@@ -1,0 +1,129 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Josefin Sans", sans-serif;
+}
+html {
+  scroll-behavior: smooth;
+  margin: 0px !important;
+  padding: 0px !important;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+}
+#main {
+  transition: all 0.3s;
+
+  border-top: 1px solid #f1e7e7;
+}
+@media (max-width: 1199px) {
+  #main {
+    padding: 20px;
+  }
+}
+ul li a:hover {
+  color: #0d6efd;
+  background-color: #fdce5e17;
+}
+
+.btn-primary {
+  background-color: #ff5f30 !important;
+  font-weight: bold;
+  border: none !important;
+  border-radius: 4px;
+  outline: none;
+}
+.candidateTable tr:nth-child(odd) td {
+  background: #fdce5e17 !important;
+}
+ul.navbar-nav li a span.badge {
+  background-color: #ff5f30 !important;
+  border-radius: 50%;
+}
+.table-wrapper {
+  overflow-x: auto;
+}
+.borderight {
+  border-right: 1px solid rgb(196, 196, 196);
+}
+a.router-link-active ol.breadcrumb li span {
+  color: #0d6efd;
+  background-color: #fdce5e17;
+}
+ul.breadcrumb li span {
+  color: #ff5722;
+}
+
+.btn {
+  background: #f6851d;
+}
+
+table thead th {
+  background-color: #f9944b !important;
+}
+
+.ribbon {
+  position: relative;
+  padding: 0 0.5em;
+  font-size: 2em;
+  margin: 0 0 0 -0.625em;
+  line-height: 1.875em;
+  color: #e6e2c8;
+  top: -17rem;
+}
+.ribbon span {
+  z-index: 1;
+  position: inherit;
+  top: -8px;
+  left: 3rem;
+  /* text-align: center; */
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #fff;
+}
+
+.ribbon:before,
+.ribbon:after {
+  position: absolute;
+  content: "";
+  display: block;
+}
+
+.ribbon:before {
+  width: 0.2em;
+  height: 93%;
+  padding: 6px 0px 0.438em;
+  top: 0px;
+  /* left: 0.531em; */
+  background: #68a325;
+  border-radius: 0.313em 0 0 0.313em;
+}
+
+.ribbon:after {
+  width: 6.313em;
+  height: 1.313em;
+  background: #68a325;
+  bottom: -0.313em;
+  /* left: -0.313em; */
+  border-radius: 0.313em 0 0 0.313em;
+  box-shadow: inset -1px 2px 2px rgba(0, 0, 0, 0.3);
+  top: 0rem;
+}
+
+@media (max-width: 600px) {
+  .ribbon {
+    line-height: 1.143em;
+    padding: 0.5em;
+  }
+
+  .ribbon:before,
+  .ribbon:after {
+    font-size: 0.714em;
+  }
+}
