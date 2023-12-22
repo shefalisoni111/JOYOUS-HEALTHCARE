@@ -117,9 +117,7 @@
                 </div>
 
                 <div>
-                  <button type="button" class="btn btn-outline-primary">
-                    Edit
-                  </button>
+                  <button type="button" class="btn btn-outline-primary">Edit</button>
                 </div>
               </div>
             </div>
@@ -155,12 +153,8 @@
                 <button type="button" class="btn btn-primary btn-sm">
                   Assitance number
                 </button>
-                <button type="button" class="btn btn-primary btn-sm">
-                  HCA
-                </button>
-                <button type="button" class="btn btn-primary btn-sm">
-                  + Add
-                </button>
+                <button type="button" class="btn btn-primary btn-sm">HCA</button>
+                <button type="button" class="btn btn-primary btn-sm">+ Add</button>
               </div>
             </div>
           </div>
@@ -172,9 +166,7 @@
                 >
                   payroll
                 </h5>
-                <button type="button" class="btn btn-outline-primary mb-3">
-                  Edit
-                </button>
+                <button type="button" class="btn btn-outline-primary mb-3">Edit</button>
               </div>
             </div>
             <div class="card-body">
@@ -230,9 +222,7 @@
                 </div>
 
                 <div>
-                  <button type="button" class="btn btn-outline-primary">
-                    Edit
-                  </button>
+                  <button type="button" class="btn btn-outline-primary">Edit</button>
                 </div>
               </div>
             </div>
@@ -287,9 +277,7 @@
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
-                <tbody>
-                  ...
-                </tbody>
+                <tbody></tbody>
               </table>
             </div>
           </div>
@@ -306,16 +294,30 @@
                 >
                   Work experience
                 </h5>
-                <button type="button" class="btn btn-primary mb-3">
+                <button
+                  class="btn btn-primary rounded-1 text-uppercase fw-medium mb-3"
+                  data-bs-toggle="modal"
+                  data-bs-target="#addWorkExperience"
+                  data-bs-whatever="@mdo"
+                  type="button"
+                >
                   + Add
                 </button>
               </div>
             </div>
             <div class="card-body">
               <table class="table">
-                <thead class="table-light"></thead>
+                <thead class="table-light">
+                  <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                  </tr>
+                </thead>
                 <tbody>
-                  ...
+                  <tr v-for="data in getWorkExpData" :key="data.id">
+                    <td v-text="data.title"></td>
+                    <td v-text="data.description"></td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -333,16 +335,30 @@
                 >
                   Education
                 </h5>
-                <button type="button" class="btn btn-primary mb-3">
+                <button
+                  class="btn btn-primary rounded-1 text-uppercase fw-medium mb-3"
+                  data-bs-toggle="modal"
+                  data-bs-target="#addEducation"
+                  data-bs-whatever="@mdo"
+                  type="button"
+                >
                   + Add
                 </button>
               </div>
             </div>
             <div class="card-body">
               <table class="table">
-                <thead class="table-light"></thead>
+                <thead class="table-light">
+                  <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                  </tr>
+                </thead>
                 <tbody>
-                  ...
+                  <tr v-for="data in getEducationExpData" :key="data.id">
+                    <td v-text="data.title"></td>
+                    <td v-text="data.description"></td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -350,17 +366,23 @@
         </div>
       </div>
     </div>
+    <WorkExperience />
+    <EducationAdd />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import WorkExperience from "../../modals/CandidatePage/OverView/WorkExperience.vue";
+import EducationAdd from "../../modals/CandidatePage/OverView/EducationAdd.vue";
 
 export default {
   name: "Overview",
   data() {
     return {
       getCandidatesDataInOverview: [],
+      getEducationExpData: [],
+      getWorkExpData: [],
       fetchCandidate: {
         id: "",
         first_name: "",
@@ -376,7 +398,7 @@ export default {
       },
     };
   },
-  components: {},
+  components: { WorkExperience, EducationAdd },
   methods: {
     async getCandidateMethod() {
       try {
@@ -388,7 +410,41 @@ export default {
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            alert(error.response.data.message);
+            // alert(error.response.data.message);
+          }
+        } else {
+          // console.error("Error fetching candidates:", error);
+        }
+      }
+    },
+    async getCandidateWorkExperienceMethod() {
+      try {
+        const response = await axios.get(
+          `https://logezy.onrender.com/candidates/${this.$route.params.id}/candidate_work_experiences`
+        );
+
+        this.getWorkExpData = response.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        } else {
+          // console.error("Error fetching candidates:", error);
+        }
+      }
+    },
+    async getCandidateEducationMethod() {
+      try {
+        const response = await axios.get(
+          `https://logezy.onrender.com/candidates/${this.$route.params.id}/candidates_all_educations`
+        );
+
+        this.getEducationExpData = response.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
           }
         } else {
           // console.error("Error fetching candidates:", error);
@@ -399,6 +455,8 @@ export default {
 
   mounted() {
     this.getCandidateMethod();
+    this.getCandidateWorkExperienceMethod();
+    this.getCandidateEducationMethod();
   },
 };
 </script>

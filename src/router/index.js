@@ -28,25 +28,25 @@ const router = createRouter({
       name: "Client",
       component: () => import("@/views/ClientView.vue"),
       children: [
-        {
-          path: "/client",
-          name: "ClientsLists",
-          component: () => import("@/components/ClientsPages/ClientsLists.vue"),
-          props: true,
-        },
-        {
-          path: "edit/:id",
-          name: "EditClient",
-          component: () => import("@/components/ClientsPages/EditClient.vue"),
-          props: true,
-        },
-        {
-          path: "view/:id",
-          name: "ClientsProfileView",
-          component: () =>
-            import("@/components/ClientsPages/ClientsProfileView.vue"),
-          props: true,
-        },
+        // {
+        //   path: "/client",
+        //   name: "ClientsLists",
+        //   component: () => import("@/components/ClientsPages/ClientsLists.vue"),
+        //   props: true,
+        // },
+        // {
+        //   path: "edit/:id",
+        //   name: "EditClient",
+        //   component: () => import("@/components/ClientsPages/EditClient.vue"),
+        //   props: true,
+        // },
+        // {
+        //   path: "view/:id",
+        //   name: "ClientsProfileView",
+        //   component: () =>
+        //     import("@/components/ClientsPages/ClientsProfileView.vue"),
+        //   props: true,
+        // },
         {
           path: "client/:id",
           name: "SingleClientProfile",

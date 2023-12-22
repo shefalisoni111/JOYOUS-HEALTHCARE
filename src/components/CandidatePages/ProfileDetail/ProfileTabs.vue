@@ -254,9 +254,7 @@
       >
         <div class="row">
           <div class="card-body border-0 px-3">
-            <h5 class="text-center bg-colors">
-              RECPAL DEMO 1 EMPLOYEE PROFILE
-            </h5>
+            <h5 class="text-center bg-colors">RECPAL DEMO 1 EMPLOYEE PROFILE</h5>
             <table class="table table-bordered">
               <tbody class="text-capitalize">
                 <tr class="d-flex justify-content-evenly">
@@ -406,7 +404,7 @@ export default {
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            alert(error.response.data.message);
+            // alert(error.response.data.message);
           }
         } else {
           // console.error("Error fetching candidates:", error);

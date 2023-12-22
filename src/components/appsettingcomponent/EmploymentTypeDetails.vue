@@ -23,76 +23,83 @@
       </div>
     </div>
     <div class="mt-4 table-wrapper">
-      <table class="table table table-hover" :v-if="getEmployeeStatus">
-        <thead>
-          <tr>
-            <th scope="col" class="col-5 text-white">Employment Type</th>
-            <th scope="col" class="col-5 text-white jusfycenter">
-              Description
-            </th>
-            <th scope="col" class="col-2 text-white jusfycenter">Action</th>
-          </tr>
-        </thead>
-        <tbody v-if="getEmployeeStatus.length > 0">
-          <tr v-for="getEmployee in getEmployeeStatus" :key="getEmployee.id">
-            <td :v-text="getEmployee.title">{{ getEmployee.title }}</td>
-            <td :v-text="getEmployee.description">
-              {{ getEmployee.description }}
-            </td>
-            <td>
-              <i
-                class="bi bi-trash"
-                v-on:click="employeeDelete(getEmployee.id)"
-              ></i>
-            </td>
-          </tr>
-          <!-- <tr>
-            <td :v-text="getEmployee.title"></td>
-            <td :v-text="getEmployee.description"></td>
-            <td><i class="bi bi-trash"></i></td>
-          </tr>
-          <tr>
-            <td>Umbrella</td>
-            <td></td>
-            <td><i class="bi bi-trash"></i></td>
-          </tr>
-          <tr>
-            <td>Paye</td>
-            <td></td>
-            <td><i class="bi bi-trash"></i></td>
-          </tr>
-          <tr>
-            <td>Holiday</td>
-            <td></td>
-            <td><i class="bi bi-trash"></i></td>
-          </tr>
-          <tr>
-            <td>Active</td>
-            <td></td>
-            <td><i class="bi bi-trash"></i></td>
-          </tr>
-          <tr>
-            <td>Inactive</td>
-            <td></td>
-            <td><i class="bi bi-trash"></i></td>
-          </tr>
-          <tr>
-            <td>Holiday</td>
-            <td></td>
-            <td><i class="bi bi-trash"></i></td>
-          </tr>
-          <tr>
-            <td>Inactive</td>
-            <td></td>
-            <td><i class="bi bi-trash"></i></td>
-          </tr> -->
-        </tbody>
-        <tbody v-else>
-          <tr>
-            <td colspan="3">Loading...</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="showdata">
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link active text-capitalize ps-0"
+              id="employymentType"
+              data-bs-toggle="pill"
+              data-bs-target="#pills-employeementType"
+              type="button"
+              role="tab"
+              aria-controls="pills-employeementType"
+              aria-selected="true"
+            >
+              Employment Types
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link text-capitalize"
+              id="companyDetail"
+              data-bs-toggle="pill"
+              data-bs-target="#pills-companyDetails"
+              type="button"
+              role="tab"
+              aria-controls="pills-companyDetails"
+              aria-selected="false"
+            >
+              Company Details
+            </button>
+          </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+          <div
+            class="tab-pane fade show active"
+            id="pills-employeementType"
+            role="tabpanel"
+            aria-labelledby="employymentType"
+            tabindex="0"
+          >
+            <table class="table table table-hover" :v-if="getEmployeeStatus">
+              <thead>
+                <tr>
+                  <th scope="col" class="col-5 text-white">Employment Type</th>
+                  <th scope="col" class="col-5 text-white jusfycenter">Description</th>
+                  <th scope="col" class="col-2 text-white jusfycenter">Action</th>
+                </tr>
+              </thead>
+              <tbody v-if="getEmployeeStatus.length > 0">
+                <tr v-for="getEmployee in getEmployeeStatus" :key="getEmployee.id">
+                  <td :v-text="getEmployee.title">{{ getEmployee.title }}</td>
+                  <td :v-text="getEmployee.description">
+                    {{ getEmployee.description }}
+                  </td>
+                  <td>
+                    <i
+                      class="bi bi-trash"
+                      v-on:click="employeeDelete(getEmployee.id)"
+                    ></i>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody v-else>
+                <tr>
+                  <td colspan="3">Loading...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div
+            class="tab-pane fade"
+            id="pills-companyDetails"
+            role="tabpanel"
+            aria-labelledby="companyDetail"
+            tabindex="0"
+          ></div>
+        </div>
+      </div>
     </div>
     <AddEmployee />
   </div>
@@ -149,6 +156,23 @@ export default {
 </script>
 
 <style>
+.showdata .nav-link {
+  color: #000;
+}
+.showdata .nav-link.active {
+  background: #e8e3e3;
+  margin-left: 4px;
+}
+.nav-pills .nav-link.active {
+  color: #ff5722;
+  border-bottom: 2px solid #ff5722;
+  border-radius: 0;
+  background-color: transparent;
+  font-weight: bold;
+}
+.nav-pills {
+  border-bottom: 1px solid #ddd6d6;
+}
 table thead th {
   background-color: #f9944b !important;
 }

@@ -1,12 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="myModal"
-      aria-labelledby="myModal"
-      tabindex="-1"
-    >
+    <div class="modal fade" id="myModal" aria-labelledby="myModal" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -26,9 +21,18 @@
                     <label class="form-label">NAME</label>
                   </div>
                   <div class="col-10 mt-1">
-                    <input type="text" class="form-control" v-model="name" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="name"
+                      @input="clearError('name')"
+                    />
+                    <div v-if="getError('name')" class="text-danger">
+                      {{ getError("name") }}
+                    </div>
                   </div>
                 </div>
+
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label for="exampleFormControlTextarea1" class="form-label"
@@ -36,10 +40,19 @@
                     >
                   </div>
                   <div class="col-10 mt-1">
-                    <input type="color" id="head" name="head" v-model="color" />
-                    <!-- <i class="bi bi-square-fill"></i> -->
+                    <input
+                      type="color"
+                      id="head"
+                      name="head"
+                      v-model="color"
+                      @input="clearError('color')"
+                    />
+                    <div v-if="getError('color')" class="text-danger">
+                      {{ getError("color") }}
+                    </div>
                   </div>
                 </div>
+
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label for="exampleFormControlTextarea1" class="form-label"
@@ -53,7 +66,11 @@
                       id="exampleFormControlTextarea1"
                       rows="3"
                       v-model="description"
+                      @input="clearError('description')"
                     ></textarea>
+                    <div v-if="getError('description')" class="text-danger">
+                      {{ getError("description") }}
+                    </div>
                   </div>
                 </div>
               </form>
@@ -71,7 +88,8 @@
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              v-on:click="addJob()"
+              :disabled="isButtonDisabled"
+              @click="addJob"
             >
               Add Job
             </button>
@@ -91,11 +109,55 @@ export default {
       color: "",
       description: "",
 
-      error: [],
+      errors: {},
     };
   },
+  computed: {
+    isButtonDisabled() {
+      return (
+        Object.values(this.errors).some((error) => error !== null) || this.isEmptyField()
+      );
+    },
+  },
   methods: {
+    clearError(fieldName) {
+      // Clear the error for the specific field
+      this.$set(this.errors, fieldName, null);
+    },
+    getError(fieldName) {
+      // Get the error message for the specific field
+      return this.errors[fieldName];
+    },
+    isEmptyField() {
+      // Check if any field is empty
+      return !this.name.trim() || !this.color.trim() || !this.description.trim();
+    },
+    validateAndAddJob() {
+      this.errors = {}; // Reset errors
+
+      // Validate each field
+      if (!this.name.trim()) {
+        this.$set(this.errors, "name", "Name is required.");
+      }
+
+      if (!this.color.trim()) {
+        this.$set(this.errors, "color", "Color is required.");
+      }
+
+      if (!this.description.trim()) {
+        this.$set(this.errors, "description", "Description is required.");
+      }
+
+      // If there are no errors, proceed to add job
+      if (
+        Object.values(this.errors).every((error) => error === null) &&
+        !this.isEmptyField()
+      ) {
+        this.addJob();
+      }
+    },
     async addJob() {
+      // Your existing addJob logic...
       const data = {
         name: this.name,
         color: this.color,

@@ -1,9 +1,7 @@
 <template>
   <div>
     <div class="container-fluid p-0 bg-define">
-      <div
-        class="pagetitle d-flex justify-content-between align-items-center p-2"
-      >
+      <div class="pagetitle d-flex justify-content-between align-items-center p-2">
         <div class="d-flex justify-content-around gap-2"></div>
 
         <div></div>
@@ -137,7 +135,7 @@ export default {
         .catch((error) => {
           if (error.response) {
             if (error.response.status == 404) {
-              alert(error.response.data.message);
+              // alert(error.response.data.message);
             }
           }
         });

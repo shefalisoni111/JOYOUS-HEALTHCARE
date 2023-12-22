@@ -2,11 +2,6 @@
   <div>
     <Navbar />
     <AddVacancy />
-    <PublishedVacancy />
-    <AppliedVacancyList />
-    <AssignedVacancyList />
-    <AllVacancyCandidateList />
-    <RejectedVacancyList />
 
     <router-view />
   </div>
@@ -15,11 +10,6 @@
 import Navbar from "../components/Navbar.vue";
 
 import AddVacancy from "../components/modals/Vacancy/AddVacancy.vue";
-import PublishedVacancy from "../components/modals/Vacancy/PublishedVacancy.vue";
-import AppliedVacancyList from "../components/modals/Vacancy/AppliedVacancyList.vue";
-import AssignedVacancyList from "../components/modals/Vacancy/AssignedVacancyList.vue";
-import RejectedVacancyList from "../components/modals/Vacancy/RejectedVacancyList.vue";
-import AllVacancyCandidateList from "../components/modals/Vacancy/AllVacancyCandidateList.vue";
 
 export default {
   data() {
@@ -29,14 +19,10 @@ export default {
       searchQuery: "",
     };
   },
+
   components: {
     Navbar,
     AddVacancy,
-    PublishedVacancy,
-    AppliedVacancyList,
-    AssignedVacancyList,
-    AllVacancyCandidateList,
-    RejectedVacancyList,
   },
 
   methods: {},

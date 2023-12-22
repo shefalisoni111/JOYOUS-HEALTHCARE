@@ -71,7 +71,11 @@
                       class="accordion-header d-flex justify-content-between align-items-center"
                       @click="toggleAccordion(index)"
                     >
-                      <button class="accordion-button" type="button">
+                      <button
+                        class="accordion-button"
+                        type="button"
+                        :class="{ collapsed: !getCate.isOpen }"
+                      >
                         {{ getCate.category_name }}
                       </button>
 
@@ -79,7 +83,7 @@
                         <li class="p-3 fs-6">
                           <button class="btn btn-warning count-doc-btn">
                             <span>!</span></button
-                          >&nbsp;2
+                          >&nbsp;{{ getCate.total_document }}
                         </li>
                         <li class=" ">
                           <button class="btn border-primary-subtle">
@@ -113,7 +117,11 @@
                               class="accordion-header"
                               @click="toggleAccordionDocument(index, docIndex)"
                             >
-                              <button class="accordion-button" type="button">
+                              <button
+                                class="accordion-button"
+                                type="button"
+                                :class="{ collapsed: !getDocs.isOpen }"
+                              >
                                 {{ getDocs.display_name }}
                               </button>
                               <div class="d-flex align-items-center">
@@ -153,7 +161,9 @@
                                   <div class="row">
                                     <div class="col-md-6">
                                       <div class="mb-3">
-                                        <label class="form-label">ISSUE DATE</label>
+                                        <label class="form-label" for="issue"
+                                          >ISSUE DATE</label
+                                        >
                                         <input
                                           type="date"
                                           class="form-control"
@@ -166,7 +176,9 @@
                                     </div>
                                     <div class="col-6">
                                       <div class="mb-3">
-                                        <label class="form-label">EXPIRY DATE</label>
+                                        <label class="form-label" for="expiry"
+                                          >EXPIRY DATE</label
+                                        >
                                         <input
                                           type="date"
                                           class="form-control"
@@ -264,11 +276,13 @@ export default {
 
       // Make sure getDocument is not empty before using find()
       if (this.getDocument.length > 0) {
-        const selectedDocument = this.getDocument.find((doc) => doc.id);
+        const selectedDocument = this.getDocument.find((document) => {
+          this.document_id = document.id;
+        });
         const data = {
           issue_date: this.issue_date,
           candidate_id: this.$route.params.id,
-          document_id: selectedDocument.id,
+          document_id: this.document_id,
           expiry_date: this.expiry_date,
           description: this.description,
           document_image: this.document_image,
@@ -286,13 +300,13 @@ export default {
               body: JSON.stringify(data),
             }
           );
-          console.log(data);
+          // console.log(data);
           alert("Successful Submit Data");
         } catch (error) {
-          console.error("Error submitting data:", error);
+          // console.error("Error submitting data:", error);
         }
       } else {
-        console.error("No documents available to associate.");
+        // console.error("No documents available to associate.");
       }
     },
     toggleAccordion(index) {
@@ -320,7 +334,7 @@ export default {
     },
 
     onDocumentAdded() {
-      this.getDocCAtegories;
+      this.getDocCAtegories();
     },
 
     documentDelete(id) {
@@ -337,6 +351,7 @@ export default {
       try {
         const response = await axios.get("https://logezy.onrender.com/documents");
         this.getDocument = response.data;
+
         this.getDocument.forEach((document) => {
           document.id = id;
         });
@@ -373,6 +388,7 @@ export default {
 .borderbottom {
   border-bottom: 1px solid #ebe2e2;
 }
+
 button.count-doc-btn {
   border-radius: 50%;
   padding: 4px 13px;

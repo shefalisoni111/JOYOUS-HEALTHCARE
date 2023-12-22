@@ -28,7 +28,7 @@
                         <li
                           class="nav-item d-flex align-items-center gap-2"
                           role="presentation"
-                          :class="{ 'nav-item': true, active: isActive }"
+                          
                         >
                           <button
                             a

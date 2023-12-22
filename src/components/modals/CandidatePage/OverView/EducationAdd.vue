@@ -1,11 +1,16 @@
 <template>
   <div>
     <!-- Modal -->
-    <div class="modal fade" id="addEmployee" aria-labelledby="addEmployee" tabindex="-1">
+    <div
+      class="modal fade"
+      id="addEducation"
+      aria-labelledby="addEducation"
+      tabindex="-1"
+    >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addEmployee">Add New Employee Type</h5>
+            <h5 class="modal-title" id="addEducation">Add Education</h5>
             <button
               type="button"
               class="btn-close"
@@ -59,7 +64,7 @@
           <div class="modal-footer">
             <button
               class="btn btn-secondary rounded-1"
-              data-bs-target="#addEmployee"
+              data-bs-target="#addEducation"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
             >
@@ -69,7 +74,7 @@
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               :disabled="isButtonDisabled"
-              v-on:click="addEmployee()"
+              v-on:click="addEducation()"
             >
               Save
             </button>
@@ -82,7 +87,7 @@
 
 <script>
 export default {
-  name: "AddEmployee",
+  name: "WorkExperience",
   data() {
     return {
       title: "",
@@ -129,23 +134,26 @@ export default {
         Object.values(this.errors).every((error) => error === null) &&
         !this.isEmptyField()
       ) {
-        this.addEmployee();
+        this.addEducation();
       }
     },
-    async addEmployee() {
+    async addEducation() {
       const data = {
         title: this.title,
         description: this.description,
       };
       try {
-        const response = await fetch("https://logezy.onrender.com/employment_types", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
+        const response = await fetch(
+          `https://logezy.onrender.com/candidates/${this.$route.params.id}/candidate_educations`,
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
         if (data) {
           location.reload();
         }

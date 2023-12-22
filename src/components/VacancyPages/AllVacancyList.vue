@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row">
-      <di class="col-12">
+      <div class="col-12">
         <table class="table candidateTable">
           <thead>
             <tr>
@@ -37,27 +37,30 @@
               <td v-text="getdata.business_unit"></td>
               <td v-text="getdata.job_title"></td>
 
-              <td v-text="getdata.dates[0]"></td>
+              <td v-for="(date, index) in getdata.dates" :key="index" v-text="date"></td>
 
               <!-- <td v-text="getdata.dates[0]"></td> -->
               <td v-text="getdata.shift"></td>
 
               <td v-text="getdata.notes"></td>
+
               <td>
-                <a
-                  class="btn btn-success"
+                <i
                   data-bs-toggle="modal"
                   data-bs-target="#publishVacancy"
                   data-bs-whatever="@mdo"
-                >
-                  <td v-if="getdata.publish == false">
-                    <i class="bi bi-bell-fill"></i>
-                  </td>
-
-                  <td v-else>
-                    <i class="bi bi-check-circle-fill"></i>
-                  </td>
-                </a>
+                  v-if="getdata.publish === 'true'"
+                  class="btn btn-success bi bi-check-circle-fill"
+                  @click="openPublished(getdata.id)"
+                ></i>
+                <i
+                  data-bs-toggle="modal"
+                  data-bs-target="#publishVacancy"
+                  data-bs-whatever="@mdo"
+                  @click="openPublished(getdata.id)"
+                  v-else
+                  class="btn btn-success bi bi-bell"
+                ></i>
               </td>
 
               <td>
@@ -67,6 +70,7 @@
                   data-bs-toggle="modal"
                   data-bs-target="#allCandidateVacancyList"
                   data-bs-whatever="@mdo"
+                  @click="openAllApplied(getdata.id)"
                 >
                   <span class="rounded-circle">{{ getdata.applied }}</span>
                 </button>
@@ -78,6 +82,7 @@
                   data-bs-toggle="modal"
                   data-bs-target="#appliedVacancy"
                   data-bs-whatever="@mdo"
+                  @click="openPopup(getdata.id)"
                 >
                   <span class="rounded-circle">{{ getdata.applied }}</span>
                 </button>
@@ -89,6 +94,7 @@
                   data-bs-toggle="modal"
                   data-bs-target="#assignedVacancyList"
                   data-bs-whatever="@mdo"
+                  @click="openAssigned(getdata.id)"
                 >
                   <span class="rounded-circle">{{ getdata.assigned }}</span>
                 </button>
@@ -100,6 +106,7 @@
                   data-bs-toggle="modal"
                   data-bs-target="#rejectedVacancyList"
                   data-bs-whatever="@mdo"
+                  @click="openRejected(getdata.id)"
                 >
                   <span class="rounded-circle">{{ getdata.rejected }}</span>
                 </button>
@@ -117,17 +124,19 @@
                 </router-link>
                 &nbsp;&nbsp;
                 <button class="btn btn-outline-success text-nowrap">
-                  <i
-                    class="bi bi-trash"
-                    v-on:click="vacancyDeleteMethod(getdata.id)"
-                  ></i>
+                  <i class="bi bi-trash" v-on:click="vacancyDeleteMethod(getdata.id)"></i>
                 </button>
               </td>
             </tr>
           </tbody>
         </table>
-      </di>
+      </div>
     </div>
+    <PublishedVacancy />
+    <AppliedVacancyList />
+    <AssignedVacancyList />
+    <RejectedVacancyList />
+    <AllVacancyCandidateList />
   </div>
 </template>
 
@@ -135,16 +144,45 @@
 import axios from "axios";
 
 // import DatePicker from "../components/DatePicker.vue";
-
+import PublishedVacancy from "../modals/Vacancy/PublishedVacancy.vue";
+import AppliedVacancyList from "../modals/Vacancy/AppliedVacancyList.vue";
+import AssignedVacancyList from "../modals/Vacancy/AssignedVacancyList.vue";
+import RejectedVacancyList from "../modals/Vacancy/RejectedVacancyList.vue";
+import AllVacancyCandidateList from "../modals/Vacancy/AllVacancyCandidateList.vue";
 export default {
   data() {
     return {
       getVacancyDetail: [],
     };
   },
-  components: {},
-
+  components: {
+    PublishedVacancy,
+    AppliedVacancyList,
+    AssignedVacancyList,
+    RejectedVacancyList,
+    AllVacancyCandidateList,
+  },
+  computed: {
+    getIconClass() {
+      return this.publish ? "bi bi-bell" : "bi bi-check-circle-fill";
+    },
+  },
   methods: {
+    openPopup(id) {
+      this.$store.commit("setSelectedAppliedItemId", id);
+    },
+    openAssigned(id) {
+      this.$store.commit("setSelectedAssignedItemId", id);
+    },
+    openRejected(id) {
+      this.$store.commit("setSelectedRejectItemId", id);
+    },
+    openAllApplied(id) {
+      this.$store.commit("setSelectedAllItemId", id);
+    },
+    openPublished(id) {
+      this.$store.commit("setSelectedPublishedItemId", id);
+    },
     async vacancyDeleteMethod(id) {
       if (!window.confirm("Are you Sure ?")) {
         return;
@@ -162,6 +200,7 @@ export default {
         });
       // alert("Record Deleted ");
     },
+
     async createVacancy() {
       const token = localStorage.getItem("token");
       axios
@@ -172,7 +211,9 @@ export default {
           },
         })
 
-        .then((response) => (this.getVacancyDetail = response.data.data));
+        .then((response) => {
+          this.getVacancyDetail = response.data.data;
+        });
     },
   },
 

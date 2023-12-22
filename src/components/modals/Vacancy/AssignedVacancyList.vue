@@ -20,7 +20,21 @@
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
-              <table class="table candidateTable">
+              <ul class="list-unstyled d-flex gap-3 mb-0 publish-ul">
+                <li>Code:{{ vacancyDetails.ref_code }}</li>
+                <li>B-unit:{{ vacancyDetails.business_unit }}</li>
+                <li>Job: {{ vacancyDetails.job_title }}</li>
+                <li
+                  v-for="(date, index) in vacancyDetails.dates"
+                  :key="index"
+                  v-text="date"
+                ></li>
+                <li>Time: {{ vacancyDetails.shift }}</li>
+                <li>Space left: 1</li>
+              </ul>
+            </div>
+            <div class="row g-3 align-items-center">
+              <table class="table candidateTable" v-if="selectedAssignedItemId">
                 <thead>
                   <tr>
                     <th scope="col">candidate code</th>
@@ -32,7 +46,7 @@
                     <th scope="col">activated</th>
                     <th scope="col">status</th>
                     <th scope="col">position</th>
-                    <th scope="col">employment type</th>
+                    <!-- <th scope="col">employment type</th> -->
                     <th scope="col">last login</th>
 
                     <th scope="col">Action</th>
@@ -52,12 +66,12 @@
                     <td v-text="data.activated"></td>
                     <td v-text="data.status"></td>
                     <td v-text="data.position"></td>
-                    <td v-text="data.employment_type"></td>
+                    <!-- <td v-text="data.employment_type"></td> -->
                     <td v-text="data.last_login"></td>
                     <td class="cursor-pointer">
-                      <a class="btn btn-outline-success text-nowrap">
+                      <!-- <a class="btn btn-outline-success text-nowrap">
                         <i class="bi bi-pencil-square"></i>
-                      </a>
+                      </a> -->
                       &nbsp;&nbsp;
                       <button class="btn btn-outline-success text-nowrap">
                         <i
@@ -66,11 +80,6 @@
                         ></i>
                       </button>
                     </td>
-                  </tr>
-                </tbody>
-                <tbody>
-                  <tr>
-                    <td colspan="12">List in Process....</td>
                   </tr>
                 </tbody>
               </table>
@@ -82,15 +91,9 @@
               data-bs-target="#assignedVacancyList"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
+              @click="closePopup"
             >
               Cancel
-            </button>
-            <button
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
-              data-bs-dismiss="modal"
-              v-on:click="addVacancyMethod()"
-            >
-              Add Vacancy
             </button>
           </div>
         </div>
@@ -101,37 +104,49 @@
 
 <script>
 import axios from "axios";
+
 export default {
   name: "AssignedVacancyList",
   data() {
-    return { assignedVacancyData: [] };
+    return { assignedVacancyData: [], vacancyDetails: [] };
+  },
+  computed: {
+    selectedAssignedItemId() {
+      this.getAssignedVacancyList(this.$store.state.selectedAssignedItemId);
+      return this.$store.state.selectedAssignedItemId;
+    },
   },
 
   methods: {
-    async getAssignedVacancyList() {
+    async getAssignedVacancyList(id) {
       const token = localStorage.getItem("token");
-      try {
-        const response = await axios.get(
-          "https://logezy.onrender.com/assigned_candidate_list",
-          {
-            headers: {
-              "content-type": "application/json",
-              Authorization: "bearer " + token,
-            },
-          }
-        );
-        this.assignedVacancyData = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            alert(error.response.data.message);
+      this.assignedVacancyData = [];
+      this.vacancyDetails = [];
+      if (this.$store.state.selectedAssignedItemId) {
+        try {
+          const response = await axios.get(
+            `https://logezy.onrender.com/assigned_candidate_list?vacancy_id=${id}`,
+            {
+              headers: {
+                "content-type": "application/json",
+                Authorization: "bearer " + token,
+              },
+            }
+          );
+          this.assignedVacancyData = response.data.data;
+          this.vacancyDetails = response.data.vacancy_date;
+        } catch (error) {
+          if (error.response) {
+            if (error.response.status == 404) {
+              // alert(error.response.data.message);
+            }
           }
         }
       }
     },
-  },
-  mounted() {
-    this.getAssignedVacancyList();
+    closePopup() {
+      this.$store.commit("setSelectedAssignedItemId", null);
+    },
   },
 };
 </script>

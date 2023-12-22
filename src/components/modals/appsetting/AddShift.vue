@@ -67,6 +67,7 @@
             </button>
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              data-bs-dismiss="modal"
               @click="updateShift"
             >
               Save Changes
@@ -79,47 +80,58 @@
 </template>
 
 <script>
+import { ref } from "vue";
 import axios from "axios";
 
 export default {
-  data() {
-    return {
-      shifts: [],
-    };
-  },
-  methods: {
-    async updateShift() {
+  setup() {
+    const shifts = ref([]);
+
+    const updateShift = async () => {
       try {
-        for (const shift of this.shifts) {
+        for (const shift of shifts.value) {
           const response = await axios.put(
             `https://logezy.onrender.com/shifts/${shift.id}`,
             { start_time: shift.start_time, end_time: shift.end_time }
           );
-          // console.log(`Shift ${shift.id} updated:`, response.data);
-          if (data) {
-            window.location.reload();
+
+          // Find the index of the updated shift in the local array
+          const updatedIndex = shifts.value.findIndex((s) => s.id === shift.id);
+
+          // Update the shift in the local array at its own position
+          if (updatedIndex !== -1) {
+            shifts.value[updatedIndex] = response.data;
           }
         }
+
+        window.location.reload();
       } catch (error) {
-        // console.error("Error updating shifts:", error);
+        console.error("Error updating shifts:", error);
       }
-    },
-    async fetchShifts() {
+    };
+
+    const fetchShifts = async () => {
       try {
         const response = await axios.get("https://logezy.onrender.com/shifts");
-        this.shifts = response.data || [];
+        shifts.value = response.data || [];
       } catch (error) {
-        // console.error("Error fetching shifts:", error);
+        console.error("Error fetching shifts:", error);
       }
-    },
+    };
 
-    updateTime(shift, property, value) {
+    const updateTime = (shift, property, value) => {
       // Update the corresponding property of the selected shift
       shift[property] = value;
-    },
-  },
-  created() {
-    this.fetchShifts();
+    };
+
+    fetchShifts(); // Fetch shifts on component setup
+
+    return {
+      shifts,
+      updateShift,
+      fetchShifts,
+      updateTime,
+    };
   },
 };
 </script>

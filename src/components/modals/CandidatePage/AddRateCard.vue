@@ -1,12 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="rateCards"
-      aria-labelledby="ratePAge"
-      tabindex="-1"
-    >
+    <div class="modal fade" id="rateCards" aria-labelledby="ratePAge" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -43,9 +38,7 @@
 
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectJobTitle"
-                      >Position</label
-                    >
+                    <label class="form-label" for="selectJobTitle">Position</label>
                   </div>
                   <div class="col-10">
                     <select v-model="job_id" id="selectJobTitle">
@@ -66,19 +59,13 @@
                     <label class="form-label">Day</label>
                   </div>
                   <div class="col-10">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="weekname"
-                    />
+                    <input type="text" class="form-control" v-model="weekname" />
                   </div>
                 </div>
 
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="employeeData"
-                      >Employment Type</label
-                    >
+                    <label class="form-label" for="employeeData">Employment Type</label>
                   </div>
                   <div class="col-10">
                     <select v-model="employment_type_id" id="selectEmployee">
@@ -96,9 +83,7 @@
 
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectShifts"
-                      >Shift Time</label
-                    >
+                    <label class="form-label" for="selectShifts">Shift Time</label>
                   </div>
                   <div class="col-10">
                     <select v-model="shift_id" id="selectShifts">
@@ -119,11 +104,7 @@
                     <label class="form-label">Staff Rate</label>
                   </div>
                   <div class="col-10">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="staff_rate"
-                    />
+                    <input type="text" class="form-control" v-model="staff_rate" />
                   </div>
                 </div>
               </form>
@@ -185,9 +166,7 @@ export default {
     },
 
     selectShifts() {
-      const shifts_id = this.shiftsTime.find(
-        (option) => option.id === this.shifts_id
-      );
+      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
       return shifts_id ? shifts_id.shift_name : "";
     },
 
@@ -223,40 +202,36 @@ export default {
     },
     async getJobTitleMethod() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/jobs");
-        this.options = response.data;
+        const response = await axios.get("https://logezy.onrender.com/active_job_list");
+        this.options = response.data.data;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            alert(error.response.data.message);
+            // alert(error.response.data.message);
           }
         }
       }
     },
     async getBusinessUnitMethod() {
       try {
-        const response = await axios.get(
-          "https://logezy.onrender.com/business_units"
-        );
+        const response = await axios.get("https://logezy.onrender.com/business_units");
         this.businessUnit = response.data;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            alert(error.response.data.message);
+            // alert(error.response.data.message);
           }
         }
       }
     },
     async getEmployeeTypeData() {
       try {
-        const response = await axios.get(
-          "https://logezy.onrender.com/employment_types"
-        );
+        const response = await axios.get("https://logezy.onrender.com/employment_types");
         this.employeeData = response.data;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            alert(error.response.data.message);
+            // alert(error.response.data.message);
           }
         }
       }

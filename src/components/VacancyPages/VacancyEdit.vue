@@ -131,7 +131,6 @@
                 <div class="d-flex justify-content-center">
                   <button
                     class="btn btn-primary rounded-1 text-capitalize fw-medium"
-                    data-bs-dismiss="modal"
                     @click.prevent="updateVacancyMethod()"
                   >
                     Save
@@ -157,11 +156,9 @@ export default {
         business_unit_id: "",
         client_id: "",
         job_id: "",
-
-        dates: [],
+        dates: "",
         shift_id: "",
         notes: "",
-        error: [],
       },
       businessUnit: [],
       shiftsTime: [],
@@ -172,49 +169,59 @@ export default {
   computed: {
     selectBusinessUnit() {
       const businessUnit = this.businessUnit.find(
-        (option) => option.id === this.fetchVacancy.business_unit
+        (option) => option.id === this.fetchVacancy.business_unit_id
       );
       return businessUnit ? businessUnit.name : "";
     },
     selectClients() {
-      const client_id = this.clientData.find(
-        (option) => option.id === this.client_id
+      const client = this.clientData.find(
+        (option) => option.id === this.fetchVacancy.client_id
       );
-      return client_id ? client_id.first_name : "";
+      return client ? client.first_name : "";
     },
-
     selectShifts() {
-      const shifts_id = this.shiftsTime.find(
-        (option) => option.id === this.shifts_id
+      const shift = this.shiftsTime.find(
+        (option) => option.id === this.fetchVacancy.shift_id
       );
-      return shifts_id ? shifts_id.shift_name : "";
+      return shift ? shift.shift_name : "";
     },
   },
   methods: {
     async fetchVacancyMethod(id) {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(
-          `https://logezy.onrender.com/vacancies/${id}`,
-          {
-            headers: {
-              "content-type": "application/json",
-              Authorization: "bearer " + token,
-            },
-          }
-        );
+        const response = await axios.get(`https://logezy.onrender.com/vacancies/${id}`, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+        });
 
-        this.fetchVacancy = { ...this.fetchVacancy, ...response.data };
+        // Update each property individually
+        this.fetchVacancy.business_unit_id = response.data.business_unit_id;
+        this.fetchVacancy.client_id = response.data.client_id;
+        this.fetchVacancy.job_id = response.data.job_id;
+        this.fetchVacancy.dates = response.data.dates;
+        this.fetchVacancy.shift_id = response.data.shift_id;
+        this.fetchVacancy.notes = response.data.notes;
       } catch (error) {
-       // console.error("Error fetching todo:", error);
+        console.error("Error fetching vacancy:", error);
       }
     },
     async updateVacancyMethod() {
       const token = localStorage.getItem("token");
+
       try {
-        await axios.put(
-          `https://logezy.onrender.com/vacancies/${this.fetchVacancy.id}`,
-          this.fetchVacancy,
+        const response = await axios.put(
+          `https://logezy.onrender.com/vacancies/${this.$route.params.id}`,
+          {
+            business_unit_id: this.fetchVacancy.business_unit_id,
+            client_id: this.fetchVacancy.client_id,
+            job_id: this.fetchVacancy.job_id,
+            dates: this.fetchVacancy.dates,
+            shift_id: this.fetchVacancy.shift_id,
+            notes: this.fetchVacancy.notes,
+          },
           {
             headers: {
               "content-type": "application/json",
@@ -222,22 +229,31 @@ export default {
             },
           }
         );
-
         alert("Candidate updated successfully");
+        // Assuming the server returns the updated item directly
+        const updatedItem = response.data;
+
+        // Find the index of the item in the local list
+        const index = this.items.findIndex((item) => item.id === updatedItem.id);
+
+        // Update the item in place if found
+        if (index !== -1) {
+          this.$set(this.items, index, updatedItem);
+        } else {
+          // console.log("Item not found in the local list");
+        }
       } catch (error) {
         // console.error("Error updating candidate:", error);
       }
     },
     async getBusinessUnitMethod() {
       try {
-        const response = await axios.get(
-          "https://logezy.onrender.com/business_units"
-        );
+        const response = await axios.get("https://logezy.onrender.com/business_units");
         this.businessUnit = response.data;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            alert(error.response.data.message);
+            // alert(error.response.data.message);
           }
         }
       }
@@ -249,7 +265,7 @@ export default {
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            alert(error.response.data.message);
+            // alert(error.response.data.message);
           }
         }
       }
@@ -261,24 +277,12 @@ export default {
     },
     async getJobTitleMethod() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/jobs");
-        this.options = response.data;
+        const response = await axios.get("https://logezy.onrender.com/active_job_list");
+        this.options = response.data.data;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            alert(error.response.data.message);
-          }
-        }
-      }
-    },
-    async getJobTitleMethod() {
-      try {
-        const response = await axios.get("https://logezy.onrender.com/jobs");
-        this.options = response.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            alert(error.response.data.message);
+            // alert(error.response.data.message);
           }
         }
       }

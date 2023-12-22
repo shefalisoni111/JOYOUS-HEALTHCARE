@@ -43,9 +43,7 @@
                         {{ option.name }}
                       </option>
                     </select>
-                    <span
-                      v-if="!validationSelectedBusinessUnit"
-                      class="text-danger"
+                    <span v-if="!validationSelectedBusinessUnit" class="text-danger"
                       >BusinessUnit Required</span
                     >
                   </div>
@@ -55,11 +53,7 @@
                     <label for="selectClients" class="form-label">Client</label>
                   </div>
                   <div class="col-10">
-                    <select
-                      v-model="client_id"
-                      id="selectClients"
-                      @change="clearError"
-                    >
+                    <select v-model="client_id" id="selectClients" @change="clearError">
                       <option
                         v-for="option in clientData"
                         :key="option.id"
@@ -76,16 +70,10 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectJobTitle"
-                      >Job Title</label
-                    >
+                    <label class="form-label" for="selectJobTitle">Job Title</label>
                   </div>
                   <div class="col-10">
-                    <select
-                      v-model="job_id"
-                      id="selectJobTitle"
-                      @change="clearError"
-                    >
+                    <select v-model="job_id" id="selectJobTitle" @change="clearError">
                       <option
                         v-for="option in options"
                         :key="option.id"
@@ -95,9 +83,7 @@
                         {{ option.name }}
                       </option>
                     </select>
-                    <span
-                      v-if="!validationSelectedOptionText"
-                      class="text-danger"
+                    <span v-if="!validationSelectedOptionText" class="text-danger"
                       >Position Required</span
                     >
                   </div>
@@ -125,11 +111,7 @@
                     <label class="form-label" for="selectShifts">Shift</label>
                   </div>
                   <div class="col-10">
-                    <select
-                      v-model="shift_id"
-                      id="selectShifts"
-                      @change="clearError"
-                    >
+                    <select v-model="shift_id" id="selectShifts" @change="clearError">
                       <option
                         v-for="option in shiftsTime"
                         :key="option.id"
@@ -237,16 +219,12 @@ export default {
     },
 
     selectClients() {
-      const client_id = this.clientData.find(
-        (option) => option.id === this.client_id
-      );
+      const client_id = this.clientData.find((option) => option.id === this.client_id);
       return client_id ? client_id.first_name : "";
     },
 
     selectShifts() {
-      const shifts_id = this.shiftsTime.find(
-        (option) => option.id === this.shifts_id
-      );
+      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
       return shifts_id ? shifts_id.shift_name : "";
     },
   },
@@ -262,12 +240,28 @@ export default {
     isFormValid: function (newVal) {
       this.isValidForm = newVal;
     },
+    job_id: function (newValue) {
+      this.validationSelectedOptionText = this.validationSelectedFormate(newValue);
+    },
+    business_unit_id: function (newValue) {
+      this.validationSelectedBusinessUnit = this.ValidationBusinessUnit(newValue);
+    },
+    client_id: function (newValue) {
+      this.validationSelectedClient = this.ValidationClient(newValue);
+    },
+    shift_id: function (newValue) {
+      this.validationShift = this.ValidationShift(newValue);
+    },
+    dates: function (newValue) {
+      this.validationDateType = this.ValidationDate(newValue);
+    },
+    notes: function (newValue) {
+      this.validationNotesText = this.ValidationNotes(newValue);
+    },
   },
   methods: {
     async addVacancyMethod() {
-      this.validationSelectedOptionText = this.validationSelectedFormate(
-        this.job_id
-      );
+      this.validationSelectedOptionText = this.validationSelectedFormate(this.job_id);
       this.validationSelectedBusinessUnit = this.ValidationBusinessUnit(
         this.business_unit_id
       );
@@ -293,17 +287,14 @@ export default {
         };
         try {
           const token = localStorage.getItem("token");
-          const response = await fetch(
-            "https://logezy.onrender.com/vacancies",
-            {
-              method: "POST",
-              headers: {
-                "content-type": "application/json",
-                Authorization: "bearer " + token,
-              },
-              body: JSON.stringify(data),
-            }
-          );
+          const response = await fetch("https://logezy.onrender.com/vacancies", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              Authorization: "bearer " + token,
+            },
+            body: JSON.stringify(data),
+          });
           if (data) {
             location.reload();
           }
@@ -314,26 +305,24 @@ export default {
     },
     async getJobTitleMethod() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/jobs");
-        this.options = response.data;
+        const response = await axios.get("https://logezy.onrender.com/active_job_list");
+        this.options = response.data.data;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            alert(error.response.data.message);
+            // alert(error.response.data.message);
           }
         }
       }
     },
     async getBusinessUnitMethod() {
       try {
-        const response = await axios.get(
-          "https://logezy.onrender.com/business_units"
-        );
+        const response = await axios.get("https://logezy.onrender.com/business_units");
         this.businessUnit = response.data;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            alert(error.response.data.message);
+            // alert(error.response.data.message);
           }
         }
       }
@@ -345,7 +334,7 @@ export default {
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            alert(error.response.data.message);
+            // alert(error.response.data.message);
           }
         }
       }
@@ -355,29 +344,29 @@ export default {
         .get("https://logezy.onrender.com/shifts")
         .then((response) => (this.shiftsTime = response.data));
     },
-    validationSelectedFormate(job_id) {
+    validationSelectedFormate(newValue) {
       const positionRegex = /[a-zA-Z0-9]/;
-      return positionRegex.test(job_id);
+      return positionRegex.test(newValue);
     },
-    ValidationBusinessUnit(business_unit_id) {
+    ValidationBusinessUnit(newValue) {
       const businessUnitRegex = /[a-zA-Z0-9]/;
-      return businessUnitRegex.test(business_unit_id);
+      return businessUnitRegex.test(newValue);
     },
-    ValidationNotes(notes) {
+    ValidationNotes(newValue) {
       const notesRegex = /[a-zA-Z0-9]/;
-      return notesRegex.test(notes);
+      return notesRegex.test(newValue);
     },
-    ValidationShift(shift_id) {
+    ValidationShift(newValue) {
       const shiftRegex = /[a-zA-Z0-9]/;
-      return shiftRegex.test(shift_id);
+      return shiftRegex.test(newValue);
     },
-    ValidationDate(dates) {
+    ValidationDate(newValue) {
       const dateRegex = /(0[1-9]|[12][0-9]|3[01])/;
-      return dateRegex.test(dates);
+      return dateRegex.test(newValue);
     },
-    ValidationClient(client_id) {
+    ValidationClient(newValue) {
       const clientRegex = /[a-zA-Z0-9]/;
-      return clientRegex.test(client_id);
+      return clientRegex.test(newValue);
     },
     clearError() {
       this.validationSelectedOptionText = true;

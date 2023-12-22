@@ -5,7 +5,7 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addCategories">Add New Document</h5>
+            <h5 class="modal-title" id="addCategories">Add New Category</h5>
             <button
               type="button"
               class="btn-close"
@@ -25,73 +25,35 @@
                       type="text"
                       class="form-control"
                       v-model="category_name"
+                      @input="clearError('category_name')"
                     />
-                  </div>
-                </div>
-                <!-- <div class="mb-3 text-uppercase">
-                  <div class="d-flex justify-content-between">
-                    <label for="exampleInputEmail1" class="form-label"
-                      >Preferred Position</label
-                    >
-                    <div>
-                      <input
-                        class="form-check-input me-3"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckDefault"
-                      />
-                      <label class="form-check-label" for="flexCheckDefault">
-                        SELECT ALL
-                      </label>
+                    <div v-if="getError('category_name')" class="text-danger">
+                      {{ getError("category_name") }}
                     </div>
                   </div>
-                  <select
-                    class="form-select"
-                    aria-label="Default select example"
-                  >
-                    <option selected></option>
-                    <option value="1">ID PROOF</option>
-                    <option value="2">NURSE ID</option>
-                    <option value="3">TRAINING</option>
-                  </select>
                 </div>
                 <div class="mb-3">
-                  <table class="table">
-                    <thead></thead>
-                    <tbody>
-                      <tr>
-                        <td>MANDATORY</td>
-                        <td><i class="bi bi-toggle-off"></i></td>
-                      </tr>
-                      <tr>
-                        <td>PROFILE VIEW</td>
-                        <td><i class="bi bi-toggle-off"></i></td>
-                      </tr>
-                      <tr>
-                        <td>ISSUE DATE</td>
-                        <td><i class="bi bi-toggle-off"></i></td>
-                      </tr>
-                      <tr>
-                        <td>EXPIRY DATE</td>
-                        <td><i class="bi bi-toggle-off"></i></td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div class="col-12">
+                    <label class="form-label" for="selectOption">Position</label>
+                  </div>
+                  <div class="col-12">
+                    <div v-for="option in options" :key="option.id">
+                      <input
+                        type="checkbox"
+                        :id="option.id"
+                        :value="option.id"
+                        v-model="job_id"
+                        @change="clearError('job_id')"
+                      />
+                      <label :for="option.id" class="text-capitalize"
+                        >&nbsp;{{ option.name }}</label
+                      >
+                    </div>
+                    <div v-if="getError('job_id')" class="text-danger">
+                      {{ getError("job_id") }}
+                    </div>
+                  </div>
                 </div>
-                <div class="mb-3">
-                  <div class="">
-                    <label for="exampleFormControlTextarea1" class="form-label"
-                      >DESC</label
-                    >
-                  </div>
-                  <div class="">
-                    <textarea
-                      class="form-control"
-                      id="exampleFormControlTextarea1"
-                      rows="3"
-                    ></textarea>
-                  </div>
-                </div> -->
               </form>
             </div>
           </div>
@@ -107,7 +69,8 @@
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              v-on:click="addCandidateStatus()"
+              :disabled="shouldDisableButton()"
+              v-on:click="addCandidateStatus"
             >
               Save
             </button>
@@ -119,38 +82,97 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "AddCategory",
   data() {
     return {
       category_name: "",
-      job_id: [1],
-      error: [],
+      job_id: [],
+      options: [],
+
+      errors: {},
     };
+  },
+  computed: {
+    selectedOptionText() {
+      const selectedOptions = this.options.filter((option) =>
+        this.job_id.includes(option.id)
+      );
+      return selectedOptions.map((option) => option.name).join(", ");
+    },
   },
   methods: {
     async addCandidateStatus() {
-      const data = {
-        category_name: this.category_name,
-        job_id: [1],
-      };
-      try {
-        const response = await fetch(
-          "https://logezy.onrender.com/document_categories",
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
+      this.validateForm();
+
+      if (Object.values(this.errors).every((error) => error === null)) {
+        const data = {
+          category_name: this.category_name,
+          job_id: this.job_id,
+        };
+        try {
+          const response = await fetch(
+            "https://logezy.onrender.com/document_categories",
+            {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            }
+          );
+          if (data) {
+            location.reload();
           }
-        );
-        if (data) {
-          location.reload();
-        }
-      } catch (error) {}
+        } catch (error) {}
+      }
     },
+    async getPositionMethod() {
+      try {
+        const response = await axios.get("https://logezy.onrender.com/active_job_list");
+        this.options = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    shouldDisableButton() {
+      // Check if any field is empty or has an error
+      return (
+        this.isEmptyField() || Object.values(this.errors).some((error) => error !== null)
+      );
+    },
+    clearError(fieldName) {
+      // Clear the error for the specific field
+      this.$set(this.errors, fieldName, null);
+    },
+    getError(fieldName) {
+      // Get the error message for the specific field
+      return this.errors[fieldName];
+    },
+    isEmptyField() {
+      // Check if any field is empty
+      return !this.category_name.trim() || this.job_id.length === 0;
+    },
+    validateForm() {
+      this.errors = {};
+
+      if (!this.category_name.trim()) {
+        this.$set(this.errors, "category_name", "Category Name is required.");
+      }
+
+      if (this.job_id.length === 0) {
+        this.$set(this.errors, "job_id", "Position is required.");
+      }
+    },
+  },
+  mounted() {
+    this.getPositionMethod();
   },
 };
 </script>
@@ -167,6 +189,12 @@ export default {
 }
 .modal-header {
   border-bottom: 0px;
+}
+select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 0px;
 }
 .modal-footer {
   border-top: 0px;

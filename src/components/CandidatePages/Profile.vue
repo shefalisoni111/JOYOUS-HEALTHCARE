@@ -252,7 +252,7 @@ export default {
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            alert(error.response.data.message);
+            // alert(error.response.data.message);
           }
         } else {
           // console.error("Error fetching candidates:", error);
@@ -270,7 +270,7 @@ export default {
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            alert(error.response.data.message);
+            // alert(error.response.data.message);
           }
         } else {
           // console.error("Error fetching candidates:", error);

@@ -10,9 +10,7 @@
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="rejectedVacancyList">
-              Rejected Vacancy
-            </h5>
+            <h5 class="modal-title" id="rejectedVacancyList">Rejected Vacancy</h5>
             <button
               type="button"
               class="btn-close"
@@ -22,7 +20,21 @@
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
-              <table class="table candidateTable">
+              <ul class="list-unstyled d-flex gap-3 mb-0 publish-ul">
+                <li>Code:{{ vacancyDetails.ref_code }}</li>
+                <li>B-unit:{{ vacancyDetails.business_unit }}</li>
+                <li>Job: {{ vacancyDetails.job_title }}</li>
+                <li
+                  v-for="(date, index) in vacancyDetails.dates"
+                  :key="index"
+                  v-text="date"
+                ></li>
+                <li>Time: {{ vacancyDetails.shift }}</li>
+                <li>Space left: 1</li>
+              </ul>
+            </div>
+            <div class="row g-3 align-items-center">
+              <table class="table candidateTable" v-if="selectedRejectItemId">
                 <thead>
                   <tr>
                     <th scope="col">candidate code</th>
@@ -34,14 +46,14 @@
                     <th scope="col">activated</th>
                     <th scope="col">status</th>
                     <th scope="col">position</th>
-                    <th scope="col">employment type</th>
+                    <!-- <th scope="col">employment type</th> -->
                     <th scope="col">last login</th>
 
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="data in RejectedVacancyList" :key="data.id">
+                  <tr v-for="data in rejectedListData" :key="data.id">
                     <td v-text="data.candidate_code"></td>
                     <td v-text="data.first_name"></td>
                     <td v-text="data.last_name"></td>
@@ -54,12 +66,12 @@
                     <td v-text="data.activated"></td>
                     <td v-text="data.status"></td>
                     <td v-text="data.position"></td>
-                    <td v-text="data.employment_type"></td>
+                    <!-- <td v-text="data.employment_type"></td> -->
                     <td v-text="data.last_login"></td>
                     <td class="cursor-pointer">
-                      <a class="btn btn-outline-success text-nowrap">
+                      <!-- <a class="btn btn-outline-success text-nowrap">
                         <i class="bi bi-pencil-square"></i>
-                      </a>
+                      </a> -->
                       &nbsp;&nbsp;
                       <button class="btn btn-outline-success text-nowrap">
                         <i
@@ -68,11 +80,6 @@
                         ></i>
                       </button>
                     </td>
-                  </tr>
-                </tbody>
-                <tbody>
-                  <tr>
-                    <td colspan="12">List in Process....</td>
                   </tr>
                 </tbody>
               </table>
@@ -87,13 +94,6 @@
             >
               Cancel
             </button>
-            <button
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
-              data-bs-dismiss="modal"
-              v-on:click="addVacancyMethod()"
-            >
-              Add Vacancy
-            </button>
           </div>
         </div>
       </div>
@@ -106,34 +106,45 @@ import axios from "axios";
 export default {
   name: "RejectedVacancyList",
   data() {
-    return { rejectedListData: [] };
+    return { rejectedListData: [], vacancyDetails: [] };
   },
-
-  methods: {
-    async getRejectedListMethod() {
-      const token = localStorage.getItem("token");
-      try {
-        const response = await axios.get(
-          "https://logezy.onrender.com/rejected_candidate_list",
-          {
-            headers: {
-              "content-type": "application/json",
-              Authorization: "bearer " + token,
-            },
-          }
-        );
-        this.rejectedListData = response.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            alert(error.response.data.message);
-          }
-        }
-      }
+  computed: {
+    selectedRejectItemId() {
+      this.getRejectedListMethod(this.$store.state.selectedRejectItemId);
+      return this.$store.state.selectedRejectItemId;
     },
   },
-  mounted() {
-    this.getRejectedListMethod();
+  methods: {
+    closePopup() {
+      this.$store.commit("setSelectedRejectItemId", null);
+    },
+    async getRejectedListMethod(id) {
+      const token = localStorage.getItem("token");
+      this.rejectedListData = [];
+      this.vacancyDetails = [];
+      if (this.$store.state.selectedRejectItemId) {
+        try {
+          const response = await axios.get(
+            `https://logezy.onrender.com/rejected_candidate_list?vacancy_id=${id}`,
+            {
+              headers: {
+                "content-type": "application/json",
+                Authorization: "bearer " + token,
+              },
+            }
+          );
+          this.rejectedListData = response.data.data;
+          this.vacancyDetails = response.data.vacancy_date;
+        } catch (error) {
+          if (error.response) {
+            if (error.response.status == 404) {
+              // alert(error.response.data.message);
+            }
+          }
+        }
+      } else {
+      }
+    },
   },
 };
 </script>

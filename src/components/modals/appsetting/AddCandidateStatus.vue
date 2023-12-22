@@ -10,9 +10,7 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addCandidateStatus">
-              Add Candidate Status
-            </h5>
+            <h5 class="modal-title" id="addCandidateStatus">Add Candidate Status</h5>
             <button
               type="button"
               class="btn-close"
@@ -28,7 +26,15 @@
                     <label class="form-label">NAME</label>
                   </div>
                   <div class="col-10 mt-1">
-                    <input type="text" class="form-control" v-model="title" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="title"
+                      @input="clearError('title')"
+                    />
+                    <div v-if="getError('title')" class="text-danger">
+                      {{ getError("title") }}
+                    </div>
                   </div>
                 </div>
 
@@ -45,7 +51,11 @@
                       id="exampleFormControlTextarea1"
                       rows="3"
                       v-model="description"
+                      @input="clearError('description')"
                     ></textarea>
+                    <div v-if="getError('description')" class="text-danger">
+                      {{ getError("description") }}
+                    </div>
                   </div>
                 </div>
               </form>
@@ -63,7 +73,8 @@
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              v-on:click="addCandidateStatus()"
+              :disabled="isButtonDisabled"
+              @click="validateAndAddCandidateStatus"
             >
               Save
             </button>
@@ -81,27 +92,63 @@ export default {
     return {
       title: "",
       description: "",
-      error: [],
+      errors: {},
     };
   },
+  computed: {
+    isButtonDisabled() {
+      return (
+        Object.values(this.errors).some((error) => error !== null) || this.isEmptyField()
+      );
+    },
+  },
   methods: {
+    clearError(fieldName) {
+      // Clear the error for the specific field
+      this.$set(this.errors, fieldName, null);
+    },
+    getError(fieldName) {
+      // Get the error message for the specific field
+      return this.errors[fieldName];
+    },
+    isEmptyField() {
+      // Check if any field is empty
+      return !this.title.trim() || !this.description.trim();
+    },
+    validateAndAddJob() {
+      this.errors = {}; // Reset errors
+
+      // Validate each field
+      if (!this.title.trim()) {
+        this.$set(this.errors, "title", "Title is required.");
+      }
+
+      if (!this.description.trim()) {
+        this.$set(this.errors, "description", "Description is required.");
+      }
+
+      // If there are no errors, proceed to add job
+      if (
+        Object.values(this.errors).every((error) => error === null) &&
+        !this.isEmptyField()
+      ) {
+        this.addCandidateStatus();
+      }
+    },
     async addCandidateStatus() {
       const data = {
         title: this.title,
         description: this.description,
       };
       try {
-        const response = await fetch(
-          "https://logezy.onrender.com/candidate_statuses",
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          }
-        );
+        const response = await fetch("https://logezy.onrender.com/candidate_statuses", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
         if (data) {
           location.reload();
         }

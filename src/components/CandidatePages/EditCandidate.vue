@@ -3,7 +3,7 @@
     <!-- Modal -->
     <div>
       <div class="main-box">
-        <div class="model-box">
+        <div class="warpper-box">
           <div class="text-center">
             <h5 class="">Edit Candidate</h5>
           </div>
@@ -64,7 +64,6 @@
                 <div class="d-flex justify-content-center">
                   <button
                     class="btn btn-primary rounded-1 text-capitalize fw-medium"
-                    data-bs-dismiss="modal"
                     @click.prevent="updateCandidateMethod()"
                   >
                     Save
@@ -105,9 +104,7 @@ export default {
   methods: {
     async fetchCandidateMethod(id) {
       try {
-        const response = await axios.get(
-          `https://logezy.onrender.com/candidates/${id}`
-        );
+        const response = await axios.get(`https://logezy.onrender.com/candidates/${id}`);
 
         this.fetchCandidate = { ...this.fetchCandidate, ...response.data.data };
       } catch (error) {
@@ -158,7 +155,7 @@ export default {
   overflow: hidden;
 }
 
-.model-box {
+.warpper-box {
   background: #f3f3f3;
   margin: 20px 443px;
   padding: 10px;

@@ -18,7 +18,7 @@
         <tbody>
           <tr v-for="client in getClientDetail" :key="client.id">
             <td v-text="client.ref_code"></td>
-            <td>
+            <!-- <td>
               <router-link
                 class="text-capitalize"
                 :to="{
@@ -28,7 +28,7 @@
               >
                 {{ client.first_name }}
               </router-link>
-            </td>
+            </td> -->
 
             <td v-text="client.address"></td>
 
@@ -46,7 +46,7 @@
                 <div class="slider round"></div>
               </label>
             </td>
-            <td class="cursor-pointer">
+            <!-- <td class="cursor-pointer">
               <router-link
                 :to="{
                   name: 'EditClient',
@@ -72,7 +72,7 @@
               >
                 <i class="bi bi-eye"></i>
               </router-link>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>
@@ -99,11 +99,9 @@ export default {
       if (!window.confirm("Are you Sure ?")) {
         return;
       }
-      await axios
-        .delete(`https://logezy.onrender.com/clients/` + id)
-        .then((response) => {
-          this.createdClient();
-        });
+      await axios.delete(`https://logezy.onrender.com/clients/` + id).then((response) => {
+        this.createdClient();
+      });
       // alert("Record Deleted ");
     },
     async createdClient() {

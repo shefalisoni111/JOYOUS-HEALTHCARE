@@ -6,12 +6,7 @@
           <div class="card">
             <div class="card-body">
               <div class="d-flex flex-column align-items-center text-center">
-                <img
-                  src="./profile.png"
-                  alt="USer"
-                  class="rounded-circle"
-                  width="150"
-                />
+                <img src="./profile.png" alt="USer" class="rounded-circle" width="150" />
                 <div class="mt-3 text-capitalize">
                   <h4>
                     {{ getProfileData.first_name }}
@@ -93,7 +88,7 @@ export default {
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            alert(error.response.data.message);
+            // alert(error.response.data.message);
           }
         } else {
           // console.error("Error fetching candidates:", error);

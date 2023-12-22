@@ -10,9 +10,7 @@
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title text-center" id="editRateCard">
-              Add Details
-            </h5>
+            <h5 class="modal-title text-center" id="editRateCard">Add Details</h5>
             <button
               type="button"
               class="btn-close"
@@ -25,9 +23,7 @@
               <form>
                 <div class="mb-3">
                   <div class="col-12">
-                    <label class="form-label" for="selectOption"
-                      >Position</label
-                    >
+                    <label class="form-label" for="selectOption">Position</label>
                   </div>
                   <div class="col-12 mt-1">
                     <select v-model="fetchRateCard.job_id" id="selectOption">
@@ -65,9 +61,7 @@
                 </div>
                 <div class="mb-3">
                   <div class="col-12">
-                    <label class="form-label" for="selectShifts"
-                      >Shift Type</label
-                    >
+                    <label class="form-label" for="selectShifts">Shift Type</label>
                   </div>
                   <div class="col-12 mt-1">
                     <select v-model="fetchRateCard.shift_id" id="selectShifts">
@@ -193,35 +187,31 @@ export default {
       return job_id ? job_id.name : "";
     },
     selectShifts() {
-      const shifts_id = this.shiftsTime.find(
-        (option) => option.id === this.shifts_id
-      );
+      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
       return shifts_id ? shifts_id.shift_name : "";
     },
   },
   methods: {
     async getEmployeeTypeData() {
       try {
-        const response = await axios.get(
-          "https://logezy.onrender.com/employment_types"
-        );
+        const response = await axios.get("https://logezy.onrender.com/employment_types");
         this.employeeData = response.data;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            alert(error.response.data.message);
+            // alert(error.response.data.message);
           }
         }
       }
     },
     async getPositionMethod() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/jobs");
-        this.options = response.data;
+        const response = await axios.get("https://logezy.onrender.com/active_job_list");
+        this.options = response.data.data;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            alert(error.response.data.message);
+            // alert(error.response.data.message);
           }
         }
       }
@@ -257,14 +247,12 @@ export default {
     },
     async getBusinessUnitMethod() {
       try {
-        const response = await axios.get(
-          "https://logezy.onrender.com/business_units"
-        );
+        const response = await axios.get("https://logezy.onrender.com/business_units");
         this.businessUnit = response.data;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            alert(error.response.data.message);
+            // alert(error.response.data.message);
           }
         }
       }

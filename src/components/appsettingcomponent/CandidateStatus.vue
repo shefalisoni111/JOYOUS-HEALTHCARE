@@ -27,12 +27,12 @@
         <thead>
           <tr>
             <th scope="col" class="col-4 bg-primary text-white">Title</th>
+
             <th scope="col" class="col-5 bg-primary text-white jusfycenter">
               Description
             </th>
-            <th scope="col" class="col-2 bg-primary text-white jusfycenter">
-              Action
-            </th>
+            <th scope="col" class="col-4 bg-primary text-white">No. of Candidates</th>
+            <th scope="col" class="col-2 bg-primary text-white jusfycenter">Action</th>
           </tr>
         </thead>
         <tbody v-if="getCandidateStatus.length > 0">
@@ -41,11 +41,9 @@
             <td :v-text="getCandidate.description">
               {{ getCandidate.description }}
             </td>
+            <td></td>
             <td>
-              <i
-                class="bi bi-trash"
-                v-on:click="candidateDelete(getCandidate.id)"
-              ></i>
+              <i class="bi bi-trash" v-on:click="candidateDelete(getCandidate.id)"></i>
             </td>
           </tr>
           <!-- <tr>
@@ -146,7 +144,7 @@ export default {
         .catch((error) => {
           if (error.response) {
             if (error.response.status == 404) {
-              alert(error.response.data.message);
+              // alert(error.response.data.message);
             }
           }
         });
@@ -174,7 +172,6 @@ table thead th {
   background-color: #f9944b !important;
 }
 .btn-primary {
-
   border: none;
 }
 </style>

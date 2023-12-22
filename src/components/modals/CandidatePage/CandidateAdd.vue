@@ -39,27 +39,19 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-4">
-                    <label class="form-label" for="selectOption"
-                      >position</label
-                    >
+                    <label class="form-label" for="selectOption">position</label>
                   </div>
                   <div class="col-8">
-                    <select
-                      v-model="job_id"
-                      id="selectOption"
-                      @change="clearError"
-                    >
+                    <select v-model="job_id" id="selectOption" @change="clearError">
                       <option
                         v-for="option in options"
                         :key="option.id"
-                        :value="option.name"
+                        :value="option.id"
                       >
                         {{ option.name }}
                       </option>
                     </select>
-                    <span
-                      v-if="!validationSelectedOptionText"
-                      class="text-danger"
+                    <span v-if="!validationSelectedOptionText" class="text-danger"
                       >Position Required</span
                     >
                   </div>
@@ -89,7 +81,7 @@
                       type="password"
                       class="form-control"
                       v-model="password"
-                      @input="clearError"
+                      @input="validatePasswordMatch"
                     />
                   </div>
                 </div>
@@ -102,7 +94,7 @@
                       type="password"
                       class="form-control"
                       v-model="confirm_password"
-                      @input="clearError"
+                      @input="validatePasswordMatch"
                     />
                     <span v-if="!passwordsMatch" class="text-danger"
                       >Passwords do not Match</span
@@ -198,7 +190,7 @@ export default {
   },
   watch: {
     // Watch for changes in input fields and trigger validations
-    job_id: "validationSelectedOptionText",
+
     email: "validateEmailFormat",
     first_name: "validateNameFormat",
     password: "validatePasswordMatch",
@@ -212,9 +204,8 @@ export default {
   },
   methods: {
     async addCandidate() {
-      this.validationSelectedOptionText = this.validationSelectedFormate(
-        this.job_id
-      );
+      this.validateSelectedOption();
+      // this.validationSelectedOptionText = this.validationSelectedFormat(this.job_id);
       this.validateCandidateName = this.validateNameFormat(this.first_name);
       // Validate email
       this.validateEmail = this.validateEmailFormat(this.email);
@@ -223,9 +214,7 @@ export default {
       this.passwordsMatch = this.password === this.confirm_password;
 
       // Validate phone number
-      this.validatePhoneNumber = this.validatePhoneNumberFormat(
-        this.phone_number
-      );
+      this.validatePhoneNumber = this.validatePhoneNumberFormat(this.phone_number);
 
       // Check if all validations pass
       if (
@@ -236,7 +225,6 @@ export default {
         this.validationSelectedOptionText
       ) {
         if (this.isPasswordRequired && !this.password) {
-         
           return;
         }
         // If validations pass, proceed with the API call
@@ -251,31 +239,31 @@ export default {
         };
 
         try {
-          const response = await fetch(
-            "https://logezy.onrender.com/candidates",
-            {
-              method: "POST",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(data),
-            }
-          );
+          const response = await fetch("https://logezy.onrender.com/candidates", {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
 
           if (data) {
             location.reload();
           }
         } catch (error) {}
       } else {
-        // Set the password required flag if the password field is empty
         this.isPasswordRequired = !this.password;
       }
     },
-
+    validatePasswordMatch() {
+      if (this.password && this.confirm_password) {
+        this.passwordsMatch = this.password === this.confirm_password;
+      } else {
+        this.passwordsMatch = false;
+      }
+    },
     validateEmailFormat(email) {
-      // Implement your email validation logic here
-      // For example, you can use a regular expression
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
     },
@@ -283,18 +271,14 @@ export default {
       const nameRegex = /[A-Za-z]/;
       return nameRegex.test(first_name);
     },
-    validationSelectedFormate(job_id) {
-      const positionRegex = /[A-Za-z]/;
-      return positionRegex.test(job_id);
+    validateSelectedOption() {
+      this.validationSelectedOptionText = !!this.job_id;
     },
     validatePhoneNumberFormat(phoneNumber) {
-      // Implement your phone number validation logic here
-      // For example, you can check the length or use a regular expression
       const phoneRegex = /^[0-9]{10}$/;
       return phoneRegex.test(phoneNumber);
     },
     clearError() {
-      // Clear the error message when the user starts typing
       this.validateEmail = true;
       this.validatePhoneNumber = true;
       this.passwordsMatch = true;
@@ -304,12 +288,12 @@ export default {
     },
     async getPositionMethod() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/jobs");
-        this.options = response.data;
+        const response = await axios.get("https://logezy.onrender.com/active_job_list");
+        this.options = response.data.data;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            alert(error.response.data.message);
+            // alert(error.response.data.message);
           }
         }
       }

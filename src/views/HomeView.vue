@@ -189,9 +189,7 @@
 
                 <!-- Revenue Card -->
                 <div class="col-xxl-4 col-md-4">
-                  <div
-                    class="card h-100 info-card totalbusinessunitsactive-card"
-                  >
+                  <div class="card h-100 info-card totalbusinessunitsactive-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
@@ -211,9 +209,7 @@
 
                 <!-- Sales Card -->
                 <div class="col-xxl-4 col-md-4">
-                  <div
-                    class="card h-100 info-card totalbusinessunitsinactive-card"
-                  >
+                  <div class="card h-100 info-card totalbusinessunitsinactive-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
@@ -247,9 +243,7 @@
                         ></div>
                         <div class="ps-2">
                           <h6>
-                            Expiring in 60 days({{
-                              getRecords.expiring_in_60_days
-                            }})
+                            Expiring in 60 days({{ getRecords.expiring_in_60_days }})
                           </h6>
                           <span
                             class="text-muted small pt-2 text-uppercase cursor-pointer"
@@ -275,9 +269,7 @@
                         ></div>
                         <div class="ps-2">
                           <h6>
-                            Expiring in 30 days({{
-                              getRecords.expiring_in_30_days
-                            }})
+                            Expiring in 30 days({{ getRecords.expiring_in_30_days }})
                           </h6>
                           <span
                             class="text-muted small pt-2 text-uppercase cursor-pointer"
@@ -338,9 +330,7 @@
                     <ul class="list-unstyled mt-3 leftsidecol">
                       <li class="d-flex mb-2">
                         <span class="rounded-circle text-white">50</span>
-                        <span class="d-flex align-items-center ms-2"
-                          >Open Vacancies</span
-                        >
+                        <span class="d-flex align-items-center ms-2">Open Vacancies</span>
                       </li>
                       <li class="d-flex mb-2">
                         <span class="rounded-circle text-white">10</span>
@@ -376,8 +366,7 @@
                         name="datefilter"
                         value=""
                         placeholder="Select Date from Start to End"
-                      /><i class="bi bi-calendar2-check position-absolute"></i
-                      >&nbsp;
+                      /><i class="bi bi-calendar2-check position-absolute"></i>&nbsp;
                     </div>
 
                     <table class="table table-borderless sizefix">

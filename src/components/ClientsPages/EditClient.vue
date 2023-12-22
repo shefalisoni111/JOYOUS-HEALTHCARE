@@ -64,7 +64,6 @@
                 <div class="d-flex justify-content-center">
                   <button
                     class="btn btn-primary rounded-1 text-capitalize fw-medium"
-                    data-bs-dismiss="modal"
                     @click.prevent="updateClientMethod()"
                   >
                     Save
@@ -103,9 +102,7 @@ export default {
   methods: {
     async fetchClientsMethod(id) {
       try {
-        const response = await axios.get(
-          `https://logezy.onrender.com/clients/${id}`
-        );
+        const response = await axios.get(`https://logezy.onrender.com/clients/${id}`);
 
         this.fetchClients = { ...this.fetchClients, ...response.data.data };
       } catch (error) {

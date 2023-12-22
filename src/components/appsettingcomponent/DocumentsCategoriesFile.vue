@@ -30,17 +30,17 @@
     </div>
     <div class="col-12">
       <div class="">
-        <div
-          class="accordion mt-3"
-          v-for="(getCate, index) in getCategory"
-          :key="index"
-        >
+        <div class="accordion mt-3" v-for="(getCate, index) in getCategory" :key="index">
           <div class="accordion-item">
             <h2
               class="accordion-header d-flex justify-content-between align-items-center"
               @click="toggleAccordion(index)"
             >
-              <button class="accordion-button" type="button">
+              <button
+                class="accordion-button"
+                type="button"
+                :class="{ collapsed: !getCate.isOpen }"
+              >
                 {{ getCate.category_name }}
               </button>
 
@@ -49,10 +49,7 @@
                   <i class="bi bi-pen"></i>
                 </li>
                 <li class="p-3">
-                  <i
-                    class="bi bi-trash"
-                    v-on:click="categoryDelete(getCate.id)"
-                  ></i>
+                  <i class="bi bi-trash" v-on:click="categoryDelete(getCate.id)"></i>
                 </li>
                 <li class="p-3">
                   <button
@@ -85,10 +82,7 @@
                     <tr v-for="getDocs in getCate.documents" :key="getDocs.id">
                       <td>{{ getDocs.display_name }}</td>
                       <td>
-                        <label
-                          class="switch"
-                          :class="{ checked: getDocs.mandatory }"
-                        >
+                        <label class="switch" :class="{ checked: getDocs.mandatory }">
                           <input
                             type="checkbox"
                             id="togBtn"
@@ -98,10 +92,7 @@
                         </label>
                       </td>
                       <td>
-                        <label
-                          class="switch"
-                          :class="{ checked: getDocs.hide_document }"
-                        >
+                        <label class="switch" :class="{ checked: getDocs.hide_document }">
                           <input
                             type="checkbox"
                             id="togBtn"
@@ -112,10 +103,7 @@
                         </label>
                       </td>
                       <td>
-                        <label
-                          class="switch"
-                          :class="{ checked: getDocs.profile_view }"
-                        >
+                        <label class="switch" :class="{ checked: getDocs.profile_view }">
                           <input
                             type="checkbox"
                             id="togBtn"
@@ -126,10 +114,7 @@
                         </label>
                       </td>
                       <td>
-                        <i
-                          class="bi bi-trash"
-                          @click="documentDelete(getDocs.id)"
-                        ></i>
+                        <i class="bi bi-trash" @click="documentDelete(getDocs.id)"></i>
                       </td>
                     </tr>
                   </tbody>
@@ -140,10 +125,7 @@
         </div>
       </div>
     </div>
-    <AddNewDoc
-      :categoryId="selectedCategoryId"
-      @documentAdded="onDocumentAdded"
-    />
+    <AddNewDoc :categoryId="selectedCategoryId" @documentAdded="onDocumentAdded" />
     <AddCategory />
   </div>
 </template>
@@ -201,11 +183,9 @@ export default {
       if (!window.confirm("Are you Sure ?")) {
         return;
       }
-      axios
-        .delete(`https://logezy.onrender.com/documents/` + id)
-        .then((response) => {
-          this.getDocCAtegories();
-        });
+      axios.delete(`https://logezy.onrender.com/documents/` + id).then((response) => {
+        this.getDocCAtegories();
+      });
       alert("Record Deleted ");
     },
     getDocumentCategories() {
@@ -252,6 +232,9 @@ ul li i {
   border-color: none;
   outline: 0;
   box-shadow: none;
+}
+.accordion-button {
+  background-color: transparent !important;
 }
 .accordion-button:not(.collapsed) {
   border: none;

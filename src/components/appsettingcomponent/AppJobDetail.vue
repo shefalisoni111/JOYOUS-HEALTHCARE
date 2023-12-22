@@ -22,43 +22,120 @@
         </button>
       </div>
     </div>
-    <div class="mt-4 table-wrapper">
-      <table class="table table table-hover addjobtable">
-        <thead>
-          <tr>
-            <th scope="col" class="col-1 bg-primary text-white">Colour</th>
-            <th scope="col" class="col-2 bg-primary text-white">Name</th>
-            <th scope="col" class="col-2 bg-primary text-white">Job Code</th>
-            <th scope="col" class="col-3 bg-primary text-white text-center">
-              No. of Clients
-            </th>
-            <th scope="col" class="col-3 bg-primary text-white text-center">
-              No. of Candidate
-            </th>
-            <th scope="col" class="col-1 bg-primary text-white">Action</th>
-          </tr>
-        </thead>
-        <tbody v-if="getJobs.length > 0">
-          <tr v-for="jobs in getJobs" :key="jobs.id">
-            <td scope="row">
-              <i class="bi bi-square-fill" :style="{ color: jobs.color }"></i>
-            </td>
-            <td v-text="jobs.name"></td>
-            <td v-text="jobs.job_code"></td>
-            <td v-text="jobs.no_of_client" align="center"></td>
-            <td v-text="jobs.no_of_candidates" align="center"></td>
-            <td>
-              <i class="bi bi-trash" v-on:click="jobsDelete(jobs.id)"></i>
-            </td>
-          </tr>
-        </tbody>
-        <tbody v-else>
-          <tr>
-            <td colspan="6">Loading...</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="showdata">
+      <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link active text-capitalize ps-0"
+            id="active"
+            data-bs-toggle="pill"
+            data-bs-target="#pills-home"
+            type="button"
+            role="tab"
+            aria-controls="pills-home"
+            aria-selected="true"
+          >
+            Active
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link text-capitalize"
+            id="inactive"
+            data-bs-toggle="pill"
+            data-bs-target="#pills-profile"
+            type="button"
+            role="tab"
+            aria-controls="pills-profile"
+            aria-selected="false"
+          >
+            Inactive
+          </button>
+        </li>
+      </ul>
+      <div class="tab-content" id="pills-tabContent">
+        <div
+          class="tab-pane fade show active"
+          id="pills-home"
+          role="tabpanel"
+          aria-labelledby="active"
+          tabindex="0"
+        >
+          <div class="mt-4 table-wrapper">
+            <table class="table table table-hover addjobtable">
+              <thead>
+                <tr>
+                  <th scope="col" class="col-1 bg-primary text-white">Colour</th>
+                  <th scope="col" class="col-2 bg-primary text-white">Name</th>
+                  <th scope="col" class="col-2 bg-primary text-white">Job Code</th>
+                  <th scope="col" class="col-3 bg-primary text-white text-center">
+                    No. of Clients
+                  </th>
+                  <th scope="col" class="col-3 bg-primary text-white text-center">
+                    No. of Candidate
+                  </th>
+                  <th scope="col" class="col-1 bg-primary text-white">Action</th>
+                </tr>
+              </thead>
+              <tbody v-if="getJobs.length > 0">
+                <tr v-for="jobs in getJobs" :key="jobs.id">
+                  <td scope="row">
+                    <i class="bi bi-square-fill" :style="{ color: jobs.color }"></i>
+                  </td>
+                  <td class="text-capitalize" v-text="jobs.name"></td>
+                  <td v-text="jobs.job_code"></td>
+                  <td v-text="jobs.no_of_client" align="center"></td>
+                  <td v-text="jobs.no_of_candidates" align="center"></td>
+                  <td>
+                    <i class="bi bi-trash" v-on:click="jobsDelete(jobs.id)"></i>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody v-else>
+                <tr>
+                  <td colspan="6">Loading...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="pills-profile"
+          role="tabpanel"
+          aria-labelledby="inactive"
+          tabindex="0"
+        >
+          <table class="table table table-hover addjobtable">
+            <thead>
+              <tr>
+                <th scope="col" class="col-1 bg-primary text-white">Colour</th>
+                <th scope="col" class="col-2 bg-primary text-white">Name</th>
+                <th scope="col" class="col-2 bg-primary text-white">Job Code</th>
+                <th scope="col" class="col-3 bg-primary text-white text-center">
+                  No. of Clients
+                </th>
+                <th scope="col" class="col-3 bg-primary text-white text-center">
+                  No. of Candidate
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="jobs in getInActiveJobs" :key="jobs.id">
+                <td scope="row">
+                  <i class="bi bi-square-fill" :style="{ color: jobs.color }"></i>
+                </td>
+                <td v-text="jobs.name"></td>
+                <td v-text="jobs.job_code"></td>
+                <td v-text="jobs.no_of_client" align="center"></td>
+                <td v-text="jobs.no_of_candidates" align="center"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
+
     <AddJobbs />
   </div>
 </template>
@@ -72,41 +149,49 @@ export default {
   data() {
     return {
       getJobs: [],
+      getInActiveJobs: [],
     };
   },
   components: {
     AddJobbs,
   },
-  onMounted() {
-    const myModal = new bootstrap.Modal(
-      document.getElementById("myModal"),
-      options
-    );
-  },
 
   methods: {
-    showPopup() {
-      myModal.show();
-    },
     jobsDelete(id) {
       if (!window.confirm("Are you Sure ?")) {
         return;
       }
-      axios
-        .delete(`https://logezy.onrender.com/jobs/` + id)
-        .then((response) => {
-          this.getJobData();
-        });
-      alert("Record Deleted ");
+      axios.put(`https://logezy.onrender.com/inactivate_job/` + id).then((response) => {
+        this.getJobData();
+      });
+      alert("Record Inactive ");
     },
     async getJobData() {
       await axios
-        .get("https://logezy.onrender.com/jobs")
-        .then((response) => (this.getJobs = response.data))
+        .get("https://logezy.onrender.com/active_job_list")
+        .then((response) => {
+          this.getJobs = response.data.data;
+          // this.getJobData();
+        })
         .catch((error) => {
           if (error.response) {
             if (error.response.status == 404) {
-              alert(error.response.data.message);
+              // alert(error.response.data.message);
+            }
+          }
+        });
+    },
+    async getInactiveJobData() {
+      await axios
+        .get("https://logezy.onrender.com/inactive_job_list")
+        .then((response) => {
+          this.getInActiveJobs = response.data.data;
+          // this.getInactiveJobData();
+        })
+        .catch((error) => {
+          if (error.response) {
+            if (error.response.status == 404) {
+              // alert(error.response.data.message);
             }
           }
         });
@@ -115,6 +200,7 @@ export default {
 
   mounted() {
     this.getJobData();
+    this.getInactiveJobData();
   },
 };
 </script>
@@ -125,7 +211,23 @@ td i.bi-trash {
   padding: 3px 15px;
   border-radius: 4px;
 }
-
+.showdata .nav-link {
+  color: #000;
+}
+.showdata .nav-link.active {
+  background: #e8e3e3;
+  margin-left: 4px;
+}
+.nav-pills .nav-link.active {
+  color: #ff5722;
+  border-bottom: 2px solid #ff5722;
+  border-radius: 0;
+  background-color: transparent;
+  font-weight: bold;
+}
+.nav-pills {
+  border-bottom: 1px solid #ddd6d6;
+}
 .pagesetting p span::after {
   content: "";
 }

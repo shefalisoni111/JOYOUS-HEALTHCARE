@@ -10,9 +10,7 @@
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title text-center" id="editOverview">
-              Add Details
-            </h5>
+            <h5 class="modal-title text-center" id="editOverview">Add Details</h5>
             <button
               type="button"
               class="btn-close"
@@ -212,14 +210,12 @@ export default {
   methods: {
     async getEmployeeTypeData() {
       try {
-        const response = await axios.get(
-          "https://logezy.onrender.com/employment_types"
-        );
+        const response = await axios.get("https://logezy.onrender.com/employment_types");
         this.employeeData = response.data;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            alert(error.response.data.message);
+            // alert(error.response.data.message);
           }
         }
       }

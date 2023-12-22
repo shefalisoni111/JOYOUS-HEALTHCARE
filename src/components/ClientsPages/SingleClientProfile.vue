@@ -53,31 +53,23 @@
               <!-- <div class="ribbon"><span>Active</span></div> -->
 
               <div class="card-body">
-                <div
-                  class="mt-3 d-flex justify-content-between align-items-center"
-                >
+                <div class="mt-3 d-flex justify-content-between align-items-center">
                   <div>
                     <h6 class="card-title text-nowrap fw-bold text-capitalize">
                       {{ getClientDatas.first_name }}
                     </h6>
-                    <span class="text-lowercase">
-                      {{ getClientDatas.email }}</span
-                    >
+                    <span class="text-lowercase"> {{ getClientDatas.email }}</span>
                   </div>
 
                   <div>
-                    <button type="button" class="btn btn-outline-primary">
-                      Edit
-                    </button>
+                    <button type="button" class="btn btn-outline-primary">Edit</button>
                   </div>
                 </div>
                 <hr />
                 <div class="mt-3">
                   <div class="d-flex justify-content-between">
                     <div>
-                      <h6
-                        class="card-title text-uppercase fs-smaller text-nowrap"
-                      >
+                      <h6 class="card-title text-uppercase fs-smaller text-nowrap">
                         contact information
                       </h6>
                     </div>
@@ -85,12 +77,7 @@
                     <div class="d-flex justify-content-between">
                       <h6 class="fs-smaller text-nowrap">Profile View</h6>
                       <label class="switch">
-                        <input
-                          type="checkbox"
-                          id="togBtn"
-                          title="check"
-                          checked
-                        />
+                        <input type="checkbox" id="togBtn" title="check" checked />
                         <div class="slider round"></div>
                       </label>
                     </div>
@@ -103,9 +90,7 @@
                         {{ getClientDatas.phone_number }}</span
                       >
                     </div>
-                    <button type="button" class="btn btn-outline-primary">
-                      Edit
-                    </button>
+                    <button type="button" class="btn btn-outline-primary">Edit</button>
                   </div>
                 </div>
               </div>
@@ -222,7 +207,7 @@ export default {
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            alert(error.response.data.message);
+            // alert(error.response.data.message);
           }
         } else {
           // console.error("Error fetching candidates:", error);

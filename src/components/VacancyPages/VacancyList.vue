@@ -43,11 +43,7 @@
                     role="tablist"
                   >
                     <div>
-                      <li
-                        class="nav-item d-flex gap-2"
-                        role="presentation"
-                        :class="{ 'nav-item': true, active: isActive }"
-                      >
+                      <li class="nav-item d-flex gap-2" role="presentation">
                         <button
                           class="nav-link"
                           :class="{ active: activeTab === index }"
@@ -62,30 +58,37 @@
                         </button>
                       </li>
                     </div>
-                    <div>
-                      <button
-                        v-if="activeTab === 0"
-                        type="button"
-                        class="btn btn-outline-success text-nowrap"
-                        data-bs-toggle="modal"
-                        data-bs-target="#addVacancies"
-                        data-bs-whatever="@mdo"
-                      >
-                        + Add Vacancy
-                      </button>
-                    </div>
 
-                    <!-- <div class="searchbox position-relative">
-                      <input
-                        class="form-control mr-sm-2"
-                        type="search"
-                        placeholder="&nbsp;&nbsp;&nbsp;&nbsp; Search by vacancy code"
-                        aria-label="Search"
-                      />
-                    </div> -->
+                    <div class="d-flex gap-2">
+                      <div>
+                        <button
+                          v-if="activeTab === 0"
+                          type="button"
+                          class="btn btn-outline-success text-nowrap"
+                          data-bs-toggle="modal"
+                          data-bs-target="#addVacancies"
+                          data-bs-whatever="@mdo"
+                        >
+                          + Add Vacancy
+                        </button>
+                      </div>
+                      <div>
+                        <!-- <input
+                          class="form-control mr-sm-2"
+                          type="search"
+                          placeholder="Search by vacancy"
+                          aria-label="Search"
+                          v-model="searchQuery"
+                          @input="debounceSearch"
+                        /> -->
+                      </div>
+                    </div>
                   </ul>
-                  <div>
+                  <div v-if="searchResults">
                     <component :is="activeComponent"></component>
+                  </div>
+                  <div class="text-danger" v-else>
+                    {{ notFoundVacancy }}
                   </div>
                 </div>
               </div>
@@ -94,20 +97,21 @@
         </div>
       </div>
     </div>
-    <AddVacancy />
-    <PulishedVacancy />
   </div>
 </template>
 <script>
 import axios from "axios";
 import AllVacancyList from "../VacancyPages/AllVacancyList.vue";
 import InActiveVacancyList from "../VacancyPages/InActiveVacancyList.vue";
+
 export default {
   data() {
     return {
       vacancyCount: 0,
-
-      searchQuery: "",
+      searchResults: [],
+      notFoundVacancy: [],
+      debounceTimeout: null,
+      // searchQuery: "",
       tabs: [
         { name: "All ", component: "AllVacancyList" },
         { name: "InActive ", component: "InActiveVacancyList" },
@@ -126,18 +130,42 @@ export default {
     selectTab(index) {
       this.activeTab = index;
     },
+    debounceSearch() {
+      // Clear the previous timeout to restart the debounce
+      clearTimeout(this.debounceTimeout);
+
+      // Set a new timeout for 300 milliseconds (adjust as needed)
+      this.debounceTimeout = setTimeout(() => {
+        this.search();
+      }, 300);
+    },
+    //search api start
+
+    // async search() {
+    //   try {
+    //     if (!this.searchQuery.trim()) {
+    //       // Don't make the request if the search query is empty
+    //       return;
+    //     }
+    //     const response = await axios.get(
+    //       `https://logezy.onrender.com/vacancy_search/${this.searchQuery}`
+    //     );
+    //     this.searchResults = response.data.data;
+    //     this.notFoundVacancy = response.data.message;
+    //     // console.log(this.searchResults);
+    //   } catch (error) {
+    //     // console.error("Error fetching search results:", error);
+    //   }
+    // },
     async createVacancy() {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(
-          "https://logezy.onrender.com/vacancies",
-          {
-            headers: {
-              "content-type": "application/json",
-              Authorization: "bearer " + token,
-            },
-          }
-        );
+        const response = await axios.get("https://logezy.onrender.com/vacancies", {
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+        });
         this.vacancyCount = response.data.count;
       } catch (error) {
         // console.error("Error fetching vacancy count:", error);

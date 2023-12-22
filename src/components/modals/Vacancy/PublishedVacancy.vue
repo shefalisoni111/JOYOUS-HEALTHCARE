@@ -11,14 +11,18 @@
         <div class="modal-content">
           <div class="modal-header d-inline-flex gap-3">
             <h5 class="modal-title" id="publishVacancy">Publish Vacancy</h5>
-            <ul class="list-unstyled d-flex gap-3 mb-0 publish-ul">
-              <li>Code:gbf</li>
-              <li>B-unit:Demo</li>
-              <li>Job: driver</li>
-              <li>Date: 18-07-2023</li>
-              <li>Time: 20:00 - 08:00</li>
+            <!-- <ul
+              class="list-unstyled d-flex gap-3 mb-0 publish-ul"
+              v-for="data in vacancyData"
+              :key="data.id"
+            >
+              <li>Code:{{ data.ref_code }}</li>
+              <li>B-unit:{{ data.business_unit }}</li>
+              <li>Job: {{ data.job_title }}</li>
+              <li v-for="(date, index) in data.dates" :key="index" v-text="date"></li>
+              <li>Time: {{ data.shift }}</li>
               <li>Space left: 1</li>
-            </ul>
+            </ul> -->
             <button
               type="button"
               class="btn-close"
@@ -113,9 +117,7 @@
 
                   <div></div>
 
-                  <div
-                    class="d-flex align-items-center justify-content-between"
-                  >
+                  <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center gap-2">
                       <div class="searchbox position-relative">
                         <input
@@ -133,81 +135,7 @@
             <div class="row">
               <div class="col-md-12">
                 <h6>Vacancy List ...</h6>
-                <!-- <table class="table candidateTable">
-                  <thead>
-                    <tr>
-                      <th scope="col">#RefCode</th>
-                      <th scope="col">Client</th>
-                      <th scope="col">Business Unit</th>
-                      <th scope="col">Job Title</th>
-                      <th scope="col">Date</th>
-                      <th scope="col">Shift</th>
-                      <th scope="col">Notes</th>
-                      <th scope="col">Publish</th>
-                      <th scope="col">All</th>
-                      <th scope="col">Applied</th>
-                      <th scope="col">Assigned</th>
-                      <th scope="col">Create by</th>
-                      <th scope="col">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="getdata in getVacancyDetail" :key="getdata.id">
-                      <td v-text="getdata.ref_code"></td>
-                      <td v-text="getdata.client"></td>
-                      <td v-text="getdata.business_unit"></td>
-                      <td v-text="getdata.job_title"></td>
-                      <td>
-                        <div v-for="date in getdata.dates" :key="date.id">
-                          <p>{{ date }}</p>
-                        </div>
-                      </td>
-                     
-                      <td v-text="getdata.shift"></td>
-
-                      <td v-text="getdata.notes"></td>
-                      <td>
-                        <a
-                          class="btn btn-success"
-                          data-bs-toggle="modal"
-                          data-bs-target="#publishVacancy"
-                          data-bs-whatever="@mdo"
-                        >
-                          <td v-if="getdata.publish === false">
-                            <i class="bi bi-bell-fill"></i>
-                          </td>
-
-                          <td v-else>
-                            <i class="bi bi-check-circle-fill"></i>
-                          </td>
-                        </a>
-                      </td>
-
-                      <td v-text="getdata.publish"></td>
-                      <td v-text="getdata.publish"></td>
-                      <td v-text="getdata.publish"></td>
-                      <td v-text="getdata.create_by_and_time"></td>
-                      <td class="cursor-pointer">
-                        <router-link
-                          :to="{
-                            name: 'VacancyEdit',
-                            params: { id: getdata.id },
-                          }"
-                          class="btn btn-outline-success text-nowrap"
-                        >
-                          <i class="bi bi-pencil-square"></i>
-                        </router-link>
-                        &nbsp;&nbsp;
-                        <button class="btn btn-outline-success text-nowrap">
-                          <i
-                            class="bi bi-trash"
-                            v-on:click="vacancyDeleteMethod(getdata.id)"
-                          ></i>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table> -->
+                <table v-if="selectedPublishItemId"></table>
               </div>
             </div>
           </div>
@@ -244,6 +172,7 @@
                         type="checkbox"
                         value=""
                         id="flexCheckDefault"
+                        v-model="notification_type"
                       />
                       Mail Notification
                     </div>
@@ -261,6 +190,7 @@
                   <button
                     class="btn btn-success rounded-1 text-capitalize fw-medium"
                     data-bs-dismiss="modal"
+                    v-on:click="publicCandidateMail()"
                   >
                     Publish
                   </button>
@@ -279,11 +209,78 @@ import axios from "axios";
 export default {
   name: "PublishedVacancy",
   data() {
-    return {};
+    return {
+      getPublicVacancyMAil: [],
+      notification_type: null,
+      vacancyData: [],
+    };
+  },
+  computed: {
+    selectedPublishItemId() {
+      this.publicCandidateMail(this.$store.state.selectedPublishItemId);
+      return this.$store.state.selectedPublishItemId;
+    },
+  },
+  methods: {
+    async publicCandidateMail(id) {
+      const token = localStorage.getItem("token");
+
+      this.getPublicVacancyMAil = [];
+      if (this.$store.state.selectedPublishItemId) {
+        try {
+          const response = await axios.put(
+            `https://logezy.onrender.com/send_notification/${id}`,
+            {
+              notification_type: this.notification_type ? "email_notification" : null,
+            },
+            {
+              headers: {
+                "content-type": "application/json",
+                Authorization: "bearer " + token,
+              },
+            }
+          );
+
+          this.getPublicVacancyMAil = response.data.data;
+          if (response.status === 200) {
+            // Show an alert after successfully sending mail
+            alert("Success Send Mail");
+            window.location.reload();
+          } else {
+          }
+        } catch (error) {
+          if (error.response) {
+            if (error.response.status == 404) {
+              // alert(error.response.data.message);
+            }
+          }
+        }
+      } else {
+        // Handle the case when selectedPublishItemId is not available
+      }
+    },
+    closePopup() {
+      this.$store.commit("setSelectedPublishedItemId", null);
+    },
+    async getVacancyDataMethod() {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get(`https://logezy.onrender.com/vacancies`, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+        });
+        this.vacancyData = response.data.data;
+      } catch (error) {
+        //console.error("Error fetching vacancies:", error);
+      }
+    },
   },
 
-  methods: {},
-  mounted() {},
+  mounted() {
+    this.getVacancyDataMethod();
+  },
 };
 </script>
 
