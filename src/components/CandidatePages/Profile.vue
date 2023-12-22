@@ -137,6 +137,8 @@
     <AddNotes />
     <!-- <EditRateCard /> -->
     <AddRateCard />
+    <NextToKinEdit />
+    <EditBankDetails />
   </div>
 </template>
 
@@ -153,6 +155,8 @@ import StaffId from "../CandidatePages/ProfileDetail/StaffId.vue";
 import CandidateHistory from "../CandidatePages/ProfileDetail/CandidateHistory.vue";
 import CandidatePreference from "../CandidatePages/ProfileDetail/CandidatePreference.vue";
 import OverviewEdit from "../modals/CandidatePage/OverviewEdit.vue";
+import NextToKinEdit from "../modals/CandidatePage/OverView/NextToKinEdit.vue";
+import EditBankDetails from "../modals/CandidatePage/OverView/EditBankDetails.vue";
 import AddRestrictedLocation from "../modals/CandidatePage/AddRestrictedLocation.vue";
 
 import AddRateCard from "../modals/CandidatePage/AddRateCard.vue";
@@ -199,6 +203,8 @@ export default {
     AddRateCard,
     // EditRateCard,
     AddNotes,
+    NextToKinEdit,
+    EditBankDetails,
   },
 
   props: ["id"],

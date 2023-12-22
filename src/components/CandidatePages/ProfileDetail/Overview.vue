@@ -117,7 +117,15 @@
                 </div>
 
                 <div>
-                  <button type="button" class="btn btn-outline-primary">Edit</button>
+                  <button
+                    class="btn btn-primary rounded-1 text-uppercase fw-medium mb-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editBankDetailsOverview"
+                    data-bs-whatever="@mdo"
+                    type="button"
+                  >
+                    Edit
+                  </button>
                 </div>
               </div>
             </div>
@@ -129,8 +137,16 @@
                 <tbody class="text-capitalize">
                   <tr>
                     <td>Bank Details</td>
+                  </tr>
+                  <tr>
+                    <td>Account No</td>
                     <td>:</td>
-                    <td>...</td>
+                    <td>{{ getCandidatesDataInOverview.bank_number }}</td>
+                  </tr>
+                  <tr>
+                    <td>IFSC Code</td>
+                    <td>:</td>
+                    <td>{{ getCandidatesDataInOverview.ifsc_code }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -260,7 +276,16 @@
                 >
                   NEXT TO KIN
                 </h5>
-                <button type="button" class="btn btn-primary mb-3">Edit</button>
+
+                <button
+                  type="button"
+                  class="btn btn-outline-success text-nowrap text-nowrap mb-3"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editNextToKin"
+                  data-bs-whatever="@mdo"
+                >
+                  Edit
+                </button>
               </div>
             </div>
             <div class="card-body">
@@ -277,7 +302,25 @@
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                  <tr v-for="data in getNextToKin" :key="data.id">
+                    <td v-text="data.name"></td>
+                    <td v-text="data.phone_number"></td>
+                    <td v-text="data.relation"></td>
+                    <td v-text="data.address_line_1"></td>
+                    <td v-text="data.address_line_2"></td>
+                    <td v-text="data.city"></td>
+                    <td v-text="data.postcode"></td>
+                    <td>
+                      <button class="btn btn-outline-success text-nowrap">
+                        <i
+                          class="bi bi-trash"
+                          v-on:click="vacancyDeleteMethod(data.id)"
+                        ></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>
@@ -383,6 +426,7 @@ export default {
       getCandidatesDataInOverview: [],
       getEducationExpData: [],
       getWorkExpData: [],
+      getNextToKin: [],
       fetchCandidate: {
         id: "",
         first_name: "",
@@ -451,12 +495,51 @@ export default {
         }
       }
     },
+    async getCandidateNextToKineMethod() {
+      try {
+        const response = await axios.get(
+          `https://logezy.onrender.com/candidates/${this.$route.params.id}/next_of_kins`
+        );
+
+        this.getNextToKin = response.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        } else {
+          // console.error("Error fetching candidates:", error);
+        }
+      }
+    },
+    async vacancyDeleteMethod(id) {
+      if (!window.confirm("Are you Sure ?")) {
+        return;
+      }
+      const token = localStorage.getItem("token");
+      await axios
+        .delete(
+          `https://logezy.onrender.com/candidates/${this.$route.params.id}/next_of_kins/` +
+            id,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: "bearer " + token,
+            },
+          }
+        )
+        .then((response) => {
+          this.getCandidateNextToKineMethod();
+        });
+      alert("Record Deleted ");
+    },
   },
 
   mounted() {
     this.getCandidateMethod();
     this.getCandidateWorkExperienceMethod();
     this.getCandidateEducationMethod();
+    this.getCandidateNextToKineMethod();
   },
 };
 </script>

@@ -12,6 +12,8 @@ html {
   height: 100%;
   overflow-x: hidden;
 }
+.form-check-input:checked {
+  background-color: #FF5722 !important;}
 
 body {
   overflow-x: hidden !important;
