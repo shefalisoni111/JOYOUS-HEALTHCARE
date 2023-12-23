@@ -197,8 +197,8 @@ export default {
   computed: {
     selectedAppliedItemId() {
       this.getAppliedVacancyMethod(this.$store.state.selectedAppliedItemId);
-      this.assignedCandidate(this.$store.state.selectedAppliedItemId);
-      this.rejectCandidate(this.$store.state.selectedAppliedItemId);
+      this.assignedCandidate(this.$store.state.selectedAssignedItemId);
+      this.rejectCandidate(this.$store.state.selectedRejectItemId);
       return this.$store.state.selectedAppliedItemId;
     },
   },
@@ -258,7 +258,7 @@ export default {
     async assignedCandidate(id) {
       const token = localStorage.getItem("token");
 
-      if (this.$store.state.selectedItemId) {
+      if (this.$store.state.selectedAssignedItemId) {
         try {
           const response = await axios.get(
             `https://logezy.onrender.com/assigned_candidate_list/${id}`,
@@ -282,7 +282,7 @@ export default {
     async rejectCandidate(id) {
       const token = localStorage.getItem("token");
 
-      if (this.$store.state.selectedItemId) {
+      if (this.$store.state.selectedRejectItemId) {
         try {
           const response = await axios.get(
             `https://logezy.onrender.com/rejected_candidate_list/${id}`,
@@ -357,13 +357,11 @@ export default {
         // Reject Candidate
         data.status = "rejected";
       }
-
-      for (let i = 0; i < this.vacancyData.length; i++) {
-        const vacancyId = this.vacancyData[i].id;
-
+      const id = this.$store.state.selectedAppliedItemId;
+      if (id) {
         try {
           const response = await fetch(
-            `https://logezy.onrender.com/apply_candidates/${vacancyId}`, // Replace with your API endpoint
+            `https://logezy.onrender.com/apply_candidates/${id}`, // Replace with your API endpoint
             {
               method: "PUT",
               headers: {
