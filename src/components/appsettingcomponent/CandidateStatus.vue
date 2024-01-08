@@ -35,7 +35,7 @@
             <th scope="col" class="col-2 bg-primary text-white jusfycenter">Action</th>
           </tr>
         </thead>
-        <tbody v-if="getCandidateStatus.length > 0">
+        <tbody>
           <tr v-for="getCandidate in getCandidateStatus" :key="getCandidate.id">
             <td :v-text="getCandidate.title">{{ getCandidate.title }}</td>
             <td :v-text="getCandidate.description">
@@ -87,11 +87,6 @@
             <td><i class="bi bi-trash"></i></td>
           </tr> -->
         </tbody>
-        <tbody v-else>
-          <tr>
-            <td colspan="3">Loading...</td>
-          </tr>
-        </tbody>
       </table>
     </div>
     <AddCandidateStatus />
@@ -129,7 +124,7 @@ export default {
         return;
       }
       axios
-        .delete(`https://logezy.onrender.com/candidate_statuses/` + id)
+        .delete(`${VITE_API_URL}/candidate_statuses/` + id)
         .then((response) => {
           this.getCandidateDAta();
         });
@@ -139,7 +134,7 @@ export default {
 
     getCandidateDAta() {
       axios
-        .get("https://logezy.onrender.com/candidate_statuses")
+        .get(`${VITE_API_URL}/candidate_statuses`)
         .then((response) => (this.getCandidateStatus = response.data))
         .catch((error) => {
           if (error.response) {

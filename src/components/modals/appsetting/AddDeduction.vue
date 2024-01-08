@@ -1,12 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="addDeduct"
-      aria-labelledby="addDeductPage"
-      tabindex="-1"
-    >
+    <div class="modal fade" id="addDeduct" aria-labelledby="addDeductPage" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -50,11 +45,7 @@
                     <label class="form-label">FREQUENCY</label>
                   </div>
                   <div class="col-8 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="frequency"
-                    />
+                    <input type="text" class="form-control" v-model="frequency" />
                     <!-- <i class="bi bi-square-fill"></i> -->
                   </div>
                 </div>
@@ -105,17 +96,14 @@ export default {
         frequency: this.frequency,
       };
       try {
-        const response = await fetch(
-          "https://logezy.onrender.com/candidate_deductions",
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          }
-        );
+        const response = await fetch(`${VITE_API_URL}/candidate_deductions`, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
         if (data) {
           location.reload();
         }

@@ -107,7 +107,7 @@ export default {
   methods: {
     async getTime() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/shifts");
+        const response = await axios.get(`${VITE_API_URL}/shifts`);
         this.shifts = response.data.map((shift) => ({
           ...shift,
           shift_id: false,
@@ -129,14 +129,14 @@ export default {
 
       try {
         const response = await axios.post(
-          `https://logezy.onrender.com/candidates/${this.$route.params.id}/restricted_shifts`,
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/restricted_shifts`,
           data
         );
         alert("Shift Added ");
         if (data) {
           if (
             window.location.href ===
-            `https://logezy.onrender.com/candidates/${this.$route.params.id}/restricted`
+            `${VITE_API_URL}/candidates/${this.$route.params.id}/restricted`
           ) {
             window.location.reload();
           }
@@ -147,7 +147,7 @@ export default {
     async getRestrictedShifts() {
       try {
         const response = await axios.get(
-          `https://logezy.onrender.com/candidates/${this.$route.params.id}/candidate_restricted_shift`
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_restricted_shift`
         );
 
         this.getRestrictedShiftData = response.data.shift_id;
@@ -160,7 +160,7 @@ export default {
     async getRestrictedLocationMethod() {
       try {
         const response = await axios.get(
-          `https://logezy.onrender.com/candidates/${this.$route.params.id}/candidate_restricted_location`
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_restricted_location`
         );
         this.getLocationData = response.data;
       } catch (error) {

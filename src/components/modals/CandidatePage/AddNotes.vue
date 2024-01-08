@@ -1,12 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="addNotes"
-      aria-labelledby="addNotes"
-      tabindex="-1"
-    >
+    <div class="modal fade" id="addNotes" aria-labelledby="addNotes" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -20,13 +15,14 @@
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
-              <form>
+              <form @submit.prevent="submitForm">
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-4">
                     <label class="form-label">Add Notes</label>
                   </div>
                   <div class="col-8">
                     <input type="text" class="form-control" v-model="notes" />
+                    <span v-if="!isValidForm" class="text-danger">Notes Required</span>
                   </div>
                 </div>
               </form>
@@ -43,8 +39,9 @@
             </button>
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
-              data-bs-dismiss="modal"
-              v-on:click="addNotes()"
+              type="submit"
+              :disabled="!isValidForm"
+              @click="submitForm"
             >
               Add
             </button>
@@ -55,24 +52,33 @@
   </div>
 </template>
 
-<script>
+<script >
 import axios from "axios";
 export default {
-  name: "CandidateAdd",
+  name: "AddNotes",
   data() {
     return {
       notes: "",
     };
   },
-
+  computed: {
+    isValidForm() {
+      return this.notes.trim() !== "";
+    },
+  },
   methods: {
+    submitForm() {
+      if (this.isValidForm) {
+        this.addNotes();
+      }
+    },
     async addNotes() {
       const data = {
         notes: this.notes,
       };
       try {
         const response = await fetch(
-          `https://logezy.onrender.com/candidates/${this.$route.params.id}/candidate_notes`,
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes`,
           {
             method: "POST",
             headers: {
@@ -86,6 +92,10 @@ export default {
           location.reload();
         }
       } catch (error) {}
+    },
+
+    clearError() {
+      this.notes = "";
     },
   },
 

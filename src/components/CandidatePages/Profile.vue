@@ -142,7 +142,7 @@
   </div>
 </template>
 
-<script>
+<script >
 import axios from "axios";
 
 import Overview from "../CandidatePages/ProfileDetail/Overview.vue";
@@ -224,7 +224,7 @@ export default {
     completeImageUrl() {
       if (this.getCandidates && this.getCandidates.profile_photo) {
         // Concatenate the base URL with the partial API URL
-        return `https://logezy.onrender.com${this.getCandidates.profile_photo}`;
+        return `${VITE_API_URL}${this.getCandidates.profile_photo}`;
       }
       return null;
     },
@@ -251,7 +251,7 @@ export default {
     async getCandidate() {
       try {
         const response = await axios.get(
-          `https://logezy.onrender.com/candidates/${this.$route.params.id}`
+          `${VITE_API_URL}/candidates/${this.$route.params.id}`
         );
 
         this.getCandidates = response.data.data;
@@ -269,7 +269,7 @@ export default {
     async GetNotesCount() {
       try {
         const response = await axios.get(
-          `https://logezy.onrender.com/candidate_notes_count_lists/${this.$route.params.id}`
+          `${VITE_API_URL}/candidate_notes_count_lists/${this.$route.params.id}`
         );
 
         this.getCount = response.data.Candidate_notes;

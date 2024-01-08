@@ -150,7 +150,7 @@
   </div>
 </template>
 
-<script>
+<script >
 import axios from "axios";
 
 export default {
@@ -176,7 +176,7 @@ export default {
       if (this.$store.state.selectedAllItemId) {
         try {
           const response = await axios.get(
-            `https://logezy.onrender.com/applied_candidate_list?vacancy_id=${id}`,
+            `${VITE_API_URL}/applied_candidate_list?vacancy_id=${id}`,
             {
               headers: {
                 "content-type": "application/json",

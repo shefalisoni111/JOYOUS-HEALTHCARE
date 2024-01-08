@@ -112,7 +112,7 @@
   </div>
 </template>
 
-<script setup>
+<script >
 // import TextFormator from "textformator/TextFormator.vue";
 </script>
 

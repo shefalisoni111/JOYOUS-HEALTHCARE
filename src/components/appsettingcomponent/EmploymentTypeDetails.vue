@@ -134,17 +134,15 @@ export default {
       if (!window.confirm("Are you Sure ?")) {
         return;
       }
-      axios
-        .delete(`https://logezy.onrender.com/employment_types/` + id)
-        .then((response) => {
-          this.getEmployeeDAta();
-        });
+      axios.delete(`${VITE_API_URL}/employment_types/` + id).then((response) => {
+        this.getEmployeeDAta();
+      });
       alert("Record Deleted ");
     },
 
     getEmployeeDAta() {
       axios
-        .get("https://logezy.onrender.com/employment_types")
+        .get(`${VITE_API_URL}/employment_types`)
         .then((response) => (this.getEmployeeStatus = response.data));
     },
   },
@@ -155,7 +153,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .showdata .nav-link {
   color: #000;
 }

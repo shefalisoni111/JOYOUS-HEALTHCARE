@@ -65,9 +65,7 @@ export default {
   methods: {
     async pendingCandidateMethod() {
       try {
-        const response = await axios.get(
-          "https://logezy.onrender.com/pending_candidates"
-        );
+        const response = await axios.get(`${VITE_API_URL}/pending_candidates`);
 
         this.getPendingCandidatesData = response.data.data;
       } catch (error) {
@@ -86,7 +84,7 @@ export default {
         return;
       }
       const response = await axios
-        .put(`https://logezy.onrender.com/candidate/approve_candidate/${id}`)
+        .put(`${VITE_API_URL}/candidate/approve_candidate/${id}`)
         .then((response) => {
           this.inactiveCandidateData = response.data;
           this.pendingCandidateMethod();
@@ -102,7 +100,7 @@ export default {
         return;
       }
       const response = await axios
-        .put(`https://logezy.onrender.com/candidate/reject_candidate/${id}`)
+        .put(`${VITE_API_URL}/candidate/reject_candidate/${id}`)
         .then((response) => {
           this.inactiveCandidateData = response.data;
           this.pendingCandidateMethod();

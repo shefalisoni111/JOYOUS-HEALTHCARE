@@ -45,9 +45,7 @@
             </div>
           </div>
           <div class="settingsdetails">
-            <div
-              class="pagetitle d-flex justify-content-between align-items-center"
-            >
+            <div class="pagetitle d-flex justify-content-between align-items-center">
               <div class="d-flex">
                 <ol class="breadcrumb mb-1">
                   <li class="breadcrumb-item active text-capitalize fw-bold">
@@ -81,7 +79,7 @@
   </div>
 </template>
 
-<script setup>
+<script >
 import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
 </script>

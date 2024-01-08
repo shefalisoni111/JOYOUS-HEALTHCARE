@@ -148,7 +148,7 @@ export default {
     //       return;
     //     }
     //     const response = await axios.get(
-    //       `https://logezy.onrender.com/vacancy_search/${this.searchQuery}`
+    //       `${VITE_API_URL}/vacancy_search/${this.searchQuery}`
     //     );
     //     this.searchResults = response.data.data;
     //     this.notFoundVacancy = response.data.message;
@@ -160,7 +160,7 @@ export default {
     async createVacancy() {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get("https://logezy.onrender.com/vacancies", {
+        const response = await axios.get(`${VITE_API_URL}/vacancies`, {
           headers: {
             "content-type": "application/json",
             Authorization: "bearer " + token,
@@ -183,6 +183,7 @@ export default {
 #main {
   transition: all 0.3s;
   height: 100dvh;
+  background-color: #fdce5e17;
 }
 .main-content {
   transition: all 0.3s;

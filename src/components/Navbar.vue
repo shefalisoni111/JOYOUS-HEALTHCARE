@@ -66,7 +66,7 @@
             <a
               class="nav-link dropdown-toggle"
               href="/candidates"
-              id="navbarDropdown"
+              id="candidatesDropdown"
               role="button"
               data-bs-toggle="dropdown"
               aria-haspopup="true"
@@ -74,11 +74,11 @@
             >
               Candidates
             </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <router-link class="dropdown-item" to="/candidates"
+            <div class="dropdown-menu" aria-labelledby="candidatesDropdown">
+              <router-link class="dropdown-item" to="/candidates/candidates"
                 >Candidate List</router-link
               >
-              <router-link class="dropdown-item" to="/availability"
+              <router-link class="dropdown-item" to="/candidates/availability"
                 >Candidate Availability</router-link
               >
             </div>
@@ -102,11 +102,31 @@
             <router-link class="nav-link" aria-current="page" to="/timesheet">
               Timesheet
             </router-link>
-            <!-- <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#">Client 1</a></li>
-              <li><a class="dropdown-item" href="#">Client 2</a></li>
-            </ul> -->
           </li>
+          <!-- <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="/timesheet/weekly"
+              id="timesheetDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Timesheet
+            </a>
+            <div class="dropdown-menu" aria-labelledby="timesheetDropdown">
+              <router-link class="dropdown-item" to="/timesheet/weekly"
+                >Weekly TimeSheet</router-link
+              >
+              <router-link class="dropdown-item" to="/timesheet/custom"
+                >CustomTimeSheet</router-link
+              >
+              <router-link class="dropdown-item" to="/timesheet/signed"
+                >Signed TimeSheet</router-link
+              >
+            </div>
+          </li> -->
           <li class="nav-item">
             <router-link class="nav-link" aria-current="page" to="/invoice">
               Invoice
@@ -258,7 +278,7 @@ export default {
       const token = localStorage.getItem("token");
       try {
         const response = await axios.get(
-          `https://logezy.onrender.com/merchant_dashboard`,
+          `${VITE_API_URL}/merchant_dashboard`,
           {
             headers: {
               "content-type": "application/json",

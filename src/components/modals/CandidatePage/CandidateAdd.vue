@@ -239,7 +239,7 @@ export default {
         };
 
         try {
-          const response = await fetch("https://logezy.onrender.com/candidates", {
+          const response = await fetch(`${VITE_API_URL}/candidates`, {
             method: "POST",
             headers: {
               Accept: "application/json",
@@ -288,7 +288,7 @@ export default {
     },
     async getPositionMethod() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/active_job_list");
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
         this.options = response.data.data;
       } catch (error) {
         if (error.response) {

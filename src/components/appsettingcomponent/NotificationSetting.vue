@@ -22,9 +22,7 @@
                   >
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize">Email</h6>
-                      <p class="text-capitalize mb-0">
-                        modify email integeration
-                      </p>
+                      <p class="text-capitalize mb-0">modify email integeration</p>
                     </div>
                   </router-link>
                 </li>
@@ -62,9 +60,7 @@
                   >
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize">notification alerts</h6>
-                      <p class="text-capitalize mb-0">
-                        modify shift & vacancy alerts
-                      </p>
+                      <p class="text-capitalize mb-0">modify shift & vacancy alerts</p>
                     </div>
                   </router-link>
                 </li>
@@ -82,7 +78,7 @@
   </div>
 </template>
 
-<script setup>
+<script >
 import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
 </script>

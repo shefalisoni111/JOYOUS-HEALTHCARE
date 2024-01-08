@@ -163,7 +163,7 @@
   </div>
 </template>
 
-<script>
+<script >
 import axios from "axios";
 
 import { reactive } from "vue";
@@ -224,7 +224,7 @@ export default {
     //       return;
     //     }
     //     const response = await axios.get(
-    //       `https://logezy.onrender.com/vacancy_search/${this.searchQuery}`
+    //       `${VITE_API_URL}/vacancy_search/${this.searchQuery}`
     //     );
     //     this.searchResults = response.data.data;
     //     this.notFoundVacancy = response.data.message;
@@ -261,7 +261,7 @@ export default {
       if (this.$store.state.selectedAssignedItemId) {
         try {
           const response = await axios.get(
-            `https://logezy.onrender.com/assigned_candidate_list/${id}`,
+            `${VITE_API_URL}/assigned_candidate_list/${id}`,
             {
               headers: {
                 "content-type": "application/json",
@@ -285,7 +285,7 @@ export default {
       if (this.$store.state.selectedRejectItemId) {
         try {
           const response = await axios.get(
-            `https://logezy.onrender.com/rejected_candidate_list/${id}`,
+            `${VITE_API_URL}/rejected_candidate_list/${id}`,
             {
               headers: {
                 "content-type": "application/json",
@@ -311,7 +311,7 @@ export default {
       if (this.$store.state.selectedAppliedItemId) {
         try {
           const response = await axios.get(
-            `https://logezy.onrender.com/applied_candidate_list?vacancy_id=${id}`,
+            `${VITE_API_URL}/applied_candidate_list?vacancy_id=${id}`,
             {
               headers: {
                 "content-type": "application/json",
@@ -361,7 +361,7 @@ export default {
       if (id) {
         try {
           const response = await fetch(
-            `https://logezy.onrender.com/apply_candidates/${id}`, // Replace with your API endpoint
+            `${VITE_API_URL}/apply_candidates/${id}`, // Replace with your API endpoint
             {
               method: "PUT",
               headers: {

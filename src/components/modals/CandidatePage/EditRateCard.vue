@@ -194,7 +194,7 @@ export default {
   methods: {
     async getEmployeeTypeData() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/employment_types");
+        const response = await axios.get(`${VITE_API_URL}/employment_types`);
         this.employeeData = response.data;
       } catch (error) {
         if (error.response) {
@@ -206,7 +206,7 @@ export default {
     },
     async getPositionMethod() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/active_job_list");
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
         this.options = response.data.data;
       } catch (error) {
         if (error.response) {
@@ -218,13 +218,13 @@ export default {
     },
     async getTimeShift() {
       await axios
-        .get("https://logezy.onrender.com/shifts")
+        .get(`${VITE_API_URL}/shifts`)
         .then((response) => (this.shiftsTime = response.data));
     },
     async fetchRateCardMethod() {
       try {
         const response = await axios.get(
-          `https://logezy.onrender.com/rate_cards/${this.$route.params.id}`
+          `${VITE_API_URL}/rate_cards/${this.$route.params.id}`
         );
 
         this.fetchRateCard = response.data.data;
@@ -234,10 +234,7 @@ export default {
     },
     async updateRateCardMethod(id) {
       try {
-        await axios.put(
-          `https://logezy.onrender.com/rate_cards/` + id,
-          this.fetchRateCard
-        );
+        await axios.put(`${VITE_API_URL}/rate_cards/` + id, this.fetchRateCard);
 
         alert("Candidate updated successfully");
         window.location.reload();
@@ -247,7 +244,7 @@ export default {
     },
     async getBusinessUnitMethod() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/business_units");
+        const response = await axios.get(`${VITE_API_URL}/business_units`);
         this.businessUnit = response.data;
       } catch (error) {
         if (error.response) {

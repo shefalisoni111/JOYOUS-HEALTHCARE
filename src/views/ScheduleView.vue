@@ -6,8 +6,14 @@
     </div>
   </div>
 </template>
-<script setup>
+<script>
 import Navbar from "../components/Navbar.vue";
+
+export default {
+  components: {
+    Navbar,
+  },
+};
 </script>
 <style scoped>
 #main {
@@ -16,84 +22,137 @@ import Navbar from "../components/Navbar.vue";
   height: 100dvh;
   background-color: #fdce5e17;
 }
-ul.generalsetting h6 {
-  font-size: 14px;
-  font-weight: bold;
-}
 </style>
 
 <!-- <template>
   <div>
     <Navbar />
-    <div id="main">
-      <div class="pagetitle px-2">
-        <div class="py-3">
-          <ol class="breadcrumb mb-1">
-            <li class="breadcrumb-item active text-uppercase fs-6">
-              Dashboard / <span class="color-fonts">Schedule</span>
-            </li>
-          </ol>
+    <div class="container-fluid">
+      <div id="main">
+        <div class="pagetitle d-flex justify-content-between px-2">
+          <div class="py-3">
+            <ol class="breadcrumb mb-1">
+              <li class="breadcrumb-item active text-uppercase fs-6">
+                Dashboard / <span class="color-fonts">Schedule</span>
+              </li>
+            </ol>
+          </div>
         </div>
-      </div>
-      <div class="row px-2">
-        <div class="col-12">
-          <ul
-            class="nav nav-pills mb-3 d-flex justify-content-end"
-            id="pills-tab"
-            role="tablist"
-          >
-            <div class="d-flex">
-              <div class="">
-                <select
-                  class="form-select"
-                  aria-label="Default select example "
-                >
-                  <option selected>Publish</option>
-                  <option value="1">Mail</option>
-                  <option value="2">Text</option>
-                </select>
+        <div class="row p-3">
+          <div class="full-page-calendar">
+            <div class="calendar-header">
+              <span v-if="formattedStartDate && formattedEndDate" class="fw-bold">
+                {{
+                  "Monday " + formattedStartDate + " to Sunday " + formattedEndDate
+                }} </span
+              >&nbsp; &nbsp;
+              <input
+                type="date"
+                v-model="startDate"
+                @change="updateDateRange"
+                class="dateInput"
+              />
+            </div>
+            
+
+            <div v-if="selectedDate !== null" class="modal">
+              <div class="modal-content">
+                <div class="close d-flex justify-content-between my-3">
+                  <h3 class="d-flex align-items-center mb-0">Edit Assigned Shift -</h3>
+                  <span class="close text-white" @click="closeModal">&times;</span>
+                </div>
+
+                <h4 class="text-capitalize">{{ getCandidateName() }}</h4>
+                <p>You clicked on {{ selectedDate }}</p>
+                <p>Status: {{ statusForSelectedDate }}</p>
+              
+                <AppointmentAdd
+                  :initialDate="selectedDate"
+                  :candidateId="selectedCandidateId"
+                  @closeModal="closeModal"
+                />
               </div>
             </div>
-          </ul>
-        </div>
-      </div>
-      <div class="schedule-vue-sample d-flex px-2">
-        <div class="col-3 border-box">
-          <div>
-            <h5>Vacancy</h5>
-            <ul v-for="data in getVacancyDetail" :key="data.id">
-              <li>{{ data.client }}</li>
-            </ul>
           </div>
-          <ul v-for="data in allVacancyData" :key="data.id">
-            <li>{{ data.first_name }}</li>
-          </ul>
-        </div>
-        <div class="col-9 control-section ps-2">
-          <div class="content-wrapper">
-            <ejs-schedule
-              id="schedule"
-              ref="ScheduleObj"
-              height="800px"
-              :ownerCollections="ownerCollection"
-              :selectedDate="selectedDate"
-              :eventSettings="eventSettings"
-            >
-              <e-resources>
-                <e-resource
-                  field="OwnerId"
-                  title="Owners"
-                  :dataSource="resourceDataSource"
-                  allowMultiple="true"
-                  name="Owners"
-                  textField="OwnerText"
-                  idField="OwnerId"
-                  colorField="Color"
-                >
-                </e-resource>
-              </e-resources>
-            </ejs-schedule>
-          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Vacancy</th>
+
+                <th>
+                  <div class="calendar-grid">
+                    <div v-for="day in daysOfWeek" :key="day" class="day-header">
+                      {{ day }}
+                    </div>
+                    <div v-for="date in selectedDateRow" :key="date" class="day-header">
+                      {{ formatDate(date) }}
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td></td>
+                <td>
+                  <div class="calendar-grid">
+                    <div v-for="(data, index) in vacancyList" :key="index">
+                      <div v-for="day in selectedDateRow" :key="day" class="text-center">
+                        <ul
+                          v-if="data.date === formattedDate(day)"
+                          class="list-unstyled mb-0"
+                        >
+                          <li
+                            v-for="(vacancy, liIndex) in data.vacancy"
+                            :key="vacancy.id"
+                            :draggable="true"
+                            @dragstart="handleDragStart(vacancy.id)"
+                            :class="{
+                              'bg-info': liIndex === 0,
+                              'bg-warning': liIndex === 1,
+                              'bg-dark': liIndex === 2,
+                              'bg-primary': liIndex >= 3,
+                            }"
+                          >
+                            {{ vacancy.business_unit }}
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr v-for="data in candidateList" :key="data.id">
+                <td class="text-capitalize fw-bold">{{ data.first_name }}</td>
+
+                <td>
+                  <div
+                    class="calendar-grid"
+                    @dragover.prevent="handleDragOver"
+                    @drop="handleDrop(data.id)"
+                  >
+                    <div
+                      v-for="day in selectedDateRow"
+                      :key="day"
+                      @click="openModal(data, day)"
+                      :class="{
+                        'calendar-day': true,
+                        clickable: day !== '',
+                      }"
+                    >
+                      <div
+                        v-if="dropCandidateId === data.id && dropDay === day"
+                        class="drop-zone"
+                      >
+                        
+                        {{ droppedContent }}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -102,190 +161,330 @@ ul.generalsetting h6 {
 
 <script>
 import axios from "axios";
+import AppointmentAdd from "../components/modals/Schedule/EditAssignedShift.vue";
 import Navbar from "../components/Navbar.vue";
-import {
-  Predicate,
-  Query,
-} from "C:/Users/krati/logezy/vue-project/node_modules/@syncfusion/ej2-data";
-import { CheckBoxComponent } from "C:/Users/krati/logezy/vue-project/node_modules/@syncfusion/ej2-vue-buttons";
-import { extend } from "C:/Users/krati/logezy/vue-project/node_modules/@syncfusion/ej2-base";
-import { resourceSampleData } from "C:/Users/krati/logezy/vue-project/src/datasource.js";
-import {
-  ScheduleComponent,
-  ResourceDirective,
-  ResourcesDirective,
-  Day,
-  Week,
-  WorkWeek,
-  Month,
-  DragAndDrop,
-  Resize,
-} from "C:/Users/krati/logezy/vue-project/node_modules/@syncfusion/ej2-vue-schedule";
 
-var ownerCollections = [
-  { OwnerText: "Margaret", OwnerId: 1, Color: "#ea7a57" },
-  { OwnerText: "Robert", OwnerId: 2, Color: "#df5286" },
-  { OwnerText: "Laura", OwnerId: 3, Color: "#865fcf" },
-];
 export default {
-  name: "CandidateAvailability",
   data() {
-    return { getVacancyDetail: [], allVacancyData: [] };
-  },
-  components: {
-    "ejs-schedule": ScheduleComponent,
-    "e-resource": ResourceDirective,
-    "e-resources": ResourcesDirective,
-    "ejs-checkbox": CheckBoxComponent,
-    Navbar,
-  },
-  data: function () {
     return {
-      selectedDate: new Date(2023, 11, 12),
-      resourceDataSource: ownerCollections,
-      ownerCollection: ownerCollections,
-      allowMultiple: true,
-      eventSettings: { dataSource: extend([], null, true) },
+      startDate: "",
+      endDate: { value: "", display: "" },
+      currentDate: new Date(),
+      selectedDate: null,
+      candidateList: [],
+      selectedCandidateId: null,
+      selectedCandidate: null,
+
+      statusForSelectedDate: null,
+      vacancyList: [],
+      vacancyBeingDragged: { id: null },
+      dropCandidateId: null,
+      dropDay: null,
+      droppedContent: null,
     };
   },
-  provide: {
-    schedule: [Day, Week, WorkWeek, Month, DragAndDrop, Resize],
-  },
-  methods: {
-    onChange: function () {
-      let scheduleObj = this.$refs.ScheduleObj;
-      let ownerOneObj = this.$refs.ownerOneObj;
-      let ownerTwoObj = this.$refs.ownerTwoObj;
-      let ownerThreeObj = this.$refs.ownerThreeObj;
-      let predicate;
-      let checkBoxes = [ownerOneObj, ownerTwoObj, ownerThreeObj];
-      checkBoxes.forEach((checkBoxObj) => {
-        if (checkBoxObj.ej2Instances && checkBoxObj.ej2Instances.checked) {
-          if (predicate) {
-            predicate = predicate.or(
-              "OwnerId",
-              "equal",
-              parseInt(checkBoxObj.value, 10)
-            );
-          } else {
-            predicate = new Predicate(
-              "OwnerId",
-              "equal",
-              parseInt(checkBoxObj.value, 10)
-            );
-          }
-        }
-      });
-      scheduleObj.ej2Instances.eventSettings.query = new Query().where(
-        predicate
+  computed: {
+    daysOfWeek() {
+      return [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ];
+    },
+    selectedCandidate() {
+      return this.candidateList.find(
+        (candidate) => candidate.id === this.selectedCandidateId
       );
     },
-    async getAppliedVacancyMethod() {
-      const token = localStorage.getItem("token");
+    selectedDateRow() {
+      // Calculate a row of 7 days starting from the selected date (Monday to Sunday)
+      const selectedDate = new Date(this.startDate);
+      const selectedDateRow = [];
 
-      const customIndex = 0;
+      // Find the first day of the week (Sunday is 0, Monday is 1, and so on)
+      const dayOfWeek = selectedDate.getDay();
+      const startDay = (dayOfWeek - 1 + 7) % 7; // Adjust for Monday being the start of the week
 
-      if (this.allVacancyData.length > customIndex) {
-        const vacancyId = this.allVacancyData[customIndex].id;
-
-        try {
-          const response = await axios.get(
-            `https://logezy.onrender.com/applied_candidate_list?vacancy_id=${vacancyId}`,
-            {
-              headers: {
-                "content-type": "application/json",
-                Authorization: "bearer " + token,
-              },
-            }
-          );
-          this.getVacancyDetail = response.data;
-        } catch (error) {
-          if (error.response) {
-            if (error.response.status == 404) {
-              alert(error.response.data.message);
-            }
-          }
-        }
-      } else {
-        console.error(
-          "Vacancy data is empty or does not have the item at the determined index."
-        );
+      for (let i = 0; i < 7; i++) {
+        const currentDate = new Date(selectedDate);
+        currentDate.setDate(selectedDate.getDate() + i - startDay);
+        selectedDateRow.push(`${currentDate.getDate()}`);
       }
+
+      return selectedDateRow;
     },
-    async getVacancyDataMethod() {
-      const token = localStorage.getItem("token");
-      try {
-        const response = await axios.get(
-          "https://logezy.onrender.com/vacancies",
-          {
-            headers: {
-              "content-type": "application/json",
-              Authorization: "bearer " + token,
-            },
-          }
-        );
-        this.allVacancyData = response.data;
-        this.getAppliedVacancyMethod();
-      } catch (error) {
-        console.error("Error fetching vacancies:", error);
-      }
+    candidateName() {
+      return this.selectedCandidate ? this.selectedCandidate.first_name : "";
+    },
+
+    formattedDates() {
+      return this.selectedDateRow.map((day) => this.formatDate(day));
+    },
+
+    formattedStartDate() {
+      return this.formatDate(this.selectedDateRow[0]);
+    },
+    formattedEndDate() {
+      return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
     },
   },
+
+  methods: {
+    handleDragStart(vacancyId) {
+      this.vacancyBeingDragged.id = vacancyId;
+    },
+    handleDragOver(event) {
+      event.preventDefault();
+    },
+    async handleDrop(candidateId) {
+      try {
+        if (!this.vacancyBeingDragged || !this.vacancyBeingDragged.id) {
+          return;
+        }
+
+        const payload = {
+          vacancy_id: this.vacancyBeingDragged.id,
+          candidate_id: candidateId,
+        };
+
+        const response = await axios.post(
+          `${VITE_API_URL}/assign_vacancy`,
+          payload
+        );
+      } catch (error) {
+      } finally {
+        // Reset drag-related data
+        this.vacancyBeingDragged = null;
+        this.dropCandidateId = null;
+        this.dropDay = null;
+        this.droppedContent = null;
+      }
+    },
+
+    formattedDate(day) {
+      const selectedDate = new Date(this.startDate);
+      selectedDate.setDate(day);
+      return selectedDate.toISOString().split("T")[0];
+    },
+    getCandidateName() {
+      return this.selectedCandidate ? this.selectedCandidate.first_name : "Default Name";
+    },
+
+    saveToLocalStorage() {
+      localStorage.setItem(
+        "calendarData",
+        JSON.stringify({
+          startDate: this.startDate,
+          endDate: this.endDate.value,
+        })
+      );
+    },
+    loadStoredData() {
+      const storedData = localStorage.getItem("calendarData");
+
+      if (storedData) {
+        const parsedData = JSON.parse(storedData);
+        this.startDate = parsedData.startDate;
+        this.endDate.value = parsedData.endDate;
+      }
+    },
+    updateSelectedDateRow(startDate, endDate) {
+      // Calculate a row of 7 days starting from the start date (Monday to Sunday)
+      const selectedDateRow = [];
+
+      // Find the first day of the week (Sunday is 0, Monday is 1, and so on)
+      const dayOfWeek = startDate.getDay();
+      const startDay = (dayOfWeek - 1 + 7) % 7; // Adjust for Monday being the start of the week
+
+      for (let i = 0; i < 7; i++) {
+        const currentDate = new Date(startDate);
+        currentDate.setDate(startDate.getDate() + i - startDay);
+        selectedDateRow.push(`${currentDate.getDate()}`);
+      }
+
+      Vue.set(this, "selectedDateRow", selectedDateRow); // Ensure reactivity
+    },
+    formatDate(day) {
+      const selectedDate = new Date(this.startDate);
+      selectedDate.setDate(day);
+      return selectedDate.toLocaleDateString(); // Adjust the format as needed
+    },
+
+    openModal(candidateId, day) {
+      try {
+        // Extract the id property from the Proxy object
+        const actualCandidateId = candidateId.id;
+
+        // Set the selected date in the format YYYY-MM-DD
+        const selectedDate = new Date(this.startDate);
+        selectedDate.setDate(parseInt(day)); // Set the day of the month
+
+        // Format the selected date exactly like the availability date
+        const formattedDate = selectedDate.toISOString().split("T")[0];
+
+        this.selectedDate = formattedDate;
+        this.selectedCandidateId = actualCandidateId; // Set the actual candidate ID
+
+        // Find the candidate in the candidateList
+        const selectedCandidate = this.candidateList.find(
+          (candidate) => candidate.id === actualCandidateId
+        );
+
+        // Check if the candidate details are found
+        if (selectedCandidate) {
+          // Use Vue.nextTick to ensure the DOM has been updated
+          this.$nextTick(() => {
+            this.selectedCandidate = selectedCandidate;
+          });
+        } else {
+          // Handle case when selectedCandidate is null
+
+          this.selectedDate = null;
+          this.statusForSelectedDate = null;
+        }
+      } catch (error) {
+        this.selectedDate = null;
+        this.statusForSelectedDate = null;
+      }
+    },
+    closeModal() {
+      this.selectedDate = null;
+
+      this.statusForSelectedDate = null;
+    },
+    async fetchCandidateList() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/approve_and_activated_candidates`
+        );
+        this.candidateList = response.data.data;
+      } catch (error) {}
+    },
+    async fetchVacancyListMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/vacancy_of_week`);
+        this.vacancyList = response.data;
+      } catch (error) {}
+    },
+  },
+  components: {
+    AppointmentAdd,
+    Navbar,
+  },
   mounted() {
-    this.getVacancyDataMethod();
+    this.fetchCandidateList();
+    this.fetchVacancyListMethod();
+    this.loadStoredData();
+    window.addEventListener("beforeunload", this.saveToLocalStorage);
   },
 };
 </script>
 
-<style>
-.schedule-vue-sample
-  .property-panel-content
-  .e-checkbox-wrapper.margaret
-  .e-frame {
-  background-color: #ea7a57;
-  border-color: transparent;
+<style scoped>
+#main {
+  background-color: #fdce5e17;
+}
+.full-page-calendar {
+  padding: 20px;
 }
 
-.schedule-vue-sample
-  .property-panel-content
-  .e-checkbox-wrapper.robert
-  .e-frame {
-  background-color: #df5286;
-  border-color: transparent;
+.calendar-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
 }
-.e-toolbar .e-toolbar-items {
-  background-color: #f3771e !important;
+input.dateInput {
+  width: 1.3%;
 }
-.e-toolbar .e-toolbar-item .e-tbar-btn:hover {
-  background-color: #f3771e !important;
-}
-.e-toolbar .e-toolbar-item .e-tbar-btn {
-  background-color: transparent;
-}
-.e-toolbar .e-toolbar-item .e-tbar-btn .e-tbar-btn-text {
-  color: rgba(0, 0, 0, 0.87);
+.current-month {
+  margin: 0 20px;
+  font-size: 18px;
   font-weight: bold;
-  background-color: transparent;
 }
-.e-schedule .e-schedule-toolbar .e-active-view .e-tbar-btn-text,
-.e-schedule .e-schedule-toolbar .e-active-view .e-icons {
-  color: #fff;
-  font-weight: bold;
-  background-color: transparent;
-}
-.schedule-vue-sample
-  .property-panel-content
-  .e-checkbox-wrapper.laura
-  .e-frame {
-  background-color: #865fcf;
-  border-color: transparent;
-}
+
 .color-fonts {
   color: #ff5f30;
   font-weight: bold;
 }
-.border-box {
-  border: 1px solid rgb(233 228 228);
-  padding: 10px;
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.day-header,
+.empty-day,
+.calendar-day {
+  text-align: center;
+  cursor: pointer;
+}
+
+.day-header {
+  font-weight: bold;
+}
+
+.empty-day {
+  background-color: #f3f3f3;
+}
+
+.modal-content h3 {
+  color: #fff;
+}
+.modal-content .close {
+  padding: 0px 5px;
+  border-radius: 4px;
+  background: #ff551f;
+}
+
+.calendar-day {
+  background-color: #eaeaea;
+  transition: background-color 0.3s ease;
+  padding: 20px 20px;
+}
+
+.calendar-day.clickable {
+  cursor: crosshair;
+  font-size: 10px;
+  color: blue !important;
+  font-weight: bold;
+}
+
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 </style> -->

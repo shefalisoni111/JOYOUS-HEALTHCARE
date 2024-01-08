@@ -1,42 +1,11 @@
 <template>
   <div>
-    <Navbar />
     <div id="main">
-      <h6>Booking Page in Progress.....</h6>
-    </div>
-  </div>
-</template>
-<script>
-import Navbar from "../components/Navbar.vue";
-
-export default {
-  components: {
-    Navbar,
-  },
-};
-</script>
-<style scoped>
-#main {
-  padding: 20px 20px;
-  transition: all 0.3s;
-  height: 100dvh;
-  background-color: #fdce5e17;
-}
-ul.generalsetting h6 {
-  font-size: 14px;
-  font-weight: bold;
-}
-</style>
-
-<!-- <template>
-  <div>
-    <Navbar />
-    <div id="main">
-      <div class="pagetitle d-flex justify-content-between px-2">
+      <div class="d-flex justify-content-between px-2">
         <div class="py-3">
           <ol class="breadcrumb mb-1">
             <li class="breadcrumb-item active text-uppercase fs-6">
-              Dashboard / <span class="color-fonts">Booking</span>
+              Dashboard / <span class="color-fonts">Custom TimeSheet</span>
             </li>
           </ol>
         </div>
@@ -102,25 +71,53 @@ ul.generalsetting h6 {
                     <table class="table candidateTable">
                       <thead>
                         <tr>
-                          <th scope="col">#Booking Code</th>
-                          <th scope="col">Candidates</th>
+                          <th>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" />
+                            </div>
+                          </th>
+                          <th scope="col">Code</th>
+                          <th scope="col">Name</th>
                           <th scope="col">Business Unit</th>
-                          <th scope="col">Job Title</th>
-                          <th scope="col">Shift Dates</th>
-                          <th scope="col">Booking By</th>
-                          <th scope="col">Booking Date</th>
-                          <th scope="col">Start</th>
-                          <th scope="col">End</th>
-                          <th scope="col">Break</th>
-                          <th scope="col">Duration</th>
-                          <th scope="col">Notes</th>
-                          <th scope="col">Mailed At</th>
-                          <th scope="col">Status</th>
+                          <th scope="col">Job</th>
+                          <th scope="col">Shift Date</th>
+                          <th scope="col">Start Time</th>
+                          <th scope="col">End Time</th>
+                          <th scope="col">Total Hours</th>
+                          <th scope="col">Client Rate</th>
+                          <th scope="col">Total Cost</th>
+                          <th scope="col">Paper TimeSheet</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr></tr>
+                        <tr v-for="data in getCustomDetail" :key="data.id">
+                          <td>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" />
+                            </div>
+                          </td>
+                          <td v-text="data.code"></td>
+                          <td v-text="data.name"></td>
+                          <td v-text="data.business_unit"></td>
+                          <td v-text="data.job"></td>
+                          <td v-text="data.shift_date"></td>
+                          <td v-text="data.start_time"></td>
+                          <td v-text="data.end_time"></td>
+                          <td v-text="data.total_hours"></td>
+                          <td v-text="data.client_rate"></td>
+                          <td v-text="data.total_cost"></td>
+                          <td v-text="data.paper_timesheet"></td>
+                          <td>
+                            <i
+                              type="button"
+                              class="btn btn-outline-success text-nowrap bi bi-pencil-square"
+                              data-bs-toggle="modal"
+                              data-bs-target="#editCustomSheet"
+                              data-bs-whatever="@mdo"
+                            ></i>
+                          </td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>
@@ -139,11 +136,13 @@ ul.generalsetting h6 {
         </div>
       </div>
     </div>
+    <EditCustomTimeSheet />
   </div>
 </template>
-<script >
+<script>
 import axios from "axios";
-import Navbar from "../components/Navbar.vue";
+import EditCustomTimeSheet from "@/components/modals/TimeSheet/EditCustomTimeSheet.vue";
+
 export default {
   data() {
     return {
@@ -151,9 +150,10 @@ export default {
       daysOfWeek: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
       startDate: null,
       endDate: null,
+      getCustomDetail: [],
     };
   },
-  components: { Navbar },
+  components: { EditCustomTimeSheet },
   computed: {
     // Function to get dates for the current week
     getWeekDates() {
@@ -197,14 +197,18 @@ export default {
       }
 
       // Save the values to localStorage
+      localStorage.setItem("currentView", this.currentView);
       localStorage.setItem("startDate", this.startDate.toISOString());
       localStorage.setItem("endDate", this.endDate.toISOString());
     },
     loadDateRangeFromLocalStorage() {
       // Load values from localStorage on component mount
+      const storedCurrentView = localStorage.getItem("currentView");
       const storedStartDate = localStorage.getItem("startDate");
       const storedEndDate = localStorage.getItem("endDate");
-
+      if (storedCurrentView) {
+        this.currentView = storedCurrentView;
+      }
       if (storedStartDate && storedEndDate) {
         this.startDate = new Date(storedStartDate);
         this.endDate = new Date(storedEndDate);
@@ -213,38 +217,16 @@ export default {
     formatDate(date) {
       return date.toLocaleDateString(); // You can customize the formatting based on your needs
     },
-    // async vacancyDeleteMethod(id) {
-    //   if (!window.confirm("Are you Sure ?")) {
-    //     return;
-    //   }
-    //   const token = localStorage.getItem("token");
-    //   await axios
-    //     .delete(`${VITE_API_URL}/vacancies/` + id, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => {
-    //       this.createVacancy();
-    //     });
-    //   // alert("Record Deleted ");
-    // },
-    // async createVacancy() {
-    //   const token = localStorage.getItem("token");
-    //   axios
-    //     .get(`${VITE_API_URL}/vacancies`, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => (this.getVacancyDetail = response.data));
-    // },
+
+    async createCustomSheetMethod() {
+      axios
+        .get(`${VITE_API_URL}/custom_timesheets`)
+        .then((response) => (this.getCustomDetail = response.data));
+    },
   },
 
   mounted() {
-    // this.createVacancy();
+    this.createCustomSheetMethod();
     this.loadDateRangeFromLocalStorage();
   },
 };
@@ -325,4 +307,4 @@ button.nav-link > li.nav-item {
 input::-webkit-input-placeholder {
   margin-left: 5px;
 }
-</style> -->
+</style>

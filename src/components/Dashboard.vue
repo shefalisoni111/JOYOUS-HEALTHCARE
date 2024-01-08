@@ -1,8 +1,8 @@
 <template></template>
 
-<script setup>
+<script >
 import Navbar from "../components/Navbar.vue";
 import Login from "../components/auth/login/Login.vue";
 </script>
 
-<style></style>
+<style scoped></style>

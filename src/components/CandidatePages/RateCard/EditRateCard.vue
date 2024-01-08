@@ -79,7 +79,7 @@
   </div>
 </template>
 
-<script>
+<script >
 import axios from "axios";
 
 export default {
@@ -105,9 +105,7 @@ export default {
   methods: {
     async fetchCandidateMethod(id) {
       try {
-        const response = await axios.get(
-          `https://logezy.onrender.com/rate_cards/${id}`
-        );
+        const response = await axios.get(`${VITE_API_URL}/rate_cards/${id}`);
 
         this.fetchCandidate = { ...this.fetchCandidate, ...response.data.data };
       } catch (error) {
@@ -117,7 +115,7 @@ export default {
     async updateCandidateMethod() {
       try {
         await axios.put(
-          `https://logezy.onrender.com/rate_cards/${this.fetchCandidate.id}`,
+          `${VITE_API_URL}/rate_cards/${this.fetchCandidate.id}`,
           {}
         );
 

@@ -2,7 +2,7 @@
   <div>
     <div class="container-fluid p-0">
       <div id="main">
-        <div class="pagetitle d-flex justify-content-between px-2">
+        <div class="d-flex justify-content-between px-2">
           <div class="py-3">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active text-uppercase fs-6">
@@ -28,7 +28,6 @@
                         <li
                           class="nav-item d-flex align-items-center gap-2"
                           role="presentation"
-                          
                         >
                           <button
                             a
@@ -47,9 +46,7 @@
                         </li>
                       </div>
                     </ul>
-                    <div
-                      class="pagetitle d-flex justify-content-end align-items-center"
-                    >
+                    <div class="d-flex justify-content-end align-items-center">
                       <div
                         class="d-flex align-items-center gap-2 justify-content-between"
                       >
@@ -88,7 +85,7 @@
     <AddClients />
   </div>
 </template>
-<script>
+<script >
 import AllClient from "../ClientsPages/AllClient.vue";
 import InActiveClient from "../ClientsPages/InActiveClient.vue";
 
@@ -203,10 +200,6 @@ table th {
 button.nav-link > li.nav-item {
   border-bottom: 2px solid red; /* Replace with your desired border color */
   padding-bottom: 5px; /* Optional: Add padding for spacing */
-}
-
-button.nav-link.active > li.nav-item {
-  /* Additional styles for the active state if needed */
 }
 
 .searchbox {

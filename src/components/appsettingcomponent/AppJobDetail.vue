@@ -161,14 +161,14 @@ export default {
       if (!window.confirm("Are you Sure ?")) {
         return;
       }
-      axios.put(`https://logezy.onrender.com/inactivate_job/` + id).then((response) => {
+      axios.put(`${VITE_API_URL}/inactivate_job/` + id).then((response) => {
         this.getJobData();
       });
       alert("Record Inactive ");
     },
     async getJobData() {
       await axios
-        .get("https://logezy.onrender.com/active_job_list")
+        .get(`${VITE_API_URL}/active_job_list`)
         .then((response) => {
           this.getJobs = response.data.data;
           // this.getJobData();
@@ -183,7 +183,7 @@ export default {
     },
     async getInactiveJobData() {
       await axios
-        .get("https://logezy.onrender.com/inactive_job_list")
+        .get(`${VITE_API_URL}/inactive_job_list`)
         .then((response) => {
           this.getInActiveJobs = response.data.data;
           // this.getInactiveJobData();

@@ -124,7 +124,7 @@
   </div>
 </template>
 
-<script>
+<script >
 import axios from "axios";
 
 import ActiveLocation from "../ClientsPages/ClientProfileDetails/ActiveLocation.vue";
@@ -200,7 +200,7 @@ export default {
     async getClientMethod() {
       try {
         const response = await axios.get(
-          `https://logezy.onrender.com/clients/${this.$route.params.id}`
+          `${VITE_API_URL}/clients/${this.$route.params.id}`
         );
 
         this.getClientDatas = response.data.data;

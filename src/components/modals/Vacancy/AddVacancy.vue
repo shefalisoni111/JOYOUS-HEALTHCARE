@@ -287,7 +287,7 @@ export default {
         };
         try {
           const token = localStorage.getItem("token");
-          const response = await fetch("https://logezy.onrender.com/vacancies", {
+          const response = await fetch(`${VITE_API_URL}/vacancies`, {
             method: "POST",
             headers: {
               "content-type": "application/json",
@@ -305,7 +305,7 @@ export default {
     },
     async getJobTitleMethod() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/active_job_list");
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
         this.options = response.data.data;
       } catch (error) {
         if (error.response) {
@@ -317,7 +317,7 @@ export default {
     },
     async getBusinessUnitMethod() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/business_units");
+        const response = await axios.get(`${VITE_API_URL}/business_units`);
         this.businessUnit = response.data;
       } catch (error) {
         if (error.response) {
@@ -329,7 +329,7 @@ export default {
     },
     async getClientMethod() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/clients");
+        const response = await axios.get(`${VITE_API_URL}/clients`);
         this.clientData = response.data.data;
       } catch (error) {
         if (error.response) {
@@ -341,7 +341,7 @@ export default {
     },
     async getTimeShift() {
       await axios
-        .get("https://logezy.onrender.com/shifts")
+        .get(`${VITE_API_URL}/shifts`)
         .then((response) => (this.shiftsTime = response.data));
     },
     validationSelectedFormate(newValue) {

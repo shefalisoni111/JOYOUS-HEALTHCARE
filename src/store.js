@@ -7,8 +7,8 @@ export default createStore({
     selectedAssignedItemId: null,
     selectedRejectItemId:null,
     selectedAllItemId:null,
-    selectedPublishItemId:null
-   
+    selectedPublishItemId:null,
+  
   },
   mutations: {
     setSelectedAppliedItemId(state, itemId) {
@@ -31,8 +31,7 @@ export default createStore({
   
   },
   actions: {
-   
-   
+    
   },
  
 });

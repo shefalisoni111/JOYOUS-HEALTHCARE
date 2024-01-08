@@ -125,8 +125,7 @@
                                 <li class="d-flex justify-content-between">
                                   <span>Deby</span>
                                   <span
-                                    ><i class="bi bi-ban"></i
-                                    ><i class="bi bi-trash"></i
+                                    ><i class="bi bi-ban"></i><i class="bi bi-trash"></i
                                   ></span>
                                 </li>
                               </ul>
@@ -138,8 +137,7 @@
                                 <li class="d-flex justify-content-between">
                                   <span>ID</span>
                                   <span
-                                    ><i class="bi bi-ban"></i
-                                    ><i class="bi bi-trash"></i
+                                    ><i class="bi bi-ban"></i><i class="bi bi-trash"></i
                                   ></span>
                                 </li>
                               </ul>
@@ -151,8 +149,7 @@
                                 <li class="d-flex justify-content-between">
                                   <span>Address Proof</span>
                                   <span
-                                    ><i class="bi bi-ban"></i
-                                    ><i class="bi bi-trash"></i
+                                    ><i class="bi bi-ban"></i><i class="bi bi-trash"></i
                                   ></span>
                                 </li>
                               </ul>
@@ -164,8 +161,7 @@
                                 <li class="d-flex justify-content-between">
                                   <span>Photo ID</span>
                                   <span
-                                    ><i class="bi bi-ban"></i
-                                    ><i class="bi bi-trash"></i
+                                    ><i class="bi bi-ban"></i><i class="bi bi-trash"></i
                                   ></span>
                                 </li>
                               </ul>
@@ -180,11 +176,10 @@
                         aria-labelledby="profile-tab"
                       >
                         <p>
-                          Lorem ipsum dolor sit, amet consectetur adipisicing
-                          elit. Dolor, voluptate sequi cumque culpa quia harum
-                          enim necessitatibus odit magnam adipisci optio id
-                          omnis at eius beatae fugiat exercitationem rerum
-                          accusantium.
+                          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolor,
+                          voluptate sequi cumque culpa quia harum enim necessitatibus odit
+                          magnam adipisci optio id omnis at eius beatae fugiat
+                          exercitationem rerum accusantium.
                         </p>
                       </div>
                       <div
@@ -194,11 +189,10 @@
                         aria-labelledby="contact-tab"
                       >
                         <p>
-                          Lorem, ipsum dolor sit amet consectetur adipisicing
-                          elit. Placeat autem debitis quaerat error at doloribus
-                          quisquam tenetur, quos excepturi sit id aut laborum
-                          dolores modi. Nemo veritatis distinctio consectetur
-                          accusamus!
+                          Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                          Placeat autem debitis quaerat error at doloribus quisquam
+                          tenetur, quos excepturi sit id aut laborum dolores modi. Nemo
+                          veritatis distinctio consectetur accusamus!
                         </p>
                       </div>
                     </div>
@@ -212,10 +206,9 @@
                   tabindex="0"
                 >
                   <p>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                    Quasi veniam cum, optio similique esse soluta! Fuga dicta,
-                    eius aut ipsum ipsam ducimus vero deleniti odit debitis
-                    corporis, nemo vel possimus.
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi veniam
+                    cum, optio similique esse soluta! Fuga dicta, eius aut ipsum ipsam
+                    ducimus vero deleniti odit debitis corporis, nemo vel possimus.
                   </p>
                 </div>
               </div>
@@ -227,7 +220,7 @@
   </div>
 </template>
 
-<script>
+<script >
 import { onMounted } from "vue";
 
 export default {
@@ -305,7 +298,6 @@ table thead th {
   background-color: #f9944b !important;
 }
 .btn-primary {
-
   border: none;
 }
 </style>

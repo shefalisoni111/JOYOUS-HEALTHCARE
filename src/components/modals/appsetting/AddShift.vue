@@ -90,10 +90,10 @@ export default {
     const updateShift = async () => {
       try {
         for (const shift of shifts.value) {
-          const response = await axios.put(
-            `https://logezy.onrender.com/shifts/${shift.id}`,
-            { start_time: shift.start_time, end_time: shift.end_time }
-          );
+          const response = await axios.put(`${VITE_API_URL}/shifts/${shift.id}`, {
+            start_time: shift.start_time,
+            end_time: shift.end_time,
+          });
 
           // Find the index of the updated shift in the local array
           const updatedIndex = shifts.value.findIndex((s) => s.id === shift.id);
@@ -112,7 +112,7 @@ export default {
 
     const fetchShifts = async () => {
       try {
-        const response = await axios.get("https://logezy.onrender.com/shifts");
+        const response = await axios.get(`${VITE_API_URL}/shifts`);
         shifts.value = response.data || [];
       } catch (error) {
         console.error("Error fetching shifts:", error);

@@ -8,21 +8,11 @@
           <div class="container">
             <div class="row">
               <div class="col-lg-10 col-xl-7 mx-auto">
-                <img
-                  src="../logo.png"
-                  class="img-fluid mb-2"
-                  alt="RecPal"
-                  width="150"
-                />
+                <img src="../logo.png" class="img-fluid mb-2" alt="RecPal" width="150" />
                 <div class="mb-4">
                   <h4 class="mb-2 fw-bold">Login</h4>
                   <span>Welcome Back! Login to Access your Account</span>
                 </div>
-                <!-- <div class="error" v-if="msg.error">
-                  <router-link to="/signup">SignUp</router-link>
-                  <p class="text-danger">{{ msg.error }}</p>
-                </div> -->
-
                 <form @submit.prevent="login()" class="loginform">
                   <div class="mb-3">
                     <input
@@ -101,17 +91,13 @@ export default {
       };
 
       try {
-        const response = await fetch(
-          "https://logezy.onrender.com/merchant_login",
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          }
-        );
+        const response = await fetch(`${VITE_API_URL}/merchant_login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
 
         const jsonData = await response.json();
 
@@ -187,5 +173,20 @@ export default {
 
 .btn-primary {
   border: none;
+}
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  color: #ff5f30;
+  background: transparent;
+  border-bottom: 4px solid #ff5f30;
+  border-radius: 0px;
+  letter-spacing: 1px;
+  font-size: 19px;
+}
+
+.nav-link {
+  color: black;
+  letter-spacing: 1px;
+  font-size: 19px;
 }
 </style>

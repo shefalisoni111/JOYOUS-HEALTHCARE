@@ -121,16 +121,14 @@ export default {
       if (!window.confirm("Are you Sure ?")) {
         return;
       }
-      await axios
-        .delete(`https://logezy.onrender.com/rate_cards/` + id)
-        .then((response) => {
-          this.showRateCardMethod();
-        });
+      await axios.delete(`${VITE_API_URL}/rate_cards/` + id).then((response) => {
+        this.showRateCardMethod();
+      });
       alert("Record Deleted ");
     },
     async showRateCardMethod() {
       await axios
-        .get("https://logezy.onrender.com/rate_cards")
+        .get(`${VITE_API_URL}/rate_cards`)
         .then((response) => (this.getRateCard = response.data))
         .catch((error) => {
           if (error.response) {

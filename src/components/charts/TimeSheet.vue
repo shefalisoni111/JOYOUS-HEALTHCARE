@@ -2,7 +2,7 @@
   <Doughnut id="my-chart-id" :options="chartOptions" :data="chartData" />
 </template>
 
-<script>
+<script >
 import { Doughnut } from "vue-chartjs";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -92,7 +92,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #my-chart-id::after {
   content: "hi";
 }

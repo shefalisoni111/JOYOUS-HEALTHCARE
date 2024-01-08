@@ -41,7 +41,7 @@
   </div>
 </template>
 
-<script>
+<script >
 import axios from "axios";
 export default {
   name: "Notes",
@@ -57,7 +57,7 @@ export default {
       }
       await axios
         .delete(
-          `https://logezy.onrender.com/candidates/${this.$route.params.id}/candidate_notes/` +
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes/` +
             id
         )
         .then((response) => {
@@ -68,7 +68,7 @@ export default {
     async getNotesMethod() {
       await axios
         .get(
-          `https://logezy.onrender.com/candidates/${this.$route.params.id}/candidate_notes_list`
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes_list`
         )
         .then((response) => (this.getNotes = response.data))
         .catch((error) => {

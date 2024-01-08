@@ -112,17 +112,14 @@ export default {
           job_id: this.job_id,
         };
         try {
-          const response = await fetch(
-            "https://logezy.onrender.com/document_categories",
-            {
-              method: "POST",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(data),
-            }
-          );
+          const response = await fetch(`${VITE_API_URL}/document_categories`, {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
           if (data) {
             location.reload();
           }
@@ -131,7 +128,7 @@ export default {
     },
     async getPositionMethod() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/active_job_list");
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
         this.options = response.data.data;
       } catch (error) {
         if (error.response) {

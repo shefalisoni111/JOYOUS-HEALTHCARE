@@ -25,14 +25,15 @@
             <tr v-for="getdata in getVacancyDetail" :key="getdata.id">
               <td v-text="getdata.ref_code"></td>
               <td>
-                <router-link
+                <!-- <router-link
                   class="text-capitalize text-black text-decoration-underline"
                   :to="{
                     name: 'SingleClientProfile',
                     params: { id: getdata.client_id },
                   }"
                   >{{ getdata.client }}</router-link
-                >
+                > -->
+                {{ getdata.client }}
               </td>
               <td v-text="getdata.business_unit"></td>
               <td v-text="getdata.job_title"></td>
@@ -189,7 +190,7 @@ export default {
       }
       const token = localStorage.getItem("token");
       await axios
-        .delete(`https://logezy.onrender.com/vacancies/` + id, {
+        .delete(`${VITE_API_URL}/vacancies/` + id, {
           headers: {
             "content-type": "application/json",
             Authorization: "bearer " + token,
@@ -204,7 +205,7 @@ export default {
     async createVacancy() {
       const token = localStorage.getItem("token");
       axios
-        .get("https://logezy.onrender.com/vacancies", {
+        .get(`${VITE_API_URL}/vacancies`, {
           headers: {
             "content-type": "application/json",
             Authorization: "bearer " + token,
@@ -227,7 +228,9 @@ export default {
 #main {
   transition: all 0.3s;
   height: 100dvh;
+  background-color: #fdce5e17;
 }
+
 .main-content {
   transition: all 0.3s;
 }

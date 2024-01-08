@@ -129,9 +129,7 @@
               </tbody>
               <tbody v-else>
                 <tr>
-                  <td colspan="8" class="text-danger text-center">
-                    Not Match Found !!
-                  </td>
+                  <td colspan="8" class="text-danger text-center">Not Match Found !!</td>
                 </tr>
               </tbody>
             </table>
@@ -191,7 +189,7 @@ export default {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.post(
-          `https://logezy.onrender.com/candidate/search_candidate`,
+          `${VITE_API_URL}/candidate/search_candidate`,
           {
             // Your search parameters in the request body
             first_name: this.searchQuery,
@@ -206,7 +204,7 @@ export default {
 
     async getActiveCAndidateMethod() {
       await axios
-        .get("https://logezy.onrender.com/approve_and_activated_candidates")
+        .get(`${VITE_API_URL}/approve_and_activated_candidates`)
         .then((response) => (this.activeCandidate = response.data))
         .catch((error) => {
           if (error.response) {

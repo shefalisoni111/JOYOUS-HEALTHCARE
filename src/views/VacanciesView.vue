@@ -6,7 +6,7 @@
     <router-view />
   </div>
 </template>
-<script>
+<script >
 import Navbar from "../components/Navbar.vue";
 
 import AddVacancy from "../components/modals/Vacancy/AddVacancy.vue";
@@ -88,10 +88,6 @@ table th {
 button.nav-link > li.nav-item {
   border-bottom: 2px solid red; /* Replace with your desired border color */
   padding-bottom: 5px; /* Optional: Add padding for spacing */
-}
-
-button.nav-link.active > li.nav-item {
-  /* Additional styles for the active state if needed */
 }
 
 .form-select {

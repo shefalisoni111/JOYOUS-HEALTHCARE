@@ -4,34 +4,17 @@
     <div id="main">
       <h6>Client Page in Progress.....</h6>
     </div>
-  </div>
-</template>
-<script setup>
-import Navbar from "../components/Navbar.vue";
-</script>
-<style scoped>
-#main {
-  padding: 20px 20px;
-  transition: all 0.3s;
-  height: 100dvh;
-  background-color: #fdce5e17;
-}
-</style>
 
-<!-- <template>
-  <div>
-    <Navbar />
+    <!-- <router-view />
 
-    <router-view />
-
-    <AddClients />
+    <AddClients /> -->
   </div>
 </template>
 <script>
 import Navbar from "../components/Navbar.vue";
-import ClientsProfileView from "../components/ClientsPages/ClientsProfileView.vue";
-import EditClient from "../components/ClientsPages/EditClient.vue";
-import AddClients from "../components/modals/CandidatePage/AddClients.vue";
+// import ClientsProfileView from "../components/ClientsPages/ClientsProfileView.vue";
+// import EditClient from "../components/ClientsPages/EditClient.vue";
+// import AddClients from "../components/modals/CandidatePage/AddClients.vue";
 
 export default {
   data() {
@@ -39,9 +22,9 @@ export default {
   },
   components: {
     Navbar,
-    ClientsProfileView,
-    EditClient,
-    AddClients,
+    // ClientsProfileView,
+    // EditClient,
+    // AddClients,
   },
 
   methods: {},
@@ -51,8 +34,10 @@ export default {
 
 <style scoped>
 #main {
+  padding: 20px 20px;
   transition: all 0.3s;
   height: 100dvh;
+  background-color: #fdce5e17;
 }
 .main-content {
   transition: all 0.3s;
@@ -123,10 +108,6 @@ table th {
 button.nav-link > li.nav-item {
   border-bottom: 2px solid red; /* Replace with your desired border color */
   padding-bottom: 5px; /* Optional: Add padding for spacing */
-}
-
-button.nav-link.active > li.nav-item {
-  /* Additional styles for the active state if needed */
 }
 
 .searchbox {
@@ -203,4 +184,4 @@ a {
   transform: translateX(15px);
   background-color: #ff9800;
 }
-</style> -->
+</style>

@@ -1,42 +1,11 @@
 <template>
   <div>
-    <Navbar />
-    <div id="main">
-      <h6>Booking Page in Progress.....</h6>
-    </div>
-  </div>
-</template>
-<script>
-import Navbar from "../components/Navbar.vue";
-
-export default {
-  components: {
-    Navbar,
-  },
-};
-</script>
-<style scoped>
-#main {
-  padding: 20px 20px;
-  transition: all 0.3s;
-  height: 100dvh;
-  background-color: #fdce5e17;
-}
-ul.generalsetting h6 {
-  font-size: 14px;
-  font-weight: bold;
-}
-</style>
-
-<!-- <template>
-  <div>
-    <Navbar />
     <div id="main">
       <div class="pagetitle d-flex justify-content-between px-2">
         <div class="py-3">
           <ol class="breadcrumb mb-1">
             <li class="breadcrumb-item active text-uppercase fs-6">
-              Dashboard / <span class="color-fonts">Booking</span>
+              Dashboard / <span class="color-fonts">Signed Timesheet</span>
             </li>
           </ol>
         </div>
@@ -102,20 +71,17 @@ ul.generalsetting h6 {
                     <table class="table candidateTable">
                       <thead>
                         <tr>
-                          <th scope="col">#Booking Code</th>
-                          <th scope="col">Candidates</th>
+                          <th scope="col">Code</th>
+                          <th scope="col">Name</th>
                           <th scope="col">Business Unit</th>
-                          <th scope="col">Job Title</th>
-                          <th scope="col">Shift Dates</th>
-                          <th scope="col">Booking By</th>
-                          <th scope="col">Booking Date</th>
-                          <th scope="col">Start</th>
-                          <th scope="col">End</th>
-                          <th scope="col">Break</th>
-                          <th scope="col">Duration</th>
-                          <th scope="col">Notes</th>
-                          <th scope="col">Mailed At</th>
-                          <th scope="col">Status</th>
+                          <th scope="col">Job</th>
+                          <th scope="col">Shift Date</th>
+                          <th scope="col">Start Time</th>
+                          <th scope="col">End Time</th>
+                          <th scope="col">Total Hours</th>
+                          <th scope="col">Client Rate</th>
+                          <th scope="col">Total Cost</th>
+                          <th scope="col">Paper Timesheet</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
@@ -141,9 +107,9 @@ ul.generalsetting h6 {
     </div>
   </div>
 </template>
-<script >
+<script>
 import axios from "axios";
-import Navbar from "../components/Navbar.vue";
+
 export default {
   data() {
     return {
@@ -153,7 +119,7 @@ export default {
       endDate: null,
     };
   },
-  components: { Navbar },
+  components: {},
   computed: {
     // Function to get dates for the current week
     getWeekDates() {
@@ -197,14 +163,18 @@ export default {
       }
 
       // Save the values to localStorage
+      localStorage.setItem("currentView", this.currentView);
       localStorage.setItem("startDate", this.startDate.toISOString());
       localStorage.setItem("endDate", this.endDate.toISOString());
     },
     loadDateRangeFromLocalStorage() {
       // Load values from localStorage on component mount
+      const storedCurrentView = localStorage.getItem("currentView");
       const storedStartDate = localStorage.getItem("startDate");
       const storedEndDate = localStorage.getItem("endDate");
-
+      if (storedCurrentView) {
+        this.currentView = storedCurrentView;
+      }
       if (storedStartDate && storedEndDate) {
         this.startDate = new Date(storedStartDate);
         this.endDate = new Date(storedEndDate);
@@ -325,4 +295,4 @@ button.nav-link > li.nav-item {
 input::-webkit-input-placeholder {
   margin-left: 5px;
 }
-</style> -->
+</style>

@@ -23,9 +23,7 @@
                   >
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize">jobs</h6>
-                      <p class="text-capitalize mb-0">
-                        Add jobs, positions & roles
-                      </p>
+                      <p class="text-capitalize mb-0">Add jobs, positions & roles</p>
                     </div>
                   </router-link>
                 </li>
@@ -56,10 +54,7 @@
                 </li>
                 <li class="list-items d-flex mt-3">
                   <i class="bi bi-clock rounded-circle"></i>
-                  <router-link
-                    to="/appsetting/shift"
-                    class="text-decoration-none"
-                  >
+                  <router-link to="/appsetting/shift" class="text-decoration-none">
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize">shift</h6>
                       <p class="text-capitalize mb-0">shift times</p>
@@ -109,9 +104,7 @@
                     class="text-decoration-none"
                   >
                     <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize">
-                        Candidate Detail Section Field
-                      </h6>
+                      <h6 class="mb-0 text-capitalize">Candidate Detail Section Field</h6>
                       <p class="text-capitalize mb-0">
                         Add Candidate Detail Section Field
                       </p>
@@ -131,9 +124,7 @@
                   >
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize">documents categories</h6>
-                      <p class="text-capitalize mb-0">
-                        create & update categories
-                      </p>
+                      <p class="text-capitalize mb-0">create & update categories</p>
                     </div>
                   </router-link>
                 </li>
@@ -150,7 +141,7 @@
     </div>
   </div>
 </template>
-<script setup>
+<script>
 import Navbar from "../components/Navbar.vue";
 import Sidebar from "../components/Sidebar.vue";
 import AppJobDetail from "../components/appsettingcomponent/AppJobDetail.vue";
@@ -158,6 +149,17 @@ import AppJobDetail from "../components/appsettingcomponent/AppJobDetail.vue";
 import CandidateStatus from "../components/appsettingcomponent/CandidateStatus.vue";
 import EmploymentTypeDetails from "../components/appsettingcomponent/EmploymentTypeDetails.vue";
 import Shift from "../components/appsettingcomponent/Shift.vue";
+
+export default {
+  components: {
+    Navbar,
+    Sidebar,
+    AppJobDetail,
+    CandidateStatus,
+    EmploymentTypeDetails,
+    Shift,
+  },
+};
 </script>
 
 <style scoped>

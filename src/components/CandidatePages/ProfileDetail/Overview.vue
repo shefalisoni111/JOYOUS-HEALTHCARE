@@ -414,7 +414,7 @@
   </div>
 </template>
 
-<script>
+<script >
 import axios from "axios";
 import WorkExperience from "../../modals/CandidatePage/OverView/WorkExperience.vue";
 import EducationAdd from "../../modals/CandidatePage/OverView/EducationAdd.vue";
@@ -447,7 +447,7 @@ export default {
     async getCandidateMethod() {
       try {
         const response = await axios.get(
-          `https://logezy.onrender.com/candidates/${this.$route.params.id}`
+          `${VITE_API_URL}/candidates/${this.$route.params.id}`
         );
 
         this.getCandidatesDataInOverview = response.data.data;
@@ -464,7 +464,7 @@ export default {
     async getCandidateWorkExperienceMethod() {
       try {
         const response = await axios.get(
-          `https://logezy.onrender.com/candidates/${this.$route.params.id}/candidate_work_experiences`
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_work_experiences`
         );
 
         this.getWorkExpData = response.data;
@@ -481,7 +481,7 @@ export default {
     async getCandidateEducationMethod() {
       try {
         const response = await axios.get(
-          `https://logezy.onrender.com/candidates/${this.$route.params.id}/candidates_all_educations`
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/candidates_all_educations`
         );
 
         this.getEducationExpData = response.data;
@@ -498,7 +498,7 @@ export default {
     async getCandidateNextToKineMethod() {
       try {
         const response = await axios.get(
-          `https://logezy.onrender.com/candidates/${this.$route.params.id}/next_of_kins`
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/next_of_kins`
         );
 
         this.getNextToKin = response.data;
@@ -519,7 +519,7 @@ export default {
       const token = localStorage.getItem("token");
       await axios
         .delete(
-          `https://logezy.onrender.com/candidates/${this.$route.params.id}/next_of_kins/` +
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/next_of_kins/` +
             id,
           {
             headers: {

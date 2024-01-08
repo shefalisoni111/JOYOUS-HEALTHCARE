@@ -204,7 +204,7 @@
   </div>
 </template>
 
-<script>
+<script >
 import axios from "axios";
 export default {
   name: "PublishedVacancy",
@@ -229,7 +229,7 @@ export default {
       if (this.$store.state.selectedPublishItemId) {
         try {
           const response = await axios.put(
-            `https://logezy.onrender.com/send_notification/${id}`,
+            `${VITE_API_URL}/send_notification/${id}`,
             {
               notification_type: this.notification_type ? "email_notification" : null,
             },
@@ -265,7 +265,7 @@ export default {
     async getVacancyDataMethod() {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(`https://logezy.onrender.com/vacancies`, {
+        const response = await axios.get(`${VITE_API_URL}/vacancies`, {
           headers: {
             "content-type": "application/json",
             Authorization: "bearer " + token,

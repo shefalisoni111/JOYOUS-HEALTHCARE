@@ -140,11 +140,10 @@
                       aria-labelledby="profile_candidate_detail_section"
                     >
                       <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Blanditiis voluptatibus placeat, quo ipsa velit ad
-                        voluptates dolore reprehenderit expedita. Rerum quasi
-                        dolorum mollitia corporis quos exercitationem
-                        repudiandae perspiciatis, non libero?
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                        Blanditiis voluptatibus placeat, quo ipsa velit ad voluptates
+                        dolore reprehenderit expedita. Rerum quasi dolorum mollitia
+                        corporis quos exercitationem repudiandae perspiciatis, non libero?
                       </p>
                     </div>
                     <div
@@ -154,11 +153,10 @@
                       aria-labelledby="profile_candidate_detail_section"
                     >
                       <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing
-                        elit. Perferendis dolor aliquam sit unde veritatis ullam
-                        accusantium modi sequi, maxime, nemo possimus
-                        consequuntur, totam fugit reiciendis vitae nulla.
-                        Quibusdam, quas sed.
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                        Perferendis dolor aliquam sit unde veritatis ullam accusantium
+                        modi sequi, maxime, nemo possimus consequuntur, totam fugit
+                        reiciendis vitae nulla. Quibusdam, quas sed.
                       </p>
                     </div>
                   </div>
@@ -171,10 +169,9 @@
                   tabindex="0"
                 >
                   <p>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                    Quasi veniam cum, optio similique esse soluta! Fuga dicta,
-                    eius aut ipsum ipsam ducimus vero deleniti odit debitis
-                    corporis, nemo vel possimus.
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi veniam
+                    cum, optio similique esse soluta! Fuga dicta, eius aut ipsum ipsam
+                    ducimus vero deleniti odit debitis corporis, nemo vel possimus.
                   </p>
                 </div>
               </div>
@@ -186,7 +183,7 @@
   </div>
 </template>
 
-<script>
+<script >
 import { onMounted } from "vue";
 
 export default {

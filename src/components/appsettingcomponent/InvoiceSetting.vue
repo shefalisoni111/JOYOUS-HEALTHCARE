@@ -22,9 +22,7 @@
                   >
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize">invoice setting</h6>
-                      <p class="text-capitalize mb-0">
-                        check invoice dues date
-                      </p>
+                      <p class="text-capitalize mb-0">check invoice dues date</p>
                     </div>
                   </router-link>
                 </li>
@@ -116,11 +114,7 @@
                       aria-labelledby="shift"
                     >
                       <div class="p-4">
-                        <ul
-                          class="nav nav-pills mb-3"
-                          id="pills-tab"
-                          role="tablist"
-                        >
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                           <li class="nav-item" role="presentation">
                             <button
                               class="nav-link active"
@@ -228,11 +222,10 @@
                       aria-labelledby="candidate"
                     >
                       <p class="p-4">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Eaque dolore quasi architecto magni aperiam totam.
-                        Quibusdam magnam eaque possimus ipsum. Necessitatibus
-                        molestias rerum architecto ipsam quis labore quod quo
-                        sint?
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
+                        dolore quasi architecto magni aperiam totam. Quibusdam magnam
+                        eaque possimus ipsum. Necessitatibus molestias rerum architecto
+                        ipsam quis labore quod quo sint?
                       </p>
                     </div>
                     <div
@@ -242,11 +235,10 @@
                       aria-labelledby="business-unit"
                     >
                       <p class="p-4">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Eaque dolore quasi architecto magni aperiam totam.
-                        Quibusdam magnam eaque possimus ipsum. Necessitatibus
-                        molestias rerum architecto ipsam quis labore quod quo
-                        sint?
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
+                        dolore quasi architecto magni aperiam totam. Quibusdam magnam
+                        eaque possimus ipsum. Necessitatibus molestias rerum architecto
+                        ipsam quis labore quod quo sint?
                       </p>
                     </div>
                     <div
@@ -256,11 +248,10 @@
                       aria-labelledby=" reminders"
                     >
                       <p class="p-4">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Eaque dolore quasi architecto magni aperiam totam.
-                        Quibusdam magnam eaque possimus ipsum. Necessitatibus
-                        molestias rerum architecto ipsam quis labore quod quo
-                        sint?
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
+                        dolore quasi architecto magni aperiam totam. Quibusdam magnam
+                        eaque possimus ipsum. Necessitatibus molestias rerum architecto
+                        ipsam quis labore quod quo sint?
                       </p>
                     </div>
                   </div>
@@ -274,7 +265,7 @@
   </div>
 </template>
 
-<script setup>
+<script >
 import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
 import TextFormator from "../textformator/TextFormator.vue";

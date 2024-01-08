@@ -119,10 +119,10 @@
                 aria-labelledby="assignshift"
               >
                 <p class="p-4">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-                  dolore quasi architecto magni aperiam totam. Quibusdam magnam
-                  eaque possimus ipsum. Necessitatibus molestias rerum
-                  architecto ipsam quis labore quod quo sint?
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque dolore
+                  quasi architecto magni aperiam totam. Quibusdam magnam eaque possimus
+                  ipsum. Necessitatibus molestias rerum architecto ipsam quis labore quod
+                  quo sint?
                 </p>
               </div>
               <div
@@ -132,10 +132,10 @@
                 aria-labelledby="cancleshift"
               >
                 <p class="p-4">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-                  dolore quasi architecto magni aperiam totam. Quibusdam magnam
-                  eaque possimus ipsum. Necessitatibus molestias rerum
-                  architecto ipsam quis labore quod quo sint?
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque dolore
+                  quasi architecto magni aperiam totam. Quibusdam magnam eaque possimus
+                  ipsum. Necessitatibus molestias rerum architecto ipsam quis labore quod
+                  quo sint?
                 </p>
               </div>
               <div
@@ -205,7 +205,7 @@
   </div>
 </template>
 
-<script setup>
+<script >
 // import TextFormator from "textformator/TextFormator.vue";
 </script>
 

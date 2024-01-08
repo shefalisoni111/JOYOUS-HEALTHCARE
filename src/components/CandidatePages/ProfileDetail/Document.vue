@@ -290,7 +290,7 @@ export default {
 
         try {
           const response = await fetch(
-            "https://logezy.onrender.com/admin_upload_candidate_document",
+            `${VITE_API_URL}/admin_upload_candidate_document`,
             {
               method: "POST",
               headers: {
@@ -341,7 +341,7 @@ export default {
       if (!window.confirm("Are you Sure ?")) {
         return;
       }
-      axios.delete("https://logezy.onrender.com/documents/" + id).then((response) => {
+      axios.delete(`${VITE_API_URL}/documents/` + id).then((response) => {
         this.getDocumentCategories();
       });
       alert("Record Deleted ");
@@ -349,7 +349,7 @@ export default {
 
     async getDocumentCategories() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/documents");
+        const response = await axios.get(`${VITE_API_URL}/documents`);
         this.getDocument = response.data;
 
         this.getDocument.forEach((document) => {
@@ -361,9 +361,7 @@ export default {
     },
     async getDocCAtegories() {
       try {
-        const response = await axios.get(
-          "https://logezy.onrender.com/document_categories"
-        );
+        const response = await axios.get(`${VITE_API_URL}/document_categories`);
 
         this.getCategory = response.data;
       } catch (error) {

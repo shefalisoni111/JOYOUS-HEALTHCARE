@@ -18,8 +18,8 @@
         <tbody>
           <tr v-for="client in getClientDetail" :key="client.id">
             <td v-text="client.ref_code"></td>
-            <!-- <td>
-              <router-link
+            <td>
+              <!-- <router-link
                 class="text-capitalize"
                 :to="{
                   name: 'SingleClientProfile',
@@ -27,8 +27,9 @@
                 }"
               >
                 {{ client.first_name }}
-              </router-link>
-            </td> -->
+              </router-link> -->
+              {{ client.first_name }}
+            </td>
 
             <td v-text="client.address"></td>
 
@@ -46,7 +47,7 @@
                 <div class="slider round"></div>
               </label>
             </td>
-            <!-- <td class="cursor-pointer">
+            <td class="cursor-pointer">
               <router-link
                 :to="{
                   name: 'EditClient',
@@ -72,7 +73,7 @@
               >
                 <i class="bi bi-eye"></i>
               </router-link>
-            </td> -->
+            </td>
           </tr>
         </tbody>
       </table>
@@ -99,14 +100,14 @@ export default {
       if (!window.confirm("Are you Sure ?")) {
         return;
       }
-      await axios.delete(`https://logezy.onrender.com/clients/` + id).then((response) => {
+      await axios.delete(`${VITE_API_URL}/clients/` + id).then((response) => {
         this.createdClient();
       });
       // alert("Record Deleted ");
     },
     async createdClient() {
       await axios
-        .get("https://logezy.onrender.com/clients")
+        .get(`${VITE_API_URL}/clients`)
 
         .then((response) => (this.getClientDetail = response.data.data));
     },
@@ -198,10 +199,6 @@ table th {
 button.nav-link > li.nav-item {
   border-bottom: 2px solid red; /* Replace with your desired border color */
   padding-bottom: 5px; /* Optional: Add padding for spacing */
-}
-
-button.nav-link.active > li.nav-item {
-  /* Additional styles for the active state if needed */
 }
 
 .searchbox {

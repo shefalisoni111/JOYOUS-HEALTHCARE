@@ -78,7 +78,7 @@
   </div>
 </template>
 
-<script>
+<script >
 import axios from "axios";
 
 export default {
@@ -102,7 +102,7 @@ export default {
   methods: {
     async fetchClientsMethod(id) {
       try {
-        const response = await axios.get(`https://logezy.onrender.com/clients/${id}`);
+        const response = await axios.get(`${VITE_API_URL}/clients/${id}`);
 
         this.fetchClients = { ...this.fetchClients, ...response.data.data };
       } catch (error) {
@@ -112,7 +112,7 @@ export default {
     async updateClientMethod() {
       try {
         await axios.put(
-          `https://logezy.onrender.com/clients/${this.fetchClients.id}`,
+          `${VITE_API_URL}/clients/${this.fetchClients.id}`,
           this.fetchClients
         );
 

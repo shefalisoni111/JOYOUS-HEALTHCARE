@@ -1,12 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="addClients"
-      aria-labelledby="addClients"
-      tabindex="-1"
-    >
+    <div class="modal fade" id="addClients" aria-labelledby="addClients" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -76,11 +71,7 @@
                     <label class="form-label">password</label>
                   </div>
                   <div class="col-8">
-                    <input
-                      type="password"
-                      class="form-control"
-                      v-model="password"
-                    />
+                    <input type="password" class="form-control" v-model="password" />
                   </div>
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
@@ -200,9 +191,7 @@ export default {
       this.passwordsMatch = this.password === this.confirm_password;
 
       // Validate phone number
-      this.validatePhoneNumber = this.validatePhoneNumberFormat(
-        this.phone_number
-      );
+      this.validatePhoneNumber = this.validatePhoneNumberFormat(this.phone_number);
 
       // Check if all validations pass
       if (
@@ -221,7 +210,7 @@ export default {
           confirm_password: this.confirm_password,
         };
         try {
-          const response = await fetch("https://logezy.onrender.com/clients", {
+          const response = await fetch(`${VITE_API_URL}/clients`, {
             method: "POST",
             headers: {
               Accept: "application/json",

@@ -173,7 +173,7 @@ export default {
         return;
       }
       axios
-        .delete("https://logezy.onrender.com/document_categories/" + id)
+        .delete(`${VITE_API_URL}/document_categories/` + id)
         .then((response) => {
           this.getDocCAtegories();
         });
@@ -183,21 +183,19 @@ export default {
       if (!window.confirm("Are you Sure ?")) {
         return;
       }
-      axios.delete(`https://logezy.onrender.com/documents/` + id).then((response) => {
+      axios.delete(`${VITE_API_URL}/documents/` + id).then((response) => {
         this.getDocCAtegories();
       });
       alert("Record Deleted ");
     },
     getDocumentCategories() {
       axios
-        .get("https://logezy.onrender.com/documents")
+        .get(`${VITE_API_URL}/documents`)
         .then((response) => (this.getDocument = response.data));
     },
     async getDocCAtegories() {
       try {
-        const response = await axios.get(
-          "https://logezy.onrender.com/document_categories"
-        );
+        const response = await axios.get(`${VITE_API_URL}/document_categories`);
 
         this.getCategory = response.data;
       } catch (error) {

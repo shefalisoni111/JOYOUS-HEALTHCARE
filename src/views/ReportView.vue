@@ -6,8 +6,14 @@
     </div>
   </div>
 </template>
-<script setup>
+<script>
 import Navbar from "../components/Navbar.vue";
+
+export default {
+  components: {
+    Navbar,
+  },
+};
 </script>
 <style scoped>
 #main {

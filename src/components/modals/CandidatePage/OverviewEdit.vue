@@ -59,7 +59,7 @@
                   </div>
                   <div class="col-12 mt-1">
                     <input
-                      type="text"
+                      type="date"
                       class="form-control"
                       v-model="fetchCandidate.DBS_PVG_issue_date"
                     />
@@ -71,7 +71,7 @@
                   </div>
                   <div class="col-12 mt-1">
                     <input
-                      type="text"
+                      type="date"
                       class="form-control"
                       v-model="fetchCandidate.DBS_PVG_expiry_date"
                     />
@@ -83,7 +83,7 @@
                   </div>
                   <div class="col-12 mt-1">
                     <input
-                      type="text"
+                      type="date"
                       class="form-control"
                       v-model="fetchCandidate.next_check_date"
                     />
@@ -119,7 +119,7 @@
                   </div>
                   <div class="col-12 mt-1">
                     <input
-                      type="text"
+                      type="date"
                       class="form-control"
                       v-model="fetchCandidate.date_of_birth"
                     />
@@ -210,7 +210,7 @@ export default {
   methods: {
     async getEmployeeTypeData() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/employment_types");
+        const response = await axios.get(`${VITE_API_URL}/employment_types`);
         this.employeeData = response.data;
       } catch (error) {
         if (error.response) {
@@ -223,7 +223,7 @@ export default {
     async fetchCandidateOverviewMethod() {
       try {
         const response = await axios.get(
-          `https://logezy.onrender.com/candidates/${this.$route.params.id}`
+          `${VITE_API_URL}/candidates/${this.$route.params.id}`
         );
 
         this.fetchCandidate = response.data.data;
@@ -234,12 +234,12 @@ export default {
     async updateCandidateMethod() {
       try {
         await axios.put(
-          `https://logezy.onrender.com/candidates/${this.fetchCandidate.id}`,
+          `${VITE_API_URL}/candidates/${this.fetchCandidate.id}`,
           this.fetchCandidate
         );
 
         alert("Candidate updated successfully");
-        window.location.reload();
+        // window.location.reload();
       } catch (error) {
         // console.error("Error updating candidate:", error);
       }

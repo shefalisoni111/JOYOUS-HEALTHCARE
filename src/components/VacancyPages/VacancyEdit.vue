@@ -190,7 +190,7 @@ export default {
     async fetchVacancyMethod(id) {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(`https://logezy.onrender.com/vacancies/${id}`, {
+        const response = await axios.get(`${VITE_API_URL}/vacancies/${id}`, {
           headers: {
             "content-type": "application/json",
             Authorization: "bearer " + token,
@@ -213,7 +213,7 @@ export default {
 
       try {
         const response = await axios.put(
-          `https://logezy.onrender.com/vacancies/${this.$route.params.id}`,
+          `${VITE_API_URL}/vacancies/${this.$route.params.id}`,
           {
             business_unit_id: this.fetchVacancy.business_unit_id,
             client_id: this.fetchVacancy.client_id,
@@ -248,7 +248,7 @@ export default {
     },
     async getBusinessUnitMethod() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/business_units");
+        const response = await axios.get(`${VITE_API_URL}/business_units`);
         this.businessUnit = response.data;
       } catch (error) {
         if (error.response) {
@@ -260,7 +260,7 @@ export default {
     },
     async getClientMethod() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/clients");
+        const response = await axios.get(`${VITE_API_URL}/clients`);
         this.clientData = response.data.data;
       } catch (error) {
         if (error.response) {
@@ -272,12 +272,12 @@ export default {
     },
     async getTimeShift() {
       await axios
-        .get("https://logezy.onrender.com/shifts")
+        .get(`${VITE_API_URL}/shifts`)
         .then((response) => (this.shiftsTime = response.data));
     },
     async getJobTitleMethod() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/active_job_list");
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
         this.options = response.data.data;
       } catch (error) {
         if (error.response) {

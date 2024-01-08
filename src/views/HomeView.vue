@@ -444,7 +444,7 @@ export default {
   async created() {
     const token = localStorage.getItem("token");
     axios
-      .get("https://logezy.onrender.com/merchant_dashboard", {
+      .get(`${VITE_API_URL}/merchant_dashboard`, {
         headers: {
           "content-type": "application/json",
           Authorization: "bearer " + token,

@@ -1,13 +1,26 @@
 <template>
   <div>
     <Navbar />
+    <!-- <RouterView /> -->
     <div id="main">
-      <h6>Timesheet Page in Progress.....</h6>
+      <h6>Work in progress</h6>
     </div>
   </div>
 </template>
-<script setup>
+<script>
 import Navbar from "../components/Navbar.vue";
+// import Custom from "../components/TimeSheetPages/CustomTimeSheet.vue";
+// import Signed from "../components/TimeSheetPages/SignedTimeSheet.vue";
+// import Weekly from "../components/TimeSheetPages/WeeklyTimeSheet.vue";
+
+export default {
+  components: {
+    // Custom,
+    // Signed,
+    // Weekly,
+    Navbar,
+  },
+};
 </script>
 <style scoped>
 #main {

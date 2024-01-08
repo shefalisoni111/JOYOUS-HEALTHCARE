@@ -1,19 +1,20 @@
 <template>
   <div>
+    <Navbar />
     <div class="container-fluid">
       <div id="main">
         <div class="pagetitle d-flex justify-content-between px-2">
           <div class="py-3">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active text-uppercase fs-6">
-                Dashboard / <span class="color-fonts">Availability</span>
+                Dashboard / <span class="color-fonts">Weekly Timesheet</span>
               </li>
             </ol>
           </div>
         </div>
         <div class="row p-3">
-          <div class="full-page-calendar">
-            <div class="calendar-header">
+          <div class="full-page-calendar pt-1 pb-0">
+            <div class="calendar-header mb-2">
               <span v-if="formattedStartDate && formattedEndDate" class="fw-bold">
                 {{
                   "Monday " + formattedStartDate + " to Sunday " + formattedEndDate
@@ -26,18 +27,105 @@
                 class="dateInput"
               />
             </div>
+            <div class="row">
+              <div class="col-3">
+                <div class="card border-0 bg-transparent">
+                  <div class="row g-0">
+                    <div class="d-flex">
+                      <div class="d-flex align-items-center">
+                        <i class="bi bi-check-circle-fill text-success fs-1"></i>
+                      </div>
+                      <div class="">
+                        <div class="card-body">
+                          <h5 class="card-title fw-bold">#Approved Timesheets</h5>
+                          <p class="card-text fw-bold">
+                            <span class="text-success">Hours</span> 24.00
+                            <span class="text-info">Amount</span> £324.00
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="card border-0 bg-transparent">
+                  <div class="row g-0">
+                    <div class="d-flex">
+                      <div class="d-flex align-items-center">
+                        <i class="bi bi-file-spreadsheet text-success fs-1"></i>
+                      </div>
+                      <div class="">
+                        <div class="card-body">
+                          <h5 class="card-title fw-bold">#Invoiced Timesheets</h5>
+                          <p class="card-text fw-bold">
+                            <span class="text-success">Hours</span> 0.00
+                            <span class="text-info">Amount</span> €0.00
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="card border-0 bg-transparent">
+                  <div class="row g-0">
+                    <div class="d-flex">
+                      <div class="d-flex align-items-center">
+                        <i class="bi bi-exclamation-triangle-fill fs-1 text-warning"></i>
+                      </div>
+                      <div class="">
+                        <div class="card-body">
+                          <h5 class="card-title fw-bold">#Pending Timesheets</h5>
+                          <p class="card-text fw-bold">
+                            <span class="text-success">Hours</span> 11.50
+                            <span class="text-info">Amount</span> €126.50
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="card border-0 bg-transparent">
+                  <div class="row g-0">
+                    <div class="d-flex">
+                      <div class="d-flex align-items-center">
+                        <i
+                          class="bi bi-file-earmark-spreadsheet-fill text-success fs-1"
+                        ></i>
+                      </div>
+                      <div class="">
+                        <div class="card-body">
+                          <h5 class="card-title fw-bold">#All Timesheets</h5>
+                          <p class="card-text fw-bold">
+                            <span class="text-success">Hours</span> 35.50
+                            <span class="text-info">Amount</span> £450.50
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- Modal -->
 
             <div v-if="selectedDate !== null" class="modal">
               <div class="modal-content">
-                <span class="close d-flex justify-content-end" @click="closeModal"
-                  >&times;</span
-                >
+                <div class="close d-flex justify-content-between my-3">
+                  <h3 class="d-flex align-items-center mb-0">Edit Assigned Shift -</h3>
+                  <span class="close text-white" @click="closeModal">&times;</span>
+                </div>
+
                 <h4 class="text-capitalize">{{ getCandidateName() }}</h4>
                 <p>You clicked on {{ selectedDate }}</p>
                 <p>Status: {{ statusForSelectedDate }}</p>
                 <!-- Pass initialDate to the Calendar component -->
-                <Calendar
+                <AppointmentAdd
                   :initialDate="selectedDate"
                   :candidateId="selectedCandidateId"
                   @closeModal="closeModal"
@@ -48,49 +136,59 @@
           <table class="table">
             <thead>
               <tr>
-                <th scope="col">Name</th>
-                <th scope="col">
+                <th rowspan="3">Name</th>
+                <th rowspan="3">Business Unit</th>
+                <th rowspan="3">Shift</th>
+                <th>
                   <div class="calendar-grid">
                     <div v-for="day in daysOfWeek" :key="day" class="day-header">
                       {{ day }}
                     </div>
                     <div v-for="date in selectedDateRow" :key="date" class="day-header">
                       {{ formatDate(date) }}
+                      <div v-if="formatDate(date)">
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Total</th>
+                      </div>
                     </div>
                   </div>
                 </th>
+
+                <th rowspan="3">Total Hours</th>
+                <th rowspan="3">Total Cost</th>
+                <th rowspan="3">Approved By</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="data in candidateList" :key="data.id">
-                <td class="text-capitalize fw-bold">{{ data.candidate_name }}</td>
+                <td class="text-capitalize fw-bold">{{ data.name }}</td>
+
+                <td>
+                  {{ data.business_unit }}
+                </td>
+                <td>{{ data.shift }}</td>
+
                 <td>
                   <div class="calendar-grid">
                     <div
                       v-for="day in selectedDateRow"
                       :key="day"
                       @click="openModal(data, day)"
-                      class="calendar-day"
-                      :class="{ 'calendar-day': true, clickable: day !== '' }"
+                      :class="{
+                        'calendar-day': true,
+                        clickable: day !== '',
+                      }"
                     >
-                      <span v-for="avail in data.availability" :key="avail.id">
-                        <span v-if="avail.date === formattedDate(day)">
-                          <span
-                            v-if="avail.status"
-                            v-bind:class="{
-                              'btn btn-warning fs-6': avail.status === 'Late',
-                              'btn btn-primary fs-6': avail.status === 'Unavailable',
-                              'btn btn-secondary fs-6': avail.status === 'Night',
-                              'btn btn-light fs-6': avail.status === 'Early',
-                            }"
-                          >
-                            {{ avail.status ? avail.status[0].toUpperCase() : "" }}
-                          </span>
-                        </span>
-                      </span>
+                      <div v-if="formatDate(day)">
+                        <td></td>
+                      </div>
                     </div>
                   </div>
                 </td>
+                <td>{{ data.total_hours }}</td>
+                <td>{{ data.total_cost }}</td>
+                <td>{{ data.approved_by }}</td>
               </tr>
             </tbody>
           </table>
@@ -102,12 +200,11 @@
 
 <script>
 import axios from "axios";
-import Calendar from "../components/modals/CandidatePage/CanderAvailableModal.vue";
-import { toRaw } from "vue";
+import AppointmentAdd from "../modals/Schedule/EditAssignedShift.vue";
+
 export default {
   data() {
     return {
-      date: new Date(),
       startDate: "",
       endDate: { value: "", display: "" },
       currentDate: new Date(),
@@ -115,10 +212,9 @@ export default {
       candidateList: [],
       selectedCandidateId: null,
       selectedCandidate: null,
-      getCandidateStatus: [],
-      showModal: false,
-      selectedCandidateStatusForDate: [],
+
       statusForSelectedDate: null,
+      vacancyList: [],
     };
   },
   computed: {
@@ -156,17 +252,13 @@ export default {
       return selectedDateRow;
     },
     candidateName() {
-      return this.selectedCandidate ? this.selectedCandidate.candidate_name : "";
+      return this.selectedCandidate ? this.selectedCandidate.first_name : "";
     },
 
     formattedDates() {
       return this.selectedDateRow.map((day) => this.formatDate(day));
     },
-    selectedCandidateComputed() {
-      return this.candidateList.find(
-        (candidate) => candidate.id === this.selectedCandidateId
-      );
-    },
+
     formattedStartDate() {
       return this.formatDate(this.selectedDateRow[0]);
     },
@@ -176,32 +268,38 @@ export default {
   },
 
   methods: {
+    async handleDrop(candidateId) {
+      try {
+        if (!this.vacancyBeingDragged || !this.vacancyBeingDragged.id) {
+          return;
+        }
+
+        const payload = {
+          vacancy_id: this.vacancyBeingDragged.id,
+          candidate_id: candidateId,
+        };
+
+        const response = await axios.post(
+          `${VITE_API_URL}/assign_vacancy`,
+          payload
+        );
+      } catch (error) {
+      } finally {
+        // Reset drag-related data
+        this.vacancyBeingDragged = null;
+        this.dropCandidateId = null;
+        this.dropDay = null;
+        this.droppedContent = null;
+      }
+    },
+
     formattedDate(day) {
       const selectedDate = new Date(this.startDate);
       selectedDate.setDate(day);
       return selectedDate.toISOString().split("T")[0];
     },
     getCandidateName() {
-      return this.selectedCandidate
-        ? this.selectedCandidate.candidate_name
-        : "Default Name";
-    },
-    getCandidateStatusForDate(candidateId, selectedDate) {
-      const candidate = this.candidateList.find(
-        (candidate) => candidate.id === candidateId
-      );
-
-      if (candidate) {
-        const availabilityEntry = candidate.availability.find(
-          (availability) => availability.date === selectedDate
-        );
-
-        if (availabilityEntry) {
-          return [{ id: availabilityEntry.id, status: availabilityEntry.status }];
-        }
-      }
-
-      return [];
+      return this.selectedCandidate ? this.selectedCandidate.first_name : "Default Name";
     },
 
     saveToLocalStorage() {
@@ -246,8 +344,8 @@ export default {
 
     openModal(candidateId, day) {
       try {
-        // Extract the candidate_id property from the Proxy object
-        const actualCandidateId = candidateId.candidate_id;
+        // Extract the id property from the Proxy object
+        const actualCandidateId = candidateId.id;
 
         // Set the selected date in the format YYYY-MM-DD
         const selectedDate = new Date(this.startDate);
@@ -261,31 +359,14 @@ export default {
 
         // Find the candidate in the candidateList
         const selectedCandidate = this.candidateList.find(
-          (candidate) => candidate.candidate_id === actualCandidateId
+          (candidate) => candidate.id === actualCandidateId
         );
 
         // Check if the candidate details are found
         if (selectedCandidate) {
-          // Find the availability for the selected day
-          const availability = selectedCandidate.availability.filter(
-            (avail) => avail.date === formattedDate
-          );
-
-          // Set the status for the selected date
-          this.statusForSelectedDate =
-            availability.length > 0 ? availability[0].status : null;
-
           // Use Vue.nextTick to ensure the DOM has been updated
-          Vue.nextTick(() => {
+          this.$nextTick(() => {
             this.selectedCandidate = selectedCandidate;
-
-            // Check if selectedCandidate is not null
-            if (selectedCandidate) {
-              // Set showModal to true
-              this.showModal = true;
-            } else {
-              // Handle case when selectedCandidate is null
-            }
           });
         } else {
           // Handle case when selectedCandidate is null
@@ -305,18 +386,17 @@ export default {
     },
     async fetchCandidateList() {
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/candidates_weekly_availability`
-        );
-        this.candidateList = response.data.data;
+        const response = await axios.get(`${VITE_API_URL}/weekly_timesheets`);
+        this.candidateList = response.data;
       } catch (error) {}
     },
   },
   components: {
-    Calendar,
+    AppointmentAdd,
   },
   mounted() {
     this.fetchCandidateList();
+
     this.loadStoredData();
     window.addEventListener("beforeunload", this.saveToLocalStorage);
   },
@@ -327,10 +407,6 @@ export default {
 #main {
   background-color: #fdce5e17;
 }
-.full-page-calendar {
-  padding: 20px;
-}
-
 .calendar-header {
   display: flex;
   align-items: center;
@@ -343,6 +419,14 @@ input.dateInput {
   margin: 0 20px;
   font-size: 18px;
   font-weight: bold;
+}
+table {
+  border: 1px solid 1px solid rgb(241 229 229);
+}
+table,
+th,
+td {
+  border: 1px solid 1px solid rgb(241 229 229);
 }
 .color-fonts {
   color: #ff5f30;
@@ -369,6 +453,15 @@ input.dateInput {
   background-color: #f3f3f3;
 }
 
+.modal-content h3 {
+  color: #fff;
+}
+.modal-content .close {
+  padding: 0px 5px;
+  border-radius: 4px;
+  background: #ff551f;
+}
+
 .calendar-day {
   background-color: #eaeaea;
   transition: background-color 0.3s ease;
@@ -377,8 +470,8 @@ input.dateInput {
 
 .calendar-day.clickable {
   cursor: crosshair;
-  font-size: 10px;
-  color: blue !important;
+  font-size: 12px;
+
   font-weight: bold;
 }
 

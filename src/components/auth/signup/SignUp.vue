@@ -8,12 +8,7 @@
           <div class="container">
             <div class="row">
               <div class="col-lg-10 col-xl-7 mx-auto">
-                <img
-                  src="../logo.png"
-                  class="img-fluid mb-2"
-                  alt="RecPal"
-                  width="150"
-                />
+                <img src="../logo.png" class="img-fluid mb-2" alt="RecPal" width="150" />
                 <div class="mb-4">
                   <h2 class="mb-2 fw-bold">Signup</h2>
                 </div>
@@ -121,7 +116,7 @@
   </div>
 </template>
 
-<script>
+<script >
 import { useRouter } from "vue-router";
 let error = "";
 export default {
@@ -154,7 +149,7 @@ export default {
       try {
         var headers = new Headers();
         headers.append("Content-Type", "application/json");
-        const response = await fetch("https://logezy.onrender.com/merchants", {
+        const response = await fetch("${VITE_API_URL}/merchants", {
           method: "POST",
           headers,
           body: JSON.stringify(data),

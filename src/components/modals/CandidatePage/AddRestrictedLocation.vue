@@ -20,7 +20,7 @@
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
-              <form>
+              <form @submit.prevent="addRestrictedLocationMethod">
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label class="form-label" for="selectBusinessUnit"
@@ -39,6 +39,9 @@
                         {{ option.name }}
                       </option>
                     </select>
+                    <span v-if="!validationBusinessUnit" class="text-danger"
+                      >Business Unit Required</span
+                    >
                   </div>
                 </div>
               </form>
@@ -55,7 +58,8 @@
               <button
                 class="btn btn-primary rounded-1 text-capitalize fw-medium"
                 data-bs-dismiss="modal"
-                v-on:click="addRestrictedLocationMethod()"
+                @click="submitForm"
+                :disabled="!isValidForm"
               >
                 Add Location
               </button>
@@ -76,9 +80,18 @@ export default {
       business_unit_id: "",
       candidate_id: "",
       businessUnit: [],
+      validationBusinessUnit: false,
     };
   },
+  watch: {
+    business_unit_id: function (newValue) {
+      this.validateBusinessUnit(newValue);
+    },
+  },
   computed: {
+    isValidForm() {
+      return this.validationBusinessUnit;
+    },
     selectBusinessUnit() {
       const business_unit_id = this.businessUnit.find(
         (option) => option.id === this.business_unit_id
@@ -87,6 +100,17 @@ export default {
     },
   },
   methods: {
+    async submitForm() {
+      this.validateBusinessUnit(this.business_unit_id);
+
+      if (this.isValidForm) {
+        await this.addRestrictedLocationMethod();
+      } else {
+      }
+    },
+    validateBusinessUnit(value) {
+      this.validationBusinessUnit = !!value;
+    },
     async addRestrictedLocationMethod() {
       const data = {
         business_unit_id: [this.business_unit_id],
@@ -94,7 +118,7 @@ export default {
       };
       try {
         const response = await fetch(
-          `https://logezy.onrender.com/candidates/${this.$route.params.id}/restricted_business_units`,
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/restricted_business_units`,
           {
             method: "POST",
             headers: {
@@ -107,9 +131,7 @@ export default {
     },
     async getBusinessUnitMethod() {
       try {
-        const response = await axios.get(
-          "https://logezy.onrender.com/business_units"
-        );
+        const response = await axios.get(`${VITE_API_URL}/business_units`);
         this.businessUnit = response.data;
       } catch (error) {
         if (error.response) {

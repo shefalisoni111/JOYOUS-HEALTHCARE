@@ -149,7 +149,7 @@
   </div>
 </template>
 
-<script>
+<script >
 import axios from "axios";
 
 export default {
@@ -165,7 +165,7 @@ export default {
     async getCandidateMethods() {
       try {
         const response = await axios.get(
-          `https://logezy.onrender.com/candidates/${this.$route.params.id}`
+          `${VITE_API_URL}/candidates/${this.$route.params.id}`
         );
 
         this.getCandidatesData = response.data.data;

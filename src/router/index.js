@@ -27,34 +27,34 @@ const router = createRouter({
       path: "/client",
       name: "Client",
       component: () => import("@/views/ClientView.vue"),
-      children: [
-        // {
-        //   path: "/client",
-        //   name: "ClientsLists",
-        //   component: () => import("@/components/ClientsPages/ClientsLists.vue"),
-        //   props: true,
-        // },
-        // {
-        //   path: "edit/:id",
-        //   name: "EditClient",
-        //   component: () => import("@/components/ClientsPages/EditClient.vue"),
-        //   props: true,
-        // },
-        // {
-        //   path: "view/:id",
-        //   name: "ClientsProfileView",
-        //   component: () =>
-        //     import("@/components/ClientsPages/ClientsProfileView.vue"),
-        //   props: true,
-        // },
-        {
-          path: "client/:id",
-          name: "SingleClientProfile",
-          component: () =>
-            import("@/components/ClientsPages/SingleClientProfile.vue"),
-          props: true,
-        },
-      ],
+      // children: [
+      //   {
+      //     path: "/client",
+      //     name: "ClientsLists",
+      //     component: () => import("@/components/ClientsPages/ClientsLists.vue"),
+      //     props: true,
+      //   },
+      //   {
+      //     path: "edit/:id",
+      //     name: "EditClient",
+      //     component: () => import("@/components/ClientsPages/EditClient.vue"),
+      //     props: true,
+      //   },
+      //   {
+      //     path: "view/:id",
+      //     name: "ClientsProfileView",
+      //     component: () =>
+      //       import("@/components/ClientsPages/ClientsProfileView.vue"),
+      //     props: true,
+      //   },
+      //   {
+      //     path: "client/:id",
+      //     name: "SingleClientProfile",
+      //     component: () =>
+      //       import("@/components/ClientsPages/SingleClientProfile.vue"),
+      //     props: true,
+      //   },
+      // ],
     },
     {
       path: "/candidates",
@@ -62,27 +62,21 @@ const router = createRouter({
       component: () => import("@/views/CandidatesView.vue"),
       children: [
         {
-          path: "/availability",
+          path: "availability",
           name: "CandidateAvailability",
           component: () => import("@/views/CandidateAvailability.vue"),
           props: true,
         },
         {
-          path: "/candidates",
+          path: "candidates",
           name: "CandidateLists",
           component: () =>
             import("@/components/CandidatePages/CandidateLists.vue"),
           props: true,
         },
+     
         {
-          path: "/candidates/profileview/:id",
-          name: "ProfileView",
-          component: () =>
-            import("@/components/CandidatePages/ProfileView.vue"),
-          props: true,
-        },
-        {
-          path: "/candidates/:id",
+          path: ":id",
           name: "Profile",
           component: () => import("@/components/CandidatePages/Profile.vue"),
           props: true,
@@ -186,7 +180,7 @@ const router = createRouter({
         },
 
         {
-          path: "/candidates/:id",
+          path: ":id",
           name: "EditCandidate",
           component: () =>
             import("@/components/CandidatePages/EditCandidate.vue"),
@@ -236,6 +230,26 @@ const router = createRouter({
       path: "/timesheet",
       name: "Timesheet",
       component: () => import("@/views/TimesheetView.vue"),
+      // children: [
+      //   {
+      //     path: "/timesheet/weekly",
+      //     name: "WeeklyTimeSheet",
+      //     component: () => import("@/components/TimeSheetPages/WeeklyTimeSheet.vue"),
+      //     props: true,
+      //   },
+      //   {
+      //     path: "/timesheet/custom",
+      //     name: "CustomTimeSheet",
+      //     component: () => import("@/components/TimeSheetPages/CustomTimeSheet.vue"),
+      //     props: true,
+      //   },
+      //   {
+      //     path: "/timesheet/signed",
+      //     name: "SignedTimeSheet",
+      //     component: () => import("@/components/TimeSheetPages/SignedTimeSheet.vue"),
+      //     props: true,
+      //   },
+      // ]
     },
     {
       path: "/invoice",
@@ -389,12 +403,7 @@ const router = createRouter({
       },
     },
 
-    // {
-    //   path: "/forgotpassword",
-    //   name: "ForgotPassword",
-    //   component: () =>
-    //     import("@/components/auth/forgotpassword/ForgotPassword.vue"),
-    // },
+   
     { path: "/:pathMatch(.*)", component: NotFound },
   ],
 

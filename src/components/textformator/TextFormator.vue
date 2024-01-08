@@ -66,7 +66,7 @@
           ></a>
         </div>
       </div>
-      <div id="editor" contenteditable></div>
+      <div id="editor" contenteditable="true"></div>
       <textarea
         name="ticketDesc"
         id="editorCopy"
@@ -77,7 +77,7 @@
   </div>
 </template>
 
-<script>
+<script >
 jQuery(document).ready(function ($) {
   $("#editControls a").click(function (e) {
     e.preventDefault();

@@ -26,9 +26,7 @@
         <form class="" v-for="shift in shifts" :key="shift.id">
           <div class="row mb-3 border-bottom pb-4 mx-1">
             <div class="col-2 p-0">
-              <label for="" class="form-label fw-medium">{{
-                shift.shift_name
-              }}</label>
+              <label for="" class="form-label fw-medium">{{ shift.shift_name }}</label>
             </div>
             <div class="col-10">
               <div class="d-flex justify-content-around">
@@ -81,7 +79,7 @@ export default {
   methods: {
     async getTime() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/shifts");
+        const response = await axios.get(`${VITE_API_URL}/shifts`);
         this.shifts = response.data || [];
       } catch (error) {
         // console.error("Error fetching shifts:", error);

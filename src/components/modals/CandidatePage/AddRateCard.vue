@@ -15,7 +15,7 @@
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
-              <form>
+              <form @submit.prevent="addRateCardMethod">
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label class="form-label" for="selectBusinessUnit"
@@ -33,6 +33,9 @@
                         {{ option.name }}
                       </option>
                     </select>
+                    <span v-if="!validationBusinessUnit" class="text-danger"
+                      >Business Unit Required</span
+                    >
                   </div>
                 </div>
 
@@ -51,6 +54,9 @@
                         {{ option.name }}
                       </option>
                     </select>
+                    <span v-if="!validationPosition" class="text-danger"
+                      >Position Required</span
+                    >
                   </div>
                 </div>
 
@@ -59,7 +65,18 @@
                     <label class="form-label">Day</label>
                   </div>
                   <div class="col-10">
-                    <input type="text" class="form-control" v-model="weekname" />
+                    <select
+                      class="form-select"
+                      aria-label="Default select example"
+                      v-model="weekname"
+                    >
+                      <option value="1">Monday</option>
+                      <option value="2">Tuesday</option>
+                      <option value="3">Wednesday</option>
+                      <option value="4">Thursday</option>
+                      <option value="5">Friday</option>
+                    </select>
+                    <span v-if="!validationDay" class="text-danger">Day Required</span>
                   </div>
                 </div>
 
@@ -78,6 +95,9 @@
                         {{ option.title }}
                       </option>
                     </select>
+                    <span v-if="!validationEmployeeType" class="text-danger"
+                      >Employee Type Required</span
+                    >
                   </div>
                 </div>
 
@@ -96,6 +116,9 @@
                         {{ option.shift_name }}
                       </option>
                     </select>
+                    <span v-if="!validationShiftTime" class="text-danger"
+                      >Shift Time Required</span
+                    >
                   </div>
                 </div>
 
@@ -104,7 +127,15 @@
                     <label class="form-label">Staff Rate</label>
                   </div>
                   <div class="col-10">
-                    <input type="text" class="form-control" v-model="staff_rate" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="staff_rate"
+                      @input="clearError"
+                    />
+                    <span v-if="!validationStaffRate" class="text-danger"
+                      >Staff Rate Required</span
+                    >
                   </div>
                 </div>
               </form>
@@ -122,7 +153,8 @@
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              v-on:click="addRateCardMethod()"
+              @click="submitForm"
+              :disabled="!isValidForm"
             >
               Add RateCard
             </button>
@@ -150,9 +182,45 @@ export default {
       options: [],
       shiftsTime: [],
       businessUnit: [],
+      validationBusinessUnit: true,
+      validationEmployeeType: true,
+      validationShiftTime: true,
+      validationDay: true,
+      validationStaffRate: true,
+      validationPosition: true,
     };
   },
+  watch: {
+    business_unit_id: function (newValue) {
+      this.validateBusinessUnit(newValue);
+    },
+    staff_rate: function (newValue) {
+      this.validateStaffRate(newValue);
+    },
+    job_id: function (newValue) {
+      this.validateJobID(newValue);
+    },
+    employment_type_id: function (newValue) {
+      this.validateEmployeeType(newValue);
+    },
+    shift_id: function (newValue) {
+      this.validateShiftId(newValue);
+    },
+    weekname: function (newValue) {
+      this.validateDay(newValue);
+    },
+  },
   computed: {
+    isValidForm() {
+      return (
+        this.validationBusinessUnit &&
+        this.validationStaffRate &&
+        this.validationPosition &&
+        this.validationShiftTime &&
+        this.validationEmployeeType &&
+        this.validationDay
+      );
+    },
     selectedOptionText() {
       const jobs_id = this.options.find((option) => option.id === this.jobs_id);
       return jobs_id ? jobs_id.name : "";
@@ -178,6 +246,19 @@ export default {
     },
   },
   methods: {
+    async submitForm() {
+      this.validateBusinessUnit(this.business_unit_id);
+      this.validateStaffRate(this.staff_rate);
+      this.validateJobID(this.job_id);
+      this.validateShiftId(this.shift_id);
+      this.validateEmployeeType(this.employment_type_id);
+      this.validateDay(this.weekname);
+
+      if (this.isValidForm) {
+        await this.addRateCardMethod();
+      } else {
+      }
+    },
     async addRateCardMethod() {
       const data = {
         weekname: this.weekname,
@@ -189,7 +270,7 @@ export default {
         shift_id: this.shift_id,
       };
       try {
-        const response = await fetch("https://logezy.onrender.com/rate_cards", {
+        const response = await fetch(`${VITE_API_URL}/rate_cards`, {
           method: "POST",
 
           headers: {
@@ -198,11 +279,14 @@ export default {
           },
           body: JSON.stringify(data),
         });
+        if (data) {
+          location.reload();
+        }
       } catch (error) {}
     },
     async getJobTitleMethod() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/active_job_list");
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
         this.options = response.data.data;
       } catch (error) {
         if (error.response) {
@@ -214,7 +298,7 @@ export default {
     },
     async getBusinessUnitMethod() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/business_units");
+        const response = await axios.get(`${VITE_API_URL}/business_units`);
         this.businessUnit = response.data;
       } catch (error) {
         if (error.response) {
@@ -226,7 +310,7 @@ export default {
     },
     async getEmployeeTypeData() {
       try {
-        const response = await axios.get("https://logezy.onrender.com/employment_types");
+        const response = await axios.get(`${VITE_API_URL}/employment_types`);
         this.employeeData = response.data;
       } catch (error) {
         if (error.response) {
@@ -239,8 +323,41 @@ export default {
 
     async getTimeShift() {
       await axios
-        .get("https://logezy.onrender.com/shifts")
+        .get(`${VITE_API_URL}/shifts`)
         .then((response) => (this.shiftsTime = response.data));
+    },
+    validateBusinessUnit(newValue) {
+      // Example validation function for Business Unit
+      this.validationBusinessUnit = newValue !== "";
+    },
+    validateStaffRate(newValue) {
+      // Example validation function for Staff Rate
+      this.validationStaffRate = newValue !== "";
+    },
+    validateJobID(newValue) {
+      // Example validation function for Job ID
+      this.validationPosition = newValue !== "";
+    },
+    validateShiftId(newValue) {
+      // Example validation function for Shift ID
+      this.validationShiftTime = newValue !== "";
+    },
+    validateEmployeeType(newValue) {
+      // Example validation function for Employee Type
+      this.validationEmployeeType = newValue !== "";
+    },
+    validateDay(newValue) {
+      // Example validation function for Day
+      this.validationDay = newValue !== "";
+    },
+
+    clearError() {
+      this.validationBusinessUnit = true;
+      this.validationStaffRate = true;
+      this.validationEmployeeType = true;
+      this.validationShiftTime = true;
+      this.validationDay = true;
+      this.validationPosition = true;
     },
   },
   mounted() {

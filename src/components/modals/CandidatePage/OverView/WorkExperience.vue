@@ -85,7 +85,7 @@
   </div>
 </template>
 
-<script>
+<script >
 export default {
   name: "WorkExperience",
   data() {
@@ -144,7 +144,7 @@ export default {
       };
       try {
         const response = await fetch(
-          `https://logezy.onrender.com/candidates/${this.$route.params.id}/work_experiences`,
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/work_experiences`,
           {
             method: "POST",
             headers: {

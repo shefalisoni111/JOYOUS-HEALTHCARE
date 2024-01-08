@@ -69,21 +69,13 @@
                     <table class="table table table-hover addjobtable">
                       <thead>
                         <tr>
-                          <th scope="col" class="col-2 bg-primary text-white">
-                            Title
-                          </th>
-                          <th scope="col" class="col-2 bg-primary text-white">
-                            Job
-                          </th>
-                          <th scope="col" class="col-2 bg-primary text-white">
-                            Amount
-                          </th>
+                          <th scope="col" class="col-2 bg-primary text-white">Title</th>
+                          <th scope="col" class="col-2 bg-primary text-white">Job</th>
+                          <th scope="col" class="col-2 bg-primary text-white">Amount</th>
                           <th scope="col" class="col-1 bg-primary text-white">
                             Frequency
                           </th>
-                          <th scope="col" class="col-1 bg-primary text-white">
-                            Action
-                          </th>
+                          <th scope="col" class="col-1 bg-primary text-white">Action</th>
                         </tr>
                       </thead>
                       <tbody v-if="getCandidateDeduction.length > 0">
@@ -107,9 +99,7 @@
                           <td>
                             <i
                               class="bi bi-trash"
-                              v-on:click="
-                                candidateDeductionDelete(getDeduction.id)
-                              "
+                              v-on:click="candidateDeductionDelete(getDeduction.id)"
                             ></i>
                           </td>
                         </tr>
@@ -130,10 +120,9 @@
                   tabindex="0"
                 >
                   <p>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                    Quasi veniam cum, optio similique esse soluta! Fuga dicta,
-                    eius aut ipsum ipsam ducimus vero deleniti odit debitis
-                    corporis, nemo vel possimus.
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi veniam
+                    cum, optio similique esse soluta! Fuga dicta, eius aut ipsum ipsam
+                    ducimus vero deleniti odit debitis corporis, nemo vel possimus.
                   </p>
                 </div>
               </div>
@@ -176,7 +165,7 @@ export default {
         return;
       }
       axios
-        .delete(`https://logezy.onrender.com/candidate_deductions/` + id)
+        .delete(`${VITE_API_URL}/candidate_deductions/` + id)
         .then((response) => {
           this.candidateDeduction();
         });
@@ -184,7 +173,7 @@ export default {
     },
     async candidateDeduction() {
       await axios
-        .get("https://logezy.onrender.com/candidate_deductions")
+        .get(`${VITE_API_URL}/candidate_deductions`)
         .then((response) => (this.getCandidateDeduction = response.data));
     },
   },

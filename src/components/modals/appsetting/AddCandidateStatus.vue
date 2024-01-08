@@ -141,7 +141,7 @@ export default {
         description: this.description,
       };
       try {
-        const response = await fetch("https://logezy.onrender.com/candidate_statuses", {
+        const response = await fetch(`${VITE_API_URL}/candidate_statuses`, {
           method: "POST",
           headers: {
             Accept: "application/json",

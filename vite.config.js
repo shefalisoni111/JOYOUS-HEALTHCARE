@@ -1,14 +1,25 @@
-import { fileURLToPath, URL } from "node:url";
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
 
-import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
+const API_URL = 'http://194.31.150.133:3000';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
+      '@': '/src',
     },
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: API_URL, 
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
+  },
+  define: {
+      VITE_API_URL: JSON.stringify(API_URL),
   },
 });

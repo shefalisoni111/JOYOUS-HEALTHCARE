@@ -21,11 +21,7 @@
                     <label class="form-label">DOCUMENT NAME</label>
                   </div>
                   <div class="mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="document_name"
-                    />
+                    <input type="text" class="form-control" v-model="document_name" />
                   </div>
                 </div>
 
@@ -37,11 +33,7 @@
                         <td>MANDATORY</td>
                         <td>
                           <label class="switch">
-                            <input
-                              type="checkbox"
-                              id="togBtn"
-                              v-model="mandatory"
-                            />
+                            <input type="checkbox" id="togBtn" v-model="mandatory" />
                             <div class="slider round"></div>
                           </label>
                         </td>
@@ -50,11 +42,7 @@
                         <td>HIDE</td>
                         <td>
                           <label class="switch">
-                            <input
-                              type="checkbox"
-                              id="togBtn"
-                              v-model="hide_document"
-                            />
+                            <input type="checkbox" id="togBtn" v-model="hide_document" />
                             <div class="slider round"></div>
                           </label>
                         </td>
@@ -63,11 +51,7 @@
                         <td>PROFILE VIEW</td>
                         <td>
                           <label class="switch">
-                            <input
-                              type="checkbox"
-                              id="togBtn"
-                              v-model="profile_view"
-                            />
+                            <input type="checkbox" id="togBtn" v-model="profile_view" />
                             <div class="slider round"></div>
                           </label>
                         </td>
@@ -146,7 +130,7 @@ export default {
           profile_view: this.profile_view,
         };
 
-        const response = await fetch("https://logezy.onrender.com/documents", {
+        const response = await fetch(`${VITE_API_URL}/documents`, {
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -168,7 +152,7 @@ export default {
   created() {
     try {
       axios
-        .get(`https://logezy.onrender.com/document_categories`)
+        .get(`${VITE_API_URL}/document_categories`)
         .then((response) => {
           this.getCategoryData = response.data;
 

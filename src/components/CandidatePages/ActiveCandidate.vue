@@ -131,7 +131,7 @@ export default {
         return;
       }
       axios
-        .put(`https://logezy.onrender.com/inactivate_candidate/${id}`)
+        .put(`${VITE_API_URL}/inactivate_candidate/${id}`)
         .then((response) => {
           this.inactiveCandidateData = response.data;
           this.getCandidateMethods();
@@ -144,7 +144,7 @@ export default {
     async getCandidateMethods() {
       try {
         const response = await axios.get(
-          "https://logezy.onrender.com/approve_and_activated_candidates"
+          `${VITE_API_URL}/approve_and_activated_candidates`
         );
 
         this.getCandidatesData = response.data.data;
@@ -165,7 +165,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .candidateTable tr:nth-child(odd) td {
   background: #fdce5e17 !important;
 }

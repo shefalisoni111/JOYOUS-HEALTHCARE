@@ -131,7 +131,7 @@
   </div>
 </template>
 
-<script>
+<script >
 import axios from "axios";
 
 export default {
@@ -154,7 +154,7 @@ export default {
     async fetchCandidateOverviewMethod() {
       try {
         const response = await axios.get(
-          `https://logezy.onrender.com/candidates/${this.$route.params.id}/next_of_kins`
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/next_of_kins`
         );
 
         this.fetchCandidate = response.data.data;
@@ -165,7 +165,7 @@ export default {
     async updateCandidateMethod(id) {
       try {
         await axios.put(
-          `https://logezy.onrender.com/candidates/${this.$route.params.id}/next_of_kins/${id}`,
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/next_of_kins/${id}`,
           this.fetchCandidate
         );
 

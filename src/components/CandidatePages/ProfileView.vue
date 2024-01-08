@@ -68,7 +68,7 @@
   </div>
 </template>
 
-<script>
+<script >
 import axios from "axios";
 export default {
   name: "ProfileView",
@@ -81,7 +81,7 @@ export default {
     async getProfileViewData() {
       try {
         const response = await axios.get(
-          `https://logezy.onrender.com/candidates/${this.$route.params.id}`
+          `${VITE_API_URL}/candidates/${this.$route.params.id}`
         );
 
         this.getProfileData = response.data.data;

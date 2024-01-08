@@ -207,7 +207,7 @@
     </div>
   </div>
 </template>
-<script setup>
+<script >
 import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
 </script>

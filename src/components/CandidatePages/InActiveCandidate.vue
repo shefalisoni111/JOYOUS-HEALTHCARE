@@ -42,7 +42,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 .candidateTable tr:nth-child(odd) td {
   background: #fdce5e17 !important;
 }
@@ -65,7 +65,7 @@ export default {
     async getCandidate() {
       try {
         const response = await axios.get(
-          "https://logezy.onrender.com/approve_and_notactivated_candidates"
+          `${VITE_API_URL}/approve_and_notactivated_candidates`
         );
 
         this.getCandidatesData = response.data.data;
@@ -86,7 +86,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .table-wrapper {
   overflow-x: auto;
 }

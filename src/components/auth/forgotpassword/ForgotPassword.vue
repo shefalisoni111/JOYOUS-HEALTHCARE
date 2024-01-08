@@ -8,12 +8,7 @@
           <div class="container">
             <div class="row">
               <div class="col-lg-10 col-xl-7 mx-auto">
-                <img
-                  src="../logo.png"
-                  class="img-fluid mb-2"
-                  alt="RecPal"
-                  width="150"
-                />
+                <img src="../logo.png" class="img-fluid mb-2" alt="RecPal" width="150" />
                 <div class="mb-4">
                   <h2 class="mb-2 fw-bold">ForgotPassword</h2>
                 </div>
@@ -49,7 +44,7 @@
   </div>
 </template>
 
-<script>
+<script >
 export default {
   name: "Login",
 
@@ -64,7 +59,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .login,
 .image {
   min-height: 100vh;
