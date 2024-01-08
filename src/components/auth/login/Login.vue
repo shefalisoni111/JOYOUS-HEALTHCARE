@@ -73,6 +73,7 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -91,49 +92,37 @@ export default {
       };
 
       try {
-        const response = await fetch(`${VITE_API_URL}/merchant_login`, {
-          method: "POST",
+        const response = await axios.post(`${VITE_API_URL}/merchant_login`, data, {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(data),
+          withCredentials: true,
+          referrerPolicy: "strict-origin-when-cross-origin",
         });
 
-        const jsonData = await response.json();
+        // Access the response data directly
+        const jsonData = response.data;
 
         if (jsonData.is_loged_in) {
           localStorage.setItem("token", jsonData.token);
-          //localStorage.setItem("data", JSON.stringify(data));
           this.$router.push({ name: "Home" });
-
-          // If "Remember Me" is checked, store the user's credentials
-          // if (this.rememberMe) {
-          //   localStorage.setItem("email", this.email);
-          //   localStorage.setItem("password", this.password);
-          // } else {
-
-          //   localStorage.removeItem("email");
-          //   localStorage.removeItem("password");
-          // }
         } else {
-          this.error = true;
           this.error = "Invalid Email or Password";
-          // if (email) {
-          //   this.error = "Please Enter Correct Email";
-          // }
-
-          // if (password) {
-          //   this.error = "Please Enter Correct Password";
-          // }
         }
       } catch (error) {
-        if (error.response && error.response.status === 401) {
+        // Handle errors
+        if (axios.isAxiosError(error)) {
+          if (error.code === "ECONNABORTED") {
+            console.error("Request timeout exceeded");
+          } else if (error.response) {
+            console.error("Server responded with an error:", error.response.status);
+          } else {
+            console.error("Request setup error:", error.message);
+          }
+        } else {
+          console.error("Network error:", error.message);
         }
       }
-    },
-    clearError() {
-      // Clear the error message when the user starts typing
-      this.error = false;
     },
   },
 

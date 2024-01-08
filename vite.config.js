@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 
-const API_URL = 'http://194.31.150.133:3000';
+const API_URL = 'https://recpalapp.co.uk/api/';
 
 export default defineConfig({
   plugins: [vue()],
@@ -21,5 +21,9 @@ export default defineConfig({
   },
   define: {
       VITE_API_URL: JSON.stringify(API_URL),
+  },
+  optimizeDeps: {
+    include: ['vue'],
+    exclude: ['vue-demi'],
   },
 });

@@ -403,6 +403,7 @@ const router = createRouter({
       },
     },
 
+    
    
     { path: "/:pathMatch(.*)", component: NotFound },
   ],
