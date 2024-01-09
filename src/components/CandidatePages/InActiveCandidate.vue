@@ -7,11 +7,8 @@
           <th scope="col">Positions</th>
           <th scope="col">Email</th>
           <th scope="col">Phone</th>
-          <!-- <th scope="col">Status</th>
-          <th scope="col">Access</th>
-          <th scope="col">Assign</th>
-          <th scope="col">Last Login</th> -->
-          <!-- <th scope="col">Action</th> -->
+
+          <th scope="col">Action</th>
         </tr>
       </thead>
       <tbody>
@@ -21,10 +18,7 @@
           <td v-text="datas.email"></td>
           <td v-text="datas.phone_number"></td>
 
-          <!-- <td>
-            <a class="btn btn-outline-success text-nowrap">
-              <i class="bi bi-eye"></i></a
-            >&nbsp;&nbsp;
+          <td>
             <button
               type="button"
               class="btn btn-success"
@@ -33,9 +27,9 @@
               title="Tooltip on top"
               v-on:click="activeCandidateMethod(pending.id)"
             >
-              Active
+              Approve
             </button>
-          </td> -->
+          </td>
         </tr>
       </tbody>
     </table>
@@ -78,6 +72,21 @@ export default {
           // console.error("Error fetching candidates:", error);
         }
       }
+    },
+    async activeCandidateMethod(id) {
+      if (!window.confirm("Are you Sure?")) {
+        return;
+      }
+      const response = await axios
+        .put(`${VITE_API_URL}/candidate/approve_candidate/${id}`)
+        .then((response) => {
+          this.inactiveCandidateData = response.data;
+          this.pendingCandidateMethod();
+        })
+
+        .catch((error) => {
+          // console.error("Error deleting candidate:", error);
+        });
     },
   },
   mounted() {

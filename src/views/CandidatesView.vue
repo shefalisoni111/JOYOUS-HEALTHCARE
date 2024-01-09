@@ -8,7 +8,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import Navbar from "../components/Navbar.vue";
 
 import CandidateAdd from "../components/modals/CandidatePage/CandidateAdd.vue";

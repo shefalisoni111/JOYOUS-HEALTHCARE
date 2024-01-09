@@ -1,14 +1,20 @@
 <template>
   <div>
     <!-- Modal -->
-    <div>
-      <div class="main-box">
-        <div class="model-box">
-          <div class="text-center">
-            <h5 class="">Edit Candidate</h5>
+    <div class="modal fade" id="editVacancy" aria-labelledby="editVacancy" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editVacancy">Edit Vacancy</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
-          <div class="mx-3">
-            <div class="row">
+          <div class="modal-body mx-3">
+            <div class="row align-items-center">
               <form>
                 <div class="mb-3">
                   <div class="">
@@ -29,11 +35,6 @@
                           {{ option.name }}
                         </option>
                       </select>
-                      <!-- <input
-                        type="text"
-                        class="form-control"
-                        v-model="fetchVacancy.business_unit"
-                      /> -->
                     </div>
                   </div>
                 </div>
@@ -53,11 +54,6 @@
                         {{ option.name }}
                       </option>
                     </select>
-                    <!-- <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchVacancy.job_title"
-                    /> -->
                   </div>
                 </div>
                 <div class="mb-3">
@@ -75,11 +71,6 @@
                         {{ option.first_name }}
                       </option>
                     </select>
-                    <!-- <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchVacancy.client"
-                    /> -->
                   </div>
                 </div>
                 <div class="mb-3">
@@ -109,14 +100,9 @@
                         {{ option.shift_name }}
                       </option>
                     </select>
-                    <!-- <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchVacancy.shift_id"
-                    /> -->
                   </div>
                 </div>
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                   <div class="col-12">
                     <label class="form-label">Notes</label>
                   </div>
@@ -127,17 +113,26 @@
                       v-model="fetchVacancy.notes"
                     />
                   </div>
-                </div>
-                <div class="d-flex justify-content-center">
-                  <button
-                    class="btn btn-primary rounded-1 text-capitalize fw-medium"
-                    @click.prevent="updateVacancyMethod()"
-                  >
-                    Save
-                  </button>
-                </div>
+                </div> -->
               </form>
             </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-secondary rounded-1"
+              data-bs-target="#editVacancy"
+              data-bs-toggle="modal"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              data-bs-dismiss="modal"
+              @click.prevent="updateVacancyMethod()"
+            >
+              Save
+            </button>
           </div>
         </div>
       </div>
@@ -153,18 +148,24 @@ export default {
   data() {
     return {
       fetchVacancy: {
+        id: "",
         business_unit_id: "",
         client_id: "",
         job_id: "",
-        dates: "",
+        dates: [],
         shift_id: "",
-        notes: "",
       },
       businessUnit: [],
       shiftsTime: [],
       clientData: [],
       options: [],
     };
+  },
+  props: {
+    vacancyId: {
+      type: Number,
+      required: true,
+    },
   },
   computed: {
     selectBusinessUnit() {
@@ -185,6 +186,12 @@ export default {
       );
       return shift ? shift.shift_name : "";
     },
+    selectJobTitle() {
+      const job_title = this.options.find(
+        (option) => option.id === this.fetchVacancy.job_id
+      );
+      return job_title ? job_title.name : "";
+    },
   },
   methods: {
     async fetchVacancyMethod(id) {
@@ -197,30 +204,32 @@ export default {
           },
         });
 
+        if (response.data.id !== undefined) {
+          this.fetchVacancy.id = response.data.id;
+        }
+
         // Update each property individually
         this.fetchVacancy.business_unit_id = response.data.business_unit_id;
         this.fetchVacancy.client_id = response.data.client_id;
         this.fetchVacancy.job_id = response.data.job_id;
         this.fetchVacancy.dates = response.data.dates;
         this.fetchVacancy.shift_id = response.data.shift_id;
-        this.fetchVacancy.notes = response.data.notes;
       } catch (error) {
-        console.error("Error fetching vacancy:", error);
+        // You might want to set a default value or display an error message
       }
     },
+
     async updateVacancyMethod() {
       const token = localStorage.getItem("token");
-
       try {
         const response = await axios.put(
-          `${VITE_API_URL}/vacancies/${this.$route.params.id}`,
+          `${VITE_API_URL}/vacancies/${this.fetchVacancy.id}`,
           {
             business_unit_id: this.fetchVacancy.business_unit_id,
             client_id: this.fetchVacancy.client_id,
             job_id: this.fetchVacancy.job_id,
             dates: this.fetchVacancy.dates,
             shift_id: this.fetchVacancy.shift_id,
-            notes: this.fetchVacancy.notes,
           },
           {
             headers: {
@@ -229,21 +238,16 @@ export default {
             },
           }
         );
-        alert("Candidate updated successfully");
-        // Assuming the server returns the updated item directly
-        const updatedItem = response.data;
 
-        // Find the index of the item in the local list
-        const index = this.items.findIndex((item) => item.id === updatedItem.id);
+        // Corrected the Vuex mutation to use 'commit' instead of 'dispatch'
+        this.$store.commit("updateVacancy", {
+          id: this.fetchVacancy.id,
+          newData: response.data,
+        });
 
-        // Update the item in place if found
-        if (index !== -1) {
-          this.$set(this.items, index, updatedItem);
-        } else {
-          // console.log("Item not found in the local list");
-        }
+        alert("Vacancy updated successfully");
       } catch (error) {
-        // console.error("Error updating candidate:", error);
+        // Handle error if needed
       }
     },
     async getBusinessUnitMethod() {
@@ -290,125 +294,27 @@ export default {
   },
 
   mounted() {
-    this.fetchVacancyMethod(this.$route.params.id);
     this.getBusinessUnitMethod();
     this.getClientMethod();
     this.getTimeShift();
     this.getJobTitleMethod();
   },
+  watch: {
+    vacancyId: {
+      immediate: true,
+      handler(newVacancyID) {
+        this.fetchVacancyMethod(newVacancyID);
+      },
+    },
+  },
 };
 </script>
 
 <style scoped>
-.modal-body {
-  border-radius: 5px;
-  background: #dbdbdb;
-}
-.modal-header {
-  border-bottom: 0px;
-}
-.modal-footer {
-  border-top: 0px;
-}
-
-#head {
-  width: 40px;
-  height: 40px;
-}
-.main-box {
-  background: #00000008;
-
-  padding: 100px 20px;
-  height: 100vh;
-  overflow: hidden;
-}
-select,
-:focus-visible {
+select {
   width: 100%;
   padding: 9px;
-  border: none;
+
   border-radius: 4px;
-}
-
-.model-box {
-  background: #f3f3f3;
-  margin: 20px 443px;
-  padding: 10px;
-  border-radius: 4px;
-  box-shadow: 3px 1px 12px 14px #c3bdbd;
-}
-.btn-primary {
-  background-color: #ff5f30 !important;
-  font-weight: bold;
-  border: none;
-  border-radius: 4px;
-  outline: none;
-}
-
-.switch {
-  width: 50px;
-  height: 17px;
-  position: relative;
-  display: inline-block;
-}
-
-.switch input {
-  display: none;
-}
-
-.switch .slider {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  cursor: pointer;
-  background-color: #e7ecf1;
-  border-radius: 30px !important;
-  border: 0;
-  padding: 0;
-  display: block;
-  margin: 12px 10px;
-  min-height: 11px;
-}
-
-.switch .slider:before {
-  position: absolute;
-  background-color: #aaa;
-  height: 15px;
-  width: 15px;
-  content: "";
-  left: 0px;
-  bottom: -2px;
-  border-radius: 50%;
-  transition: ease-in-out 0.5s;
-}
-
-.switch .slider:after {
-  content: "";
-  color: white;
-  display: block;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 70%;
-  transition: all 0.5s;
-  font-size: 10px;
-  font-family: Verdana, sans-serif;
-}
-
-.switch input:checked + .slider:after {
-  transition: all 0.5s;
-  left: 30%;
-  content: "";
-}
-
-.switch input:checked + .slider {
-  background-color: #d3d6d9;
-}
-
-.switch input:checked + .slider:before {
-  transform: translateX(15px);
-  background-color: #ff9800;
 }
 </style>

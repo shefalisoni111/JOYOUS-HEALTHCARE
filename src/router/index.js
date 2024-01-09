@@ -179,13 +179,7 @@ const router = createRouter({
           ],
         },
 
-        {
-          path: ":id",
-          name: "EditCandidate",
-          component: () =>
-            import("@/components/CandidatePages/EditCandidate.vue"),
-          props: true,
-        },
+      
       ],
     },
 
@@ -201,12 +195,7 @@ const router = createRouter({
           props: true,
         },
 
-        {
-          path: "edit/:id",
-          name: "VacancyEdit",
-          component: () => import("@/components/VacancyPages/VacancyEdit.vue"),
-          props: true,
-        },
+     
         {
           path: "/candidate/profileview/:id",
           name: "ProfileView",

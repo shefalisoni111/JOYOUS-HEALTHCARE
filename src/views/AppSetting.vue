@@ -9,7 +9,7 @@
           <div class="leftside">
             <div class="heading mb-3 position-relative">
               <p class="bforeline"></p>
-              <p class="mb-0 text-uppercase gs">General Settings</p>
+              <p class="mb-0 text-uppercase fw-bold">General Settings</p>
               <p class="afterline"></p>
             </div>
             <div>
@@ -113,7 +113,7 @@
                 </li>
                 <div class="heading my-3 position-relative">
                   <p class="bforeline"></p>
-                  <p class="mb-0 text-uppercase gs">Documents Setting</p>
+                  <p class="mb-0 text-uppercase fw-bold">Documents Setting</p>
                   <p class="afterlines"></p>
                 </div>
                 <li class="list-items d-flex">
@@ -201,31 +201,6 @@ ul.generalsetting li a .job h6 {
 ul.generalsetting h6 {
   font-size: 14px;
   font-weight: bold;
-}
-
-.heading p.bforeline {
-  width: 18px;
-  height: 0.3px;
-  background: #d8c9c9;
-  left: 0;
-  top: 50%;
-  position: absolute;
-}
-.heading p.afterline {
-  width: 126px;
-  height: 0.3px;
-  background: #d8c9c9;
-  right: 0;
-  top: 50%;
-  position: absolute;
-}
-.heading p.afterlines {
-  width: 79px;
-  height: 0.3px;
-  background: #d8c9c9;
-  right: 0;
-  top: 50%;
-  position: absolute;
 }
 
 .heading p.gs {

@@ -38,30 +38,7 @@
                 <div
                   class="pagetitle d-flex justify-content-between align-items-center p-2"
                 >
-                  <div class="d-flex justify-content-around gap-2">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="flexCheckDefault"
-                    />
-                    Select All
-                  </div>
-
                   <div></div>
-
-                  <div class="d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center gap-2">
-                      <div class="searchbox position-relative">
-                        <input
-                          class="form-control mr-sm-2"
-                          type="search"
-                          placeholder="Search "
-                          aria-label="Search"
-                        />
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -111,21 +88,6 @@
               </table>
             </div>
             <hr />
-            <div class="row g-3 align-items-center mt-3">
-              <div class="d-flex gap-1">
-                <div class="d-flex align-items-center">
-                  <label>Choose Action:</label>
-                </div>
-                <div class="col-3">
-                  <select class="form-select" aria-label="Disabled select example">
-                    <option selected>Select an Action</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                </div>
-              </div>
-            </div>
           </div>
           <div class="modal-footer">
             <button
@@ -134,7 +96,7 @@
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
             >
-              Submit
+              Close
             </button>
             <!-- <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
@@ -150,7 +112,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import axios from "axios";
 
 export default {

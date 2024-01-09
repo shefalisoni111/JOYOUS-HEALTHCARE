@@ -17,7 +17,7 @@
               <th scope="col">Applied</th>
               <th scope="col">Assigned</th>
               <th scope="col">Rejected</th>
-              <th scope="col">Create by</th>
+              <th scope="col">Created by</th>
               <th scope="col">Action</th>
             </tr>
           </thead>
@@ -40,7 +40,6 @@
 
               <td v-for="(date, index) in getdata.dates" :key="index" v-text="date"></td>
 
-              <!-- <td v-text="getdata.dates[0]"></td> -->
               <td v-text="getdata.shift"></td>
 
               <td v-text="getdata.notes"></td>
@@ -114,15 +113,13 @@
               </td>
               <td v-text="getdata.create_by_and_time"></td>
               <td class="cursor-pointer">
-                <router-link
-                  :to="{
-                    name: 'VacancyEdit',
-                    params: { id: getdata.id },
-                  }"
-                  class="btn btn-outline-success text-nowrap"
-                >
-                  <i class="bi bi-pencil-square"></i>
-                </router-link>
+                <i
+                  class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editVacancy"
+                  data-bs-whatever="@mdo"
+                  @click="editVacancyId(getdata.id)"
+                ></i>
                 &nbsp;&nbsp;
                 <button class="btn btn-outline-success text-nowrap">
                   <i class="bi bi-trash" v-on:click="vacancyDeleteMethod(getdata.id)"></i>
@@ -133,6 +130,7 @@
         </table>
       </div>
     </div>
+    <EditVacancy :vacancyId="selectedVacancyId" />
     <PublishedVacancy />
     <AppliedVacancyList />
     <AssignedVacancyList />
@@ -150,10 +148,12 @@ import AppliedVacancyList from "../modals/Vacancy/AppliedVacancyList.vue";
 import AssignedVacancyList from "../modals/Vacancy/AssignedVacancyList.vue";
 import RejectedVacancyList from "../modals/Vacancy/RejectedVacancyList.vue";
 import AllVacancyCandidateList from "../modals/Vacancy/AllVacancyCandidateList.vue";
+import EditVacancy from "../modals/Vacancy/EditVacancy.vue";
 export default {
   data() {
     return {
       getVacancyDetail: [],
+      selectedVacancyId: "",
     };
   },
   components: {
@@ -162,6 +162,7 @@ export default {
     AssignedVacancyList,
     RejectedVacancyList,
     AllVacancyCandidateList,
+    EditVacancy,
   },
   computed: {
     getIconClass() {
@@ -169,6 +170,10 @@ export default {
     },
   },
   methods: {
+    editVacancyId(vacancyId) {
+      this.selectedVacancyId = vacancyId;
+      console.log("selectedVacancyId", this.selectedVacancyId);
+    },
     openPopup(id) {
       this.$store.commit("setSelectedAppliedItemId", id);
     },

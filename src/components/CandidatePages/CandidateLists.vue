@@ -145,6 +145,7 @@
 <script>
 import axios from "axios";
 import CandidateAdd from "../modals/CandidatePage/CandidateAdd.vue";
+
 import ActiveCandidate from "../CandidatePages/ActiveCandidate.vue";
 import InActiveCandidate from "../CandidatePages/InActiveCandidate.vue";
 import Rejected from "../CandidatePages/Rejected.vue";
@@ -188,14 +189,11 @@ export default {
     async search() {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.post(
-          `${VITE_API_URL}/candidate/search_candidate`,
-          {
-            // Your search parameters in the request body
-            first_name: this.searchQuery,
-            candidate_code: this.searchQuery,
-          }
-        );
+        const response = await axios.post(`${VITE_API_URL}/candidate/search_candidate`, {
+          // Your search parameters in the request body
+          first_name: this.searchQuery,
+          candidate_code: this.searchQuery,
+        });
         this.searchResults = response.data;
       } catch (error) {
         // console.error("Error fetching search results:", error);

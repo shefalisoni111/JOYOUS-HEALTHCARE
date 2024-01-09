@@ -226,7 +226,7 @@ export default {
           status: this.status,
         };
 
-        const response = await fetch(`${VITE_API_URL}/availabilitys`, {
+        const response = await axios.post(`${VITE_API_URL}/availabilitys`, {
           method: "POST",
           headers: {
             Accept: "application/json",

@@ -33,7 +33,6 @@
               <td v-text="candidate.position"></td>
               <td>{{ candidate.email }}</td>
               <td>
-                <i class="bi bi-telephone-fill success"></i>
                 {{ candidate.phone_number }}
               </td>
               <td>
@@ -78,14 +77,23 @@
 
                 &nbsp;&nbsp;
 
-                <router-link
+                <!-- <router-link
                   :to="{
                     name: 'EditCandidate',
                     params: { id: candidate.id },
                   }"
                   class="btn btn-outline-success text-nowrap"
                 >
-                  <i class="bi bi-pencil-square"></i></router-link
+                  </router-link
+                > -->
+
+                <i
+                  class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editCandidate"
+                  data-bs-whatever="@mdo"
+                  @click="editCandidate(candidate.id)"
+                ></i
                 >&nbsp;&nbsp;
                 <router-link
                   :to="{
@@ -102,12 +110,13 @@
         </table>
       </div>
     </div>
+    <EditCandidate :candidateId="selectedCandidateId" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import EditCandidate from "../CandidatePages/EditCandidate.vue";
+import EditCandidate from "../modals/CandidatePage/EditCandidate.vue";
 
 export default {
   name: "ActiveCandidate",
@@ -115,6 +124,7 @@ export default {
     return {
       getCandidatesData: [],
       inactiveCandidateData: [],
+      selectedCandidateId: null,
     };
   },
 
@@ -125,7 +135,9 @@ export default {
     selectTab(index) {
       this.activeTab = index;
     },
-
+    editCandidate(candidateId) {
+      this.selectedCandidateId = candidateId;
+    },
     deleteCandidate(id) {
       if (!window.confirm("Are you Sure?")) {
         return;

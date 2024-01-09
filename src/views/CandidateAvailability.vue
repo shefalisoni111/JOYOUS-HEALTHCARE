@@ -103,7 +103,7 @@
 <script>
 import axios from "axios";
 import Calendar from "../components/modals/CandidatePage/CanderAvailableModal.vue";
-import { toRaw } from "vue";
+
 export default {
   data() {
     return {

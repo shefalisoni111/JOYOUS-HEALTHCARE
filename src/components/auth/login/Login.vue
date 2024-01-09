@@ -96,8 +96,6 @@ export default {
           headers: {
             "Content-Type": "application/json",
           },
-          withCredentials: true,
-          referrerPolicy: "strict-origin-when-cross-origin",
         });
 
         // Access the response data directly

@@ -54,7 +54,8 @@
                           :key="index"
                           @click="selectTab(index)"
                         >
-                          {{ tab.name }}({{ index === 0 ? vacancyCount : 0 }})
+                          {{ tab.name }}
+                          <!-- ({{ index === 0 ? vacancyCount : 0 }}) -->
                         </button>
                       </li>
                     </div>

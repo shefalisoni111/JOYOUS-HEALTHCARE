@@ -74,6 +74,7 @@
                   <th scope="col" class="col-3 bg-primary text-white text-center">
                     No. of Candidate
                   </th>
+
                   <th scope="col" class="col-1 bg-primary text-white">Action</th>
                 </tr>
               </thead>
@@ -86,6 +87,7 @@
                   <td v-text="jobs.job_code"></td>
                   <td v-text="jobs.no_of_client" align="center"></td>
                   <td v-text="jobs.no_of_candidates" align="center"></td>
+
                   <td>
                     <i class="bi bi-trash" v-on:click="jobsDelete(jobs.id)"></i>
                   </td>

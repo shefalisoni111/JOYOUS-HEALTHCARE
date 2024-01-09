@@ -28,7 +28,7 @@
               title="Tooltip on top"
               v-on:click="activeCandidateMethod(pending.id)"
             >
-              Approved</button
+              Approve</button
             >&nbsp;&nbsp;
             <button
               type="button"

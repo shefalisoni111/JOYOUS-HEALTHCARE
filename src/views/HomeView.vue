@@ -81,7 +81,7 @@
                         <div class="ps-2">
                           <h6 v-text="getRecords.Passive_client"></h6>
                           <span class="text-muted small pt-2 text-uppercase"
-                            >inactive clients</span
+                            >inactive client</span
                           >
                         </div>
                       </div>

@@ -1,11 +1,11 @@
 {
   "name": "vue-project",
   "version": "0.0.0",
-  
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000",
-    "stage": "vite build --host=194.31.150.133",
+    "stage": "vite --host=127.0.0.1",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -25,3 +25,4 @@
     "vite": "^5.0.11"
   }
 }
+

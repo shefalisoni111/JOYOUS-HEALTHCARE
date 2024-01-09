@@ -17,7 +17,7 @@
               <th scope="col">Applied</th>
               <th scope="col">Assigned</th>
               <th scope="col">Rejected</th>
-              <th scope="col">Create by</th>
+              <th scope="col">Created by</th>
               <th scope="col">Action</th>
             </tr>
           </thead>

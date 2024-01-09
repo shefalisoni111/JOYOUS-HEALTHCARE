@@ -18,10 +18,10 @@
               + Add Or Update Notes
             </button>
 
-            <button type="button" class="btn btn-outline-success text-nowrap">
+            <!-- <button type="button" class="btn btn-outline-success text-nowrap">
               <i class="bi bi-funnel"></i>
               Show Filters
-            </button>
+            </button> -->
           </div>
         </div>
       </div>
