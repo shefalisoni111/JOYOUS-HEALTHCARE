@@ -301,15 +301,15 @@
                   </tr>
                 </thead>
                 <tbody v-if="getNextToKin">
-                  <tr v-for="data in getNextToKin" :key="data.id">
-                    <td v-text="data.name"></td>
-                    <td v-text="data.phone_number"></td>
-                    <td v-text="data.relation"></td>
-                    <td v-text="data.address_line_1"></td>
-                    <td v-text="data.address_line_2"></td>
-                    <td v-text="data.city"></td>
-                    <td v-text="data.postcode"></td>
-                    <td>
+                  <tr v-for="(data, index) in getNextToKin" :key="index">
+                    <td v-if="data">{{ data.name }}</td>
+                    <td v-if="data">{{ data.phone_number }}</td>
+                    <td v-if="data">{{ data.relation }}</td>
+                    <td v-if="data">{{ data.address_line_1 }}</td>
+                    <td v-if="data">{{ data.address_line_2 }}</td>
+                    <td v-if="data">{{ data.city }}</td>
+                    <td v-if="data">{{ data.postcode }}</td>
+                    <td v-if="data">
                       <button class="btn btn-outline-success text-nowrap">
                         <i
                           class="bi bi-trash"
@@ -500,11 +500,9 @@ export default {
           `${VITE_API_URL}/candidates/${this.$route.params.id}/next_of_kins`
         );
 
-        // Check if the response data is an array and has at least one element
-        if (Array.isArray(response.data) && response.data.length > 0) {
+        if (response.data) {
           this.getNextToKin = response.data;
         } else {
-          // console.error("Unexpected response format:", response.data);
         }
       } catch (error) {
         // console.error("Error fetching next of kin data:", error);

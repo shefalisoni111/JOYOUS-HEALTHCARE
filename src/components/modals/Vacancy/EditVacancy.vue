@@ -245,10 +245,8 @@ export default {
       const originalDate = this.fetchVacancy.dates;
 
       try {
-        // Parse the original date string
         const parsedDate = new Date(originalDate);
 
-        // Check if the parsed date is valid
         if (!isNaN(parsedDate.getTime())) {
           // Format the date to "yyyy-MM-dd"
           const formattedDate = parsedDate.toISOString().split("T")[0];

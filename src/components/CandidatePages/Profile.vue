@@ -145,10 +145,10 @@
     <AddRestrictedLocation />
     <AddNotes />
     <!-- <EditRateCard /> -->
-    <AddRateCard />
+
     <NextToKinEdit />
     <EditBankDetails />
-    <EditProfileContact :candidateId="selectedCandidateId" />
+    <EditProfileContact :candidateId="selectedCandidateId || 0" />
   </div>
 </template>
 
@@ -170,7 +170,6 @@ import EditBankDetails from "../modals/CandidatePage/OverView/EditBankDetails.vu
 import AddRestrictedLocation from "../modals/CandidatePage/AddRestrictedLocation.vue";
 import EditProfileContact from "../modals/CandidatePage/EditProfileContact.vue";
 
-import AddRateCard from "../modals/CandidatePage/AddRateCard.vue";
 // import EditRateCard from "../modals/CandidatePage/EditRateCard.vue";
 import AddNotes from "../modals/CandidatePage/AddNotes.vue";
 
@@ -212,7 +211,7 @@ export default {
     CandidateHistory,
     CandidatePreference,
     AddRestrictedLocation,
-    AddRateCard,
+
     // EditRateCard,
     AddNotes,
     NextToKinEdit,

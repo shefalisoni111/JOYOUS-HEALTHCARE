@@ -85,7 +85,9 @@
                   <td v-text="jobs.no_of_candidates"></td>
                   <td>2</td>
                   <td>
-                    <i class="bi bi-trash" v-on:click="jobsDelete(jobs.id)"></i>
+                    <button class="btn btn-primary" v-on:click="jobsDelete(jobs.id)">
+                      In-Active
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -108,6 +110,7 @@
                 <th scope="col" class="bg-primary text-white">No. of Clients</th>
                 <th scope="col" class="bg-primary text-white">No. of Candidate</th>
                 <th scope="col" class="bg-primary text-white">No. of Documents</th>
+                <th scope="col" class="bg-primary text-white">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -120,6 +123,11 @@
                 <td v-text="jobs.no_of_client"></td>
                 <td v-text="jobs.no_of_candidates"></td>
                 <td>2</td>
+                <td>
+                  <button class="btn btn-primary" v-on:click="jobActive(jobs.id)">
+                    Re-Activate
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -148,6 +156,15 @@ export default {
   },
 
   methods: {
+    // jobActive(id) {
+    //   if (!window.confirm("Are you Sure ?")) {
+    //     return;
+    //   }
+    //   // axios.put(`${VITE_API_URL}/inactivate_job/` + id).then((response) => {
+    //   //   this.getJobData();
+    //   // });
+    //   alert("Record Inactive ");
+    // },
     jobsDelete(id) {
       if (!window.confirm("Are you Sure ?")) {
         return;
@@ -176,8 +193,20 @@ export default {
         .get(`${VITE_API_URL}/inactive_job_list`)
         .then((response) => {
           this.getInActiveJobs = response.data.data;
-          // this.getInactiveJobData();
+          this.getInactiveDataMethod();
         })
+        .catch((error) => {
+          if (error.response) {
+            if (error.response.status == 404) {
+              // alert(error.response.data.message);
+            }
+          }
+        });
+    },
+    async getInactiveDataMethod() {
+      await axios
+        .get(`${VITE_API_URL}/inactive_job_list`)
+        .then((response) => {})
         .catch((error) => {
           if (error.response) {
             if (error.response.status == 404) {
@@ -227,5 +256,13 @@ td i.bi-trash {
 
 table thead th {
   background-color: #f9944b !important;
+}
+table {
+  border-collapse: separate;
+}
+.table th,
+.table td {
+  text-align: center;
+  width: 14.2857%;
 }
 </style>

@@ -70,11 +70,11 @@
                       aria-label="Default select example"
                       v-model="weekname"
                     >
-                      <option value="1">Monday</option>
-                      <option value="2">Tuesday</option>
-                      <option value="3">Wednesday</option>
-                      <option value="4">Thursday</option>
-                      <option value="5">Friday</option>
+                      <option value="Monday">Monday</option>
+                      <option value="Tuesday">Tuesday</option>
+                      <option value="Wednesday">Wednesday</option>
+                      <option value="Thursday">Thursday</option>
+                      <option value="Friday">Friday</option>
                     </select>
                     <span v-if="!validationDay" class="text-danger">Day Required</span>
                   </div>
@@ -172,11 +172,11 @@ export default {
   data() {
     return {
       weekname: "",
-      staff_rate: "",
+      shift_id: "",
       business_unit_id: "",
       job_id: "",
       employment_type_id: "",
-      shift_id: "",
+      staff_rate: "",
       candidate_id: "",
       employeeData: [],
       options: [],
@@ -194,7 +194,7 @@ export default {
     business_unit_id: function (newValue) {
       this.validateBusinessUnit(newValue);
     },
-    staff_rate: function (newValue) {
+    shift_id: function (newValue) {
       this.validateStaffRate(newValue);
     },
     job_id: function (newValue) {
@@ -248,7 +248,7 @@ export default {
   methods: {
     async submitForm() {
       this.validateBusinessUnit(this.business_unit_id);
-      this.validateStaffRate(this.staff_rate);
+      this.validateStaffRate(this.shift_id);
       this.validateJobID(this.job_id);
       this.validateShiftId(this.shift_id);
       this.validateEmployeeType(this.employment_type_id);
@@ -279,9 +279,18 @@ export default {
           },
           body: JSON.stringify(data),
         });
-        // if (data) {
-        //   location.reload();
-        // }
+        if (response.ok) {
+          this.$emit("rateCard");
+
+          this.weekname = "";
+          this.staff_rate = "";
+          this.business_unit_id = "";
+          this.job_id = "";
+          this.$route.params.id = "";
+          this.employment_type_id = "";
+          this.shift_id = "";
+        } else {
+        }
       } catch (error) {}
     },
     async getJobTitleMethod() {

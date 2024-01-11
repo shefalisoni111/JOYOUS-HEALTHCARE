@@ -46,46 +46,6 @@
               <i class="bi bi-trash" v-on:click="candidateDelete(getCandidate.id)"></i>
             </td>
           </tr>
-          <!-- <tr>
-            <td>Pending</td>
-            <td>LG002</td>
-            <td><i class="bi bi-trash"></i></td>
-          </tr>
-          <tr>
-            <td>Inactive</td>
-            <td>LG003</td>
-            <td><i class="bi bi-trash"></i></td>
-          </tr>
-          <tr>
-            <td>Maternity</td>
-            <td>LG001</td>
-            <td><i class="bi bi-trash"></i></td>
-          </tr>
-          <tr>
-            <td>Holiday</td>
-            <td>LG002</td>
-            <td><i class="bi bi-trash"></i></td>
-          </tr>
-          <tr>
-            <td>Active</td>
-            <td>LG003</td>
-            <td><i class="bi bi-trash"></i></td>
-          </tr>
-          <tr>
-            <td>Inactive</td>
-            <td>LG001</td>
-            <td><i class="bi bi-trash"></i></td>
-          </tr>
-          <tr>
-            <td>Holiday</td>
-            <td>LG002</td>
-            <td><i class="bi bi-trash"></i></td>
-          </tr>
-          <tr>
-            <td>Inactive</td>
-            <td>LG003</td>
-            <td><i class="bi bi-trash"></i></td>
-          </tr> -->
         </tbody>
       </table>
     </div>
@@ -168,5 +128,13 @@ table thead th {
 }
 .btn-primary {
   border: none;
+}
+table {
+  border-collapse: separate;
+}
+.table th,
+.table td {
+  text-align: center;
+  width: 14.2857%;
 }
 </style>

@@ -377,7 +377,7 @@
                       >&nbsp;
 
                       <!-- Custom date picker component -->
-                      <div v-if="showDatePicker" class="date-picker" style="width: 200px">
+                      <div v-if="showDatePicker" class="date-picker">
                         <!-- Set a fixed width for the date picker -->
                         <div class="mb-3">
                           <label for="startDate" class="form-label">Start Date:</label>
@@ -618,5 +618,11 @@ h6 {
 
 span {
   font-weight: 600;
+}
+
+.input-group > .form-control,
+.input-group > .form-select,
+.input-group > .form-floating {
+  width: inherit !important;
 }
 </style>

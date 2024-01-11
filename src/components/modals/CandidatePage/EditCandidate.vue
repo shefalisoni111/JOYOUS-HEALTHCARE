@@ -122,7 +122,7 @@ export default {
   props: {
     candidateId: {
       type: Number,
-      default: null,
+      default: 0,
     },
   },
   computed: {

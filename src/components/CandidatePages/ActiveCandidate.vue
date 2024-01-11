@@ -110,7 +110,7 @@
         </table>
       </div>
     </div>
-    <EditCandidate :candidateId="selectedCandidateId" />
+    <EditCandidate :candidateId="selectedCandidateId || 0" />
   </div>
 </template>
 

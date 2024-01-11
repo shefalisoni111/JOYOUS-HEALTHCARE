@@ -168,4 +168,12 @@ table thead th {
 .btn-primary {
   border: none;
 }
+table {
+  border-collapse: separate;
+}
+.table th,
+.table td {
+  text-align: center;
+  width: 14.2857%;
+}
 </style>

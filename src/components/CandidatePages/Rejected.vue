@@ -86,7 +86,6 @@ export default {
       const response = await axios
         .put(`${VITE_API_URL}/candidate/approve_candidate/${id}`)
         .then((response) => {
-          this.inactiveCandidateData = response.data;
           this.pendingCandidateMethod();
         })
 

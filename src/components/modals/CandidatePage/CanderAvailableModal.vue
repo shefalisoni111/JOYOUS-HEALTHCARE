@@ -28,38 +28,41 @@
         <div v-for="blankDay in leadingBlankDays" :key="blankDay" class="empty-day"></div>
         <div v-for="dayData in calendarData" :key="dayData.date" class="calendar-day">
           <div class="day-number">{{ dayData.day }}</div>
-          <div class="shift-checkboxes d-flex">
-            &nbsp;<input
-              type="checkbox"
-              id="early"
-              v-model="dayData.shifts.early"
-              @click="updateDate(dayData.date, 'Early')"
-            />
-            <label for="early" class="ps-1">E</label>
-            &nbsp;
-            <input
-              type="checkbox"
-              id="late"
-              v-model="dayData.shifts.late"
-              @click="updateDate(dayData.date, 'Late')"
-            />
-            <label for="late" class="ps-1">L</label>
-            &nbsp;
-            <input
-              type="checkbox"
-              id="night"
-              v-model="dayData.shifts.night"
-              @click="updateDate(dayData.date, 'Night')"
-            />
-            <label for="night" class="ps-1">N</label>
-            &nbsp;
-            <input
-              type="checkbox"
-              id="unavailable"
-              v-model="dayData.shifts.unavailable"
-              @click="updateDate(dayData.date, 'Unavailable')"
-            />
-            <label for="unavailable" class="ps-1">U</label>
+          <div class="shift-checkboxes d-flex flex-column">
+            <div>
+              <input
+                type="checkbox"
+                id="early"
+                v-model="dayData.shifts.early"
+                @click="updateDate(dayData.date, 'Early')"
+              />
+              <label for="early" class="ps-1">E</label>
+              &nbsp;
+              <input
+                type="checkbox"
+                id="late"
+                v-model="dayData.shifts.late"
+                @click="updateDate(dayData.date, 'Late')"
+              />
+              <label for="late" class="ps-1">L</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="night"
+                v-model="dayData.shifts.night"
+                @click="updateDate(dayData.date, 'Night')"
+              />
+              <label for="night" class="ps-1">N</label>
+              &nbsp;
+              <input
+                type="checkbox"
+                id="unavailable"
+                v-model="dayData.shifts.unavailable"
+                @click="updateDate(dayData.date, 'Unavailable')"
+              />
+              <label for="unavailable" class="ps-1">U</label>
+            </div>
           </div>
         </div>
       </div>

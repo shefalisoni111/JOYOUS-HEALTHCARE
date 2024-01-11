@@ -25,7 +25,7 @@
               data-bs-toggle="tooltip"
               data-bs-placement="top"
               title="Tooltip on top"
-              v-on:click="activeCandidateMethod(pending.id)"
+              v-on:click="activeCandidateMethod(datas.id)"
             >
               Re-Activate
             </button>
@@ -80,8 +80,7 @@ export default {
       const response = await axios
         .put(`${VITE_API_URL}/candidate/approve_candidate/${id}`)
         .then((response) => {
-          this.inactiveCandidateData = response.data;
-          this.pendingCandidateMethod();
+          this.getCandidate();
         })
 
         .catch((error) => {

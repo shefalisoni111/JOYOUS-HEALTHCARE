@@ -70,6 +70,8 @@
                       v-for="day in selectedDateRow"
                       :key="day"
                       @click="openModal(data, day)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#staticBackdrop"
                       class="calendar-day"
                       :class="{ 'calendar-day': true, clickable: day !== '' }"
                     >
@@ -113,8 +115,9 @@ export default {
       currentDate: new Date(),
       selectedDate: null,
       candidateList: [],
-      selectedCandidateId: null,
       selectedCandidate: null,
+      selectedCandidateId: null,
+      candidateList: null,
       getCandidateStatus: [],
       showModal: false,
       selectedCandidateStatusForDate: [],
@@ -236,12 +239,12 @@ export default {
         selectedDateRow.push(`${currentDate.getDate()}`);
       }
 
-      Vue.set(this, "selectedDateRow", selectedDateRow); // Ensure reactivity
+      Vue.set(this, "selectedDateRow", selectedDateRow);
     },
     formatDate(day) {
       const selectedDate = new Date(this.startDate);
       selectedDate.setDate(day);
-      return selectedDate.toLocaleDateString(); // Adjust the format as needed
+      return selectedDate.toLocaleDateString();
     },
 
     openModal(candidateId, day) {
@@ -391,7 +394,7 @@ input.dateInput {
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%;
+  width: 90%;
 }
 
 .close {

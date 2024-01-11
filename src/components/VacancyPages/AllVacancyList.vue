@@ -59,7 +59,7 @@
                 ></i>
               </td>
 
-              <td>
+              <td class="text-center">
                 <button
                   type="button"
                   class="btn text-nowrap"

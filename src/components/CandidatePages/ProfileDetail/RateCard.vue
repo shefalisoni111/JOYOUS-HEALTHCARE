@@ -93,12 +93,13 @@
         </div>
       </div>
     </div>
+    <AddRateCard @rateCard="showRateCardMethod" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
+import AddRateCard from "../../../components/modals/CandidatePage/AddRateCard.vue";
 export default {
   name: "RateCard",
   data() {
@@ -106,7 +107,7 @@ export default {
       getRateCard: [],
     };
   },
-  components: {},
+  components: { AddRateCard },
   methods: {
     //  ratecard apis start
     async rateCardDelete(id) {
