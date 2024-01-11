@@ -3,16 +3,14 @@
     <!-- Modal -->
     <div
       class="modal fade"
-      id="editBankDetailsOverview"
+      id="viewDocCandidate"
       aria-labelledby="candidatePage"
       tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title text-center" id="editBankDetailsOverview">
-              Edit Details
-            </h5>
+            <h5 class="modal-title" id="viewDocCandidate">Document</h5>
             <button
               type="button"
               class="btn-close"
@@ -21,50 +19,33 @@
             ></button>
           </div>
           <div class="modal-body mx-3">
-            <div class="row align-items-center">
-              <form>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Account Number</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="number"
-                      class="form-control"
-                      v-model="fetchCandidate.bank_number"
-                    />
-                  </div>
+            <div class="row g-3 align-items-center">
+              <div class="container">
+                <div class="main-body mt-5">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Document Name</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{{ documentDetails.document_name }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">IFSC Code</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchCandidate.ifsc_code"
-                    />
-                  </div>
-                </div>
-              </form>
+              </div>
             </div>
           </div>
           <div class="modal-footer">
             <button
               class="btn btn-secondary rounded-1"
-              data-bs-target="#editBankDetailsOverview"
+              data-bs-target="#viewDocCandidate"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
             >
               Cancel
-            </button>
-            <button
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
-              data-bs-dismiss="modal"
-              @click.prevent="updateCandidateMethod()"
-            >
-              Save
             </button>
           </div>
         </div>
@@ -75,47 +56,41 @@
 
 <script>
 import axios from "axios";
-
 export default {
-  name: "NextToKinEdit",
+  name: "ProfileView",
   data() {
     return {
-      fetchCandidate: {
-        bank_number: "",
-        ifsc_code: "",
-      },
+      documentDetails: {},
     };
   },
-
-  methods: {
-    async fetchCandidateOverviewMethod() {
-      try {
-        const response = await axios.get(
-          `${VITE_API_URL}/candidates/${this.$route.params.id}`
-        );
-
-        this.fetchCandidate = response.data.data;
-      } catch (error) {
-        // console.error("Error fetching todo:", error);
-      }
+  props: {
+    documentId: {
+      type: Number,
+      default: null,
     },
-    async updateCandidateMethod() {
+  },
+  watch: {
+    documentId: {
+      immediate: true,
+      handler(newVal) {
+        if (newVal !== null) {
+          this.getDocumentDetails();
+        }
+      },
+    },
+  },
+  methods: {
+    async getDocumentDetails() {
       try {
-        await axios.put(
-          `${VITE_API_URL}/candidates/${this.$route.params.id}`,
-          this.fetchCandidate
-        );
-
-        alert("Candidate updated successfully");
-        window.location.reload();
+        const response = await axios.get(`${VITE_API_URL}/documents/${this.documentId}`);
+        this.documentDetails = response.data.data;
       } catch (error) {
-        // console.error("Error updating candidate:", error);
+        // Handle error if needed
       }
     },
   },
-
   mounted() {
-    this.fetchCandidateOverviewMethod();
+    this.getDocumentDetails();
   },
 };
 </script>
@@ -132,31 +107,16 @@ export default {
   border-top: 0px;
 }
 
-select {
-  width: 100%;
-  border: none;
-  padding: 9px;
-  border-radius: 4px;
-}
-
 #head {
   width: 40px;
   height: 40px;
 }
-.main-box {
-  background: #00000008;
 
-  padding: 100px 20px;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.model-box {
-  background: #f3f3f3;
-  margin: 20px 443px;
+select {
+  width: 100%;
   padding: 10px;
   border-radius: 4px;
-  box-shadow: 3px 1px 12px 14px #c3bdbd;
+  border: 0px;
 }
 .btn-primary {
   background-color: #ff5f30 !important;
@@ -165,7 +125,9 @@ select {
   border-radius: 4px;
   outline: none;
 }
-
+label.form-label {
+  text-transform: capitalize;
+}
 .switch {
   width: 50px;
   height: 17px;

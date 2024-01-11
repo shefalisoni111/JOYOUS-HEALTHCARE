@@ -52,7 +52,7 @@
                     placeholder="Search by Name"
                     aria-label="Search"
                     v-model="searchQuery"
-                    @change="search"
+                    @input="debounceSearch"
                   />
                   <!-- <button type="submit" class="btn btn-primary">Search</button> -->
 
@@ -138,7 +138,7 @@
       </div>
     </div>
 
-    <CandidateAdd />
+    <CandidateAdd @addCandidate="getActiveCAndidateMethod" />
   </div>
 </template>
 
@@ -158,11 +158,12 @@ export default {
       inactiveCandidateData: [],
       activeCandidate: [],
       searchQuery: null,
+      debounceTimeout: null,
       searchResults: [],
       tabs: [
         { name: "All ", component: "ActiveCandidate" },
         { name: "InActive ", component: "InActiveCandidate" },
-        { name: "Pending...", component: "Rejected" },
+        { name: "Pending", component: "Rejected" },
       ],
       activeTab: 0,
     };
@@ -180,6 +181,13 @@ export default {
   },
 
   methods: {
+    debounceSearch() {
+      clearTimeout(this.debounceTimeout);
+
+      this.debounceTimeout = setTimeout(() => {
+        this.search();
+      }, 300);
+    },
     selectTab(index) {
       this.activeTab = index;
     },
@@ -188,11 +196,8 @@ export default {
 
     async search() {
       try {
-        const token = localStorage.getItem("token");
         const response = await axios.post(`${VITE_API_URL}/candidate/search_candidate`, {
-          // Your search parameters in the request body
           first_name: this.searchQuery,
-          candidate_code: this.searchQuery,
         });
         this.searchResults = response.data;
       } catch (error) {

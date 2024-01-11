@@ -81,7 +81,7 @@ export default {
   data() {
     return {
       title: "",
-      jobs_id: 1,
+      jobs_id: "",
       amount: "",
       frequency: "",
       error: [],
@@ -91,7 +91,7 @@ export default {
     async addDeductionMethod() {
       const data = {
         title: this.title,
-        jobs_id: 1,
+        jobs_id: this.jobs_id,
         amount: this.amount,
         frequency: this.frequency,
       };
@@ -104,8 +104,14 @@ export default {
           },
           body: JSON.stringify(data),
         });
-        if (data) {
-          location.reload();
+        if (response.ok) {
+          this.$emit("updateList");
+
+          this.title = "";
+          this.amount = "";
+          this.frequency = "";
+        } else {
+          // console.error("Failed to add candidate deduction:", response.statusText);
         }
       } catch (error) {}
     },

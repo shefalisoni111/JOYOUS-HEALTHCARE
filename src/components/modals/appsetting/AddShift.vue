@@ -106,7 +106,7 @@ export default {
 
         window.location.reload();
       } catch (error) {
-        console.error("Error updating shifts:", error);
+        // console.error("Error updating shifts:", error);
       }
     };
 
@@ -115,7 +115,7 @@ export default {
         const response = await axios.get(`${VITE_API_URL}/shifts`);
         shifts.value = response.data || [];
       } catch (error) {
-        console.error("Error fetching shifts:", error);
+        // console.error("Error fetching shifts:", error);
       }
     };
 

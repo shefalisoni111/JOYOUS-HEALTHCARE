@@ -2,11 +2,11 @@
   <div class="col-12">
     <div class="pagetitle d-flex justify-content-between">
       <div class="d-flex align-items-center">
-        <ol class="breadcrumb mb-1">
+        <ul class="breadcrumb mb-1">
           <li class="breadcrumb-item active text-uppercase fw-bold">
             details / <span>candidates status</span>
           </li>
-        </ol>
+        </ul>
       </div>
       <!-- End Page Title -->
       <div class="d-flex align-items-center">
@@ -89,7 +89,7 @@
         </tbody>
       </table>
     </div>
-    <AddCandidateStatus />
+    <AddCandidateStatus @updateList="getCandidateData" />
   </div>
 </template>
 
@@ -123,19 +123,19 @@ export default {
       if (!window.confirm("Are you Sure ?")) {
         return;
       }
-      axios
-        .delete(`${VITE_API_URL}/candidate_statuses/` + id)
-        .then((response) => {
-          this.getCandidateDAta();
-        });
+      axios.delete(`${VITE_API_URL}/candidate_statuses/` + id).then((response) => {
+        this.getCandidateData();
+      });
 
       alert("Record Deleted ");
     },
 
-    getCandidateDAta() {
+    getCandidateData() {
       axios
         .get(`${VITE_API_URL}/candidate_statuses`)
-        .then((response) => (this.getCandidateStatus = response.data))
+        .then((response) => {
+          this.getCandidateStatus = response.data || [];
+        })
         .catch((error) => {
           if (error.response) {
             if (error.response.status == 404) {
@@ -147,7 +147,7 @@ export default {
   },
 
   mounted() {
-    this.getCandidateDAta();
+    this.getCandidateData();
   },
 };
 </script>

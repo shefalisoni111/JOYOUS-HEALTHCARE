@@ -9,7 +9,7 @@
           <div class="leftside">
             <div class="heading mb-3 position-relative">
               <p class="bforeline"></p>
-              <p class="mb-0 text-uppercase fw-bold">General Settings</p>
+              <p class="mb-0 text-uppercase fw-bold genSetting">General Settings</p>
               <p class="afterline"></p>
             </div>
             <div>
@@ -113,7 +113,7 @@
                 </li>
                 <div class="heading my-3 position-relative">
                   <p class="bforeline"></p>
-                  <p class="mb-0 text-uppercase fw-bold">Documents Setting</p>
+                  <p class="mb-0 text-uppercase fw-bold docSetting">Documents Setting</p>
                   <p class="afterlines"></p>
                 </div>
                 <li class="list-items d-flex">
@@ -166,6 +166,15 @@ export default {
 /*--------------------------------------------------------------
 # Page Title
 --------------------------------------------------------------*/
+.docSetting {
+  margin-left: -16px;
+  color: #ff5722;
+}
+
+.genSetting {
+  color: #ff5722;
+}
+
 .pagetitle {
   margin-bottom: 10px;
   background-color: #fff;

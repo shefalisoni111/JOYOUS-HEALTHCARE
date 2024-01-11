@@ -9,7 +9,8 @@ export default createStore({
     selectedAllItemId:null,
     selectedPublishItemId:null,
     candidates: [],
-    vacancies:[]
+    vacancies:[],
+    getCategory: [],
   },
   mutations: {
     setSelectedAppliedItemId(state, itemId) {
@@ -29,7 +30,7 @@ export default createStore({
     },
 
     updateCandidate(state, { id, newData }) {
-      console.log('Updating candidate:', id, newData);
+      // console.log('Updating candidate:', id, newData);
       const index = state.candidates.findIndex(candidate => candidate.id === id);
       if (index !== -1) {
         // Update the candidate in the array
@@ -37,12 +38,20 @@ export default createStore({
       }
     },
     updateVacancy(state, { id, newData }) {
-      const index = state.vacancies.findIndex(vacancy => vacancy.id === id);
+      const index = state.vacancies.findIndex(v => v.id === id);
       if (index !== -1) {
-        // Assuming your vacancies are stored in an array
-        state.vacancies.splice(index, 1, newData);
+        // Update the existing vacancy with newData
+        state.vacancies[index] = newData;
       }
-    }
+    },
+    updateCategory(state, payload) {
+      const { id, newData } = payload;
+      const categoryIndex = state.getCategory.findIndex((cat) => cat.id === id);
+      if (categoryIndex !== -1) {
+        state.getCategory[categoryIndex] = { ...state.getCategory[categoryIndex], ...newData };
+      }
+    },
+   
   
   },
   actions: {

@@ -66,9 +66,9 @@
     </div>
 
     <div class="mt-3 float-end">
-      <button class="btn btn-primary" @click="closeNestedCalendar">Close</button>&nbsp;
+      <button class="btn btn-primary" @click="closeNestedCalendar">Cancel</button>&nbsp;
       <button class="btn btn-primary" @click="addCandidateStatus" data-bs-dismiss="modal">
-        Add Status
+        Add Availability
       </button>
     </div>
   </div>
@@ -270,7 +270,7 @@ export default {
 }
 .calendar-day .day-number {
   border-radius: 50% !important;
-  background: #80808078 !important;
+  background: #b5cfe3 !important;
   padding: 9px 15px !important;
 }
 .calendar-grid {

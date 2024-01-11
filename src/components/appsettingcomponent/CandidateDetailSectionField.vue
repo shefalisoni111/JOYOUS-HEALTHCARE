@@ -2,11 +2,11 @@
   <div class="col-12">
     <div class="pagetitle d-flex justify-content-between">
       <div class="d-flex align-items-center">
-        <ol class="breadcrumb mb-1">
+        <ul class="breadcrumb mb-1">
           <li class="breadcrumb-item active text-uppercase fw-bold">
             genral settings / <span class="clr">candidate profile</span>
           </li>
-        </ol>
+        </ul>
       </div>
       <!-- End Page Title -->
     </div>
@@ -168,11 +168,7 @@
                   aria-labelledby="inactive"
                   tabindex="0"
                 >
-                  <p>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi veniam
-                    cum, optio similique esse soluta! Fuga dicta, eius aut ipsum ipsam
-                    ducimus vero deleniti odit debitis corporis, nemo vel possimus.
-                  </p>
+                  <p>Inprogress...</p>
                 </div>
               </div>
             </div>
@@ -183,7 +179,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import { onMounted } from "vue";
 
 export default {

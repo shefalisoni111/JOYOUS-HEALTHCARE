@@ -2,11 +2,11 @@
   <div class="col-12">
     <div class="pagetitle d-flex justify-content-between">
       <div class="d-flex align-items-center">
-        <ol class="breadcrumb mb-1">
+        <ul class="breadcrumb mb-1">
           <li class="breadcrumb-item active text-uppercase fw-bold">
             employment types details / <span>employment types</span>
           </li>
-        </ol>
+        </ul>
       </div>
       <!-- End Page Title -->
       <div class="d-flex align-items-center">
@@ -70,7 +70,7 @@
                   <th scope="col" class="col-2 text-white jusfycenter">Action</th>
                 </tr>
               </thead>
-              <tbody v-if="getEmployeeStatus.length > 0">
+              <tbody>
                 <tr v-for="getEmployee in getEmployeeStatus" :key="getEmployee.id">
                   <td :v-text="getEmployee.title">{{ getEmployee.title }}</td>
                   <td :v-text="getEmployee.description">
@@ -84,11 +84,6 @@
                   </td>
                 </tr>
               </tbody>
-              <tbody v-else>
-                <tr>
-                  <td colspan="3">Loading...</td>
-                </tr>
-              </tbody>
             </table>
           </div>
           <div
@@ -97,11 +92,13 @@
             role="tabpanel"
             aria-labelledby="companyDetail"
             tabindex="0"
-          ></div>
+          >
+            Inprogress...
+          </div>
         </div>
       </div>
     </div>
-    <AddEmployee />
+    <AddEmployee @updateList="getEmployeeDAta" />
   </div>
 </template>
 
@@ -115,21 +112,14 @@ export default {
   data() {
     return {
       getEmployeeStatus: [],
+      addEmployeeModal: null,
     };
   },
   components: {
     AddEmployee,
   },
-  onMounted() {
-    const addEmployee = new bootstrap.Modal(
-      document.getElementById("addEmployee"),
-      options
-    );
-  },
+
   methods: {
-    showPopups() {
-      addEmployee.show();
-    },
     employeeDelete(id) {
       if (!window.confirm("Are you Sure ?")) {
         return;
@@ -143,7 +133,7 @@ export default {
     getEmployeeDAta() {
       axios
         .get(`${VITE_API_URL}/employment_types`)
-        .then((response) => (this.getEmployeeStatus = response.data));
+        .then((response) => (this.getEmployeeStatus = response.data || []));
     },
   },
 

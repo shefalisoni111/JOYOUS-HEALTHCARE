@@ -114,8 +114,8 @@ export default {
       debounceTimeout: null,
       // searchQuery: "",
       tabs: [
-        { name: "All ", component: "AllVacancyList" },
-        { name: "InActive ", component: "InActiveVacancyList" },
+        { name: "Open ", component: "AllVacancyList" },
+        { name: "Assigned ", component: "InActiveVacancyList" },
       ],
       activeTab: 0,
     };
@@ -167,7 +167,7 @@ export default {
             Authorization: "bearer " + token,
           },
         });
-        this.vacancyCount = response.data.count;
+        this.vacancyCount = response.data;
       } catch (error) {
         // console.error("Error fetching vacancy count:", error);
       }

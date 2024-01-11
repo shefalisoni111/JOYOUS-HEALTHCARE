@@ -1,15 +1,12 @@
 <template>
   <div>
     <Navbar />
-    <AddVacancy />
 
     <router-view />
   </div>
 </template>
-<script >
+<script>
 import Navbar from "../components/Navbar.vue";
-
-import AddVacancy from "../components/modals/Vacancy/AddVacancy.vue";
 
 export default {
   data() {
@@ -22,7 +19,6 @@ export default {
 
   components: {
     Navbar,
-    AddVacancy,
   },
 
   methods: {},

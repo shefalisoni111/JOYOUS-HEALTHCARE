@@ -50,7 +50,7 @@
               class="border-bottom d-flex justify-content-between align-items-center pb-3"
             >
               <h5 class="card-title text-uppercase fw-bold small">
-                RESTRICTED LOCATIONS (15)
+                RESTRICTED LOCATIONS
               </h5>
               <div class="d-flex gap-2">
                 <button

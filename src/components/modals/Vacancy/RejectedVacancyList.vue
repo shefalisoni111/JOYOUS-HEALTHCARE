@@ -101,7 +101,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import axios from "axios";
 export default {
   name: "RejectedVacancyList",
@@ -180,8 +180,13 @@ label.form-label {
   width: 40px;
   height: 40px;
 }
-
-.modal {
-  --bs-modal-width: 881px;
+.modal-dialog {
+  margin-right: inherit;
+}
+.modal-xl {
+  width: 1400px !important;
+}
+.modal-content {
+  height: 930px;
 }
 </style>

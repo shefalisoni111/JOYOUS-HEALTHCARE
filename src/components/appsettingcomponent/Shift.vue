@@ -3,11 +3,11 @@
     <div class="col-12 p-0">
       <div class="pagetitle d-flex justify-content-between">
         <div class="d-flex align-items-center">
-          <ol class="breadcrumb mb-1">
+          <ul class="breadcrumb mb-1">
             <li class="breadcrumb-item active text-uppercase fw-bold">
               Shift / <span>shift</span>
             </li>
-          </ol>
+          </ul>
         </div>
         <!-- End Page Title -->
         <div class="d-flex align-items-center">
@@ -40,6 +40,7 @@
                     :name="'start-time-' + shift.id"
                     class="form-control"
                     :value="shift.start_time"
+                    readonly
                   />
                 </div>
 
@@ -53,6 +54,7 @@
                     :name="'end-time-' + shift.id"
                     class="form-control"
                     :value="shift.end_time"
+                    readonly
                   />
                 </div>
               </div>

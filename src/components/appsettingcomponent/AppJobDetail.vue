@@ -65,37 +65,28 @@
             <table class="table table table-hover addjobtable">
               <thead>
                 <tr>
-                  <th scope="col" class="col-1 bg-primary text-white">Colour</th>
-                  <th scope="col" class="col-2 bg-primary text-white">Name</th>
-                  <th scope="col" class="col-2 bg-primary text-white">Job Code</th>
-                  <th scope="col" class="col-3 bg-primary text-white text-center">
-                    No. of Clients
-                  </th>
-                  <th scope="col" class="col-3 bg-primary text-white text-center">
-                    No. of Candidate
-                  </th>
-
-                  <th scope="col" class="col-1 bg-primary text-white">Action</th>
+                  <th scope="col" class="bg-primary text-white">Colour</th>
+                  <th scope="col" class="bg-primary text-white">Name</th>
+                  <th scope="col" class="bg-primary text-white">Job Code</th>
+                  <th scope="col" class="bg-primary text-white">No. of Clients</th>
+                  <th scope="col" class="bg-primary text-white">No. of Candidate</th>
+                  <th scope="col" class="bg-primary text-white">No. of Documents</th>
+                  <th scope="col" class="bg-primary text-white">Action</th>
                 </tr>
               </thead>
-              <tbody v-if="getJobs.length > 0">
+              <tbody>
                 <tr v-for="jobs in getJobs" :key="jobs.id">
                   <td scope="row">
                     <i class="bi bi-square-fill" :style="{ color: jobs.color }"></i>
                   </td>
                   <td class="text-capitalize" v-text="jobs.name"></td>
                   <td v-text="jobs.job_code"></td>
-                  <td v-text="jobs.no_of_client" align="center"></td>
-                  <td v-text="jobs.no_of_candidates" align="center"></td>
-
+                  <td v-text="jobs.no_of_client"></td>
+                  <td v-text="jobs.no_of_candidates"></td>
+                  <td>2</td>
                   <td>
                     <i class="bi bi-trash" v-on:click="jobsDelete(jobs.id)"></i>
                   </td>
-                </tr>
-              </tbody>
-              <tbody v-else>
-                <tr>
-                  <td colspan="6">Loading...</td>
                 </tr>
               </tbody>
             </table>
@@ -111,15 +102,12 @@
           <table class="table table table-hover addjobtable">
             <thead>
               <tr>
-                <th scope="col" class="col-1 bg-primary text-white">Colour</th>
-                <th scope="col" class="col-2 bg-primary text-white">Name</th>
-                <th scope="col" class="col-2 bg-primary text-white">Job Code</th>
-                <th scope="col" class="col-3 bg-primary text-white text-center">
-                  No. of Clients
-                </th>
-                <th scope="col" class="col-3 bg-primary text-white text-center">
-                  No. of Candidate
-                </th>
+                <th scope="col" class="bg-primary text-white">Colour</th>
+                <th scope="col" class="bg-primary text-white">Name</th>
+                <th scope="col" class="bg-primary text-white">Job Code</th>
+                <th scope="col" class="bg-primary text-white">No. of Clients</th>
+                <th scope="col" class="bg-primary text-white">No. of Candidate</th>
+                <th scope="col" class="bg-primary text-white">No. of Documents</th>
               </tr>
             </thead>
             <tbody>
@@ -129,8 +117,9 @@
                 </td>
                 <td v-text="jobs.name"></td>
                 <td v-text="jobs.job_code"></td>
-                <td v-text="jobs.no_of_client" align="center"></td>
-                <td v-text="jobs.no_of_candidates" align="center"></td>
+                <td v-text="jobs.no_of_client"></td>
+                <td v-text="jobs.no_of_candidates"></td>
+                <td>2</td>
               </tr>
             </tbody>
           </table>
@@ -138,7 +127,7 @@
       </div>
     </div>
 
-    <AddJobbs />
+    <AddJobbs @jobAdded="getJobData" />
   </div>
 </template>
 
@@ -173,7 +162,6 @@ export default {
         .get(`${VITE_API_URL}/active_job_list`)
         .then((response) => {
           this.getJobs = response.data.data;
-          // this.getJobData();
         })
         .catch((error) => {
           if (error.response) {

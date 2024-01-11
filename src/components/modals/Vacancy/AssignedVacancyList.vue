@@ -102,7 +102,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import axios from "axios";
 
 export default {
@@ -179,10 +179,13 @@ label.form-label {
   width: 40px;
   height: 40px;
 }
-.modal-xl {
-  --bs-modal-width: 1823px !important;
+.modal-dialog {
+  margin-right: inherit;
 }
-.modal {
-  --bs-modal-width: 881px;
+.modal-xl {
+  width: 1400px !important;
+}
+.modal-content {
+  height: 930px;
 }
 </style>

@@ -16,7 +16,7 @@
 
     <div class="row m-4">
       <div class="mb-3" v-for="data in getNotes" :key="data.id">
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between border-1 border-success">
           <div class="">
             <div class="card">
               <div class="card-body">
@@ -41,7 +41,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import axios from "axios";
 export default {
   name: "Notes",
@@ -57,8 +57,7 @@ export default {
       }
       await axios
         .delete(
-          `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes/` +
-            id
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes/` + id
         )
         .then((response) => {
           this.createdClient();
@@ -67,9 +66,7 @@ export default {
     },
     async getNotesMethod() {
       await axios
-        .get(
-          `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes_list`
-        )
+        .get(`${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes_list`)
         .then((response) => (this.getNotes = response.data))
         .catch((error) => {
           if (error.response) {

@@ -13,7 +13,7 @@
               <th scope="col">Shift</th>
               <th scope="col">Notes</th>
               <th scope="col">Publish</th>
-              <th scope="col">All</th>
+              <th scope="col" class="text-center">All</th>
               <th scope="col">Applied</th>
               <th scope="col">Assigned</th>
               <th scope="col">Rejected</th>
@@ -25,15 +25,11 @@
             <tr v-for="getdata in getVacancyDetail" :key="getdata.id">
               <td v-text="getdata.ref_code"></td>
               <td>
-                <!-- <router-link
-                  class="text-capitalize text-black text-decoration-underline"
-                  :to="{
-                    name: 'SingleClientProfile',
-                    params: { id: getdata.client_id },
-                  }"
+                <router-link
+                  class="text-capitalize text-black text-decoration-underline fw-bold"
+                  to="/client"
                   >{{ getdata.client }}</router-link
-                > -->
-                {{ getdata.client }}
+                >
               </td>
               <td v-text="getdata.business_unit"></td>
               <td v-text="getdata.job_title"></td>
@@ -111,7 +107,8 @@
                   <span class="rounded-circle">{{ getdata.rejected }}</span>
                 </button>
               </td>
-              <td v-text="getdata.create_by_and_time"></td>
+              <td v-text="getdata.create_by_and_time.split(' ')[0]"></td>
+
               <td class="cursor-pointer">
                 <i
                   class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
@@ -121,7 +118,7 @@
                   @click="editVacancyId(getdata.id)"
                 ></i>
                 &nbsp;&nbsp;
-                <button class="btn btn-outline-success text-nowrap">
+                <button class="btn btn-outline-danger text-nowrap">
                   <i class="bi bi-trash" v-on:click="vacancyDeleteMethod(getdata.id)"></i>
                 </button>
               </td>
@@ -130,12 +127,13 @@
         </table>
       </div>
     </div>
-    <EditVacancy :vacancyId="selectedVacancyId" />
+    <EditVacancy :vacancyId="selectedVacancyId || 0" />
     <PublishedVacancy />
     <AppliedVacancyList />
     <AssignedVacancyList />
     <RejectedVacancyList />
     <AllVacancyCandidateList />
+    <AddVacancy @addVacancy="createVacancy" />
   </div>
 </template>
 
@@ -149,11 +147,12 @@ import AssignedVacancyList from "../modals/Vacancy/AssignedVacancyList.vue";
 import RejectedVacancyList from "../modals/Vacancy/RejectedVacancyList.vue";
 import AllVacancyCandidateList from "../modals/Vacancy/AllVacancyCandidateList.vue";
 import EditVacancy from "../modals/Vacancy/EditVacancy.vue";
+import AddVacancy from "../modals/Vacancy/AddVacancy.vue";
 export default {
   data() {
     return {
       getVacancyDetail: [],
-      selectedVacancyId: "",
+      selectedVacancyId: 0,
     };
   },
   components: {
@@ -163,6 +162,7 @@ export default {
     RejectedVacancyList,
     AllVacancyCandidateList,
     EditVacancy,
+    AddVacancy,
   },
   computed: {
     getIconClass() {
@@ -172,7 +172,17 @@ export default {
   methods: {
     editVacancyId(vacancyId) {
       this.selectedVacancyId = vacancyId;
-      console.log("selectedVacancyId", this.selectedVacancyId);
+    },
+    updateVacancyInList(updatedVacancy) {
+      // Find the index of the updated vacancy in the list
+      const index = this.getVacancyDetail.findIndex(
+        (vacancy) => vacancy.id === updatedVacancy.id
+      );
+
+      // Update the vacancy in the list
+      if (index !== -1) {
+        this.$set(this.getVacancyDetail, index, updatedVacancy);
+      }
     },
     openPopup(id) {
       this.$store.commit("setSelectedAppliedItemId", id);
@@ -195,7 +205,7 @@ export default {
       }
       const token = localStorage.getItem("token");
       await axios
-        .delete(`${VITE_API_URL}/vacancies/` + id, {
+        .put(`${VITE_API_URL}/inactive_vacancy/` + id, {
           headers: {
             "content-type": "application/json",
             Authorization: "bearer " + token,
@@ -204,7 +214,7 @@ export default {
         .then((response) => {
           this.createVacancy();
         });
-      // alert("Record Deleted ");
+      alert("InActive Vacancy");
     },
 
     async createVacancy() {

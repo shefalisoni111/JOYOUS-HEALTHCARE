@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-3">
         <div class="card border-success mb-3">
-          <div class="card-header">RecPal Demo</div>
+          <div class="card-header">RECPAL DEMO</div>
           <div class="card-body">
             <div class="col-12">
               <table class="table table-sm">
@@ -39,7 +39,7 @@
       </div>
       <div class="col-md-3">
         <div class="card border-success mb-3">
-          <div class="card-header">RecPal Demo</div>
+          <div class="card-header">RECPAL DEMO</div>
           <div class="card-body">
             <div class="col-12">
               <table class="table table-sm">
@@ -75,7 +75,7 @@
       </div>
       <div class="col-md-3">
         <div class="card border-success mb-3">
-          <div class="card-header">RecPal Demo</div>
+          <div class="card-header">RECPAL DEMO</div>
           <div class="card-body">
             <div class="col-12">
               <table class="table table-sm">
@@ -111,7 +111,7 @@
       </div>
       <div class="col-md-3">
         <div class="card border-success mb-3">
-          <div class="card-header">RecPal Demo</div>
+          <div class="card-header">RECPAL DEMO</div>
           <div class="card-body">
             <div class="col-12">
               <table class="table table-sm">
@@ -149,7 +149,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import axios from "axios";
 
 export default {

@@ -2,11 +2,11 @@
   <div class="col-12">
     <div class="pagetitle d-flex justify-content-between">
       <div class="d-flex align-items-center">
-        <ol class="breadcrumb mb-1">
+        <ul class="breadcrumb mb-1">
           <li class="breadcrumb-item active text-uppercase fw-bold">
             genral settings / <span class="clr">candidate deductions</span>
           </li>
-        </ol>
+        </ul>
       </div>
       <!-- End Page Title -->
       <div class="d-flex align-items-center">
@@ -78,21 +78,21 @@
                           <th scope="col" class="col-1 bg-primary text-white">Action</th>
                         </tr>
                       </thead>
-                      <tbody v-if="getCandidateDeduction.length > 0">
+                      <tbody>
                         <tr
                           v-for="getDeduction in getCandidateDeduction"
                           :key="getDeduction.id"
                         >
-                          <td :v-text="getDeduction.title">
+                          <td>
                             {{ getDeduction.title }}
                           </td>
-                          <td :v-text="getDeduction.job">
+                          <td>
                             {{ getDeduction.jobs_id }}
                           </td>
-                          <td :v-text="getDeduction.amount">
+                          <td>
                             {{ getDeduction.amount }}
                           </td>
-                          <td :v-text="getDeduction.frequency">
+                          <td>
                             {{ getDeduction.frequency }}
                           </td>
 
@@ -102,11 +102,6 @@
                               v-on:click="candidateDeductionDelete(getDeduction.id)"
                             ></i>
                           </td>
-                        </tr>
-                      </tbody>
-                      <tbody v-else>
-                        <tr>
-                          <td colspan="5">Loading...</td>
                         </tr>
                       </tbody>
                     </table>
@@ -119,11 +114,7 @@
                   aria-labelledby="inactive_candidate_deduction"
                   tabindex="0"
                 >
-                  <p>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi veniam
-                    cum, optio similique esse soluta! Fuga dicta, eius aut ipsum ipsam
-                    ducimus vero deleniti odit debitis corporis, nemo vel possimus.
-                  </p>
+                  <p>Inprogress...</p>
                 </div>
               </div>
             </div>
@@ -131,13 +122,13 @@
         </div>
       </div>
     </div>
-    <AddDeductionComponent />
+    <AddDeductionComponent @updateList="fetchCandidateDeductions" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import { onMounted } from "vue";
+
 import AddDeductionComponent from "../modals/appsetting/AddDeduction.vue";
 export default {
   name: "CandidateDeduction",
@@ -149,37 +140,26 @@ export default {
   components: {
     AddDeductionComponent,
   },
-  onMounted() {
-    // const addDeduction = new bootstrap.Modal(
-    //   document.getElementById("addDeduction"),
-    //   options
-    // );
-  },
 
   methods: {
-    showPopups() {
-      addDeduct.show();
-    },
     candidateDeductionDelete(id) {
       if (!window.confirm("Are you Sure ?")) {
         return;
       }
-      axios
-        .delete(`${VITE_API_URL}/candidate_deductions/` + id)
-        .then((response) => {
-          this.candidateDeduction();
-        });
+      axios.delete(`${VITE_API_URL}/candidate_deductions/` + id).then((response) => {
+        this.fetchCandidateDeductions();
+      });
       alert("Record Deleted ");
     },
-    async candidateDeduction() {
+    async fetchCandidateDeductions() {
       await axios
         .get(`${VITE_API_URL}/candidate_deductions`)
-        .then((response) => (this.getCandidateDeduction = response.data));
+        .then((response) => (this.getCandidateDeduction = response.data || []));
     },
   },
 
   mounted() {
-    this.candidateDeduction();
+    this.fetchCandidateDeductions();
   },
 };
 </script>
@@ -217,6 +197,7 @@ table th {
 table thead th {
   background-color: #f9944b !important;
 }
+
 .btn-primary {
   border: none;
 }

@@ -67,9 +67,7 @@
                       v-model="email"
                       @input="clearError"
                     />
-                    <span v-if="!validateEmail" class="text-danger"
-                      >Invalid Email Format</span
-                    >
+                    <span v-if="!validateEmail" class="text-danger">Required Email </span>
                   </div>
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
@@ -113,7 +111,7 @@
                       @input="clearError"
                     />
                     <span v-if="!validatePhoneNumber" class="text-danger"
-                      >Invalid Phone Number</span
+                      >Required Phone Number</span
                     >
                   </div>
                 </div>
@@ -248,8 +246,17 @@ export default {
             body: JSON.stringify(data),
           });
 
-          if (data) {
-            location.reload();
+          if (response.ok) {
+            this.$emit("addCandidate");
+
+            this.first_name = "";
+            this.job_id = "";
+            this.password = "";
+            this.confirm_password = "";
+            this.phone_number = "";
+            this.email = "";
+            this.activated = "";
+          } else {
           }
         } catch (error) {}
       } else {

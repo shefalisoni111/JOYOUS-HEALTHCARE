@@ -92,7 +92,16 @@
                         {{ getCandidates.phone_number }}</span
                       >
                     </div>
-                    <button type="button" class="btn btn-outline-primary">Edit</button>
+                    <button
+                      type="button"
+                      class="btn btn-primary text-nowrap text-nowrap"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editContactProfile"
+                      data-bs-whatever="@mdo"
+                      @click="editCandidate(getCandidates.id)"
+                    >
+                      Edit
+                    </button>
                   </div>
                 </div>
               </div>
@@ -139,10 +148,11 @@
     <AddRateCard />
     <NextToKinEdit />
     <EditBankDetails />
+    <EditProfileContact :candidateId="selectedCandidateId" />
   </div>
 </template>
 
-<script >
+<script>
 import axios from "axios";
 
 import Overview from "../CandidatePages/ProfileDetail/Overview.vue";
@@ -158,6 +168,7 @@ import OverviewEdit from "../modals/CandidatePage/OverviewEdit.vue";
 import NextToKinEdit from "../modals/CandidatePage/OverView/NextToKinEdit.vue";
 import EditBankDetails from "../modals/CandidatePage/OverView/EditBankDetails.vue";
 import AddRestrictedLocation from "../modals/CandidatePage/AddRestrictedLocation.vue";
+import EditProfileContact from "../modals/CandidatePage/EditProfileContact.vue";
 
 import AddRateCard from "../modals/CandidatePage/AddRateCard.vue";
 // import EditRateCard from "../modals/CandidatePage/EditRateCard.vue";
@@ -172,6 +183,7 @@ export default {
       restrictedShift: [],
       getCount: [],
       getCandidateData: [],
+      selectedCandidateId: null,
 
       tabs: [
         { name: "Overview ", component: "Overview" },
@@ -205,9 +217,16 @@ export default {
     AddNotes,
     NextToKinEdit,
     EditBankDetails,
+    EditProfileContact,
   },
 
   props: ["id"],
+  props: {
+    candidateId: {
+      type: Number,
+      default: null,
+    },
+  },
   computed: {
     userId() {
       return this.id;
@@ -231,6 +250,9 @@ export default {
   },
 
   methods: {
+    editCandidate(candidateId) {
+      this.selectedCandidateId = candidateId;
+    },
     getTabLink(tab) {
       return { name: tab.component, params: { id: this.$route.params.id } };
     },

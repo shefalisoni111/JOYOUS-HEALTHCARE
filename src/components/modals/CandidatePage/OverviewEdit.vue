@@ -47,7 +47,7 @@
                   </div>
                   <div class="col-12 mt-1">
                     <input
-                      type="text"
+                      type="number"
                       class="form-control"
                       v-model="fetchCandidate.DBS_PVG_no"
                     />
@@ -95,7 +95,7 @@
                   </div>
                   <div class="col-12 mt-1">
                     <input
-                      type="text"
+                      type="number"
                       class="form-control"
                       v-model="fetchCandidate.NMC_NISCC_SSSC_pin"
                     />
@@ -239,7 +239,7 @@ export default {
         );
 
         alert("Candidate updated successfully");
-        // window.location.reload();
+        window.location.reload();
       } catch (error) {
         // console.error("Error updating candidate:", error);
       }

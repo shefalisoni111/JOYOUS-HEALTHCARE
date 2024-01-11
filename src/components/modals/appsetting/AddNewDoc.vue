@@ -138,11 +138,16 @@ export default {
           },
           body: JSON.stringify(data),
         });
-        this.$emit("documentAdded");
-        // Handle the response as needed
-        if (data) {
-          location.reload();
+        if (response.ok) {
+          this.$emit("documentAdded");
+
+          this.document_name = "";
+          this.document_category_id = "";
+          this.mandatory = "";
+          this.hide_document = "";
+          this.profile_view = "";
         }
+        // Handle the response as needed
       } catch (error) {
         // console.error("Error adding document:", error);
       }

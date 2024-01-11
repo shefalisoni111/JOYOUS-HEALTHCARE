@@ -23,7 +23,7 @@
                 </router-link> -->
                 <button
                   type="button"
-                  class="btn btn-outline-success text-nowrap text-nowrap mb-3"
+                  class="btn btn-primary rounded-1 fw-medium mb-3"
                   data-bs-toggle="modal"
                   data-bs-target="#editOverview"
                   data-bs-whatever="@mdo"
@@ -37,7 +37,7 @@
                 <thead>
                   <tr class=""></tr>
                 </thead>
-                <tbody class="text-capitalize">
+                <tbody class="text-capitalize" v-if="getCandidatesDataInOverview">
                   <tr>
                     <td>Candidate ID</td>
                     <td>:</td>
@@ -109,16 +109,12 @@
             <div class="card-header">
               <div class="d-flex justify-content-between">
                 <div class="d-flex align-items-center">
-                  <div class="fs-smaller text-nowrap">Profile View</div>
-                  <label class="switch">
-                    <input type="checkbox" id="togBtn" checked />
-                    <div class="slider round"></div>
-                  </label>
+                  <h6 class="mb-0">Bank Details</h6>
                 </div>
 
                 <div>
                   <button
-                    class="btn btn-primary rounded-1 text-uppercase fw-medium mb-3"
+                    class="btn btn-primary rounded-1 fw-medium mb-0"
                     data-bs-toggle="modal"
                     data-bs-target="#editBankDetailsOverview"
                     data-bs-whatever="@mdo"
@@ -126,6 +122,13 @@
                   >
                     Edit
                   </button>
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="fs-smaller text-nowrap">Profile View</div>
+                  <label class="switch">
+                    <input type="checkbox" id="togBtn" checked />
+                    <div class="slider round"></div>
+                  </label>
                 </div>
               </div>
             </div>
@@ -136,7 +139,9 @@
                 </thead>
                 <tbody class="text-capitalize">
                   <tr>
-                    <td>Bank Details</td>
+                    <td>Bank Name</td>
+                    <td>:</td>
+                    <td>IDBI</td>
                   </tr>
                   <tr>
                     <td>Account No</td>
@@ -167,7 +172,7 @@
             <div class="card-body">
               <div class="d-flex gap-2">
                 <button type="button" class="btn btn-primary btn-sm">
-                  Assitance number
+                  Assistance Number
                 </button>
                 <button type="button" class="btn btn-primary btn-sm">HCA</button>
                 <button type="button" class="btn btn-primary btn-sm">+ Add</button>
@@ -252,13 +257,6 @@
                     <td>social care wealth</td>
                     <td>:</td>
                     <td>2345678978</td>
-                    <td>
-                      <div class="d-flex justify-content-between">
-                        <div class="fs-smaller text-nowrap">Profile View</div>
-
-                        <input type="checkbox" id="togBtn" />
-                      </div>
-                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -302,7 +300,7 @@
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody v-if="getNextToKin">
                   <tr v-for="data in getNextToKin" :key="data.id">
                     <td v-text="data.name"></td>
                     <td v-text="data.phone_number"></td>
@@ -414,7 +412,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import axios from "axios";
 import WorkExperience from "../../modals/CandidatePage/OverView/WorkExperience.vue";
 import EducationAdd from "../../modals/CandidatePage/OverView/EducationAdd.vue";
@@ -451,14 +449,15 @@ export default {
         );
 
         this.getCandidatesDataInOverview = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
+
+        if (this.getCandidatesDataInOverview && this.getCandidatesDataInOverview.id) {
+          const candidateId = this.getCandidatesDataInOverview?.id;
         } else {
-          // console.error("Error fetching candidates:", error);
         }
+      } catch (error) {
+        // Handle API request error
+        // console.error("Error fetching candidate data:", error)
+        // throw error;
       }
     },
     async getCandidateWorkExperienceMethod() {
@@ -501,15 +500,14 @@ export default {
           `${VITE_API_URL}/candidates/${this.$route.params.id}/next_of_kins`
         );
 
-        this.getNextToKin = response.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
+        // Check if the response data is an array and has at least one element
+        if (Array.isArray(response.data) && response.data.length > 0) {
+          this.getNextToKin = response.data;
         } else {
-          // console.error("Error fetching candidates:", error);
+          // console.error("Unexpected response format:", response.data);
         }
+      } catch (error) {
+        // console.error("Error fetching next of kin data:", error);
       }
     },
     async vacancyDeleteMethod(id) {
@@ -519,8 +517,7 @@ export default {
       const token = localStorage.getItem("token");
       await axios
         .delete(
-          `${VITE_API_URL}/candidates/${this.$route.params.id}/next_of_kins/` +
-            id,
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/next_of_kins/` + id,
           {
             headers: {
               "content-type": "application/json",
@@ -535,11 +532,15 @@ export default {
     },
   },
 
-  mounted() {
-    this.getCandidateMethod();
-    this.getCandidateWorkExperienceMethod();
-    this.getCandidateEducationMethod();
-    this.getCandidateNextToKineMethod();
+  async mounted() {
+    try {
+      await this.getCandidateMethod();
+      await this.getCandidateWorkExperienceMethod();
+      await this.getCandidateEducationMethod();
+      await this.getCandidateNextToKineMethod();
+    } catch (error) {
+      // console.error("Error during component initialization:", error);
+    }
   },
 };
 </script>

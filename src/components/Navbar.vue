@@ -2,12 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="/home"
-        ><img
-          src="../assets/logo.png"
-          loading="lazy"
-          class="img-fluid"
-          alt="RecPal"
-          width="119"
+        ><img src="../assets/logo.png" class="img-fluid" alt="RecPal" width="119"
       /></a>
       <button
         class="navbar-toggler"
@@ -277,15 +272,12 @@ export default {
     async getAdminMethod() {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/merchant_dashboard`,
-          {
-            headers: {
-              "content-type": "application/json",
-              Authorization: "bearer " + token,
-            },
-          }
-        );
+        const response = await axios.get(`${VITE_API_URL}/merchant_dashboard`, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+        });
 
         this.getAdminData = response.data.merchant_data;
       } catch (error) {

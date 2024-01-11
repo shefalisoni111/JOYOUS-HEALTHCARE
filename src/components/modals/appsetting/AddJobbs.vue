@@ -112,6 +112,7 @@ export default {
       errors: {},
     };
   },
+
   computed: {
     isButtonDisabled() {
       return (
@@ -121,16 +122,18 @@ export default {
   },
   methods: {
     clearError(fieldName) {
-      // Clear the error for the specific field
-      this.$set(this.errors, fieldName, null);
+      this.errors[fieldName] = null;
     },
     getError(fieldName) {
       // Get the error message for the specific field
       return this.errors[fieldName];
     },
     isEmptyField() {
-      // Check if any field is empty
-      return !this.name.trim() || !this.color.trim() || !this.description.trim();
+      return !this.name || !this.isValidColor(this.color) || !this.description;
+    },
+    isValidColor(color) {
+      const hexColorRegex = /^#[0-9A-Fa-f]{6}$/;
+      return hexColorRegex.test(color);
     },
     validateAndAddJob() {
       this.errors = {}; // Reset errors
@@ -172,8 +175,13 @@ export default {
           },
           body: JSON.stringify(data),
         });
-        if (data) {
-          location.reload();
+        if (response.ok) {
+          this.$emit("jobAdded");
+
+          this.name = "";
+          this.color = "";
+          this.description = "";
+        } else {
         }
       } catch (error) {}
     },

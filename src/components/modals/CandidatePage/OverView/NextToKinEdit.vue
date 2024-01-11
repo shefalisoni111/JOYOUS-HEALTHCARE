@@ -18,7 +18,7 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body mx-3">
+          <div class="modal-body mx-3" v-if="fetchCandidate">
             <div class="row align-items-center">
               <form>
                 <div class="mb-3">
@@ -39,7 +39,7 @@
                   </div>
                   <div class="col-12 mt-1">
                     <input
-                      type="text"
+                      type="number"
                       class="form-control"
                       v-model="fetchCandidate.phone_number"
                     />
@@ -99,7 +99,7 @@
                   </div>
                   <div class="col-12 mt-1">
                     <input
-                      type="text"
+                      type="number"
                       class="form-control"
                       v-model="fetchCandidate.postcode"
                     />
@@ -131,7 +131,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import axios from "axios";
 
 export default {
@@ -147,6 +147,7 @@ export default {
         city: "",
         postcode: "",
       },
+      fetchCandidate: null,
     };
   },
 

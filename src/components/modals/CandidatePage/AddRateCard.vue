@@ -279,9 +279,9 @@ export default {
           },
           body: JSON.stringify(data),
         });
-        if (data) {
-          location.reload();
-        }
+        // if (data) {
+        //   location.reload();
+        // }
       } catch (error) {}
     },
     async getJobTitleMethod() {

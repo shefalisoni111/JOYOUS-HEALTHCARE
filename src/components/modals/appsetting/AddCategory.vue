@@ -83,6 +83,7 @@
 
 <script>
 import axios from "axios";
+
 export default {
   name: "AddCategory",
   data() {
@@ -94,6 +95,7 @@ export default {
       errors: {},
     };
   },
+
   computed: {
     selectedOptionText() {
       const selectedOptions = this.options.filter((option) =>
@@ -120,7 +122,7 @@ export default {
             },
             body: JSON.stringify(data),
           });
-          if (data) {
+          if (response.ok) {
             location.reload();
           }
         } catch (error) {}
@@ -145,8 +147,7 @@ export default {
       );
     },
     clearError(fieldName) {
-      // Clear the error for the specific field
-      this.$set(this.errors, fieldName, null);
+      this.errors[fieldName] = null;
     },
     getError(fieldName) {
       // Get the error message for the specific field

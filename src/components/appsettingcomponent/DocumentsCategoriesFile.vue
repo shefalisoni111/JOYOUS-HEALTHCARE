@@ -3,11 +3,11 @@
     <div class="settingsdetails">
       <div class="pagetitle d-flex justify-content-between">
         <div class="d-flex align-items-center">
-          <ol class="breadcrumb mb-1 py-2">
+          <ul class="breadcrumb mb-1 py-2">
             <li class="breadcrumb-item active text-uppercase fw-bold">
               genral setting / <span>Document Categories</span>
             </li>
-          </ol>
+          </ul>
         </div>
         <!-- End Page Title -->
       </div>
@@ -46,10 +46,21 @@
 
               <ul class="list-unstyled d-inline-flex align-items-center mb-0">
                 <li class="p-3">
-                  <i class="bi bi-pen"></i>
+                  <button
+                    class="btn btn-outline-success text-nowrap text-nowrap"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editDocCategory"
+                    data-bs-whatever="@mdo"
+                    @click="editCategory($event, getCate.id)"
+                  >
+                    <li class="bi bi-pen"></li>
+                  </button>
                 </li>
                 <li class="p-3">
-                  <i class="bi bi-trash" v-on:click="categoryDelete(getCate.id)"></i>
+                  <i
+                    class="bi bi-trash btn btn-outline-success text-nowrap text-nowrap"
+                    v-on:click="categoryDelete(getCate.id)"
+                  ></i>
                 </li>
                 <li class="p-3">
                   <button
@@ -126,7 +137,11 @@
       </div>
     </div>
     <AddNewDoc :categoryId="selectedCategoryId" @documentAdded="onDocumentAdded" />
-    <AddCategory />
+    <EditCategoryDoc
+      :categoryId="selectedCategoryId"
+      @onDocAdded="getDocumentCategories"
+    />
+    <AddCategory :categoryId="selectedCategoryId" />
   </div>
 </template>
 
@@ -134,6 +149,7 @@
 import axios from "axios";
 import AddNewDoc from "../modals/appsetting/AddNewDoc.vue";
 import AddCategory from "../modals/appsetting/AddCategory.vue";
+import EditCategoryDoc from "../modals/appsetting/EditCategoryDoc.vue";
 
 export default {
   name: "DocumentCategories",
@@ -148,9 +164,14 @@ export default {
   components: {
     AddNewDoc,
     AddCategory,
+    EditCategoryDoc,
   },
 
   methods: {
+    editCategory(event, categoryId) {
+      event.stopPropagation();
+      this.selectedCategoryId = categoryId;
+    },
     toggleAccordion(index) {
       // Close all accordions
       this.getCategory.forEach((getCate, i) => {
@@ -163,7 +184,7 @@ export default {
       this.getCategory[index].isOpen = !this.getCategory[index].isOpen;
     },
     onDocumentAdded() {
-      this.getDocCAtegories;
+      this.getDocCAtegories();
     },
     selectCategory(categoryId) {
       this.selectedCategoryId = categoryId;
@@ -172,11 +193,9 @@ export default {
       if (!window.confirm("Are you Sure ?")) {
         return;
       }
-      axios
-        .delete(`${VITE_API_URL}/document_categories/` + id)
-        .then((response) => {
-          this.getDocCAtegories();
-        });
+      axios.delete(`${VITE_API_URL}/document_categories/` + id).then((response) => {
+        this.getDocCAtegories();
+      });
       alert("Record Deleted ");
     },
     documentDelete(id) {

@@ -3,11 +3,7 @@
   <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
       <li class="nav-item">
-        <router-link
-          class="nav-link"
-          to="/appsetting"
-          aria-label="appSettingPage"
-        >
+        <router-link class="nav-link" to="/appsetting" aria-label="appSettingPage">
           <i class="bi bi-gear"></i>
         </router-link>
       </li>
@@ -146,10 +142,6 @@
   border-radius: 0px;
 }
 
-.sidebar-nav .nav-link.collapsed:nth-last-child() {
-  border-bottom: 0px;
-}
-
 .sidebar-nav .nav-link:hover {
   color: #fff;
   background: #0d6efd;
@@ -198,7 +190,7 @@
 }
 </style>
 
-<script >
+<script>
 (function () {
   "use strict";
 

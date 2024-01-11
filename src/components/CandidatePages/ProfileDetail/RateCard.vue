@@ -15,7 +15,7 @@
               data-bs-target="#rateCards"
               data-bs-whatever="@mdo"
             >
-              + Add Or Update Notes
+              + Add Or Update Rate Card
             </button>
 
             <!-- <button type="button" class="btn btn-outline-success text-nowrap">
@@ -34,20 +34,12 @@
             <table class="table candidateTable">
               <thead>
                 <tr>
-                  <th scope="col">
-                    Sl.No
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="flexCheckDefault"
-                    />
-                  </th>
+                  <th scope="col">S.No</th>
                   <th scope="col">Business Unit</th>
                   <th scope="col">Position</th>
                   <th scope="col">Day</th>
                   <th scope="col">Employment Type</th>
-                  <th scope="col">Shift Type Start End Time</th>
+                  <th scope="col">Shift Type</th>
                   <th scope="col">Staff Rate</th>
                   <th scope="col">Last Update</th>
                   <th scope="col">Action</th>

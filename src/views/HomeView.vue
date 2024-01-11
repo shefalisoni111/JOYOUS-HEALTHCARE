@@ -7,7 +7,7 @@
           <ol class="breadcrumb mb-1">
             <li class="breadcrumb-item active">Dashboard</li>
           </ol>
-          <h5>Welcome To Recruitment Pal</h5>
+          <h5>Welcome to Recpal</h5>
         </div>
         <!-- End Page Title -->
         <div class="d-flex align-items-center">
@@ -40,8 +40,8 @@
                         ></div>
                         <div class="ps-2">
                           <h6 v-text="getRecords.Total_client"></h6>
-                          <span class="text-muted small pt-2 text-uppercase"
-                            >Total Client</span
+                          <span class="text-muted pt-2 text-capitalize"
+                            >Total Clients</span
                           >
                         </div>
                       </div>
@@ -60,8 +60,8 @@
                         ></div>
                         <div class="ps-2">
                           <h6 v-text="getRecords.Active_client"></h6>
-                          <span class="text-muted small pt-2 text-uppercase"
-                            >active client</span
+                          <span class="text-muted pt-2 text-capitalize"
+                            >active clients</span
                           >
                         </div>
                       </div>
@@ -80,8 +80,8 @@
                         ></div>
                         <div class="ps-2">
                           <h6 v-text="getRecords.Passive_client"></h6>
-                          <span class="text-muted small pt-2 text-uppercase"
-                            >inactive client</span
+                          <span class="text-muted pt-2 text-capitalize"
+                            >inactive clients</span
                           >
                         </div>
                       </div>
@@ -106,7 +106,7 @@
                         ></div>
                         <div class="ps-2">
                           <h6 v-text="getRecords.candidates"></h6>
-                          <span class="text-muted small pt-2 text-uppercase"
+                          <span class="text-muted pt-2 text-capitalize"
                             >Total Candidates</span
                           >
                         </div>
@@ -126,7 +126,7 @@
                         ></div>
                         <div class="ps-2">
                           <h6 v-text="getRecords.current_candidate"></h6>
-                          <span class="text-muted small pt-2 text-uppercase"
+                          <span class="text-muted pt-2 text-capitalize"
                             >active Candidates</span
                           >
                         </div>
@@ -146,7 +146,7 @@
                         ></div>
                         <div class="ps-2">
                           <h6 v-text="getRecords.deleted_candidate"></h6>
-                          <span class="text-muted small pt-2 text-uppercase"
+                          <span class="text-muted pt-2 text-capitalize"
                             >inactive Candidates</span
                           >
                         </div>
@@ -177,7 +177,7 @@
                         ></div>
                         <div class="ps-2">
                           <h6 v-text="getRecords.Total_business_unit"></h6>
-                          <span class="text-muted small pt-2 text-uppercase"
+                          <span class="text-muted pt-2 text-capitalize"
                             >Total Business Units</span
                           >
                         </div>
@@ -197,7 +197,7 @@
                         ></div>
                         <div class="ps-2">
                           <h6 v-text="getRecords.Active_business_unit"></h6>
-                          <span class="text-muted small pt-2 text-uppercase"
+                          <span class="text-muted pt-2 text-capitalize"
                             >active Business Units</span
                           >
                         </div>
@@ -217,7 +217,7 @@
                         ></div>
                         <div class="ps-2">
                           <h6 v-text="getRecords.Inactive_business_unit"></h6>
-                          <span class="text-muted small pt-2 text-uppercase"
+                          <span class="text-muted pt-2 text-capitalize"
                             >inactive Business Units</span
                           >
                         </div>
@@ -246,7 +246,7 @@
                             Expiring in 60 days({{ getRecords.expiring_in_60_days }})
                           </h6>
                           <span
-                            class="text-muted small pt-2 text-uppercase cursor-pointer"
+                            class="text-muted pt-2 text-capitalize cursor-pointer"
                             data-bs-toggle="modal"
                             data-bs-target="#inprogress"
                             data-bs-whatever="@mdo"
@@ -272,7 +272,7 @@
                             Expiring in 30 days({{ getRecords.expiring_in_30_days }})
                           </h6>
                           <span
-                            class="text-muted small pt-2 text-uppercase cursor-pointer"
+                            class="text-muted pt-2 text-capitalize cursor-pointer"
                             data-bs-toggle="modal"
                             data-bs-target="#inprogress"
                             data-bs-whatever="@mdo"
@@ -296,7 +296,7 @@
                         <div class="ps-2">
                           <h6>Expired ({{ getRecords.compliance_insight }})</h6>
                           <span
-                            class="text-muted small pt-2 text-uppercase cursor-pointer"
+                            class="text-muted pt-2 text-capitalize cursor-pointer"
                             data-bs-toggle="modal"
                             data-bs-target="#inprogress"
                             data-bs-whatever="@mdo"
@@ -359,14 +359,50 @@
               <div class="card h-100">
                 <div class="d-flex justify-content-between bg-white rounded">
                   <div class="col-lg-7 p-3">
-                    <div class="position-relative">
+                    <div class="input-group mb-3">
                       <input
                         class="form-control"
                         type="text"
                         name="datefilter"
-                        value=""
+                        :value="formatDateRange"
                         placeholder="Select Date from Start to End"
-                      /><i class="bi bi-calendar2-check position-absolute"></i>&nbsp;
+                        readonly
+                        style="width: 200px"
+                      />
+                      <i
+                        class="bi bi-calendar2-check position-absolute"
+                        @click="showDatePicker = !showDatePicker"
+                        style="cursor: pointer"
+                      ></i
+                      >&nbsp;
+
+                      <!-- Custom date picker component -->
+                      <div v-if="showDatePicker" class="date-picker" style="width: 200px">
+                        <!-- Set a fixed width for the date picker -->
+                        <div class="mb-3">
+                          <label for="startDate" class="form-label">Start Date:</label>
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="startDate"
+                            v-model="startDate"
+                            @change="updateEndDateMin"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label for="endDate" class="form-label">End Date:</label>
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="endDate"
+                            v-model="endDate"
+                            :min="startDate"
+                          />
+                        </div>
+                        <button class="btn btn-primary" @click="applyDateRange">
+                          Apply
+                        </button>
+                      </div>
                     </div>
 
                     <table class="table table-borderless sizefix">
@@ -432,6 +468,9 @@ export default {
   data() {
     return {
       getRecords: [],
+      startDate: "",
+      endDate: "",
+      showDatePicker: false,
     };
   },
   components: {
@@ -440,7 +479,23 @@ export default {
     Navbar,
     InProgress,
   },
-  methods: {},
+  computed: {
+    formatDateRange() {
+      return this.startDate && this.endDate
+        ? `${this.startDate} to ${this.endDate}`
+        : "Select Date from Start to End";
+    },
+  },
+  methods: {
+    updateEndDateMin() {
+      this.$refs.endDate.min = this.startDate;
+    },
+    applyDateRange() {
+      localStorage.setItem("startDate", this.startDate);
+      localStorage.setItem("endDate", this.endDate);
+      this.showDatePicker = false;
+    },
+  },
   async created() {
     const token = localStorage.getItem("token");
     axios
@@ -454,7 +509,15 @@ export default {
       .then((response) => (this.getRecords = response.data.data));
   },
 
-  mounted() {},
+  mounted() {
+    const storedStartDate = localStorage.getItem("startDate");
+    const storedEndDate = localStorage.getItem("endDate");
+
+    if (storedStartDate && storedEndDate) {
+      this.startDate = storedStartDate;
+      this.endDate = storedEndDate;
+    }
+  },
 };
 </script>
 
@@ -477,7 +540,9 @@ export default {
 table.sizefix {
   font-size: 15px;
 }
-
+.input-group {
+  width: 95%;
+}
 .bi-calendar2-check {
   top: 4px;
   right: 10px;
@@ -550,10 +615,7 @@ table th.cw {
 h6 {
   font-size: 14px;
 }
-small,
-.small {
-  font-size: 0.7rem;
-}
+
 span {
   font-weight: 600;
 }

@@ -3,14 +3,14 @@
     <!-- Modal -->
     <div
       class="modal fade"
-      id="editCandidate"
-      aria-labelledby="editCandidate"
+      id="editContactProfile"
+      aria-labelledby="editContactProfile"
       tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="editCandidate">Edit Candidate</h5>
+            <h5 class="modal-title" id="editContactProfile">Edit Contact</h5>
             <button
               type="button"
               class="btn-close"
@@ -21,33 +21,6 @@
           <div class="modal-body mx-3">
             <div class="row align-items-center">
               <form>
-                <div class="mb-3">
-                  <div class="">
-                    <div class="col-12">
-                      <label class="form-label">Name</label>
-                    </div>
-                    <div class="col-12 mt-1">
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="fetchCandidate.first_name"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Email</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="email"
-                      class="form-control"
-                      v-model="fetchCandidate.email"
-                    />
-                  </div>
-                </div>
                 <div class="mb-3">
                   <div class="col-12">
                     <label class="form-label">Phone Number</label>
@@ -60,25 +33,13 @@
                     />
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Status</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchCandidate.activated"
-                    />
-                  </div>
-                </div>
               </form>
             </div>
           </div>
           <div class="modal-footer">
             <button
               class="btn btn-secondary rounded-1"
-              data-bs-target="#editCandidate"
+              data-bs-target="#editContactProfile"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
             >
@@ -101,18 +62,20 @@
 import axios from "axios";
 
 export default {
-  name: "EditCandidate",
+  name: "editContactProfile",
   data() {
     return {
       fetchCandidate: {
         id: "",
+
+        phone_number: "",
         first_name: "",
         last_name: "",
         password: "",
         confirm_password: "",
         address: "",
         jobs_id: 1,
-        phone_number: "",
+
         email: "",
         activated: "",
         employment_type_id: "",
@@ -122,7 +85,7 @@ export default {
   props: {
     candidateId: {
       type: Number,
-      default: null,
+      required: true,
     },
   },
   computed: {
@@ -145,17 +108,11 @@ export default {
           `${VITE_API_URL}/candidates/${this.fetchCandidate.id}`,
           this.fetchCandidate
         );
-
-        // Corrected the Vuex mutation to use 'commit' instead of 'dispatch'
-        this.$store.commit("updateCandidate", {
-          id: this.fetchCandidate.id,
-          newData: response.data, // Use 'response.data' for the updated data
-        });
-
-        alert("Candidate updated successfully");
         if (response.data) {
           location.reload();
+        } else {
         }
+        alert("Candidate updated successfully");
       } catch (error) {
         // Handle error if needed
         // console.error("Error updating candidate:", error);

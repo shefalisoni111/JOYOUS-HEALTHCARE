@@ -103,7 +103,7 @@
                   <tr>
                     <td>DOB</td>
                     <td>:</td>
-                    <td>PAYE</td>
+                    <td>...</td>
                   </tr>
                   <tr>
                     <td>Enhanced DBS Number</td>
@@ -130,11 +130,7 @@
                     <td>:</td>
                     <td>...</td>
                   </tr>
-                  <tr>
-                    <td>tiuiyiy</td>
-                    <td>:</td>
-                    <td>...</td>
-                  </tr>
+
                   <tr>
                     <td>Photo ID</td>
                     <td>:</td>
@@ -145,13 +141,9 @@
                     <td>:</td>
                     <td>...</td>
                   </tr>
+
                   <tr>
-                    <td>ere</td>
-                    <td>:</td>
-                    <td>...</td>
-                  </tr>
-                  <tr>
-                    <td>rerer</td>
+                    <td>refer</td>
                     <td>:</td>
                     <td>...</td>
                   </tr>
@@ -305,11 +297,7 @@
 
                     <td></td>
                   </tr>
-                  <tr>
-                    <td>DOB</td>
 
-                    <td>PAYE</td>
-                  </tr>
                   <tr>
                     <td>Enhanced DBS Number</td>
 
@@ -372,7 +360,7 @@
         role="tabpanel"
         aria-labelledby="pills-rudimentary-tab"
       >
-        ...
+        InProgress ....
       </div>
       <div
         class="tab-pane fade"
@@ -380,13 +368,13 @@
         role="tabpanel"
         aria-labelledby="pills-nhs-tab"
       >
-        ...
+        InProgress ....
       </div>
     </div>
   </div>
 </template>
 
-<script >
+<script>
 import axios from "axios";
 
 export default {

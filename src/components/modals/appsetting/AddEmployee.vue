@@ -81,6 +81,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "AddEmployee",
   data() {
@@ -101,8 +102,7 @@ export default {
   },
   methods: {
     clearError(fieldName) {
-      // Clear the error for the specific field
-      this.$set(this.errors, fieldName, null);
+      this.errors[fieldName] = null;
     },
     getError(fieldName) {
       // Get the error message for the specific field
@@ -138,18 +138,15 @@ export default {
         description: this.description,
       };
       try {
-        const response = await fetch(`${VITE_API_URL}/employment_types`, {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-        if (data) {
-          location.reload();
+        const response = await axios.post(`${VITE_API_URL}/employment_types`, data);
+        if (response.data) {
+          this.$emit("updateList");
+          this.title = "";
+          this.description = "";
         }
-      } catch (error) {}
+      } catch (error) {
+        // console.error("Error adding employee:", error);
+      }
     },
   },
   mounted() {},

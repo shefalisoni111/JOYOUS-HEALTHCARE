@@ -79,7 +79,7 @@
                   </div>
                   <div class="col-12 mt-1">
                     <input
-                      type="text"
+                      type="date"
                       class="form-control"
                       v-model="fetchVacancy.dates"
                     />
@@ -142,7 +142,7 @@
 
 <script>
 import axios from "axios";
-
+import store from "@/store";
 export default {
   name: "VacancyEdit",
   data() {
@@ -152,7 +152,7 @@ export default {
         business_unit_id: "",
         client_id: "",
         job_id: "",
-        dates: [],
+        dates: "",
         shift_id: "",
       },
       businessUnit: [],
@@ -192,8 +192,27 @@ export default {
       );
       return job_title ? job_title.name : "";
     },
+    getVacancyDetail() {
+      return this.$store.state.vacancies;
+    },
   },
   methods: {
+    // async fetchVacancies() {
+    //   const token = localStorage.getItem("token");
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/vacancies`, {
+    //       headers: {
+    //         "content-type": "application/json",
+    //         Authorization: "bearer " + token,
+    //       },
+    //     });
+
+    //     // Assuming your store has a mutation named 'setVacancies'
+    //     store.commit("setVacancies", response.data.data);
+    //   } catch (error) {
+    //     // Handle error if needed
+    //   }
+    // },
     async fetchVacancyMethod(id) {
       const token = localStorage.getItem("token");
       try {
@@ -221,35 +240,53 @@ export default {
 
     async updateVacancyMethod() {
       const token = localStorage.getItem("token");
+
+      // Ensure that fetchVacancy.dates is a valid date string
+      const originalDate = this.fetchVacancy.dates;
+
       try {
-        const response = await axios.put(
-          `${VITE_API_URL}/vacancies/${this.fetchVacancy.id}`,
-          {
-            business_unit_id: this.fetchVacancy.business_unit_id,
-            client_id: this.fetchVacancy.client_id,
-            job_id: this.fetchVacancy.job_id,
-            dates: this.fetchVacancy.dates,
-            shift_id: this.fetchVacancy.shift_id,
-          },
-          {
-            headers: {
-              "content-type": "application/json",
-              Authorization: "bearer " + token,
+        // Parse the original date string
+        const parsedDate = new Date(originalDate);
+
+        // Check if the parsed date is valid
+        if (!isNaN(parsedDate.getTime())) {
+          // Format the date to "yyyy-MM-dd"
+          const formattedDate = parsedDate.toISOString().split("T")[0];
+
+          const response = await axios.put(
+            `${VITE_API_URL}/vacancies/${this.fetchVacancy.id}`,
+            {
+              business_unit_id: this.fetchVacancy.business_unit_id,
+              client_id: this.fetchVacancy.client_id,
+              job_id: this.fetchVacancy.job_id,
+              dates: [formattedDate],
+              shift_id: this.fetchVacancy.shift_id,
             },
+            {
+              headers: {
+                "content-type": "application/json",
+                Authorization: "bearer " + token,
+              },
+            }
+          );
+
+          store.commit("updateVacancy", {
+            id: this.fetchVacancy.id,
+            newData: response.data,
+          });
+
+          alert("Vacancy updated successfully");
+          if (response.ok) {
+            this.$emit("addAfterEditVacancy");
           }
-        );
-
-        // Corrected the Vuex mutation to use 'commit' instead of 'dispatch'
-        this.$store.commit("updateVacancy", {
-          id: this.fetchVacancy.id,
-          newData: response.data,
-        });
-
-        alert("Vacancy updated successfully");
+        } else {
+          console.error("Invalid date format:", originalDate);
+        }
       } catch (error) {
-        // Handle error if needed
+        console.error("Error updating vacancy:", error);
       }
     },
+
     async getBusinessUnitMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/business_units`);
@@ -316,5 +353,6 @@ select {
   padding: 9px;
 
   border-radius: 4px;
+  border: 1px solid #80808059;
 }
 </style>

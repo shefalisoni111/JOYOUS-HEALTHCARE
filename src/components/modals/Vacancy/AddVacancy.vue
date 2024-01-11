@@ -159,6 +159,7 @@
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               :disabled="!isValidForm"
               :class="{ disabled: !isValidForm }"
+              data-bs-dismiss="modal"
               v-on:click="addVacancyMethod()"
             >
               Add Vacancy
@@ -295,8 +296,14 @@ export default {
             },
             body: JSON.stringify(data),
           });
-          if (data) {
-            location.reload();
+          if (response.ok) {
+            this.$emit("addVacancy");
+            this.business_unit_id = "";
+            this.job_id = "";
+            this.dates = "";
+            this.shift_id = "";
+            this.notes = "";
+            this.client_id = "";
           }
         } catch (error) {}
       } else {

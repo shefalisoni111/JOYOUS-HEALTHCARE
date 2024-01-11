@@ -111,14 +111,14 @@ export default {
         // Handle errors
         if (axios.isAxiosError(error)) {
           if (error.code === "ECONNABORTED") {
-            console.error("Request timeout exceeded");
+            // console.error("Request timeout exceeded");
           } else if (error.response) {
-            console.error("Server responded with an error:", error.response.status);
+            // console.error("Server responded with an error:", error.response.status);
           } else {
-            console.error("Request setup error:", error.message);
+            // console.error("Request setup error:", error.message);
           }
         } else {
-          console.error("Network error:", error.message);
+          // console.error("Network error:", error.message);
         }
       }
     },

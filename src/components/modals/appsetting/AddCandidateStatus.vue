@@ -74,7 +74,7 @@
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               :disabled="isButtonDisabled"
-              @click="validateAndAddCandidateStatus"
+              @click="validateAndAddJob"
             >
               Save
             </button>
@@ -86,10 +86,12 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "AddCandidateStatus",
   data() {
     return {
+      getCandidateStatus: [],
       title: "",
       description: "",
       errors: {},
@@ -104,8 +106,7 @@ export default {
   },
   methods: {
     clearError(fieldName) {
-      // Clear the error for the specific field
-      this.$set(this.errors, fieldName, null);
+      this.errors[fieldName] = null;
     },
     getError(fieldName) {
       // Get the error message for the specific field
@@ -140,6 +141,7 @@ export default {
         title: this.title,
         description: this.description,
       };
+
       try {
         const response = await fetch(`${VITE_API_URL}/candidate_statuses`, {
           method: "POST",
@@ -149,10 +151,36 @@ export default {
           },
           body: JSON.stringify(data),
         });
-        if (data) {
-          location.reload();
+
+        if (response.ok) {
+          const newCandidateStatus = await response.json();
+
+          this.$emit("updateList");
+
+          this.title = "";
+          this.description = "";
+        } else {
+          // Handle errors if needed
+          // console.error("Failed to add candidate status:", response.statusText);
         }
-      } catch (error) {}
+      } catch (error) {
+        // Handle errors if needed
+        // console.error("Error adding candidate status:", error);
+      }
+    },
+    getCandidateData() {
+      axios
+        .get(`${VITE_API_URL}/candidate_statuses`)
+        .then((response) => {
+          this.getCandidateStatus = response.data || [];
+        })
+        .catch((error) => {
+          if (error.response) {
+            if (error.response.status == 404) {
+              // alert(error.response.data.message);
+            }
+          }
+        });
     },
   },
 };

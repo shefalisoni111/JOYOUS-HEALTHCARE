@@ -33,7 +33,7 @@
                 <span class="close d-flex justify-content-end" @click="closeModal"
                   >&times;</span
                 >
-                <h4 class="text-capitalize">{{ getCandidateName() }}</h4>
+                <h4 class="text-capitalize">Availability - {{ getCandidateName() }}</h4>
                 <p>You clicked on {{ selectedDate }}</p>
                 <p>Status: {{ statusForSelectedDate }}</p>
                 <!-- Pass initialDate to the Calendar component -->
@@ -246,58 +246,48 @@ export default {
 
     openModal(candidateId, day) {
       try {
-        // Extract the candidate_id property from the Proxy object
         const actualCandidateId = candidateId.candidate_id;
-
-        // Set the selected date in the format YYYY-MM-DD
         const selectedDate = new Date(this.startDate);
-        selectedDate.setDate(parseInt(day)); // Set the day of the month
-
-        // Format the selected date exactly like the availability date
+        selectedDate.setDate(parseInt(day));
         const formattedDate = selectedDate.toISOString().split("T")[0];
 
         this.selectedDate = formattedDate;
-        this.selectedCandidateId = actualCandidateId; // Set the actual candidate ID
+        this.selectedCandidateId = actualCandidateId;
 
-        // Find the candidate in the candidateList
         const selectedCandidate = this.candidateList.find(
           (candidate) => candidate.candidate_id === actualCandidateId
         );
 
-        // Check if the candidate details are found
         if (selectedCandidate) {
-          // Find the availability for the selected day
           const availability = selectedCandidate.availability.filter(
             (avail) => avail.date === formattedDate
           );
 
-          // Set the status for the selected date
           this.statusForSelectedDate =
             availability.length > 0 ? availability[0].status : null;
 
-          // Use Vue.nextTick to ensure the DOM has been updated
-          Vue.nextTick(() => {
+          // Use the nextTick method from the app instance
+          this.$nextTick(() => {
             this.selectedCandidate = selectedCandidate;
 
-            // Check if selectedCandidate is not null
             if (selectedCandidate) {
-              // Set showModal to true
               this.showModal = true;
             } else {
-              // Handle case when selectedCandidate is null
+              // console.error("Selected candidate not found");
             }
           });
         } else {
-          // Handle case when selectedCandidate is null
-
+          // console.error("Selected candidate not found");
           this.selectedDate = null;
           this.statusForSelectedDate = null;
         }
       } catch (error) {
+        // console.error("Error in openModal:", error);
         this.selectedDate = null;
         this.statusForSelectedDate = null;
       }
     },
+
     closeModal() {
       this.selectedDate = null;
 

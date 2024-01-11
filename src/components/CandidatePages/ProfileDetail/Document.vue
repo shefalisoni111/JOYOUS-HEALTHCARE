@@ -47,13 +47,13 @@
                 <button type="button" class="btn btn-primary btn-sm">
                   <i class="bi bi-download"></i> Download All
                 </button>
-                <div class="d-flex align-items-center">
+                <!-- <div class="d-flex align-items-center">
                   <h6 class="mb-0">Compliant All</h6>
                   <label class="switch">
                     <input type="checkbox" id="togBtn" />
                     <div class="slider round"></div>
                   </label>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -85,11 +85,11 @@
                             <span>!</span></button
                           >&nbsp;{{ getCate.total_document }}
                         </li>
-                        <li class=" ">
+                        <!-- <li class=" ">
                           <button class="btn border-primary-subtle">
                             <i class="bi bi-eye"></i>
                           </button>
-                        </li>
+                        </li> -->
 
                         <li class="">
                           <button
@@ -125,11 +125,11 @@
                                 {{ getDocs.display_name }}
                               </button>
                               <div class="d-flex align-items-center">
-                                <h6 class="mb-0">Compliant</h6>
+                                <!-- <h6 class="mb-0">Compliant</h6>
                                 <label class="switch">
                                   <input type="checkbox" id="togBtn" />
                                   <div class="slider round"></div>
-                                </label>
+                                </label> -->
                               </div>
 
                               <ul
@@ -141,7 +141,14 @@
                                   </button>
                                 </li>
                                 <li class="">
-                                  <button class="btn border-primary-subtle">
+                                  <button
+                                    type="button"
+                                    class="btn border-primary-subtle"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#viewDocCandidate"
+                                    data-bs-whatever="@mdo"
+                                    @click="editCandidate(getDocs.id)"
+                                  >
                                     <i class="bi bi-eye"></i>
                                   </button>
                                 </li>
@@ -241,16 +248,18 @@
         role="tabpanel"
         aria-labelledby="deletedDocument"
       >
-        .....
+        Inprogress...
       </div>
     </div>
     <AddCategory />
+    <ViewDocuments :documentId="selectedCandidateId" ref="viewDocuments" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import AddCategory from "../../modals/appsetting/AddCategory.vue";
+import ViewDocuments from "../../modals/CandidatePage/Documents/ViewDocuments.vue";
 
 export default {
   name: "Document",
@@ -263,10 +272,15 @@ export default {
       description: null,
       document_image: null,
       selectedFile: null,
+      selectedCandidateId: null,
     };
   },
-  components: { AddCategory },
+  components: { AddCategory, ViewDocuments },
   methods: {
+    editCandidate(documentId) {
+      this.selectedCandidateId = documentId;
+      this.$refs.viewDocuments.getDocumentDetails();
+    },
     handleFileChange(event) {
       const files = event.target.files;
       this.document_image = files[0];

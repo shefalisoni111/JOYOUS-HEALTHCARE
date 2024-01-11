@@ -170,9 +170,7 @@ export default {
   methods: {
     async fetchCustomTimeSheetMethod(id) {
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/custom_timesheets/${id}`
-        );
+        const response = await axios.get(`${VITE_API_URL}/custom_timesheets/${id}`);
 
         // Update each property individually
         this.fetchCustomSheetData.business_unit_id = response.data.business_unit_id;
@@ -181,21 +179,18 @@ export default {
         this.fetchCustomSheetData.shift_id = response.data.shift_id;
         this.fetchCustomSheetData.client_rate = response.data.client_rate;
       } catch (error) {
-        console.error("Error fetching vacancy:", error);
+        // console.error("Error fetching vacancy:", error);
       }
     },
     async updateCustomTimeSheetMethod() {
       try {
-        const response = await axios.put(
-          `${VITE_API_URL}/custom_timesheets/${id}`,
-          {
-            business_unit_id: this.fetchCustomSheetData.business_unit_id,
-            job_id: this.fetchCustomSheetData.job_id,
-            name: this.fetchCustomSheetData.name,
-            shift_id: this.fetchCustomSheetData.shift_id,
-            client_rate: this.fetchCustomSheetData.client_rate,
-          }
-        );
+        const response = await axios.put(`${VITE_API_URL}/custom_timesheets/${id}`, {
+          business_unit_id: this.fetchCustomSheetData.business_unit_id,
+          job_id: this.fetchCustomSheetData.job_id,
+          name: this.fetchCustomSheetData.name,
+          shift_id: this.fetchCustomSheetData.shift_id,
+          client_rate: this.fetchCustomSheetData.client_rate,
+        });
 
         alert("Custom timeSheet updated successfully");
 
@@ -212,10 +207,10 @@ export default {
           this.$set(this.getCustomDetail, index, updatedItem);
         } else {
           // Handle the case where the item is not found in the local list
-          console.log("Item not found in the local list");
+          // console.log("Item not found in the local list");
         }
       } catch (error) {
-        console.error("Error updating custom timeSheet:", error);
+        // console.error("Error updating custom timeSheet:", error);
       }
     },
     async getBusinessUnitMethod() {
