@@ -68,6 +68,7 @@
             <table class="table table table-hover addjobtable">
               <thead>
                 <tr>
+                  <th scope="col">ID</th>
                   <th scope="col" class="bg-primary text-white">Colour</th>
                   <th scope="col" class="bg-primary text-white">Name</th>
                   <th scope="col" class="bg-primary text-white">Job Code</th>
@@ -79,6 +80,7 @@
               </thead>
               <tbody>
                 <tr v-for="jobs in getJobs" :key="jobs.id">
+                  <td v-text="jobs.id"></td>
                   <td scope="row">
                     <i class="bi bi-square-fill" :style="{ color: jobs.color }"></i>
                   </td>
@@ -88,7 +90,7 @@
                   <td v-text="jobs.no_of_candidates"></td>
                   <td>2</td>
                   <td>
-                    <button class="btn btn-primary" v-on:click="jobsDelete(jobs.id)">
+                    <button class="btn btn-primary" v-on:click="jobsInActive(jobs.id)">
                       In-Active
                     </button>
                   </td>
@@ -107,6 +109,7 @@
           <table class="table table table-hover addjobtable">
             <thead>
               <tr>
+                <th scope="col">ID</th>
                 <th scope="col" class="bg-primary text-white">Colour</th>
                 <th scope="col" class="bg-primary text-white">Name</th>
                 <th scope="col" class="bg-primary text-white">Job Code</th>
@@ -118,6 +121,7 @@
             </thead>
             <tbody>
               <tr v-for="jobs in getInActiveJobs" :key="jobs.id">
+                <td v-text="jobs.id"></td>
                 <td scope="row">
                   <i class="bi bi-square-fill" :style="{ color: jobs.color }"></i>
                 </td>
@@ -127,6 +131,11 @@
                 <td v-text="jobs.no_of_candidates"></td>
                 <td>2</td>
                 <td>
+                  <i
+                    class="bi bi-trash btn btn btn-outline-danger"
+                    v-on:click="jobsDelete(jobs.id)"
+                  ></i>
+                  <span>&nbsp;</span>
                   <button class="btn btn-primary" v-on:click="jobActive(jobs.id)">
                     Re-Activate
                   </button>
@@ -176,10 +185,17 @@ export default {
       if (!window.confirm("Are you Sure ?")) {
         return;
       }
+      axios.delete(`${VITE_API_URL}/jobs/` + id).then((response) => {
+        this.getInactiveJobData();
+      });
+    },
+    jobsInActive(id) {
+      if (!window.confirm("Are you Sure ?")) {
+        return;
+      }
       axios.put(`${VITE_API_URL}/inactivate_job/` + id).then((response) => {
         this.getJobData();
       });
-      alert("Record Inactive ");
     },
     async getJobData() {
       await axios

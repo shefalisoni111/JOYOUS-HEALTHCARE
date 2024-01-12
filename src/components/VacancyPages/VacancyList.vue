@@ -114,8 +114,8 @@ export default {
       debounceTimeout: null,
       // searchQuery: "",
       tabs: [
-        { name: "Open ", component: "AllVacancyList" },
-        { name: "Assigned ", component: "InActiveVacancyList" },
+        { name: "Active ", component: "AllVacancyList" },
+        { name: "In-Active ", component: "InActiveVacancyList" },
       ],
       activeTab: 0,
     };

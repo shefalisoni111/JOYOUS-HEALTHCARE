@@ -69,6 +69,7 @@
                     <table class="table table table-hover addjobtable">
                       <thead>
                         <tr>
+                          <th scope="col" class="col-2 bg-primary text-white">ID</th>
                           <th scope="col" class="col-2 bg-primary text-white">Title</th>
                           <th scope="col" class="col-2 bg-primary text-white">Job</th>
                           <th scope="col" class="col-2 bg-primary text-white">Amount</th>
@@ -83,6 +84,9 @@
                           v-for="getDeduction in getCandidateDeduction"
                           :key="getDeduction.id"
                         >
+                          <td>
+                            {{ getDeduction.id }}
+                          </td>
                           <td>
                             {{ getDeduction.title }}
                           </td>
@@ -114,7 +118,7 @@
                   aria-labelledby="inactive_candidate_deduction"
                   tabindex="0"
                 >
-                  <p>Inprogress...</p>
+                  <p>Work in Progress...</p>
                 </div>
               </div>
             </div>
@@ -149,7 +153,6 @@ export default {
       axios.delete(`${VITE_API_URL}/candidate_deductions/` + id).then((response) => {
         this.fetchCandidateDeductions();
       });
-      alert("Record Deleted ");
     },
     async fetchCandidateDeductions() {
       await axios

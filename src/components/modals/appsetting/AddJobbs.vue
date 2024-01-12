@@ -40,16 +40,7 @@
                     >
                   </div>
                   <div class="col-10 mt-1">
-                    <input
-                      type="color"
-                      id="head"
-                      name="head"
-                      v-model="color"
-                      @input="clearError('color')"
-                    />
-                    <div v-if="getError('color')" class="text-danger">
-                      {{ getError("color") }}
-                    </div>
+                    <input type="color" id="head" name="head" v-model="color" />
                   </div>
                 </div>
 
@@ -106,7 +97,7 @@ export default {
   data() {
     return {
       name: "",
-      color: "",
+      color: "#050505",
       description: "",
 
       errors: {},
@@ -116,7 +107,9 @@ export default {
   computed: {
     isButtonDisabled() {
       return (
-        Object.values(this.errors).some((error) => error !== null) || this.isEmptyField()
+        Object.values(this.errors).some((error) => error !== null) ||
+        !this.name.trim() ||
+        !this.description.trim()
       );
     },
   },
@@ -131,10 +124,7 @@ export default {
     isEmptyField() {
       return !this.name || !this.isValidColor(this.color) || !this.description;
     },
-    isValidColor(color) {
-      const hexColorRegex = /^#[0-9A-Fa-f]{6}$/;
-      return hexColorRegex.test(color);
-    },
+
     validateAndAddJob() {
       this.errors = {}; // Reset errors
 
@@ -142,11 +132,6 @@ export default {
       if (!this.name.trim()) {
         this.$set(this.errors, "name", "Name is required.");
       }
-
-      if (!this.color.trim()) {
-        this.$set(this.errors, "color", "Color is required.");
-      }
-
       if (!this.description.trim()) {
         this.$set(this.errors, "description", "Description is required.");
       }

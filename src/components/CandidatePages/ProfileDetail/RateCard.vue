@@ -117,7 +117,6 @@ export default {
       await axios.delete(`${VITE_API_URL}/rate_cards/` + id).then((response) => {
         this.showRateCardMethod();
       });
-      alert("Record Deleted ");
     },
     async showRateCardMethod() {
       await axios

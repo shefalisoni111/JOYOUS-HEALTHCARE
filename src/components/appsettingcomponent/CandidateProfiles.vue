@@ -53,7 +53,8 @@
                   aria-labelledby="active"
                   tabindex="0"
                 >
-                  <div>
+                  <p>Work in Progress...</p>
+                  <!-- <div>
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                       <li class="nav-item" role="presentation">
                         <button
@@ -196,7 +197,7 @@
                         </p>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
                 <div
                   class="tab-pane fade"
@@ -205,7 +206,7 @@
                   aria-labelledby="inactive"
                   tabindex="0"
                 >
-                  <p>Inprogress...</p>
+                  <p>Work in Progress...</p>
                 </div>
               </div>
             </div>

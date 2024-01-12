@@ -26,6 +26,7 @@
       <table class="table table table-hover" :v-if="getCandidateStatus">
         <thead>
           <tr>
+            <th scope="col" class="col-4 bg-primary text-white">ID</th>
             <th scope="col" class="col-4 bg-primary text-white">Title</th>
 
             <th scope="col" class="col-5 bg-primary text-white jusfycenter">
@@ -37,6 +38,7 @@
         </thead>
         <tbody>
           <tr v-for="getCandidate in getCandidateStatus" :key="getCandidate.id">
+            <td :v-text="getCandidate.id">{{ getCandidate.id }}</td>
             <td :v-text="getCandidate.title">{{ getCandidate.title }}</td>
             <td :v-text="getCandidate.description">
               {{ getCandidate.description }}
@@ -86,8 +88,6 @@ export default {
       axios.delete(`${VITE_API_URL}/candidate_statuses/` + id).then((response) => {
         this.getCandidateData();
       });
-
-      alert("Record Deleted ");
     },
 
     getCandidateData() {

@@ -187,13 +187,13 @@
                   >
                     Cancel
                   </button>
-                  <!-- <button
+                  <button
                     class="btn btn-success rounded-1 text-capitalize fw-medium"
                     data-bs-dismiss="modal"
                     v-on:click="publicCandidateMail()"
                   >
                     Publish
-                  </button> -->
+                  </button>
                 </div>
               </div>
             </div>
@@ -244,7 +244,7 @@ export default {
           this.getPublicVacancyMAil = response.data.data;
           if (response.status === 200) {
             // Show an alert after successfully sending mail
-            alert("Success Send Mail");
+
             window.location.reload();
           } else {
           }

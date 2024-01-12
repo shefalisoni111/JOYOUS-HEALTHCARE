@@ -27,6 +27,9 @@ const router = createRouter({
       path: "/client",
       name: "Client",
       component: () => import("@/views/ClientView.vue"),
+      meta: {
+        auth: true,
+      },
       // children: [
       //   {
       //     path: "/client",
@@ -60,6 +63,9 @@ const router = createRouter({
       path: "/candidates",
       name: "Candidate",
       component: () => import("@/views/CandidatesView.vue"),
+      meta: {
+        auth: true,
+      },
       children: [
         {
           path: "availability",
@@ -187,6 +193,9 @@ const router = createRouter({
       path: "/vacancie",
       name: "Vacancies",
       component: () => import("@/views/VacanciesView.vue"),
+      meta: {
+        auth: true,
+      },
       children: [
         {
           path: "/vacancie",
@@ -209,16 +218,25 @@ const router = createRouter({
       path: "/schedule",
       name: "Schedule",
       component: () => import("@/views/ScheduleView.vue"),
+      meta: {
+        auth: true,
+      },
     },
     {
       path: "/booking",
       name: "Booking",
       component: () => import("@/views/BookingView.vue"),
+      meta: {
+        auth: true,
+      },
     },
     {
       path: "/timesheet",
       name: "Timesheet",
       component: () => import("@/views/TimesheetView.vue"),
+      meta: {
+        auth: true,
+      },
       // children: [
       //   {
       //     path: "/timesheet/weekly",
@@ -244,17 +262,26 @@ const router = createRouter({
       path: "/invoice",
       name: "Invoice",
       component: () => import("@/views/InvoiceView.vue"),
+      meta: {
+        auth: true,
+      },
     },
     {
       path: "/report",
       name: "Report",
       component: () => import("@/views/ReportView.vue"),
+      meta: {
+        auth: true,
+      },
     },
 
     {
       path: "/appsetting",
       name: "AppSetting",
       component: () => import("@/views/AppSetting.vue"),
+      meta: {
+        auth: true,
+      },
 
       children: [
         {
@@ -324,18 +351,27 @@ const router = createRouter({
       name: "AgencySetting",
       component: () =>
         import("@/components/appsettingcomponent/AgencySetting.vue"),
+        meta: {
+          auth: true,
+        },
     },
     {
       path: "/appsetting/invoicesetting",
       name: "InvoiceSetting",
       component: () =>
         import("@/components/appsettingcomponent/InvoiceSetting.vue"),
+        meta: {
+          auth: true,
+        },
     },
     {
       path: "/appsetting/notificationsetting",
       name: "NotificationSetting",
       component: () =>
         import("@/components/appsettingcomponent/NotificationSetting.vue"),
+        meta: {
+          auth: true,
+        },
       children: [
         {
           path: "/appsetting/notificationsetting",
@@ -381,6 +417,9 @@ const router = createRouter({
       name: "PrevilegesSetting",
       component: () =>
         import("@/components/appsettingcomponent/PrevilegesSetting.vue"),
+        meta: {
+          auth: true,
+        },
     },
 
     {
@@ -388,7 +427,7 @@ const router = createRouter({
       name: "Login",
       component: () => import("@/components/auth/login/Login.vue"),
       meta: {
-        auth: false,
+        auth: true,
       },
     },
 
@@ -401,11 +440,18 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.hasOwnProperty("requiresAuth") && to.meta.requiresAuth && !localStorage.getItem("token")) {
-    next("/login");
-  } else if (to.meta.hasOwnProperty("requiresAuth") && !to.meta.requiresAuth && localStorage.getItem("token")) {
-    next("/dashboard");
+  // Check if the route requires authentication
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    // Check if there is a token in local storage
+    if (!localStorage.getItem('token')) {
+      // User is not authenticated, redirect to login
+      next({ name: 'Login' });
+    } else {
+      // User is authenticated, proceed to the route
+      next();
+    }
   } else {
+    // Route does not require authentication, proceed
     next();
   }
 });

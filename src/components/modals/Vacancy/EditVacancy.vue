@@ -240,45 +240,42 @@ export default {
 
     async updateVacancyMethod() {
       const token = localStorage.getItem("token");
+      const dateObject = new Date(this.fetchVacancy.dates);
 
-      // Ensure that fetchVacancy.dates is a valid date string
-      const originalDate = this.fetchVacancy.dates;
+      // Extract the date part in the "yyyy-MM-dd" format
+      const formattedDate =
+        dateObject.getFullYear() +
+        "-" +
+        ("0" + (dateObject.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("0" + dateObject.getDate()).slice(-2);
 
       try {
-        const parsedDate = new Date(originalDate);
-
-        if (!isNaN(parsedDate.getTime())) {
-          // Format the date to "yyyy-MM-dd"
-          const formattedDate = parsedDate.toISOString().split("T")[0];
-
-          const response = await axios.put(
-            `${VITE_API_URL}/vacancies/${this.fetchVacancy.id}`,
-            {
-              business_unit_id: this.fetchVacancy.business_unit_id,
-              client_id: this.fetchVacancy.client_id,
-              job_id: this.fetchVacancy.job_id,
-              dates: [formattedDate],
-              shift_id: this.fetchVacancy.shift_id,
+        const response = await axios.put(
+          `${VITE_API_URL}/vacancies/${this.fetchVacancy.id}`,
+          {
+            business_unit_id: this.fetchVacancy.business_unit_id,
+            client_id: this.fetchVacancy.client_id,
+            job_id: this.fetchVacancy.job_id,
+            dates: [formattedDate],
+            shift_id: this.fetchVacancy.shift_id,
+          },
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: "bearer " + token,
             },
-            {
-              headers: {
-                "content-type": "application/json",
-                Authorization: "bearer " + token,
-              },
-            }
-          );
-
-          store.commit("updateVacancy", {
-            id: this.fetchVacancy.id,
-            newData: response.data,
-          });
-
-          alert("Vacancy updated successfully");
-          if (response.ok) {
-            this.$emit("addAfterEditVacancy");
           }
-        } else {
-          console.error("Invalid date format:", originalDate);
+        );
+
+        store.commit("updateVacancy", {
+          id: this.fetchVacancy.id,
+          newData: response.data,
+        });
+
+        alert("Vacancy updated successfully");
+        if (response.ok) {
+          this.$emit("addAfterEditVacancy");
         }
       } catch (error) {
         console.error("Error updating vacancy:", error);

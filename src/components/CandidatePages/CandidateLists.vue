@@ -8,11 +8,7 @@
               <li class="breadcrumb-item active text-uppercase fs-6">
                 Dashboard / <span class="color-fonts">CANDIDATES</span> /
 
-                <span class="badge text-dark">{{
-                  activeCandidate.active_candidate
-                }}</span>
-                &nbsp;
-                <span class="color-fonts">Active Candidates</span>
+                <span class="color-fonts">{{ activeTabName }} Candidates</span>
               </li>
             </ol>
           </div>
@@ -149,6 +145,13 @@ import CandidateAdd from "../modals/CandidatePage/CandidateAdd.vue";
 import ActiveCandidate from "../CandidatePages/ActiveCandidate.vue";
 import InActiveCandidate from "../CandidatePages/InActiveCandidate.vue";
 import Rejected from "../CandidatePages/Rejected.vue";
+import RejectCandidate from "../CandidatePages/RejectCandidate.vue";
+
+const axiosInstance = axios.create({
+  headers: {
+    "Cache-Control": "no-cache",
+  },
+});
 
 export default {
   name: "CAndidatesList",
@@ -161,11 +164,13 @@ export default {
       debounceTimeout: null,
       searchResults: [],
       tabs: [
-        { name: "All ", component: "ActiveCandidate" },
+        { name: "Active ", component: "ActiveCandidate" },
         { name: "In-Active ", component: "InActiveCandidate" },
         { name: "Pending", component: "Rejected" },
+        { name: "Reject", component: "RejectCandidate" },
       ],
       activeTab: 0,
+      activeTabName: "Active",
     };
   },
   computed: {
@@ -178,6 +183,7 @@ export default {
     ActiveCandidate,
     InActiveCandidate,
     Rejected,
+    RejectCandidate,
   },
 
   methods: {
@@ -190,18 +196,23 @@ export default {
     },
     selectTab(index) {
       this.activeTab = index;
+      this.activeTabName = this.tabs[index].name;
     },
 
     //search api start
 
     async search() {
       try {
-        const response = await axios.post(`${VITE_API_URL}/candidate/search_candidate`, {
-          first_name: this.searchQuery,
-        });
-        this.searchResults = response.data;
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/search_candidate/${this.searchQuery}`
+        );
+        this.searchResults = response.data.data;
+        this.errorMsg = "";
       } catch (error) {
-        // console.error("Error fetching search results:", error);
+        this.searchResults = [];
+        this.showSearchResults = false;
+        this.errorMsg = "Error fetching search results.";
+        console.error("Error fetching search results:", error);
       }
     },
 

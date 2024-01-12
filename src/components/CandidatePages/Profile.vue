@@ -22,7 +22,7 @@
               <button
                 type="button"
                 class="btn btn-outline-success"
-                @click="previousTab"
+                @click.prevent="previousTab"
                 v-show="hasPreviousTab"
               >
                 <i class="bi bi-caret-left-fill"></i>Previous
@@ -32,7 +32,7 @@
               <button
                 type="button"
                 class="btn btn-outline-success"
-                @click="nextTab"
+                @click.prevent="handleNextTabClick"
                 v-show="hasNextTab"
               >
                 Next <i class="bi bi-caret-right-fill"></i>
@@ -257,6 +257,16 @@ export default {
     },
     selectTab(index) {
       this.activeTab = index;
+    },
+    handleNextTabClick() {
+      if (!this.doubleClick) {
+        this.doubleClick = true;
+        setTimeout(() => {
+          this.doubleClick = false;
+        }, 300);
+
+        this.nextTab();
+      }
     },
     nextTab() {
       if (this.activeTab < this.tabs.length - 1) {

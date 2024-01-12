@@ -62,7 +62,6 @@ export default {
         .then((response) => {
           this.createdClient();
         });
-      // alert("Record Deleted ");
     },
     async getNotesMethod() {
       await axios

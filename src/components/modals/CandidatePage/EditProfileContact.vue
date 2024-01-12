@@ -27,10 +27,16 @@
                   </div>
                   <div class="col-12 mt-1">
                     <input
-                      type="number"
+                      type="text"
                       class="form-control"
                       v-model="fetchCandidate.phone_number"
+                      @input="cleanPhoneNumber"
                     />
+                    <span
+                      v-if="!validatePhoneNumber(fetchCandidate.phone_number)"
+                      class="text-danger"
+                      >Invalid Phone Number</span
+                    >
                   </div>
                 </div>
               </form>
@@ -94,6 +100,17 @@ export default {
     },
   },
   methods: {
+    cleanPhoneNumber() {
+      this.fetchCandidate.phone_number = this.fetchCandidate.phone_number.replace(
+        /\D/g,
+        ""
+      );
+    },
+
+    validatePhoneNumber(phoneNumber) {
+      const phoneRegex = /^\d{10}$/;
+      return phoneRegex.test(phoneNumber);
+    },
     async fetchCandidateMethod(id) {
       try {
         const response = await axios.get(`${VITE_API_URL}/candidates/${id}`);

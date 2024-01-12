@@ -5,6 +5,7 @@
         <table class="table candidateTable">
           <thead>
             <tr>
+              <th scope="col">ID</th>
               <th scope="col">Name</th>
               <th scope="col">Positions</th>
               <th scope="col">Email</th>
@@ -18,6 +19,7 @@
           </thead>
           <tbody>
             <tr v-for="candidate in getCandidatesData" :key="candidate.id">
+              <td v-text="candidate.id"></td>
               <td>
                 <router-link
                   class="text-capitalize"

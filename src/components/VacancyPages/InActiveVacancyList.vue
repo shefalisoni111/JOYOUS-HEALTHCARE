@@ -5,6 +5,7 @@
         <table class="table candidateTable">
           <thead>
             <tr>
+              <th scope="col">ID</th>
               <th scope="col">#RefCode</th>
               <th scope="col">Client</th>
               <th scope="col">Business Unit</th>
@@ -18,6 +19,7 @@
           </thead>
           <tbody>
             <tr v-for="data in getInactiveData" :key="data.id">
+              <td v-text="data.id"></td>
               <td v-text="data.ref_code"></td>
               <td>
                 <router-link

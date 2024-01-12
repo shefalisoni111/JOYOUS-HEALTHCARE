@@ -196,7 +196,6 @@ export default {
       axios.delete(`${VITE_API_URL}/document_categories/` + id).then((response) => {
         this.getDocCAtegories();
       });
-      alert("Record Deleted ");
     },
     documentDelete(id) {
       if (!window.confirm("Are you Sure ?")) {
@@ -205,7 +204,6 @@ export default {
       axios.delete(`${VITE_API_URL}/documents/` + id).then((response) => {
         this.getDocCAtegories();
       });
-      alert("Record Deleted ");
     },
     getDocumentCategories() {
       axios

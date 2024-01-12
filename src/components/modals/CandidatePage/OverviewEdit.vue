@@ -47,9 +47,10 @@
                   </div>
                   <div class="col-12 mt-1">
                     <input
-                      type="number"
+                      type="text"
                       class="form-control"
                       v-model="fetchCandidate.DBS_PVG_no"
+                      @input="cleanAndValidateDBSPVGNo"
                     />
                   </div>
                 </div>
@@ -95,9 +96,10 @@
                   </div>
                   <div class="col-12 mt-1">
                     <input
-                      type="number"
+                      type="text"
                       class="form-control"
                       v-model="fetchCandidate.NMC_NISCC_SSSC_pin"
+                      @input="cleanAndValidatePin"
                     />
                   </div>
                 </div>
@@ -208,6 +210,17 @@ export default {
     },
   },
   methods: {
+    cleanAndValidateDBSPVGNo() {
+      this.fetchCandidate.DBS_PVG_no = this.fetchCandidate.DBS_PVG_no.replace(/\D/g, "");
+    },
+
+    cleanAndValidatePin() {
+      this.fetchCandidate.NMC_NISCC_SSSC_pin = this.fetchCandidate.NMC_NISCC_SSSC_pin.replace(
+        /\D/g,
+        ""
+      );
+    },
+
     async getEmployeeTypeData() {
       try {
         const response = await axios.get(`${VITE_API_URL}/employment_types`);

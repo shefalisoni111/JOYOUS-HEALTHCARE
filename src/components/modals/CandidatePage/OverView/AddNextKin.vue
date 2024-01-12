@@ -29,7 +29,21 @@
                     <label class="form-label">Phone Number</label>
                   </div>
                   <div class="col-12 mt-1">
-                    <input type="number" class="form-control" v-model="phone_number" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="phone_number"
+                      @input="cleanPhoneNumber"
+                      pattern="[0-9]*"
+                    />
+                    <span v-if="!validatePhoneNumber" class="text-danger"
+                      >Required Phone Number</span
+                    >
+                    <span
+                      v-if="phone_number && !validatePhoneNumber(phone_number)"
+                      class="text-danger"
+                      >Invalid Phone Number</span
+                    >
                   </div>
                 </div>
                 <div class="mb-3">
@@ -70,6 +84,9 @@
                   </div>
                   <div class="col-12 mt-1">
                     <input type="number" class="form-control" v-model="postcode" />
+                    <span v-if="!validatePostcode" class="text-danger"
+                      >Invalid Postcode</span
+                    >
                   </div>
                 </div>
               </form>
@@ -116,6 +133,17 @@ export default {
   },
 
   methods: {
+    validatePostcode(postcode) {
+      return postcode.length >= 5 && postcode.length <= 10;
+    },
+    cleanAndValidatePhoneNumber() {
+      this.phone_number = this.phone_number.replace(/\D/g, "");
+    },
+
+    validatePhoneNumber(phoneNumber) {
+      const phoneNumberRegex = /^\d{10}$/;
+      return phoneNumberRegex.test(phoneNumber);
+    },
     async fetchNextToKinMethod() {
       const payload = {
         name: this.name,

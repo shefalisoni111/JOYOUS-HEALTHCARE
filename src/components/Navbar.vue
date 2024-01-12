@@ -262,11 +262,16 @@ export default {
     signout() {
       if (localStorage.getItem("token")) {
         localStorage.removeItem("token");
+        localStorage.removeItem("tokenExpiration");
         this.$router.replace({ name: "Login" });
       }
     },
     async getAdminMethod() {
       const token = localStorage.getItem("token");
+      if (!token) {
+        this.$router.replace({ name: "Login" });
+        return;
+      }
       try {
         const response = await axios.get(`${VITE_API_URL}/merchant_dashboard`, {
           headers: {
@@ -276,15 +281,7 @@ export default {
         });
 
         this.getAdminData = response.data.merchant_data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        } else {
-          // console.error("Error fetching candidates:", error);
-        }
-      }
+      } catch (error) {}
     },
   },
 

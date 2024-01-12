@@ -44,9 +44,9 @@
                 <h6>Document Categories</h6>
               </div>
               <div class="d-flex gap-1">
-                <button type="button" class="btn btn-primary btn-sm">
+                <!-- <button type="button" class="btn btn-primary btn-sm">
                   <i class="bi bi-download"></i> Download All
-                </button>
+                </button> -->
                 <!-- <div class="d-flex align-items-center">
                   <h6 class="mb-0">Compliant All</h6>
                   <label class="switch">
@@ -135,11 +135,6 @@
                               <ul
                                 class="list-unstyled d-inline-flex align-items-center mb-0"
                               >
-                                <li class="">
-                                  <button class="btn border-primary-subtle">
-                                    <i class="bi bi-download"></i>
-                                  </button>
-                                </li>
                                 <li class="">
                                   <button
                                     type="button"
@@ -248,7 +243,7 @@
         role="tabpanel"
         aria-labelledby="deletedDocument"
       >
-        Inprogress...
+        Work in Progress...
       </div>
     </div>
     <AddCategory />
@@ -358,7 +353,6 @@ export default {
       axios.delete(`${VITE_API_URL}/documents/` + id).then((response) => {
         this.getDocumentCategories();
       });
-      alert("Record Deleted ");
     },
 
     async getDocumentCategories() {

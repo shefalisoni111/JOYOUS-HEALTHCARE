@@ -29,9 +29,10 @@
                   </div>
                   <div class="col-12 mt-1">
                     <input
-                      type="number"
+                      type="text"
                       class="form-control"
                       v-model="fetchCandidate.bank_number"
+                      @input="cleanAndValidateBankNumber"
                     />
                   </div>
                 </div>
@@ -88,6 +89,12 @@ export default {
   },
 
   methods: {
+    cleanAndValidateBankNumber() {
+      this.fetchCandidate.bank_number = this.fetchCandidate.bank_number.replace(
+        /\D/g,
+        ""
+      );
+    },
     async fetchCandidateOverviewMethod() {
       try {
         const response = await axios.get(

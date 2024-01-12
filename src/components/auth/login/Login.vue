@@ -98,35 +98,52 @@ export default {
           },
         });
 
-        // Access the response data directly
         const jsonData = response.data;
 
         if (jsonData.is_loged_in) {
           localStorage.setItem("token", jsonData.token);
           this.$router.push({ name: "Home" });
+
+          if (jsonData.tokenExpiration) {
+            localStorage.setItem("tokenExpiration", jsonData.tokenExpiration);
+            this.setupAutoLogout();
+          }
         } else {
           this.error = "Invalid Email or Password";
         }
       } catch (error) {
         // Handle errors
-        if (axios.isAxiosError(error)) {
-          if (error.code === "ECONNABORTED") {
-            // console.error("Request timeout exceeded");
-          } else if (error.response) {
-            // console.error("Server responded with an error:", error.response.status);
-          } else {
-            // console.error("Request setup error:", error.message);
-          }
-        } else {
-          // console.error("Network error:", error.message);
-        }
       }
+    },
+
+    setupAutoLogout() {
+      const tokenExpiration = localStorage.getItem("tokenExpiration");
+      const timeToExpiration = tokenExpiration - Date.now();
+
+      setTimeout(() => {
+        this.logout();
+      }, timeToExpiration);
+    },
+
+    logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("tokenExpiration");
+      localStorage.clear();
+      this.$router.push({ name: "Login" });
     },
   },
 
   mounted() {
     const token = localStorage.getItem("token");
     if (token) {
+      // Check if token exists and set up auto logout
+      if (localStorage.getItem("tokenExpiration")) {
+        this.setupAutoLogout();
+      } else {
+        // Token doesn't have expiration info, probably manually deleted
+        this.logout();
+      }
+
       this.$router.push({ name: "Home" });
     }
 

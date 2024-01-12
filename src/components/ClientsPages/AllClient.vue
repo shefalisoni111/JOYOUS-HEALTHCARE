@@ -103,7 +103,6 @@ export default {
       await axios.delete(`${VITE_API_URL}/clients/` + id).then((response) => {
         this.createdClient();
       });
-      // alert("Record Deleted ");
     },
     async createdClient() {
       await axios

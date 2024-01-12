@@ -536,7 +536,6 @@ export default {
         .then((response) => {
           this.getCandidateNextToKineMethod();
         });
-      alert("Record Deleted ");
     },
   },
 

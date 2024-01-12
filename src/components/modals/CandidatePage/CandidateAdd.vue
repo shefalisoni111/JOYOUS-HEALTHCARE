@@ -31,6 +31,7 @@
                       class="form-control"
                       v-model="first_name"
                       @input="clearError"
+                      @change="detectAutofill"
                     />
                     <span v-if="!validateCandidateName" class="text-danger"
                       >Candidate Name Required</span
@@ -47,6 +48,7 @@
                         v-for="option in options"
                         :key="option.id"
                         :value="option.id"
+                        @change="detectAutofill"
                       >
                         {{ option.name }}
                       </option>
@@ -66,6 +68,7 @@
                       class="form-control"
                       v-model="email"
                       @input="clearError"
+                      @change="detectAutofill"
                     />
                     <span v-if="!validateEmail" class="text-danger">Required Email </span>
                   </div>
@@ -80,6 +83,7 @@
                       class="form-control"
                       v-model="password"
                       @input="validatePasswordMatch"
+                      @change="detectAutofill"
                     />
                   </div>
                 </div>
@@ -93,6 +97,7 @@
                       class="form-control"
                       v-model="confirm_password"
                       @input="validatePasswordMatch"
+                      @change="detectAutofill"
                     />
                     <span v-if="!passwordsMatch" class="text-danger"
                       >Passwords do not Match</span
@@ -105,13 +110,20 @@
                   </div>
                   <div class="col-8">
                     <input
-                      type="number"
+                      type="text"
                       class="form-control"
                       v-model="phone_number"
-                      @input="clearError"
+                      @input="cleanPhoneNumber"
+                      @change="detectAutofill"
+                      pattern="[0-9]*"
                     />
                     <span v-if="!validatePhoneNumber" class="text-danger"
                       >Required Phone Number</span
+                    >
+                    <span
+                      v-if="phone_number && !validatePhoneNumberFormat(phone_number)"
+                      class="text-danger"
+                      >Invalid Phone Number</span
                     >
                   </div>
                 </div>
@@ -169,6 +181,7 @@ export default {
       employment_type_id: "",
       isValidForm: false,
       error: [],
+      autofilled: false,
     };
   },
   computed: {
@@ -201,6 +214,12 @@ export default {
     },
   },
   methods: {
+    cleanPhoneNumber() {
+      this.phone_number = this.phone_number.replace(/\D/g, "");
+    },
+    detectAutofill() {
+      this.autofilled = true;
+    },
     async addCandidate() {
       this.validateSelectedOption();
       // this.validationSelectedOptionText = this.validationSelectedFormat(this.job_id);
@@ -282,16 +301,20 @@ export default {
       this.validationSelectedOptionText = !!this.job_id;
     },
     validatePhoneNumberFormat(phoneNumber) {
-      const phoneRegex = /^[0-9]{10}$/;
+      const phoneRegex = /^\d{10}$/;
       return phoneRegex.test(phoneNumber);
     },
     clearError() {
-      this.validateEmail = true;
-      this.validatePhoneNumber = true;
-      this.passwordsMatch = true;
-      this.validateCandidateName = true;
-      this.validationSelectedOptionText = true;
-      this.isPasswordRequired = true;
+      if (this.autofilled) {
+        this.autofilled = false;
+      } else {
+        this.validateEmail = true;
+        this.validatePhoneNumber = true;
+        this.passwordsMatch = true;
+        this.validateCandidateName = true;
+        this.validationSelectedOptionText = true;
+        this.isPasswordRequired = true;
+      }
     },
     async getPositionMethod() {
       try {

@@ -3,7 +3,7 @@
     <Navbar />
     <!-- <RouterView /> -->
     <div id="main">
-      <h6>Work in progress</h6>
+      <h6>TimeSheet Page in Progress.....</h6>
     </div>
   </div>
 </template>

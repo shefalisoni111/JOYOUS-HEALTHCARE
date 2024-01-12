@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import axios from "axios";
 
 export default {
@@ -104,9 +104,11 @@ export default {
           }
         }
 
-        window.location.reload();
+        // Fetch the latest shifts data from the server
+        await fetchShifts();
       } catch (error) {
-        // console.error("Error updating shifts:", error);
+        // Handle errors
+        console.error("Error updating shifts:", error);
       }
     };
 
@@ -115,7 +117,8 @@ export default {
         const response = await axios.get(`${VITE_API_URL}/shifts`);
         shifts.value = response.data || [];
       } catch (error) {
-        // console.error("Error fetching shifts:", error);
+        // Handle errors
+        console.error("Error fetching shifts:", error);
       }
     };
 
@@ -124,7 +127,7 @@ export default {
       shift[property] = value;
     };
 
-    fetchShifts(); // Fetch shifts on component setup
+    fetchShifts();
 
     return {
       shifts,

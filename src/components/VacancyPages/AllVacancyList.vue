@@ -5,12 +5,14 @@
         <table class="table candidateTable">
           <thead>
             <tr>
+              <th scope="col">ID</th>
               <th scope="col">#RefCode</th>
               <th scope="col">Client</th>
               <th scope="col">Business Unit</th>
               <th scope="col">Job Title</th>
               <th scope="col">Date</th>
               <th scope="col">Shift</th>
+              <th scope="col">Staff Required</th>
               <th scope="col">Notes</th>
               <th scope="col">Publish</th>
               <th scope="col" class="text-center">All</th>
@@ -23,6 +25,7 @@
           </thead>
           <tbody>
             <tr v-for="getdata in getVacancyDetail" :key="getdata.id">
+              <td v-text="getdata.id"></td>
               <td v-text="getdata.ref_code"></td>
               <td>
                 <router-link
@@ -37,7 +40,7 @@
               <td v-for="(date, index) in getdata.dates" :key="index" v-text="date"></td>
 
               <td v-text="getdata.shift"></td>
-
+              <td v-text="getdata.staff_required"></td>
               <td v-text="getdata.notes"></td>
 
               <td>
@@ -118,8 +121,11 @@
                   @click="editVacancyId(getdata.id)"
                 ></i>
                 &nbsp;&nbsp;
-                <button class="btn btn-outline-danger text-nowrap">
-                  <i class="bi bi-trash" v-on:click="vacancyDeleteMethod(getdata.id)"></i>
+                <button
+                  class="btn btn-outline-danger text-nowrap"
+                  v-on:click="vacancyDeleteMethod(getdata.id)"
+                >
+                  In-Active
                 </button>
               </td>
             </tr>

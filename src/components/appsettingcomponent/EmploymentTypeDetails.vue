@@ -65,6 +65,7 @@
             <table class="table table table-hover" :v-if="getEmployeeStatus">
               <thead>
                 <tr>
+                  <th scope="col" class="col-5 text-white">ID</th>
                   <th scope="col" class="col-5 text-white">Employment Type</th>
                   <th scope="col" class="col-5 text-white jusfycenter">Description</th>
                   <th scope="col" class="col-2 text-white jusfycenter">Action</th>
@@ -72,6 +73,7 @@
               </thead>
               <tbody>
                 <tr v-for="getEmployee in getEmployeeStatus" :key="getEmployee.id">
+                  <td :v-text="getEmployee.id">{{ getEmployee.id }}</td>
                   <td :v-text="getEmployee.title">{{ getEmployee.title }}</td>
                   <td :v-text="getEmployee.description">
                     {{ getEmployee.description }}
@@ -93,7 +95,7 @@
             aria-labelledby="companyDetail"
             tabindex="0"
           >
-            Inprogress...
+            Work in Progress...
           </div>
         </div>
       </div>
@@ -127,7 +129,6 @@ export default {
       axios.delete(`${VITE_API_URL}/employment_types/` + id).then((response) => {
         this.getEmployeeDAta();
       });
-      alert("Record Deleted ");
     },
 
     getEmployeeDAta() {

@@ -39,10 +39,14 @@
                   </div>
                   <div class="col-12 mt-1">
                     <input
-                      type="number"
+                      type="text"
                       class="form-control"
                       v-model="fetchCandidate.phone_number"
+                      @input="cleanAndValidatePhoneNumber"
                     />
+                    <span v-if="!validatePhoneNumber" class="text-danger"
+                      >Invalid Phone Number</span
+                    >
                   </div>
                 </div>
                 <div class="mb-3">
@@ -147,11 +151,20 @@ export default {
         city: "",
         postcode: "",
       },
-      fetchCandidate: null,
+
+      validatePhoneNumber: true,
     };
   },
 
   methods: {
+    cleanAndValidatePhoneNumber() {
+      this.fetchCandidate.phone_number = this.fetchCandidate.phone_number.replace(
+        /\D/g,
+        ""
+      );
+
+      this.validatePhoneNumber = this.fetchCandidate.phone_number.length === 10;
+    },
     async fetchCandidateOverviewMethod() {
       try {
         const response = await axios.get(

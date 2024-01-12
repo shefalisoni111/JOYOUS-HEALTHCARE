@@ -3,6 +3,7 @@
     <table class="table candidateTable">
       <thead>
         <tr>
+          <th scope="col">ID</th>
           <th scope="col">Name</th>
           <th scope="col">Positions</th>
           <th scope="col">Email</th>
@@ -14,6 +15,7 @@
       </thead>
       <tbody>
         <tr v-for="pending in getPendingCandidatesData" :key="pending.id">
+          <td v-text="pending.id"></td>
           <td class="text-capitalize" v-text="pending.first_name"></td>
           <td v-text="pending.position"></td>
           <td v-text="pending.email"></td>
@@ -56,7 +58,7 @@
 import axios from "axios";
 
 export default {
-  name: "CAndidatesList",
+  name: "Rejected",
   data() {
     return {
       getPendingCandidatesData: [],
@@ -83,31 +85,31 @@ export default {
       if (!window.confirm("Are you Sure?")) {
         return;
       }
-      const response = await axios
-        .put(`${VITE_API_URL}/candidate/approve_candidate/${id}`)
-        .then((response) => {
-          this.pendingCandidateMethod();
-        })
+      try {
+        const response = await axios.put(
+          `${VITE_API_URL}/candidate/approve_candidate/${id}`
+        );
 
-        .catch((error) => {
-          // console.error("Error deleting candidate:", error);
-        });
+        this.pendingCandidateMethod();
+      } catch (error) {
+        // console.error("Error approving candidate:", error);
+      }
     },
 
     async rejectCandidateMethod(id) {
       if (!window.confirm("Are you Sure?")) {
         return;
       }
-      const response = await axios
-        .put(`${VITE_API_URL}/candidate/reject_candidate/${id}`)
-        .then((response) => {
-          this.inactiveCandidateData = response.data;
-          this.pendingCandidateMethod();
-        })
+      try {
+        const response = await axios.put(
+          `${VITE_API_URL}/candidate/reject_candidate/${id}`
+        );
+        // console.log("Response after approval:", response);
 
-        .catch((error) => {
-          // console.error("Error deleting candidate:", error);
-        });
+        this.pendingCandidateMethod();
+      } catch (error) {
+        // console.error("Error approving candidate:", error);
+      }
     },
   },
   mounted() {
