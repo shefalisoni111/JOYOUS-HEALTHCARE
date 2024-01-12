@@ -4,7 +4,7 @@
     <div
       class="modal fade"
       id="editNextToKin"
-      aria-labelledby="candidatePage"
+      aria-labelledby="editNextKin"
       tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">

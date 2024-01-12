@@ -162,7 +162,7 @@ export default {
       searchResults: [],
       tabs: [
         { name: "All ", component: "ActiveCandidate" },
-        { name: "InActive ", component: "InActiveCandidate" },
+        { name: "In-Active ", component: "InActiveCandidate" },
         { name: "Pending", component: "Rejected" },
       ],
       activeTab: 0,

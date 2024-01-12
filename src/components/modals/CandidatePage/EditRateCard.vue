@@ -4,7 +4,7 @@
     <div
       class="modal fade"
       id="editRateCard"
-      aria-labelledby="candidatePage"
+      aria-labelledby="editRateCard"
       tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">

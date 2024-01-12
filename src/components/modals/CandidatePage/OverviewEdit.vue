@@ -4,7 +4,7 @@
     <div
       class="modal fade"
       id="editOverview"
-      aria-labelledby="candidatePage"
+      aria-labelledby="overviewEdit"
       tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">

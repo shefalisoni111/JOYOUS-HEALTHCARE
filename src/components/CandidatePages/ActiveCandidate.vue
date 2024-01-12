@@ -72,7 +72,7 @@
                   title="Tooltip on top"
                   v-on:click="deleteCandidate(candidate.id)"
                 >
-                  InActive
+                  In-Active
                 </button>
 
                 &nbsp;&nbsp;

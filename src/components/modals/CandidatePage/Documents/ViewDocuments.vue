@@ -4,7 +4,7 @@
     <div
       class="modal fade"
       id="viewDocCandidate"
-      aria-labelledby="candidatePage"
+      aria-labelledby="addNextToKin"
       tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">

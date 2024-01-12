@@ -232,14 +232,10 @@
               </li>
 
               <li>
-                <router-link
-                  class="dropdown-item d-flex align-items-center"
-                  to="/login"
-                  v-on:click="signout"
-                >
+                <a class="dropdown-item d-flex align-items-center" v-on:click="signout">
                   <i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp;
                   <span>Sign Out</span>
-                </router-link>
+                </a>
               </li>
             </ul>
             <!-- End Profile Dropdown Items -->
@@ -266,7 +262,7 @@ export default {
     signout() {
       if (localStorage.getItem("token")) {
         localStorage.removeItem("token");
-        this.$router.push({ name: "Login" });
+        this.$router.replace({ name: "Login" });
       }
     },
     async getAdminMethod() {

@@ -401,14 +401,10 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if ("auth" in to.meta && to.meta.auth && !localStorage.getItem("token")) {
-    next("/");
-  } else if (
-    "auth" in to.meta &&
-    !to.meta.auth &&
-    localStorage.getItem("token")
-  ) {
-    next("/home");
+  if (to.meta.hasOwnProperty("requiresAuth") && to.meta.requiresAuth && !localStorage.getItem("token")) {
+    next("/login");
+  } else if (to.meta.hasOwnProperty("requiresAuth") && !to.meta.requiresAuth && localStorage.getItem("token")) {
+    next("/dashboard");
   } else {
     next();
   }

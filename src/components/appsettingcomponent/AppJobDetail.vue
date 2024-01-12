@@ -11,6 +11,7 @@
       <!-- End Page Title -->
       <div class="d-flex align-items-center">
         <button
+          v-if="activeTab === 'active'"
           class="btn btn-primary rounded-1 text-uppercase fw-medium"
           data-bs-toggle="modal"
           data-bs-target="#myModal"
@@ -34,6 +35,7 @@
             role="tab"
             aria-controls="pills-home"
             aria-selected="true"
+            @click="setActiveTab('active')"
           >
             Active
           </button>
@@ -48,6 +50,7 @@
             role="tab"
             aria-controls="pills-profile"
             aria-selected="false"
+            @click="setActiveTab('inactive')"
           >
             Inactive
           </button>
@@ -149,6 +152,7 @@ export default {
     return {
       getJobs: [],
       getInActiveJobs: [],
+      activeTab: "active",
     };
   },
   components: {
@@ -156,15 +160,18 @@ export default {
   },
 
   methods: {
-    // jobActive(id) {
-    //   if (!window.confirm("Are you Sure ?")) {
-    //     return;
-    //   }
-    //   // axios.put(`${VITE_API_URL}/inactivate_job/` + id).then((response) => {
-    //   //   this.getJobData();
-    //   // });
-    //   alert("Record Inactive ");
-    // },
+    setActiveTab(tab) {
+      this.activeTab = tab;
+    },
+    jobActive(id) {
+      if (!window.confirm("Are you Sure ?")) {
+        return;
+      }
+      axios.put(`${VITE_API_URL}/active_job/` + id).then((response) => {
+        this.getJobData();
+      });
+      alert("Record Inactive ");
+    },
     jobsDelete(id) {
       if (!window.confirm("Are you Sure ?")) {
         return;

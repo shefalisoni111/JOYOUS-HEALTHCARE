@@ -279,10 +279,10 @@
                   type="button"
                   class="btn btn-outline-success text-nowrap text-nowrap mb-3"
                   data-bs-toggle="modal"
-                  data-bs-target="#editNextToKin"
+                  data-bs-target="#addNextToKin"
                   data-bs-whatever="@mdo"
                 >
-                  Edit
+                  Add
                 </button>
               </div>
             </div>
@@ -314,6 +314,14 @@
                         <i
                           class="bi bi-trash"
                           v-on:click="vacancyDeleteMethod(data.id)"
+                        ></i></button
+                      >&nbsp;&nbsp;
+                      <button class="btn btn-outline-success text-nowrap">
+                        <i
+                          class="bi bi-pencil-square"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editNextToKin"
+                          data-bs-whatever="@mdo"
                         ></i>
                       </button>
                     </td>
@@ -409,6 +417,7 @@
     </div>
     <WorkExperience />
     <EducationAdd />
+    <AddNextKin @AddNextKin="getCandidateNextToKineMethod" />
   </div>
 </template>
 
@@ -416,6 +425,7 @@
 import axios from "axios";
 import WorkExperience from "../../modals/CandidatePage/OverView/WorkExperience.vue";
 import EducationAdd from "../../modals/CandidatePage/OverView/EducationAdd.vue";
+import AddNextKin from "../../modals/CandidatePage/OverView/AddNextKin.vue";
 
 export default {
   name: "Overview",
@@ -440,7 +450,7 @@ export default {
       },
     };
   },
-  components: { WorkExperience, EducationAdd },
+  components: { WorkExperience, EducationAdd, AddNextKin },
   methods: {
     async getCandidateMethod() {
       try {

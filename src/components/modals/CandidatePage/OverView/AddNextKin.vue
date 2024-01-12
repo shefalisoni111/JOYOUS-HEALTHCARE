@@ -1,18 +1,11 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="editBankDetailsOverview"
-      aria-labelledby="editBanktDetails"
-      tabindex="-1"
-    >
+    <div class="modal fade" id="addNextToKin" aria-labelledby="addNextKin" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title text-center" id="editBankDetailsOverview">
-              Edit Details
-            </h5>
+            <h5 class="modal-title text-center" id="addNextToKin">Add Next to Kin</h5>
             <button
               type="button"
               class="btn-close"
@@ -25,26 +18,58 @@
               <form>
                 <div class="mb-3">
                   <div class="col-12">
-                    <label class="form-label">Account Number</label>
+                    <label class="form-label">Name</label>
                   </div>
                   <div class="col-12 mt-1">
-                    <input
-                      type="number"
-                      class="form-control"
-                      v-model="fetchCandidate.bank_number"
-                    />
+                    <input type="text" class="form-control" v-model="name" />
                   </div>
                 </div>
                 <div class="mb-3">
                   <div class="col-12">
-                    <label class="form-label">IFSC Code</label>
+                    <label class="form-label">Phone Number</label>
                   </div>
                   <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchCandidate.ifsc_code"
-                    />
+                    <input type="number" class="form-control" v-model="phone_number" />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="col-12">
+                    <label class="form-label">Relation</label>
+                  </div>
+                  <div class="col-12 mt-1">
+                    <input type="text" class="form-control" v-model="relation" />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="col-12">
+                    <label class="form-label">Address Line 1</label>
+                  </div>
+                  <div class="col-12 mt-1">
+                    <input type="text" class="form-control" v-model="address_line_1" />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="col-12">
+                    <label class="form-label">Address Line 2</label>
+                  </div>
+                  <div class="col-12 mt-1">
+                    <input type="text" class="form-control" v-model="address_line_2" />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="col-12">
+                    <label class="form-label">City</label>
+                  </div>
+                  <div class="col-12 mt-1">
+                    <input type="text" class="form-control" v-model="city" />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="col-12">
+                    <label class="form-label">PostCode</label>
+                  </div>
+                  <div class="col-12 mt-1">
+                    <input type="number" class="form-control" v-model="postcode" />
                   </div>
                 </div>
               </form>
@@ -53,7 +78,7 @@
           <div class="modal-footer">
             <button
               class="btn btn-secondary rounded-1"
-              data-bs-target="#editBankDetailsOverview"
+              data-bs-target="#addNextToKin"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
             >
@@ -62,9 +87,9 @@
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              @click.prevent="updateCandidateMethod()"
+              @click.prevent="fetchNextToKinMethod()"
             >
-              Save
+              Add
             </button>
           </div>
         </div>
@@ -80,43 +105,51 @@ export default {
   name: "NextToKinEdit",
   data() {
     return {
-      fetchCandidate: {
-        bank_number: "",
-        ifsc_code: "",
-      },
+      name: "",
+      phone_number: "",
+      relation: "",
+      address_line_1: "",
+      address_line_2: "",
+      city: "",
+      postcode: "",
     };
   },
 
   methods: {
-    async fetchCandidateOverviewMethod() {
+    async fetchNextToKinMethod() {
+      const payload = {
+        name: this.name,
+        phone_number: this.phone_number,
+        relation: this.relation,
+        address_line_1: this.address_line_1,
+        address_line_2: this.address_line_2,
+        city: this.city,
+        postcode: this.postcode,
+      };
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/candidates/${this.$route.params.id}`
+        const response = await axios.post(
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/next_of_kins`,
+          payload
         );
+        if (response.status === 200 || response.status === 201) {
+          this.$emit("AddNextKin");
 
-        this.fetchCandidate = response.data.data;
+          this.name = "";
+          this.phone_number = "";
+          this.relation = "";
+          this.address_line_1 = "";
+          this.address_line_2 = "";
+          this.city = "";
+          this.postcode = "";
+        } else {
+        }
       } catch (error) {
         // console.error("Error fetching todo:", error);
       }
     },
-    async updateCandidateMethod() {
-      try {
-        await axios.put(
-          `${VITE_API_URL}/candidates/${this.$route.params.id}`,
-          this.fetchCandidate
-        );
-
-        alert("Candidate updated successfully");
-        window.location.reload();
-      } catch (error) {
-        // console.error("Error updating candidate:", error);
-      }
-    },
   },
 
-  mounted() {
-    this.fetchCandidateOverviewMethod();
-  },
+  mounted() {},
 };
 </script>
 
