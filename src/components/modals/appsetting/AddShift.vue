@@ -80,29 +80,55 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, getCurrentInstance } from "vue";
 import axios from "axios";
+function formatTime(time) {
+  if (!time) {
+    return ""; // Handle the case where the time is undefined or null
+  }
 
+  // Check if the time is in ISO format
+  if (time.endsWith("Z")) {
+    // Convert ISO format to a Date object
+    const date = new Date(time);
+
+    // Format the date
+    const formattedTime = date.toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+
+    return formattedTime;
+  }
+
+  // If the time is not in ISO format, assume it's already formatted
+  return time;
+}
 export default {
   setup() {
+    const { emit } = getCurrentInstance();
     const shifts = ref([]);
-
     const updateShift = async () => {
+      let updatedShifts = []; // Define updatedShifts with an empty array
+
       try {
-        for (const shift of shifts.value) {
-          const response = await axios.put(`${VITE_API_URL}/shifts/${shift.id}`, {
-            start_time: shift.start_time,
-            end_time: shift.end_time,
-          });
+        updatedShifts = await Promise.all(
+          shifts.value.map(async (shift) => {
+            const response = await axios.put(`${VITE_API_URL}/shifts/${shift.id}`, {
+              start_time: shift.start_time,
+              end_time: shift.end_time,
+            });
+            return {
+              ...response.data,
+              start_time: response.data.start_time,
+              end_time: response.data.end_time,
+            };
+          })
+        );
 
-          // Find the index of the updated shift in the local array
-          const updatedIndex = shifts.value.findIndex((s) => s.id === shift.id);
-
-          // Update the shift in the local array at its own position
-          if (updatedIndex !== -1) {
-            shifts.value[updatedIndex] = response.data;
-          }
-        }
+        // Emit the event with the array of updated shifts
+        emit("shift-updated", updatedShifts);
 
         // Fetch the latest shifts data from the server
         await fetchShifts();
@@ -111,7 +137,6 @@ export default {
         console.error("Error updating shifts:", error);
       }
     };
-
     const fetchShifts = async () => {
       try {
         const response = await axios.get(`${VITE_API_URL}/shifts`);

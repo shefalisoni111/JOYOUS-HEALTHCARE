@@ -172,7 +172,7 @@
                         type="checkbox"
                         value=""
                         id="flexCheckDefault"
-                        v-model="notification_type"
+                        v-model="enableMailNotification"
                       />
                       Mail Notification
                     </div>
@@ -200,12 +200,15 @@
           </div>
         </div>
       </div>
+      <SuccessAlert :show="showMessage" message="Mail sent successfully!" />
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+
 export default {
   name: "PublishedVacancy",
   data() {
@@ -213,7 +216,13 @@ export default {
       getPublicVacancyMAil: [],
       notification_type: null,
       vacancyData: [],
+      enableMailNotification: false,
+      showMessage: false,
+      publicationStatus: null,
     };
+  },
+  components: {
+    SuccessAlert,
   },
   computed: {
     selectedPublishItemId() {
@@ -224,15 +233,17 @@ export default {
   methods: {
     async publicCandidateMail(id) {
       const token = localStorage.getItem("token");
-
       this.getPublicVacancyMAil = [];
+
       if (this.$store.state.selectedPublishItemId) {
         try {
+          const notificationType = this.enableMailNotification
+            ? "email_notification"
+            : null;
+
           const response = await axios.put(
             `${VITE_API_URL}/send_notification/${id}`,
-            {
-              notification_type: this.notification_type ? "email_notification" : null,
-            },
+            { notification_type: notificationType },
             {
               headers: {
                 "content-type": "application/json",
@@ -242,18 +253,16 @@ export default {
           );
 
           this.getPublicVacancyMAil = response.data.data;
-          if (response.status === 200) {
-            // Show an alert after successfully sending mail
 
-            window.location.reload();
+          if (response.status === 200) {
+            this.publicationStatus = "published";
+            this.showMessage = true;
+            this.$emit("publishVacancy");
           } else {
+            // Handle other response statuses if needed
           }
         } catch (error) {
-          if (error.response) {
-            if (error.response.status == 404) {
-              // alert(error.response.data.message);
-            }
-          }
+          // Handle errors
         }
       } else {
         // Handle the case when selectedPublishItemId is not available

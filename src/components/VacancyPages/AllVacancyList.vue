@@ -50,6 +50,11 @@
                   data-bs-whatever="@mdo"
                   v-if="getdata.publish === 'true'"
                   class="btn btn-success bi bi-check-circle-fill"
+                  :class="{
+                    'btn-success': getdata.publish === 'true',
+                    'bi-check-circle-fill': getdata.publish === 'true',
+                    'bi-bell': getdata.publish !== 'true',
+                  }"
                   @click="openPublished(getdata.id)"
                 ></i>
                 <i
@@ -134,7 +139,7 @@
       </div>
     </div>
     <EditVacancy :vacancyId="selectedVacancyId || 0" />
-    <PublishedVacancy />
+    <PublishedVacancy @publishVacancy="createVacancy" />
     <AppliedVacancyList />
     <AssignedVacancyList />
     <RejectedVacancyList />

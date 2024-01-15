@@ -21,7 +21,17 @@
                     <label class="form-label">Name</label>
                   </div>
                   <div class="col-12 mt-1">
-                    <input type="text" class="form-control" v-model="name" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="name"
+                      @focus="touched.name = true"
+                      @blur="touched.name = true"
+                      required
+                    />
+                    <span v-if="touched.name && !name" class="text-danger"
+                      >Name is required</span
+                    >
                   </div>
                 </div>
                 <div class="mb-3">
@@ -33,14 +43,20 @@
                       type="text"
                       class="form-control"
                       v-model="phone_number"
-                      @input="cleanPhoneNumber"
+                      @input="cleanAndValidatePhoneNumber"
+                      @focus="touched.phone_number = true"
+                      @blur="touched.phone_number = true"
                       pattern="[0-9]*"
                     />
-                    <span v-if="!validatePhoneNumber" class="text-danger"
+                    <span
+                      v-if="touched.phone_number && !cleanAndValidatePhoneNumber()"
+                      class="text-danger"
                       >Required Phone Number</span
                     >
                     <span
-                      v-if="phone_number && !validatePhoneNumber(phone_number)"
+                      v-if="
+                        touched.phone_number && cleanAndValidatePhoneNumber() === false
+                      "
                       class="text-danger"
                       >Invalid Phone Number</span
                     >
@@ -51,7 +67,17 @@
                     <label class="form-label">Relation</label>
                   </div>
                   <div class="col-12 mt-1">
-                    <input type="text" class="form-control" v-model="relation" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="relation"
+                      required
+                      @focus="touched.relation = true"
+                      @blur="touched.relation = true"
+                    />
+                    <span v-if="touched.relation && !relation" class="text-danger"
+                      >Relation is required</span
+                    >
                   </div>
                 </div>
                 <div class="mb-3">
@@ -59,7 +85,19 @@
                     <label class="form-label">Address Line 1</label>
                   </div>
                   <div class="col-12 mt-1">
-                    <input type="text" class="form-control" v-model="address_line_1" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="address_line_1"
+                      required
+                      @focus="touched.address_line_1 = true"
+                      @blur="touched.address_line_1 = true"
+                    />
+                    <span
+                      v-if="touched.address_line_1 && !address_line_1"
+                      class="text-danger"
+                      >Address Line 1 is required</span
+                    >
                   </div>
                 </div>
                 <div class="mb-3">
@@ -67,7 +105,19 @@
                     <label class="form-label">Address Line 2</label>
                   </div>
                   <div class="col-12 mt-1">
-                    <input type="text" class="form-control" v-model="address_line_2" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="address_line_2"
+                      required
+                      @focus="touched.address_line_2 = true"
+                      @blur="touched.address_line_2 = true"
+                    />
+                    <span
+                      v-if="touched.address_line_2 && !address_line_2"
+                      class="text-danger"
+                      >Address Line 2 is required</span
+                    >
                   </div>
                 </div>
                 <div class="mb-3">
@@ -75,7 +125,17 @@
                     <label class="form-label">City</label>
                   </div>
                   <div class="col-12 mt-1">
-                    <input type="text" class="form-control" v-model="city" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="city"
+                      @focus="touched.city = true"
+                      @blur="touched.city = true"
+                      required
+                    />
+                    <span v-if="touched.city && !city" class="text-danger"
+                      >City is required</span
+                    >
                   </div>
                 </div>
                 <div class="mb-3">
@@ -83,10 +143,29 @@
                     <label class="form-label">PostCode</label>
                   </div>
                   <div class="col-12 mt-1">
-                    <input type="number" class="form-control" v-model="postcode" />
-                    <span v-if="!validatePostcode" class="text-danger"
-                      >Invalid Postcode</span
-                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="postcode"
+                      @input="cleanAndValidatePostcode"
+                      @focus="touched.postcode = true"
+                      @blur="touched.postcode = true"
+                      required
+                    />
+                    <span v-if="touched.postcode">
+                      <span
+                        v-if="!validatePostcode(postcode) && !isNumeric(postcode)"
+                        class="text-danger"
+                      >
+                        Invalid Postcode and must be a number
+                      </span>
+                      <span v-else-if="!validatePostcode(postcode)" class="text-danger">
+                        Invalid Postcode
+                      </span>
+                      <span v-else-if="!isNumeric(postcode)" class="text-danger">
+                        Postcode must be a number
+                      </span>
+                    </span>
                   </div>
                 </div>
               </form>
@@ -103,7 +182,8 @@
             </button>
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
-              data-bs-dismiss="modal"
+              :disabled="isSubmitDisabled"
+              data-bs-toggle="modal"
               @click.prevent="fetchNextToKinMethod()"
             >
               Add
@@ -129,17 +209,98 @@ export default {
       address_line_2: "",
       city: "",
       postcode: "",
+      touched: {
+        name: false,
+        phone_number: false,
+        relation: false,
+        address_line_1: false,
+        address_line_2: false,
+        city: false,
+        postcode: false,
+      },
     };
   },
-
+  computed: {
+    isSubmitDisabled() {
+      return (
+        !this.name.trim() ||
+        !this.phone_number.trim() ||
+        !this.relation.trim() ||
+        !this.address_line_1.trim() ||
+        !this.address_line_2.trim() ||
+        !this.city.trim() ||
+        !this.validatePhoneNumber(this.phone_number) ||
+        !this.validatePostcode(this.postcode)
+      );
+    },
+  },
   methods: {
+    isNumeric(value) {
+      return /^\d+$/.test(value);
+    },
+    validateForm() {
+      // Reset error messages
+      this.nameError = "";
+      this.phoneNumberError = "";
+      this.relationError = "";
+      this.addressLine1Error = "";
+      this.addressLine2Error = "";
+      this.cityError = "";
+      this.postcodeError = "";
+
+      // Validate each field and set error messages
+      if (!this.name.trim()) this.nameError = "Name is required";
+      if (!this.validatePhoneNumber(this.phone_number))
+        this.phoneNumberError = "Invalid Phone Number";
+      if (!this.relation.trim()) this.relationError = "Relation is required";
+      if (!this.address_line_1.trim())
+        this.addressLine1Error = "Address Line 1 is required";
+      if (!this.address_line_2.trim())
+        this.addressLine2Error = "Address Line 2 is required";
+      if (!this.city.trim()) this.cityError = "City is required";
+      if (!this.validatePostcode(this.postcode)) this.postcodeError = "Invalid Postcode";
+
+      // Return true if there are any errors
+      return (
+        this.nameError ||
+        this.phoneNumberError ||
+        this.relationError ||
+        this.addressLine1Error ||
+        this.addressLine2Error ||
+        this.cityError ||
+        this.postcodeError
+      );
+    },
+
+    submitForm() {
+      // Validate the form before submitting
+      if (this.validateForm()) {
+        // Display an error message or handle validation as needed
+        console.log("Form validation failed");
+        return;
+      }
+
+      this.fetchNextToKinMethod();
+    },
     validatePostcode(postcode) {
-      return postcode.length >= 5 && postcode.length <= 10;
+      const numericRegex = /^[0-9]+$/;
+      return numericRegex.test(postcode) && postcode.length >= 5 && postcode.length <= 10;
     },
     cleanAndValidatePhoneNumber() {
-      this.phone_number = this.phone_number.replace(/\D/g, "");
-    },
+      const cleanedPhoneNumber = this.phone_number.replace(/\D/g, "");
 
+      this.phone_number = cleanedPhoneNumber;
+
+      return this.validatePhoneNumber(cleanedPhoneNumber);
+    },
+    cleanAndValidatePostcode() {
+      const cleanedPostcode = this.postcode.replace(/\D/g, "");
+
+      this.postcode = cleanedPostcode;
+
+      if (!this.validatePostcode(cleanedPostcode)) {
+      }
+    },
     validatePhoneNumber(phoneNumber) {
       const phoneNumberRegex = /^\d{10}$/;
       return phoneNumberRegex.test(phoneNumber);

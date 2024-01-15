@@ -231,7 +231,7 @@
                 <hr class="dropdown-divider" />
               </li>
 
-              <li>
+              <li class="cursor-pointer">
                 <a class="dropdown-item d-flex align-items-center" v-on:click="signout">
                   <i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp;
                   <span>Sign Out</span>
@@ -292,6 +292,9 @@ export default {
 </script>
 
 <style scoped>
+.cursor-pointer {
+  cursor: pointer;
+}
 .bi-person::before {
   font-size: 60px;
 }

@@ -126,7 +126,10 @@
               </table>
             </div>
             <hr />
-            <div class="row g-3 align-items-center mt-3">
+            <div
+              class="row g-3 align-items-center mt-3"
+              v-if="getVacancyDetail.length > 0"
+            >
               <div class="d-flex gap-1">
                 <div class="d-flex align-items-center">
                   <label>Choose Action:</label>
@@ -163,7 +166,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import axios from "axios";
 
 import { reactive } from "vue";

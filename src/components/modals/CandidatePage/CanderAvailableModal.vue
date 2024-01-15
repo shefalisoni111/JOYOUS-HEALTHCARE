@@ -1,12 +1,16 @@
 <template>
-  <div class="nested-calendar">
+  <div class="nested-calendar" id="nested-calendar">
     <div class="nested-calendar-content">
       <div class="calendar-header d-flex justify-content-between my-3">
         <div class="d-flex">
           <button class="btn btn-primary" @click="goToPreviousMonth">
             <i class="bi bi-caret-left-fill"></i>
           </button>
-          <div class="current-month d-flex align-items-center">{{ currentMonth }}</div>
+          <div class="current-month d-flex align-items-center">
+            {{
+              currentDate.toLocaleString("default", { month: "long", year: "numeric" })
+            }}
+          </div>
           <button class="btn btn-primary" @click="goToNextMonth">
             <i class="bi bi-caret-right-fill"></i>
           </button>
@@ -70,9 +74,7 @@
 
     <div class="mt-3 float-end">
       <button class="btn btn-primary" @click="closeNestedCalendar">Cancel</button>&nbsp;
-      <button class="btn btn-primary" @click="addCandidateStatus" data-bs-dismiss="modal">
-        Add Availability
-      </button>
+      <button class="btn btn-primary" @click="handleButtonClick">Add Availability</button>
     </div>
   </div>
 </template>
@@ -97,8 +99,10 @@ export default {
       candidate_id: this.candidateId,
       date: "",
       status: "",
-      currentMonth: "",
     };
+  },
+  created() {
+    this.candidate_id = this.candidateId;
   },
   watch: {
     candidateId(newCandidateId) {
@@ -107,17 +111,21 @@ export default {
 
     currentDate: {
       handler: function () {
-        this.updateCurrentMonth();
+        this.updateCurrentMonth(this.currentDate);
         this.initializeCalendar();
       },
       deep: true,
     },
+    initialDate: {
+      handler: function (newInitialDate) {
+        const parsedDate = new Date(newInitialDate);
+        this.updateCurrentMonth(parsedDate);
+        this.initializeCalendar();
+      },
+      immediate: true,
+    },
   },
   computed: {
-    currentMonth() {
-      const initialDate = new Date(this.initialDate);
-      return initialDate.toLocaleString("default", { month: "long", year: "numeric" });
-    },
     daysOfWeek() {
       return [
         "Sunday",
@@ -139,11 +147,17 @@ export default {
     },
   },
   methods: {
-    updateCurrentMonth() {
-      this.currentMonth = this.currentDate.toLocaleString("default", {
-        month: "long",
-        year: "numeric",
-      });
+    handleButtonClick() {
+      this.addCandidateStatus();
+      this.closeNestedCalendar();
+    },
+    updateCurrentMonth(date) {
+      if (date instanceof Date && !isNaN(date)) {
+        this.currentMonth = date.toLocaleString("default", {
+          month: "long",
+          year: "numeric",
+        });
+      }
     },
     goToPreviousMonth() {
       this.currentDate = new Date(
@@ -151,16 +165,15 @@ export default {
         this.currentDate.getMonth() - 1,
         1
       );
-      this.updateCurrentMonth();
+      this.updateCurrentMonth(this.currentDate);
     },
-
     goToNextMonth() {
       this.currentDate = new Date(
         this.currentDate.getFullYear(),
         this.currentDate.getMonth() + 1,
         1
       );
-      this.updateCurrentMonth();
+      this.updateCurrentMonth(this.currentDate);
     },
     closeNestedCalendar() {
       this.$emit("closeModal");
@@ -229,13 +242,11 @@ export default {
           status: this.status,
         };
 
-        const response = await axios.post(`${VITE_API_URL}/availabilitys`, {
-          method: "POST",
+        const response = await axios.post(`${VITE_API_URL}/availabilitys`, data, {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(data),
         });
 
         // if (data) {
@@ -247,7 +258,7 @@ export default {
 
   mounted() {
     this.initializeCalendar();
-    this.updateCurrentMonth();
+    this.updateCurrentMonth(this.initialDate);
   },
 };
 </script>

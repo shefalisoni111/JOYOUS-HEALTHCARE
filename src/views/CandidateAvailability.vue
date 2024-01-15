@@ -34,12 +34,12 @@
                   >&times;</span
                 >
                 <h4 class="text-capitalize">Availability - {{ getCandidateName() }}</h4>
-                <p>You clicked on {{ selectedDate }}</p>
-                <p>Status: {{ statusForSelectedDate }}</p>
+                <!-- <p>You clicked on {{ selectedDate }}</p>
+                <p>Status: {{ statusForSelectedDate }}</p> -->
                 <!-- Pass initialDate to the Calendar component -->
                 <Calendar
                   :initialDate="selectedDate"
-                  :candidateId="selectedCandidateId"
+                  :candidateId="selectedCandidateId.toString()"
                   @closeModal="closeModal"
                 />
               </div>
@@ -114,9 +114,10 @@ export default {
       endDate: { value: "", display: "" },
       currentDate: new Date(),
       selectedDate: null,
-      candidateList: [],
+
       selectedCandidate: null,
       selectedCandidateId: null,
+      selectedCandidateData: null,
       candidateList: null,
       getCandidateStatus: [],
       showModal: false,
@@ -136,7 +137,7 @@ export default {
         "Sunday",
       ];
     },
-    selectedCandidate() {
+    computedSelectedCandidate() {
       return this.candidateList.find(
         (candidate) => candidate.id === this.selectedCandidateId
       );
@@ -165,7 +166,7 @@ export default {
     formattedDates() {
       return this.selectedDateRow.map((day) => this.formatDate(day));
     },
-    selectedCandidateComputed() {
+    getSelectedCandidate() {
       return this.candidateList.find(
         (candidate) => candidate.id === this.selectedCandidateId
       );
@@ -175,6 +176,11 @@ export default {
     },
     formattedEndDate() {
       return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
+    },
+    computedSelectedCandidate() {
+      return this.candidateList.find(
+        (candidate) => candidate.id === this.selectedCandidateId
+      );
     },
   },
 
@@ -391,7 +397,7 @@ input.dateInput {
 
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto;
+  margin: 16% auto;
   padding: 20px;
   border: 1px solid #888;
   width: 90%;

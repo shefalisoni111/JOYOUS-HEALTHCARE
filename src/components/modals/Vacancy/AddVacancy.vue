@@ -156,10 +156,10 @@
               Cancel
             </button>
             <button
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
               :disabled="!isValidForm"
               :class="{ disabled: !isValidForm }"
-              data-bs-dismiss="modal"
+              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              :data-bs-dismiss="isValidForm ? 'modal' : null"
               v-on:click="addVacancyMethod()"
             >
               Add Vacancy

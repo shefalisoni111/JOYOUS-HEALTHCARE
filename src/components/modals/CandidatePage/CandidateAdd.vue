@@ -143,6 +143,7 @@
               :disabled="!isValidForm"
               :class="{ disabled: !isValidForm }"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              :data-bs-dismiss="isValidForm ? 'modal' : null"
               v-on:click="addCandidate()"
             >
               Add
@@ -290,7 +291,7 @@ export default {
       }
     },
     validateEmailFormat(email) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const emailRegex = /^[^\s@]+@gmail\.com$/;
       return emailRegex.test(email);
     },
     validateNameFormat(first_name) {

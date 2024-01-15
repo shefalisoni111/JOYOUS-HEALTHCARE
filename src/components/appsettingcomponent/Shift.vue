@@ -63,7 +63,7 @@
         </form>
       </div>
     </div>
-    <AddShift />
+    <AddShift :shifts="shifts" @shift-updated="updateShiftInList" />
   </div>
 </template>
 
@@ -86,6 +86,18 @@ export default {
       } catch (error) {
         // console.error("Error fetching shifts:", error);
       }
+    },
+    updateShiftInList(updatedShifts) {
+      updatedShifts.forEach((updatedShift) => {
+        // Find the index of the updated shift in the local array
+        const updatedIndex = this.shifts.findIndex((s) => s.id === updatedShift.id);
+
+        // Update the shift in the local array at its own position
+        if (updatedIndex !== -1) {
+          // Use direct assignment for reactivity in Vue 3
+          this.shifts[updatedIndex] = updatedShift;
+        }
+      });
     },
   },
   mounted() {

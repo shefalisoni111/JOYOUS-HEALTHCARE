@@ -44,9 +44,14 @@
                 <h6>Document Categories</h6>
               </div>
               <div class="d-flex gap-1">
-                <!-- <button type="button" class="btn btn-primary btn-sm">
-                  <i class="bi bi-download"></i> Download All
-                </button> -->
+                <button
+                  type="button"
+                  class="btn btn-primary btn-sm"
+                  v-on:click="getDownloadDocMethod()"
+                >
+                  <i class="bi bi-download"></i>
+                  Download All
+                </button>
                 <!-- <div class="d-flex align-items-center">
                   <h6 class="mb-0">Compliant All</h6>
                   <label class="switch">
@@ -363,6 +368,16 @@ export default {
         this.getDocument.forEach((document) => {
           document.id = id;
         });
+      } catch (error) {
+        // console.error("Error fetching documents:", error);
+      }
+    },
+    async getDownloadDocMethod() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/download_document/${this.$route.params.id}`
+        );
+        console.log(response.data);
       } catch (error) {
         // console.error("Error fetching documents:", error);
       }
