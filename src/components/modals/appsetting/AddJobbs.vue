@@ -164,7 +164,7 @@ export default {
           this.$emit("jobAdded");
 
           this.name = "";
-          this.color = "";
+          this.color = "#050505";
           this.description = "";
         } else {
         }

@@ -27,7 +27,7 @@
       <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
           <button
-            class="nav-link active text-capitalize ps-0"
+            class="nav-link active text-capitalize ps-0 text-nowrap"
             id="active"
             data-bs-toggle="pill"
             data-bs-target="#pills-home"
@@ -42,7 +42,7 @@
         </li>
         <li class="nav-item" role="presentation">
           <button
-            class="nav-link text-capitalize"
+            class="nav-link text-capitalize text-nowrap"
             id="inactive"
             data-bs-toggle="pill"
             data-bs-target="#pills-profile"
@@ -90,7 +90,10 @@
                   <td v-text="jobs.no_of_candidates"></td>
                   <td>2</td>
                   <td>
-                    <button class="btn btn-primary" v-on:click="jobsInActive(jobs.id)">
+                    <button
+                      class="btn btn-primary text-nowrap"
+                      v-on:click="jobsInActive(jobs.id)"
+                    >
                       In-Active
                     </button>
                   </td>
@@ -136,7 +139,10 @@
                     v-on:click="jobsDelete(jobs.id)"
                   ></i>
                   <span>&nbsp;</span>
-                  <button class="btn btn-primary" v-on:click="jobActive(jobs.id)">
+                  <button
+                    class="btn btn-primary text-nowrap"
+                    v-on:click="jobActive(jobs.id)"
+                  >
                     Re-Activate
                   </button>
                 </td>

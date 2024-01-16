@@ -1,69 +1,78 @@
 <template>
-  <div class="container-fluid">
-    <div class="row no-gutter">
-      <div class="col-md-6 d-none d-md-flex bg-image"></div>
+  <div class="container-fluid p-0">
+    <div class="d-flex align-items-center justify-content-center whole-bg">
+      <div class="row no-gutter d-flex justify-content-center align-items-center w-100">
+        <div class="col-4 d-flex wrapper-div p-0">
+          <!-- <div class="col-md-6 d-none d-md-flex bg-image"></div> -->
 
-      <div class="login-form col-md-6">
-        <div class="login d-flex align-items-center py-5">
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-10 col-xl-7 mx-auto">
-                <img src="../logo.png" class="img-fluid mb-2" alt="RecPal" width="150" />
-                <div class="mb-4">
-                  <h4 class="mb-2 fw-bold">Login</h4>
-                  <span>Welcome Back! Login to Access your Account</span>
+          <div class="login-form">
+            <img
+              src="../logo.png"
+              class="img-fluid mb-2 m-auto d-block"
+              alt="RecPal"
+              width="170"
+            />
+            <div class="login d-flex align-items-center py-5">
+              <div class="container">
+                <div class="row">
+                  <div class="col-lg-10 mx-auto">
+                    <div class="mb-4">
+                      <h4 class="mb-2 fw-bold">Login</h4>
+                      <span>Welcome Back! Login to Access your Account</span>
+                    </div>
+                    <form @submit.prevent="login()" class="loginform">
+                      <div class="mb-3">
+                        <input
+                          id="inputEmail"
+                          type="email"
+                          v-model="email"
+                          placeholder="Email address"
+                          @input="clearError"
+                          autofocus="true"
+                          class="form-control border-0 shadow-sm"
+                        />
+                        <!-- <div class="error" v-if="msg">
+                            <span class="text-danger">{{ msg }}</span>
+                          </div> -->
+                      </div>
+                      <div class="mb-3">
+                        <input
+                          id="inputPassword"
+                          type="password"
+                          v-model="password"
+                          placeholder="Password"
+                          @input="clearError"
+                          required
+                          class="form-control border-0 shadow-sm text-primary"
+                        />
+                      </div>
+                      <div v-if="error" class="error-message text-danger">
+                        {{ error }}
+                      </div>
+
+                      <!-- <div class="form-check ps-0">
+                          <label>
+                            <input type="checkbox" v-model="rememberMe" /> Remember
+                            Password
+                          </label>
+                        </div> -->
+                      <div class="my-4 d-flex justify-content-between">
+                        <button
+                          type="submit"
+                          class="btn btn-primary btn-block text-capitalize shadow-sm cursor-pointer"
+                        >
+                          Sign in
+                        </button>
+                        <!-- <div class="d-flex align-items-center">
+                            Did you
+                            <router-link class="ps-1" to="/forgotpassword">
+                              Forget your password ?</router-link
+                            >
+                          </div> -->
+                      </div>
+                    </form>
+                  </div>
                 </div>
-                <form @submit.prevent="login()" class="loginform">
-                  <div class="mb-3">
-                    <input
-                      id="inputEmail"
-                      type="email"
-                      v-model="email"
-                      placeholder="Email address"
-                      @input="clearError"
-                      autofocus="true"
-                      class="form-control border-0 shadow-sm"
-                    />
-                    <!-- <div class="error" v-if="msg">
-                      <span class="text-danger">{{ msg }}</span>
-                    </div> -->
-                  </div>
-                  <div class="mb-3">
-                    <input
-                      id="inputPassword"
-                      type="password"
-                      v-model="password"
-                      placeholder="Password"
-                      @input="clearError"
-                      required
-                      class="form-control border-0 shadow-sm text-primary"
-                    />
-                  </div>
-                  <div v-if="error" class="error-message text-danger">
-                    {{ error }}
-                  </div>
-
-                  <!-- <div class="form-check ps-0">
-                    <label>
-                      <input type="checkbox" v-model="rememberMe" /> Remember
-                      Password
-                    </label>
-                  </div> -->
-                  <div class="my-4 d-flex justify-content-between">
-                    <button
-                      type="submit"
-                      class="btn btn-primary btn-block text-capitalize shadow-sm"
-                    >
-                      Sign in
-                    </button>
-                    <!-- <div class="d-flex align-items-center">
-                      Did you
-                      <router-link class="ps-1" to="/forgotpassword">
-                        Forget your password ?</router-link
-                      >
-                    </div> -->
-                  </div>
-                </form>
               </div>
             </div>
           </div>
@@ -162,11 +171,26 @@ export default {
 <style scoped>
 .login,
 .image {
-  min-height: 100vh;
+}
+.whole-bg {
+  background-image: url("src/assets/loginbggg11.jpg");
+  height: 100vh;
+  background-size: cover;
+  background-position: center center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
+.wrapper-div {
+  box-shadow: 0 8px 11px 0 rgb(0 0 0 / 42%), 0 15px 24px 0 rgb(0 0 0 / 38%);
+  border-radius: 12px;
+  background-color: antiquewhite;
+}
 .bg-image {
-  background-image: url("src/assets/login-split.jpg");
+  flex: 1;
+  background-image: url("src/assets/loginbggg.jpg");
   background-size: cover;
   background-position: center center;
 }
@@ -174,7 +198,10 @@ export default {
   background-color: #f7f5f4;
   padding: 0.4rem 0.75rem;
 }
-
+.login-form {
+  flex: 1; /* This will make the form take up the remaining space */
+  padding: 20px; /* Adjust the padding as needed */
+}
 .btn-primary {
   border: none;
 }
@@ -192,5 +219,8 @@ export default {
   color: black;
   letter-spacing: 1px;
   font-size: 19px;
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 </style>

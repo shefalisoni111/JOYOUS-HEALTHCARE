@@ -218,8 +218,26 @@ export default {
     cleanPhoneNumber() {
       this.phone_number = this.phone_number.replace(/\D/g, "");
     },
+
     detectAutofill() {
-      this.autofilled = true;
+      if (this.$refs.email && this.$refs.email.autofocus && this.$refs.email.value) {
+        // Mark the field as autofilled
+        this.autofilled = true;
+        // Clear the autofilled value
+        this.email = "";
+      }
+
+      // Check if the password field is autofilled
+      if (
+        this.$refs.password &&
+        this.$refs.password.autofocus &&
+        this.$refs.password.value
+      ) {
+        // Mark the field as autofilled
+        this.autofilled = true;
+        // Clear the autofilled value
+        this.password = "";
+      }
     },
     async addCandidate() {
       this.validateSelectedOption();

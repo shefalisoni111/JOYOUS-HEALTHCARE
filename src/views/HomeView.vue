@@ -27,18 +27,20 @@
         <section class="section dashboard mt-3">
           <div class="row">
             <!-- Left side columns -->
-            <div class="col-lg-6">
+            <div class="col-2 col-lg-3 mb-3">
               <div class="row">
                 <!-- Sales Card -->
                 <h5>Client</h5>
-                <div class="col-xxl-4 col-md-4">
+                <div class="col-12 mb-3">
                   <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                        ></div>
-                        <div class="ps-2">
+                          class="card-icon d-flex align-items-center justify-content-center"
+                        >
+                          <i class="bi bi-people-fill fs-1"></i>
+                        </div>
+                        <div class="ps-4">
                           <h6 v-text="getRecords.Total_client"></h6>
                           <span class="text-muted pt-2 text-capitalize"
                             >Total Clients</span
@@ -51,14 +53,16 @@
                 <!-- End Sales Card -->
 
                 <!-- Revenue Card -->
-                <div class="col-xxl-4 col-md-4">
-                  <div class="card h-100 info-card revenue-card">
+                <div class="col-12 mb-3">
+                  <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                        ></div>
-                        <div class="ps-2">
+                          class="card-icon d-flex align-items-center justify-content-center"
+                        >
+                          <i class="bi bi-people-fill fs-1"></i>
+                        </div>
+                        <div class="ps-4">
                           <h6 v-text="getRecords.Active_client"></h6>
                           <span class="text-muted pt-2 text-capitalize"
                             >active clients</span
@@ -71,14 +75,16 @@
                 <!-- End Revenue Card -->
 
                 <!-- Sales Card -->
-                <div class="col-xxl-4 col-md-4">
+                <div class="col-12 mb-3">
                   <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                        ></div>
-                        <div class="ps-2">
+                          class="card-icon d-flex align-items-center justify-content-center"
+                        >
+                          <i class="bi bi-people-fill fs-1"></i>
+                        </div>
+                        <div class="ps-4">
                           <h6 v-text="getRecords.Passive_client"></h6>
                           <span class="text-muted pt-2 text-capitalize"
                             >inactive clients</span
@@ -93,18 +99,20 @@
             </div>
             <!-- End Left side columns -->
             <!-- right side columns -->
-            <div class="col-lg-6">
+            <div class="col-lg-3 mb-3">
               <div class="row">
                 <!-- Sales Card -->
                 <h5>Candidates</h5>
-                <div class="col-xxl-4 col-md-4">
+                <div class="col-12 mb-3">
                   <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                        ></div>
-                        <div class="ps-2">
+                          class="card-icon d-flex align-items-center justify-content-center"
+                        >
+                          <i class="bi bi-people-fill fs-1"></i>
+                        </div>
+                        <div class="ps-4">
                           <h6 v-text="getRecords.candidates"></h6>
                           <span class="text-muted pt-2 text-capitalize"
                             >Total Candidates</span
@@ -117,14 +125,16 @@
                 <!-- End Sales Card -->
 
                 <!-- Revenue Card -->
-                <div class="col-xxl-4 col-md-4">
-                  <div class="card h-100 info-card revenue-card">
+                <div class="col-12 mb-3">
+                  <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                        ></div>
-                        <div class="ps-2">
+                          class="card-icon d-flex align-items-center justify-content-center"
+                        >
+                          <i class="bi bi-people-fill fs-1"></i>
+                        </div>
+                        <div class="ps-4">
                           <h6 v-text="getRecords.current_candidate"></h6>
                           <span class="text-muted pt-2 text-capitalize"
                             >active Candidates</span
@@ -137,14 +147,16 @@
                 <!-- End Revenue Card -->
 
                 <!-- Sales Card -->
-                <div class="col-xxl-4 col-md-4">
+                <div class="col-12 mb-3">
                   <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                        ></div>
-                        <div class="ps-2">
+                          class="card-icon d-flex align-items-center justify-content-center"
+                        >
+                          <i class="bi bi-people-fill fs-1"></i>
+                        </div>
+                        <div class="ps-4">
                           <h6 v-text="getRecords.deleted_candidate"></h6>
                           <span class="text-muted pt-2 text-capitalize"
                             >inactive Candidates</span
@@ -157,25 +169,21 @@
                 <!-- End Sales Card -->
               </div>
             </div>
-            <!-- End right side columns -->
-          </div>
-        </section>
 
-        <section class="section dashboard mt-4">
-          <div class="row">
-            <!-- Left side columns -->
-            <div class="col-lg-6">
+            <div class="col-lg-3 mb-3">
               <div class="row">
                 <!-- Sales Card -->
                 <h5>Business Units</h5>
-                <div class="col-xxl-4 col-md-4">
-                  <div class="card h-100 info-card totalbusinessunits-card">
+                <div class="col-12 mb-3">
+                  <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                        ></div>
-                        <div class="ps-2">
+                          class="card-icon d-flex align-items-center justify-content-center"
+                        >
+                          <i class="bi bi-people-fill fs-1"></i>
+                        </div>
+                        <div class="ps-4">
                           <h6 v-text="getRecords.Total_business_unit"></h6>
                           <span class="text-muted pt-2 text-capitalize"
                             >Total Business Units</span
@@ -188,14 +196,16 @@
                 <!-- End Sales Card -->
 
                 <!-- Revenue Card -->
-                <div class="col-xxl-4 col-md-4">
-                  <div class="card h-100 info-card totalbusinessunitsactive-card">
+                <div class="col-12 mb-3">
+                  <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                        ></div>
-                        <div class="ps-2">
+                          class="card-icon d-flex align-items-center justify-content-center"
+                        >
+                          <i class="bi bi-people-fill fs-1"></i>
+                        </div>
+                        <div class="ps-4">
                           <h6 v-text="getRecords.Active_business_unit"></h6>
                           <span class="text-muted pt-2 text-capitalize"
                             >active Business Units</span
@@ -208,14 +218,16 @@
                 <!-- End Revenue Card -->
 
                 <!-- Sales Card -->
-                <div class="col-xxl-4 col-md-4">
-                  <div class="card h-100 info-card totalbusinessunitsinactive-card">
+                <div class="col-12 mb-3">
+                  <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                        ></div>
-                        <div class="ps-2">
+                          class="card-icon d-flex align-items-center justify-content-center"
+                        >
+                          <i class="bi bi-people-fill fs-1"></i>
+                        </div>
+                        <div class="ps-4">
                           <h6 v-text="getRecords.Inactive_business_unit"></h6>
                           <span class="text-muted pt-2 text-capitalize"
                             >inactive Business Units</span
@@ -230,18 +242,20 @@
             </div>
             <!-- End Left side columns -->
             <!-- right side columns -->
-            <div class="col-lg-6">
+            <div class="col-lg-3 mb-3">
               <div class="row">
                 <!-- Sales Card -->
                 <h5>Compliance Insight</h5>
-                <div class="col-xxl-4 col-md-4">
-                  <div class="card h-100 info-card totaldoc-card">
+                <div class="col-12 mb-3">
+                  <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                        ></div>
-                        <div class="ps-2">
+                          class="card-icon d-flex align-items-center justify-content-center"
+                        >
+                          <i class="bi bi-people-fill fs-1"></i>
+                        </div>
+                        <div class="ps-4">
                           <h6>
                             Expiring in 60 days({{ getRecords.expiring_in_60_days }})
                           </h6>
@@ -260,14 +274,16 @@
                 <!-- End Sales Card -->
 
                 <!-- Revenue Card -->
-                <div class="col-xxl-4 col-md-4">
-                  <div class="card h-100 info-card expiredoc-card">
+                <div class="col-12 mb-3">
+                  <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                        ></div>
-                        <div class="ps-2">
+                          class="card-icon d-flex align-items-center justify-content-center"
+                        >
+                          <i class="bi bi-people-fill fs-1"></i>
+                        </div>
+                        <div class="ps-4">
                           <h6>
                             Expiring in 30 days({{ getRecords.expiring_in_30_days }})
                           </h6>
@@ -286,14 +302,16 @@
                 <!-- End Revenue Card -->
 
                 <!-- Sales Card -->
-                <div class="col-xxl-4 col-md-4">
-                  <div class="card h-100 info-card expireindays-card">
+                <div class="col-12 mb-3">
+                  <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                        ></div>
-                        <div class="ps-2">
+                          class="card-icon d-flex align-items-center justify-content-center"
+                        >
+                          <i class="bi bi-people-fill fs-1"></i>
+                        </div>
+                        <div class="ps-4">
                           <h6>Expired ({{ getRecords.compliance_insight }})</h6>
                           <span
                             class="text-muted pt-2 text-capitalize cursor-pointer"
@@ -319,8 +337,10 @@
             <!-- Left side columns -->
             <div class="col-lg-5">
               <div class="card h-100">
-                <div class="d-flex justify-content-between bg-white rounded">
-                  <div class="col-lg-5 p-3">
+                <div
+                  class="d-flex justify-content-between bg-white rounded align-items-center"
+                >
+                  <div class="col-lg-4 p-3">
                     <h5 class="mb-0">Vacancies</h5>
                     <div class="">
                       <ol class="breadcrumb mb-1">
@@ -341,12 +361,12 @@
                       <li class="d-flex mb-2">
                         <span class="rounded-circle text-white">30</span>
                         <span class="d-flex align-items-center ms-2"
-                          >Assign Vacancies</span
+                          >Assigned Vacancies</span
                         >
                       </li>
                     </ul>
                   </div>
-                  <div class="col-lg-7 p-3">
+                  <div class="col-lg-8 p-3 mt-3">
                     <VueBarChart />
                   </div>
                 </div>
@@ -357,55 +377,92 @@
             <!-- right side columns -->
             <div class="col-lg-7">
               <div class="card h-100">
-                <div class="d-flex justify-content-between bg-white rounded">
-                  <div class="col-lg-7 p-3">
-                    <div class="input-group mb-3">
-                      <input
-                        class="form-control"
-                        type="text"
-                        name="datefilter"
-                        :value="formatDateRange"
-                        placeholder="Select Date from Start to End"
-                        readonly
-                        style="width: 200px"
-                      />
-                      <i
-                        class="bi bi-calendar2-check position-absolute"
-                        @click="showDatePicker = !showDatePicker"
-                        style="cursor: pointer"
-                      ></i
-                      >&nbsp;
+                <div class="bg-white rounded">
+                  <div class="col-lg-8 p-3">
+                    <div class="d-flex justify-content-between">
+                      <div class="d-flex align-items-center mb-0">
+                        <h5>TimeSheet</h5>
+                      </div>
+                      <div>
+                        <div class="input-group">
+                          <input
+                            class="form-control"
+                            type="text"
+                            name="datefilter"
+                            :value="formatDateRange"
+                            placeholder="Select Date from Start to End"
+                            readonly
+                            style="width: 200px"
+                          />
+                          <i
+                            class="bi bi-calendar2-check position-absolute"
+                            @click="showDatePicker = true"
+                            style="cursor: pointer"
+                          ></i
+                          >&nbsp;
+                        </div>
 
-                      <!-- Custom date picker component -->
-                      <div v-if="showDatePicker" class="date-picker">
-                        <!-- Set a fixed width for the date picker -->
-                        <div class="mb-3">
-                          <label for="startDate" class="form-label">Start Date:</label>
-                          <input
-                            type="date"
-                            class="form-control"
-                            id="startDate"
-                            v-model="startDate"
-                            @change="updateEndDateMin"
-                          />
+                        <!-- Modal for the date picker -->
+                        <div
+                          v-if="showDatePicker"
+                          class="modal"
+                          tabindex="-1"
+                          role="dialog"
+                          style="display: block"
+                        >
+                          <div class="modal-dialog modal-sm">
+                            <!-- Adjust the size with modal-sm, modal-md, modal-lg, etc. -->
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title">Select Date Range</h5>
+                                <button
+                                  type="button"
+                                  class="btn-close"
+                                  @click="showDatePicker = false"
+                                ></button>
+                              </div>
+                              <div class="modal-body">
+                                <!-- Custom date picker component -->
+                                <div class="mb-3">
+                                  <label for="startDate" class="form-label"
+                                    >Start Date:</label
+                                  >
+                                  <input
+                                    type="date"
+                                    class="form-control"
+                                    id="startDate"
+                                    v-model="startDate"
+                                    @change="updateEndDateMin"
+                                  />
+                                </div>
+                                <div class="mb-3">
+                                  <label for="endDate" class="form-label"
+                                    >End Date:</label
+                                  >
+                                  <input
+                                    type="date"
+                                    class="form-control"
+                                    id="endDate"
+                                    v-model="endDate"
+                                    :min="startDate"
+                                  />
+                                </div>
+                                <button class="btn btn-primary" @click="applyDateRange">
+                                  Apply
+                                </button>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                        <div class="mb-3">
-                          <label for="endDate" class="form-label">End Date:</label>
-                          <input
-                            type="date"
-                            class="form-control"
-                            id="endDate"
-                            v-model="endDate"
-                            :min="startDate"
-                          />
-                        </div>
-                        <button class="btn btn-primary" @click="applyDateRange">
-                          Apply
-                        </button>
+                        <div
+                          v-if="showDatePicker"
+                          class="modal-backdrop"
+                          @click="showDatePicker = false"
+                        ></div>
                       </div>
                     </div>
 
-                    <table class="table table-borderless sizefix">
+                    <!-- <table class="table table-borderless sizefix">
                       <thead>
                         <tr class="">
                           <th scope="col" class="h-100">TimeSheet</th>
@@ -438,9 +495,9 @@
                           <td>331.00</td>
                         </tr>
                       </tbody>
-                    </table>
+                    </table> -->
                   </div>
-                  <div class="col-lg-5 p-3">
+                  <div class="col-lg-12 p-3">
                     <TimeSheet />
                   </div>
                 </div>
@@ -481,9 +538,7 @@ export default {
   },
   computed: {
     formatDateRange() {
-      return this.startDate && this.endDate
-        ? `${this.startDate} to ${this.endDate}`
-        : "Select Date from Start to End";
+      return `${this.startDate} - ${this.endDate}`;
     },
   },
   methods: {
@@ -540,9 +595,7 @@ export default {
 table.sizefix {
   font-size: 15px;
 }
-.input-group {
-  width: 95%;
-}
+
 .bi-calendar2-check {
   top: 4px;
   right: 10px;
@@ -555,14 +608,19 @@ table.sizefix {
 .card.totalbusinessunitsactive-card {
   background: #f4b58f;
 }
-
+.bgs-color {
+  background-color: #ffa500;
+  padding: 25px 30px;
+}
 .cursor-pointer {
   cursor: pointer;
 }
 .card.totalbusinessunitsinactive-card {
   background: #c8c3ec;
 }
-
+.card.sales-card {
+  border-top: 5px solid orange;
+}
 .card.totaldoc-card {
   background: #8ec02b;
 }

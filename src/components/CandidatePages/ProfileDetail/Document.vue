@@ -260,6 +260,7 @@
 import axios from "axios";
 import AddCategory from "../../modals/appsetting/AddCategory.vue";
 import ViewDocuments from "../../modals/CandidatePage/Documents/ViewDocuments.vue";
+import { saveAs } from "file-saver";
 
 export default {
   name: "Document",
@@ -374,10 +375,20 @@ export default {
     },
     async getDownloadDocMethod() {
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/download_document/${this.$route.params.id}`
-        );
-        console.log(response.data);
+        // Assuming this.getDocument is an array of documents
+        this.getDocument.forEach(async (document) => {
+          try {
+            const response = await axios.get(
+              `${VITE_API_URL}/download_document/${document.id}`,
+              { responseType: "blob" }
+            );
+
+            // Save the blob using FileSaver.js
+            saveAs(response.data, "document_filename.ext");
+          } catch (error) {
+            // console.error("Error fetching document:", error);
+          }
+        });
       } catch (error) {
         // console.error("Error fetching documents:", error);
       }

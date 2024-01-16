@@ -7,7 +7,7 @@
       aria-labelledby="addWorkExperience"
       tabindex="-1"
     >
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addWorkExperience">Add Work Experience</h5>
@@ -23,7 +23,7 @@
               <form>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label">NAME</label>
+                    <label class="form-label">Name</label>
                   </div>
                   <div class="col-10 mt-1">
                     <input
@@ -37,11 +37,59 @@
                     </div>
                   </div>
                 </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
+                    <label class="form-label">Company Name</label>
+                  </div>
+                  <div class="col-10 mt-1">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="company_name"
+                      @input="clearError('company_name')"
+                    />
+                    <div v-if="getError('title')" class="text-danger">
+                      {{ getError("title") }}
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
+                    <label class="form-label">Experience</label>
+                  </div>
+                  <div class="col-10 mt-1">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="experience"
+                      @input="clearError('experience')"
+                    />
+                    <div v-if="getError('title')" class="text-danger">
+                      {{ getError("title") }}
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
+                    <label class="form-label">Position</label>
+                  </div>
+                  <div class="col-10 mt-1">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="position"
+                      @input="clearError('position')"
+                    />
+                    <div v-if="getError('title')" class="text-danger">
+                      {{ getError("title") }}
+                    </div>
+                  </div>
+                </div>
 
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label for="exampleFormControlTextarea1" class="form-label"
-                      >DESC</label
+                      >Description</label
                     >
                   </div>
                   <div class="col-10 mt-1">
@@ -85,13 +133,16 @@
   </div>
 </template>
 
-<script >
+<script>
 export default {
   name: "WorkExperience",
   data() {
     return {
       title: "",
 
+      company_name: "",
+      experience: "",
+      position: "",
       description: "",
 
       errors: {},
@@ -106,8 +157,7 @@ export default {
   },
   methods: {
     clearError(fieldName) {
-      // Clear the error for the specific field
-      this.$set(this.errors, fieldName, null);
+      this.errors[fieldName] = null;
     },
     getError(fieldName) {
       // Get the error message for the specific field
@@ -125,11 +175,23 @@ export default {
         this.$set(this.errors, "title", "Title is required.");
       }
 
+      if (!this.company_name.trim()) {
+        this.$set(this.errors, "company_name", "Company Name is required.");
+      }
+
+      if (!this.experience.trim()) {
+        this.$set(this.errors, "experience", "Experience is required.");
+      }
+
+      if (!this.position.trim()) {
+        this.$set(this.errors, "position", "Position is required.");
+      }
+
       if (!this.description.trim()) {
         this.$set(this.errors, "description", "Description is required.");
       }
 
-      // If there are no errors, proceed to add job
+      // If there are no errors, proceed to add work experience
       if (
         Object.values(this.errors).every((error) => error === null) &&
         !this.isEmptyField()
@@ -138,24 +200,31 @@ export default {
       }
     },
     async addWorkExperience() {
+      const candidateId = parseInt(this.$route.params.id);
+      if (isNaN(candidateId)) {
+        return;
+      }
+
       const data = {
+        candidate_id: candidateId,
         title: this.title,
+        company_name: this.company_name,
+        experience: this.experience,
+        position: this.position,
         description: this.description,
       };
       try {
-        const response = await fetch(
-          `${VITE_API_URL}/candidates/${this.$route.params.id}/work_experiences`,
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          }
-        );
-        if (data) {
-          location.reload();
+        const response = await fetch(`${VITE_API_URL}work_experiences`, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+        if (response.ok) {
+          console.log("Event emitted successfully");
+          this.$emit("AddExperienceData");
         }
       } catch (error) {}
     },

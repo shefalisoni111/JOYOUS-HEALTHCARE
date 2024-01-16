@@ -358,14 +358,23 @@
               <table class="table">
                 <thead class="table-light">
                   <tr>
+                    <th>ID</th>
                     <th scope="col">Title</th>
+                    <th scope="col">Company Name</th>
+                    <th scope="col">Experience</th>
+                    <th scope="col">Position</th>
                     <th scope="col">Description</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="data in getWorkExpData" :key="data.id">
-                    <td v-text="data.title"></td>
-                    <td v-text="data.description"></td>
+                  <tr v-for="(data, index) in getWorkExpData" :key="index">
+                    <td v-if="data">{{ data.id }}</td>
+                    <td v-if="data">{{ data.title }}</td>
+
+                    <td v-if="data">{{ data.company_name }}</td>
+                    <td v-if="data">{{ data.experience }}</td>
+                    <td v-if="data">{{ data.position }}</td>
+                    <td v-if="data">{{ data.description }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -415,7 +424,7 @@
         </div>
       </div>
     </div>
-    <WorkExperience />
+    <WorkExperience @AddExperienceData="getCandidateWorkExperienceMethod" />
     <EducationAdd />
     <AddNextKin @AddNextKin="getCandidateNextToKineMethod" />
   </div>
@@ -472,9 +481,7 @@ export default {
     },
     async getCandidateWorkExperienceMethod() {
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_work_experiences`
-        );
+        const response = await axios.get(`${VITE_API_URL}/work_experiences`);
 
         this.getWorkExpData = response.data;
       } catch (error) {
