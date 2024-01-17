@@ -63,7 +63,7 @@
         </form>
       </div>
     </div>
-    <AddShift :shifts="shifts" @shift-updated="updateShiftInList" />
+    <AddShift :shifts="shifts" @shift-updated="getTime" />
   </div>
 </template>
 
@@ -100,8 +100,9 @@ export default {
       });
     },
   },
-  mounted() {
-    this.getTime();
+
+  async created() {
+    await this.getTime();
   },
 };
 </script>

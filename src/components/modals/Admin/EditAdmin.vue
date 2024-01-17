@@ -1,16 +1,11 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="editCandidate"
-      aria-labelledby="editCandidate"
-      tabindex="-1"
-    >
+    <div class="modal fade" id="editAdmin" aria-labelledby="editAdmin" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="editCandidate">Edit Candidate</h5>
+            <h5 class="modal-title" id="editAdmin">Edit Candidate</h5>
             <button
               type="button"
               class="btn-close"
@@ -30,7 +25,7 @@
                       <input
                         type="text"
                         class="form-control"
-                        v-model="fetchCandidate.first_name"
+                        v-model="fetchAdmin.first_name"
                       />
                     </div>
                   </div>
@@ -41,11 +36,7 @@
                     <label class="form-label">Email</label>
                   </div>
                   <div class="col-12 mt-1">
-                    <input
-                      type="email"
-                      class="form-control"
-                      v-model="fetchCandidate.email"
-                    />
+                    <input type="email" class="form-control" v-model="fetchAdmin.email" />
                   </div>
                 </div>
                 <div class="mb-3">
@@ -56,19 +47,19 @@
                     <input
                       type="number"
                       class="form-control"
-                      v-model="fetchCandidate.phone_number"
+                      v-model="fetchAdmin.phone_number"
                     />
                   </div>
                 </div>
                 <div class="mb-3">
                   <div class="col-12">
-                    <label class="form-label">Status</label>
+                    <label class="form-label">Address</label>
                   </div>
                   <div class="col-12 mt-1">
                     <input
                       type="text"
                       class="form-control"
-                      v-model="fetchCandidate.activated"
+                      v-model="fetchAdmin.address"
                     />
                   </div>
                 </div>
@@ -78,7 +69,7 @@
           <div class="modal-footer">
             <button
               class="btn btn-secondary rounded-1"
-              data-bs-target="#editCandidate"
+              data-bs-target="#editAdmin"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
             >
@@ -87,7 +78,7 @@
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              @click.prevent="updateCandidateMethod()"
+              @click.prevent="updateAdminMethod()"
             >
               Save
             </button>
@@ -101,58 +92,44 @@
 import axios from "axios";
 
 export default {
-  name: "EditCandidate",
+  name: "editAdmin",
   data() {
     return {
-      fetchCandidate: {
-        id: "",
+      fetchAdmin: {
+        id: 1,
         first_name: "",
         last_name: "",
-        password: "",
-        confirm_password: "",
+
         address: "",
-        jobs_id: 1,
+
         phone_number: "",
         email: "",
-        activated: "",
-        employment_type_id: "",
       },
     };
   },
-  props: {
-    candidateId: {
-      type: Number,
-      default: 0,
-    },
-  },
-  computed: {
-    getCandidatesData() {
-      return this.$store.state.candidates;
-    },
+  mounted() {
+    // Call fetchAdminMethod when the component is mounted
+    this.fetchAdminMethod(1);
   },
   methods: {
-    async fetchCandidateMethod(id) {
+    async fetchAdminMethod(id) {
       try {
-        const response = await axios.get(`${VITE_API_URL}/candidates/${id}`);
-        this.fetchCandidate = { ...this.fetchCandidate, ...response.data.data };
+        const response = await axios.get(`${VITE_API_URL}/merchants/${id}`);
+
+        this.fetchAdmin = { ...this.fetchAdmin, ...response.data };
       } catch (error) {
-        // Handle error if needed
+        // console.error("Error fetching admin data:", error);
       }
     },
-    async updateCandidateMethod() {
+    async updateAdminMethod() {
       try {
         const response = await axios.put(
-          `${VITE_API_URL}/candidates/${this.fetchCandidate.id}`,
-          this.fetchCandidate
+          `${VITE_API_URL}/merchants/${this.fetchAdmin.id}`,
+          this.fetchAdmin
         );
+        this.$emit("admin-updated");
 
-        // Corrected the Vuex mutation to use 'commit' instead of 'dispatch'
-        this.$store.commit("updateCandidate", {
-          id: this.fetchCandidate.id,
-          newData: response.data, // Use 'response.data' for the updated data
-        });
-        this.$emit("Candidate-updated");
-        alert("Candidate updated successfully");
+        alert("Admin updated successfully");
         // if (response.data) {
         //   location.reload();
         // }
@@ -160,14 +137,6 @@ export default {
         // Handle error if needed
         // console.error("Error updating candidate:", error);
       }
-    },
-  },
-  watch: {
-    candidateId: {
-      immediate: true,
-      handler(newCandidateId) {
-        this.fetchCandidateMethod(newCandidateId);
-      },
     },
   },
 };

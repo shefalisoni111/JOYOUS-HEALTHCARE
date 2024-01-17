@@ -12,7 +12,7 @@
               <th scope="col">Job Title</th>
               <th scope="col">Date</th>
               <th scope="col">Shift</th>
-              <th scope="col">Staff Required</th>
+              <!-- <th scope="col">Staff Required</th> -->
               <th scope="col">Notes</th>
               <th scope="col">Publish</th>
               <th scope="col" class="text-center">All</th>
@@ -40,7 +40,7 @@
               <td v-for="(date, index) in getdata.dates" :key="index" v-text="date"></td>
 
               <td v-text="getdata.shift"></td>
-              <td v-text="getdata.staff_required"></td>
+              <!-- <td v-text="getdata.staff_required"></td> -->
               <td v-text="getdata.notes"></td>
 
               <td>
@@ -138,7 +138,7 @@
         </table>
       </div>
     </div>
-    <EditVacancy :vacancyId="selectedVacancyId || 0" />
+    <EditVacancy :vacancyId="selectedVacancyId || 0" @updateVacancy="createVacancy" />
     <PublishedVacancy @publishVacancy="createVacancy" />
     <AppliedVacancyList />
     <AssignedVacancyList />
@@ -244,8 +244,8 @@ export default {
     },
   },
 
-  mounted() {
-    this.createVacancy();
+  async created() {
+    await this.createVacancy();
   },
 };
 </script>

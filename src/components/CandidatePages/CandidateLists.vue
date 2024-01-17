@@ -83,7 +83,7 @@
                   <th scope="col">Phone</th>
                   <th scope="col">Status</th>
                   <th scope="col">Access</th>
-                  <th scope="col">Assign</th>
+                  <!-- <th scope="col">Assign</th> -->
                   <th scope="col">Last Login</th>
                 </tr>
               </thead>
@@ -109,7 +109,7 @@
                       <div class="slider round"></div>
                     </label>
                   </td>
-                  <td>
+                  <!-- <td>
                     <button
                       type="button"
                       class="border-0 fs-3 bg-transparent text-success"
@@ -119,7 +119,7 @@
                     >
                       <i class="bi bi-person-circle"></i>
                     </button>
-                  </td>
+                  </td> -->
                   <td>{{ data.last_login }}</td>
                 </tr>
               </tbody>

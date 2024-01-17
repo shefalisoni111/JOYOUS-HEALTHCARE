@@ -8,7 +8,7 @@
           <th scope="col">Positions</th>
           <th scope="col">Email</th>
           <th scope="col">Phone</th>
-
+          <th scope="col">Status</th>
           <th scope="col">Action</th>
         </tr>
       </thead>
@@ -19,7 +19,7 @@
           <td v-text="datas.position"></td>
           <td v-text="datas.email"></td>
           <td v-text="datas.phone_number"></td>
-
+          <td v-text="datas.status"></td>
           <td>
             <button
               type="button"

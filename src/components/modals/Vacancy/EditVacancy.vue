@@ -231,7 +231,16 @@ export default {
         this.fetchVacancy.business_unit_id = response.data.business_unit_id;
         this.fetchVacancy.client_id = response.data.client_id;
         this.fetchVacancy.job_id = response.data.job_id;
-        this.fetchVacancy.dates = response.data.dates;
+
+        // Extract only the date part and format it as "yyyy-MM-dd"
+        const dateObject = new Date(response.data.dates);
+        this.fetchVacancy.dates =
+          dateObject.getFullYear() +
+          "-" +
+          ("0" + (dateObject.getMonth() + 1)).slice(-2) +
+          "-" +
+          ("0" + dateObject.getDate()).slice(-2);
+
         this.fetchVacancy.shift_id = response.data.shift_id;
       } catch (error) {
         // You might want to set a default value or display an error message
@@ -272,11 +281,8 @@ export default {
           id: this.fetchVacancy.id,
           newData: response.data,
         });
-
+        this.$emit("updateVacancy");
         alert("Vacancy updated successfully");
-        if (response.ok) {
-          this.$emit("addAfterEditVacancy");
-        }
       } catch (error) {
         console.error("Error updating vacancy:", error);
       }

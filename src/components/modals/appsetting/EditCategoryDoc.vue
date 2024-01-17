@@ -95,9 +95,7 @@ export default {
           this.fetchCategory
         );
 
-        if (response.data) {
-          location.reload();
-        }
+        this.$emit("onDocAdded");
         alert("Category updated successfully");
       } catch (error) {
         // Handle error if needed

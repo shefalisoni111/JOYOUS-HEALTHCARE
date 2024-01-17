@@ -337,36 +337,42 @@
             <!-- Left side columns -->
             <div class="col-lg-5">
               <div class="card h-100">
-                <div
-                  class="d-flex justify-content-between bg-white rounded align-items-center"
-                >
-                  <div class="col-lg-4 p-3">
-                    <h5 class="mb-0">Vacancies</h5>
+                <div class="col-12 p-4">
+                  <h5>Vacancies Details</h5>
+                </div>
+
+                <div class="d-flex justify-content-between bg-white rounded mt-2">
+                  <div class="col-lg-5 p-3 d-flex align-items-center left-flex-border">
                     <div class="">
-                      <ol class="breadcrumb mb-1">
-                        <li class="breadcrumb-item active">Current Week</li>
-                      </ol>
+                      <h5 class="mb-0">Vacancies</h5>
+                      <div class="">
+                        <ol class="breadcrumb mb-1">
+                          <li class="breadcrumb-item active">Current Week</li>
+                        </ol>
+                      </div>
+                      <ul class="list-unstyled mt-3 leftsidecol">
+                        <li class="d-flex mb-2">
+                          <span class="rounded-circle text-white">50</span>
+                          <span class="d-flex align-items-center ms-2"
+                            >Open Vacancies</span
+                          >
+                        </li>
+                        <li class="d-flex mb-2">
+                          <span class="rounded-circle text-white">10</span>
+                          <span class="d-flex align-items-center ms-2"
+                            >Applied Vacancies</span
+                          >
+                        </li>
+                        <li class="d-flex mb-2">
+                          <span class="rounded-circle text-white">30</span>
+                          <span class="d-flex align-items-center ms-2"
+                            >Assigned Vacancies</span
+                          >
+                        </li>
+                      </ul>
                     </div>
-                    <ul class="list-unstyled mt-3 leftsidecol">
-                      <li class="d-flex mb-2">
-                        <span class="rounded-circle text-white">50</span>
-                        <span class="d-flex align-items-center ms-2">Open Vacancies</span>
-                      </li>
-                      <li class="d-flex mb-2">
-                        <span class="rounded-circle text-white">10</span>
-                        <span class="d-flex align-items-center ms-2"
-                          >Applied Vacancies</span
-                        >
-                      </li>
-                      <li class="d-flex mb-2">
-                        <span class="rounded-circle text-white">30</span>
-                        <span class="d-flex align-items-center ms-2"
-                          >Assigned Vacancies</span
-                        >
-                      </li>
-                    </ul>
                   </div>
-                  <div class="col-lg-8 p-3 mt-3">
+                  <div class="col-lg-7 p-3 right-flex-border">
                     <VueBarChart />
                   </div>
                 </div>
@@ -378,7 +384,7 @@
             <div class="col-lg-7">
               <div class="card h-100">
                 <div class="bg-white rounded">
-                  <div class="col-lg-8 p-3">
+                  <div class="col-lg-12 p-3">
                     <div class="d-flex justify-content-between">
                       <div class="d-flex align-items-center mb-0">
                         <h5>TimeSheet</h5>
@@ -585,6 +591,10 @@ export default {
   background-color: #fff;
   border-radius: 10px;
   padding: 10px;
+}
+.left-flex-border,
+.right-flex-border {
+  border: 1px solid #80808042;
 }
 .pagetitle h1 {
   font-size: 24px;

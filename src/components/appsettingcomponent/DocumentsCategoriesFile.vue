@@ -137,10 +137,7 @@
       </div>
     </div>
     <AddNewDoc :categoryId="selectedCategoryId" @documentAdded="onDocumentAdded" />
-    <EditCategoryDoc
-      :categoryId="selectedCategoryId"
-      @onDocAdded="getDocumentCategories"
-    />
+    <EditCategoryDoc :categoryId="selectedCategoryId" @onDocAdded="getDocCAtegories" />
     <AddCategory :categoryId="selectedCategoryId" />
   </div>
 </template>
@@ -220,9 +217,9 @@ export default {
       }
     },
   },
-  created() {
+  async created() {
     // this.getDocumentCategories();
-    this.getDocCAtegories();
+    await this.getDocCAtegories();
   },
 };
 </script>

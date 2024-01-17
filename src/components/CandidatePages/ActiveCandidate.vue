@@ -11,8 +11,8 @@
               <th scope="col">Email</th>
               <th scope="col">Phone</th>
               <th scope="col">Status</th>
-              <th scope="col">Access</th>
-              <th scope="col">Assign</th>
+              <!-- <th scope="col">Access</th> -->
+              <!-- <th scope="col">Assign</th> -->
               <th scope="col">Last Login</th>
               <th scope="col">Action</th>
             </tr>
@@ -47,13 +47,13 @@
                   <div class="slider round"></div>
                 </label>
               </td>
-              <td>
+              <!-- <td>
                 <label class="switch">
                   <input type="checkbox" id="togBtn" checked />
                   <div class="slider round"></div>
                 </label>
-              </td>
-              <td>
+              </td> -->
+              <!-- <td>
                 <button
                   type="button"
                   class="border-0 fs-3 bg-transparent text-success"
@@ -63,7 +63,7 @@
                 >
                   <i class="bi bi-person-circle"></i>
                 </button>
-              </td>
+              </td> -->
               <td>{{ candidate.last_login }}</td>
               <td class="cursor-pointer">
                 <button
@@ -112,7 +112,10 @@
         </table>
       </div>
     </div>
-    <EditCandidate :candidateId="selectedCandidateId || 0" />
+    <EditCandidate
+      :candidateId="selectedCandidateId || 0"
+      @Candidate-updated="getCandidateMethods"
+    />
   </div>
 </template>
 
@@ -173,8 +176,8 @@ export default {
     },
   },
 
-  mounted() {
-    this.getCandidateMethods();
+  async created() {
+    await this.getCandidateMethods();
   },
 };
 </script>

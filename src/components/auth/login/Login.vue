@@ -173,7 +173,7 @@ export default {
 .image {
 }
 .whole-bg {
-  background-image: url("src/assets/loginbggg11.jpg");
+  background-image: url("src/assets/loginbggg11.png");
   height: 100vh;
   background-size: cover;
   background-position: center center;
@@ -190,7 +190,7 @@ export default {
 }
 .bg-image {
   flex: 1;
-  background-image: url("src/assets/loginbggg.jpg");
+  background-image: url("src/assets/loginbggg11.png");
   background-size: cover;
   background-position: center center;
 }

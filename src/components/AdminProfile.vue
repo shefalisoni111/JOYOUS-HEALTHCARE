@@ -11,19 +11,15 @@
           Admin Profile
         </h3>
         <div class="row gutters-sm mt-3">
-          <div class="col-md-4 mb-3">
-            <div class="card">
+          <div class="col-md-4">
+            <div class="card h-100">
               <div class="card-body">
                 <div class="d-flex flex-column align-items-center text-center">
                   <router-view to="/home"
-                    ><img
-                      src="./profile.png"
-                      alt="USer"
-                      class="rounded-circle"
-                      width="150"
+                    ><img src="./profile.png" alt="USer" width="150"
                   /></router-view>
-                  <div class="mt-3 text-capitalize">
-                    <h4>
+                  <div class="mt-3">
+                    <h4 class="text-capitalize">
                       {{ getAdmin.first_name }}
                     </h4>
                     <p class="text-secondary mb-1">
@@ -31,19 +27,29 @@
                     </p>
                     <!-- <p class="text-muted font-size-sm">Developer</p> -->
                   </div>
+                  <div>
+                    <button
+                      type="button"
+                      class="btn btn-outline-success text-nowrap text-nowrap"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editAdmin"
+                      data-bs-whatever="@mdo"
+                    >
+                      Edit
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="card mt-3"></div>
           </div>
           <div class="col-md-8">
-            <div class="card mb-3">
+            <div class="card h-100">
               <div class="card-body">
                 <div class="row">
                   <div class="col-sm-3">
                     <h6 class="mb-0">Full Name</h6>
                   </div>
-                  <div class="col-sm-9 text-secondary">
+                  <div class="col-sm-9 text-secondary text-capitalize">
                     {{ getAdmin.first_name }}
                   </div>
                 </div>
@@ -71,7 +77,7 @@
                   <div class="col-sm-3">
                     <h6 class="mb-0">Address</h6>
                   </div>
-                  <div class="col-sm-9 text-secondary">
+                  <div class="col-sm-9 text-secondary text-capitalize">
                     {{ getAdmin.address }}
                   </div>
                 </div>
@@ -81,12 +87,15 @@
         </div>
       </div>
     </div>
+    <EditAdmin @admin-updated="handleAdminUpdated" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import Navbar from "../components/Navbar.vue";
+import EditAdmin from "../components/modals/Admin/EditAdmin.vue";
+
 export default {
   name: "AdminProfile",
   data() {
@@ -94,21 +103,34 @@ export default {
       getAdmin: [],
     };
   },
-  components: { Navbar },
-  methods: {},
-  async created() {
-    const token = localStorage.getItem("token");
-    axios
-      .get(`${VITE_API_URL}/merchant_dashboard`, {
-        headers: {
-          "content-type": "application/json",
-          Authorization: "bearer " + token,
-        },
-      })
+  components: { Navbar, EditAdmin },
 
-      .then((response) => (this.getAdmin = response.data.merchant_data));
+  methods: {
+    handleAdminUpdated() {
+      this.fetchAdminData();
+    },
+    async fetchAdminData() {
+      const token = localStorage.getItem("token");
+
+      try {
+        const response = await axios.get(`${VITE_API_URL}/merchant_dashboard`, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+        });
+
+        this.getAdmin = response.data.merchant_data;
+      } catch (error) {
+        // Handle error if needed
+        // console.error("Error fetching admin data:", error);
+      }
+    },
   },
-  mounted() {},
+  async created() {
+    // Fetch initial admin data when the component is created
+    await this.fetchAdminData();
+  },
 };
 </script>
 
@@ -125,7 +147,7 @@ export default {
   word-wrap: break-word;
   background-color: #fff;
   background-clip: border-box;
-  border: 0 solid rgba(0, 0, 0, 0.125);
+
   border-radius: 0.25rem;
 }
 

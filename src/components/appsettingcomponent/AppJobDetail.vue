@@ -134,11 +134,11 @@
                 <td v-text="jobs.no_of_candidates"></td>
                 <td>2</td>
                 <td>
-                  <i
+                  <!-- <i
                     class="bi bi-trash btn btn btn-outline-danger"
                     v-on:click="jobsDelete(jobs.id)"
                   ></i>
-                  <span>&nbsp;</span>
+                  <span>&nbsp;</span> -->
                   <button
                     class="btn btn-primary text-nowrap"
                     v-on:click="jobActive(jobs.id)"
@@ -200,7 +200,16 @@ export default {
         return;
       }
       axios.put(`${VITE_API_URL}/inactivate_job/` + id).then((response) => {
-        this.getJobData();
+        if (
+          response.data.message ===
+          "nurse job is associated with vacancy or candidate records. Cannot deactivate."
+        ) {
+          alert(
+            "Cannot deactivate job: nurse job is associated with vacancy or candidate records."
+          );
+        } else {
+          this.getJobData();
+        }
       });
     },
     async getJobData() {

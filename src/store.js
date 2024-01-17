@@ -11,6 +11,7 @@ export default createStore({
     candidates: [],
     vacancies:[],
     getCategory: [],
+     adminData: {},
   },
   mutations: {
     setSelectedAppliedItemId(state, itemId) {
