@@ -28,15 +28,17 @@
           <div class="row">
             <!-- Left side columns -->
             <div class="col-2 col-lg-3 mb-3">
-              <div class="row">
+              <div class="row d-flex justify-content-center">
                 <!-- Sales Card -->
-                <h5>Client</h5>
-                <div class="col-12 mb-3">
+                <h5 class="text-uppercase fw-bold d-flex justify-content-center">
+                  Client
+                </h5>
+                <div class="col-8 mb-3">
                   <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon d-flex align-items-center justify-content-center"
+                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
                         >
                           <i class="bi bi-people-fill fs-1"></i>
                         </div>
@@ -53,12 +55,12 @@
                 <!-- End Sales Card -->
 
                 <!-- Revenue Card -->
-                <div class="col-12 mb-3">
+                <div class="col-8 mb-3">
                   <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon d-flex align-items-center justify-content-center"
+                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
                         >
                           <i class="bi bi-people-fill fs-1"></i>
                         </div>
@@ -75,12 +77,12 @@
                 <!-- End Revenue Card -->
 
                 <!-- Sales Card -->
-                <div class="col-12 mb-3">
+                <div class="col-8 mb-3">
                   <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon d-flex align-items-center justify-content-center"
+                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
                         >
                           <i class="bi bi-people-fill fs-1"></i>
                         </div>
@@ -100,15 +102,17 @@
             <!-- End Left side columns -->
             <!-- right side columns -->
             <div class="col-lg-3 mb-3">
-              <div class="row">
+              <div class="row d-flex justify-content-center">
                 <!-- Sales Card -->
-                <h5>Candidates</h5>
-                <div class="col-12 mb-3">
+                <h5 class="text-uppercase fw-bold d-flex justify-content-center">
+                  Candidates
+                </h5>
+                <div class="col-8 mb-3">
                   <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon d-flex align-items-center justify-content-center"
+                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
                         >
                           <i class="bi bi-people-fill fs-1"></i>
                         </div>
@@ -125,12 +129,12 @@
                 <!-- End Sales Card -->
 
                 <!-- Revenue Card -->
-                <div class="col-12 mb-3">
+                <div class="col-8 mb-3">
                   <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon d-flex align-items-center justify-content-center"
+                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
                         >
                           <i class="bi bi-people-fill fs-1"></i>
                         </div>
@@ -147,12 +151,12 @@
                 <!-- End Revenue Card -->
 
                 <!-- Sales Card -->
-                <div class="col-12 mb-3">
+                <div class="col-8 mb-3">
                   <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon d-flex align-items-center justify-content-center"
+                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
                         >
                           <i class="bi bi-people-fill fs-1"></i>
                         </div>
@@ -171,15 +175,17 @@
             </div>
 
             <div class="col-lg-3 mb-3">
-              <div class="row">
+              <div class="row d-flex justify-content-center">
                 <!-- Sales Card -->
-                <h5>Business Units</h5>
-                <div class="col-12 mb-3">
+                <h5 class="text-uppercase fw-bold d-flex justify-content-center">
+                  Business Units
+                </h5>
+                <div class="col-8 mb-3">
                   <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon d-flex align-items-center justify-content-center"
+                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
                         >
                           <i class="bi bi-people-fill fs-1"></i>
                         </div>
@@ -196,12 +202,12 @@
                 <!-- End Sales Card -->
 
                 <!-- Revenue Card -->
-                <div class="col-12 mb-3">
+                <div class="col-8 mb-3">
                   <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon d-flex align-items-center justify-content-center"
+                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
                         >
                           <i class="bi bi-people-fill fs-1"></i>
                         </div>
@@ -218,12 +224,12 @@
                 <!-- End Revenue Card -->
 
                 <!-- Sales Card -->
-                <div class="col-12 mb-3">
+                <div class="col-8 mb-3">
                   <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon d-flex align-items-center justify-content-center"
+                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
                         >
                           <i class="bi bi-people-fill fs-1"></i>
                         </div>
@@ -243,15 +249,17 @@
             <!-- End Left side columns -->
             <!-- right side columns -->
             <div class="col-lg-3 mb-3">
-              <div class="row">
+              <div class="row d-flex justify-content-center">
                 <!-- Sales Card -->
-                <h5>Compliance Insight</h5>
-                <div class="col-12 mb-3">
+                <h5 class="text-uppercase fw-bold d-flex justify-content-center">
+                  Compliance Insight
+                </h5>
+                <div class="col-8 mb-3">
                   <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon d-flex align-items-center justify-content-center"
+                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
                         >
                           <i class="bi bi-people-fill fs-1"></i>
                         </div>
@@ -274,12 +282,12 @@
                 <!-- End Sales Card -->
 
                 <!-- Revenue Card -->
-                <div class="col-12 mb-3">
+                <div class="col-8 mb-3">
                   <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon d-flex align-items-center justify-content-center"
+                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
                         >
                           <i class="bi bi-people-fill fs-1"></i>
                         </div>
@@ -302,12 +310,12 @@
                 <!-- End Revenue Card -->
 
                 <!-- Sales Card -->
-                <div class="col-12 mb-3">
+                <div class="col-8 mb-3">
                   <div class="card h-100 info-card sales-card">
                     <div class="card-body">
                       <div class="d-flex align-items-center">
                         <div
-                          class="card-icon d-flex align-items-center justify-content-center"
+                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
                         >
                           <i class="bi bi-people-fill fs-1"></i>
                         </div>
@@ -337,7 +345,7 @@
             <!-- Left side columns -->
             <div class="col-lg-5">
               <div class="card h-100">
-                <div class="col-12 p-4">
+                <div class="col-8 p-4">
                   <h5>Vacancies Details</h5>
                 </div>
 
@@ -384,7 +392,7 @@
             <div class="col-lg-7">
               <div class="card h-100">
                 <div class="bg-white rounded">
-                  <div class="col-lg-12 p-3">
+                  <div class="col-lg-12 pt-3 ps-3">
                     <div class="d-flex justify-content-between">
                       <div class="d-flex align-items-center mb-0">
                         <h5>TimeSheet</h5>
@@ -503,7 +511,7 @@
                       </tbody>
                     </table> -->
                   </div>
-                  <div class="col-lg-12 p-3">
+                  <div class="col-lg-12 ps-3">
                     <TimeSheet />
                   </div>
                 </div>
@@ -605,6 +613,10 @@ export default {
 table.sizefix {
   font-size: 15px;
 }
+.rounddesign {
+  background: #ffc107;
+  padding: 9px 20px;
+}
 
 .bi-calendar2-check {
   top: 4px;
@@ -629,7 +641,7 @@ table.sizefix {
   background: #c8c3ec;
 }
 .card.sales-card {
-  border-top: 5px solid orange;
+  border-left: 5px solid orange;
 }
 .card.totaldoc-card {
   background: #8ec02b;

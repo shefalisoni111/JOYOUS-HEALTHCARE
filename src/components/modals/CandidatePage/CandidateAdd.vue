@@ -69,6 +69,7 @@
                       v-model="email"
                       @input="clearError"
                       @change="detectAutofill"
+                      autocomplete="new-email"
                     />
                     <span v-if="!validateEmail" class="text-danger">Required Email </span>
                   </div>
@@ -84,6 +85,7 @@
                       v-model="password"
                       @input="validatePasswordMatch"
                       @change="detectAutofill"
+                      autocomplete="new-password"
                     />
                   </div>
                 </div>
