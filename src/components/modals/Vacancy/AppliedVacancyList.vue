@@ -34,7 +34,7 @@
               </ul>
             </div>
             <div class="row m-3">
-              <div class="col-md-12">
+              <div class="col-md-12" v-if="getVacancyDetail.length > 0">
                 <div
                   class="pagetitle d-flex justify-content-between align-items-center p-2"
                 >
@@ -54,21 +54,23 @@
                   <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center gap-2">
                       <div class="searchbox position-relative">
-                        <input
-                          class="form-control mr-sm-2"
-                          type="search"
-                          placeholder="Search by Name"
-                          aria-label="Search"
-                          v-model="searchQuery"
-                          @input="debounceSearch"
-                        />
+                        <form @submit.prevent="search">
+                          <input
+                            class="form-control mr-sm-2"
+                            type="search"
+                            placeholder="Search by Name"
+                            aria-label="Search"
+                            v-model="searchQuery"
+                            @input="debounceSearch"
+                          />
+                        </form>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="row g-3 align-items-center">
+            <div class="row g-3 align-items-center" v-if="searchQuery">
               <table class="table candidateTable" v-if="selectedAppliedItemId">
                 <thead>
                   <tr>
@@ -88,7 +90,7 @@
                     <th scope="col">Action</th> -->
                   </tr>
                 </thead>
-                <tbody>
+                <tbody v-if="searchResults.length > 0">
                   <tr v-for="data in getVacancyDetail" :key="data.id">
                     <td>
                       <input
@@ -121,6 +123,13 @@
                         ></i>
                       </button>
                     </td> -->
+                  </tr>
+                </tbody>
+                <tbody v-else>
+                  <tr>
+                    <td colspan="7" class="text-danger text-center">
+                      Not Match Found !!
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -170,7 +179,11 @@
 import axios from "axios";
 
 import { reactive } from "vue";
-
+const axiosInstance = axios.create({
+  headers: {
+    "Cache-Control": "no-cache",
+  },
+});
 export default {
   name: "AppliedVacancyList",
   data() {
@@ -178,8 +191,9 @@ export default {
       getVacancyDetail: [],
       searchResults: [],
       notFoundVacancy: [],
+      searchQuery: null,
       debounceTimeout: null,
-      searchQuery: "",
+      searchResults: [],
 
       vacancyDetails: [],
 
@@ -206,38 +220,31 @@ export default {
     },
   },
   methods: {
+    debounceSearch() {
+      clearTimeout(this.debounceTimeout);
+
+      this.debounceTimeout = setTimeout(() => {
+        this.search();
+      }, 300);
+    },
     closePopup() {
       this.$store.commit("setSelectedAppliedItemId", null);
     },
-    // debounceSearch() {
-    //   // Clear the previous timeout to restart the debounce
-    //   clearTimeout(this.debounceTimeout);
-
-    //   // Set a new timeout for 300 milliseconds (adjust as needed)
-    //   this.debounceTimeout = setTimeout(() => {
-    //     this.search();
-    //   }, 300);
-    // },
-    // //search api start
-
-    // async search() {
-    //   try {
-    //     if (!this.searchQuery.trim()) {
-    //       // Don't make the request if the search query is empty
-    //       return;
-    //     }
-    //     const response = await axios.get(
-    //       `${VITE_API_URL}/vacancy_search/${this.searchQuery}`
-    //     );
-    //     this.searchResults = response.data.data;
-    //     this.notFoundVacancy = response.data.message;
-    //     if (this.searchResults || this.notFoundVacancy) {
-    //       window.load();
-    //     }
-    //   } catch (error) {
-    //     // console.error("Error fetching search results:", error);
-    //   }
-    // },
+    //search api start
+    async search() {
+      try {
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/candidate_search/${this.searchQuery}`
+        );
+        this.searchResults = response.data.data;
+        this.errorMsg = "";
+      } catch (error) {
+        this.searchResults = [];
+        this.showSearchResults = false;
+        this.errorMsg = "Error fetching search results.";
+        console.error("Error fetching search results:", error);
+      }
+    },
     selectAllCandidates() {
       if (this.selectAll) {
         this.getVacancyDetail.forEach((data) => {
@@ -326,6 +333,7 @@ export default {
           this.getVacancyDetail.push(...response.data.data);
 
           this.vacancyDetails = response.data.vacancy_date;
+          this.$emit("appliedVacancy");
         } catch (error) {
           if (error.response) {
             if (error.response.status == 404) {

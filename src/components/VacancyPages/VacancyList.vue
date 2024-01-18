@@ -55,7 +55,6 @@
                           @click="selectTab(index)"
                         >
                           {{ tab.name }}
-                          <!-- ({{ index === 0 ? vacancyCount : 0 }}) -->
                         </button>
                       </li>
                     </div>
@@ -74,14 +73,16 @@
                         </button>
                       </div>
                       <div>
-                        <!-- <input
-                          class="form-control mr-sm-2"
-                          type="search"
-                          placeholder="Search by vacancy"
-                          aria-label="Search"
-                          v-model="searchQuery"
-                          @input="debounceSearch"
-                        /> -->
+                        <form @submit.prevent="search">
+                          <input
+                            class="form-control mr-sm-2"
+                            type="search"
+                            placeholder="Search by vacancy"
+                            aria-label="Search"
+                            v-model="searchQuery"
+                            @input="debounceSearch"
+                          />
+                        </form>
                       </div>
                     </div>
                   </ul>
@@ -104,6 +105,12 @@
 import axios from "axios";
 import AllVacancyList from "../VacancyPages/AllVacancyList.vue";
 import InActiveVacancyList from "../VacancyPages/InActiveVacancyList.vue";
+
+const axiosInstance = axios.create({
+  headers: {
+    "Cache-Control": "no-cache",
+  },
+});
 
 export default {
   data() {

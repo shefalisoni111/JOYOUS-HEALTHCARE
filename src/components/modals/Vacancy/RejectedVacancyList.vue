@@ -135,6 +135,7 @@ export default {
           );
           this.rejectedListData = response.data.data;
           this.vacancyDetails = response.data.vacancy_date;
+          this.$emit("rejectVacancy");
         } catch (error) {
           if (error.response) {
             if (error.response.status == 404) {

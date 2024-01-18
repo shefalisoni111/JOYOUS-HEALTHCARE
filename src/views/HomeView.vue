@@ -5,21 +5,21 @@
       <div class="pagetitle d-flex justify-content-between">
         <div class="">
           <ol class="breadcrumb mb-1">
-            <li class="breadcrumb-item active">Dashboard</li>
+            <li class="breadcrumb-item active fs-5">Dashboard</li>
           </ol>
-          <h5>Welcome to Recpal</h5>
+          <h5 class="fs-4" style="color: #ff5f30">Welcome to Recpal</h5>
         </div>
         <!-- End Page Title -->
         <div class="d-flex align-items-center">
           <button
             type="button"
-            class="btn btn-primary text-nowrap"
+            class="btn btn-primary text-nowrap fs-5 text-capitalize"
             data-bs-toggle="modal"
             data-bs-target="#inprogress"
             data-bs-whatever="@mdo"
           >
             <i class="bi bi-file-earmark"></i>
-            GENERATE REPORT
+            generate report
           </button>
         </div>
       </div>
@@ -27,75 +27,77 @@
         <section class="section dashboard mt-3">
           <div class="row">
             <!-- Left side columns -->
-            <div class="col-2 col-lg-3 mb-3">
+            <div class="col-lg-3 mb-3">
               <div class="row d-flex justify-content-center">
                 <!-- Sales Card -->
-                <h5 class="text-uppercase fw-bold d-flex justify-content-center">
+                <h5
+                  class="text-uppercase fw-bold d-flex justify-content-start fs-5 pb-2 ps-5"
+                >
                   Client
                 </h5>
-                <div class="col-8 mb-3">
-                  <div class="card h-100 info-card sales-card">
-                    <div class="card-body">
-                      <div class="d-flex align-items-center">
-                        <div
-                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
-                        >
-                          <i class="bi bi-people-fill fs-1"></i>
-                        </div>
-                        <div class="ps-4">
-                          <h6 v-text="getRecords.Total_client"></h6>
-                          <span class="text-muted pt-2 text-capitalize"
+
+                <div class="col-10 mb-3">
+                  <div class="card h-100 info-card sales-card border-left-blue">
+                    <div class="card-body px-4 py-1">
+                      <div class="d-flex justify-content-between">
+                        <div class="card-icon d-flex flex-column">
+                          <i class="bi bi-people fs-1 text-info"></i>
+                          <span class="text-muted text-capitalize fs-6"
                             >Total Clients</span
                           >
                         </div>
+                        <div class="ps-4 mt-2">
+                          <h6
+                            v-text="getRecords.Total_client"
+                            class="fs-3 fw-bold mb-0"
+                          ></h6>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <!-- End Sales Card -->
-
-                <!-- Revenue Card -->
-                <div class="col-8 mb-3">
-                  <div class="card h-100 info-card sales-card">
-                    <div class="card-body">
-                      <div class="d-flex align-items-center">
-                        <div
-                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
-                        >
-                          <i class="bi bi-people-fill fs-1"></i>
-                        </div>
-                        <div class="ps-4">
-                          <h6 v-text="getRecords.Active_client"></h6>
-                          <span class="text-muted pt-2 text-capitalize"
-                            >active clients</span
+                <div class="col-10 mb-3">
+                  <div class="card h-100 info-card sales-card border-left-green">
+                    <div class="card-body px-4 py-1">
+                      <div class="d-flex justify-content-between">
+                        <div class="card-icon d-flex flex-column">
+                          <i class="bi bi-people fs-1 text-success"></i>
+                          <span class="text-muted text-capitalize fs-6"
+                            >Active Clients</span
                           >
                         </div>
+                        <div class="ps-4 mt-2">
+                          <h6
+                            v-text="getRecords.Active_client"
+                            class="fs-3 fw-bold mb-0"
+                          ></h6>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <!-- End Revenue Card -->
-
-                <!-- Sales Card -->
-                <div class="col-8 mb-3">
-                  <div class="card h-100 info-card sales-card">
-                    <div class="card-body">
-                      <div class="d-flex align-items-center">
-                        <div
-                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
-                        >
-                          <i class="bi bi-people-fill fs-1"></i>
-                        </div>
-                        <div class="ps-4">
-                          <h6 v-text="getRecords.Passive_client"></h6>
-                          <span class="text-muted pt-2 text-capitalize"
+                <div class="col-10 mb-3">
+                  <div class="card h-100 info-card sales-card border-left-red">
+                    <div class="card-body px-4 py-1">
+                      <div class="d-flex justify-content-between">
+                        <div class="card-icon d-flex flex-column">
+                          <i class="bi bi-people fs-1 text-danger"></i>
+                          <span class="text-muted text-capitalize fs-6"
                             >inactive clients</span
                           >
                         </div>
+                        <div class="ps-4 mt-2">
+                          <h6
+                            v-text="getRecords.Passive_client"
+                            class="fs-3 fw-bold mb-0"
+                          ></h6>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                <!-- End Sales Card -->
+
                 <!-- End Sales Card -->
               </div>
             </div>
@@ -104,45 +106,50 @@
             <div class="col-lg-3 mb-3">
               <div class="row d-flex justify-content-center">
                 <!-- Sales Card -->
-                <h5 class="text-uppercase fw-bold d-flex justify-content-center">
+                <h5
+                  class="text-uppercase fw-bold d-flex justify-content-start fs-5 pb-2 ps-5"
+                >
                   Candidates
                 </h5>
-                <div class="col-8 mb-3">
-                  <div class="card h-100 info-card sales-card">
-                    <div class="card-body">
-                      <div class="d-flex align-items-center">
-                        <div
-                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
-                        >
-                          <i class="bi bi-people-fill fs-1"></i>
-                        </div>
-                        <div class="ps-4">
-                          <h6 v-text="getRecords.candidates"></h6>
-                          <span class="text-muted pt-2 text-capitalize"
+
+                <div class="col-10 mb-3">
+                  <div class="card h-100 info-card sales-card border-left-blue">
+                    <div class="card-body px-4 py-1">
+                      <div class="d-flex justify-content-between">
+                        <div class="card-icon d-flex flex-column">
+                          <i class="bi bi-people fs-1 text-info"></i>
+                          <span class="text-muted text-capitalize fs-6"
                             >Total Candidates</span
                           >
                         </div>
+                        <div class="ps-4 mt-2">
+                          <h6
+                            v-text="getRecords.candidates"
+                            class="fs-3 fw-bold mb-0"
+                          ></h6>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+
                 <!-- End Sales Card -->
 
-                <!-- Revenue Card -->
-                <div class="col-8 mb-3">
-                  <div class="card h-100 info-card sales-card">
-                    <div class="card-body">
-                      <div class="d-flex align-items-center">
-                        <div
-                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
-                        >
-                          <i class="bi bi-people-fill fs-1"></i>
-                        </div>
-                        <div class="ps-4">
-                          <h6 v-text="getRecords.current_candidate"></h6>
-                          <span class="text-muted pt-2 text-capitalize"
+                <div class="col-10 mb-3">
+                  <div class="card h-100 info-card sales-card border-left-green">
+                    <div class="card-body px-4 py-1">
+                      <div class="d-flex justify-content-between">
+                        <div class="card-icon d-flex flex-column">
+                          <i class="bi bi-people fs-1 text-success"></i>
+                          <span class="text-muted text-capitalize fs-6"
                             >active Candidates</span
                           >
+                        </div>
+                        <div class="ps-4 mt-2">
+                          <h6
+                            v-text="getRecords.current_candidate"
+                            class="fs-3 fw-bold mb-0"
+                          ></h6>
                         </div>
                       </div>
                     </div>
@@ -150,21 +157,21 @@
                 </div>
                 <!-- End Revenue Card -->
 
-                <!-- Sales Card -->
-                <div class="col-8 mb-3">
-                  <div class="card h-100 info-card sales-card">
-                    <div class="card-body">
-                      <div class="d-flex align-items-center">
-                        <div
-                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
-                        >
-                          <i class="bi bi-people-fill fs-1"></i>
-                        </div>
-                        <div class="ps-4">
-                          <h6 v-text="getRecords.deleted_candidate"></h6>
-                          <span class="text-muted pt-2 text-capitalize"
+                <div class="col-10 mb-3">
+                  <div class="card h-100 info-card sales-card border-left-red">
+                    <div class="card-body px-4 py-1">
+                      <div class="d-flex justify-content-between">
+                        <div class="card-icon d-flex flex-column">
+                          <i class="bi bi-people fs-1 text-danger"></i>
+                          <span class="text-muted text-capitalize fs-6"
                             >inactive Candidates</span
                           >
+                        </div>
+                        <div class="ps-4 mt-2">
+                          <h6
+                            v-text="getRecords.deleted_candidate"
+                            class="fs-3 fw-bold mb-0"
+                          ></h6>
                         </div>
                       </div>
                     </div>
@@ -177,23 +184,26 @@
             <div class="col-lg-3 mb-3">
               <div class="row d-flex justify-content-center">
                 <!-- Sales Card -->
-                <h5 class="text-uppercase fw-bold d-flex justify-content-center">
+                <h5
+                  class="text-uppercase fw-bold d-flex justify-content-start fs-5 pb-2 ps-5"
+                >
                   Business Units
                 </h5>
-                <div class="col-8 mb-3">
-                  <div class="card h-100 info-card sales-card">
-                    <div class="card-body">
-                      <div class="d-flex align-items-center">
-                        <div
-                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
-                        >
-                          <i class="bi bi-people-fill fs-1"></i>
-                        </div>
-                        <div class="ps-4">
-                          <h6 v-text="getRecords.Total_business_unit"></h6>
-                          <span class="text-muted pt-2 text-capitalize"
+                <div class="col-10 mb-3">
+                  <div class="card h-100 info-card sales-card border-left-blue">
+                    <div class="card-body px-4 py-1">
+                      <div class="d-flex justify-content-between">
+                        <div class="card-icon d-flex flex-column">
+                          <i class="bi bi-people fs-1 text-info"></i>
+                          <span class="text-muted text-capitalize fs-6"
                             >Total Business Units</span
                           >
+                        </div>
+                        <div class="ps-4 mt-2">
+                          <h6
+                            v-text="getRecords.Total_business_unit"
+                            class="fs-3 fw-bold mb-0"
+                          ></h6>
                         </div>
                       </div>
                     </div>
@@ -202,20 +212,22 @@
                 <!-- End Sales Card -->
 
                 <!-- Revenue Card -->
-                <div class="col-8 mb-3">
-                  <div class="card h-100 info-card sales-card">
-                    <div class="card-body">
-                      <div class="d-flex align-items-center">
-                        <div
-                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
-                        >
-                          <i class="bi bi-people-fill fs-1"></i>
-                        </div>
-                        <div class="ps-4">
-                          <h6 v-text="getRecords.Active_business_unit"></h6>
-                          <span class="text-muted pt-2 text-capitalize"
+
+                <div class="col-10 mb-3">
+                  <div class="card h-100 info-card sales-card border-left-green">
+                    <div class="card-body px-4 py-1">
+                      <div class="d-flex justify-content-between">
+                        <div class="card-icon d-flex flex-column">
+                          <i class="bi bi-people fs-1 text-success"></i>
+                          <span class="text-muted text-capitalize fs-6"
                             >active Business Units</span
                           >
+                        </div>
+                        <div class="ps-4 mt-2">
+                          <h6
+                            v-text="getRecords.Active_business_unit"
+                            class="fs-3 fw-bold mb-0"
+                          ></h6>
                         </div>
                       </div>
                     </div>
@@ -224,20 +236,22 @@
                 <!-- End Revenue Card -->
 
                 <!-- Sales Card -->
-                <div class="col-8 mb-3">
-                  <div class="card h-100 info-card sales-card">
-                    <div class="card-body">
-                      <div class="d-flex align-items-center">
-                        <div
-                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
-                        >
-                          <i class="bi bi-people-fill fs-1"></i>
-                        </div>
-                        <div class="ps-4">
-                          <h6 v-text="getRecords.Inactive_business_unit"></h6>
-                          <span class="text-muted pt-2 text-capitalize"
+
+                <div class="col-10 mb-3">
+                  <div class="card h-100 info-card sales-card border-left-red">
+                    <div class="card-body px-4 py-1">
+                      <div class="d-flex justify-content-between">
+                        <div class="card-icon d-flex flex-column">
+                          <i class="bi bi-people fs-1 text-danger"></i>
+                          <span class="text-muted text-capitalize fs-6"
                             >inactive Business Units</span
                           >
+                        </div>
+                        <div class="ps-4 mt-2">
+                          <h6
+                            v-text="getRecords.Inactive_business_unit"
+                            class="fs-3 fw-bold mb-0"
+                          ></h6>
                         </div>
                       </div>
                     </div>
@@ -251,22 +265,25 @@
             <div class="col-lg-3 mb-3">
               <div class="row d-flex justify-content-center">
                 <!-- Sales Card -->
-                <h5 class="text-uppercase fw-bold d-flex justify-content-center">
+                <h5
+                  class="text-uppercase fw-bold d-flex justify-content-start fs-5 pb-2 ps-5"
+                >
                   Compliance Insight
                 </h5>
-                <div class="col-8 mb-3">
-                  <div class="card h-100 info-card sales-card">
-                    <div class="card-body">
-                      <div class="d-flex align-items-center">
-                        <div
-                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
-                        >
-                          <i class="bi bi-people-fill fs-1"></i>
+
+                <div class="col-10 mb-3">
+                  <div class="card h-100 info-card sales-card border-left-blue">
+                    <div class="card-body px-4 py-1">
+                      <div class="d-flex justify-content-between">
+                        <div class="card-icon d-flex flex-column">
+                          <i class="bi bi-people fs-1 text-info"></i>
+                          <span class="text-muted text-capitalize fs-6"
+                            >Expiring in 60 days({{
+                              getRecords.expiring_in_60_days
+                            }})</span
+                          >
                         </div>
-                        <div class="ps-4">
-                          <h6>
-                            Expiring in 60 days({{ getRecords.expiring_in_60_days }})
-                          </h6>
+                        <div class="ps-4 mt-2">
                           <span
                             class="text-muted pt-2 text-capitalize cursor-pointer"
                             data-bs-toggle="modal"
@@ -281,20 +298,19 @@
                 </div>
                 <!-- End Sales Card -->
 
-                <!-- Revenue Card -->
-                <div class="col-8 mb-3">
-                  <div class="card h-100 info-card sales-card">
-                    <div class="card-body">
-                      <div class="d-flex align-items-center">
-                        <div
-                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
-                        >
-                          <i class="bi bi-people-fill fs-1"></i>
+                <div class="col-10 mb-3">
+                  <div class="card h-100 success-card sales-card border-left-green">
+                    <div class="card-body px-4 py-1">
+                      <div class="d-flex justify-content-between">
+                        <div class="card-icon d-flex flex-column">
+                          <i class="bi bi-people fs-1 text-success"></i>
+                          <span class="text-muted text-capitalize fs-6">
+                            Expiring in 30 days({{
+                              getRecords.expiring_in_30_days
+                            }})</span
+                          >
                         </div>
-                        <div class="ps-4">
-                          <h6>
-                            Expiring in 30 days({{ getRecords.expiring_in_30_days }})
-                          </h6>
+                        <div class="ps-4 mt-2">
                           <span
                             class="text-muted pt-2 text-capitalize cursor-pointer"
                             data-bs-toggle="modal"
@@ -309,18 +325,17 @@
                 </div>
                 <!-- End Revenue Card -->
 
-                <!-- Sales Card -->
-                <div class="col-8 mb-3">
-                  <div class="card h-100 info-card sales-card">
-                    <div class="card-body">
-                      <div class="d-flex align-items-center">
-                        <div
-                          class="card-icon d-flex align-items-center rounded-circle rounddesign justify-content-center"
-                        >
-                          <i class="bi bi-people-fill fs-1"></i>
+                <div class="col-10 mb-3">
+                  <div class="card h-100 info-card sales-card border-left-red">
+                    <div class="card-body px-4 py-1">
+                      <div class="d-flex justify-content-between">
+                        <div class="card-icon d-flex flex-column">
+                          <i class="bi bi-people fs-1 text-danger"></i>
+                          <span class="text-muted text-capitalize fs-6">
+                            Expired ({{ getRecords.compliance_insight }})</span
+                          >
                         </div>
-                        <div class="ps-4">
-                          <h6>Expired ({{ getRecords.compliance_insight }})</h6>
+                        <div class="ps-4 mt-2">
                           <span
                             class="text-muted pt-2 text-capitalize cursor-pointer"
                             data-bs-toggle="modal"
@@ -343,44 +358,57 @@
         <section class="section dashboard mt-4">
           <div class="row">
             <!-- Left side columns -->
-            <div class="col-lg-5">
-              <div class="card h-100">
-                <div class="col-8 p-4">
-                  <h5>Vacancies Details</h5>
+            <div class="col-lg-4">
+              <div class="card h-100 card-border">
+                <div class="col-8 p-3">
+                  <h5
+                    class="fs-5 p-2 text-white mb-0 rounded-2"
+                    style="background: #f9944b"
+                  >
+                    Vacancies
+                  </h5>
+                  <div class="">
+                    <ol class="breadcrumb mb-1">
+                      <li class="breadcrumb-item active">Current Week</li>
+                    </ol>
+                  </div>
                 </div>
 
                 <div class="d-flex justify-content-between bg-white rounded mt-2">
-                  <div class="col-lg-5 p-3 d-flex align-items-center left-flex-border">
+                  <div class="col-lg-5 px-3 d-flex align-items-center">
                     <div class="">
-                      <h5 class="mb-0">Vacancies</h5>
-                      <div class="">
-                        <ol class="breadcrumb mb-1">
-                          <li class="breadcrumb-item active">Current Week</li>
-                        </ol>
-                      </div>
-                      <ul class="list-unstyled mt-3 leftsidecol">
+                      <ul class="list-unstyled">
                         <li class="d-flex mb-2">
-                          <span class="rounded-circle text-white">50</span>
-                          <span class="d-flex align-items-center ms-2"
-                            >Open Vacancies</span
-                          >
+                          <div class="d-flex">
+                            <span class="box-icon mt-2"></span>
+                            <div class="d-flex flex-column">
+                              <span class="fs-4 ps-2">50</span>
+                              <span class="d-flex ms-2">Open Vacancies</span>
+                            </div>
+                          </div>
                         </li>
                         <li class="d-flex mb-2">
-                          <span class="rounded-circle text-white">10</span>
-                          <span class="d-flex align-items-center ms-2"
-                            >Applied Vacancies</span
-                          >
+                          <div class="d-flex">
+                            <span class="box-icon2 mt-2"></span>
+                            <div class="d-flex flex-column">
+                              <span class="fs-4 ps-2">10</span>
+                              <span class="d-flex ms-2">Applied Vacancies</span>
+                            </div>
+                          </div>
                         </li>
                         <li class="d-flex mb-2">
-                          <span class="rounded-circle text-white">30</span>
-                          <span class="d-flex align-items-center ms-2"
-                            >Assigned Vacancies</span
-                          >
+                          <div class="d-flex">
+                            <span class="box-icon3 mt-2"></span>
+                            <div class="d-flex flex-column">
+                              <span class="fs-4 ps-2">30</span>
+                              <span class="d-flex ms-2">Assigned Vacancies</span>
+                            </div>
+                          </div>
                         </li>
                       </ul>
                     </div>
                   </div>
-                  <div class="col-lg-7 p-3 right-flex-border">
+                  <div class="col-lg-7 px-3">
                     <VueBarChart />
                   </div>
                 </div>
@@ -389,15 +417,20 @@
             <!-- Left side columns end -->
 
             <!-- right side columns -->
-            <div class="col-lg-7">
-              <div class="card h-100">
+            <div class="col-lg-8">
+              <div class="card h-100 card-border">
                 <div class="bg-white rounded">
                   <div class="col-lg-12 pt-3 ps-3">
                     <div class="d-flex justify-content-between">
-                      <div class="d-flex align-items-center mb-0">
-                        <h5>TimeSheet</h5>
+                      <div class="col-7">
+                        <h5
+                          class="fs-5 p-2 text-white rounded-1"
+                          style="background: #f9944b"
+                        >
+                          TimeSheet
+                        </h5>
                       </div>
-                      <div>
+                      <div class="p-3">
                         <div class="input-group">
                           <input
                             class="form-control"
@@ -406,10 +439,10 @@
                             :value="formatDateRange"
                             placeholder="Select Date from Start to End"
                             readonly
-                            style="width: 200px"
+                            style="width: 266px"
                           />
                           <i
-                            class="bi bi-calendar2-check position-absolute"
+                            class="bi bi-calendar2-check position-absolute fw-bold"
                             @click="showDatePicker = true"
                             style="cursor: pointer"
                           ></i
@@ -475,43 +508,8 @@
                         ></div>
                       </div>
                     </div>
-
-                    <!-- <table class="table table-borderless sizefix">
-                      <thead>
-                        <tr class="">
-                          <th scope="col" class="h-100">TimeSheet</th>
-                          <th scope="col" class="cw h-100"></th>
-                        </tr>
-                      </thead>
-                      <tbody class="text-capitalize">
-                        <tr>
-                          <td>total timesheet hours</td>
-                          <td>35.00</td>
-                        </tr>
-                        <tr>
-                          <td>approved timesheet hours</td>
-                          <td>24.00</td>
-                        </tr>
-                        <tr>
-                          <td>invoiced timesheet hours</td>
-                          <td>0.00</td>
-                        </tr>
-                        <tr>
-                          <td>total pay rate</td>
-                          <td>11.00</td>
-                        </tr>
-                        <tr>
-                          <td>pending timesheet hours</td>
-                          <td>111.00</td>
-                        </tr>
-                        <tr>
-                          <td>total charge rate</td>
-                          <td>331.00</td>
-                        </tr>
-                      </tbody>
-                    </table> -->
                   </div>
-                  <div class="col-lg-12 ps-3">
+                  <div class="col-lg-12 px-3">
                     <TimeSheet />
                   </div>
                 </div>
@@ -640,9 +638,7 @@ table.sizefix {
 .card.totalbusinessunitsinactive-card {
   background: #c8c3ec;
 }
-.card.sales-card {
-  border-left: 5px solid orange;
-}
+
 .card.totaldoc-card {
   background: #8ec02b;
 }
@@ -674,7 +670,9 @@ ul.leftsidecol > li:nth-child(2) span.rounded-circle {
 .btn-primary {
   border: none;
 }
-
+.card-header {
+  background: transparent;
+}
 ul.leftsidecol > li:nth-child(3) span.rounded-circle {
   background: #22cbe0;
 }
@@ -699,10 +697,38 @@ h6 {
 span {
   font-weight: 600;
 }
-
-.input-group > .form-control,
-.input-group > .form-select,
-.input-group > .form-floating {
-  width: inherit !important;
+.card.sales-card {
+  border-top-right-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+}
+.card.border-left-blue {
+  border-left: 4px solid #2196f3;
+}
+.card.border-left-red {
+  border-left: 4px solid red;
+}
+.card.border-left-green {
+  border-left: 4px solid rgb(53, 119, 27);
+}
+.box-icon {
+  width: 18px;
+  height: 17px;
+  background-color: #57e3b4;
+  border-radius: 5px;
+}
+.box-icon2 {
+  width: 18px;
+  height: 17px;
+  background-color: #e66e65;
+  border-radius: 5px;
+}
+.box-icon3 {
+  width: 18px;
+  height: 17px;
+  background-color: #22cbe0;
+  border-radius: 5px;
+}
+.card-border {
+  border: 0.8px solid #ff5722;
 }
 </style>

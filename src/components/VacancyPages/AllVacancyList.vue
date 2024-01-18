@@ -140,10 +140,10 @@
     </div>
     <EditVacancy :vacancyId="selectedVacancyId || 0" @updateVacancy="createVacancy" />
     <PublishedVacancy @publishVacancy="createVacancy" />
-    <AppliedVacancyList />
-    <AssignedVacancyList />
-    <RejectedVacancyList />
-    <AllVacancyCandidateList />
+    <AppliedVacancyList @appliedVacancy="createVacancy" />
+    <AssignedVacancyList @assignVacancy="createVacancy" />
+    <RejectedVacancyList @rejectVacancy="createVacancy" />
+    <AllVacancyCandidateList @allVacancy="createVacancy" />
     <AddVacancy @addVacancy="createVacancy" />
   </div>
 </template>

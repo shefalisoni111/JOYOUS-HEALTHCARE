@@ -49,7 +49,7 @@
                     <!-- <th scope="col">employment type</th> -->
                     <th scope="col">last login</th>
 
-                    <th scope="col">Action</th>
+                    <!-- <th scope="col">Action</th> -->
                   </tr>
                 </thead>
                 <tbody>
@@ -68,10 +68,8 @@
                     <td v-text="data.position"></td>
                     <!-- <td v-text="data.employment_type"></td> -->
                     <td v-text="data.last_login"></td>
-                    <td class="cursor-pointer">
-                      <!-- <a class="btn btn-outline-success text-nowrap">
-                        <i class="bi bi-pencil-square"></i>
-                      </a> -->
+                    <!-- <td class="cursor-pointer">
+                     
                       &nbsp;&nbsp;
                       <button class="btn btn-outline-success text-nowrap">
                         <i
@@ -79,7 +77,7 @@
                           v-on:click="vacancyDeleteMethod(data.id)"
                         ></i>
                       </button>
-                    </td>
+                    </td> -->
                   </tr>
                 </tbody>
               </table>
@@ -135,6 +133,7 @@ export default {
           );
           this.assignedVacancyData = response.data.data;
           this.vacancyDetails = response.data.vacancy_date;
+          this.$emit("assignVacancy");
         } catch (error) {
           if (error.response) {
             if (error.response.status == 404) {

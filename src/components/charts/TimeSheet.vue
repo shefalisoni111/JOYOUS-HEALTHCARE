@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas ref="chartCanvas" height="335px"></canvas>
+    <canvas ref="chartCanvas" height="335px" width="1211px"></canvas>
   </div>
 </template>
 
@@ -14,15 +14,15 @@ export default {
       dataObject: {
         labels: [
           "Total timeSheet hours",
-          "Approved timesheet hours",
-          "Invoiced timesheet hours",
+          "Approved timeSheet hours",
+          "Invoiced timeSheet hours",
           "Total pay rate",
-          "Pending timesheet hours",
+          "Pending timeSheet hours",
           "Total charge rate",
         ],
         datasets: [
           {
-            data: [35, 24, 0, 11, 111, 331],
+            data: [35, 24, 6, 11, 111, 331],
             backgroundColor: [
               "#16aa8a",
               "#304adc",
@@ -62,7 +62,41 @@ export default {
               display: false,
             },
           },
+          scales: {
+            y: {
+              ticks: {
+                font: {
+                  size: 17,
+                },
+              },
+            },
+          },
         },
+        plugins: [
+          {
+            afterDatasetsDraw: (chart) => {
+              const { ctx } = chart;
+              const datasets = chart.data.datasets;
+
+              datasets.forEach((dataset, i) => {
+                const meta = chart.getDatasetMeta(i);
+
+                meta.data.forEach((bar, index) => {
+                  const data = dataset.data[index];
+
+                  if (data !== 0) {
+                    const y = bar.y - 2;
+                    const leftSpace = 10;
+                    ctx.fillStyle = "black";
+                    ctx.textAlign = "center";
+                    const x = bar.x + leftSpace;
+                    ctx.fillText(data, x, y);
+                  }
+                });
+              });
+            },
+          },
+        ],
       });
     },
   },

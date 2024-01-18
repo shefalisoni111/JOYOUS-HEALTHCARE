@@ -10,7 +10,7 @@
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="allCandidateVacancyList">Applied Vacancy</h5>
+            <h5 class="modal-title" id="allCandidateVacancyList">All Vacancy</h5>
             <button
               type="button"
               class="btn-close"
@@ -148,6 +148,7 @@ export default {
           );
           this.getVacancyDetail = response.data.data;
           this.vacancyDetails = response.data.vacancy_date;
+          this.$emit("allVacancy");
         } catch (error) {
           if (error.response) {
             if (error.response.status == 404) {
