@@ -73,7 +73,7 @@
                         </button>
                       </div>
                       <div>
-                        <form @submit.prevent="search">
+                        <!-- <form @submit.prevent="search">
                           <input
                             class="form-control mr-sm-2"
                             type="search"
@@ -82,16 +82,16 @@
                             v-model="searchQuery"
                             @input="debounceSearch"
                           />
-                        </form>
+                        </form> -->
                       </div>
                     </div>
                   </ul>
-                  <div v-if="searchResults">
+                  <div>
                     <component :is="activeComponent"></component>
                   </div>
-                  <div class="text-danger" v-else>
+                  <!-- <div class="text-danger" v-else>
                     {{ notFoundVacancy }}
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -106,19 +106,19 @@ import axios from "axios";
 import AllVacancyList from "../VacancyPages/AllVacancyList.vue";
 import InActiveVacancyList from "../VacancyPages/InActiveVacancyList.vue";
 
-const axiosInstance = axios.create({
-  headers: {
-    "Cache-Control": "no-cache",
-  },
-});
+// const axiosInstance = axios.create({
+//   headers: {
+//     "Cache-Control": "no-cache",
+//   },
+// });
 
 export default {
   data() {
     return {
       vacancyCount: 0,
-      searchResults: [],
-      notFoundVacancy: [],
-      debounceTimeout: null,
+      // searchResults: [],
+      // notFoundVacancy: [],
+      // debounceTimeout: null,
       // searchQuery: "",
       tabs: [
         { name: "Active ", component: "AllVacancyList" },
@@ -138,15 +138,13 @@ export default {
     selectTab(index) {
       this.activeTab = index;
     },
-    debounceSearch() {
-      // Clear the previous timeout to restart the debounce
-      clearTimeout(this.debounceTimeout);
+    // debounceSearch() {
+    //   clearTimeout(this.debounceTimeout);
 
-      // Set a new timeout for 300 milliseconds (adjust as needed)
-      this.debounceTimeout = setTimeout(() => {
-        this.search();
-      }, 300);
-    },
+    //   this.debounceTimeout = setTimeout(() => {
+    //     this.search();
+    //   }, 300);
+    // },
     //search api start
 
     // async search() {
@@ -160,7 +158,6 @@ export default {
     //     );
     //     this.searchResults = response.data.data;
     //     this.notFoundVacancy = response.data.message;
-    //     // console.log(this.searchResults);
     //   } catch (error) {
     //     // console.error("Error fetching search results:", error);
     //   }
