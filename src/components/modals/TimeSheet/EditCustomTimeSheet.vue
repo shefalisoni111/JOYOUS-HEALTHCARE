@@ -172,7 +172,6 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/custom_timesheets/${id}`);
 
-        // Update each property individually
         this.fetchCustomSheetData.business_unit_id = response.data.business_unit_id;
         this.fetchCustomSheetData.name = response.data.name;
         this.fetchCustomSheetData.job_id = response.data.job_id;
@@ -194,19 +193,15 @@ export default {
 
         alert("Custom timeSheet updated successfully");
 
-        // Assuming the server returns the updated item directly
         const updatedItem = response.data;
 
-        // Find the index of the item in the local list
         const index = this.getCustomDetail.findIndex(
           (item) => item.id === updatedItem.id
         );
 
-        // Update the item in place if found
         if (index !== -1) {
           this.$set(this.getCustomDetail, index, updatedItem);
         } else {
-          // Handle the case where the item is not found in the local list
           // console.log("Item not found in the local list");
         }
       } catch (error) {

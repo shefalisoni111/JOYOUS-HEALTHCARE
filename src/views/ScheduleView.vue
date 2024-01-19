@@ -201,13 +201,13 @@ export default {
       );
     },
     selectedDateRow() {
-      // Calculate a row of 7 days starting from the selected date (Monday to Sunday)
+    
       const selectedDate = new Date(this.startDate);
       const selectedDateRow = [];
 
-      // Find the first day of the week (Sunday is 0, Monday is 1, and so on)
+
       const dayOfWeek = selectedDate.getDay();
-      const startDay = (dayOfWeek - 1 + 7) % 7; // Adjust for Monday being the start of the week
+      const startDay = (dayOfWeek - 1 + 7) % 7; 
 
       for (let i = 0; i < 7; i++) {
         const currentDate = new Date(selectedDate);
@@ -257,7 +257,7 @@ export default {
         );
       } catch (error) {
       } finally {
-        // Reset drag-related data
+   
         this.vacancyBeingDragged = null;
         this.dropCandidateId = null;
         this.dropDay = null;
@@ -293,12 +293,12 @@ export default {
       }
     },
     updateSelectedDateRow(startDate, endDate) {
-      // Calculate a row of 7 days starting from the start date (Monday to Sunday)
+
       const selectedDateRow = [];
 
-      // Find the first day of the week (Sunday is 0, Monday is 1, and so on)
+   
       const dayOfWeek = startDate.getDay();
-      const startDay = (dayOfWeek - 1 + 7) % 7; // Adjust for Monday being the start of the week
+      const startDay = (dayOfWeek - 1 + 7) % 7; 
 
       for (let i = 0; i < 7; i++) {
         const currentDate = new Date(startDate);
@@ -306,42 +306,42 @@ export default {
         selectedDateRow.push(`${currentDate.getDate()}`);
       }
 
-      Vue.set(this, "selectedDateRow", selectedDateRow); // Ensure reactivity
+      Vue.set(this, "selectedDateRow", selectedDateRow); 
     },
     formatDate(day) {
       const selectedDate = new Date(this.startDate);
       selectedDate.setDate(day);
-      return selectedDate.toLocaleDateString(); // Adjust the format as needed
+      return selectedDate.toLocaleDateString(); 
     },
 
     openModal(candidateId, day) {
       try {
-        // Extract the id property from the Proxy object
+
         const actualCandidateId = candidateId.id;
 
-        // Set the selected date in the format YYYY-MM-DD
+    
         const selectedDate = new Date(this.startDate);
-        selectedDate.setDate(parseInt(day)); // Set the day of the month
+        selectedDate.setDate(parseInt(day)); 
 
-        // Format the selected date exactly like the availability date
+  
         const formattedDate = selectedDate.toISOString().split("T")[0];
 
         this.selectedDate = formattedDate;
-        this.selectedCandidateId = actualCandidateId; // Set the actual candidate ID
+        this.selectedCandidateId = actualCandidateId; 
 
-        // Find the candidate in the candidateList
+    
         const selectedCandidate = this.candidateList.find(
           (candidate) => candidate.id === actualCandidateId
         );
 
-        // Check if the candidate details are found
+  
         if (selectedCandidate) {
-          // Use Vue.nextTick to ensure the DOM has been updated
+      
           this.$nextTick(() => {
             this.selectedCandidate = selectedCandidate;
           });
         } else {
-          // Handle case when selectedCandidate is null
+
 
           this.selectedDate = null;
           this.statusForSelectedDate = null;

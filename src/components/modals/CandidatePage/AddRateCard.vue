@@ -336,27 +336,21 @@ export default {
         .then((response) => (this.shiftsTime = response.data));
     },
     validateBusinessUnit(newValue) {
-      // Example validation function for Business Unit
       this.validationBusinessUnit = newValue !== "";
     },
     validateStaffRate(newValue) {
-      // Example validation function for Staff Rate
       this.validationStaffRate = newValue !== "";
     },
     validateJobID(newValue) {
-      // Example validation function for Job ID
       this.validationPosition = newValue !== "";
     },
     validateShiftId(newValue) {
-      // Example validation function for Shift ID
       this.validationShiftTime = newValue !== "";
     },
     validateEmployeeType(newValue) {
-      // Example validation function for Employee Type
       this.validationEmployeeType = newValue !== "";
     },
     validateDay(newValue) {
-      // Example validation function for Day
       this.validationDay = newValue !== "";
     },
 

@@ -121,7 +121,6 @@ export default {
   },
   components: {},
   computed: {
-    // Function to get dates for the current week
     getWeekDates() {
       const currentDate = new Date();
       const weekStart = new Date(currentDate);
@@ -134,7 +133,7 @@ export default {
       }
       return weekDates;
     },
-    // Function to get dates for the current month
+
     getMonthDates() {
       const currentDate = new Date();
       const daysInMonth = new Date(
@@ -162,13 +161,12 @@ export default {
         this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
       }
 
-      // Save the values to localStorage
       localStorage.setItem("currentView", this.currentView);
       localStorage.setItem("startDate", this.startDate.toISOString());
       localStorage.setItem("endDate", this.endDate.toISOString());
     },
     loadDateRangeFromLocalStorage() {
-      // Load values from localStorage on component mount
+      t;
       const storedCurrentView = localStorage.getItem("currentView");
       const storedStartDate = localStorage.getItem("startDate");
       const storedEndDate = localStorage.getItem("endDate");
@@ -181,7 +179,7 @@ export default {
       }
     },
     formatDate(date) {
-      return date.toLocaleDateString(); // You can customize the formatting based on your needs
+      return date.toLocaleDateString();
     },
     // async vacancyDeleteMethod(id) {
     //   if (!window.confirm("Are you Sure ?")) {

@@ -241,7 +241,6 @@ export default {
     },
     completeImageUrl() {
       if (this.getCandidates && this.getCandidates.profile_photo) {
-        // Concatenate the base URL with the partial API URL
         return `${VITE_API_URL}${this.getCandidates.profile_photo}`;
       }
       return null;

@@ -84,15 +84,12 @@ import { ref, onMounted, getCurrentInstance } from "vue";
 import axios from "axios";
 function formatTime(time) {
   if (!time) {
-    return ""; // Handle the case where the time is undefined or null
+    return "";
   }
 
-  // Check if the time is in ISO format
   if (time.endsWith("Z")) {
-    // Convert ISO format to a Date object
     const date = new Date(time);
 
-    // Format the date
     const formattedTime = date.toLocaleTimeString([], {
       hour: "numeric",
       minute: "numeric",
@@ -102,7 +99,6 @@ function formatTime(time) {
     return formattedTime;
   }
 
-  // If the time is not in ISO format, assume it's already formatted
   return time;
 }
 export default {
@@ -110,7 +106,7 @@ export default {
     const { emit } = getCurrentInstance();
     const shifts = ref([]);
     const updateShift = async () => {
-      let updatedShifts = []; // Define updatedShifts with an empty array
+      let updatedShifts = [];
 
       try {
         updatedShifts = await Promise.all(
@@ -127,13 +123,10 @@ export default {
           })
         );
 
-        // Emit the event with the array of updated shifts
         emit("shift-updated", updatedShifts);
 
-        // Fetch the latest shifts data from the server
         await fetchShifts();
       } catch (error) {
-        // Handle errors
         console.error("Error updating shifts:", error);
       }
     };
@@ -142,13 +135,11 @@ export default {
         const response = await axios.get(`${VITE_API_URL}/shifts`);
         shifts.value = response.data || [];
       } catch (error) {
-        // Handle errors
         console.error("Error fetching shifts:", error);
       }
     };
 
     const updateTime = (shift, property, value) => {
-      // Update the corresponding property of the selected shift
       shift[property] = value;
     };
 

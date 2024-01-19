@@ -197,22 +197,6 @@ export default {
     },
   },
   methods: {
-    // async fetchVacancies() {
-    //   const token = localStorage.getItem("token");
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/vacancies`, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     });
-
-    //     // Assuming your store has a mutation named 'setVacancies'
-    //     store.commit("setVacancies", response.data.data);
-    //   } catch (error) {
-    //     // Handle error if needed
-    //   }
-    // },
     async fetchVacancyMethod(id) {
       const token = localStorage.getItem("token");
       try {
@@ -227,12 +211,10 @@ export default {
           this.fetchVacancy.id = response.data.id;
         }
 
-        // Update each property individually
         this.fetchVacancy.business_unit_id = response.data.business_unit_id;
         this.fetchVacancy.client_id = response.data.client_id;
         this.fetchVacancy.job_id = response.data.job_id;
 
-        // Extract only the date part and format it as "yyyy-MM-dd"
         const dateObject = new Date(response.data.dates);
         this.fetchVacancy.dates =
           dateObject.getFullYear() +
@@ -242,16 +224,13 @@ export default {
           ("0" + dateObject.getDate()).slice(-2);
 
         this.fetchVacancy.shift_id = response.data.shift_id;
-      } catch (error) {
-        // You might want to set a default value or display an error message
-      }
+      } catch (error) {}
     },
 
     async updateVacancyMethod() {
       const token = localStorage.getItem("token");
       const dateObject = new Date(this.fetchVacancy.dates);
 
-      // Extract the date part in the "yyyy-MM-dd" format
       const formattedDate =
         dateObject.getFullYear() +
         "-" +

@@ -118,7 +118,6 @@ export default {
       this.errors[fieldName] = null;
     },
     getError(fieldName) {
-      // Get the error message for the specific field
       return this.errors[fieldName];
     },
     isEmptyField() {
@@ -126,9 +125,8 @@ export default {
     },
 
     validateAndAddJob() {
-      this.errors = {}; // Reset errors
+      this.errors = {};
 
-      // Validate each field
       if (!this.name.trim()) {
         this.$set(this.errors, "name", "Name is required.");
       }
@@ -136,7 +134,6 @@ export default {
         this.$set(this.errors, "description", "Description is required.");
       }
 
-      // If there are no errors, proceed to add job
       if (
         Object.values(this.errors).every((error) => error === null) &&
         !this.isEmptyField()
@@ -145,7 +142,6 @@ export default {
       }
     },
     async addJob() {
-      // Your existing addJob logic...
       const data = {
         name: this.name,
         color: this.color,

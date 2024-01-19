@@ -35,34 +35,42 @@
           <div class="shift-checkboxes d-flex flex-column">
             <div>
               <input
-                type="checkbox"
+                type="radio"
                 id="early"
-                v-model="dayData.shifts.early"
+                name="shiftsGroup"
+                v-model="dayData.selectedShift"
+                :value="'Early'"
                 @click="updateDate(dayData.date, 'Early')"
               />
               <label for="early" class="ps-1">E</label>
               &nbsp;
               <input
-                type="checkbox"
+                type="radio"
                 id="late"
-                v-model="dayData.shifts.late"
+                name="shiftsGroup"
+                v-model="dayData.selectedShift"
+                :value="'Late'"
                 @click="updateDate(dayData.date, 'Late')"
               />
               <label for="late" class="ps-1">L</label>
             </div>
             <div>
               <input
-                type="checkbox"
+                type="radio"
                 id="night"
-                v-model="dayData.shifts.night"
+                name="shiftsGroup"
+                v-model="dayData.selectedShift"
+                :value="'Night'"
                 @click="updateDate(dayData.date, 'Night')"
               />
               <label for="night" class="ps-1">N</label>
               &nbsp;
               <input
-                type="checkbox"
+                type="radio"
                 id="unavailable"
-                v-model="dayData.shifts.unavailable"
+                name="shiftsGroup"
+                v-model="dayData.selectedShift"
+                :value="'Unavailable'"
                 @click="updateDate(dayData.date, 'Unavailable')"
               />
               <label for="unavailable" class="ps-1">U</label>
@@ -205,21 +213,17 @@ export default {
       });
     },
     updateDate(selectedDate, shift) {
-      // Set the component's date property
       this.date = selectedDate;
 
-      // Update the status based on the selected shift
       const dayData = this.calendarData.find((data) => data.date === selectedDate);
       if (dayData) {
         dayData.shifts[shift] = !dayData.shifts[shift];
       }
 
-      // Collect the selected shifts for the status property
       const selectedShifts = Object.keys(dayData.shifts)
         .filter((key) => dayData.shifts[key])
         .join(", ");
 
-      // Set the status property
       this.status = selectedShifts ? selectedShifts : "";
     },
     addCandidateStatus: async function () {
@@ -230,7 +234,6 @@ export default {
           return;
         }
 
-        // Format the date in 'yyyy-MM-dd' format
         const formattedDate = parsedDate.toLocaleDateString("en-CA", {
           year: "numeric",
           month: "2-digit",
@@ -248,10 +251,6 @@ export default {
             "Content-Type": "application/json",
           },
         });
-
-        // if (data) {
-        //   location.reload();
-        // }
       } catch (error) {}
     },
   },

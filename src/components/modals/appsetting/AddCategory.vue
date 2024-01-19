@@ -141,7 +141,6 @@ export default {
       }
     },
     shouldDisableButton() {
-      // Check if any field is empty or has an error
       return (
         this.isEmptyField() || Object.values(this.errors).some((error) => error !== null)
       );
@@ -150,11 +149,9 @@ export default {
       this.errors[fieldName] = null;
     },
     getError(fieldName) {
-      // Get the error message for the specific field
       return this.errors[fieldName];
     },
     isEmptyField() {
-      // Check if any field is empty
       return !this.category_name.trim() || this.job_id.length === 0;
     },
     validateForm() {

@@ -225,8 +225,6 @@ export default {
 </script>
 
 <style scoped>
-/* Add your styling for accordion here */
-
 .main-doc {
   border: 1px solid rgb(167, 167, 167);
   border-radius: 4px;

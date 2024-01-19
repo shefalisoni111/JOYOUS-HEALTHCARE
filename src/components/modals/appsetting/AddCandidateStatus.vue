@@ -109,17 +109,14 @@ export default {
       this.errors[fieldName] = null;
     },
     getError(fieldName) {
-      // Get the error message for the specific field
       return this.errors[fieldName];
     },
     isEmptyField() {
-      // Check if any field is empty
       return !this.title.trim() || !this.description.trim();
     },
     validateAndAddJob() {
-      this.errors = {}; // Reset errors
+      this.errors = {};
 
-      // Validate each field
       if (!this.title.trim()) {
         this.$set(this.errors, "title", "Title is required.");
       }
@@ -128,7 +125,6 @@ export default {
         this.$set(this.errors, "description", "Description is required.");
       }
 
-      // If there are no errors, proceed to add job
       if (
         Object.values(this.errors).every((error) => error === null) &&
         !this.isEmptyField()
@@ -160,11 +156,9 @@ export default {
           this.title = "";
           this.description = "";
         } else {
-          // Handle errors if needed
           // console.error("Failed to add candidate status:", response.statusText);
         }
       } catch (error) {
-        // Handle errors if needed
         // console.error("Error adding candidate status:", error);
       }
     },

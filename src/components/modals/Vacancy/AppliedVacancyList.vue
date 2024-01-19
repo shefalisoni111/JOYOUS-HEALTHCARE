@@ -262,7 +262,6 @@ export default {
         case "2":
           this.rejectCandidate();
           break;
-        // Add more cases if needed
       }
     },
     async assignedCandidate(id) {
@@ -315,7 +314,7 @@ export default {
     },
     async getAppliedVacancyMethod(id) {
       const token = localStorage.getItem("token");
-      // Clear arrays before the loop starts
+
       this.getVacancyDetail = [];
       this.vacancyDetails = [];
       if (this.$store.state.selectedAppliedItemId) {
@@ -360,28 +359,22 @@ export default {
         status: "",
       };
 
-      // Set status based on selected action
       if (this.selectedAction === "1") {
-        // Assign Candidate
         data.status = "assigned";
       } else if (this.selectedAction === "2") {
-        // Reject Candidate
         data.status = "rejected";
       }
       const id = this.$store.state.selectedAppliedItemId;
       if (id) {
         try {
-          const response = await fetch(
-            `${VITE_API_URL}/apply_candidates/${id}`, // Replace with your API endpoint
-            {
-              method: "PUT",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(data),
-            }
-          );
+          const response = await fetch(`${VITE_API_URL}/apply_candidates/${id}`, {
+            method: "PUT",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
 
           if (response.ok) {
             this.checkedCandidates = {};

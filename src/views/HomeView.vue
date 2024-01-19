@@ -430,82 +430,22 @@
                           TimeSheet
                         </h5>
                       </div>
-                      <div class="p-3">
-                        <div class="input-group">
+                      <div class="px-3 d-flex align-items-center">
+                        <div>
+                          <span
+                            v-if="formattedStartDate && formattedEndDate"
+                            class="fw-bold"
+                          >
+                            {{ formattedStartDate + " - " + formattedEndDate }}
+                          </span>
+                          &nbsp; &nbsp;
                           <input
-                            class="form-control"
-                            type="text"
-                            name="datefilter"
-                            :value="formatDateRange"
-                            placeholder="Select Date from Start to End"
-                            readonly
-                            style="width: 266px"
+                            type="month"
+                            v-model="selectedMonth"
+                            @change="updateDateRange"
+                            class="dateInput"
                           />
-                          <i
-                            class="bi bi-calendar2-check position-absolute fw-bold"
-                            @click="showDatePicker = true"
-                            style="cursor: pointer"
-                          ></i
-                          >&nbsp;
                         </div>
-
-                        <!-- Modal for the date picker -->
-                        <div
-                          v-if="showDatePicker"
-                          class="modal"
-                          tabindex="-1"
-                          role="dialog"
-                          style="display: block"
-                        >
-                          <div class="modal-dialog modal-sm">
-                            <!-- Adjust the size with modal-sm, modal-md, modal-lg, etc. -->
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title">Select Date Range</h5>
-                                <button
-                                  type="button"
-                                  class="btn-close"
-                                  @click="showDatePicker = false"
-                                ></button>
-                              </div>
-                              <div class="modal-body">
-                                <!-- Custom date picker component -->
-                                <div class="mb-3">
-                                  <label for="startDate" class="form-label"
-                                    >Start Date:</label
-                                  >
-                                  <input
-                                    type="date"
-                                    class="form-control"
-                                    id="startDate"
-                                    v-model="startDate"
-                                    @change="updateEndDateMin"
-                                  />
-                                </div>
-                                <div class="mb-3">
-                                  <label for="endDate" class="form-label"
-                                    >End Date:</label
-                                  >
-                                  <input
-                                    type="date"
-                                    class="form-control"
-                                    id="endDate"
-                                    v-model="endDate"
-                                    :min="startDate"
-                                  />
-                                </div>
-                                <button class="btn btn-primary" @click="applyDateRange">
-                                  Apply
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div
-                          v-if="showDatePicker"
-                          class="modal-backdrop"
-                          @click="showDatePicker = false"
-                        ></div>
                       </div>
                     </div>
                   </div>
@@ -537,9 +477,8 @@ export default {
   data() {
     return {
       getRecords: [],
-      startDate: "",
+      selectedMonth: "",
       endDate: "",
-      showDatePicker: false,
     };
   },
   components: {
@@ -549,40 +488,81 @@ export default {
     InProgress,
   },
   computed: {
-    formatDateRange() {
-      return `${this.startDate} - ${this.endDate}`;
+    formattedStartDate() {
+      return this.formatDate(this.selectedMonth);
+    },
+    formattedEndDate() {
+      return this.formatDate(this.endDate);
     },
   },
   methods: {
-    updateEndDateMin() {
-      this.$refs.endDate.min = this.startDate;
+    updateDateRange() {
+      localStorage.setItem("selectedMonth", this.selectedMonth);
+      const [selectedYear, selectedMonth] = this.selectedMonth.split("-");
+
+      const endYear =
+        selectedMonth === "12" ? `${parseInt(selectedYear) + 1}` : selectedYear;
+      const endMonth = selectedMonth === "12" ? "01" : `${parseInt(selectedMonth) + 1}`;
+
+      this.endDate = `${endYear}-${endMonth}`;
+
+      this.saveToLocalStorage();
     },
-    applyDateRange() {
-      localStorage.setItem("startDate", this.startDate);
-      localStorage.setItem("endDate", this.endDate);
-      this.showDatePicker = false;
+    formatDate(dateString) {
+      const options = { year: "numeric", month: "numeric", day: "numeric" };
+      return new Date(dateString).toLocaleDateString(undefined, options);
+    },
+    saveToLocalStorage() {
+      localStorage.setItem(
+        "calendarData",
+        JSON.stringify({
+          startDate: this.selectedMonth,
+          endDate: this.endDate,
+        })
+      );
+    },
+    loadStoredData() {
+      const storedData = localStorage.getItem("calendarData");
+
+      if (storedData) {
+        const parsedData = JSON.parse(storedData);
+        this.selectedMonth = parsedData.startDate;
+        this.endDate = parsedData.endDate;
+      }
+    },
+    async fetchData() {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get(`${VITE_API_URL}/merchant_dashboard`, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+        });
+        this.getRecords = response.data.data;
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     },
   },
-  async created() {
-    const token = localStorage.getItem("token");
-    axios
-      .get(`${VITE_API_URL}/merchant_dashboard`, {
-        headers: {
-          "content-type": "application/json",
-          Authorization: "bearer " + token,
-        },
-      })
+  created() {
+    if (!localStorage.getItem("calendarData")) {
+      const today = new Date();
+      const defaultStartDate = today.toISOString().split("T")[0].slice(0, 7);
+      this.selectedMonth = defaultStartDate;
+      this.updateDateRange();
+    }
 
-      .then((response) => (this.getRecords = response.data.data));
+    this.loadStoredData();
+    this.fetchData();
   },
 
   mounted() {
-    const storedStartDate = localStorage.getItem("startDate");
-    const storedEndDate = localStorage.getItem("endDate");
+    window.addEventListener("beforeunload", this.saveToLocalStorage);
 
-    if (storedStartDate && storedEndDate) {
-      this.startDate = storedStartDate;
-      this.endDate = storedEndDate;
+    const inputElement = document.querySelector(".dateInput");
+    if (inputElement) {
+      inputElement.value = this.selectedMonth;
     }
   },
 };

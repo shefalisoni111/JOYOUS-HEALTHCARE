@@ -151,7 +151,6 @@
 <script>
 import axios from "axios";
 
-// import DatePicker from "../components/DatePicker.vue";
 import PublishedVacancy from "../modals/Vacancy/PublishedVacancy.vue";
 import AppliedVacancyList from "../modals/Vacancy/AppliedVacancyList.vue";
 import AssignedVacancyList from "../modals/Vacancy/AssignedVacancyList.vue";
@@ -185,12 +184,10 @@ export default {
       this.selectedVacancyId = vacancyId;
     },
     updateVacancyInList(updatedVacancy) {
-      // Find the index of the updated vacancy in the list
       const index = this.getVacancyDetail.findIndex(
         (vacancy) => vacancy.id === updatedVacancy.id
       );
 
-      // Update the vacancy in the list
       if (index !== -1) {
         this.$set(this.getVacancyDetail, index, updatedVacancy);
       }

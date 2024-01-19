@@ -108,7 +108,6 @@ export default {
     };
   },
   mounted() {
-    // Call fetchAdminMethod when the component is mounted
     this.fetchAdminMethod(1);
   },
   methods: {
@@ -130,11 +129,7 @@ export default {
         this.$emit("admin-updated");
 
         alert("Admin updated successfully");
-        // if (response.data) {
-        //   location.reload();
-        // }
       } catch (error) {
-        // Handle error if needed
         // console.error("Error updating candidate:", error);
       }
     },

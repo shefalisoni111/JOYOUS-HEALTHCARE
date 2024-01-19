@@ -259,13 +259,9 @@ export default {
             this.showMessage = true;
             this.$emit("publishVacancy");
           } else {
-            // Handle other response statuses if needed
           }
-        } catch (error) {
-          // Handle errors
-        }
+        } catch (error) {}
       } else {
-        // Handle the case when selectedPublishItemId is not available
       }
     },
     closePopup() {

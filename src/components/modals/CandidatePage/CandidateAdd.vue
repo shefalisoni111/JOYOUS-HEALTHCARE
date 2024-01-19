@@ -203,15 +203,12 @@ export default {
     },
   },
   watch: {
-    // Watch for changes in input fields and trigger validations
-
     email: "validateEmailFormat",
     first_name: "validateNameFormat",
     password: "validatePasswordMatch",
     confirm_password: "validatePasswordMatch",
     phone_number: "validatePhoneNumberFormat",
 
-    // Update overall form validity when any watched property changes
     isFormValid: function (newVal) {
       this.isValidForm = newVal;
     },
@@ -223,38 +220,32 @@ export default {
 
     detectAutofill() {
       if (this.$refs.email && this.$refs.email.autofocus && this.$refs.email.value) {
-        // Mark the field as autofilled
         this.autofilled = true;
-        // Clear the autofilled value
+
         this.email = "";
       }
 
-      // Check if the password field is autofilled
       if (
         this.$refs.password &&
         this.$refs.password.autofocus &&
         this.$refs.password.value
       ) {
-        // Mark the field as autofilled
         this.autofilled = true;
-        // Clear the autofilled value
+
         this.password = "";
       }
     },
     async addCandidate() {
       this.validateSelectedOption();
-      // this.validationSelectedOptionText = this.validationSelectedFormat(this.job_id);
+
       this.validateCandidateName = this.validateNameFormat(this.first_name);
-      // Validate email
+
       this.validateEmail = this.validateEmailFormat(this.email);
 
-      // Validate password matching
       this.passwordsMatch = this.password === this.confirm_password;
 
-      // Validate phone number
       this.validatePhoneNumber = this.validatePhoneNumberFormat(this.phone_number);
 
-      // Check if all validations pass
       if (
         this.validateEmail &&
         this.passwordsMatch &&
@@ -265,7 +256,7 @@ export default {
         if (this.isPasswordRequired && !this.password) {
           return;
         }
-        // If validations pass, proceed with the API call
+
         const data = {
           first_name: this.first_name,
           job_id: 1,

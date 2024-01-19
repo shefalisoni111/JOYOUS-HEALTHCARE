@@ -147,7 +147,6 @@ export default {
           this.hide_document = "";
           this.profile_view = "";
         }
-        // Handle the response as needed
       } catch (error) {
         // console.error("Error adding document:", error);
       }

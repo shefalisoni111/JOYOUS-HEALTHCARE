@@ -440,18 +440,18 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  // Check if the route requires authentication
+
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    // Check if there is a token in local storage
+
     if (!localStorage.getItem('token')) {
-      // User is not authenticated, redirect to login
+
       next({ name: 'Login' });
     } else {
-      // User is authenticated, proceed to the route
+
       next();
     }
   } else {
-    // Route does not require authentication, proceed
+ 
     next();
   }
 });

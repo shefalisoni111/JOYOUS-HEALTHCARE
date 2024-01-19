@@ -135,9 +135,7 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/candidates/${id}`);
         this.fetchCandidate = { ...this.fetchCandidate, ...response.data.data };
-      } catch (error) {
-        // Handle error if needed
-      }
+      } catch (error) {}
     },
     async updateCandidateMethod() {
       try {
@@ -146,18 +144,13 @@ export default {
           this.fetchCandidate
         );
 
-        // Corrected the Vuex mutation to use 'commit' instead of 'dispatch'
         this.$store.commit("updateCandidate", {
           id: this.fetchCandidate.id,
-          newData: response.data, // Use 'response.data' for the updated data
+          newData: response.data,
         });
         this.$emit("Candidate-updated");
         alert("Candidate updated successfully");
-        // if (response.data) {
-        //   location.reload();
-        // }
       } catch (error) {
-        // Handle error if needed
         // console.error("Error updating candidate:", error);
       }
     },

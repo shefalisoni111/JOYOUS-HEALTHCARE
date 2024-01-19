@@ -167,7 +167,6 @@ export default {
     },
   },
   watch: {
-    // Watch for changes in input fields and trigger validations
     address: "validateAddressFormat",
     first_name: "validateNameFormat",
     email: "validateEmailFormat",
@@ -175,7 +174,6 @@ export default {
     confirm_password: "validatePasswordMatch",
     phone_number: "validatePhoneNumberFormat",
 
-    // Update overall form validity when any watched property changes
     isFormValid: function (newVal) {
       this.isValidForm = newVal;
     },
@@ -184,16 +182,13 @@ export default {
     async addClients() {
       this.validateAddress = this.validateAddressFormat(this.address);
       this.validateClientName = this.validateNameFormat(this.first_name);
-      // Validate email
+
       this.validateEmail = this.validateEmailFormat(this.email);
 
-      // Validate password matching
       this.passwordsMatch = this.password === this.confirm_password;
 
-      // Validate phone number
       this.validatePhoneNumber = this.validatePhoneNumberFormat(this.phone_number);
 
-      // Check if all validations pass
       if (
         this.validateEmail &&
         this.passwordsMatch &&
@@ -225,8 +220,6 @@ export default {
       }
     },
     validateEmailFormat(email) {
-      // Implement your email validation logic here
-      // For example, you can use a regular expression
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
     },
@@ -239,13 +232,10 @@ export default {
       return addressRegex.test(address);
     },
     validatePhoneNumberFormat(phoneNumber) {
-      // Implement your phone number validation logic here
-      // For example, you can check the length or use a regular expression
       const phoneRegex = /^[0-9]{10}$/;
       return phoneRegex.test(phoneNumber);
     },
     clearError() {
-      // Clear the error message when the user starts typing
       this.validateEmail = true;
       this.validatePhoneNumber = true;
       this.passwordsMatch = true;

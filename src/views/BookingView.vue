@@ -155,7 +155,7 @@ export default {
   },
   components: { Navbar },
   computed: {
-    // Function to get dates for the current week
+
     getWeekDates() {
       const currentDate = new Date();
       const weekStart = new Date(currentDate);
@@ -168,7 +168,7 @@ export default {
       }
       return weekDates;
     },
-    // Function to get dates for the current month
+
     getMonthDates() {
       const currentDate = new Date();
       const daysInMonth = new Date(

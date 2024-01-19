@@ -145,11 +145,9 @@ export default {
   mounted() {
     const token = localStorage.getItem("token");
     if (token) {
-      // Check if token exists and set up auto logout
       if (localStorage.getItem("tokenExpiration")) {
         this.setupAutoLogout();
       } else {
-        // Token doesn't have expiration info, probably manually deleted
         this.logout();
       }
 

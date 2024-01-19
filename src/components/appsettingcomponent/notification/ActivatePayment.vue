@@ -207,7 +207,7 @@
   </div>
 </template>
 
-<script >
+<script>
 // import TextFormator from "textformator/TextFormator.vue";
 </script>
 

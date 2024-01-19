@@ -128,7 +128,6 @@ export default {
     },
   },
   async created() {
-    // Fetch initial admin data when the component is created
     await this.fetchAdminData();
   },
 };

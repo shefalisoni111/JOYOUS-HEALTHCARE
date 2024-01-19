@@ -115,9 +115,7 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/candidates/${id}`);
         this.fetchCandidate = { ...this.fetchCandidate, ...response.data.data };
-      } catch (error) {
-        // Handle error if needed
-      }
+      } catch (error) {}
     },
     async updateCandidateMethod() {
       try {
@@ -131,7 +129,6 @@ export default {
         }
         alert("Candidate updated successfully");
       } catch (error) {
-        // Handle error if needed
         // console.error("Error updating candidate:", error);
       }
     },

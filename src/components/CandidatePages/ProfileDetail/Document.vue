@@ -289,7 +289,6 @@ export default {
     async addCandidateDocument() {
       const token = localStorage.getItem("token");
 
-      // Make sure getDocument is not empty before using find()
       if (this.getDocument.length > 0) {
         const selectedDocument = this.getDocument.find((document) => {
           this.document_id = document.id;
@@ -325,14 +324,12 @@ export default {
       }
     },
     toggleAccordion(index) {
-      // Close all accordions
       this.getCategory.forEach((getCate, i) => {
         if (i !== index) {
           getCate.isOpen = false;
         }
       });
 
-      // Toggle the clicked accordion
       this.getCategory[index].isOpen = !this.getCategory[index].isOpen;
     },
     toggleAccordionDocument(categoryIndex, documentIndex) {
@@ -342,7 +339,6 @@ export default {
         }
       });
 
-      // Toggle the clicked document accordion
       this.getCategory[categoryIndex].documents[documentIndex].isOpen = !this.getCategory[
         categoryIndex
       ].documents[documentIndex].isOpen;
@@ -375,7 +371,6 @@ export default {
     },
     async getDownloadDocMethod() {
       try {
-        // Assuming this.getDocument is an array of documents
         this.getDocument.forEach(async (document) => {
           try {
             const response = await axios.get(
@@ -383,7 +378,6 @@ export default {
               { responseType: "blob" }
             );
 
-            // Save the blob using FileSaver.js
             saveAs(response.data, "document_filename.ext");
           } catch (error) {
             // console.error("Error fetching document:", error);
@@ -403,13 +397,11 @@ export default {
       }
     },
   },
-  //  candidate category doc apis start
+
   created() {
     this.getDocumentCategories();
     this.getDocCAtegories();
   },
-
-  //  candidate category doc apis end
 };
 </script>
 

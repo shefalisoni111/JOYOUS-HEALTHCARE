@@ -117,13 +117,11 @@ export default {
       }
     },
     isSelected(shiftId) {
-      // Check if shiftId is in the selectedShifts array
       return this.getRestrictedShiftData.includes(shiftId);
     },
     async postRestrictedShift() {
-      // Prepare data for the API request
       const data = {
-        shift_id: this.selectedShifts, // Use the selectedShifts array
+        shift_id: this.selectedShifts,
         candidate_id: this.$route.params.id,
       };
 

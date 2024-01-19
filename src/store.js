@@ -31,7 +31,7 @@ export default createStore({
     },
 
     updateCandidate(state, { id, newData }) {
-      // console.log('Updating candidate:', id, newData);
+
       const index = state.candidates.findIndex(candidate => candidate.id === id);
       if (index !== -1) {
         // Update the candidate in the array
@@ -41,7 +41,7 @@ export default createStore({
     updateVacancy(state, { id, newData }) {
       const index = state.vacancies.findIndex(v => v.id === id);
       if (index !== -1) {
-        // Update the existing vacancy with newData
+
         state.vacancies[index] = newData;
       }
     },

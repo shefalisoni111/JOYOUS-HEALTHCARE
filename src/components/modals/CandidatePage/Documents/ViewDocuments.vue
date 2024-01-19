@@ -84,9 +84,7 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/documents/${this.documentId}`);
         this.documentDetails = response.data.data;
-      } catch (error) {
-        // Handle error if needed
-      }
+      } catch (error) {}
     },
   },
   mounted() {

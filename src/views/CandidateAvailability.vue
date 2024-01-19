@@ -143,13 +143,11 @@ export default {
       );
     },
     selectedDateRow() {
-      // Calculate a row of 7 days starting from the selected date (Monday to Sunday)
       const selectedDate = new Date(this.startDate);
       const selectedDateRow = [];
 
-      // Find the first day of the week (Sunday is 0, Monday is 1, and so on)
       const dayOfWeek = selectedDate.getDay();
-      const startDay = (dayOfWeek - 1 + 7) % 7; // Adjust for Monday being the start of the week
+      const startDay = (dayOfWeek - 1 + 7) % 7;
 
       for (let i = 0; i < 7; i++) {
         const currentDate = new Date(selectedDate);
@@ -232,12 +230,10 @@ export default {
       }
     },
     updateSelectedDateRow(startDate, endDate) {
-      // Calculate a row of 7 days starting from the start date (Monday to Sunday)
       const selectedDateRow = [];
 
-      // Find the first day of the week (Sunday is 0, Monday is 1, and so on)
       const dayOfWeek = startDate.getDay();
-      const startDay = (dayOfWeek - 1 + 7) % 7; // Adjust for Monday being the start of the week
+      const startDay = (dayOfWeek - 1 + 7) % 7;
 
       for (let i = 0; i < 7; i++) {
         const currentDate = new Date(startDate);
@@ -275,7 +271,6 @@ export default {
           this.statusForSelectedDate =
             availability.length > 0 ? availability[0].status : null;
 
-          // Use the nextTick method from the app instance
           this.$nextTick(() => {
             this.selectedCandidate = selectedCandidate;
 
@@ -286,12 +281,10 @@ export default {
             }
           });
         } else {
-          // console.error("Selected candidate not found");
           this.selectedDate = null;
           this.statusForSelectedDate = null;
         }
       } catch (error) {
-        // console.error("Error in openModal:", error);
         this.selectedDate = null;
         this.statusForSelectedDate = null;
       }

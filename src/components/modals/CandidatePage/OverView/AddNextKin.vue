@@ -239,7 +239,6 @@ export default {
       return /^\d+$/.test(value);
     },
     validateForm() {
-      // Reset error messages
       this.nameError = "";
       this.phoneNumberError = "";
       this.relationError = "";
@@ -248,7 +247,6 @@ export default {
       this.cityError = "";
       this.postcodeError = "";
 
-      // Validate each field and set error messages
       if (!this.name.trim()) this.nameError = "Name is required";
       if (!this.validatePhoneNumber(this.phone_number))
         this.phoneNumberError = "Invalid Phone Number";
@@ -260,7 +258,6 @@ export default {
       if (!this.city.trim()) this.cityError = "City is required";
       if (!this.validatePostcode(this.postcode)) this.postcodeError = "Invalid Postcode";
 
-      // Return true if there are any errors
       return (
         this.nameError ||
         this.phoneNumberError ||
@@ -273,9 +270,7 @@ export default {
     },
 
     submitForm() {
-      // Validate the form before submitting
       if (this.validateForm()) {
-        // Display an error message or handle validation as needed
         console.log("Form validation failed");
         return;
       }

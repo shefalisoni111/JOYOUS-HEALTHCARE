@@ -230,14 +230,13 @@ export default {
     },
   },
   watch: {
-    // Watch for changes in input fields and trigger validations
     job_id: "validationSelectedOptionText",
     business_unit_id: "validationSelectedBusinessUnit",
     client_id: "validationSelectedClient",
     shift_id: "validationShift",
     dates: "validationDateType",
     notes: "validationNotesText",
-    // Update overall form validity when any watched property changes
+
     isFormValid: function (newVal) {
       this.isValidForm = newVal;
     },
@@ -307,7 +306,6 @@ export default {
           }
         } catch (error) {}
       } else {
-        // Set the password required flag if the password field is empty
       }
     },
     async getJobTitleMethod() {

@@ -84,9 +84,7 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/document_categories/${id}`);
         this.fetchCategory = { ...this.fetchCategory, ...response.data.data };
-      } catch (error) {
-        // Handle error if needed
-      }
+      } catch (error) {}
     },
     async updateCategoryMethod() {
       try {
@@ -98,7 +96,6 @@ export default {
         this.$emit("onDocAdded");
         alert("Category updated successfully");
       } catch (error) {
-        // Handle error if needed
         // console.error("Error updating Category:", error);
       }
     },
