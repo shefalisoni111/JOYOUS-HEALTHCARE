@@ -112,9 +112,8 @@ export default {
           `${VITE_API_URL}/candidates/${this.$route.params.id}`,
           this.fetchCandidate
         );
-
+        this.$emit("bankDetailAdded");
         alert("Candidate updated successfully");
-        window.location.reload();
       } catch (error) {
         // console.error("Error updating candidate:", error);
       }

@@ -1,5 +1,8 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light">
+  <nav
+    class="navbar navbar-expand-lg navbar-light"
+    :class="{ 'fixed-navbar': isNavbarFixed }"
+  >
     <div class="container-fluid">
       <a class="navbar-brand" href="/home"
         ><img src="../assets/logo.png" class="img-fluid" alt="RecPal" width="119"
@@ -17,7 +20,7 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav m-auto mt-0 mb-lg-0">
+        <ul class="navbar-nav m-auto mt-0 mb-lg-0 fw-bold">
           <li class="nav-item">
             <router-link class="nav-link" aria-current="page" to="/home">
               Home
@@ -255,10 +258,20 @@ export default {
   data() {
     return {
       getAdminData: [],
+      isNavbarFixed: false,
     };
   },
 
   methods: {
+    handleScroll() {
+      const offset = window.scrollY;
+
+      if (offset > 100) {
+        this.isNavbarFixed = true;
+      } else {
+        this.isNavbarFixed = false;
+      }
+    },
     signout() {
       if (localStorage.getItem("token")) {
         localStorage.removeItem("token");
@@ -287,6 +300,10 @@ export default {
 
   mounted() {
     this.getAdminMethod();
+    window.addEventListener("scroll", this.handleScroll);
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.handleScroll);
   },
 };
 </script>
@@ -294,6 +311,15 @@ export default {
 <style scoped>
 .cursor-pointer {
   cursor: pointer;
+}
+
+.fixed-navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
 }
 .bi-person::before {
   font-size: 60px;

@@ -187,7 +187,7 @@
                 >
                   payroll
                 </h5>
-                <button type="button" class="btn btn-outline-primary mb-3">Edit</button>
+                <button type="button" class="btn btn-primary mb-3">Edit</button>
               </div>
             </div>
             <div class="card-body">
@@ -243,7 +243,7 @@
                 </div>
 
                 <div>
-                  <button type="button" class="btn btn-outline-primary">Edit</button>
+                  <button type="button" class="btn btn-primary">Edit</button>
                 </div>
               </div>
             </div>
@@ -425,8 +425,12 @@
       </div>
     </div>
     <WorkExperience @AddExperienceData="getCandidateWorkExperienceMethod" />
-    <EducationAdd />
+
     <AddNextKin @AddNextKin="getCandidateNextToKineMethod" />
+    <EditBankDetails @bankDetailAdded="getCandidateMethod" />
+    <NextToKinEdit @nextToKinAdded="getCandidateNextToKineMethod" />
+    <EditBankDetails @bankDetailAdded="getCandidateMethod" />
+    <OverviewEdit @overviewAdded="getCandidateMethod" />
   </div>
 </template>
 
@@ -435,6 +439,9 @@ import axios from "axios";
 import WorkExperience from "../../modals/CandidatePage/OverView/WorkExperience.vue";
 import EducationAdd from "../../modals/CandidatePage/OverView/EducationAdd.vue";
 import AddNextKin from "../../modals/CandidatePage/OverView/AddNextKin.vue";
+import OverviewEdit from "../../modals/CandidatePage/OverviewEdit.vue";
+import NextToKinEdit from "../../modals/CandidatePage/OverView/NextToKinEdit.vue";
+import EditBankDetails from "../../modals/CandidatePage/OverView/EditBankDetails.vue";
 
 export default {
   name: "Overview",
@@ -459,7 +466,14 @@ export default {
       },
     };
   },
-  components: { WorkExperience, EducationAdd, AddNextKin },
+  components: {
+    WorkExperience,
+    EducationAdd,
+    AddNextKin,
+    OverviewEdit,
+    NextToKinEdit,
+    EditBankDetails,
+  },
   methods: {
     async getCandidateMethod() {
       try {
@@ -545,7 +559,10 @@ export default {
         });
     },
   },
-
+  async created() {
+    await this.getCandidateNextToKineMethod();
+    await this.getCandidateMethod();
+  },
   async mounted() {
     try {
       await this.getCandidateMethod();

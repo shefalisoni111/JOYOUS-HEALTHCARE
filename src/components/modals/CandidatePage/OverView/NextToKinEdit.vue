@@ -124,7 +124,7 @@
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              @click.prevent="updateCandidateMethod(fetchCandidate.id)"
+              @click.prevent="updateNextToKinMethod(fetchCandidate.id)"
             >
               Save
             </button>
@@ -165,7 +165,7 @@ export default {
 
       this.validatePhoneNumber = this.fetchCandidate.phone_number.length === 10;
     },
-    async fetchCandidateOverviewMethod() {
+    async fetchNextToKinMethod() {
       try {
         const response = await axios.get(
           `${VITE_API_URL}/candidates/${this.$route.params.id}/next_of_kins`
@@ -176,15 +176,15 @@ export default {
         // console.error("Error fetching todo:", error);
       }
     },
-    async updateCandidateMethod(id) {
+    async updateNextToKinMethod(id) {
       try {
         await axios.put(
           `${VITE_API_URL}/candidates/${this.$route.params.id}/next_of_kins/${id}`,
           this.fetchCandidate
         );
 
-        alert("Candidate updated successfully");
-        window.location.reload();
+        alert("NextToKin updated successfully");
+        this.$emit("nextToKinAdded");
       } catch (error) {
         // console.error("Error updating candidate:", error);
       }
@@ -192,7 +192,7 @@ export default {
   },
 
   mounted() {
-    this.fetchCandidateOverviewMethod();
+    this.fetchNextToKinMethod();
   },
 };
 </script>

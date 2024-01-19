@@ -123,10 +123,7 @@ export default {
           `${VITE_API_URL}/candidates/${this.fetchCandidate.id}`,
           this.fetchCandidate
         );
-        if (response.data) {
-          location.reload();
-        } else {
-        }
+        this.$emit("contactAdded");
         alert("Candidate updated successfully");
       } catch (error) {
         // console.error("Error updating candidate:", error);

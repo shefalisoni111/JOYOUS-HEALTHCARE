@@ -5,7 +5,7 @@
       <div class="pagetitle d-flex justify-content-between">
         <div class="">
           <ol class="breadcrumb mb-1">
-            <li class="breadcrumb-item active fs-5">Dashboard</li>
+            <li class="breadcrumb-item active fs-6">Dashboard</li>
           </ol>
           <h5 class="fs-4" style="color: #ff5f30">Welcome to Recpal</h5>
         </div>
@@ -31,7 +31,7 @@
               <div class="row d-flex justify-content-center">
                 <!-- Sales Card -->
                 <h5
-                  class="text-uppercase fw-bold d-flex justify-content-start fs-5 pb-2 ps-5"
+                  class="text-uppercase fw-bold d-flex justify-content-start fs-6 pb-2 ps-5"
                 >
                   Client
                 </h5>
@@ -107,7 +107,7 @@
               <div class="row d-flex justify-content-center">
                 <!-- Sales Card -->
                 <h5
-                  class="text-uppercase fw-bold d-flex justify-content-start fs-5 pb-2 ps-5"
+                  class="text-uppercase fw-bold d-flex justify-content-start fs-6 pb-2 ps-5"
                 >
                   Candidates
                 </h5>
@@ -185,7 +185,7 @@
               <div class="row d-flex justify-content-center">
                 <!-- Sales Card -->
                 <h5
-                  class="text-uppercase fw-bold d-flex justify-content-start fs-5 pb-2 ps-5"
+                  class="text-uppercase fw-bold d-flex justify-content-start fs-6 pb-2 ps-5"
                 >
                   Business Units
                 </h5>
@@ -266,7 +266,7 @@
               <div class="row d-flex justify-content-center">
                 <!-- Sales Card -->
                 <h5
-                  class="text-uppercase fw-bold d-flex justify-content-start fs-5 pb-2 ps-5"
+                  class="text-uppercase fw-bold d-flex justify-content-start fs-6 pb-2 ps-5"
                 >
                   Compliance Insight
                 </h5>
@@ -382,7 +382,7 @@
                           <div class="d-flex">
                             <span class="box-icon mt-2"></span>
                             <div class="d-flex flex-column">
-                              <span class="fs-4 ps-2">50</span>
+                              <span class="fs-4 ps-2 fw-bold">50</span>
                               <span class="d-flex ms-2">Open Vacancies</span>
                             </div>
                           </div>
@@ -391,7 +391,7 @@
                           <div class="d-flex">
                             <span class="box-icon2 mt-2"></span>
                             <div class="d-flex flex-column">
-                              <span class="fs-4 ps-2">10</span>
+                              <span class="fs-4 ps-2 fw-bold">10</span>
                               <span class="d-flex ms-2">Applied Vacancies</span>
                             </div>
                           </div>
@@ -400,7 +400,7 @@
                           <div class="d-flex">
                             <span class="box-icon3 mt-2"></span>
                             <div class="d-flex flex-column">
-                              <span class="fs-4 ps-2">30</span>
+                              <span class="fs-4 ps-2 fw-bold">30</span>
                               <span class="d-flex ms-2">Assigned Vacancies</span>
                             </div>
                           </div>
@@ -674,9 +674,6 @@ h6 {
   font-size: 14px;
 }
 
-span {
-  font-weight: 600;
-}
 .card.sales-card {
   border-top-right-radius: 2rem;
   border-bottom-right-radius: 2rem;

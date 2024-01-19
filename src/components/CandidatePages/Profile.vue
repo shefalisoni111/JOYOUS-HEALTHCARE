@@ -141,14 +141,14 @@
         </div>
       </div>
     </div>
-    <OverviewEdit />
+
     <AddRestrictedLocation />
     <AddNotes />
-    <!-- <EditRateCard /> -->
 
-    <NextToKinEdit />
-    <EditBankDetails />
-    <EditProfileContact :candidateId="selectedCandidateId || 0" />
+    <EditProfileContact
+      :candidateId="selectedCandidateId || 0"
+      @contactAdded="getCandidate"
+    />
   </div>
 </template>
 
@@ -164,13 +164,10 @@ import Notes from "../CandidatePages/ProfileDetail/Notes.vue";
 import StaffId from "../CandidatePages/ProfileDetail/StaffId.vue";
 import CandidateHistory from "../CandidatePages/ProfileDetail/CandidateHistory.vue";
 import CandidatePreference from "../CandidatePages/ProfileDetail/CandidatePreference.vue";
-import OverviewEdit from "../modals/CandidatePage/OverviewEdit.vue";
-import NextToKinEdit from "../modals/CandidatePage/OverView/NextToKinEdit.vue";
-import EditBankDetails from "../modals/CandidatePage/OverView/EditBankDetails.vue";
+
 import AddRestrictedLocation from "../modals/CandidatePage/AddRestrictedLocation.vue";
 import EditProfileContact from "../modals/CandidatePage/EditProfileContact.vue";
 
-// import EditRateCard from "../modals/CandidatePage/EditRateCard.vue";
 import AddNotes from "../modals/CandidatePage/AddNotes.vue";
 
 export default {
@@ -201,7 +198,7 @@ export default {
 
   components: {
     Overview,
-    OverviewEdit,
+
     Document,
     ProfileTabs,
     Restricted,
@@ -211,12 +208,8 @@ export default {
     CandidateHistory,
     CandidatePreference,
     AddRestrictedLocation,
-
-    // EditRateCard,
-    AddNotes,
-    NextToKinEdit,
-    EditBankDetails,
     EditProfileContact,
+    AddNotes,
   },
 
   props: ["id"],
@@ -315,8 +308,8 @@ export default {
     },
   },
 
-  created() {
-    this.getCandidate();
+  async created() {
+    await this.getCandidate();
     this.GetNotesCount();
   },
 };

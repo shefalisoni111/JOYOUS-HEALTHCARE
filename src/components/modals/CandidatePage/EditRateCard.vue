@@ -237,7 +237,7 @@ export default {
         await axios.put(`${VITE_API_URL}/rate_cards/` + id, this.fetchRateCard);
 
         alert("Candidate updated successfully");
-        window.location.reload();
+        this.$emit("rateCardAdded");
       } catch (error) {
         // console.error("Error updating candidate:", error);
       }

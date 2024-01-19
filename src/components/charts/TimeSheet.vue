@@ -66,7 +66,7 @@ export default {
             y: {
               ticks: {
                 font: {
-                  size: 17,
+                  size: 15,
                 },
               },
             },

@@ -250,9 +250,8 @@ export default {
           `${VITE_API_URL}/candidates/${this.fetchCandidate.id}`,
           this.fetchCandidate
         );
-
+        this.$emit("overviewAdded");
         alert("Candidate updated successfully");
-        window.location.reload();
       } catch (error) {
         // console.error("Error updating candidate:", error);
       }

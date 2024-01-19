@@ -69,10 +69,10 @@
                     <i
                       class="bi bi-trash3 cursor-pointer btn btn-outline-success text-nowrap"
                       v-on:click="rateCardDelete(getrate.id)"
-                    ></i
-                    >&nbsp;&nbsp;
+                    ></i>
+                    <!-- &nbsp;&nbsp;
 
-                    <!-- <i
+                    <i
                       class="bi bi-pencil-square cursor-pointer btn btn-outline-success text-nowrap"
                       type="button"
                       data-bs-toggle="modal"
@@ -94,12 +94,14 @@
       </div>
     </div>
     <AddRateCard @rateCard="showRateCardMethod" />
+    <!-- <EditRateCard @rateCardAdded="showRateCardMethod" /> -->
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import AddRateCard from "../../../components/modals/CandidatePage/AddRateCard.vue";
+// import EditRateCard from "../../modals/CandidatePage/EditRateCard.vue";
 export default {
   name: "RateCard",
   data() {
@@ -133,8 +135,8 @@ export default {
 
     //  ratecard apis end
   },
-  mounted() {
-    this.showRateCardMethod();
+  async created() {
+    await this.showRateCardMethod();
   },
 };
 </script>

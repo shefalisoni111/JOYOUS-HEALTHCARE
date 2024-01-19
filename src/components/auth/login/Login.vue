@@ -1,6 +1,10 @@
 <template>
   <div class="container-fluid p-0">
-    <div class="d-flex align-items-center justify-content-center whole-bg">
+    <div
+      class="d-flex align-items-center justify-content-center whole-bg"
+      style="background-image: url('src/assets/loginbggg11.png')"
+      loading="lazy"
+    >
       <div class="row no-gutter d-flex justify-content-center align-items-center w-100">
         <div class="col-4 d-flex wrapper-div p-0">
           <!-- <div class="col-md-6 d-none d-md-flex bg-image"></div> -->
@@ -60,8 +64,10 @@
                         <button
                           type="submit"
                           class="btn btn-primary btn-block text-capitalize shadow-sm cursor-pointer"
+                          :disabled="loading"
                         >
-                          Sign in
+                          <span v-if="loading">Loading...</span>
+                          <span v-else>Sign in</span>
                         </button>
                         <!-- <div class="d-flex align-items-center">
                             Did you
@@ -90,11 +96,13 @@ export default {
       password: "",
       error: false,
       rememberMe: false,
+      loading: false,
     };
   },
 
   methods: {
     async login() {
+      this.loading = true;
       const data = {
         email: this.email,
         password: this.password,
@@ -122,6 +130,8 @@ export default {
         }
       } catch (error) {
         // Handle errors
+      } finally {
+        this.loading = false;
       }
     },
 
@@ -171,7 +181,6 @@ export default {
 .image {
 }
 .whole-bg {
-  background-image: url("src/assets/loginbggg11.png");
   height: 100vh;
   background-size: cover;
   background-position: center center;
