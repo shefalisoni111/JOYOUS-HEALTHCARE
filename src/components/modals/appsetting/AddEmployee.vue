@@ -18,7 +18,7 @@
               <form>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label">NAME</label>
+                    <label class="form-label">Employee Type</label>
                   </div>
                   <div class="col-10 mt-1">
                     <input
@@ -36,7 +36,7 @@
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label for="exampleFormControlTextarea1" class="form-label"
-                      >DESC</label
+                      >Desc</label
                     >
                   </div>
                   <div class="col-10 mt-1">
