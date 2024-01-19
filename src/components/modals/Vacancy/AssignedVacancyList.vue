@@ -24,11 +24,9 @@
                 <li>Code:{{ vacancyDetails.ref_code }}</li>
                 <li>B-unit:{{ vacancyDetails.business_unit }}</li>
                 <li>Job: {{ vacancyDetails.job_title }}</li>
-                <li
-                  v-for="(date, index) in vacancyDetails.dates"
-                  :key="index"
-                  v-text="date"
-                ></li>
+                <li v-for="(date, index) in vacancyDetails.dates" :key="index">
+                  Date: {{ date }}
+                </li>
                 <li>Time: {{ vacancyDetails.shift }}</li>
                 <li>Space left: 1</li>
               </ul>

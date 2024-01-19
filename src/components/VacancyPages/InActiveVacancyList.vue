@@ -70,7 +70,7 @@ export default {
       if (!window.confirm("Are you Sure?")) {
         return;
       }
-      axios.put(`${VITE_API_URL}/inactive_vacancy/${id}`).then((response) => {
+      axios.put(`${VITE_API_URL}/active_vacancy/${id}`).then((response) => {
         this.inactiveCandidateData = response.data;
         this.getInactiveVacancyMethod();
       });

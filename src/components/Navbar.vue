@@ -265,10 +265,11 @@ export default {
   methods: {
     handleScroll() {
       const offset = window.scrollY;
+      const offsetThreshold = 100;
 
-      if (offset > 100) {
-        this.isNavbarFixed = true;
-      } else {
+      this.isNavbarFixed = offset > offsetThreshold;
+
+      if (offset <= offsetThreshold) {
         this.isNavbarFixed = false;
       }
     },
@@ -302,8 +303,9 @@ export default {
     this.getAdminMethod();
     window.addEventListener("scroll", this.handleScroll);
   },
-  beforeDestroy() {
+  beforeRouteLeave(to, from, next) {
     window.removeEventListener("scroll", this.handleScroll);
+    next();
   },
 };
 </script>
