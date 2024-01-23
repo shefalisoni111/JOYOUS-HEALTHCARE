@@ -2,7 +2,7 @@
   <div>
     <div class="container-fluid">
       <div id="main">
-        <div class="pagetitle d-flex justify-content-between px-2">
+        <div class="pagetitle d-flex justify-content-between px-2 mt-2">
           <div class="py-3">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active text-uppercase fs-6">
@@ -331,6 +331,7 @@ export default {
 <style scoped>
 #main {
   background-color: #fdce5e17;
+  margin-top: 80px;
 }
 .full-page-calendar {
   padding: 20px;

@@ -70,7 +70,7 @@
                       class="bi bi-trash3 cursor-pointer btn btn-outline-success text-nowrap"
                       v-on:click="rateCardDelete(getrate.id)"
                     ></i>
-                    &nbsp;&nbsp;
+                    <!-- &nbsp;&nbsp;
 
                     <i
                       class="bi bi-pencil-square cursor-pointer btn btn-outline-success text-nowrap"
@@ -79,7 +79,7 @@
                       data-bs-target="#editRateCard"
                       data-bs-whatever="@mdo"
                       @click="editRateCard(getrate.id)"
-                    ></i>
+                    ></i> -->
                   </td>
                 </tr>
               </tbody>
@@ -94,17 +94,17 @@
       </div>
     </div>
     <AddRateCard @rateCard="showRateCardMethod" />
-    <EditRateCard
+    <!-- <EditRateCard
       @rateCardAdded="showRateCardMethod"
       :rateCardId="selectedRateCardId || 0"
-    />
+    /> -->
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import AddRateCard from "../../../components/modals/CandidatePage/AddRateCard.vue";
-import EditRateCard from "../../modals/CandidatePage/EditRateCard.vue";
+// import EditRateCard from "../../modals/CandidatePage/EditRateCard.vue";
 export default {
   name: "RateCard",
   data() {
@@ -113,7 +113,7 @@ export default {
       selectedRateCardId: null,
     };
   },
-  components: { AddRateCard, EditRateCard },
+  components: { AddRateCard },
   methods: {
     editRateCard(rateCardId) {
       this.selectedRateCardId = rateCardId;

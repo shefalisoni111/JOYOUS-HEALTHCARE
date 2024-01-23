@@ -17,6 +17,7 @@ export default {
 </script>
 <style scoped>
 #main {
+  margin-top: 80px;
   padding: 20px 20px;
   transition: all 0.3s;
   height: 100dvh;

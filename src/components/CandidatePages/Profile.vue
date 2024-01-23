@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="container-fluid p-0 mt-3">
-      <div id="main" class="bg-orange-light">
-        <div class="pagetitle d-flex justify-content-between">
+      <div id="main" class="main">
+        <div class="pagetitle d-flex justify-content-between p-2">
           <div class="">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active text-uppercase fs-6">
@@ -342,6 +342,10 @@ export default {
 </script>
 
 <style scoped>
+.main {
+  background-color: #fdce5e17;
+  margin-top: 80px;
+}
 .fs-smaller {
   font-size: smaller;
 }
