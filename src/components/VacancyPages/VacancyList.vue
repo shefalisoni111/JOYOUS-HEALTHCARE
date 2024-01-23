@@ -16,7 +16,7 @@
         </div> -->
         <div class="pagetitle d-flex justify-content-between px-2">
           <div class="py-3">
-            <ol class="breadcrumb mb-1">
+            <ol class="breadcrumb my-2">
               <li class="breadcrumb-item active text-uppercase fs-6">
                 <router-link class="nav-link d-inline" aria-current="page" to="/home"
                   >Dashboard</router-link

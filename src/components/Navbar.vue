@@ -270,7 +270,7 @@ export default {
       if (this.$route.path === "/home") {
         offsetThreshold = 10;
       } else {
-        offsetThreshold = 70;
+        offsetThreshold = 100;
       }
 
       if (offset > offsetThreshold) {
