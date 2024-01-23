@@ -37,9 +37,14 @@
               <td v-text="getdata.business_unit"></td>
               <td v-text="getdata.job_title"></td>
 
-              <td v-for="(date, index) in getdata.dates" :key="index" v-text="date"></td>
+              <td
+                v-for="(date, index) in getdata.dates"
+                :key="index"
+                v-text="date"
+                class="widthDefine"
+              ></td>
 
-              <td v-text="getdata.shift"></td>
+              <td v-text="getdata.shift" class="widthDefine"></td>
               <!-- <td v-text="getdata.staff_required"></td> -->
               <td v-text="getdata.notes"></td>
 
@@ -128,9 +133,15 @@
                 &nbsp;&nbsp;
                 <button
                   class="btn btn-outline-danger text-nowrap"
-                  v-on:click="vacancyDeleteMethod(getdata.id)"
+                  v-on:click="vacancyInactiveMethod(getdata.id)"
                 >
-                  In-Active
+                  In-Active</button
+                >&nbsp;
+                <button
+                  class="btn btn-outline-success text-nowrap"
+                  v-on:click="vacancyActiveMethod(getdata.id)"
+                >
+                  Active
                 </button>
               </td>
             </tr>
@@ -207,7 +218,7 @@ export default {
     openPublished(id) {
       this.$store.commit("setSelectedPublishedItemId", id);
     },
-    async vacancyDeleteMethod(id) {
+    async vacancyInactiveMethod(id) {
       if (!window.confirm("Are you Sure ?")) {
         return;
       }
@@ -224,11 +235,28 @@ export default {
         });
       alert("InActive Vacancy");
     },
+    async vacancyActiveMethod(id) {
+      if (!window.confirm("Are you Sure ?")) {
+        return;
+      }
+      const token = localStorage.getItem("token");
+      await axios
+        .put(`${VITE_API_URL}/active_vacancy/` + id, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+        })
+        .then((response) => {
+          this.createVacancy();
+        });
+      alert("InActive Vacancy");
+    },
 
     async createVacancy() {
       const token = localStorage.getItem("token");
       axios
-        .get(`${VITE_API_URL}/activate_vacancy_list`, {
+        .get(`${VITE_API_URL}/vacancies`, {
           headers: {
             "content-type": "application/json",
             Authorization: "bearer " + token,
@@ -236,7 +264,7 @@ export default {
         })
 
         .then((response) => {
-          this.getVacancyDetail = response.data.vacancies;
+          this.getVacancyDetail = response.data.data;
         });
     },
   },
@@ -310,14 +338,16 @@ ul.nav-pills {
 table th {
   background-color: #ff5f30;
 }
-
-button.nav-link > li.nav-item {
-  border-bottom: 2px solid red; /* Replace with your desired border color */
-  padding-bottom: 5px; /* Optional: Add padding for spacing */
+.table.candidateTable th,
+.table.candidateTable td.widthDefine {
+  white-space: pre-wrap;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-
-button.nav-link.active > li.nav-item {
-  /* Additional styles for the active state if needed */
+button.nav-link > li.nav-item {
+  border-bottom: 2px solid red;
+  padding-bottom: 5px;
 }
 
 .form-select {

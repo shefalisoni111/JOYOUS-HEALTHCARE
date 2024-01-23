@@ -250,7 +250,14 @@ export default {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
+          body: JSON.stringify(data),
         });
+        if (data) {
+          alert("Availability added successfully");
+          window.location.reload();
+        } else {
+          // this.successMessage = "Failed to add availability";
+        }
       } catch (error) {}
     },
   },

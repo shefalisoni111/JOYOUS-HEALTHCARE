@@ -265,11 +265,17 @@ export default {
   methods: {
     handleScroll() {
       const offset = window.scrollY;
-      const offsetThreshold = 100;
+      let offsetThreshold = 10;
 
-      this.isNavbarFixed = offset > offsetThreshold;
+      if (this.$route.path === "/home") {
+        offsetThreshold = 10;
+      } else {
+        offsetThreshold = 70;
+      }
 
-      if (offset <= offsetThreshold) {
+      if (offset > offsetThreshold) {
+        this.isNavbarFixed = true;
+      } else {
         this.isNavbarFixed = false;
       }
     },
@@ -301,10 +307,11 @@ export default {
 
   mounted() {
     this.getAdminMethod();
-    window.addEventListener("scroll", this.handleScroll);
+    window.addEventListener("scroll", () => this.handleScroll());
   },
+
   beforeRouteLeave(to, from, next) {
-    window.removeEventListener("scroll", this.handleScroll);
+    window.addEventListener("scroll", () => this.handleScroll());
     next();
   },
 };

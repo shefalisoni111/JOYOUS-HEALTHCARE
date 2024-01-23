@@ -22,7 +22,6 @@
                     :id="shift.id"
                     :value="shift.id"
                     v-model="selectedShifts"
-                    :checked="isSelected(shift.id)"
                   />
                   &nbsp;{{ shift.shift_name }}
                 </li>
@@ -87,11 +86,13 @@
         </div>
       </div>
     </div>
+    <AddRestrictedLocation @getLocationAdded="getRestrictedLocationMethod" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import AddRestrictedLocation from "../../modals/CandidatePage/AddRestrictedLocation.vue";
 
 export default {
   name: "Restricted",
@@ -103,7 +104,9 @@ export default {
       getLocationData: [],
     };
   },
-
+  components: {
+    AddRestrictedLocation,
+  },
   methods: {
     async getTime() {
       try {
@@ -117,7 +120,7 @@ export default {
       }
     },
     isSelected(shiftId) {
-      return this.getRestrictedShiftData.includes(shiftId);
+      return this.selectedShifts.includes(shiftId);
     },
     async postRestrictedShift() {
       const data = {
@@ -167,10 +170,10 @@ export default {
     },
   },
 
-  created() {
-    this.getTime();
-    this.getRestrictedShifts();
-    this.getRestrictedLocationMethod();
+  async created() {
+    await this.getTime();
+    await this.getRestrictedShifts();
+    await this.getRestrictedLocationMethod();
   },
 };
 </script>

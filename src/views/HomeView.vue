@@ -2,29 +2,31 @@
   <div>
     <Navbar />
     <div id="main" class="main">
-      <div class="pagetitle d-flex justify-content-between">
-        <div class="">
-          <ol class="breadcrumb mb-1">
-            <li class="breadcrumb-item active fs-6">Dashboard</li>
-          </ol>
-          <h5 class="fs-4" style="color: #ff5f30">Welcome to Recpal</h5>
-        </div>
-        <!-- End Page Title -->
-        <div class="d-flex align-items-center">
-          <button
-            type="button"
-            class="btn btn-primary text-nowrap fs-5 text-capitalize"
-            data-bs-toggle="modal"
-            data-bs-target="#inprogress"
-            data-bs-whatever="@mdo"
-          >
-            <i class="bi bi-file-earmark"></i>
-            generate report
-          </button>
+      <div class="pagetitle mx-4 mt-4">
+        <div class="d-flex justify-content-between">
+          <div class="">
+            <ol class="breadcrumb mb-1">
+              <li class="breadcrumb-item active fs-6">Dashboard</li>
+            </ol>
+            <h5 class="fs-4" style="color: #ff5f30">Welcome to Recpal</h5>
+          </div>
+          <!-- End Page Title -->
+          <div class="d-flex align-items-center">
+            <button
+              type="button"
+              class="btn btn-primary text-nowrap fs-5 text-capitalize"
+              data-bs-toggle="modal"
+              data-bs-target="#inprogress"
+              data-bs-whatever="@mdo"
+            >
+              <i class="bi bi-file-earmark"></i>
+              generate report
+            </button>
+          </div>
         </div>
       </div>
       <div v-if="getRecords">
-        <section class="section dashboard mt-3">
+        <section class="section dashboard mt-5">
           <div class="row">
             <!-- Left side columns -->
             <div class="col-lg-3 mb-3">
@@ -118,8 +120,12 @@
                       <div class="d-flex justify-content-between">
                         <div class="card-icon d-flex flex-column">
                           <i class="bi bi-people fs-1 text-info"></i>
-                          <span class="text-muted text-capitalize fs-6"
-                            >Total Candidates</span
+                          <span class="text-muted text-capitalize fs-6">
+                            <router-link
+                              class="text-capitalize text-decoration-none text-muted"
+                              :to="{ name: 'AllCandidateListsDisplay' }"
+                              >Total Candidates
+                            </router-link></span
                           >
                         </div>
                         <div class="ps-4 mt-2">
@@ -141,8 +147,12 @@
                       <div class="d-flex justify-content-between">
                         <div class="card-icon d-flex flex-column">
                           <i class="bi bi-people fs-1 text-success"></i>
-                          <span class="text-muted text-capitalize fs-6"
-                            >active Candidates</span
+                          <span class="text-muted text-capitalize fs-6">
+                            <router-link
+                              class="text-capitalize text-decoration-none text-muted"
+                              :to="{ name: 'ActiveCandidate' }"
+                              >active Candidates</router-link
+                            ></span
                           >
                         </div>
                         <div class="ps-4 mt-2">
@@ -163,8 +173,12 @@
                       <div class="d-flex justify-content-between">
                         <div class="card-icon d-flex flex-column">
                           <i class="bi bi-people fs-1 text-danger"></i>
-                          <span class="text-muted text-capitalize fs-6"
-                            >inactive Candidates</span
+                          <span class="text-muted text-capitalize fs-6">
+                            <router-link
+                              class="text-capitalize text-decoration-none text-muted"
+                              :to="{ name: 'InActiveCandidate' }"
+                              >inactive Candidates</router-link
+                            ></span
                           >
                         </div>
                         <div class="ps-4 mt-2">
@@ -355,9 +369,10 @@
           </div>
         </section>
 
-        <section class="section dashboard mt-4">
-          <div class="row">
+        <section class="section dashboard mt-4 mb-4">
+          <div class="row gx-5 mx-3">
             <!-- Left side columns -->
+
             <div class="col-lg-4">
               <div class="card h-100 card-border">
                 <div class="col-8 p-3">

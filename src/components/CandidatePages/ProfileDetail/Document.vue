@@ -371,18 +371,26 @@ export default {
     },
     async getDownloadDocMethod() {
       try {
-        this.getDocument.forEach(async (document) => {
+        for (const document of this.getDocument) {
           try {
             const response = await axios.get(
               `${VITE_API_URL}/download_document/${document.id}`,
-              { responseType: "blob" }
+              { responseType: "json" }
             );
 
-            saveAs(response.data, "document_filename.ext");
+            const imageUrls = response.data.image_urls;
+
+            for (const imageUrlObject of imageUrls) {
+              const imageUrl = imageUrlObject.image_url;
+              const documentId = imageUrlObject.document_id;
+              const filename = `${VITE_API_URL}${imageUrl}.png`;
+              const imageResponse = await axios.get(imageUrl, { responseType: "blob" });
+              saveAs(imageResponse.data, filename);
+            }
           } catch (error) {
             // console.error("Error fetching document:", error);
           }
-        });
+        }
       } catch (error) {
         // console.error("Error fetching documents:", error);
       }
@@ -398,9 +406,9 @@ export default {
     },
   },
 
-  created() {
-    this.getDocumentCategories();
-    this.getDocCAtegories();
+  async created() {
+    await this.getDocumentCategories();
+    await this.getDocCAtegories();
   },
 };
 </script>

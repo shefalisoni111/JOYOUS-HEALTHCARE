@@ -6,7 +6,10 @@
           <div class="py-3">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active text-uppercase fs-6">
-                Dashboard / <span class="color-fonts">CANDIDATES</span> /
+                <router-link class="nav-link d-inline" aria-current="page" to="/home"
+                  >Dashboard</router-link
+                >
+                / <span class="color-fonts">CANDIDATES</span> /
 
                 <span class="color-fonts">{{ activeTabName }} Candidates</span>
               </li>
@@ -24,6 +27,7 @@
                 <button
                   class="nav-link"
                   :class="{ active: activeTab === index }"
+                  :to="`/${tab.routeName}`"
                   aria-selected="true"
                   type="button"
                   role="tab"
@@ -141,7 +145,7 @@
 <script>
 import axios from "axios";
 import CandidateAdd from "../modals/CandidatePage/CandidateAdd.vue";
-
+import AllCandidateListsDisplay from "../CandidatePages/AllCandidateListsDisplay.vue";
 import ActiveCandidate from "../CandidatePages/ActiveCandidate.vue";
 import InActiveCandidate from "../CandidatePages/InActiveCandidate.vue";
 import Rejected from "../CandidatePages/Rejected.vue";
@@ -164,13 +168,22 @@ export default {
       debounceTimeout: null,
       searchResults: [],
       tabs: [
-        { name: "Active ", component: "ActiveCandidate" },
-        { name: "In-Active ", component: "InActiveCandidate" },
-        { name: "Pending", component: "Rejected" },
-        { name: "Reject", component: "RejectCandidate" },
+        {
+          name: "All ",
+          component: "AllCandidateListsDisplay",
+          routeName: "AllCandidateListsDisplay",
+        },
+        { name: "Active ", component: "ActiveCandidate", routeName: "ActiveCandidate" },
+        {
+          name: "In-Active ",
+          component: "InActiveCandidate",
+          routeName: "InActiveCandidate",
+        },
+        { name: "Pending", component: "Rejected", routeName: "Rejected" },
+        { name: "Reject", component: "RejectCandidate", routeName: "RejectCandidate" },
       ],
       activeTab: 0,
-      activeTabName: "Active",
+      activeTabName: name,
     };
   },
   computed: {
@@ -184,9 +197,20 @@ export default {
     InActiveCandidate,
     Rejected,
     RejectCandidate,
+    AllCandidateListsDisplay,
   },
 
   methods: {
+    setActiveTabFromRoute() {
+      const currentRouteName = this.$route.name;
+      const matchingTabIndex = this.tabs.findIndex(
+        (tab) => tab.routeName === currentRouteName
+      );
+
+      if (matchingTabIndex !== -1) {
+        this.selectTab(matchingTabIndex);
+      }
+    },
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
 
@@ -197,6 +221,7 @@ export default {
     selectTab(index) {
       this.activeTab = index;
       this.activeTabName = this.tabs[index].name;
+      this.$router.push({ name: this.tabs[index].routeName });
     },
 
     //search api start
@@ -232,6 +257,7 @@ export default {
 
   mounted() {
     this.getActiveCAndidateMethod();
+    this.setActiveTabFromRoute();
   },
 };
 </script>
@@ -305,7 +331,12 @@ a:link {
   color: black;
   text-decoration: none;
 }
-
+.nav-pills .nav-link {
+  background-color: transparent;
+  border: 1px solid #ff5722;
+  border-radius: 22px;
+  color: #ff5722;
+}
 .switch {
   width: 50px;
   height: 17px;

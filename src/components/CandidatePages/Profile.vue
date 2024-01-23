@@ -6,7 +6,10 @@
           <div class="">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active text-uppercase fs-6">
-                Dashboard / CANDIDATES /
+                <router-link class="nav-link d-inline" aria-current="page" to="/home"
+                  >Dashboard</router-link
+                >
+                / CANDIDATES /
                 <span class="color-fonts">{{ getCandidates.first_name }}</span>
               </li>
             </ol>
@@ -44,10 +47,19 @@
           <div class="col-md-3">
             <div class="card profile">
               <img
-                v-if="getCandidates"
+                v-if="getCandidates && getCandidates.profile_photo"
                 :src="completeImageUrl"
                 class="card-img-top position-relative"
                 alt="..."
+                loading="lazy"
+              />
+              <img
+                v-else
+                src="./userprofile.png"
+                class="card-img-top position-relative"
+                style="border: 1px solid #8080801a"
+                alt="Default Image"
+                loading="lazy"
               />
 
               <!-- <div class="ribbon"><span>Active</span></div> -->
@@ -112,6 +124,7 @@
               <li class="nav-item d-inline-flex gap-2" role="presentation">
                 <button
                   class="btn-css"
+                  :to="`/${tab.routeName}`"
                   aria-selected="true"
                   type="button"
                   role="tab"
@@ -124,7 +137,6 @@
                     class="nav-link"
                     :class="{ active: activeTab === index }"
                     :to="getTabLink(tab)"
-                    v-on:click.prevent
                   >
                     <span class="badge bg-success">{{
                       index === 5 ? getCount : ""
@@ -141,9 +153,6 @@
         </div>
       </div>
     </div>
-
-    <AddRestrictedLocation />
-    <AddNotes />
 
     <EditProfileContact
       :candidateId="selectedCandidateId || 0"
@@ -165,10 +174,7 @@ import StaffId from "../CandidatePages/ProfileDetail/StaffId.vue";
 import CandidateHistory from "../CandidatePages/ProfileDetail/CandidateHistory.vue";
 import CandidatePreference from "../CandidatePages/ProfileDetail/CandidatePreference.vue";
 
-import AddRestrictedLocation from "../modals/CandidatePage/AddRestrictedLocation.vue";
 import EditProfileContact from "../modals/CandidatePage/EditProfileContact.vue";
-
-import AddNotes from "../modals/CandidatePage/AddNotes.vue";
 
 export default {
   name: "Profile",
@@ -182,15 +188,23 @@ export default {
       selectedCandidateId: null,
 
       tabs: [
-        { name: "Overview ", component: "Overview" },
-        { name: "Documents ", component: "Document" },
-        { name: "Profile ", component: "ProfileTabs" },
-        { name: "Restricted", component: "Restricted" },
-        { name: "Rate Card", component: "RateCard" },
-        { name: "Notes", component: "Notes" },
-        { name: "Staff ID", component: "StaffId" },
-        { name: "Candidate History", component: "CandidateHistory" },
-        { name: "Candidate Reference", component: "CandidatePreference" },
+        { name: "Overview ", component: "Overview", routeName: "Overview" },
+        { name: "Documents ", component: "Document", routeName: "Document" },
+        { name: "Profile ", component: "ProfileTabs", routeName: "ProfileTabs" },
+        { name: "Restricted", component: "Restricted", routeName: "Restricted" },
+        { name: "Rate Card", component: "RateCard", routeName: "RateCard" },
+        { name: "Notes", component: "Notes", routeName: "Notes" },
+        { name: "Staff ID", component: "StaffId", routeName: "StaffId" },
+        {
+          name: "Candidate History",
+          component: "CandidateHistory",
+          routeName: "CandidateHistory",
+        },
+        {
+          name: "Candidate Reference",
+          component: "CandidatePreference",
+          routeName: "CandidatePreference",
+        },
       ],
       activeTab: 0,
     };
@@ -207,9 +221,8 @@ export default {
     StaffId,
     CandidateHistory,
     CandidatePreference,
-    AddRestrictedLocation,
+
     EditProfileContact,
-    AddNotes,
   },
 
   props: ["id"],
@@ -239,8 +252,19 @@ export default {
       return null;
     },
   },
-
+  watch: {
+    "$route.params.id": "updateActiveTab",
+  },
   methods: {
+    updateActiveTab() {
+      const activeTabIndex = this.tabs.findIndex(
+        (tab) => tab.routeName === this.$route.name
+      );
+
+      if (activeTabIndex !== -1) {
+        this.activeTab = activeTabIndex;
+      }
+    },
     editCandidate(candidateId) {
       this.selectedCandidateId = candidateId;
     },
@@ -278,6 +302,7 @@ export default {
         );
 
         this.getCandidates = response.data.data;
+        this.GetNotesCount();
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
@@ -309,8 +334,9 @@ export default {
   },
 
   async created() {
+    await this.updateActiveTab();
     await this.getCandidate();
-    this.GetNotesCount();
+    await this.GetNotesCount();
   },
 };
 </script>

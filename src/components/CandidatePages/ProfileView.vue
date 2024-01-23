@@ -2,8 +2,8 @@
   <div class="container">
     <div class="main-body mt-5">
       <div class="row gutters-sm">
-        <div class="col-md-4 mb-3">
-          <div class="card">
+        <div class="col-md-4">
+          <div class="card h-100">
             <div class="card-body">
               <div class="d-flex flex-column align-items-center text-center">
                 <img src="./profile.png" alt="USer" class="rounded-circle" width="150" />
@@ -22,7 +22,7 @@
           <div class="card mt-3"></div>
         </div>
         <div class="col-md-8">
-          <div class="card mb-3">
+          <div class="card h-100">
             <div class="card-body">
               <div class="row">
                 <div class="col-sm-3">
@@ -68,7 +68,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import axios from "axios";
 export default {
   name: "ProfileView",
@@ -145,6 +145,9 @@ export default {
 }
 .h-100 {
   height: 100% !important;
+}
+.card {
+  border: 1px solid grey;
 }
 .shadow-none {
   box-shadow: none !important;

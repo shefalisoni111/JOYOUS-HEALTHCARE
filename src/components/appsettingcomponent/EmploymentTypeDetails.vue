@@ -127,7 +127,13 @@ export default {
         return;
       }
       axios.delete(`${VITE_API_URL}/employment_types/` + id).then((response) => {
-        this.getEmployeeDAta();
+        if (response.data.error === "record could not deleted !") {
+          alert(
+            "Cannot Delete Employee Type: This record associated with candidate employee type records."
+          );
+        } else {
+          this.getEmployeeDAta();
+        }
       });
     },
 

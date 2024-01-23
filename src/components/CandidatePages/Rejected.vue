@@ -16,7 +16,17 @@
       <tbody>
         <tr v-for="pending in getPendingCandidatesData" :key="pending.id">
           <td v-text="pending.id"></td>
-          <td class="text-capitalize" v-text="pending.first_name"></td>
+          <td class="text-capitalize">
+            <router-link
+              class="text-capitalize"
+              :to="{
+                name: 'Profile',
+                params: { id: pending && pending.id },
+              }"
+            >
+              {{ pending.first_name }}</router-link
+            >
+          </td>
           <td v-text="pending.position"></td>
           <td v-text="pending.email"></td>
           <td v-text="pending.phone_number"></td>

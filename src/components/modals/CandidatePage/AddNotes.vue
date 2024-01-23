@@ -41,6 +41,7 @@
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               type="submit"
               :disabled="!isValidForm"
+              data-bs-dismiss="modal"
               @click="submitForm"
             >
               Add
@@ -52,7 +53,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import axios from "axios";
 export default {
   name: "AddNotes",
@@ -88,8 +89,13 @@ export default {
             body: JSON.stringify(data),
           }
         );
-        if (data) {
-          location.reload();
+
+        if (response.ok) {
+          this.$store.dispatch("updateNoteCount");
+          this.$emit("getNotesAdded");
+
+          this.notes = "";
+        } else {
         }
       } catch (error) {}
     },
@@ -98,8 +104,6 @@ export default {
       this.notes = "";
     },
   },
-
-  mounted() {},
 };
 </script>
 

@@ -38,17 +38,22 @@
         </div>
       </div>
     </div>
+    <AddNotes @getNotesAdded="getNotesMethod" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import AddNotes from "../../modals/CandidatePage/AddNotes.vue";
 export default {
   name: "Notes",
   data() {
     return {
       getNotes: [],
     };
+  },
+  components: {
+    AddNotes,
   },
   methods: {
     async notesDeleteMethod(id) {
@@ -60,7 +65,7 @@ export default {
           `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes/` + id
         )
         .then((response) => {
-          this.createdClient();
+          this.getNotesMethod();
         });
     },
     async getNotesMethod() {
@@ -78,8 +83,8 @@ export default {
 
     //  ratecard apis end
   },
-  mounted() {
-    this.getNotesMethod();
+  async created() {
+    await this.getNotesMethod();
   },
 };
 </script>

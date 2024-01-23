@@ -12,6 +12,7 @@ export default createStore({
     vacancies:[],
     getCategory: [],
      adminData: {},
+     noteCount: 0,
   },
   mutations: {
     setSelectedAppliedItemId(state, itemId) {
@@ -52,11 +53,31 @@ export default createStore({
         state.getCategory[categoryIndex] = { ...state.getCategory[categoryIndex], ...newData };
       }
     },
-   
+    SET_NOTE_COUNT(state, count) {
+      state.noteCount = count;
+    },
   
   },
   actions: {
-    
+    async updateNoteCount({ commit }) {
+      try {
+        const response = await fetch(`${VITE_API_URL}/get_note_count`);
+        
+        if (!response.ok) {
+          if (response.status === 404) {
+            console.warn('Note count resource not found. Check the API endpoint.');
+          } else {
+            throw new Error(`Failed to fetch note count (HTTP ${response.status})`);
+          }
+        } else {
+          const data = await response.json();
+          commit('SET_NOTE_COUNT', data.count);
+        }
+      } catch (error) {
+        console.error('Error updating note count:', error.message);
+      }
+    },
   },
+  
  
 });

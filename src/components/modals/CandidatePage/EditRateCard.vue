@@ -10,7 +10,7 @@
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title text-center" id="editRateCard">Add Details</h5>
+            <h5 class="modal-title text-center" id="editRateCard">Edit Rate Card</h5>
             <button
               type="button"
               class="btn-close"
@@ -30,7 +30,7 @@
                       <option
                         v-for="option in options"
                         :key="option.id"
-                        :value="option.name"
+                        :value="option.id"
                       >
                         {{ option.name }}
                       </option>
@@ -152,7 +152,7 @@
 import axios from "axios";
 
 export default {
-  name: "CandidateAdd",
+  name: "EditRateCard",
   data() {
     return {
       fetchRateCard: {
@@ -161,33 +161,44 @@ export default {
         job_id: "",
         weekname: "",
         shift_id: "",
-        shiftsTime: [],
+        staff_rate: "",
         business_unit_id: "",
-        businessUnit: [],
       },
       employeeData: [],
       options: [],
+      businessUnit: [],
+      shiftsTime: [],
     };
+  },
+  props: {
+    rateCardId: {
+      type: Number,
+      default: 0,
+    },
   },
   computed: {
     selectEmployeeType() {
       const employment_type = this.employeeData.find(
-        (option) => option.id === this.employment_type
+        (option) => option.id === this.fetchRateCard.employment_type
       );
       return employment_type ? employment_type.title : "";
     },
     selectBusinessUnit() {
       const business_unit_id = this.businessUnit.find(
-        (option) => option.id === this.business_unit_id
+        (option) => option.id === this.fetchRateCard.business_unit_id
       );
       return business_unit_id ? business_unit_id.name : "";
     },
     selectedOptionText() {
-      const job_id = this.options.find((option) => option.id === this.job_id);
+      const job_id = this.options.find(
+        (option) => option.id === this.fetchRateCard.job_id
+      );
       return job_id ? job_id.name : "";
     },
     selectShifts() {
-      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
+      const shifts_id = this.shiftsTime.find(
+        (option) => option.id === this.fetchRateCard.shift_id
+      );
       return shifts_id ? shifts_id.shift_name : "";
     },
   },
@@ -223,18 +234,19 @@ export default {
     },
     async fetchRateCardMethod() {
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/rate_cards/${this.$route.params.id}`
-        );
+        const response = await axios.get(`${VITE_API_URL}/rate_cards/${this.rateCardId}`);
 
         this.fetchRateCard = response.data.data;
       } catch (error) {
         // console.error("Error fetching todo:", error);
       }
     },
-    async updateRateCardMethod(id) {
+    async updateRateCardMethod() {
       try {
-        await axios.put(`${VITE_API_URL}/rate_cards/` + id, this.fetchRateCard);
+        await axios.put(
+          `${VITE_API_URL}rate_cards/` + this.fetchRateCard.id,
+          this.fetchRateCard
+        );
 
         alert("Candidate updated successfully");
         this.$emit("rateCardAdded");
@@ -254,14 +266,21 @@ export default {
         }
       }
     },
+    async fetchData() {
+      try {
+        await this.fetchRateCardMethod();
+        await this.getEmployeeTypeData();
+        await this.getPositionMethod();
+        await this.getBusinessUnitMethod();
+        await this.getTimeShift();
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    },
   },
 
-  mounted() {
-    this.fetchRateCardMethod();
-    this.getEmployeeTypeData();
-    this.getPositionMethod();
-    this.getBusinessUnitMethod();
-    this.getTimeShift();
+  async created() {
+    await this.fetchData();
   },
 };
 </script>

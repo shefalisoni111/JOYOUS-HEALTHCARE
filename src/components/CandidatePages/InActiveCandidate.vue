@@ -15,7 +15,17 @@
       <tbody>
         <tr v-for="datas in getCandidatesData" :key="datas">
           <td v-text="datas.id"></td>
-          <td class="text-capitalize" v-text="datas.first_name"></td>
+          <td class="text-capitalize">
+            <router-link
+              class="text-capitalize"
+              :to="{
+                name: 'Profile',
+                params: { id: datas && datas.id },
+              }"
+            >
+              {{ datas.first_name }}</router-link
+            >
+          </td>
           <td v-text="datas.position"></td>
           <td v-text="datas.email"></td>
           <td v-text="datas.phone_number"></td>

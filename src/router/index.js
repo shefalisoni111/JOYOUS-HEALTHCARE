@@ -79,6 +79,70 @@ const router = createRouter({
           component: () =>
             import("@/components/CandidatePages/CandidateLists.vue"),
           props: true,
+          children: [
+            {
+              path: "/candidates/allCandidate",
+              name: "AllCandidateListsDisplay",
+              component: () =>
+                import(
+                  "@/components/CandidatePages/AllCandidateListsDisplay.vue"
+                ),
+              meta: {
+                auth: true,
+              },
+            },
+            {
+              path: "/candidates/activeCandidate",
+              name: "ActiveCandidate",
+              component: () =>
+                import(
+                  "@/components/CandidatePages/ActiveCandidate.vue"
+                ),
+              meta: {
+                auth: true,
+              },
+            },
+            {
+              path: "/candidates/InactiveCandidate",
+              name: "InActiveCandidate",
+              component: () =>
+                import(
+                  "@/components/CandidatePages/InActiveCandidate.vue"
+                ),
+              meta: {
+                auth: true,
+              },
+            },
+            {
+              path: "/candidates/pendingCandidate",
+              name: "Rejected",
+              component: () =>
+                import(
+                  "@/components/CandidatePages/Rejected.vue"
+                ),
+              meta: {
+                auth: true,
+              },
+            },
+            {
+              path: "/candidates/rejectCandidate",
+              name: "RejectCandidate",
+              component: () =>
+                import(
+                  "@/components/CandidatePages/RejectCandidate.vue"
+                ),
+              meta: {
+                auth: true,
+              },
+            },
+          ]
+        },
+        {
+          path: "/candidate/profileview/:id",
+          name: "ProfileView",
+          component: () =>
+            import("@/components/CandidatePages/ProfileView.vue"),
+          props: true,
         },
      
         {
@@ -187,6 +251,7 @@ const router = createRouter({
 
       
       ],
+
     },
 
     {
@@ -204,14 +269,6 @@ const router = createRouter({
           props: true,
         },
 
-     
-        {
-          path: "/candidate/profileview/:id",
-          name: "ProfileView",
-          component: () =>
-            import("@/components/CandidatePages/ProfileView.vue"),
-          props: true,
-        },
       ],
     },
     {

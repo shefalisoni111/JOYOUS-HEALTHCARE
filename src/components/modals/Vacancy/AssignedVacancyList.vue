@@ -37,7 +37,7 @@
                   <tr>
                     <th scope="col">candidate code</th>
                     <th scope="col">first name</th>
-                    <th scope="col">last name</th>
+
                     <th scope="col">phone number</th>
                     <th scope="col">email</th>
                     <th scope="col">address</th>
@@ -54,7 +54,7 @@
                   <tr v-for="data in assignedVacancyData" :key="data.id">
                     <td v-text="data.candidate_code"></td>
                     <td v-text="data.first_name"></td>
-                    <td v-text="data.last_name"></td>
+
                     <td v-text="data.phone_number"></td>
 
                     <td v-text="data.email"></td>

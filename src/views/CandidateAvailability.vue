@@ -6,7 +6,10 @@
           <div class="py-3">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active text-uppercase fs-6">
-                Dashboard / <span class="color-fonts">Availability</span>
+                <router-link class="nav-link d-inline" aria-current="page" to="/home"
+                  >Dashboard</router-link
+                >
+                / <span class="color-fonts">Availability</span>
               </li>
             </ol>
           </div>
@@ -41,6 +44,7 @@
                   :initialDate="selectedDate"
                   :candidateId="selectedCandidateId.toString()"
                   @closeModal="closeModal"
+                  @Candidate-availability="fetchCandidateList"
                 />
               </div>
             </div>
@@ -63,7 +67,9 @@
             </thead>
             <tbody>
               <tr v-for="data in candidateList" :key="data.id">
-                <td class="text-capitalize fw-bold">{{ data.candidate_name }}</td>
+                <td class="text-capitalize fw-bold">
+                  {{ data.candidate_name }}
+                </td>
                 <td>
                   <div class="calendar-grid">
                     <div
@@ -79,11 +85,12 @@
                         <span v-if="avail.date === formattedDate(day)">
                           <span
                             v-if="avail.status"
+                            style="font-size: small; padding: 0px 5px"
                             v-bind:class="{
-                              'btn btn-warning fs-6': avail.status === 'Late',
-                              'btn btn-primary fs-6': avail.status === 'Unavailable',
-                              'btn btn-secondary fs-6': avail.status === 'Night',
-                              'btn btn-light fs-6': avail.status === 'Early',
+                              'btn btn-warning ': avail.status === 'Late',
+                              'btn btn-primary ': avail.status === 'Unavailable',
+                              'btn btn-secondary ': avail.status === 'Night',
+                              'btn btn-light ': avail.status === 'Early',
                             }"
                           >
                             {{ avail.status ? avail.status[0].toUpperCase() : "" }}
@@ -303,6 +310,12 @@ export default {
         this.candidateList = response.data.data;
       } catch (error) {}
     },
+    async fetchStatus() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/availabilitys`);
+        this.candidateList = response.data.data;
+      } catch (error) {}
+    },
   },
   components: {
     Calendar,
@@ -364,7 +377,7 @@ input.dateInput {
 .calendar-day {
   background-color: #eaeaea;
   transition: background-color 0.3s ease;
-  padding: 20px 20px;
+  padding: 17px 20px;
 }
 
 .calendar-day.clickable {

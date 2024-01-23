@@ -83,6 +83,7 @@ export default {
       validationBusinessUnit: false,
     };
   },
+
   watch: {
     business_unit_id: function (newValue) {
       this.validateBusinessUnit(newValue);
@@ -104,7 +105,7 @@ export default {
       this.validateBusinessUnit(this.business_unit_id);
 
       if (this.isValidForm) {
-        await this.addRestrictedLocationMethod();
+        this.addRestrictedLocationMethod();
       } else {
       }
     },
@@ -127,6 +128,11 @@ export default {
             body: JSON.stringify(data),
           }
         );
+        if (response.ok) {
+          this.$emit("getLocationAdded");
+          this.business_unit_id = "";
+        } else {
+        }
       } catch (error) {}
     },
     async getBusinessUnitMethod() {

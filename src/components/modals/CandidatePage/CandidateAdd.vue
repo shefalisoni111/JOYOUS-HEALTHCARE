@@ -289,6 +289,7 @@ export default {
             this.activated = "";
           } else {
           }
+          alert("Successful Availability added");
         } catch (error) {}
       } else {
         this.isPasswordRequired = !this.password;

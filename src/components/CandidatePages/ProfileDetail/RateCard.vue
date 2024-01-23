@@ -70,7 +70,7 @@
                       class="bi bi-trash3 cursor-pointer btn btn-outline-success text-nowrap"
                       v-on:click="rateCardDelete(getrate.id)"
                     ></i>
-                    <!-- &nbsp;&nbsp;
+                    &nbsp;&nbsp;
 
                     <i
                       class="bi bi-pencil-square cursor-pointer btn btn-outline-success text-nowrap"
@@ -78,8 +78,8 @@
                       data-bs-toggle="modal"
                       data-bs-target="#editRateCard"
                       data-bs-whatever="@mdo"
-                      v-on:click="updateRateCardMethod(getrate.id)"
-                    ></i> -->
+                      @click="editRateCard(getrate.id)"
+                    ></i>
                   </td>
                 </tr>
               </tbody>
@@ -94,23 +94,30 @@
       </div>
     </div>
     <AddRateCard @rateCard="showRateCardMethod" />
-    <!-- <EditRateCard @rateCardAdded="showRateCardMethod" /> -->
+    <EditRateCard
+      @rateCardAdded="showRateCardMethod"
+      :rateCardId="selectedRateCardId || 0"
+    />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import AddRateCard from "../../../components/modals/CandidatePage/AddRateCard.vue";
-// import EditRateCard from "../../modals/CandidatePage/EditRateCard.vue";
+import EditRateCard from "../../modals/CandidatePage/EditRateCard.vue";
 export default {
   name: "RateCard",
   data() {
     return {
       getRateCard: [],
+      selectedRateCardId: null,
     };
   },
-  components: { AddRateCard },
+  components: { AddRateCard, EditRateCard },
   methods: {
+    editRateCard(rateCardId) {
+      this.selectedRateCardId = rateCardId;
+    },
     //  ratecard apis start
     async rateCardDelete(id) {
       if (!window.confirm("Are you Sure ?")) {

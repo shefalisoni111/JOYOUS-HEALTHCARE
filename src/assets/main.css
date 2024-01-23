@@ -98,7 +98,29 @@ table thead th {
   letter-spacing: 1px;
   color: #fff;
 }
+@media (max-width: 767px) {
+  /* Styles for screens smaller than 768px */
+  .fixed-navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+  }
+}
 
+@media (min-width: 768px) {
+  /* Styles for screens 768px and larger */
+  .fixed-navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+  }
+}
 .ribbon:before,
 .ribbon:after {
   position: absolute;

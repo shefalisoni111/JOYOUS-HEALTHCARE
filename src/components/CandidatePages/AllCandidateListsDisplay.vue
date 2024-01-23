@@ -42,11 +42,11 @@
               </td>
 
               <!-- <td>
-                <label class="switch">
-                  <input type="checkbox" id="togBtn" checked />
-                  <div class="slider round"></div>
-                </label>
-              </td> -->
+                  <label class="switch">
+                    <input type="checkbox" id="togBtn" checked />
+                    <div class="slider round"></div>
+                  </label>
+                </td> -->
               <td>
                 <button
                   type="button"
@@ -75,14 +75,14 @@
                 &nbsp;&nbsp;
 
                 <!-- <router-link
-                  :to="{
-                    name: 'EditCandidate',
-                    params: { id: candidate.id },
-                  }"
-                  class="btn btn-outline-success text-nowrap"
-                >
-                  </router-link
-                > -->
+                    :to="{
+                      name: 'EditCandidate',
+                      params: { id: candidate.id },
+                    }"
+                    class="btn btn-outline-success text-nowrap"
+                  >
+                    </router-link
+                  > -->
 
                 <i
                   class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
@@ -186,9 +186,7 @@ export default {
     // },
     async getCandidateMethods() {
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/approve_and_activated_candidates`
-        );
+        const response = await axios.get(`${VITE_API_URL}/candidates`);
 
         this.getCandidatesData = response.data.data;
       } catch (error) {
