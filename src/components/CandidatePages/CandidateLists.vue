@@ -9,7 +9,7 @@
                 <router-link class="nav-link d-inline" aria-current="page" to="/home"
                   >Dashboard</router-link
                 >
-                / <span class="color-fonts">CANDIDATES</span> /
+                /
 
                 <span class="color-fonts">{{ activeTabName }} Candidates</span>
               </li>
@@ -183,7 +183,7 @@ export default {
         { name: "Reject", component: "RejectCandidate", routeName: "RejectCandidate" },
       ],
       activeTab: 0,
-      activeTabName: name,
+      activeTabName: "",
     };
   },
   computed: {
@@ -217,6 +217,9 @@ export default {
       this.debounceTimeout = setTimeout(() => {
         this.search();
       }, 300);
+    },
+    setActiveTabNameOnLoad() {
+      this.activeTabName = this.tabs[this.activeTab].name;
     },
     selectTab(index) {
       this.activeTab = index;
@@ -258,6 +261,13 @@ export default {
   mounted() {
     this.getActiveCAndidateMethod();
     this.setActiveTabFromRoute();
+    this.setActiveTabNameOnLoad();
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.setActiveTabFromRoute();
+
+    this.setActiveTabNameOnLoad();
+    next();
   },
 };
 </script>
@@ -265,6 +275,7 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
+  margin-top: 80px;
 }
 .main-content {
   transition: all 0.3s;

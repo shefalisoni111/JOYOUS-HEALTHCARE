@@ -1,8 +1,5 @@
 <template>
-  <nav
-    class="navbar navbar-expand-lg navbar-light"
-    :class="{ 'fixed-navbar': isNavbarFixed }"
-  >
+  <nav class="navbar navbar-expand-lg navbar-light fixed-navbar">
     <div class="container-fluid">
       <a class="navbar-brand" href="/home"
         ><img src="../assets/logo.png" class="img-fluid" alt="RecPal" width="119"
@@ -258,27 +255,10 @@ export default {
   data() {
     return {
       getAdminData: [],
-      isNavbarFixed: false,
     };
   },
 
   methods: {
-    handleScroll() {
-      const offset = window.scrollY;
-      let offsetThreshold = 10;
-
-      if (this.$route.path === "/home") {
-        offsetThreshold = 10;
-      } else {
-        offsetThreshold = 100;
-      }
-
-      if (offset > offsetThreshold) {
-        this.isNavbarFixed = true;
-      } else {
-        this.isNavbarFixed = false;
-      }
-    },
     signout() {
       if (localStorage.getItem("token")) {
         localStorage.removeItem("token");
@@ -307,12 +287,6 @@ export default {
 
   mounted() {
     this.getAdminMethod();
-    window.addEventListener("scroll", () => this.handleScroll());
-  },
-
-  beforeRouteLeave(to, from, next) {
-    window.addEventListener("scroll", () => this.handleScroll());
-    next();
   },
 };
 </script>
@@ -327,7 +301,7 @@ export default {
   top: 0;
   width: 100%;
   background-color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid #80808021;
   z-index: 1000;
 }
 .bi-person::before {

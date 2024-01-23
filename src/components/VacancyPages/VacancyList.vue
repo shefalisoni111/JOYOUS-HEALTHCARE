@@ -21,7 +21,7 @@
                 <router-link class="nav-link d-inline" aria-current="page" to="/home"
                   >Dashboard</router-link
                 >
-                / <span class="color-fonts">Vacancies</span> /
+                /
 
                 <span class="color-fonts">{{ activeTabName }} Vacancies</span>
               </li>
@@ -143,7 +143,7 @@ export default {
         { name: "In-Active ", component: "InActiveVacancyList" },
       ],
       activeTab: 0,
-      activeTabName: name,
+      activeTabName: "",
     };
   },
   computed: {
@@ -158,6 +158,9 @@ export default {
       this.activeTab = index;
       this.activeTabName = this.tabs[index].name;
       this.$router.push({ name: this.tabs[index].routeName });
+    },
+    setActiveTabNameOnLoad() {
+      this.activeTabName = this.tabs[this.activeTab].name;
     },
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
@@ -200,6 +203,13 @@ export default {
 
   mounted() {
     this.createVacancy();
+    this.setActiveTabNameOnLoad();
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.setActiveTabFromRoute();
+
+    this.setActiveTabNameOnLoad();
+    next();
   },
 };
 </script>
@@ -209,6 +219,7 @@ export default {
   transition: all 0.3s;
 
   background-color: #fdce5e17;
+  margin-top: 80px;
 }
 .main-content {
   transition: all 0.3s;

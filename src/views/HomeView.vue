@@ -2,7 +2,7 @@
   <div>
     <Navbar />
     <div id="main" class="main">
-      <div class="pagetitle mx-4 mt-4">
+      <div class="pagetitle mx-4 mt-4" style="margin-top: 30px">
         <div class="d-flex justify-content-between">
           <div class="">
             <ol class="breadcrumb mb-1">
@@ -592,6 +592,9 @@ export default {
   background-color: #fff;
   border-radius: 10px;
   padding: 10px;
+}
+#main {
+  margin-top: 79px;
 }
 .left-flex-border,
 .right-flex-border {
