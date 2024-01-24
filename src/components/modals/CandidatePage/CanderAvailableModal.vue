@@ -226,6 +226,40 @@ export default {
 
       this.status = selectedShifts ? selectedShifts : "";
     },
+    // addCandidateStatus: async function () {
+    //   try {
+    //     const parsedDate = new Date(this.date);
+
+    //     if (isNaN(parsedDate)) {
+    //       return;
+    //     }
+
+    //     const formattedDate = parsedDate.toLocaleDateString("en-CA", {
+    //       year: "numeric",
+    //       month: "2-digit",
+    //       day: "2-digit",
+    //     });
+    //     const data = {
+    //       candidate_id: this.candidate_id,
+    //       date: formattedDate,
+    //       status: this.status,
+    //     };
+
+    //     const response = await axios.post(`${VITE_API_URL}/availabilitys`, data, {
+    //       headers: {
+    //         Accept: "application/json",
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify(data),
+    //     });
+    //     // if (data) {
+    //     //   alert("Availability added successfully");
+    //     //   window.location.reload();
+    //     // } else {
+
+    //     // }
+    //   } catch (error) {}
+    // },
     addCandidateStatus: async function () {
       try {
         const parsedDate = new Date(this.date);
@@ -239,30 +273,74 @@ export default {
           month: "2-digit",
           day: "2-digit",
         });
+
         const data = {
           candidate_id: this.candidate_id,
           date: formattedDate,
           status: this.status,
         };
 
-        const response = await axios.post(`${VITE_API_URL}/availabilitys`, data, {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-        if (data) {
-          alert("Availability added successfully");
-          window.location.reload();
+        // Check if a status update is needed
+        const isUpdate = this.status;
+
+        if (isUpdate) {
+          // Perform PUT request to update the field
+          const putResponse = await axios.put(
+            `${VITE_API_URL}/availabilitys/${this.candidate_id}`,
+            data,
+            {
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (putResponse.status === 200) {
+            alert("Availability updated successfully");
+            window.location.reload();
+            this.fetchCandidateList();
+          } else {
+            // console.error("Failed to update availability");
+          }
         } else {
-          // this.successMessage = "Failed to add availability";
+          // Perform POST request to add a new availability status
+          const postResponse = await axios.post(`${VITE_API_URL}/availabilitys`, data, {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (postResponse.status === 201) {
+            alert("Availability added successfully");
+            window.location.reload();
+            this.fetchCandidateList();
+          } else {
+            // console.error("Failed to add availability");
+          }
         }
+      } catch (error) {
+        // Handle errors here
+        // console.error("Error updating/adding availability:", error);
+      }
+    },
+    async fetchCandidateList() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/availabilitys`);
+        this.candidateList = response.data;
+      } catch (error) {}
+    },
+    async fetchStatus() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/availabilitys`);
+        this.candidateList = response.data.data;
       } catch (error) {}
     },
   },
 
-  mounted() {
+  async created() {
+    await this.fetchCandidateList();
     this.initializeCalendar();
     this.updateCurrentMonth(this.initialDate);
   },

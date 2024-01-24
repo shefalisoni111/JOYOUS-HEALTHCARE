@@ -563,7 +563,9 @@ export default {
   created() {
     if (!localStorage.getItem("calendarData")) {
       const today = new Date();
-      const defaultStartDate = today.toISOString().split("T")[0].slice(0, 7);
+      const defaultStartDate = `${today.getFullYear()}-${(today.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}`;
       this.selectedMonth = defaultStartDate;
       this.updateDateRange();
     }
@@ -584,9 +586,6 @@ export default {
 </script>
 
 <style scoped>
-/*--------------------------------------------------------------
-# Page Title
---------------------------------------------------------------*/
 .pagetitle {
   margin-bottom: 10px;
   background-color: #fff;

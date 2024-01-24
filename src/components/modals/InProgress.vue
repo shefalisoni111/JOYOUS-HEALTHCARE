@@ -1,12 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="inprogress"
-      aria-labelledby="inprogress"
-      tabindex="-1"
-    >
+    <div class="modal fade" id="inprogress" aria-labelledby="inprogress" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -18,7 +13,7 @@
             ></button>
           </div>
           <div class="modal-body mx-3">
-            <img src="./progress.gif" width="100%" title="work in progress" />
+            <img src="./progress.gif" width="70%" title="work in progress" />
           </div>
           <!-- <div class="modal-footer">
             <button
@@ -36,6 +31,11 @@
   </div>
 </template>
 
-<script ></script>
+<script></script>
 
-<style scoped></style>
+<style scoped>
+.modal-body img {
+  display: block;
+  margin: auto;
+}
+</style>

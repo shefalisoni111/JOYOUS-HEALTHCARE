@@ -138,7 +138,7 @@
                               </div>
 
                               <ul
-                                class="list-unstyled d-inline-flex align-items-center mb-0"
+                                class="list-unstyled d-inline-flex align-items-center mb-0 gap-2"
                               >
                                 <li class="">
                                   <button
@@ -248,7 +248,33 @@
         role="tabpanel"
         aria-labelledby="deletedDocument"
       >
-        Work in Progress...
+        <div class="row">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">id</th>
+                <th scope="col">Document Name</th>
+                <th scope="col">Issue Date</th>
+                <th scope="col">Expiry Date</th>
+                <th scope="col">Description</th>
+                <th scope="col">Image Url</th>
+
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="data in getDeletedDocument" :key="data.id">
+                <td>{{ data.id }}</td>
+                <td>{{ data.document_name }}</td>
+                <td>{{ data.issue_date }}</td>
+                <td>{{ data.expiry_date }}</td>
+                <td>{{ data.description }}</td>
+                <td class="width-row">{{ `${VITE_API_URL}${data.url}` }}</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
     <AddCategory />
@@ -266,12 +292,14 @@ export default {
   name: "Document",
   data() {
     return {
+      VITE_API_URL: "https://recpalapp.co.uk/api/",
       getCategory: [],
       getDocument: [],
+      getDeletedDocument: [],
       issue_date: null,
       expiry_date: null,
       description: null,
-      document_image: null,
+      url: null,
       selectedFile: null,
       selectedCandidateId: null,
     };
@@ -284,7 +312,10 @@ export default {
     },
     handleFileChange(event) {
       const files = event.target.files;
-      this.document_image = files[0];
+
+      if (files.length > 0) {
+        this.url = files[0];
+      }
     },
     async addCandidateDocument() {
       const token = localStorage.getItem("token");
@@ -299,7 +330,7 @@ export default {
           document_id: this.document_id,
           expiry_date: this.expiry_date,
           description: this.description,
-          document_image: this.document_image,
+          url: this.url.name,
         };
 
         try {
@@ -314,8 +345,16 @@ export default {
               body: JSON.stringify(data),
             }
           );
-          // console.log(data);
-          alert("Successful Submit Data");
+
+          const responseData = await response.json();
+
+          if (response.ok) {
+            console.log("Successful Submit Data", responseData);
+            alert("Successful Submit Data");
+          } else {
+            console.error("Error submitting data:", responseData);
+            // Handle error appropriately
+          }
         } catch (error) {
           // console.error("Error submitting data:", error);
         }
@@ -352,7 +391,7 @@ export default {
       if (!window.confirm("Are you Sure ?")) {
         return;
       }
-      axios.delete(`${VITE_API_URL}/documents/` + id).then((response) => {
+      axios.put(`${VITE_API_URL}/delete_candidate_document/` + id).then((response) => {
         this.getDocumentCategories();
       });
     },
@@ -395,6 +434,16 @@ export default {
         // console.error("Error fetching documents:", error);
       }
     },
+    async getDeletedDocumentListMethod() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/deleted_candidate_document_list`
+        );
+        this.getDeletedDocument = response.data.data;
+      } catch (error) {
+        // console.error("Error fetching documents:", error);
+      }
+    },
     async getDocCAtegories() {
       try {
         const response = await axios.get(`${VITE_API_URL}/document_categories`);
@@ -409,6 +458,7 @@ export default {
   async created() {
     await this.getDocumentCategories();
     await this.getDocCAtegories();
+    await this.getDeletedDocumentListMethod();
   },
 };
 </script>
@@ -601,7 +651,9 @@ ul.nav-pills {
   font-size: 16px;
   transition: transform 0.3s;
 }
-
+table tr td.width-row {
+  width: 50px;
+}
 .expanded {
   transform: rotate(90deg);
 }

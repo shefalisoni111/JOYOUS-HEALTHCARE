@@ -425,7 +425,7 @@
       </div>
     </div>
     <WorkExperience @AddExperienceData="getCandidateWorkExperienceMethod" />
-
+    <EducationAdd />
     <AddNextKin @AddNextKin="getCandidateNextToKineMethod" />
     <EditBankDetails @bankDetailAdded="getCandidateMethod" />
     <NextToKinEdit @nextToKinAdded="getCandidateNextToKineMethod" />

@@ -50,7 +50,8 @@
                 v-if="getCandidates && getCandidates.profile_photo"
                 :src="completeImageUrl"
                 class="card-img-top position-relative"
-                alt="..."
+                height="400px"
+                alt="profile"
                 loading="lazy"
               />
               <img
@@ -58,7 +59,8 @@
                 src="./userprofile.png"
                 class="card-img-top position-relative"
                 style="border: 1px solid #8080801a"
-                alt="Default Image"
+                height="400px"
+                alt="Default profile"
                 loading="lazy"
               />
 

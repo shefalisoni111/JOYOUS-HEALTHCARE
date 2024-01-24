@@ -41,35 +41,38 @@
               </li>
             </ul>
             <div class="d-flex align-items-center p-2">
-              <div class="d-flex justify-content-between">
-                <form
-                  @submit.prevent="search"
+              <div class="d-flex justify-content-between gap-2">
+                <div
                   class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
                 >
-                  <input
-                    class="form-control mr-sm-2"
-                    type="search"
-                    placeholder="Search by Name"
-                    aria-label="Search"
-                    v-model="searchQuery"
-                    @input="debounceSearch"
-                  />
-                  <!-- <button type="submit" class="btn btn-primary">Search</button> -->
+                  <form
+                    @submit.prevent="search"
+                    class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
+                  >
+                    <input
+                      class="form-control mr-sm-2"
+                      type="search"
+                      placeholder="Search by Name"
+                      aria-label="Search"
+                      v-model="searchQuery"
+                      @input="debounceSearch"
+                    />
+                  </form>
+                </div>
 
-                  <div class="d-flex justify-content-between gap-2">
-                    <button
-                      v-if="activeTab === 0"
-                      type="button"
-                      class="btn btn-outline-success text-nowrap text-nowrap"
-                      data-bs-toggle="modal"
-                      data-bs-target="#addCandidate"
-                      data-bs-whatever="@mdo"
-                    >
-                      <i class="bi bi-person-plus-fill"></i>
-                      Add Candidate
-                    </button>
-                  </div>
-                </form>
+                <div class="d-flex justify-content-between gap-2">
+                  <button
+                    v-if="activeTab === 0"
+                    type="button"
+                    class="btn btn-outline-success text-nowrap text-nowrap"
+                    data-bs-toggle="modal"
+                    data-bs-target="#addCandidate"
+                    data-bs-whatever="@mdo"
+                  >
+                    <i class="bi bi-person-plus-fill"></i>
+                    Add Candidate
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -87,11 +90,11 @@
                   <th scope="col">Phone</th>
                   <th scope="col">Status</th>
                   <th scope="col">Access</th>
-                  <!-- <th scope="col">Assign</th> -->
+
                   <th scope="col">Last Login</th>
                 </tr>
               </thead>
-              <tbody v-if="searchResults.length > 0">
+              <tbody v-if="searchResults?.length > 0">
                 <tr v-for="data in searchResults" :key="data.id">
                   <td>{{ data.first_name }}</td>
                   <td>{{ data.position }}</td>
@@ -103,33 +106,25 @@
                       <div class="slider round"></div>
                     </label>
                     <label class="switch" v-else>
-                      <input type="checkbox" id="togBtn" />
+                      <input type="checkbox" id="togBtn1" />
                       <div class="slider round"></div>
                     </label>
                   </td>
                   <td>
                     <label class="switch">
-                      <input type="checkbox" id="togBtn" checked />
+                      <input type="checkbox" id="togBtn2" checked />
                       <div class="slider round"></div>
                     </label>
                   </td>
-                  <!-- <td>
-                    <button
-                      type="button"
-                      class="border-0 fs-3 bg-transparent text-success"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                      title="Nurse"
-                    >
-                      <i class="bi bi-person-circle"></i>
-                    </button>
-                  </td> -->
+
                   <td>{{ data.last_login }}</td>
                 </tr>
               </tbody>
               <tbody v-else>
                 <tr>
-                  <td colspan="8" class="text-danger text-center">Not Match Found !!</td>
+                  <td colspan="8" class="text-danger text-center">
+                    {{ errorMessage }}
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -156,17 +151,16 @@ const axiosInstance = axios.create({
     "Cache-Control": "no-cache",
   },
 });
-
 export default {
-  name: "CAndidatesList",
+  name: "CandidatesList",
   data() {
     return {
-      getCandidatesData: [],
       inactiveCandidateData: [],
       activeCandidate: [],
       searchQuery: null,
       debounceTimeout: null,
       searchResults: [],
+      errorMessage: "",
       tabs: [
         {
           name: "All ",
@@ -231,19 +225,82 @@ export default {
 
     async search() {
       try {
-        const response = await axiosInstance.get(
-          `${VITE_API_URL}/search_candidate/${this.searchQuery}`
-        );
-        this.searchResults = response.data.data;
-        this.errorMsg = "";
-      } catch (error) {
         this.searchResults = [];
-        this.showSearchResults = false;
-        this.errorMsg = "Error fetching search results.";
-        console.error("Error fetching search results:", error);
+        let activatedStatus = null;
+
+        if (this.activeTab === 1) {
+          activatedStatus = true;
+        } else if (this.activeTab === 2) {
+          activatedStatus = false;
+        } else if (this.activeTab === 3 || this.activeTab === 4) {
+          await this.searchByStatus();
+          return;
+        } else if (this.activeTab === 0) {
+          const response = await axiosInstance.get(
+            `${VITE_API_URL}/search_candidate/${this.searchQuery}`
+          );
+
+          this.searchResults = response.data.data;
+        } else {
+          activatedStatus = this.activeTab === 1 ? true : false;
+        }
+
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/candidate_searching_active_and_inactive`,
+          {
+            params: {
+              candidate_query: this.searchQuery,
+              activated: activatedStatus,
+              tab: this.activeTabName.toLowerCase(),
+            },
+          }
+        );
+
+        this.searchResults = response.data;
+      } catch (error) {
+        if (
+          (error.response && error.response.status === 404) ||
+          error.response.status === 400
+        ) {
+          this.errorMessage = "No candidates found for the specified criteria";
+        }
       }
     },
 
+    async searchByStatus() {
+      try {
+        this.searchResults = [];
+        let activatedStatus = null;
+
+        if (this.activeTab === 3) {
+          activatedStatus = "pending";
+        } else if (this.activeTab === 4) {
+          activatedStatus = "rejected";
+        }
+
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/candidate_searching_according_to_status`,
+          {
+            params: {
+              candidate_query: this.searchQuery,
+              status: activatedStatus,
+              tab: this.activeTabName.toLowerCase(),
+            },
+          }
+        );
+
+        this.searchResults = response.data;
+        this.errorMessage = response.message;
+        console.log(this.errorMessage);
+      } catch (error) {
+        if (
+          (error.response && error.response.status === 404) ||
+          error.response.status === 400
+        ) {
+          this.errorMessage = "No candidates found for the specified criteria";
+        }
+      }
+    },
     async getActiveCAndidateMethod() {
       await axios
         .get(`${VITE_API_URL}/approve_and_activated_candidates`)
@@ -251,7 +308,7 @@ export default {
         .catch((error) => {
           if (error.response) {
             if (error.response.status == 404) {
-              alert(error.response.data.message);
+              // alert(error.response.data.message);
             }
           }
         });
@@ -263,10 +320,24 @@ export default {
     this.setActiveTabFromRoute();
     this.setActiveTabNameOnLoad();
   },
-  beforeRouteUpdate(to, from, next) {
-    this.setActiveTabFromRoute();
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
 
-    this.setActiveTabNameOnLoad();
+      if (matchingTabIndex !== -1) {
+        vm.activeTab = matchingTabIndex;
+        vm.activeTabName = vm.tabs[matchingTabIndex].name;
+      }
+    });
+  },
+  beforeRouteUpdate(to, from, next) {
+    const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
+
+    if (matchingTabIndex !== -1) {
+      this.activeTab = matchingTabIndex;
+      this.activeTabName = this.tabs[matchingTabIndex].name;
+    }
+
     next();
   },
 };

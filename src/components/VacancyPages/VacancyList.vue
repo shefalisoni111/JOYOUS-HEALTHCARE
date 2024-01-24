@@ -78,12 +78,12 @@
 
                     <div class="d-flex gap-2">
                       <div>
-                        <form @submit.prevent="search">
+                        <form @submit.prevent="searchVacancy">
                           <input
                             class="form-control mr-sm-2"
                             type="search"
                             placeholder="Search by vacancy"
-                            aria-label="Search"
+                            aria-label="SearchVacancy"
                             v-model="searchQuery"
                             @input="debounceSearch"
                           />
@@ -103,11 +103,156 @@
                       </div>
                     </div>
                   </ul>
-                  <div v-if="searchResults">
+                  <div v-if="!searchQuery">
                     <component :is="activeComponent"></component>
                   </div>
-                  <div class="text-danger" v-else>
-                    {{ notFoundVacancy }}
+
+                  <div v-if="searchQuery">
+                    <table class="table candidateTable">
+                      <thead>
+                        <tr>
+                          <th scope="col">ID</th>
+                          <th scope="col">#RefCode</th>
+                          <th scope="col">Client</th>
+                          <th scope="col">Business Unit</th>
+                          <th scope="col">Job Title</th>
+                          <th scope="col">Date</th>
+                          <th scope="col">Shift</th>
+
+                          <th scope="col">Notes</th>
+                          <th scope="col">Publish</th>
+                          <th scope="col" class="text-center">All</th>
+                          <th scope="col">Applied</th>
+                          <th scope="col">Assigned</th>
+                          <th scope="col">Rejected</th>
+                          <th scope="col">Created by</th>
+                          <th scope="col">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="searchResults?.length > 0">
+                        <tr v-for="data in searchResults" :key="data.id">
+                          <td v-text="data.id"></td>
+                          <td v-text="data.ref_code"></td>
+                          <td>
+                            <router-link
+                              class="text-capitalize text-black text-decoration-underline fw-bold"
+                              to="/client"
+                              >{{ data.client }}</router-link
+                            >
+                          </td>
+                          <td v-text="data.business_unit"></td>
+                          <td v-text="data.job_title"></td>
+
+                          <td
+                            v-for="(date, index) in data.dates"
+                            :key="index"
+                            v-text="date"
+                          ></td>
+
+                          <td v-text="data.shift"></td>
+
+                          <td v-text="data.notes"></td>
+
+                          <td>
+                            <i
+                              data-bs-toggle="modal"
+                              data-bs-target="#publishVacancy"
+                              data-bs-whatever="@mdo"
+                              v-if="data.publish === 'true'"
+                              class="btn btn-success bi bi-check-circle-fill"
+                              :class="{
+                                'btn-success': data.publish === 'true',
+                                'bi-check-circle-fill': data.publish === 'true',
+                                'bi-bell': data.publish !== 'true',
+                              }"
+                              @click="openPublished(data.id)"
+                            ></i>
+                            <i
+                              data-bs-toggle="modal"
+                              data-bs-target="#publishVacancy"
+                              data-bs-whatever="@mdo"
+                              @click="openPublished(data.id)"
+                              v-else
+                              class="btn btn-success bi bi-bell"
+                            ></i>
+                          </td>
+
+                          <td class="text-center">
+                            <button
+                              type="button"
+                              class="btn text-nowrap"
+                              data-bs-toggle="modal"
+                              data-bs-target="#allCandidateVacancyList"
+                              data-bs-whatever="@mdo"
+                              @click="openAllApplied(data.id)"
+                            >
+                              <span class="rounded-circle">{{ data.applied }}</span>
+                            </button>
+                          </td>
+                          <td>
+                            <button
+                              type="button"
+                              class="btn text-nowrap"
+                              data-bs-toggle="modal"
+                              data-bs-target="#appliedVacancy"
+                              data-bs-whatever="@mdo"
+                              @click="openPopup(data.id)"
+                            >
+                              <span class="rounded-circle">{{ data.applied }}</span>
+                            </button>
+                          </td>
+                          <td>
+                            <button
+                              type="button"
+                              class="btn text-nowrap"
+                              data-bs-toggle="modal"
+                              data-bs-target="#assignedVacancyList"
+                              data-bs-whatever="@mdo"
+                              @click="openAssigned(data.id)"
+                            >
+                              <span class="rounded-circle">{{ data.assigned }}</span>
+                            </button>
+                          </td>
+                          <td>
+                            <button
+                              type="button"
+                              class="btn text-nowrap"
+                              data-bs-toggle="modal"
+                              data-bs-target="#rejectedVacancyList"
+                              data-bs-whatever="@mdo"
+                              @click="openRejected(data.id)"
+                            >
+                              <span class="rounded-circle">{{ data.rejected }}</span>
+                            </button>
+                          </td>
+                          <td v-text="data.create_by_and_time.split(' ')[0]"></td>
+
+                          <td class="cursor-pointer">
+                            <i
+                              class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
+                              data-bs-toggle="modal"
+                              data-bs-target="#editVacancy"
+                              data-bs-whatever="@mdo"
+                              @click="editVacancyId(data.id)"
+                            ></i>
+                            &nbsp;&nbsp;
+                            <button
+                              class="btn btn-outline-danger text-nowrap"
+                              v-on:click="vacancyDeleteMethod(data.id)"
+                            >
+                              In-Active
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr>
+                          <td colspan="15" class="text-danger text-center">
+                            {{ errorMessage }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -134,9 +279,10 @@ export default {
     return {
       vacancyCount: 0,
       searchResults: [],
-      notFoundVacancy: [],
+      searchQuery: null,
       debounceTimeout: null,
-      searchQuery: "",
+      searchResults: [],
+      errorMessage: "",
       tabs: [
         { name: "All", component: "AllVacancyDisplay" },
         { name: "Active ", component: "AllVacancyList" },
@@ -157,7 +303,7 @@ export default {
     selectTab(index) {
       this.activeTab = index;
       this.activeTabName = this.tabs[index].name;
-      this.$router.push({ name: this.tabs[index].routeName });
+      // this.$router.push({ name: this.tabs[index].routeName });
     },
     setActiveTabNameOnLoad() {
       this.activeTabName = this.tabs[this.activeTab].name;
@@ -166,23 +312,49 @@ export default {
       clearTimeout(this.debounceTimeout);
 
       this.debounceTimeout = setTimeout(() => {
-        this.search();
+        this.searchVacancy();
       }, 300);
     },
     // search api start
 
-    async search() {
+    async searchVacancy() {
       try {
-        if (!this.searchQuery.trim()) {
-          return;
+        this.searchResults = [];
+        let activatedStatus = null;
+
+        if (this.activeTab === 1) {
+          activatedStatus = true;
+        } else if (this.activeTab === 2) {
+          activatedStatus = false;
+        } else if (this.activeTab === 0) {
+          const response = await axiosInstance.get(
+            `${VITE_API_URL}/vacancy_search/${this.searchQuery}`
+          );
+
+          this.searchResults = response.data;
+        } else {
+          activatedStatus = this.activeTab === 1 ? true : false;
         }
-        const response = await axios.get(
-          `${VITE_API_URL}/vacancy_search/${this.searchQuery}`
+
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/vacancy_searching_active_and_inactive`,
+          {
+            params: {
+              vacancy_query: this.searchQuery,
+              activated: activatedStatus,
+              tab: this.activeTabName.toLowerCase(),
+            },
+          }
         );
-        this.searchResults = response.data.data;
-        this.notFoundVacancy = response.data.message;
+
+        this.searchResults = response.data;
       } catch (error) {
-        // console.error("Error fetching search results:", error);
+        if (
+          (error.response && error.response.status === 400) ||
+          error.response.status === 404
+        ) {
+          this.errorMessage = "No vacancy found for the specified criteria";
+        }
       }
     },
     async createVacancy() {
@@ -194,7 +366,7 @@ export default {
             Authorization: "bearer " + token,
           },
         });
-        this.vacancyCount = response.data;
+        this.vacancyCount = response.data.data;
       } catch (error) {
         // console.error("Error fetching vacancy count:", error);
       }
