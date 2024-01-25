@@ -2,7 +2,7 @@
   <div>
     <Navbar />
     <div class="container">
-      <div class="main-body mt-5">
+      <div class="main-body" id="main">
         <h3
           class="text-center fw-bold p-2 m-auto rounded-3 mainheading"
           style="width
@@ -137,7 +137,9 @@ export default {
 .card {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
-
+#main {
+  margin-top: 95px;
+}
 .card {
   position: relative;
   display: flex;
