@@ -26,10 +26,18 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-4">
-                    <label class="form-label">JOB</label>
+                    <label class="form-label" for="selectOption">JOB</label>
                   </div>
                   <div class="col-8 mt-1">
-                    <input type="text" class="form-control" v-model="jobs_id" />
+                    <select v-model="jobs_id" id="selectOption">
+                      <option
+                        v-for="option in options"
+                        :key="option.id"
+                        :value="option.id"
+                      >
+                        {{ option.name }}
+                      </option>
+                    </select>
                   </div>
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
@@ -66,7 +74,7 @@
               data-bs-dismiss="modal"
               v-on:click="addDeductionMethod()"
             >
-              Add Job
+              Add Deduction
             </button>
           </div>
         </div>
@@ -76,6 +84,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "AddDeduction",
   data() {
@@ -85,7 +94,14 @@ export default {
       amount: "",
       frequency: "",
       error: [],
+      options: [],
     };
+  },
+  computed: {
+    selectedOptionText() {
+      const jobs_id = this.options.find((option) => option.id === this.jobs_id);
+      return jobs_id ? jobs_id.name : "";
+    },
   },
   methods: {
     async addDeductionMethod() {
@@ -108,6 +124,7 @@ export default {
           this.$emit("updateList");
 
           this.title = "";
+          this.jobs_id = "";
           this.amount = "";
           this.frequency = "";
         } else {
@@ -115,6 +132,22 @@ export default {
         }
       } catch (error) {}
     },
+    async getPositionMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+
+        this.options = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+  },
+  async mounted() {
+    await this.getPositionMethod();
   },
 };
 </script>
@@ -129,5 +162,11 @@ export default {
 }
 .modal-footer {
   border-top: 0px;
+}
+select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 3px;
+  border: 0px solid transparent;
 }
 </style>
