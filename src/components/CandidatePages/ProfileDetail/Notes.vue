@@ -38,7 +38,6 @@
         </div>
       </div>
     </div>
-    <AddNotes @getNotesAdded="getNotesMethod" />
   </div>
 </template>
 
@@ -52,33 +51,36 @@ export default {
       getNotes: [],
     };
   },
-  components: {
-    AddNotes,
-  },
+
+  components: { AddNotes },
   methods: {
     async notesDeleteMethod(id) {
       if (!window.confirm("Are you Sure ?")) {
         return;
       }
-      await axios
-        .delete(
-          `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes/` + id
-        )
-        .then((response) => {
-          this.getNotesMethod();
-        });
+      await axios.delete(
+        `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes/` + id
+      );
+      window.location.reload();
     },
     async getNotesMethod() {
-      await axios
-        .get(`${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes_list`)
-        .then((response) => (this.getNotes = response.data))
-        .catch((error) => {
-          if (error.response) {
-            if (error.response.status == 404) {
-              // alert(error.response.data.message);
-            }
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes_list`
+        );
+
+        if (response.status === 200) {
+          this.getNotes = response.data;
+          this.getNotesMethod();
+        }
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status === 404) {
+            // Handle 404 error if needed
+            // alert(error.response.data.message);
           }
-        });
+        }
+      }
     },
 
     //  ratecard apis end

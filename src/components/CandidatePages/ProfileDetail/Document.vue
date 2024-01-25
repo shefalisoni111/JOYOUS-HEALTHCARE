@@ -152,14 +152,11 @@
                                     <i class="bi bi-eye"></i>
                                   </button>
                                 </li>
-                                <li class="">
+                                <!-- <li class="">
                                   <button class="btn border-primary-subtle">
-                                    <i
-                                      class="bi bi-trash"
-                                      v-on:click="documentDelete(getDocs.id)"
-                                    ></i>
+                                    <i class="bi bi-trash"></i>
                                   </button>
-                                </li>
+                                </li> -->
                               </ul>
                             </h2>
                             <div class="">
@@ -248,7 +245,7 @@
         role="tabpanel"
         aria-labelledby="deletedDocument"
       >
-        <div class="row">
+        <!-- <div class="row">
           <table class="table">
             <thead>
               <tr>
@@ -274,7 +271,7 @@
               </tr>
             </tbody>
           </table>
-        </div>
+        </div> -->
       </div>
     </div>
     <AddCategory />
@@ -349,11 +346,10 @@ export default {
           const responseData = await response.json();
 
           if (response.ok) {
-            console.log("Successful Submit Data", responseData);
+            // console.log("Successful Submit Data", responseData);
             alert("Successful Submit Data");
           } else {
-            console.error("Error submitting data:", responseData);
-            // Handle error appropriately
+            // console.error("Error submitting data:", responseData);
           }
         } catch (error) {
           // console.error("Error submitting data:", error);
@@ -387,14 +383,14 @@ export default {
       this.getDocCAtegories();
     },
 
-    documentDelete(id) {
-      if (!window.confirm("Are you Sure ?")) {
-        return;
-      }
-      axios.put(`${VITE_API_URL}/delete_candidate_document/` + id).then((response) => {
-        this.getDocumentCategories();
-      });
-    },
+    // documentDelete(id) {
+    //   if (!window.confirm("Are you Sure ?")) {
+    //     return;
+    //   }
+    //   axios.put(`${VITE_API_URL}/delete_candidate_document/` + id).then((response) => {
+    //     this.getDocumentCategories();
+    //   });
+    // },
 
     async getDocumentCategories() {
       try {

@@ -77,6 +77,7 @@ export default {
       const data = {
         notes: this.notes,
       };
+
       try {
         const response = await fetch(
           `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes`,
@@ -91,9 +92,7 @@ export default {
         );
 
         if (response.ok) {
-          this.$store.dispatch("updateNoteCount");
           this.$emit("getNotesAdded");
-
           this.notes = "";
         } else {
         }

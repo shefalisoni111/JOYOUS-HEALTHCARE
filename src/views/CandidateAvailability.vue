@@ -238,14 +238,17 @@ export default {
     },
     updateSelectedDateRow(startDate, endDate) {
       const selectedDateRow = [];
-
-      const dayOfWeek = startDate.getDay();
-      const startDay = (dayOfWeek - 1 + 7) % 7;
+      const startDay = startDate.getDay();
 
       for (let i = 0; i < 7; i++) {
         const currentDate = new Date(startDate);
         currentDate.setDate(startDate.getDate() + i - startDay);
-        selectedDateRow.push(`${currentDate.getDate()}`);
+
+        if (currentDate.getMonth() === startDate.getMonth()) {
+          selectedDateRow.push(`${currentDate.getDate()}`);
+        } else {
+          selectedDateRow.push("");
+        }
       }
 
       Vue.set(this, "selectedDateRow", selectedDateRow);

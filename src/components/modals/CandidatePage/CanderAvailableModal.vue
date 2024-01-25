@@ -280,11 +280,15 @@ export default {
           status: this.status,
         };
 
-        // Check if a status update is needed
         const isUpdate = this.status;
 
-        if (isUpdate) {
-          // Perform PUT request to update the field
+        const isSameDate = formattedDate === this.existingDate;
+        const isStatusAlreadyAdded = this.isStatusAlreadyAdded();
+
+        if (isUpdate && !isSameDate && isStatusAlreadyAdded) {
+          if (!window.confirm("Are you Sure ?")) {
+            return;
+          }
           const putResponse = await axios.put(
             `${VITE_API_URL}/availabilitys/${this.candidate_id}`,
             data,
@@ -300,11 +304,11 @@ export default {
             alert("Availability updated successfully");
             window.location.reload();
             this.fetchCandidateList();
+            // this.$emit("Candidate-availability");
           } else {
             // console.error("Failed to update availability");
           }
         } else {
-          // Perform POST request to add a new availability status
           const postResponse = await axios.post(`${VITE_API_URL}/availabilitys`, data, {
             headers: {
               Accept: "application/json",
@@ -316,13 +320,34 @@ export default {
             alert("Availability added successfully");
             window.location.reload();
             this.fetchCandidateList();
+            // this.$emit("Candidate-availability");
           } else {
             // console.error("Failed to add availability");
           }
         }
       } catch (error) {
-        // Handle errors here
         // console.error("Error updating/adding availability:", error);
+      }
+    },
+    isStatusAlreadyAdded: async function () {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/availabilitys/${this.candidate_id}`,
+          {
+            params: {
+              date: this.date,
+            },
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        return response.data && response.data.status !== undefined;
+      } catch (error) {
+        // console.error("Error checking status:", error);
+        return false;
       }
     },
     async fetchCandidateList() {
