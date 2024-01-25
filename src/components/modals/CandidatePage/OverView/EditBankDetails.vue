@@ -25,6 +25,18 @@
               <form>
                 <div class="mb-3">
                   <div class="col-12">
+                    <label class="form-label">Bank Name</label>
+                  </div>
+                  <div class="col-12 mt-1">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="fetchCandidate.bank_name"
+                    />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="col-12">
                     <label class="form-label">Account Number</label>
                   </div>
                   <div class="col-12 mt-1">
@@ -82,6 +94,7 @@ export default {
   data() {
     return {
       fetchCandidate: {
+        bank_name: "",
         bank_number: "",
         ifsc_code: "",
       },

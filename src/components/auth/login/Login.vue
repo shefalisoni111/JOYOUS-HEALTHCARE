@@ -118,13 +118,13 @@ export default {
         const jsonData = response.data;
 
         if (jsonData.is_loged_in) {
-          localStorage.setItem("token", jsonData.token);
-          this.$router.push({ name: "Home" });
+          const tokenExpiration = Date.now() + 3600000; // 1 hour in milliseconds
 
-          if (jsonData.tokenExpiration) {
-            localStorage.setItem("tokenExpiration", jsonData.tokenExpiration);
-            this.setupAutoLogout();
-          }
+          localStorage.setItem("token", jsonData.token);
+          localStorage.setItem("tokenExpiration", tokenExpiration);
+
+          this.setupAutoLogout();
+          this.$router.push({ name: "Home" });
         } else {
           this.error = "Invalid Email or Password";
         }
@@ -137,11 +137,19 @@ export default {
 
     setupAutoLogout() {
       const tokenExpiration = localStorage.getItem("tokenExpiration");
-      const timeToExpiration = tokenExpiration - Date.now();
+      const timeToExpiration = tokenExpiration - Date.now() + 3600000;
 
       setTimeout(() => {
-        this.logout();
+        this.logoutDueToExpiration();
       }, timeToExpiration);
+    },
+    logoutDueToExpiration() {
+      // Remove token and token expiration from storage
+      localStorage.removeItem("token");
+      localStorage.removeItem("tokenExpiration");
+
+      // Perform logout
+      this.logout();
     },
 
     logout() {

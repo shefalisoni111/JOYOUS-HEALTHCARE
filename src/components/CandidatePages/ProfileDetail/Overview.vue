@@ -141,7 +141,7 @@
                   <tr>
                     <td>Bank Name</td>
                     <td>:</td>
-                    <td>IDBI</td>
+                    <td>{{ getCandidatesDataInOverview.bank_name }}</td>
                   </tr>
                   <tr>
                     <td>Account No</td>
@@ -565,7 +565,7 @@ export default {
   },
   async mounted() {
     try {
-      await this.getCandidateMethod();
+      // await this.getCandidateMethod();
       await this.getCandidateWorkExperienceMethod();
       await this.getCandidateEducationMethod();
       await this.getCandidateNextToKineMethod();

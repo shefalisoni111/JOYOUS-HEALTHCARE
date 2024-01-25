@@ -258,6 +258,7 @@ export default {
         // console.log("Response status:", response.status);
 
         alert("Availability updated successfully");
+        this.$emit("Candidate-availability");
         this.fetchCandidateList();
         window.location.reload();
       } catch (error) {

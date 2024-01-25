@@ -190,19 +190,18 @@ export default {
   },
 
   methods: {
-    // updateDateRange() {
-    //   this.fetchCandidateList(this.startDate);
-    // },
+    updateDateRange() {
+      this.fetchCandidateList(this.startDate);
+      this.saveToLocalStorage();
+    },
     formattedDate(day) {
       const selectedDate = new Date(this.startDate);
 
-      // Check if selectedDate is a valid date
       if (selectedDate instanceof Date && !isNaN(selectedDate)) {
         selectedDate.setDate(day);
         return selectedDate.toISOString().split("T")[0];
       } else {
-        // console.error("Invalid date:", selectedDate);
-        return ""; // or some default value, depending on your requirements
+        return "";
       }
     },
     getCandidateName() {
@@ -338,7 +337,8 @@ export default {
     Calendar,
   },
   async created() {
-    await this.fetchCandidateList();
+    const startDate = new Date();
+    await this.fetchCandidateList(startDate);
     await this.loadStoredData();
     await window.addEventListener("beforeunload", this.saveToLocalStorage);
   },
