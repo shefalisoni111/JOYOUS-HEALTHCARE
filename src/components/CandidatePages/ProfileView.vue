@@ -1,63 +1,70 @@
 <template>
   <div class="container">
-    <div class="main-body mt-5">
-      <div class="row gutters-sm">
-        <div class="col-md-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <div class="d-flex flex-column align-items-center text-center">
-                <img src="./profile.png" alt="USer" class="rounded-circle" width="150" />
-                <div class="mt-3 text-capitalize">
-                  <h4>
-                    {{ getProfileData.first_name }}
-                  </h4>
-                  <p class="text-secondary mb-1">
-                    {{ getProfileData.position }}
-                  </p>
-                  <!-- <p class="text-muted font-size-sm">Developer</p> -->
+    <div id="main">
+      <div class="main-body mt-5">
+        <div class="row gutters-sm">
+          <div class="col-md-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <div class="d-flex flex-column align-items-center text-center">
+                  <img
+                    src="./profile.png"
+                    alt="USer"
+                    class="rounded-circle"
+                    width="150"
+                  />
+                  <div class="mt-3 text-capitalize">
+                    <h4>
+                      {{ getProfileData.first_name }}
+                    </h4>
+                    <p class="text-secondary mb-1">
+                      {{ getProfileData.position }}
+                    </p>
+                    <!-- <p class="text-muted font-size-sm">Developer</p> -->
+                  </div>
                 </div>
               </div>
             </div>
+            <div class="card mt-3"></div>
           </div>
-          <div class="card mt-3"></div>
-        </div>
-        <div class="col-md-8">
-          <div class="card h-100">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-sm-3">
-                  <h6 class="mb-0">Full Name</h6>
+          <div class="col-md-8">
+            <div class="card h-100">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">Full Name</h6>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{ getProfileData.first_name }}
+                  </div>
                 </div>
-                <div class="col-sm-9 text-secondary">
-                  {{ getProfileData.first_name }}
+                <hr />
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">Email</h6>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{ getProfileData.email }}
+                  </div>
                 </div>
-              </div>
-              <hr />
-              <div class="row">
-                <div class="col-sm-3">
-                  <h6 class="mb-0">Email</h6>
-                </div>
-                <div class="col-sm-9 text-secondary">
-                  {{ getProfileData.email }}
-                </div>
-              </div>
 
-              <hr />
-              <div class="row">
-                <div class="col-sm-3">
-                  <h6 class="mb-0">Mobile</h6>
+                <hr />
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">Mobile</h6>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{ getProfileData.phone_number }}
+                  </div>
                 </div>
-                <div class="col-sm-9 text-secondary">
-                  {{ getProfileData.phone_number }}
-                </div>
-              </div>
-              <hr />
-              <div class="row">
-                <div class="col-sm-3">
-                  <h6 class="mb-0">Address</h6>
-                </div>
-                <div class="col-sm-9 text-secondary">
-                  {{ getProfileData.address }}
+                <hr />
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">Address</h6>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{ getProfileData.address }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -103,6 +110,9 @@ export default {
 </script>
 
 <style scoped>
+#main {
+  margin-top: 80px;
+}
 .card {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }

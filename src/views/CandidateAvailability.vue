@@ -190,10 +190,20 @@ export default {
   },
 
   methods: {
+    // updateDateRange() {
+    //   this.fetchCandidateList(this.startDate);
+    // },
     formattedDate(day) {
       const selectedDate = new Date(this.startDate);
-      selectedDate.setDate(day);
-      return selectedDate.toISOString().split("T")[0];
+
+      // Check if selectedDate is a valid date
+      if (selectedDate instanceof Date && !isNaN(selectedDate)) {
+        selectedDate.setDate(day);
+        return selectedDate.toISOString().split("T")[0];
+      } else {
+        // console.error("Invalid date:", selectedDate);
+        return ""; // or some default value, depending on your requirements
+      }
     },
     getCandidateName() {
       return this.selectedCandidate
@@ -234,6 +244,7 @@ export default {
         const parsedData = JSON.parse(storedData);
         this.startDate = parsedData.startDate;
         this.endDate.value = parsedData.endDate;
+        this.fetchCandidateList(this.startDate);
       }
     },
     updateSelectedDateRow(startDate, endDate) {
@@ -305,10 +316,13 @@ export default {
 
       this.statusForSelectedDate = null;
     },
-    async fetchCandidateList() {
+    async fetchCandidateList(startDate) {
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/candidates_weekly_availability`
+          `${VITE_API_URL}/candidates_weekly_availability`,
+          {
+            params: { date: startDate },
+          }
         );
         this.candidateList = response.data.data;
       } catch (error) {}
@@ -323,10 +337,10 @@ export default {
   components: {
     Calendar,
   },
-  mounted() {
-    this.fetchCandidateList();
-    this.loadStoredData();
-    window.addEventListener("beforeunload", this.saveToLocalStorage);
+  async created() {
+    await this.fetchCandidateList();
+    await this.loadStoredData();
+    await window.addEventListener("beforeunload", this.saveToLocalStorage);
   },
 };
 </script>

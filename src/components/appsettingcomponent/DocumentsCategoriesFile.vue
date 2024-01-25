@@ -94,11 +94,7 @@
                       <td>{{ getDocs.display_name }}</td>
                       <td>
                         <label class="switch" :class="{ checked: getDocs.mandatory }">
-                          <input
-                            type="checkbox"
-                            id="togBtn"
-                            :checked="getDocs.mandatory"
-                          />
+                          <input type="checkbox" id="togBtn" checked />
                           <div class="slider round"></div>
                         </label>
                       </td>
@@ -292,7 +288,7 @@ ul li i {
 
 .switch .slider:after {
   content: "";
-  color: white;
+  color: rgb(189, 84, 15);
   display: block;
   position: absolute;
   transform: translate(-50%, -50%);

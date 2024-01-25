@@ -154,7 +154,10 @@
                                 </li>
                                 <!-- <li class="">
                                   <button class="btn border-primary-subtle">
-                                    <i class="bi bi-trash"></i>
+                                    <i
+                                      class="bi bi-trash"
+                                      v-on:click="documentDelete(getDocs.id)"
+                                    ></i>
                                   </button>
                                 </li> -->
                               </ul>
@@ -245,6 +248,7 @@
         role="tabpanel"
         aria-labelledby="deletedDocument"
       >
+        Work in Progress...
         <!-- <div class="row">
           <table class="table">
             <thead>
@@ -289,7 +293,7 @@ export default {
   name: "Document",
   data() {
     return {
-      VITE_API_URL: "https://recpalapp.co.uk/api/",
+      // VITE_API_URL: "https://recpalapp.co.uk/api/",
       getCategory: [],
       getDocument: [],
       getDeletedDocument: [],
@@ -346,10 +350,11 @@ export default {
           const responseData = await response.json();
 
           if (response.ok) {
-            // console.log("Successful Submit Data", responseData);
+            console.log("Successful Submit Data", responseData);
             alert("Successful Submit Data");
           } else {
-            // console.error("Error submitting data:", responseData);
+            console.error("Error submitting data:", responseData);
+            // Handle error appropriately
           }
         } catch (error) {
           // console.error("Error submitting data:", error);

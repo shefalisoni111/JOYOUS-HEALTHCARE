@@ -515,9 +515,9 @@ export default {
       localStorage.setItem("selectedMonth", this.selectedMonth);
       const [selectedYear, selectedMonth] = this.selectedMonth.split("-");
 
-      const endYear =
-        selectedMonth === "12" ? `${parseInt(selectedYear) + 1}` : selectedYear;
-      const endMonth = selectedMonth === "12" ? "01" : `${parseInt(selectedMonth) + 1}`;
+      let endYear = selectedYear;
+      let endMonth =
+        selectedMonth === "12" ? "01" : `${parseInt(selectedMonth) + 1}`.padStart(2, "0");
 
       this.endDate = `${endYear}-${endMonth}`;
 

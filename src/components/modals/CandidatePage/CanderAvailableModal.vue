@@ -226,40 +226,7 @@ export default {
 
       this.status = selectedShifts ? selectedShifts : "";
     },
-    // addCandidateStatus: async function () {
-    //   try {
-    //     const parsedDate = new Date(this.date);
 
-    //     if (isNaN(parsedDate)) {
-    //       return;
-    //     }
-
-    //     const formattedDate = parsedDate.toLocaleDateString("en-CA", {
-    //       year: "numeric",
-    //       month: "2-digit",
-    //       day: "2-digit",
-    //     });
-    //     const data = {
-    //       candidate_id: this.candidate_id,
-    //       date: formattedDate,
-    //       status: this.status,
-    //     };
-
-    //     const response = await axios.post(`${VITE_API_URL}/availabilitys`, data, {
-    //       headers: {
-    //         Accept: "application/json",
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify(data),
-    //     });
-    //     // if (data) {
-    //     //   alert("Availability added successfully");
-    //     //   window.location.reload();
-    //     // } else {
-
-    //     // }
-    //   } catch (error) {}
-    // },
     addCandidateStatus: async function () {
       try {
         const parsedDate = new Date(this.date);
@@ -273,60 +240,28 @@ export default {
           month: "2-digit",
           day: "2-digit",
         });
-
         const data = {
           candidate_id: this.candidate_id,
           date: formattedDate,
           status: this.status,
         };
-
-        const isUpdate = this.status;
-
-        const isSameDate = formattedDate === this.existingDate;
-        const isStatusAlreadyAdded = this.isStatusAlreadyAdded();
-
-        if (isUpdate && !isSameDate && isStatusAlreadyAdded) {
-          if (!window.confirm("Are you Sure ?")) {
-            return;
-          }
-          const putResponse = await axios.put(
-            `${VITE_API_URL}/availabilitys/${this.candidate_id}`,
-            data,
-            {
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-              },
-            }
-          );
-
-          if (putResponse.status === 200) {
-            alert("Availability updated successfully");
-            window.location.reload();
-            this.fetchCandidateList();
-            // this.$emit("Candidate-availability");
-          } else {
-            // console.error("Failed to update availability");
-          }
-        } else {
-          const postResponse = await axios.post(`${VITE_API_URL}/availabilitys`, data, {
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-          });
-
-          if (postResponse.status === 201) {
-            alert("Availability added successfully");
-            window.location.reload();
-            this.fetchCandidateList();
-            // this.$emit("Candidate-availability");
-          } else {
-            // console.error("Failed to add availability");
-          }
+        if (!window.confirm("Are you Sure ?")) {
+          return;
         }
+        const response = await axios.post(`${VITE_API_URL}/availabilitys`, data, {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        });
+
+        // console.log("Response status:", response.status);
+
+        alert("Availability updated successfully");
+        this.fetchCandidateList();
+        window.location.reload();
       } catch (error) {
-        // console.error("Error updating/adding availability:", error);
+        console.error("Error:", error);
       }
     },
     isStatusAlreadyAdded: async function () {
