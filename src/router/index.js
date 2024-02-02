@@ -30,34 +30,34 @@ const router = createRouter({
       meta: {
         auth: true,
       },
-      // children: [
-      //   {
-      //     path: "/client",
-      //     name: "ClientsLists",
-      //     component: () => import("@/components/ClientsPages/ClientsLists.vue"),
-      //     props: true,
-      //   },
-      //   {
-      //     path: "edit/:id",
-      //     name: "EditClient",
-      //     component: () => import("@/components/ClientsPages/EditClient.vue"),
-      //     props: true,
-      //   },
-      //   {
-      //     path: "view/:id",
-      //     name: "ClientsProfileView",
-      //     component: () =>
-      //       import("@/components/ClientsPages/ClientsProfileView.vue"),
-      //     props: true,
-      //   },
-      //   {
-      //     path: "client/:id",
-      //     name: "SingleClientProfile",
-      //     component: () =>
-      //       import("@/components/ClientsPages/SingleClientProfile.vue"),
-      //     props: true,
-      //   },
-      // ],
+      children: [
+        {
+          path: "/client",
+          name: "ClientsLists",
+          component: () => import("@/components/ClientsPages/ClientsLists.vue"),
+          props: true,
+        },
+        {
+          path: "edit/:id",
+          name: "EditClient",
+          component: () => import("@/components/ClientsPages/EditClient.vue"),
+          props: true,
+        },
+        {
+          path: "view/:id",
+          name: "ClientsProfileView",
+          component: () =>
+            import("@/components/ClientsPages/ClientsProfileView.vue"),
+          props: true,
+        },
+        {
+          path: "client/:id",
+          name: "SingleClientProfile",
+          component: () =>
+            import("@/components/ClientsPages/SingleClientProfile.vue"),
+          props: true,
+        },
+      ],
     },
     {
       path: "/candidates",
@@ -288,32 +288,32 @@ const router = createRouter({
       },
     },
     {
-      path: "/timesheet",
+      path: "/timesheet/weekly",
       name: "Timesheet",
       component: () => import("@/views/TimesheetView.vue"),
       meta: {
         auth: true,
       },
-      // children: [
-      //   {
-      //     path: "/timesheet/weekly",
-      //     name: "WeeklyTimeSheet",
-      //     component: () => import("@/components/TimeSheetPages/WeeklyTimeSheet.vue"),
-      //     props: true,
-      //   },
-      //   {
-      //     path: "/timesheet/custom",
-      //     name: "CustomTimeSheet",
-      //     component: () => import("@/components/TimeSheetPages/CustomTimeSheet.vue"),
-      //     props: true,
-      //   },
-      //   {
-      //     path: "/timesheet/signed",
-      //     name: "SignedTimeSheet",
-      //     component: () => import("@/components/TimeSheetPages/SignedTimeSheet.vue"),
-      //     props: true,
-      //   },
-      // ]
+      children: [
+        {
+          path: "/timesheet/weekly",
+          name: "WeeklyTimeSheet",
+          component: () => import("@/components/TimeSheetPages/WeeklyTimeSheet.vue"),
+          props: true,
+        },
+        {
+          path: "/timesheet/custom",
+          name: "CustomTimeSheet",
+          component: () => import("@/components/TimeSheetPages/CustomTimeSheet.vue"),
+          props: true,
+        },
+        {
+          path: "/timesheet/signed",
+          name: "SignedTimeSheet",
+          component: () => import("@/components/TimeSheetPages/SignedTimeSheet.vue"),
+          props: true,
+        },
+      ]
     },
     {
       path: "/invoice",

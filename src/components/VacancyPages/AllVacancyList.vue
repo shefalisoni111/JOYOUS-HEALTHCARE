@@ -28,11 +28,20 @@
               <td v-text="getdata.id"></td>
               <td v-text="getdata.ref_code"></td>
               <td>
-                <router-link
+                <!-- <router-link
                   class="text-capitalize text-black text-decoration-underline fw-bold"
                   to="/client"
                   >{{ getdata.client }}</router-link
+                > -->
+                <router-link
+                  class="text-capitalize text-black text-decoration-underline fw-bold"
+                  :to="{
+                    name: 'SingleClientProfile',
+                    params: { id: getdata.client_id },
+                  }"
                 >
+                  {{ getdata.client }}
+                </router-link>
               </td>
               <td v-text="getdata.business_unit"></td>
               <td v-text="getdata.job_title"></td>
@@ -76,7 +85,7 @@
                   data-bs-whatever="@mdo"
                   @click="openAllApplied(getdata.id)"
                 >
-                  <span class="rounded-circle">{{ getdata.applied }}</span>
+                  <span class="rounded-circle">{{ getdata.all_candidate }}</span>
                 </button>
               </td>
               <td>
@@ -179,6 +188,7 @@ export default {
       return this.publish ? "bi bi-bell" : "bi bi-check-circle-fill";
     },
   },
+
   methods: {
     editVacancyId(vacancyId) {
       this.selectedVacancyId = vacancyId;

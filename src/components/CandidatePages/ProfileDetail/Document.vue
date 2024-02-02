@@ -30,6 +30,7 @@
         </button>
       </li>
     </ul>
+
     <div class="tab-content" id="pills-tabContent">
       <div
         class="tab-pane fade show active"
@@ -37,7 +38,7 @@
         role="tabpanel"
         aria-labelledby="pills-document-tab"
       >
-        <div class="">
+        <div>
           <div class="row mb-3">
             <div class="d-flex justify-content-between align-items-baseline">
               <div>
@@ -81,21 +82,21 @@
                         type="button"
                         :class="{ collapsed: !getCate.isOpen }"
                       >
-                        {{ getCate.category_name }}
+                        {{ getCate.document_category.category_name }}
                       </button>
 
                       <ul class="list-unstyled d-inline-flex align-items-center mb-0">
                         <li class="p-3 fs-6">
                           <button class="btn btn-warning count-doc-btn">
                             <span>!</span></button
-                          >&nbsp;{{ getCate.total_document }}
+                          >&nbsp;{{ getCate.document_category.total_document }}
                         </li>
                         <!-- <li class=" ">
                           <button class="btn border-primary-subtle">
                             <i class="bi bi-eye"></i>
                           </button>
                         </li> -->
-
+                        <!-- 
                         <li class="">
                           <button
                             class="btn border-primary-subtle rounded-1 text-capitalize fw-bold"
@@ -106,7 +107,7 @@
                           >
                             +
                           </button>
-                        </li>
+                        </li> -->
                       </ul>
                     </h2>
 
@@ -120,14 +121,20 @@
                           <div class="accordion-item">
                             <h2
                               class="accordion-header"
-                              @click="toggleAccordionDocument(index, docIndex)"
+                              @click="
+                                toggleAccordionDocument(
+                                  getDocs.document.id,
+                                  index,
+                                  docIndex
+                                )
+                              "
                             >
                               <button
                                 class="accordion-button"
                                 type="button"
                                 :class="{ collapsed: !getDocs.isOpen }"
                               >
-                                {{ getDocs.display_name }}
+                                {{ getDocs.document.document_name }}
                               </button>
                               <div class="d-flex align-items-center">
                                 <!-- <h6 class="mb-0">Compliant</h6>
@@ -142,24 +149,41 @@
                               >
                                 <li class="">
                                   <button
+                                    v-if="getDocs.candidate_document === null"
+                                    class="d-none"
+                                  ></button>
+                                  <button
+                                    v-else
                                     type="button"
                                     class="btn border-primary-subtle"
                                     data-bs-toggle="modal"
                                     data-bs-target="#viewDocCandidate"
                                     data-bs-whatever="@mdo"
-                                    @click="editCandidate(getDocs.id)"
+                                    @click="
+                                      viewDocument(getDocs.candidate_document.id, $event)
+                                    "
                                   >
                                     <i class="bi bi-eye"></i>
                                   </button>
                                 </li>
-                                <!-- <li class="">
-                                  <button class="btn border-primary-subtle">
+
+                                <li class="">
+                                  <button
+                                    class="d-none"
+                                    v-if="getDocs.candidate_document === null"
+                                  ></button>
+                                  <button class="btn border-primary-subtle" v-else>
                                     <i
                                       class="bi bi-trash"
-                                      v-on:click="documentDelete(getDocs.id)"
+                                      v-on:click="
+                                        documentDelete(
+                                          getDocs.candidate_document.id,
+                                          $event
+                                        )
+                                      "
                                     ></i>
                                   </button>
-                                </li> -->
+                                </li>
                               </ul>
                             </h2>
                             <div class="">
@@ -223,7 +247,9 @@
                                     <button
                                       type="button"
                                       class="btn btn-primary"
-                                      v-on:click="addCandidateDocument()"
+                                      v-on:click="
+                                        addCandidateDocument(getDocs.document.id)
+                                      "
                                     >
                                       Save
                                     </button>
@@ -248,8 +274,8 @@
         role="tabpanel"
         aria-labelledby="deletedDocument"
       >
-        Work in Progress...
-        <!-- <div class="row">
+        <!-- Work in Progress... -->
+        <div class="row p-2">
           <table class="table">
             <thead>
               <tr>
@@ -258,9 +284,7 @@
                 <th scope="col">Issue Date</th>
                 <th scope="col">Expiry Date</th>
                 <th scope="col">Description</th>
-                <th scope="col">Image Url</th>
-
-                <th scope="col">Action</th>
+                <!-- <th scope="col" class="width-row">Image Url</th> -->
               </tr>
             </thead>
             <tbody>
@@ -270,16 +294,16 @@
                 <td>{{ data.issue_date }}</td>
                 <td>{{ data.expiry_date }}</td>
                 <td>{{ data.description }}</td>
-                <td class="width-row">{{ `${VITE_API_URL}${data.url}` }}</td>
+                <!-- <td>{{ `${VITE_API_URL}${data.url}` }}</td> -->
                 <td></td>
               </tr>
             </tbody>
           </table>
-        </div> -->
+        </div>
       </div>
     </div>
     <AddCategory />
-    <ViewDocuments :documentId="selectedCandidateId" ref="viewDocuments" />
+    <ViewDocuments :documentId="selectedDocumentId" ref="viewDocuments" />
   </div>
 </template>
 
@@ -293,21 +317,24 @@ export default {
   name: "Document",
   data() {
     return {
-      // VITE_API_URL: "https://recpalapp.co.uk/api/",
       getCategory: [],
       getDocument: [],
       getDeletedDocument: [],
+      selectedDocumentId: 0,
+
       issue_date: null,
       expiry_date: null,
       description: null,
       url: null,
       selectedFile: null,
       selectedCandidateId: null,
+      errorMessage: null,
     };
   },
   components: { AddCategory, ViewDocuments },
   methods: {
-    editCandidate(documentId) {
+    viewDocument(documentId, event) {
+      event.stopPropagation();
       this.selectedCandidateId = documentId;
       this.$refs.viewDocuments.getDocumentDetails();
     },
@@ -318,21 +345,19 @@ export default {
         this.url = files[0];
       }
     },
-    async addCandidateDocument() {
+    async addCandidateDocument(id) {
       const token = localStorage.getItem("token");
 
       if (this.getDocument.length > 0) {
-        const selectedDocument = this.getDocument.find((document) => {
-          this.document_id = document.id;
-        });
-        const data = {
-          issue_date: this.issue_date,
-          candidate_id: this.$route.params.id,
-          document_id: this.document_id,
-          expiry_date: this.expiry_date,
-          description: this.description,
-          url: this.url.name,
-        };
+        const selectedDocument = this.getDocument[0];
+
+        const formData = new FormData();
+        formData.append("candidate_document[candidate_id]", this.$route.params.id);
+        formData.append("candidate_document[document_id]", id);
+        formData.append("candidate_document[issue_date]", this.issue_date);
+        formData.append("candidate_document[expiry_date]", this.expiry_date);
+        formData.append("candidate_document[description]", this.description);
+        formData.append("candidate_document[document_image]", this.url);
 
         try {
           const response = await fetch(
@@ -343,18 +368,21 @@ export default {
                 Accept: "application/json",
                 Authorization: "bearer " + token,
               },
-              body: JSON.stringify(data),
+              body: formData,
             }
           );
 
           const responseData = await response.json();
 
           if (response.ok) {
-            console.log("Successful Submit Data", responseData);
             alert("Successful Submit Data");
+            this.issue_date = "";
+            this.expiry_date = "";
+            this.description = "";
+            this.url = null;
           } else {
-            console.error("Error submitting data:", responseData);
             // Handle error appropriately
+            // console.error("Error submitting data:", responseData);
           }
         } catch (error) {
           // console.error("Error submitting data:", error);
@@ -372,7 +400,11 @@ export default {
 
       this.getCategory[index].isOpen = !this.getCategory[index].isOpen;
     },
-    toggleAccordionDocument(categoryIndex, documentIndex) {
+    toggleAccordionDocument(documentId, categoryIndex, documentIndex) {
+      this.getDocument.forEach((document) => {
+        if (document.id === documentId) {
+        }
+      });
       this.getCategory[categoryIndex].documents.forEach((getDocs, i) => {
         if (i !== documentIndex) {
           getDocs.isOpen = false;
@@ -388,14 +420,15 @@ export default {
       this.getDocCAtegories();
     },
 
-    // documentDelete(id) {
-    //   if (!window.confirm("Are you Sure ?")) {
-    //     return;
-    //   }
-    //   axios.put(`${VITE_API_URL}/delete_candidate_document/` + id).then((response) => {
-    //     this.getDocumentCategories();
-    //   });
-    // },
+    documentDelete(id, event) {
+      event.stopPropagation();
+      if (!window.confirm("Are you Sure ?")) {
+        return;
+      }
+      axios.put(`${VITE_API_URL}/delete_candidate_document/` + id).then((response) => {
+        this.getDocumentCategories();
+      });
+    },
 
     async getDocumentCategories() {
       try {
@@ -411,25 +444,27 @@ export default {
     },
     async getDownloadDocMethod() {
       try {
-        for (const document of this.getDocument) {
-          try {
-            const response = await axios.get(
-              `${VITE_API_URL}/download_document/${document.id}`,
-              { responseType: "json" }
-            );
+        try {
+          const response = await axios.get(
+            `${VITE_API_URL}/download_document/${this.$route.params.id}`,
+            { responseType: "json" }
+          );
 
-            const imageUrls = response.data.image_urls;
+          const imageUrls = response.data.image_urls;
 
-            for (const imageUrlObject of imageUrls) {
-              const imageUrl = imageUrlObject.image_url;
-              const documentId = imageUrlObject.document_id;
-              const filename = `${VITE_API_URL}${imageUrl}.png`;
-              const imageResponse = await axios.get(imageUrl, { responseType: "blob" });
-              saveAs(imageResponse.data, filename);
-            }
-          } catch (error) {
-            // console.error("Error fetching document:", error);
+          for (const imageUrlObject of imageUrls) {
+            const imageUrl = `${VITE_API_URL}${imageUrlObject.image_url.split("?")[0]}`;
+            const documentId = imageUrlObject.document_id;
+            const filename = imageUrl
+              .split("/")
+              .pop()
+              .split("?")[0]
+              .replace(/[^\w\s.]/gi, "");
+            const imageResponse = await axios.get(imageUrl, { responseType: "blob" });
+            saveAs(imageResponse.data, filename);
           }
+        } catch (error) {
+          // console.error("Error fetching document:", error);
         }
       } catch (error) {
         // console.error("Error fetching documents:", error);
@@ -437,22 +472,29 @@ export default {
     },
     async getDeletedDocumentListMethod() {
       try {
+        const candidateId = this.$route.params.id;
         const response = await axios.get(
-          `${VITE_API_URL}/deleted_candidate_document_list`
+          `${VITE_API_URL}/deleted_candidate_document_list?candidate_id=${candidateId}`
         );
-        this.getDeletedDocument = response.data.data;
+        this.getDeletedDocument = response.data;
       } catch (error) {
         // console.error("Error fetching documents:", error);
       }
     },
     async getDocCAtegories() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/document_categories`);
+        const response = await axios.get(
+          `${VITE_API_URL}/candidate_documentlist_on_admin/${this.$route.params.id}`
+        );
 
         this.getCategory = response.data;
       } catch (error) {
         // console.error("Error fetching document categories:", error);
       }
+    },
+    async viewDocument(id, event) {
+      this.selectedDocumentId = id;
+      event.stopPropagation();
     },
   },
 
@@ -652,7 +694,7 @@ ul.nav-pills {
   font-size: 16px;
   transition: transform 0.3s;
 }
-table tr td.width-row {
+table tr th.width-row {
   width: 50px;
 }
 .expanded {

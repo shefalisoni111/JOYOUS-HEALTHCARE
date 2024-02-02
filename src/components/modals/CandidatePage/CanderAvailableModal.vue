@@ -41,6 +41,7 @@
                 v-model="dayData.selectedShift"
                 :value="'Early'"
                 @click="updateDate(dayData.date, 'Early')"
+                :disabled="isShiftDisabled(dayData.date)"
               />
               <label for="early" class="ps-1">E</label>
               &nbsp;
@@ -51,6 +52,7 @@
                 v-model="dayData.selectedShift"
                 :value="'Late'"
                 @click="updateDate(dayData.date, 'Late')"
+                :disabled="isShiftDisabled(dayData.date)"
               />
               <label for="late" class="ps-1">L</label>
             </div>
@@ -62,6 +64,7 @@
                 v-model="dayData.selectedShift"
                 :value="'Night'"
                 @click="updateDate(dayData.date, 'Night')"
+                :disabled="isShiftDisabled(dayData.date)"
               />
               <label for="night" class="ps-1">N</label>
               &nbsp;
@@ -72,6 +75,7 @@
                 v-model="dayData.selectedShift"
                 :value="'Unavailable'"
                 @click="updateDate(dayData.date, 'Unavailable')"
+                :disabled="isShiftDisabled(dayData.date)"
               />
               <label for="unavailable" class="ps-1">U</label>
             </div>
@@ -99,6 +103,10 @@ export default {
       type: String,
       default: null,
     },
+    availabilityId: {
+      type: [String, Number],
+      default: null,
+    },
   },
   data() {
     return {
@@ -107,12 +115,20 @@ export default {
       candidate_id: this.candidateId,
       date: "",
       status: "",
+      availability_id: this.availabilityId,
+      selectedDate: null,
     };
   },
   created() {
     this.candidate_id = this.candidateId;
   },
   watch: {
+    availability_id(newAvailabilityId) {
+      this.$emit("availabilityChange", newAvailabilityId);
+
+      this.fetchAvailability(this.candidate_id, this.initialDate);
+    },
+
     candidateId(newCandidateId) {
       this.candidate_id = newCandidateId;
     },
@@ -155,7 +171,18 @@ export default {
     },
   },
   methods: {
-    handleButtonClick() {
+    isShiftDisabled(selectedDate) {
+      const dayData = this.calendarData.find((data) => data.date === selectedDate);
+      return (
+        dayData &&
+        selectedDate !== this.selectedDate &&
+        (dayData.shifts.early ||
+          dayData.shifts.late ||
+          dayData.shifts.night ||
+          dayData.shifts.unavailable)
+      );
+    },
+    async handleButtonClick() {
       this.addCandidateStatus();
       this.closeNestedCalendar();
     },
@@ -207,8 +234,8 @@ export default {
             late: false,
             night: false,
             unavailable: false,
-            formattedDate: "",
           },
+          availability_id: null,
         };
       });
     },
@@ -217,7 +244,35 @@ export default {
 
       const dayData = this.calendarData.find((data) => data.date === selectedDate);
       if (dayData) {
+        // If all shifts are already selected, disable them
+        if (
+          dayData.shifts.early &&
+          dayData.shifts.late &&
+          dayData.shifts.night &&
+          dayData.shifts.unavailable
+        ) {
+          // Do nothing or show a message indicating that all shifts are already selected
+          return;
+        }
+
         dayData.shifts[shift] = !dayData.shifts[shift];
+
+        // Check if all shifts are now selected, disable them if needed
+        if (
+          dayData.shifts.early &&
+          dayData.shifts.late &&
+          dayData.shifts.night &&
+          dayData.shifts.unavailable
+        ) {
+          // Disable all shifts
+          dayData.shifts.early = false;
+          dayData.shifts.late = false;
+          dayData.shifts.night = false;
+          dayData.shifts.unavailable = false;
+
+          // Optionally, you can show a message indicating that all shifts are disabled
+          alert("All shifts are disabled for this date.");
+        }
       }
 
       const selectedShifts = Object.keys(dayData.shifts)
@@ -227,6 +282,9 @@ export default {
       this.status = selectedShifts ? selectedShifts : "";
     },
 
+    getSelectedDateData() {
+      return this.calendarData.find((dayData) => dayData.date === this.date);
+    },
     addCandidateStatus: async function () {
       try {
         const parsedDate = new Date(this.date);
@@ -240,69 +298,74 @@ export default {
           month: "2-digit",
           day: "2-digit",
         });
+
         const data = {
           candidate_id: this.candidate_id,
           date: formattedDate,
           status: this.status,
         };
-        if (!window.confirm("Are you Sure ?")) {
-          return;
-        }
-        const response = await axios.post(`${VITE_API_URL}/availabilitys`, data, {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        });
 
-        // console.log("Response status:", response.status);
+        if (this.availability_id !== null) {
+          if (!window.confirm("Are you Sure ?")) {
+            // console.log("Confirmation canceled");
+            return;
+          }
 
-        alert("Availability updated successfully");
-        this.$emit("Candidate-availability");
-        this.fetchCandidateList();
-        window.location.reload();
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    },
-    isStatusAlreadyAdded: async function () {
-      try {
-        const response = await axios.get(
-          `${VITE_API_URL}/availabilitys/${this.candidate_id}`,
-          {
-            params: {
-              date: this.date,
-            },
+          const putResponse = await axios.put(
+            `${VITE_API_URL}/availabilitys/${this.availability_id}`,
+            data,
+            {
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (putResponse.status === 200) {
+            alert("Availability updated successfully");
+            window.location.reload();
+            // this.fetchCandidateList();
+            // this.$emit("Candidate-availability");
+          } else {
+            // console.error("Failed to update availability");
+          }
+        } else {
+          const postResponse = await axios.post(`${VITE_API_URL}/availabilitys`, data, {
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json",
             },
-          }
-        );
+          });
 
-        return response.data && response.data.status !== undefined;
+          if (postResponse.status === 201) {
+            alert("Availability added successfully");
+            window.location.reload();
+            // this.fetchCandidateList();
+            // this.$emit("Candidate-availability");
+          } else {
+            // console.error("Failed to add availability");
+          }
+        }
       } catch (error) {
-        // console.error("Error checking status:", error);
-        return false;
+        if (error.response && error.response.status === 422) {
+          const errorData = error.response.data;
+
+          if (errorData && errorData.date) {
+            alert(`Error: ${errorData.date[0]}`);
+          } else {
+            // alert("An error occurred while updating/adding availability.");
+          }
+        } else {
+          // alert("An unexpected error occurred.");
+        }
       }
-    },
-    async fetchCandidateList() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/availabilitys`);
-        this.candidateList = response.data;
-      } catch (error) {}
-    },
-    async fetchStatus() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/availabilitys`);
-        this.candidateList = response.data.data;
-      } catch (error) {}
     },
   },
 
   async created() {
-    await this.fetchCandidateList();
     this.initializeCalendar();
+
     this.updateCurrentMonth(this.initialDate);
   },
 };

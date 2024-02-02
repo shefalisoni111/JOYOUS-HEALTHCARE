@@ -221,7 +221,7 @@
               data-bs-target="#appliedVacancy"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
-              v-on:click="updateVacancyMethod()"
+              v-on:click="updateVacancyMethod($event)"
               @click="closePopup"
             >
               Submit
@@ -403,7 +403,8 @@ export default {
       }
     },
 
-    async updateVacancyMethod() {
+    async updateVacancyMethod(event) {
+      event.stopPropagation();
       const checkedCandidateIds = Object.keys(this.checkedCandidates)
         .filter((candidate_id) => this.checkedCandidates[candidate_id])
         .map((candidate_id) => parseInt(candidate_id));

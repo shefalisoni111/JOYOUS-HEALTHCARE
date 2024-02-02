@@ -107,7 +107,7 @@ export default {
   name: "AddNewDoc",
   props: {
     categoryId: {
-      type: String,
+      type: [String, Number, null],
       required: true,
     },
   },

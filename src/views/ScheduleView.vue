@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div>
     <Navbar />
     <div id="main">
@@ -23,9 +23,9 @@ export default {
   margin-top: 80px;
   background-color: #fdce5e17;
 }
-</style>
+</style> -->
 
-<!-- <template>
+<template>
   <div>
     <Navbar />
     <div class="container-fluid">
@@ -54,7 +54,6 @@ export default {
                 class="dateInput"
               />
             </div>
-            
 
             <div v-if="selectedDate !== null" class="modal">
               <div class="modal-content">
@@ -66,7 +65,7 @@ export default {
                 <h4 class="text-capitalize">{{ getCandidateName() }}</h4>
                 <p>You clicked on {{ selectedDate }}</p>
                 <p>Status: {{ statusForSelectedDate }}</p>
-              
+
                 <AppointmentAdd
                   :initialDate="selectedDate"
                   :candidateId="selectedCandidateId"
@@ -145,7 +144,6 @@ export default {
                         v-if="dropCandidateId === data.id && dropDay === day"
                         class="drop-zone"
                       >
-                        
                         {{ droppedContent }}
                       </div>
                     </div>
@@ -174,8 +172,8 @@ export default {
       selectedDate: null,
       candidateList: [],
       selectedCandidateId: null,
-      selectedCandidate: null,
-
+      // selectedCandidate: null,
+      currentSelectedCandidate: null,
       statusForSelectedDate: null,
       vacancyList: [],
       vacancyBeingDragged: { id: null },
@@ -202,13 +200,11 @@ export default {
       );
     },
     selectedDateRow() {
-    
       const selectedDate = new Date(this.startDate);
       const selectedDateRow = [];
 
-
       const dayOfWeek = selectedDate.getDay();
-      const startDay = (dayOfWeek - 1 + 7) % 7; 
+      const startDay = (dayOfWeek - 1 + 7) % 7;
 
       for (let i = 0; i < 7; i++) {
         const currentDate = new Date(selectedDate);
@@ -252,13 +248,9 @@ export default {
           candidate_id: candidateId,
         };
 
-        const response = await axios.post(
-          `${VITE_API_URL}/assign_vacancy`,
-          payload
-        );
+        const response = await axios.post(`${VITE_API_URL}/assign_vacancy`, payload);
       } catch (error) {
       } finally {
-   
         this.vacancyBeingDragged = null;
         this.dropCandidateId = null;
         this.dropDay = null;
@@ -268,8 +260,14 @@ export default {
 
     formattedDate(day) {
       const selectedDate = new Date(this.startDate);
-      selectedDate.setDate(day);
-      return selectedDate.toISOString().split("T")[0];
+      selectedDate.setDate(parseInt(day));
+
+      if (!isNaN(selectedDate.getTime())) {
+        return selectedDate.toISOString().split("T")[0];
+      } else {
+        console.error("Invalid date:", selectedDate);
+        return null;
+      }
     },
     getCandidateName() {
       return this.selectedCandidate ? this.selectedCandidate.first_name : "Default Name";
@@ -294,12 +292,10 @@ export default {
       }
     },
     updateSelectedDateRow(startDate, endDate) {
-
       const selectedDateRow = [];
 
-   
       const dayOfWeek = startDate.getDay();
-      const startDay = (dayOfWeek - 1 + 7) % 7; 
+      const startDay = (dayOfWeek - 1 + 7) % 7;
 
       for (let i = 0; i < 7; i++) {
         const currentDate = new Date(startDate);
@@ -307,43 +303,35 @@ export default {
         selectedDateRow.push(`${currentDate.getDate()}`);
       }
 
-      Vue.set(this, "selectedDateRow", selectedDateRow); 
+      Vue.set(this, "selectedDateRow", selectedDateRow);
     },
     formatDate(day) {
       const selectedDate = new Date(this.startDate);
       selectedDate.setDate(day);
-      return selectedDate.toLocaleDateString(); 
+      return selectedDate.toLocaleDateString();
     },
 
     openModal(candidateId, day) {
       try {
-
         const actualCandidateId = candidateId.id;
 
-    
         const selectedDate = new Date(this.startDate);
-        selectedDate.setDate(parseInt(day)); 
+        selectedDate.setDate(parseInt(day));
 
-  
         const formattedDate = selectedDate.toISOString().split("T")[0];
 
         this.selectedDate = formattedDate;
-        this.selectedCandidateId = actualCandidateId; 
+        this.selectedCandidateId = actualCandidateId;
 
-    
         const selectedCandidate = this.candidateList.find(
           (candidate) => candidate.id === actualCandidateId
         );
 
-  
         if (selectedCandidate) {
-      
           this.$nextTick(() => {
-            this.selectedCandidate = selectedCandidate;
+            this.currentSelectedCandidate = selectedCandidate;
           });
         } else {
-
-
           this.selectedDate = null;
           this.statusForSelectedDate = null;
         }
@@ -369,7 +357,9 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/vacancy_of_week`);
         this.vacancyList = response.data;
-      } catch (error) {}
+      } catch (error) {
+        // console.error("Error in fetchVacancyListMethod:", error);
+      }
     },
   },
   components: {
@@ -388,6 +378,7 @@ export default {
 <style scoped>
 #main {
   background-color: #fdce5e17;
+  margin-top: 80px;
 }
 .full-page-calendar {
   padding: 20px;
@@ -488,4 +479,4 @@ input.dateInput {
   text-decoration: none;
   cursor: pointer;
 }
-</style> -->
+</style>

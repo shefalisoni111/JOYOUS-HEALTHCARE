@@ -19,7 +19,7 @@
           <tr v-for="client in getClientDetail" :key="client.id">
             <td v-text="client.ref_code"></td>
             <td>
-              <!-- <router-link
+              <router-link
                 class="text-capitalize"
                 :to="{
                   name: 'SingleClientProfile',
@@ -27,8 +27,8 @@
                 }"
               >
                 {{ client.first_name }}
-              </router-link> -->
-              {{ client.first_name }}
+              </router-link>
+              <!-- {{ client.first_name }} -->
             </td>
 
             <td v-text="client.address"></td>

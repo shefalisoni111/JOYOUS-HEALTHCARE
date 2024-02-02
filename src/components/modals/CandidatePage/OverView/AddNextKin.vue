@@ -271,7 +271,7 @@ export default {
 
     submitForm() {
       if (this.validateForm()) {
-        console.log("Form validation failed");
+        // console.log("Form validation failed");
         return;
       }
 

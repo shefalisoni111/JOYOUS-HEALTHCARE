@@ -30,9 +30,13 @@
               <td>
                 <router-link
                   class="text-capitalize text-black text-decoration-underline fw-bold"
-                  to="/client"
-                  >{{ getdata.client }}</router-link
+                  :to="{
+                    name: 'SingleClientProfile',
+                    params: { id: getdata.client_id },
+                  }"
                 >
+                  {{ getdata.client }}
+                </router-link>
               </td>
               <td v-text="getdata.business_unit"></td>
               <td v-text="getdata.job_title"></td>
@@ -81,7 +85,7 @@
                   data-bs-whatever="@mdo"
                   @click="openAllApplied(getdata.id)"
                 >
-                  <span class="rounded-circle">{{ getdata.applied }}</span>
+                  <span class="rounded-circle">{{ getdata.all_candidate }}</span>
                 </button>
               </td>
               <td>
@@ -190,6 +194,7 @@ export default {
       return this.publish ? "bi bi-bell" : "bi bi-check-circle-fill";
     },
   },
+
   methods: {
     editVacancyId(vacancyId) {
       this.selectedVacancyId = vacancyId;
@@ -212,8 +217,10 @@ export default {
     openRejected(id) {
       this.$store.commit("setSelectedRejectItemId", id);
     },
-    openAllApplied(id) {
+    async openAllApplied(id) {
+      await this.$store.dispatch("updateVacancyId");
       this.$store.commit("setSelectedAllItemId", id);
+      const vacancyId = this.$store.state.vacancy_id;
     },
     openPublished(id) {
       this.$store.commit("setSelectedPublishedItemId", id);

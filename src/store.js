@@ -4,15 +4,18 @@ import { createStore } from 'vuex';
 export default createStore({
   state: {
     selectedAppliedItemId: null,
+    selectedCandidateItemId: null,
     selectedAssignedItemId: null,
     selectedRejectItemId:null,
     selectedAllItemId:null,
     selectedPublishItemId:null,
+    selectedJobItemId:null,
     candidates: [],
     vacancies:[],
     getCategory: [],
      adminData: {},
      noteCount: 0,
+     vacancy_id: null,
   },
   mutations: {
     setSelectedAppliedItemId(state, itemId) {
@@ -55,6 +58,15 @@ export default createStore({
     },
     SET_NOTE_COUNT(state, count) {
       state.noteCount = count;
+    },
+    setSelectedCandidateId(state, itemId) {
+      state.selectedCandidateItemId = itemId;
+    },
+    setSelectedJobId(state, jobId) {
+      state.selectedJobItemId = jobId;
+    },
+    setVacancyId(state, vacancyId) {
+      state.vacancy_id = vacancyId;
     },
   
   },

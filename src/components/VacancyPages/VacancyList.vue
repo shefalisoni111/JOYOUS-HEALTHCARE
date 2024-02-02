@@ -136,9 +136,13 @@
                           <td>
                             <router-link
                               class="text-capitalize text-black text-decoration-underline fw-bold"
-                              to="/client"
-                              >{{ data.client }}</router-link
+                              :to="{
+                                name: 'SingleClientProfile',
+                                params: { id: data.client_id },
+                              }"
                             >
+                              {{ data.client }}
+                            </router-link>
                           </td>
                           <td v-text="data.business_unit"></td>
                           <td v-text="data.job_title"></td>
@@ -186,7 +190,7 @@
                               data-bs-whatever="@mdo"
                               @click="openAllApplied(data.id)"
                             >
-                              <span class="rounded-circle">{{ data.applied }}</span>
+                              <span class="rounded-circle">{{ data.all_candidate }}</span>
                             </button>
                           </td>
                           <td>

@@ -219,7 +219,7 @@ export default {
           body: JSON.stringify(data),
         });
         if (response.ok) {
-          console.log("Event emitted successfully");
+          // console.log("Event emitted successfully");
           this.$emit("AddExperienceData");
         }
       } catch (error) {}

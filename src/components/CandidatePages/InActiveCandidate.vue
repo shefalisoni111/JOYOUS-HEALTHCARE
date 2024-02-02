@@ -90,7 +90,7 @@ export default {
         return;
       }
       const response = await axios
-        .put(`${VITE_API_URL}/candidate/approve_candidate/${id}`)
+        .put(`${VITE_API_URL}/re_activate_candidate/${id}`)
         .then((response) => {
           this.getCandidate();
         })

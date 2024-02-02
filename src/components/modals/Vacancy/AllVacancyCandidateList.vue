@@ -35,8 +35,37 @@
               <div class="col-md-12">
                 <div
                   class="pagetitle d-flex justify-content-between align-items-center p-2"
+                  v-if="getVacancyDetail.length > 0"
                 >
+                  <div class="d-flex justify-content-around gap-2">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      v-model="selectAll"
+                      @change="selectAllCandidates"
+                      id="selectAllCheckbox"
+                    />
+                    Select All
+                  </div>
+
                   <div></div>
+
+                  <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="searchbox position-relative">
+                        <!-- <form @submit.prevent="search">
+                          <input
+                            class="form-control mr-sm-2"
+                            type="search"
+                            placeholder="Search by Name"
+                            aria-label="Search"
+                            v-model="searchQuery"
+                            @input="debounceSearch"
+                          />
+                        </form> -->
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -44,6 +73,7 @@
               <table class="table candidateTable" v-if="selectedAllItemId">
                 <thead>
                   <tr>
+                    <th></th>
                     <th scope="col">candidate code</th>
                     <th scope="col">first name</th>
                     <th scope="col">last name</th>
@@ -60,6 +90,15 @@
                 </thead>
                 <tbody>
                   <tr v-for="data in getVacancyDetail" :key="data.id">
+                    <td>
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        :value="data.id"
+                        :id="data.id"
+                        v-model="checkedCandidates[data.id]"
+                      />
+                    </td>
                     <td v-text="data.candidate_code"></td>
                     <td v-text="data.first_name"></td>
                     <td v-text="data.last_name"></td>
@@ -85,7 +124,6 @@
                 </tbody>
               </table>
             </div>
-            <hr />
           </div>
           <div class="modal-footer">
             <button
@@ -96,13 +134,16 @@
             >
               Close
             </button>
-            <!-- <button
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+            <button
+              class="btn btn-primary rounded-1"
+              data-bs-target="#allCandidateVacancyList"
+              data-bs-toggle="modal"
               data-bs-dismiss="modal"
-              v-on:click="addVacancyMethod()"
+              v-on:click="updateAssignVacancyMethod($event)"
+              @click.stop="closePopup"
             >
-              Add Vacancy
-            </button> -->
+              Submit
+            </button>
           </div>
         </div>
       </div>
@@ -112,16 +153,33 @@
 
 <script>
 import axios from "axios";
+import { reactive } from "vue";
 
 export default {
   name: "AllVacancyCandidateList",
 
   data() {
-    return { getVacancyDetail: [], vacancyDetails: [] };
+    return {
+      getVacancyDetail: [],
+      vacancyDetails: [],
+
+      getRejectedList: [],
+      getAssignedList: [],
+      checkedCandidates: reactive({}),
+      selectAll: false,
+    };
+  },
+  created() {
+    this.getVacancyDetail.forEach((data) => {
+      this.$set(this.checkedCandidates, data.id, false);
+    });
   },
   computed: {
     selectedAllItemId() {
-      this.getallCandidateVacancyListMethod(this.$store.state.selectedAllItemId);
+      // this.getallCandidateVacancyListMethod(this.$store.state.selectedAllItemId);
+      this.getAllCandidateListMethod(this.$store.state.selectedAllItemId);
+      //   this.assignedCandidate(this.$store.state.selectedAssignedItemId);
+      // this.rejectCandidate(this.$store.state.selectedRejectItemId);
       return this.$store.state.selectedAllItemId;
     },
   },
@@ -129,14 +187,25 @@ export default {
     closePopup() {
       this.$store.commit("setSelectedAllItemId", null);
     },
-    async getallCandidateVacancyListMethod(id) {
+
+    selectAllCandidates() {
+      if (this.selectAll) {
+        this.getVacancyDetail.forEach((data) => {
+          this.checkedCandidates[data.id] = true;
+        });
+      } else {
+        this.checkedCandidates = {};
+      }
+    },
+
+    async getAllCandidateListMethod(id) {
       const token = localStorage.getItem("token");
       this.getVacancyDetail = [];
       this.vacancyDetails = [];
       if (this.$store.state.selectedAllItemId) {
         try {
           const response = await axios.get(
-            `${VITE_API_URL}/applied_candidate_list?vacancy_id=${id}`,
+            `${VITE_API_URL}/candidate_list_of_vacancy?vacancy_id=${id}`,
             {
               headers: {
                 "content-type": "application/json",
@@ -144,9 +213,10 @@ export default {
               },
             }
           );
-          this.getVacancyDetail = response.data.data;
-          this.vacancyDetails = response.data.vacancy_date;
+          this.getVacancyDetail = response.data.candidates_data;
+          this.vacancyDetails = response.data.vacancy_data;
           this.$emit("allVacancy");
+          // console.log(this.getVacancyDetail);
         } catch (error) {
           if (error.response) {
             if (error.response.status == 404) {
@@ -155,6 +225,42 @@ export default {
           }
         }
       } else {
+      }
+    },
+    async updateAssignVacancyMethod(event) {
+      event.stopPropagation();
+      const checkedCandidateIds = Object.keys(this.checkedCandidates)
+        .filter((candidate_id) => this.checkedCandidates[candidate_id])
+        .map((candidate_id) => parseInt(candidate_id));
+
+      if (checkedCandidateIds.length === 0) {
+        return;
+      }
+      const id = this.$store.state.selectedAllItemId;
+      const data = {
+        candidate_ids: checkedCandidateIds,
+
+        vacancy_id: id,
+      };
+
+      if (id) {
+        try {
+          const response = await fetch(`${VITE_API_URL}/assign_vacancy_to_candidates`, {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+
+          if (response.ok) {
+            alert("Candidates assigned successfully!");
+            this.checkedCandidates = {};
+            this.$emit("allVacancy");
+          } else {
+          }
+        } catch (error) {}
       }
     },
   },

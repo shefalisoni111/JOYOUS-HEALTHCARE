@@ -14,7 +14,7 @@
         </div>
         <div class="row p-3">
           <div class="full-page-calendar pt-1 pb-0">
-            <div class="calendar-header mb-2">
+            <div class="calendar-header mb-5">
               <span v-if="formattedStartDate && formattedEndDate" class="fw-bold">
                 {{
                   "Monday " + formattedStartDate + " to Sunday " + formattedEndDate
@@ -144,14 +144,14 @@
                     <div v-for="day in daysOfWeek" :key="day" class="day-header">
                       {{ day }}
                     </div>
-                    <div v-for="date in selectedDateRow" :key="date" class="day-header">
+                    <!-- <div v-for="date in selectedDateRow" :key="date" class="day-header">
                       {{ formatDate(date) }}
                       <div v-if="formatDate(date)">
                         <th>Start</th>
                         <th>End</th>
                         <th>Total</th>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </th>
 
@@ -201,6 +201,7 @@
 <script>
 import axios from "axios";
 import AppointmentAdd from "../modals/Schedule/EditAssignedShift.vue";
+import Navbar from "../Navbar.vue";
 
 export default {
   data() {
@@ -229,7 +230,7 @@ export default {
         "Sunday",
       ];
     },
-    selectedCandidate() {
+    computedSelectedCandidate() {
       return this.candidateList.find(
         (candidate) => candidate.id === this.selectedCandidateId
       );
@@ -377,6 +378,7 @@ export default {
   },
   components: {
     AppointmentAdd,
+    Navbar,
   },
   mounted() {
     this.fetchCandidateList();
@@ -390,6 +392,7 @@ export default {
 <style scoped>
 #main {
   background-color: #fdce5e17;
+  margin-top: 82px;
 }
 .calendar-header {
   display: flex;

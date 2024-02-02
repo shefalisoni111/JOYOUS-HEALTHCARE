@@ -28,9 +28,23 @@
                         <th>Document Name</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr>
-                        <td>{{ documentDetails.document_name }}</td>
+                    <tbody v-for="group in documentDetails" :key="group.id">
+                      <tr v-for="documentData in group.documents" :key="documentData.id">
+                        <td v-if="documentId === documentData.candidate_document?.id">
+                          {{ documentData.candidate_document?.document_name }}
+                          <br />
+                          <img
+                            v-if="documentData.candidate_document?.url"
+                            :src="completeImageUrl(documentData.candidate_document?.url)"
+                            alt="Document Image"
+                            style="
+                              height: 310px;
+                              width: 30%;
+                              margin: auto;
+                              display: block;
+                            "
+                          />
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -57,10 +71,10 @@
 <script>
 import axios from "axios";
 export default {
-  name: "ProfileView",
+  name: "ViewDocuments",
   data() {
     return {
-      documentDetails: {},
+      documentDetails: [],
     };
   },
   props: {
@@ -80,15 +94,28 @@ export default {
     },
   },
   methods: {
+    completeImageUrl(url) {
+      if (url) {
+        const completeUrl = `${VITE_API_URL}${url}`;
+
+        return completeUrl;
+      }
+      return null;
+    },
     async getDocumentDetails() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/documents/${this.documentId}`);
-        this.documentDetails = response.data.data;
-      } catch (error) {}
+        const response = await axios.get(
+          `${VITE_API_URL}/candidate_documentlist_on_admin/${this.$route.params.id}`
+        );
+
+        this.documentDetails = response.data;
+      } catch (error) {
+        // console.error("Error fetching document categories:", error);
+      }
     },
   },
-  mounted() {
-    this.getDocumentDetails();
+  async created() {
+    await this.getDocumentDetails();
   },
 };
 </script>

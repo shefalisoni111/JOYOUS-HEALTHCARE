@@ -49,12 +49,11 @@
                 </td> -->
               <td>
                 <button
-                  type="button"
-                  class="border-0 fs-3 bg-transparent text-success"
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="top"
-                  title="Nurse"
-                  @click="assignedCandidate(candidate.id)"
+                  class="btn btn-outline-success"
+                  data-bs-toggle="modal"
+                  data-bs-target="#assignDirectVacancy"
+                  data-bs-whatever="@mdo"
+                  @click="updateSelectedIds(candidate)"
                 >
                   <i class="bi bi-person-circle"></i>
                 </button>
@@ -111,12 +110,17 @@
       :candidateId="selectedCandidateId || 0"
       @Candidate-updated="getCandidateMethods"
     />
+    <AssignDirectVacancy
+      :candidateId="selectedCandidateId || 0"
+      @Candidate-updated="getCandidateMethods"
+    />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import EditCandidate from "../modals/CandidatePage/EditCandidate.vue";
+import AssignDirectVacancy from "../modals/CandidatePage/AssignDirectVacancy.vue";
 
 export default {
   name: "ActiveCandidate",
@@ -130,8 +134,13 @@ export default {
 
   components: {
     EditCandidate,
+    AssignDirectVacancy,
   },
   methods: {
+    updateSelectedIds(candidate) {
+      this.$store.commit("setSelectedCandidateId", candidate.id);
+      this.$store.commit("setSelectedJobId", candidate.job_id);
+    },
     selectTab(index) {
       this.activeTab = index;
     },

@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div>
     <Navbar />
     <div id="main">
@@ -27,9 +27,9 @@ ul.generalsetting h6 {
   font-size: 14px;
   font-weight: bold;
 }
-</style>
+</style> -->
 
-<!-- <template>
+<template>
   <div>
     <Navbar />
     <div id="main">
@@ -66,13 +66,19 @@ ul.generalsetting h6 {
                     </div>
                     &nbsp;&nbsp;
                     <div class="d-flex align-items-center">
-                      <span v-if="startDate && endDate" class="fw-bold">
+                      <span
+                        v-if="currentView === 'weekly' && startDate && endDate"
+                        class="fw-bold"
+                      >
                         {{
                           "Monday " +
                           formatDate(startDate) +
                           " to Sunday " +
                           formatDate(endDate)
                         }}
+                      </span>
+                      <span v-else-if="currentView === 'monthly'" class="fw-bold">
+                        {{ formatDate(startDate) + " to " + formatDate(endDate) }}
                       </span>
                     </div>
                   </div>
@@ -142,7 +148,7 @@ ul.generalsetting h6 {
     </div>
   </div>
 </template>
-<script >
+<script>
 import axios from "axios";
 import Navbar from "../components/Navbar.vue";
 export default {
@@ -156,7 +162,6 @@ export default {
   },
   components: { Navbar },
   computed: {
-
     getWeekDates() {
       const currentDate = new Date();
       const weekStart = new Date(currentDate);
@@ -255,6 +260,7 @@ export default {
 #main {
   transition: all 0.3s;
   height: 100vh;
+  margin-top: 80px;
   background-color: #fdce5e17;
 }
 .main-content {
@@ -326,4 +332,4 @@ button.nav-link > li.nav-item {
 input::-webkit-input-placeholder {
   margin-left: 5px;
 }
-</style> -->
+</style>

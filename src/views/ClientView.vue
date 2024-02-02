@@ -2,19 +2,18 @@
   <div>
     <Navbar />
     <div id="main">
-      <h6>Client Page in Progress.....</h6>
+      <!-- <h6>Client Page in Progress.....</h6> -->
+      <router-view />
+
+      <AddClients />
     </div>
-
-    <!-- <router-view />
-
-    <AddClients /> -->
   </div>
 </template>
 <script>
 import Navbar from "../components/Navbar.vue";
-// import ClientsProfileView from "../components/ClientsPages/ClientsProfileView.vue";
-// import EditClient from "../components/ClientsPages/EditClient.vue";
-// import AddClients from "../components/modals/CandidatePage/AddClients.vue";
+import ClientsProfileView from "../components/ClientsPages/ClientsProfileView.vue";
+import EditClient from "../components/ClientsPages/EditClient.vue";
+import AddClients from "../components/modals/CandidatePage/AddClients.vue";
 
 export default {
   data() {
@@ -22,9 +21,9 @@ export default {
   },
   components: {
     Navbar,
-    // ClientsProfileView,
-    // EditClient,
-    // AddClients,
+    ClientsProfileView,
+    EditClient,
+    AddClients,
   },
 
   methods: {},
@@ -34,10 +33,10 @@ export default {
 
 <style scoped>
 #main {
-  padding: 20px 20px;
+  padding: 20px 1px;
   transition: all 0.3s;
   margin-top: 80px;
-  height: 100dvh;
+
   background-color: #fdce5e17;
 }
 .main-content {

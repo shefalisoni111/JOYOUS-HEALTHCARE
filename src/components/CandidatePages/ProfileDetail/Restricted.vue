@@ -152,7 +152,7 @@ export default {
         );
 
         this.getRestrictedShiftData = response.data.shift_id;
-        this.selectedShifts = this.getRestrictedShiftData;
+        this.selectedShifts = this.getRestrictedShiftData || [];
       } catch (error) {
         // console.error("Error fetching restricted shifts:", error);
       }

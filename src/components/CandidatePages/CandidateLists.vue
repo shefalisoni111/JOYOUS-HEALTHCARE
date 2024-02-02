@@ -291,7 +291,6 @@ export default {
 
         this.searchResults = response.data;
         this.errorMessage = response.message;
-        console.log(this.errorMessage);
       } catch (error) {
         if (
           (error.response && error.response.status === 404) ||

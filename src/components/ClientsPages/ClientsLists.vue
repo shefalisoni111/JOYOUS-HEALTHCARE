@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container-fluid p-0">
-      <div id="main">
+      <div id="">
         <div class="d-flex justify-content-between px-2">
           <div class="py-3">
             <ol class="breadcrumb mb-1">
@@ -85,7 +85,7 @@
     <AddClients />
   </div>
 </template>
-<script >
+<script>
 import AllClient from "../ClientsPages/AllClient.vue";
 import InActiveClient from "../ClientsPages/InActiveClient.vue";
 

@@ -35,6 +35,24 @@
                     </div>
                   </div>
                 </div>
+                <div class="mb-3">
+                  <div class="col-12">
+                    <label class="form-label" for="selectJobTitle">Position</label>
+                  </div>
+                  <div class="col-12">
+                    <div v-for="option in options" :key="option.id">
+                      <input
+                        type="checkbox"
+                        :id="option.id"
+                        :value="option.id"
+                        v-model="fetchCategory.job_id"
+                      />
+                      <label :for="option.id" class="text-capitalize"
+                        >&nbsp;{{ option.name }}</label
+                      >
+                    </div>
+                  </div>
+                </div>
               </form>
             </div>
           </div>
@@ -69,7 +87,9 @@ export default {
     return {
       fetchCategory: {
         category_name: "",
+        job_id: [],
       },
+      options: [],
     };
   },
   props: {
@@ -78,7 +98,14 @@ export default {
       required: true,
     },
   },
-
+  computed: {
+    selectJobTitle() {
+      const job_title = this.options.find(
+        (option) => option.id === this.fetchVacancy.job_id
+      );
+      return job_title ? job_title.name : "";
+    },
+  },
   methods: {
     async fetchCategoryMethod(id) {
       try {
@@ -99,6 +126,18 @@ export default {
         // console.error("Error updating Category:", error);
       }
     },
+    async getJobTitleMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+        this.options = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
   },
   watch: {
     categoryId: {
@@ -110,6 +149,9 @@ export default {
   },
   beforeDestroy() {
     this.$options.watch.categoryId = null;
+  },
+  mounted() {
+    this.getJobTitleMethod();
   },
 };
 </script>

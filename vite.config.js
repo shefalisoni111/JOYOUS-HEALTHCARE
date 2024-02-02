@@ -19,6 +19,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
+    
   },
   define: {
       VITE_API_URL: JSON.stringify(API_URL),
@@ -27,4 +28,5 @@ export default defineConfig({
     include: ['vue'],
     exclude: ['vue-demi'],
   },
+ 
 });

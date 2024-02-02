@@ -1,23 +1,23 @@
 <template>
   <div>
     <Navbar />
-    <!-- <RouterView /> -->
-    <div id="main">
+    <RouterView />
+    <!-- <div id="main">
       <h6>TimeSheet Page in Progress.....</h6>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
 import Navbar from "../components/Navbar.vue";
-// import Custom from "../components/TimeSheetPages/CustomTimeSheet.vue";
-// import Signed from "../components/TimeSheetPages/SignedTimeSheet.vue";
-// import Weekly from "../components/TimeSheetPages/WeeklyTimeSheet.vue";
+import Custom from "../components/TimeSheetPages/CustomTimeSheet.vue";
+import Signed from "../components/TimeSheetPages/SignedTimeSheet.vue";
+import Weekly from "../components/TimeSheetPages/WeeklyTimeSheet.vue";
 
 export default {
   components: {
-    // Custom,
-    // Signed,
-    // Weekly,
+    Custom,
+    Signed,
+    Weekly,
     Navbar,
   },
 };

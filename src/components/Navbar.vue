@@ -93,12 +93,12 @@
               Booking
             </router-link>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <router-link class="nav-link" aria-current="page" to="/timesheet">
               Timesheet
             </router-link>
-          </li>
-          <!-- <li class="nav-item dropdown">
+          </li> -->
+          <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
               href="/timesheet/weekly"
@@ -121,7 +121,7 @@
                 >Signed TimeSheet</router-link
               >
             </div>
-          </li> -->
+          </li>
           <li class="nav-item">
             <router-link class="nav-link" aria-current="page" to="/invoice">
               Invoice

@@ -34,13 +34,19 @@
                     </div>
                     &nbsp;&nbsp;
                     <div class="d-flex align-items-center">
-                      <span v-if="startDate && endDate" class="fw-bold">
+                      <span
+                        v-if="currentView === 'weekly' && startDate && endDate"
+                        class="fw-bold"
+                      >
                         {{
                           "Monday " +
                           formatDate(startDate) +
                           " to Sunday " +
                           formatDate(endDate)
                         }}
+                      </span>
+                      <span v-else-if="currentView === 'monthly'" class="fw-bold">
+                        {{ formatDate(startDate) + " to " + formatDate(endDate) }}
                       </span>
                     </div>
                   </div>
@@ -233,6 +239,8 @@ export default {
 #main {
   transition: all 0.3s;
   height: 100vh;
+
+  margin-top: 82px;
   background-color: #fdce5e17;
 }
 .main-content {

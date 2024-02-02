@@ -40,11 +40,13 @@
                 <!-- <p>You clicked on {{ selectedDate }}</p>
                 <p>Status: {{ statusForSelectedDate }}</p> -->
                 <!-- Pass initialDate to the Calendar component -->
+
                 <Calendar
                   :initialDate="selectedDate"
                   :candidateId="selectedCandidateId.toString()"
                   @closeModal="closeModal"
-                  @Candidate-availability="fetchCandidateList"
+                  :availabilityId="availability_id"
+                  @Candidate-availability="handleAvailabilityChange"
                 />
               </div>
             </div>
@@ -68,7 +70,14 @@
             <tbody>
               <tr v-for="data in candidateList" :key="data.id">
                 <td class="text-capitalize fw-bold">
-                  {{ data.candidate_name }}
+                  {{ data.candidate_name + " " }}
+                  <span
+                    v-if="data.job"
+                    style="background: rgb(209, 207, 207); padding: 3px"
+                  >
+                    {{ data.job }}
+                  </span>
+                  <!-- <span class="fs-6 text-muted fw-100"><br />{{ data.job }}</span> -->
                 </td>
                 <td>
                   <div class="calendar-grid">
@@ -121,7 +130,7 @@ export default {
       endDate: { value: "", display: "" },
       currentDate: new Date(),
       selectedDate: null,
-
+      availabilityIds: [],
       selectedCandidate: null,
       selectedCandidateId: null,
       selectedCandidateData: null,
@@ -190,6 +199,9 @@ export default {
   },
 
   methods: {
+    handleAvailabilityChange(availabilityId) {
+      this.availability_id = availabilityId;
+    },
     updateDateRange() {
       this.fetchCandidateList(this.startDate);
       this.saveToLocalStorage();
@@ -284,12 +296,17 @@ export default {
         );
 
         if (selectedCandidate) {
-          const availability = selectedCandidate.availability.filter(
+          const availability = selectedCandidate.availability.find(
             (avail) => avail.date === formattedDate
           );
 
-          this.statusForSelectedDate =
-            availability.length > 0 ? availability[0].status : null;
+          if (availability) {
+            this.availability_id = availability.availability_id;
+            this.statusForSelectedDate = availability.status;
+          } else {
+            this.availability_id = null;
+            this.statusForSelectedDate = null;
+          }
 
           this.$nextTick(() => {
             this.selectedCandidate = selectedCandidate;
@@ -303,10 +320,12 @@ export default {
         } else {
           this.selectedDate = null;
           this.statusForSelectedDate = null;
+          this.availability_id = null;
         }
       } catch (error) {
         this.selectedDate = null;
         this.statusForSelectedDate = null;
+        this.availability_id = null;
       }
     },
 
@@ -324,12 +343,12 @@ export default {
           }
         );
         this.candidateList = response.data.data;
-      } catch (error) {}
-    },
-    async fetchStatus() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/availabilitys`);
-        this.candidateList = response.data.data;
+
+        this.availabilityIds = this.candidateList.map((candidate) => {
+          return candidate.availability.map(
+            (availabilityItem) => availabilityItem.availability_id
+          );
+        });
       } catch (error) {}
     },
   },
