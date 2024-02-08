@@ -113,7 +113,13 @@
 </template>
 
 <script>
-// import TextFormator from "textformator/TextFormator.vue";
+import TextFormator from "../../textformator/TextFormator.vue";
+
+export default {
+  components: {
+    TextFormator,
+  },
+};
 </script>
 
 <style scoped>

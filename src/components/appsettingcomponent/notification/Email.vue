@@ -13,7 +13,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row mt-3">
       <div class="col-12">
         <div class="bg-white px-3">
           <div class="showdata">
@@ -232,7 +232,13 @@
 </template>
 
 <script>
-// import TextFormator from "textformator/TextFormator.vue";
+import TextFormator from "../../textformator/TextFormator.vue";
+
+export default {
+  components: {
+    TextFormator,
+  },
+};
 </script>
 
 <style scoped>
