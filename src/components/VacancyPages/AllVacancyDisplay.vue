@@ -41,12 +41,13 @@
               <td v-text="getdata.business_unit"></td>
               <td v-text="getdata.job_title"></td>
 
-              <td
-                v-for="(date, index) in getdata.dates"
-                :key="index"
-                v-text="date"
-                class="widthDefine"
-              ></td>
+              <td class="widthDefine">
+                <span v-for="(date, index) in getdata.dates" :key="index">
+                  {{ date }}
+
+                  <template v-if="index !== getdata.dates.length - 1">, </template>
+                </span>
+              </td>
 
               <td v-text="getdata.shift" class="widthDefine"></td>
               <!-- <td v-text="getdata.staff_required"></td> -->

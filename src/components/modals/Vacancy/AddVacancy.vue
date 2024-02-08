@@ -97,12 +97,25 @@
                     <input
                       type="date"
                       class="form-control"
-                      v-model="dates"
-                      @change="clearError"
+                      v-model="selectedDate"
+                      @change="addDate"
                     />
                     <span v-if="!validationDateType" class="text-danger"
                       >Date Required</span
                     >
+                    <div v-if="dates.length > 0" class="mt-2">
+                      <span
+                        v-for="(date, index) in dates"
+                        :key="index"
+                        class="badge bg-secondary me-1"
+                      >
+                        {{ date }}
+                        <button
+                          class="btn-close btn-sm"
+                          @click="removeDate(index)"
+                        ></button>
+                      </span>
+                    </div>
                   </div>
                 </div>
 
@@ -194,6 +207,7 @@ export default {
       shiftsTime: [],
       notes: "",
       isValidForm: false,
+      selectedDate: null,
     };
   },
   computed: {
@@ -260,6 +274,19 @@ export default {
     },
   },
   methods: {
+    addDate() {
+      if (this.selectedDate) {
+        if (!this.dates.includes(this.selectedDate)) {
+          this.dates.push(this.selectedDate);
+        }
+        this.selectedDate = "";
+        this.clearError();
+      }
+    },
+    removeDate(index) {
+      this.dates.splice(index, 1);
+      this.clearError();
+    },
     async addVacancyMethod() {
       this.validationSelectedOptionText = this.validationSelectedFormate(this.job_id);
       this.validationSelectedBusinessUnit = this.ValidationBusinessUnit(
@@ -280,7 +307,7 @@ export default {
         const data = {
           business_unit_id: this.business_unit_id,
           job_id: this.job_id,
-          dates: [this.dates],
+          dates: this.dates,
           shift_id: this.shift_id,
           notes: this.notes,
           client_id: this.client_id,
