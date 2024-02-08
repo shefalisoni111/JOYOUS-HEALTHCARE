@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container-fluid p-0">
-      <div id="">
+      <div id="main">
         <div class="d-flex justify-content-between px-2">
           <div class="py-3">
             <ol class="breadcrumb mb-1">

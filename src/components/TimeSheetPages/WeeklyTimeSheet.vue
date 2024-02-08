@@ -22,13 +22,12 @@
                 {{
                   "Monday " + formattedStartDate + " to Sunday " + formattedEndDate
                 }} </span
-              >&nbsp; &nbsp;
-              <input
-                type="date"
-                v-model="startDate"
-                @change="updateDateRange"
-                class="dateInput"
-              />
+              >&nbsp; &nbsp; &nbsp;&nbsp;
+              <div class="d-flex align-items-center fs-4">
+                <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
+                <i class="bi bi-calendar2-check-fill"></i>
+                <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+              </div>
             </div>
             <div class="row">
               <div class="col-3">
@@ -147,14 +146,14 @@
                     <div v-for="day in daysOfWeek" :key="day" class="day-header">
                       {{ day }}
                     </div>
-                    <!-- <div v-for="date in selectedDateRow" :key="date" class="day-header">
+                    <div v-for="date in selectedDateRow" :key="date" class="day-header">
                       {{ formatDate(date) }}
-                      <div v-if="formatDate(date)">
+                      <!-- <div v-if="formatDate(date)">
                         <th>Start</th>
                         <th>End</th>
                         <th>Total</th>
-                      </div>
-                    </div> -->
+                      </div> -->
+                    </div>
                   </div>
                 </th>
 
@@ -164,7 +163,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="data in candidateList" :key="data.id">
+              <tr v-for="data in paginateCandidates" :key="data.id">
                 <td class="text-capitalize fw-bold">{{ data.name }}</td>
 
                 <td>
@@ -198,6 +197,27 @@
         </div>
       </div>
     </div>
+    <div class="mx-3" style="text-align: right" v-if="candidateList.length >= 8">
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= candidateList.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
   </div>
 </template>
 
@@ -209,7 +229,7 @@ import Navbar from "../Navbar.vue";
 export default {
   data() {
     return {
-      startDate: "",
+      startDate: new Date(),
       endDate: { value: "", display: "" },
       currentDate: new Date(),
       selectedDate: null,
@@ -219,9 +239,19 @@ export default {
 
       statusForSelectedDate: null,
       vacancyList: [],
+      currentPage: 1,
+      itemsPerPage: 8,
     };
   },
   computed: {
+    paginateCandidates() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.candidateList.slice(startIndex, endIndex);
+    },
+    totalRecordsOnPage() {
+      return this.paginateCandidates.length;
+    },
     daysOfWeek() {
       return [
         "Monday",
@@ -270,6 +300,48 @@ export default {
   },
 
   methods: {
+    moveToPrevious() {
+      if (!this.formattedStartDate || !this.formattedEndDate) {
+        return;
+      }
+
+      const startDateParts = this.formattedStartDate.split("/");
+      const endDateParts = this.formattedEndDate.split("/");
+      const formattedStartDate =
+        startDateParts[2] + "-" + startDateParts[1] + "-" + startDateParts[0];
+      const formattedEndDate =
+        endDateParts[2] + "-" + endDateParts[1] + "-" + endDateParts[0];
+
+      const startDate = new Date(formattedStartDate);
+      const endDate = new Date(formattedEndDate);
+
+      startDate.setDate(startDate.getDate() - 7);
+      endDate.setDate(endDate.getDate() - 7);
+
+      this.startDate = startDate;
+      this.endDate = endDate;
+    },
+    moveToNext() {
+      if (!this.formattedStartDate || !this.formattedEndDate) {
+        return;
+      }
+
+      const startDateParts = this.formattedStartDate.split("/");
+      const endDateParts = this.formattedEndDate.split("/");
+      const formattedStartDate =
+        startDateParts[2] + "-" + startDateParts[1] + "-" + startDateParts[0];
+      const formattedEndDate =
+        endDateParts[2] + "-" + endDateParts[1] + "-" + endDateParts[0];
+
+      const startDate = new Date(formattedStartDate);
+      const endDate = new Date(formattedEndDate);
+
+      startDate.setDate(startDate.getDate() + 7);
+      endDate.setDate(endDate.getDate() + 7);
+
+      this.startDate = startDate;
+      this.endDate = endDate;
+    },
     async handleDrop(candidateId) {
       try {
         if (!this.vacancyBeingDragged || !this.vacancyBeingDragged.id) {
@@ -344,10 +416,14 @@ export default {
 
         const selectedDate = new Date(this.startDate);
         selectedDate.setDate(parseInt(day));
+        selectedDate.setDate(selectedDate.getDate() + 1);
 
-        const formattedDate = selectedDate.toISOString().split("T")[0];
-
-        this.selectedDate = formattedDate;
+        this.selectedDate = selectedDate
+          .toISOString()
+          .split("T")[0]
+          .split("-")
+          .reverse()
+          .join("-");
         this.selectedCandidateId = actualCandidateId;
 
         const selectedCandidate = this.candidateList.find(
@@ -395,7 +471,7 @@ export default {
 <style scoped>
 #main {
   background-color: #fdce5e17;
-  margin-top: 82px;
+  margin-top: 65px;
 }
 .calendar-header {
   display: flex;

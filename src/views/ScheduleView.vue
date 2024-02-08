@@ -20,7 +20,7 @@ export default {
   padding: 20px 20px;
   transition: all 0.3s;
   height: 100dvh;
-  margin-top: 72px;
+  
   background-color: #fdce5e17;
 }
 </style> -->
@@ -85,7 +85,7 @@ export default {
           <table class="table">
             <thead>
               <tr>
-                <th>Vacancy</th>
+                <th style="width: 15%">Vacancy</th>
 
                 <th>
                   <div class="calendar-grid">
@@ -110,7 +110,7 @@ export default {
                           v-if="data.date === formattedDate(day)"
                           class="list-unstyled mb-0"
                         >
-                          <li
+                          <!-- <li
                             v-for="(vacancy, liIndex) in data.vacancy"
                             :key="vacancy.id"
                             :draggable="true"
@@ -123,15 +123,51 @@ export default {
                             }"
                           >
                             {{ vacancy.business_unit }}
-                          </li>
+                          </li> -->
+                          <li>business_unit</li>
                         </ul>
                       </div>
                     </div>
                   </div>
                 </td>
               </tr>
-              <tr v-for="data in candidateList" :key="data.id">
-                <td class="text-capitalize fw-bold">{{ data.first_name }}</td>
+              <tr>
+                <td style="border-right: 1px solid rgb(209, 208, 208)">
+                  <form
+                    class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
+                  >
+                    <input
+                      class="form-control mr-sm-2"
+                      type="search"
+                      placeholder="Search for candidate"
+                      aria-label="Search"
+                    />
+                  </form>
+                </td>
+                <td>
+                  <div
+                    style="height: 40px; overflow: auto; width: 223px; cursor: pointer"
+                  >
+                    <ul>
+                      <li>business_unit</li>
+                      <li>business_unit</li>
+                      <li>business_unit</li>
+                      <li>business_unit</li>
+                      <li>business_unit</li>
+                      <li>business_unit</li>
+                      <li>business_unit</li>
+                      <li>business_unit</li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              <tr v-for="data in paginateCandidates" :key="data.id">
+                <td
+                  class="text-capitalize fw-bold"
+                  style="border-right: 1px solid rgb(209, 208, 208)"
+                >
+                  {{ data.first_name }}
+                </td>
 
                 <td>
                   <div
@@ -163,6 +199,27 @@ export default {
         </div>
       </div>
     </div>
+    <div class="mx-3" style="text-align: right" v-if="candidateList.length >= 10">
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= candidateList.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
   </div>
 </template>
 
@@ -188,9 +245,19 @@ export default {
       dropCandidateId: null,
       dropDay: null,
       droppedContent: null,
+      currentPage: 1,
+      itemsPerPage: 10,
     };
   },
   computed: {
+    paginateCandidates() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.candidateList.slice(startIndex, endIndex);
+    },
+    totalRecordsOnPage() {
+      return this.paginateCandidates.length;
+    },
     daysOfWeek() {
       return [
         "Monday",
@@ -444,7 +511,7 @@ export default {
 <style scoped>
 #main {
   background-color: #fdce5e17;
-  margin-top: 72px;
+  margin-top: 65px;
 }
 .full-page-calendar {
   padding: 20px;

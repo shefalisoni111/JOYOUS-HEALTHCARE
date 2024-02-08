@@ -26,6 +26,7 @@
                       class="form-control"
                       v-model="first_name"
                       @input="clearError"
+                      @change="detectAutofill"
                     />
                     <span v-if="!validateClientName" class="text-danger"
                       >Client Name Required</span
@@ -42,6 +43,7 @@
                       class="form-control"
                       v-model="address"
                       @input="clearError"
+                      @change="detectAutofill"
                     />
                     <span v-if="!validateAddress" class="text-danger"
                       >Address Required</span
@@ -59,6 +61,7 @@
                         class="form-control"
                         v-model="email"
                         @input="clearError"
+                        @change="detectAutofill"
                       />
                       <span v-if="!validateEmail" class="text-danger"
                         >Invalid Email format</span
@@ -71,10 +74,20 @@
                     <label class="form-label">password</label>
                   </div>
                   <div class="col-8">
-                    <input type="password" class="form-control" v-model="password" />
+                    <input
+                      type="password"
+                      class="form-control"
+                      v-model="password"
+                      @input="clearError"
+                      @change="detectAutofill"
+                      required
+                    />
+                    <span v-if="!validatePassword" class="text-danger">
+                      Password is required
+                    </span>
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
+                <!-- <div class="mb-3 d-flex justify-content-between">
                   <div class="col-4">
                     <label class="form-label">Confirm-Password</label>
                   </div>
@@ -89,7 +102,7 @@
                       >Passwords do not Match</span
                     >
                   </div>
-                </div>
+                </div> -->
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-4">
                     <label class="form-label">phone number</label>
@@ -100,6 +113,7 @@
                       class="form-control"
                       v-model="phone_number"
                       @input="cleanPhoneNumber"
+                      @change="detectAutofill"
                     />
                     <span v-if="!validatePhoneNumber" class="text-danger"
                       >Invalid Phone Number</span
@@ -146,9 +160,10 @@ export default {
     return {
       validateAddress: true,
       validateClientName: true,
+      validatePassword: true,
       validateEmail: true,
       validatePhoneNumber: true,
-      passwordsMatch: true,
+
       first_name: "",
       ref_code: "",
       address: "",
@@ -158,13 +173,14 @@ export default {
       confirm_password: "",
       isValidForm: false,
       error: [],
+      autofilled: false,
     };
   },
   computed: {
     isFormValid() {
       return (
         this.validateEmail &&
-        this.passwordsMatch &&
+        this.validatePassword &&
         this.validatePhoneNumber &&
         this.validateClientName &&
         this.validateAddress
@@ -175,11 +191,10 @@ export default {
     address: "validateAddressFormat",
     first_name: "validateNameFormat",
     email: "validateEmailFormat",
-    password: {
-      handler: "validatePasswordMatch",
-      immediate: true,
+    password: function (newVal) {
+      this.validatePassword(newVal);
     },
-    confirm_password: "validatePasswordMatch",
+
     phone_number: "validatePhoneNumberFormat",
 
     isFormValid: function (newVal) {
@@ -187,28 +202,41 @@ export default {
     },
   },
   methods: {
+    detectAutofill() {
+      setTimeout(() => {
+        if (this.email === this.$refs.email.value) {
+          this.autofilled = true;
+        }
+      }, 100);
+
+      // Detect autofill for password field
+      setTimeout(() => {
+        if (this.password === this.$refs.password.value) {
+          this.autofilled = true;
+        }
+      }, 100);
+    },
     cleanPhoneNumber() {
       this.phone_number = this.phone_number.replace(/\D/g, "");
       this.clearError();
     },
-    validatePasswordMatch() {
-      this.passwordsMatch = this.password === this.confirm_password;
-    },
+
     async addClients() {
       this.validateAddress = this.validateAddressFormat(this.address);
       this.validateClientName = this.validateNameFormat(this.first_name);
 
       this.validateEmail = this.validateEmailFormat(this.email);
 
-      this.passwordsMatch = this.password === this.confirm_password;
+      this.validatePassword = !!this.password.trim();
 
       this.validatePhoneNumber = this.validatePhoneNumberFormat(this.phone_number);
 
       if (
         this.validateEmail &&
-        this.passwordsMatch &&
+        this.validatePassword &&
         this.validatePhoneNumber &&
-        this.validateClientName
+        this.validateClientName &&
+        this.validateAddress
       ) {
         const data = {
           first_name: this.first_name,
@@ -256,7 +284,7 @@ export default {
     clearError() {
       this.validateEmail = true;
       this.validatePhoneNumber = true;
-      this.passwordsMatch = true;
+      this.validatePassword = true;
       this.validateClientName = true;
       this.validateAddress = true;
     },

@@ -2,7 +2,7 @@
   <div>
     <div class="container-fluid p-0">
       <div id="main">
-        <div class="pagetitle d-flex justify-content-between px-2">
+        <div class="pagetitle bg-define d-flex justify-content-between px-2">
           <div class="py-3">
             <ol class="breadcrumb my-2">
               <li class="breadcrumb-item active text-uppercase fs-6">
@@ -345,15 +345,13 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-  margin-top: 72px;
+  margin-top: 63px;
 }
 .main-content {
   transition: all 0.3s;
 }
 .bg-define {
   background-color: #fdce5e17;
-  border-bottom: 1px solid #ded9d9;
-  border-top: 1px solid #ded9d9;
 }
 .color-fonts {
   color: #ff5f30;

@@ -393,9 +393,8 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-
+  margin-top: 63px;
   background-color: #fdce5e17;
-  margin-top: 72px;
 }
 .main-content {
   transition: all 0.3s;

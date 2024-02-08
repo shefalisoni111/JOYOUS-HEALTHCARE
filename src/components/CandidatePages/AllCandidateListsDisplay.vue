@@ -18,7 +18,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="candidate in getCandidatesData" :key="candidate.id">
+            <tr v-for="candidate in paginateCandidates" :key="candidate.id">
               <td v-text="candidate.id"></td>
               <td>
                 <router-link
@@ -123,6 +123,27 @@
       :candidateId="selectedCandidateId || 0"
       @Candidate-updated="getCandidateMethods"
     />
+    <div class="mx-3" style="text-align: right" v-if="getCandidatesData.length >= 8">
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= getCandidatesData.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
   </div>
 </template>
 
@@ -138,12 +159,24 @@ export default {
       getCandidatesData: [],
       inactiveCandidateData: [],
       selectedCandidateId: null,
+      currentPage: 1,
+      itemsPerPage: 11,
     };
   },
 
   components: {
     EditCandidate,
     AssignDirectVacancy,
+  },
+  computed: {
+    paginateCandidates() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.getCandidatesData.slice(startIndex, endIndex);
+    },
+    totalRecordsOnPage() {
+      return this.paginateCandidates.length;
+    },
   },
   methods: {
     updateSelectedIds(candidate) {

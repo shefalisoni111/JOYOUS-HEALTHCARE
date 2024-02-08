@@ -277,12 +277,12 @@
 
                 <button
                   type="button"
-                  class="btn btn-outline-success text-nowrap text-nowrap mb-3"
+                  class="btn btn-primary text-nowrap text-nowrap mb-3"
                   data-bs-toggle="modal"
                   data-bs-target="#addNextToKin"
                   data-bs-whatever="@mdo"
                 >
-                  Add
+                  + Add
                 </button>
               </div>
             </div>
@@ -322,6 +322,7 @@
                           data-bs-toggle="modal"
                           data-bs-target="#editNextToKin"
                           data-bs-whatever="@mdo"
+                          v-on:click="nextKinEdit(data.id)"
                         ></i>
                       </button>
                     </td>
@@ -428,7 +429,10 @@
     <EducationAdd />
     <AddNextKin @AddNextKin="getCandidateNextToKineMethod" />
     <EditBankDetails @bankDetailAdded="getCandidateMethod" />
-    <NextToKinEdit @nextToKinAdded="getCandidateNextToKineMethod" />
+    <NextToKinEdit
+      @nextToKinAdded="getCandidateNextToKineMethod"
+      :nextKinID="selectedNextKinId"
+    />
     <EditBankDetails @bankDetailAdded="getCandidateMethod" />
     <OverviewEdit @overviewAdded="getCandidateMethod" />
   </div>
@@ -464,6 +468,7 @@ export default {
         activated: "",
         employment_type_id: "",
       },
+      selectedNextKinId: null,
     };
   },
   components: {
@@ -475,6 +480,9 @@ export default {
     EditBankDetails,
   },
   methods: {
+    nextKinEdit(nextKinID) {
+      this.selectedNextKinId = nextKinID;
+    },
     async getCandidateMethod() {
       try {
         const response = await axios.get(

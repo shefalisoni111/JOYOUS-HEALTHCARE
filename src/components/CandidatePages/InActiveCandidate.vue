@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="datas in getCandidatesData" :key="datas">
+        <tr v-for="datas in paginateCandidates" :key="datas">
           <td v-text="datas.id"></td>
           <td class="text-capitalize">
             <router-link
@@ -45,6 +45,27 @@
         </tr>
       </tbody>
     </table>
+    <div class="mx-3" style="text-align: right" v-if="getCandidatesData.length >= 8">
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= getCandidatesData.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
   </div>
 </template>
 
@@ -65,7 +86,19 @@ export default {
   data() {
     return {
       getCandidatesData: [],
+      currentPage: 1,
+      itemsPerPage: 11,
     };
+  },
+  computed: {
+    paginateCandidates() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.getCandidatesData.slice(startIndex, endIndex);
+    },
+    totalRecordsOnPage() {
+      return this.paginateCandidates.length;
+    },
   },
   methods: {
     async getCandidate() {

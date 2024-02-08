@@ -23,16 +23,18 @@ body {
 #main {
   transition: all 0.3s;
 
-  border-top: 1px solid #f1e7e7;
 }
 
 
 @media (max-width: 1690px) {
   html {font-size: small;}
+
  
 }
 @media (max-width: 1390px) {
   html {font-size: x-small;}
+ 
+  
 }
 @media (max-width: 1199px) {
   #main {

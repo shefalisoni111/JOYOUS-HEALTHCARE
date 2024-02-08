@@ -20,7 +20,7 @@ export default {
   padding: 20px 20px;
   transition: all 0.3s;
   height: 100dvh;
-  margin-top: 72px;
+  
   background-color: #fdce5e17;
 }
 ul.generalsetting h6 {
@@ -135,6 +135,11 @@ ul.generalsetting h6 {
                     <table class="table candidateTable">
                       <thead>
                         <tr>
+                          <th>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" />
+                            </div>
+                          </th>
                           <th scope="col">Code</th>
                           <th scope="col">Name</th>
                           <th scope="col">Business Unit</th>
@@ -146,11 +151,29 @@ ul.generalsetting h6 {
                           <th scope="col">Client Rate</th>
                           <th scope="col">Total Cost</th>
                           <th scope="col">Paper Timesheet</th>
-                          <th scope="col">Action</th>
+                          <!-- <th scope="col">Action</th> -->
                         </tr>
                       </thead>
                       <tbody>
-                        <tr></tr>
+                        <tr>
+                          <td>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" />
+                            </div>
+                          </td>
+                          <td scope="col">f5643r</td>
+                          <td scope="col">Aniket</td>
+                          <td scope="col">BusinessUnit</td>
+                          <td scope="col">Manager</td>
+                          <td scope="col">25/01/2024</td>
+                          <td scope="col">22:00</td>
+                          <td scope="col">10:00</td>
+
+                          <td scope="col">10 hours</td>
+                          <td scope="col">60%</td>
+                          <td scope="col">$235</td>
+                          <td scope="col">testing</td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>
@@ -308,7 +331,7 @@ export default {
 #main {
   transition: all 0.3s;
   height: 100vh;
-  margin-top: 72px;
+  margin-top: 65px;
   background-color: #fdce5e17;
 }
 .main-content {

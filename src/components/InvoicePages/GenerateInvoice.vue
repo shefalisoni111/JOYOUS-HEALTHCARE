@@ -20,7 +20,7 @@ export default {
   padding: 20px 20px;
   transition: all 0.3s;
   height: 100dvh;
-  margin-top: 72px;
+  
   background-color: #fdce5e17;
 }
 ul.generalsetting h6 {
@@ -200,9 +200,9 @@ ul.generalsetting h6 {
                 <div class="tab-content" id="pills-tabContent">
                   <div
                     class="tab-pane fade show active"
-                    id="pills-home"
+                    id="pills-Weekly"
                     role="tabpanel"
-                    aria-labelledby="pills-home-tab"
+                    aria-labelledby="pills-Weekly-tab"
                   >
                     <table class="table candidateTable">
                       <thead>
@@ -223,16 +223,28 @@ ul.generalsetting h6 {
                                 :key="date"
                                 class="day-header"
                               >
-                                {{ formatDateInternal(date) }}
+                                {{ formatDate(date) }}
                               </div>
                             </div>
                           </th>
                           <th scope="col">Holiday</th>
-                          <th scope="col">Action</th>
+                          <!-- <th scope="col">Action</th> -->
                         </tr>
                       </thead>
                       <tbody>
-                        <tr></tr>
+                        <tr>
+                          <td scope="col">BusinessUnit</td>
+                          <td scope="col">weekend</td>
+                          <td scope="col">11:00Am</td>
+                          <!-- <td scope="col">11:00Am</td>
+                          <td scope="col">11:00Am</td>
+                          <td scope="col">11:00Am</td>
+                          <td scope="col">11:00Am</td>
+                          <td scope="col">11:00Am</td>
+                          <td scope="col">11:00Am</td> -->
+
+                          <td scope="col">23/2/2024</td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>
@@ -246,7 +258,7 @@ ul.generalsetting h6 {
                   </div>
                   <div
                     class="tab-pane fade"
-                    id="pills-Monthly"
+                    id="pills-Montdly"
                     role="tabpanel"
                     aria-labelledby="pills-Monthly-tab"
                   >
@@ -285,18 +297,19 @@ export default {
     return {
       currentView: "weekly",
       daysOfWeek: [
-        "Sunday",
         "Monday",
         "Tuesday",
         "Wednesday",
         "Thursday",
         "Friday",
         "Saturday",
+        "Sunday",
       ],
       startDate: new Date(),
       endDate: new Date(),
       business_unit_id: "",
       businessUnit: [],
+      selectedDateRow: [],
     };
   },
   components: { Navbar },
@@ -329,6 +342,17 @@ export default {
       const monthDates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
       return monthDates;
     },
+
+    // formattedDates() {
+    //   return this.selectedDateRow.map((day) => this.formatDate(day));
+    // },
+
+    // formattedStartDate() {
+    //   return this.formatDate(this.selectedDateRow[0]);
+    // },
+    // formattedEndDate() {
+    //   return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
+    // },
   },
   methods: {
     async getBusinessUnitMethod() {
@@ -373,6 +397,7 @@ export default {
     },
     updateDateRange() {
       const currentDate = new Date();
+      this.selectedDateRow = [];
       if (this.currentView === "weekly") {
         const weekStart = new Date(this.startDate);
         weekStart.setDate(this.startDate.getDate() - this.startDate.getDay());
@@ -399,6 +424,9 @@ export default {
       }
     },
     formatDate(date) {
+      if (!(date instanceof Date)) {
+        date = new Date(this.startDate.getFullYear(), this.startDate.getMonth(), date);
+      }
       return date.toLocaleDateString();
     },
     // async vacancyDeleteMethod(id) {
@@ -444,7 +472,7 @@ export default {
 #main {
   transition: all 0.3s;
   height: 100vh;
-  margin-top: 72px;
+  margin-top: 65px;
   background-color: #fdce5e17;
 }
 .main-content {

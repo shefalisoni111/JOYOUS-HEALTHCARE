@@ -24,7 +24,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="getdata in getVacancyDetail" :key="getdata.id">
+            <tr v-for="getdata in paginatedVacancies" :key="getdata.id">
               <td v-text="getdata.id"></td>
               <td v-text="getdata.ref_code"></td>
               <td>
@@ -176,6 +176,28 @@
     <RejectedVacancyList @rejectVacancy="createVacancy" />
     <AllVacancyCandidateList @allVacancy="createVacancy" />
     <AddVacancy @addVacancy="createVacancy" />
+
+    <div class="mt-3" style="text-align: right" v-if="getVacancyDetail.length >= 9">
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= getVacancyDetail.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
   </div>
 </template>
 
@@ -194,6 +216,8 @@ export default {
     return {
       getVacancyDetail: [],
       selectedVacancyId: 0,
+      currentPage: 1,
+      itemsPerPage: 9,
     };
   },
   components: {
@@ -208,6 +232,14 @@ export default {
   computed: {
     getIconClass() {
       return this.publish ? "bi bi-bell" : "bi bi-check-circle-fill";
+    },
+    paginatedVacancies() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.getVacancyDetail.slice(startIndex, endIndex);
+    },
+    totalRecordsOnPage() {
+      return this.paginatedVacancies.length;
     },
   },
 
@@ -307,6 +339,7 @@ export default {
 #main {
   transition: all 0.3s;
   height: 100dvh;
+
   background-color: #fdce5e17;
 }
 

@@ -68,7 +68,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="data in candidateList" :key="data.id">
+              <tr v-for="data in paginateCandidates" :key="data.id">
                 <td class="text-capitalize fw-bold">
                   {{ data.candidate_name + " " }}
                   <span
@@ -115,6 +115,27 @@
         </div>
       </div>
     </div>
+    <div class="mx-3" style="text-align: right" v-if="candidateList.length >= 8">
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= candidateList.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
   </div>
 </template>
 
@@ -139,9 +160,19 @@ export default {
       showModal: false,
       selectedCandidateStatusForDate: [],
       statusForSelectedDate: null,
+      currentPage: 1,
+      itemsPerPage: 8,
     };
   },
   computed: {
+    paginateCandidates() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.candidateList.slice(startIndex, endIndex);
+    },
+    totalRecordsOnPage() {
+      return this.paginateCandidates.length;
+    },
     daysOfWeek() {
       return [
         "Monday",

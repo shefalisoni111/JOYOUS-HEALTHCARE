@@ -166,7 +166,15 @@ export default {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr></tr>
+                        <tr>
+                          <td scope="col">Aniket</td>
+
+                          <td scope="col">Prabhu</td>
+                          <td scope="col">Active</td>
+                          <td scope="col">BusinessUnit Report</td>
+                          <td scope="col">Recipient Domain</td>
+                          <td scope="col">23/2/2024</td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>

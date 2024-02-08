@@ -91,7 +91,7 @@ export default {
 </script>
 <style scoped>
 #main {
-  margin-top: 72px;
+  margin-top: 65px;
 }
 .pagetitle {
   margin-bottom: 10px;

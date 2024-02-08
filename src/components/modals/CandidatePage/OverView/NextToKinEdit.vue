@@ -18,7 +18,7 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body mx-3" v-if="fetchCandidate">
+          <div class="modal-body mx-3" v-if="fetchNExtToKinData">
             <div class="row align-items-center">
               <form>
                 <div class="mb-3">
@@ -29,7 +29,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      v-model="fetchCandidate.name"
+                      v-model="fetchNExtToKinData.name"
                     />
                   </div>
                 </div>
@@ -41,7 +41,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      v-model="fetchCandidate.phone_number"
+                      v-model="fetchNExtToKinData.phone_number"
                       @input="cleanAndValidatePhoneNumber"
                     />
                     <span v-if="!validatePhoneNumber" class="text-danger"
@@ -57,7 +57,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      v-model="fetchCandidate.relation"
+                      v-model="fetchNExtToKinData.relation"
                     />
                   </div>
                 </div>
@@ -69,7 +69,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      v-model="fetchCandidate.address_line_1"
+                      v-model="fetchNExtToKinData.address_line_1"
                     />
                   </div>
                 </div>
@@ -81,7 +81,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      v-model="fetchCandidate.address_line_2"
+                      v-model="fetchNExtToKinData.address_line_2"
                     />
                   </div>
                 </div>
@@ -93,7 +93,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      v-model="fetchCandidate.city"
+                      v-model="fetchNExtToKinData.city"
                     />
                   </div>
                 </div>
@@ -105,7 +105,7 @@
                     <input
                       type="number"
                       class="form-control"
-                      v-model="fetchCandidate.postcode"
+                      v-model="fetchNExtToKinData.postcode"
                     />
                   </div>
                 </div>
@@ -124,7 +124,7 @@
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              @click.prevent="updateNextToKinMethod(fetchCandidate.id)"
+              @click.prevent="updateNextToKinMethod()"
             >
               Save
             </button>
@@ -142,7 +142,7 @@ export default {
   name: "NextToKinEdit",
   data() {
     return {
-      fetchCandidate: {
+      fetchNExtToKinData: {
         name: "",
         phone_number: "",
         relation: "",
@@ -155,23 +155,28 @@ export default {
       validatePhoneNumber: true,
     };
   },
-
+  props: {
+    nextKinID: {
+      type: [String, Number, null],
+      required: true,
+    },
+  },
   methods: {
     cleanAndValidatePhoneNumber() {
-      this.fetchCandidate.phone_number = this.fetchCandidate.phone_number.replace(
+      this.fetchNExtToKinData.phone_number = this.fetchNExtToKinData.phone_number.replace(
         /\D/g,
         ""
       );
 
-      this.validatePhoneNumber = this.fetchCandidate.phone_number.length === 10;
+      this.validatePhoneNumber = this.fetchNExtToKinData.phone_number.length === 10;
     },
-    async fetchNextToKinMethod() {
+    async fetchNextToKinMethod(id) {
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/candidates/${this.$route.params.id}/next_of_kins`
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/next_of_kins/${id}`
         );
 
-        this.fetchCandidate = response.data.data;
+        this.fetchNExtToKinData = response.data.data;
       } catch (error) {
         // console.error("Error fetching todo:", error);
       }
@@ -179,8 +184,8 @@ export default {
     async updateNextToKinMethod(id) {
       try {
         await axios.put(
-          `${VITE_API_URL}/candidates/${this.$route.params.id}/next_of_kins/${id}`,
-          this.fetchCandidate
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/next_of_kins/${this.nextKinID}`,
+          this.fetchNExtToKinData
         );
 
         alert("NextToKin updated successfully");
@@ -190,7 +195,17 @@ export default {
       }
     },
   },
-
+  watch: {
+    nextKinID: {
+      immediate: true,
+      handler(newNextKinID) {
+        this.fetchNextToKinMethod(newNextKinID);
+      },
+    },
+  },
+  beforeDestroy() {
+    this.$options.watch.nextKinID = null;
+  },
   mounted() {
     this.fetchNextToKinMethod();
   },

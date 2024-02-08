@@ -16,7 +16,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="client in getClientDetail" :key="client.id">
+          <tr v-for="client in paginateCandidates" :key="client.id">
             <td v-text="client.ref_code"></td>
             <td>
               <router-link
@@ -78,6 +78,27 @@
         </tbody>
       </table>
     </div>
+    <div class="mx-3" style="text-align: right" v-if="getClientDetail.length >= 8">
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= getClientDetail.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
   </div>
 </template>
 <script>
@@ -90,11 +111,22 @@ export default {
 
       isActive: true,
       searchQuery: "",
+      currentPage: 1,
+      itemsPerPage: 8,
     };
   },
 
   components: {},
-
+  computed: {
+    paginateCandidates() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.getClientDetail.slice(startIndex, endIndex);
+    },
+    totalRecordsOnPage() {
+      return this.paginateCandidates.length;
+    },
+  },
   methods: {
     async clientsDeleteMethod(id) {
       if (!window.confirm("Are you Sure ?")) {

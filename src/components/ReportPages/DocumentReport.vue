@@ -144,7 +144,17 @@ export default {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr></tr>
+                        <tr>
+                          <td scope="col">1</td>
+                          <td scope="col">Aniket</td>
+
+                          <td scope="col">ID Proof</td>
+                          <td scope="col">Pancard</td>
+                          <td scope="col">24/1/2024</td>
+                          <td scope="col">3/2/2024</td>
+                          <td scope="col">7/8/2024</td>
+                          <td scope="col">Active</td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>

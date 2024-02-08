@@ -349,7 +349,7 @@ export default {
 <style scoped>
 .main {
   background-color: #fdce5e17;
-  margin-top: 72px;
+  margin-top: 65px;
 }
 .fs-smaller {
   font-size: smaller;

@@ -170,11 +170,11 @@ export default {
                     <table class="table candidateTable">
                       <thead>
                         <tr>
-                          <th scope="col">#Type</th>
+                          <!-- <th scope="col">#Type</th> -->
                           <th scope="col">Employee Code</th>
 
                           <th scope="col">Employee First Name</th>
-                          <th scope="col">Employee First Name</th>
+                          <th scope="col">Employee Last Name</th>
                           <th scope="col">Position</th>
                           <th scope="col">Client</th>
                           <th scope="col">Business Unit</th>
@@ -195,7 +195,29 @@ export default {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr></tr>
+                        <tr>
+                          <td scope="col">57820534</td>
+
+                          <td scope="col">Aniket</td>
+                          <td scope="col">Yadav</td>
+                          <td scope="col">Manager</td>
+                          <td scope="col">clientDemo</td>
+                          <td scope="col">BusinessUnit</td>
+                          <td scope="col">23/2/2024</td>
+                          <td scope="col">2/2/2024</td>
+                          <td scope="col">online</td>
+
+                          <td scope="col">565664</td>
+                          <td scope="col">12:00</td>
+                          <td scope="col">7:00</td>
+                          <td scope="col">8</td>
+                          <td scope="col">$45</td>
+                          <td scope="col">8</td>
+                          <td scope="col">7</td>
+                          <td scope="col">$23</td>
+                          <td scope="col">1</td>
+                          <td scope="col">active</td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>

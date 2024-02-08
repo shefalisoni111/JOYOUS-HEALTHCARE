@@ -20,7 +20,7 @@ export default {
   padding: 20px 20px;
   transition: all 0.3s;
   height: 100dvh;
-  margin-top: 72px;
+  
   background-color: #fdce5e17;
 }
 ul.generalsetting h6 {
@@ -138,11 +138,27 @@ ul.generalsetting h6 {
                           <th scope="col">Notes</th>
                           <th scope="col">Mailed At</th>
                           <th scope="col">Status</th>
-                          <th scope="col">Action</th>
+                          <!-- <th scope="col">Action</th> -->
                         </tr>
                       </thead>
                       <tbody>
-                        <tr></tr>
+                        <tr>
+                          <td scope="col">67cde3</td>
+                          <td scope="col">Aniket</td>
+                          <td scope="col">BusinessUnit</td>
+                          <td scope="col">Manager</td>
+                          <td scope="col">Night Shift 22:00-10:00</td>
+                          <td scope="col">merchant</td>
+                          <td scope="col">25/01/2024</td>
+                          <td scope="col">22:00</td>
+                          <td scope="col">10:00</td>
+                          <td scope="col">2:00</td>
+                          <td scope="col">10 hours</td>
+                          <td scope="col">testing</td>
+                          <td scope="col">aniket@gmail.com</td>
+                          <td scope="col">active</td>
+                          <!-- <td scope="col">view</td> -->
+                        </tr>
                       </tbody>
                     </table>
                   </div>
@@ -300,7 +316,7 @@ export default {
 #main {
   transition: all 0.3s;
   height: 100vh;
-  margin-top: 72px;
+  margin-top: 65px;
   background-color: #fdce5e17;
 }
 .main-content {

@@ -240,25 +240,35 @@
                 </router-link>
               </li>
 
-              <li class="px-3">
-                <a class="d-flex align-items-center"></a
-                ><i class="bi bi-asterisk pe-2"></i><span>Activity Log</span>
+              <li class="cursor-pointer my-1">
+                <a class="dropdown-item d-flex align-items-center">
+                  <i class="bi bi-asterisk pe-2"></i><span>Activity Log</span></a
+                >
               </li>
 
-              <li class="px-3">
-                <i class="bi bi-ban-fill pe-2"></i><span>Recruitment</span>
+              <li class="cursor-pointer my-1">
+                <a class="dropdown-item d-flex align-items-center"
+                  ><i class="bi bi-ban-fill pe-2"></i><span>Recruitment</span></a
+                >
               </li>
 
-              <li class="px-3">
-                <i class="bi bi-journal-arrow-down pe-2"></i><span>Diary Notes</span>
+              <li class="cursor-pointer my-1">
+                <a class="dropdown-item d-flex align-items-center"
+                  ><i class="bi bi-journal-arrow-down pe-2"></i
+                  ><span>Diary Notes</span></a
+                >
               </li>
 
-              <li class="px-3">
-                <i class="bi bi-gear-wide pe-2"></i><span>Personal Settings</span>
+              <li class="cursor-pointer my-1">
+                <a class="dropdown-item d-flex align-items-center"
+                  ><i class="bi bi-gear-wide pe-2"></i><span>Personal Settings</span></a
+                >
               </li>
 
-              <li class="px-3">
-                <i class="bi bi-brightness-low pe-2"></i><span>Support</span>
+              <li class="cursor-pointer my-1">
+                <a class="dropdown-item d-flex align-items-center">
+                  <i class="bi bi-brightness-low pe-2"></i><span>Support</span>
+                </a>
               </li>
               <li>
                 <hr class="dropdown-divider" />

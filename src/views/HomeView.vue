@@ -584,7 +584,7 @@ export default {
     if (inputElement) {
       inputElement.value = this.selectedMonth;
     }
-    const timestamp = 1707324326139;
+    const timestamp = 1707369178494;
     const dates = new Date(timestamp);
     console.log(dates);
   },
@@ -599,7 +599,7 @@ export default {
   padding: 10px;
 }
 #main {
-  margin-top: 70px;
+  margin-top: 65px;
 }
 .left-flex-border,
 .right-flex-border {

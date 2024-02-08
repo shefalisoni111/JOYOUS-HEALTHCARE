@@ -128,19 +128,24 @@
                 <td scope="row">
                   <i class="bi bi-square-fill" :style="{ color: jobs.color }"></i>
                 </td>
-                <td v-text="jobs.name"></td>
+                <td class="text-capitalize" v-text="jobs.name"></td>
                 <td v-text="jobs.job_code"></td>
                 <td v-text="jobs.no_of_client"></td>
                 <td v-text="jobs.no_of_candidates"></td>
                 <td>2</td>
                 <td>
-                  <!-- <i
-                    class="bi bi-trash btn btn btn-outline-danger"
-                    v-on:click="jobsDelete(jobs.id)"
-                  ></i>
-                  <span>&nbsp;</span> -->
                   <button
-                    class="btn btn-primary text-nowrap"
+                    class="bi bi-pencil btn-sm btn btn-primary rounded-1 text-uppercase fw-medium"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editJob"
+                    data-bs-whatever="@mdo"
+                    type="button"
+                    v-on:click="jobsEdit(jobs.id)"
+                  ></button>
+
+                  <span>&nbsp;</span>
+                  <button
+                    class="btn btn-primary btn-sm text-nowrap"
                     v-on:click="jobActive(jobs.id)"
                   >
                     Re-Activate
@@ -154,12 +159,14 @@
     </div>
 
     <AddJobbs @jobAdded="getJobData" />
+    <EditJob :jobID="selectedjobID" @jobUpdate="getInactiveJobData" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import AddJobbs from "../modals/appsetting/AddJobbs.vue";
+import EditJob from "../modals/appsetting/EditJob.vue";
 
 export default {
   name: "AppJobDetail",
@@ -168,15 +175,20 @@ export default {
       getJobs: [],
       getInActiveJobs: [],
       activeTab: "active",
+      selectedjobID: null,
     };
   },
   components: {
     AddJobbs,
+    EditJob,
   },
 
   methods: {
     setActiveTab(tab) {
       this.activeTab = tab;
+    },
+    jobsEdit(jobID) {
+      this.selectedjobID = jobID;
     },
     jobActive(id) {
       if (!window.confirm("Are you Sure ?")) {
@@ -187,14 +199,14 @@ export default {
       });
       alert("Record Inactive ");
     },
-    jobsDelete(id) {
-      if (!window.confirm("Are you Sure ?")) {
-        return;
-      }
-      axios.delete(`${VITE_API_URL}/jobs/` + id).then((response) => {
-        this.getInactiveJobData();
-      });
-    },
+    // jobsDelete(id) {
+    //   if (!window.confirm("Are you Sure ?")) {
+    //     return;
+    //   }
+    //   axios.delete(`${VITE_API_URL}/jobs/` + id).then((response) => {
+    //     this.getInactiveJobData();
+    //   });
+    // },
     jobsInActive(id) {
       if (!window.confirm("Are you Sure ?")) {
         return;
@@ -302,6 +314,12 @@ table {
 .table th,
 .table td {
   text-align: center;
-  width: 14.2857%;
+  width: 11.2857%;
+}
+.table td:last-child {
+  width: 16% !important;
+}
+.table th:last-child {
+  width: 16% !important;
 }
 </style>

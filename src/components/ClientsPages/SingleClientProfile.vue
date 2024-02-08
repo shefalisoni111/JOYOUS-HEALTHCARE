@@ -6,7 +6,10 @@
           <div class="">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active text-uppercase fs-6">
-                Dashboard / CANDIDATES /
+                <router-link class="nav-link d-inline" aria-current="page" to="/home"
+                  >Dashboard</router-link
+                >
+                /
                 <span class="color-fonts">{{ getClientDatas.first_name }}</span>
               </li>
             </ol>
@@ -254,13 +257,7 @@ export default {
   padding: 10px;
   transition: all 0.3s;
 }
-.bg-white {
-  border-left: 1px solid #dedede;
-}
-.bg-orange-light {
-  background: #fef8f8;
-  background-color: #fdce5e17;
-}
+
 .card ul li {
   display: inline-block;
 }

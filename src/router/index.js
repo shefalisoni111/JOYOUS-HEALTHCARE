@@ -419,7 +419,7 @@ const router = createRouter({
         },
         {
           path: "/report/RateCard",
-          name: "RateCard",
+          name: "ReportRateCard",
           component: () =>
             import(
               "@/components/ReportPages/RateCard.vue"

@@ -18,7 +18,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="data in getInactiveData" :key="data.id">
+            <tr v-for="data in displayedVacancies" :key="data.id">
               <td v-text="data.id"></td>
               <td v-text="data.ref_code"></td>
               <td>
@@ -53,6 +53,27 @@
         </table>
       </div>
     </div>
+    <div class="mt-3" style="text-align: right" v-if="getInactiveData.length >= 10">
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= getInactiveData.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
   </div>
 </template>
 
@@ -65,9 +86,25 @@ export default {
     return {
       getInactiveData: [],
       inactiveCandidateData: [],
+      currentPage: 1,
+      itemsPerPage: 10,
     };
   },
-
+  computed: {
+    displayedVacancies() {
+      return this.getInactiveData.length >= 8
+        ? this.paginatedVacancies
+        : this.getInactiveData;
+    },
+    paginatedVacancies() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.getInactiveData.slice(startIndex, endIndex);
+    },
+    totalRecordsOnPage() {
+      return this.getInactiveData.length;
+    },
+  },
   components: {},
   methods: {
     reActivatedMethod(id) {

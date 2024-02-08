@@ -19,7 +19,7 @@ export default {
 #main {
   padding: 20px 20px;
   transition: all 0.3s;
-  margin-top: 72px;
+  
   height: 100dvh;
   background-color: #fdce5e17;
 }
@@ -210,7 +210,7 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-  margin-top: 72px;
+  margin-top: 60px;
 }
 .main-content {
   transition: all 0.3s;
