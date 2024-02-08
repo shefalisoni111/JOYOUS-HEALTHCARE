@@ -49,7 +49,7 @@
               <li class="nav-item" role="presentation">
                 <button
                   class="nav-link text-capitalize"
-                  id="cancleshift"
+                  id="cancelshift"
                   data-bs-toggle="tab"
                   data-bs-target="#contact"
                   type="button"
@@ -57,7 +57,7 @@
                   aria-controls="contact"
                   aria-selected="false"
                 >
-                  cancle shift
+                  cancel shift
                 </button>
               </li>
               <li class="nav-item" role="presentation">
@@ -129,7 +129,7 @@
                 class="tab-pane fade"
                 id="contact"
                 role="tabpanel"
-                aria-labelledby="cancleshift"
+                aria-labelledby="cancelshift"
               >
                 <p class="p-4">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque dolore

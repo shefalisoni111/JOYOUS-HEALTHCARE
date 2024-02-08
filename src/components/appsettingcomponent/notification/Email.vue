@@ -115,7 +115,7 @@
                     <li class="nav-item" role="presentation">
                       <button
                         class="nav-link"
-                        id="cancleshifts"
+                        id="cancelshifts"
                         data-bs-toggle="pill"
                         data-bs-target="#pills-contact"
                         type="button"
@@ -123,7 +123,7 @@
                         aria-controls="pills-contact"
                         aria-selected="false"
                       >
-                        Cancle Shifts
+                        Cancel Shifts
                       </button>
                     </li>
                   </ul>
@@ -176,7 +176,7 @@
                       class="tab-pane fade"
                       id="pills-contact"
                       role="tabpanel"
-                      aria-labelledby="cancleshifts"
+                      aria-labelledby="cancelshifts"
                       tabindex="0"
                     >
                       ...
