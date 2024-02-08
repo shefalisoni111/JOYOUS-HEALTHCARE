@@ -5,7 +5,7 @@
         <div class="d-flex align-items-center">
           <ol class="breadcrumb mb-1 p-3">
             <li class="breadcrumb-item active text-uppercase fw-bold">
-              Notification setting / <span>SMS</span>
+              Notification setting / <span class="clr">SMS</span>
             </li>
           </ol>
         </div>
@@ -112,7 +112,7 @@
   </div>
 </template>
 
-<script >
+<script>
 // import TextFormator from "textformator/TextFormator.vue";
 </script>
 
@@ -122,12 +122,19 @@
   background: none;
   margin-left: 4px;
 }
+
+.nav-pills .nav-link {
+  color: #302d2c;
+}
 .nav-pills .nav-link.active {
-  color: #0d6efd;
-  border-bottom: 2px solid #0d6efd;
+  color: #ff5722;
+  border-bottom: 2px solid #ff5722;
   border-radius: 0;
   background-color: transparent;
   font-weight: bold;
+}
+.clr {
+  color: #ff5722;
 }
 .nav-pills {
   border-bottom: 1px solid #ddd6d6;

@@ -205,19 +205,19 @@
   </div>
 </template>
 
-<script >
+<script>
 // import TextFormator from "textformator/TextFormator.vue";
 </script>
 
 <style scoped>
 .showdata .nav-link {
   color: #ffffff;
-  background: #0d6efd;
+  background: #ff5722;
   margin-left: 4px;
 }
 .bi-toggle-on {
   font-size: 40px;
-  color: #0d6efd;
+  color: #ff5722;
 }
 .showdata .nav-link.active {
   color: #000;
@@ -238,10 +238,13 @@ ul.generalsetting h6 {
   background: none;
   margin-left: 4px;
 }
+ol.breadcrumb li span {
+  color: #ff5722;
+}
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  color: #0d6efd;
-  border-bottom: 2px solid #0d6efd;
+  color: #ff5722;
+  border-bottom: 2px solid #ff5722;
   border-radius: 0;
   background-color: transparent;
   font-weight: bold;

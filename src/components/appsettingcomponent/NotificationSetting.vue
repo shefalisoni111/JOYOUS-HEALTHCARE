@@ -9,7 +9,7 @@
           <div class="leftside">
             <div class="heading mb-3 position-relative">
               <p class="bforeline"></p>
-              <p class="mb-0 text-uppercase gs">notifications Settings</p>
+              <p class="mb-0 text-uppercase fw-bold genSetting">notifications Settings</p>
               <p class="afterline"></p>
             </div>
             <div>
@@ -78,14 +78,21 @@
   </div>
 </template>
 
-<script >
+<script>
 import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
+
+export default {
+  components: {
+    Navbar,
+    Sidebar,
+  },
+};
 </script>
 <style scoped>
-/*--------------------------------------------------------------
-# Page Title
---------------------------------------------------------------*/
+#main {
+  margin-top: 72px;
+}
 .pagetitle {
   margin-bottom: 10px;
   background-color: #fff;
@@ -95,16 +102,16 @@ import Sidebar from "../Sidebar.vue";
   font-size: 24px;
   margin-bottom: 0;
   font-weight: 600;
-  color: #0d6efd;
+  color: #ff5722;
 }
 
 ul.generalsetting li i.rounded-circle {
-  background: #ebf2f8;
+  background: #fff4de;
   width: 48px;
   height: 40px;
   text-align: center;
   line-height: 40px;
-  color: #0d6efd;
+  color: #ff5722;
 }
 ul.generalsetting li {
   padding: 4px;
@@ -115,6 +122,9 @@ ul.generalsetting li a .job p {
 ul.generalsetting li a .job p,
 ul.generalsetting li a .job h6 {
   color: #000;
+}
+.genSetting {
+  color: #ff5722;
 }
 
 ul.generalsetting h6 {
@@ -128,8 +138,7 @@ ul.generalsetting li a {
   padding: 3px;
 }
 a.router-link-active {
-  color: #0d6efd;
-  background-color: #fafdff;
+  color: #ff5722;
 }
 
 a.router-link-active::after {
@@ -137,22 +146,7 @@ a.router-link-active::after {
   font-family: "bootstrap-icons";
   display: flex;
   align-items: center;
-}
-.heading p.bforeline {
-  width: 18px;
-  height: 0.3px;
-  background: #d8c9c9;
-  left: 0;
-  top: 50%;
-  position: absolute;
-}
-.heading p.afterline {
-  width: 126px;
-  height: 0.3px;
-  background: #d8c9c9;
-  right: 0;
-  top: 50%;
-  position: absolute;
+  color: #ff5722;
 }
 
 .heading p.gs {

@@ -30,7 +30,7 @@ export default {
   padding: 20px 20px;
   transition: all 0.3s;
   height: 100dvh;
-  margin-top: 80px;
+  margin-top: 72px;
   background-color: #fdce5e17;
 }
 .main-content {

@@ -159,16 +159,17 @@ export default {
     EmploymentTypeDetails,
     Shift,
   },
+  data() {
+    return {};
+  },
+  methods: {},
+  mounted() {},
 };
 </script>
 
 <style scoped>
-/*--------------------------------------------------------------
-# Page Title
---------------------------------------------------------------*/
-
 #main {
-  margin-top: 80px;
+  margin-top: 72px;
 }
 .docSetting {
   margin-left: -16px;
@@ -183,12 +184,6 @@ export default {
   margin-bottom: 10px;
   background-color: #fff;
   padding: 10px;
-}
-.pagetitle h1 {
-  font-size: 24px;
-  margin-bottom: 0;
-  font-weight: 600;
-  color: #0d6efd;
 }
 
 ul.generalsetting li i.rounded-circle {
@@ -225,22 +220,11 @@ ul.generalsetting h6 {
   width: 100%;
 }
 
-.settingsdetails p span {
-  width: 100%;
-  height: 0;
-  left: 0;
-  bottom: 5px;
-  border-bottom: 3px solid #0d6efd;
-}
 ul.generalsetting li a {
   display: flex;
   justify-content: space-between;
   width: 100%;
   padding: 3px;
-}
-a.router-link-active {
-  color: #0d6efd;
-  background-color: #fdce5e38;
 }
 
 a.router-link-active::after {

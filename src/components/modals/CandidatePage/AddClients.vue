@@ -96,12 +96,17 @@
                   </div>
                   <div class="col-8">
                     <input
-                      type="number"
+                      type="text"
                       class="form-control"
                       v-model="phone_number"
-                      @input="clearError"
+                      @input="cleanPhoneNumber"
                     />
                     <span v-if="!validatePhoneNumber" class="text-danger"
+                      >Invalid Phone Number</span
+                    >
+                    <span
+                      v-if="phone_number && !validatePhoneNumberFormat(phone_number)"
+                      class="text-danger"
                       >Invalid Phone Number</span
                     >
                   </div>
@@ -170,7 +175,10 @@ export default {
     address: "validateAddressFormat",
     first_name: "validateNameFormat",
     email: "validateEmailFormat",
-    password: "validatePasswordMatch",
+    password: {
+      handler: "validatePasswordMatch",
+      immediate: true,
+    },
     confirm_password: "validatePasswordMatch",
     phone_number: "validatePhoneNumberFormat",
 
@@ -179,6 +187,13 @@ export default {
     },
   },
   methods: {
+    cleanPhoneNumber() {
+      this.phone_number = this.phone_number.replace(/\D/g, "");
+      this.clearError();
+    },
+    validatePasswordMatch() {
+      this.passwordsMatch = this.password === this.confirm_password;
+    },
     async addClients() {
       this.validateAddress = this.validateAddressFormat(this.address);
       this.validateClientName = this.validateNameFormat(this.first_name);
@@ -220,11 +235,11 @@ export default {
       }
     },
     validateEmailFormat(email) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const emailRegex = /^[^\s@]+@gmail\.com$/;
       return emailRegex.test(email);
     },
     validateNameFormat(first_name) {
-      const nameRegex = /[a-zA-Z]+\\.?/;
+      const nameRegex = /[A-Za-z]/;
       return nameRegex.test(first_name);
     },
     validateAddressFormat(address) {
@@ -232,7 +247,10 @@ export default {
       return addressRegex.test(address);
     },
     validatePhoneNumberFormat(phoneNumber) {
-      const phoneRegex = /^[0-9]{10}$/;
+      if (phoneNumber.trim() === "") {
+        return false;
+      }
+      const phoneRegex = /^\d{10}$/;
       return phoneRegex.test(phoneNumber);
     },
     clearError() {

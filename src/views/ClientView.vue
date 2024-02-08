@@ -13,7 +13,7 @@
 import Navbar from "../components/Navbar.vue";
 import ClientsProfileView from "../components/ClientsPages/ClientsProfileView.vue";
 import EditClient from "../components/ClientsPages/EditClient.vue";
-import AddClients from "../components/modals/CandidatePage/AddClients.vue";
+import AddClients from "@/components/modals/CandidatePage/AddClients.vue";
 
 export default {
   data() {
@@ -35,7 +35,7 @@ export default {
 #main {
   padding: 20px 1px;
   transition: all 0.3s;
-  margin-top: 80px;
+  margin-top: 72px;
 
   background-color: #fdce5e17;
 }

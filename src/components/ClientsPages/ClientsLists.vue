@@ -6,7 +6,10 @@
           <div class="py-3">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active text-uppercase fs-6">
-                Dashboard / <span class="color-fonts">Clients </span>
+                <router-link class="nav-link d-inline" aria-current="page" to="/home"
+                  >Dashboard</router-link
+                >
+                / <span class="color-fonts">Clients </span>
               </li>
             </ol>
           </div>
@@ -82,7 +85,6 @@
         </div>
       </div>
     </div>
-    <AddClients />
   </div>
 </template>
 <script>

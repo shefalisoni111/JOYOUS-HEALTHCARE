@@ -2,7 +2,7 @@
   <div>
     <Navbar />
     <div id="main">
-      <h6>Client Invoice Page in Progress.....</h6>
+      <h6>PAyroll Page in Progress.....</h6>
     </div>
   </div>
 </template>
@@ -19,13 +19,9 @@ export default {
 #main {
   padding: 20px 20px;
   transition: all 0.3s;
+
   height: 100dvh;
-  margin-top: 72px;
   background-color: #fdce5e17;
-}
-ul.generalsetting h6 {
-  font-size: 14px;
-  font-weight: bold;
 }
 </style> -->
 
@@ -33,28 +29,70 @@ ul.generalsetting h6 {
   <div>
     <Navbar />
     <div id="main">
-      <div class="pagetitle d-flex justify-content-between px-2">
-        <div class="py-3">
-          <ol class="breadcrumb mb-1">
-            <li class="breadcrumb-item active text-uppercase fs-6">
-              <router-link class="nav-link d-inline" aria-current="page" to="/home"
-                >Dashboard</router-link
-              >
-              / <span class="color-fonts">Signed TimeSheet</span>
-            </li>
-          </ol>
-        </div>
-      </div>
-
       <div class="container-fluid mt-3">
         <div class="row">
           <div class="col-12">
             <div class="">
+              <div class="gap-2 d-flex ms-2">
+                <select v-model="client_id" id="selectClients">
+                  <option value="">All Client</option>
+                  <option
+                    v-for="option in clientData"
+                    :key="option.id"
+                    :value="option.id"
+                    aria-placeholder="Select Job"
+                  >
+                    {{ option.first_name }}
+                  </option>
+                </select>
+                <select v-model="business_unit_id" id="selectBusinessUnit">
+                  <option value="">All Business Unit</option>
+                  <option
+                    v-for="option in businessUnit"
+                    :key="option.id"
+                    :value="option.id"
+                    placeholder="Select BusinessUnit"
+                  >
+                    {{ option.name }}
+                  </option>
+                </select>
+                <select v-model="client_id">
+                  <option value="">All Candidate Status</option>
+                </select>
+                <select v-model="client_id">
+                  <option value="">All Candidate</option>
+                </select>
+                <select v-model="client_id" id="selectEmployeeType">
+                  <option value="">All Employee Type</option>
+                  <option
+                    v-for="option in employeeData"
+                    :key="option.id"
+                    :value="option.id"
+                  >
+                    {{ option.title }}
+                  </option>
+                </select>
+                <select v-model="job_id" id="selectOption">
+                  <option value="">All Position</option>
+                  <option v-for="option in options" :key="option.id" :value="option.id">
+                    {{ option.name }}
+                  </option>
+                </select>
+                <select v-model="client_id">
+                  <option value="">All Payroll Frequency</option>
+                </select>
+                <select v-model="client_id">
+                  <option value="">Status</option>
+                </select>
+              </div>
               <div>
                 <div class="p-2">
                   <div class="d-flex justify-content-between">
                     <div class="d-flex">
                       <div class="d-flex align-items-center gap-2">
+                        <select>
+                          <option>By Shift Date :</option>
+                        </select>
                         <select
                           class="form-control"
                           v-model="currentView"
@@ -94,22 +132,19 @@ ul.generalsetting h6 {
                     </div>
 
                     <div class="d-flex gap-3 align-items-center">
-                      <form
-                        class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
-                      >
-                        <input
-                          class="form-control mr-sm-2"
-                          type="search"
-                          placeholder="Search by Name"
-                          aria-label="Search"
-                        />
-                      </form>
+                      <button type="button" class="btn btn-outline-success text-nowrap">
+                        <i class="bi bi-download"></i> Export CSV
+                      </button>
+                      <button type="button" class="btn btn-outline-success text-nowrap">
+                        <i class="bi bi-download"></i> Export CSV(All)
+                      </button>
+                      <button type="button" class="btn btn-outline-success text-nowrap">
+                        <i class="bi bi-eye"></i> Customize View
+                      </button>
                     </div>
                   </div>
                 </div>
-                <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                   
-                  </ul> -->
+
                 <div v-if="currentView === 'weekly'">
                   <div>
                     <div v-for="(day, index) in daysOfWeek" :key="index"></div>
@@ -135,18 +170,28 @@ ul.generalsetting h6 {
                     <table class="table candidateTable">
                       <thead>
                         <tr>
-                          <th scope="col">Code</th>
-                          <th scope="col">Name</th>
+                          <th scope="col">#Type</th>
+                          <th scope="col">Employee Code</th>
+
+                          <th scope="col">Employee First Name</th>
+                          <th scope="col">Employee First Name</th>
+                          <th scope="col">Position</th>
+                          <th scope="col">Client</th>
                           <th scope="col">Business Unit</th>
-                          <th scope="col">Job</th>
                           <th scope="col">Shift Date</th>
-                          <th scope="col">Start Time</th>
-                          <th scope="col">End Time</th>
-                          <th scope="col">Total Hours</th>
-                          <th scope="col">Client Rate</th>
-                          <th scope="col">Total Cost</th>
-                          <th scope="col">Paper Timesheet</th>
-                          <th scope="col">Action</th>
+                          <th scope="col">Approved Date</th>
+                          <th scope="col">Payment Ref</th>
+
+                          <th scope="col">Payroll Id</th>
+                          <th scope="col">Time From</th>
+                          <th scope="col">Time To</th>
+                          <th scope="col">Total Hours(Pay)</th>
+                          <th scope="col">Pay Rate</th>
+                          <th scope="col">Total Hours(exc NIer)</th>
+                          <th scope="col">Total Hours(Change)</th>
+                          <th scope="col">Change Rate</th>
+                          <th scope="col">Total Change</th>
+                          <th scope="col">Status</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -178,13 +223,49 @@ export default {
   data() {
     return {
       currentView: "weekly",
-      daysOfWeek: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+      daysOfWeek: [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ],
       startDate: new Date(),
       endDate: new Date(),
+      client_id: "",
+      clientData: [],
+      business_unit_id: "",
+      businessUnit: [],
+      job_id: "",
+      options: [],
+      employeeData: [],
+      employment_type_id: "",
     };
   },
   components: { Navbar },
   computed: {
+    selectBusinessUnit() {
+      const business_unit_id = this.businessUnit.find(
+        (option) => option.id === this.business_unit_id
+      );
+      return business_unit_id ? business_unit_id.name : "";
+    },
+    selectedOptionText() {
+      const job_id = this.options.find((option) => option.id === this.job_id);
+      return job_id ? job_id.name : "";
+    },
+    selectClients() {
+      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      return client_id ? client_id.first_name : "";
+    },
+    selectEmployeeType() {
+      const employment_type_id = this.employeeData.find(
+        (option) => option.id === this.employment_type_id
+      );
+      return employment_type_id ? employment_type_id.title : "";
+    },
     getWeekDates() {
       const currentDate = new Date();
       const weekStart = new Date(currentDate);
@@ -210,6 +291,54 @@ export default {
     },
   },
   methods: {
+    async getClientMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/clients`);
+        this.clientData = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    async getEmployeeTypeMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/employment_types`);
+        this.employeeData = response.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    async getPositionMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+        this.options = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    async getBusinessUnitMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/business_units`);
+        this.businessUnit = response.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
     moveToPrevious() {
       if (this.currentView === "weekly") {
         this.startDate.setDate(this.startDate.getDate() - 7);
@@ -265,7 +394,7 @@ export default {
       }
     },
     formatDate(date) {
-      return date.toLocaleDateString(); // You can customize the formatting based on your needs
+      return date.toLocaleDateString();
     },
     // async vacancyDeleteMethod(id) {
     //   if (!window.confirm("Are you Sure ?")) {
@@ -300,6 +429,10 @@ export default {
   mounted() {
     // this.createVacancy();
     this.loadDateRangeFromLocalStorage();
+    this.getBusinessUnitMethod();
+    this.getPositionMethod();
+    this.getClientMethod();
+    this.getEmployeeTypeMethod();
   },
 };
 </script>
@@ -308,7 +441,7 @@ export default {
 #main {
   transition: all 0.3s;
   height: 100vh;
-  margin-top: 72px;
+
   background-color: #fdce5e17;
 }
 .main-content {

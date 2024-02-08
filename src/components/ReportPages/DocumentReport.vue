@@ -2,7 +2,7 @@
   <div>
     <Navbar />
     <div id="main">
-      <h6>Client Invoice Page in Progress.....</h6>
+      <h6>PAyroll Page in Progress.....</h6>
     </div>
   </div>
 </template>
@@ -19,13 +19,9 @@ export default {
 #main {
   padding: 20px 20px;
   transition: all 0.3s;
+
   height: 100dvh;
-  margin-top: 72px;
   background-color: #fdce5e17;
-}
-ul.generalsetting h6 {
-  font-size: 14px;
-  font-weight: bold;
 }
 </style> -->
 
@@ -33,120 +29,118 @@ ul.generalsetting h6 {
   <div>
     <Navbar />
     <div id="main">
-      <div class="pagetitle d-flex justify-content-between px-2">
-        <div class="py-3">
-          <ol class="breadcrumb mb-1">
-            <li class="breadcrumb-item active text-uppercase fs-6">
-              <router-link class="nav-link d-inline" aria-current="page" to="/home"
-                >Dashboard</router-link
-              >
-              / <span class="color-fonts">Signed TimeSheet</span>
-            </li>
-          </ol>
-        </div>
-      </div>
-
       <div class="container-fluid mt-3">
         <div class="row">
           <div class="col-12">
             <div class="">
+              <div class="gap-2 d-flex ms-2">
+                <select>
+                  <option value="">All</option>
+                </select>
+                <select>
+                  <option value="">All Candidate Status</option>
+                </select>
+                <select>
+                  <option value="">All Candidate</option>
+                </select>
+                <select>
+                  <option value="">All Document Category</option>
+                </select>
+                <select>
+                  <option value="">All Document Type</option>
+                </select>
+              </div>
               <div>
                 <div class="p-2">
                   <div class="d-flex justify-content-between">
                     <div class="d-flex">
-                      <div class="d-flex align-items-center gap-2">
-                        <select
-                          class="form-control"
-                          v-model="currentView"
-                          @change="updateDateRange"
-                        >
-                          <option value="weekly">Weekly</option>
-                          <option value="monthly">Monthly</option>
-                        </select>
-                      </div>
-
-                      &nbsp;&nbsp;
-                      <div class="d-flex align-items-center">
-                        <span
-                          v-if="currentView === 'weekly' && startDate && endDate"
-                          class="fw-bold"
-                        >
-                          {{
-                            "Monday " +
-                            formatDate(startDate) +
-                            " to Sunday " +
-                            formatDate(endDate)
-                          }}
-                        </span>
-                        <span
-                          v-else-if="currentView === 'monthly' && startDate && endDate"
-                          class="fw-bold"
-                        >
-                          {{ formatDate(startDate) + " to " + formatDate(endDate) }}
-                        </span>
-                      </div>
-                      &nbsp;&nbsp;
-                      <div class="d-flex align-items-center fs-4">
-                        <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
-                        <i class="bi bi-calendar2-check-fill"></i>
-                        <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
-                      </div>
+                      <ul class="nav nav-pills mt-2 gap-2" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                          <button
+                            class="nav-link active"
+                            id="pills-all-tab"
+                            data-bs-toggle="pill"
+                            data-bs-target="#pills-all"
+                            type="button"
+                            role="tab"
+                            aria-controls="pills-all"
+                            aria-selected="true"
+                          >
+                            All
+                          </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <button
+                            class="nav-link"
+                            id="pills-active-tab"
+                            data-bs-toggle="pill"
+                            data-bs-target="#pills-active"
+                            type="button"
+                            role="tab"
+                            aria-controls="pills-active"
+                            aria-selected="false"
+                          >
+                            Active
+                          </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <button
+                            class="nav-link"
+                            id="pills-dueDate-tab"
+                            data-bs-toggle="pill"
+                            data-bs-target="#pills-dueDate"
+                            type="button"
+                            role="tab"
+                            aria-controls="pills-dueDate"
+                            aria-selected="false"
+                          >
+                            Due(30 days)
+                          </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <button
+                            class="nav-link"
+                            id="pills-expired-tab"
+                            data-bs-toggle="pill"
+                            data-bs-target="#pills-expired"
+                            type="button"
+                            role="tab"
+                            aria-controls="pills-expired"
+                            aria-selected="false"
+                          >
+                            Expired
+                          </button>
+                        </li>
+                      </ul>
                     </div>
 
-                    <div class="d-flex gap-3 align-items-center">
-                      <form
-                        class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
-                      >
-                        <input
-                          class="form-control mr-sm-2"
-                          type="search"
-                          placeholder="Search by Name"
-                          aria-label="Search"
-                        />
-                      </form>
+                    <div class="d-flex align-items-center">
+                      <button type="button" class="btn btn-outline-success text-nowrap">
+                        <i class="bi bi-eye"></i> Customize View
+                      </button>
                     </div>
                   </div>
                 </div>
-                <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                   
-                  </ul> -->
-                <div v-if="currentView === 'weekly'">
-                  <div>
-                    <div v-for="(day, index) in daysOfWeek" :key="index"></div>
-                    <div v-for="(day, index) in getWeekDates" :key="index"></div>
-                  </div>
-                </div>
 
-                <div v-else-if="currentView === 'monthly'">
-                  <div>
-                    <div v-for="(day, index) in getMonthDates" :key="index"></div>
-                  </div>
-                </div>
-                <div class="d-flex gap-2">
-                  <div></div>
-                </div>
-                <div class="tab-content mt-4" id="pills-tabContent">
+                <div class="tab-content" id="pills-tabContent">
                   <div
                     class="tab-pane fade show active"
-                    id="pills-home"
+                    id="pills-all"
                     role="tabpanel"
-                    aria-labelledby="pills-home-tab"
+                    aria-labelledby="pills-all-tab"
                   >
                     <table class="table candidateTable">
                       <thead>
                         <tr>
-                          <th scope="col">Code</th>
-                          <th scope="col">Name</th>
-                          <th scope="col">Business Unit</th>
-                          <th scope="col">Job</th>
-                          <th scope="col">Shift Date</th>
-                          <th scope="col">Start Time</th>
-                          <th scope="col">End Time</th>
-                          <th scope="col">Total Hours</th>
-                          <th scope="col">Client Rate</th>
-                          <th scope="col">Total Cost</th>
-                          <th scope="col">Paper Timesheet</th>
-                          <th scope="col">Action</th>
+                          <th scope="col">Sl No</th>
+                          <th scope="col">Candidate</th>
+
+                          <th scope="col">Document Category</th>
+                          <th scope="col">Document Type</th>
+                          <th scope="col">Upload Date</th>
+                          <th scope="col">Issue Date</th>
+                          <th scope="col">Expiry Date</th>
+                          <th scope="col">Status</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -156,9 +150,25 @@ ul.generalsetting h6 {
                   </div>
                   <div
                     class="tab-pane fade"
-                    id="pills-profile"
+                    id="pills-active"
                     role="tabpanel"
-                    aria-labelledby="pills-profile-tab"
+                    aria-labelledby="pills-active-tab"
+                  >
+                    ...
+                  </div>
+                  <div
+                    class="tab-pane fade"
+                    id="pills-dueDate"
+                    role="tabpanel"
+                    aria-labelledby="pills-dueDate-tab"
+                  >
+                    ...
+                  </div>
+                  <div
+                    class="tab-pane fade"
+                    id="pills-expired"
+                    role="tabpanel"
+                    aria-labelledby="pills-expired-tab"
                   >
                     ...
                   </div>
@@ -178,7 +188,15 @@ export default {
   data() {
     return {
       currentView: "weekly",
-      daysOfWeek: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+      daysOfWeek: [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ],
       startDate: new Date(),
       endDate: new Date(),
     };
@@ -265,7 +283,7 @@ export default {
       }
     },
     formatDate(date) {
-      return date.toLocaleDateString(); // You can customize the formatting based on your needs
+      return date.toLocaleDateString();
     },
     // async vacancyDeleteMethod(id) {
     //   if (!window.confirm("Are you Sure ?")) {
@@ -308,7 +326,7 @@ export default {
 #main {
   transition: all 0.3s;
   height: 100vh;
-  margin-top: 72px;
+
   background-color: #fdce5e17;
 }
 .main-content {
@@ -342,7 +360,7 @@ select {
   border-left: 1px solid #ded9d9;
   height: 100vh;
 }
-a[data-v-507f63b7] {
+a {
   text-decoration: none;
 }
 .candidateTable tr:nth-child(odd) td {
@@ -362,12 +380,12 @@ a[data-v-507f63b7] {
 
 .nav-pills .nav-link {
   background-color: transparent;
-  border: 1px solid #0d6efd;
+  border: 1px solid #ff5f30;
   border-radius: 22px;
+  color: #ff5f30;
 }
 ul.nav-pills {
   height: 53px;
-  border-bottom: 1px solid #b8b1b1;
 }
 table th {
   background-color: #ff5f30;

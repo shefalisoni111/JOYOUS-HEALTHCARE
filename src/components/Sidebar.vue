@@ -3,56 +3,44 @@
   <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
       <li class="nav-item">
-        <router-link class="nav-link" to="/appsetting" aria-label="appSettingPage">
+        <router-link class="nav-link" to="/appsetting/addjobdetail">
           <i class="bi bi-gear"></i>
         </router-link>
       </li>
 
-      <!-- <li class="nav-item">
-        <router-link
-          class="nav-link"
-          data-bs-target="#Live-Location-nav"
-          data-bs-toggle=""
-          to="/appsetting/agencysetting"
-          aria-label="agencysettingPage"
-        >
+      <li class="nav-item">
+        <router-link class="nav-link" to="/appsetting/agencysetting">
           <i class="bi bi-person"></i>
         </router-link>
       </li>
 
       <li class="nav-item">
-        <router-link
-          class="nav-link"
-          data-bs-target="#Employees-nav"
-          data-bs-toggle=""
-          to="/appsetting/invoicesetting"
-          aria-label="invoicesettingPage"
-        >
+        <router-link class="nav-link" to="/appsetting/invoicesetting">
           <i class="bi bi-file-earmark-text"></i>
         </router-link>
       </li>
       <li class="nav-item">
-        <a class="nav-link" to="" aria-label="Page">
+        <a class="nav-link" to="">
           <i class="bi bi-card-list"></i>
         </a>
       </li>
 
       <li class="nav-item">
         <router-link class="nav-link" to="/appsetting/notificationsetting">
-          <i class="bi bi-bell" aria-label="Page"></i>
+          <i class="bi bi-bell"></i>
         </router-link>
       </li>
 
       <li class="nav-item">
-        <router-link class="nav-link" to="/appsetting/previlegesetting" aria-label="previlegesettingPage">
+        <router-link class="nav-link" to="/appsetting/previlegesetting">
           <i class="bi bi-person-check"></i>
         </router-link>
       </li>
       <li class="nav-item">
-        <a class="nav-link" to="" aria-label="Page">
+        <router-link class="nav-link" to="/appsetting/ClientSettings">
           <i class="bi bi-people"></i>
-        </a>
-      </li> -->
+        </router-link>
+      </li>
     </ul>
   </aside>
   <!-- End Sidebar-->
@@ -135,7 +123,7 @@
 }
 
 .sidebar-nav .nav-link.collapsed {
-  color: #0d6efd;
+  color: #ff5f30;
   background: #fff;
   padding: 10px 20px;
   border-bottom: 1px solid #f1e8e8;
@@ -144,7 +132,7 @@
 
 .sidebar-nav .nav-link:hover {
   color: #fff;
-  background: #0d6efd;
+  background: #ff5f30;
 }
 
 .sidebar-nav .nav-link .bi-chevron-down {

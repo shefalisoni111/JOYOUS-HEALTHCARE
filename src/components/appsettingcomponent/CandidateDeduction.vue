@@ -4,7 +4,7 @@
       <div class="d-flex align-items-center">
         <ul class="breadcrumb mb-1">
           <li class="breadcrumb-item active text-uppercase fw-bold">
-            genral settings / <span class="clr">candidate deductions</span>
+            General settings / <span class="clr">candidate deductions</span>
           </li>
         </ul>
       </div>

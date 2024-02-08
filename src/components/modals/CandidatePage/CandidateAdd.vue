@@ -145,7 +145,7 @@
               :disabled="!isValidForm"
               :class="{ disabled: !isValidForm }"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
-              :data-bs-dismiss="isValidForm ? 'modal' : null"
+              :data-bs-dismiss="isValidForm ? null : 'modal'"
               v-on:click="addCandidate()"
             >
               Add
@@ -242,18 +242,23 @@ export default {
 
       this.validateEmail = this.validateEmailFormat(this.email);
 
-      this.passwordsMatch = this.password === this.confirm_password;
+      // this.passwordsMatch = this.password === this.confirm_password;
 
       this.validatePhoneNumber = this.validatePhoneNumberFormat(this.phone_number);
+      this.passwordsMatch = true;
 
       if (
         this.validateEmail &&
-        this.passwordsMatch &&
         this.validatePhoneNumber &&
         this.validateCandidateName &&
         this.validationSelectedOptionText
       ) {
         if (this.isPasswordRequired && !this.password) {
+          return;
+        }
+        this.validatePasswordMatch();
+
+        if (!this.passwordsMatch) {
           return;
         }
 
@@ -287,7 +292,15 @@ export default {
             this.phone_number = "";
             this.email = "";
             this.activated = "";
+            this.isValidForm = true;
           } else {
+            this.isValidForm = false;
+            this.validateEmail = true;
+            this.validatePhoneNumber = true;
+
+            this.validateCandidateName = true;
+            this.validationSelectedOptionText = true;
+            this.isPasswordRequired = true;
           }
           alert("Successful Availability added");
         } catch (error) {}

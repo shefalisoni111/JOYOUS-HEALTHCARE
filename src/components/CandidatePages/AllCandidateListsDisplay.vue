@@ -22,7 +22,7 @@
               <td v-text="candidate.id"></td>
               <td>
                 <router-link
-                  class="text-capitalize"
+                  class="text-capitalize fw-bold text-decoration-underline"
                   :to="{
                     name: 'Profile',
                     params: { id: candidate.id },
@@ -83,15 +83,24 @@
                     </router-link
                   > -->
 
-                <i
+                <!-- <i
                   class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
                   data-bs-toggle="modal"
                   data-bs-target="#editCandidate"
                   data-bs-whatever="@mdo"
                   @click="editCandidate(candidate.id)"
                 ></i
-                >&nbsp;&nbsp;
+                >&nbsp;&nbsp; -->
                 <router-link
+                  class="btn btn-outline-success text-nowrap"
+                  :to="{
+                    name: 'Profile',
+                    params: { id: candidate.id },
+                  }"
+                >
+                  <i class="bi bi-eye"></i>
+                </router-link>
+                <!-- <router-link
                   :to="{
                     name: 'ProfileView',
                     params: { id: candidate.id },
@@ -99,7 +108,7 @@
                   class="btn btn-outline-success text-nowrap"
                 >
                   <i class="bi bi-eye"></i
-                ></router-link>
+                ></router-link> -->
               </td>
             </tr>
           </tbody>

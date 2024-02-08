@@ -168,9 +168,7 @@ select {
 label.form-label {
   text-transform: capitalize;
 }
-.modal-xl {
-  --bs-modal-width: 1823px !important;
-}
+
 .modal-footer {
   border-top: 0px;
 }
@@ -186,8 +184,5 @@ label.form-label {
 }
 .modal-xl {
   width: 1400px !important;
-}
-.modal-content {
-  height: 930px;
 }
 </style>

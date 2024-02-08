@@ -17,7 +17,7 @@
           <td v-text="datas.id"></td>
           <td class="text-capitalize">
             <router-link
-              class="text-capitalize"
+              class="text-capitalize fw-bold text-decoration-underline"
               :to="{
                 name: 'Profile',
                 params: { id: datas && datas.id },

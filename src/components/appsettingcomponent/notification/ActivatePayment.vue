@@ -214,7 +214,7 @@
 <style scoped>
 .showdata .nav-link {
   color: #403b3b;
-  background: transparent;
+  background: #ff5722;
   margin-left: 4px;
 }
 .showdata .tab-content .nav-link.active {
@@ -229,7 +229,7 @@
   border-top: 1px solid transparent;
 }
 ol.breadcrumb li span {
-  color: #0d6efd;
+  color: #ff5722;
 }
 .card {
   margin: 2px;
@@ -242,8 +242,8 @@ ol.breadcrumb li span {
 }
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  color: #0d6efd;
-  border-bottom: 2px solid #0d6efd;
+  color: #ff5722;
+  border-bottom: 2px solid #ff5722;
   border-radius: 0;
   background-color: transparent;
   font-weight: bold;

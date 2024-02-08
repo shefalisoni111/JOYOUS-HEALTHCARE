@@ -9,7 +9,7 @@
           <div class="leftside">
             <div class="heading mb-3 position-relative">
               <p class="bforeline"></p>
-              <p class="mb-0 text-uppercase gs">agency Settings</p>
+              <p class="mb-0 text-uppercase fw-bold genSetting">agency Settings</p>
               <p class="afterline"></p>
             </div>
             <div>
@@ -21,7 +21,7 @@
                     class="text-decoration-none"
                   >
                     <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize">profile</h6>
+                      <h6 class="mb-0 text-capitalize clr">profile</h6>
                       <p class="text-capitalize mb-0">
                         view & update agency profiles & logos
                       </p>
@@ -38,7 +38,7 @@
               <div class="d-flex align-items-center">
                 <ol class="breadcrumb mb-1 p-3">
                   <li class="breadcrumb-item active text-uppercase fw-bold">
-                    agency setting / <span>profile</span>
+                    agency setting / <span class="clr">profile</span>
                   </li>
                 </ol>
               </div>
@@ -207,16 +207,25 @@
     </div>
   </div>
 </template>
-<script >
+<script>
 import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
+
+export default {
+  components: {
+    Navbar,
+    Sidebar,
+  },
+};
 </script>
 
 <style scoped>
 /*--------------------------------------------------------------
   # Page Title
   --------------------------------------------------------------*/
-
+#main {
+  margin-top: 72px;
+}
 table th,
 table tr td {
   text-transform: capitalize;
@@ -234,12 +243,12 @@ table tr td {
 }
 
 ul.generalsetting li i.rounded-circle {
-  background: #ebf2f8;
+  background: #fff4de;
   width: 48px;
   height: 40px;
   text-align: center;
   line-height: 40px;
-  color: #0d6efd;
+  color: #ff5722;
 }
 ul.generalsetting li a .job p {
   font-size: 12px;
@@ -259,33 +268,19 @@ ul.generalsetting li a {
 }
 a.router-link-active {
   color: #0d6efd;
-  background-color: #fdce5e38;
 }
-
+.clr {
+  color: #ff5722;
+}
 a.router-link-active::after {
   content: "\F285";
   font-family: "bootstrap-icons";
   display: flex;
   align-items: center;
+  color: #ff5722;
 }
 ul.generalsetting h6 {
   font-size: 14px;
-}
-.heading p.bforeline {
-  width: 18px;
-  height: 0.3px;
-  background: #d8c9c9;
-  left: 0;
-  top: 50%;
-  position: absolute;
-}
-.heading p.afterline {
-  width: 126px;
-  height: 0.3px;
-  background: #d8c9c9;
-  right: 0;
-  top: 50%;
-  position: absolute;
 }
 
 .heading p.gs {
@@ -295,6 +290,9 @@ ul.generalsetting h6 {
 .pagesetting {
   border-bottom: 1px solid rgb(196, 196, 196);
   width: 100%;
+}
+.genSetting {
+  color: #ff5722;
 }
 
 .settingsdetails p span {
@@ -315,16 +313,19 @@ ul.generalsetting h6 {
 }
 
 .showdata .nav-link {
-  color: #ffffff;
-  background: #0d6efd;
-  margin-left: 4px;
+  color: #000;
 }
 .showdata .nav-link.active {
-  color: #000;
-  background: none;
+  background: #e8e3e3;
   margin-left: 4px;
 }
-
+.nav-pills .nav-link.active {
+  color: #ff5722;
+  border-bottom: 2px solid #ff5722;
+  border-radius: 0;
+  background-color: transparent;
+  font-weight: bold;
+}
 .btn-primary {
   border: none;
 }

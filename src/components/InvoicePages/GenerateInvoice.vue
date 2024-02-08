@@ -40,7 +40,8 @@ ul.generalsetting h6 {
               <router-link class="nav-link d-inline" aria-current="page" to="/home"
                 >Dashboard</router-link
               >
-              / <span class="color-fonts">Signed TimeSheet</span>
+              / <span class="color-fonts">Client Invoice</span> /
+              <span class="color-fonts">Generate Invoice</span>
             </li>
           </ol>
         </div>
@@ -54,7 +55,7 @@ ul.generalsetting h6 {
                 <div class="p-2">
                   <div class="d-flex justify-content-between">
                     <div class="d-flex">
-                      <div class="d-flex align-items-center gap-2">
+                      <div class="d-flex align-items-center">
                         <select
                           class="form-control"
                           v-model="currentView"
@@ -94,16 +95,17 @@ ul.generalsetting h6 {
                     </div>
 
                     <div class="d-flex gap-3 align-items-center">
-                      <form
-                        class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
-                      >
-                        <input
-                          class="form-control mr-sm-2"
-                          type="search"
-                          placeholder="Search by Name"
-                          aria-label="Search"
-                        />
-                      </form>
+                      <select v-model="business_unit_id" id="selectBusinessUnit">
+                        <option value="">All Business Unit</option>
+                        <option
+                          v-for="option in businessUnit"
+                          :key="option.id"
+                          :value="option.id"
+                          placeholder="Select BusinessUnit"
+                        >
+                          {{ option.name }}
+                        </option>
+                      </select>
                     </div>
                   </div>
                 </div>
@@ -122,10 +124,80 @@ ul.generalsetting h6 {
                     <div v-for="(day, index) in getMonthDates" :key="index"></div>
                   </div>
                 </div>
-                <div class="d-flex gap-2">
-                  <div></div>
-                </div>
-                <div class="tab-content mt-4" id="pills-tabContent">
+
+                <ul class="nav nav-pills mt-3 gap-2" id="pills-tab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link active"
+                      id="pills-Weekly-tab"
+                      data-bs-toggle="pill"
+                      data-bs-target="#pills-Weekly"
+                      type="button"
+                      role="tab"
+                      aria-controls="pills-Weekly"
+                      aria-selected="true"
+                    >
+                      Weekly
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link"
+                      id="pills-Daily-tab"
+                      data-bs-toggle="pill"
+                      data-bs-target="#pills-Daily"
+                      type="button"
+                      role="tab"
+                      aria-controls="pills-Daily"
+                      aria-selected="false"
+                    >
+                      Daily
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link"
+                      id="pills-Monthly-tab"
+                      data-bs-toggle="pill"
+                      data-bs-target="#pills-Monthly"
+                      type="button"
+                      role="tab"
+                      aria-controls="pills-Monthly"
+                      aria-selected="false"
+                    >
+                      Monthly
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link"
+                      id="pills-ShiftCandidate-tab"
+                      data-bs-toggle="pill"
+                      data-bs-target="#pills-ShiftCandidate"
+                      type="button"
+                      role="tab"
+                      aria-controls="pills-ShiftCandidate"
+                      aria-selected="false"
+                    >
+                      Shift & Candidate
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link"
+                      id="pills-CandidateWeekly-tab"
+                      data-bs-toggle="pill"
+                      data-bs-target="#pills-CandidateWeekly"
+                      type="button"
+                      role="tab"
+                      aria-controls="pills-CandidateWeekly"
+                      aria-selected="false"
+                    >
+                      Candidate Weekly
+                    </button>
+                  </li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
                   <div
                     class="tab-pane fade show active"
                     id="pills-home"
@@ -135,17 +207,27 @@ ul.generalsetting h6 {
                     <table class="table candidateTable">
                       <thead>
                         <tr>
-                          <th scope="col">Code</th>
-                          <th scope="col">Name</th>
                           <th scope="col">Business Unit</th>
-                          <th scope="col">Job</th>
-                          <th scope="col">Shift Date</th>
-                          <th scope="col">Start Time</th>
-                          <th scope="col">End Time</th>
-                          <th scope="col">Total Hours</th>
-                          <th scope="col">Client Rate</th>
-                          <th scope="col">Total Cost</th>
-                          <th scope="col">Paper Timesheet</th>
+                          <th scope="col">Week End</th>
+                          <th>
+                            <div class="calendar-grid">
+                              <div
+                                v-for="day in daysOfWeek"
+                                :key="day"
+                                class="day-header"
+                              >
+                                {{ day }}
+                              </div>
+                              <div
+                                v-for="date in selectedDateRow"
+                                :key="date"
+                                class="day-header"
+                              >
+                                {{ formatDateInternal(date) }}
+                              </div>
+                            </div>
+                          </th>
+                          <th scope="col">Holiday</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
@@ -156,9 +238,33 @@ ul.generalsetting h6 {
                   </div>
                   <div
                     class="tab-pane fade"
-                    id="pills-profile"
+                    id="pills-Daily"
                     role="tabpanel"
-                    aria-labelledby="pills-profile-tab"
+                    aria-labelledby="pills-Daily-tab"
+                  >
+                    ...
+                  </div>
+                  <div
+                    class="tab-pane fade"
+                    id="pills-Monthly"
+                    role="tabpanel"
+                    aria-labelledby="pills-Monthly-tab"
+                  >
+                    ...
+                  </div>
+                  <div
+                    class="tab-pane fade"
+                    id="pills-ShiftCandidate"
+                    role="tabpanel"
+                    aria-labelledby="pills-ShiftCandidate-tab"
+                  >
+                    ...
+                  </div>
+                  <div
+                    class="tab-pane fade"
+                    id="pills-CandidateWeekly"
+                    role="tabpanel"
+                    aria-labelledby="pills-CandidateWeekly-tab"
                   >
                     ...
                   </div>
@@ -178,13 +284,29 @@ export default {
   data() {
     return {
       currentView: "weekly",
-      daysOfWeek: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+      daysOfWeek: [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ],
       startDate: new Date(),
       endDate: new Date(),
+      business_unit_id: "",
+      businessUnit: [],
     };
   },
   components: { Navbar },
   computed: {
+    selectBusinessUnit() {
+      const business_unit_id = this.businessUnit.find(
+        (option) => option.id === this.business_unit_id
+      );
+      return business_unit_id ? business_unit_id.name : "";
+    },
     getWeekDates() {
       const currentDate = new Date();
       const weekStart = new Date(currentDate);
@@ -197,7 +319,6 @@ export default {
       }
       return weekDates;
     },
-
     getMonthDates() {
       const currentDate = new Date();
       const daysInMonth = new Date(
@@ -210,6 +331,18 @@ export default {
     },
   },
   methods: {
+    async getBusinessUnitMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/business_units`);
+        this.businessUnit = response.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
     moveToPrevious() {
       if (this.currentView === "weekly") {
         this.startDate.setDate(this.startDate.getDate() - 7);
@@ -256,6 +389,7 @@ export default {
       localStorage.setItem("endDate", this.endDate.toISOString());
     },
     loadDateRangeFromLocalStorage() {
+      // Load values from localStorage on component mount
       const storedStartDate = localStorage.getItem("startDate");
       const storedEndDate = localStorage.getItem("endDate");
 
@@ -265,7 +399,7 @@ export default {
       }
     },
     formatDate(date) {
-      return date.toLocaleDateString(); // You can customize the formatting based on your needs
+      return date.toLocaleDateString();
     },
     // async vacancyDeleteMethod(id) {
     //   if (!window.confirm("Are you Sure ?")) {
@@ -300,6 +434,8 @@ export default {
   mounted() {
     // this.createVacancy();
     this.loadDateRangeFromLocalStorage();
+    this.getBusinessUnitMethod();
+    window.addEventListener("beforeunload", this.saveToLocalStorage);
   },
 };
 </script>
@@ -317,9 +453,26 @@ export default {
 .bg-define {
   background-color: #fdce5e17;
 }
+select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 0px;
+  border: 1px solid rgb(202, 198, 198);
+}
 .color-fonts {
   color: #ff5f30;
   font-weight: bold;
+}
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.nav-pills .nav-link {
+  color: #ff5f30;
+  border: 1px solid #ff5f30 !important;
 }
 .btn-primary {
   border: none;
@@ -327,12 +480,7 @@ export default {
 .form-check-input {
   border: 2px solid grey;
 }
-select {
-  padding: 10px;
-  border-radius: 4px;
-  border: 0px;
-  border: 1px solid rgb(202, 198, 198);
-}
+
 .rounded-circle {
   border: 1px solid #ff5f30;
   padding: 8px 11px;
@@ -355,19 +503,18 @@ a[data-v-507f63b7] {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   background-color: transparent;
-  border: 1px solid green;
+  border: 1px solid green !important;
   border-radius: 22px;
   color: green;
 }
 
 .nav-pills .nav-link {
   background-color: transparent;
-  border: 1px solid #0d6efd;
+
   border-radius: 22px;
 }
 ul.nav-pills {
   height: 53px;
-  border-bottom: 1px solid #b8b1b1;
 }
 table th {
   background-color: #ff5f30;

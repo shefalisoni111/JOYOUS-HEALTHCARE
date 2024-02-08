@@ -182,7 +182,4 @@ label.form-label {
 .modal-xl {
   width: 1400px !important;
 }
-.modal-content {
-  height: 930px;
-}
 </style>

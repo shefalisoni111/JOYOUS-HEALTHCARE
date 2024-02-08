@@ -5,7 +5,7 @@
         <div class="d-flex align-items-center">
           <ul class="breadcrumb mb-1 py-2">
             <li class="breadcrumb-item active text-uppercase fw-bold">
-              genral setting / <span>Document Categories</span>
+              General setting / <span>Document Categories</span>
             </li>
           </ul>
         </div>

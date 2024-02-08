@@ -217,6 +217,16 @@
           </div>
           <div class="modal-footer">
             <button
+              class="btn btn-secondary rounded-1"
+              data-bs-target="#assignedVacancyList"
+              data-bs-toggle="modal"
+              data-bs-dismiss="modal"
+              @click="closePopup"
+            >
+              Cancel
+            </button>
+            <button
+              v-if="getVacancyDetail.length > 0"
               class="btn btn-primary rounded-1"
               data-bs-target="#appliedVacancy"
               data-bs-toggle="modal"
@@ -487,9 +497,7 @@ label.form-label {
   width: 40px;
   height: 40px;
 }
-.modal-content {
-  height: 930px;
-}
+
 table th {
   text-transform: capitalize;
 }

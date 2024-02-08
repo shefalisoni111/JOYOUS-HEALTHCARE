@@ -263,7 +263,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: "/vacancie",
+          path: "/vacancies",
           name: "VacancyList",
           component: () => import("@/components/VacancyPages/VacancyList.vue"),
           props: true,
@@ -316,12 +316,32 @@ const router = createRouter({
       ]
     },
     {
-      path: "/invoice",
+      path: "/invoice/client-invoice",
       name: "Invoice",
       component: () => import("@/views/InvoiceView.vue"),
       meta: {
         auth: true,
       },
+      children: [
+        {
+          path: "/invoice/client-invoice",
+          name: "ClientInvoice",
+          component: () => import("@/components/InvoicePages/ClientInvoice.vue"),
+          props: true,
+        },
+        {
+          path: "/invoice/Candidate-invoice",
+          name: "CandidateInvoice",
+          component: () => import("@/components/InvoicePages/CandidateInvoice.vue"),
+          props: true,
+        },
+        {
+          path: "/invoice/Generate-invoice",
+          name: "GenerateInvoice",
+          component: () => import("@/components/InvoicePages/GenerateInvoice.vue"),
+          props: true,
+        },
+      ],
     },
     {
       path: "/report",
@@ -330,10 +350,100 @@ const router = createRouter({
       meta: {
         auth: true,
       },
+      children: [
+        {
+          path: "/report/PayrollReport",
+          name: "PayrollReport",
+          component: () =>
+            import(
+              "@/components/ReportPages/PayrollReport.vue"
+            ),
+          meta: {
+            auth: true,
+          },
+        },
+        {
+          path: "/report/StaffReport",
+          name: "StaffReport",
+          component: () =>
+            import(
+              "@/components/ReportPages/StaffReport.vue"
+            ),
+          meta: {
+            auth: true,
+          },
+        },
+        {
+          path: "/report/ClientReport",
+          name: "ClientReport",
+          component: () =>
+            import(
+              "@/components/ReportPages/ClientReport.vue"
+            ),
+          meta: {
+            auth: true,
+          },
+        },
+        {
+          path: "/report/BusinessUnitReport",
+          name: "BusinessUnitReport",
+          component: () =>
+            import(
+              "@/components/ReportPages/BusinessUnitReport.vue"
+            ),
+          meta: {
+            auth: true,
+          },
+        },
+        {
+          path: "/report/InvoiceReport",
+          name: "InvoiceReport",
+          component: () =>
+            import(
+              "@/components/ReportPages/InvoiceReport.vue"
+            ),
+          meta: {
+            auth: true,
+          },
+        },
+        {
+          path: "/report/DocumentReport",
+          name: "DocumentReport",
+          component: () =>
+            import(
+              "@/components/ReportPages/DocumentReport.vue"
+            ),
+          meta: {
+            auth: true,
+          },
+        },
+        {
+          path: "/report/RateCard",
+          name: "RateCard",
+          component: () =>
+            import(
+              "@/components/ReportPages/RateCard.vue"
+            ),
+          meta: {
+            auth: true,
+          },
+        },
+        {
+          path: "/report/EmailReport",
+          name: "EmailReport",
+          component: () =>
+            import(
+              "@/components/ReportPages/EmailReport.vue"
+            ),
+          meta: {
+            auth: true,
+          },
+        },
+      ]
     },
 
     {
-      path: "/appsetting",
+      path: "/appsetting/addjobdetail",
       name: "AppSetting",
       component: () => import("@/views/AppSetting.vue"),
       meta: {
@@ -477,6 +587,29 @@ const router = createRouter({
         meta: {
           auth: true,
         },
+    },
+    {
+      path: "/appsetting/ClientSettings",
+      name: "ClientSettings",
+      component: () =>
+        import("@/components/appsettingcomponent/ClientSettings.vue"),
+        meta: {
+          auth: true,
+        },
+        children: [
+          {
+            path: "/appsetting/ClientSettings",
+            name: "BasicClientSetting",
+            component: () =>
+              import("@/components/appsettingcomponent/ClientSetting/BasicClientSetting.vue"),
+          },
+          {
+            path: "/appsetting/emailNotification",
+            name: "EmailNotification",
+            component: () =>
+              import("@/components/appsettingcomponent/ClientSetting/EmailNotification.vue"),
+          },
+        ]
     },
 
     {

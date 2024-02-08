@@ -79,7 +79,7 @@
             </div>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" aria-current="page" to="/vacancie">
+            <router-link class="nav-link" aria-current="page" to="/vacancies">
               Vacancies
             </router-link>
           </li>
@@ -101,7 +101,7 @@
           <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
-              href="/timesheet/weekly"
+              to="/timesheet/weekly"
               id="timesheetDropdown"
               role="button"
               data-bs-toggle="dropdown"
@@ -122,20 +122,31 @@
               >
             </div>
           </li>
-          <li class="nav-item">
-            <router-link class="nav-link" aria-current="page" to="/invoice">
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              aria-current="page"
+              to="/invoice/client-invoice"
+              role="button"
+              id="invoiceDropdown"
+              data-bs-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
               Invoice
-            </router-link>
-            <!-- <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="invoiceDropdown">
               <li>
-                <router-link class="dropdown-item" href="#"
-                  >Client 1</router-link
+                <router-link class="dropdown-item" to="/invoice/client-invoice"
+                  >Client Invoice</router-link
                 >
               </li>
               <li>
-                <router-link class="dropdown-item">Client 2</router-link>
+                <router-link class="dropdown-item" to="/invoice/Candidate-invoice"
+                  >Candidate Invoice</router-link
+                >
               </li>
-            </ul> -->
+            </ul>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" aria-current="page" to="/report">
@@ -199,7 +210,7 @@
                 src="./profile.png"
                 alt="USer"
                 class="rounded-circle profileAdminImg"
-                width="50"
+                width="40"
               />
             </a>
             <!-- End Profile Image Icon -->
@@ -207,6 +218,7 @@
             <ul
               class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
               v-if="getAdminData"
+              style="width: 220px"
             >
               <li>
                 <router-link class="dropdown-item text-capitalize" to="/admin">
@@ -226,6 +238,27 @@
                 >
                   <i class="bi bi-gear pe-2"></i><span>App Settings</span>
                 </router-link>
+              </li>
+
+              <li class="px-3">
+                <a class="d-flex align-items-center"></a
+                ><i class="bi bi-asterisk pe-2"></i><span>Activity Log</span>
+              </li>
+
+              <li class="px-3">
+                <i class="bi bi-ban-fill pe-2"></i><span>Recruitment</span>
+              </li>
+
+              <li class="px-3">
+                <i class="bi bi-journal-arrow-down pe-2"></i><span>Diary Notes</span>
+              </li>
+
+              <li class="px-3">
+                <i class="bi bi-gear-wide pe-2"></i><span>Personal Settings</span>
+              </li>
+
+              <li class="px-3">
+                <i class="bi bi-brightness-low pe-2"></i><span>Support</span>
               </li>
               <li>
                 <hr class="dropdown-divider" />

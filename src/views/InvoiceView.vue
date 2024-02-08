@@ -1,17 +1,22 @@
 <template>
   <div>
     <Navbar />
-    <div id="main">
+    <RouterView />
+    <!-- <div id="main">
       <h6>Invoice Page in Progress.....</h6>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
 import Navbar from "../components/Navbar.vue";
+import ClientInvoice from "../components/InvoicePages/ClientInvoice.vue";
+import CandidateInvoice from "../components/InvoicePages/CandidateInvoice.vue";
 
 export default {
   components: {
     Navbar,
+    ClientInvoice,
+    CandidateInvoice,
   },
 };
 </script>
@@ -20,7 +25,7 @@ export default {
   padding: 20px 20px;
   transition: all 0.3s;
   height: 100dvh;
-  margin-top: 80px;
+  margin-top: 72px;
   background-color: #fdce5e17;
 }
 ul.generalsetting h6 {

@@ -4,7 +4,7 @@
       <div class="d-flex align-items-center">
         <ul class="breadcrumb mb-1">
           <li class="breadcrumb-item active text-uppercase fw-bold">
-            genral settings / <span class="clr">jobs</span>
+            General settings / <span class="clr">jobs</span>
           </li>
         </ul>
       </div>
@@ -288,6 +288,7 @@ td i.bi-trash {
 .pagesetting p span::after {
   content: "";
 }
+
 .btn-primary {
   border: none;
 }

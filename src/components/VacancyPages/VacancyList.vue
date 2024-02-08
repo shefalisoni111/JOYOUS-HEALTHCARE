@@ -395,7 +395,7 @@ export default {
   transition: all 0.3s;
 
   background-color: #fdce5e17;
-  margin-top: 80px;
+  margin-top: 72px;
 }
 .main-content {
   transition: all 0.3s;

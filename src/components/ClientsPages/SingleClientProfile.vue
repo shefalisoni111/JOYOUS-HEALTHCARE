@@ -74,13 +74,13 @@
                       </h6>
                     </div>
 
-                    <div class="d-flex justify-content-between">
+                    <!-- <div class="d-flex justify-content-between">
                       <h6 class="fs-smaller text-nowrap">Profile View</h6>
                       <label class="switch">
                         <input type="checkbox" id="togBtn" title="check" checked />
                         <div class="slider round"></div>
                       </label>
-                    </div>
+                    </div> -->
                   </div>
 
                   <div class="d-flex justify-content-between mt-3">
@@ -124,7 +124,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import axios from "axios";
 
 import ActiveLocation from "../ClientsPages/ClientProfileDetails/ActiveLocation.vue";

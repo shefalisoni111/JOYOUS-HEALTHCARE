@@ -515,6 +515,9 @@ export default {
       localStorage.setItem("selectedMonth", this.selectedMonth);
       const [selectedYear, selectedMonth] = this.selectedMonth.split("-");
 
+      // Ensure selectedMonth is always in the "yyyy-MM" format
+      this.selectedMonth = `${selectedYear}-${selectedMonth.padStart(2, "0")}`;
+
       let endYear = selectedYear;
       let endMonth =
         selectedMonth === "12" ? "01" : `${parseInt(selectedMonth) + 1}`.padStart(2, "0");
@@ -581,6 +584,9 @@ export default {
     if (inputElement) {
       inputElement.value = this.selectedMonth;
     }
+    const timestamp = 1707324326139;
+    const dates = new Date(timestamp);
+    console.log(dates);
   },
 };
 </script>
@@ -593,7 +599,7 @@ export default {
   padding: 10px;
 }
 #main {
-  margin-top: 79px;
+  margin-top: 70px;
 }
 .left-flex-border,
 .right-flex-border {

@@ -2,12 +2,12 @@
   <div>
     <Navbar />
     <div id="main">
-      <h6>Booking Page in Progress.....</h6>
+      <h6>Client Invoice Page in Progress.....</h6>
     </div>
   </div>
 </template>
 <script>
-import Navbar from "../components/Navbar.vue";
+import Navbar from "../Navbar.vue";
 
 export default {
   components: {
@@ -17,10 +17,10 @@ export default {
 </script>
 <style scoped>
 #main {
-  margin-top: 80px;
   padding: 20px 20px;
   transition: all 0.3s;
   height: 100dvh;
+  margin-top: 72px;
   background-color: #fdce5e17;
 }
 ul.generalsetting h6 {
@@ -37,7 +37,10 @@ ul.generalsetting h6 {
         <div class="py-3">
           <ol class="breadcrumb mb-1">
             <li class="breadcrumb-item active text-uppercase fs-6">
-              Dashboard / <span class="color-fonts">Booking</span>
+              <router-link class="nav-link d-inline" aria-current="page" to="/home"
+                >Dashboard</router-link
+              >
+              / <span class="color-fonts">Booking</span>
             </li>
           </ol>
         </div>
@@ -48,58 +51,70 @@ ul.generalsetting h6 {
           <div class="col-12">
             <div class="">
               <div>
-                <ul
-                  class="nav nav-pills mb-3 d-flex justify-content-between"
-                  id="pills-tab"
-                  role="tablist"
-                >
-                  <div class="d-flex">
-                    <div class="d-flex align-items-center">
-                      <select
-                        class="form-control"
-                        v-model="currentView"
-                        @change="updateDateRange"
-                      >
-                        <option value="weekly">Weekly</option>
-                        <option value="monthly">Monthly</option>
-                      </select>
-                    </div>
-                    &nbsp;&nbsp;
-                    <div class="d-flex align-items-center">
-                      <span
-                        v-if="currentView === 'weekly' && startDate && endDate"
-                        class="fw-bold"
-                      >
-                        {{
-                          "Monday " +
-                          formatDate(startDate) +
-                          " to Sunday " +
-                          formatDate(endDate)
-                        }}
-                      </span>
-                      <span v-else-if="currentView === 'monthly'" class="fw-bold">
-                        {{ formatDate(startDate) + " to " + formatDate(endDate) }}
-                      </span>
-                    </div>
-                  </div>
+                <div class="p-2">
+                  <div class="d-flex justify-content-between">
+                    <div class="d-flex">
+                      <div class="d-flex align-items-center gap-2">
+                        <select
+                          class="form-control"
+                          v-model="currentView"
+                          @change="updateDateRange"
+                        >
+                          <option value="weekly">Weekly</option>
+                          <option value="monthly">Monthly</option>
+                        </select>
+                      </div>
 
-                  <div v-if="currentView === 'weekly'">
-                    <div>
-                      <div v-for="(day, index) in daysOfWeek" :key="index"></div>
-                      <div v-for="(day, index) in getWeekDates" :key="index"></div>
+                      &nbsp;&nbsp;
+                      <div class="d-flex align-items-center">
+                        <span
+                          v-if="currentView === 'weekly' && startDate && endDate"
+                          class="fw-bold"
+                        >
+                          {{
+                            "Monday " +
+                            formatDate(startDate) +
+                            " to Sunday " +
+                            formatDate(endDate)
+                          }}
+                        </span>
+                        <span
+                          v-else-if="currentView === 'monthly' && startDate && endDate"
+                          class="fw-bold"
+                        >
+                          {{ formatDate(startDate) + " to " + formatDate(endDate) }}
+                        </span>
+                      </div>
+                      &nbsp;&nbsp;
+                      <div class="d-flex align-items-center fs-4">
+                        <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
+                        <i class="bi bi-calendar2-check-fill"></i>
+                        <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                      </div>
                     </div>
-                  </div>
 
-                  <div v-else-if="currentView === 'monthly'">
-                    <div>
-                      <div v-for="(day, index) in getMonthDates" :key="index"></div>
-                    </div>
+                    <div class="d-flex gap-3 align-items-center"></div>
                   </div>
-                  <div class="d-flex gap-2">
-                    <div></div>
+                </div>
+                <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                   
+                  </ul> -->
+                <div v-if="currentView === 'weekly'">
+                  <div>
+                    <div v-for="(day, index) in daysOfWeek" :key="index"></div>
+                    <div v-for="(day, index) in getWeekDates" :key="index"></div>
                   </div>
-                </ul>
-                <div class="tab-content" id="pills-tabContent">
+                </div>
+
+                <div v-else-if="currentView === 'monthly'">
+                  <div>
+                    <div v-for="(day, index) in getMonthDates" :key="index"></div>
+                  </div>
+                </div>
+                <div class="d-flex gap-2">
+                  <div></div>
+                </div>
+                <div class="tab-content mt-4" id="pills-tabContent">
                   <div
                     class="tab-pane fade show active"
                     id="pills-home"
@@ -156,8 +171,8 @@ export default {
     return {
       currentView: "weekly",
       daysOfWeek: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-      startDate: null,
-      endDate: null,
+      startDate: new Date(),
+      endDate: new Date(),
     };
   },
   components: { Navbar },
@@ -187,27 +202,52 @@ export default {
     },
   },
   methods: {
+    moveToPrevious() {
+      if (this.currentView === "weekly") {
+        this.startDate.setDate(this.startDate.getDate() - 7);
+        this.endDate.setDate(this.endDate.getDate() - 7);
+        this.updateDateRange();
+      } else if (this.currentView === "monthly") {
+        this.startDate.setMonth(this.startDate.getMonth() - 1);
+        this.endDate = new Date(
+          this.startDate.getFullYear(),
+          this.startDate.getMonth() + 1,
+          0
+        );
+      }
+    },
+    moveToNext() {
+      if (this.currentView === "weekly") {
+        this.startDate.setDate(this.startDate.getDate() + 7);
+        this.endDate.setDate(this.endDate.getDate() + 7);
+        this.updateDateRange();
+      } else if (this.currentView === "monthly") {
+        this.startDate.setMonth(this.startDate.getMonth() + 1);
+        this.endDate = new Date(
+          this.startDate.getFullYear(),
+          this.startDate.getMonth() + 1,
+          0
+        );
+      }
+    },
     updateDateRange() {
       const currentDate = new Date();
-
       if (this.currentView === "weekly") {
-        this.startDate = new Date(
-          currentDate.setDate(currentDate.getDate() - currentDate.getDay() + 1)
-        );
-        this.endDate = new Date(
-          currentDate.setDate(currentDate.getDate() - currentDate.getDay() + 7)
-        );
+        const weekStart = new Date(this.startDate);
+        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay());
+        this.startDate = weekStart;
+        this.endDate = new Date(weekStart);
+        this.endDate.setDate(this.endDate.getDate() + 6);
       } else if (this.currentView === "monthly") {
+        const currentDate = new Date();
         this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
         this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
       }
-
       // Save the values to localStorage
       localStorage.setItem("startDate", this.startDate.toISOString());
       localStorage.setItem("endDate", this.endDate.toISOString());
     },
     loadDateRangeFromLocalStorage() {
-      // Load values from localStorage on component mount
       const storedStartDate = localStorage.getItem("startDate");
       const storedEndDate = localStorage.getItem("endDate");
 
@@ -260,7 +300,7 @@ export default {
 #main {
   transition: all 0.3s;
   height: 100vh;
-  margin-top: 80px;
+  margin-top: 72px;
   background-color: #fdce5e17;
 }
 .main-content {
@@ -279,7 +319,12 @@ export default {
 .form-check-input {
   border: 2px solid grey;
 }
-
+select {
+  padding: 10px;
+  border-radius: 4px;
+  border: 0px;
+  border: 1px solid rgb(202, 198, 198);
+}
 .rounded-circle {
   border: 1px solid #ff5f30;
   padding: 8px 11px;
@@ -321,8 +366,8 @@ table th {
 }
 
 button.nav-link > li.nav-item {
-  border-bottom: 2px solid red; /* Replace with your desired border color */
-  padding-bottom: 5px; /* Optional: Add padding for spacing */
+  border-bottom: 2px solid red;
+  padding-bottom: 5px;
 }
 
 .form-select {

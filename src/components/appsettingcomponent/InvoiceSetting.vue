@@ -9,7 +9,7 @@
           <div class="leftside">
             <div class="heading mb-3 position-relative">
               <p class="bforeline"></p>
-              <p class="mb-0 text-uppercase gs">invoice Settings</p>
+              <p class="mb-0 text-uppercase fw-bold genSetting">invoice Settings</p>
               <p class="afterline"></p>
             </div>
             <div>
@@ -36,7 +36,7 @@
               <div class="d-flex align-items-center">
                 <ol class="breadcrumb mb-1 p-3">
                   <li class="breadcrumb-item active text-uppercase fw-bold">
-                    invoice setting / <span>invoice setting</span>
+                    invoice setting / <span class="clr">invoice setting</span>
                   </li>
                 </ol>
               </div>
@@ -265,16 +265,24 @@
   </div>
 </template>
 
-<script >
+<script>
 import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
 import TextFormator from "../textformator/TextFormator.vue";
+
+export default {
+  components: {
+    Navbar,
+    Sidebar,
+    TextFormator,
+  },
+};
 </script>
 
 <style scoped>
-/*--------------------------------------------------------------
-  # Page Title
-  --------------------------------------------------------------*/
+#main {
+  margin-top: 72px;
+}
 #logo {
   width: 119px;
 
@@ -301,11 +309,17 @@ table tr td {
   background: none;
   margin-left: 4px;
 }
+.clr {
+  color: #ff5722;
+}
+.genSetting {
+  color: #ff5722;
+}
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  color: #0d6efd;
-  border-bottom: 2px solid #0d6efd;
+  color: #ff5722;
+  border-bottom: 2px solid #ff5722;
   border-radius: 0;
   background-color: transparent;
   font-weight: bold;
@@ -315,12 +329,12 @@ table tr td {
 }
 
 ul.generalsetting li i.rounded-circle {
-  background: #ebf2f8;
+  background: #fff4de;
   width: 48px;
   height: 40px;
   text-align: center;
   line-height: 40px;
-  color: #0d6efd;
+  color: #ff5722;
 }
 ul.generalsetting li a .job p {
   font-size: 12px;
@@ -346,7 +360,6 @@ ul.generalsetting li a {
 }
 a.router-link-active {
   color: #0d6efd;
-  background-color: #fafdff;
 }
 
 a.router-link-active::after {
@@ -354,22 +367,7 @@ a.router-link-active::after {
   font-family: "bootstrap-icons";
   display: flex;
   align-items: center;
-}
-.heading p.bforeline {
-  width: 18px;
-  height: 0.3px;
-  background: #d8c9c9;
-  left: 0;
-  top: 50%;
-  position: absolute;
-}
-.heading p.afterline {
-  width: 126px;
-  height: 0.3px;
-  background: #d8c9c9;
-  right: 0;
-  top: 50%;
-  position: absolute;
+  color: #ff5722;
 }
 
 .heading p.gs {

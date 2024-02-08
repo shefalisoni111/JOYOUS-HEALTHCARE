@@ -10,7 +10,7 @@
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="allCandidateVacancyList">All Vacancy</h5>
+            <h5 class="modal-title" id="allCandidateVacancyList">All Candidate List</h5>
             <button
               type="button"
               class="btn-close"
@@ -142,7 +142,7 @@
               v-on:click="updateAssignVacancyMethod($event)"
               @click.stop="closePopup"
             >
-              Submit
+              Assign
             </button>
           </div>
         </div>
@@ -303,9 +303,7 @@ label.form-label {
   width: 40px;
   height: 40px;
 }
-.modal-content {
-  height: 930px;
-}
+
 table th {
   text-transform: capitalize;
 }

@@ -18,7 +18,7 @@
           <td v-text="pending.id"></td>
           <td class="text-capitalize">
             <router-link
-              class="text-capitalize"
+              class="text-capitalize fw-bold text-decoration-underline"
               :to="{
                 name: 'Profile',
                 params: { id: pending && pending.id },

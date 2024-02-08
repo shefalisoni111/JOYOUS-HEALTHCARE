@@ -1,11 +1,46 @@
+<!-- <template>
+  <div>
+    <Navbar />
+    <div id="main">
+      <h6>Client Invoice Page in Progress.....</h6>
+    </div>
+  </div>
+</template>
+<script>
+import Navbar from "../Navbar.vue";
+
+export default {
+  components: {
+    Navbar,
+  },
+};
+</script>
+<style scoped>
+#main {
+  padding: 20px 20px;
+  transition: all 0.3s;
+  height: 100dvh;
+  margin-top: 72px;
+  background-color: #fdce5e17;
+}
+ul.generalsetting h6 {
+  font-size: 14px;
+  font-weight: bold;
+}
+</style> -->
+
 <template>
   <div>
+    <Navbar />
     <div id="main">
-      <div class="d-flex justify-content-between px-2">
+      <div class="pagetitle d-flex justify-content-between px-2">
         <div class="py-3">
           <ol class="breadcrumb mb-1">
             <li class="breadcrumb-item active text-uppercase fs-6">
-              Dashboard / <span class="color-fonts">Custom TimeSheet</span>
+              <router-link class="nav-link d-inline" aria-current="page" to="/home"
+                >Dashboard</router-link
+              >
+              / <span class="color-fonts">Custom TimeSheet</span>
             </li>
           </ol>
         </div>
@@ -16,58 +51,81 @@
           <div class="col-12">
             <div class="">
               <div>
-                <ul
-                  class="nav nav-pills mb-3 d-flex justify-content-between"
-                  id="pills-tab"
-                  role="tablist"
-                >
-                  <div class="d-flex">
-                    <div class="d-flex align-items-center">
-                      <select
-                        class="form-control"
-                        v-model="currentView"
-                        @change="updateDateRange"
-                      >
-                        <option value="weekly">Weekly</option>
-                        <option value="monthly">Monthly</option>
-                      </select>
-                    </div>
-                    &nbsp;&nbsp;
-                    <div class="d-flex align-items-center">
-                      <span
-                        v-if="currentView === 'weekly' && startDate && endDate"
-                        class="fw-bold"
-                      >
-                        {{
-                          "Monday " +
-                          formatDate(startDate) +
-                          " to Sunday " +
-                          formatDate(endDate)
-                        }}
-                      </span>
-                      <span v-else-if="currentView === 'monthly'" class="fw-bold">
-                        {{ formatDate(startDate) + " to " + formatDate(endDate) }}
-                      </span>
-                    </div>
-                  </div>
+                <div class="p-2">
+                  <div class="d-flex justify-content-between">
+                    <div class="d-flex">
+                      <div class="d-flex align-items-center gap-2">
+                        <select
+                          class="form-control"
+                          v-model="currentView"
+                          @change="updateDateRange"
+                        >
+                          <option value="weekly">Weekly</option>
+                          <option value="monthly">Monthly</option>
+                        </select>
+                      </div>
 
-                  <div v-if="currentView === 'weekly'">
-                    <div>
-                      <div v-for="(day, index) in daysOfWeek" :key="index"></div>
-                      <div v-for="(day, index) in getWeekDates" :key="index"></div>
+                      &nbsp;&nbsp;
+                      <div class="d-flex align-items-center">
+                        <span
+                          v-if="currentView === 'weekly' && startDate && endDate"
+                          class="fw-bold"
+                        >
+                          {{
+                            "Monday " +
+                            formatDate(startDate) +
+                            " to Sunday " +
+                            formatDate(endDate)
+                          }}
+                        </span>
+                        <span
+                          v-else-if="currentView === 'monthly' && startDate && endDate"
+                          class="fw-bold"
+                        >
+                          {{ formatDate(startDate) + " to " + formatDate(endDate) }}
+                        </span>
+                      </div>
+                      &nbsp;&nbsp;
+                      <div class="d-flex align-items-center fs-4">
+                        <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
+                        <i class="bi bi-calendar2-check-fill"></i>
+                        <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                      </div>
                     </div>
-                  </div>
 
-                  <div v-else-if="currentView === 'monthly'">
-                    <div>
-                      <div v-for="(day, index) in getMonthDates" :key="index"></div>
+                    <div class="d-flex gap-3 align-items-center">
+                      <form
+                        class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
+                      >
+                        <input
+                          class="form-control mr-sm-2"
+                          type="search"
+                          placeholder="Search by Name"
+                          aria-label="Search"
+                        />
+                      </form>
                     </div>
                   </div>
-                  <div class="d-flex gap-2">
-                    <div></div>
+                </div>
+                <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                   
+                  </ul> -->
+                <div v-if="currentView === 'weekly'">
+                  <div>
+                    <div v-for="(day, index) in daysOfWeek" :key="index"></div>
+                    <div v-for="(day, index) in getWeekDates" :key="index"></div>
                   </div>
-                </ul>
-                <div class="tab-content" id="pills-tabContent">
+                </div>
+
+                <div v-else-if="currentView === 'monthly'">
+                  <div>
+                    <div v-for="(day, index) in getMonthDates" :key="index"></div>
+                  </div>
+                </div>
+                <div class="d-flex gap-2">
+                  <div></div>
+                </div>
+                <div class="tab-content mt-4" id="pills-tabContent">
                   <div
                     class="tab-pane fade show active"
                     id="pills-home"
@@ -97,33 +155,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="data in getCustomDetail" :key="data.id">
-                          <td>
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" />
-                            </div>
-                          </td>
-                          <td v-text="data.code"></td>
-                          <td v-text="data.name"></td>
-                          <td v-text="data.business_unit"></td>
-                          <td v-text="data.job"></td>
-                          <td v-text="data.shift_date"></td>
-                          <td v-text="data.start_time"></td>
-                          <td v-text="data.end_time"></td>
-                          <td v-text="data.total_hours"></td>
-                          <td v-text="data.client_rate"></td>
-                          <td v-text="data.total_cost"></td>
-                          <td v-text="data.paper_timesheet"></td>
-                          <td>
-                            <i
-                              type="button"
-                              class="btn btn-outline-success text-nowrap bi bi-pencil-square"
-                              data-bs-toggle="modal"
-                              data-bs-target="#editCustomSheet"
-                              data-bs-whatever="@mdo"
-                            ></i>
-                          </td>
-                        </tr>
+                        <tr></tr>
                       </tbody>
                     </table>
                   </div>
@@ -142,24 +174,21 @@
         </div>
       </div>
     </div>
-    <EditCustomTimeSheet />
   </div>
 </template>
 <script>
 import axios from "axios";
-import EditCustomTimeSheet from "@/components/modals/TimeSheet/EditCustomTimeSheet.vue";
-
+import Navbar from "../Navbar.vue";
 export default {
   data() {
     return {
       currentView: "weekly",
       daysOfWeek: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-      startDate: null,
-      endDate: null,
-      getCustomDetail: [],
+      startDate: new Date(),
+      endDate: new Date(),
     };
   },
-  components: { EditCustomTimeSheet },
+  components: { Navbar },
   computed: {
     getWeekDates() {
       const currentDate = new Date();
@@ -186,50 +215,95 @@ export default {
     },
   },
   methods: {
+    moveToPrevious() {
+      if (this.currentView === "weekly") {
+        this.startDate.setDate(this.startDate.getDate() - 7);
+        this.endDate.setDate(this.endDate.getDate() - 7);
+        this.updateDateRange();
+      } else if (this.currentView === "monthly") {
+        this.startDate.setMonth(this.startDate.getMonth() - 1);
+        this.endDate = new Date(
+          this.startDate.getFullYear(),
+          this.startDate.getMonth() + 1,
+          0
+        );
+      }
+    },
+    moveToNext() {
+      if (this.currentView === "weekly") {
+        this.startDate.setDate(this.startDate.getDate() + 7);
+        this.endDate.setDate(this.endDate.getDate() + 7);
+        this.updateDateRange();
+      } else if (this.currentView === "monthly") {
+        this.startDate.setMonth(this.startDate.getMonth() + 1);
+        this.endDate = new Date(
+          this.startDate.getFullYear(),
+          this.startDate.getMonth() + 1,
+          0
+        );
+      }
+    },
     updateDateRange() {
       const currentDate = new Date();
-
       if (this.currentView === "weekly") {
-        this.startDate = new Date(
-          currentDate.setDate(currentDate.getDate() - currentDate.getDay() + 1)
-        );
-        this.endDate = new Date(
-          currentDate.setDate(currentDate.getDate() - currentDate.getDay() + 7)
-        );
+        const weekStart = new Date(this.startDate);
+        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay());
+        this.startDate = weekStart;
+        this.endDate = new Date(weekStart);
+        this.endDate.setDate(this.endDate.getDate() + 6);
       } else if (this.currentView === "monthly") {
+        const currentDate = new Date();
         this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
         this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
       }
-
-      localStorage.setItem("currentView", this.currentView);
+      // Save the values to localStorage
       localStorage.setItem("startDate", this.startDate.toISOString());
       localStorage.setItem("endDate", this.endDate.toISOString());
     },
     loadDateRangeFromLocalStorage() {
-      const storedCurrentView = localStorage.getItem("currentView");
       const storedStartDate = localStorage.getItem("startDate");
       const storedEndDate = localStorage.getItem("endDate");
-      if (storedCurrentView) {
-        this.currentView = storedCurrentView;
-      }
+
       if (storedStartDate && storedEndDate) {
         this.startDate = new Date(storedStartDate);
         this.endDate = new Date(storedEndDate);
       }
     },
     formatDate(date) {
-      return date.toLocaleDateString();
+      return date.toLocaleDateString(); // You can customize the formatting based on your needs
     },
-
-    async createCustomSheetMethod() {
-      axios
-        .get(`${VITE_API_URL}/custom_timesheets`)
-        .then((response) => (this.getCustomDetail = response.data));
-    },
+    // async vacancyDeleteMethod(id) {
+    //   if (!window.confirm("Are you Sure ?")) {
+    //     return;
+    //   }
+    //   const token = localStorage.getItem("token");
+    //   await axios
+    //     .delete(`${VITE_API_URL}/vacancies/` + id, {
+    //       headers: {
+    //         "content-type": "application/json",
+    //         Authorization: "bearer " + token,
+    //       },
+    //     })
+    //     .then((response) => {
+    //       this.createVacancy();
+    //     });
+    //   // alert("Record Deleted ");
+    // },
+    // async createVacancy() {
+    //   const token = localStorage.getItem("token");
+    //   axios
+    //     .get(`${VITE_API_URL}/vacancies`, {
+    //       headers: {
+    //         "content-type": "application/json",
+    //         Authorization: "bearer " + token,
+    //       },
+    //     })
+    //     .then((response) => (this.getVacancyDetail = response.data));
+    // },
   },
 
   mounted() {
-    this.createCustomSheetMethod();
+    // this.createVacancy();
     this.loadDateRangeFromLocalStorage();
   },
 };
@@ -239,8 +313,7 @@ export default {
 #main {
   transition: all 0.3s;
   height: 100vh;
-
-  margin-top: 82px;
+  margin-top: 72px;
   background-color: #fdce5e17;
 }
 .main-content {
@@ -259,7 +332,12 @@ export default {
 .form-check-input {
   border: 2px solid grey;
 }
-
+select {
+  padding: 10px;
+  border-radius: 4px;
+  border: 0px;
+  border: 1px solid rgb(202, 198, 198);
+}
 .rounded-circle {
   border: 1px solid #ff5f30;
   padding: 8px 11px;
@@ -301,8 +379,8 @@ table th {
 }
 
 button.nav-link > li.nav-item {
-  border-bottom: 2px solid red; /* Replace with your desired border color */
-  padding-bottom: 5px; /* Optional: Add padding for spacing */
+  border-bottom: 2px solid red;
+  padding-bottom: 5px;
 }
 
 .form-select {

@@ -85,7 +85,11 @@
                   data-bs-whatever="@mdo"
                   @click="openAllApplied(getdata.id)"
                 >
-                  <span class="rounded-circle">{{ getdata.all_candidate }}</span>
+                  <span
+                    :style="{ padding: getPadding(getdata.all_candidate) }"
+                    class="rounded-circle"
+                    >{{ getdata.all_candidate }}</span
+                  >
                 </button>
               </td>
               <td>
@@ -97,7 +101,11 @@
                   data-bs-whatever="@mdo"
                   @click="openPopup(getdata.id)"
                 >
-                  <span class="rounded-circle">{{ getdata.applied }}</span>
+                  <span
+                    :style="{ padding: getPadding(getdata.all_candidate) }"
+                    class="rounded-circle"
+                    >{{ getdata.applied }}</span
+                  >
                 </button>
               </td>
               <td>
@@ -109,7 +117,11 @@
                   data-bs-whatever="@mdo"
                   @click="openAssigned(getdata.id)"
                 >
-                  <span class="rounded-circle">{{ getdata.assigned }}</span>
+                  <span
+                    :style="{ padding: getPadding(getdata.all_candidate) }"
+                    class="rounded-circle"
+                    >{{ getdata.assigned }}</span
+                  >
                 </button>
               </td>
               <td>
@@ -121,7 +133,11 @@
                   data-bs-whatever="@mdo"
                   @click="openRejected(getdata.id)"
                 >
-                  <span class="rounded-circle">{{ getdata.rejected }}</span>
+                  <span
+                    :style="{ padding: getPadding(getdata.all_candidate) }"
+                    class="rounded-circle"
+                    >{{ getdata.rejected }}</span
+                  >
                 </button>
               </td>
               <td v-text="getdata.create_by_and_time.split(' ')[0]"></td>
@@ -190,6 +206,11 @@ export default {
   },
 
   methods: {
+    getPadding(value) {
+      // Calculate padding based on the number of digits
+      const digitCount = value.toString().length;
+      return digitCount === 1 ? "8px 11px" : "11px";
+    },
     editVacancyId(vacancyId) {
       this.selectedVacancyId = vacancyId;
     },

@@ -20,7 +20,7 @@ export default {
   padding: 20px 20px;
   transition: all 0.3s;
   height: 100dvh;
-  margin-top: 80px;
+  margin-top: 72px;
   background-color: #fdce5e17;
 }
 </style> -->
@@ -34,7 +34,10 @@ export default {
           <div class="py-3">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active text-uppercase fs-6">
-                Dashboard / <span class="color-fonts">Schedule</span>
+                <router-link class="nav-link d-inline" aria-current="page" to="/home"
+                  >Dashboard</router-link
+                >
+                / <span class="color-fonts">Schedule</span>
               </li>
             </ol>
           </div>
@@ -46,13 +49,18 @@ export default {
                 {{
                   "Monday " + formattedStartDate + " to Sunday " + formattedEndDate
                 }} </span
-              >&nbsp; &nbsp;
-              <input
+              >&nbsp; &nbsp; &nbsp;&nbsp;
+              <div class="d-flex align-items-center fs-4">
+                <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
+                <i class="bi bi-calendar2-check-fill"></i>
+                <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+              </div>
+              <!-- <input
                 type="date"
                 v-model="startDate"
                 @change="updateDateRange"
                 class="dateInput"
-              />
+              /> -->
             </div>
 
             <div v-if="selectedDate !== null" class="modal">
@@ -166,7 +174,7 @@ import Navbar from "../components/Navbar.vue";
 export default {
   data() {
     return {
-      startDate: "",
+      startDate: new Date(),
       endDate: { value: "", display: "" },
       currentDate: new Date(),
       selectedDate: null,
@@ -199,6 +207,7 @@ export default {
         (candidate) => candidate.id === this.selectedCandidateId
       );
     },
+
     selectedDateRow() {
       const selectedDate = new Date(this.startDate);
       const selectedDateRow = [];
@@ -231,6 +240,49 @@ export default {
   },
 
   methods: {
+    moveToPrevious() {
+      if (!this.formattedStartDate || !this.formattedEndDate) {
+        return;
+      }
+
+      const startDateParts = this.formattedStartDate.split("/");
+      const endDateParts = this.formattedEndDate.split("/");
+      const formattedStartDate =
+        startDateParts[2] + "-" + startDateParts[1] + "-" + startDateParts[0];
+      const formattedEndDate =
+        endDateParts[2] + "-" + endDateParts[1] + "-" + endDateParts[0];
+
+      const startDate = new Date(formattedStartDate);
+      const endDate = new Date(formattedEndDate);
+
+      startDate.setDate(startDate.getDate() - 7);
+      endDate.setDate(endDate.getDate() - 7);
+
+      this.startDate = startDate;
+      this.endDate = endDate;
+    },
+    moveToNext() {
+      if (!this.formattedStartDate || !this.formattedEndDate) {
+        return;
+      }
+
+      const startDateParts = this.formattedStartDate.split("/");
+      const endDateParts = this.formattedEndDate.split("/");
+      const formattedStartDate =
+        startDateParts[2] + "-" + startDateParts[1] + "-" + startDateParts[0];
+      const formattedEndDate =
+        endDateParts[2] + "-" + endDateParts[1] + "-" + endDateParts[0];
+
+      const startDate = new Date(formattedStartDate);
+      const endDate = new Date(formattedEndDate);
+
+      startDate.setDate(startDate.getDate() + 7);
+      endDate.setDate(endDate.getDate() + 7);
+
+      this.startDate = startDate;
+      this.endDate = endDate;
+    },
+
     handleDragStart(vacancyId) {
       this.vacancyBeingDragged.id = vacancyId;
     },
@@ -317,25 +369,39 @@ export default {
 
         const selectedDate = new Date(this.startDate);
         selectedDate.setDate(parseInt(day));
+        selectedDate.setDate(selectedDate.getDate() + 1);
 
-        const formattedDate = selectedDate.toISOString().split("T")[0];
-
-        this.selectedDate = formattedDate;
+        this.selectedDate = selectedDate
+          .toISOString()
+          .split("T")[0]
+          .split("-")
+          .reverse()
+          .join("-");
         this.selectedCandidateId = actualCandidateId;
 
         const selectedCandidate = this.candidateList.find(
           (candidate) => candidate.id === actualCandidateId
         );
 
+        const columnDateMatch = this.formattedDate(day);
+        const vacancy = this.vacancyList.find(
+          (vacancy) => vacancy.date === columnDateMatch
+        );
+
         if (selectedCandidate) {
-          this.$nextTick(() => {
-            this.currentSelectedCandidate = selectedCandidate;
-          });
+          this.currentSelectedCandidate = selectedCandidate;
         } else {
           this.selectedDate = null;
           this.statusForSelectedDate = null;
         }
+
+        if (vacancy) {
+          this.statusForSelectedDate = "Vacancy Available";
+        } else {
+          this.statusForSelectedDate = "No Vacancy";
+        }
       } catch (error) {
+        // Handle errors
         this.selectedDate = null;
         this.statusForSelectedDate = null;
       }
@@ -378,7 +444,7 @@ export default {
 <style scoped>
 #main {
   background-color: #fdce5e17;
-  margin-top: 80px;
+  margin-top: 72px;
 }
 .full-page-calendar {
   padding: 20px;

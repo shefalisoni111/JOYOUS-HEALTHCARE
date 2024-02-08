@@ -375,6 +375,7 @@ export default {
           const responseData = await response.json();
 
           if (response.ok) {
+            this.getDocCAtegories();
             alert("Successful Submit Data");
             this.issue_date = "";
             this.expiry_date = "";
@@ -426,7 +427,7 @@ export default {
         return;
       }
       axios.put(`${VITE_API_URL}/delete_candidate_document/` + id).then((response) => {
-        this.getDocumentCategories();
+        this.getDocCAtegories();
       });
     },
 
@@ -477,6 +478,7 @@ export default {
           `${VITE_API_URL}/deleted_candidate_document_list?candidate_id=${candidateId}`
         );
         this.getDeletedDocument = response.data;
+        this.getDeletedDocumentListMethod();
       } catch (error) {
         // console.error("Error fetching documents:", error);
       }

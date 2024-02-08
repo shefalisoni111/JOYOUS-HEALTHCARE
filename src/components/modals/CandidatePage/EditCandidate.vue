@@ -35,7 +35,23 @@
                     </div>
                   </div>
                 </div>
-
+                <div class="mb-3">
+                  <div class="col-12">
+                    <label class="form-label">Position</label>
+                  </div>
+                  <div class="col-12 mt-1">
+                    <select v-model="fetchCandidate.job_id" id="selectJobTitle">
+                      <option
+                        v-for="option in options"
+                        :key="option.id"
+                        :value="option.id"
+                        aria-placeholder="Select Job"
+                      >
+                        {{ option.name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
                 <div class="mb-3">
                   <div class="col-12">
                     <label class="form-label">Email</label>
@@ -111,12 +127,13 @@ export default {
         password: "",
         confirm_password: "",
         address: "",
-        jobs_id: 1,
+        job_id: 1,
         phone_number: "",
         email: "",
         activated: "",
         employment_type_id: "",
       },
+      options: [],
     };
   },
   props: {
@@ -129,8 +146,26 @@ export default {
     getCandidatesData() {
       return this.$store.state.candidates;
     },
+    selectJobTitle() {
+      const job_title = this.options.find(
+        (option) => option.id === this.fetchVacancy.job_id
+      );
+      return job_title ? job_title.name : "";
+    },
   },
   methods: {
+    async getJobTitleMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+        this.options = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
     async fetchCandidateMethod(id) {
       try {
         const response = await axios.get(`${VITE_API_URL}/candidates/${id}`);
@@ -163,5 +198,17 @@ export default {
       },
     },
   },
+  mounted() {
+    this.getJobTitleMethod();
+  },
 };
 </script>
+<style scoped>
+select {
+  width: 100%;
+  padding: 9px;
+
+  border-radius: 4px;
+  border: 1px solid #80808059;
+}
+</style>
