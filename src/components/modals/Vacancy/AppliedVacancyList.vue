@@ -218,7 +218,7 @@
           <div class="modal-footer">
             <button
               class="btn btn-secondary rounded-1"
-              data-bs-target="#assignedVacancyList"
+              data-bs-target="#appliedVacancy"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
               @click="closePopup"
@@ -232,7 +232,6 @@
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
               v-on:click="updateVacancyMethod($event)"
-              @click="closePopup"
             >
               Submit
             </button>
@@ -287,9 +286,6 @@ export default {
     },
   },
   methods: {
-    closePopup() {
-      this.$store.commit("setSelectedAppliedItemId", null);
-    },
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
 
@@ -455,6 +451,9 @@ export default {
           }
         } catch (error) {}
       }
+    },
+    closePopup() {
+      this.$store.commit("setSelectedAppliedItemId", null);
     },
   },
 };
