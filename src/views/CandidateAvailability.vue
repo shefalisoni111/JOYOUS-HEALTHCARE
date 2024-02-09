@@ -115,7 +115,11 @@
         </div>
       </div>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="candidateList.length >= 8">
+    <div
+      class="mx-3"
+      style="text-align: right"
+      v-if="candidateList && candidateList.length >= 8"
+    >
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -166,9 +170,13 @@ export default {
   },
   computed: {
     paginateCandidates() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.candidateList.slice(startIndex, endIndex);
+      if (this.candidateList) {
+        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        const endIndex = startIndex + this.itemsPerPage;
+        return this.candidateList.slice(startIndex, endIndex);
+      } else {
+        return [];
+      }
     },
     totalRecordsOnPage() {
       return this.paginateCandidates.length;
