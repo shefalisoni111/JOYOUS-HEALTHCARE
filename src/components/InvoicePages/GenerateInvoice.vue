@@ -47,7 +47,7 @@ ul.generalsetting h6 {
         </div>
       </div>
 
-      <div class="container-fluid mt-3">
+      <div class="container-fluid pt-3">
         <div class="row">
           <div class="col-12">
             <div class="">
@@ -223,7 +223,7 @@ ul.generalsetting h6 {
                                 :key="date"
                                 class="day-header"
                               >
-                                {{ formatDate(date) }}
+                                {{ date }}
                               </div>
                             </div>
                           </th>
@@ -343,16 +343,16 @@ export default {
       return monthDates;
     },
 
-    // formattedDates() {
-    //   return this.selectedDateRow.map((day) => this.formatDate(day));
-    // },
+    formattedDates() {
+      return this.selectedDateRow.map((day) => this.formatDate(day));
+    },
 
-    // formattedStartDate() {
-    //   return this.formatDate(this.selectedDateRow[0]);
-    // },
-    // formattedEndDate() {
-    //   return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
-    // },
+    formattedStartDate() {
+      return this.formatDate(this.selectedDateRow[0]);
+    },
+    formattedEndDate() {
+      return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
+    },
   },
   methods: {
     async getBusinessUnitMethod() {

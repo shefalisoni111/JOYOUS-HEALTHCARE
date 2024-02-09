@@ -33,7 +33,7 @@
                       @input="clearError"
                       @change="detectAutofill"
                     />
-                    <span v-if="!validateCandidateName" class="text-danger"
+                    <span v-if="!validateCandidateName && !autofilled" class="text-danger"
                       >Candidate Name Required</span
                     >
                   </div>
@@ -48,12 +48,13 @@
                         v-for="option in options"
                         :key="option.id"
                         :value="option.id"
-                        @change="detectAutofill"
                       >
                         {{ option.name }}
                       </option>
                     </select>
-                    <span v-if="!validationSelectedOptionText" class="text-danger"
+                    <span
+                      v-if="!validationSelectedOptionText && !autofilled"
+                      class="text-danger"
                       >Position Required</span
                     >
                   </div>
@@ -71,7 +72,9 @@
                       @change="detectAutofill"
                       autocomplete="new-email"
                     />
-                    <span v-if="!validateEmail" class="text-danger">Required Email </span>
+                    <span v-if="!validateEmail && !autofilled" class="text-danger"
+                      >Required Email</span
+                    >
                   </div>
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
@@ -117,9 +120,8 @@
                       v-model="phone_number"
                       @input="cleanPhoneNumber"
                       @change="detectAutofill"
-                      pattern="[0-9]*"
                     />
-                    <span v-if="!validatePhoneNumber" class="text-danger"
+                    <span v-if="showPhoneNumberValidation" class="text-danger"
                       >Required Phone Number</span
                     >
                     <span
@@ -172,6 +174,7 @@ export default {
       passwordsMatch: true,
       selectedOption: null,
       validationSelectedOptionText: true,
+      showPhoneNumberValidation: false,
       first_name: "",
       last_name: "",
       password: "",
@@ -179,7 +182,6 @@ export default {
       options: [],
       confirm_password: "",
       address: "",
-
       phone_number: "",
       email: "",
       activated: "",
@@ -210,80 +212,42 @@ export default {
     password: "validatePasswordMatch",
     confirm_password: "validatePasswordMatch",
     phone_number: "validatePhoneNumberFormat",
-
     isFormValid: function (newVal) {
       this.isValidForm = newVal;
     },
   },
   methods: {
     isFieldEmpty() {
-      if (!this.first_name.trim()) {
-        this.validateCandidateName = true;
-        return true;
-      }
-      if (!this.email.trim()) {
-        this.validateEmail = false;
-        return true;
-      }
-      if (!this.phone_number.trim()) {
-        this.validatePhoneNumber = false;
-        return true;
-      }
-      if (!this.password.trim() || !this.confirm_password.trim()) {
-        this.passwordsMatch = false;
-        return true;
-      }
-      if (!this.job_id) {
-        this.validationSelectedOptionText = false;
-        return true;
-      }
-
-      return false;
+      return (
+        !this.first_name.trim() ||
+        !this.email.trim() ||
+        !this.phone_number.trim() ||
+        !this.password.trim() ||
+        !this.confirm_password.trim() ||
+        !this.job_id
+      );
     },
-
     cleanPhoneNumber() {
       this.phone_number = this.phone_number.replace(/\D/g, "");
     },
-
     detectAutofill() {
-      if (this.$refs.email && this.$refs.email.autofocus && this.$refs.email.value) {
-        this.autofilled = true;
+      const isPhoneNumberFocused = document.activeElement === this.$refs.phone_number;
 
-        this.email = "";
-      }
+      const isPhoneNumberFilled = this.phone_number.trim() !== "";
 
-      if (
-        this.$refs.password &&
-        this.$refs.password.autofocus &&
-        this.$refs.password.value
-      ) {
-        this.autofilled = true;
-
-        this.password = "";
-      }
+      this.showPhoneNumberValidation = !isPhoneNumberFocused && !isPhoneNumberFilled;
     },
     async addCandidate() {
       this.validateSelectedOption();
-
       this.validateCandidateName = this.validateNameFormat(this.first_name);
-
       this.validateEmail = this.validateEmailFormat(this.email);
-
-      // this.passwordsMatch = this.password === this.confirm_password;
-
       this.validatePhoneNumber = this.validatePhoneNumberFormat(this.phone_number);
-      this.passwordsMatch = true;
+      this.passwordsMatch = this.password === this.confirm_password;
 
-      if (
-        this.validateEmail &&
-        this.validatePhoneNumber &&
-        this.validateCandidateName &&
-        this.validationSelectedOptionText
-      ) {
+      if (this.isFormValid) {
         if (this.isPasswordRequired && !this.password) {
           return;
         }
-        this.validatePasswordMatch();
 
         if (!this.passwordsMatch) {
           return;
@@ -311,36 +275,21 @@ export default {
 
           if (response.ok) {
             this.$emit("addCandidate");
-
-            this.first_name = "";
-            this.job_id = "";
-            this.password = "";
-            this.confirm_password = "";
-            this.phone_number = "";
-            this.email = "";
-            this.activated = "";
-            this.isValidForm = true;
+            this.resetForm();
+            alert("Successful Candidate added");
           } else {
-            this.isValidForm = false;
-            this.validateEmail = true;
-            this.validatePhoneNumber = true;
-
-            this.validateCandidateName = true;
-            this.validationSelectedOptionText = true;
-            this.isPasswordRequired = true;
+            alert("Error adding Candidate");
           }
-          alert("Successful Availability added");
-        } catch (error) {}
+        } catch (error) {
+          alert("Error adding Candidate");
+        }
       } else {
         this.isPasswordRequired = !this.password;
       }
     },
     validatePasswordMatch() {
-      if (this.password && this.confirm_password) {
-        this.passwordsMatch = this.password === this.confirm_password;
-      } else {
-        this.passwordsMatch = false;
-      }
+      this.passwordsMatch =
+        this.password && this.confirm_password && this.password === this.confirm_password;
     },
     validateEmailFormat(email) {
       const emailRegex = /^[^\s@]+@gmail\.com$/;
@@ -381,8 +330,17 @@ export default {
         }
       }
     },
+    resetForm() {
+      this.first_name = "";
+      this.job_id = "";
+      this.password = "";
+      this.confirm_password = "";
+      this.phone_number = "";
+      this.email = "";
+      this.activated = "";
+      this.isValidForm = true;
+    },
   },
-
   mounted() {
     this.getPositionMethod();
     this.isValidForm = this.isFormValid;
