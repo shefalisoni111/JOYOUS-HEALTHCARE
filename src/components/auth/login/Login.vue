@@ -137,18 +137,22 @@ export default {
 
     setupAutoLogout() {
       const tokenExpiration = localStorage.getItem("tokenExpiration");
-      const timeToExpiration = tokenExpiration - Date.now() + 3600000;
+      const currentTime = Date.now();
+      const timeToExpiration = tokenExpiration - currentTime;
 
-      setTimeout(() => {
+      if (timeToExpiration > 0) {
+        setTimeout(() => {
+          this.logoutDueToExpiration();
+        }, timeToExpiration);
+      } else {
+        // Token has already expired, initiate logout
         this.logoutDueToExpiration();
-      }, timeToExpiration);
+      }
     },
     logoutDueToExpiration() {
-      // Remove token and token expiration from storage
       localStorage.removeItem("token");
       localStorage.removeItem("tokenExpiration");
 
-      // Perform logout
       this.logout();
     },
 
@@ -156,7 +160,7 @@ export default {
       localStorage.removeItem("token");
       localStorage.removeItem("tokenExpiration");
       localStorage.clear();
-      this.$router.push({ name: "Login" });
+      this.$router.replace({ name: "Login" });
     },
   },
 
