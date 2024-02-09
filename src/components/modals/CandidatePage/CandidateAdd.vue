@@ -231,9 +231,8 @@ export default {
       this.phone_number = this.phone_number.replace(/\D/g, "");
     },
     detectAutofill() {
-      const isPhoneNumberFocused = document.activeElement === this.$refs.phone_number;
-
       const isPhoneNumberFilled = this.phone_number.trim() !== "";
+      const isPositionSelected = !!this.job_id;
 
       this.showPhoneNumberValidation = !isPhoneNumberFocused && !isPhoneNumberFilled;
     },
