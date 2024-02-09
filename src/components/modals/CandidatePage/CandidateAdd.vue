@@ -241,8 +241,8 @@ export default {
       this.validateCandidateName = this.validateNameFormat(this.first_name);
       this.validateEmail = this.validateEmailFormat(this.email);
       this.validatePhoneNumber = this.validatePhoneNumberFormat(this.phone_number);
-      this.passwordsMatch = this.password === this.confirm_password;
 
+      this.validatePasswordMatch();
       if (this.isFormValid) {
         if (this.isPasswordRequired && !this.password) {
           return;
@@ -287,8 +287,7 @@ export default {
       }
     },
     validatePasswordMatch() {
-      this.passwordsMatch =
-        this.password && this.confirm_password && this.password === this.confirm_password;
+      this.passwordsMatch = this.password === this.confirm_password;
     },
     validateEmailFormat(email) {
       const emailRegex = /^[^\s@]+@gmail\.com$/;
