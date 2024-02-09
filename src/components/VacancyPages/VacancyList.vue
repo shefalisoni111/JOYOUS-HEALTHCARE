@@ -147,11 +147,15 @@
                           <td v-text="data.business_unit"></td>
                           <td v-text="data.job_title"></td>
 
-                          <td
-                            v-for="(date, index) in data.dates"
-                            :key="index"
-                            v-text="date"
-                          ></td>
+                          <td class="widthDefine">
+                            <span v-for="(date, index) in data.dates" :key="index">
+                              {{ date }}
+
+                              <template v-if="index !== data.dates.length - 1"
+                                >,
+                              </template>
+                            </span>
+                          </td>
 
                           <td v-text="data.shift"></td>
 
@@ -408,6 +412,12 @@ export default {
 }
 .btn-primary {
   border: none;
+}
+.table.candidateTable td.widthDefine {
+  white-space: pre-wrap;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .form-check-input {
   border: 2px solid grey;
