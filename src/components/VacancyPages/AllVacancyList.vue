@@ -176,7 +176,7 @@
     <RejectedVacancyList @rejectVacancy="createVacancy" />
     <AllVacancyCandidateList @allVacancy="createVacancy" />
     <AddVacancy @addVacancy="createVacancy" />
-    <div class="mt-3" style="text-align: right" v-if="getVacancyDetail.length >= 10">
+    <div class="mt-3" style="text-align: right" v-if="getVacancyDetail.length >= 9">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -216,7 +216,7 @@ export default {
       getVacancyDetail: [],
       selectedVacancyId: 0,
       currentPage: 1,
-      itemsPerPage: 10,
+      itemsPerPage: 9,
     };
   },
   components: {

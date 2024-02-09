@@ -345,7 +345,7 @@
                   Work experience
                 </h5>
                 <button
-                  class="btn btn-primary rounded-1 text-uppercase fw-medium mb-3"
+                  class="btn btn-primary rounded-1 text-capitalize fw-medium mb-3"
                   data-bs-toggle="modal"
                   data-bs-target="#addWorkExperience"
                   data-bs-whatever="@mdo"
@@ -395,7 +395,7 @@
                   Education
                 </h5>
                 <button
-                  class="btn btn-primary rounded-1 text-uppercase fw-medium mb-3"
+                  class="btn btn-primary rounded-1 text-capitalize fw-medium mb-3"
                   data-bs-toggle="modal"
                   data-bs-target="#addEducation"
                   data-bs-whatever="@mdo"

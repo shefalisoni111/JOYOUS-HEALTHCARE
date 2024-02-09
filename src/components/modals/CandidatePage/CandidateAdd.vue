@@ -142,11 +142,13 @@
               Cancel
             </button>
             <button
-              :disabled="!isValidForm"
-              :class="{ disabled: !isValidForm }"
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
-              :data-bs-dismiss="isValidForm ? null : 'modal'"
-              v-on:click="addCandidate()"
+              :disabled="!isValidForm || isFieldEmpty()"
+              :class="{
+                'btn btn-primary rounded-1 text-capitalize fw-medium': true,
+                disabled: !isValidForm || isFieldEmpty(),
+              }"
+              v-on:click="addCandidate"
+              v-bind:data-bs-dismiss="!isFieldEmpty() && isValidForm ? 'modal' : null"
             >
               Add
             </button>
@@ -214,6 +216,31 @@ export default {
     },
   },
   methods: {
+    isFieldEmpty() {
+      if (!this.first_name.trim()) {
+        this.validateCandidateName = true;
+        return true;
+      }
+      if (!this.email.trim()) {
+        this.validateEmail = false;
+        return true;
+      }
+      if (!this.phone_number.trim()) {
+        this.validatePhoneNumber = false;
+        return true;
+      }
+      if (!this.password.trim() || !this.confirm_password.trim()) {
+        this.passwordsMatch = false;
+        return true;
+      }
+      if (!this.job_id) {
+        this.validationSelectedOptionText = false;
+        return true;
+      }
+
+      return false;
+    },
+
     cleanPhoneNumber() {
       this.phone_number = this.phone_number.replace(/\D/g, "");
     },

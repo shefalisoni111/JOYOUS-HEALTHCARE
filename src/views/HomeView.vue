@@ -584,9 +584,6 @@ export default {
     if (inputElement) {
       inputElement.value = this.selectedMonth;
     }
-    const timestamp = 1707369178494;
-    const dates = new Date(timestamp);
-    console.log(dates);
   },
 };
 </script>

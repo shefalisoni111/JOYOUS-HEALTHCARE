@@ -144,11 +144,9 @@ export default {
       }, timeToExpiration);
     },
     logoutDueToExpiration() {
-      // Remove token and token expiration from storage
       localStorage.removeItem("token");
       localStorage.removeItem("tokenExpiration");
 
-      // Perform logout
       this.logout();
     },
 
@@ -214,8 +212,8 @@ export default {
   padding: 0.4rem 0.75rem;
 }
 .login-form {
-  flex: 1; /* This will make the form take up the remaining space */
-  padding: 20px; /* Adjust the padding as needed */
+  flex: 1;
+  padding: 20px;
 }
 .btn-primary {
   border: none;

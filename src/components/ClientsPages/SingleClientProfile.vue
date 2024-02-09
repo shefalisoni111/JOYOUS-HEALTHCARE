@@ -65,7 +65,7 @@
                   </div>
 
                   <div>
-                    <button type="button" class="btn btn-outline-primary">Edit</button>
+                    <button type="button" class="btn btn-primary">Edit</button>
                   </div>
                 </div>
                 <hr />
@@ -93,7 +93,7 @@
                         {{ getClientDatas.phone_number }}</span
                       >
                     </div>
-                    <button type="button" class="btn btn-outline-primary">Edit</button>
+                    <button type="button" class="btn btn-primary">Edit</button>
                   </div>
                 </div>
               </div>
