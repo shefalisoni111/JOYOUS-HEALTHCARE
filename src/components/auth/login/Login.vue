@@ -144,9 +144,11 @@ export default {
       }, timeToExpiration);
     },
     logoutDueToExpiration() {
+      // Remove token and token expiration from storage
       localStorage.removeItem("token");
       localStorage.removeItem("tokenExpiration");
 
+      // Perform logout
       this.logout();
     },
 
