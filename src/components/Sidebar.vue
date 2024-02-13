@@ -20,9 +20,9 @@
         </router-link>
       </li>
       <li class="nav-item">
-        <a class="nav-link" to="">
+        <router-link class="nav-link" to="/appsetting/SubscriptionSetting">
           <i class="bi bi-card-list"></i>
-        </a>
+        </router-link>
       </li>
 
       <li class="nav-item">

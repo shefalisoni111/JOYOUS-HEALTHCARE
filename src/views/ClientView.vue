@@ -4,16 +4,12 @@
     <div id="main">
       <!-- <h6>Client Page in Progress.....</h6> -->
       <router-view />
-
-      <AddClients />
     </div>
   </div>
 </template>
 <script>
 import Navbar from "../components/Navbar.vue";
 import ClientsProfileView from "../components/ClientsPages/ClientsProfileView.vue";
-import EditClient from "../components/ClientsPages/EditClient.vue";
-import AddClients from "@/components/modals/CandidatePage/AddClients.vue";
 
 export default {
   data() {
@@ -22,8 +18,6 @@ export default {
   components: {
     Navbar,
     ClientsProfileView,
-    EditClient,
-    AddClients,
   },
 
   methods: {},

@@ -202,7 +202,7 @@ export default {
       }
 
       const data = {
-        candidate_id: candidateId,
+        candidate_id: this.$route.params.id,
         title: this.title,
         company_name: this.company_name,
         experience: this.experience,
@@ -210,7 +210,7 @@ export default {
         description: this.description,
       };
       try {
-        const response = await fetch(`${VITE_API_URL}work_experiences`, {
+        const response = await fetch(`${VITE_API_URL}/work_experiences`, {
           method: "POST",
           headers: {
             Accept: "application/json",

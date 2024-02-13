@@ -289,7 +289,7 @@ export default {
       }
     },
     formatDate(date) {
-      return date.toLocaleDateString(); // You can customize the formatting based on your needs
+      return date.toLocaleDateString();
     },
     // async vacancyDeleteMethod(id) {
     //   if (!window.confirm("Are you Sure ?")) {

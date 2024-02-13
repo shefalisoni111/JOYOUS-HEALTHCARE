@@ -79,9 +79,10 @@
                   </div>
                   <div class="col-12 mt-1">
                     <input
-                      type="date"
+                      type="text"
                       class="form-control"
                       v-model="fetchVacancy.dates"
+                      multiple
                     />
                   </div>
                 </div>
@@ -152,7 +153,7 @@ export default {
         business_unit_id: "",
         client_id: "",
         job_id: "",
-        dates: "",
+        dates: [],
         shift_id: "",
       },
       businessUnit: [],
@@ -215,13 +216,16 @@ export default {
         this.fetchVacancy.client_id = response.data.client_id;
         this.fetchVacancy.job_id = response.data.job_id;
 
-        const dateObject = new Date(response.data.dates);
-        this.fetchVacancy.dates =
-          dateObject.getFullYear() +
-          "-" +
-          ("0" + (dateObject.getMonth() + 1)).slice(-2) +
-          "-" +
-          ("0" + dateObject.getDate()).slice(-2);
+        this.fetchVacancy.dates = response.data.dates.map((date) => {
+          const dateObject = new Date(date);
+          return (
+            dateObject.getFullYear() +
+            "-" +
+            ("0" + (dateObject.getMonth() + 1)).slice(-2) +
+            "-" +
+            ("0" + dateObject.getDate()).slice(-2)
+          );
+        });
 
         this.fetchVacancy.shift_id = response.data.shift_id;
       } catch (error) {}

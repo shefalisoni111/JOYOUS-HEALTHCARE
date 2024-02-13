@@ -503,7 +503,9 @@ export default {
     },
     async getCandidateWorkExperienceMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/work_experiences`);
+        const response = await axios.get(
+          `${VITE_API_URL}/candidate_work_experiences/${this.$route.params.id}`
+        );
 
         this.getWorkExpData = response.data;
       } catch (error) {

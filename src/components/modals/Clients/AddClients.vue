@@ -16,11 +16,11 @@
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
               <form>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-4">
+                <div class="mb-3">
+                  <div class="col-12">
                     <label class="form-label">client name</label>
                   </div>
-                  <div class="col-8">
+                  <div class="col-12">
                     <input
                       type="text"
                       class="form-control"
@@ -33,11 +33,11 @@
                     >
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-4">
+                <div class="mb-3">
+                  <div class="col-12">
                     <label class="form-label" for="selectOption">address</label>
                   </div>
-                  <div class="col-8">
+                  <div class="col-12">
                     <input
                       type="text"
                       class="form-control"
@@ -51,17 +51,18 @@
                   </div>
                 </div>
                 <div class="mb-3">
-                  <div class="d-flex justify-content-between">
-                    <div class="col-4">
+                  <div class="">
+                    <div class="col-12">
                       <label class="form-label">email</label>
                     </div>
-                    <div class="col-8">
+                    <div class="col-12">
                       <input
                         type="email"
                         class="form-control"
                         v-model="email"
                         @input="clearError"
                         @change="detectAutofill"
+                        ref="email"
                       />
                       <span v-if="!validateEmail" class="text-danger"
                         >Invalid Email format</span
@@ -69,45 +70,46 @@
                     </div>
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-4">
+                <div class="mb-3">
+                  <div class="col-12">
                     <label class="form-label">password</label>
                   </div>
-                  <div class="col-8">
+                  <div class="col-12">
                     <input
                       type="password"
                       class="form-control"
                       v-model="password"
-                      @input="clearError"
+                      @input="validatePassword"
                       @change="detectAutofill"
-                      required
+                      @blur="validatePassword"
+                      ref="password"
                     />
-                    <span v-if="!validatePassword" class="text-danger">
+                    <span v-if="showPasswordRequiredMessage" class="text-danger">
                       Password is required
                     </span>
                   </div>
                 </div>
-                <!-- <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-4">
+                <div class="mb-3">
+                  <div class="col-12">
                     <label class="form-label">Confirm-Password</label>
                   </div>
-                  <div class="col-8">
+                  <div class="col-12">
                     <input
                       type="password"
                       class="form-control"
                       v-model="confirm_password"
-                      @input="clearError"
+                      @input="validateConfirmPassword"
                     />
                     <span v-if="!passwordsMatch" class="text-danger"
                       >Passwords do not Match</span
                     >
                   </div>
-                </div> -->
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-4">
+                </div>
+                <div class="mb-3">
+                  <div class="col-12">
                     <label class="form-label">phone number</label>
                   </div>
-                  <div class="col-8">
+                  <div class="col-12">
                     <input
                       type="text"
                       class="form-control"
@@ -141,6 +143,7 @@
               :disabled="!isValidForm"
               :class="{ disabled: !isValidForm }"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              data-bs-dismiss="modal"
               v-on:click="addClients()"
             >
               Add
@@ -160,10 +163,12 @@ export default {
     return {
       validateAddress: true,
       validateClientName: true,
-      validatePassword: true,
+      isPasswordValid: true,
       validateEmail: true,
       validatePhoneNumber: true,
-
+      validatePassword: null,
+      showPasswordRequiredMessage: false,
+      passwordsMatch: true,
       first_name: "",
       ref_code: "",
       address: "",
@@ -180,6 +185,7 @@ export default {
     isFormValid() {
       return (
         this.validateEmail &&
+        this.passwordsMatch &&
         this.validatePassword &&
         this.validatePhoneNumber &&
         this.validateClientName &&
@@ -191,10 +197,8 @@ export default {
     address: "validateAddressFormat",
     first_name: "validateNameFormat",
     email: "validateEmailFormat",
-    password: function (newVal) {
-      this.validatePassword(newVal);
-    },
-
+    password: "validatePasswordMatch",
+    confirm_password: "validatePasswordMatch",
     phone_number: "validatePhoneNumberFormat",
 
     isFormValid: function (newVal) {
@@ -202,6 +206,15 @@ export default {
     },
   },
   methods: {
+    // validatePassword() {
+    //   this.showPasswordRequiredMessage = this.password === "";
+    // },
+    validatePasswordMatch() {
+      this.passwordsMatch = this.password === this.confirm_password;
+    },
+    cleanPhoneNumber() {
+      this.phone_number = this.phone_number.replace(/\D/g, "");
+    },
     detectAutofill() {
       setTimeout(() => {
         if (this.email === this.$refs.email.value) {
@@ -228,19 +241,19 @@ export default {
       this.validateEmail = this.validateEmailFormat(this.email);
 
       this.validatePassword = !!this.password.trim();
-
+      this.passwordsMatch = this.password === this.confirm_password;
       this.validatePhoneNumber = this.validatePhoneNumberFormat(this.phone_number);
 
       if (
         this.validateEmail &&
-        this.validatePassword &&
+        this.passwordsMatch &&
         this.validatePhoneNumber &&
         this.validateClientName &&
         this.validateAddress
       ) {
         const data = {
           first_name: this.first_name,
-          ref_code: this.ref_code,
+
           address: this.address,
           phone_number: this.phone_number,
           email: this.email,
@@ -256,8 +269,17 @@ export default {
             },
             body: JSON.stringify(data),
           });
-          if (data) {
-            location.reload();
+          if (response.ok) {
+            // location.reload();
+            this.$emit("client-updated");
+            this.first_name = "";
+
+            this.address = "";
+            this.phone_number = "";
+            this.email = "";
+            this.password = "";
+            this.confirm_password = "";
+            alert("Successful Client added");
           }
         } catch (error) {}
       }
@@ -285,6 +307,7 @@ export default {
       this.validateEmail = true;
       this.validatePhoneNumber = true;
       this.validatePassword = true;
+      this.passwordsMatch = true;
       this.validateClientName = true;
       this.validateAddress = true;
     },

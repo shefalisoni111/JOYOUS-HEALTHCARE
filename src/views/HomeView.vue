@@ -446,20 +446,20 @@
                         </h5>
                       </div>
                       <div class="px-3 d-flex align-items-center">
-                        <div>
+                        <div class="d-flex justify-content-between">
                           <span
-                            v-if="formattedStartDate && formattedEndDate"
-                            class="fw-bold"
+                            v-if="currentView === 'monthly' && startDate && endDate"
+                            class="fw-bold d-flex align-items-center"
                           >
-                            {{ formattedStartDate + " - " + formattedEndDate }}
+                            {{ formatDate(startDate) + " to " + formatDate(endDate) }}
                           </span>
-                          &nbsp; &nbsp;
-                          <input
-                            type="month"
-                            v-model="selectedMonth"
-                            @change="updateDateRange"
-                            class="dateInput"
-                          />
+                          &nbsp;&nbsp;
+                          <div class="d-flex align-items-center fs-4">
+                            <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
+                            <i class="bi bi-calendar2-check-fill"></i>
+                            <!-- <input type="month" id="dateInput" class="form-control" /> -->
+                            <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -491,9 +491,10 @@ export default {
 
   data() {
     return {
+      currentView: "monthly",
       getRecords: [],
-      selectedMonth: "",
-      endDate: "",
+      startDate: new Date(),
+      endDate: new Date(),
     };
   },
   components: {
@@ -503,49 +504,73 @@ export default {
     InProgress,
   },
   computed: {
-    formattedStartDate() {
-      return this.formatDate(this.selectedMonth);
-    },
-    formattedEndDate() {
-      return this.formatDate(this.endDate);
+    getMonthDates() {
+      const currentDate = new Date();
+      const daysInMonth = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() + 1,
+        0
+      ).getDate();
+      const monthDates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+      return monthDates;
     },
   },
   methods: {
+    formatDate(date) {
+      return date.toLocaleDateString();
+    },
+    moveToPrevious() {
+      if (this.currentView === "weekly") {
+        this.startDate.setDate(this.startDate.getDate() - 7);
+        this.endDate.setDate(this.endDate.getDate() - 7);
+        this.updateDateRange();
+      } else if (this.currentView === "monthly") {
+        this.startDate.setMonth(this.startDate.getMonth() - 1);
+        this.endDate = new Date(
+          this.startDate.getFullYear(),
+          this.startDate.getMonth() + 1,
+          0
+        );
+      }
+    },
+    moveToNext() {
+      if (this.currentView === "weekly") {
+        this.startDate.setDate(this.startDate.getDate() + 7);
+        this.endDate.setDate(this.endDate.getDate() + 7);
+        this.updateDateRange();
+      } else if (this.currentView === "monthly") {
+        this.startDate.setMonth(this.startDate.getMonth() + 1);
+        this.endDate = new Date(
+          this.startDate.getFullYear(),
+          this.startDate.getMonth() + 1,
+          0
+        );
+      }
+    },
     updateDateRange() {
-      localStorage.setItem("selectedMonth", this.selectedMonth);
-      const [selectedYear, selectedMonth] = this.selectedMonth.split("-");
-
-      // Ensure selectedMonth is always in the "yyyy-MM" format
-      this.selectedMonth = `${selectedYear}-${selectedMonth.padStart(2, "0")}`;
-
-      let endYear = selectedYear;
-      let endMonth =
-        selectedMonth === "12" ? "01" : `${parseInt(selectedMonth) + 1}`.padStart(2, "0");
-
-      this.endDate = `${endYear}-${endMonth}`;
-
-      this.saveToLocalStorage();
+      const currentDate = new Date();
+      if (this.currentView === "weekly") {
+        const weekStart = new Date(this.startDate);
+        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay());
+        this.startDate = weekStart;
+        this.endDate = new Date(weekStart);
+        this.endDate.setDate(this.endDate.getDate() + 6);
+      } else if (this.currentView === "monthly") {
+        const currentDate = new Date();
+        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+      }
+      // Save the values to localStorage
+      localStorage.setItem("startDate", this.startDate.toISOString());
+      localStorage.setItem("endDate", this.endDate.toISOString());
     },
-    formatDate(dateString) {
-      const options = { year: "numeric", month: "numeric", day: "numeric" };
-      return new Date(dateString).toLocaleDateString(undefined, options);
-    },
-    saveToLocalStorage() {
-      localStorage.setItem(
-        "calendarData",
-        JSON.stringify({
-          startDate: this.selectedMonth,
-          endDate: this.endDate,
-        })
-      );
-    },
-    loadStoredData() {
-      const storedData = localStorage.getItem("calendarData");
+    loadDateRangeFromLocalStorage() {
+      const storedStartDate = localStorage.getItem("startDate");
+      const storedEndDate = localStorage.getItem("endDate");
 
-      if (storedData) {
-        const parsedData = JSON.parse(storedData);
-        this.selectedMonth = parsedData.startDate;
-        this.endDate = parsedData.endDate;
+      if (storedStartDate && storedEndDate) {
+        this.startDate = new Date(storedStartDate);
+        this.endDate = new Date(storedEndDate);
       }
     },
     async fetchData() {
@@ -573,17 +598,12 @@ export default {
       this.updateDateRange();
     }
 
-    this.loadStoredData();
+    this.loadDateRangeFromLocalStorage();
     this.fetchData();
   },
 
   mounted() {
-    window.addEventListener("beforeunload", this.saveToLocalStorage);
-
-    const inputElement = document.querySelector(".dateInput");
-    if (inputElement) {
-      inputElement.value = this.selectedMonth;
-    }
+    this.loadDateRangeFromLocalStorage();
   },
 };
 </script>

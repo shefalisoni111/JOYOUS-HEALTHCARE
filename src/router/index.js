@@ -532,6 +532,15 @@ const router = createRouter({
         },
     },
     {
+      path: "/appsetting/SubscriptionSetting",
+      name: "SubscriptionSetting",
+      component: () =>
+        import("@/components/appsettingcomponent/SubscriptionSetting.vue"),
+        meta: {
+          auth: true,
+        },
+    },
+    {
       path: "/appsetting/notificationsetting",
       name: "NotificationSetting",
       component: () =>

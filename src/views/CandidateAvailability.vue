@@ -69,7 +69,7 @@
             </thead>
             <tbody>
               <tr v-for="data in paginateCandidates" :key="data.id">
-                <td class="text-capitalize fw-bold">
+                <td class="text-capitalize fw-bold" style="width: 21%">
                   {{ data.candidate_name + " " }}
                   <span
                     v-if="data.job"

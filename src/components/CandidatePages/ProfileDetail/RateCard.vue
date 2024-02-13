@@ -118,7 +118,7 @@ export default {
     editRateCard(rateCardId) {
       this.selectedRateCardId = rateCardId;
     },
-    //  ratecard apis start
+    //  rateCard apis start
     async rateCardDelete(id) {
       if (!window.confirm("Are you Sure ?")) {
         return;
@@ -129,7 +129,7 @@ export default {
     },
     async showRateCardMethod() {
       await axios
-        .get(`${VITE_API_URL}/rate_cards`)
+        .get(`${VITE_API_URL}/candidate_rate_card_list/${this.$route.params.id}`)
         .then((response) => (this.getRateCard = response.data))
         .catch((error) => {
           if (error.response) {

@@ -1,16 +1,11 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="editCandidate"
-      aria-labelledby="editCandidate"
-      tabindex="-1"
-    >
+    <div class="modal fade" id="editClient" aria-labelledby="editClient" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="editCandidate">Edit Candidate</h5>
+            <h5 class="modal-title" id="editClient">Edit Client</h5>
             <button
               type="button"
               class="btn-close"
@@ -30,28 +25,12 @@
                       <input
                         type="text"
                         class="form-control"
-                        v-model="fetchCandidate.first_name"
+                        v-model="fetchClients.first_name"
                       />
                     </div>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Position</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <select v-model="fetchCandidate.job_id" id="selectJobTitle">
-                      <option
-                        v-for="option in options"
-                        :key="option.id"
-                        :value="option.id"
-                        aria-placeholder="Select Job"
-                      >
-                        {{ option.name }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
+
                 <div class="mb-3">
                   <div class="col-12">
                     <label class="form-label">Email</label>
@@ -60,7 +39,7 @@
                     <input
                       type="email"
                       class="form-control"
-                      v-model="fetchCandidate.email"
+                      v-model="fetchClients.email"
                     />
                   </div>
                 </div>
@@ -70,21 +49,48 @@
                   </div>
                   <div class="col-12 mt-1">
                     <input
-                      type="number"
+                      type="text"
                       class="form-control"
-                      v-model="fetchCandidate.phone_number"
+                      v-model="fetchClients.phone_number"
+                      @input="cleanPhoneNumber"
+                      inputmode="numeric"
+                      pattern="[0-9]*"
                     />
                   </div>
                 </div>
                 <div class="mb-3">
                   <div class="col-12">
-                    <label class="form-label">Status</label>
+                    <label class="form-label">Password</label>
                   </div>
                   <div class="col-12 mt-1">
                     <input
                       type="text"
                       class="form-control"
-                      v-model="fetchCandidate.activated"
+                      v-model="fetchClients.password"
+                    />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="col-12">
+                    <label class="form-label">Confirm Password</label>
+                  </div>
+                  <div class="col-12 mt-1">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="fetchClients.confirm_password"
+                    />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="col-12">
+                    <label class="form-label">Address</label>
+                  </div>
+                  <div class="col-12 mt-1">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="fetchClients.address"
                     />
                   </div>
                 </div>
@@ -94,7 +100,7 @@
           <div class="modal-footer">
             <button
               class="btn btn-secondary rounded-1"
-              data-bs-target="#editCandidate"
+              data-bs-target="#editClient"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
             >
@@ -103,7 +109,7 @@
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              @click.prevent="updateCandidateMethod()"
+              @click.prevent="updateClientMethod"
             >
               Save
             </button>
@@ -117,92 +123,71 @@
 import axios from "axios";
 
 export default {
-  name: "EditCandidate",
+  name: "CandidateAdd",
   data() {
     return {
-      fetchCandidate: {
+      fetchClients: {
         id: "",
         first_name: "",
-        last_name: "",
-        password: "",
-        confirm_password: "",
+
         address: "",
-        job_id: 1,
         phone_number: "",
         email: "",
-        activated: "",
-        employment_type_id: "",
+        password: "",
+        confirm_password: "",
+        error: [],
       },
-      options: [],
     };
   },
   props: {
-    candidateId: {
+    clientID: {
       type: Number,
       default: 0,
     },
   },
-  computed: {
-    getCandidatesData() {
-      return this.$store.state.candidates;
-    },
-    selectJobTitle() {
-      const job_title = this.options.find(
-        (option) => option.id === this.fetchVacancy.job_id
-      );
-      return job_title ? job_title.name : "";
-    },
-  },
   methods: {
-    async getJobTitleMethod() {
+    cleanPhoneNumber() {
+      this.fetchClients.phone_number = this.fetchClients.phone_number.replace(/\D/g, "");
+    },
+    async fetchClientsMethod(id) {
       try {
-        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
-        this.options = response.data.data;
+        const response = await axios.get(`${VITE_API_URL}/clients/${id}`);
+
+        this.fetchClients = { ...this.fetchClients, ...response.data.data };
       } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
+        // console.error("Error fetching todo:", error);
       }
     },
-    async fetchCandidateMethod(id) {
+    async updateClientMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/candidates/${id}`);
-        this.fetchCandidate = { ...this.fetchCandidate, ...response.data.data };
-      } catch (error) {}
-    },
-    async updateCandidateMethod() {
-      try {
-        const response = await axios.put(
-          `${VITE_API_URL}/candidates/${this.fetchCandidate.id}`,
-          this.fetchCandidate
+        await axios.put(
+          `${VITE_API_URL}/clients/${this.fetchClients.id}`,
+          this.fetchClients
         );
-
-        this.$store.commit("updateCandidate", {
-          id: this.fetchCandidate.id,
-          newData: response.data,
-        });
         this.$emit("client-updated");
-        alert("Candidate updated successfully");
+        alert("Client updated successfully");
       } catch (error) {
         // console.error("Error updating candidate:", error);
       }
     },
+    validatePhoneNumberFormat(phone_number) {
+      return /^\d{10}$/.test(phone_number);
+    },
   },
   watch: {
-    candidateId: {
+    clientID: {
       immediate: true,
-      handler(newCandidateId) {
-        this.fetchCandidateMethod(newCandidateId);
+      handler(newClientID) {
+        this.fetchClientsMethod(newClientID);
       },
     },
   },
   mounted() {
-    this.getJobTitleMethod();
+    this.fetchClientsMethod(this.$route.params.id);
   },
 };
 </script>
+
 <style scoped>
 select {
   width: 100%;

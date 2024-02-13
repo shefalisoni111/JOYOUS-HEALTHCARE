@@ -56,13 +56,20 @@ export default {
                     {{ option.name }}
                   </option>
                 </select>
-                <select v-model="client_id">
+                <select v-model="id">
                   <option value="">All Candidate Status</option>
                 </select>
-                <select v-model="client_id">
+                <select v-model="id" id="selectCandidateList">
                   <option value="">All Candidate</option>
+                  <option
+                    v-for="option in candidateLists"
+                    :key="option.id"
+                    :value="option.id"
+                  >
+                    {{ option.first_name }}
+                  </option>
                 </select>
-                <select v-model="client_id" id="selectEmployeeType">
+                <select v-model="employment_type_id" id="selectEmployeeType">
                   <option value="">All Employee Type</option>
                   <option
                     v-for="option in employeeData"
@@ -264,6 +271,8 @@ export default {
       options: [],
       employeeData: [],
       employment_type_id: "",
+      candidateLists: [],
+      id: "",
     };
   },
   components: { Navbar },
@@ -287,6 +296,10 @@ export default {
         (option) => option.id === this.employment_type_id
       );
       return employment_type_id ? employment_type_id.title : "";
+    },
+    selectCandidateList() {
+      const id = this.candidateLists.find((option) => option.id === this.id);
+      return id ? id.first_name : "";
     },
     getWeekDates() {
       const currentDate = new Date();
@@ -353,6 +366,18 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/business_units`);
         this.businessUnit = response.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    async getCandidateListMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/candidates`);
+        this.candidateLists = response.data;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
@@ -455,6 +480,7 @@ export default {
     this.getPositionMethod();
     this.getClientMethod();
     this.getEmployeeTypeMethod();
+    this.getCandidateListMethod();
   },
 };
 </script>

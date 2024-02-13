@@ -101,37 +101,6 @@ export default {
             </thead>
             <tbody>
               <tr>
-                <td></td>
-                <td>
-                  <div class="calendar-grid">
-                    <div v-for="(data, index) in vacancyList" :key="index">
-                      <div v-for="day in selectedDateRow" :key="day" class="text-center">
-                        <ul
-                          v-if="data.date === formattedDate(day)"
-                          class="list-unstyled mb-0"
-                        >
-                          <!-- <li
-                            v-for="(vacancy, liIndex) in data.vacancy"
-                            :key="vacancy.id"
-                            :draggable="true"
-                            @dragstart="handleDragStart(vacancy.id)"
-                            :class="{
-                              'bg-info': liIndex === 0,
-                              'bg-warning': liIndex === 1,
-                              'bg-dark': liIndex === 2,
-                              'bg-primary': liIndex >= 3,
-                            }"
-                          >
-                            {{ vacancy.business_unit }}
-                          </li> -->
-                          <li>business_unit</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
                 <td style="border-right: 1px solid rgb(209, 208, 208)">
                   <form
                     class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
@@ -145,22 +114,40 @@ export default {
                   </form>
                 </td>
                 <td>
-                  <div
-                    style="height: 40px; overflow: auto; width: 223px; cursor: pointer"
-                  >
-                    <ul>
-                      <li>business_unit</li>
-                      <li>business_unit</li>
-                      <li>business_unit</li>
-                      <li>business_unit</li>
-                      <li>business_unit</li>
-                      <li>business_unit</li>
-                      <li>business_unit</li>
-                      <li>business_unit</li>
-                    </ul>
+                  <div class="calendar-grid">
+                    <div v-for="(data, index) in vacancyList" :key="index">
+                      <div
+                        v-for="day in selectedDateRow"
+                        :key="day"
+                        class="text-center"
+                        style="max-height: 46px; overflow-y: auto"
+                      >
+                        <ul
+                          v-if="data.date === formattedDate(day)"
+                          class="list-unstyled mb-0"
+                        >
+                          <li
+                            v-for="(vacancy, liIndex) in data.vacancy"
+                            :key="vacancy.id"
+                            :draggable="true"
+                            @dragstart="handleDragStart(vacancy.id)"
+                            :class="{
+                              'bg-info': liIndex === 0,
+                              'bg-warning': liIndex === 1,
+                              'bg-success': liIndex === 2,
+                              'bg-primary': liIndex >= 3,
+                            }"
+                          >
+                            {{ vacancy.business_unit }}
+                          </li>
+                          <!-- <li>business_unit</li> -->
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                 </td>
               </tr>
+
               <tr v-for="data in paginateCandidates" :key="data.id">
                 <td
                   class="text-capitalize fw-bold"
@@ -199,7 +186,7 @@ export default {
         </div>
       </div>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="candidateList.length >= 10">
+    <div class="mx-3" style="text-align: right" v-if="candidateList.length >= 8">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -246,7 +233,7 @@ export default {
       dropDay: null,
       droppedContent: null,
       currentPage: 1,
-      itemsPerPage: 10,
+      itemsPerPage: 8,
     };
   },
   computed: {

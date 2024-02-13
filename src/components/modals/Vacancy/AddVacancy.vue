@@ -324,6 +324,7 @@ export default {
           });
           if (response.ok) {
             this.$emit("addVacancy");
+            alert("Successful Vacancy added");
             this.business_unit_id = "";
             this.job_id = "";
             this.dates = "";

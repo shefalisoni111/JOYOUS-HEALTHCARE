@@ -48,15 +48,16 @@
               </label>
             </td>
             <td class="cursor-pointer">
-              <router-link
-                :to="{
-                  name: 'EditClient',
-                  params: { id: client.id },
-                }"
-                class="btn btn-outline-success text-nowrap"
+              <button
+                type="button"
+                class="btn btn-outline-success text-nowrap text-nowrap"
+                data-bs-toggle="modal"
+                data-bs-target="#editClient"
+                data-bs-whatever="@mdo"
+                @click="editClient(client.id)"
               >
                 <i class="bi bi-pencil-square"></i>
-              </router-link>
+              </button>
               &nbsp;&nbsp;
               <button class="btn btn-outline-success text-nowrap">
                 <i
@@ -66,7 +67,7 @@
               >&nbsp;&nbsp;
               <router-link
                 :to="{
-                  name: 'ClientsProfileView',
+                  name: 'SingleClientProfile',
                   params: { id: client.id },
                 }"
                 class="btn btn-outline-success text-nowrap"
@@ -99,16 +100,20 @@
         Next
       </button>
     </div>
+    <EditClientModal :clientID="selectedClientID || 0" @client-updated="createdClient" />
+    <AddClients @client-updated="createdClient" />
   </div>
 </template>
 <script>
 import axios from "axios";
+import EditClientModal from "../modals/Clients/EditClientModal.vue";
+import AddClients from "@/components/modals/Clients/AddClients.vue";
 
 export default {
   data() {
     return {
       getClientDetail: [],
-
+      selectedClientID: null,
       isActive: true,
       searchQuery: "",
       currentPage: 1,
@@ -116,7 +121,7 @@ export default {
     };
   },
 
-  components: {},
+  components: { EditClientModal, AddClients },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -128,6 +133,9 @@ export default {
     },
   },
   methods: {
+    editClient(clientID) {
+      this.selectedClientID = clientID;
+    },
     async clientsDeleteMethod(id) {
       if (!window.confirm("Are you Sure ?")) {
         return;
