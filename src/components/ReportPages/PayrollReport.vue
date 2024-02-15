@@ -56,9 +56,17 @@ export default {
                     {{ option.name }}
                   </option>
                 </select>
-                <select v-model="id">
+                <select v-model="id" id="selectCandidateList">
                   <option value="">All Candidate Status</option>
+                  <option
+                    v-for="option in candidateLists"
+                    :key="option.id"
+                    :value="option.id"
+                  >
+                    {{ option.status }}
+                  </option>
                 </select>
+
                 <select v-model="id" id="selectCandidateList">
                   <option value="">All Candidate</option>
                   <option
@@ -273,6 +281,7 @@ export default {
       employment_type_id: "",
       candidateLists: [],
       id: "",
+      candidateStatus: [],
     };
   },
   components: { Navbar },
@@ -377,7 +386,8 @@ export default {
     async getCandidateListMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/candidates`);
-        this.candidateLists = response.data;
+        this.candidateLists = response.data.data;
+        this.candidateStatus = response.data.data.status;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {

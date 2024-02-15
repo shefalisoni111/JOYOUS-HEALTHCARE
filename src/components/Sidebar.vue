@@ -9,35 +9,35 @@
       </li>
 
       <li class="nav-item">
-        <router-link class="nav-link" to="/appsetting/agencysetting">
+        <router-link class="nav-link" to="/appsetting/agencysetting" exact>
           <i class="bi bi-person"></i>
         </router-link>
       </li>
 
       <li class="nav-item">
-        <router-link class="nav-link" to="/appsetting/invoicesetting">
+        <router-link class="nav-link" to="/appsetting/invoicesetting" exact>
           <i class="bi bi-file-earmark-text"></i>
         </router-link>
       </li>
       <li class="nav-item">
-        <router-link class="nav-link" to="/appsetting/SubscriptionSetting">
+        <router-link class="nav-link" to="/appsetting/SubscriptionSetting" exact>
           <i class="bi bi-card-list"></i>
         </router-link>
       </li>
 
       <li class="nav-item">
-        <router-link class="nav-link" to="/appsetting/notificationsetting">
+        <router-link class="nav-link" to="/appsetting/notificationsetting" exact>
           <i class="bi bi-bell"></i>
         </router-link>
       </li>
 
       <li class="nav-item">
-        <router-link class="nav-link" to="/appsetting/previlegesetting">
+        <router-link class="nav-link" to="/appsetting/previlegesetting" exact>
           <i class="bi bi-person-check"></i>
         </router-link>
       </li>
       <li class="nav-item">
-        <router-link class="nav-link" to="/appsetting/ClientSettings">
+        <router-link class="nav-link" to="/appsetting/ClientSettings" exact>
           <i class="bi bi-people"></i>
         </router-link>
       </li>

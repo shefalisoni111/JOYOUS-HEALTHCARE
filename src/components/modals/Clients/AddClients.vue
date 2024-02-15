@@ -63,6 +63,7 @@
                         @input="clearError"
                         @change="detectAutofill"
                         ref="email"
+                        autocomplete="new-email"
                       />
                       <span v-if="!validateEmail" class="text-danger"
                         >Invalid Email format</span
@@ -83,6 +84,7 @@
                       @change="detectAutofill"
                       @blur="validatePassword"
                       ref="password"
+                      autocomplete="new-password"
                     />
                     <span v-if="showPasswordRequiredMessage" class="text-danger">
                       Password is required
@@ -216,18 +218,18 @@ export default {
       this.phone_number = this.phone_number.replace(/\D/g, "");
     },
     detectAutofill() {
-      setTimeout(() => {
-        if (this.email === this.$refs.email.value) {
-          this.autofilled = true;
-        }
-      }, 100);
+      let emailAutofilled = false;
+      let passwordAutofilled = false;
 
-      // Detect autofill for password field
-      setTimeout(() => {
-        if (this.password === this.$refs.password.value) {
-          this.autofilled = true;
-        }
-      }, 100);
+      if (this.email && this.email === this.$refs.email.value) {
+        emailAutofilled = true;
+      }
+
+      if (this.password && this.password === this.$refs.password.value) {
+        passwordAutofilled = true;
+      }
+
+      this.autofilled = emailAutofilled && passwordAutofilled;
     },
     cleanPhoneNumber() {
       this.phone_number = this.phone_number.replace(/\D/g, "");

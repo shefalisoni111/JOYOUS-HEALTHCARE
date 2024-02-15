@@ -155,28 +155,29 @@
           </li>
         </ul>
         <ul class="navbar-nav m-0 mb-2 mb-lg-0">
-          <!-- <li class="nav-item dropdown mt-3">
+          <li class="nav-item dropdown mt-1">
+            <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+              <i class="bi bi-chat-left-dots fs-5"></i
+            ></a>
+          </li>
+          <li class="nav-item dropdown mt-2">
             <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
               <i class="bi bi-bell"></i>
-              <span class="badge bg-primary badge-number">4</span>
+              <span class="badge bg-primary badge-number">2</span>
             </a>
 
-            <ul
-              class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
-            >
-              <li class="dropdown-header">
-                You have 4 new notifications
-                <a href="#"
-                  ><span class="badge rounded-pill bg-primary p-2 ms-2"
-                    >View all</span
-                  ></a
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+              <li class="dropdown-header d-flex">
+                You have 2 new notifications
+                <a href="#" class="mt-2 ms-2"
+                  ><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a
                 >
               </li>
               <li>
                 <hr class="dropdown-divider" />
               </li>
 
-              <li class="notification-item p-2">
+              <li class="notification-item p-2 d-flex gap-1">
                 <i class="bi bi-exclamation-circle text-warning"></i>
                 <div>
                   <h4>Lorem Ipsum</h4>
@@ -188,7 +189,7 @@
               <li>
                 <hr class="dropdown-divider" />
               </li>
-              <li class="notification-item p-2">
+              <li class="notification-item p-2 d-flex gap-1">
                 <i class="bi bi-exclamation-circle text-warning"></i>
                 <div>
                   <h4>Lorem Ipsum</h4>
@@ -197,7 +198,7 @@
                 </div>
               </li>
             </ul>
-          </li> -->
+          </li>
           <!-- End Notification Nav -->
           <li class="nav-item dropdown">
             <a
@@ -353,6 +354,10 @@ export default {
 .bi-person-circle::before {
   content: "\F4D7";
   font-size: 36px;
+}
+.bi-bell::before {
+  content: "\f18a";
+  font-size: 21px;
 }
 ul.navbar-nav li a span.badge {
   translate: -9px -12px;

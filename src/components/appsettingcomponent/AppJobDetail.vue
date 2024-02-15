@@ -68,7 +68,7 @@
             <table class="table table table-hover addjobtable">
               <thead>
                 <tr>
-                  <th scope="col">ID</th>
+                  <th scope="col" class="bg-primary text-white">Id</th>
                   <th scope="col" class="bg-primary text-white">Colour</th>
                   <th scope="col" class="bg-primary text-white">Name</th>
                   <th scope="col" class="bg-primary text-white">Job Code</th>
@@ -112,7 +112,7 @@
           <table class="table table table-hover addjobtable">
             <thead>
               <tr>
-                <th scope="col">ID</th>
+                <th scope="col" class="bg-primary text-white">Id</th>
                 <th scope="col" class="bg-primary text-white">Colour</th>
                 <th scope="col" class="bg-primary text-white">Name</th>
                 <th scope="col" class="bg-primary text-white">Job Code</th>

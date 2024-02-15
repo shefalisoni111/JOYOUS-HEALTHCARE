@@ -118,10 +118,15 @@ export default {
         const jsonData = response.data;
 
         if (jsonData.is_loged_in) {
-          const tokenExpiration = Date.now() + 3600000; // 1 hour in milliseconds
+          // const tokenExpiration = Date.now() + 60 * 60 * 1000; // 1 hour  in milliseconds
+          let tokenExpiration = localStorage.getItem("tokenExpiration");
+          if (!tokenExpiration || parseInt(tokenExpiration) <= Date.now()) {
+            tokenExpiration = Date.now() + 8 * 60 * 60 * 1000; // 1 hour in milliseconds
+            localStorage.setItem("tokenExpiration", tokenExpiration);
+          }
 
           localStorage.setItem("token", jsonData.token);
-          localStorage.setItem("tokenExpiration", tokenExpiration);
+          // localStorage.setItem("tokenExpiration", tokenExpiration);
 
           this.setupAutoLogout();
           this.$router.push({ name: "Home" });
@@ -136,16 +141,24 @@ export default {
     },
 
     setupAutoLogout() {
-      const tokenExpiration = localStorage.getItem("tokenExpiration");
-      const currentTime = Date.now();
-      const timeToExpiration = tokenExpiration - currentTime;
+      const tokenExpirationString = localStorage.getItem("tokenExpiration");
 
-      if (timeToExpiration > 0) {
-        setTimeout(() => {
+      if (tokenExpirationString !== null && tokenExpirationString !== undefined) {
+        const tokenExpiration = parseInt(tokenExpirationString);
+        const currentTime = Date.now();
+        const timeToExpiration = tokenExpiration - currentTime;
+        // console.log(tokenExpiration, currentTime, timeToExpiration, timeToExpiration > 0);
+        if (timeToExpiration > 0) {
+          setTimeout(() => {
+            // console.log("Token expired. Logging out.");
+            this.logoutDueToExpiration();
+          }, timeToExpiration);
+        } else {
+          // console.log("Token already expired. Logging out.");
           this.logoutDueToExpiration();
-        }, timeToExpiration);
+        }
       } else {
-        // Token has already expired, initiate logout
+        // console.log("Token expiration not found. Logging out.");
         this.logoutDueToExpiration();
       }
     },
@@ -157,9 +170,6 @@ export default {
     },
 
     logout() {
-      localStorage.removeItem("token");
-      localStorage.removeItem("tokenExpiration");
-      localStorage.clear();
       this.$router.replace({ name: "Login" });
     },
   },

@@ -330,9 +330,21 @@ const router = createRouter({
           props: true,
         },
         {
+          path: "/invoice/client-invoice/ClientInvoiceView",
+          name: "ClientInvoiceView",
+          component: () => import("@/components/InvoicePages/ClientInvoiceView.vue"),
+          props: true,
+        },
+        {
           path: "/invoice/Candidate-invoice",
           name: "CandidateInvoice",
           component: () => import("@/components/InvoicePages/CandidateInvoice.vue"),
+          props: true,
+        },
+        {
+          path: "/invoice/Candidate-invoice/CandidateInvoiceView",
+          name: "CandidateInvoiceView",
+          component: () => import("@/components/InvoicePages/CandidateInvoiceView.vue"),
           props: true,
         },
         {

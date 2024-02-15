@@ -53,8 +53,8 @@
                   aria-labelledby="active_candidate_detail_section"
                   tabindex="0"
                 >
-                  <p>Work in Progress...</p>
-                  <!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
+                  <!-- <p>Work in Progress...</p> -->
+                  <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                       <button
                         class="nav-link active ms-0"
@@ -160,7 +160,7 @@
                         reiciendis vitae nulla. Quibusdam, quas sed.
                       </p>
                     </div>
-                  </div> -->
+                  </div>
                 </div>
                 <div
                   class="tab-pane fade"

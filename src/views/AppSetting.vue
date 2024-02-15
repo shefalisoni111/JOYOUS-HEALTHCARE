@@ -16,11 +16,7 @@
               <ul class="list-unstyled text-capitalize generalsetting px-3">
                 <li class="list-items d-flex">
                   <i class="bi bi-suitcase-lg rounded-circle"></i>
-                  <router-link
-                    to="/appsetting/addjobdetail"
-                    exact
-                    class="text-decoration-none"
-                  >
+                  <router-link to="/appsetting/addjobdetail" class="text-decoration-none">
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize">jobs</h6>
                       <p class="text-capitalize mb-0">Add jobs, positions & roles</p>
@@ -31,7 +27,6 @@
                   <i class="bi bi-check-lg rounded-circle"></i>
                   <router-link
                     to="/appsetting/candidatestatus"
-                    exact
                     class="text-decoration-none"
                   >
                     <div class="job ms-2">
