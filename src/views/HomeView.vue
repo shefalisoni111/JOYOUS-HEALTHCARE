@@ -420,6 +420,15 @@
                             </div>
                           </div>
                         </li>
+                        <li class="d-flex mb-2">
+                          <div class="d-flex">
+                            <span class="box-icon4 mt-2"></span>
+                            <div class="d-flex flex-column">
+                              <span class="fs-4 ps-2 fw-bold">2</span>
+                              <span class="d-flex ms-2">Deleted Shifts</span>
+                            </div>
+                          </div>
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -743,6 +752,12 @@ h6 {
   width: 18px;
   height: 17px;
   background-color: #22cbe0;
+  border-radius: 5px;
+}
+.box-icon4 {
+  width: 18px;
+  height: 17px;
+  background-color: #fc1414cf;
   border-radius: 5px;
 }
 .card-border {

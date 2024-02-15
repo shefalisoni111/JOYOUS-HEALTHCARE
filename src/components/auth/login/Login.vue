@@ -121,7 +121,7 @@ export default {
           // const tokenExpiration = Date.now() + 60 * 60 * 1000; // 1 hour  in milliseconds
           let tokenExpiration = localStorage.getItem("tokenExpiration");
           if (!tokenExpiration || parseInt(tokenExpiration) <= Date.now()) {
-            tokenExpiration = Date.now() + 8 * 60 * 60 * 1000; // 1 hour in milliseconds
+            tokenExpiration = Date.now() + 8 * 3600000; // 1 hour in milliseconds
             localStorage.setItem("tokenExpiration", tokenExpiration);
           }
 
@@ -147,7 +147,7 @@ export default {
         const tokenExpiration = parseInt(tokenExpirationString);
         const currentTime = Date.now();
         const timeToExpiration = tokenExpiration - currentTime;
-        // console.log(tokenExpiration, currentTime, timeToExpiration, timeToExpiration > 0);
+        console.log(tokenExpiration, currentTime, timeToExpiration, timeToExpiration > 0);
         if (timeToExpiration > 0) {
           setTimeout(() => {
             // console.log("Token expired. Logging out.");

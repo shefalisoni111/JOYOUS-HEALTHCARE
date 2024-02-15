@@ -13,11 +13,16 @@ export default {
   data() {
     return {
       chartData: {
-        labels: ["Open Vacancies", "Applied Vacancies", "Assign Vacancies"],
+        labels: [
+          "Open Vacancies",
+          "Applied Vacancies",
+          "Assign Vacancies",
+          "Deleted Shifts",
+        ],
         datasets: [
           {
-            backgroundColor: ["#57e3b4", "#e66e65", "#22cbe0"],
-            data: [50, 10, 15],
+            backgroundColor: ["#57e3b4", "#e66e65", "#22cbe0", "#fc1414cf"],
+            data: [50, 10, 15, 3],
           },
         ],
       },
@@ -31,7 +36,7 @@ export default {
           legend: { display: false },
           tooltip: { enable: false },
         },
-        cutout: 70,
+        cutout: 50,
         layout: {
           padding: {
             bottom: 20,
