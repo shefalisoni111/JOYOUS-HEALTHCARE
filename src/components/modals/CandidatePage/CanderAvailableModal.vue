@@ -3,17 +3,17 @@
     <div class="nested-calendar-content">
       <div class="calendar-header d-flex justify-content-between my-3">
         <div class="d-flex">
-          <button class="btn btn-primary" @click="goToPreviousMonth">
+          <!-- <button class="btn btn-primary" @click="goToPreviousMonth">
             <i class="bi bi-caret-left-fill"></i>
-          </button>
+          </button> -->
           <div class="current-month d-flex align-items-center">
             {{
               currentDate.toLocaleString("default", { month: "long", year: "numeric" })
             }}
           </div>
-          <button class="btn btn-primary" @click="goToNextMonth">
+          <!-- <button class="btn btn-primary" @click="goToNextMonth">
             <i class="bi bi-caret-right-fill"></i>
-          </button>
+          </button> -->
         </div>
         <div>
           <ul class="list-inline">
@@ -28,56 +28,58 @@
         </div>
       </div>
       <div class="calendar-grid">
-        <div v-for="day in daysOfWeek" :key="day" class="day-header">{{ day }}</div>
-        <div v-for="blankDay in leadingBlankDays" :key="blankDay" class="empty-day"></div>
-        <div v-for="dayData in calendarData" :key="dayData.date" class="calendar-day">
-          <div class="day-number">{{ dayData.day }}</div>
+        <div v-for="day in daysOfWeek" :key="day" class="day-header">
+          {{ day }}
+        </div>
+        <div v-for="date in selectedDateRow" :key="date" class="day-header">
+          {{ formatDate(date) }}
+
           <div class="shift-checkboxes d-flex flex-column">
             <div>
               <input
                 type="radio"
-                id="early"
-                name="shiftsGroup"
-                v-model="dayData.selectedShift"
+                :id="'early-' + date"
+                :name="'shiftsGroup-' + date"
+                v-model="selectedShifts[date]"
                 :value="'Early'"
-                @click="updateDate(dayData.date, 'Early')"
-                :disabled="isShiftDisabled(dayData.date)"
+                @click="updateDate(date, 'Early')"
+                :disabled="isShiftDisabled(date)"
               />
-              <label for="early" class="ps-1">E</label>
+              <label :for="'early-' + date" class="ps-1">E</label>
               &nbsp;
               <input
                 type="radio"
-                id="late"
-                name="shiftsGroup"
-                v-model="dayData.selectedShift"
+                :id="'late-' + date"
+                :name="'shiftsGroup-' + date"
+                v-model="selectedShifts[date]"
                 :value="'Late'"
-                @click="updateDate(dayData.date, 'Late')"
-                :disabled="isShiftDisabled(dayData.date)"
+                @click="updateDate(date, 'Late')"
+                :disabled="isShiftDisabled(date)"
               />
-              <label for="late" class="ps-1">L</label>
+              <label :for="'late-' + date" class="ps-1">L</label>
             </div>
             <div>
               <input
                 type="radio"
-                id="night"
-                name="shiftsGroup"
-                v-model="dayData.selectedShift"
+                :id="'night-' + date"
+                :name="'shiftsGroup-' + date"
+                v-model="selectedShifts[date]"
                 :value="'Night'"
-                @click="updateDate(dayData.date, 'Night')"
-                :disabled="isShiftDisabled(dayData.date)"
+                @click="updateDate(date, 'Night')"
+                :disabled="isShiftDisabled(date)"
               />
-              <label for="night" class="ps-1">N</label>
+              <label :for="'night-' + date" class="ps-1">N</label>
               &nbsp;
               <input
                 type="radio"
-                id="unavailable"
-                name="shiftsGroup"
-                v-model="dayData.selectedShift"
+                :id="'unavailable-' + date"
+                :name="'shiftsGroup-' + date"
+                v-model="selectedShifts[date]"
                 :value="'Unavailable'"
-                @click="updateDate(dayData.date, 'Unavailable')"
-                :disabled="isShiftDisabled(dayData.date)"
+                @click="updateDate(date, 'Unavailable')"
+                :disabled="isShiftDisabled(date)"
               />
-              <label for="unavailable" class="ps-1">U</label>
+              <label :for="'unavailable-' + date" class="ps-1">U</label>
             </div>
           </div>
         </div>
@@ -107,21 +109,28 @@ export default {
       type: [String, Number],
       default: null,
     },
+    startDate: {
+      type: String,
+      required: false,
+    },
   },
   data() {
     return {
+      selectedStartDate: "",
       currentDate: new Date(),
       calendarData: [],
       candidate_id: this.candidateId,
       date: "",
       status: "",
       availability_id: this.availabilityId,
-      selectedDate: null,
+      selectedDate: [],
+      selectedShifts: {},
     };
   },
   created() {
     this.candidate_id = this.candidateId;
   },
+
   watch: {
     availability_id(newAvailabilityId) {
       this.$emit("availabilityChange", newAvailabilityId);
@@ -152,14 +161,57 @@ export default {
   computed: {
     daysOfWeek() {
       return [
-        "Sunday",
         "Monday",
         "Tuesday",
         "Wednesday",
         "Thursday",
         "Friday",
         "Saturday",
+        "Sunday",
       ];
+    },
+    computedSelectedCandidate() {
+      return this.candidateList.find(
+        (candidate) => candidate.id === this.selectedCandidateId
+      );
+    },
+    selectedDateRow() {
+      const selectedDate = new Date(this.startDate);
+      const selectedDateRow = [];
+
+      const dayOfWeek = selectedDate.getDay();
+      const startDay = (dayOfWeek - 1 + 7) % 7;
+
+      for (let i = 0; i < 7; i++) {
+        const currentDate = new Date(selectedDate);
+        currentDate.setDate(selectedDate.getDate() + i - startDay);
+        selectedDateRow.push(currentDate);
+      }
+
+      return selectedDateRow;
+    },
+    candidateName() {
+      return this.selectedCandidate ? this.selectedCandidate.candidate_name : "";
+    },
+
+    formattedDates() {
+      return this.selectedDateRow.map((day) => this.formatDate(day));
+    },
+    getSelectedCandidate() {
+      return this.candidateList.find(
+        (candidate) => candidate.id === this.selectedCandidateId
+      );
+    },
+    formattedStartDate() {
+      return this.formatDate(this.selectedDateRow[0]);
+    },
+    formattedEndDate() {
+      return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
+    },
+    computedSelectedCandidate() {
+      return this.candidateList.find(
+        (candidate) => candidate.id === this.selectedCandidateId
+      );
     },
     leadingBlankDays() {
       const firstDayOfWeek = new Date(
@@ -171,6 +223,9 @@ export default {
     },
   },
   methods: {
+    formatDate(date) {
+      return new Date(date).toLocaleDateString();
+    },
     isShiftDisabled(selectedDate) {
       const dayData = this.calendarData.find((data) => data.date === selectedDate);
       return (
@@ -194,22 +249,22 @@ export default {
         });
       }
     },
-    goToPreviousMonth() {
-      this.currentDate = new Date(
-        this.currentDate.getFullYear(),
-        this.currentDate.getMonth() - 1,
-        1
-      );
-      this.updateCurrentMonth(this.currentDate);
-    },
-    goToNextMonth() {
-      this.currentDate = new Date(
-        this.currentDate.getFullYear(),
-        this.currentDate.getMonth() + 1,
-        1
-      );
-      this.updateCurrentMonth(this.currentDate);
-    },
+    // goToPreviousMonth() {
+    //   this.currentDate = new Date(
+    //     this.currentDate.getFullYear(),
+    //     this.currentDate.getMonth() - 1,
+    //     1
+    //   );
+    //   this.updateCurrentMonth(this.currentDate);
+    // },
+    // goToNextMonth() {
+    //   this.currentDate = new Date(
+    //     this.currentDate.getFullYear(),
+    //     this.currentDate.getMonth() + 1,
+    //     1
+    //   );
+    //   this.updateCurrentMonth(this.currentDate);
+    // },
     closeNestedCalendar() {
       this.$emit("closeModal");
     },
@@ -239,51 +294,72 @@ export default {
         };
       });
     },
+    // updateDate(selectedDate, shift) {
+    //   this.date = selectedDate;
+
+    //   const dayData = this.calendarData.find((data) => data.date === selectedDate);
+    //   if (dayData) {
+    //     // If all shifts are already selected, disable them
+    //     if (
+    //       dayData.shifts.early &&
+    //       dayData.shifts.late &&
+    //       dayData.shifts.night &&
+    //       dayData.shifts.unavailable
+    //     ) {
+    //       // Do nothing or show a message indicating that all shifts are already selected
+    //       return;
+    //     }
+
+    //     dayData.shifts[shift] = !dayData.shifts[shift];
+
+    //     // Check if all shifts are now selected, disable them if needed
+    //     if (
+    //       dayData.shifts.early &&
+    //       dayData.shifts.late &&
+    //       dayData.shifts.night &&
+    //       dayData.shifts.unavailable
+    //     ) {
+    //       // Disable all shifts
+    //       dayData.shifts.early = false;
+    //       dayData.shifts.late = false;
+    //       dayData.shifts.night = false;
+    //       dayData.shifts.unavailable = false;
+
+    //       // Optionally, you can show a message indicating that all shifts are disabled
+    //       alert("All shifts are disabled for this date.");
+    //     }
+    //   }
+
+    //   const selectedShifts = Object.keys(dayData.shifts)
+    //     .filter((key) => dayData.shifts[key])
+    //     .join(", ");
+
+    //   this.status = selectedShifts ? selectedShifts : "";
+    // },
     updateDate(selectedDate, shift) {
       this.date = selectedDate;
-
+      // console.log(shift);
+      this.status = shift;
       const dayData = this.calendarData.find((data) => data.date === selectedDate);
       if (dayData) {
-        // If all shifts are already selected, disable them
+        dayData.shifts = dayData.shifts || {};
+        dayData.shifts[shift] = !dayData.shifts[shift];
+
         if (
           dayData.shifts.early &&
           dayData.shifts.late &&
           dayData.shifts.night &&
           dayData.shifts.unavailable
         ) {
-          // Do nothing or show a message indicating that all shifts are already selected
           return;
         }
 
-        dayData.shifts[shift] = !dayData.shifts[shift];
-
-        // Check if all shifts are now selected, disable them if needed
-        if (
-          dayData.shifts.early &&
-          dayData.shifts.late &&
-          dayData.shifts.night &&
-          dayData.shifts.unavailable
-        ) {
-          // Disable all shifts
-          dayData.shifts.early = false;
-          dayData.shifts.late = false;
-          dayData.shifts.night = false;
-          dayData.shifts.unavailable = false;
-
-          // Optionally, you can show a message indicating that all shifts are disabled
-          alert("All shifts are disabled for this date.");
-        }
+        // Update the status
+        const selectedShifts = Object.keys(dayData.shifts)
+          .filter((key) => dayData.shifts[key])
+          .join(", ");
+        this.status = selectedShifts || "";
       }
-
-      const selectedShifts = Object.keys(dayData.shifts)
-        .filter((key) => dayData.shifts[key])
-        .join(", ");
-
-      this.status = selectedShifts ? selectedShifts : "";
-    },
-
-    getSelectedDateData() {
-      return this.calendarData.find((dayData) => dayData.date === this.date);
     },
     addCandidateStatus: async function () {
       try {
@@ -400,7 +476,9 @@ export default {
   grid-template-columns: repeat(7, 1fr);
   gap: 5px;
 }
-
+.day-header {
+  background: #9e9e9e2b;
+}
 .day-header,
 .empty-day,
 .calendar-day {

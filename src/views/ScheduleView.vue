@@ -28,7 +28,7 @@ export default {
 <template>
   <div>
     <Navbar />
-    <div class="container-fluid">
+    <div class="container-fluid p-0">
       <div id="main">
         <div class="pagetitle d-flex justify-content-between px-2">
           <div class="py-3">
@@ -82,107 +82,196 @@ export default {
               </div>
             </div>
           </div>
-          <table class="table">
-            <thead>
-              <tr>
-                <th style="width: 15%">Vacancy</th>
-
-                <th>
-                  <div class="calendar-grid">
-                    <div v-for="day in daysOfWeek" :key="day" class="day-header">
-                      {{ day }}
-                    </div>
-                    <div v-for="date in selectedDateRow" :key="date" class="day-header">
-                      {{ formatDate(date) }}
+          <div>
+            <div class="sidebar-container">
+              <div class="sidebar-button" :class="{ 'slide-left': isOpen }">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <button
+                      @click="toggleSidebar"
+                      class="btn btn-default border-0 pe-2 fs-5"
+                    >
+                      <i class="bi bi-funnel-fill"></i>
+                    </button>
+                    <span v-if="isOpen" class="text-danger fs-5 ps-2">Filter </span>
+                  </div>
+                  <div>
+                    <i
+                      v-if="isOpen"
+                      class="bi bi-x float-end fs-2 d-flex cursor-pointer"
+                      @click="toggleSidebar"
+                    ></i>
+                  </div>
+                </div>
+                <div class="d-flex">
+                  <div>
+                    <button
+                      @click="toggleSidebar"
+                      class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
+                    >
+                      <i
+                        class="bi bi-person-fill"
+                        style="border-radius: 50%; background: #ffeb3b; padding: 10px"
+                      ></i>
+                    </button>
+                  </div>
+                  <div>
+                    <div class="filters" v-show="isOpen">
+                      <select v-model="job_id" id="selectJobTitle" class="form-select">
+                        <option value="" selected>Select Jobs</option>
+                        <option
+                          v-for="option in options"
+                          :key="option.id"
+                          :value="option.id"
+                        >
+                          {{ option.name }}
+                        </option>
+                      </select>
                     </div>
                   </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="border-right: 1px solid rgb(209, 208, 208)">
-                  <form
-                    class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
-                  >
-                    <input
-                      class="form-control mr-sm-2"
-                      type="search"
-                      placeholder="Search for candidate"
-                      aria-label="Search"
-                    />
-                  </form>
-                </td>
-                <td>
-                  <div class="calendar-grid">
-                    <div v-for="(data, index) in vacancyList" :key="index">
-                      <div
-                        v-for="day in selectedDateRow"
-                        :key="day"
-                        class="text-center"
-                        style="max-height: 46px; overflow-y: auto"
+                </div>
+                <div class="d-flex">
+                  <div>
+                    <button
+                      @click="toggleSidebar"
+                      class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
+                    >
+                      <i
+                        class="bi bi-briefcase-fill"
+                        style="border-radius: 50%; background: #ff6d3f; padding: 10px"
+                      ></i>
+                    </button>
+                  </div>
+                  <div>
+                    <div class="filters" v-show="isOpen">
+                      <select
+                        v-model="business_unit_id"
+                        id="selectBusinessUnit"
+                        class="form-select"
                       >
-                        <ul
-                          v-if="data.date === formattedDate(day)"
-                          class="list-unstyled mb-0"
+                        <option value="" selected>Select BusinessUnit</option>
+                        <option
+                          v-for="option in businessUnit"
+                          :key="option.id"
+                          :value="option.id"
                         >
-                          <li
-                            v-for="(vacancy, liIndex) in data.vacancy"
-                            :key="vacancy.id"
-                            :draggable="true"
-                            @dragstart="handleDragStart(vacancy.id)"
+                          {{ option.name }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sidebar-content" :class="{ 'slide-left': isOpen }">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th style="width: 15%">Vacancy</th>
+
+                      <th>
+                        <div class="calendar-grid">
+                          <div v-for="day in daysOfWeek" :key="day" class="day-header">
+                            {{ day }}
+                          </div>
+                          <div
+                            v-for="date in selectedDateRow"
+                            :key="date"
+                            class="day-header"
+                          >
+                            {{ formatDate(date) }}
+                          </div>
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="border-right: 1px solid rgb(209, 208, 208)">
+                        <form
+                          class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
+                        >
+                          <input
+                            class="form-control mr-sm-2"
+                            type="search"
+                            placeholder="Search for candidate"
+                            aria-label="Search"
+                          />
+                        </form>
+                      </td>
+                      <td>
+                        <div class="calendar-grid">
+                          <div v-for="(data, index) in vacancyList" :key="index">
+                            <div
+                              v-for="day in selectedDateRow"
+                              :key="day"
+                              class="text-center"
+                              style="max-height: 46px; overflow-y: auto"
+                            >
+                              <ul
+                                v-if="data.date === formattedDate(day)"
+                                class="list-unstyled mb-0"
+                              >
+                                <li
+                                  v-for="(vacancy, liIndex) in data.vacancy"
+                                  :key="vacancy.id"
+                                  :draggable="true"
+                                  @dragstart="handleDragStart(vacancy.id)"
+                                  :class="{
+                                    'bg-info': liIndex === 0,
+                                    'bg-warning': liIndex === 1,
+                                    'bg-success': liIndex === 2,
+                                    'bg-primary': liIndex >= 3,
+                                  }"
+                                >
+                                  {{ vacancy.business_unit }}
+                                </li>
+                                <!-- <li>business_unit</li> -->
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr v-for="data in paginateCandidates" :key="data.id">
+                      <td
+                        class="text-capitalize fw-bold"
+                        style="border-right: 1px solid rgb(209, 208, 208)"
+                      >
+                        {{ data.first_name }}
+                      </td>
+
+                      <td>
+                        <div
+                          class="calendar-grid"
+                          @dragover.prevent="handleDragOver"
+                          @drop="handleDrop(data.id)"
+                        >
+                          <div
+                            v-for="day in selectedDateRow"
+                            :key="day"
+                            @click="openModal(data, day)"
                             :class="{
-                              'bg-info': liIndex === 0,
-                              'bg-warning': liIndex === 1,
-                              'bg-success': liIndex === 2,
-                              'bg-primary': liIndex >= 3,
+                              'calendar-day': true,
+                              clickable: day !== '',
                             }"
                           >
-                            {{ vacancy.business_unit }}
-                          </li>
-                          <!-- <li>business_unit</li> -->
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-
-              <tr v-for="data in paginateCandidates" :key="data.id">
-                <td
-                  class="text-capitalize fw-bold"
-                  style="border-right: 1px solid rgb(209, 208, 208)"
-                >
-                  {{ data.first_name }}
-                </td>
-
-                <td>
-                  <div
-                    class="calendar-grid"
-                    @dragover.prevent="handleDragOver"
-                    @drop="handleDrop(data.id)"
-                  >
-                    <div
-                      v-for="day in selectedDateRow"
-                      :key="day"
-                      @click="openModal(data, day)"
-                      :class="{
-                        'calendar-day': true,
-                        clickable: day !== '',
-                      }"
-                    >
-                      <div
-                        v-if="dropCandidateId === data.id && dropDay === day"
-                        class="drop-zone"
-                      >
-                        {{ droppedContent }}
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                            <div
+                              v-if="dropCandidateId === data.id && dropDay === day"
+                              class="drop-zone"
+                            >
+                              {{ droppedContent }}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -218,6 +307,7 @@ import Navbar from "../components/Navbar.vue";
 export default {
   data() {
     return {
+      isOpen: false,
       startDate: new Date(),
       endDate: { value: "", display: "" },
       currentDate: new Date(),
@@ -234,9 +324,25 @@ export default {
       droppedContent: null,
       currentPage: 1,
       itemsPerPage: 8,
+      options: [],
+      job_id: "",
+      business_unit_id: "",
+
+      businessUnit: [],
     };
   },
+
   computed: {
+    selectBusinessUnit() {
+      const business_unit_id = this.businessUnit.find(
+        (option) => option.id === this.business_unit_id
+      );
+      return business_unit_id ? business_unit_id.name : "";
+    },
+    selectJobTitle() {
+      const job_id = this.options.find((option) => option.id === this.job_id);
+      return job_id ? job_id.name : "";
+    },
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
@@ -294,6 +400,9 @@ export default {
   },
 
   methods: {
+    toggleSidebar() {
+      this.isOpen = !this.isOpen;
+    },
     moveToPrevious() {
       if (!this.formattedStartDate || !this.formattedEndDate) {
         return;
@@ -481,6 +590,30 @@ export default {
         // console.error("Error in fetchVacancyListMethod:", error);
       }
     },
+    async getJobTitleMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+        this.options = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    async getBusinessUnitMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/business_units`);
+        this.businessUnit = response.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
   },
   components: {
     AppointmentAdd,
@@ -489,8 +622,10 @@ export default {
   mounted() {
     this.fetchCandidateList();
     this.fetchVacancyListMethod();
+    this.getBusinessUnitMethod();
     this.loadStoredData();
     window.addEventListener("beforeunload", this.saveToLocalStorage);
+    this.getJobTitleMethod();
   },
 };
 </script>
@@ -503,7 +638,36 @@ export default {
 .full-page-calendar {
   padding: 20px;
 }
+.sidebar-container {
+  display: flex; /* Make children inline */
+}
 
+.sidebar-button {
+  padding: 10px;
+  background: #dbdbdb;
+}
+
+.sidebar-content {
+  flex: 1; /* Take remaining space */
+}
+
+.sidebar {
+  width: 200px; /* Sidebar width */
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+.sidebar.open {
+  width: 400px; /* Sidebar width when open */
+}
+
+.slide-left-content {
+  transition: margin-left 0.3s; /* Smooth transition for content */
+}
+
+.filters {
+  margin-top: 10px;
+}
 .calendar-header {
   display: flex;
   align-items: center;
@@ -527,7 +691,9 @@ input.dateInput {
   grid-template-columns: repeat(7, 1fr);
   gap: 5px;
 }
-
+.cursor-pointer {
+  cursor: pointer;
+}
 .day-header,
 .empty-day,
 .calendar-day {

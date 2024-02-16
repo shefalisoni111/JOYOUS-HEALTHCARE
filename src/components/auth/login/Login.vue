@@ -147,7 +147,7 @@ export default {
         const tokenExpiration = parseInt(tokenExpirationString);
         const currentTime = Date.now();
         const timeToExpiration = tokenExpiration - currentTime;
-        console.log(tokenExpiration, currentTime, timeToExpiration, timeToExpiration > 0);
+        // console.log(tokenExpiration, currentTime, timeToExpiration, timeToExpiration > 0);
         if (timeToExpiration > 0) {
           setTimeout(() => {
             // console.log("Token expired. Logging out.");

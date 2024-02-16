@@ -47,6 +47,7 @@
                   @closeModal="closeModal"
                   :availabilityId="availability_id"
                   @Candidate-availability="handleAvailabilityChange"
+                  :startDate="startDate"
                 />
               </div>
             </div>

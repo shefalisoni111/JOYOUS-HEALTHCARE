@@ -222,10 +222,10 @@
               style="width: 220px"
             >
               <li>
-                <router-link class="dropdown-item text-capitalize" to="/admin">
+                <a class="dropdown-item text-capitalize">
                   <h5 class="d-block mb-0">{{ getAdminData.first_name }}</h5>
                   <span class="d-block">Admin</span>
-                </router-link>
+                </a>
               </li>
               <li>
                 <hr class="dropdown-divider" />
@@ -261,9 +261,11 @@
               </li>
 
               <li class="cursor-pointer my-1">
-                <a class="dropdown-item d-flex align-items-center"
-                  ><i class="bi bi-gear-wide pe-2"></i><span>Personal Settings</span></a
-                >
+                <router-link
+                  class="dropdown-item text-capitalize d-flex align-items-center"
+                  to="/admin"
+                  ><i class="bi bi-gear-wide pe-2"></i><span>Personal Settings</span>
+                </router-link>
               </li>
 
               <li class="cursor-pointer my-1">
