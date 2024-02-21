@@ -118,15 +118,9 @@ export default {
         const jsonData = response.data;
 
         if (jsonData.is_loged_in) {
-          // const tokenExpiration = Date.now() + 60 * 60 * 1000; // 1 hour  in milliseconds
-          let tokenExpiration = localStorage.getItem("tokenExpiration");
-          if (!tokenExpiration || parseInt(tokenExpiration) <= Date.now()) {
-            tokenExpiration = Date.now() + 8 * 3600000; // 1 hour in milliseconds
-            localStorage.setItem("tokenExpiration", tokenExpiration);
-          }
-
+          const tokenExpiration = Date.now() + 12 * 60 * 60 * 1000;
+          localStorage.setItem("tokenExpiration", tokenExpiration);
           localStorage.setItem("token", jsonData.token);
-          // localStorage.setItem("tokenExpiration", tokenExpiration);
 
           this.setupAutoLogout();
           this.$router.push({ name: "Home" });
@@ -141,24 +135,18 @@ export default {
     },
 
     setupAutoLogout() {
-      const tokenExpirationString = localStorage.getItem("tokenExpiration");
-
-      if (tokenExpirationString !== null && tokenExpirationString !== undefined) {
-        const tokenExpiration = parseInt(tokenExpirationString);
-        const currentTime = Date.now();
-        const timeToExpiration = tokenExpiration - currentTime;
-        // console.log(tokenExpiration, currentTime, timeToExpiration, timeToExpiration > 0);
+      const tokenExpiration = localStorage.getItem("tokenExpiration");
+      if (tokenExpiration) {
+        const timeToExpiration = tokenExpiration - Date.now();
         if (timeToExpiration > 0) {
           setTimeout(() => {
-            // console.log("Token expired. Logging out.");
             this.logoutDueToExpiration();
           }, timeToExpiration);
         } else {
-          // console.log("Token already expired. Logging out.");
           this.logoutDueToExpiration();
         }
       } else {
-        // console.log("Token expiration not found. Logging out.");
+        console.error("Token expiration not found");
         this.logoutDueToExpiration();
       }
     },
@@ -177,13 +165,15 @@ export default {
   mounted() {
     const token = localStorage.getItem("token");
     if (token) {
-      if (localStorage.getItem("tokenExpiration")) {
-        this.setupAutoLogout();
+      const tokenExpiration = localStorage.getItem("tokenExpiration");
+      if (tokenExpiration && Date.now() > parseInt(tokenExpiration)) {
+        this.logoutDueToExpiration();
       } else {
-        this.logout();
+        this.setupAutoLogout();
+        this.$router.push({ name: "Home" });
       }
-
-      this.$router.push({ name: "Home" });
+    } else {
+      this.$router.push({ name: "Login" });
     }
 
     // Check if "Remember Me" credentials exist
@@ -251,5 +241,15 @@ export default {
 }
 .cursor-pointer {
   cursor: pointer;
+}
+@media (max-width: 1300px) and (min-width: 800px) {
+  .wrapper-div {
+    width: 40%;
+  }
+}
+@media (max-width: 799px) {
+  .wrapper-div {
+    width: 58%;
+  }
 }
 </style>

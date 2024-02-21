@@ -480,7 +480,7 @@ export default {
       if (!isNaN(selectedDate.getTime())) {
         return selectedDate.toISOString().split("T")[0];
       } else {
-        console.error("Invalid date:", selectedDate);
+        // console.error("Invalid date:", selectedDate);
         return null;
       }
     },
@@ -644,7 +644,7 @@ export default {
 
 .sidebar-button {
   padding: 10px;
-  background: #dbdbdb;
+  background: #faf8f4;
 }
 
 .sidebar-content {

@@ -1,5 +1,9 @@
 <template>
-  <div class="nested-calendar" id="nested-calendar">
+  <div
+    class="nested-calendar"
+    id="nested-calendar"
+    style="overflow-x: scroll; margin-top: 10px"
+  >
     <div class="nested-calendar-content">
       <div class="calendar-header d-flex justify-content-between my-3">
         <div class="d-flex">
@@ -7,9 +11,7 @@
             <i class="bi bi-caret-left-fill"></i>
           </button> -->
           <div class="current-month d-flex align-items-center">
-            {{
-              currentDate.toLocaleString("default", { month: "long", year: "numeric" })
-            }}
+            {{ selectedMonth }}
           </div>
           <!-- <button class="btn btn-primary" @click="goToNextMonth">
             <i class="bi bi-caret-right-fill"></i>
@@ -125,6 +127,7 @@ export default {
       availability_id: this.availabilityId,
       selectedDate: [],
       selectedShifts: {},
+      selectedMonth: "",
     };
   },
   created() {
@@ -223,6 +226,14 @@ export default {
     },
   },
   methods: {
+    updateCurrentMonth(date) {
+      if (date instanceof Date && !isNaN(date)) {
+        this.selectedMonth = date.toLocaleString("default", {
+          month: "long",
+          year: "numeric",
+        });
+      }
+    },
     formatDate(date) {
       return new Date(date).toLocaleDateString();
     },
@@ -241,14 +252,7 @@ export default {
       this.addCandidateStatus();
       this.closeNestedCalendar();
     },
-    updateCurrentMonth(date) {
-      if (date instanceof Date && !isNaN(date)) {
-        this.currentMonth = date.toLocaleString("default", {
-          month: "long",
-          year: "numeric",
-        });
-      }
-    },
+
     // goToPreviousMonth() {
     //   this.currentDate = new Date(
     //     this.currentDate.getFullYear(),
@@ -442,7 +446,7 @@ export default {
   async created() {
     this.initializeCalendar();
 
-    this.updateCurrentMonth(this.initialDate);
+    this.updateCurrentMonth(new Date(this.initialDate));
   },
 };
 </script>

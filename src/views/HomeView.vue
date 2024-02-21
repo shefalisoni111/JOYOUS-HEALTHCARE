@@ -457,7 +457,7 @@
                       <div class="px-3 d-flex align-items-center">
                         <div class="d-flex justify-content-between">
                           <span
-                            v-if="currentView === 'monthly' && startDate && endDate"
+                            v-if="currentView === 'weekly' && startDate && endDate"
                             class="fw-bold d-flex align-items-center"
                           >
                             {{ formatDate(startDate) + " to " + formatDate(endDate) }}
@@ -465,7 +465,8 @@
                           &nbsp;&nbsp;
                           <div class="d-flex align-items-center fs-4">
                             <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
-                            <i class="bi bi-calendar2-check-fill"></i>
+                            <i class="bi bi-calendar3"></i>
+                            <!-- <i class="bi bi-calendar2-check-fill"></i> -->
                             <!-- <input type="month" id="dateInput" class="form-control" /> -->
                             <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
                           </div>
@@ -500,7 +501,7 @@ export default {
 
   data() {
     return {
-      currentView: "monthly",
+      currentView: "weekly",
       getRecords: [],
       startDate: new Date(),
       endDate: new Date(),

@@ -14,7 +14,7 @@
             </ol>
           </div>
         </div>
-        <div class="row p-3">
+        <div class="row p-3" style="overflow: auto">
           <div class="full-page-calendar">
             <div class="calendar-header">
               <span v-if="formattedStartDate && formattedEndDate" class="fw-bold">
@@ -27,6 +27,7 @@
                 v-model="startDate"
                 @change="updateDateRange"
                 class="dateInput"
+                value=""
               />
             </div>
             <!-- Modal -->
@@ -37,12 +38,12 @@
                   >&times;</span
                 >
                 <h4 class="text-capitalize">Availability - {{ getCandidateName() }}</h4>
-                <!-- <p>You clicked on {{ selectedDate }}</p>
-                <p>Status: {{ statusForSelectedDate }}</p> -->
+                <!-- <p>You clicked on {{ selectedDate }}</p> -->
+                <!-- <p>Status: {{ statusForSelectedDate }}</p> -->
                 <!-- Pass initialDate to the Calendar component -->
 
                 <Calendar
-                  :initialDate="selectedDate"
+                  :initialDate="selectedDate.toISOString()"
                   :candidateId="selectedCandidateId.toString()"
                   @closeModal="closeModal"
                   :availabilityId="availability_id"
@@ -201,14 +202,27 @@ export default {
     selectedDateRow() {
       const selectedDate = new Date(this.startDate);
       const selectedDateRow = [];
-
       const dayOfWeek = selectedDate.getDay();
       const startDay = (dayOfWeek - 1 + 7) % 7;
 
       for (let i = 0; i < 7; i++) {
         const currentDate = new Date(selectedDate);
         currentDate.setDate(selectedDate.getDate() + i - startDay);
-        selectedDateRow.push(`${currentDate.getDate()}`);
+
+        const lastDayOfMonth = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        ).getDate();
+        if (currentDate.getDate() > lastDayOfMonth) {
+          currentDate.setMonth(currentDate.getMonth() + 1);
+
+          currentDate.setDate(1);
+
+          currentDate.setDate(i + 1 - startDay);
+        }
+
+        selectedDateRow.push(currentDate);
       }
 
       return selectedDateRow;
@@ -226,10 +240,24 @@ export default {
       );
     },
     formattedStartDate() {
-      return this.formatDate(this.selectedDateRow[0]);
+      const startDate = new Date(this.startDate);
+      const mondayIndex = 1;
+      const dayOfWeek = startDate.getDay();
+      const daysToAdd =
+        dayOfWeek < mondayIndex ? mondayIndex - dayOfWeek - 7 : mondayIndex - dayOfWeek;
+      startDate.setDate(startDate.getDate() + daysToAdd);
+      return `${startDate.getDate()}/${
+        startDate.getMonth() + 1
+      }/${startDate.getFullYear()}`;
     },
     formattedEndDate() {
-      return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
+      const endDate = new Date(this.startDate);
+      const sundayIndex = 0;
+      const dayOfWeek = endDate.getDay();
+      const daysToAdd =
+        dayOfWeek < sundayIndex ? sundayIndex - dayOfWeek : sundayIndex - dayOfWeek + 7;
+      endDate.setDate(endDate.getDate() + daysToAdd);
+      return `${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()}`;
     },
     computedSelectedCandidate() {
       return this.candidateList.find(
@@ -246,12 +274,12 @@ export default {
       this.fetchCandidateList(this.startDate);
       this.saveToLocalStorage();
     },
-    formattedDate(day) {
-      const selectedDate = new Date(this.startDate);
-
-      if (selectedDate instanceof Date && !isNaN(selectedDate)) {
-        selectedDate.setDate(day);
-        return selectedDate.toISOString().split("T")[0];
+    formattedDate(date) {
+      if (date instanceof Date && !isNaN(date)) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
       } else {
         return "";
       }
@@ -314,21 +342,23 @@ export default {
       }
 
       Vue.set(this, "selectedDateRow", selectedDateRow);
+      console.log(selectedDateRow);
     },
     formatDate(day) {
-      const selectedDate = new Date(this.startDate);
-      selectedDate.setDate(day);
-      return selectedDate.toLocaleDateString();
+      return day.toLocaleDateString();
     },
 
     openModal(candidateId, day) {
       try {
         const actualCandidateId = candidateId.candidate_id;
-        const selectedDate = new Date(this.startDate);
-        selectedDate.setDate(parseInt(day));
-        const formattedDate = selectedDate.toISOString().split("T")[0];
+        // const selectedDate = new Date(this.startDate);
+        // const dayOfMonth = day.getDate(); // Extract day of the month
+        // selectedDate.setDate(dayOfMonth);
+        // const formattedDate = selectedDate.toISOString().split("T")[0];
+        const selectedDate = new Date(day.getFullYear(), day.getMonth(), day.getDate());
 
-        this.selectedDate = formattedDate;
+        this.selectedDate = selectedDate;
+
         this.selectedCandidateId = actualCandidateId;
 
         const selectedCandidate = this.candidateList.find(
@@ -336,6 +366,7 @@ export default {
         );
 
         if (selectedCandidate) {
+          const formattedDate = this.formattedDate(selectedDate);
           const availability = selectedCandidate.availability.find(
             (avail) => avail.date === formattedDate
           );
@@ -420,6 +451,13 @@ export default {
 }
 input.dateInput {
   width: 1.3%;
+  background: transparent;
+  color: transparent;
+  border: transparent;
+  font-size: larger;
+}
+input.dateInput:focus-visible {
+  outline: transparent !important;
 }
 .current-month {
   margin: 0 20px;
@@ -498,5 +536,21 @@ input.dateInput {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+@media (max-width: 1300px) {
+  input.dateInput {
+    width: 1.8%;
+  }
+}
+@media (max-width: 900px) {
+  input.dateInput {
+    width: 3%;
+  }
+}
+@media (max-width: 560px) {
+  input.dateInput {
+    width: 4%;
+  }
 }
 </style>

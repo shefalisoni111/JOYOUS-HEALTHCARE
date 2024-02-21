@@ -157,9 +157,10 @@
         <ul class="navbar-nav m-0 mb-2 mb-lg-0">
           <li class="nav-item dropdown mt-1">
             <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-              <i class="bi bi-chat-left-dots fs-5"></i
+              <i class="bi bi-chat-left-dots fs-5" @click="toggleChatBox"></i
             ></a>
           </li>
+
           <li class="nav-item dropdown mt-2">
             <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
               <i class="bi bi-bell"></i>
@@ -288,6 +289,27 @@
           </li>
           <!-- End Profile Nav -->
         </ul>
+        <div v-if="showChatBox" class="chat-box">
+          <!-- Chat content goes here -->
+          <div class="chat-container">
+            <div class="chat-header">
+              <h5 class="mb-0">Chat</h5>
+              <button class="btn btn-danger btn-sm" @click="toggleChatBox">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </div>
+            <div class="chat-messages">
+              <div v-for="(message, index) in messages" :key="index" class="message">
+                <div class="message-sender">{{ message.sender }}</div>
+                <div class="message-content">{{ message.content }}</div>
+              </div>
+            </div>
+            <div class="chat-input">
+              <input v-model="newMessage" type="text" placeholder="Type your message" />
+              <button @click="sendMessage" class="btn btn-primary btn-sm">Send</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
@@ -301,10 +323,29 @@ export default {
   data() {
     return {
       getAdminData: [],
+      showChatBox: false,
+
+      newMessage: "",
+      messages: [
+        { sender: "John", content: "Hello!" },
+        // { sender: "Jane", content: "Hi there!" },
+      ],
     };
   },
 
   methods: {
+    toggleChat() {
+      this.isOpen = !this.isOpen;
+    },
+    toggleChatBox() {
+      this.showChatBox = !this.showChatBox;
+    },
+    sendMessage() {
+      if (this.newMessage.trim() !== "") {
+        this.messages.push({ sender: "You", content: this.newMessage });
+        this.newMessage = "";
+      }
+    },
     signout() {
       if (localStorage.getItem("token")) {
         localStorage.removeItem("token");
@@ -341,7 +382,49 @@ export default {
 .cursor-pointer {
   cursor: pointer;
 }
+.chat-box {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+}
+.chat-container {
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 
+.chat-header {
+  background-color: #f0f0f0;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-messages {
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.message {
+  margin-bottom: 10px;
+}
+
+.message-sender {
+  font-weight: bold;
+}
+
+.chat-input {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .fixed-navbar {
   position: fixed;
   top: 0;
