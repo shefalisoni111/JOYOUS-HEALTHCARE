@@ -33,14 +33,13 @@ body {
 }
 @media (max-width: 1390px) {
   html {font-size: x-small;}
+  
  
   
 }
-@media (max-width: 1199px) {
-  #main {
-    padding: 20px;
-  }
-}
+
+
+
 ul li a:hover {
   color: #ff5722;
   background-color: #fdce5e17;

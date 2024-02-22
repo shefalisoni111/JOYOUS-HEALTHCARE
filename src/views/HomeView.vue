@@ -626,7 +626,6 @@ export default {
   padding: 10px;
 }
 #main {
-  margin-top: 65px;
 }
 .left-flex-border,
 .right-flex-border {
@@ -714,10 +713,10 @@ table th.cw {
   transform: translateX(-34px);
 }
 #main {
-  padding: 20px 20px;
+  padding: 0px 20px;
   transition: all 0.3s;
   background: #fef8f8;
-
+  padding-top: 65px;
   background-color: #fdce5e17;
 }
 h6 {

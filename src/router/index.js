@@ -455,7 +455,7 @@ const router = createRouter({
     },
 
     {
-      path: "/appsetting/addjobdetail",
+      path: "/appsetting",
       name: "AppSetting",
       component: () => import("@/views/AppSetting.vue"),
       meta: {
@@ -464,19 +464,23 @@ const router = createRouter({
 
       children: [
         {
-          path: "/appsetting/addjobdetail",
+          path: "", 
+          redirect: { name: "AppJobDetail" } 
+        },
+        {
+          path: "addjobdetail",
           name: "AppJobDetail",
           component: () =>
             import("@/components/appsettingcomponent/AppJobDetail.vue"),
         },
         {
-          path: "/appsetting/candidatestatus",
+          path: "/candidatestatus",
           name: "CandidateStatus",
           component: () =>
             import("@/components/appsettingcomponent/CandidateStatus.vue"),
         },
         {
-          path: "/appsetting/employmenttypedetail",
+          path: "/employmenttypedetail",
           name: "EmploymentTypeDetails",
           component: () =>
             import(
@@ -484,30 +488,30 @@ const router = createRouter({
             ),
         },
         {
-          path: "/appsetting/shift",
+          path: "/shift",
           name: "Shift",
           component: () => import("@/components/appsettingcomponent/Shift.vue"),
         },
         {
-          path: "/appsetting/holidaycalender",
+          path: "/holidaycalender",
           name: "HolidaysCalender",
           component: () =>
             import("@/components/appsettingcomponent/HolidaysCalender.vue"),
         },
         {
-          path: "/appsetting/candidatededuction",
+          path: "/candidatededuction",
           name: "CandidateDeduction",
           component: () =>
             import("@/components/appsettingcomponent/CandidateDeduction.vue"),
         },
         {
-          path: "/appsetting/candidateprofiles",
+          path: "/candidateprofiles",
           name: "CandidateProfiles",
           component: () =>
             import("@/components/appsettingcomponent/CandidateProfiles.vue"),
         },
         {
-          path: "/appsetting/candidatedetailfield",
+          path: "/candidatedetailfield",
           name: "CandidateDetailSectionField",
           component: () =>
             import(
@@ -515,7 +519,7 @@ const router = createRouter({
             ),
         },
         {
-          path: "/appsetting/documentcategories",
+          path: "/documentcategories",
           name: "DocumentCategories",
           component: () =>
             import(
@@ -562,7 +566,11 @@ const router = createRouter({
         },
       children: [
         {
-          path: "/appsetting/notificationsetting",
+          path: "", 
+          redirect: { name: "Email" } 
+        },
+        {
+          path: "/email",
           name: "Email",
           component: () =>
             import("@/components/appsettingcomponent/notification/Email.vue"),
@@ -619,13 +627,17 @@ const router = createRouter({
         },
         children: [
           {
-            path: "/appsetting/ClientSettings",
+            path: "", 
+            redirect: { name: "BasicClientSetting" } 
+          },
+          {
+            path: "basicClientSettings",
             name: "BasicClientSetting",
             component: () =>
               import("@/components/appsettingcomponent/ClientSetting/BasicClientSetting.vue"),
           },
           {
-            path: "/appsetting/emailNotification",
+            path: "emailNotification",
             name: "EmailNotification",
             component: () =>
               import("@/components/appsettingcomponent/ClientSetting/EmailNotification.vue"),

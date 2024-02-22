@@ -55,7 +55,7 @@
               <div class="">
                 <div>
                   <ul
-                    class="nav nav-pills mb-3 d-flex justify-content-between"
+                    class="nav nav-pills mb-3 d-flex justify-content-between mb-3"
                     id="pills-tab"
                     role="tablist"
                   >
@@ -455,10 +455,7 @@ a[data-v-507f63b7] {
   border: 1px solid #0d6efd;
   border-radius: 22px;
 }
-ul.nav-pills {
-  height: 53px;
-  border-bottom: 1px solid #b8b1b1;
-}
+
 table th {
   background-color: #ff5f30;
 }

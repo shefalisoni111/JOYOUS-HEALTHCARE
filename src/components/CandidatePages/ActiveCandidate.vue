@@ -333,4 +333,12 @@ a {
   transform: translateX(15px);
   background-color: #ff9800;
 }
+@media (max-width: 1120px) {
+  .candidateTable {
+    width: 1090px;
+  }
+  .table-wrapper {
+    overflow-x: scroll;
+  }
+}
 </style>

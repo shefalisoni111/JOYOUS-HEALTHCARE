@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-12">
-        <table class="table candidateTable">
+      <div class="col-12 wrapper-vacancy">
+        <table class="table vacancyTable">
           <thead>
             <tr>
               <th scope="col">ID</th>
@@ -149,10 +149,18 @@ export default {
 </script>
 
 <style scoped>
-.table.candidateTable td.widthDefine {
+.table.vacancyTable td.widthDefine {
   white-space: pre-wrap;
   max-width: 100px;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+@media (max-width: 1120px) {
+  .vacancyTable {
+    width: 1090px;
+  }
+  .wrapper-vacancy {
+    overflow-x: scroll;
+  }
 }
 </style>

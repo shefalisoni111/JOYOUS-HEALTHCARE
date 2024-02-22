@@ -224,7 +224,7 @@ export default {
   # Page Title
   --------------------------------------------------------------*/
 #main {
-  margin-top: 65px;
+  padding-top: 65px;
 }
 table th,
 table tr td {
@@ -333,10 +333,4 @@ ul.generalsetting h6 {
 /*--------------------------------------------------------------
   # Main
   --------------------------------------------------------------*/
-
-@media (max-width: 1199px) {
-  #main {
-    padding: 20px;
-  }
-}
 </style>

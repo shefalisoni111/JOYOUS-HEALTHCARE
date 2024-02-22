@@ -275,9 +275,7 @@ a {
 .switch input {
   display: none;
 }
-.table-wrapper {
-  overflow-x: auto;
-}
+
 .switch .slider {
   position: absolute;
   top: 0;
@@ -332,5 +330,13 @@ a {
 .switch input:checked + .slider:before {
   transform: translateX(15px);
   background-color: #ff9800;
+}
+@media (max-width: 1120px) {
+  .candidateTable {
+    width: 1090px;
+  }
+  .table-wrapper {
+    overflow-x: scroll;
+  }
 }
 </style>

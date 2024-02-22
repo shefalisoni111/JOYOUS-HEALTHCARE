@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-12">
-        <table class="table candidateTable">
+      <div class="col-12 wrapper-vacancy">
+        <table class="table vacancyTable">
           <thead>
             <tr>
               <th scope="col">ID</th>
@@ -373,7 +373,7 @@ export default {
 a[data-v-507f63b7] {
   text-decoration: none;
 }
-.candidateTable tr:nth-child(odd) td {
+.vacancyTable tr:nth-child(odd) td {
   background: #fdce5e17 !important;
 }
 .btn-primary {
@@ -393,20 +393,11 @@ a[data-v-507f63b7] {
   border: 1px solid #0d6efd;
   border-radius: 22px;
 }
-ul.nav-pills {
-  height: 53px;
-  border-bottom: 1px solid #b8b1b1;
-}
+
 table th {
   background-color: #ff5f30;
 }
-.table.candidateTable th,
-.table.candidateTable td.widthDefine {
-  white-space: pre-wrap;
-  max-width: 100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+
 button.nav-link > li.nav-item {
   border-bottom: 2px solid red;
   padding-bottom: 5px;
@@ -429,5 +420,13 @@ button.nav-link > li.nav-item {
 }
 input::-webkit-input-placeholder {
   margin-left: 5px;
+}
+@media (max-width: 1120px) {
+  .vacancyTable {
+    width: 1090px;
+  }
+  .wrapper-vacancy {
+    overflow-x: scroll;
+  }
 }
 </style>

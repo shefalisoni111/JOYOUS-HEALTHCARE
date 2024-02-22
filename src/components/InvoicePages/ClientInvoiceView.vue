@@ -187,7 +187,7 @@ export default {
 #main {
   transition: all 0.3s;
   height: 100vh;
-  margin-top: 65px;
+  padding-top: 65px;
   background-color: #fdce5e17;
 }
 .main-content {

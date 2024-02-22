@@ -2,7 +2,7 @@
   <div>
     <Navbar />
 
-    <div id="main" class="main">
+    <div id="main" class="main px-sm-2">
       <div class="row">
         <div class="col-md-1"><Sidebar /></div>
         <div class="col-md-3 p-3 p-0 bg-white borderight">
@@ -16,7 +16,7 @@
               <ul class="list-unstyled text-capitalize generalsetting px-3">
                 <li class="list-items d-flex">
                   <i class="bi bi-suitcase-lg rounded-circle"></i>
-                  <router-link to="/appsetting/addjobdetail" class="text-decoration-none">
+                  <router-link to="addjobdetail" class="text-decoration-none">
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize">jobs</h6>
                       <p class="text-capitalize mb-0">Add jobs, positions & roles</p>
@@ -25,10 +25,7 @@
                 </li>
                 <li class="list-items d-flex mt-3">
                   <i class="bi bi-check-lg rounded-circle"></i>
-                  <router-link
-                    to="/appsetting/candidatestatus"
-                    class="text-decoration-none"
-                  >
+                  <router-link to="/candidatestatus" class="text-decoration-none">
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize">candidates status</h6>
                       <p class="text-capitalize mb-0">view & modify</p>
@@ -37,10 +34,7 @@
                 </li>
                 <li class="list-items d-flex mt-3">
                   <i class="bi bi-person-square rounded-circle"></i>
-                  <router-link
-                    to="/appsetting/employmenttypedetail"
-                    class="text-decoration-none"
-                  >
+                  <router-link to="/employmenttypedetail" class="text-decoration-none">
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize">employment types</h6>
                       <p class="text-capitalize mb-0">Add & modify</p>
@@ -49,7 +43,7 @@
                 </li>
                 <li class="list-items d-flex mt-3">
                   <i class="bi bi-clock rounded-circle"></i>
-                  <router-link to="/appsetting/shift" class="text-decoration-none">
+                  <router-link to="/shift" class="text-decoration-none">
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize">shift</h6>
                       <p class="text-capitalize mb-0">shift times</p>
@@ -59,7 +53,7 @@
                 <!-- <li class="list-items d-flex mt-3">
                   <i class="bi bi-clock rounded-circle"></i>
                   <router-link
-                    to="/appsetting/holidaycalender"
+                    to="/holidaycalender"
                     class="text-decoration-none"
                   >
                     <div class="job ms-2">
@@ -70,10 +64,7 @@
                 </li> -->
                 <li class="list-items d-flex mt-3">
                   <i class="bi bi-credit-card rounded-circle"></i>
-                  <router-link
-                    to="/appsetting/candidatededuction"
-                    class="text-decoration-none"
-                  >
+                  <router-link to="/candidatededuction" class="text-decoration-none">
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize">Candidate Deduction</h6>
                       <p class="text-capitalize mb-0">Add & modify Deduction</p>
@@ -82,10 +73,7 @@
                 </li>
                 <li class="list-items d-flex mt-3">
                   <i class="bi bi-person-vcard rounded-circle"></i>
-                  <router-link
-                    to="/appsetting/candidateprofiles"
-                    class="text-decoration-none"
-                  >
+                  <router-link to="/candidateprofiles" class="text-decoration-none">
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize">Candidate profile</h6>
                       <p class="text-capitalize mb-0">Add mandatory fields</p>
@@ -94,10 +82,7 @@
                 </li>
                 <li class="list-items d-flex mt-3">
                   <i class="bi bi-card-list rounded-circle"></i>
-                  <router-link
-                    to="/appsetting/candidatedetailfield"
-                    class="text-decoration-none"
-                  >
+                  <router-link to="/candidatedetailfield" class="text-decoration-none">
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize">Candidate Detail Section Field</h6>
                       <p class="text-capitalize mb-0">
@@ -106,17 +91,14 @@
                     </div>
                   </router-link>
                 </li>
-                <div class="heading my-3 position-relative">
+                <div class="heading my-3 position-relative px-sm-2">
                   <p class="bforeline"></p>
                   <p class="mb-0 text-uppercase fw-bold docSetting">Documents Setting</p>
                   <p class="afterlines"></p>
                 </div>
                 <li class="list-items d-flex">
                   <i class="bi bi-file-earmark-medical rounded-circle"></i>
-                  <router-link
-                    to="/appsetting/documentcategories"
-                    class="text-decoration-none"
-                  >
+                  <router-link to="/documentcategories" class="text-decoration-none">
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize">documents categories</h6>
                       <p class="text-capitalize mb-0">create & update categories</p>
@@ -164,7 +146,7 @@ export default {
 
 <style scoped>
 #main {
-  margin-top: 65px;
+  padding-top: 65px;
 }
 .docSetting {
   margin-left: -16px;
@@ -228,5 +210,11 @@ a.router-link-active::after {
   display: flex;
   align-items: center;
   color: #ff5722;
+}
+
+@media (max-width: 1400px) {
+  #main {
+    padding-top: 51px;
+  }
 }
 </style>

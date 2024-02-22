@@ -17,7 +17,7 @@
                 <li class="list-items d-flex">
                   <i class="bi bi-person rounded-circle"></i>
                   <router-link
-                    to="/appsetting/agencysetting"
+                    to="/appsetting/SubscriptionSetting"
                     class="text-decoration-none"
                   >
                     <div class="job ms-2">
@@ -178,7 +178,7 @@ export default {
 
 <style scoped>
 #main {
-  margin-top: 65px;
+  padding-top: 65px;
 }
 table th,
 table tr td {
@@ -294,9 +294,5 @@ ul.generalsetting h6 {
   border: none;
 }
 
-@media (max-width: 1199px) {
-  #main {
-    padding: 20px;
-  }
-}
+
 </style>

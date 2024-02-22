@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="table-wrapper mt-3">
-      <table class="table candidateTable">
+      <table class="table clientTable">
         <thead>
           <tr>
             <th scope="col">#RefCode</th>
@@ -206,7 +206,7 @@ a:link {
   color: black;
   text-decoration: none;
 }
-.candidateTable tr:nth-child(odd) td {
+.clientTable tr:nth-child(odd) td {
   background: #fdce5e17 !important;
 }
 .btn-primary {
@@ -313,5 +313,13 @@ a {
 .switch input:checked + .slider:before {
   transform: translateX(15px);
   background-color: #ff9800;
+}
+@media (max-width: 1120px) {
+  .clientTable {
+    width: 1090px;
+  }
+  .table-wrapper {
+    overflow-x: scroll;
+  }
 }
 </style>

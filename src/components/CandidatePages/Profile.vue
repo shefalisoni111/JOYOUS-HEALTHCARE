@@ -1,166 +1,168 @@
 <template>
   <div>
-    <div class="container-fluid p-0 mt-3">
-      <div id="main" class="main">
-        <div class="pagetitle d-flex justify-content-between p-2">
-          <div class="">
-            <ol class="breadcrumb mb-1">
-              <li class="breadcrumb-item active text-uppercase fs-6">
-                <router-link class="nav-link d-inline" aria-current="page" to="/home"
-                  >Dashboard</router-link
-                >
-                / CANDIDATES /
-                <span class="color-fonts">{{ getCandidates.first_name }}</span>
-              </li>
-            </ol>
+    <div id="main">
+      <div class="container-fluid p-0 mt-3">
+        <div class="main">
+          <div class="pagetitle d-flex justify-content-between p-2">
+            <div class="">
+              <ol class="breadcrumb mb-1">
+                <li class="breadcrumb-item active text-uppercase fs-6">
+                  <router-link class="nav-link d-inline" aria-current="page" to="/home"
+                    >Dashboard</router-link
+                  >
+                  / CANDIDATES /
+                  <span class="color-fonts">{{ getCandidates.first_name }}</span>
+                </li>
+              </ol>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="">
-      <div id="main">
-        <div class="row">
-          <div class="col-12 borderbottom pb-3 pt-1">
-            <div class="float-start">
-              <button
-                type="button"
-                class="btn btn-outline-success"
-                @click.prevent="previousTab"
-                v-show="hasPreviousTab"
-              >
-                <i class="bi bi-caret-left-fill"></i>Previous
-              </button>
-            </div>
-            <div class="float-end">
-              <button
-                type="button"
-                class="btn btn-outline-success"
-                @click.prevent="handleNextTabClick"
-                v-show="hasNextTab"
-              >
-                Next <i class="bi bi-caret-right-fill"></i>
-              </button>
+      <div class="">
+        <div>
+          <div class="row">
+            <div class="col-12 borderbottom pb-3 pt-1">
+              <div class="float-start">
+                <button
+                  type="button"
+                  class="btn btn-outline-success"
+                  @click.prevent="previousTab"
+                  v-show="hasPreviousTab"
+                >
+                  <i class="bi bi-caret-left-fill"></i>Previous
+                </button>
+              </div>
+              <div class="float-end">
+                <button
+                  type="button"
+                  class="btn btn-outline-success"
+                  @click.prevent="handleNextTabClick"
+                  v-show="hasNextTab"
+                >
+                  Next <i class="bi bi-caret-right-fill"></i>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-3">
-            <div class="card profile">
-              <img
-                v-if="getCandidates && getCandidates.profile_photo"
-                :src="completeImageUrl"
-                class="card-img-top position-relative"
-                height="400px"
-                alt="profile"
-                loading="lazy"
-              />
-              <img
-                v-else
-                src="./userprofile.png"
-                class="card-img-top position-relative"
-                style="border: 1px solid #8080801a"
-                height="400px"
-                alt="Default profile"
-                loading="lazy"
-              />
+          <div class="row">
+            <div class="col-md-3">
+              <div class="card profile">
+                <img
+                  v-if="getCandidates && getCandidates.profile_photo"
+                  :src="completeImageUrl"
+                  class="card-img-top position-relative"
+                  height="400px"
+                  alt="profile"
+                  loading="lazy"
+                />
+                <img
+                  v-else
+                  src="./userprofile.png"
+                  class="card-img-top position-relative"
+                  style="border: 1px solid #8080801a"
+                  height="400px"
+                  alt="Default profile"
+                  loading="lazy"
+                />
 
-              <!-- <div class="ribbon"><span>Active</span></div> -->
+                <!-- <div class="ribbon"><span>Active</span></div> -->
 
-              <div class="card-body">
-                <div class="mt-3 d-flex justify-content-between align-items-center">
-                  <div>
-                    <h6 class="card-title text-nowrap fw-bold text-capitalize">
-                      {{ getCandidates.first_name }}
-                    </h6>
-                    <span class="text-lowercase"> {{ getCandidates.email }}</span>
-                  </div>
-
-                  <div>
-                    <!-- <button type="button" class="btn btn-outline-primary">
-                      Edit
-                    </button> -->
-                  </div>
-                </div>
-                <hr />
-                <div class="mt-3">
-                  <div class="d-flex justify-content-between">
+                <div class="card-body">
+                  <div class="mt-3 d-flex justify-content-between align-items-center">
                     <div>
-                      <h6 class="card-title text-uppercase fs-smaller text-nowrap">
-                        contact information
+                      <h6 class="card-title text-nowrap fw-bold text-capitalize">
+                        {{ getCandidates.first_name }}
                       </h6>
+                      <span class="text-lowercase"> {{ getCandidates.email }}</span>
                     </div>
 
-                    <div class="d-flex justify-content-between">
-                      <h6 class="fs-smaller text-nowrap">Profile View</h6>
-                      <label class="switch">
-                        <input type="checkbox" id="togBtn" title="check" checked />
-                        <div class="slider round"></div>
-                      </label>
+                    <div>
+                      <!-- <button type="button" class="btn btn-outline-primary">
+                          Edit
+                        </button> -->
                     </div>
                   </div>
+                  <hr />
+                  <div class="mt-3">
+                    <div class="d-flex justify-content-between">
+                      <div>
+                        <h6 class="card-title text-uppercase fs-smaller text-nowrap">
+                          contact information
+                        </h6>
+                      </div>
 
-                  <div class="d-flex justify-content-between mt-3">
-                    <div class="d-flex align-items-center">
-                      <span
-                        ><i class="bi bi-telephone"></i>
-                        {{ getCandidates.phone_number }}</span
-                      >
+                      <div class="d-flex justify-content-between">
+                        <h6 class="fs-smaller text-nowrap">Profile View</h6>
+                        <label class="switch">
+                          <input type="checkbox" id="togBtn" title="check" checked />
+                          <div class="slider round"></div>
+                        </label>
+                      </div>
                     </div>
-                    <button
-                      type="button"
-                      class="btn btn-primary text-nowrap text-nowrap"
-                      data-bs-toggle="modal"
-                      data-bs-target="#editContactProfile"
-                      data-bs-whatever="@mdo"
-                      @click="editCandidate(getCandidates.id)"
-                    >
-                      Edit
-                    </button>
+
+                    <div class="d-flex justify-content-between mt-3">
+                      <div class="d-flex align-items-center">
+                        <span
+                          ><i class="bi bi-telephone"></i>
+                          {{ getCandidates.phone_number }}</span
+                        >
+                      </div>
+                      <button
+                        type="button"
+                        class="btn btn-primary text-nowrap text-nowrap"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editContactProfile"
+                        data-bs-whatever="@mdo"
+                        @click="editCandidate(getCandidates.id)"
+                      >
+                        Edit
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-9 bg-white">
-            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-              <li class="nav-item d-inline-flex gap-2" role="presentation">
-                <button
-                  class="btn-css"
-                  :to="`/${tab.routeName}`"
-                  aria-selected="true"
-                  type="button"
-                  role="tab"
-                  data-bs-toggle="pill"
-                  v-for="(tab, index) in tabs"
-                  :key="index"
-                  @click="selectTab(index)"
-                >
-                  <router-link
-                    class="nav-link"
-                    :class="{ active: activeTab === index }"
-                    :to="getTabLink(tab)"
+            <div class="col-md-9 bg-white">
+              <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item d-inline-flex gap-2" role="presentation">
+                  <button
+                    class="btn-css"
+                    :to="`/${tab.routeName}`"
+                    aria-selected="true"
+                    type="button"
+                    role="tab"
+                    data-bs-toggle="pill"
+                    v-for="(tab, index) in tabs"
+                    :key="index"
+                    @click="selectTab(index)"
                   >
-                    <span class="badge bg-success">{{
-                      index === 5 ? getCount : ""
-                    }}</span>
-                    {{ tab.name }}</router-link
-                  >
-                </button>
-              </li>
-            </ul>
-            <div class="tab-content">
-              <component :is="activeComponent"></component>
+                    <router-link
+                      class="nav-link"
+                      :class="{ active: activeTab === index }"
+                      :to="getTabLink(tab)"
+                    >
+                      <span class="badge bg-success">{{
+                        index === 5 ? getCount : ""
+                      }}</span>
+                      {{ tab.name }}</router-link
+                    >
+                  </button>
+                </li>
+              </ul>
+              <div class="tab-content">
+                <component :is="activeComponent"></component>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <EditProfileContact
-      :candidateId="selectedCandidateId || 0"
-      @contactAdded="getCandidate"
-    />
-    <AddNotes @getNotesAdded="GetNotesCount" />
+      <EditProfileContact
+        :candidateId="selectedCandidateId || 0"
+        @contactAdded="getCandidate"
+      />
+      <AddNotes @getNotesAdded="GetNotesCount" />
+    </div>
   </div>
 </template>
 
@@ -347,10 +349,6 @@ export default {
 </script>
 
 <style scoped>
-.main {
-  background-color: #fdce5e17;
-  margin-top: 65px;
-}
 .fs-smaller {
   font-size: smaller;
 }
@@ -393,6 +391,8 @@ ul li a {
   transition: all 0.3s;
   padding: 10px;
   transition: all 0.3s;
+  padding-top: 65px;
+  background-color: #fdce5e17;
 }
 .bg-white {
   border-left: 1px solid #dedede;

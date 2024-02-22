@@ -16,10 +16,7 @@
               <ul class="list-unstyled text-capitalize generalsetting px-3">
                 <li class="list-items d-flex">
                   <i class="bi bi-person rounded-circle"></i>
-                  <router-link
-                    to="/appsetting/ClientSettings"
-                    class="text-decoration-none"
-                  >
+                  <router-link to="basicClientSettings" class="text-decoration-none">
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize clr">basic permission</h6>
                       <p class="text-capitalize mb-0">Modify</p>
@@ -28,10 +25,7 @@
                 </li>
                 <li class="list-items d-flex mt-3">
                   <i class="bi bi-person rounded-circle"></i>
-                  <router-link
-                    to="/appsetting/emailNotification"
-                    class="text-decoration-none"
-                  >
+                  <router-link to="emailNotification" class="text-decoration-none">
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize clr">email notification</h6>
                       <p class="text-capitalize mb-0">Modify email templates</p>
@@ -66,7 +60,7 @@ export default {
 
 <style scoped>
 #main {
-  margin-top: 65px;
+  padding-top: 65px;
 }
 table th,
 table tr td {
@@ -238,10 +232,5 @@ ul.generalsetting h6 {
 }
 .btn-primary {
   border: none;
-}
-@media (max-width: 1199px) {
-  #main {
-    padding: 20px;
-  }
 }
 </style>

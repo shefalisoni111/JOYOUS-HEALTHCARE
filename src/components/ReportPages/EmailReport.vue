@@ -78,7 +78,9 @@ export default {
               </div>
               <div>
                 <div class="p-2">
-                  <div class="d-flex justify-content-between">
+                  <div
+                    class="d-md-flex d-lg-flex justify-content-md-between justify-content-lg-between"
+                  >
                     <div class="d-flex">
                       <div class="d-flex align-items-center gap-2">
                         <select
@@ -119,7 +121,7 @@ export default {
                       </div>
                     </div>
 
-                    <div class="d-flex gap-3 align-items-center">
+                    <div class="d-flex gap-3 align-items-center mt-lg-0 mt-3">
                       <button type="button" class="btn btn-outline-success text-nowrap">
                         <i class="bi bi-download"></i> Export CSV
                       </button>
@@ -148,12 +150,12 @@ export default {
                 </div>
                 <div class="tab-content mt-4" id="pills-tabContent">
                   <div
-                    class="tab-pane fade show active"
+                    class="tab-pane fade show active table-wrapper"
                     id="pills-home"
                     role="tabpanel"
                     aria-labelledby="pills-home-tab"
                   >
-                    <table class="table candidateTable">
+                    <table class="table reportTable">
                       <thead>
                         <tr>
                           <th scope="col">Sender</th>
@@ -457,7 +459,7 @@ select {
 a[data-v-507f63b7] {
   text-decoration: none;
 }
-.candidateTable tr:nth-child(odd) td {
+.reportTable tr:nth-child(odd) td {
   background: #fdce5e17 !important;
 }
 .btn-primary {
@@ -496,5 +498,13 @@ button.nav-link > li.nav-item {
 
 input::-webkit-input-placeholder {
   margin-left: 5px;
+}
+@media (max-width: 1120px) {
+  .reportTable {
+    width: 1090px;
+  }
+  .table-wrapper {
+    overflow-x: scroll;
+  }
 }
 </style>

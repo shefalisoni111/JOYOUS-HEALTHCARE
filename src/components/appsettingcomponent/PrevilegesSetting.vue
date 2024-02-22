@@ -239,7 +239,7 @@ export default {
 </script>
 <style scoped>
 #main {
-  margin-top: 65px;
+  padding-top: 65px;
 }
 .pagetitle {
   margin-bottom: 10px;

@@ -18,14 +18,14 @@
         </div>
       </div>
     </div>
-    <div class="container-fluid p-0">
+    <div class="container-fluid p-0" style="background-color: #fdce5e17">
       <div class="row">
         <div class="">
           <div class="d-flex gap-2 justify-content-between bg-define">
             <ul class="nav nav-pills my-3 p-2" role="tablist">
               <li class="nav-item d-inline-flex gap-2" role="presentation">
                 <button
-                  class="nav-link"
+                  class="nav-link text-nowrap"
                   :class="{ active: activeTab === index }"
                   :to="`/${tab.routeName}`"
                   aria-selected="true"
@@ -41,14 +41,9 @@
               </li>
             </ul>
             <div class="d-flex align-items-center p-2">
-              <div class="d-flex justify-content-between gap-2">
-                <div
-                  class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
-                >
-                  <form
-                    @submit.prevent="search"
-                    class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
-                  >
+              <div class="d-flex align-items-center gap-2">
+                <div class="form-inline my-2 my-lg-0">
+                  <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
                     <input
                       class="form-control mr-sm-2"
                       type="search"
@@ -60,7 +55,7 @@
                   </form>
                 </div>
 
-                <div class="d-flex justify-content-between gap-2">
+                <div>
                   <button
                     v-if="activeTab === 0"
                     type="button"
@@ -345,7 +340,8 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-  margin-top: 63px;
+  padding-top: 63px;
+  background-color: #fdce5e17;
 }
 .main-content {
   transition: all 0.3s;

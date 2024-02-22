@@ -3,7 +3,7 @@
   <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
       <li class="nav-item">
-        <router-link class="nav-link" to="/appsetting/addjobdetail">
+        <router-link class="nav-link" to="/appsetting">
           <i class="bi bi-gear"></i>
         </router-link>
       </li>
@@ -175,6 +175,17 @@
 
 .sidebar-nav .nav-content a.active i {
   background-color: #4154f1;
+}
+@media (max-width: 1200px) {
+  .sidebar-nav .nav-link {
+    padding: 10px 10px;
+    margin: -12px;
+  }
+}
+@media (max-width: 767px) {
+  .sidebar {
+    height: auto;
+  }
 }
 </style>
 

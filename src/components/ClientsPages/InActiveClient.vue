@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="table-wrapper mt-3">
-      <table class="table candidateTable">
+      <table class="table clientTable">
         <thead>
           <tr>
             <th scope="col">#RefCode</th>
@@ -75,7 +75,7 @@ a:link {
   color: black;
   text-decoration: none;
 }
-.candidateTable tr:nth-child(odd) td {
+.clientTable tr:nth-child(odd) td {
   background: #fdce5e17 !important;
 }
 .btn-primary {
@@ -105,12 +105,8 @@ table th {
 }
 
 button.nav-link > li.nav-item {
-  border-bottom: 2px solid red; /* Replace with your desired border color */
-  padding-bottom: 5px; /* Optional: Add padding for spacing */
-}
-
-button.nav-link.active > li.nav-item {
-  /* Additional styles for the active state if needed */
+  border-bottom: 2px solid red;
+  padding-bottom: 5px;
 }
 
 .searchbox {
@@ -186,5 +182,13 @@ a {
 .switch input:checked + .slider:before {
   transform: translateX(15px);
   background-color: #ff9800;
+}
+@media (max-width: 1120px) {
+  .clientTable {
+    width: 1090px;
+  }
+  .table-wrapper {
+    overflow-x: scroll;
+  }
 }
 </style>

@@ -155,9 +155,9 @@
           </li>
         </ul>
         <ul class="navbar-nav m-0 mb-2 mb-lg-0">
-          <li class="nav-item dropdown mt-1">
+          <li class="nav-item dropdown mt-2">
             <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-              <i class="bi bi-chat-left-dots fs-5" @click="toggleChatBox"></i
+              <i class="bi bi-chat-left-dots" @click="toggleChatBox"></i
             ></a>
           </li>
 
@@ -236,7 +236,7 @@
                 <router-link
                   class="dropdown-item d-flex align-items-center"
                   aria-current="page"
-                  to="/appsetting/addjobdetail"
+                  to="/appsetting"
                 >
                   <i class="bi bi-gear pe-2"></i><span>App Settings</span>
                 </router-link>
@@ -444,6 +444,9 @@ export default {
   content: "\f18a";
   font-size: 21px;
 }
+.bi-chat-left-dots::before {
+  font-size: 21px;
+}
 ul.navbar-nav li a span.badge {
   translate: -9px -12px;
 }
@@ -465,12 +468,6 @@ ul.navbar-nav li a span.badge {
 .profileAdminImg {
   border: 1px solid grey;
 }
-@media (min-width: 1200px) {
-  .logo {
-    width: 280px;
-  }
-}
-
 .logo img {
   max-height: 26px;
   margin-right: 6px;
@@ -508,5 +505,16 @@ a.router-link-active {
   color: #fff;
   background-color: #f6851d;
   border-radius: 4px;
+}
+@media (min-width: 1200px) {
+  .logo {
+    width: 280px;
+  }
+}
+@media (max-width: 1400px) {
+  .bi-chat-left-dots::before {
+    font-size: 18px;
+    margin-top: 4px;
+  }
 }
 </style>

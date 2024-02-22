@@ -50,9 +50,12 @@ export default {
         <div class="">
           <div class="d-flex gap-2 justify-content-between bg-define">
             <ul class="nav nav-pills my-3 p-2" role="tablist">
-              <li class="nav-item d-inline-flex gap-2" role="presentation">
+              <li
+                class="nav-item d-sm-contents d-lg-inline-flex d-md-inline-flex gap-2"
+                role="presentation"
+              >
                 <button
-                  class="nav-link"
+                  class="nav-link text-nowrap"
                   :class="{ active: activeTab === index }"
                   :to="`/${tab.routeName}`"
                   aria-selected="true"
@@ -210,7 +213,8 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-  margin-top: 60px;
+  padding-top: 60px;
+  background-color: #fdce5e17;
 }
 .main-content {
   transition: all 0.3s;
@@ -218,7 +222,6 @@ export default {
 .bg-define {
   background-color: #fdce5e17;
   border-bottom: 1px solid #ded9d9;
-  border-top: 1px solid #ded9d9;
 }
 .color-fonts {
   color: #ff5f30;
@@ -348,5 +351,11 @@ a:link {
 .switch input:checked + .slider:before {
   transform: translateX(15px);
   background-color: #ff9800;
+}
+
+@media (max-width: 768px) {
+  .d-sm-contents {
+    display: contents;
+  }
 }
 </style>

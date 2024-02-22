@@ -438,7 +438,7 @@ export default {
 <style scoped>
 #main {
   background-color: #fdce5e17;
-  margin-top: 62px;
+  padding-top: 62px;
 }
 .full-page-calendar {
   padding: 20px;

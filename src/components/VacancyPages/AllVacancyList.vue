@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-12">
-        <table class="table candidateTable">
+      <div class="col-12 wrapper-vacancy">
+        <table class="table vacancyTable">
           <thead>
             <tr>
               <th scope="col">ID</th>
@@ -344,7 +344,7 @@ export default {
 .form-check-input {
   border: 2px solid grey;
 }
-.table.candidateTable td.widthDefine {
+.table.vacancyTable td.widthDefine {
   white-space: pre-wrap;
   max-width: 100px;
   overflow: hidden;
@@ -362,7 +362,7 @@ export default {
 a[data-v-507f63b7] {
   text-decoration: none;
 }
-.candidateTable tr:nth-child(odd) td {
+.vacancyTable tr:nth-child(odd) td {
   background: #fdce5e17 !important;
 }
 .btn-primary {
@@ -416,5 +416,13 @@ button.nav-link.active > li.nav-item {
 }
 input::-webkit-input-placeholder {
   margin-left: 5px;
+}
+@media (max-width: 1120px) {
+  .vacancyTable {
+    width: 1090px;
+  }
+  .wrapper-vacancy {
+    overflow-x: scroll;
+  }
 }
 </style>

@@ -633,7 +633,7 @@ export default {
 <style scoped>
 #main {
   background-color: #fdce5e17;
-  margin-top: 65px;
+  padding-top: 65px;
 }
 .full-page-calendar {
   padding: 20px;

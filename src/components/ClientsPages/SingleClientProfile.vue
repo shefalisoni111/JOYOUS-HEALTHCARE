@@ -20,7 +20,7 @@
     <div class="">
       <div id="main">
         <div class="row">
-          <div class="col-12 borderbottom pb-3 pt-1">
+          <div class="col-12 pb-3 pt-1">
             <div class="float-start">
               <button
                 type="button"
@@ -228,9 +228,6 @@ export default {
 <style scoped>
 .fs-smaller {
   font-size: smaller;
-}
-.borderbottom {
-  border-bottom: 1px solid #ebe2e2;
 }
 
 .accordion-button {

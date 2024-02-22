@@ -281,7 +281,7 @@ export default {
 
 <style scoped>
 #main {
-  margin-top: 65px;
+  padding-top: 65px;
 }
 #logo {
   width: 119px;

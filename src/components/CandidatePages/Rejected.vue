@@ -173,7 +173,13 @@ a {
   color: black;
   text-decoration: none;
 }
-.table-wrapper {
-  overflow-x: auto;
+
+@media (max-width: 1120px) {
+  .candidateTable {
+    width: 1090px;
+  }
+  .table-wrapper {
+    overflow-x: scroll;
+  }
 }
 </style>

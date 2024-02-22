@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-12">
         <div class="m-auto text-center mt-5">
-          <a href="/"><h1>Go to RecPal Home</h1></a>
+          <a href="/home"><h1>Go to RecPal Home</h1></a>
         </div>
         <img src="../assets/404img.jpg" class="img-fluid" />
       </div>
