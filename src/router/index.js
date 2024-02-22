@@ -465,6 +465,7 @@ const router = createRouter({
       children: [
         {
           path: "", 
+          name: "AppSettingRedirect",
           redirect: { name: "AppJobDetail" } 
         },
         {
@@ -567,6 +568,7 @@ const router = createRouter({
       children: [
         {
           path: "", 
+          name: "NotificationSettingRedirect",
           redirect: { name: "Email" } 
         },
         {
@@ -628,6 +630,7 @@ const router = createRouter({
         children: [
           {
             path: "", 
+            name: "ClientSettingRedirect",
             redirect: { name: "BasicClientSetting" } 
           },
           {
