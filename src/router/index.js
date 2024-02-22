@@ -468,7 +468,7 @@ const router = createRouter({
           redirect: { name: "AppJobDetail" } 
         },
         {
-          path: "addjobdetail",
+          path: "/addjobdetail",
           name: "AppJobDetail",
           component: () =>
             import("@/components/appsettingcomponent/AppJobDetail.vue"),
