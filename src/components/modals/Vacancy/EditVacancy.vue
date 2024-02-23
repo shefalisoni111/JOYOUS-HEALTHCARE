@@ -231,14 +231,20 @@ export default {
 
     async updateVacancyMethod() {
       const token = localStorage.getItem("token");
-      const dateObject = new Date(this.fetchVacancy.dates);
+      const currentDate = new Date();
+      const selectedDate = new Date(this.fetchVacancy.dates);
+
+      if (selectedDate < currentDate) {
+        alert("Date must be greater than or equal to today's date");
+        return;
+      }
 
       const formattedDate =
-        dateObject.getFullYear() +
+        selectedDate.getFullYear() +
         "-" +
-        ("0" + (dateObject.getMonth() + 1)).slice(-2) +
+        ("0" + (selectedDate.getMonth() + 1)).slice(-2) +
         "-" +
-        ("0" + dateObject.getDate()).slice(-2);
+        ("0" + selectedDate.getDate()).slice(-2);
 
       try {
         const response = await axios.put(
