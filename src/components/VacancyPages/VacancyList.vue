@@ -91,7 +91,7 @@
                       </div>
                       <div>
                         <button
-                          v-if="activeTab === 0"
+                          v-if="activeTab === 0 || activeTab === 1"
                           type="button"
                           class="btn btn-outline-success text-nowrap"
                           data-bs-toggle="modal"

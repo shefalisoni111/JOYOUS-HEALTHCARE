@@ -344,11 +344,8 @@ export default {
 .form-check-input {
   border: 2px solid grey;
 }
-.table.vacancyTable td.widthDefine {
-  white-space: pre-wrap;
-  max-width: 100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.widthDefine {
+  width: 6%;
 }
 .rounded-circle {
   border: 1px solid #ff5f30;

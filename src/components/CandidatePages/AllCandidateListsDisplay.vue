@@ -6,9 +6,9 @@
           <thead>
             <tr>
               <th scope="col">ID</th>
-              <th scope="col">Name</th>
+              <th scope="col" class="widthSet">Name</th>
               <th scope="col">Positions</th>
-              <th scope="col">Email</th>
+              <th scope="col" class="widthSet">Email</th>
               <th scope="col">Phone</th>
               <th scope="col">Status</th>
               <!-- <th scope="col">Access</th> -->
@@ -321,6 +321,9 @@ a {
   transition: all 0.5s;
   left: 30%;
   content: "";
+}
+table th.widthSet {
+  width: 11%;
 }
 
 .switch input:checked + .slider {

@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="nested-calendar"
-    id="nested-calendar"
-    style="overflow-x: scroll; margin-top: 10px"
-  >
+  <div class="nested-calendar" id="nested-calendar">
     <div class="nested-calendar-content">
       <div class="calendar-header d-flex justify-content-between my-3">
         <div class="d-flex">

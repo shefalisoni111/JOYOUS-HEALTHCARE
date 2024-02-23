@@ -14,36 +14,34 @@
             ></button>
           </div>
           <div class="modal-body mx-3">
-            <div class="row align-items-center">
+            <div class="row g-3 align-items-center">
               <form>
-                <div class="mb-3">
-                  <div class="">
-                    <div class="col-12">
-                      <label class="form-label">Business Unit</label>
-                    </div>
-                    <div class="col-12 mt-1">
-                      <select
-                        v-model="fetchVacancy.business_unit_id"
-                        id="selectBusinessUnit"
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-3">
+                    <label class="form-label">Business Unit</label>
+                  </div>
+                  <div class="col-9">
+                    <select
+                      v-model="fetchVacancy.business_unit_id"
+                      id="selectBusinessUnit"
+                    >
+                      <option
+                        v-for="option in businessUnit"
+                        :key="option.id"
+                        :value="option.id"
+                        placeholder="Select BusinessUnit"
                       >
-                        <option
-                          v-for="option in businessUnit"
-                          :key="option.id"
-                          :value="option.id"
-                          placeholder="Select BusinessUnit"
-                        >
-                          {{ option.name }}
-                        </option>
-                      </select>
-                    </div>
+                        {{ option.name }}
+                      </option>
+                    </select>
                   </div>
                 </div>
 
-                <div class="mb-3">
-                  <div class="col-12">
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-3">
                     <label class="form-label">Job Title</label>
                   </div>
-                  <div class="col-12 mt-1">
+                  <div class="col-9">
                     <select v-model="fetchVacancy.job_id" id="selectJobTitle">
                       <option
                         v-for="option in options"
@@ -56,11 +54,11 @@
                     </select>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="col-12">
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-3">
                     <label class="form-label">Client ID</label>
                   </div>
-                  <div class="col-12 mt-1">
+                  <div class="col-9">
                     <select v-model="fetchVacancy.client_id" id="selectClients">
                       <option
                         v-for="option in clientData"
@@ -73,11 +71,11 @@
                     </select>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="col-12">
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-3">
                     <label class="form-label">Dates</label>
                   </div>
-                  <div class="col-12 mt-1">
+                  <div class="col-9">
                     <input
                       type="text"
                       class="form-control"
@@ -86,11 +84,11 @@
                     />
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="col-12">
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-3">
                     <label class="form-label">Shift</label>
                   </div>
-                  <div class="col-12 mt-1">
+                  <div class="col-9">
                     <select v-model="fetchVacancy.shift_id" id="selectShifts">
                       <option
                         v-for="option in shiftsTime"
@@ -107,7 +105,7 @@
                   <div class="col-12">
                     <label class="form-label">Notes</label>
                   </div>
-                  <div class="col-12 mt-1">
+                  <div class="col-12 ">
                     <input
                       type="text"
                       class="form-control"
@@ -338,5 +336,12 @@ select {
 
   border-radius: 4px;
   border: 1px solid #80808059;
+}
+.modal {
+  --bs-modal-width: 841px;
+}
+.modal-body {
+  border-radius: 5px;
+  background: #dbdbdb;
 }
 </style>

@@ -409,6 +409,9 @@ button.nav-link > li.nav-item {
 .searchbox {
   width: 19%;
 }
+.widthDefine {
+  width: 6%;
+}
 .searchbox::before {
   content: "\F52A";
   font-family: "bootstrap-icons";

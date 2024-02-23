@@ -6,9 +6,9 @@
           <thead>
             <tr>
               <th scope="col">ID</th>
-              <th scope="col">Name</th>
+              <th scope="col" class="widthSet">Name</th>
               <th scope="col">Positions</th>
-              <th scope="col">Email</th>
+              <th scope="col" class="widthSet">Email</th>
               <th scope="col">Phone</th>
               <th scope="col">Status</th>
               <!-- <th scope="col">Access</th> -->
@@ -258,6 +258,10 @@ export default {
 </script>
 
 <style scoped>
+table th.widthSet {
+  width: 11%;
+}
+
 .candidateTable tr:nth-child(odd) td {
   background: #fdce5e17 !important;
 }

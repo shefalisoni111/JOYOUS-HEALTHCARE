@@ -29,11 +29,7 @@
                   </div>
 
                   <div class="col-10">
-                    <select
-                      v-model="business_unit_id"
-                      id="selectBusinessUnit"
-                      @change="clearError"
-                    >
+                    <select v-model="business_unit_id" id="selectBusinessUnit">
                       <option
                         v-for="option in businessUnit"
                         :key="option.id"
@@ -53,7 +49,7 @@
                     <label for="selectClients" class="form-label">Client</label>
                   </div>
                   <div class="col-10">
-                    <select v-model="client_id" id="selectClients" @change="clearError">
+                    <select v-model="client_id" id="selectClients">
                       <option
                         v-for="option in clientData"
                         :key="option.id"
@@ -73,7 +69,7 @@
                     <label class="form-label" for="selectJobTitle">Job Title</label>
                   </div>
                   <div class="col-10">
-                    <select v-model="job_id" id="selectJobTitle" @change="clearError">
+                    <select v-model="job_id" id="selectJobTitle">
                       <option
                         v-for="option in options"
                         :key="option.id"
@@ -100,8 +96,8 @@
                       v-model="selectedDate"
                       @change="addDate"
                     />
-                    <span v-if="!validationDateType" class="text-danger"
-                      >Date Required</span
+                    <span v-if="!validationDateType" class="text-danger text-capitalize"
+                      >must be a date greater than or equal to today</span
                     >
                     <div v-if="dates.length > 0" class="mt-2">
                       <span
@@ -124,7 +120,7 @@
                     <label class="form-label" for="selectShifts">Shift</label>
                   </div>
                   <div class="col-10">
-                    <select v-model="shift_id" id="selectShifts" @change="clearError">
+                    <select v-model="shift_id" id="selectShifts">
                       <option
                         v-for="option in shiftsTime"
                         :key="option.id"
@@ -169,10 +165,10 @@
               Cancel
             </button>
             <button
-              :disabled="!isValidForm"
-              :class="{ disabled: !isValidForm }"
+              :disabled="!isFormValid"
+              :class="{ disabled: !isFormValid }"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
-              :data-bs-dismiss="isValidForm ? 'modal' : null"
+              :data-bs-dismiss="isFormValid ? 'modal' : null"
               v-on:click="addVacancyMethod()"
             >
               Add Vacancy
@@ -213,6 +209,12 @@ export default {
   computed: {
     isFormValid() {
       return (
+        this.business_unit_id !== "" &&
+        this.client_id !== "" &&
+        this.job_id !== "" &&
+        this.shift_id !== "" &&
+        this.notes !== "" &&
+        this.selectedDate !== null &&
         this.validationSelectedOptionText &&
         this.validationSelectedBusinessUnit &&
         this.validationSelectedClient &&
@@ -274,13 +276,36 @@ export default {
     },
   },
   methods: {
+    clearFieldsAndValidation() {
+      this.business_unit_id = "";
+      this.client_id = "";
+      this.job_id = "";
+      this.dates = [];
+      this.shift_id = "";
+      this.notes = "";
+      this.selectedDate = null;
+      this.validationSelectedOptionText = true;
+      this.validationSelectedBusinessUnit = true;
+      this.validationSelectedClient = true;
+      this.validationNotesText = true;
+      this.validationShift = true;
+      this.validationDateType = true;
+    },
     addDate() {
       if (this.selectedDate) {
-        if (!this.dates.includes(this.selectedDate)) {
-          this.dates.push(this.selectedDate);
+        const currentDate = new Date();
+        const selectedDate = new Date(this.selectedDate);
+
+        if (selectedDate >= currentDate) {
+          if (!this.dates.includes(this.selectedDate)) {
+            this.dates.push(this.selectedDate);
+          }
+          this.selectedDate = "";
+          this.clearError();
+          this.validationDateType = true;
+        } else {
+          this.validationDateType = false;
         }
-        this.selectedDate = "";
-        this.clearError();
       }
     },
     removeDate(index) {
@@ -322,15 +347,12 @@ export default {
             },
             body: JSON.stringify(data),
           });
+
           if (response.ok) {
             this.$emit("addVacancy");
             alert("Successful Vacancy added");
-            this.business_unit_id = "";
-            this.job_id = "";
-            this.dates = "";
-            this.shift_id = "";
-            this.notes = "";
-            this.client_id = "";
+            this.clearFieldsAndValidation();
+            window.location.reload();
           }
         } catch (error) {}
       } else {
@@ -416,6 +438,7 @@ export default {
     this.getClientMethod();
     this.getTimeShift();
     this.isValidForm = this.isFormValid;
+    this.clearError();
   },
 };
 </script>

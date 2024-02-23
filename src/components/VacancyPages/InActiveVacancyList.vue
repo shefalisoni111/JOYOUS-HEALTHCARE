@@ -149,11 +149,8 @@ export default {
 </script>
 
 <style scoped>
-.table.vacancyTable td.widthDefine {
-  white-space: pre-wrap;
-  max-width: 100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.widthDefine {
+  width: 6%;
 }
 @media (max-width: 1120px) {
   .vacancyTable {

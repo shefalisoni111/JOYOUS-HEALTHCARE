@@ -138,7 +138,7 @@ export default {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 #main {
-  margin-top: 95px;
+  margin-top: 85px;
 }
 .card {
   position: relative;
@@ -197,5 +197,10 @@ ul.profile .dropdown-item:focus {
 }
 .shadow-none {
   box-shadow: none !important;
+}
+@media (max-width: 1700px) {
+  #main {
+    margin-top: 70px;
+  }
 }
 </style>
