@@ -29,11 +29,15 @@
           </ul>
         </div>
       </div>
-      <div class="calendar-grid">
+      <div class="calendar-grid table-wrapper">
         <div v-for="day in daysOfWeek" :key="day" class="day-header">
           {{ day }}
         </div>
-        <div v-for="date in selectedDateRow" :key="date" class="day-header">
+        <div
+          v-for="date in selectedDateRow"
+          :key="date"
+          class="day-header candidateTable"
+        >
           {{ formatDate(date) }}
 
           <div class="shift-checkboxes d-flex flex-column">
@@ -522,6 +526,17 @@ export default {
 .shift-checkboxes {
   margin-top: 5px;
 }
-
-/* Adjust the styles as needed */
+@media (max-width: 1400px) {
+  label {
+    font-size: 14px;
+  }
+}
+@media (max-width: 1120px) {
+  .candidateTable {
+    width: 200px;
+  }
+  .table-wrapper {
+    overflow-x: scroll;
+  }
+}
 </style>

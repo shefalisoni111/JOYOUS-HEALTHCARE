@@ -346,9 +346,7 @@ export default {
 .main-content {
   transition: all 0.3s;
 }
-.bg-define {
-  background-color: #fdce5e17;
-}
+
 .color-fonts {
   color: #ff5f30;
   font-weight: bold;

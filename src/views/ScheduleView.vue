@@ -82,8 +82,8 @@ export default {
               </div>
             </div>
           </div>
-          <div>
-            <div class="sidebar-container">
+          <div class="table-wrapper">
+            <div class="sidebar-container scheduleTable">
               <div class="sidebar-button" :class="{ 'slide-left': isOpen }">
                 <div class="d-flex justify-content-between">
                   <div>
@@ -103,7 +103,7 @@ export default {
                     ></i>
                   </div>
                 </div>
-                <div class="d-flex">
+                <div class="d-flex mt-2">
                   <div>
                     <button
                       @click="toggleSidebar"
@@ -130,7 +130,7 @@ export default {
                     </div>
                   </div>
                 </div>
-                <div class="d-flex">
+                <div class="d-flex mt-2">
                   <div>
                     <button
                       @click="toggleSidebar"
@@ -764,5 +764,13 @@ input.dateInput {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+@media (max-width: 1120px) {
+  .scheduleTable {
+    width: 1090px;
+  }
+  .table-wrapper {
+    overflow-x: scroll;
+  }
 }
 </style>

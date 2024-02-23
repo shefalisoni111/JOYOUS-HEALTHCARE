@@ -373,7 +373,7 @@
           <div class="row gx-5 mx-3">
             <!-- Left side columns -->
 
-            <div class="col-lg-4">
+            <div class="col-sm-12 col-lg-4">
               <div class="card h-100 card-border">
                 <div class="col-8 p-3">
                   <h5
@@ -389,8 +389,8 @@
                   </div>
                 </div>
 
-                <div class="d-flex justify-content-between bg-white rounded mt-2">
-                  <div class="col-lg-5 px-3 d-flex align-items-center">
+                <div class="d-lg-flex justify-content-lg-between bg-white rounded mt-2">
+                  <div class="col-sm-12 col-lg-5 px-3 d-flex align-items-center">
                     <div class="">
                       <ul class="list-unstyled">
                         <li class="d-flex mb-2">
@@ -432,7 +432,7 @@
                       </ul>
                     </div>
                   </div>
-                  <div class="col-lg-7 px-3">
+                  <div class="col-sm-12 col-lg-7 px-3">
                     <VueBarChart />
                   </div>
                 </div>
@@ -441,11 +441,11 @@
             <!-- Left side columns end -->
 
             <!-- right side columns -->
-            <div class="col-lg-8">
+            <div class="col-sm-12 col-lg-8">
               <div class="card h-100 card-border">
                 <div class="bg-white rounded">
                   <div class="col-lg-12 pt-3 ps-3">
-                    <div class="d-flex justify-content-between">
+                    <div class="d-lg-flex justify-content-lg-between">
                       <div class="col-7">
                         <h5
                           class="fs-5 p-2 text-white rounded-1"

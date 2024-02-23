@@ -14,7 +14,7 @@
             </ol>
           </div>
         </div>
-        <div class="row p-3" style="overflow: auto">
+        <div class="row p-3">
           <div class="full-page-calendar">
             <div class="calendar-header">
               <span v-if="formattedStartDate && formattedEndDate" class="fw-bold">
@@ -53,67 +53,69 @@
               </div>
             </div>
           </div>
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Name</th>
-                <th scope="col">
-                  <div class="calendar-grid">
-                    <div v-for="day in daysOfWeek" :key="day" class="day-header">
-                      {{ day }}
+          <div class="table-wrapper">
+            <table class="table candidateTable">
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">
+                    <div class="calendar-grid">
+                      <div v-for="day in daysOfWeek" :key="day" class="day-header">
+                        {{ day }}
+                      </div>
+                      <div v-for="date in selectedDateRow" :key="date" class="day-header">
+                        {{ formatDate(date) }}
+                      </div>
                     </div>
-                    <div v-for="date in selectedDateRow" :key="date" class="day-header">
-                      {{ formatDate(date) }}
-                    </div>
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="data in paginateCandidates" :key="data.id">
-                <td class="text-capitalize fw-bold" style="width: 21%">
-                  {{ data.candidate_name + " " }}
-                  <span
-                    v-if="data.job"
-                    style="background: rgb(209, 207, 207); padding: 3px"
-                  >
-                    {{ data.job }}
-                  </span>
-                  <!-- <span class="fs-6 text-muted fw-100"><br />{{ data.job }}</span> -->
-                </td>
-                <td>
-                  <div class="calendar-grid">
-                    <div
-                      v-for="day in selectedDateRow"
-                      :key="day"
-                      @click="openModal(data, day)"
-                      data-bs-toggle="modal"
-                      data-bs-target="#staticBackdrop"
-                      class="calendar-day"
-                      :class="{ 'calendar-day': true, clickable: day !== '' }"
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="data in paginateCandidates" :key="data.id">
+                  <td class="text-capitalize fw-bold" style="width: 21%">
+                    {{ data.candidate_name + " " }}
+                    <span
+                      v-if="data.job"
+                      style="background: rgb(209, 207, 207); padding: 3px"
                     >
-                      <span v-for="avail in data.availability" :key="avail.id">
-                        <span v-if="avail.date === formattedDate(day)">
-                          <span
-                            v-if="avail.status"
-                            style="font-size: small; padding: 0px 5px"
-                            v-bind:class="{
-                              'btn btn-warning ': avail.status === 'Late',
-                              'btn btn-primary ': avail.status === 'Unavailable',
-                              'btn btn-secondary ': avail.status === 'Night',
-                              'btn btn-light ': avail.status === 'Early',
-                            }"
-                          >
-                            {{ avail.status ? avail.status[0].toUpperCase() : "" }}
+                      {{ data.job }}
+                    </span>
+                    <!-- <span class="fs-6 text-muted fw-100"><br />{{ data.job }}</span> -->
+                  </td>
+                  <td>
+                    <div class="calendar-grid">
+                      <div
+                        v-for="day in selectedDateRow"
+                        :key="day"
+                        @click="openModal(data, day)"
+                        data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop"
+                        class="calendar-day"
+                        :class="{ 'calendar-day': true, clickable: day !== '' }"
+                      >
+                        <span v-for="avail in data.availability" :key="avail.id">
+                          <span v-if="avail.date === formattedDate(day)">
+                            <span
+                              v-if="avail.status"
+                              style="font-size: small; padding: 0px 5px"
+                              v-bind:class="{
+                                'btn btn-warning ': avail.status === 'Late',
+                                'btn btn-primary ': avail.status === 'Unavailable',
+                                'btn btn-secondary ': avail.status === 'Night',
+                                'btn btn-light ': avail.status === 'Early',
+                              }"
+                            >
+                              {{ avail.status ? avail.status[0].toUpperCase() : "" }}
+                            </span>
                           </span>
                         </span>
-                      </span>
+                      </div>
                     </div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -541,6 +543,14 @@ input.dateInput:focus-visible {
 @media (max-width: 1300px) {
   input.dateInput {
     width: 1.8%;
+  }
+}
+@media (max-width: 1120px) {
+  .candidateTable {
+    width: 1090px;
+  }
+  .table-wrapper {
+    overflow-x: scroll;
   }
 }
 @media (max-width: 900px) {
