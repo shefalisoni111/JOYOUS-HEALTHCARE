@@ -154,7 +154,7 @@
             </router-link>
           </li>
         </ul>
-        <ul class="navbar-nav m-0 mb-2 mb-lg-0">
+        <ul class="navbar-nav m-0 mb-2 mb-lg-0 inline-nav">
           <li class="nav-item dropdown mt-2">
             <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
               <i class="bi bi-chat-left-dots" @click="toggleChatBox"></i
@@ -505,6 +505,16 @@ a.router-link-active {
   color: #fff;
   background-color: #f6851d;
   border-radius: 4px;
+}
+@media (max-width: 991px) {
+  .nav-item {
+    font-size: 15px;
+    padding: 5px;
+    margin-top: -5px;
+  }
+  ul.inline-nav {
+    display: -webkit-box;
+  }
 }
 @media (min-width: 1200px) {
   .logo {

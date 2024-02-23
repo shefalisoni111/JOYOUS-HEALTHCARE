@@ -52,7 +52,7 @@ ul.generalsetting h6 {
             <div class="">
               <div>
                 <div class="p-2">
-                  <div class="d-flex justify-content-between">
+                  <div class="d-lg-flex justify-content-lg-between">
                     <div class="d-flex">
                       <div class="d-flex align-items-center gap-2">
                         <select>
@@ -130,7 +130,7 @@ ul.generalsetting h6 {
                 </div>
                 <div class="tab-content mt-4" id="pills-tabContent">
                   <div
-                    class="tab-pane fade show active"
+                    class="tab-pane fade show active table-wrapper"
                     id="pills-home"
                     role="tabpanel"
                     aria-labelledby="pills-home-tab"
@@ -414,5 +414,14 @@ button.nav-link > li.nav-item {
 
 input::-webkit-input-placeholder {
   margin-left: 5px;
+}
+
+@media (max-width: 1120px) {
+  .candidateTable {
+    width: 1090px;
+  }
+  .table-wrapper {
+    overflow-x: scroll;
+  }
 }
 </style>
