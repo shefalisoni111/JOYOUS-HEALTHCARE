@@ -25,9 +25,9 @@
                 </li>
                 <li class="list-items d-flex mt-3">
                   <i class="bi bi-check-lg rounded-circle"></i>
-                  <router-link to="/candidatestatus" class="text-decoration-none">
+                  <router-link to="/staff-status" class="text-decoration-none">
                     <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize">candidates status</h6>
+                      <h6 class="mb-0 text-capitalize">Staff status</h6>
                       <p class="text-capitalize mb-0">view & modify</p>
                     </div>
                   </router-link>
@@ -64,30 +64,28 @@
                 </li> -->
                 <li class="list-items d-flex mt-3">
                   <i class="bi bi-credit-card rounded-circle"></i>
-                  <router-link to="/candidatededuction" class="text-decoration-none">
+                  <router-link to="/staff-deduction" class="text-decoration-none">
                     <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize">Candidate Deduction</h6>
+                      <h6 class="mb-0 text-capitalize">Staff Deduction</h6>
                       <p class="text-capitalize mb-0">Add & modify Deduction</p>
                     </div>
                   </router-link>
                 </li>
                 <li class="list-items d-flex mt-3">
                   <i class="bi bi-person-vcard rounded-circle"></i>
-                  <router-link to="/candidateprofiles" class="text-decoration-none">
+                  <router-link to="/staff-profiles" class="text-decoration-none">
                     <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize">Candidate profile</h6>
+                      <h6 class="mb-0 text-capitalize">Staff profile</h6>
                       <p class="text-capitalize mb-0">Add mandatory fields</p>
                     </div>
                   </router-link>
                 </li>
                 <li class="list-items d-flex mt-3">
                   <i class="bi bi-card-list rounded-circle"></i>
-                  <router-link to="/candidatedetailfield" class="text-decoration-none">
+                  <router-link to="/staff-detail-field" class="text-decoration-none">
                     <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize">Candidate Detail Section Field</h6>
-                      <p class="text-capitalize mb-0">
-                        Add Candidate Detail Section Field
-                      </p>
+                      <h6 class="mb-0 text-capitalize">Staff Detail Section Field</h6>
+                      <p class="text-capitalize mb-0">Add Staff Detail Section Field</p>
                     </div>
                   </router-link>
                 </li>

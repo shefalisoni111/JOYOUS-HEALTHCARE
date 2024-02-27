@@ -24,15 +24,15 @@ const router = createRouter({
     },
 
     {
-      path: "/client",
-      name: "Client",
+      path: "/vendor",
+      name: "Vendor",
       component: () => import("@/views/ClientView.vue"),
       meta: {
         auth: true,
       },
       children: [
         {
-          path: "/client",
+          path: "/vendor",
           name: "ClientsLists",
           component: () => import("@/components/ClientsPages/ClientsLists.vue"),
           props: true,
@@ -51,7 +51,7 @@ const router = createRouter({
           props: true,
         },
         {
-          path: "client/:id",
+          path: "vendor/:id",
           name: "SingleClientProfile",
           component: () =>
             import("@/components/ClientsPages/SingleClientProfile.vue"),
@@ -60,7 +60,7 @@ const router = createRouter({
       ],
     },
     {
-      path: "/candidates",
+      path: "/staff",
       name: "Candidate",
       component: () => import("@/views/CandidatesView.vue"),
       meta: {
@@ -74,14 +74,14 @@ const router = createRouter({
           props: true,
         },
         {
-          path: "candidates",
+          path: "staffs",
           name: "CandidateLists",
           component: () =>
             import("@/components/CandidatePages/CandidateLists.vue"),
           props: true,
           children: [
             {
-              path: "/candidates/allCandidate",
+              path: "/staffs/allStaffs",
               name: "AllCandidateListsDisplay",
               component: () =>
                 import(
@@ -92,7 +92,7 @@ const router = createRouter({
               },
             },
             {
-              path: "/candidates/activeCandidate",
+              path: "/staffs/activeStaff",
               name: "ActiveCandidate",
               component: () =>
                 import(
@@ -103,7 +103,7 @@ const router = createRouter({
               },
             },
             {
-              path: "/candidates/InactiveCandidate",
+              path: "/staffs/InactiveStaff",
               name: "InActiveCandidate",
               component: () =>
                 import(
@@ -114,7 +114,7 @@ const router = createRouter({
               },
             },
             {
-              path: "/candidates/pendingCandidate",
+              path: "/staffs/pendingStaff",
               name: "Rejected",
               component: () =>
                 import(
@@ -125,7 +125,7 @@ const router = createRouter({
               },
             },
             {
-              path: "/candidates/rejectCandidate",
+              path: "/staffs/rejectStaff",
               name: "RejectCandidate",
               component: () =>
                 import(
@@ -138,7 +138,7 @@ const router = createRouter({
           ]
         },
         {
-          path: "/candidate/profileview/:id",
+          path: "/staffs/profileview/:id",
           name: "ProfileView",
           component: () =>
             import("@/components/CandidatePages/ProfileView.vue"),
@@ -152,7 +152,7 @@ const router = createRouter({
           props: true,
           children: [
             {
-              path: "/candidates/:id/overview",
+              path: "/staffs/:id/overview",
               name: "Overview",
               component: () =>
                 import(
@@ -163,7 +163,7 @@ const router = createRouter({
               },
             },
             {
-              path: "/candidates/:id/document",
+              path: "/staffs/:id/document",
               name: "Document",
               component: () =>
                 import(
@@ -174,7 +174,7 @@ const router = createRouter({
               },
             },
             {
-              path: "/candidates/:id/profiles",
+              path: "/staffs/:id/profiles",
               name: "ProfileTabs",
               component: () =>
                 import(
@@ -185,7 +185,7 @@ const router = createRouter({
               },
             },
             {
-              path: "/candidates/:id/restricted",
+              path: "/staffs/:id/restricted",
               name: "Restricted",
               component: () =>
                 import(
@@ -196,7 +196,7 @@ const router = createRouter({
               },
             },
             {
-              path: "/candidates/:id/rate-card",
+              path: "/staffs/:id/rate-card",
               name: "RateCard",
               component: () =>
                 import(
@@ -207,7 +207,7 @@ const router = createRouter({
               },
             },
             {
-              path: "/candidates/:id/notes",
+              path: "/staffs/:id/notes",
               name: "Notes",
               component: () =>
                 import("@/components/CandidatePages/ProfileDetail/Notes.vue"),
@@ -216,7 +216,7 @@ const router = createRouter({
               },
             },
             {
-              path: "/candidates/:id/staff-id",
+              path: "/staffs/:id/staff-id",
               name: "StaffId",
               component: () =>
                 import("@/components/CandidatePages/ProfileDetail/StaffId.vue"),
@@ -225,7 +225,7 @@ const router = createRouter({
               },
             },
             {
-              path: "/candidates/:id/candidate-history",
+              path: "/staffs/:id/candidate-history",
               name: "CandidateHistory",
               component: () =>
                 import(
@@ -236,7 +236,7 @@ const router = createRouter({
               },
             },
             {
-              path: "/candidates/:id/candidate-preference",
+              path: "/staffs/:id/candidate-preference",
               name: "CandidatePreference",
               component: () =>
                 import(
@@ -255,7 +255,7 @@ const router = createRouter({
     },
 
     {
-      path: "/vacancie",
+      path: "/shifts",
       name: "Vacancies",
       component: () => import("@/views/VacanciesView.vue"),
       meta: {
@@ -263,7 +263,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: "/vacancies",
+          path: "/shifts",
           name: "VacancyList",
           component: () => import("@/components/VacancyPages/VacancyList.vue"),
           props: true,
@@ -475,7 +475,7 @@ const router = createRouter({
             import("@/components/appsettingcomponent/AppJobDetail.vue"),
         },
         {
-          path: "/candidatestatus",
+          path: "/staff-status",
           name: "CandidateStatus",
           component: () =>
             import("@/components/appsettingcomponent/CandidateStatus.vue"),
@@ -500,19 +500,19 @@ const router = createRouter({
             import("@/components/appsettingcomponent/HolidaysCalender.vue"),
         },
         {
-          path: "/candidatededuction",
+          path: "/staff-deduction",
           name: "CandidateDeduction",
           component: () =>
             import("@/components/appsettingcomponent/CandidateDeduction.vue"),
         },
         {
-          path: "/candidateprofiles",
+          path: "/staff-profiles",
           name: "CandidateProfiles",
           component: () =>
             import("@/components/appsettingcomponent/CandidateProfiles.vue"),
         },
         {
-          path: "/candidatedetailfield",
+          path: "/staff-detail-field",
           name: "CandidateDetailSectionField",
           component: () =>
             import(

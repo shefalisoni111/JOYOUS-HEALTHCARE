@@ -20,7 +20,7 @@
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
-              <ul class="list-unstyled d-flex gap-3 mb-0 publish-ul">
+              <ul class="list-unstyled d-lg-flex gap-3 mb-0 publish-ul d-sm-grid">
                 <li>Code:{{ vacancyDetails.ref_code }}</li>
                 <li>Department:{{ vacancyDetails.business_unit }}</li>
                 <li>Job: {{ vacancyDetails.job_title }}</li>
@@ -32,41 +32,42 @@
               </ul>
             </div>
             <div class="row g-3 align-items-center">
-              <table class="table candidateTable" v-if="selectedAssignedItemId">
-                <thead>
-                  <tr>
-                    <th scope="col">staff code</th>
-                    <th scope="col">first name</th>
+              <div class="wrapper-vacancy">
+                <table class="table vacancyTable" v-if="selectedAssignedItemId">
+                  <thead>
+                    <tr>
+                      <th scope="col">staff code</th>
+                      <th scope="col">first name</th>
 
-                    <th scope="col">phone number</th>
-                    <th scope="col">email</th>
-                    <th scope="col">address</th>
-                    <th scope="col">activated</th>
-                    <th scope="col">status</th>
-                    <th scope="col">position</th>
-                    <!-- <th scope="col">employment type</th> -->
-                    <th scope="col">last login</th>
+                      <th scope="col">phone number</th>
+                      <th scope="col">email</th>
+                      <th scope="col">address</th>
+                      <th scope="col">activated</th>
+                      <th scope="col">status</th>
+                      <th scope="col">position</th>
+                      <!-- <th scope="col">employment type</th> -->
+                      <th scope="col">last login</th>
 
-                    <!-- <th scope="col">Action</th> -->
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="data in assignedVacancyData" :key="data.id">
-                    <td v-text="data.candidate_code"></td>
-                    <td v-text="data.first_name"></td>
+                      <!-- <th scope="col">Action</th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="data in assignedVacancyData" :key="data.id">
+                      <td v-text="data.candidate_code"></td>
+                      <td v-text="data.first_name"></td>
 
-                    <td v-text="data.phone_number"></td>
+                      <td v-text="data.phone_number"></td>
 
-                    <td v-text="data.email"></td>
+                      <td v-text="data.email"></td>
 
-                    <td v-text="data.address"></td>
+                      <td v-text="data.address"></td>
 
-                    <td v-text="data.activated"></td>
-                    <td v-text="data.status"></td>
-                    <td v-text="data.position"></td>
-                    <!-- <td v-text="data.employment_type"></td> -->
-                    <td v-text="data.last_login"></td>
-                    <!-- <td class="cursor-pointer">
+                      <td v-text="data.activated"></td>
+                      <td v-text="data.status"></td>
+                      <td v-text="data.position"></td>
+                      <!-- <td v-text="data.employment_type"></td> -->
+                      <td v-text="data.last_login"></td>
+                      <!-- <td class="cursor-pointer">
                      
                       &nbsp;&nbsp;
                       <button class="btn btn-outline-success text-nowrap">
@@ -76,9 +77,10 @@
                         ></i>
                       </button>
                     </td> -->
-                  </tr>
-                </tbody>
-              </table>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
           <div class="modal-footer">
@@ -180,6 +182,22 @@ label.form-label {
   margin-right: inherit;
 }
 .modal-xl {
-  width: 1400px !important;
+  width: 1400px;
+}
+@media (max-width: 1120px) {
+  .vacancyTable {
+    width: 1090px;
+  }
+  .wrapper-vacancy {
+    overflow-x: scroll;
+  }
+}
+@media (max-width: 1050px) {
+  .modal-dialog {
+    margin-right: auto;
+  }
+  .modal-xl {
+    width: auto;
+  }
 }
 </style>

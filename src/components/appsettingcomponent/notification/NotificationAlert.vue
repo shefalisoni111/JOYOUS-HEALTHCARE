@@ -29,7 +29,7 @@
                   aria-controls="home"
                   aria-selected="true"
                 >
-                  vacancy
+                  Shift
                 </button>
               </li>
               <li class="nav-item" role="presentation">
@@ -97,14 +97,14 @@
                           <h5 class="fw-bold">
                             Enable push notification for mobile phones
                           </h5>
-                          <p>Download the candidate app for IOS,or Android</p>
+                          <p>Download the staff app for IOS,or Android</p>
                         </div>
                         <div><i class="bi bi-toggle-on"></i></div>
                       </div>
                       <div class="d-flex justify-content-between">
                         <div>
                           <h5 class="fw-bold">Via e-mail</h5>
-                          <p>Enable vacancy alert via email</p>
+                          <p>Enable shift alert via email</p>
                         </div>
                         <div><i class="bi bi-toggle-on"></i></div>
                       </div>

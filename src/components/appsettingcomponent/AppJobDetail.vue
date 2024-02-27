@@ -72,8 +72,8 @@
                   <th scope="col" class="bg-primary text-white">Colour</th>
                   <th scope="col" class="bg-primary text-white">Name</th>
                   <th scope="col" class="bg-primary text-white">Job Code</th>
-                  <th scope="col" class="bg-primary text-white">No. of Clients</th>
-                  <th scope="col" class="bg-primary text-white">No. of Candidate</th>
+                  <th scope="col" class="bg-primary text-white">No. of Vendors</th>
+                  <th scope="col" class="bg-primary text-white">No. of Staffs</th>
                   <th scope="col" class="bg-primary text-white">No. of Documents</th>
                   <th scope="col" class="bg-primary text-white">Action</th>
                 </tr>
@@ -116,8 +116,8 @@
                 <th scope="col" class="bg-primary text-white">Colour</th>
                 <th scope="col" class="bg-primary text-white">Name</th>
                 <th scope="col" class="bg-primary text-white">Job Code</th>
-                <th scope="col" class="bg-primary text-white">No. of Clients</th>
-                <th scope="col" class="bg-primary text-white">No. of Candidate</th>
+                <th scope="col" class="bg-primary text-white">No. of Vendor</th>
+                <th scope="col" class="bg-primary text-white">No. of Staff</th>
                 <th scope="col" class="bg-primary text-white">No. of Documents</th>
                 <th scope="col" class="bg-primary text-white">Action</th>
               </tr>

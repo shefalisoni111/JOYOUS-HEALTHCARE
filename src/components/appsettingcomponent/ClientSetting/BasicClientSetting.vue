@@ -5,7 +5,7 @@
         <div class="d-flex align-items-center">
           <ol class="breadcrumb mb-1 p-3">
             <li class="breadcrumb-item active text-uppercase fw-bold">
-              client setting / <span class="clr">basic permission</span>
+              Vendor setting / <span class="clr">basic permission</span>
             </li>
           </ol>
         </div>
@@ -56,7 +56,7 @@
                   aria-controls="pills-CandidateProfile"
                   aria-selected="false"
                 >
-                  Candidate Profile
+                  Staff Profile
                 </button>
               </li>
             </ul>
@@ -73,7 +73,7 @@
                     <div class="bg-white py-4">
                       <div>
                         <h6>
-                          <b>Client:</b> Pages displayed in the client dashboard can be
+                          <b>Vendor:</b> Pages displayed in the Vendor dashboard can be
                           enabled or disabled from here.
                         </h6>
                         <ul class="list-unstyled list-inline">
@@ -88,7 +88,7 @@
                             <label class="switch">
                               <input type="checkbox" id="togBtn" checked />
                               <div class="slider round"></div> </label
-                            >Vacancies
+                            >Shifts
                           </li>
                           <li>
                             <label class="switch">
@@ -124,8 +124,8 @@
                       </div>
                       <div class="mt-5">
                         <h6>
-                          <b>Business Unit :</b> Pages displayed in the business unit
-                          dashboard can be enabled or disabled from here..
+                          <b>Department :</b> Pages displayed in the department dashboard
+                          can be enabled or disabled from here..
                         </h6>
                         <ul class="list-unstyled list-inline">
                           <li>
@@ -139,7 +139,7 @@
                             <label class="switch">
                               <input type="checkbox" id="togBtn" checked />
                               <div class="slider round"></div> </label
-                            >Vacancies
+                            >Shifts
                           </li>
                           <li>
                             <label class="switch">

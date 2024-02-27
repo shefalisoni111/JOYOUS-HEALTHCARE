@@ -16,7 +16,7 @@
               <ul class="list-unstyled text-capitalize generalsetting px-3">
                 <li class="list-items d-flex mt-2">
                   <i class="bi bi-envelope rounded-circle"></i>
-                  <router-link to="email" class="text-decoration-none">
+                  <router-link to="/email" class="text-decoration-none">
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize">Email</h6>
                       <p class="text-capitalize mb-0">modify email integeration</p>

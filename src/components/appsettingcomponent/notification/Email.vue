@@ -43,7 +43,7 @@
                   aria-controls="profile"
                   aria-selected="false"
                 >
-                  candidate
+                  staff
                 </button>
               </li>
               <li class="nav-item" role="presentation">
@@ -57,7 +57,7 @@
                   aria-controls="contact"
                   aria-selected="false"
                 >
-                  business-unit
+                  Department
                 </button>
               </li>
               <li class="nav-item" role="presentation">
@@ -95,7 +95,7 @@
                         aria-controls="pills-home"
                         aria-selected="true"
                       >
-                        Vacancy
+                        Shift
                       </button>
                     </li>
                     <li class="nav-item" role="presentation">

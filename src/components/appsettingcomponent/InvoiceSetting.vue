@@ -74,7 +74,7 @@
                         aria-controls="profile"
                         aria-selected="false"
                       >
-                        candidate
+                        Staff
                       </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -88,7 +88,7 @@
                         aria-controls="contact"
                         aria-selected="false"
                       >
-                        business-unit
+                        Department
                       </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -126,7 +126,7 @@
                               aria-controls="pills-home"
                               aria-selected="true"
                             >
-                              Vacancy
+                              Shift
                             </button>
                           </li>
                           <li class="nav-item" role="presentation">
@@ -174,7 +174,7 @@
                                       <input
                                         type="email"
                                         class="form-control"
-                                        placeholder="New Vacancy Created"
+                                        placeholder="New Shift Created"
                                       />
                                     </form>
                                   </div>

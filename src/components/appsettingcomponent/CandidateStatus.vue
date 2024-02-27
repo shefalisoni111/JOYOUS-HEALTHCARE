@@ -4,7 +4,7 @@
       <div class="d-flex align-items-center">
         <ul class="breadcrumb mb-1">
           <li class="breadcrumb-item active text-uppercase fw-bold">
-            details / <span>candidates status</span>
+            details / <span>staff status</span>
           </li>
         </ul>
       </div>
@@ -32,7 +32,7 @@
             <th scope="col" class="col-5 bg-primary text-white jusfycenter">
               Description
             </th>
-            <th scope="col" class="col-4 bg-primary text-white">No. of Candidates</th>
+            <th scope="col" class="col-4 bg-primary text-white">No. of Staffs</th>
             <th scope="col" class="col-2 bg-primary text-white jusfycenter">Action</th>
           </tr>
         </thead>
