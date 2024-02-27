@@ -117,12 +117,15 @@ export default {
 
         const jsonData = response.data;
 
-        if (jsonData.is_loged_in) {
-          const tokenExpiration = Date.now() + 12 * 60 * 60 * 1000;
-          localStorage.setItem("tokenExpiration", tokenExpiration);
-          localStorage.setItem("token", jsonData.token);
+        if (jsonData.is_logged_in) {
+          const tokenExpiration = new Date(jsonData.expiry_time).getTime(); // Convert expiry_time to milliseconds
+          const currentTime = Date.now();
 
-          this.setupAutoLogout();
+          localStorage.setItem("token", jsonData.token);
+          localStorage.setItem("tokenExpiration", tokenExpiration);
+
+          this.setupAutoLogout(tokenExpiration - currentTime);
+
           this.$router.push({ name: "Home" });
         } else {
           this.error = "Invalid Email or Password";
@@ -134,22 +137,12 @@ export default {
       }
     },
 
-    setupAutoLogout() {
-      const tokenExpiration = localStorage.getItem("tokenExpiration");
-      if (tokenExpiration) {
-        const timeToExpiration = tokenExpiration - Date.now();
-        if (timeToExpiration > 0) {
-          setTimeout(() => {
-            this.logoutDueToExpiration();
-          }, timeToExpiration);
-        } else {
-          this.logoutDueToExpiration();
-        }
-      } else {
-        console.error("Token expiration not found");
+    setupAutoLogout(timeToExpiration) {
+      setTimeout(() => {
         this.logoutDueToExpiration();
-      }
+      }, timeToExpiration);
     },
+
     logoutDueToExpiration() {
       localStorage.removeItem("token");
       localStorage.removeItem("tokenExpiration");
