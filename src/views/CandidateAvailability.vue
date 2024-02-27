@@ -37,9 +37,30 @@
                 <span class="close d-flex justify-content-end" @click="closeModal"
                   >&times;</span
                 >
-                <h4 class="text-capitalize">Availability - {{ getCandidateName() }}</h4>
-                <!-- <p>You clicked on {{ selectedDate }}</p> -->
-                <!-- <p>Status: {{ statusForSelectedDate }}</p> -->
+                <h4 class="text-capitalize">{{ getCandidateName() }}</h4>
+                <p>
+                  You clicked on
+                  <span style="color: #ff5722; font-weight: bold">{{
+                    formatDate(selectedDate)
+                  }}</span>
+                  and Availability
+                  <span
+                    v-if="statusForSelectedDate"
+                    style="color: #ff5722; font-weight: bold"
+                  >
+                    {{ statusForSelectedDate }}
+                  </span>
+                  <span v-else style="color: #ff5722; font-weight: bold"> null </span>
+                </p>
+                <p v-if="statusForSelectedDate">
+                  Status:
+                  <span style="color: #ff5722; font-weight: bold">{{
+                    statusForSelectedDate
+                  }}</span>
+                </p>
+                <p v-else>
+                  Status: <span style="color: #ff5722; font-weight: bold">null</span>
+                </p>
                 <!-- Pass initialDate to the Calendar component -->
 
                 <Calendar
@@ -49,6 +70,7 @@
                   :availabilityId="availability_id"
                   @Candidate-availability="handleAvailabilityChange"
                   :startDate="startDate"
+                  :availabilityStatus="statusForSelectedDate"
                 />
               </div>
             </div>

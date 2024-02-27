@@ -10,7 +10,7 @@
                   <router-link class="nav-link d-inline" aria-current="page" to="/home"
                     >Dashboard</router-link
                   >
-                  / CANDIDATES /
+                  / STAFF /
                   <span class="color-fonts">{{ getCandidates.first_name }}</span>
                 </li>
               </ol>
@@ -203,12 +203,12 @@ export default {
         { name: "Notes", component: "Notes", routeName: "Notes" },
         { name: "Staff ID", component: "StaffId", routeName: "StaffId" },
         {
-          name: "Candidate History",
+          name: "Staff History",
           component: "CandidateHistory",
           routeName: "CandidateHistory",
         },
         {
-          name: "Candidate Reference",
+          name: "Staff Reference",
           component: "CandidatePreference",
           routeName: "CandidatePreference",
         },

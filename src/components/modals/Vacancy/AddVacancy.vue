@@ -10,7 +10,7 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addVacancies">Add Vacancy</h5>
+            <h5 class="modal-title" id="addVacancies">Add Shift</h5>
             <button
               type="button"
               class="btn-close"
@@ -97,7 +97,7 @@
                       @change="addDate"
                     />
                     <span v-if="!validationDateType" class="text-danger text-capitalize"
-                      >must be a date greater than or equal to today</span
+                      >Please choose a date from today onwards!</span
                     >
                     <div v-if="dates.length > 0" class="mt-2">
                       <span

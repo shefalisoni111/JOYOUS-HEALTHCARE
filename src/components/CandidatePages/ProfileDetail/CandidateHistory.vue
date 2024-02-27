@@ -1,3 +1,3 @@
 <template>
-  <h6>Candidates History Page is Processing....</h6>
+  <h6>Staff History Page is Processing....</h6>
 </template>

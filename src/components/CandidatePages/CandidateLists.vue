@@ -11,7 +11,7 @@
                 >
                 /
 
-                <span class="color-fonts">{{ activeTabName }} Candidates</span>
+                <span class="color-fonts">{{ activeTabName }} Staffs</span>
               </li>
             </ol>
           </div>
@@ -65,7 +65,7 @@
                     data-bs-whatever="@mdo"
                   >
                     <i class="bi bi-person-plus-fill"></i>
-                    Add Candidate
+                    Add Staff
                   </button>
                 </div>
               </div>

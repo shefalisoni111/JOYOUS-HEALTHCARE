@@ -5,7 +5,7 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addClients">Add Client</h5>
+            <h5 class="modal-title" id="addClients">Add Vendor</h5>
             <button
               type="button"
               class="btn-close"
@@ -18,7 +18,7 @@
               <form>
                 <div class="mb-3">
                   <div class="col-12">
-                    <label class="form-label">client name</label>
+                    <label class="form-label">Vendor name</label>
                   </div>
                   <div class="col-12">
                     <input

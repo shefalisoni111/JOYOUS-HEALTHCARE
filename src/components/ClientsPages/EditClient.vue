@@ -5,7 +5,7 @@
       <div class="main-box">
         <div class="model-box">
           <div class="text-center">
-            <h5 class="">Edit Client</h5>
+            <h5 class="">Edit Vendor</h5>
           </div>
           <div class="mx-3">
             <div class="row">
@@ -78,7 +78,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import axios from "axios";
 
 export default {

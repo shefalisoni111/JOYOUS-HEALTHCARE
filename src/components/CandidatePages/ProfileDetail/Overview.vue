@@ -39,7 +39,7 @@
                 </thead>
                 <tbody class="text-capitalize" v-if="getCandidatesDataInOverview">
                   <tr>
-                    <td>Candidate ID</td>
+                    <td>Staff ID</td>
                     <td>:</td>
                     <td>{{ getCandidatesDataInOverview.candidate_code }}</td>
                   </tr>

@@ -5,7 +5,7 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="editVacancy">Edit Vacancy</h5>
+            <h5 class="modal-title" id="editVacancy">Edit Shift</h5>
             <button
               type="button"
               class="btn-close"
@@ -18,7 +18,7 @@
               <form>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-3">
-                    <label class="form-label">Business Unit</label>
+                    <label class="form-label">Department</label>
                   </div>
                   <div class="col-9">
                     <select
@@ -56,7 +56,7 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-3">
-                    <label class="form-label">Client ID</label>
+                    <label class="form-label">Vendor ID</label>
                   </div>
                   <div class="col-9">
                     <select v-model="fetchVacancy.client_id" id="selectClients">
@@ -232,19 +232,26 @@ export default {
     async updateVacancyMethod() {
       const token = localStorage.getItem("token");
       const currentDate = new Date();
-      const selectedDate = new Date(this.fetchVacancy.dates);
 
-      if (selectedDate < currentDate) {
-        alert("Date must be greater than or equal to today's date");
-        return;
+      for (const selectedDateString of this.fetchVacancy.dates) {
+        const selectedDate = new Date(selectedDateString);
+
+        if (selectedDate < currentDate) {
+          alert("Invalid selection! Please choose a date from today onwards.");
+          return;
+        }
       }
 
-      const formattedDate =
-        selectedDate.getFullYear() +
-        "-" +
-        ("0" + (selectedDate.getMonth() + 1)).slice(-2) +
-        "-" +
-        ("0" + selectedDate.getDate()).slice(-2);
+      const formattedDates = this.fetchVacancy.dates.map((selectedDateString) => {
+        const selectedDate = new Date(selectedDateString);
+        return (
+          selectedDate.getFullYear() +
+          "-" +
+          ("0" + (selectedDate.getMonth() + 1)).slice(-2) +
+          "-" +
+          ("0" + selectedDate.getDate()).slice(-2)
+        );
+      });
 
       try {
         const response = await axios.put(

@@ -23,7 +23,7 @@
                 >
                 /
 
-                <span class="color-fonts">{{ activeTabName }} Vacancies</span>
+                <span class="color-fonts">{{ activeTabName }} Shifts</span>
               </li>
             </ol>
           </div>
@@ -98,7 +98,7 @@
                           data-bs-target="#addVacancies"
                           data-bs-whatever="@mdo"
                         >
-                          + Add Vacancy
+                          + Add Shift
                         </button>
                       </div>
                     </div>

@@ -9,7 +9,7 @@
                 <router-link class="nav-link d-inline" aria-current="page" to="/home"
                   >Dashboard</router-link
                 >
-                / <span class="color-fonts">Clients </span>
+                / <span class="color-fonts">Vendors </span>
               </li>
             </ol>
           </div>
@@ -69,7 +69,7 @@
                           data-bs-target="#addClients"
                           data-bs-whatever="@mdo"
                         >
-                          + Add Client
+                          + Add Vendor
                         </button>
                       </div>
                     </div>

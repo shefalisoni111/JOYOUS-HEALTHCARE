@@ -25,7 +25,7 @@
           </li>
           <li class="nav-item">
             <router-link class="nav-link" aria-current="page" to="/client">
-              Clients
+              Vendors
               <!-- <i class="bi bi-caret-down-fill"></i> -->
             </router-link>
 
@@ -67,20 +67,20 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              Candidates
+              Staffs
             </a>
             <div class="dropdown-menu" aria-labelledby="candidatesDropdown">
               <router-link class="dropdown-item" to="/candidates/candidates"
-                >Candidate List</router-link
+                >Staff List</router-link
               >
               <router-link class="dropdown-item" to="/candidates/availability"
-                >Candidate Availability</router-link
+                >Staff Availability</router-link
               >
             </div>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" aria-current="page" to="/vacancies">
-              Vacancies
+              Shifts
             </router-link>
           </li>
           <li class="nav-item">

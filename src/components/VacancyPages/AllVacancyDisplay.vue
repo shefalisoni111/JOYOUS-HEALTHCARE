@@ -7,8 +7,8 @@
             <tr>
               <th scope="col">ID</th>
               <th scope="col">#RefCode</th>
-              <th scope="col">Client</th>
-              <th scope="col">Business Unit</th>
+              <th scope="col">Vendor</th>
+              <th scope="col">Department</th>
               <th scope="col">Job Title</th>
               <th scope="col">Date</th>
               <th scope="col">Shift</th>
@@ -103,7 +103,7 @@
                   @click="openPopup(getdata.id)"
                 >
                   <span
-                    :style="{ padding: getPadding(getdata.all_candidate) }"
+                    :style="{ padding: getPadding(getdata.applied) }"
                     class="rounded-circle"
                     >{{ getdata.applied }}</span
                   >
@@ -119,7 +119,7 @@
                   @click="openAssigned(getdata.id)"
                 >
                   <span
-                    :style="{ padding: getPadding(getdata.all_candidate) }"
+                    :style="{ padding: getPadding(getdata.assigned) }"
                     class="rounded-circle"
                     >{{ getdata.assigned }}</span
                   >
@@ -135,7 +135,7 @@
                   @click="openRejected(getdata.id)"
                 >
                   <span
-                    :style="{ padding: getPadding(getdata.all_candidate) }"
+                    :style="{ padding: getPadding(getdata.rejected) }"
                     class="rounded-circle"
                     >{{ getdata.rejected }}</span
                   >
@@ -248,8 +248,9 @@ export default {
     getPadding(value) {
       // Calculate padding based on the number of digits
       const digitCount = value.toString().length;
-      return digitCount === 1 ? "8px 11px" : "11px";
+      return digitCount === 1 ? "10px 13px" : "12px 13px";
     },
+
     editVacancyId(vacancyId) {
       this.selectedVacancyId = vacancyId;
     },
@@ -411,6 +412,10 @@ button.nav-link > li.nav-item {
 }
 .widthDefine {
   width: 6%;
+}
+.btn:focus-visible {
+  border: none;
+  outline: none;
 }
 .searchbox::before {
   content: "\F52A";

@@ -10,7 +10,7 @@
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header d-inline-flex gap-3">
-            <h5 class="modal-title" id="publishVacancy">Publish Vacancy</h5>
+            <h5 class="modal-title" id="publishVacancy">Publish Shift</h5>
             <!-- <ul
               class="list-unstyled d-flex gap-3 mb-0 publish-ul"
               v-for="data in vacancyData"
@@ -96,7 +96,7 @@
                     type="checkbox"
                     value=""
                     id="flexCheckDefault"
-                  />&nbsp;@ REJECTED BY CANDIDATE
+                  />&nbsp;@ REJECTED BY STAFF
                 </li>
               </ul>
             </div>
@@ -134,7 +134,7 @@
             </div>
             <div class="row">
               <div class="col-md-12">
-                <h6>Vacancy List ...</h6>
+                <h6>Shifts List ...</h6>
                 <table v-if="selectedPublishItemId"></table>
               </div>
             </div>

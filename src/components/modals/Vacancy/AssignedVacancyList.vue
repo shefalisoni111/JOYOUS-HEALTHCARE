@@ -10,7 +10,7 @@
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="assignedVacancyList">Assign Vacancy</h5>
+            <h5 class="modal-title" id="assignedVacancyList">Assign Shift</h5>
             <button
               type="button"
               class="btn-close"
@@ -22,7 +22,7 @@
             <div class="row g-3 align-items-center">
               <ul class="list-unstyled d-flex gap-3 mb-0 publish-ul">
                 <li>Code:{{ vacancyDetails.ref_code }}</li>
-                <li>B-unit:{{ vacancyDetails.business_unit }}</li>
+                <li>Department:{{ vacancyDetails.business_unit }}</li>
                 <li>Job: {{ vacancyDetails.job_title }}</li>
                 <li v-for="(date, index) in vacancyDetails.dates" :key="index">
                   Date: {{ date }}
@@ -35,7 +35,7 @@
               <table class="table candidateTable" v-if="selectedAssignedItemId">
                 <thead>
                   <tr>
-                    <th scope="col">candidate code</th>
+                    <th scope="col">staff code</th>
                     <th scope="col">first name</th>
 
                     <th scope="col">phone number</th>

@@ -10,7 +10,7 @@
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="appliedVacancy">Applied Vacancy</h5>
+            <h5 class="modal-title" id="appliedVacancy">Applied Shift</h5>
             <button
               type="button"
               class="btn-close"
@@ -22,7 +22,7 @@
             <div class="row g-3 align-items-center">
               <ul class="list-unstyled d-flex gap-3 mb-0 publish-ul">
                 <li>Code:{{ vacancyDetails.ref_code }}</li>
-                <li>B-unit:{{ vacancyDetails.business_unit }}</li>
+                <li>Department:{{ vacancyDetails.business_unit }}</li>
                 <li>Job: {{ vacancyDetails.job_title }}</li>
                 <li
                   v-for="(date, index) in vacancyDetails.dates"
@@ -76,7 +76,7 @@
                 <thead>
                   <tr>
                     <th></th>
-                    <th scope="col">candidate code</th>
+                    <th scope="col">staff code</th>
                     <th scope="col">first name</th>
                     <th scope="col">last name</th>
                     <th scope="col">phone number</th>
@@ -133,7 +133,7 @@
                 <thead>
                   <tr>
                     <th></th>
-                    <th scope="col">candidate code</th>
+                    <th scope="col">staff code</th>
                     <th scope="col">first name</th>
                     <th scope="col">last name</th>
                     <th scope="col">phone number</th>
@@ -208,8 +208,8 @@
                     @change="handleSelectChange"
                   >
                     <option :value="null" disabled>Select an Action</option>
-                    <option value="1">Assigned Candidate</option>
-                    <option value="2">Reject Candidate</option>
+                    <option value="1">Assigned Staffs</option>
+                    <option value="2">Reject Staffs</option>
                   </select>
                 </div>
               </div>
