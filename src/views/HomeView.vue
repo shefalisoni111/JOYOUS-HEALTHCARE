@@ -35,7 +35,7 @@
                 <h5
                   class="text-uppercase fw-bold d-flex justify-content-start fs-6 pb-2 ps-5"
                 >
-                  Client
+                  Vendor
                 </h5>
 
                 <div class="col-10 mb-3">
@@ -45,7 +45,7 @@
                         <div class="card-icon d-flex flex-column">
                           <i class="bi bi-people fs-1 text-info"></i>
                           <span class="text-muted text-capitalize fs-6"
-                            >Total Clients</span
+                            >Total Vendors</span
                           >
                         </div>
                         <div class="ps-4 mt-2">
@@ -65,7 +65,7 @@
                         <div class="card-icon d-flex flex-column">
                           <i class="bi bi-people fs-1 text-success"></i>
                           <span class="text-muted text-capitalize fs-6"
-                            >Active Clients</span
+                            >Active Vendors</span
                           >
                         </div>
                         <div class="ps-4 mt-2">
@@ -85,7 +85,7 @@
                         <div class="card-icon d-flex flex-column">
                           <i class="bi bi-people fs-1 text-danger"></i>
                           <span class="text-muted text-capitalize fs-6"
-                            >inactive clients</span
+                            >inactive Vendors</span
                           >
                         </div>
                         <div class="ps-4 mt-2">
@@ -111,7 +111,7 @@
                 <h5
                   class="text-uppercase fw-bold d-flex justify-content-start fs-6 pb-2 ps-5"
                 >
-                  Candidates
+                  Staff
                 </h5>
 
                 <div class="col-10 mb-3">
@@ -124,7 +124,7 @@
                             <router-link
                               class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'AllCandidateListsDisplay' }"
-                              >Total Candidates
+                              >Total Staffs
                             </router-link></span
                           >
                         </div>
@@ -151,7 +151,7 @@
                             <router-link
                               class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'ActiveCandidate' }"
-                              >active Candidates</router-link
+                              >active Staffs</router-link
                             ></span
                           >
                         </div>
@@ -177,7 +177,7 @@
                             <router-link
                               class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'InActiveCandidate' }"
-                              >inactive Candidates</router-link
+                              >inactive Staffs</router-link
                             ></span
                           >
                         </div>
@@ -201,7 +201,7 @@
                 <h5
                   class="text-uppercase fw-bold d-flex justify-content-start fs-6 pb-2 ps-5"
                 >
-                  Business Units
+                  Department
                 </h5>
                 <div class="col-10 mb-3">
                   <div class="card h-100 info-card sales-card border-left-blue">
@@ -210,7 +210,7 @@
                         <div class="card-icon d-flex flex-column">
                           <i class="bi bi-people fs-1 text-info"></i>
                           <span class="text-muted text-capitalize fs-6"
-                            >Total Business Units</span
+                            >Total Departments</span
                           >
                         </div>
                         <div class="ps-4 mt-2">
@@ -234,7 +234,7 @@
                         <div class="card-icon d-flex flex-column">
                           <i class="bi bi-people fs-1 text-success"></i>
                           <span class="text-muted text-capitalize fs-6"
-                            >active Business Units</span
+                            >active Departments</span
                           >
                         </div>
                         <div class="ps-4 mt-2">
@@ -258,7 +258,7 @@
                         <div class="card-icon d-flex flex-column">
                           <i class="bi bi-people fs-1 text-danger"></i>
                           <span class="text-muted text-capitalize fs-6"
-                            >inactive Business Units</span
+                            >inactive Departments</span
                           >
                         </div>
                         <div class="ps-4 mt-2">
@@ -282,7 +282,7 @@
                 <h5
                   class="text-uppercase fw-bold d-flex justify-content-start fs-6 pb-2 ps-5"
                 >
-                  Compliance Insight
+                  Training Insight
                 </h5>
 
                 <div class="col-10 mb-3">
@@ -380,7 +380,7 @@
                     class="fs-5 p-2 text-white mb-0 rounded-2"
                     style="background: #f9944b"
                   >
-                    Vacancies
+                    Shifts
                   </h5>
                   <div class="">
                     <ol class="breadcrumb mb-1">
@@ -398,7 +398,7 @@
                             <span class="box-icon mt-2"></span>
                             <div class="d-flex flex-column">
                               <span class="fs-4 ps-2 fw-bold">50</span>
-                              <span class="d-flex ms-2">Open Vacancies</span>
+                              <span class="d-flex ms-2">Open Shifts</span>
                             </div>
                           </div>
                         </li>
@@ -407,7 +407,7 @@
                             <span class="box-icon2 mt-2"></span>
                             <div class="d-flex flex-column">
                               <span class="fs-4 ps-2 fw-bold">10</span>
-                              <span class="d-flex ms-2">Applied Vacancies</span>
+                              <span class="d-flex ms-2">Applied Shifts</span>
                             </div>
                           </div>
                         </li>
@@ -416,7 +416,7 @@
                             <span class="box-icon3 mt-2"></span>
                             <div class="d-flex flex-column">
                               <span class="fs-4 ps-2 fw-bold">30</span>
-                              <span class="d-flex ms-2">Assigned Vacancies</span>
+                              <span class="d-flex ms-2">Assigned Shifts</span>
                             </div>
                           </div>
                         </li>
