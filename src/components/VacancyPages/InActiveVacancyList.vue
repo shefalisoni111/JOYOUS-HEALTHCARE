@@ -49,7 +49,11 @@
               <td>
                 <button
                   class="btn btn-outline-success text-nowrap"
-                  v-on:click="reActivatedMethod(data.id)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editVacancy"
+                  data-bs-whatever="@mdo"
+                  @click="editVacancyId(data.id)"
+                  v-on:click="reActivatedMethod(data.id, data.editDate)"
                 >
                   Re-Activate
                 </button>
@@ -80,22 +84,26 @@
         Next
       </button>
     </div>
+    <EditVacancy :vacancyId="selectedVacancyId || 0" @updateVacancy="createVacancy" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
+import EditVacancy from "../modals/Vacancy/EditVacancy.vue";
 export default {
   name: "ActiveCandidate",
   data() {
     return {
       getInactiveData: [],
       inactiveCandidateData: [],
+      selectedVacancyId: 0,
+      createVacancy: null,
       currentPage: 1,
       itemsPerPage: 9,
     };
   },
+  components: { EditVacancy },
   computed: {
     displayedVacancies() {
       return this.getInactiveData.length >= 8
@@ -111,19 +119,34 @@ export default {
       return this.getInactiveData.length;
     },
   },
-  components: {},
+
   methods: {
-    reActivatedMethod(id) {
-      if (!window.confirm("Are you Sure?")) {
-        return;
+    editVacancyId(vacancyId) {
+      this.selectedVacancyId = vacancyId;
+    },
+    reActivatedMethod(id, date) {
+      const today = new Date();
+      const editDate = new Date(date);
+
+      // Check if the edit date is before today's date
+      if (editDate < today) {
+        if (!window.confirm("Are you sure you want to re-activate?")) {
+          return;
+        }
+        axios
+          .put(`${VITE_API_URL}/active_vacancy/${id}`)
+          .then((response) => {
+            this.inactiveCandidateData = response.data;
+            this.getInactiveVacancyMethod();
+            alert("Successful Reactivate");
+          })
+          .catch((error) => {
+            console.error("Error reactivating vacancy:", error);
+          });
+      } else {
+        // Date is today or later
+        alert("Cannot re-activate. Edit date is today or later.");
       }
-      axios.put(`${VITE_API_URL}/active_vacancy/${id}`).then((response) => {
-        this.inactiveCandidateData = response.data;
-        this.getInactiveVacancyMethod();
-      });
-      alert("Successful Reactivate").catch((error) => {
-        // console.error("Error deleting candidate:", error);
-      });
     },
 
     async getInactiveVacancyMethod() {

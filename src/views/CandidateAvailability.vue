@@ -291,8 +291,9 @@ export default {
   },
 
   methods: {
-    handleAvailabilityChange(availabilityId) {
-      this.availability_id = availabilityId;
+    handleAvailabilityChange(availability_id) {
+      console.log("Availability ID received:", availability_id);
+      console.log("Availability ID:", availability_id);
     },
     updateDateRange() {
       this.fetchCandidateList(this.startDate);

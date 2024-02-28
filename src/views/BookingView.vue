@@ -125,8 +125,8 @@ ul.generalsetting h6 {
                       <thead>
                         <tr>
                           <th scope="col">#Booking Code</th>
-                          <th scope="col">Candidates</th>
-                          <th scope="col">Business Unit</th>
+                          <th scope="col">Staffs</th>
+                          <th scope="col">Department</th>
                           <th scope="col">Job Title</th>
                           <th scope="col">Shift Dates</th>
                           <th scope="col">Booking By</th>
@@ -145,7 +145,7 @@ ul.generalsetting h6 {
                         <tr>
                           <td scope="col">67cde3</td>
                           <td scope="col">Aniket</td>
-                          <td scope="col">BusinessUnit</td>
+                          <td scope="col">Department</td>
                           <td scope="col">Manager</td>
                           <td scope="col">Night Shift 22:00-10:00</td>
                           <td scope="col">merchant</td>

@@ -316,7 +316,7 @@ const router = createRouter({
       ]
     },
     {
-      path: "/invoice/client-invoice",
+      path: "/invoice/vendor-invoice",
       name: "Invoice",
       component: () => import("@/views/InvoiceView.vue"),
       meta: {
@@ -324,25 +324,25 @@ const router = createRouter({
       },
       children: [
         {
-          path: "/invoice/client-invoice",
+          path: "/invoice/vendor-invoice",
           name: "ClientInvoice",
           component: () => import("@/components/InvoicePages/ClientInvoice.vue"),
           props: true,
         },
         {
-          path: "/invoice/client-invoice/ClientInvoiceView",
+          path: "/invoice/vendor-invoice/VendorInvoiceView",
           name: "ClientInvoiceView",
           component: () => import("@/components/InvoicePages/ClientInvoiceView.vue"),
           props: true,
         },
         {
-          path: "/invoice/Candidate-invoice",
+          path: "/invoice/staff-invoice",
           name: "CandidateInvoice",
           component: () => import("@/components/InvoicePages/CandidateInvoice.vue"),
           props: true,
         },
         {
-          path: "/invoice/Candidate-invoice/CandidateInvoiceView",
+          path: "/invoice/staff-invoice/StaffInvoiceView",
           name: "CandidateInvoiceView",
           component: () => import("@/components/InvoicePages/CandidateInvoiceView.vue"),
           props: true,

@@ -77,7 +77,7 @@
                   </div>
                   <div class="col-9">
                     <input
-                      type="text"
+                      type="date"
                       class="form-control"
                       v-model="fetchVacancy.dates"
                       multiple
@@ -231,36 +231,27 @@ export default {
 
     async updateVacancyMethod() {
       const token = localStorage.getItem("token");
-      const currentDate = new Date();
-
-      for (const selectedDateString of this.fetchVacancy.dates) {
-        const selectedDate = new Date(selectedDateString);
-
-        if (selectedDate < currentDate) {
-          alert("Invalid selection! Please choose a date from today onwards.");
-          return;
-        }
-      }
-
-      const formattedDates = this.fetchVacancy.dates.map((selectedDateString) => {
-        const selectedDate = new Date(selectedDateString);
-        return (
-          selectedDate.getFullYear() +
-          "-" +
-          ("0" + (selectedDate.getMonth() + 1)).slice(-2) +
-          "-" +
-          ("0" + selectedDate.getDate()).slice(-2)
-        );
-      });
 
       try {
+        const datesArray = Array.isArray(this.fetchVacancy.dates)
+          ? this.fetchVacancy.dates
+          : [this.fetchVacancy.dates];
+        const today = new Date();
+        const invalidDate = datesArray.find((date) => new Date(date) < today);
+
+        if (invalidDate) {
+          alert(
+            "At least one date is less than today. Please select a date greater than or equal to today."
+          );
+          return;
+        }
         const response = await axios.put(
           `${VITE_API_URL}/vacancies/${this.fetchVacancy.id}`,
           {
             business_unit_id: this.fetchVacancy.business_unit_id,
             client_id: this.fetchVacancy.client_id,
             job_id: this.fetchVacancy.job_id,
-            dates: [formattedDate],
+            dates: datesArray,
             shift_id: this.fetchVacancy.shift_id,
           },
           {

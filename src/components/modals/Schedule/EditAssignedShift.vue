@@ -9,7 +9,7 @@
               <input type="text" class="form-control" aria-describedby="emailHelp" />
             </div>
             <div class="mb-3">
-              <label class="form-label">Business Unit</label>
+              <label class="form-label">Department</label>
               <input type="text" class="form-control" aria-describedby="emailHelp" />
             </div>
             <div class="mb-3">
@@ -99,7 +99,7 @@
     </div>
   </div>
 </template>
-<script >
+<script>
 export default {
   data() {
     return {

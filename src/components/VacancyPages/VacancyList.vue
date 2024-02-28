@@ -82,7 +82,7 @@
                           <input
                             class="form-control mr-sm-2"
                             type="search"
-                            placeholder="Search by vacancy"
+                            placeholder="Search by shift"
                             aria-label="SearchVacancy"
                             v-model="searchQuery"
                             @input="debounceSearch"
@@ -113,8 +113,8 @@
                         <tr>
                           <th scope="col">ID</th>
                           <th scope="col">#RefCode</th>
-                          <th scope="col">Client</th>
-                          <th scope="col">Business Unit</th>
+                          <th scope="col">Vendor</th>
+                          <th scope="col">Department</th>
                           <th scope="col">Job Title</th>
                           <th scope="col">Date</th>
                           <th scope="col">Shift</th>

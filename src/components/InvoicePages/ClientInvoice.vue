@@ -40,7 +40,7 @@ ul.generalsetting h6 {
               <router-link class="nav-link d-inline" aria-current="page" to="/home"
                 >Dashboard</router-link
               >
-              / <span class="color-fonts">Client Invoice</span>
+              / <span class="color-fonts">Vendor Invoice</span>
             </li>
           </ol>
         </div>
@@ -147,8 +147,8 @@ ul.generalsetting h6 {
                       <thead>
                         <tr>
                           <th scope="col">#Number</th>
-                          <th scope="col">Client</th>
-                          <th scope="col">Business Unit</th>
+                          <th scope="col">Vendor</th>
+                          <th scope="col">Department</th>
                           <th scope="col">From</th>
                           <th scope="col">To</th>
                           <th scope="col">Created On</th>
@@ -168,7 +168,7 @@ ul.generalsetting h6 {
                         <tr>
                           <td scope="col">#1</td>
                           <td scope="col">ClientDemo</td>
-                          <td scope="col">BusinessUnit</td>
+                          <td scope="col">Department</td>
                           <td scope="col">25/01/2024</td>
                           <td scope="col">25/01/2025</td>
                           <td scope="col">mobile</td>
@@ -183,7 +183,7 @@ ul.generalsetting h6 {
                           <td scope="col">done</td>
                           <td>
                             <router-link
-                              to="/invoice/client-invoice/ClientInvoiceView"
+                              to="/invoice/vendor-invoice/VendorInvoiceView"
                               class="text-success"
                               ><i class="bi bi-eye"></i
                             ></router-link>

@@ -40,7 +40,7 @@ ul.generalsetting h6 {
               <router-link class="nav-link d-inline" aria-current="page" to="/home"
                 >Dashboard</router-link
               >
-              / <span class="color-fonts">Client Invoice</span> /
+              / <span class="color-fonts">Vendor Invoice</span> /
               <span class="color-fonts">Generate Invoice</span>
             </li>
           </ol>
@@ -96,7 +96,7 @@ ul.generalsetting h6 {
 
                     <div class="d-flex gap-3 align-items-center">
                       <select v-model="business_unit_id" id="selectBusinessUnit">
-                        <option value="">All Business Unit</option>
+                        <option value="">All Department</option>
                         <option
                           v-for="option in businessUnit"
                           :key="option.id"
@@ -179,7 +179,7 @@ ul.generalsetting h6 {
                       aria-controls="pills-ShiftCandidate"
                       aria-selected="false"
                     >
-                      Shift & Candidate
+                      Shift & Staff
                     </button>
                   </li>
                   <li class="nav-item" role="presentation">
@@ -193,7 +193,7 @@ ul.generalsetting h6 {
                       aria-controls="pills-CandidateWeekly"
                       aria-selected="false"
                     >
-                      Candidate Weekly
+                      Staff Weekly
                     </button>
                   </li>
                 </ul>
@@ -207,7 +207,7 @@ ul.generalsetting h6 {
                     <table class="table candidateTable">
                       <thead>
                         <tr>
-                          <th scope="col">Business Unit</th>
+                          <th scope="col">Department</th>
                           <th scope="col">Week End</th>
                           <th>
                             <div class="calendar-grid">
@@ -233,7 +233,7 @@ ul.generalsetting h6 {
                       </thead>
                       <tbody>
                         <tr>
-                          <td scope="col">BusinessUnit</td>
+                          <td scope="col">Department</td>
                           <td scope="col">weekend</td>
                           <td scope="col">11:00Am</td>
                           <!-- <td scope="col">11:00Am</td>

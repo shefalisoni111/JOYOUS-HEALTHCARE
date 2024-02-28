@@ -45,6 +45,9 @@
                 v-model="selectedShifts[date]"
                 :value="'Early'"
                 @click="updateDate(date, 'Early')"
+                :checked="
+                  initialDate === formatDate(date) && availabilityStatus === 'Early'
+                "
                 :disabled="isShiftDisabled(date)"
               />
               <label :for="'early-' + date" class="ps-1">E</label>
@@ -56,6 +59,9 @@
                 v-model="selectedShifts[date]"
                 :value="'Late'"
                 @click="updateDate(date, 'Late')"
+                :checked="
+                  initialDate === formatDate(date) && availabilityStatus === 'Late'
+                "
                 :disabled="isShiftDisabled(date)"
               />
               <label :for="'late-' + date" class="ps-1">L</label>
@@ -68,6 +74,9 @@
                 v-model="selectedShifts[date]"
                 :value="'Night'"
                 @click="updateDate(date, 'Night')"
+                :checked="
+                  initialDate === formatDate(date) && availabilityStatus === 'Night'
+                "
                 :disabled="isShiftDisabled(date)"
               />
               <label :for="'night-' + date" class="ps-1">N</label>
@@ -79,6 +88,9 @@
                 v-model="selectedShifts[date]"
                 :value="'Unavailable'"
                 @click="updateDate(date, 'Unavailable')"
+                :checked="
+                  initialDate === formatDate(date) && availabilityStatus === 'Unavailable'
+                "
                 :disabled="isShiftDisabled(date)"
               />
               <label :for="'unavailable-' + date" class="ps-1">U</label>
@@ -115,6 +127,7 @@ export default {
       type: String,
       required: false,
     },
+    availabilityStatus: String,
   },
   data() {
     return {
@@ -275,6 +288,7 @@ export default {
     updateSelectedDate(selectedDate) {
       this.selectedDate = selectedDate;
     },
+
     initializeCalendar() {
       const initialDate = this.initialDate
         ? new Date(this.initialDate)
@@ -342,7 +356,6 @@ export default {
     // },
     updateDate(selectedDate, shift) {
       this.date = selectedDate;
-      // console.log(shift);
       this.status = shift;
       const dayData = this.calendarData.find((data) => data.date === selectedDate);
       if (dayData) {
@@ -363,12 +376,12 @@ export default {
           .filter((key) => dayData.shifts[key])
           .join(", ");
         this.status = selectedShifts || "";
+        this.$set(this.selectedShifts, selectedDate, shift);
       }
     },
     addCandidateStatus: async function () {
       try {
         const parsedDate = new Date(this.date);
-
         if (isNaN(parsedDate)) {
           return;
         }
@@ -379,21 +392,20 @@ export default {
           day: "2-digit",
         });
 
-        const data = {
-          candidate_id: this.candidate_id,
-          date: formattedDate,
-          status: this.status,
-        };
+        let availabilities = [];
 
         if (this.availability_id !== null) {
-          if (!window.confirm("Are you Sure ?")) {
-            // console.log("Confirmation canceled");
+          if (!window.confirm("Are you sure?")) {
             return;
           }
 
           const putResponse = await axios.put(
             `${VITE_API_URL}/availabilitys/${this.availability_id}`,
-            data,
+            {
+              candidate_id: this.candidate_id,
+              date: formattedDate,
+              status: this.status,
+            },
             {
               headers: {
                 Accept: "application/json",
@@ -406,25 +418,44 @@ export default {
             alert("Availability updated successfully");
             window.location.reload();
             // this.fetchCandidateList();
-            // this.$emit("Candidate-availability");
+            // this.$emit("Candidate-availability", this.availability_id);
+            return;
           } else {
-            // console.error("Failed to update availability");
+            return;
           }
         } else {
-          const postResponse = await axios.post(`${VITE_API_URL}/availabilitys`, data, {
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-          });
+          if (Object.keys(this.selectedShifts).length === 0) {
+            availabilities = [];
+          } else {
+            for (const [date, status] of Object.entries(this.selectedShifts)) {
+              availabilities.push({
+                candidate_id: this.candidate_id,
+                date,
+                status,
+              });
+            }
+          }
+
+          // Post all availabilities in the array
+          const postResponse = await axios.post(
+            `${VITE_API_URL}/availabilitys`,
+            { availabilities },
+            {
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+            }
+          );
 
           if (postResponse.status === 201) {
-            alert("Availability added successfully");
+            alert("Availabilities added successfully");
             window.location.reload();
             // this.fetchCandidateList();
-            // this.$emit("Candidate-availability");
+            // this.$emit("Candidate-availability", this.availability_id);
+            return;
           } else {
-            // console.error("Failed to add availability");
+            return;
           }
         }
       } catch (error) {

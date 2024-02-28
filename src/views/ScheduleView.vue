@@ -167,7 +167,7 @@ export default {
                 <table class="table">
                   <thead>
                     <tr>
-                      <th style="width: 15%">Vacancy</th>
+                      <th style="width: 15%">Shifts</th>
 
                       <th>
                         <div class="calendar-grid">
@@ -194,7 +194,7 @@ export default {
                           <input
                             class="form-control mr-sm-2"
                             type="search"
-                            placeholder="Search for candidate"
+                            placeholder="Search for staff"
                             aria-label="Search"
                           />
                         </form>

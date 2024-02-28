@@ -10,7 +10,7 @@
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="assignDirectVacancy">Vacancy</h5>
+            <h5 class="modal-title" id="assignDirectVacancy">Shift</h5>
             <button
               type="button"
               class="btn-close"

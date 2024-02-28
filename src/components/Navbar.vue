@@ -137,13 +137,13 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="invoiceDropdown">
               <li>
-                <router-link class="dropdown-item" to="/invoice/client-invoice"
-                  >Client Invoice</router-link
+                <router-link class="dropdown-item" to="/invoice/vendor-invoice"
+                  >Vendor Invoice</router-link
                 >
               </li>
               <li>
-                <router-link class="dropdown-item" to="/invoice/Candidate-invoice"
-                  >Candidate Invoice</router-link
+                <router-link class="dropdown-item" to="/invoice/staff-invoice"
+                  >Staff Invoice</router-link
                 >
               </li>
             </ul>

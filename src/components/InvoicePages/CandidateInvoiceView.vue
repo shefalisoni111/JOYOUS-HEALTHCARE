@@ -9,7 +9,7 @@
               <router-link class="nav-link d-inline" aria-current="page" to="/home"
                 >Dashboard</router-link
               >
-              / <span class="color-fonts">Candidate Invoices</span>
+              / <span class="color-fonts">Staff Invoices</span>
             </li>
           </ol>
         </div>

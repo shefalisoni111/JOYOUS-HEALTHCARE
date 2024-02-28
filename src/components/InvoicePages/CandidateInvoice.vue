@@ -40,7 +40,7 @@ ul.generalsetting h6 {
               <router-link class="nav-link d-inline" aria-current="page" to="/home"
                 >Dashboard</router-link
               >
-              / <span class="color-fonts">Candidate Invoice</span>
+              / <span class="color-fonts">Staff Invoice</span>
             </li>
           </ol>
         </div>
@@ -139,7 +139,7 @@ ul.generalsetting h6 {
                       <thead>
                         <tr>
                           <th scope="col">#Number</th>
-                          <th scope="col">Candidate</th>
+                          <th scope="col">Staff</th>
 
                           <th scope="col">From</th>
                           <th scope="col">To</th>
@@ -175,7 +175,7 @@ ul.generalsetting h6 {
                           <td scope="col">done</td>
                           <td>
                             <router-link
-                              to="/invoice/Candidate-invoice/CandidateInvoiceView"
+                              to="/invoice/staff-invoice/StaffInvoiceView"
                               class="text-success"
                               ><i class="bi bi-eye"></i
                             ></router-link>
