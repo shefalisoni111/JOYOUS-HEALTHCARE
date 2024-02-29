@@ -386,8 +386,31 @@ export default {
 
       if (storedData) {
         const parsedData = JSON.parse(storedData);
-        this.startDate = parsedData.startDate;
         this.endDate.value = parsedData.endDate;
+
+        if (!parsedData.startDate || isNaN(new Date(parsedData.startDate).getTime())) {
+          const currentDate = new Date();
+          const currentDayOfWeek = currentDate.getDay();
+          const startOfWeek = new Date(currentDate);
+          const diff =
+            currentDate.getDate() - currentDayOfWeek + (currentDayOfWeek === 0 ? -6 : 1);
+          startOfWeek.setDate(diff);
+          this.startDate = startOfWeek;
+        } else {
+          this.startDate = new Date(parsedData.startDate);
+        }
+      } else {
+        const currentDate = new Date();
+        const currentDayOfWeek = currentDate.getDay();
+        const startOfWeek = new Date(currentDate);
+        const diff =
+          currentDate.getDate() - currentDayOfWeek + (currentDayOfWeek === 0 ? -6 : 1);
+        startOfWeek.setDate(diff);
+        this.startDate = startOfWeek;
+
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(endOfWeek.getDate() + 6);
+        this.endDate.value = endOfWeek.toISOString().split("T")[0];
       }
     },
     updateSelectedDateRow(startDate, endDate) {
@@ -461,7 +484,15 @@ export default {
   },
   mounted() {
     this.fetchCandidateList();
+    const currentDate = new Date();
+    const startOfWeek = new Date(currentDate);
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
+    this.startDate = startOfWeek;
 
+    // Set the end date to the current date's end of the week
+    const endOfWeek = new Date(currentDate);
+    endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
+    this.endDate = endOfWeek;
     this.loadStoredData();
     window.addEventListener("beforeunload", this.saveToLocalStorage);
   },

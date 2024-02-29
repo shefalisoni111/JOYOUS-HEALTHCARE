@@ -158,12 +158,12 @@
                 >
                   In-Active</button
                 >&nbsp;
-                <button
+                <!-- <button
                   class="btn btn-outline-success text-nowrap"
                   v-on:click="vacancyActiveMethod(getdata.id)"
                 >
                   Active
-                </button>
+                </button> -->
               </td>
             </tr>
           </tbody>
@@ -199,13 +199,13 @@
         Next
       </button>
     </div>
-    <!-- <loader></loader> -->
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-// import Loader from "../Loader/Loader.vue";
+import Loader from "../Loader/Loader.vue";
 import PublishedVacancy from "../modals/Vacancy/PublishedVacancy.vue";
 import AppliedVacancyList from "../modals/Vacancy/AppliedVacancyList.vue";
 import AssignedVacancyList from "../modals/Vacancy/AssignedVacancyList.vue";
@@ -220,8 +220,10 @@ export default {
       selectedVacancyId: 0,
       currentPage: 1,
       itemsPerPage: 9,
+      isLoading: false,
     };
   },
+
   components: {
     PublishedVacancy,
     AppliedVacancyList,
@@ -230,7 +232,7 @@ export default {
     AllVacancyCandidateList,
     EditVacancy,
     AddVacancy,
-    // Loader,
+    Loader,
   },
   computed: {
     getIconClass() {
@@ -308,45 +310,48 @@ export default {
         });
       alert("InActive Vacancy");
     },
-    async vacancyActiveMethod(id) {
-      if (!window.confirm("Are you Sure ?")) {
-        return;
-      }
-      const token = localStorage.getItem("token");
-      const isActive = this.getVacancyDetail.find(
-        (vacancy) => vacancy.id === id && vacancy.activated === true
-      );
+    // async vacancyActiveMethod(id) {
+    //   if (!window.confirm("Are you Sure ?")) {
+    //     return;
+    //   }
+    //   const token = localStorage.getItem("token");
+    //   const isActive = this.getVacancyDetail.find(
+    //     (vacancy) => vacancy.id === id && vacancy.activated === true
+    //   );
 
-      if (isActive) {
-        alert("Vacancy already active");
-        return;
-      }
+    //   if (isActive) {
+    //     alert("Vacancy already active");
+    //     return;
+    //   }
 
-      await axios
-        .put(`${VITE_API_URL}/active_vacancy/` + id, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: "bearer " + token,
-          },
-        })
-        .then((response) => {
-          this.createVacancy();
-        });
-      alert("Active Vacancy");
-    },
+    //   await axios
+    //     .put(`${VITE_API_URL}/active_vacancy/` + id, {
+    //       headers: {
+    //         "content-type": "application/json",
+    //         Authorization: "bearer " + token,
+    //       },
+    //     })
+    //     .then((response) => {
+    //       this.createVacancy();
+    //     });
+    //   alert("Active Vacancy");
+    // },
 
     async createVacancy() {
       const token = localStorage.getItem("token");
-      axios
+      this.isLoading = true;
+      await axios
         .get(`${VITE_API_URL}/vacancies`, {
           headers: {
             "content-type": "application/json",
             Authorization: "bearer " + token,
           },
         })
-
         .then((response) => {
           this.getVacancyDetail = response.data.data;
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
   },

@@ -32,7 +32,12 @@ const router = createRouter({
       },
       children: [
         {
-          path: "/client",
+          path: "", 
+          name: "ClientsListsRedirect",
+          redirect: { name: "ClientsLists" } 
+        },
+        {
+          path: "/client-list",
           name: "ClientsLists",
           component: () => import("@/components/ClientsPages/ClientsLists.vue"),
           props: true,
@@ -94,7 +99,7 @@ const router = createRouter({
           props: true,
         },
         {
-          path: "/client",
+          path: "/client-view",
           name: "Client",
           component: () => import("@/views/ClientView.vue"),
           meta: {
@@ -128,13 +133,18 @@ const router = createRouter({
       },
       children: [
         {
-          path: "availability",
+          path: "", 
+          name: "CandidateAvailabilityRedirect",
+          redirect: { name: "CandidateAvailability" } 
+        },
+        {
+          path: "/availability",
           name: "CandidateAvailability",
           component: () => import("@/views/CandidateAvailability.vue"),
           props: true,
         },
         {
-          path: "staffs",
+          path: "/staff-list",
           name: "CandidateLists",
           component: () =>
             import("@/components/CandidatePages/CandidateLists.vue"),
@@ -323,7 +333,12 @@ const router = createRouter({
       },
       children: [
         {
-          path: "/shifts",
+          path: "", 
+          name: "VacancyListRedirect",
+          redirect: { name: "VacancyList" } 
+        },
+        {
+          path: "/shift-list",
           name: "VacancyList",
           component: () => import("@/components/VacancyPages/VacancyList.vue"),
           props: true,
@@ -348,13 +363,18 @@ const router = createRouter({
       },
     },
     {
-      path: "/timesheet/weekly",
+      path: "/timesheet",
       name: "Timesheet",
       component: () => import("@/views/TimesheetView.vue"),
       meta: {
         auth: true,
       },
       children: [
+        {
+          path: "", 
+          name: "WeeklyTimeSheetRedirect",
+          redirect: { name: "WeeklyTimeSheet" } 
+        },
         {
           path: "/timesheet/weekly",
           name: "WeeklyTimeSheet",
@@ -376,7 +396,7 @@ const router = createRouter({
       ]
     },
     {
-      path: "/invoice/vendor-invoice",
+      path: "/invoice",
       name: "Invoice",
       component: () => import("@/views/InvoiceView.vue"),
       meta: {
@@ -384,13 +404,18 @@ const router = createRouter({
       },
       children: [
         {
-          path: "/invoice/vendor-invoice",
+          path: "", 
+          name: "ClientInvoiceRedirect",
+          redirect: { name: "ClientInvoice" } 
+        },
+        {
+          path: "/invoice/client-invoice",
           name: "ClientInvoice",
           component: () => import("@/components/InvoicePages/ClientInvoice.vue"),
           props: true,
         },
         {
-          path: "/invoice/vendor-invoice/VendorInvoiceView",
+          path: "/invoice/client-invoice/client-InvoiceView",
           name: "ClientInvoiceView",
           component: () => import("@/components/InvoicePages/ClientInvoiceView.vue"),
           props: true,

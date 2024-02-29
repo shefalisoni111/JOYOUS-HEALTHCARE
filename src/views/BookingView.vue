@@ -259,7 +259,7 @@ export default {
         this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
         this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
       }
-      // Save the values to localStorage
+
       localStorage.setItem("startDate", this.startDate.toISOString());
       localStorage.setItem("endDate", this.endDate.toISOString());
     },
@@ -268,12 +268,26 @@ export default {
       const storedEndDate = localStorage.getItem("endDate");
 
       if (storedStartDate && storedEndDate) {
-        this.startDate = new Date(storedStartDate);
-        this.endDate = new Date(storedEndDate);
+        const startDate = new Date(storedStartDate);
+        const endDate = new Date(storedEndDate);
+
+        const currentDate = new Date();
+        const weekStart = new Date(currentDate);
+        weekStart.setDate(currentDate.getDate() - currentDate.getDay());
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekStart.getDate() + 6);
+
+        if (startDate < weekStart || startDate > weekEnd) {
+          this.startDate = new Date(weekStart);
+          this.endDate = new Date(weekEnd);
+        } else {
+          this.startDate = startDate;
+          this.endDate = endDate;
+        }
       }
     },
     formatDate(date) {
-      return date.toLocaleDateString(); // You can customize the formatting based on your needs
+      return date.toLocaleDateString();
     },
     // async vacancyDeleteMethod(id) {
     //   if (!window.confirm("Are you Sure ?")) {

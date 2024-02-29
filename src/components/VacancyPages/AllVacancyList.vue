@@ -197,12 +197,13 @@
         Next
       </button>
     </div>
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
+import Loader from "../Loader/Loader.vue";
 import PublishedVacancy from "../modals/Vacancy/PublishedVacancy.vue";
 import AppliedVacancyList from "../modals/Vacancy/AppliedVacancyList.vue";
 import AssignedVacancyList from "../modals/Vacancy/AssignedVacancyList.vue";
@@ -217,6 +218,7 @@ export default {
       selectedVacancyId: 0,
       currentPage: 1,
       itemsPerPage: 9,
+      isLoading: false,
     };
   },
   components: {
@@ -227,6 +229,7 @@ export default {
     AllVacancyCandidateList,
     EditVacancy,
     AddVacancy,
+    Loader,
   },
   computed: {
     displayedVacancies() {
@@ -301,6 +304,7 @@ export default {
 
     async createVacancy() {
       const token = localStorage.getItem("token");
+      this.isLoading = true;
       axios
         .get(`${VITE_API_URL}/activate_vacancy_list`, {
           headers: {
@@ -311,6 +315,9 @@ export default {
 
         .then((response) => {
           this.getVacancyDetail = response.data.vacancies;
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
   },

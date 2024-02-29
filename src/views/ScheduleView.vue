@@ -626,6 +626,11 @@ export default {
     this.loadStoredData();
     window.addEventListener("beforeunload", this.saveToLocalStorage);
     this.getJobTitleMethod();
+    const currentDate = new Date();
+    const startOfWeek = new Date(currentDate);
+    startOfWeek.setDate(currentDate.getDate() - currentDate.getDay() + 1);
+
+    this.startDate = startOfWeek;
   },
 };
 </script>

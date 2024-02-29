@@ -17,7 +17,7 @@
         <div class="row p-3">
           <div class="full-page-calendar">
             <div class="d-flex justify-content-between align-items-center">
-              <div class="calendar-header">
+              <div class="calendar-header w-100">
                 <span v-if="formattedStartDate && formattedEndDate" class="fw-bold">
                   {{
                     "Monday " + formattedStartDate + " to Sunday " + formattedEndDate
@@ -569,30 +569,18 @@ export default {
     Calendar,
   },
   async created() {
-    const storedData = localStorage.getItem("calendarData");
-
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
-      this.startDate = parsedData.startDate;
-      this.endDate.value = parsedData.endDate;
+    try {
+      const currentDate = new Date();
+      const mondayIndex = 1;
+      const dayOfWeek = currentDate.getDay();
+      const daysToAdd =
+        dayOfWeek < mondayIndex ? mondayIndex - dayOfWeek - 7 : mondayIndex - dayOfWeek;
+      currentDate.setDate(currentDate.getDate() + daysToAdd);
+      this.startDate = currentDate.toISOString().split("T")[0];
       this.fetchCandidateList(this.startDate);
-    } else {
-      try {
-        // Fetch current date from API
-        const response = await axios.get(`${VITE_API_URL}/today_current_date`);
-        const currentDate = new Date(response.data.current_data_is);
-        const mondayIndex = 1;
-        const dayOfWeek = currentDate.getDay();
-        const daysToAdd =
-          dayOfWeek < mondayIndex ? mondayIndex - dayOfWeek - 7 : mondayIndex - dayOfWeek;
-        currentDate.setDate(currentDate.getDate() + daysToAdd);
-        this.startDate = currentDate.toISOString().split("T")[0];
-        this.fetchCandidateList(this.startDate);
-      } catch (error) {
-        // console.error("Failed to fetch current date from API:", error);
-      }
+    } catch (error) {
+      // Handle error
     }
-
     window.addEventListener("beforeunload", this.saveToLocalStorage);
   },
 };

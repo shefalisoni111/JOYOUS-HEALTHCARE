@@ -209,6 +209,9 @@ a.router-link-active::after {
   align-items: center;
   color: #ff5722;
 }
+ul.generalsetting li i.rounded-circle {
+  border-radius: 50%;
+}
 
 @media (max-width: 1400px) {
   #main {

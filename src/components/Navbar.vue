@@ -26,7 +26,7 @@
           <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
-              href="/client"
+              href="/client-list"
               id="vendorDropdown"
               role="button"
               data-bs-toggle="dropdown"
@@ -37,7 +37,7 @@
             </a>
 
             <div class="dropdown-menu" aria-labelledby="vendorDropdown">
-              <router-link class="dropdown-item" to="/client">Client</router-link>
+              <router-link class="dropdown-item" to="/client-list">Client</router-link>
               <router-link class="dropdown-item" to="/site">Site</router-link>
               <router-link class="dropdown-item" to="/rates_and_rules"
                 >Rates and Rules</router-link
@@ -57,7 +57,7 @@
           <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
-              href="/staff"
+              href="/staff-list"
               id="candidatesDropdown"
               role="button"
               data-bs-toggle="dropdown"
@@ -67,16 +67,14 @@
               Staff
             </a>
             <div class="dropdown-menu" aria-labelledby="candidatesDropdown">
-              <router-link class="dropdown-item" to="/staff/staffs"
-                >Staff List</router-link
-              >
-              <router-link class="dropdown-item" to="/staff/availability"
+              <router-link class="dropdown-item" to="/staff-list">Staff List</router-link>
+              <router-link class="dropdown-item" to="/availability"
                 >Staff Availability</router-link
               >
             </div>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" aria-current="page" to="/shifts">
+            <router-link class="nav-link" aria-current="page" to="/shift-list">
               Shifts
             </router-link>
           </li>
@@ -134,7 +132,7 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="invoiceDropdown">
               <li>
-                <router-link class="dropdown-item" to="/invoice/vendor-invoice"
+                <router-link class="dropdown-item" to="/invoice/client-invoice"
                   >Client Invoice</router-link
                 >
               </li>

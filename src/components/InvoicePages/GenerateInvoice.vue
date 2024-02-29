@@ -40,7 +40,7 @@ ul.generalsetting h6 {
               <router-link class="nav-link d-inline" aria-current="page" to="/home"
                 >Dashboard</router-link
               >
-              / <span class="color-fonts">ClientInvoice</span> /
+              / <span class="color-fonts">Client Invoice</span> /
               <span class="color-fonts">Generate Invoice</span>
             </li>
           </ol>

@@ -40,7 +40,7 @@ ul.generalsetting h6 {
               <router-link class="nav-link d-inline" aria-current="page" to="/home"
                 >Dashboard</router-link
               >
-              / <span class="color-fonts">ClientInvoice</span>
+              / <span class="color-fonts">Client Invoice</span>
             </li>
           </ol>
         </div>
@@ -337,6 +337,14 @@ export default {
 
   mounted() {
     // this.createVacancy();
+    const currentDate = new Date();
+    const startOfWeek = new Date(currentDate);
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
+    this.startDate = startOfWeek;
+
+    const endOfWeek = new Date(currentDate);
+    endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
+    this.endDate = endOfWeek;
     this.loadDateRangeFromLocalStorage();
   },
 };

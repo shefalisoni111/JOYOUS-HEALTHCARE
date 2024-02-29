@@ -13,7 +13,7 @@
               <th scope="col">Date</th>
               <th scope="col">Shift</th>
               <th scope="col">Notes</th>
-
+              <th scope="col">Status</th>
               <th scope="col">Action</th>
             </tr>
           </thead>
@@ -46,12 +46,16 @@
               <td v-text="data.shift"></td>
 
               <td v-text="data.notes"></td>
+              <td></td>
               <td>
                 <button
                   class="btn btn-outline-success text-nowrap"
                   v-on:click="reActivatedMethod(data.id, data.editDate)"
                 >
-                  Re-Activate
+                  Re-Activate</button
+                >&nbsp;&nbsp;
+                <button class="btn btn-outline-danger text-nowrap">
+                  <i class="bi bi-trash" v-on:click="vacancyDeleteMethod(data.id)"></i>
                 </button>
               </td>
             </tr>
@@ -80,12 +84,13 @@
         Next
       </button>
     </div>
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
+import Loader from "../Loader/Loader.vue";
 export default {
   name: "ActiveCandidate",
   data() {
@@ -96,9 +101,10 @@ export default {
       createVacancy: null,
       currentPage: 1,
       itemsPerPage: 9,
+      isLoading: false,
     };
   },
-  components: {},
+  components: { Loader },
   computed: {
     displayedVacancies() {
       return this.getInactiveData.length >= 8
@@ -116,6 +122,22 @@ export default {
   },
 
   methods: {
+    async vacancyDeleteMethod(id) {
+      if (!window.confirm("Are you Sure ?")) {
+        return;
+      }
+      const token = localStorage.getItem("token");
+      await axios
+        .delete(`${VITE_API_URL}/vacancies/` + id, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+        })
+        .then((response) => {
+          this.getInactiveVacancyMethod();
+        });
+    },
     reActivatedMethod(id, date) {
       const today = new Date();
       const editDate = new Date(date);
@@ -140,6 +162,7 @@ export default {
     },
 
     async getInactiveVacancyMethod() {
+      this.isLoading = true;
       try {
         const response = await axios.get(`${VITE_API_URL}/inactive_vacancy_list`);
 
@@ -151,6 +174,8 @@ export default {
         } else {
           // console.error("Error fetching candidates:", error);
         }
+      } finally {
+        this.isLoading = false;
       }
     },
   },
@@ -162,12 +187,98 @@ export default {
 </script>
 
 <style scoped>
-.widthDefine {
-  width: 6%;
+#main {
+  transition: all 0.3s;
+  height: 100dvh;
+
+  background-color: #fdce5e17;
+}
+
+.main-content {
+  transition: all 0.3s;
 }
 .btn:focus-visible {
   border: none;
   outline: none;
+}
+.bg-define {
+  background-color: #fdce5e17;
+}
+.color-fonts {
+  color: #ff5f30;
+  font-weight: bold;
+}
+.btn-primary {
+  border: none;
+}
+.form-check-input {
+  border: 2px solid grey;
+}
+.widthDefine {
+  width: 6%;
+}
+.rounded-circle {
+  border: 1px solid #ff5f30;
+  padding: 8px 11px;
+  cursor: pointer;
+}
+.border-left {
+  border-left: 1px solid #ded9d9;
+  height: 100vh;
+}
+a[data-v-507f63b7] {
+  text-decoration: none;
+}
+.vacancyTable tr:nth-child(odd) td {
+  background: #fdce5e17 !important;
+}
+.btn-primary {
+  border-radius: 4px;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  background-color: transparent;
+  border: 1px solid green;
+  border-radius: 22px;
+  color: green;
+}
+
+.nav-pills .nav-link {
+  background-color: transparent;
+  border: 1px solid #0d6efd;
+  border-radius: 22px;
+}
+ul.nav-pills {
+  height: 53px;
+  border-bottom: 1px solid #b8b1b1;
+}
+table th {
+  background-color: #ff5f30;
+}
+
+button.nav-link > li.nav-item {
+  border-bottom: 2px solid red;
+  padding-bottom: 5px;
+}
+
+.form-select {
+  width: auto;
+}
+.searchbox {
+  width: 19%;
+}
+.searchbox::before {
+  content: "\F52A";
+  font-family: "bootstrap-icons";
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  color: #ff5f30;
+  font-weight: bolder;
+}
+input::-webkit-input-placeholder {
+  margin-left: 5px;
 }
 @media (max-width: 1120px) {
   .vacancyTable {
