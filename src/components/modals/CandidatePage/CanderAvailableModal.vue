@@ -45,9 +45,7 @@
                 v-model="selectedShifts[date]"
                 :value="'Early'"
                 @click="updateDate(date, 'Early')"
-                :checked="
-                  initialDate === formatDate(date) && availabilityStatus === 'Early'
-                "
+                :checked="getCheckedStatus(date, 'Early')"
                 :disabled="isShiftDisabled(date)"
               />
               <label :for="'early-' + date" class="ps-1">E</label>
@@ -59,9 +57,7 @@
                 v-model="selectedShifts[date]"
                 :value="'Late'"
                 @click="updateDate(date, 'Late')"
-                :checked="
-                  initialDate === formatDate(date) && availabilityStatus === 'Late'
-                "
+                :checked="getCheckedStatus(date, 'Late')"
                 :disabled="isShiftDisabled(date)"
               />
               <label :for="'late-' + date" class="ps-1">L</label>
@@ -74,9 +70,7 @@
                 v-model="selectedShifts[date]"
                 :value="'Night'"
                 @click="updateDate(date, 'Night')"
-                :checked="
-                  initialDate === formatDate(date) && availabilityStatus === 'Night'
-                "
+                :checked="getCheckedStatus(date, 'Night')"
                 :disabled="isShiftDisabled(date)"
               />
               <label :for="'night-' + date" class="ps-1">N</label>
@@ -88,9 +82,7 @@
                 v-model="selectedShifts[date]"
                 :value="'Unavailable'"
                 @click="updateDate(date, 'Unavailable')"
-                :checked="
-                  initialDate === formatDate(date) && availabilityStatus === 'Unavailable'
-                "
+                :checked="getCheckedStatus(date, 'Unavailable')"
                 :disabled="isShiftDisabled(date)"
               />
               <label :for="'unavailable-' + date" class="ps-1">U</label>
@@ -141,6 +133,8 @@ export default {
       selectedDate: [],
       selectedShifts: {},
       selectedMonth: "",
+      updatedStatusData: [],
+      availabilityByDate: [],
     };
   },
   created() {
@@ -239,6 +233,14 @@ export default {
     },
   },
   methods: {
+    getCheckedStatus(date, shift) {
+      const formattedDate = this.formatDate(date);
+      const availability = this.availabilityByDate.find((item) => {
+        return item.date === formattedDate;
+      });
+
+      return availability && availability.status === shift;
+    },
     updateCurrentMonth(date) {
       if (date instanceof Date && !isNaN(date)) {
         this.selectedMonth = date.toLocaleString("default", {
@@ -371,12 +373,14 @@ export default {
           return;
         }
 
-        // Update the status
         const selectedShifts = Object.keys(dayData.shifts)
           .filter((key) => dayData.shifts[key])
           .join(", ");
         this.status = selectedShifts || "";
         this.$set(this.selectedShifts, selectedDate, shift);
+        if (this.availabilityByDate[selectedDate] === shift) {
+          this.selectedShifts[selectedDate] = shift;
+        }
       }
     },
     addCandidateStatus: async function () {
@@ -436,7 +440,6 @@ export default {
             }
           }
 
-          // Post all availabilities in the array
           const postResponse = await axios.post(
             `${VITE_API_URL}/availabilitys`,
             { availabilities },
@@ -472,12 +475,38 @@ export default {
         }
       }
     },
+    async fetchAvailabilityStatusMethod(startDate) {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/weekly_availability_for_candidate/${this.candidate_id}`,
+          {
+            params: { date: startDate },
+          }
+        );
+        this.updatedStatusData = response.data.data;
+
+        this.availabilityByDate = this.updatedStatusData.reduce(
+          (formattedData, candidate) => {
+            candidate.availability.forEach((availabilityItem) => {
+              const formattedDate = this.formatDate(availabilityItem.date);
+              formattedData.push({
+                date: formattedDate,
+                status: availabilityItem.status,
+              });
+            });
+            return formattedData;
+          },
+          []
+        );
+      } catch (error) {}
+    },
   },
 
-  async created() {
+  created() {
     this.initializeCalendar();
 
     this.updateCurrentMonth(new Date(this.initialDate));
+    this.fetchAvailabilityStatusMethod();
   },
 };
 </script>
@@ -538,7 +567,9 @@ export default {
 .calendar-day:hover {
   background-color: #dcdcdc;
 }
-
+input[type="radio"]:checked {
+  background-color: #ca5507;
+}
 .calendar-day {
   display: flex;
 

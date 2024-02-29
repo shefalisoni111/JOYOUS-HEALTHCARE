@@ -307,7 +307,7 @@ export default {
         this.searchResults = response.data.data;
         this.errorMsg = "";
       } catch (error) {
-        console.error("Error fetching search results:", error);
+        // console.error("Error fetching search results:", error);
 
         this.searchResults = [];
         this.showSearchResults = false;

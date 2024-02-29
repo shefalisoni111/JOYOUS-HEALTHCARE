@@ -77,7 +77,7 @@
                   </div>
                   <div class="col-9">
                     <input
-                      type="date"
+                      type="text"
                       class="form-control"
                       v-model="fetchVacancy.dates"
                       multiple
@@ -215,14 +215,12 @@ export default {
         this.fetchVacancy.job_id = response.data.job_id;
 
         this.fetchVacancy.dates = response.data.dates.map((date) => {
-          const dateObject = new Date(date);
-          return (
-            dateObject.getFullYear() +
-            "-" +
-            ("0" + (dateObject.getMonth() + 1)).slice(-2) +
-            "-" +
-            ("0" + dateObject.getDate()).slice(-2)
-          );
+          // Ensure date is in the correct format before parsing
+          const dateParts = date.split(",")[1].trim().split("-"); // Extract date parts
+          const day = dateParts[0].trim();
+          const month = dateParts[1].trim();
+          const year = dateParts[2].trim();
+          return `${year}-${month}-${day}`; // Construct date in yyyy-MM-dd format
         });
 
         this.fetchVacancy.shift_id = response.data.shift_id;
@@ -240,9 +238,7 @@ export default {
         const invalidDate = datesArray.find((date) => new Date(date) < today);
 
         if (invalidDate) {
-          alert(
-            "At least one date is less than today. Please select a date greater than or equal to today."
-          );
+          alert("Please select a date greater than or equal to today.");
           return;
         }
         const response = await axios.put(
@@ -269,7 +265,7 @@ export default {
         this.$emit("updateVacancy");
         alert("Vacancy updated successfully");
       } catch (error) {
-        console.error("Error updating vacancy:", error);
+        // console.error("Error updating vacancy:", error);
       }
     },
 

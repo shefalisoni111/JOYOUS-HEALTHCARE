@@ -126,12 +126,16 @@ export default {
 
           this.setupAutoLogout(tokenExpiration - currentTime);
 
+          // Clear any previous error
+          this.error = "";
+
           this.$router.push({ name: "Home" });
         } else {
           this.error = "Invalid Email or Password";
         }
       } catch (error) {
-        // Handle errors
+        // Handle errors, e.g., display an error message
+        this.error = "An error occurred. Please try again later.";
       } finally {
         this.loading = false;
       }

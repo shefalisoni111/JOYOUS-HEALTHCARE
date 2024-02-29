@@ -285,6 +285,7 @@ export default {
         return;
       }
       const token = localStorage.getItem("token");
+
       await axios
         .put(`${VITE_API_URL}/inactive_vacancy/` + id, {
           headers: {

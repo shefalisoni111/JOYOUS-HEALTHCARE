@@ -9,7 +9,7 @@
                 <router-link class="nav-link d-inline" aria-current="page" to="/home"
                   >Dashboard</router-link
                 >
-                / <span class="color-fonts">Vendors </span>
+                / <span class="color-fonts">{{ activeTabName }} Vendors </span>
               </li>
             </ol>
           </div>
@@ -90,6 +90,7 @@
 <script>
 import AllClient from "../ClientsPages/AllClient.vue";
 import InActiveClient from "../ClientsPages/InActiveClient.vue";
+import ActiveVendor from "../ClientsPages/ActiveVendor.vue";
 
 export default {
   data() {
@@ -99,10 +100,13 @@ export default {
       isActive: true,
       searchQuery: "",
       tabs: [
-        { name: "All ", component: "AllClient" },
-        { name: "InActive ", component: "InActiveClient" },
+        { name: "All ", component: "AllClient", routeName: "AllClient" },
+
+        { name: "Active ", component: "ActiveVendor", routeName: "ActiveVendor" },
+        { name: "InActive ", component: "InActiveClient", routeName: "InActiveClient" },
       ],
       activeTab: 0,
+      activeTabName: "",
     };
   },
   computed: {
@@ -110,12 +114,52 @@ export default {
       return this.tabs[this.activeTab].component;
     },
   },
-  components: { AllClient, InActiveClient },
+  components: { AllClient, InActiveClient, ActiveVendor },
 
   methods: {
+    setActiveTabFromRoute() {
+      const currentRouteName = this.$route.name;
+      const matchingTabIndex = this.tabs.findIndex(
+        (tab) => tab.routeName === currentRouteName
+      );
+
+      if (matchingTabIndex !== -1) {
+        this.selectTab(matchingTabIndex);
+      }
+    },
+
+    setActiveTabNameOnLoad() {
+      this.activeTabName = this.tabs[this.activeTab].name;
+    },
     selectTab(index) {
       this.activeTab = index;
+      this.activeTabName = this.tabs[index].name;
+      this.$router.push({ name: this.tabs[index].routeName });
     },
+  },
+  mounted() {
+    this.setActiveTabFromRoute();
+    this.setActiveTabNameOnLoad();
+  },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
+
+      if (matchingTabIndex !== -1) {
+        vm.activeTab = matchingTabIndex;
+        vm.activeTabName = vm.tabs[matchingTabIndex].name;
+      }
+    });
+  },
+  beforeRouteUpdate(to, from, next) {
+    const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
+
+    if (matchingTabIndex !== -1) {
+      this.activeTab = matchingTabIndex;
+      this.activeTabName = this.tabs[matchingTabIndex].name;
+    }
+
+    next();
   },
 };
 </script>

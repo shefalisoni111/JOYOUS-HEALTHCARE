@@ -285,6 +285,15 @@ export default {
         return;
       }
       const token = localStorage.getItem("token");
+
+      const isInactive = this.getVacancyDetail.find(
+        (vacancy) => vacancy.id === id && vacancy.activated === false
+      );
+
+      if (isInactive) {
+        alert("Vacancy already Inactive");
+        return;
+      }
       await axios
         .put(`${VITE_API_URL}/inactive_vacancy/` + id, {
           headers: {
@@ -302,6 +311,15 @@ export default {
         return;
       }
       const token = localStorage.getItem("token");
+      const isActive = this.getVacancyDetail.find(
+        (vacancy) => vacancy.id === id && vacancy.activated === true
+      );
+
+      if (isActive) {
+        alert("Vacancy already active");
+        return;
+      }
+
       await axios
         .put(`${VITE_API_URL}/active_vacancy/` + id, {
           headers: {
@@ -312,7 +330,7 @@ export default {
         .then((response) => {
           this.createVacancy();
         });
-      alert("InActive Vacancy");
+      alert("Active Vacancy");
     },
 
     async createVacancy() {

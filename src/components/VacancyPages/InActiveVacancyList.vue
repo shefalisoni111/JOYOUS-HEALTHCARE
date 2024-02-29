@@ -49,10 +49,6 @@
               <td>
                 <button
                   class="btn btn-outline-success text-nowrap"
-                  data-bs-toggle="modal"
-                  data-bs-target="#editVacancy"
-                  data-bs-whatever="@mdo"
-                  @click="editVacancyId(data.id)"
                   v-on:click="reActivatedMethod(data.id, data.editDate)"
                 >
                   Re-Activate
@@ -84,13 +80,12 @@
         Next
       </button>
     </div>
-    <EditVacancy :vacancyId="selectedVacancyId || 0" @updateVacancy="createVacancy" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import EditVacancy from "../modals/Vacancy/EditVacancy.vue";
+
 export default {
   name: "ActiveCandidate",
   data() {
@@ -103,7 +98,7 @@ export default {
       itemsPerPage: 9,
     };
   },
-  components: { EditVacancy },
+  components: {},
   computed: {
     displayedVacancies() {
       return this.getInactiveData.length >= 8
@@ -121,15 +116,11 @@ export default {
   },
 
   methods: {
-    editVacancyId(vacancyId) {
-      this.selectedVacancyId = vacancyId;
-    },
     reActivatedMethod(id, date) {
       const today = new Date();
       const editDate = new Date(date);
 
-      // Check if the edit date is before today's date
-      if (editDate < today) {
+      if (editDate <= today) {
         if (!window.confirm("Are you sure you want to re-activate?")) {
           return;
         }
@@ -141,10 +132,9 @@ export default {
             alert("Successful Reactivate");
           })
           .catch((error) => {
-            console.error("Error reactivating vacancy:", error);
+            // console.error("Error reactivating vacancy:", error);
           });
       } else {
-        // Date is today or later
         alert("Cannot re-activate. Edit date is today or later.");
       }
     },

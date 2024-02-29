@@ -36,6 +36,42 @@ const router = createRouter({
           name: "ClientsLists",
           component: () => import("@/components/ClientsPages/ClientsLists.vue"),
           props: true,
+          children: [
+            {
+              path: "/vendor/allVendor",
+              name: "AllClient",
+              component: () =>
+                import(
+                  "@/components/ClientsPages/AllClient.vue"
+                ),
+              meta: {
+                auth: true,
+              },
+            },
+            {
+              path: "/vendor/activeVendor",
+              name: "ActiveVendor",
+              component: () =>
+                import(
+                  "@/components/ClientsPages/ActiveVendor.vue"
+                ),
+              meta: {
+                auth: true,
+              },
+            },
+            {
+              path: "/vendor/Inactive-Vendor",
+              name: "InActiveClient",
+              component: () =>
+                import(
+                  "@/components/ClientsPages/InActiveClient.vue"
+                ),
+              meta: {
+                auth: true,
+              },
+            },
+           
+          ]
         },
         {
           path: "edit/:id",
@@ -56,6 +92,30 @@ const router = createRouter({
           component: () =>
             import("@/components/ClientsPages/SingleClientProfile.vue"),
           props: true,
+        },
+        {
+          path: "/vendors",
+          name: "Vendor",
+          component: () => import("@/views/ClientView.vue"),
+          meta: {
+            auth: true,
+          },
+        },
+        {
+          path: "/department",
+          name: "Department",
+          component: () => import("@/components/ClientsPages/Department.vue"),
+          meta: {
+            auth: true,
+          },
+        },
+        {
+          path: "/rates_and_rules",
+          name: "Rates_and_Rules",
+          component: () => import("@/components/ClientsPages/Rates_and_Rules.vue"),
+          meta: {
+            auth: true,
+          },
         },
       ],
     },

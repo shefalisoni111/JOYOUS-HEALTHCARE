@@ -45,7 +45,11 @@
                         <div class="card-icon d-flex flex-column">
                           <i class="bi bi-people fs-1 text-info"></i>
                           <span class="text-muted text-capitalize fs-6"
-                            >Total Vendors</span
+                            ><router-link
+                              class="text-capitalize text-decoration-none text-muted"
+                              :to="{ name: 'AllClient' }"
+                              >Total Vendors</router-link
+                            ></span
                           >
                         </div>
                         <div class="ps-4 mt-2">
@@ -65,7 +69,11 @@
                         <div class="card-icon d-flex flex-column">
                           <i class="bi bi-people fs-1 text-success"></i>
                           <span class="text-muted text-capitalize fs-6"
-                            >Active Vendors</span
+                            ><router-link
+                              class="text-capitalize text-decoration-none text-muted"
+                              :to="{ name: 'ActiveVendor' }"
+                              >Active Vendors</router-link
+                            ></span
                           >
                         </div>
                         <div class="ps-4 mt-2">
@@ -85,7 +93,11 @@
                         <div class="card-icon d-flex flex-column">
                           <i class="bi bi-people fs-1 text-danger"></i>
                           <span class="text-muted text-capitalize fs-6"
-                            >inactive Vendors</span
+                            ><router-link
+                              class="text-capitalize text-decoration-none text-muted"
+                              :to="{ name: 'InActiveClient' }"
+                              >inactive Vendors</router-link
+                            ></span
                           >
                         </div>
                         <div class="ps-4 mt-2">
@@ -210,7 +222,11 @@
                         <div class="card-icon d-flex flex-column">
                           <i class="bi bi-people fs-1 text-info"></i>
                           <span class="text-muted text-capitalize fs-6"
-                            >Total Departments</span
+                            ><router-link
+                              class="text-capitalize text-decoration-none text-muted"
+                              :to="{ name: 'Department' }"
+                              >Total Departments</router-link
+                            ></span
                           >
                         </div>
                         <div class="ps-4 mt-2">
@@ -234,7 +250,11 @@
                         <div class="card-icon d-flex flex-column">
                           <i class="bi bi-people fs-1 text-success"></i>
                           <span class="text-muted text-capitalize fs-6"
-                            >active Departments</span
+                            ><router-link
+                              class="text-capitalize text-decoration-none text-muted"
+                              :to="{ name: 'Department' }"
+                              >active Departments</router-link
+                            ></span
                           >
                         </div>
                         <div class="ps-4 mt-2">
@@ -258,7 +278,11 @@
                         <div class="card-icon d-flex flex-column">
                           <i class="bi bi-people fs-1 text-danger"></i>
                           <span class="text-muted text-capitalize fs-6"
-                            >inactive Departments</span
+                            ><router-link
+                              class="text-capitalize text-decoration-none text-muted"
+                              :to="{ name: 'Department' }"
+                              >inactive Departments</router-link
+                            ></span
                           >
                         </div>
                         <div class="ps-4 mt-2">
@@ -425,7 +449,7 @@
                             <span class="box-icon4 mt-2"></span>
                             <div class="d-flex flex-column">
                               <span class="fs-4 ps-2 fw-bold">2</span>
-                              <span class="d-flex ms-2">Deleted Shifts</span>
+                              <span class="d-flex ms-2">Inactive Shifts</span>
                             </div>
                           </div>
                         </li>
@@ -614,7 +638,7 @@ export default {
 
   mounted() {
     this.loadDateRangeFromLocalStorage();
-    // const timestamp = 1709106283467;
+    // const timestamp = 1709186517666;
     // const date = new Date(timestamp);
     // console.log(date);
   },

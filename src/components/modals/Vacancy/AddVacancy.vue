@@ -96,7 +96,7 @@
                       v-model="selectedDate"
                       @change="addDate"
                     />
-                    <span v-if="!validationDateType" class="text-danger text-capitalize"
+                    <span v-if="!validationDateType" class="text-danger"
                       >Please choose a date from today onwards!</span
                     >
                     <div v-if="dates.length > 0" class="mt-2">
@@ -296,7 +296,7 @@ export default {
         const currentDate = new Date();
         const selectedDate = new Date(this.selectedDate);
 
-        if (selectedDate >= currentDate) {
+        if (selectedDate > currentDate || this.isToday(selectedDate, currentDate)) {
           if (!this.dates.includes(this.selectedDate)) {
             this.dates.push(this.selectedDate);
           }
@@ -307,6 +307,13 @@ export default {
           this.validationDateType = false;
         }
       }
+    },
+    isToday(selectedDate, currentDate) {
+      return (
+        selectedDate.getDate() === currentDate.getDate() &&
+        selectedDate.getMonth() === currentDate.getMonth() &&
+        selectedDate.getFullYear() === currentDate.getFullYear()
+      );
     },
     removeDate(index) {
       this.dates.splice(index, 1);

@@ -23,11 +23,26 @@
               Home
             </router-link>
           </li>
-          <li class="nav-item">
-            <router-link class="nav-link" aria-current="page" to="/vendor">
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="/vendor"
+              id="vendorDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
               Vendors
-              <!-- <i class="bi bi-caret-down-fill"></i> -->
-            </router-link>
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="vendorDropdown">
+              <router-link class="dropdown-item" to="/vendor">Vendors</router-link>
+              <router-link class="dropdown-item" to="/department">Department</router-link>
+              <router-link class="dropdown-item" to="/rates_and_rules"
+                >Rates and Rules</router-link
+              >
+            </div>
 
             <!-- <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li>
@@ -38,25 +53,7 @@
               </li>
             </ul> -->
           </li>
-          <!-- <li class="nav-item">
-            <router-link class="nav-link" aria-current="page" to="/candidates">
-              Candidates
-              <i class="bi bi-caret-down-fill"></i>
-            </router-link>
 
-            <ul
-              class="dropdown"
-              aria-labelledby="navbarDropdown"
-              
-            >
-              <li>
-                <router-link class="dropdown-item">Client 1</router-link>
-              </li>
-              <li>
-                <router-link class="dropdown-item">Client 2</router-link>
-              </li>
-            </ul>
-          </li> -->
           <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"

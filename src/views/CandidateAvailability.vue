@@ -37,8 +37,10 @@
                 <span class="close d-flex justify-content-end" @click="closeModal"
                   >&times;</span
                 >
-                <h4 class="text-capitalize">{{ getCandidateName() }}</h4>
-                <p>
+                <h4 class="text-capitalize" style="color: #ff5722; font-weight: bold">
+                  {{ getCandidateName() }}
+                </h4>
+                <!-- <p>
                   You clicked on
                   <span style="color: #ff5722; font-weight: bold">{{
                     formatDate(selectedDate)
@@ -51,8 +53,8 @@
                     {{ statusForSelectedDate }}
                   </span>
                   <span v-else style="color: #ff5722; font-weight: bold"> null </span>
-                </p>
-                <p v-if="statusForSelectedDate">
+                </p> -->
+                <!-- <p v-if="statusForSelectedDate">
                   Status:
                   <span style="color: #ff5722; font-weight: bold">{{
                     statusForSelectedDate
@@ -60,7 +62,7 @@
                 </p>
                 <p v-else>
                   Status: <span style="color: #ff5722; font-weight: bold">null</span>
-                </p>
+                </p> -->
                 <!-- Pass initialDate to the Calendar component -->
 
                 <Calendar
@@ -292,8 +294,8 @@ export default {
 
   methods: {
     handleAvailabilityChange(availability_id) {
-      console.log("Availability ID received:", availability_id);
-      console.log("Availability ID:", availability_id);
+      // console.log("Availability ID received:", availability_id);
+      // console.log("Availability ID:", availability_id);
     },
     updateDateRange() {
       this.fetchCandidateList(this.startDate);
@@ -367,7 +369,7 @@ export default {
       }
 
       Vue.set(this, "selectedDateRow", selectedDateRow);
-      console.log(selectedDateRow);
+      // console.log(selectedDateRow);
     },
     formatDate(day) {
       return day.toLocaleDateString();
@@ -452,10 +454,31 @@ export default {
     Calendar,
   },
   async created() {
-    const startDate = new Date();
-    await this.fetchCandidateList(startDate);
-    await this.loadStoredData();
-    await window.addEventListener("beforeunload", this.saveToLocalStorage);
+    const storedData = localStorage.getItem("calendarData");
+
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      this.startDate = parsedData.startDate;
+      this.endDate.value = parsedData.endDate;
+      this.fetchCandidateList(this.startDate);
+    } else {
+      try {
+        // Fetch current date from API
+        const response = await axios.get(`${VITE_API_URL}/today_current_date`);
+        const currentDate = new Date(response.data.current_data_is);
+        const mondayIndex = 1;
+        const dayOfWeek = currentDate.getDay();
+        const daysToAdd =
+          dayOfWeek < mondayIndex ? mondayIndex - dayOfWeek - 7 : mondayIndex - dayOfWeek;
+        currentDate.setDate(currentDate.getDate() + daysToAdd);
+        this.startDate = currentDate.toISOString().split("T")[0];
+        this.fetchCandidateList(this.startDate);
+      } catch (error) {
+        // console.error("Failed to fetch current date from API:", error);
+      }
+    }
+
+    window.addEventListener("beforeunload", this.saveToLocalStorage);
   },
 };
 </script>
@@ -480,6 +503,9 @@ input.dateInput {
   color: transparent;
   border: transparent;
   font-size: larger;
+}
+input[type="radio"]:checked {
+  background-color: #ca5507;
 }
 input.dateInput:focus-visible {
   outline: transparent !important;

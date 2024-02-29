@@ -77,7 +77,7 @@ export default createStore({
         
         if (!response.ok) {
           if (response.status === 404) {
-            console.warn('Note count resource not found. Check the API endpoint.');
+            // console.warn('Note count resource not found. Check the API endpoint.');
           } else {
             throw new Error(`Failed to fetch note count (HTTP ${response.status})`);
           }
@@ -86,7 +86,7 @@ export default createStore({
           commit('SET_NOTE_COUNT', data.count);
         }
       } catch (error) {
-        console.error('Error updating note count:', error.message);
+        // console.error('Error updating note count:', error.message);
       }
     },
   },
