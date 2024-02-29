@@ -5,7 +5,7 @@
         <div class="d-flex align-items-center">
           <ol class="breadcrumb mb-1 p-3">
             <li class="breadcrumb-item active text-uppercase fw-bold">
-              Vendor setting / <span class="clr">basic permission</span>
+              Clientsetting / <span class="clr">basic permission</span>
             </li>
           </ol>
         </div>
@@ -73,7 +73,7 @@
                     <div class="bg-white py-4">
                       <div>
                         <h6>
-                          <b>Vendor:</b> Pages displayed in the Vendor dashboard can be
+                          <b>Vendor:</b> Pages displayed in the Clientdashboard can be
                           enabled or disabled from here.
                         </h6>
                         <ul class="list-unstyled list-inline">
@@ -124,8 +124,8 @@
                       </div>
                       <div class="mt-5">
                         <h6>
-                          <b>Department :</b> Pages displayed in the department dashboard
-                          can be enabled or disabled from here..
+                          <b>Site :</b> Pages displayed in the Site dashboard can be
+                          enabled or disabled from here..
                         </h6>
                         <ul class="list-unstyled list-inline">
                           <li>

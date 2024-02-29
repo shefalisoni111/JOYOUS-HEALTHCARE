@@ -8,7 +8,7 @@
               <th scope="col">ID</th>
               <th scope="col">#RefCode</th>
               <th scope="col">Vendor</th>
-              <th scope="col">Department</th>
+              <th scope="col">Site</th>
               <th scope="col">Job Title</th>
               <th scope="col">Date</th>
               <th scope="col">Shift</th>
@@ -199,12 +199,13 @@
         Next
       </button>
     </div>
+    <!-- <loader></loader> -->
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
+// import Loader from "../Loader/Loader.vue";
 import PublishedVacancy from "../modals/Vacancy/PublishedVacancy.vue";
 import AppliedVacancyList from "../modals/Vacancy/AppliedVacancyList.vue";
 import AssignedVacancyList from "../modals/Vacancy/AssignedVacancyList.vue";
@@ -229,6 +230,7 @@ export default {
     AllVacancyCandidateList,
     EditVacancy,
     AddVacancy,
+    // Loader,
   },
   computed: {
     getIconClass() {

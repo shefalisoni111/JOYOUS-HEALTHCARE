@@ -4,7 +4,7 @@
       <div class="d-flex align-items-center">
         <ul class="breadcrumb mb-1">
           <li class="breadcrumb-item active text-uppercase fw-bold">
-            General settings / <span class="clr">Staffs profile</span>
+            General settings / <span class="clr">Staff profile</span>
           </li>
         </ul>
       </div>

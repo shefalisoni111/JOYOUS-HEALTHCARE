@@ -142,13 +142,13 @@ ul.generalsetting h6 {
                           </th>
                           <th scope="col">Code</th>
                           <th scope="col">Name</th>
-                          <th scope="col">Department</th>
+                          <th scope="col">Site</th>
                           <th scope="col">Job</th>
                           <th scope="col">Shift Date</th>
                           <th scope="col">Start Time</th>
                           <th scope="col">End Time</th>
                           <th scope="col">Total Hours</th>
-                          <th scope="col">Vendor Rate</th>
+                          <th scope="col">ClientRate</th>
                           <th scope="col">Total Cost</th>
                           <th scope="col">Paper TimeSheet</th>
                           <!-- <th scope="col">Action</th> -->
@@ -163,7 +163,7 @@ ul.generalsetting h6 {
                           </td>
                           <td scope="col">f5643r</td>
                           <td scope="col">Aniket</td>
-                          <td scope="col">Department</td>
+                          <td scope="col">Site</td>
                           <td scope="col">Manager</td>
                           <td scope="col">25/01/2024</td>
                           <td scope="col">22:00</td>

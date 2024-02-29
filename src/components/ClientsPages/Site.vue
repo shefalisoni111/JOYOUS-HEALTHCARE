@@ -2,7 +2,7 @@
   <div>
     <Navbar />
     <div id="main">
-      <h6>Department Page in Progress.....</h6>
+      <h6>Site Page in Progress.....</h6>
     </div>
   </div>
 </template>

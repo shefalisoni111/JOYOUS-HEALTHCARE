@@ -18,7 +18,7 @@
               <form>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-3">
-                    <label class="form-label">Department</label>
+                    <label class="form-label">Site</label>
                   </div>
                   <div class="col-9">
                     <select
@@ -56,7 +56,7 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-3">
-                    <label class="form-label">Vendor ID</label>
+                    <label class="form-label">ClientID</label>
                   </div>
                   <div class="col-9">
                     <select v-model="fetchVacancy.client_id" id="selectClients">
@@ -101,18 +101,18 @@
                     </select>
                   </div>
                 </div>
-                <!-- <div class="mb-3">
-                  <div class="col-12">
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-3">
                     <label class="form-label">Notes</label>
                   </div>
-                  <div class="col-12 ">
+                  <div class="col-9">
                     <input
                       type="text"
                       class="form-control"
                       v-model="fetchVacancy.notes"
                     />
                   </div>
-                </div> -->
+                </div>
               </form>
             </div>
           </div>
@@ -153,6 +153,7 @@ export default {
         job_id: "",
         dates: [],
         shift_id: "",
+        notes: "",
       },
       businessUnit: [],
       shiftsTime: [],
@@ -215,14 +216,13 @@ export default {
         this.fetchVacancy.job_id = response.data.job_id;
 
         this.fetchVacancy.dates = response.data.dates.map((date) => {
-          // Ensure date is in the correct format before parsing
-          const dateParts = date.split(",")[1].trim().split("-"); // Extract date parts
+          const dateParts = date.split(",")[1].trim().split("-");
           const day = dateParts[0].trim();
           const month = dateParts[1].trim();
           const year = dateParts[2].trim();
-          return `${year}-${month}-${day}`; // Construct date in yyyy-MM-dd format
+          return `${day}-${month}-${year}`;
         });
-
+        this.fetchVacancy.notes = response.data.notes;
         this.fetchVacancy.shift_id = response.data.shift_id;
       } catch (error) {}
     },
@@ -235,11 +235,19 @@ export default {
           ? this.fetchVacancy.dates
           : [this.fetchVacancy.dates];
         const today = new Date();
-        const invalidDate = datesArray.find((date) => new Date(date) < today);
+        const invalidDate = datesArray.find((date) => {
+          const selectedDate = new Date(date);
 
-        if (invalidDate) {
-          alert("Please select a date greater than or equal to today.");
+          return (
+            selectedDate < today || selectedDate.toDateString() === today.toDateString()
+          );
+        });
+
+        if (invalidDate && invalidDate < today) {
+          alert("Please choose a date from today onwards.");
           return;
+        } else if (invalidDate && invalidDate >= today) {
+          alert("Edit successful!");
         }
         const response = await axios.put(
           `${VITE_API_URL}/vacancies/${this.fetchVacancy.id}`,
@@ -248,6 +256,7 @@ export default {
             client_id: this.fetchVacancy.client_id,
             job_id: this.fetchVacancy.job_id,
             dates: datesArray,
+            notes: this.fetchVacancy.notes,
             shift_id: this.fetchVacancy.shift_id,
           },
           {

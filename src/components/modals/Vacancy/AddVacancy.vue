@@ -23,6 +23,26 @@
               <form>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
+                    <label for="selectClients" class="form-label">Client</label>
+                  </div>
+                  <div class="col-10">
+                    <select v-model="client_id" id="selectClients">
+                      <option
+                        v-for="option in clientData"
+                        :key="option.id"
+                        :value="option.id"
+                        aria-placeholder="Select Job"
+                      >
+                        {{ option.first_name }}
+                      </option>
+                    </select>
+                    <span v-if="!validationSelectedClient" class="text-danger"
+                      >Client Required</span
+                    >
+                  </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
                     <label class="form-label" for="selectBusinessUnit"
                       >Business Unit</label
                     >
@@ -44,26 +64,7 @@
                     >
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label for="selectClients" class="form-label">Client</label>
-                  </div>
-                  <div class="col-10">
-                    <select v-model="client_id" id="selectClients">
-                      <option
-                        v-for="option in clientData"
-                        :key="option.id"
-                        :value="option.id"
-                        aria-placeholder="Select Job"
-                      >
-                        {{ option.first_name }}
-                      </option>
-                    </select>
-                    <span v-if="!validationSelectedClient" class="text-danger"
-                      >Client Required</span
-                    >
-                  </div>
-                </div>
+
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label class="form-label" for="selectJobTitle">Job Title</label>
@@ -276,21 +277,21 @@ export default {
     },
   },
   methods: {
-    clearFieldsAndValidation() {
-      this.business_unit_id = "";
-      this.client_id = "";
-      this.job_id = "";
-      this.dates = [];
-      this.shift_id = "";
-      this.notes = "";
-      this.selectedDate = null;
-      this.validationSelectedOptionText = true;
-      this.validationSelectedBusinessUnit = true;
-      this.validationSelectedClient = true;
-      this.validationNotesText = true;
-      this.validationShift = true;
-      this.validationDateType = true;
-    },
+    // clearFieldsAndValidation() {
+    //   this.business_unit_id = "";
+    //   this.client_id = "";
+    //   this.job_id = "";
+    //   this.dates = [];
+    //   this.shift_id = "";
+    //   this.notes = "";
+    //   this.selectedDate = null;
+    //   this.validationSelectedOptionText = true;
+    //   this.validationSelectedBusinessUnit = true;
+    //   this.validationSelectedClient = true;
+    //   this.validationNotesText = true;
+    //   this.validationShift = true;
+    //   this.validationDateType = true;
+    // },
     addDate() {
       if (this.selectedDate) {
         const currentDate = new Date();
@@ -356,10 +357,12 @@ export default {
           });
 
           if (response.ok) {
+            this.clearFields();
+            setTimeout(() => {
+              this.clearError();
+            }, 100);
             this.$emit("addVacancy");
             alert("Successful Vacancy added");
-            this.clearFieldsAndValidation();
-            window.location.reload();
           }
         } catch (error) {}
       } else {
@@ -437,6 +440,15 @@ export default {
       this.validationNotesText = true;
       this.validationShift = true;
       this.validationDateType = true;
+    },
+    clearFields() {
+      this.business_unit_id = "";
+      this.client_id = "";
+      this.job_id = "";
+      this.dates = [];
+      this.shift_id = "";
+      this.notes = "";
+      this.selectedDate = null;
     },
   },
   mounted() {

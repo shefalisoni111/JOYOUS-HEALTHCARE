@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-12">
         <div class="d-flex justify-content-between">
-          <h5 class="mb-2 d-flex align-items-center">Department</h5>
+          <h5 class="mb-2 d-flex align-items-center">Site</h5>
           <button
             type="button"
             class="btn btn-outline-success text-nowrap"
@@ -11,7 +11,7 @@
             data-bs-target="#addVacancies"
             data-bs-whatever="@mdo"
           >
-            + Add Department
+            + Add Site
           </button>
         </div>
 

@@ -5,7 +5,7 @@
         <thead>
           <tr>
             <th scope="col">#RefCode</th>
-            <th scope="col">Vendor Name</th>
+            <th scope="col">ClientName</th>
 
             <th scope="col">Address</th>
             <th scope="col">PhoneNumber</th>

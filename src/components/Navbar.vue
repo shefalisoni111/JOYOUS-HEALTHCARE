@@ -26,19 +26,19 @@
           <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
-              href="/vendor"
+              href="/client"
               id="vendorDropdown"
               role="button"
               data-bs-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"
             >
-              Vendors
+              Client
             </a>
 
             <div class="dropdown-menu" aria-labelledby="vendorDropdown">
-              <router-link class="dropdown-item" to="/vendor">Vendors</router-link>
-              <router-link class="dropdown-item" to="/department">Department</router-link>
+              <router-link class="dropdown-item" to="/client">Client</router-link>
+              <router-link class="dropdown-item" to="/site">Site</router-link>
               <router-link class="dropdown-item" to="/rates_and_rules"
                 >Rates and Rules</router-link
               >
@@ -64,7 +64,7 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              Staffs
+              Staff
             </a>
             <div class="dropdown-menu" aria-labelledby="candidatesDropdown">
               <router-link class="dropdown-item" to="/staff/staffs"
@@ -112,7 +112,7 @@
                 >Weekly TimeSheet</router-link
               >
               <router-link class="dropdown-item" to="/timesheet/custom"
-                >CustomTimeSheet</router-link
+                >Custom TimeSheet</router-link
               >
               <router-link class="dropdown-item" to="/timesheet/signed"
                 >Signed TimeSheet</router-link
@@ -135,7 +135,7 @@
             <ul class="dropdown-menu" aria-labelledby="invoiceDropdown">
               <li>
                 <router-link class="dropdown-item" to="/invoice/vendor-invoice"
-                  >Vendor Invoice</router-link
+                  >Client Invoice</router-link
                 >
               </li>
               <li>

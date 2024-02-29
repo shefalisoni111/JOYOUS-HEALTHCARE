@@ -24,21 +24,21 @@ const router = createRouter({
     },
 
     {
-      path: "/vendor",
-      name: "Vendor",
+      path: "/client",
+      name: "Client",
       component: () => import("@/views/ClientView.vue"),
       meta: {
         auth: true,
       },
       children: [
         {
-          path: "/vendor",
+          path: "/client",
           name: "ClientsLists",
           component: () => import("@/components/ClientsPages/ClientsLists.vue"),
           props: true,
           children: [
             {
-              path: "/vendor/allVendor",
+              path: "/client/allClient",
               name: "AllClient",
               component: () =>
                 import(
@@ -49,18 +49,18 @@ const router = createRouter({
               },
             },
             {
-              path: "/vendor/activeVendor",
-              name: "ActiveVendor",
+              path: "/client/activeClient",
+              name: "ActiveClient",
               component: () =>
                 import(
-                  "@/components/ClientsPages/ActiveVendor.vue"
+                  "@/components/ClientsPages/ActiveClient.vue"
                 ),
               meta: {
                 auth: true,
               },
             },
             {
-              path: "/vendor/Inactive-Vendor",
+              path: "/client/Inactive-Client",
               name: "InActiveClient",
               component: () =>
                 import(
@@ -94,17 +94,17 @@ const router = createRouter({
           props: true,
         },
         {
-          path: "/vendors",
-          name: "Vendor",
+          path: "/client",
+          name: "Client",
           component: () => import("@/views/ClientView.vue"),
           meta: {
             auth: true,
           },
         },
         {
-          path: "/department",
-          name: "Department",
-          component: () => import("@/components/ClientsPages/Department.vue"),
+          path: "/site",
+          name: "Site",
+          component: () => import("@/components/ClientsPages/Site.vue"),
           meta: {
             auth: true,
           },

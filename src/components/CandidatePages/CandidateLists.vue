@@ -11,7 +11,7 @@
                 >
                 /
 
-                <span class="color-fonts">{{ activeTabName }} Staffs</span>
+                <span class="color-fonts">{{ activeTabName }} Staff</span>
               </li>
             </ol>
           </div>

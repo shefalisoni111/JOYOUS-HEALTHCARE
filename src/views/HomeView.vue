@@ -35,7 +35,7 @@
                 <h5
                   class="text-uppercase fw-bold d-flex justify-content-start fs-6 pb-2 ps-5"
                 >
-                  Vendor
+                  Client
                 </h5>
 
                 <div class="col-10 mb-3">
@@ -48,7 +48,7 @@
                             ><router-link
                               class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'AllClient' }"
-                              >Total Vendors</router-link
+                              >Total Clients</router-link
                             ></span
                           >
                         </div>
@@ -71,8 +71,8 @@
                           <span class="text-muted text-capitalize fs-6"
                             ><router-link
                               class="text-capitalize text-decoration-none text-muted"
-                              :to="{ name: 'ActiveVendor' }"
-                              >Active Vendors</router-link
+                              :to="{ name: 'ActiveClient' }"
+                              >Active Clients</router-link
                             ></span
                           >
                         </div>
@@ -96,7 +96,7 @@
                             ><router-link
                               class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'InActiveClient' }"
-                              >inactive Vendors</router-link
+                              >inactive Clients</router-link
                             ></span
                           >
                         </div>
@@ -136,7 +136,7 @@
                             <router-link
                               class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'AllCandidateListsDisplay' }"
-                              >Total Staffs
+                              >Total Staff
                             </router-link></span
                           >
                         </div>
@@ -163,7 +163,7 @@
                             <router-link
                               class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'ActiveCandidate' }"
-                              >active Staffs</router-link
+                              >active Staff</router-link
                             ></span
                           >
                         </div>
@@ -189,7 +189,7 @@
                             <router-link
                               class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'InActiveCandidate' }"
-                              >inactive Staffs</router-link
+                              >inactive Staff</router-link
                             ></span
                           >
                         </div>
@@ -213,7 +213,7 @@
                 <h5
                   class="text-uppercase fw-bold d-flex justify-content-start fs-6 pb-2 ps-5"
                 >
-                  Department
+                  Site
                 </h5>
                 <div class="col-10 mb-3">
                   <div class="card h-100 info-card sales-card border-left-blue">
@@ -224,8 +224,8 @@
                           <span class="text-muted text-capitalize fs-6"
                             ><router-link
                               class="text-capitalize text-decoration-none text-muted"
-                              :to="{ name: 'Department' }"
-                              >Total Departments</router-link
+                              :to="{ name: 'Site' }"
+                              >Total Sites</router-link
                             ></span
                           >
                         </div>
@@ -252,8 +252,8 @@
                           <span class="text-muted text-capitalize fs-6"
                             ><router-link
                               class="text-capitalize text-decoration-none text-muted"
-                              :to="{ name: 'Department' }"
-                              >active Departments</router-link
+                              :to="{ name: 'Site' }"
+                              >active Sites</router-link
                             ></span
                           >
                         </div>
@@ -280,8 +280,8 @@
                           <span class="text-muted text-capitalize fs-6"
                             ><router-link
                               class="text-capitalize text-decoration-none text-muted"
-                              :to="{ name: 'Department' }"
-                              >inactive Departments</router-link
+                              :to="{ name: 'Site' }"
+                              >inactive Sites</router-link
                             ></span
                           >
                         </div>

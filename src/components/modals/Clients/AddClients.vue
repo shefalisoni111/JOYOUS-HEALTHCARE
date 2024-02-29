@@ -18,7 +18,7 @@
               <form>
                 <div class="mb-3">
                   <div class="col-12">
-                    <label class="form-label">Vendor name</label>
+                    <label class="form-label">Clientname</label>
                   </div>
                   <div class="col-12">
                     <input

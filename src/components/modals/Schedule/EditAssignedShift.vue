@@ -9,7 +9,7 @@
               <input type="text" class="form-control" aria-describedby="emailHelp" />
             </div>
             <div class="mb-3">
-              <label class="form-label">Department</label>
+              <label class="form-label">Site</label>
               <input type="text" class="form-control" aria-describedby="emailHelp" />
             </div>
             <div class="mb-3">

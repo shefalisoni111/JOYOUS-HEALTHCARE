@@ -9,7 +9,7 @@
           <div class="leftside">
             <div class="heading mb-1 position-relative">
               <p class="bforeline"></p>
-              <p class="mb-0 text-uppercase fw-bold genSetting">Vendor Settings</p>
+              <p class="mb-0 text-uppercase fw-bold genSetting">ClientSettings</p>
               <p class="afterline"></p>
             </div>
             <div>

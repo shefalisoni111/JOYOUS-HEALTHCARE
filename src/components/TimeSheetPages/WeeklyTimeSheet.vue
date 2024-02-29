@@ -139,7 +139,7 @@
             <thead>
               <tr>
                 <th rowspan="3">Name</th>
-                <th rowspan="3">Department</th>
+                <th rowspan="3">Site</th>
                 <th rowspan="3">Shift</th>
                 <th>
                   <div class="calendar-grid">

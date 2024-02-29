@@ -9,7 +9,7 @@
                 <router-link class="nav-link d-inline" aria-current="page" to="/home"
                   >Dashboard</router-link
                 >
-                / <span class="color-fonts">{{ activeTabName }} Vendors </span>
+                / <span class="color-fonts">{{ activeTabName }} Clients </span>
               </li>
             </ol>
           </div>
@@ -90,7 +90,7 @@
 <script>
 import AllClient from "../ClientsPages/AllClient.vue";
 import InActiveClient from "../ClientsPages/InActiveClient.vue";
-import ActiveVendor from "../ClientsPages/ActiveVendor.vue";
+import ActiveClient from "./ActiveClient.vue";
 
 export default {
   data() {
@@ -102,7 +102,7 @@ export default {
       tabs: [
         { name: "All ", component: "AllClient", routeName: "AllClient" },
 
-        { name: "Active ", component: "ActiveVendor", routeName: "ActiveVendor" },
+        { name: "Active ", component: "ActiveClient", routeName: "ActiveClient" },
         { name: "InActive ", component: "InActiveClient", routeName: "InActiveClient" },
       ],
       activeTab: 0,
@@ -114,7 +114,7 @@ export default {
       return this.tabs[this.activeTab].component;
     },
   },
-  components: { AllClient, InActiveClient, ActiveVendor },
+  components: { AllClient, InActiveClient, ActiveClient },
 
   methods: {
     setActiveTabFromRoute() {

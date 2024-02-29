@@ -32,7 +32,7 @@
             <th scope="col" class="col-5 bg-primary text-white jusfycenter">
               Description
             </th>
-            <th scope="col" class="col-4 bg-primary text-white">No. of Staffs</th>
+            <th scope="col" class="col-4 bg-primary text-white">No. of Staff</th>
             <th scope="col" class="col-2 bg-primary text-white jusfycenter">Action</th>
           </tr>
         </thead>
