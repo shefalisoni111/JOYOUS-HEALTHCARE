@@ -286,7 +286,13 @@ ul.generalsetting h6 {
 .heading p.gs {
   transform: translateX(18px);
 }
-
+a.router-link-active {
+  background-color: #fff4de;
+}
+ul.generalsetting li i.rounded-circle a.router-link-active:active {
+  border-top-left-radius: 22px !important;
+  border-bottom-left-radius: 22px !important;
+}
 .pagesetting {
   border-bottom: 1px solid rgb(196, 196, 196);
   width: 100%;

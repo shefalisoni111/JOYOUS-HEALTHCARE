@@ -171,7 +171,7 @@ ul.generalsetting h6 {
 
                           <td scope="col">10 hours</td>
                           <td scope="col">60%</td>
-                          <td scope="col">$235</td>
+                          <td scope="col">£235</td>
                           <td scope="col">testing</td>
                         </tr>
                       </tbody>
@@ -288,7 +288,7 @@ export default {
       }
     },
     formatDate(date) {
-      return date.toLocaleDateString(); // You can customize the formatting based on your needs
+      return date.toLocaleDateString();
     },
     // async vacancyDeleteMethod(id) {
     //   if (!window.confirm("Are you Sure ?")) {
@@ -323,6 +323,14 @@ export default {
   mounted() {
     // this.createVacancy();
     this.loadDateRangeFromLocalStorage();
+    const currentDate = new Date();
+    const startOfWeek = new Date(currentDate);
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
+    this.startDate = startOfWeek;
+
+    const endOfWeek = new Date(currentDate);
+    endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
+    this.endDate = endOfWeek;
   },
 };
 </script>

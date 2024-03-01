@@ -230,10 +230,10 @@ export default {
                           <td scope="col">12:00</td>
                           <td scope="col">7:00</td>
                           <td scope="col">8</td>
-                          <td scope="col">$45</td>
+                          <td scope="col">£45</td>
                           <td scope="col">8</td>
                           <td scope="col">7</td>
-                          <td scope="col">$23</td>
+                          <td scope="col">£23</td>
                           <td scope="col">1</td>
                           <td scope="col">active</td>
                         </tr>
@@ -495,6 +495,14 @@ export default {
     this.getClientMethod();
     this.getEmployeeTypeMethod();
     this.getCandidateListMethod();
+    const currentDate = new Date();
+    const startOfWeek = new Date(currentDate);
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
+    this.startDate = startOfWeek;
+
+    const endOfWeek = new Date(currentDate);
+    endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
+    this.endDate = endOfWeek;
   },
 };
 </script>

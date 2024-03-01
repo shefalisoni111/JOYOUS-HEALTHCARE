@@ -135,7 +135,7 @@
                                       <p class="card-text">
                                         Approch 0.031 each
                                       </p>
-                                      <h5 class="fw-bold">$ 10.00</h5>
+                                      <h5 class="fw-bold">£ 10.00</h5>
                                       <a href="#" class="btn btn-success w-100"
                                         >Purchase</a
                                       >
@@ -148,7 +148,7 @@
                                       <p class="card-text">
                                         Approch 0.031 each
                                       </p>
-                                      <h5 class="fw-bold">$ 10.00</h5>
+                                      <h5 class="fw-bold">£ 10.00</h5>
                                       <a href="#" class="btn btn-success w-100"
                                         >Purchase</a
                                       >
@@ -161,7 +161,7 @@
                                       <p class="card-text">
                                         Approch 0.031 each
                                       </p>
-                                      <h5 class="fw-bold">$ 10.00</h5>
+                                      <h5 class="fw-bold">£ 10.00</h5>
                                       <a href="#" class="btn btn-success w-100"
                                         >Purchase</a
                                       >
@@ -174,7 +174,7 @@
                                       <p class="card-text">
                                         Approch 0.031 each
                                       </p>
-                                      <h5 class="fw-bold">$ 10.00</h5>
+                                      <h5 class="fw-bold">£ 10.00</h5>
                                       <a href="#" class="btn btn-success w-100"
                                         >Purchase</a
                                       >

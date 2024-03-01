@@ -212,7 +212,13 @@ a.router-link-active::after {
 ul.generalsetting li i.rounded-circle {
   border-radius: 50%;
 }
-
+a.router-link-active {
+  background-color: #fff4de;
+}
+ul.generalsetting li i.rounded-circle a.router-link-active:active {
+  border-top-left-radius: 22px !important;
+  border-bottom-left-radius: 22px !important;
+}
 @media (max-width: 1400px) {
   #main {
     padding-top: 51px;

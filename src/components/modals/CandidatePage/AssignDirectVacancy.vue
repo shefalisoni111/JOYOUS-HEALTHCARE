@@ -19,19 +19,58 @@
             ></button>
           </div>
           <div class="modal-body">
+            <div class="row m-3">
+              <div class="col-md-12">
+                <div
+                  class="pagetitle d-flex justify-content-between align-items-center p-2"
+                  v-if="getVacancyDetail.length > 0"
+                >
+                  <div class="d-flex justify-content-around gap-2">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      v-model="selectAll"
+                      @change="selectAllVacancy"
+                      id="selectAllCheckbox"
+                    />
+                    Select All
+                  </div>
+
+                  <div></div>
+
+                  <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="searchbox position-relative">
+                        <!-- <form @submit.prevent="search">
+                          <input
+                            class="form-control mr-sm-2"
+                            type="search"
+                            placeholder="Search by Name"
+                            aria-label="Search"
+                            v-model="searchQuery"
+                            @input="debounceSearch"
+                          />
+                        </form> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="row g-3 align-items-center">
               <table class="table candidateTable" v-if="selectedCandidateItemId">
                 <thead>
                   <tr>
+                    <th scope="col"></th>
                     <th scope="col">ID</th>
                     <th scope="col">#RefCode</th>
                     <th scope="col">Client</th>
                     <th scope="col">Business Unit</th>
                     <th scope="col">Job Title</th>
-                    <th scope="col">Date</th>
+                    <th scope="col" class="widthDefine">Date</th>
                     <th scope="col">Shift</th>
                     <!-- <th scope="col">Staff Required</th> -->
-                    <th scope="col">Notes</th>
+                    <!-- <th scope="col">Notes</th> -->
 
                     <!-- <th scope="col">Created by</th> -->
                   </tr>
@@ -42,7 +81,16 @@
                       {{ errorMessage }}
                     </td>
                   </tr>
-                  <tr v-for="getdata in vacancyList" :key="getdata.id">
+                  <tr v-for="getdata in getVacancyDetail" :key="getdata.id">
+                    <td>
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        :value="getdata.id"
+                        :id="getdata.id"
+                        v-model="checkedVacancies[getdata.id]"
+                      />
+                    </td>
                     <td v-text="getdata.id"></td>
                     <td v-text="getdata.ref_code"></td>
                     <td>
@@ -55,15 +103,17 @@
                     <td v-text="getdata.business_unit"></td>
                     <td v-text="getdata.job_title"></td>
 
-                    <td
-                      v-for="(date, index) in getdata.dates"
-                      :key="index"
-                      v-text="date"
-                    ></td>
+                    <td>
+                      <span v-for="(date, index) in getdata.dates" :key="index">
+                        {{ date }}
+
+                        <template v-if="index !== getdata.dates.length - 1">, </template>
+                      </span>
+                    </td>
 
                     <td v-text="getdata.shift"></td>
                     <!-- <td v-text="getdata.staff_required"></td> -->
-                    <td v-text="getdata.notes"></td>
+                    <!-- <td v-text="getdata.notes"></td> -->
 
                     <!-- <td v-text="getdata.create_by_and_time.split(' ')[0]"></td> -->
                   </tr>
@@ -77,10 +127,19 @@
               data-bs-target="#assignDirectVacancy"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
-              v-on:click="assignVacancyToCandidateDirectMethod()"
-              @click="closePopup"
             >
-              Submit
+              Close
+            </button>
+            <button
+              v-if="getVacancyDetail.length > 0"
+              class="btn btn-primary rounded-1"
+              data-bs-target="#assignDirectVacancy"
+              data-bs-toggle="modal"
+              data-bs-dismiss="modal"
+              v-on:click="assignVacancyToCandidateDirectMethod($event)"
+              @click.stop="closePopup"
+            >
+              Assign
             </button>
           </div>
         </div>
@@ -91,7 +150,7 @@
 
 <script>
 import axios from "axios";
-
+import { reactive } from "vue";
 export default {
   name: "AssignDirectVacancy",
   data() {
@@ -99,9 +158,15 @@ export default {
       getVacancyDetail: [],
       vacancyList: [],
       errorMessage: "",
+      checkedVacancies: reactive({}),
+      selectAll: false,
     };
   },
-
+  created() {
+    this.getVacancyDetail.forEach((data) => {
+      this.$set(this.checkedVacancies, data.id, false);
+    });
+  },
   computed: {
     selectedCandidateItemId() {
       this.assignedCandidate(
@@ -117,28 +182,34 @@ export default {
   methods: {
     closePopup() {
       this.$store.commit("setSelectedCandidateId", null);
-      this.$store.commit("setSelectedJobId", null);
     },
-
+    selectAllVacancy() {
+      if (this.selectAll) {
+        this.getVacancyDetail.forEach((data) => {
+          this.checkedVacancies[data.id] = true;
+        });
+      } else {
+        this.checkedVacancies = {};
+      }
+    },
     assignedCandidate(candidateId, jobId) {
       this.$emit("assignCandidate", { candidateId, jobId });
     },
 
-    async assignedCandidate(candidateId, jobId) {
+    async assignedCandidate(candidateId) {
       const token = localStorage.getItem("token");
 
       if (this.$store.state.selectedCandidateItemId) {
         try {
-          const response = await axios.get(`${VITE_API_URL}/find_vacancy_according_job`, {
-            params: {
-              candidate_id: candidateId,
-              job_id: jobId,
-            },
-            headers: {
-              "content-type": "application/json",
-              Authorization: "bearer " + token,
-            },
-          });
+          const response = await axios.get(
+            `${VITE_API_URL}/find_vacancy_according_candidate_job/${this.$store.state.selectedCandidateItemId}`,
+            {
+              headers: {
+                "content-type": "application/json",
+                Authorization: "bearer " + token,
+              },
+            }
+          );
 
           // console.log(
           //   "candidate_id",
@@ -148,13 +219,13 @@ export default {
           // );
 
           this.errorMessage = response.data.message;
-          this.getVacancyDetail = response.data;
+          this.getVacancyDetail = response.data.vacancies;
 
           this.vacancyList = [];
 
-          this.getVacancyDetail.forEach((vacancyItem) => {
-            this.vacancyList.push(vacancyItem.vacancy);
-          });
+          // this.getVacancyDetail.forEach((vacancyItem) => {
+          //   this.vacancyList.push(vacancyItem.vacancy);
+          // });
           this.$emit("assignVacancy");
         } catch (error) {
           if (error.response) {
@@ -165,50 +236,45 @@ export default {
         }
       }
     },
-    // async assignVacancyToCandidateDirectMethod(candidateId, jobId) {
-    //   const token = localStorage.getItem("token");
+    async assignVacancyToCandidateDirectMethod(event) {
+      event.stopPropagation();
+      const token = localStorage.getItem("token");
+      const checkedVacancyIds = Object.keys(this.checkedVacancies)
+        .filter((vacancy_id) => this.checkedVacancies[vacancy_id])
+        .map((vacancy_id) => parseInt(vacancy_id));
 
-    //   if (this.$store.state.selectedCandidateItemId) {
-    //     try {
-    //       const response = await axios.get(`${VITE_API_URL}/find_vacancy_according_job`, {
-    //         params: {
-    //           candidate_id: candidateId,
-    //           job_id: jobId,
-    //         },
-    //         headers: {
-    //           "content-type": "application/json",
-    //           Authorization: "bearer " + token,
-    //         },
-    //       });
+      if (checkedVacancyIds.length === 0) {
+        return;
+      }
+      console.log(this.$store.state.selectedCandidateItemId, checkedVacancyIds);
+      const data = {
+        candidate_id: this.$store.state.selectedCandidateItemId,
+        vacancy_id: checkedVacancyIds,
+      };
 
-    //       // console.log(
-    //       //   "candidate_id",
-    //       //   this.$store.state.selectedCandidateItemId,
-    //       //   "job_id",
-    //       //   this.$store.state.selectedJobItemId,
-    //       //   this.getVacancyDetail
-    //       // );
+      try {
+        const response = await fetch(`${VITE_API_URL}/assigned_vacancy`, {
+          method: "PUT",
+          headers: {
+            Accept: "application/json",
 
-    //       this.getVacancyDetail = response.data;
-    //       this.$emit("assignVacancy");
+            Authorization: "bearer " + token,
+          },
+          body: JSON.stringify(data),
+        });
 
-    //       this.vacancyList = [];
-
-    //       this.getVacancyDetail.forEach((vacancyItem) => {
-    //         this.vacancyList.push(vacancyItem.vacancy);
-    //       });
-    //       if (response.status === 200 && this.vacancyList.length === 0) {
-    //         this.errorMessage = "Vacancy Not Found";
-    //       }
-    //     } catch (error) {
-    //       if (error.response) {
-    //         if (error.response.status == 404) {
-    //           // Handle 404 error
-    //         }
-    //       }
-    //     }
-    //   }
-    // },
+        if (response.ok) {
+          alert("Staff Assigned Shift Successfully!");
+          this.checkedVacancies = {};
+          this.$emit("Candidate-updated");
+        } else {
+          // throw new Error(`Failed to assign candidates. Status: ${response.status}`);
+        }
+      } catch (error) {
+        // console.error("Error assigning candidates:", error);
+        // Optionally, display an error message to the user
+      }
+    },
   },
 };
 </script>
@@ -221,7 +287,9 @@ export default {
 .modal-header {
   border-bottom: 0px;
 }
-
+.widthDefine {
+  width: 18%;
+}
 .modal-dialog {
   margin-right: auto;
 }

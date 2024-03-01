@@ -145,7 +145,13 @@ a.router-link-active::after {
   align-items: center;
   color: #ff5722;
 }
-
+a.router-link-active {
+  background-color: #fff4de;
+}
+ul.generalsetting li i.rounded-circle a.router-link-active:active {
+  border-top-left-radius: 22px !important;
+  border-bottom-left-radius: 22px !important;
+}
 .heading p.gs {
   transform: translateX(18px);
 }

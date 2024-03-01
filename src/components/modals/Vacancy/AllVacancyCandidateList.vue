@@ -137,6 +137,7 @@
               Close
             </button>
             <button
+              v-if="getVacancyDetail.length > 0"
               class="btn btn-primary rounded-1"
               data-bs-target="#allCandidateVacancyList"
               data-bs-toggle="modal"

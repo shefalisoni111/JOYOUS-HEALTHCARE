@@ -641,6 +641,14 @@ export default {
     // const timestamp = 1709186517666;
     // const date = new Date(timestamp);
     // console.log(date);
+    const currentDate = new Date();
+    const startOfWeek = new Date(currentDate);
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
+    this.startDate = startOfWeek;
+
+    const endOfWeek = new Date(currentDate);
+    endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
+    this.endDate = endOfWeek;
   },
 };
 </script>

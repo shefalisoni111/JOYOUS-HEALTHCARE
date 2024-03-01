@@ -69,7 +69,7 @@
                           data-bs-target="#addClients"
                           data-bs-whatever="@mdo"
                         >
-                          + Add Vendor
+                          + Add Client
                         </button>
                       </div>
                     </div>

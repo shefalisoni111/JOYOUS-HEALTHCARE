@@ -165,9 +165,9 @@ ul.generalsetting h6 {
                           <td scope="col">25/01/2025</td>
                           <td scope="col">mobile</td>
                           <td scope="col">25/02/2024</td>
-                          <td scope="col">$567</td>
-                          <td scope="col">$345</td>
-                          <td scope="col">$123</td>
+                          <td scope="col">£567</td>
+                          <td scope="col">£345</td>
+                          <td scope="col">£123</td>
                           <td scope="col">Active</td>
 
                           <td scope="col">#564f</td>
@@ -330,6 +330,14 @@ export default {
   mounted() {
     // this.createVacancy();
     this.loadDateRangeFromLocalStorage();
+    const currentDate = new Date();
+    const startOfWeek = new Date(currentDate);
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
+    this.startDate = startOfWeek;
+
+    const endOfWeek = new Date(currentDate);
+    endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
+    this.endDate = endOfWeek;
   },
 };
 </script>

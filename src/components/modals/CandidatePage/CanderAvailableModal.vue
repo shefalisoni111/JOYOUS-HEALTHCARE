@@ -235,6 +235,7 @@ export default {
   methods: {
     getCheckedStatus(date, shift) {
       const formattedDate = this.formatDate(date);
+
       const availability = this.availabilityByDate.find((item) => {
         return item.date === formattedDate;
       });
@@ -475,30 +476,29 @@ export default {
         }
       }
     },
-    async fetchAvailabilityStatusMethod(startDate) {
+    async fetchAvailabilityStatusMethod() {
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/weekly_availability_for_candidate/${this.candidate_id}`,
-          {
-            params: { date: startDate },
-          }
+          `${VITE_API_URL}/weekly_availability_for_candidate?candidate_id=${this.candidateId}&date=${this.startDate}`
         );
         this.updatedStatusData = response.data.data;
 
         this.availabilityByDate = this.updatedStatusData.reduce(
           (formattedData, candidate) => {
-            candidate.availability.forEach((availabilityItem) => {
-              const formattedDate = this.formatDate(availabilityItem.date);
+            if (candidate.availability) {
+              const formattedDate = this.formatDate(candidate.availability.date);
               formattedData.push({
                 date: formattedDate,
-                status: availabilityItem.status,
+                status: candidate.availability.status,
               });
-            });
+            }
             return formattedData;
           },
           []
         );
-      } catch (error) {}
+      } catch (error) {
+        // console.error("Error fetching availability:", error);
+      }
     },
   },
 

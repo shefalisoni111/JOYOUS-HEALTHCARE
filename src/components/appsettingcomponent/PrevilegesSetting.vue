@@ -284,6 +284,13 @@ ul.generalsetting li a {
   padding: 3px;
 }
 a.router-link-active {
+  background-color: #fff4de;
+}
+ul.generalsetting li i.rounded-circle a.router-link-active:active {
+  border-top-left-radius: 22px !important;
+  border-bottom-left-radius: 22px !important;
+}
+a.router-link-active {
   color: #ff5722;
 }
 .genSetting {

@@ -312,6 +312,13 @@ table tr td {
 .clr {
   color: #ff5722;
 }
+a.router-link-active {
+  background-color: #fff4de;
+}
+ul.generalsetting li i.rounded-circle a.router-link-active:active {
+  border-top-left-radius: 22px !important;
+  border-bottom-left-radius: 22px !important;
+}
 .genSetting {
   color: #ff5722;
 }

@@ -101,7 +101,7 @@
                           <div class="card mb-3" style="max-width: 18rem">
                             <div class="card-header text-center">Testing demo</div>
                             <div class="card-body ">
-                              <h5 class="card-title text-center">£0.00</h5>
+                              <h5 class="card-title text-center">$0.00</h5>
                               <p class="text-center">plus VAT</p>
                               <p class="card-text">
                                 <ul>
@@ -199,6 +199,13 @@ table tr td {
 .nav-tabs .nav-link:focus,
 .nav-tabs .nav-link {
   border: none;
+}
+a.router-link-active {
+  background-color: #fff4de;
+}
+ul.generalsetting li i.rounded-circle a.router-link-active:active {
+  border-top-left-radius: 22px !important;
+  border-bottom-left-radius: 22px !important;
 }
 a.router-link-active::after {
   content: "\F285";

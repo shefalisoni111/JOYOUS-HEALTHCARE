@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show" class="alert alert-success" role="alert">
+  <div v-if="show" class="alert alert-success" :class="position" role="alert">
     {{ message }}
   </div>
 </template>
@@ -15,8 +15,20 @@ export default {
       type: String,
       required: true,
     },
+    position: {
+      type: String,
+      default: "fixed-top",
+    },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.alert {
+  position: relative;
+}
+
+.fixed-top {
+  top: 0;
+}
+</style>

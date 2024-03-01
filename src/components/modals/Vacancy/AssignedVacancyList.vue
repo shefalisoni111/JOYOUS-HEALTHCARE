@@ -36,23 +36,25 @@
                 <table class="table vacancyTable" v-if="selectedAssignedItemId">
                   <thead>
                     <tr>
+                      <th>ID</th>
                       <th scope="col">staff code</th>
                       <th scope="col">first name</th>
 
                       <th scope="col">phone number</th>
                       <th scope="col">email</th>
                       <th scope="col">address</th>
-                      <th scope="col">activated</th>
+                      <!-- <th scope="col">activated</th> -->
                       <th scope="col">status</th>
                       <th scope="col">position</th>
                       <!-- <th scope="col">employment type</th> -->
-                      <th scope="col">last login</th>
+                      <!-- <th scope="col">last login</th> -->
 
                       <!-- <th scope="col">Action</th> -->
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="data in assignedVacancyData" :key="data.id">
+                      <td v-text="data.id"></td>
                       <td v-text="data.candidate_code"></td>
                       <td v-text="data.first_name"></td>
 
@@ -62,11 +64,11 @@
 
                       <td v-text="data.address"></td>
 
-                      <td v-text="data.activated"></td>
+                      <!-- <td v-text="data.activated"></td> -->
                       <td v-text="data.status"></td>
                       <td v-text="data.position"></td>
                       <!-- <td v-text="data.employment_type"></td> -->
-                      <td v-text="data.last_login"></td>
+                      <!-- <td v-text="data.last_login"></td> -->
                       <!-- <td class="cursor-pointer">
                      
                       &nbsp;&nbsp;

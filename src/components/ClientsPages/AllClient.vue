@@ -59,12 +59,12 @@
                 <i class="bi bi-pencil-square"></i>
               </button>
               &nbsp;&nbsp;
-              <button class="btn btn-outline-success text-nowrap">
+              <!-- <button class="btn btn-outline-success text-nowrap">
                 <i
                   class="bi bi-trash"
                   v-on:click="clientsDeleteMethod(client.id)"
                 ></i></button
-              >&nbsp;&nbsp;
+              >&nbsp;&nbsp; -->
               <router-link
                 :to="{
                   name: 'SingleClientProfile',
@@ -136,14 +136,14 @@ export default {
     editClient(clientID) {
       this.selectedClientID = clientID;
     },
-    async clientsDeleteMethod(id) {
-      if (!window.confirm("Are you Sure ?")) {
-        return;
-      }
-      await axios.delete(`${VITE_API_URL}/clients/` + id).then((response) => {
-        this.createdClient();
-      });
-    },
+    // async clientsDeleteMethod(id) {
+    //   if (!window.confirm("Are you Sure ?")) {
+    //     return;
+    //   }
+    //   await axios.delete(`${VITE_API_URL}/clients/` + id).then((response) => {
+    //     this.createdClient();
+    //   });
+    // },
     async createdClient() {
       await axios
         .get(`${VITE_API_URL}/clients`)

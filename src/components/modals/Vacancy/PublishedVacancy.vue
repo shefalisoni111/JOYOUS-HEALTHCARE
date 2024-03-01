@@ -109,8 +109,9 @@
                     <input
                       class="form-check-input"
                       type="checkbox"
-                      value=""
-                      id="flexCheckDefault"
+                      v-model="selectAll"
+                      @change="selectAllCandidates"
+                      id="selectAllCheckbox"
                     />
                     Select All
                   </div>
@@ -134,8 +135,45 @@
             </div>
             <div class="row">
               <div class="col-md-12">
-                <h6>Shifts List ...</h6>
-                <table v-if="selectedPublishItemId"></table>
+                <h6>Shifts List</h6>
+                <table v-if="selectedPublishItemId" class="w-100">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th scope="col">ID</th>
+                      <th scope="col" class="widthSet">First Name</th>
+                      <th scope="col" class="widthSet">Last Name</th>
+                      <th scope="col">Positions</th>
+                      <th scope="col" class="widthSet">Email</th>
+                      <th scope="col">Phone</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="candidate in getCandidatesData" :key="candidate.id">
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          :value="candidate.id"
+                          :id="candidate.id"
+                          v-model="checkedCandidates[candidate.id]"
+                        />
+                      </td>
+                      <td v-text="candidate.id"></td>
+                      <td>
+                        {{ candidate.first_name }}
+                      </td>
+                      <td>
+                        {{ candidate.last_name }}
+                      </td>
+                      <td v-text="candidate.position"></td>
+                      <td>{{ candidate.email }}</td>
+                      <td>
+                        {{ candidate.phone_number }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -208,21 +246,29 @@
 <script>
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
-
+import { reactive } from "vue";
 export default {
   name: "PublishedVacancy",
   data() {
     return {
+      getCandidatesData: [],
       getPublicVacancyMAil: [],
       notification_type: null,
       vacancyData: [],
       enableMailNotification: false,
       showMessage: false,
       publicationStatus: null,
+      checkedCandidates: reactive({}),
+      selectAll: false,
     };
   },
   components: {
     SuccessAlert,
+  },
+  created() {
+    this.getCandidatesData.forEach((data) => {
+      this.$set(this.checkedCandidates, data.id, false);
+    });
   },
   computed: {
     selectedPublishItemId() {
@@ -231,18 +277,38 @@ export default {
     },
   },
   methods: {
-    async publicCandidateMail(id) {
+    selectAllCandidates() {
+      if (this.selectAll) {
+        this.getCandidatesData.forEach((data) => {
+          this.checkedCandidates[data.id] = true;
+        });
+      } else {
+        this.checkedCandidates = {};
+      }
+    },
+    async publicCandidateMail() {
       const token = localStorage.getItem("token");
       this.getPublicVacancyMAil = [];
 
       if (this.$store.state.selectedPublishItemId) {
+        const checkedCandidateIds = Object.keys(this.checkedCandidates)
+          .filter((candidate_id) => this.checkedCandidates[candidate_id])
+          .map((candidate_id) => parseInt(candidate_id));
+
+        // Check if any candidate is checked
+        if (checkedCandidateIds.length === 0) {
+          // Handle case where no candidate is checked
+          // console.error("No candidate is checked.");
+          return;
+        }
+
         try {
           const notificationType = this.enableMailNotification
             ? "email_notification"
             : null;
 
           const response = await axios.put(
-            `${VITE_API_URL}/send_notification/${id}`,
+            `${VITE_API_URL}/send_notification/${checkedCandidateIds}`,
             { notification_type: notificationType },
             {
               headers: {
@@ -253,15 +319,40 @@ export default {
           );
 
           this.getPublicVacancyMAil = response.data.data;
-
+          alert(response.data.message);
           if (response.status === 200) {
             this.publicationStatus = "published";
             this.showMessage = true;
             this.$emit("publishVacancy");
+            for (const key in this.checkedCandidates) {
+              this.checkedCandidates[key] = false;
+            }
           } else {
+            // Handle error case if needed
           }
-        } catch (error) {}
+        } catch (error) {
+          // console.error("Error sending notification:", error);
+          // Handle error
+        }
       } else {
+        // Handle case where selectedPublishItemId is falsy
+      }
+    },
+
+    async getActiveCandidateMethod() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/approve_and_activated_candidates`
+        );
+
+        this.getCandidatesData = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+          }
+        } else {
+          // console.error("Error fetching candidates:", error);
+        }
       }
     },
     closePopup() {
@@ -285,6 +376,7 @@ export default {
 
   mounted() {
     this.getVacancyDataMethod();
+    this.getActiveCandidateMethod();
   },
 };
 </script>
@@ -300,6 +392,9 @@ export default {
 .publish-ul li {
   background: #ff57223d;
   padding: 5px;
+}
+table th.widthSet {
+  width: 15%;
 }
 .modal-xl {
   --bs-modal-width: 1823px !important;
