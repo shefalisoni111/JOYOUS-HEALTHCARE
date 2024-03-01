@@ -66,7 +66,14 @@
                           class="btn btn-primary btn-block text-capitalize shadow-sm cursor-pointer"
                           :disabled="loading"
                         >
-                          <span v-if="loading">Loading...</span>
+                          <span v-if="loading">
+                            <span
+                              class="spinner-border spinner-border-sm"
+                              role="status"
+                              aria-hidden="true"
+                            ></span>
+                            Loading...
+                          </span>
                           <span v-else>Sign in</span>
                         </button>
                         <!-- <div class="d-flex align-items-center">
@@ -118,8 +125,10 @@ export default {
         const jsonData = response.data;
 
         if (jsonData.is_logged_in) {
-          const tokenExpiration = new Date(jsonData.expiry_time).getTime(); // Convert expiry_time to milliseconds
-          const currentTime = Date.now();
+          const tokenExpiration = new Date(jsonData.expiry_time);
+          const currentTime = new Date();
+          // console.log("Token Expiration:", tokenExpiration);
+          // console.log("Current Time:", currentTime);
 
           localStorage.setItem("token", jsonData.token);
           localStorage.setItem("tokenExpiration", tokenExpiration);
@@ -131,8 +140,7 @@ export default {
           this.error = "Invalid Email or Password";
         }
       } catch (error) {
-        // Handle errors, e.g., display an error message
-        // this.error = "An error occurred. Please try again later.";
+        this.error = "Invalid Email or Password";
       } finally {
         this.loading = false;
       }
@@ -160,11 +168,11 @@ export default {
     const token = localStorage.getItem("token");
     if (token) {
       const tokenExpiration = localStorage.getItem("tokenExpiration");
-      if (tokenExpiration && Date.now() > parseInt(tokenExpiration)) {
-        this.logoutDueToExpiration();
-      } else {
-        this.setupAutoLogout();
+      if (tokenExpiration && Date.now() < parseInt(tokenExpiration)) {
+        this.setupAutoLogout(parseInt(tokenExpiration) - Date.now());
         this.$router.push({ name: "Home" });
+      } else {
+        this.logoutDueToExpiration();
       }
     } else {
       this.$router.push({ name: "Login" });
