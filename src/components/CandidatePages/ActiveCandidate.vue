@@ -145,11 +145,13 @@
         Next
       </button>
     </div>
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import Loader from "../Loader/Loader.vue";
 import EditCandidate from "../modals/CandidatePage/EditCandidate.vue";
 import AssignDirectVacancy from "../modals/CandidatePage/AssignDirectVacancy.vue";
 
@@ -162,12 +164,14 @@ export default {
       selectedCandidateId: null,
       currentPage: 1,
       itemsPerPage: 11,
+      isLoading: false,
     };
   },
 
   components: {
     EditCandidate,
     AssignDirectVacancy,
+    Loader,
   },
   computed: {
     paginateCandidates() {
@@ -234,6 +238,7 @@ export default {
     //   }
     // },
     async getCandidateMethods() {
+      this.isLoading = true;
       try {
         const response = await axios.get(
           `${VITE_API_URL}/approve_and_activated_candidates`
@@ -247,6 +252,8 @@ export default {
         } else {
           // console.error("Error fetching candidates:", error);
         }
+      } finally {
+        this.isLoading = false;
       }
     },
   },

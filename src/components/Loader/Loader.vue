@@ -34,7 +34,7 @@ export default {
 
       setTimeout(() => {
         isLoading.value = false;
-      }, 300);
+      }, 350);
     };
 
     onMounted(simulateLoading);
@@ -50,7 +50,7 @@ export default {
 .spinner-container {
   display: flex;
   justify-content: center;
-
+  align-content: center;
   height: 100dvh;
 }
 .lds-spinner {

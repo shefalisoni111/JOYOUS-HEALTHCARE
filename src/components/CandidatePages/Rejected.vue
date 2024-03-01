@@ -86,12 +86,13 @@
         Next
       </button>
     </div>
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
+import Loader from "../Loader/Loader.vue";
 export default {
   name: "Rejected",
   data() {
@@ -99,8 +100,10 @@ export default {
       getPendingCandidatesData: [],
       currentPage: 1,
       itemsPerPage: 11,
+      isLoading: false,
     };
   },
+  components: { Loader },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -125,6 +128,8 @@ export default {
         } else {
           // console.error("Error fetching candidates:", error);
         }
+      } finally {
+        this.isLoading = false;
       }
     },
 

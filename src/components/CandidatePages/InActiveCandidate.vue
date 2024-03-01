@@ -66,6 +66,7 @@
         Next
       </button>
     </div>
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
@@ -81,6 +82,7 @@ a {
 
 <script>
 import axios from "axios";
+import Loader from "../Loader/Loader.vue";
 export default {
   name: "InActiveCandidate",
   data() {
@@ -88,8 +90,10 @@ export default {
       getCandidatesData: [],
       currentPage: 1,
       itemsPerPage: 11,
+      isLoading: false,
     };
   },
+  components: { Loader },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -119,6 +123,7 @@ export default {
       }
     },
     async activeCandidateMethod(id) {
+      this.isLoading = true;
       if (!window.confirm("Are you Sure?")) {
         return;
       }
@@ -130,6 +135,9 @@ export default {
 
         .catch((error) => {
           // console.error("Error deleting candidate:", error);
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
   },

@@ -68,12 +68,14 @@
                       type="email"
                       class="form-control"
                       v-model="email"
-                      @input="clearError"
+                      @input="validateEmailFormat"
                       @change="detectAutofill"
                       autocomplete="new-email"
                     />
-                    <span v-if="!validateEmail && !autofilled" class="text-danger"
-                      >Required Email</span
+                    <span
+                      v-if="email && !validateEmailFormat(email) && !autofilled"
+                      class="text-danger"
+                      >Invalid Email</span
                     >
                   </div>
                 </div>
@@ -121,9 +123,9 @@
                       @input="cleanPhoneNumber"
                       @change="detectAutofill"
                     />
-                    <span v-if="showPhoneNumberValidation" class="text-danger"
+                    <!-- <span v-if="showPhoneNumberValidation" class="text-danger"
                       >Required Phone Number</span
-                    >
+                    > -->
                     <span
                       v-if="phone_number && !validatePhoneNumberFormat(phone_number)"
                       class="text-danger"
@@ -233,10 +235,12 @@ export default {
     detectAutofill() {
       const isPhoneNumberFilled = this.phone_number.trim() !== "";
       const isPositionSelected = !!this.job_id;
+      const isPhoneNumberFocused = document.activeElement === this.$refs.phone_number;
 
       if (!isPositionSelected) {
-        const isPhoneNumberFocused = document.activeElement === this.$refs.phone_number;
         this.showPhoneNumberValidation = !isPhoneNumberFocused && !isPhoneNumberFilled;
+      } else {
+        this.showPhoneNumberValidation = false;
       }
     },
     async addCandidate() {
@@ -296,6 +300,7 @@ export default {
       const emailRegex = /^[^\s@]+@gmail\.com$/;
       return emailRegex.test(email);
     },
+
     validateNameFormat(first_name) {
       const nameRegex = /[A-Za-z]/;
       return nameRegex.test(first_name);

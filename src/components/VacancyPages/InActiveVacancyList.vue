@@ -7,7 +7,7 @@
             <tr>
               <th scope="col">ID</th>
               <th scope="col">#RefCode</th>
-              <th scope="col">Vendor</th>
+              <th scope="col">Client</th>
               <th scope="col">Site</th>
               <th scope="col">Job Title</th>
               <th scope="col">Date</th>

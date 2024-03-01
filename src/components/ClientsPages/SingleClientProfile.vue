@@ -10,6 +10,15 @@
                   >Dashboard</router-link
                 >
                 /
+                <router-link
+                  class="text-capitalize fw-bold text-decoration-underline"
+                  style="color: #595b5b"
+                  :to="{
+                    name: 'AllClient',
+                  }"
+                  >CLIENT</router-link
+                >
+                /
                 <span class="color-fonts">{{ getClientDatas.first_name }}</span>
               </li>
             </ol>

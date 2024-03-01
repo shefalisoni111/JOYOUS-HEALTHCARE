@@ -10,7 +10,16 @@
                   <router-link class="nav-link d-inline" aria-current="page" to="/home"
                     >Dashboard</router-link
                   >
-                  / STAFF /
+                  /
+                  <router-link
+                    class="text-capitalize fw-bold text-decoration-underline"
+                    style="color: #595b5b"
+                    :to="{
+                      name: 'AllCandidateListsDisplay',
+                    }"
+                    >STAFF</router-link
+                  >
+                  /
                   <span class="color-fonts">{{ getCandidates.first_name }}</span>
                 </li>
               </ol>

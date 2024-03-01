@@ -389,6 +389,26 @@ export default {
         this.search();
       }, 300);
     },
+    // async search() {
+    //   try {
+    //     this.searchResults = [];
+    //     let activatedStatus = null;
+
+    //     const response = await axiosInstance.get(
+    //       `${VITE_API_URL}/search_candidate/${this.searchQuery}`
+    //     );
+
+    //     this.searchResults = response.data.data;
+    //   } catch (error) {
+    //     if (
+    //       (error.response && error.response.status === 404) ||
+    //       error.response.status === 400
+    //     ) {
+    //       this.errorMessage = "No candidates found for the specified criteria";
+    //     }
+    //   }
+    // },
+
     async search() {
       try {
         this.searchResults = [];
@@ -408,6 +428,7 @@ export default {
         }
       }
     },
+
     handleAvailabilityChange(availability_id) {
       // console.log("Availability ID received:", availability_id);
       // console.log("Availability ID:", availability_id);

@@ -68,12 +68,13 @@
         Next
       </button>
     </div>
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
+import Loader from "../Loader/Loader.vue";
 export default {
   name: "RejectCandidate",
   data() {
@@ -81,8 +82,10 @@ export default {
       getRejectCandidateList: [],
       currentPage: 1,
       itemsPerPage: 11,
+      isLoading: false,
     };
   },
+  components: { Loader },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -95,6 +98,7 @@ export default {
   },
   methods: {
     async rejectCandidate() {
+      this.isLoading = true;
       try {
         const response = await axios.get(`${VITE_API_URL}/rejected_candidates_list`);
 
@@ -107,6 +111,8 @@ export default {
         } else {
           // console.error("Error fetching candidates:", error);
         }
+      } finally {
+        this.isLoading = false;
       }
     },
 
