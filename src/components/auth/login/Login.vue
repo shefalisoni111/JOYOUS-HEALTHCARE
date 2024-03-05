@@ -169,22 +169,20 @@ export default {
     logout() {
       this.$router.replace({ name: "Login" });
     },
-  },
+    checkTokenExpiration() {
+      const token = localStorage.getItem("token");
+      const tokenExpiration = localStorage.getItem("tokenExpiration");
 
-  mounted() {
-    const token = localStorage.getItem("token");
-
-    const tokenExpiration = localStorage.getItem("tokenExpiration");
-
-    if (token) {
-      if (new Date().getTime() < new Date(tokenExpiration).getTime()) {
+      if (token && new Date().getTime() < new Date(tokenExpiration).getTime()) {
         this.$router.push({ name: "Home" });
       } else {
         this.logoutDueToExpiration();
       }
-    } else {
-      this.$router.push({ name: "Login" });
-    }
+    },
+  },
+
+  mounted() {
+    this.checkTokenExpiration();
 
     // Check if "Remember Me" credentials exist
     // const email = localStorage.getItem("email");
