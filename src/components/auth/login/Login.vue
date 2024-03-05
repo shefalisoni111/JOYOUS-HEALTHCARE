@@ -64,7 +64,6 @@
                         <button
                           type="submit"
                           class="btn btn-primary btn-block text-capitalize shadow-sm cursor-pointer"
-                          :disabled="loading"
                         >
                           <span v-if="loading">
                             <span
@@ -75,6 +74,7 @@
                             Loading...
                           </span>
                           <span v-else>Sign in</span>
+                          <!-- <span>Sign in</span> -->
                         </button>
                         <!-- <div class="d-flex align-items-center">
                             Did you
@@ -88,6 +88,12 @@
                 </div>
               </div>
             </div>
+            <Loader
+              v-if="loading"
+              :isLoading="loading"
+              class="position-absolute start-50 translate-middle"
+              style="z-index: 1000; top: 100%; transform: translate(-50%, -50%)"
+            ></Loader>
           </div>
         </div>
       </div>
@@ -96,6 +102,7 @@
 </template>
 <script>
 import axios from "axios";
+import Loader from "../../Loader/Loader.vue";
 export default {
   data() {
     return {
@@ -104,9 +111,13 @@ export default {
       error: false,
       rememberMe: false,
       loading: false,
+      token: null,
+      tokenExpiration: null,
     };
   },
-
+  components: {
+    Loader,
+  },
   methods: {
     async login() {
       this.loading = true;
@@ -114,7 +125,6 @@ export default {
         email: this.email,
         password: this.password,
       };
-
       try {
         const response = await axios.post(`${VITE_API_URL}/merchant_login`, data, {
           headers: {
@@ -125,17 +135,14 @@ export default {
         const jsonData = response.data;
 
         if (jsonData.is_logged_in) {
-          const tokenExpiration = new Date(jsonData.expiry_time);
-          const currentTime = new Date();
-          // console.log("Token Expiration:", tokenExpiration);
-          // console.log("Current Time:", currentTime);
-
           localStorage.setItem("token", jsonData.token);
-          localStorage.setItem("tokenExpiration", tokenExpiration);
-
-          this.setupAutoLogout(tokenExpiration - currentTime);
-
+          localStorage.setItem("tokenExpiration", new Date(jsonData.expiry_time));
           this.$router.push({ name: "Home" });
+
+          this.setupAutoLogout(
+            new Date(localStorage.getItem("tokenExpiration")).getTime() -
+              new Date().getTime()
+          );
         } else {
           this.error = "Invalid Email or Password";
         }
@@ -166,10 +173,11 @@ export default {
 
   mounted() {
     const token = localStorage.getItem("token");
+
+    const tokenExpiration = localStorage.getItem("tokenExpiration");
+
     if (token) {
-      const tokenExpiration = localStorage.getItem("tokenExpiration");
-      if (tokenExpiration && Date.now() < parseInt(tokenExpiration)) {
-        this.setupAutoLogout(parseInt(tokenExpiration) - Date.now());
+      if (new Date().getTime() < new Date(tokenExpiration).getTime()) {
         this.$router.push({ name: "Home" });
       } else {
         this.logoutDueToExpiration();

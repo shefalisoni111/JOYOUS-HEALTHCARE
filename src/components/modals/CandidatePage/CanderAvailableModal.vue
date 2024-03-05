@@ -6,9 +6,9 @@
           <!-- <button class="btn btn-primary" @click="goToPreviousMonth">
             <i class="bi bi-caret-left-fill"></i>
           </button> -->
-          <div class="current-month d-flex align-items-center">
+          <!-- <div class="current-month d-flex align-items-center">
             {{ selectedMonth }}
-          </div>
+          </div> -->
           <!-- <button class="btn btn-primary" @click="goToNextMonth">
             <i class="bi bi-caret-right-fill"></i>
           </button> -->
@@ -233,6 +233,23 @@ export default {
     },
   },
   methods: {
+    async fetchCandidateList(startDate) {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/candidates_weekly_availability`,
+          {
+            params: { date: startDate },
+          }
+        );
+        // this.candidateList = response.data.data;
+
+        this.availabilityIds = this.candidateList.map((candidate) => {
+          return candidate.availability.map(
+            (availabilityItem) => availabilityItem.availability_id
+          );
+        });
+      } catch (error) {}
+    },
     getCheckedStatus(date, shift) {
       const formattedDate = this.formatDate(date);
 
@@ -420,10 +437,19 @@ export default {
           );
 
           if (putResponse.status === 200) {
+            this.updatedStatusData.forEach((candidate) => {
+              if (candidate.candidate_id === this.candidate_id) {
+                candidate.availability = {
+                  date: formattedDate,
+                  status: this.status,
+                };
+              }
+            });
             alert("Availability updated successfully");
-            window.location.reload();
-            // this.fetchCandidateList();
-            // this.$emit("Candidate-availability", this.availability_id);
+
+            // this.$emit("availability-updated");
+
+            this.errorMessage = "";
             return;
           } else {
             return;
@@ -453,10 +479,23 @@ export default {
           );
 
           if (postResponse.status === 201) {
+            availabilities.forEach((availability) => {
+              const candidate = this.updatedStatusData.find(
+                (candidate) => candidate.candidate_id === availability.candidate_id
+              );
+              if (candidate) {
+                candidate.availability = {
+                  date: availability.date,
+                  status: availability.status,
+                };
+              }
+            });
+
             alert("Availabilities added successfully");
-            window.location.reload();
-            // this.fetchCandidateList();
-            // this.$emit("Candidate-availability", this.availability_id);
+
+            // this.$emit("availability-updated");
+
+            this.errorMessage = "";
             return;
           } else {
             return;
@@ -476,6 +515,7 @@ export default {
         }
       }
     },
+
     async fetchAvailabilityStatusMethod() {
       try {
         const response = await axios.get(
@@ -502,11 +542,13 @@ export default {
     },
   },
 
-  created() {
-    this.initializeCalendar();
-
-    this.updateCurrentMonth(new Date(this.initialDate));
-    this.fetchAvailabilityStatusMethod();
+  async created() {
+    await Promise.all([
+      this.initializeCalendar(),
+      this.updateCurrentMonth(new Date(this.initialDate)),
+      this.fetchAvailabilityStatusMethod(),
+    ]);
+    await this.fetchCandidateList(this.startDate);
   },
 };
 </script>

@@ -157,7 +157,7 @@
         </div>
       </div>
     </div>
-
+    <ConfirmationModal :message="confirmMessage" @confirmed="performAction" />
     <AddJobbs @jobAdded="getJobData" />
     <EditJob :jobID="selectedjobID" @jobUpdate="getInactiveJobData" />
   </div>
@@ -167,6 +167,7 @@
 import axios from "axios";
 import AddJobbs from "../modals/appsetting/AddJobbs.vue";
 import EditJob from "../modals/appsetting/EditJob.vue";
+import ConfirmationModal from "../../components/Alerts/ConfirmationAlert.vue";
 
 export default {
   name: "AppJobDetail",
@@ -176,14 +177,26 @@ export default {
       getInActiveJobs: [],
       activeTab: "active",
       selectedjobID: null,
+      confirmMessage: "",
     };
   },
   components: {
     AddJobbs,
     EditJob,
+    ConfirmationModal,
   },
 
   methods: {
+    showConfirmation(message, callback) {
+      this.confirmMessage = message;
+      this.confirmCallback = callback;
+      $("#confirmationModal").modal("show");
+    },
+    performAction() {
+      if (typeof this.confirmCallback === "function") {
+        this.confirmCallback();
+      }
+    },
     setActiveTab(tab) {
       this.activeTab = tab;
     },
@@ -196,31 +209,22 @@ export default {
       }
       axios.put(`${VITE_API_URL}/active_job/` + id).then((response) => {
         this.getJobData();
+        this.getInactiveJobData();
       });
-      alert("Record Inactive ");
+      alert("Record Activated ");
     },
-    // jobsDelete(id) {
-    //   if (!window.confirm("Are you Sure ?")) {
-    //     return;
-    //   }
-    //   axios.delete(`${VITE_API_URL}/jobs/` + id).then((response) => {
-    //     this.getInactiveJobData();
-    //   });
-    // },
+
     jobsInActive(id) {
       if (!window.confirm("Are you Sure ?")) {
         return;
       }
       axios.put(`${VITE_API_URL}/inactivate_job/` + id).then((response) => {
-        if (
-          response.data.message ===
-          "nurse job is associated with vacancy or candidate records. Cannot deactivate."
-        ) {
-          alert(
-            "Cannot deactivate job: nurse job is associated with vacancy or candidate records."
-          );
+        this.getJobData();
+        this.getInactiveJobData();
+        if (response.data.message) {
+          alert(response.data.message);
         } else {
-          this.getJobData();
+          alert("Record Inactivated ");
         }
       });
     },
@@ -243,7 +247,7 @@ export default {
         .get(`${VITE_API_URL}/inactive_job_list`)
         .then((response) => {
           this.getInActiveJobs = response.data.data;
-          this.getInactiveDataMethod();
+          // this.getInactiveDataMethod();
         })
         .catch((error) => {
           if (error.response) {
@@ -256,7 +260,9 @@ export default {
     async getInactiveDataMethod() {
       await axios
         .get(`${VITE_API_URL}/inactive_job_list`)
-        .then((response) => {})
+        .then((response) => {
+          // this.getInactiveJobData();
+        })
         .catch((error) => {
           if (error.response) {
             if (error.response.status == 404) {

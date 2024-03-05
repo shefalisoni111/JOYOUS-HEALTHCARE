@@ -343,9 +343,11 @@ export default {
     },
     signout() {
       if (localStorage.getItem("token")) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("tokenExpiration");
-        this.$router.replace({ name: "Login" });
+        if (confirm("Are you sure you want to sign out?")) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("tokenExpiration");
+          this.$router.replace({ name: "Login" });
+        }
       }
     },
     async getAdminMethod() {

@@ -84,9 +84,9 @@
                   :candidateId="selectedCandidateId.toString()"
                   @closeModal="closeModal"
                   :availabilityId="availability_id"
-                  @Candidate-availability="handleAvailabilityChange"
                   :startDate="startDate"
                   :availabilityStatus="statusForSelectedDate"
+                  @availability-updated="fetchCandidateList"
                 />
               </div>
             </div>
@@ -174,11 +174,9 @@
               <tbody v-if="searchResults?.length > 0">
                 <tr v-for="data in searchResults" :key="data.id">
                   <td class="text-capitalize fw-bold" style="width: 21%">
-                    {{ data.first_name + " " }}
-                    <span>
-                      {{ data.last_name }}
-                    </span>
-                    <!-- <span class="fs-6 text-muted fw-100"><br />{{ data.job }}</span> -->
+                    {{ data.candidate_name + " " }}
+
+                    <span class="fs-6 text-muted fw-100"><br />{{ data.job }}</span>
                   </td>
                   <td>
                     <div class="calendar-grid">
@@ -382,6 +380,30 @@ export default {
   },
 
   methods: {
+    async fetchAvailabilityStatusMethod() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/weekly_availability_for_candidate?candidate_id=${this.candidateId}&date=${this.startDate}`
+        );
+        this.updatedStatusData = response.data.data;
+
+        this.availabilityByDate = this.updatedStatusData.reduce(
+          (formattedData, candidate) => {
+            if (candidate.availability) {
+              const formattedDate = this.formatDate(candidate.availability.date);
+              formattedData.push({
+                date: formattedDate,
+                status: candidate.availability.status,
+              });
+            }
+            return formattedData;
+          },
+          []
+        );
+      } catch (error) {
+        // console.error("Error fetching availability:", error);
+      }
+    },
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
 
@@ -415,7 +437,7 @@ export default {
         let activatedStatus = null;
 
         const response = await axiosInstance.get(
-          `${VITE_API_URL}/search_candidate/${this.searchQuery}`
+          `${VITE_API_URL}/availability_searching/${this.searchQuery}`
         );
 
         this.searchResults = response.data.data;
@@ -429,10 +451,6 @@ export default {
       }
     },
 
-    handleAvailabilityChange(availability_id) {
-      // console.log("Availability ID received:", availability_id);
-      // console.log("Availability ID:", availability_id);
-    },
     updateDateRange() {
       this.fetchCandidateList(this.startDate);
       this.saveToLocalStorage();
@@ -514,10 +532,7 @@ export default {
     openModal(candidateId, day) {
       try {
         const actualCandidateId = candidateId.candidate_id;
-        // const selectedDate = new Date(this.startDate);
-        // const dayOfMonth = day.getDate(); // Extract day of the month
-        // selectedDate.setDate(dayOfMonth);
-        // const formattedDate = selectedDate.toISOString().split("T")[0];
+
         const selectedDate = new Date(day.getFullYear(), day.getMonth(), day.getDate());
 
         this.selectedDate = selectedDate;
@@ -578,6 +593,13 @@ export default {
         );
         this.candidateList = response.data.data;
 
+        // this.candidateList.forEach((candidate) => {
+        //   candidate.availabilityByDate = {};
+        //   candidate.availability.forEach((avail) => {
+        //     candidate.availabilityByDate[avail.date] = avail.status;
+        //   });
+        // });
+
         this.availabilityIds = this.candidateList.map((candidate) => {
           return candidate.availability.map(
             (availabilityItem) => availabilityItem.availability_id
@@ -598,10 +620,14 @@ export default {
         dayOfWeek < mondayIndex ? mondayIndex - dayOfWeek - 7 : mondayIndex - dayOfWeek;
       currentDate.setDate(currentDate.getDate() + daysToAdd);
       this.startDate = currentDate.toISOString().split("T")[0];
-      this.fetchCandidateList(this.startDate);
+      this.fetchCandidateList(this.formattedStartDate);
+      this.fetchAvailabilityStatusMethod();
     } catch (error) {
       // Handle error
     }
+    setInterval(() => {
+      this.fetchCandidateList(this.formattedStartDate);
+    }, 5000);
     window.addEventListener("beforeunload", this.saveToLocalStorage);
   },
 };

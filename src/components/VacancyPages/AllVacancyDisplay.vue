@@ -252,7 +252,7 @@ export default {
     getPadding(value) {
       // Calculate padding based on the number of digits
       const digitCount = value.toString().length;
-      return digitCount === 1 ? "10px 13px" : "12px 13px";
+      return digitCount === 1 ? "7px 11px" : "8px 8px";
     },
 
     editVacancyId(vacancyId) {

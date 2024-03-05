@@ -254,7 +254,7 @@ export default {
     getPadding(value) {
       // Calculate padding based on the number of digits
       const digitCount = value.toString().length;
-      return digitCount === 1 ? "10px 13px" : "12px 13px";
+      return digitCount === 1 ? "7px 11px" : "8px 8px";
     },
     editVacancyId(vacancyId) {
       this.selectedVacancyId = vacancyId;
@@ -400,12 +400,19 @@ table th {
 }
 
 button.nav-link > li.nav-item {
-  border-bottom: 2px solid red; /* Replace with your desired border color */
-  padding-bottom: 5px; /* Optional: Add padding for spacing */
+  border-bottom: 2px solid red;
+  padding-bottom: 5px;
 }
-
-button.nav-link.active > li.nav-item {
-  /* Additional styles for the active state if needed */
+.btn-check:checked + .btn,
+.btn.active,
+.btn.show,
+.btn:first-child:active,
+:not(.btn-check) + .btn:active {
+  border: none !important;
+}
+button:focus-visible {
+  outline: none !important;
+  border: none !important;
 }
 
 .form-select {

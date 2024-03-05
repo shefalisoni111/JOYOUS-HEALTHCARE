@@ -138,7 +138,7 @@ ul.generalsetting h6 {
                           <th scope="col">Notes</th>
                           <th scope="col">Mailed At</th>
                           <th scope="col">Status</th>
-                          <!-- <th scope="col">Action</th> -->
+                          <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -157,7 +157,7 @@ ul.generalsetting h6 {
                           <td scope="col">testing</td>
                           <td scope="col">aniket@gmail.com</td>
                           <td scope="col">active</td>
-                          <!-- <td scope="col">view</td> -->
+                          <td scope="col">view</td>
                         </tr>
                       </tbody>
                     </table>
@@ -268,22 +268,8 @@ export default {
       const storedEndDate = localStorage.getItem("endDate");
 
       if (storedStartDate && storedEndDate) {
-        const startDate = new Date(storedStartDate);
-        const endDate = new Date(storedEndDate);
-
-        const currentDate = new Date();
-        const weekStart = new Date(currentDate);
-        weekStart.setDate(currentDate.getDate() - currentDate.getDay());
-        const weekEnd = new Date(weekStart);
-        weekEnd.setDate(weekStart.getDate() + 6);
-
-        if (startDate < weekStart || startDate > weekEnd) {
-          this.startDate = new Date(weekStart);
-          this.endDate = new Date(weekEnd);
-        } else {
-          this.startDate = startDate;
-          this.endDate = endDate;
-        }
+        this.startDate = new Date(storedStartDate);
+        this.endDate = new Date(storedEndDate);
       }
     },
     formatDate(date) {
@@ -321,7 +307,17 @@ export default {
 
   mounted() {
     // this.createVacancy();
+
     this.loadDateRangeFromLocalStorage();
+
+    const currentDate = new Date();
+    const startOfWeek = new Date(currentDate);
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
+    this.startDate = startOfWeek;
+
+    const endOfWeek = new Date(currentDate);
+    endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
+    this.endDate = endOfWeek;
   },
 };
 </script>

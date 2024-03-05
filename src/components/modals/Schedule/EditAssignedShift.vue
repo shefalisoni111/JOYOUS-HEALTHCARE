@@ -90,7 +90,7 @@
             </div>
 
             <div class="d-flex gap-2">
-              <button class="btn btn-danger">Delete</button>
+              <!-- <button class="btn btn-danger">Delete</button> -->
               <button type="submit" class="btn btn-primary">Save</button>
             </div>
           </div>

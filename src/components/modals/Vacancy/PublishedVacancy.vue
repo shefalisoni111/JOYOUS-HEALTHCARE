@@ -376,7 +376,7 @@ export default {
 
   mounted() {
     this.getVacancyDataMethod();
-    this.getActiveCandidateMethod();
+    // this.getActiveCandidateMethod();
   },
 };
 </script>

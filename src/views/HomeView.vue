@@ -46,17 +46,22 @@
                           <i class="bi bi-people fs-1 text-info"></i>
                           <span class="text-muted text-capitalize fs-6"
                             ><router-link
-                              class="text-capitalize text-decoration-none text-muted"
+                              class="text-capitalize text-decoration-none text-muted text-decoration-underline"
                               :to="{ name: 'AllClient' }"
                               >Total Clients</router-link
                             ></span
                           >
                         </div>
                         <div class="ps-4 mt-2">
-                          <h6
-                            v-text="getRecords.Total_client"
-                            class="fs-3 fw-bold mb-0"
-                          ></h6>
+                          <router-link
+                            class="text-capitalize text-decoration-none text-black"
+                            :to="{ name: 'AllClient' }"
+                          >
+                            <h6
+                              v-text="getRecords.Total_client"
+                              class="fs-3 fw-bold mb-0"
+                            ></h6
+                          ></router-link>
                         </div>
                       </div>
                     </div>
@@ -70,17 +75,22 @@
                           <i class="bi bi-people fs-1 text-success"></i>
                           <span class="text-muted text-capitalize fs-6"
                             ><router-link
-                              class="text-capitalize text-decoration-none text-muted"
+                              class="text-capitalize text-decoration-none text-muted text-decoration-underline"
                               :to="{ name: 'ActiveClient' }"
                               >Active Clients</router-link
                             ></span
                           >
                         </div>
                         <div class="ps-4 mt-2">
-                          <h6
-                            v-text="getRecords.Active_client"
-                            class="fs-3 fw-bold mb-0"
-                          ></h6>
+                          <router-link
+                            class="text-capitalize text-decoration-none text-black"
+                            :to="{ name: 'ActiveClient' }"
+                          >
+                            <h6
+                              v-text="getRecords.Active_client"
+                              class="fs-3 fw-bold mb-0"
+                            ></h6
+                          ></router-link>
                         </div>
                       </div>
                     </div>
@@ -94,17 +104,22 @@
                           <i class="bi bi-people fs-1 text-danger"></i>
                           <span class="text-muted text-capitalize fs-6"
                             ><router-link
-                              class="text-capitalize text-decoration-none text-muted"
+                              class="text-capitalize text-decoration-none text-muted text-decoration-underline"
                               :to="{ name: 'InActiveClient' }"
                               >inactive Clients</router-link
                             ></span
                           >
                         </div>
                         <div class="ps-4 mt-2">
-                          <h6
-                            v-text="getRecords.Passive_client"
-                            class="fs-3 fw-bold mb-0"
-                          ></h6>
+                          <router-link
+                            class="text-capitalize text-decoration-none text-black"
+                            :to="{ name: 'InActiveClient' }"
+                          >
+                            <h6
+                              v-text="getRecords.Passive_client"
+                              class="fs-3 fw-bold mb-0"
+                            ></h6
+                          ></router-link>
                         </div>
                       </div>
                     </div>
@@ -134,17 +149,22 @@
                           <i class="bi bi-people fs-1 text-info"></i>
                           <span class="text-muted text-capitalize fs-6">
                             <router-link
-                              class="text-capitalize text-decoration-none text-muted"
+                              class="text-capitalize text-decoration-none text-muted text-decoration-underline"
                               :to="{ name: 'AllCandidateListsDisplay' }"
                               >Total Staff
                             </router-link></span
                           >
                         </div>
                         <div class="ps-4 mt-2">
-                          <h6
-                            v-text="getRecords.candidates"
-                            class="fs-3 fw-bold mb-0"
-                          ></h6>
+                          <router-link
+                            class="text-capitalize text-decoration-none text-black"
+                            :to="{ name: 'AllCandidateListsDisplay' }"
+                          >
+                            <h6
+                              v-text="getRecords.candidates"
+                              class="fs-3 fw-bold mb-0"
+                            ></h6
+                          ></router-link>
                         </div>
                       </div>
                     </div>
@@ -161,17 +181,22 @@
                           <i class="bi bi-people fs-1 text-success"></i>
                           <span class="text-muted text-capitalize fs-6">
                             <router-link
-                              class="text-capitalize text-decoration-none text-muted"
+                              class="text-capitalize text-decoration-none text-muted text-decoration-underline"
                               :to="{ name: 'ActiveCandidate' }"
                               >active Staff</router-link
                             ></span
                           >
                         </div>
                         <div class="ps-4 mt-2">
-                          <h6
-                            v-text="getRecords.current_candidate"
-                            class="fs-3 fw-bold mb-0"
-                          ></h6>
+                          <router-link
+                            class="text-capitalize text-decoration-none text-black"
+                            :to="{ name: 'ActiveCandidate' }"
+                          >
+                            <h6
+                              v-text="getRecords.current_candidate"
+                              class="fs-3 fw-bold mb-0"
+                            ></h6
+                          ></router-link>
                         </div>
                       </div>
                     </div>
@@ -187,17 +212,22 @@
                           <i class="bi bi-people fs-1 text-danger"></i>
                           <span class="text-muted text-capitalize fs-6">
                             <router-link
-                              class="text-capitalize text-decoration-none text-muted"
+                              class="text-capitalize text-decoration-none text-muted text-decoration-underline"
                               :to="{ name: 'InActiveCandidate' }"
                               >inactive Staff</router-link
                             ></span
                           >
                         </div>
                         <div class="ps-4 mt-2">
-                          <h6
-                            v-text="getRecords.deleted_candidate"
-                            class="fs-3 fw-bold mb-0"
-                          ></h6>
+                          <router-link
+                            class="text-capitalize text-decoration-none text-black"
+                            :to="{ name: 'InActiveCandidate' }"
+                          >
+                            <h6
+                              v-text="getRecords.deleted_candidate"
+                              class="fs-3 fw-bold mb-0"
+                            ></h6
+                          ></router-link>
                         </div>
                       </div>
                     </div>
@@ -223,17 +253,22 @@
                           <i class="bi bi-people fs-1 text-info"></i>
                           <span class="text-muted text-capitalize fs-6"
                             ><router-link
-                              class="text-capitalize text-decoration-none text-muted"
+                              class="text-capitalize text-decoration-none text-muted text-decoration-underline"
                               :to="{ name: 'Site' }"
                               >Total Sites</router-link
                             ></span
                           >
                         </div>
                         <div class="ps-4 mt-2">
-                          <h6
-                            v-text="getRecords.Total_business_unit"
-                            class="fs-3 fw-bold mb-0"
-                          ></h6>
+                          <router-link
+                            class="text-capitalize text-decoration-none text-black"
+                            :to="{ name: 'Site' }"
+                          >
+                            <h6
+                              v-text="getRecords.Total_business_unit"
+                              class="fs-3 fw-bold mb-0"
+                            ></h6
+                          ></router-link>
                         </div>
                       </div>
                     </div>
@@ -251,17 +286,22 @@
                           <i class="bi bi-people fs-1 text-success"></i>
                           <span class="text-muted text-capitalize fs-6"
                             ><router-link
-                              class="text-capitalize text-decoration-none text-muted"
+                              class="text-capitalize text-decoration-none text-muted text-decoration-underline"
                               :to="{ name: 'Site' }"
                               >active Sites</router-link
                             ></span
                           >
                         </div>
                         <div class="ps-4 mt-2">
-                          <h6
-                            v-text="getRecords.Active_business_unit"
-                            class="fs-3 fw-bold mb-0"
-                          ></h6>
+                          <router-link
+                            class="text-capitalize text-decoration-none text-black"
+                            :to="{ name: 'Site' }"
+                          >
+                            <h6
+                              v-text="getRecords.Active_business_unit"
+                              class="fs-3 fw-bold mb-0"
+                            ></h6
+                          ></router-link>
                         </div>
                       </div>
                     </div>
@@ -279,17 +319,22 @@
                           <i class="bi bi-people fs-1 text-danger"></i>
                           <span class="text-muted text-capitalize fs-6"
                             ><router-link
-                              class="text-capitalize text-decoration-none text-muted"
+                              class="text-capitalize text-decoration-none text-muted text-decoration-underline"
                               :to="{ name: 'Site' }"
                               >inactive Sites</router-link
                             ></span
                           >
                         </div>
                         <div class="ps-4 mt-2">
-                          <h6
-                            v-text="getRecords.Inactive_business_unit"
-                            class="fs-3 fw-bold mb-0"
-                          ></h6>
+                          <router-link
+                            class="text-capitalize text-decoration-none text-black"
+                            :to="{ name: 'Site' }"
+                          >
+                            <h6
+                              v-text="getRecords.Inactive_business_unit"
+                              class="fs-3 fw-bold mb-0"
+                            ></h6
+                          ></router-link>
                         </div>
                       </div>
                     </div>
