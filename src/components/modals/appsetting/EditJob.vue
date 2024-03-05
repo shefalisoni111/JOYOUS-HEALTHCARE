@@ -26,6 +26,21 @@
                     </div>
                   </div>
                 </div>
+                <div class="mb-3">
+                  <div class="">
+                    <div class="col-12">
+                      <label class="form-label">Color</label>
+                    </div>
+                    <div class="col-12 mt-1">
+                      <input
+                        type="color"
+                        id="head"
+                        name="head"
+                        v-model="fetchJobs.color"
+                      />
+                    </div>
+                  </div>
+                </div>
               </form>
             </div>
           </div>
@@ -60,6 +75,7 @@ export default {
     return {
       fetchJobs: {
         name: "",
+        color: "",
       },
     };
   },
@@ -75,12 +91,14 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/jobs/${id}`);
         this.fetchJobs.name = response.data.data.name;
+        this.fetchJobs.color = response.data.data.color;
       } catch (error) {}
     },
     async updateJobsMethod() {
       try {
         const response = await axios.put(`${VITE_API_URL}/jobs/${this.jobID}`, {
           name: this.fetchJobs.name,
+          color: this.fetchJobs.color,
         });
 
         this.$emit("jobUpdate");
@@ -103,3 +121,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+#head {
+  width: 40px;
+  height: 40px;
+}
+</style>

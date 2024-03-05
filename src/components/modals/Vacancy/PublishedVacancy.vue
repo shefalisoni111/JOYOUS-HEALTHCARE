@@ -136,7 +136,7 @@
             <div class="row">
               <div class="col-md-12">
                 <h6>Shifts List</h6>
-                <table v-if="selectedPublishItemId" class="w-100">
+                <!-- <table v-if="selectedPublishItemId" class="w-100">
                   <thead>
                     <tr>
                       <th></th>
@@ -173,7 +173,7 @@
                       </td>
                     </tr>
                   </tbody>
-                </table>
+                </table> -->
               </div>
             </div>
           </div>
