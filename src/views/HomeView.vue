@@ -46,7 +46,7 @@
                           <i class="bi bi-people fs-1 text-info"></i>
                           <span class="text-muted text-capitalize fs-6"
                             ><router-link
-                              class="text-capitalize text-decoration-none text-muted text-decoration-underline"
+                              class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'AllClient' }"
                               >Total Clients</router-link
                             ></span
@@ -75,7 +75,7 @@
                           <i class="bi bi-people fs-1 text-success"></i>
                           <span class="text-muted text-capitalize fs-6"
                             ><router-link
-                              class="text-capitalize text-decoration-none text-muted text-decoration-underline"
+                              class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'ActiveClient' }"
                               >Active Clients</router-link
                             ></span
@@ -104,7 +104,7 @@
                           <i class="bi bi-people fs-1 text-danger"></i>
                           <span class="text-muted text-capitalize fs-6"
                             ><router-link
-                              class="text-capitalize text-decoration-none text-muted text-decoration-underline"
+                              class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'InActiveClient' }"
                               >inactive Clients</router-link
                             ></span
@@ -149,7 +149,7 @@
                           <i class="bi bi-people fs-1 text-info"></i>
                           <span class="text-muted text-capitalize fs-6">
                             <router-link
-                              class="text-capitalize text-decoration-none text-muted text-decoration-underline"
+                              class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'AllCandidateListsDisplay' }"
                               >Total Staff
                             </router-link></span
@@ -181,7 +181,7 @@
                           <i class="bi bi-people fs-1 text-success"></i>
                           <span class="text-muted text-capitalize fs-6">
                             <router-link
-                              class="text-capitalize text-decoration-none text-muted text-decoration-underline"
+                              class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'ActiveCandidate' }"
                               >active Staff</router-link
                             ></span
@@ -212,7 +212,7 @@
                           <i class="bi bi-people fs-1 text-danger"></i>
                           <span class="text-muted text-capitalize fs-6">
                             <router-link
-                              class="text-capitalize text-decoration-none text-muted text-decoration-underline"
+                              class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'InActiveCandidate' }"
                               >inactive Staff</router-link
                             ></span
@@ -253,7 +253,7 @@
                           <i class="bi bi-people fs-1 text-info"></i>
                           <span class="text-muted text-capitalize fs-6"
                             ><router-link
-                              class="text-capitalize text-decoration-none text-muted text-decoration-underline"
+                              class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'Site' }"
                               >Total Sites</router-link
                             ></span
@@ -286,7 +286,7 @@
                           <i class="bi bi-people fs-1 text-success"></i>
                           <span class="text-muted text-capitalize fs-6"
                             ><router-link
-                              class="text-capitalize text-decoration-none text-muted text-decoration-underline"
+                              class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'Site' }"
                               >active Sites</router-link
                             ></span
@@ -319,7 +319,7 @@
                           <i class="bi bi-people fs-1 text-danger"></i>
                           <span class="text-muted text-capitalize fs-6"
                             ><router-link
-                              class="text-capitalize text-decoration-none text-muted text-decoration-underline"
+                              class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'Site' }"
                               >inactive Sites</router-link
                             ></span
