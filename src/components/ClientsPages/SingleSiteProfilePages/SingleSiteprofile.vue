@@ -59,7 +59,7 @@
                 Active
               </h6>
               <img
-                src="./location.jpg"
+                src="../location.jpg"
                 class="card-img-top position-relative"
                 height="317"
                 alt="..."
