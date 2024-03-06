@@ -154,11 +154,11 @@ import axios from "axios";
 
 import RateInvoiceSettings from "../SingleSiteProfilePages/RateInvoiceSettings.vue";
 import CustomHolidays from "../SingleSiteProfilePages/CustomHolidays.vue";
-import ClientJobs from "../SingleSiteProfilePages/ClientJobs.vue";
-import ClientWTR from "../SingleSiteProfilePages/ClientWTR.vue";
-import ClientNotes from "../SingleSiteProfilePages/ClientNotes.vue";
-import ClientSetting from "../SingleSiteProfilePages/ClientSetting.vue";
-import ClientUser from "../SingleSiteProfilePages/ClientUser.vue";
+// import ClientJobs from "../SingleSiteProfilePages/ClientJobs.vue";
+// import ClientWTR from "../SingleSiteProfilePages/ClientWTR.vue";
+// import ClientNotes from "../SingleSiteProfilePages/ClientNotes.vue";
+// import ClientSetting from "../SingleSiteProfilePages/ClientSetting.vue";
+// import ClientUser from "../SingleSiteProfilePages/ClientUser.vue";
 
 export default {
   name: "SingleClientProfile",
@@ -167,8 +167,8 @@ export default {
       getClientDatas: [],
 
       tabs: [
-        { name: "Rate & Invoice Settings ", component: "ActiveLocation" },
-        { name: "Custom Holidays", component: "PassiveLocation" },
+        { name: "Rate & Invoice Settings ", component: "RateInvoiceSettings" },
+        { name: "Custom Holidays", component: "CustomHolidays" },
         { name: "Shift Settings ", component: "ClientJobs" },
         { name: "Restricted Candidates", component: "ClientWTR" },
         { name: "Notes", component: "ClientNotes" },
@@ -177,13 +177,8 @@ export default {
     };
   },
   components: {
-    ActiveLocation,
-    PassiveLocation,
-    ClientJobs,
-    ClientWTR,
-    ClientNotes,
-    ClientSetting,
-    ClientUser,
+    RateInvoiceSettings,
+    CustomHolidays,
   },
 
   props: ["id"],
