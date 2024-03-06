@@ -383,7 +383,9 @@ export default {
     async fetchAvailabilityStatusMethod() {
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/weekly_availability_for_candidate?candidate_id=${this.candidateId}&date=${this.startDate}`
+          `${VITE_API_URL}/weekly_availability_for_candidate?candidate_id=${
+            this.candidateId
+          }&date=${this.formattedDate(this.startDate)}`
         );
         this.updatedStatusData = response.data.data;
 

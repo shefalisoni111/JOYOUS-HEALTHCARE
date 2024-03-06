@@ -12,7 +12,7 @@
                   >
                   /
                   <router-link
-                    class="text-capitalize fw-bold text-decoration-underline"
+                    class="text-capitalize text-decoration-underline"
                     style="color: #595b5b"
                     :to="{
                       name: 'AllCandidateListsDisplay',
@@ -55,7 +55,15 @@
           </div>
           <div class="row">
             <div class="col-md-3">
-              <div class="card profile">
+              <div class="card profile position-relative">
+                <h6
+                  class="position-absolute p-2 z-1 text-white text-capitalize tag"
+                  style="background: #68a325; margin-left: -7px"
+                >
+                  {{
+                    getCandidates.status === "approved" ? "Active" : getCandidates.status
+                  }}
+                </h6>
                 <img
                   v-if="getCandidates && getCandidates.profile_photo"
                   :src="completeImageUrl"
@@ -133,7 +141,7 @@
             </div>
             <div class="col-md-9 bg-white">
               <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                <li class="nav-item d-inline-flex gap-2" role="presentation">
+                <li class="nav-item d-lg-inline-flex gap-2 d-in" role="presentation">
                   <button
                     class="btn-css"
                     :to="`/${tab.routeName}`"
@@ -358,6 +366,17 @@ export default {
 </script>
 
 <style scoped>
+h6.tag:after {
+  content: " ";
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -1px;
+  top: 100%;
+  border-width: 5px 4px;
+  border-style: solid;
+  border-color: #666 #666 transparent transparent;
+}
 .fs-smaller {
   font-size: smaller;
 }

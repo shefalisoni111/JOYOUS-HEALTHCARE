@@ -298,8 +298,9 @@ export default {
         const selectedDate = new Date(this.selectedDate);
 
         if (selectedDate > currentDate || this.isToday(selectedDate, currentDate)) {
-          if (!this.dates.includes(this.selectedDate)) {
-            this.dates.push(this.selectedDate);
+          const formattedDate = selectedDate.toLocaleDateString("en-GB");
+          if (!this.dates.includes(formattedDate)) {
+            this.dates.push(formattedDate);
           }
           this.selectedDate = "";
           this.clearError();

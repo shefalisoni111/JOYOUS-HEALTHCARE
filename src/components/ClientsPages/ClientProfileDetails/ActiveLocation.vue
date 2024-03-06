@@ -16,7 +16,9 @@
         </div>
 
         <div class="card mt-2">
-          <div class="card-header">Hospital 1</div>
+          <div class="card-header">
+            <router-link to="SingleSiteprofile">Hospital 1</router-link>
+          </div>
           <div class="card-body">
             <h5 class="card-title"></h5>
             <div class="card-text d-flex">
@@ -53,7 +55,55 @@
     </div>
   </div>
 </template>
+<script>
+import axios from "axios";
 
+export default {
+  data() {
+    return {
+      getClientDetail: [],
+      selectedClientID: null,
+      isActive: true,
+      searchQuery: "",
+      currentPage: 1,
+      itemsPerPage: 8,
+    };
+  },
+
+  computed: {
+    paginateCandidates() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.getClientDetail.slice(startIndex, endIndex);
+    },
+    totalRecordsOnPage() {
+      return this.paginateCandidates.length;
+    },
+  },
+  methods: {
+    editClient(clientID) {
+      this.selectedClientID = clientID;
+    },
+    // async clientsDeleteMethod(id) {
+    //   if (!window.confirm("Are you Sure ?")) {
+    //     return;
+    //   }
+    //   await axios.delete(`${VITE_API_URL}/clients/` + id).then((response) => {
+    //     this.createdClient();
+    //   });
+    // },
+    async createdClient() {
+      await axios
+        .get(`${VITE_API_URL}/clients`)
+
+        .then((response) => (this.getClientDetail = response.data.data));
+    },
+  },
+  mounted() {
+    this.createdClient();
+  },
+};
+</script>
 <style scoped>
 .card .rounded-circle {
   border: 1px solid #000;

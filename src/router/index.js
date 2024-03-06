@@ -92,12 +92,21 @@ const router = createRouter({
           props: true,
         },
         {
-          path: "vendor/:id",
+          path: "client/:id",
           name: "SingleClientProfile",
           component: () =>
             import("@/components/ClientsPages/SingleClientProfile.vue"),
           props: true,
+          
         },
+        {
+          path: "client/site",
+          name: "SingleSiteprofile",
+          component: () =>
+            import("@/components/ClientsPages/SingleSiteProfilePages/SingleSiteprofile.vue"),
+          props: true,
+        },
+        
         {
           path: "/client-view",
           name: "Client",

@@ -10,16 +10,13 @@
                   >Dashboard</router-link
                 >
                 /
-                <router-link
+                <a
                   class="text-capitalize text-decoration-underline"
                   style="color: #595b5b"
-                  :to="{
-                    name: 'AllClient',
-                  }"
-                  >CLIENT</router-link
+                  >CLIENT</a
                 >
                 /
-                <span class="color-fonts">{{ getClientDatas.first_name }}</span>
+                <span class="color-fonts">Client Name</span>/ <span>Hospital 1</span>
               </li>
             </ol>
           </div>
@@ -56,8 +53,8 @@
           <div class="col-md-3">
             <div class="card profile position-relative">
               <h6
-                class="position-absolute p-2 z-1 text-white text-capitalize tag"
-                style="background: #68a325; margin-left: -7px"
+                class="position-absolute p-2 z-1 text-white text-capitalize"
+                style="background: #68a325"
               >
                 Active
               </h6>
@@ -93,12 +90,12 @@
                     </div>
 
                     <!-- <div class="d-flex justify-content-between">
-                      <h6 class="fs-smaller text-nowrap">Profile View</h6>
-                      <label class="switch">
-                        <input type="checkbox" id="togBtn" title="check" checked />
-                        <div class="slider round"></div>
-                      </label>
-                    </div> -->
+                        <h6 class="fs-smaller text-nowrap">Profile View</h6>
+                        <label class="switch">
+                          <input type="checkbox" id="togBtn" title="check" checked />
+                          <div class="slider round"></div>
+                        </label>
+                      </div> -->
                   </div>
 
                   <div class="d-flex justify-content-between mt-3">
@@ -155,13 +152,13 @@
 <script>
 import axios from "axios";
 
-import ActiveLocation from "../ClientsPages/ClientProfileDetails/ActiveLocation.vue";
-import PassiveLocation from "../ClientsPages/ClientProfileDetails/PassiveLocation.vue";
-import ClientJobs from "../ClientsPages/ClientProfileDetails/ClientJobs.vue";
-import ClientWTR from "../ClientsPages/ClientProfileDetails/ClientWTR.vue";
-import ClientNotes from "../ClientsPages/ClientProfileDetails/ClientNotes.vue";
-import ClientSetting from "../ClientsPages/ClientProfileDetails/ClientSetting.vue";
-import ClientUser from "../ClientsPages/ClientProfileDetails/ClientUser.vue";
+import RateInvoiceSettings from "../SingleSiteProfilePages/RateInvoiceSettings.vue";
+import CustomHolidays from "../SingleSiteProfilePages/CustomHolidays.vue";
+import ClientJobs from "../SingleSiteProfilePages/ClientJobs.vue";
+import ClientWTR from "../SingleSiteProfilePages/ClientWTR.vue";
+import ClientNotes from "../SingleSiteProfilePages/ClientNotes.vue";
+import ClientSetting from "../SingleSiteProfilePages/ClientSetting.vue";
+import ClientUser from "../SingleSiteProfilePages/ClientUser.vue";
 
 export default {
   name: "SingleClientProfile",
@@ -170,13 +167,11 @@ export default {
       getClientDatas: [],
 
       tabs: [
-        { name: "Active Location ", component: "ActiveLocation" },
-        { name: "Passive Location ", component: "PassiveLocation" },
-        { name: "Jobs ", component: "ClientJobs" },
-        { name: "WTR", component: "ClientWTR" },
+        { name: "Rate & Invoice Settings ", component: "ActiveLocation" },
+        { name: "Custom Holidays", component: "PassiveLocation" },
+        { name: "Shift Settings ", component: "ClientJobs" },
+        { name: "Restricted Candidates", component: "ClientWTR" },
         { name: "Notes", component: "ClientNotes" },
-        { name: "Setting", component: "ClientSetting" },
-        { name: "User", component: "ClientUser" },
       ],
       activeTab: 0,
     };
@@ -251,17 +246,6 @@ export default {
 </script>
 
 <style scoped>
-h6.tag:after {
-  content: " ";
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: -1px;
-  top: 100%;
-  border-width: 5px 4px;
-  border-style: solid;
-  border-color: #666 #666 transparent transparent;
-}
 .fs-smaller {
   font-size: smaller;
 }

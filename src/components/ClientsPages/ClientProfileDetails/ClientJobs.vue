@@ -6,8 +6,8 @@
           <div class="card-header">Manage Client Jobs here</div>
           <div class="card-body">
             <h5 class="card-title"></h5>
-            <div class="card-text d-flex justify-content-between gap-3">
-              <div class="">
+            <div class="card-text d-flex justify-content-between gap-3 mb-3">
+              <div class="gap-2 d-flex">
                 <span class="btn btn-primary">Doctor</span>
                 <span class="btn btn-primary">Nurse</span>
                 <span class="btn btn-primary">HCA</span>
@@ -21,7 +21,7 @@
               data-bs-target="#addVacancies"
               data-bs-whatever="@mdo"
             >
-              + Add Business Unit
+              + Add Site
             </button>
           </div>
         </div>

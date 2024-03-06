@@ -66,7 +66,7 @@
         aria-labelledby="pills-profileOne-tab"
       >
         <div class="row">
-          <div class="col-md-12 d-flex">
+          <div class="col-md-12 d-flex align-items-center">
             <div class="col-md-5 d-flex align-items-end">
               <img src="../profile.png" class="img-fluid" />
               <div class="text-capitalize fw-bolder">
@@ -82,11 +82,17 @@
               </div>
             </div>
             <div class="col-md-4"></div>
-            <div class="col-md-2 d-flex align-items-center">
+            <div class="col-md-2 d-flex align-items-center flex-column">
               <img src="./logo.png" class="img-fluid" />
+              <div class="text-danger">
+                <a href="#" class="text-danger">
+                  <i class="bi bi-file-earmark-pdf fs-2 fw-bold"></i
+                ></a>
+              </div>
             </div>
           </div>
         </div>
+
         <div class="row mt-3">
           <div class="col-md-7 d-flex">
             <div class="card-body">
@@ -277,6 +283,13 @@
                       >
                         Download Pdf
                       </button> -->
+                      <div class="text-danger">
+                        <a href="#" class="text-danger">
+                          <i
+                            class="bi bi-file-earmark-pdf fs-2 fw-bold d-block text-center cursor-pointer"
+                          ></i
+                        ></a>
+                      </div>
                     </div>
                   </td>
                 </tr>

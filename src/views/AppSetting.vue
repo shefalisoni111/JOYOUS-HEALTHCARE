@@ -50,18 +50,15 @@
                     </div>
                   </router-link>
                 </li>
-                <!-- <li class="list-items d-flex mt-3">
-                  <i class="bi bi-clock rounded-circle"></i>
-                  <router-link
-                    to="/holidaycalender"
-                    class="text-decoration-none"
-                  >
+                <li class="list-items d-flex mt-3">
+                  <i class="bi bi-calendar2-range-fill rounded-circle"></i>
+                  <router-link to="/holidaycalender" class="text-decoration-none">
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize">Holiday Calender</h6>
                       <p class="text-capitalize mb-0">Add & Modify holidays</p>
                     </div>
                   </router-link>
-                </li> -->
+                </li>
                 <li class="list-items d-flex mt-3">
                   <i class="bi bi-credit-card rounded-circle"></i>
                   <router-link to="/staff-deduction" class="text-decoration-none">
