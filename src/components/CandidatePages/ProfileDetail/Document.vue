@@ -333,6 +333,9 @@ export default {
   },
   components: { AddCategory, ViewDocuments },
   methods: {
+    isDownloadDisabled() {
+      return !this.getCate.documents;
+    },
     viewDocument(documentId, event) {
       event.stopPropagation();
       this.selectedCandidateId = documentId;
@@ -428,6 +431,7 @@ export default {
       }
       axios.put(`${VITE_API_URL}/delete_candidate_document/` + id).then((response) => {
         this.getDocCAtegories();
+        this.getDeletedDocumentListMethod();
       });
     },
 
@@ -478,7 +482,7 @@ export default {
           `${VITE_API_URL}/deleted_candidate_document_list?candidate_id=${candidateId}`
         );
         this.getDeletedDocument = response.data;
-        this.getDeletedDocumentListMethod();
+        // this.getDeletedDocumentListMethod();
       } catch (error) {
         // console.error("Error fetching documents:", error);
       }
