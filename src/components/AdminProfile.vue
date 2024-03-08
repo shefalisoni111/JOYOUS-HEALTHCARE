@@ -16,15 +16,26 @@
               <div class="card-body">
                 <div class="d-flex flex-column align-items-center text-center">
                   <div class="img-div position-relative">
-                    <router-view to="/home"
-                      ><img
+                    <router-view to="/home">
+                      <img
+                        v-if="!profileImage"
+                        src="./profile.png"
+                        alt="Admin"
+                        width="150"
+                        height="150"
+                        @click.prevent
+                        style=""
+                      />
+                      <img
+                        v-else
                         :src="profileImage"
                         alt="Admin"
                         width="150"
                         height="150"
                         @click.prevent
                         style=""
-                    /></router-view>
+                      />
+                    </router-view>
                     <label for="profilePicInput">
                       <i class="bi bi-camera-fill"></i>
                     </label>
