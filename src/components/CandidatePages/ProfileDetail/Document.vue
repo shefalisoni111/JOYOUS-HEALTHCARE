@@ -469,6 +469,9 @@ export default {
             saveAs(imageResponse.data, filename);
           }
         } catch (error) {
+          if (error.response && error.response.status === 404) {
+            alert("Candidate document not found");
+          }
           // console.error("Error fetching document:", error);
         }
       } catch (error) {
