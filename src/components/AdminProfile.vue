@@ -15,9 +15,29 @@
             <div class="card h-100">
               <div class="card-body">
                 <div class="d-flex flex-column align-items-center text-center">
-                  <router-view to="/home"
-                    ><img src="./profile.png" alt="USer" width="150"
-                  /></router-view>
+                  <div class="img-div position-relative">
+                    <router-view to="/home"
+                      ><img
+                        :src="profileImage"
+                        alt="Admin"
+                        width="150"
+                        height="150"
+                        @click.prevent
+                        style=""
+                    /></router-view>
+                    <label for="profilePicInput">
+                      <i class="bi bi-camera-fill"></i>
+                    </label>
+                  </div>
+
+                  <input
+                    type="file"
+                    id="profilePicInput"
+                    ref="profilePicInput"
+                    style="display: none"
+                    @change="handleFileChange"
+                    accept="image/*"
+                  />
                   <div class="mt-3">
                     <h4 class="text-capitalize">
                       {{ getAdmin.first_name }}
@@ -30,7 +50,7 @@
                   <div>
                     <button
                       type="button"
-                      class="btn btn-outline-success text-nowrap text-nowrap"
+                      class="btn btn-primary text-nowrap text-nowrap"
                       data-bs-toggle="modal"
                       data-bs-target="#editAdmin"
                       data-bs-whatever="@mdo"
@@ -86,6 +106,9 @@
           </div>
         </div>
       </div>
+      <div v-if="errorMessage" class="alert alert-danger" role="alert">
+        {{ errorMessage }}
+      </div>
     </div>
     <EditAdmin @admin-updated="handleAdminUpdated" />
   </div>
@@ -101,11 +124,57 @@ export default {
   data() {
     return {
       getAdmin: [],
+      errorMessage: null,
+      profileImage: null,
     };
   },
   components: { Navbar, EditAdmin },
 
   methods: {
+    openFileInput() {
+      this.$refs.profilePicInput.click();
+    },
+    async handleFileChange(event) {
+      const token = localStorage.getItem("token");
+      const file = event.target.files[0];
+      if (!file) {
+        console.error("No file selected");
+        return;
+      }
+      try {
+        const formData = new FormData();
+        formData.append("profile_photo", file);
+        const response = await axios.put(
+          `${VITE_API_URL}/merchant_upload_profile`,
+          formData,
+          {
+            headers: {
+              Authorization: "bearer " + token,
+            },
+          }
+        );
+
+        const imageUrl = `${VITE_API_URL}${response.data.data.profile_photo}`;
+        localStorage.setItem("profileImage", imageUrl);
+        this.profileImage = imageUrl;
+        console.log(this.profileImage);
+        if (response.data.error) {
+          this.errorMessage = response.data.error;
+
+          this.profileImage = null;
+        } else {
+          if (response.data && response.data.data && response.data.data.profile_photo) {
+            this.profileImage = `${VITE_API_URL}${response.data.data.profile_photo}`;
+            this.errorMessage = null;
+          } else {
+            console.error("Profile photo not found in response:", response.data);
+          }
+        }
+      } catch (error) {
+        console.error("Error uploading profile picture:", error);
+        // Handle error
+      }
+    },
     handleAdminUpdated() {
       this.fetchAdminData();
     },
@@ -128,12 +197,32 @@ export default {
     },
   },
   async created() {
+    const storedProfileImage = localStorage.getItem("profileImage");
+    if (storedProfileImage) {
+      this.profileImage = storedProfileImage;
+    }
     await this.fetchAdminData();
   },
 };
 </script>
 
 <style scoped>
+.img-div label {
+  position: absolute;
+  bottom: 0;
+  background: #42403f;
+  border-radius: 50%;
+  padding: 3px 8px;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 400;
+  right: 10%;
+}
+.img-div img {
+  border-radius: 50%;
+  border: 1px solid grey;
+  box-shadow: 5px 6px 25px -10px;
+}
 .card {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }

@@ -254,7 +254,7 @@
                           <span class="text-muted text-capitalize fs-6"
                             ><router-link
                               class="text-capitalize text-decoration-none text-muted"
-                              :to="{ name: 'Site' }"
+                              :to="{ name: 'AllSite' }"
                               >Total Sites</router-link
                             ></span
                           >
@@ -262,7 +262,7 @@
                         <div class="ps-4 mt-2">
                           <router-link
                             class="text-capitalize text-decoration-none text-black"
-                            :to="{ name: 'Site' }"
+                            :to="{ name: 'AllSite' }"
                           >
                             <h6
                               v-text="getRecords.Total_business_unit"
@@ -287,7 +287,7 @@
                           <span class="text-muted text-capitalize fs-6"
                             ><router-link
                               class="text-capitalize text-decoration-none text-muted"
-                              :to="{ name: 'Site' }"
+                              :to="{ name: 'ActiveSite' }"
                               >active Sites</router-link
                             ></span
                           >
@@ -295,7 +295,7 @@
                         <div class="ps-4 mt-2">
                           <router-link
                             class="text-capitalize text-decoration-none text-black"
-                            :to="{ name: 'Site' }"
+                            :to="{ name: 'ActiveSite' }"
                           >
                             <h6
                               v-text="getRecords.Active_business_unit"
@@ -320,7 +320,7 @@
                           <span class="text-muted text-capitalize fs-6"
                             ><router-link
                               class="text-capitalize text-decoration-none text-muted"
-                              :to="{ name: 'Site' }"
+                              :to="{ name: 'InActiveSite' }"
                               >inactive Sites</router-link
                             ></span
                           >
@@ -328,7 +328,7 @@
                         <div class="ps-4 mt-2">
                           <router-link
                             class="text-capitalize text-decoration-none text-black"
-                            :to="{ name: 'Site' }"
+                            :to="{ name: 'InActiveSite' }"
                           >
                             <h6
                               v-text="getRecords.Inactive_business_unit"
@@ -683,7 +683,7 @@ export default {
 
   mounted() {
     this.loadDateRangeFromLocalStorage();
-    // const timestamp = 1709361240733;
+    // const timestamp = 1709838903304;
     // const date = new Date(timestamp);
     // console.log(date);
     const currentDate = new Date();

@@ -401,7 +401,11 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
-
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: #f6851d !important;
+  color: #fff !important;
+}
 .chat-messages {
   max-height: 200px;
   overflow-y: auto;

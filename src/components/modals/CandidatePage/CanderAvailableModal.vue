@@ -407,7 +407,11 @@ export default {
         if (isNaN(parsedDate)) {
           return;
         }
-
+        // const currentDate = new Date();
+        // if (parsedDate < currentDate) {
+        //   alert("Error: Date must be greater than or equal to today's date.");
+        //   return;
+        // }
         const formattedDate = parsedDate.toLocaleDateString("en-CA", {
           year: "numeric",
           month: "2-digit",
@@ -505,7 +509,17 @@ export default {
         if (error.response && error.response.status === 422) {
           const errorData = error.response.data;
 
-          if (errorData && errorData.date) {
+          if (
+            errorData &&
+            errorData.error &&
+            errorData.error.includes("Date must be greater than or equal to")
+          ) {
+            const errorMessage = errorData.error.replace(
+              "Failed to create availability: ",
+              ""
+            );
+            alert(`Error: ${errorMessage}`);
+          } else if (errorData && errorData.date) {
             alert(`Error: ${errorData.date[0]}`);
           } else {
             // alert("An error occurred while updating/adding availability.");

@@ -99,13 +99,7 @@ const router = createRouter({
           props: true,
           
         },
-        {
-          path: "client/site",
-          name: "SingleSiteprofile",
-          component: () =>
-            import("@/components/ClientsPages/SingleSiteProfilePages/SingleSiteprofile.vue"),
-          props: true,
-        },
+        
         
         {
           path: "/client-view",
@@ -119,9 +113,73 @@ const router = createRouter({
           path: "/site",
           name: "Site",
           component: () => import("@/components/ClientsPages/Site.vue"),
+          props: true,
           meta: {
             auth: true,
           },
+          children: [
+            {
+              path: "", 
+              name: "SiteListsRedirect",
+              redirect: { name: "SiteLists" } 
+            },
+            {
+              path: "/site/siteLists",
+              name: "SiteLists",
+              component: () =>
+                import("../components/ClientsPages/SitePages/SiteLists.vue"),
+              props: true,
+              children: [
+                {
+                  path: "/site/allSite",
+                  name: "AllSite",
+                  component: () =>
+                    import(
+                      "@/components/ClientsPages/SitePages/AllSite.vue"
+                    ),
+                    props: true,
+                  meta: {
+                    auth: true,
+                  },
+                },
+                {
+                  path: "/site/activeSite",
+                  name: "ActiveSite",
+                  component: () =>
+                    import(
+                      "@/components/ClientsPages/SitePages/ActiveSite.vue"
+                    ),
+                    props: true,
+                  meta: {
+                    auth: true,
+                  },
+                },
+                {
+                  path: "/site/Inactive-Site",
+                  name: "InActiveSite",
+                  component: () =>
+                    import(
+                      "@/components/ClientsPages/SitePages/InActiveSite.vue"
+                    ),
+                    props: true,
+                  meta: {
+                    auth: true,
+                  },
+                },
+              ]
+             
+            },
+            {
+              path: "/site/site-profile",
+              name: "SingleSiteprofile",
+              component: () =>
+                import("@/components/ClientsPages/SingleSiteProfilePages/SingleSiteprofile.vue"),
+              props: true,
+             
+            },
+            
+           
+          ]
         },
         {
           path: "/rates_and_rules",

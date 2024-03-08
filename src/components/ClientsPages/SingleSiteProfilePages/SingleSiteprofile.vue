@@ -53,8 +53,8 @@
           <div class="col-md-3">
             <div class="card profile position-relative">
               <h6
-                class="position-absolute p-2 z-1 text-white text-capitalize"
-                style="background: #68a325"
+                class="position-absolute p-2 z-1 text-white text-capitalize tag"
+                style="background: #68a325; margin-left: -7px"
               >
                 Active
               </h6>
@@ -68,47 +68,30 @@
               <!-- <div class="ribbon"><span>Active</span></div> -->
 
               <div class="card-body">
-                <div class="mt-3 d-flex justify-content-between align-items-center">
+                <div class="mt-3 d-flex justify-content-between align-items-top">
+                  <div>
+                    <h6>Reference Code : BU570L03</h6>
+                    <h4>Hospital 1</h4>
+                    <h6>Email : {{ getClientDatas.email }}</h6>
+                    <h6>Address : {{ getClientDatas.address }}</h6>
+                    <h6>Mobile : {{ getClientDatas.phone_number }}</h6>
+                    <h6>Contact person's name:</h6>
+                    <h6>Contact person's email:</h6>
+                    <h6>Contact person's number:</h6>
+                    <h6>Bookings email:</h6>
+                  </div>
                   <div>
                     <h6 class="card-title text-nowrap fw-bold text-capitalize">
                       {{ getClientDatas.first_name }}
                     </h6>
-                    <span class="text-lowercase"> {{ getClientDatas.email }}</span>
+                    <span class="text-lowercase"> </span>
                   </div>
-
                   <div>
                     <button type="button" class="btn btn-primary">Edit</button>
                   </div>
                 </div>
                 <hr />
-                <div class="mt-3">
-                  <div class="d-flex justify-content-between">
-                    <div>
-                      <h6 class="card-title text-uppercase fs-smaller text-nowrap">
-                        contact information
-                      </h6>
-                    </div>
 
-                    <!-- <div class="d-flex justify-content-between">
-                        <h6 class="fs-smaller text-nowrap">Profile View</h6>
-                        <label class="switch">
-                          <input type="checkbox" id="togBtn" title="check" checked />
-                          <div class="slider round"></div>
-                        </label>
-                      </div> -->
-                  </div>
-
-                  <div class="d-flex justify-content-between mt-3">
-                    <div class="d-flex align-items-center">
-                      <span
-                        ><i class="bi bi-telephone"></i>
-                        {{ getClientDatas.phone_number }}</span
-                      >
-                    </div>
-                    <button type="button" class="btn btn-primary">Edit</button>
-                  </div>
-                </div>
-                <hr />
                 <div class="mt-3 d-flex justify-content-between align-items-center">
                   <div>
                     <h6 class="card-title text-nowrap fw-bold text-capitalize">
@@ -154,11 +137,9 @@ import axios from "axios";
 
 import RateInvoiceSettings from "../SingleSiteProfilePages/RateInvoiceSettings.vue";
 import CustomHolidays from "../SingleSiteProfilePages/CustomHolidays.vue";
-// import ClientJobs from "../SingleSiteProfilePages/ClientJobs.vue";
-// import ClientWTR from "../SingleSiteProfilePages/ClientWTR.vue";
-// import ClientNotes from "../SingleSiteProfilePages/ClientNotes.vue";
-// import ClientSetting from "../SingleSiteProfilePages/ClientSetting.vue";
-// import ClientUser from "../SingleSiteProfilePages/ClientUser.vue";
+import RestrictedCandidates from "../SingleSiteProfilePages/RestrictedCandidates.vue";
+import ShiftSettings from "../SingleSiteProfilePages/ShiftSettings.vue";
+import SiteNotes from "../SingleSiteProfilePages/SiteNotes.vue";
 
 export default {
   name: "SingleClientProfile",
@@ -169,9 +150,9 @@ export default {
       tabs: [
         { name: "Rate & Invoice Settings ", component: "RateInvoiceSettings" },
         { name: "Custom Holidays", component: "CustomHolidays" },
-        { name: "Shift Settings ", component: "ClientJobs" },
-        { name: "Restricted Candidates", component: "ClientWTR" },
-        { name: "Notes", component: "ClientNotes" },
+        { name: "Shift Settings ", component: "ShiftSettings" },
+        { name: "Restricted Staff", component: "RestrictedCandidates" },
+        { name: "Notes", component: "SiteNotes" },
       ],
       activeTab: 0,
     };
@@ -179,6 +160,9 @@ export default {
   components: {
     RateInvoiceSettings,
     CustomHolidays,
+    RestrictedCandidates,
+    ShiftSettings,
+    SiteNotes,
   },
 
   props: ["id"],
@@ -241,6 +225,17 @@ export default {
 </script>
 
 <style scoped>
+h6.tag:after {
+  content: " ";
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -1px;
+  top: 100%;
+  border-width: 5px 4px;
+  border-style: solid;
+  border-color: #666 #666 transparent transparent;
+}
 .fs-smaller {
   font-size: smaller;
 }
