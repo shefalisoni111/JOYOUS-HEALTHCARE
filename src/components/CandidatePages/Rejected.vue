@@ -116,6 +116,7 @@ export default {
   },
   methods: {
     async pendingCandidateMethod() {
+      this.isLoading = true;
       try {
         const response = await axios.get(`${VITE_API_URL}/pending_candidates`);
 

@@ -106,6 +106,7 @@ export default {
   },
   methods: {
     async getCandidate() {
+      this.isLoading = true;
       try {
         const response = await axios.get(
           `${VITE_API_URL}/approve_and_notactivated_candidates`
@@ -120,10 +121,11 @@ export default {
         } else {
           // console.error("Error fetching candidates:", error);
         }
+      } finally {
+        this.isLoading = false;
       }
     },
     async activeCandidateMethod(id) {
-      this.isLoading = true;
       if (!window.confirm("Are you Sure?")) {
         return;
       }
@@ -135,9 +137,6 @@ export default {
 
         .catch((error) => {
           // console.error("Error deleting candidate:", error);
-        })
-        .finally(() => {
-          this.isLoading = false;
         });
     },
   },

@@ -26,23 +26,23 @@ export default {
   props: {
     isLoading: Boolean,
   },
-  setup() {
-    const isLoading = ref(false);
+  // setup() {
+  //   const isLoading = ref(false);
 
-    const simulateLoading = () => {
-      isLoading.value = true;
+  //   const simulateLoading = () => {
+  //     isLoading.value = true;
 
-      setTimeout(() => {
-        isLoading.value = false;
-      }, 350);
-    };
+  //     setTimeout(() => {
+  //       isLoading.value = false;
+  //     }, 350);
+  //   };
 
-    onMounted(simulateLoading);
+  //   onMounted(simulateLoading);
 
-    return {
-      isLoading,
-    };
-  },
+  //   return {
+  //     isLoading,
+  //   };
+  // },
 };
 </script>
 

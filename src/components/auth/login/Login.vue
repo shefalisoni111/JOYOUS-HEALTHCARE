@@ -135,12 +135,17 @@ export default {
         const jsonData = response.data;
 
         if (jsonData.is_logged_in) {
-          const tokenExpiration = new Date(jsonData.expiry_time).getTime();
+          const sessionDurationInMinutes = 360;
+          // const tokenExpiration = new Date(jsonData.expiry_time).getTime();
+          const expirationTime =
+            new Date().getTime() + sessionDurationInMinutes * 60 * 1000;
+
           localStorage.setItem("token", jsonData.token);
-          localStorage.setItem("tokenExpiration", new Date(jsonData.expiry_time));
+          localStorage.setItem("tokenExpiration", expirationTime);
           this.$router.push({ name: "Home" });
 
-          this.setupAutoLogout(tokenExpiration - new Date().getTime());
+          // this.setupAutoLogout(tokenExpiration - new Date().getTime());
+          this.setupAutoLogout(sessionDurationInMinutes * 60 * 1000);
         } else {
           this.error = "Invalid Email or Password";
         }
@@ -156,32 +161,29 @@ export default {
         this.logoutDueToExpiration();
       }, timeToExpiration);
     },
+    checkTokenExpiration() {
+      const tokenExpiration = localStorage.getItem("tokenExpiration");
 
+      if (tokenExpiration && new Date().getTime() >= parseInt(tokenExpiration)) {
+        this.logoutDueToExpiration();
+      }
+    },
     logoutDueToExpiration() {
       localStorage.removeItem("token");
       localStorage.removeItem("tokenExpiration");
-
       this.logout();
     },
 
     logout() {
+      // localStorage.removeItem("token");
+      // localStorage.removeItem("tokenExpiration");
       this.$router.replace({ name: "Login" });
-    },
-    checkTokenExpiration() {
-      const tokenExpiration = localStorage.getItem("tokenExpiration");
-
-      if (
-        tokenExpiration &&
-        new Date().getTime() >= new Date(tokenExpiration).getTime()
-      ) {
-        this.logoutDueToExpiration();
-      }
     },
   },
 
   mounted() {
     this.checkTokenExpiration();
-
+    setInterval(this.checkTokenExpiration, 60000);
     // Check if "Remember Me" credentials exist
     // const email = localStorage.getItem("email");
     // const password = localStorage.getItem("password");
