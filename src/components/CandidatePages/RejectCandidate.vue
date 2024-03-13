@@ -19,13 +19,14 @@
 
           <td class="text-capitalize">
             <router-link
-              class="text-capitalize fw-bold text-decoration-underline"
+              class="text-capitalize fw-bold"
               :to="{
                 name: 'Profile',
                 params: { id: pending && pending.id },
               }"
             >
-              {{ pending && pending.first_name }}</router-link
+              {{ pending && pending.first_name }}&nbsp;
+              {{ pending && pending.last_name }}</router-link
             >
           </td>
           <td v-text="pending.position"></td>

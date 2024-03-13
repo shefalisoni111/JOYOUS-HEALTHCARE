@@ -22,13 +22,13 @@
               <td v-text="candidate.id"></td>
               <td>
                 <router-link
-                  class="text-capitalize fw-bold text-decoration-underline"
+                  class="text-capitalize fw-bold"
                   :to="{
                     name: 'Profile',
                     params: { id: candidate.id },
                   }"
                 >
-                  {{ candidate.first_name }}
+                  {{ candidate.first_name }}&nbsp; {{ candidate.last_name }}
                 </router-link>
               </td>
 

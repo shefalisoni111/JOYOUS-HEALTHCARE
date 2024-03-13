@@ -17,13 +17,13 @@
           <td v-text="datas.id"></td>
           <td class="text-capitalize">
             <router-link
-              class="text-capitalize fw-bold text-decoration-underline"
+              class="text-capitalize fw-bold"
               :to="{
                 name: 'Profile',
                 params: { id: datas && datas.id },
               }"
             >
-              {{ datas.first_name }}</router-link
+              {{ datas.first_name }}&nbsp;&nbsp;{{ datas.last_name }}</router-link
             >
           </td>
           <td v-text="datas.position"></td>

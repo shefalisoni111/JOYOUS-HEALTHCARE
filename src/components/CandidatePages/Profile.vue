@@ -20,7 +20,11 @@
                     >STAFF</router-link
                   >
                   /
-                  <span class="color-fonts">{{ getCandidates.first_name }}</span>
+                  <span class="color-fonts"
+                    >{{ getCandidates.first_name }}&nbsp;{{
+                      getCandidates.last_name
+                    }}</span
+                  >
                 </li>
               </ol>
             </div>
