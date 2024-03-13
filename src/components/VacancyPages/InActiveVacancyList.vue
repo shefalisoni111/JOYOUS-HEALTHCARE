@@ -12,8 +12,9 @@
               <th scope="col">Job Title</th>
               <th scope="col">Date</th>
               <th scope="col">Shift</th>
-              <th scope="col">Notes</th>
-              <th scope="col">Status</th>
+              <th scope="col" class="withShow">Staff required</th>
+              <th scope="col" class="widthDefineNotes">Notes</th>
+              <!-- <th scope="col">Status</th> -->
               <th scope="col">Action</th>
             </tr>
           </thead>
@@ -44,9 +45,11 @@
               <!-- <td v-for="(date, index) in data.dates" :key="index" v-text="date"></td> -->
 
               <td v-text="data.shift"></td>
-
-              <td v-text="data.notes"></td>
-              <td></td>
+              <td class="withShow text-center">
+                {{ data.staff_required === null ? 0 : data.staff_required }}
+              </td>
+              <td class="widthDefineNotes" v-text="data.notes"></td>
+              <!-- <td></td> -->
               <td>
                 <button
                   class="btn btn-outline-success text-nowrap"
@@ -193,7 +196,12 @@ export default {
 
   background-color: #fdce5e17;
 }
-
+.withShow {
+  width: 7%;
+}
+.widthDefineNotes {
+  width: 8%;
+}
 .main-content {
   transition: all 0.3s;
 }

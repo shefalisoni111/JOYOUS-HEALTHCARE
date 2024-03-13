@@ -12,8 +12,8 @@
               <th scope="col">Job Title</th>
               <th scope="col">Date</th>
               <th scope="col">Shift</th>
-              <!-- <th scope="col">Staff Required</th> -->
-              <th scope="col">Notes</th>
+              <th scope="col" class="withShow">Staff Required</th>
+              <th scope="col" class="widthDefineNotes">Notes</th>
               <th scope="col">Publish</th>
               <th scope="col" class="text-center">All</th>
               <th scope="col">Applied</th>
@@ -55,8 +55,10 @@
               <!-- <td v-for="(date, index) in getdata.dates" :key="index" v-text="date"></td> -->
 
               <td v-text="getdata.shift"></td>
-              <!-- <td v-text="getdata.staff_required"></td> -->
-              <td v-text="getdata.notes"></td>
+              <td class="withShow text-center">
+                {{ getdata.staff_required === null ? 0 : getdata.staff_required }}
+              </td>
+              <td class="widthDefineNotes" v-text="getdata.notes"></td>
 
               <td>
                 <i
@@ -335,7 +337,12 @@ export default {
 
   background-color: #fdce5e17;
 }
-
+.widthDefineNotes {
+  width: 8%;
+}
+.withShow {
+  width: 5%;
+}
 .main-content {
   transition: all 0.3s;
 }

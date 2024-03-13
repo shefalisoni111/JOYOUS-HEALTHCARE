@@ -136,7 +136,7 @@
             <div class="row">
               <div class="col-md-12">
                 <h6>Shifts List</h6>
-                <!-- <table v-if="selectedPublishItemId" class="w-100">
+                <table v-if="selectedPublishItemId" class="w-100">
                   <thead>
                     <tr>
                       <th></th>
@@ -173,7 +173,7 @@
                       </td>
                     </tr>
                   </tbody>
-                </table> -->
+                </table>
               </div>
             </div>
           </div>
@@ -258,26 +258,28 @@ export default {
       enableMailNotification: false,
       showMessage: false,
       publicationStatus: null,
-      // checkedCandidates: reactive({}),
+      checkedCandidates: reactive({}),
       selectAll: false,
     };
   },
   components: {
     SuccessAlert,
   },
-  watch: {
-    selectedPublishItemId: function (newVal, oldVal) {
-      this.publicCandidateMail(newVal);
-    },
+
+  created() {
+    this.getCandidatesData.forEach((data) => {
+      this.$set(this.checkedCandidates, data.id, false);
+    });
   },
-  // created() {
-  //   this.getCandidatesData.forEach((data) => {
-  //     this.$set(this.checkedCandidates, data.id, false);
-  //   });
-  // },
   computed: {
     selectedPublishItemId() {
-      this.publicCandidateMail(this.$store.state.selectedPublishItemId);
+      this.getAllCandidateListMethod(this.$store.state.selectedPublishItemId);
+
+      return this.$store.state.selectedPublishItemId;
+    },
+    selectedAllItemId() {
+      this.getAllCandidateListMethod(this.$store.state.selectedPublishItemId);
+
       return this.$store.state.selectedPublishItemId;
     },
   },
@@ -291,11 +293,42 @@ export default {
         this.checkedCandidates = {};
       }
     },
-    async publicCandidateMail(id) {
-      const token = localStorage.getItem("token");
-      this.getPublicVacancyMAil = [];
+    async getAllCandidateListMethod(id) {
+      this.getCandidatesData = [];
 
       if (this.$store.state.selectedPublishItemId) {
+        try {
+          const response = await axios.get(
+            `${VITE_API_URL}/candidate_list_of_vacancy?vacancy_id=${id}`
+          );
+          this.getCandidatesData = response.data.candidates_data;
+          // this.vacancyDetails = response.data.vacancy_data;
+          this.$emit("allVacancy");
+          // console.log(this.getCandidatesData);
+        } catch (error) {
+          if (error.response) {
+            if (error.response.status == 404) {
+              // alert(error.response.data.message);
+            }
+          }
+        }
+      } else {
+      }
+    },
+
+    async publicCandidateMail() {
+      const token = localStorage.getItem("token");
+
+      if (this.$store.state.selectedPublishItemId) {
+        const checkedCandidateIds = Object.keys(this.checkedCandidates)
+          .filter((candidate_ids) => this.checkedCandidates[candidate_ids])
+          .map((candidate_ids) => parseInt(candidate_ids));
+
+        // if (checkedCandidateIds.length === 0) {
+        //   alert("Please select at least one candidate before proceeding.");
+        //   return;
+        // }
+
         try {
           const notificationType = this.enableMailNotification
             ? "email_notification"
@@ -303,7 +336,7 @@ export default {
 
           const response = await axios.put(
             `${VITE_API_URL}/send_notification/${this.$store.state.selectedPublishItemId}`,
-            { notification_type: notificationType },
+            { notification_type: notificationType, candidate_ids: checkedCandidateIds },
             {
               headers: {
                 "content-type": "application/json",
@@ -312,74 +345,29 @@ export default {
             }
           );
 
-          this.getPublicVacancyMAil = response.data.data;
-
+          // this.getPublicVacancyMAil = response.data.data;
+          alert(response.data.message);
           if (response.status === 200) {
-            this.publicationStatus = "published";
-            this.showMessage = true;
+            this.checkedCandidates = Object.fromEntries(
+              Object.keys(this.checkedCandidates).map((key) => [key, false])
+            );
+
+            this.enableMailNotification = false;
+
+            this.showMessage = false;
+
             this.$emit("publishVacancy");
           } else {
-            // Handle other response statuses if needed
+            // Handle error case if needed
           }
         } catch (error) {
-          // Handle errors
+          // console.error("Error sending notification:", error);
+          // Handle error
         }
       } else {
-        // Handle the case when selectedPublishItemId is not available
+        // Handle case where selectedPublishItemId is falsy
       }
     },
-    // async publicCandidateMail() {
-    //   const token = localStorage.getItem("token");
-    //   this.getPublicVacancyMAil = [];
-
-    //   if (this.$store.state.selectedPublishItemId) {
-    //     const checkedCandidateIds = Object.keys(this.checkedCandidates)
-    //       .filter((candidate_id) => this.checkedCandidates[candidate_id])
-    //       .map((candidate_id) => parseInt(candidate_id));
-
-    //     // Check if any candidate is checked
-    //     if (checkedCandidateIds.length === 0) {
-    //       // Handle case where no candidate is checked
-    //       // console.error("No candidate is checked.");
-    //       return;
-    //     }
-
-    //     try {
-    //       const notificationType = this.enableMailNotification
-    //         ? "email_notification"
-    //         : null;
-
-    //       const response = await axios.put(
-    //         `${VITE_API_URL}/send_notification/${checkedCandidateIds}`,
-    //         { notification_type: notificationType },
-    //         {
-    //           headers: {
-    //             "content-type": "application/json",
-    //             Authorization: "bearer " + token,
-    //           },
-    //         }
-    //       );
-
-    //       this.getPublicVacancyMAil = response.data.data;
-    //       alert(response.data.message);
-    //       if (response.status === 200) {
-    //         this.publicationStatus = "published";
-    //         this.showMessage = true;
-    //         this.$emit("publishVacancy");
-    //         for (const key in this.checkedCandidates) {
-    //           this.checkedCandidates[key] = false;
-    //         }
-    //       } else {
-    //         // Handle error case if needed
-    //       }
-    //     } catch (error) {
-    //       // console.error("Error sending notification:", error);
-    //       // Handle error
-    //     }
-    //   } else {
-    //     // Handle case where selectedPublishItemId is falsy
-    //   }
-    // },
 
     // async getActiveCandidateMethod() {
     //   try {
@@ -418,7 +406,7 @@ export default {
 
   mounted() {
     this.getVacancyDataMethod();
-    // this.getActiveCandidateMethod();
+    this.getAllCandidateListMethod(this.$store.state.selectedPublishItemId);
   },
 };
 </script>

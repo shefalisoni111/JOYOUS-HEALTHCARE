@@ -1,8 +1,9 @@
 <template>
-  <Doughnut id="my-chart-id" :options="chartOptions" :data="chartData" />
+  <Doughnut ref="myChart" id="my-chart-id" :options="chartOptions" :data="chartData" />
 </template>
 
 <script>
+import axios from "axios";
 import { Doughnut } from "vue-chartjs";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -22,7 +23,7 @@ export default {
         datasets: [
           {
             backgroundColor: ["#57e3b4", "#e66e65", "#22cbe0", "#fc1414cf"],
-            data: [50, 10, 15, 3],
+            data: [0, 0, 0, 0],
           },
         ],
       },
@@ -33,16 +34,6 @@ export default {
           title: {
             display: false,
           },
-          legend: { display: false },
-          tooltip: { enable: false },
-        },
-        cutout: 50,
-        layout: {
-          padding: {
-            bottom: 20,
-          },
-        },
-        plugins: {
           legend: {
             display: false,
             position: "bottom",
@@ -86,6 +77,7 @@ export default {
           },
         },
       },
+
       doughnutlabel: {
         labels: [
           {
@@ -101,6 +93,35 @@ export default {
         ],
       },
     };
+  },
+  methods: {
+    fetchData() {
+      axios
+        .get(`${VITE_API_URL}/home_vacancy_data`)
+        .then((response) => {
+          const apiData = response.data.data;
+
+          this.chartData.datasets[0].data[0] = apiData.activate_vacancy || 0;
+          this.chartData.datasets[0].data[1] = apiData.applied_vacancies || 0;
+          this.chartData.datasets[0].data[2] = apiData.assigned_vacancies || 0;
+          this.chartData.datasets[0].data[3] = apiData.deleted_shifts || 0;
+
+          const data = this.chartData.datasets[0].data;
+
+          if (this.$refs.myChart && this.$refs.myChart.chart) {
+            this.$refs.myChart.chart.update();
+            // console.log("Chart updated successfully");
+          } else {
+            // console.error("Chart instance or reference not found:", this.$refs.myChart);
+          }
+        })
+        .catch((error) => {
+          // console.error("Error fetching data:", error);
+        });
+    },
+  },
+  mounted() {
+    this.fetchData();
   },
 };
 </script>

@@ -466,7 +466,9 @@
                           <div class="d-flex">
                             <span class="box-icon mt-2"></span>
                             <div class="d-flex flex-column">
-                              <span class="fs-4 ps-2 fw-bold">50</span>
+                              <span class="fs-4 ps-2 fw-bold">{{
+                                getShiftCount.activate_vacancy
+                              }}</span>
                               <span class="d-flex ms-2">Open Shifts</span>
                             </div>
                           </div>
@@ -475,7 +477,9 @@
                           <div class="d-flex">
                             <span class="box-icon2 mt-2"></span>
                             <div class="d-flex flex-column">
-                              <span class="fs-4 ps-2 fw-bold">10</span>
+                              <span class="fs-4 ps-2 fw-bold">{{
+                                getShiftCount.applied_vacancies
+                              }}</span>
                               <span class="d-flex ms-2">Applied Shifts</span>
                             </div>
                           </div>
@@ -484,7 +488,9 @@
                           <div class="d-flex">
                             <span class="box-icon3 mt-2"></span>
                             <div class="d-flex flex-column">
-                              <span class="fs-4 ps-2 fw-bold">30</span>
+                              <span class="fs-4 ps-2 fw-bold">{{
+                                getShiftCount.assigned_vacancies
+                              }}</span>
                               <span class="d-flex ms-2">Assigned Shifts</span>
                             </div>
                           </div>
@@ -493,7 +499,9 @@
                           <div class="d-flex">
                             <span class="box-icon4 mt-2"></span>
                             <div class="d-flex flex-column">
-                              <span class="fs-4 ps-2 fw-bold">2</span>
+                              <span class="fs-4 ps-2 fw-bold">{{
+                                getShiftCount.inactive_vacancies
+                              }}</span>
                               <span class="d-flex ms-2">Inactive Shifts</span>
                             </div>
                           </div>
@@ -574,6 +582,7 @@ export default {
       getRecords: [],
       startDate: new Date(),
       endDate: new Date(),
+      getShiftCount: [],
     };
   },
   components: {
@@ -666,6 +675,14 @@ export default {
         // console.error("Error fetching data:", error);
       }
     },
+    async FetchShiftsMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/home_vacancy_data`);
+        this.getShiftCount = response.data.data;
+      } catch (error) {
+        // console.error("Error fetching data:", error);
+      }
+    },
   },
   created() {
     if (!localStorage.getItem("calendarData")) {
@@ -679,11 +696,12 @@ export default {
 
     this.loadDateRangeFromLocalStorage();
     this.fetchData();
+    this.FetchShiftsMethod();
   },
 
   mounted() {
     this.loadDateRangeFromLocalStorage();
-    // const timestamp = 1710031498493;
+    // const timestamp = 1710384909104;
     // const date = new Date(timestamp);
     // console.log(date);
     const currentDate = new Date();

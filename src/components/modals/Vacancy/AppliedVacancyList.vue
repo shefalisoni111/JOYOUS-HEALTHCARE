@@ -418,8 +418,12 @@ export default {
       const checkedCandidateIds = Object.keys(this.checkedCandidates)
         .filter((candidate_id) => this.checkedCandidates[candidate_id])
         .map((candidate_id) => parseInt(candidate_id));
-
       if (checkedCandidateIds.length === 0) {
+        alert("Please select at least one candidate before proceeding.");
+        return;
+      }
+      if (!this.selectedAction) {
+        alert("Please select an action (Assign or Reject) before proceeding.");
         return;
       }
 
@@ -451,6 +455,11 @@ export default {
           if (response.ok) {
             this.checkedCandidates = {};
             this.$emit("appliedVacancy");
+            if (this.selectedAction === "1") {
+              alert("Staff assigned successfully!");
+            } else if (this.selectedAction === "2") {
+              alert("Staff rejected successfully!");
+            }
           } else {
           }
         } catch (error) {}

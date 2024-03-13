@@ -103,6 +103,7 @@
 <script>
 import axios from "axios";
 import Loader from "../../Loader/Loader.vue";
+
 export default {
   data() {
     return {
@@ -118,6 +119,7 @@ export default {
   components: {
     Loader,
   },
+
   methods: {
     async login() {
       this.loading = true;
@@ -135,17 +137,14 @@ export default {
         const jsonData = response.data;
 
         if (jsonData.is_logged_in) {
-          const sessionDurationInMinutes = 360;
-          // const tokenExpiration = new Date(jsonData.expiry_time).getTime();
-          const expirationTime =
-            new Date().getTime() + sessionDurationInMinutes * 60 * 1000;
+          const tokenExpiration = new Date(jsonData.expiry_time).getTime();
+          const expirationTime = tokenExpiration;
 
           localStorage.setItem("token", jsonData.token);
           localStorage.setItem("tokenExpiration", expirationTime);
           this.$router.push({ name: "Home" });
 
-          // this.setupAutoLogout(tokenExpiration - new Date().getTime());
-          this.setupAutoLogout(sessionDurationInMinutes * 60 * 1000);
+          this.setupAutoLogout(tokenExpiration - new Date().getTime());
         } else {
           this.error = "Invalid Email or Password";
         }
@@ -163,9 +162,13 @@ export default {
     },
     checkTokenExpiration() {
       const tokenExpiration = localStorage.getItem("tokenExpiration");
+      const currentTime = new Date().getTime();
 
-      if (tokenExpiration && new Date().getTime() >= parseInt(tokenExpiration)) {
+      if (tokenExpiration && currentTime >= parseInt(tokenExpiration)) {
         this.logoutDueToExpiration();
+      } else {
+        const remainingTime = parseInt(tokenExpiration) - currentTime;
+        this.setupAutoLogout(remainingTime);
       }
     },
     logoutDueToExpiration() {
@@ -183,7 +186,7 @@ export default {
 
   mounted() {
     this.checkTokenExpiration();
-    setInterval(this.checkTokenExpiration, 60000);
+
     // Check if "Remember Me" credentials exist
     // const email = localStorage.getItem("email");
     // const password = localStorage.getItem("password");

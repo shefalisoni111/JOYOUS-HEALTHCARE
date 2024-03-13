@@ -136,6 +136,22 @@
                     >
                   </div>
                 </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
+                    <label class="form-label" for="selectShifts">Staff Required</label>
+                  </div>
+                  <div class="col-10">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="staff_required"
+                      @input="clearError"
+                    />
+                    <span v-if="!validationStaffRequired" class="text-danger"
+                      >Staff Required</span
+                    >
+                  </div>
+                </div>
 
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
@@ -192,6 +208,7 @@ export default {
       validationSelectedClient: true,
       validationNotesText: true,
       validationShift: true,
+      validationStaffRequired: true,
       validationDateType: true,
       business_unit_id: "",
       client_id: "",
@@ -203,6 +220,7 @@ export default {
       shift_id: "",
       shiftsTime: [],
       notes: "",
+      staff_required: "",
       isValidForm: false,
       selectedDate: null,
     };
@@ -215,13 +233,15 @@ export default {
         this.job_id !== "" &&
         this.shift_id !== "" &&
         this.notes !== "" &&
+        this.staff_required !== "" &&
         this.selectedDate !== null &&
         this.validationSelectedOptionText &&
         this.validationSelectedBusinessUnit &&
         this.validationSelectedClient &&
         this.validationNotesText &&
         this.validationShift &&
-        this.validationDateType
+        this.validationDateType &&
+        this.validationStaffRequired
       );
     },
     selectedOptionText() {
@@ -251,6 +271,7 @@ export default {
     business_unit_id: "validationSelectedBusinessUnit",
     client_id: "validationSelectedClient",
     shift_id: "validationShift",
+    staff_required: "validationStaffRequired",
     dates: "validationDateType",
     notes: "validationNotesText",
 
@@ -268,6 +289,9 @@ export default {
     },
     shift_id: function (newValue) {
       this.validationShift = this.ValidationShift(newValue);
+    },
+    staff_required: function (newValue) {
+      this.validationStaffRequired = this.ValidationStaffRequired(newValue);
     },
     dates: function (newValue) {
       this.validationDateType = this.ValidationDate(newValue);
@@ -329,6 +353,7 @@ export default {
       this.validationSelectedClient = this.ValidationClient(this.client_id);
       this.validationNotesText = this.ValidationNotes(this.notes);
       this.validationShift = this.ValidationShift(this.shift_id);
+      this.validationStaffRequired = this.ValidationStaffRequired(this.staff_required);
       this.validationDateType = this.ValidationDate(this.dates);
       if (
         this.validationSelectedOptionText &&
@@ -336,6 +361,7 @@ export default {
         this.validationSelectedClient &&
         this.validationNotesText &&
         this.validationShift &&
+        this.validationStaffRequired &&
         this.validationDateType
       ) {
         const data = {
@@ -343,6 +369,7 @@ export default {
           job_id: this.job_id,
           dates: this.dates,
           shift_id: this.shift_id,
+          staff_required: this.staff_required,
           notes: this.notes,
           client_id: this.client_id,
         };
@@ -426,6 +453,10 @@ export default {
       const shiftRegex = /[a-zA-Z0-9]/;
       return shiftRegex.test(newValue);
     },
+    ValidationStaffRequired(newValue) {
+      const staffRequired = /^(0?[1-9]|[12][0-9]|3[01])$/;
+      return staffRequired.test(newValue);
+    },
     ValidationDate(newValue) {
       const dateRegex = /(0[1-9]|[12][0-9]|3[01])/;
       return dateRegex.test(newValue);
@@ -440,7 +471,7 @@ export default {
       this.validationSelectedClient = true;
       this.validationNotesText = true;
       this.validationShift = true;
-      this.validationDateType = true;
+      (this.validationStaffRequired = true), (this.validationDateType = true);
     },
     clearFields() {
       this.business_unit_id = "";
@@ -448,7 +479,7 @@ export default {
       this.job_id = "";
       this.dates = [];
       this.shift_id = "";
-      this.notes = "";
+      (this.staff_required = ""), (this.notes = "");
       this.selectedDate = null;
     },
   },
