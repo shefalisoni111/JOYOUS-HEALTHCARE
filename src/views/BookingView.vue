@@ -157,7 +157,9 @@ ul.generalsetting h6 {
                           <td scope="col">testing</td>
                           <td scope="col">aniket@gmail.com</td>
                           <td scope="col">active</td>
-                          <td scope="col">view</td>
+                          <td scope="col">
+                            <i class="bi bi-trash text-danger"></i>
+                          </td>
                         </tr>
                       </tbody>
                     </table>

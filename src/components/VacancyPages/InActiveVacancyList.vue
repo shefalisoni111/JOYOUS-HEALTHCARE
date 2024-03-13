@@ -14,7 +14,7 @@
               <th scope="col">Shift</th>
               <th scope="col" class="withShow">Staff required</th>
               <th scope="col" class="widthDefineNotes">Notes</th>
-              <!-- <th scope="col">Status</th> -->
+              <th scope="col">Status</th>
               <th scope="col">Action</th>
             </tr>
           </thead>
@@ -35,7 +35,7 @@
               </td>
               <td v-text="data.business_unit"></td>
               <td v-text="data.job_title"></td>
-              <td class="widthDefine">
+              <td class="">
                 <span v-for="(date, index) in data.dates" :key="index">
                   {{ date }}
 
@@ -49,7 +49,7 @@
                 {{ data.staff_required === null ? 0 : data.staff_required }}
               </td>
               <td class="widthDefineNotes" v-text="data.notes"></td>
-              <!-- <td></td> -->
+              <td v-text="data.status"></td>
               <td>
                 <button
                   class="btn btn-outline-success text-nowrap"

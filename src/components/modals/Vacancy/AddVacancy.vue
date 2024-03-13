@@ -142,13 +142,13 @@
                   </div>
                   <div class="col-10">
                     <input
-                      type="text"
+                      type="number"
                       class="form-control"
                       v-model="staff_required"
-                      @input="clearError"
+                      @input="validateStaffRequired"
                     />
                     <span v-if="!validationStaffRequired" class="text-danger"
-                      >Staff Required</span
+                      >Staff Required positive number only</span
                     >
                   </div>
                 </div>
@@ -301,6 +301,14 @@ export default {
     },
   },
   methods: {
+    validateStaffRequired() {
+      if (this.staff_required < 0) {
+        this.staff_required = null;
+        this.validationStaffRequired = false;
+      } else {
+        this.validationStaffRequired = true;
+      }
+    },
     // clearFieldsAndValidation() {
     //   this.business_unit_id = "";
     //   this.client_id = "";

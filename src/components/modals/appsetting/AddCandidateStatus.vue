@@ -1,5 +1,6 @@
 <template>
   <div>
+    <AlertMsg :message="successMessage" v-if="successMessage" />
     <!-- Modal -->
     <div
       class="modal fade"
@@ -87,6 +88,7 @@
 
 <script>
 import axios from "axios";
+import AlertMsg from "../../../components/Alerts/AlertMsg.vue";
 export default {
   name: "AddCandidateStatus",
   data() {
@@ -95,7 +97,11 @@ export default {
       title: "",
       description: "",
       errors: {},
+      successMessage: "",
     };
+  },
+  components: {
+    AlertMsg,
   },
   computed: {
     isButtonDisabled() {
@@ -152,7 +158,7 @@ export default {
           const newCandidateStatus = await response.json();
 
           this.$emit("updateList");
-
+          this.successMessage = "Staff Status Add Successful";
           this.title = "";
           this.description = "";
         } else {

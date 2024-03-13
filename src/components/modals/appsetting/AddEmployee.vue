@@ -1,5 +1,6 @@
 <template>
   <div>
+    <AlertMsg :message="successMessage" v-if="successMessage" />
     <!-- Modal -->
     <div class="modal fade" id="addEmployee" aria-labelledby="addEmployee" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
@@ -82,6 +83,7 @@
 
 <script>
 import axios from "axios";
+import AlertMsg from "../../../components/Alerts/AlertMsg.vue";
 export default {
   name: "AddEmployee",
   data() {
@@ -93,6 +95,7 @@ export default {
       errors: {},
     };
   },
+  components: { AlertMsg },
   computed: {
     isButtonDisabled() {
       return (
@@ -138,6 +141,7 @@ export default {
         const response = await axios.post(`${VITE_API_URL}/employment_types`, data);
         if (response.data) {
           this.$emit("updateList");
+          this.successMessage = "Employee type Add Successful";
           this.title = "";
           this.description = "";
         }

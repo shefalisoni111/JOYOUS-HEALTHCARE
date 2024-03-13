@@ -1,5 +1,6 @@
 <template>
   <div>
+    <AlertMsg :message="successMessage" v-if="successMessage" />
     <!-- Modal -->
     <div class="modal fade" id="addShift" aria-labelledby="addShift" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -81,6 +82,7 @@
 
 <script>
 import { ref, onMounted, getCurrentInstance } from "vue";
+import AlertMsg from "../../../components/Alerts/AlertMsg.vue";
 import axios from "axios";
 function formatTime(time) {
   if (!time) {
@@ -105,6 +107,7 @@ export default {
   setup() {
     const { emit } = getCurrentInstance();
     const shifts = ref([]);
+    const successMessage = ref("");
     const updateShift = async () => {
       let updatedShifts = [];
 
@@ -124,7 +127,7 @@ export default {
         );
 
         emit("shift-updated", updatedShifts);
-
+        successMessage.value = "Shift Add Successful";
         await fetchShifts();
       } catch (error) {
         // console.error("Error updating shifts:", error);
@@ -150,7 +153,11 @@ export default {
       updateShift,
       fetchShifts,
       updateTime,
+      successMessage,
     };
+  },
+  components: {
+    AlertMsg,
   },
 };
 </script>

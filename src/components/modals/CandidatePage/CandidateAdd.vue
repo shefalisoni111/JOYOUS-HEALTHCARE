@@ -23,7 +23,7 @@
               <form>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-4">
-                    <label class="form-label">name</label>
+                    <label class="form-label">First Name</label>
                   </div>
                   <div class="col-8">
                     <input
@@ -34,7 +34,26 @@
                       @change="detectAutofill"
                     />
                     <span v-if="!validateCandidateName && !autofilled" class="text-danger"
-                      >Candidate Name Required</span
+                      >Staff First Name Required</span
+                    >
+                  </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-4">
+                    <label class="form-label">Last Name</label>
+                  </div>
+                  <div class="col-8">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="last_name"
+                      @input="clearError"
+                      @change="detectAutofill"
+                    />
+                    <span
+                      v-if="!validateCandidateLName && !autofilled"
+                      class="text-danger"
+                      >Staff Last Name Required</span
                     >
                   </div>
                 </div>
@@ -172,6 +191,7 @@ export default {
       validateEmail: true,
       isPasswordRequired: true,
       validateCandidateName: true,
+      validateCandidateLName: true,
       validatePhoneNumber: true,
       passwordsMatch: true,
       selectedOption: null,
@@ -200,6 +220,7 @@ export default {
         this.passwordsMatch &&
         this.validatePhoneNumber &&
         this.validateCandidateName &&
+        this.validateCandidateLName &&
         this.validationSelectedOptionText
       );
     },
@@ -211,6 +232,7 @@ export default {
   watch: {
     email: "validateEmailFormat",
     first_name: "validateNameFormat",
+    last_name: "validateLNameFormat",
     password: "validatePasswordMatch",
     confirm_password: "validatePasswordMatch",
     phone_number: "validatePhoneNumberFormat",
@@ -222,6 +244,7 @@ export default {
     isFieldEmpty() {
       return (
         !this.first_name.trim() ||
+        !this.last_name.trim() ||
         !this.email.trim() ||
         !this.phone_number.trim() ||
         !this.password.trim() ||
@@ -246,6 +269,7 @@ export default {
     async addCandidate() {
       this.validateSelectedOption();
       this.validateCandidateName = this.validateNameFormat(this.first_name);
+      this.validateCandidateLName = this.validateLNameFormat(this.last_name);
       this.validateEmail = this.validateEmailFormat(this.email);
       this.validatePhoneNumber = this.validatePhoneNumberFormat(this.phone_number);
 
@@ -261,6 +285,7 @@ export default {
 
         const data = {
           first_name: this.first_name,
+          last_name: this.last_name,
           job_id: 1,
           password: this.password,
           confirm_password: this.confirm_password,
@@ -305,6 +330,10 @@ export default {
       const nameRegex = /[A-Za-z]/;
       return nameRegex.test(first_name);
     },
+    validateLNameFormat(last_name) {
+      const nameRegex = /[A-Za-z]/;
+      return nameRegex.test(last_name);
+    },
     validateSelectedOption() {
       this.validationSelectedOptionText = !!this.job_id;
     },
@@ -320,6 +349,7 @@ export default {
         this.validatePhoneNumber = true;
         this.passwordsMatch = true;
         this.validateCandidateName = true;
+        this.validateCandidateLName = true;
         this.validationSelectedOptionText = true;
         this.isPasswordRequired = true;
       }
@@ -338,6 +368,7 @@ export default {
     },
     resetForm() {
       this.first_name = "";
+      this.last_name = "";
       this.job_id = "";
       this.password = "";
       this.confirm_password = "";
