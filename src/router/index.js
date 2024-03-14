@@ -19,7 +19,7 @@ const router = createRouter({
       name: "AdminProfile",
       component: () => import("@/components/AdminProfile.vue"),
       meta: {
-        auth: true,
+         requiresAuth: true,
       },
     },
 
@@ -28,7 +28,7 @@ const router = createRouter({
       name: "Client",
       component: () => import("@/views/ClientView.vue"),
       meta: {
-        auth: true,
+         requiresAuth: true,
       },
       children: [
         {
@@ -50,7 +50,7 @@ const router = createRouter({
                   "@/components/ClientsPages/AllClient.vue"
                 ),
               meta: {
-                auth: true,
+                 requiresAuth: true,
               },
             },
             {
@@ -61,7 +61,7 @@ const router = createRouter({
                   "@/components/ClientsPages/ActiveClient.vue"
                 ),
               meta: {
-                auth: true,
+                 requiresAuth: true,
               },
             },
             {
@@ -72,7 +72,7 @@ const router = createRouter({
                   "@/components/ClientsPages/InActiveClient.vue"
                 ),
               meta: {
-                auth: true,
+                 requiresAuth: true,
               },
             },
            
@@ -106,7 +106,7 @@ const router = createRouter({
           name: "Client",
           component: () => import("@/views/ClientView.vue"),
           meta: {
-            auth: true,
+             requiresAuth: true,
           },
         },
         {
@@ -115,7 +115,7 @@ const router = createRouter({
           component: () => import("@/components/ClientsPages/Site.vue"),
           props: true,
           meta: {
-            auth: true,
+             requiresAuth: true,
           },
           children: [
             {
@@ -139,7 +139,7 @@ const router = createRouter({
                     ),
                     props: true,
                   meta: {
-                    auth: true,
+                     requiresAuth: true,
                   },
                 },
                 {
@@ -151,7 +151,7 @@ const router = createRouter({
                     ),
                     props: true,
                   meta: {
-                    auth: true,
+                     requiresAuth: true,
                   },
                 },
                 {
@@ -163,7 +163,7 @@ const router = createRouter({
                     ),
                     props: true,
                   meta: {
-                    auth: true,
+                     requiresAuth: true,
                   },
                 },
               ]
@@ -186,7 +186,7 @@ const router = createRouter({
           name: "Rates_and_Rules",
           component: () => import("@/components/ClientsPages/Rates_and_Rules.vue"),
           meta: {
-            auth: true,
+             requiresAuth: true,
           },
         },
       ],
@@ -196,7 +196,7 @@ const router = createRouter({
       name: "Candidate",
       component: () => import("@/views/CandidatesView.vue"),
       meta: {
-        auth: true,
+         requiresAuth: true,
       },
       children: [
         {
@@ -225,7 +225,7 @@ const router = createRouter({
                   "@/components/CandidatePages/AllCandidateListsDisplay.vue"
                 ),
               meta: {
-                auth: true,
+                 requiresAuth: true,
               },
             },
             {
@@ -236,7 +236,7 @@ const router = createRouter({
                   "@/components/CandidatePages/ActiveCandidate.vue"
                 ),
               meta: {
-                auth: true,
+                 requiresAuth: true,
               },
             },
             {
@@ -247,7 +247,7 @@ const router = createRouter({
                   "@/components/CandidatePages/InActiveCandidate.vue"
                 ),
               meta: {
-                auth: true,
+                 requiresAuth: true,
               },
             },
             {
@@ -258,7 +258,7 @@ const router = createRouter({
                   "@/components/CandidatePages/Rejected.vue"
                 ),
               meta: {
-                auth: true,
+                 requiresAuth: true,
               },
             },
             {
@@ -269,7 +269,7 @@ const router = createRouter({
                   "@/components/CandidatePages/RejectCandidate.vue"
                 ),
               meta: {
-                auth: true,
+                 requiresAuth: true,
               },
             },
           ]
@@ -296,7 +296,7 @@ const router = createRouter({
                   "@/components/CandidatePages/ProfileDetail/Overview.vue"
                 ),
               meta: {
-                auth: true,
+                 requiresAuth: true,
               },
             },
             {
@@ -307,7 +307,7 @@ const router = createRouter({
                   "@/components/CandidatePages/ProfileDetail/Document.vue"
                 ),
               meta: {
-                auth: true,
+                 requiresAuth: true,
               },
             },
             {
@@ -318,7 +318,7 @@ const router = createRouter({
                   "@/components/CandidatePages/ProfileDetail/ProfileTabs.vue"
                 ),
               meta: {
-                auth: true,
+                 requiresAuth: true,
               },
             },
             {
@@ -329,7 +329,7 @@ const router = createRouter({
                   "@/components/CandidatePages/ProfileDetail/Restricted.vue"
                 ),
               meta: {
-                auth: true,
+                 requiresAuth: true,
               },
             },
             {
@@ -340,7 +340,7 @@ const router = createRouter({
                   "@/components/CandidatePages/ProfileDetail/RateCard.vue"
                 ),
               meta: {
-                auth: true,
+                 requiresAuth: true,
               },
             },
             {
@@ -349,7 +349,7 @@ const router = createRouter({
               component: () =>
                 import("@/components/CandidatePages/ProfileDetail/Notes.vue"),
               meta: {
-                auth: true,
+                 requiresAuth: true,
               },
             },
             {
@@ -358,7 +358,7 @@ const router = createRouter({
               component: () =>
                 import("@/components/CandidatePages/ProfileDetail/StaffId.vue"),
               meta: {
-                auth: true,
+                 requiresAuth: true,
               },
             },
             {
@@ -369,7 +369,7 @@ const router = createRouter({
                   "@/components/CandidatePages/ProfileDetail/CandidateHistory.vue"
                 ),
               meta: {
-                auth: true,
+                 requiresAuth: true,
               },
             },
             {
@@ -380,7 +380,7 @@ const router = createRouter({
                   "@/components/CandidatePages/ProfileDetail/CandidatePreference.vue"
                 ),
               meta: {
-                auth: true,
+                 requiresAuth: true,
               },
             },
           ],
@@ -396,7 +396,7 @@ const router = createRouter({
       name: "Vacancies",
       component: () => import("@/views/VacanciesView.vue"),
       meta: {
-        auth: true,
+         requiresAuth: true,
       },
       children: [
         {
@@ -418,7 +418,7 @@ const router = createRouter({
       name: "Schedule",
       component: () => import("@/views/ScheduleView.vue"),
       meta: {
-        auth: true,
+         requiresAuth: true,
       },
     },
     {
@@ -426,7 +426,7 @@ const router = createRouter({
       name: "Booking",
       component: () => import("@/views/BookingView.vue"),
       meta: {
-        auth: true,
+         requiresAuth: true,
       },
     },
     {
@@ -434,7 +434,7 @@ const router = createRouter({
       name: "Timesheet",
       component: () => import("@/views/TimesheetView.vue"),
       meta: {
-        auth: true,
+         requiresAuth: true,
       },
       children: [
         {
@@ -467,7 +467,7 @@ const router = createRouter({
       name: "Invoice",
       component: () => import("@/views/InvoiceView.vue"),
       meta: {
-        auth: true,
+         requiresAuth: true,
       },
       children: [
         {
@@ -512,7 +512,7 @@ const router = createRouter({
       name: "Report",
       component: () => import("@/views/ReportView.vue"),
       meta: {
-        auth: true,
+         requiresAuth: true,
       },
       children: [
         {
@@ -523,7 +523,7 @@ const router = createRouter({
               "@/components/ReportPages/PayrollReport.vue"
             ),
           meta: {
-            auth: true,
+             requiresAuth: true,
           },
         },
         {
@@ -534,7 +534,7 @@ const router = createRouter({
               "@/components/ReportPages/StaffReport.vue"
             ),
           meta: {
-            auth: true,
+             requiresAuth: true,
           },
         },
         {
@@ -545,7 +545,7 @@ const router = createRouter({
               "@/components/ReportPages/ClientReport.vue"
             ),
           meta: {
-            auth: true,
+             requiresAuth: true,
           },
         },
         {
@@ -556,7 +556,7 @@ const router = createRouter({
               "@/components/ReportPages/BusinessUnitReport.vue"
             ),
           meta: {
-            auth: true,
+             requiresAuth: true,
           },
         },
         {
@@ -567,7 +567,7 @@ const router = createRouter({
               "@/components/ReportPages/InvoiceReport.vue"
             ),
           meta: {
-            auth: true,
+             requiresAuth: true,
           },
         },
         {
@@ -578,7 +578,7 @@ const router = createRouter({
               "@/components/ReportPages/DocumentReport.vue"
             ),
           meta: {
-            auth: true,
+             requiresAuth: true,
           },
         },
         {
@@ -589,7 +589,7 @@ const router = createRouter({
               "@/components/ReportPages/RateCard.vue"
             ),
           meta: {
-            auth: true,
+             requiresAuth: true,
           },
         },
         {
@@ -600,7 +600,7 @@ const router = createRouter({
               "@/components/ReportPages/EmailReport.vue"
             ),
           meta: {
-            auth: true,
+             requiresAuth: true,
           },
         },
       ]
@@ -611,7 +611,7 @@ const router = createRouter({
       name: "AppSetting",
       component: () => import("@/views/AppSetting.vue"),
       meta: {
-        auth: true,
+         requiresAuth: true,
       },
 
       children: [
@@ -688,7 +688,7 @@ const router = createRouter({
       component: () =>
         import("@/components/appsettingcomponent/AgencySetting.vue"),
         meta: {
-          auth: true,
+           requiresAuth: true,
         },
     },
     {
@@ -697,7 +697,7 @@ const router = createRouter({
       component: () =>
         import("@/components/appsettingcomponent/InvoiceSetting.vue"),
         meta: {
-          auth: true,
+           requiresAuth: true,
         },
     },
     {
@@ -706,7 +706,7 @@ const router = createRouter({
       component: () =>
         import("@/components/appsettingcomponent/SubscriptionSetting.vue"),
         meta: {
-          auth: true,
+           requiresAuth: true,
         },
     },
     {
@@ -715,7 +715,7 @@ const router = createRouter({
       component: () =>
         import("@/components/appsettingcomponent/NotificationSetting.vue"),
         meta: {
-          auth: true,
+           requiresAuth: true,
         },
       children: [
         {
@@ -768,7 +768,7 @@ const router = createRouter({
       component: () =>
         import("@/components/appsettingcomponent/PrevilegesSetting.vue"),
         meta: {
-          auth: true,
+           requiresAuth: true,
         },
     },
     {
@@ -777,7 +777,7 @@ const router = createRouter({
       component: () =>
         import("@/components/appsettingcomponent/ClientSettings.vue"),
         meta: {
-          auth: true,
+           requiresAuth: true,
         },
         children: [
           {
@@ -805,7 +805,7 @@ const router = createRouter({
       name: "Login",
       component: () => import("@/components/auth/login/Login.vue"),
       meta: {
-        auth: true,
+         requiresAuth: true,
       },
     },
 
