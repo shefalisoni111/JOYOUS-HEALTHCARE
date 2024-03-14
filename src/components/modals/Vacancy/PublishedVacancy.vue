@@ -23,12 +23,6 @@
               <li>Time: {{ data.shift }}</li>
               <li>Space left: 1</li>
             </ul> -->
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -140,12 +134,13 @@
                   <thead>
                     <tr>
                       <th></th>
-                      <th scope="col">ID</th>
+                      <th scope="col">staff code</th>
                       <th scope="col" class="widthSet">First Name</th>
                       <th scope="col" class="widthSet">Last Name</th>
                       <th scope="col">Positions</th>
                       <th scope="col" class="widthSet">Email</th>
                       <th scope="col">Phone</th>
+                      <th scope="col">Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -159,7 +154,7 @@
                           v-model="checkedCandidates[candidate.id]"
                         />
                       </td>
-                      <td v-text="candidate.id"></td>
+                      <td v-text="candidate.candidate_code"></td>
                       <td>
                         {{ candidate.first_name }}
                       </td>
@@ -171,6 +166,7 @@
                       <td>
                         {{ candidate.phone_number }}
                       </td>
+                      <td v-text="candidate.status"></td>
                     </tr>
                   </tbody>
                 </table>

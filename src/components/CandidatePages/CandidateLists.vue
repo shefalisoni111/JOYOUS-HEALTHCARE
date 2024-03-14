@@ -79,6 +79,7 @@
             <table class="table candidateTable">
               <thead>
                 <tr>
+                  <th scope="col">ID</th>
                   <th scope="col">Name</th>
                   <th scope="col">Positions</th>
                   <th scope="col">Email</th>
@@ -87,32 +88,43 @@
                   <th scope="col">Access</th>
 
                   <th scope="col">Last Login</th>
+                  <th scope="col">Action</th>
                 </tr>
               </thead>
               <tbody v-if="searchResults?.length > 0">
                 <tr v-for="data in searchResults" :key="data.id">
+                  <td>{{ data.id }}</td>
                   <td>{{ data.first_name }}</td>
                   <td>{{ data.position }}</td>
                   <td>{{ data.email }}</td>
                   <td>{{ data.phone_number }}</td>
                   <td>
-                    <label class="switch" v-if="data.activated == true">
-                      <input type="checkbox" id="togBtn" checked />
-                      <div class="slider round"></div>
-                    </label>
-                    <label class="switch" v-else>
-                      <input type="checkbox" id="togBtn1" />
-                      <div class="slider round"></div>
-                    </label>
-                  </td>
-                  <td>
-                    <label class="switch">
-                      <input type="checkbox" id="togBtn2" checked />
-                      <div class="slider round"></div>
-                    </label>
+                    {{ data.status }}
                   </td>
 
                   <td>{{ data.last_login }}</td>
+                  <td>
+                    <button
+                      class="btn btn-outline-success"
+                      data-bs-toggle="modal"
+                      data-bs-target="#assignDirectVacancy"
+                      data-bs-whatever="@mdo"
+                      @click="updateSelectedIds(data)"
+                    >
+                      <i class="bi bi-person-circle"></i>
+                    </button>
+                  </td>
+                  <td>
+                    <router-link
+                      class="btn btn-outline-success text-nowrap"
+                      :to="{
+                        name: 'Profile',
+                        params: { id: data.id },
+                      }"
+                    >
+                      <i class="bi bi-eye"></i>
+                    </router-link>
+                  </td>
                 </tr>
               </tbody>
               <tbody v-else>
@@ -129,6 +141,10 @@
     </div>
 
     <CandidateAdd @addCandidate="getActiveCAndidateMethod" />
+    <AssignDirectVacancy
+      :candidateId="selectedCandidateId || 0"
+      @Candidate-updated="getCandidateMethods"
+    />
   </div>
 </template>
 
@@ -139,7 +155,8 @@ import AllCandidateListsDisplay from "../CandidatePages/AllCandidateListsDisplay
 import ActiveCandidate from "../CandidatePages/ActiveCandidate.vue";
 import InActiveCandidate from "../CandidatePages/InActiveCandidate.vue";
 import Rejected from "../CandidatePages/Rejected.vue";
-import RejectCandidate from "../CandidatePages/RejectCandidate.vue";
+import AssignDirectVacancy from "../modals/CandidatePage/AssignDirectVacancy.vue";
+// import RejectCandidate from "../CandidatePages/RejectCandidate.vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -151,6 +168,7 @@ export default {
   data() {
     return {
       inactiveCandidateData: [],
+      selectedCandidateId: null,
       activeCandidate: [],
       searchQuery: null,
       debounceTimeout: null,
@@ -169,7 +187,7 @@ export default {
           routeName: "InActiveCandidate",
         },
         { name: "Pending", component: "Rejected", routeName: "Rejected" },
-        { name: "Reject", component: "RejectCandidate", routeName: "RejectCandidate" },
+        // { name: "Reject", component: "RejectCandidate", routeName: "RejectCandidate" },
       ],
       activeTab: 0,
       activeTabName: "",
@@ -185,11 +203,19 @@ export default {
     ActiveCandidate,
     InActiveCandidate,
     Rejected,
-    RejectCandidate,
+    // RejectCandidate,
     AllCandidateListsDisplay,
+    AssignDirectVacancy,
   },
 
   methods: {
+    openAssigned(id) {
+      this.$store.commit("setSelectedAssignedItemId", id);
+    },
+    updateSelectedIds(candidate) {
+      this.$store.commit("setSelectedCandidateId", candidate.id);
+      this.$store.commit("setSelectedJobId", candidate.job_id);
+    },
     setActiveTabFromRoute() {
       const currentRouteName = this.$route.name;
       const matchingTabIndex = this.tabs.findIndex(
@@ -307,10 +333,28 @@ export default {
           }
         });
     },
+    async getCandidateMethods() {
+      this.isLoading = true;
+      try {
+        const response = await axios.get(`${VITE_API_URL}/candidates`);
+
+        this.getCandidatesData = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+          }
+        } else {
+          // console.error("Error fetching candidates:", error);
+        }
+      } finally {
+        this.isLoading = false;
+      }
+    },
   },
 
   mounted() {
     this.getActiveCAndidateMethod();
+    this.getCandidateMethods();
     this.setActiveTabFromRoute();
     this.setActiveTabNameOnLoad();
   },

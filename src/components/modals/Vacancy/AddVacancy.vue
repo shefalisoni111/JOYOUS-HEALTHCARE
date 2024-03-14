@@ -11,12 +11,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addVacancies">Add Shift</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -141,13 +135,23 @@
                   <div class="col-10">
                     <input
                       type="number"
-                      class="form-control"
+                      class="form-control w-25"
                       v-model="staff_required"
                       @input="validateStaffRequired"
+                      @keydown.prevent
                     />
-                    <span v-if="!validationStaffRequired" class="text-danger"
-                      >Staff Required positive number only</span
+                    <span
+                      v-if="!validationStaffRequired && staff_required < 0"
+                      class="text-danger"
                     >
+                      Staff Required positive number only
+                    </span>
+                    <span
+                      v-else-if="!validationStaffRequired && staff_required === 0"
+                      class="text-danger"
+                    >
+                      Staff Required invalid
+                    </span>
                   </div>
                 </div>
 
@@ -176,6 +180,7 @@
               data-bs-target="#addVacancies"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
+              v-on:click="clearFieldsData"
             >
               Cancel
             </button>
@@ -300,28 +305,20 @@ export default {
   },
   methods: {
     validateStaffRequired() {
-      if (this.staff_required < 0) {
-        this.staff_required = null;
+      if (this.staff_required <= 0) {
+        // this.staff_required = null;
         this.validationStaffRequired = false;
       } else {
         this.validationStaffRequired = true;
       }
     },
-    // clearFieldsAndValidation() {
-    //   this.business_unit_id = "";
-    //   this.client_id = "";
-    //   this.job_id = "";
-    //   this.dates = [];
-    //   this.shift_id = "";
-    //   this.notes = "";
-    //   this.selectedDate = null;
-    //   this.validationSelectedOptionText = true;
-    //   this.validationSelectedBusinessUnit = true;
-    //   this.validationSelectedClient = true;
-    //   this.validationNotesText = true;
-    //   this.validationShift = true;
-    //   this.validationDateType = true;
-    // },
+    clearFieldsData() {
+      this.clearFields();
+      setTimeout(() => {
+        this.clearError();
+      }, 10);
+    },
+
     addDate() {
       if (this.selectedDate) {
         const currentDate = new Date();

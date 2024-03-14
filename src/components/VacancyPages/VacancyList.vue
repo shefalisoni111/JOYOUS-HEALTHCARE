@@ -327,6 +327,7 @@ export default {
 
     async searchVacancy() {
       try {
+        const token = localStorage.getItem("token");
         this.searchResults = [];
         let activatedStatus = null;
 
@@ -336,7 +337,13 @@ export default {
           activatedStatus = false;
         } else if (this.activeTab === 0) {
           const response = await axiosInstance.get(
-            `${VITE_API_URL}/vacancy_search/${this.searchQuery}`
+            `${VITE_API_URL}/vacancy_search/${this.searchQuery}`,
+            {
+              headers: {
+                "content-type": "application/json",
+                Authorization: "bearer " + token,
+              },
+            }
           );
 
           this.searchResults = response.data;
@@ -351,6 +358,10 @@ export default {
               vacancy_query: this.searchQuery,
               activated: activatedStatus,
               tab: this.activeTabName.toLowerCase(),
+            },
+            headers: {
+              "content-type": "application/json",
+              Authorization: "bearer " + token,
             },
           }
         );

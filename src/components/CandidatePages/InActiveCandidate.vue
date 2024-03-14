@@ -132,6 +132,7 @@ export default {
       const response = await axios
         .put(`${VITE_API_URL}/re_activate_candidate/${id}`)
         .then((response) => {
+          alert("Staff reactivated successfully!");
           this.getCandidate();
         })
 

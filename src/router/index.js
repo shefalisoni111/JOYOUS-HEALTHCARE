@@ -805,7 +805,7 @@ const router = createRouter({
       name: "Login",
       component: () => import("@/components/auth/login/Login.vue"),
       meta: {
-         requiresAuth: true,
+        auth: true,
       },
     },
 

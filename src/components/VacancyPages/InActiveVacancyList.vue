@@ -51,12 +51,20 @@
               <td class="widthDefineNotes" v-text="data.notes"></td>
               <td v-text="data.status"></td>
               <td>
-                <button
+                <!-- <button
                   class="btn btn-outline-success text-nowrap"
                   v-on:click="reActivatedMethod(data.id, data.editDate)"
                 >
-                  Re-Activate</button
-                >&nbsp;&nbsp;
+                  Re-Activate
+                </button> -->
+                <!-- <i
+                  class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editVacancy"
+                  data-bs-whatever="@mdo"
+                  @click="editVacancyId(data.id)"
+                ></i> -->
+                &nbsp;&nbsp;
                 <button class="btn btn-outline-danger text-nowrap">
                   <i class="bi bi-trash" v-on:click="vacancyDeleteMethod(data.id)"></i>
                 </button>
@@ -87,6 +95,7 @@
         Next
       </button>
     </div>
+    <EditVacancy :vacancyId="selectedVacancyId || 0" @updateVacancy="createVacancy" />
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
@@ -94,6 +103,7 @@
 <script>
 import axios from "axios";
 import Loader from "../Loader/Loader.vue";
+import EditVacancy from "../modals/Vacancy/EditVacancy.vue";
 export default {
   name: "ActiveCandidate",
   data() {
@@ -107,7 +117,7 @@ export default {
       isLoading: false,
     };
   },
-  components: { Loader },
+  components: { Loader, EditVacancy },
   computed: {
     displayedVacancies() {
       return this.getInactiveData.length >= 8
@@ -125,6 +135,9 @@ export default {
   },
 
   methods: {
+    editVacancyId(vacancyId) {
+      this.selectedVacancyId = vacancyId;
+    },
     async vacancyDeleteMethod(id) {
       if (!window.confirm("Are you Sure ?")) {
         return;

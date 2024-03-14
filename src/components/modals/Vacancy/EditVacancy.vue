@@ -6,12 +6,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="editVacancy">Edit Shift</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -103,6 +97,20 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-3">
+                    <label class="form-label">Staff Required</label>
+                  </div>
+                  <div class="col-9">
+                    <input
+                      type="number"
+                      class="form-control w-25"
+                      v-model="fetchVacancy.staff_required"
+                      @input="validateStaffRequired"
+                      @keydown.prevent
+                    />
+                  </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-3">
                     <label class="form-label">Notes</label>
                   </div>
                   <div class="col-9">
@@ -150,6 +158,7 @@ export default {
         id: "",
         business_unit_id: "",
         client_id: "",
+        staff_required: "",
         job_id: "",
         dates: [],
         shift_id: "",
@@ -197,6 +206,11 @@ export default {
     },
   },
   methods: {
+    validateStaffRequired() {
+      if (this.fetchVacancy.staff_required <= 0) {
+        this.fetchVacancy.staff_required = null;
+      }
+    },
     async fetchVacancyMethod(id) {
       const token = localStorage.getItem("token");
       try {
@@ -214,7 +228,7 @@ export default {
         this.fetchVacancy.business_unit_id = response.data.business_unit_id;
         this.fetchVacancy.client_id = response.data.client_id;
         this.fetchVacancy.job_id = response.data.job_id;
-
+        this.fetchVacancy.staff_required = response.data.staff_required;
         this.fetchVacancy.dates = response.data.dates.map((date) => {
           const dateParts = date.split(",")[1].trim().split("-");
           const day = dateParts[0].trim();
@@ -258,6 +272,7 @@ export default {
             dates: datesArray,
             notes: this.fetchVacancy.notes,
             shift_id: this.fetchVacancy.shift_id,
+            staff_required: this.fetchVacancy.staff_required,
           },
           {
             headers: {

@@ -42,7 +42,7 @@
             >
               Approve</button
             >&nbsp;&nbsp;
-            <button
+            <!-- <button
               type="button"
               class="btn btn-danger"
               data-bs-toggle="tooltip"
@@ -51,7 +51,7 @@
               v-on:click="rejectCandidateMethod(pending.id)"
             >
               Reject
-            </button>
+            </button> -->
           </td>
         </tr>
       </tbody>

@@ -11,12 +11,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="rejectedVacancyList">Rejected Shift</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -33,6 +27,32 @@
                 <li>Space left: 1</li>
               </ul>
             </div>
+            <div class="row m-3">
+              <div class="col-md-12">
+                <div
+                  class="pagetitle d-flex justify-content-between align-items-center p-2"
+                >
+                  <div></div>
+
+                  <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="searchbox position-relative">
+                        <form @submit.prevent="search">
+                          <input
+                            class="form-control mr-sm-2"
+                            type="search"
+                            placeholder="Search by Name"
+                            aria-label="Search"
+                            v-model="searchQuery"
+                            @input="debounceSearch"
+                          />
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="row g-3 align-items-center">
               <div class="wrapper-vacancy">
                 <table class="table vacancyTable" v-if="selectedRejectItemId">
@@ -40,35 +60,35 @@
                     <tr>
                       <th scope="col">staff code</th>
                       <th scope="col">first name</th>
-
+                      <th scope="col">last name</th>
                       <th scope="col">phone number</th>
                       <th scope="col">email</th>
-                      <th scope="col">address</th>
-                      <th scope="col">activated</th>
+                      <!-- <th scope="col">address</th> -->
+                      <!-- <th scope="col">activated</th> -->
                       <th scope="col">status</th>
                       <th scope="col">position</th>
                       <!-- <th scope="col">employment type</th> -->
-                      <th scope="col">last login</th>
+                      <!-- <th scope="col">last login</th> -->
 
-                      <th scope="col">Action</th>
+                      <!-- <th scope="col">Action</th> -->
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="data in rejectedListData" :key="data.id">
                       <td v-text="data.candidate_code"></td>
                       <td v-text="data.first_name"></td>
-
+                      <td v-text="data.last_name"></td>
                       <td v-text="data.phone_number"></td>
 
                       <td v-text="data.email"></td>
 
-                      <td v-text="data.address"></td>
+                      <!-- <td v-text="data.address"></td> -->
 
-                      <td v-text="data.activated"></td>
+                      <!-- <td v-text="data.activated"></td> -->
                       <td v-text="data.status"></td>
                       <td v-text="data.position"></td>
                       <!-- <td v-text="data.employment_type"></td> -->
-                      <td v-text="data.last_login"></td>
+                      <!-- <td v-text="data.last_login"></td> -->
                       <td class="cursor-pointer">
                         <!-- <a class="btn btn-outline-success text-nowrap">
                         <i class="bi bi-pencil-square"></i>
@@ -108,7 +128,7 @@ import axios from "axios";
 export default {
   name: "RejectedVacancyList",
   data() {
-    return { rejectedListData: [], vacancyDetails: [] };
+    return { rejectedListData: [], vacancyDetails: [], searchQuery: null };
   },
   computed: {
     selectedRejectItemId() {

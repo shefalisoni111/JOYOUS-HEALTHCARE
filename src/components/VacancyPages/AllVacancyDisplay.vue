@@ -154,17 +154,19 @@
                   @click="editVacancyId(getdata.id)"
                 ></i>
                 &nbsp;&nbsp;
-                <button
-                  class="btn btn-outline-danger text-nowrap"
+                <!-- <button
+                  v-if="getdata.activated"
+                  class="btn btn-danger text-nowrap"
                   v-on:click="vacancyInactiveMethod(getdata.id)"
                 >
-                  In-Active</button
+                  In-Activate</button
                 >&nbsp;
-                <!-- <button
-                  class="btn btn-outline-success text-nowrap"
+                <button
+                  v-else
+                  class="btn btn-success text-nowrap"
                   v-on:click="vacancyActiveMethod(getdata.id)"
                 >
-                  Active
+                  Activated
                 </button> -->
               </td>
             </tr>
@@ -251,6 +253,21 @@ export default {
   },
 
   methods: {
+    reActivatedMethod(id) {
+      if (!window.confirm("Are you sure you want to re-activate?")) {
+        return;
+      }
+      axios
+        .put(`${VITE_API_URL}/active_vacancy/${id}`)
+        .then((response) => {
+          this.inactiveCandidateData = response.data;
+          this.getInactiveVacancyMethod();
+          alert("Successful Reactivate");
+        })
+        .catch((error) => {
+          // console.error("Error reactivating vacancy:", error);
+        });
+    },
     getPadding(value) {
       // Calculate padding based on the number of digits
       const digitCount = value.toString().length;
@@ -312,32 +329,32 @@ export default {
         });
       alert("InActive Vacancy");
     },
-    // async vacancyActiveMethod(id) {
-    //   if (!window.confirm("Are you Sure ?")) {
-    //     return;
-    //   }
-    //   const token = localStorage.getItem("token");
-    //   const isActive = this.getVacancyDetail.find(
-    //     (vacancy) => vacancy.id === id && vacancy.activated === true
-    //   );
+    async vacancyActiveMethod(id) {
+      if (!window.confirm("Are you Sure ?")) {
+        return;
+      }
+      const token = localStorage.getItem("token");
+      const isActive = this.getVacancyDetail.find(
+        (vacancy) => vacancy.id === id && vacancy.activated === true
+      );
 
-    //   if (isActive) {
-    //     alert("Vacancy already active");
-    //     return;
-    //   }
+      if (isActive) {
+        alert("Vacancy already active");
+        return;
+      }
 
-    //   await axios
-    //     .put(`${VITE_API_URL}/active_vacancy/` + id, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => {
-    //       this.createVacancy();
-    //     });
-    //   alert("Active Vacancy");
-    // },
+      await axios
+        .put(`${VITE_API_URL}/active_vacancy/` + id, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+        })
+        .then((response) => {
+          this.createVacancy();
+        });
+      alert("Active Vacancy");
+    },
 
     async createVacancy() {
       const token = localStorage.getItem("token");

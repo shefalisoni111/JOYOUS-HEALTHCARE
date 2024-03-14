@@ -63,13 +63,13 @@
               <td class="cursor-pointer">
                 <button
                   type="button"
-                  class="btn btn-success"
+                  class="btn btn-danger"
                   data-bs-toggle="tooltip"
                   data-bs-placement="top"
                   title="Tooltip on top"
                   v-on:click="deleteCandidate(candidate.id)"
                 >
-                  In-Active
+                  In-Activate
                 </button>
 
                 &nbsp;&nbsp;
@@ -204,6 +204,7 @@ export default {
       axios
         .put(`${VITE_API_URL}/inactivate_candidate/${id}`)
         .then((response) => {
+          alert("Staff In-activated successfully!");
           this.inactiveCandidateData = response.data;
           this.getCandidateMethods();
         })

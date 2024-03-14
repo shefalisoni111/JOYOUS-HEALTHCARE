@@ -204,6 +204,15 @@
               aria-label="profile detail"
             >
               <img
+                v-if="profilePhotoUrl !== './profile.png'"
+                :src="profilePhotoUrl"
+                alt="USer"
+                class="rounded-circle profileAdminImg"
+                width="40"
+                height="40"
+              />
+              <img
+                v-else
                 src="./profile.png"
                 alt="USer"
                 class="rounded-circle profileAdminImg"
@@ -214,7 +223,6 @@
 
             <ul
               class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
-              v-if="getAdminData"
               style="width: 220px"
             >
               <li>
@@ -319,7 +327,7 @@ export default {
     return {
       getAdminData: [],
       showChatBox: false,
-
+      getAdminProfile: [],
       newMessage: "",
       messages: [
         { sender: "John", content: "Hello!" },
@@ -327,7 +335,13 @@ export default {
       ],
     };
   },
+  computed: {
+    profilePhotoUrl() {
+      const storedImageUrl = localStorage.getItem("profileImage");
 
+      return storedImageUrl ? storedImageUrl : "./profile.png";
+    },
+  },
   methods: {
     toggleChat() {
       this.isOpen = !this.isOpen;
@@ -365,6 +379,7 @@ export default {
         });
 
         this.getAdminData = response.data.merchant_data;
+        this.getAdminProfile = response.data.data;
       } catch (error) {}
     },
   },

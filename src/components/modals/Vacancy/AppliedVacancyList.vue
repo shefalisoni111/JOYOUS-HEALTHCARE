@@ -11,12 +11,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="appliedVacancy">Applied Shift</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
           </div>
           <div class="modal-body">
             <div class="row g-3 align-items-center">
@@ -140,9 +134,9 @@
                       <th scope="col">first name</th>
                       <th scope="col">last name</th>
                       <th scope="col">phone number</th>
-                      <!-- <th scope="col">email</th>
-                    <th scope="col">address</th> -->
-                      <th scope="col">activated</th>
+                      <th scope="col">email</th>
+                      <!--<th scope="col">address</th> -->
+                      <!-- <th scope="col">activated</th> -->
                       <th scope="col">status</th>
                       <th scope="col">position</th>
                       <!-- <th scope="col">employment type</th> -->
@@ -167,7 +161,7 @@
                       <td v-text="data.last_name"></td>
                       <td v-text="data.phone_number"></td>
 
-                      <td v-text="data.activated"></td>
+                      <td v-text="data.email"></td>
                       <td v-text="data.status"></td>
                       <td v-text="data.position"></td>
                       <!-- <td v-text="data.employment_type"></td> -->

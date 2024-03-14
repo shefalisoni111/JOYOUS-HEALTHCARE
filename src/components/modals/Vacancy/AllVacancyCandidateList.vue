@@ -11,12 +11,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="allCandidateVacancyList">All Staff List</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
           </div>
           <div class="modal-body">
             <div class="row g-3 align-items-center">
@@ -53,7 +47,7 @@
                   <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center gap-2">
                       <div class="searchbox position-relative">
-                        <!-- <form @submit.prevent="search">
+                        <form @submit.prevent="search">
                           <input
                             class="form-control mr-sm-2"
                             type="search"
@@ -62,7 +56,7 @@
                             v-model="searchQuery"
                             @input="debounceSearch"
                           />
-                        </form> -->
+                        </form>
                       </div>
                     </div>
                   </div>
@@ -75,12 +69,12 @@
                   <thead>
                     <tr>
                       <th></th>
+
                       <th scope="col">staff code</th>
                       <th scope="col">first name</th>
                       <th scope="col">last name</th>
                       <th scope="col">phone number</th>
-
-                      <th scope="col">activated</th>
+                      <th scope="col">Email</th>
                       <th scope="col">status</th>
                       <th scope="col">position</th>
                       <!-- <th scope="col">employment type</th> -->
@@ -104,7 +98,7 @@
                       <td v-text="data.first_name"></td>
                       <td v-text="data.last_name"></td>
                       <td v-text="data.phone_number"></td>
-                      <td v-text="data.activated"></td>
+                      <td v-text="data.email"></td>
                       <td v-text="data.status"></td>
                       <td v-text="data.position"></td>
                       <!-- <td v-text="data.employment_type"></td> -->
@@ -165,7 +159,7 @@ export default {
     return {
       getVacancyDetail: [],
       vacancyDetails: [],
-
+      searchQuery: null,
       getRejectedList: [],
       getAssignedList: [],
       checkedCandidates: reactive({}),

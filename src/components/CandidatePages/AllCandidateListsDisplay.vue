@@ -37,8 +37,8 @@
               <td>
                 {{ candidate.phone_number }}
               </td>
-              <td>
-                {{ candidate.activated ? "Active" : "Inactive" }}
+              <td class="text-capitalize">
+                {{ candidate.status }}
               </td>
 
               <!-- <td>
@@ -60,19 +60,29 @@
               </td>
               <td>{{ candidate.last_login }}</td>
               <td class="cursor-pointer">
+                <!-- <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title="Tooltip on top"
+                  v-on:click="deleteCandidate(candidate.id)"
+                >
+                  In-Activate
+                </button>
+
+                &nbsp;&nbsp;
                 <button
                   type="button"
                   class="btn btn-success"
                   data-bs-toggle="tooltip"
                   data-bs-placement="top"
                   title="Tooltip on top"
-                  v-on:click="deleteCandidate(candidate.id)"
+                  v-on:click="activeCandidateMethod(candidate.id)"
                 >
-                  In-Active
-                </button>
-
+                  Activate
+                </button> -->
                 &nbsp;&nbsp;
-
                 <!-- <router-link
                     :to="{
                       name: 'EditCandidate',
@@ -183,6 +193,21 @@ export default {
     },
   },
   methods: {
+    async activeCandidateMethod(id) {
+      if (!window.confirm("Are you Sure?")) {
+        return;
+      }
+      const response = await axios
+        .put(`${VITE_API_URL}/re_activate_candidate/${id}`)
+        .then((response) => {
+          alert("Staff reactivated successfully!");
+          this.getCandidateMethods();
+        })
+
+        .catch((error) => {
+          // console.error("Error deleting candidate:", error);
+        });
+    },
     updateSelectedIds(candidate) {
       this.$store.commit("setSelectedCandidateId", candidate.id);
       this.$store.commit("setSelectedJobId", candidate.job_id);
@@ -203,6 +228,7 @@ export default {
       axios
         .put(`${VITE_API_URL}/inactivate_candidate/${id}`)
         .then((response) => {
+          alert("Staff In-activated successfully!");
           this.inactiveCandidateData = response.data;
           this.getCandidateMethods();
         })

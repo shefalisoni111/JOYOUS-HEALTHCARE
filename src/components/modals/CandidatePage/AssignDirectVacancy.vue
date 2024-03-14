@@ -11,12 +11,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="assignDirectVacancy">Shift</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
           </div>
           <div class="modal-body">
             <div class="row m-3">
@@ -41,7 +35,7 @@
                   <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center gap-2">
                       <div class="searchbox position-relative">
-                        <!-- <form @submit.prevent="search">
+                        <form @submit.prevent="search">
                           <input
                             class="form-control mr-sm-2"
                             type="search"
@@ -50,7 +44,7 @@
                             v-model="searchQuery"
                             @input="debounceSearch"
                           />
-                        </form> -->
+                        </form>
                       </div>
                     </div>
                   </div>
@@ -156,6 +150,7 @@ export default {
   data() {
     return {
       getVacancyDetail: [],
+      searchQuery: null,
       vacancyList: [],
       errorMessage: "",
       checkedVacancies: reactive({}),

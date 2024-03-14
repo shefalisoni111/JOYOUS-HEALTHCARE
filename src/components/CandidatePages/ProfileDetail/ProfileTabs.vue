@@ -75,8 +75,25 @@
         <div class="row">
           <div class="col-md-12 d-flex align-items-center">
             <div class="col-md-5 d-flex align-items-end">
-              <img src="../profile.png" class="img-fluid" />
-              <div class="text-capitalize fw-bolder">
+              <img
+                v-if="
+                  getCandidatesDataInProfileTab &&
+                  getCandidatesDataInProfileTab.profile_photo
+                "
+                :src="completeImageUrl"
+                class="card-img-top position-relative profile"
+                alt="profile"
+                loading="lazy"
+              />
+              <img
+                v-else
+                src="../profile.png"
+                class="card-img-top position-relative default-profile"
+                style="border: 1px solid #8080801a"
+                alt="Default profile"
+                loading="lazy"
+              />
+              <div class="text-capitalize fw-bolder ps-2">
                 <h6>
                   {{
                     getCandidatesDataInProfileTab.first_name +
@@ -299,7 +316,28 @@
               <tbody class="text-capitalize">
                 <tr class="d-flex justify-content-evenly">
                   <td class="">
-                    <img src="../profile.png" class="img-fluid" />
+                    <img
+                      v-if="
+                        getCandidatesDataInProfileTab &&
+                        getCandidatesDataInProfileTab.profile_photo
+                      "
+                      :src="completeImageUrl"
+                      class="card-img-top position-relative"
+                      height="200px"
+                      width="200px"
+                      alt="profile"
+                      loading="lazy"
+                    />
+                    <img
+                      v-else
+                      src="../profile.png"
+                      class="card-img-top position-relative"
+                      style="border: 1px solid #8080801a"
+                      height="200px"
+                      width="200px"
+                      alt="Default profile"
+                      loading="lazy"
+                    />
                   </td>
                   <td class="d-flex align-items-center border-0">
                     <div>
@@ -477,7 +515,17 @@ export default {
   data() {
     return { getCandidatesDataInProfileTab: [] };
   },
-
+  computed: {
+    completeImageUrl() {
+      if (
+        this.getCandidatesDataInProfileTab &&
+        this.getCandidatesDataInProfileTab.profile_photo
+      ) {
+        return `${VITE_API_URL}${this.getCandidatesDataInProfileTab.profile_photo}`;
+      }
+      return null;
+    },
+  },
   methods: {
     async getCandidateProfileTabMethod() {
       try {
@@ -508,6 +556,18 @@ export default {
 </script>
 
 <style scoped>
+img.profile {
+  border: 1px solid #c3b6b6;
+  border-radius: 8px;
+  height: 200px;
+  width: 200px;
+}
+img.default-profile {
+  border: 1px solid #c3b6b6;
+  border-radius: 8px;
+  height: 200px;
+  width: 200px;
+}
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   color: #ff5722;
