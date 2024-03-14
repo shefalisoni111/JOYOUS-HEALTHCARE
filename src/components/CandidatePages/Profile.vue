@@ -114,8 +114,17 @@
 
                       <div class="d-flex justify-content-between">
                         <h6 class="fs-smaller text-nowrap">Profile View</h6>
-                        <label class="switch">
+                        <!-- <label class="switch">
                           <input type="checkbox" id="togBtn" title="check" checked />
+                          <div class="slider round"></div>
+                        </label> -->
+                        <label class="switch">
+                          <input
+                            type="checkbox"
+                            id="togBtn"
+                            v-model="contactDetailChecked"
+                            @change="updateProfileView"
+                          />
                           <div class="slider round"></div>
                         </label>
                       </div>
@@ -183,6 +192,7 @@
         @contactAdded="getCandidate"
       />
       <AddNotes @getNotesAdded="GetNotesCount" />
+      <!-- <ProfileTabs @getContactDetail="getCandidate" /> -->
     </div>
   </div>
 </template>
@@ -214,7 +224,7 @@ export default {
 
       getCandidateData: [],
       selectedCandidateId: null,
-
+      contactDetailChecked: false,
       tabs: [
         { name: "Overview ", component: "Overview", routeName: "Overview" },
         { name: "Documents ", component: "Document", routeName: "Document" },
@@ -283,7 +293,32 @@ export default {
   watch: {
     "$route.params.id": "updateActiveTab",
   },
+
   methods: {
+    async updateProfileView() {
+      try {
+        const formData = new FormData();
+
+        formData.append(
+          "contact_information",
+          this.contactDetailChecked ? "true" : "false"
+        );
+        formData.append("candidate_id", this.$route.params.id);
+        const response = await axios.put(
+          `${VITE_API_URL}/update_bank_details_contact_information`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        await this.getCandidate();
+      } catch (error) {
+        // console.error("Error updating profile view:", error);
+      }
+    },
     updateActiveTab() {
       const activeTabIndex = this.tabs.findIndex(
         (tab) => tab.routeName === this.$route.name
@@ -330,6 +365,7 @@ export default {
         );
 
         this.getCandidates = response.data.data;
+        this.contactDetailChecked = this.getCandidates.contact_information;
         this.GetNotesCount();
       } catch (error) {
         if (error.response) {

@@ -142,21 +142,31 @@ ul.generalsetting h6 {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td scope="col">67cde3</td>
-                          <td scope="col">Aniket</td>
-                          <td scope="col">Site</td>
-                          <td scope="col">Manager</td>
-                          <td scope="col">Night Shift 22:00-10:00</td>
-                          <td scope="col">merchant</td>
-                          <td scope="col">25/01/2024</td>
-                          <td scope="col">22:00</td>
-                          <td scope="col">10:00</td>
-                          <td scope="col">2:00</td>
-                          <td scope="col">10 hours</td>
-                          <td scope="col">testing</td>
-                          <td scope="col">aniket@gmail.com</td>
-                          <td scope="col">active</td>
+                        <tr v-for="data in getBookingData" :key="data.id">
+                          <td scope="col">{{ data.booking_code }}</td>
+                          <td scope="col">null</td>
+                          <td scope="col">{{ data.business_unit }}</td>
+                          <td scope="col">{{ data.job_title }}</td>
+                          <td>
+                            <span v-for="(date, index) in data.shift_dates" :key="index">
+                              {{ date }}
+
+                              <template v-if="index !== data.shift_dates.length - 1"
+                                >,
+                              </template>
+                            </span>
+                          </td>
+                          <td scope="col">{{ data.booked_by }}</td>
+                          <td scope="col">{{ data.booking_date }}</td>
+                          <td scope="col">{{ data.start_time }}</td>
+                          <td scope="col">{{ data.end_time }}</td>
+                          <td scope="col">{{ data.break }}</td>
+                          <td scope="col">{{ data.duration }}</td>
+                          <td scope="col">{{ data.notes ? data.notes : "null" }}</td>
+                          <td scope="col">
+                            {{ data.mailed_at ? data.mailed_at : "null" }}
+                          </td>
+                          <td scope="col">{{ data.status ? data.status : "null" }}</td>
                           <td scope="col">
                             <i class="bi bi-trash text-danger"></i>
                           </td>
@@ -191,6 +201,7 @@ export default {
       daysOfWeek: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
       startDate: new Date(),
       endDate: new Date(),
+      getBookingData: "",
     };
   },
   components: { Navbar },
@@ -294,21 +305,21 @@ export default {
     //     });
     //   // alert("Record Deleted ");
     // },
-    // async createVacancy() {
-    //   const token = localStorage.getItem("token");
-    //   axios
-    //     .get(`${VITE_API_URL}/vacancies`, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => (this.getVacancyDetail = response.data));
-    // },
+    async fetchBookingDataMethod() {
+      const token = localStorage.getItem("token");
+      axios
+        .get(`${VITE_API_URL}/bookings`, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+        })
+        .then((response) => (this.getBookingData = response.data.booking_datas));
+    },
   },
 
   mounted() {
-    // this.createVacancy();
+    this.fetchBookingDataMethod();
 
     this.loadDateRangeFromLocalStorage();
 

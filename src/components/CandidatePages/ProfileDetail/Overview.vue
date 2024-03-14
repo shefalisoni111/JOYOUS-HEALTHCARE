@@ -125,8 +125,17 @@
                 </div>
                 <div class="d-flex align-items-center">
                   <div class="fs-smaller text-nowrap">Profile View</div>
-                  <label class="switch">
+                  <!-- <label class="switch">
                     <input type="checkbox" id="togBtn" checked />
+                    <div class="slider round"></div>
+                  </label> -->
+                  <label class="switch">
+                    <input
+                      type="checkbox"
+                      id="togBtn"
+                      v-model="bankDetailChecked"
+                      @change="updateProfileView"
+                    />
                     <div class="slider round"></div>
                   </label>
                 </div>
@@ -435,11 +444,13 @@
     />
     <EditBankDetails @bankDetailAdded="getCandidateMethod" />
     <OverviewEdit @overviewAdded="getCandidateMethod" />
+    <!-- <ProfileTabs @getBankDetail="getCandidateMethod" /> -->
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import ProfileTabs from "../../CandidatePages/ProfileDetail/ProfileTabs.vue";
 import WorkExperience from "../../modals/CandidatePage/OverView/WorkExperience.vue";
 import EducationAdd from "../../modals/CandidatePage/OverView/EducationAdd.vue";
 import AddNextKin from "../../modals/CandidatePage/OverView/AddNextKin.vue";
@@ -468,6 +479,7 @@ export default {
         activated: "",
         employment_type_id: "",
       },
+      bankDetailChecked: false,
       selectedNextKinId: null,
     };
   },
@@ -478,10 +490,27 @@ export default {
     OverviewEdit,
     NextToKinEdit,
     EditBankDetails,
+    ProfileTabs,
   },
   methods: {
     nextKinEdit(nextKinID) {
       this.selectedNextKinId = nextKinID;
+    },
+    async updateProfileView() {
+      try {
+        const formData = new FormData();
+
+        formData.append("bank_detail", this.bankDetailChecked ? "true" : "false");
+        formData.append("candidate_id", this.$route.params.id);
+        const response = await axios.put(
+          `${VITE_API_URL}/update_bank_details_contact_information`,
+          formData
+        );
+
+        this.getCandidateMethod();
+      } catch (error) {
+        // console.error("Error updating profile view:", error);
+      }
     },
     async getCandidateMethod() {
       try {
@@ -490,7 +519,7 @@ export default {
         );
 
         this.getCandidatesDataInOverview = response.data.data;
-
+        this.bankDetailChecked = this.getCandidatesDataInOverview.bank_detail;
         if (this.getCandidatesDataInOverview && this.getCandidatesDataInOverview.id) {
           const candidateId = this.getCandidatesDataInOverview?.id;
         } else {
@@ -575,7 +604,7 @@ export default {
   },
   async mounted() {
     try {
-      // await this.getCandidateMethod();
+      await this.getCandidateMethod();
       await this.getCandidateWorkExperienceMethod();
       await this.getCandidateEducationMethod();
       await this.getCandidateNextToKineMethod();

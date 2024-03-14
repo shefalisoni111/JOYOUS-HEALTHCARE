@@ -154,6 +154,46 @@
                     <td>...</td>
                   </tr>
                 </tbody>
+                <tbody
+                  v-if="
+                    getCandidatesDataInProfileTab &&
+                    getCandidatesDataInProfileTab.bank_detail
+                  "
+                >
+                  <tr>
+                    <td class="fs-6 fw-bold">Bank Detail</td>
+                  </tr>
+                  <tr>
+                    <td>Account Number</td>
+                    <td>:</td>
+                    <td>{{ getCandidatesDataInProfileTab.bank_number }}</td>
+                  </tr>
+                  <tr>
+                    <td>IFSC</td>
+                    <td>:</td>
+                    <td>{{ getCandidatesDataInProfileTab.ifsc_code }}</td>
+                  </tr>
+                  <tr>
+                    <td>Bank Name</td>
+                    <td>:</td>
+                    <td>{{ getCandidatesDataInProfileTab.bank_name }}</td>
+                  </tr>
+                </tbody>
+                <tbody
+                  v-if="
+                    getCandidatesDataInProfileTab &&
+                    getCandidatesDataInProfileTab.contact_information
+                  "
+                >
+                  <tr>
+                    <td class="fs-6 fw-bold">Contact Information</td>
+                  </tr>
+                  <tr>
+                    <td>Phone Number</td>
+                    <td>:</td>
+                    <td>{{ getCandidatesDataInProfileTab.phone_number }}</td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>
@@ -395,6 +435,7 @@ export default {
   data() {
     return { getCandidatesDataInProfileTab: [] };
   },
+
   methods: {
     async getCandidateProfileTabMethod() {
       try {
@@ -402,6 +443,10 @@ export default {
           `${VITE_API_URL}/candidates/${this.$route.params.id}`
         );
         this.getCandidatesDataInProfileTab = response.data.data;
+        if (this.getCandidatesDataInProfileTab) {
+          this.getCandidateProfileTabMethod();
+          this.$emit("getBankDetail");
+        }
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {

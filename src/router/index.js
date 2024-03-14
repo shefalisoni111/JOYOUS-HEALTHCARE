@@ -818,20 +818,27 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    const tokenExpiration = localStorage.getItem('tokenExpiration');
+    const currentTime = new Date().getTime();
 
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-
-    if (!localStorage.getItem('token')) {
-
+    if (tokenExpiration && currentTime >= parseInt(tokenExpiration)) {
+    
+      localStorage.removeItem('token');
+      localStorage.removeItem('tokenExpiration');
+      next({ name: 'Login' });
+    } else if (!localStorage.getItem('token')) {
+     
       next({ name: 'Login' });
     } else {
-
+  
       next();
     }
   } else {
- 
+   
     next();
   }
 });
+
 
 export default router;
