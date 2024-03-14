@@ -66,6 +66,13 @@
         aria-labelledby="pills-profileOne-tab"
       >
         <div class="row">
+          <div class="text-danger d-flex justify-content-end">
+            <a href="#" class="text-danger">
+              <i class="bi bi-file-earmark-pdf fs-2 fw-bold"></i
+            ></a>
+          </div>
+        </div>
+        <div class="row">
           <div class="col-md-12 d-flex align-items-center">
             <div class="col-md-5 d-flex align-items-end">
               <img src="../profile.png" class="img-fluid" />
@@ -84,11 +91,6 @@
             <div class="col-md-4"></div>
             <div class="col-md-2 d-flex align-items-center flex-column">
               <img src="./logo.png" class="img-fluid" />
-              <div class="text-danger">
-                <a href="#" class="text-danger">
-                  <i class="bi bi-file-earmark-pdf fs-2 fw-bold"></i
-                ></a>
-              </div>
             </div>
           </div>
         </div>
@@ -323,15 +325,15 @@
                       >
                         Download Pdf
                       </button> -->
-                      <div class="text-danger">
-                        <a href="#" class="text-danger">
-                          <i
-                            class="bi bi-file-earmark-pdf fs-2 fw-bold d-block text-center cursor-pointer"
-                          ></i
-                        ></a>
-                      </div>
                     </div>
                   </td>
+                  <div class="text-danger">
+                    <a href="#" class="text-danger">
+                      <i
+                        class="bi bi-file-earmark-pdf fs-2 fw-bold d-block text-center cursor-pointer"
+                      ></i
+                    ></a>
+                  </div>
                 </tr>
               </tbody>
             </table>
@@ -400,6 +402,46 @@
                     <td>Gender</td>
 
                     <td>...</td>
+                  </tr>
+                </tbody>
+                <tbody
+                  v-if="
+                    getCandidatesDataInProfileTab &&
+                    getCandidatesDataInProfileTab.bank_detail
+                  "
+                >
+                  <tr>
+                    <td class="fs-6 fw-bold">Bank Detail</td>
+                  </tr>
+                  <tr>
+                    <td>Account Number</td>
+                    <td>:</td>
+                    <td>{{ getCandidatesDataInProfileTab.bank_number }}</td>
+                  </tr>
+                  <tr>
+                    <td>IFSC</td>
+                    <td>:</td>
+                    <td>{{ getCandidatesDataInProfileTab.ifsc_code }}</td>
+                  </tr>
+                  <tr>
+                    <td>Bank Name</td>
+                    <td>:</td>
+                    <td>{{ getCandidatesDataInProfileTab.bank_name }}</td>
+                  </tr>
+                </tbody>
+                <tbody
+                  v-if="
+                    getCandidatesDataInProfileTab &&
+                    getCandidatesDataInProfileTab.contact_information
+                  "
+                >
+                  <tr>
+                    <td class="fs-6 fw-bold">Contact Information</td>
+                  </tr>
+                  <tr>
+                    <td>Phone Number</td>
+                    <td>:</td>
+                    <td>{{ getCandidatesDataInProfileTab.phone_number }}</td>
                   </tr>
                 </tbody>
               </table>

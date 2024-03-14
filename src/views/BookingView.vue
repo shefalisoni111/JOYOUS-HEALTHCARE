@@ -144,7 +144,7 @@ ul.generalsetting h6 {
                       <tbody>
                         <tr v-for="data in getBookingData" :key="data.id">
                           <td scope="col">{{ data.booking_code }}</td>
-                          <td scope="col">null</td>
+                          <td scope="col">{{ data.candidate }}</td>
                           <td scope="col">{{ data.business_unit }}</td>
                           <td scope="col">{{ data.job_title }}</td>
                           <td>

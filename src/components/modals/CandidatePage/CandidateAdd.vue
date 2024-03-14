@@ -307,12 +307,12 @@ export default {
           if (response.ok) {
             this.$emit("addCandidate");
             this.resetForm();
-            alert("Successful Candidate added");
+            alert("Successful Staff added");
           } else {
-            alert("Error adding Candidate");
+            alert("Error adding Staff");
           }
         } catch (error) {
-          alert("Error adding Candidate");
+          alert("Error adding Staff");
         }
       } else {
         this.isPasswordRequired = !this.password;

@@ -53,13 +53,13 @@
                   <i class="bi bi-download"></i>
                   Download All
                 </button>
-                <!-- <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center">
                   <h6 class="mb-0">Compliant All</h6>
                   <label class="switch">
                     <input type="checkbox" id="togBtn" />
                     <div class="slider round"></div>
                   </label>
-                </div> -->
+                </div>
               </div>
             </div>
           </div>

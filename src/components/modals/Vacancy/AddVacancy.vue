@@ -43,9 +43,7 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectBusinessUnit"
-                      >Business Unit</label
-                    >
+                    <label class="form-label" for="selectBusinessUnit">Site</label>
                   </div>
 
                   <div class="col-10">
@@ -60,7 +58,7 @@
                       </option>
                     </select>
                     <span v-if="!validationSelectedBusinessUnit" class="text-danger"
-                      >BusinessUnit Required</span
+                      >Site Required</span
                     >
                   </div>
                 </div>
@@ -188,7 +186,7 @@
               :data-bs-dismiss="isFormValid ? 'modal' : null"
               v-on:click="addVacancyMethod()"
             >
-              Add Vacancy
+              Add Shift
             </button>
           </div>
         </div>
@@ -398,9 +396,13 @@ export default {
               this.clearError();
             }, 100);
             this.$emit("addVacancy");
-            alert("Successful Vacancy added");
+            alert("Successful Shift added");
+          } else {
+            alert("Error adding Shift");
           }
-        } catch (error) {}
+        } catch (error) {
+          alert("Error adding Shift");
+        }
       } else {
       }
     },

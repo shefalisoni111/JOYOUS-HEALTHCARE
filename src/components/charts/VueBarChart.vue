@@ -104,7 +104,7 @@ export default {
           this.chartData.datasets[0].data[0] = apiData.activate_vacancy || 0;
           this.chartData.datasets[0].data[1] = apiData.applied_vacancies || 0;
           this.chartData.datasets[0].data[2] = apiData.assigned_vacancies || 0;
-          this.chartData.datasets[0].data[3] = apiData.deleted_shifts || 0;
+          this.chartData.datasets[0].data[3] = apiData.inactive_vacancies || 0;
 
           const data = this.chartData.datasets[0].data;
 
