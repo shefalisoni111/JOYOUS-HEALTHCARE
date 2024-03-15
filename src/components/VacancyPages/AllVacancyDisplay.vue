@@ -217,6 +217,7 @@ import RejectedVacancyList from "../modals/Vacancy/RejectedVacancyList.vue";
 import AllVacancyCandidateList from "../modals/Vacancy/AllVacancyCandidateList.vue";
 import EditVacancy from "../modals/Vacancy/EditVacancy.vue";
 import AddVacancy from "../modals/Vacancy/AddVacancy.vue";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -296,7 +297,6 @@ export default {
       this.$store.commit("setSelectedRejectItemId", id);
     },
     async openAllApplied(id) {
-      await this.$store.dispatch("updateVacancyId");
       this.$store.commit("setSelectedAllItemId", id);
       const vacancyId = this.$store.state.vacancy_id;
     },

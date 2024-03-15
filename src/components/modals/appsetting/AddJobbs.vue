@@ -6,7 +6,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="myModal">Add Jobs</h5>
-           
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -153,7 +152,7 @@ export default {
         });
         if (response.ok) {
           this.$emit("jobAdded");
-
+          alert("Add Jobs successfully");
           this.name = "";
           this.color = "#050505";
           this.description = "";

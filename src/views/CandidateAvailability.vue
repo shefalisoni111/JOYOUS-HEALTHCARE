@@ -48,9 +48,9 @@
 
             <div v-if="selectedDate !== null" class="modal">
               <div class="modal-content">
-                <span class="close d-flex justify-content-end" @click="closeModal"
+                <!-- <span class="close d-flex justify-content-end" @click="closeModal"
                   >&times;</span
-                >
+                > -->
                 <h4 class="text-capitalize" style="color: #ff5722; font-weight: bold">
                   {{ getCandidateName() }}
                 </h4>

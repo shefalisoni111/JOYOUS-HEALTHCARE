@@ -308,10 +308,10 @@ export default {
     //     });
     //   // alert("Record Deleted ");
     // },
-    // async createVacancy() {
+    // async getCustomSheetMethod() {
     //   const token = localStorage.getItem("token");
     //   axios
-    //     .get(`${VITE_API_URL}/vacancies`, {
+    //     .get(`${VITE_API_URL}/weekly_timesheets`, {
     //       headers: {
     //         "content-type": "application/json",
     //         Authorization: "bearer " + token,
@@ -322,7 +322,7 @@ export default {
   },
 
   mounted() {
-    // this.createVacancy();
+    // this.getCustomSheetMethod();
     this.loadDateRangeFromLocalStorage();
     const currentDate = new Date();
     const startOfWeek = new Date(currentDate);

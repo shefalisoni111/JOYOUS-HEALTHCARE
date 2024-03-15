@@ -18,9 +18,7 @@ export default createStore({
      vacancy_id: null,
   },
   mutations: {
-    updateVacancyId(state, vacancyId) {
-      state.vacancy_id = vacancyId;
-    },
+   
     setSelectedAppliedItemId(state, itemId) {
       state.selectedAppliedItemId = itemId;
     },
@@ -80,7 +78,7 @@ export default createStore({
         
         if (!response.ok) {
           if (response.status === 404) {
-            // console.warn('Note count resource not found. Check the API endpoint.');
+           
           } else {
             throw new Error(`Failed to fetch note count (HTTP ${response.status})`);
           }
