@@ -7,7 +7,7 @@
           <div class="modal-header">
             <h5 class="modal-title" id="addClients">Add Client</h5>
           </div>
-          <div class="modal-body mx-3">
+          <div class="modal-body mx-3" style="background: #dbdbdb">
             <div class="row g-3 align-items-center">
               <form>
                 <div class="mb-3">
@@ -29,21 +29,27 @@
                 </div>
                 <div class="mb-3">
                   <div class="col-12">
-                    <label class="form-label" for="selectOption">address</label>
+                    <label class="form-label">phone number</label>
                   </div>
                   <div class="col-12">
                     <input
                       type="text"
                       class="form-control"
-                      v-model="address"
-                      @input="clearError"
+                      v-model="phone_number"
+                      @input="cleanPhoneNumber"
                       @change="detectAutofill"
                     />
-                    <span v-if="!validateAddress" class="text-danger"
-                      >Address Required</span
+                    <span v-if="!validatePhoneNumber" class="text-danger"
+                      >Invalid Phone Number</span
+                    >
+                    <span
+                      v-if="phone_number && !validatePhoneNumberFormat(phone_number)"
+                      class="text-danger"
+                      >Invalid Phone Number</span
                     >
                   </div>
                 </div>
+
                 <div class="mb-3">
                   <div class="">
                     <div class="col-12">
@@ -65,6 +71,23 @@
                         >Invalid Email format</span
                       >
                     </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="col-12">
+                    <label class="form-label" for="selectOption">address</label>
+                  </div>
+                  <div class="col-12">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="address"
+                      @input="clearError"
+                      @change="detectAutofill"
+                    />
+                    <span v-if="!validateAddress" class="text-danger"
+                      >Address Required</span
+                    >
                   </div>
                 </div>
                 <div class="mb-3">
@@ -100,28 +123,6 @@
                     />
                     <span v-if="!passwordsMatch" class="text-danger"
                       >Passwords do not Match</span
-                    >
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">phone number</label>
-                  </div>
-                  <div class="col-12">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="phone_number"
-                      @input="cleanPhoneNumber"
-                      @change="detectAutofill"
-                    />
-                    <span v-if="!validatePhoneNumber" class="text-danger"
-                      >Invalid Phone Number</span
-                    >
-                    <span
-                      v-if="phone_number && !validatePhoneNumberFormat(phone_number)"
-                      class="text-danger"
-                      >Invalid Phone Number</span
                     >
                   </div>
                 </div>
