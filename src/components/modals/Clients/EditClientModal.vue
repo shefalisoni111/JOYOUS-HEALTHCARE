@@ -6,9 +6,8 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="editClient">Edit Client</h5>
-           
           </div>
-          <div class="modal-body mx-3">
+          <div class="modal-body mx-3" style="background: #dbdbdb">
             <div class="row align-items-center">
               <form>
                 <div class="mb-3">
