@@ -348,7 +348,10 @@ export default {
     vacancyId: {
       immediate: true,
       handler(newVacancyID) {
-        this.fetchVacancyMethod(newVacancyID);
+        if (newVacancyID !== 0) {
+          this.fetchVacancyMethod(newVacancyID);
+        } else {
+        }
       },
     },
   },
