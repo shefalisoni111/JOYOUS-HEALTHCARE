@@ -54,6 +54,9 @@
                   data-bs-target="#assignDirectVacancy"
                   data-bs-whatever="@mdo"
                   @click="updateSelectedIds(candidate)"
+                  :disabled="
+                    candidate.status === 'pending' || candidate.status === 'rejected'
+                  "
                 >
                   <i class="bi bi-person-circle"></i>
                 </button>
