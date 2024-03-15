@@ -54,12 +54,14 @@
                         type="email"
                         class="form-control"
                         v-model="email"
-                        @input="clearError"
+                        @input="validateEmailFormat(email)"
                         @change="detectAutofill"
                         ref="email"
                         autocomplete="new-email"
                       />
-                      <span v-if="!validateEmail" class="text-danger"
+                      <span
+                        v-if="email && !validateEmailFormat(email)"
+                        class="text-danger"
                         >Invalid Email format</span
                       >
                     </div>
@@ -137,8 +139,8 @@
               Cancel
             </button>
             <button
-              :disabled="!isValidForm"
-              :class="{ disabled: !isValidForm }"
+              :disabled="!isFormFilledAndValid"
+              :class="{ disabled: !isFormFilledAndValid }"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               v-on:click="addClients()"
@@ -189,6 +191,22 @@ export default {
         this.validateAddress
       );
     },
+    isFormFilledAndValid() {
+      return (
+        this.first_name &&
+        this.address &&
+        this.email &&
+        this.password &&
+        this.confirm_password &&
+        this.phone_number &&
+        this.validateEmail &&
+        this.passwordsMatch &&
+        this.validatePassword &&
+        this.validatePhoneNumber &&
+        this.validateClientName &&
+        this.validateAddress
+      );
+    },
   },
   watch: {
     address: "validateAddressFormat",
@@ -206,7 +224,20 @@ export default {
     // validatePassword() {
     //   this.showPasswordRequiredMessage = this.password === "";
     // },
-
+    clearFieldsData() {
+      this.clearFields();
+      setTimeout(() => {
+        this.clearError();
+      }, 10);
+    },
+    clearFields() {
+      this.first_name = "";
+      this.address = "";
+      this.phone_number = "";
+      this.email = "";
+      this.password = "";
+      this.confirm_password = "";
+    },
     validatePasswordMatch() {
       this.passwordsMatch = this.password === this.confirm_password;
     },

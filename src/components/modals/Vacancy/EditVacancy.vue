@@ -287,6 +287,7 @@ export default {
           newData: response.data,
         });
         this.$emit("updateVacancy");
+        this.$emit("updateVacancyInactive");
         alert("Vacancy updated successfully");
       } catch (error) {
         // console.error("Error updating vacancy:", error);

@@ -292,12 +292,16 @@ export default {
       const token = localStorage.getItem("token");
 
       await axios
-        .put(`${VITE_API_URL}/inactive_vacancy/` + id, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: "bearer " + token,
-          },
-        })
+        .put(
+          `${VITE_API_URL}/inactive_vacancy/` + id,
+          {},
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
         .then((response) => {
           this.createVacancy();
         });

@@ -51,12 +51,26 @@
               <td class="widthDefineNotes" v-text="data.notes"></td>
               <td v-text="data.status"></td>
               <td>
-                <!-- <button
+                <button
+                  v-if="isEditAllowed(data.dates)"
                   class="btn btn-outline-success text-nowrap"
-                  v-on:click="reActivatedMethod(data.id, data.editDate)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editVacancy"
+                  data-bs-whatever="@mdo"
+                  @click="editAndReactivate(data.id)"
                 >
-                  Re-Activate
-                </button> -->
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button
+                  v-else
+                  class="btn btn-outline-success text-nowrap"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editVacancy"
+                  data-bs-whatever="@mdo"
+                  @click="editAndReactivate(data.id)"
+                >
+                  <i class="bi bi-person-check"></i>
+                </button>
                 <!-- <i
                   class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
                   data-bs-toggle="modal"
@@ -95,7 +109,10 @@
         Next
       </button>
     </div>
-    <EditVacancy :vacancyId="selectedVacancyId || 0" @updateVacancy="createVacancy" />
+    <EditVacancy
+      :vacancyId="selectedVacancyId || 0"
+      @updateVacancyInactive="getInactiveVacancyMethod"
+    />
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
@@ -115,6 +132,7 @@ export default {
       currentPage: 1,
       itemsPerPage: 9,
       isLoading: false,
+      today: new Date(),
     };
   },
   components: { Loader, EditVacancy },
@@ -135,8 +153,24 @@ export default {
   },
 
   methods: {
-    editVacancyId(vacancyId) {
-      this.selectedVacancyId = vacancyId;
+    isEditAllowed(dates) {
+      const today = new Date();
+
+      return dates.some((date) => {
+        const [weekday, dateString] = date.split(", ");
+
+        const [day, month, year] = dateString.split("-").map(Number);
+
+        const monthIndex = month - 1;
+
+        const parsedDate = new Date(year, monthIndex, day);
+
+        return parsedDate < today;
+      });
+    },
+    editAndReactivate(vacancyId) {
+      this.reActivatedMethod(vacancyId);
+      this.editVacancyId(vacancyId);
     },
     async vacancyDeleteMethod(id) {
       if (!window.confirm("Are you Sure ?")) {
@@ -154,29 +188,25 @@ export default {
           this.getInactiveVacancyMethod();
         });
     },
-    reActivatedMethod(id, date) {
-      const today = new Date();
-      const editDate = new Date(date);
-
-      if (editDate <= today) {
-        if (!window.confirm("Are you sure you want to re-activate?")) {
-          return;
-        }
-        axios
-          .put(`${VITE_API_URL}/active_vacancy/${id}`)
-          .then((response) => {
-            this.inactiveCandidateData = response.data;
-            this.getInactiveVacancyMethod();
-            alert("Successful Reactivate");
-          })
-          .catch((error) => {
-            // console.error("Error reactivating vacancy:", error);
-          });
-      } else {
-        alert("Cannot re-activate. Edit date is today or later.");
+    reActivatedMethod(id) {
+      if (!window.confirm("Are you sure you want to re-activate?")) {
+        return;
       }
-    },
+      axios
+        .put(`${VITE_API_URL}/active_vacancy/${id}`)
+        .then((response) => {
+          this.inactiveCandidateData = response.data;
 
+          this.getInactiveVacancyMethod();
+          alert("Successful Reactivate");
+        })
+        .catch((error) => {
+          // console.error("Error reactivating vacancy:", error);
+        });
+    },
+    editVacancyId(vacancyId) {
+      this.selectedVacancyId = vacancyId;
+    },
     async getInactiveVacancyMethod() {
       this.isLoading = true;
       try {

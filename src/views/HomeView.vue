@@ -701,7 +701,7 @@ export default {
 
   mounted() {
     this.loadDateRangeFromLocalStorage();
-    // const timestamp = 1710385557727;
+    // const timestamp = 1710480557621;
     // const date = new Date(timestamp);
     // console.log(date);
     const currentDate = new Date();

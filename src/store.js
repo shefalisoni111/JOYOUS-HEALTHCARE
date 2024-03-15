@@ -18,6 +18,9 @@ export default createStore({
      vacancy_id: null,
   },
   mutations: {
+    updateVacancyId(state, vacancyId) {
+      state.vacancy_id = vacancyId;
+    },
     setSelectedAppliedItemId(state, itemId) {
       state.selectedAppliedItemId = itemId;
     },
