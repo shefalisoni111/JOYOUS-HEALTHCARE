@@ -236,6 +236,7 @@ export default {
           const year = dateParts[2].trim();
           return `${day}-${month}-${year}`;
         });
+        // this.fetchVacancy.dates = response.data.dates;
         this.fetchVacancy.notes = response.data.notes;
         this.fetchVacancy.shift_id = response.data.shift_id;
       } catch (error) {}

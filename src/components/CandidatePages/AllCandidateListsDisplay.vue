@@ -55,7 +55,9 @@
                   data-bs-whatever="@mdo"
                   @click="updateSelectedIds(candidate)"
                   :disabled="
-                    candidate.status === 'pending' || candidate.status === 'rejected'
+                    candidate.status === 'pending' ||
+                    candidate.status === 'rejected' ||
+                    !candidate.activated
                   "
                 >
                   <i class="bi bi-person-circle"></i>

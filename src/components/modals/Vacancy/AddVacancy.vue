@@ -88,6 +88,7 @@
                       class="form-control"
                       v-model="selectedDate"
                       @change="addDate"
+                      style="padding-right: 1px"
                     />
                     <span v-if="!validationDateType" class="text-danger"
                       >Please choose a date from today onwards!</span

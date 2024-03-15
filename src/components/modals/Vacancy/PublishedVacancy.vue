@@ -137,9 +137,10 @@
                       <th scope="col">staff code</th>
                       <th scope="col" class="widthSet">First Name</th>
                       <th scope="col" class="widthSet">Last Name</th>
-                      <th scope="col">Positions</th>
+                      <th scope="col">Phone Number</th>
+
                       <th scope="col" class="widthSet">Email</th>
-                      <th scope="col">Phone</th>
+                      <th scope="col">Positions</th>
                       <th scope="col">Status</th>
                     </tr>
                   </thead>
@@ -161,12 +162,13 @@
                       <td>
                         {{ candidate.last_name }}
                       </td>
-                      <td v-text="candidate.position"></td>
-                      <td>{{ candidate.email }}</td>
                       <td>
                         {{ candidate.phone_number }}
                       </td>
-                      <td v-text="candidate.status"></td>
+
+                      <td>{{ candidate.email }}</td>
+                      <td>{{ candidate.position }}</td>
+                      <td>{{ candidate.status }}</td>
                     </tr>
                   </tbody>
                 </table>

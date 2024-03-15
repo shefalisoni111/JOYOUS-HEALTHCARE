@@ -36,11 +36,11 @@
               <td v-text="data.business_unit"></td>
               <td v-text="data.job_title"></td>
               <td class="">
-                <span v-for="(date, index) in data.dates" :key="index">
+                <div v-for="(date, index) in data.dates" :key="index">
                   {{ date }}
 
                   <template v-if="index !== data.dates.length - 1">, </template>
-                </span>
+                </div>
               </td>
               <!-- <td v-for="(date, index) in data.dates" :key="index" v-text="date"></td> -->
 
@@ -64,12 +64,9 @@
                 <button
                   v-else
                   class="btn btn-outline-success text-nowrap"
-                  data-bs-toggle="modal"
-                  data-bs-target="#editVacancy"
-                  data-bs-whatever="@mdo"
                   @click="editAndReactivate(data.id)"
                 >
-                  <i class="bi bi-person-check"></i>
+                  <i class="bi bi-person-fill-check"></i>
                 </button>
                 <!-- <i
                   class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
@@ -189,9 +186,9 @@ export default {
         });
     },
     reActivatedMethod(id) {
-      if (!window.confirm("Are you sure you want to re-activate?")) {
-        return;
-      }
+      // if (!window.confirm("Are you sure you want to re-activate?")) {
+      //   return;
+      // }
       axios
         .put(`${VITE_API_URL}/active_vacancy/${id}`)
         .then((response) => {

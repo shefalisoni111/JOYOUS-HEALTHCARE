@@ -92,6 +92,7 @@ export default createStore({
         // console.error('Error updating note count:', error.message);
       }
     },
+   
   },
   
  
