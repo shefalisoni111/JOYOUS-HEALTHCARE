@@ -168,7 +168,7 @@ export default {
           `${VITE_API_URL}/candidates/${this.$route.params.id}`
         );
 
-        this.getCandidatesData = response.data.data;
+        this.getCandidatesData = response.data.candidate;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {

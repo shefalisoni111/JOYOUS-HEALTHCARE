@@ -518,7 +518,7 @@ export default {
           `${VITE_API_URL}/candidates/${this.$route.params.id}`
         );
 
-        this.getCandidatesDataInOverview = response.data.data;
+        this.getCandidatesDataInOverview = response.data.candidate;
         this.bankDetailChecked = this.getCandidatesDataInOverview.bank_detail;
         if (this.getCandidatesDataInOverview && this.getCandidatesDataInOverview.id) {
           const candidateId = this.getCandidatesDataInOverview?.id;

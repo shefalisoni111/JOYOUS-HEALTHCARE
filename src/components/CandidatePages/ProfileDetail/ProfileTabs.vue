@@ -532,7 +532,7 @@ export default {
         const response = await axios.get(
           `${VITE_API_URL}/candidates/${this.$route.params.id}`
         );
-        this.getCandidatesDataInProfileTab = response.data.data;
+        this.getCandidatesDataInProfileTab = response.data.candidate;
         if (this.getCandidatesDataInProfileTab) {
           this.getCandidateProfileTabMethod();
           this.$emit("getBankDetail");

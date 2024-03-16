@@ -91,7 +91,7 @@ export default {
           `${VITE_API_URL}/candidates/${this.$route.params.id}`
         );
 
-        this.getProfileData = response.data.data;
+        this.getProfileData = response.data.candidate;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
@@ -111,7 +111,6 @@ export default {
 
 <style scoped>
 #main {
-  
 }
 .card {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);

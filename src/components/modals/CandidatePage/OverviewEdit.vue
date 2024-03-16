@@ -11,7 +11,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title text-center" id="editOverview">Add Details</h5>
-           
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
@@ -234,7 +233,7 @@ export default {
           `${VITE_API_URL}/candidates/${this.$route.params.id}`
         );
 
-        this.fetchCandidate = response.data.data;
+        this.fetchCandidate = response.data.candidate;
       } catch (error) {
         // console.error("Error fetching todo:", error);
       }
