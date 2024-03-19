@@ -115,19 +115,23 @@
                   <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center gap-2">
                       <div class="searchbox position-relative">
-                        <input
-                          class="form-control mr-sm-2"
-                          type="search"
-                          placeholder="Search "
-                          aria-label="Search"
-                        />
+                        <form @submit.prevent="search">
+                          <input
+                            class="form-control mr-sm-2"
+                            type="search"
+                            placeholder="Search by Name"
+                            aria-label="Search"
+                            v-model="searchQuery"
+                            @input="debounceSearch"
+                          />
+                        </form>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="row">
+            <div class="row" v-if="!searchQuery">
               <div class="col-md-12">
                 <h6>Shifts List</h6>
                 <table v-if="selectedPublishItemId" class="w-100">
@@ -169,6 +173,60 @@
                       <td>{{ candidate.email }}</td>
                       <td>{{ candidate.position }}</td>
                       <td>{{ candidate.status }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="row" v-if="searchQuery">
+              <div class="col-md-12">
+                <h6>Shifts List</h6>
+                <table v-if="selectedPublishItemId" class="w-100">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th scope="col">staff code</th>
+                      <th scope="col" class="widthSet">First Name</th>
+                      <th scope="col" class="widthSet">Last Name</th>
+                      <th scope="col">Phone Number</th>
+
+                      <th scope="col" class="widthSet">Email</th>
+                      <th scope="col">Positions</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody v-if="searchResults.length > 0">
+                    <tr v-for="candidate in searchResults" :key="candidate.id">
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          :value="candidate.id"
+                          :id="candidate.id"
+                          v-model="checkedCandidates[candidate.id]"
+                        />
+                      </td>
+                      <td v-text="candidate.candidate_code"></td>
+                      <td>
+                        {{ candidate.first_name }}
+                      </td>
+                      <td>
+                        {{ candidate.last_name }}
+                      </td>
+                      <td>
+                        {{ candidate.phone_number }}
+                      </td>
+
+                      <td>{{ candidate.email }}</td>
+                      <td>{{ candidate.position }}</td>
+                      <td>{{ candidate.status }}</td>
+                    </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="7" class="text-danger text-center">
+                        Not Match Found !!
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -245,6 +303,13 @@
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 import { reactive } from "vue";
+
+const axiosInstance = axios.create({
+  headers: {
+    "Cache-Control": "no-cache",
+  },
+});
+
 export default {
   name: "PublishedVacancy",
   data() {
@@ -258,6 +323,9 @@ export default {
       publicationStatus: null,
       checkedCandidates: reactive({}),
       selectAll: false,
+      searchQuery: null,
+      debounceTimeout: null,
+      searchResults: [],
     };
   },
   components: {
@@ -398,6 +466,31 @@ export default {
         this.vacancyData = response.data.data;
       } catch (error) {
         //console.error("Error fetching vacancies:", error);
+      }
+    },
+    //search api start
+    async search() {
+      try {
+        this.searchResults = [];
+
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/searching_publish_candidates`,
+          {
+            params: {
+              candidate_query: this.searchQuery,
+              vacancy_id: this.$store.state.selectedPublishItemId,
+            },
+          }
+        );
+
+        this.searchResults = response.data;
+      } catch (error) {
+        if (
+          (error.response && error.response.status === 404) ||
+          error.response.status === 400
+        ) {
+          this.errorMessage = "No candidates found for the specified criteria";
+        }
       }
     },
   },

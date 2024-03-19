@@ -63,7 +63,7 @@
                 </div>
               </div>
             </div>
-            <div class="row g-3 align-items-center">
+            <div class="row g-3 align-items-center" v-if="!searchQuery">
               <div class="wrapper-vacancy">
                 <table class="table vacancyTable" v-if="selectedAllItemId">
                   <thead>
@@ -122,6 +122,72 @@
                 </table>
               </div>
             </div>
+            <div class="row g-3 align-items-center" v-if="searchQuery">
+              <div class="wrapper-vacancy">
+                <table class="table vacancyTable" v-if="selectedAllItemId">
+                  <thead>
+                    <tr>
+                      <th></th>
+
+                      <th scope="col">staff code</th>
+                      <th scope="col">first name</th>
+                      <th scope="col">last name</th>
+                      <th scope="col">phone number</th>
+                      <th scope="col">Email</th>
+
+                      <th scope="col">position</th>
+                      <th scope="col">status</th>
+                      <!-- <th scope="col">employment type</th> -->
+                      <!-- <th scope="col">last login</th>
+
+                    <th scope="col">Action</th> -->
+                    </tr>
+                  </thead>
+                  <tbody v-if="searchResults.length > 0">
+                    <tr v-for="data in searchResults" :key="data.id">
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          :value="data.id"
+                          :id="data.id"
+                          v-model="checkedCandidates[data.id]"
+                        />
+                      </td>
+                      <td v-text="data.candidate_code"></td>
+                      <td v-text="data.first_name"></td>
+                      <td v-text="data.last_name"></td>
+                      <td v-text="data.phone_number"></td>
+                      <td v-text="data.email"></td>
+
+                      <td v-text="data.position"></td>
+                      <td v-text="data.status"></td>
+                      <!-- <td v-text="data.employment_type"></td> -->
+                      <!-- <td v-text="data.last_login"></td>
+                    <td class="cursor-pointer">
+                      <a class="btn btn-outline-success text-nowrap">
+                        <i class="bi bi-pencil-square"></i>
+                      </a>
+                      &nbsp;&nbsp;
+                      <button class="btn btn-outline-success text-nowrap">
+                        <i
+                          class="bi bi-trash"
+                          v-on:click="vacancyDeleteMethod(data.id)"
+                        ></i>
+                      </button>
+                    </td> -->
+                    </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="7" class="text-danger text-center">
+                        Not Match Found !!
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
           <div class="modal-footer">
             <button
@@ -154,6 +220,12 @@
 import axios from "axios";
 import { reactive } from "vue";
 
+const axiosInstance = axios.create({
+  headers: {
+    "Cache-Control": "no-cache",
+  },
+});
+
 export default {
   name: "AllVacancyCandidateList",
 
@@ -166,6 +238,9 @@ export default {
       getAssignedList: [],
       checkedCandidates: reactive({}),
       selectAll: false,
+      searchQuery: null,
+      debounceTimeout: null,
+      searchResults: [],
     };
   },
   created() {
@@ -260,6 +335,32 @@ export default {
           } else {
           }
         } catch (error) {}
+      }
+    },
+    //search api start
+    async search() {
+      try {
+        this.searchResults = [];
+
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/searching_candidates_according_position`,
+          {
+            params: {
+              candidate_query: this.searchQuery,
+              vacancy_id: this.$store.state.selectedAllItemId,
+              status: "all_candidate",
+            },
+          }
+        );
+
+        this.searchResults = response.data;
+      } catch (error) {
+        if (
+          (error.response && error.response.status === 404) ||
+          error.response.status === 400
+        ) {
+          this.errorMessage = "No candidates found for the specified criteria";
+        }
       }
     },
   },

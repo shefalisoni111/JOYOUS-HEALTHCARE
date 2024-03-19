@@ -261,7 +261,7 @@ export default {
             `${VITE_API_URL}/search_candidate/${this.searchQuery}`
           );
 
-          this.searchResults = response.data.data;
+          this.searchResults = response.data.candidate;
         } else {
           activatedStatus = this.activeTab === 1 ? true : false;
         }
@@ -310,7 +310,7 @@ export default {
           }
         );
 
-        this.searchResults = response.data;
+        this.searchResults = response.candidate;
         this.errorMessage = response.message;
       } catch (error) {
         if (

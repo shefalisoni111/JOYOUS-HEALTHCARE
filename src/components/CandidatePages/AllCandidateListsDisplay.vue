@@ -49,7 +49,22 @@
                 </td> -->
               <td>
                 <button
-                  class="btn btn-outline-success"
+                  class="btn"
+                  :class="[
+                    'btn-outline-success',
+                    {
+                      'btn-outline-danger':
+                        candidate.status === 'pending' ||
+                        candidate.status === 'rejected' ||
+                        !candidate.activated,
+                    },
+                    {
+                      'disabled-button':
+                        candidate.status === 'pending' ||
+                        candidate.status === 'rejected' ||
+                        !candidate.activated,
+                    },
+                  ]"
                   data-bs-toggle="modal"
                   data-bs-target="#assignDirectVacancy"
                   data-bs-whatever="@mdo"

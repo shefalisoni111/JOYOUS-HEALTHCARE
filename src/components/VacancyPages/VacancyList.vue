@@ -78,12 +78,12 @@
 
                     <div class="d-flex gap-2">
                       <div>
-                        <form @submit.prevent="searchVacancy">
+                        <form @submit.prevent="search">
                           <input
                             class="form-control mr-sm-2"
                             type="search"
-                            placeholder="Search by shift"
-                            aria-label="SearchVacancy"
+                            placeholder="Search by Name"
+                            aria-label="Search"
                             v-model="searchQuery"
                             @input="debounceSearch"
                           />
@@ -256,7 +256,7 @@
                       <tbody v-else>
                         <tr>
                           <td colspan="15" class="text-danger text-center">
-                            {{ errorMessage }}
+                            Not Match Found !!
                           </td>
                         </tr>
                       </tbody>
@@ -286,7 +286,7 @@ export default {
   data() {
     return {
       vacancyCount: 0,
-      searchResults: [],
+
       searchQuery: null,
       debounceTimeout: null,
       searchResults: [],
@@ -320,12 +320,12 @@ export default {
       clearTimeout(this.debounceTimeout);
 
       this.debounceTimeout = setTimeout(() => {
-        this.searchVacancy();
+        this.search();
       }, 300);
     },
     // search api start
 
-    async searchVacancy() {
+    async search() {
       try {
         const token = localStorage.getItem("token");
         this.searchResults = [];
@@ -337,7 +337,7 @@ export default {
           activatedStatus = false;
         } else if (this.activeTab === 0) {
           const response = await axiosInstance.get(
-            `${VITE_API_URL}/vacancy_search/${this.searchQuery}`,
+            `${VITE_API_URL}/serching_vacancies/${this.searchQuery}`,
             {
               headers: {
                 "content-type": "application/json",
@@ -346,17 +346,17 @@ export default {
             }
           );
 
-          this.searchResults = response.data;
+          this.searchResults = response.data.vacancy;
+          return;
         } else {
           activatedStatus = this.activeTab === 1 ? true : false;
         }
-
         const response = await axiosInstance.get(
-          `${VITE_API_URL}/vacancy_searching_active_and_inactive`,
+          `${VITE_API_URL}/searching_active_inactive_vacancies`,
           {
             params: {
               vacancy_query: this.searchQuery,
-              activated: activatedStatus,
+              active_status: activatedStatus,
               tab: this.activeTabName.toLowerCase(),
             },
             headers: {
@@ -366,7 +366,7 @@ export default {
           }
         );
 
-        this.searchResults = response.data;
+        this.searchResults = response.data.vacancy;
       } catch (error) {
         if (
           (error.response && error.response.status === 400) ||

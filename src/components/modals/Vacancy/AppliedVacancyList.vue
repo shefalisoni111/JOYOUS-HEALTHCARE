@@ -296,18 +296,27 @@ export default {
     //search api start
     async search() {
       try {
+        this.searchResults = [];
+
         const response = await axiosInstance.get(
-          `${VITE_API_URL}/candidate_search/${this.searchQuery}`
+          `${VITE_API_URL}/searching_candidates_according_position`,
+          {
+            params: {
+              candidate_query: this.searchQuery,
+              vacancy_id: this.$store.state.selectedAppliedItemId,
+              status: "applied",
+            },
+          }
         );
 
-        this.searchResults = response.data.data;
-        this.errorMsg = "";
+        this.searchResults = response.data;
       } catch (error) {
-        // console.error("Error fetching search results:", error);
-
-        this.searchResults = [];
-        this.showSearchResults = false;
-        this.errorMsg = "Error fetching search results.";
+        if (
+          (error.response && error.response.status === 404) ||
+          error.response.status === 400
+        ) {
+          this.errorMessage = "No candidates found for the specified criteria";
+        }
       }
     },
     selectAllCandidates() {

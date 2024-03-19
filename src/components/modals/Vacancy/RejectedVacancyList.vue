@@ -53,7 +53,7 @@
                 </div>
               </div>
             </div>
-            <div class="row g-3 align-items-center">
+            <div class="row g-3 align-items-center" v-if="!searchQuery">
               <div class="wrapper-vacancy">
                 <table class="table vacancyTable" v-if="selectedRejectItemId">
                   <thead>
@@ -91,10 +91,8 @@
                       <td v-text="data.status"></td>
                       <!-- <td v-text="data.employment_type"></td> -->
                       <!-- <td v-text="data.last_login"></td> -->
-                      <td class="cursor-pointer">
-                        <!-- <a class="btn btn-outline-success text-nowrap">
-                        <i class="bi bi-pencil-square"></i>
-                      </a> -->
+                      <!-- <td class="cursor-pointer">
+                       
                         &nbsp;&nbsp;
                         <button class="btn btn-outline-success text-nowrap">
                           <i
@@ -102,6 +100,66 @@
                             v-on:click="vacancyDeleteMethod(data.id)"
                           ></i>
                         </button>
+                      </td> -->
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="row g-3 align-items-center" v-if="searchQuery">
+              <div class="wrapper-vacancy">
+                <table class="table vacancyTable" v-if="selectedRejectItemId">
+                  <thead>
+                    <tr>
+                      <th scope="col">staff code</th>
+                      <th scope="col">first name</th>
+                      <th scope="col">last name</th>
+                      <th scope="col">phone number</th>
+                      <th scope="col">email</th>
+                      <!-- <th scope="col">address</th> -->
+                      <!-- <th scope="col">activated</th> -->
+
+                      <th scope="col">position</th>
+                      <th scope="col">status</th>
+                      <!-- <th scope="col">employment type</th> -->
+                      <!-- <th scope="col">last login</th> -->
+
+                      <!-- <th scope="col">Action</th> -->
+                    </tr>
+                  </thead>
+                  <tbody v-if="searchResults.length > 0">
+                    <tr v-for="data in searchResults" :key="data.id">
+                      <td v-text="data.candidate_code"></td>
+                      <td v-text="data.first_name"></td>
+                      <td v-text="data.last_name"></td>
+                      <td v-text="data.phone_number"></td>
+
+                      <td v-text="data.email"></td>
+
+                      <!-- <td v-text="data.address"></td> -->
+
+                      <!-- <td v-text="data.activated"></td> -->
+
+                      <td v-text="data.position"></td>
+                      <td v-text="data.status"></td>
+                      <!-- <td v-text="data.employment_type"></td> -->
+                      <!-- <td v-text="data.last_login"></td> -->
+                      <!-- <td class="cursor-pointer">
+                       
+                        &nbsp;&nbsp;
+                        <button class="btn btn-outline-success text-nowrap">
+                          <i
+                            class="bi bi-trash"
+                            v-on:click="vacancyDeleteMethod(data.id)"
+                          ></i>
+                        </button>
+                      </td> -->
+                    </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="7" class="text-danger text-center">
+                        Not Match Found !!
                       </td>
                     </tr>
                   </tbody>
@@ -127,10 +185,23 @@
 
 <script>
 import axios from "axios";
+
+const axiosInstance = axios.create({
+  headers: {
+    "Cache-Control": "no-cache",
+  },
+});
+
 export default {
   name: "RejectedVacancyList",
   data() {
-    return { rejectedListData: [], vacancyDetails: [], searchQuery: null };
+    return {
+      rejectedListData: [],
+      vacancyDetails: [],
+      searchQuery: null,
+      debounceTimeout: null,
+      searchResults: [],
+    };
   },
   computed: {
     selectedRejectItemId() {
@@ -168,6 +239,32 @@ export default {
           }
         }
       } else {
+      }
+    },
+    //search api start
+    async search() {
+      try {
+        this.searchResults = [];
+
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/searching_candidates_according_position`,
+          {
+            params: {
+              candidate_query: this.searchQuery,
+              vacancy_id: this.$store.state.selectedRejectItemId,
+              status: "rejected",
+            },
+          }
+        );
+
+        this.searchResults = response.data;
+      } catch (error) {
+        if (
+          (error.response && error.response.status === 404) ||
+          error.response.status === 400
+        ) {
+          this.errorMessage = "No candidates found for the specified criteria";
+        }
       }
     },
   },
