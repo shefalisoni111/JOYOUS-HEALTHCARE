@@ -173,7 +173,7 @@ export default {
 
 <style scoped>
 table th.widthSet {
-  width: 11%;
+  width: 15%;
 }
 
 .candidateTable tr:nth-child(odd) td {

@@ -85,7 +85,7 @@
                   <th scope="col">Email</th>
                   <th scope="col">Phone</th>
                   <th scope="col">Status</th>
-                  <th scope="col">Access</th>
+                  <th scope="col" v-if="activeTab === 0 || activeTab === 1">Assign</th>
 
                   <th scope="col">Last Login</th>
                   <th scope="col">Action</th>
@@ -101,20 +101,74 @@
                   <td>
                     {{ data.status }}
                   </td>
-
-                  <td>{{ data.last_login }}</td>
-                  <td>
+                  <td v-if="activeTab === 0 || activeTab === 1">
                     <button
-                      class="btn btn-outline-success"
+                      class="btn"
+                      :class="[
+                        'btn-outline-success',
+                        {
+                          'btn-outline-danger':
+                            data.status === 'pending' ||
+                            data.status === 'rejected' ||
+                            !data.activated,
+                        },
+                        {
+                          'disabled-button':
+                            data.status === 'pending' ||
+                            data.status === 'rejected' ||
+                            !data.activated,
+                        },
+                      ]"
                       data-bs-toggle="modal"
                       data-bs-target="#assignDirectVacancy"
                       data-bs-whatever="@mdo"
                       @click="updateSelectedIds(data)"
+                      :disabled="
+                        data.status === 'pending' ||
+                        data.status === 'rejected' ||
+                        !data.activated
+                      "
                     >
                       <i class="bi bi-person-circle"></i>
                     </button>
                   </td>
+                  <td>{{ data.last_login }}</td>
                   <td>
+                    <button
+                      v-if="activeTab === 2"
+                      type="button"
+                      class="btn btn-success"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                      title="Tooltip on top"
+                      v-on:click="activeCandidateMethod(data.id)"
+                    >
+                      Re-Activate
+                    </button>
+                    &nbsp;&nbsp;
+                    <button
+                      v-if="activeTab === 1"
+                      type="button"
+                      class="btn btn-danger"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                      title="Tooltip on top"
+                      v-on:click="deleteCandidate(data.id)"
+                    >
+                      In-Activate
+                    </button>
+                    &nbsp;&nbsp;
+                    <button
+                      v-if="activeTab === 3"
+                      type="button"
+                      class="btn btn-success"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                      title="Tooltip on top"
+                      v-on:click="approvedCandidate(data.id)"
+                    >
+                      Approve</button
+                    >&nbsp;&nbsp;
                     <router-link
                       class="btn btn-outline-success text-nowrap"
                       :to="{
@@ -209,6 +263,75 @@ export default {
   },
 
   methods: {
+    async pendingCandidateMethod() {
+      this.isLoading = true;
+      try {
+        const response = await axios.get(`${VITE_API_URL}/pending_candidates`);
+
+        // this.getPendingCandidatesData = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        } else {
+          // console.error("Error fetching candidates:", error);
+        }
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    async approvedCandidate(id) {
+      if (!window.confirm("Are you Sure?")) {
+        return;
+      }
+      try {
+        const response = await axios.put(
+          `${VITE_API_URL}/candidate/approve_candidate/${id}`
+        );
+        alert("Staff reactivated successfully!");
+        this.pendingCandidateMethod();
+      } catch (error) {
+        // console.error("Error approving candidate:", error);
+      }
+    },
+
+    async getCandidate() {
+      this.isLoading = true;
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/approve_and_notactivated_candidates`
+        );
+
+        // this.getCandidatesData = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        } else {
+          // console.error("Error fetching candidates:", error);
+        }
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    async activeCandidateMethod(id) {
+      if (!window.confirm("Are you Sure?")) {
+        return;
+      }
+      const response = await axios
+        .put(`${VITE_API_URL}/re_activate_candidate/${id}`)
+        .then((response) => {
+          alert("Staff reactivated successfully!");
+          this.getCandidate();
+        })
+
+        .catch((error) => {
+          // console.error("Error deleting candidate:", error);
+        });
+    },
     openAssigned(id) {
       this.$store.commit("setSelectedAssignedItemId", id);
     },
@@ -241,7 +364,21 @@ export default {
       this.activeTabName = this.tabs[index].name;
       this.$router.push({ name: this.tabs[index].routeName });
     },
-
+    deleteCandidate(id) {
+      if (!window.confirm("Are you Sure?")) {
+        return;
+      }
+      axios
+        .put(`${VITE_API_URL}/inactivate_candidate/${id}`)
+        .then((response) => {
+          alert("Staff In-activated successfully!");
+          // this.inactiveCandidateData = response.data;
+          this.getCandidateMethods();
+        })
+        .catch((error) => {
+          // console.error("Error deleting candidate:", error);
+        });
+    },
     //search api start
 
     async search() {
@@ -277,7 +414,7 @@ export default {
           }
         );
 
-        this.searchResults = response.data.candidate;
+        this.searchResults = response.data;
       } catch (error) {
         if (
           (error.response && error.response.status === 404) ||
@@ -311,7 +448,7 @@ export default {
         );
 
         this.searchResults = response.data;
-        console.log(this.searchResults);
+
         this.errorMessage = response.message;
       } catch (error) {
         if (
@@ -355,9 +492,12 @@ export default {
 
   mounted() {
     this.getActiveCAndidateMethod();
-    this.getCandidateMethods();
+    // this.getCandidateMethods();
     this.setActiveTabFromRoute();
     this.setActiveTabNameOnLoad();
+    this.getCandidateMethods();
+    this.getCandidate();
+    this.pendingCandidateMethod();
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
