@@ -421,7 +421,7 @@ export default {
             this.enableMailNotification = false;
 
             this.showMessage = false;
-
+            this.selectAll = false;
             this.$emit("publishVacancy");
           } else {
             // Handle error case if needed

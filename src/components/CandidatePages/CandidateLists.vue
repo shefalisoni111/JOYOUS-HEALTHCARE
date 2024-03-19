@@ -129,7 +129,7 @@
               </tbody>
               <tbody v-else>
                 <tr>
-                  <td colspan="8" class="text-danger text-center">
+                  <td colspan="9" class="text-danger text-center">
                     {{ errorMessage }}
                   </td>
                 </tr>
@@ -277,7 +277,7 @@ export default {
           }
         );
 
-        this.searchResults = response.data;
+        this.searchResults = response.data.candidate;
       } catch (error) {
         if (
           (error.response && error.response.status === 404) ||
@@ -310,7 +310,8 @@ export default {
           }
         );
 
-        this.searchResults = response.candidate;
+        this.searchResults = response.data;
+        console.log(this.searchResults);
         this.errorMessage = response.message;
       } catch (error) {
         if (
