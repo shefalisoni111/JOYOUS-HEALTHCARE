@@ -241,6 +241,13 @@ export default {
       } else {
       }
     },
+    debounceSearch() {
+      clearTimeout(this.debounceTimeout);
+
+      this.debounceTimeout = setTimeout(() => {
+        this.search();
+      }, 100);
+    },
     //search api start
     async search() {
       try {

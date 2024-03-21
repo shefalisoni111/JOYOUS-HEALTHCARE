@@ -354,7 +354,8 @@ export default {
 
       this.debounceTimeout = setTimeout(() => {
         this.search();
-      }, 300);
+        this.searchByStatus();
+      }, 100);
     },
     setActiveTabNameOnLoad() {
       this.activeTabName = this.tabs[this.activeTab].name;

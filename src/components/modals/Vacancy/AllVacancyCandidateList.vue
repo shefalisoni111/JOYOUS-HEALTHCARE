@@ -337,18 +337,24 @@ export default {
         } catch (error) {}
       }
     },
+    debounceSearch() {
+      clearTimeout(this.debounceTimeout);
+
+      this.debounceTimeout = setTimeout(() => {
+        this.search();
+      }, 100);
+    },
     //search api start
     async search() {
       try {
         this.searchResults = [];
 
         const response = await axiosInstance.get(
-          `${VITE_API_URL}/searching_candidates_according_position`,
+          `${VITE_API_URL}/searching_publish_candidates`,
           {
             params: {
               candidate_query: this.searchQuery,
               vacancy_id: this.$store.state.selectedAllItemId,
-              status: "all_candidate",
             },
           }
         );

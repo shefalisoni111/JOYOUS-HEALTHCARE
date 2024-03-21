@@ -56,37 +56,36 @@
               <td class="widthDefineNotes" v-text="getdata.notes"></td>
 
               <td>
-                <i
+                <button
+                  class="btn btn-success border-0"
+                  :disabled="!getdata.activated"
+                  :class="{ 'bg-danger': !getdata.activated }"
+                  @click="getdata.publish === 'true' && openPublished(getdata.id)"
                   data-bs-toggle="modal"
                   data-bs-target="#publishVacancy"
                   data-bs-whatever="@mdo"
-                  v-if="getdata.publish === 'true'"
-                  class="btn btn-success bi bi-check-circle-fill"
-                  :class="{
-                    'btn-success': getdata.publish === 'true',
-                    'bi-check-circle-fill': getdata.publish === 'true',
-                    'bi-bell': getdata.publish !== 'true',
-                  }"
-                  @click="openPublished(getdata.id)"
-                ></i>
-                <i
-                  data-bs-toggle="modal"
-                  data-bs-target="#publishVacancy"
-                  data-bs-whatever="@mdo"
-                  @click="openPublished(getdata.id)"
-                  v-else
-                  class="btn btn-success bi bi-bell"
-                ></i>
+                >
+                  <i
+                    v-if="getdata.publish === 'true'"
+                    class="bi bi-check-circle-fill"
+                    :class="{
+                      'bi-check-circle-fill': getdata.publish === 'true',
+                      'bi-bell': getdata.publish !== 'true',
+                    }"
+                  ></i>
+                  <i v-else class="bi bi-bell"></i>
+                </button>
               </td>
 
               <td class="text-center">
                 <button
                   type="button"
-                  class="btn text-nowrap"
+                  class="btn text-nowrap border-0"
                   data-bs-toggle="modal"
                   data-bs-target="#allCandidateVacancyList"
                   data-bs-whatever="@mdo"
                   @click="openAllApplied(getdata.id)"
+                  :disabled="!getdata.activated"
                 >
                   <span
                     :style="{ padding: getPadding(getdata.all_candidate) }"
@@ -98,11 +97,12 @@
               <td>
                 <button
                   type="button"
-                  class="btn text-nowrap"
+                  class="btn text-nowrap border-0"
                   data-bs-toggle="modal"
                   data-bs-target="#appliedVacancy"
                   data-bs-whatever="@mdo"
                   @click="openPopup(getdata.id)"
+                  :disabled="!getdata.activated"
                 >
                   <span
                     :style="{ padding: getPadding(getdata.applied) }"
@@ -114,11 +114,12 @@
               <td>
                 <button
                   type="button"
-                  class="btn text-nowrap"
+                  class="btn text-nowrap border-0"
                   data-bs-toggle="modal"
                   data-bs-target="#assignedVacancyList"
                   data-bs-whatever="@mdo"
                   @click="openAssigned(getdata.id)"
+                  :disabled="!getdata.activated"
                 >
                   <span
                     :style="{ padding: getPadding(getdata.assigned) }"
@@ -130,11 +131,12 @@
               <td>
                 <button
                   type="button"
-                  class="btn text-nowrap"
+                  class="btn text-nowrap border-0"
                   data-bs-toggle="modal"
                   data-bs-target="#rejectedVacancyList"
                   data-bs-whatever="@mdo"
                   @click="openRejected(getdata.id)"
+                  :disabled="!getdata.activated"
                 >
                   <span
                     :style="{ padding: getPadding(getdata.rejected) }"

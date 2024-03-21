@@ -37,7 +37,7 @@
               <td>
                 {{ candidate.phone_number }}
               </td>
-              <td>
+              <td class="text-capitalize">
                 {{ candidate.status }}
               </td>
 

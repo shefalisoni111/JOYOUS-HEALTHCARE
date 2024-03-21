@@ -243,6 +243,13 @@ export default {
     closePopup() {
       this.$store.commit("setSelectedAssignedItemId", null);
     },
+    debounceSearch() {
+      clearTimeout(this.debounceTimeout);
+
+      this.debounceTimeout = setTimeout(() => {
+        this.search();
+      }, 100);
+    },
     async search() {
       try {
         this.searchResults = [];

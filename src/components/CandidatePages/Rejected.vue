@@ -30,7 +30,7 @@
           <td v-text="pending.position"></td>
           <td v-text="pending.email"></td>
           <td v-text="pending.phone_number"></td>
-          <td v-text="pending.status"></td>
+          <td class="text-capitalize" v-text="pending.status"></td>
           <td>
             <button
               type="button"
@@ -42,7 +42,7 @@
             >
               Approve</button
             >&nbsp;&nbsp;
-            <!-- <button
+            <button
               type="button"
               class="btn btn-danger"
               data-bs-toggle="tooltip"
@@ -51,7 +51,7 @@
               v-on:click="rejectCandidateMethod(pending.id)"
             >
               Reject
-            </button> -->
+            </button>
           </td>
         </tr>
       </tbody>
@@ -160,6 +160,7 @@ export default {
         // console.log("Response after approval:", response);
 
         this.pendingCandidateMethod();
+        alert("reject staff successful");
       } catch (error) {
         // console.error("Error approving candidate:", error);
       }

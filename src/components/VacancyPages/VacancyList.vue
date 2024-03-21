@@ -321,7 +321,7 @@ export default {
 
       this.debounceTimeout = setTimeout(() => {
         this.search();
-      }, 300);
+      }, 100);
     },
     // search api start
 

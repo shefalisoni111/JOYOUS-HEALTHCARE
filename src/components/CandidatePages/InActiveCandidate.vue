@@ -29,7 +29,7 @@
           <td v-text="datas.position"></td>
           <td v-text="datas.email"></td>
           <td v-text="datas.phone_number"></td>
-          <td v-text="datas.status"></td>
+          <td class="text-capitalize" v-text="datas.status"></td>
           <td>
             <button
               type="button"

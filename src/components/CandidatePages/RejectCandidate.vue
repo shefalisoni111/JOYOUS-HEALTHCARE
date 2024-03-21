@@ -32,7 +32,7 @@
           <td v-text="pending.position"></td>
           <td v-text="pending.email"></td>
           <td v-text="pending.phone_number"></td>
-          <td v-text="pending.status"></td>
+          <td class="text-capitalize" v-text="pending.status"></td>
           <td>
             <button
               type="button"
