@@ -101,6 +101,7 @@
 
 <script>
 import axios from "axios";
+
 export default {
   props: {
     initialDate: {
@@ -111,10 +112,10 @@ export default {
       type: String,
       default: null,
     },
-    availabilityId: {
-      type: [String, Number],
-      default: null,
-    },
+    // availabilityId: {
+    //   type: [String, Number],
+    //   default: null,
+    // },
     startDate: {
       type: String,
       required: false,
@@ -129,9 +130,10 @@ export default {
       candidate_id: this.candidateId,
       date: "",
       status: "",
-      availability_id: this.availabilityId,
+      availability_id: null,
       selectedDate: [],
       selectedShifts: {},
+      availabilityIds: [],
       selectedMonth: "",
       updatedStatusData: [],
       availabilityByDate: [],
@@ -144,8 +146,6 @@ export default {
   watch: {
     availability_id(newAvailabilityId) {
       this.$emit("availabilityChange", newAvailabilityId);
-
-      this.fetchAvailability(this.candidate_id, this.initialDate);
     },
 
     candidateId(newCandidateId) {
@@ -233,23 +233,6 @@ export default {
     },
   },
   methods: {
-    async fetchCandidateList(startDate) {
-      try {
-        const response = await axios.get(
-          `${VITE_API_URL}/candidates_weekly_availability`,
-          {
-            params: { date: startDate },
-          }
-        );
-        // this.candidateList = response.data.data;
-
-        this.availabilityIds = this.candidateList.map((candidate) => {
-          return candidate.availability.map(
-            (availabilityItem) => availabilityItem.availability_id
-          );
-        });
-      } catch (error) {}
-    },
     getCheckedStatus(date, shift) {
       const formattedDate = this.formatDate(date);
 
@@ -374,9 +357,22 @@ export default {
 
     //   this.status = selectedShifts ? selectedShifts : "";
     // },
+
     updateDate(selectedDate, shift) {
       this.date = selectedDate;
       this.status = shift;
+
+      const availability = this.availabilityIds.find(
+        (item) => item.date === this.formatDate(selectedDate)
+      );
+
+      if (availability) {
+        this.availability_id = availability.id;
+      } else {
+        this.availability_id = null;
+      }
+
+      // console.log(this.availability_id);
       const dayData = this.calendarData.find((data) => data.date === selectedDate);
       if (dayData) {
         dayData.shifts = dayData.shifts || {};
@@ -396,9 +392,6 @@ export default {
           .join(", ");
         this.status = selectedShifts || "";
         this.$set(this.selectedShifts, selectedDate, shift);
-        if (this.availabilityByDate[selectedDate] === shift) {
-          this.selectedShifts[selectedDate] = shift;
-        }
       }
     },
     addCandidateStatus: async function () {
@@ -425,12 +418,24 @@ export default {
             return;
           }
 
+          for (const [date, status] of Object.entries(this.selectedShifts)) {
+            const availability = this.availabilityIds.find(
+              (item) => item.date === this.formatDate(date)
+            );
+            if (availability) {
+              availabilities.push({
+                id: availability.id,
+                date,
+                status,
+              });
+            } else {
+            }
+          }
+
           const putResponse = await axios.put(
-            `${VITE_API_URL}/availabilitys/${this.availability_id}`,
+            `${VITE_API_URL}/update_availabilitys`,
             {
-              candidate_id: this.candidate_id,
-              date: formattedDate,
-              status: this.status,
+              availability_ids_and_statuses: availabilities,
             },
             {
               headers: {
@@ -537,6 +542,20 @@ export default {
         );
         this.updatedStatusData = response.data.data;
 
+        this.availabilityIds = this.updatedStatusData.reduce(
+          (formattedData, candidate) => {
+            if (candidate.availability) {
+              const formattedDate = this.formatDate(candidate.availability.date);
+              formattedData.push({
+                date: formattedDate,
+                id: candidate.availability.availability_id,
+              });
+            }
+            return formattedData;
+          },
+          []
+        );
+
         this.availabilityByDate = this.updatedStatusData.reduce(
           (formattedData, candidate) => {
             if (candidate.availability) {
@@ -562,7 +581,6 @@ export default {
       this.updateCurrentMonth(new Date(this.initialDate)),
       this.fetchAvailabilityStatusMethod(),
     ]);
-    await this.fetchCandidateList(this.startDate);
   },
 };
 </script>

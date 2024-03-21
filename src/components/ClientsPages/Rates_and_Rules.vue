@@ -83,7 +83,7 @@
                           <th scope="col">Umbrella</th>
                           <th scope="col">PAYE</th>
                           <th scope="col">Created By and Time</th>
-                          <th scope="col">Last Updatec</th>
+                          <th scope="col">Last Update</th>
 
                           <!-- <th scope="col">Action</th> -->
                         </tr>

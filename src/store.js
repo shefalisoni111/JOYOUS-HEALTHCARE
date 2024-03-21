@@ -16,9 +16,10 @@ export default createStore({
      adminData: {},
      noteCount: 0,
      vacancy_id: null,
+     
   },
   mutations: {
-   
+ 
     setSelectedAppliedItemId(state, itemId) {
       state.selectedAppliedItemId = itemId;
     },
@@ -90,7 +91,7 @@ export default createStore({
         // console.error('Error updating note count:', error.message);
       }
     },
-   
+    
   },
   
  

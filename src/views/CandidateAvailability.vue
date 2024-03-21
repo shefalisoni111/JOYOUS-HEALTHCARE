@@ -48,9 +48,9 @@
 
             <div v-if="selectedDate !== null" class="modal">
               <div class="modal-content">
-                <span class="close d-flex justify-content-end" @click="closeModal"
+                <!-- <span class="close d-flex justify-content-end" @click="closeModal"
                   >&times;</span
-                >
+                > -->
                 <h4 class="text-capitalize" style="color: #ff5722; font-weight: bold">
                   {{ getCandidateName() }}
                 </h4>
@@ -413,25 +413,6 @@ export default {
         this.search();
       }, 300);
     },
-    // async search() {
-    //   try {
-    //     this.searchResults = [];
-    //     let activatedStatus = null;
-
-    //     const response = await axiosInstance.get(
-    //       `${VITE_API_URL}/search_candidate/${this.searchQuery}`
-    //     );
-
-    //     this.searchResults = response.data.data;
-    //   } catch (error) {
-    //     if (
-    //       (error.response && error.response.status === 404) ||
-    //       error.response.status === 400
-    //     ) {
-    //       this.errorMessage = "No candidates found for the specified criteria";
-    //     }
-    //   }
-    // },
 
     async search() {
       try {
