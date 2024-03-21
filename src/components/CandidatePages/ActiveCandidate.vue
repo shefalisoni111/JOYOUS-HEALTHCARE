@@ -38,7 +38,7 @@
                 {{ candidate.phone_number }}
               </td>
               <td>
-                {{ candidate.activated ? "Active" : "Inactive" }}
+                {{ candidate.status }}
               </td>
 
               <!-- <td>
