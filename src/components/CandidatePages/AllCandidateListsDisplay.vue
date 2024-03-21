@@ -8,6 +8,7 @@
               <th scope="col">ID</th>
               <th scope="col" class="widthSet">Name</th>
               <th scope="col">Positions</th>
+              <!-- <th scope="col">Employment Type</th> -->
               <th scope="col" class="widthSet">Email</th>
               <th scope="col">Phone</th>
               <th scope="col">Status</th>

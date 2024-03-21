@@ -17,18 +17,25 @@
         </div>
         <div class="row p-3">
           <div class="full-page-calendar pt-1 pb-0">
-            <div class="calendar-header mb-5">
-              <span v-if="formattedStartDate && formattedEndDate" class="fw-bold">
-                {{
-                  "Monday " + formattedStartDate + " to Sunday " + formattedEndDate
-                }} </span
-              >&nbsp; &nbsp; &nbsp;&nbsp;
-              <div class="d-flex align-items-center fs-4">
-                <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
-                <i class="bi bi-calendar2-check-fill"></i>
-                <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+            <div class="d-flex justify-content-between mb-3">
+              <div class="calendar-header align-items-center">
+                <span v-if="formattedStartDate && formattedEndDate" class="fw-bold">
+                  {{
+                    "Monday " + formattedStartDate + " to Sunday " + formattedEndDate
+                  }} </span
+                >&nbsp; &nbsp; &nbsp;&nbsp;
+                <div class="d-flex align-items-center fs-4">
+                  <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
+                  <i class="bi bi-calendar2-check-fill"></i>
+                  <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                </div>
               </div>
+              <button type="button" class="btn btn-outline-success text-nowrap">
+                <i class="bi bi-funnel"></i>
+                Show Filters
+              </button>
             </div>
+
             <div class="row">
               <div class="col-3">
                 <div class="card border-0 bg-transparent">
@@ -160,6 +167,11 @@
                 <th rowspan="3">Total Hours</th>
                 <th rowspan="3">Total Cost</th>
                 <th rowspan="3">Approved By</th>
+                <th rowspan="3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" checked />
+                  </div>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -191,6 +203,11 @@
                 <td>{{ data.total_hours }}</td>
                 <td>{{ data.total_cost }}</td>
                 <td>{{ data.approved_by }}</td>
+                <th>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" />
+                  </div>
+                </th>
               </tr>
             </tbody>
           </table>

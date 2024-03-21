@@ -145,7 +145,7 @@ export default {
       return this.getInactiveData.slice(startIndex, endIndex);
     },
     totalRecordsOnPage() {
-      return this.getInactiveData.length;
+      return this.paginatedVacancies.length;
     },
   },
 

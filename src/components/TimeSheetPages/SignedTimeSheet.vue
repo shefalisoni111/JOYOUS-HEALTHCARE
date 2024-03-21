@@ -94,16 +94,10 @@ ul.generalsetting h6 {
                     </div>
 
                     <div class="d-flex gap-3 align-items-center">
-                      <form
-                        class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
-                      >
-                        <input
-                          class="form-control mr-sm-2"
-                          type="search"
-                          placeholder="Search by Name"
-                          aria-label="Search"
-                        />
-                      </form>
+                      <button type="button" class="btn btn-outline-success text-nowrap">
+                        <i class="bi bi-funnel"></i>
+                        Show Filters
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -122,15 +116,59 @@ ul.generalsetting h6 {
                     <div v-for="(day, index) in getMonthDates" :key="index"></div>
                   </div>
                 </div>
-                <div class="d-flex gap-2">
+                <div class="d-flex gap-2 mb-3">
                   <div></div>
                 </div>
-                <div class="tab-content mt-4" id="pills-tabContent">
+                <ul class="nav nav-pills mb-3 gap-2" id="pills-tab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link active"
+                      id="pills-pendingSigned-tab"
+                      data-bs-toggle="pill"
+                      data-bs-target="#pills-pendingSigned"
+                      type="button"
+                      role="tab"
+                      aria-controls="pills-pendingSigned"
+                      aria-selected="true"
+                    >
+                      Pending
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link"
+                      id="pills-approvedSigned-tab"
+                      data-bs-toggle="pill"
+                      data-bs-target="#pills-approvedSigned"
+                      type="button"
+                      role="tab"
+                      aria-controls="pills-approvedSigned"
+                      aria-selected="false"
+                    >
+                      Approved
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link"
+                      id="pills-deletedSigned-tab"
+                      data-bs-toggle="pill"
+                      data-bs-target="#pills-deletedSigned"
+                      type="button"
+                      role="tab"
+                      aria-controls="pills-deletedSigned"
+                      aria-selected="false"
+                    >
+                      Deleted
+                    </button>
+                  </li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
                   <div
                     class="tab-pane fade show active"
-                    id="pills-home"
+                    id="pills-pendingSigned"
                     role="tabpanel"
-                    aria-labelledby="pills-home-tab"
+                    aria-labelledby="pills-pendingSigned-tab"
                   >
                     <table class="table candidateTable">
                       <thead>
@@ -140,18 +178,20 @@ ul.generalsetting h6 {
                               <input class="form-check-input" type="checkbox" value="" />
                             </div>
                           </th>
-                          <th scope="col">Code</th>
-                          <th scope="col">Name</th>
+                          <th scope="col">Type</th>
+                          <th scope="col">Staff</th>
+                          <th scope="col">Client</th>
                           <th scope="col">Site</th>
                           <th scope="col">Job</th>
+                          <th scope="col">Date</th>
                           <th scope="col">Shift Date</th>
                           <th scope="col">Start Time</th>
                           <th scope="col">End Time</th>
+                          <th scope="col">Break</th>
                           <th scope="col">Total Hours</th>
-                          <th scope="col">ClientRate</th>
-                          <th scope="col">Total Cost</th>
-                          <th scope="col">Paper Timesheet</th>
-                          <!-- <th scope="col">Action</th> -->
+                          <th scope="col">Submitted Date</th>
+                          <th scope="col">View / Editt</th>
+                          <th scope="col">Approve / Status</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -164,6 +204,7 @@ ul.generalsetting h6 {
                           <td scope="col">f5643r</td>
                           <td scope="col">Aniket</td>
                           <td scope="col">Site</td>
+                          <td scope="col">Site</td>
                           <td scope="col">Manager</td>
                           <td scope="col">25/01/2024</td>
                           <td scope="col">22:00</td>
@@ -173,17 +214,27 @@ ul.generalsetting h6 {
                           <td scope="col">60%</td>
                           <td scope="col">£235</td>
                           <td scope="col">testing</td>
+                          <td scope="col">£235</td>
+                          <td scope="col">testing</td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
                   <div
                     class="tab-pane fade"
-                    id="pills-profile"
+                    id="pills-approvedSigned"
                     role="tabpanel"
-                    aria-labelledby="pills-profile-tab"
+                    aria-labelledby="pills-approvedSigned-tab"
                   >
-                    ...
+                    Work in Progress...
+                  </div>
+                  <div
+                    class="tab-pane fade"
+                    id="pills-deletedSigned"
+                    role="tabpanel"
+                    aria-labelledby="pills-deletedSigned-tab"
+                  >
+                    Work in Progress...
                   </div>
                 </div>
               </div>
@@ -355,6 +406,11 @@ export default {
 .btn-primary {
   border: none;
 }
+.nav-pills .nav-link {
+  border: 1px solid #ff5f30 !important;
+  color: #ff5f30;
+}
+
 .form-check-input {
   border: 2px solid grey;
 }
@@ -386,7 +442,7 @@ a[data-v-507f63b7] {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   background-color: transparent;
-  border: 1px solid green;
+  border: 1px solid green !important;
   border-radius: 22px;
   color: green;
 }

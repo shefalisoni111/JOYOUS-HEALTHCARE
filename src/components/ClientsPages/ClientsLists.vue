@@ -53,14 +53,14 @@
                       <div
                         class="d-flex align-items-center gap-2 justify-content-between"
                       >
-                        <!-- <div class="searchbox position-relative">
+                        <div class="searchbox position-relative">
                           <input
                             class="form-control mr-sm-2"
                             type="search"
-                            placeholder="Search Client"
+                            placeholder="Search..."
                             aria-label="Search"
                           />
-                        </div> -->
+                        </div>
                         <button
                           v-if="activeTab === 0"
                           type="button"
@@ -70,6 +70,30 @@
                           data-bs-whatever="@mdo"
                         >
                           + Add Client
+                        </button>
+                        <button type="button" class="btn btn-outline-success text-nowrap">
+                          <i class="bi bi-funnel"></i>
+                          Show Filters
+                        </button>
+                        <button
+                          class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
+                          type="button"
+                          id="navbarDropdown"
+                          role="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          :
+
+                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">Import</a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item" href="#">Export</a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                              <a class="dropdown-item" href="#">Export All</a>
+                            </li>
+                          </ul>
                         </button>
                       </div>
                     </div>

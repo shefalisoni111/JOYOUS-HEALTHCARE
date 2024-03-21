@@ -94,7 +94,7 @@
                 </li>
               </ul>
             </div>
-            <div class="row" v-if="selectedPublishItemId">
+            <div class="row">
               <div class="col-md-12">
                 <div
                   class="pagetitle d-flex justify-content-between align-items-center p-2"

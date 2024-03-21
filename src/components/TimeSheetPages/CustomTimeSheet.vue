@@ -104,6 +104,10 @@ ul.generalsetting h6 {
                           aria-label="Search"
                         />
                       </form>
+                      <button type="button" class="btn btn-outline-success text-nowrap">
+                        <i class="bi bi-funnel"></i>
+                        Show Filters
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -140,6 +144,7 @@ ul.generalsetting h6 {
                               <input class="form-check-input" type="checkbox" value="" />
                             </div>
                           </th>
+                          <th scope="col">ID</th>
                           <th scope="col">Code</th>
                           <th scope="col">Name</th>
                           <th scope="col">Site</th>
@@ -154,25 +159,28 @@ ul.generalsetting h6 {
                           <!-- <th scope="col">Action</th> -->
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody v-for="data in getCustomTimeSheet" :key="data.id">
                         <tr>
                           <td>
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
                             </div>
                           </td>
-                          <td scope="col">f5643r</td>
-                          <td scope="col">Aniket</td>
-                          <td scope="col">Site</td>
-                          <td scope="col">Manager</td>
-                          <td scope="col">25/01/2024</td>
-                          <td scope="col">22:00</td>
-                          <td scope="col">10:00</td>
+                          <td scope="col">{{ data.id }}</td>
+                          <td scope="col">{{ data.code }}</td>
+                          <td scope="col">{{ data.name }}</td>
+                          <td scope="col">{{ data.business_unit }}</td>
+                          <td scope="col">{{ data.job }}</td>
+                          <td scope="col">{{ data.shift_date }}</td>
+                          <td scope="col">{{ data.start_time }}</td>
+                          <td scope="col">{{ data.end_time }}</td>
 
-                          <td scope="col">10 hours</td>
-                          <td scope="col">60%</td>
-                          <td scope="col">£235</td>
-                          <td scope="col">testing</td>
+                          <td scope="col">{{ data.total_hours }}</td>
+                          <td scope="col">{{ data.client_rate }}</td>
+                          <td scope="col">{{ data.total_cost }}</td>
+                          <td scope="col">
+                            {{ data.paper_timesheet ? data.paper_timesheet : "null" }}
+                          </td>
                           <!-- <td scope="col">Action</td> -->
                         </tr>
                       </tbody>
@@ -205,6 +213,7 @@ export default {
       daysOfWeek: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
       startDate: new Date(),
       endDate: new Date(),
+      getCustomTimeSheet: [],
     };
   },
   components: { Navbar },
@@ -308,21 +317,21 @@ export default {
     //     });
     //   // alert("Record Deleted ");
     // },
-    // async getCustomSheetMethod() {
-    //   const token = localStorage.getItem("token");
-    //   axios
-    //     .get(`${VITE_API_URL}/weekly_timesheets`, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => (this.getVacancyDetail = response.data));
-    // },
+    async getCustomSheetMethod() {
+      const token = localStorage.getItem("token");
+      axios
+        .get(`${VITE_API_URL}/custom_timesheets`, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+        })
+        .then((response) => (this.getCustomTimeSheet = response.data.custom_sheets));
+    },
   },
 
   mounted() {
-    // this.getCustomSheetMethod();
+    this.getCustomSheetMethod();
     this.loadDateRangeFromLocalStorage();
     const currentDate = new Date();
     const startOfWeek = new Date(currentDate);

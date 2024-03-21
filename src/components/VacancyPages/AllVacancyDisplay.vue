@@ -56,25 +56,31 @@
               <td class="widthDefineNotes" v-text="getdata.notes"></td>
 
               <td>
-                <button
-                  class="btn btn-success border-0"
-                  :disabled="!getdata.activated"
-                  :class="{ 'bg-danger': !getdata.activated }"
-                  @click="getdata.publish === 'true' && openPublished(getdata.id)"
+                <i
                   data-bs-toggle="modal"
                   data-bs-target="#publishVacancy"
                   data-bs-whatever="@mdo"
-                >
-                  <i
-                    v-if="getdata.publish === 'true'"
-                    class="bi bi-check-circle-fill"
-                    :class="{
-                      'bi-check-circle-fill': getdata.publish === 'true',
-                      'bi-bell': getdata.publish !== 'true',
-                    }"
-                  ></i>
-                  <i v-else class="bi bi-bell"></i>
-                </button>
+                  v-if="getdata.publish === 'true'"
+                  :class="{
+                    btn: true,
+                    'btn-success': getdata.publish === 'true',
+                    bi: true,
+                    'bi-check-circle-fill': getdata.publish === 'true',
+                    'bi-bell': getdata.publish !== 'true',
+                    disabled: !getdata.activated,
+                    'bg-danger': !getdata.activated,
+                  }"
+                  @click="getdata.activated && openPublished(getdata.id)"
+                ></i>
+                <i
+                  data-bs-toggle="modal"
+                  data-bs-target="#publishVacancy"
+                  data-bs-whatever="@mdo"
+                  @click="openPublished(getdata.id)"
+                  v-else
+                  class="btn btn-success bi bi-bell"
+                  :class="{ disabled: !getdata.activated }"
+                ></i>
               </td>
 
               <td class="text-center">
