@@ -65,7 +65,7 @@
                     </select>
                   </div>
                 </div>
-                <div class="mb-3 d-flex gap-3 flex-wrap">
+                <div class="mb-3 d-flex flex-wrap">
                   <!-- <div class="col-3">
                     <label class="form-label">Dates</label>
                   </div>
@@ -77,21 +77,23 @@
                       multiple
                     />
                   </div> -->
-                  <div
-                    v-for="(date, index) in fetchVacancy.dates"
-                    :key="index"
-                    class="mb-3 d-flex"
-                  >
+                  <div class="mb-3 d-flex justify-content-between">
                     <div class="col-3">
-                      <label class="form-label">Date {{ index + 1 }}</label>
+                      <label class="form-label">Date</label>
                     </div>
-                    <div class="col-9">
-                      <input
-                        type="date"
-                        class="form-control"
-                        :value="formatDate(date)"
-                        @input="updateDate($event.target.value, index)"
-                      />
+                    <div class="mb-3 d-flex justify-content-between">
+                      <div
+                        class="col-3"
+                        v-for="(date, index) in fetchVacancy.dates"
+                        :key="index"
+                      >
+                        <input
+                          type="date"
+                          class="form-control"
+                          :value="formatDate(date)"
+                          @input="updateDate($event.target.value, index)"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
