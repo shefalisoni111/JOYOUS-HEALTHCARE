@@ -65,26 +65,15 @@
                     </select>
                   </div>
                 </div>
-                <div class="mb-3 d-flex gap-2 flex-wrap">
-                  <!-- <div class="col-3">
-                    <label class="form-label">Dates</label>
-                  </div>
-                  <div class="col-9">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchVacancy.dates[index]"
-                      multiple
-                    />
-                  </div> -->
-                  <div class="mb-3 d-flex justify-content-between text-wrap">
+                <div class="mb-3">
+                  <div class="d-flex flex-wrap">
                     <div class="col-3">
                       <label class="form-label">Date</label>
                     </div>
                     <div
                       v-for="(date, index) in fetchVacancy.dates"
                       :key="index"
-                      class="mb-3"
+                      class=""
                     >
                       <div class="col-11">
                         <input
