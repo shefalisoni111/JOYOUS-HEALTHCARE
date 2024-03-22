@@ -159,7 +159,7 @@ ul.generalsetting h6 {
                           <!-- <th scope="col">Action</th> -->
                         </tr>
                       </thead>
-                      <tbody v-for="data in getCustomTimeSheet" :key="data.id">
+                      <tbody v-for="data in paginateCandidates" :key="data.id">
                         <tr>
                           <td>
                             <div class="form-check">
@@ -200,6 +200,31 @@ ul.generalsetting h6 {
           </div>
         </div>
       </div>
+      <div
+        class="mx-3 mb-2"
+        style="text-align: right"
+        v-if="getCustomTimeSheet.length >= 8"
+      >
+        <button class="btn btn-outline-dark btn-sm">
+          {{ totalRecordsOnPage }} Records Per Page
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm btn-primary mr-2"
+          :disabled="currentPage === 1"
+          @click="currentPage--"
+        >
+          Previous</button
+        >&nbsp;&nbsp; <span>{{ currentPage }}</span
+        >&nbsp;&nbsp;
+        <button
+          class="btn btn-sm btn-primary ml-2"
+          :disabled="currentPage * itemsPerPage >= getCustomTimeSheet.length"
+          @click="currentPage++"
+        >
+          Next
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -214,10 +239,20 @@ export default {
       startDate: new Date(),
       endDate: new Date(),
       getCustomTimeSheet: [],
+      currentPage: 1,
+      itemsPerPage: 14,
     };
   },
   components: { Navbar },
   computed: {
+    paginateCandidates() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.getCustomTimeSheet.slice(startIndex, endIndex);
+    },
+    totalRecordsOnPage() {
+      return this.paginateCandidates.length;
+    },
     getWeekDates() {
       const currentDate = new Date();
       const weekStart = new Date(currentDate);

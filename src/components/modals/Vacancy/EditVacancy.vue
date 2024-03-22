@@ -65,17 +65,34 @@
                     </select>
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-3">
+                <div class="mb-3 d-flex gap-3 flex-wrap">
+                  <!-- <div class="col-3">
                     <label class="form-label">Dates</label>
                   </div>
                   <div class="col-9">
                     <input
                       type="text"
                       class="form-control"
-                      v-model="fetchVacancy.dates"
+                      v-model="fetchVacancy.dates[index]"
                       multiple
                     />
+                  </div> -->
+                  <div
+                    v-for="(date, index) in fetchVacancy.dates"
+                    :key="index"
+                    class="mb-3 d-flex"
+                  >
+                    <div class="col-3">
+                      <label class="form-label">Date {{ index + 1 }}</label>
+                    </div>
+                    <div class="col-9">
+                      <input
+                        type="date"
+                        class="form-control"
+                        :value="formatDate(date)"
+                        @input="updateDate($event.target.value, index)"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
@@ -206,6 +223,15 @@ export default {
     },
   },
   methods: {
+    formatDate(date) {
+      // Assuming date is in "DD-MM-YYYY" format
+      const [day, month, year] = date.split("-");
+      return `${year}-${month}-${day}`;
+    },
+    updateDate(value, index) {
+      const [year, month, day] = value.split("-");
+      this.fetchVacancy.dates[index] = `${day}-${month}-${year}`;
+    },
     validateStaffRequired() {
       if (this.fetchVacancy.staff_required <= 0) {
         this.fetchVacancy.staff_required = null;

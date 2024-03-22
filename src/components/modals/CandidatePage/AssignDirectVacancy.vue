@@ -51,7 +51,7 @@
                 </div>
               </div>
             </div>
-            <div class="row g-3 align-items-center">
+            <div class="row g-3 align-items-center" v-if="!searchQuery">
               <table class="table candidateTable" v-if="selectedCandidateItemId">
                 <thead>
                   <tr>
@@ -114,6 +114,71 @@
                 </tbody>
               </table>
             </div>
+            <div class="row g-3 align-items-center" v-if="searchQuery">
+              <table class="table candidateTable" v-if="selectedCandidateItemId">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col">ID</th>
+                    <th scope="col">#RefCode</th>
+                    <th scope="col">Client</th>
+                    <th scope="col">Business Unit</th>
+                    <th scope="col">Job Title</th>
+                    <th scope="col" class="widthDefine">Date</th>
+                    <th scope="col">Shift</th>
+                    <!-- <th scope="col">Staff Required</th> -->
+                    <!-- <th scope="col">Notes</th> -->
+
+                    <!-- <th scope="col">Created by</th> -->
+                  </tr>
+                </thead>
+                <tbody v-if="searchResults.length > 0">
+                  <tr v-for="getdata in searchResults" :key="getdata.id">
+                    <td>
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        :value="getdata.id"
+                        :id="getdata.id"
+                        v-model="checkedVacancies[getdata.id]"
+                      />
+                    </td>
+                    <td v-text="getdata.id"></td>
+                    <td v-text="getdata.ref_code"></td>
+                    <td>
+                      <router-link
+                        class="text-capitalize text-black text-decoration-underline fw-bold"
+                        to="/client"
+                        >{{ getdata.client }}</router-link
+                      >
+                    </td>
+                    <td v-text="getdata.business_unit"></td>
+                    <td v-text="getdata.job_title"></td>
+
+                    <td>
+                      <span v-for="(date, index) in getdata.dates" :key="index">
+                        {{ date }}
+
+                        <template v-if="index !== getdata.dates.length - 1">, </template>
+                      </span>
+                    </td>
+
+                    <td v-text="getdata.shift"></td>
+                    <!-- <td v-text="getdata.staff_required"></td> -->
+                    <!-- <td v-text="getdata.notes"></td> -->
+
+                    <!-- <td v-text="getdata.create_by_and_time.split(' ')[0]"></td> -->
+                  </tr>
+                </tbody>
+                <tbody v-else>
+                  <tr>
+                    <td colspan="8" class="text-danger text-center">
+                      Not Match Found !!
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div class="modal-footer">
             <button
@@ -145,12 +210,20 @@
 <script>
 import axios from "axios";
 import { reactive } from "vue";
+
+const axiosInstance = axios.create({
+  headers: {
+    "Cache-Control": "no-cache",
+  },
+});
 export default {
   name: "AssignDirectVacancy",
   data() {
     return {
       getVacancyDetail: [],
       searchQuery: null,
+      debounceTimeout: null,
+      searchResults: [],
       vacancyList: [],
       errorMessage: "",
       checkedVacancies: reactive({}),
@@ -175,6 +248,38 @@ export default {
     },
   },
   methods: {
+    debounceSearch() {
+      clearTimeout(this.debounceTimeout);
+
+      this.debounceTimeout = setTimeout(() => {
+        this.search();
+      }, 100);
+    },
+    //search api start
+    async search() {
+      try {
+        this.searchResults = [];
+
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/search_candidate_vacancy_job_position`,
+          {
+            params: {
+              candidate_query: this.searchQuery,
+              candidate_id: this.$store.state.selectedCandidateItemId,
+            },
+          }
+        );
+
+        this.searchResults = response.data.vacancy;
+      } catch (error) {
+        if (
+          (error.response && error.response.status === 404) ||
+          error.response.status === 400
+        ) {
+          this.errorMessage = "No candidates found for the specified criteria";
+        }
+      }
+    },
     closePopup() {
       this.$store.commit("setSelectedCandidateId", null);
     },

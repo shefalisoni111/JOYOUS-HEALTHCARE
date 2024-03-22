@@ -79,7 +79,11 @@
                   @click="openPublished(getdata.id)"
                   v-else
                   class="btn btn-success bi bi-bell"
-                  :class="{ disabled: !getdata.activated }"
+                  :class="{
+                    disabled: !getdata.activated,
+                    'btn-success': getdata.publish === 'true',
+                    'bg-danger': !getdata.activated,
+                  }"
                 ></i>
               </td>
 

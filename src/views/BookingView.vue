@@ -175,7 +175,7 @@ ul.generalsetting h6 {
                         <th scope="col">Break</th>
                         <th scope="col">Duration</th>
                         <th scope="col">Notes</th>
-                        <th scope="col">Mailed At</th>
+                        <!-- <th scope="col">Mailed At</th> -->
                         <th scope="col">Status</th>
                         <th scope="col">Action</th>
                       </tr>
@@ -202,9 +202,9 @@ ul.generalsetting h6 {
                         <td scope="col">{{ data.break }}</td>
                         <td scope="col">{{ data.duration }}</td>
                         <td scope="col">{{ data.notes ? data.notes : "null" }}</td>
-                        <td scope="col">
+                        <!-- <td scope="col">
                           {{ data.mailed_at ? data.mailed_at : "null" }}
-                        </td>
+                        </td> -->
                         <td scope="col">{{ data.status ? data.status : "null" }}</td>
                         <td scope="col">
                           <i class="bi bi-trash text-danger"></i>
