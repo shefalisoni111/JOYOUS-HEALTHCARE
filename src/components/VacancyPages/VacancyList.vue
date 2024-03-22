@@ -330,6 +330,7 @@ export default {
         const token = localStorage.getItem("token");
         this.searchResults = [];
         let activatedStatus = null;
+        const modifiedSearchQuery = this.searchQuery.replace(/ /g, "_");
 
         if (this.activeTab === 1) {
           activatedStatus = true;
@@ -337,7 +338,7 @@ export default {
           activatedStatus = false;
         } else if (this.activeTab === 0) {
           const response = await axiosInstance.get(
-            `${VITE_API_URL}/serching_vacancies/${this.searchQuery}`,
+            `${VITE_API_URL}/serching_vacancies/${modifiedSearchQuery}`,
             {
               headers: {
                 "content-type": "application/json",
@@ -355,7 +356,7 @@ export default {
           `${VITE_API_URL}/searching_active_inactive_vacancies`,
           {
             params: {
-              vacancy_query: this.searchQuery,
+              vacancy_query: modifiedSearchQuery,
               active_status: activatedStatus,
               tab: this.activeTabName.toLowerCase(),
             },

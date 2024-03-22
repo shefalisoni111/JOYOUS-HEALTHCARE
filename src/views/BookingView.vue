@@ -163,6 +163,7 @@ ul.generalsetting h6 {
                   <table class="table bookingTable">
                     <thead>
                       <tr>
+                        <th>ID</th>
                         <th scope="col">#Booking Code</th>
                         <th scope="col">Staff</th>
                         <th scope="col">Site</th>
@@ -182,6 +183,7 @@ ul.generalsetting h6 {
                     </thead>
                     <tbody>
                       <tr v-for="data in paginationBooking" :key="data.id">
+                        <td scope="col">{{ data.id }}</td>
                         <td scope="col">{{ data.booking_code }}</td>
                         <td scope="col">{{ data.candidate }}</td>
                         <td scope="col">{{ data.business_unit }}</td>

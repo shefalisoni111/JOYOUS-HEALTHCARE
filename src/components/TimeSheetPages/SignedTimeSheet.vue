@@ -184,7 +184,7 @@ ul.generalsetting h6 {
                           <th scope="col">Site</th>
                           <th scope="col">Job</th>
                           <th scope="col">Date</th>
-                          <th scope="col">Shift Date</th>
+
                           <th scope="col">Start Time</th>
                           <th scope="col">End Time</th>
                           <th scope="col">Break</th>
@@ -206,15 +206,15 @@ ul.generalsetting h6 {
                           <td scope="col">Site</td>
                           <td scope="col">Site</td>
                           <td scope="col">Manager</td>
-                          <td scope="col">25/01/2024</td>
+
                           <td scope="col">22:00</td>
                           <td scope="col">10:00</td>
 
                           <td scope="col">10 hours</td>
                           <td scope="col">60%</td>
-                          <td scope="col">£235</td>
+                          <td scope="col">12</td>
                           <td scope="col">testing</td>
-                          <td scope="col">£235</td>
+                          <td scope="col">view</td>
                           <td scope="col">testing</td>
                         </tr>
                       </tbody>
