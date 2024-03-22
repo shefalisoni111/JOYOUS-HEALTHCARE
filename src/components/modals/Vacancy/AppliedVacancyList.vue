@@ -12,7 +12,7 @@
           <div class="modal-header">
             <h5 class="modal-title" id="appliedVacancy">Applied Shift</h5>
           </div>
-          <div class="modal-body">
+          <div class="modal-body overflow-x-auto">
             <div class="row g-3 align-items-center">
               <ul class="list-unstyled d-lg-flex gap-3 mb-0 publish-ul d-sm-grid">
                 <li>Code:{{ vacancyDetails.ref_code }}</li>

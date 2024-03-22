@@ -50,7 +50,7 @@ ul.generalsetting h6 {
         <div class="row">
           <div class="col-12">
             <div class="">
-              <div>
+              <div class="d-flex justify-content-between">
                 <div class="p-2">
                   <div class="d-flex justify-content-between">
                     <div class="d-flex">
@@ -112,81 +112,140 @@ ul.generalsetting h6 {
                   </div>
                 </div>
                 <div class="d-flex gap-2">
-                  <div></div>
-                </div>
-                <div class="tab-content mt-4" id="pills-tabContent">
-                  <div
-                    class="tab-pane fade show active table-wrapper"
-                    id="pills-home"
-                    role="tabpanel"
-                    aria-labelledby="pills-home-tab"
-                  >
-                    <table class="table bookingTable">
-                      <thead>
-                        <tr>
-                          <th scope="col">#Booking Code</th>
-                          <th scope="col">Staff</th>
-                          <th scope="col">Site</th>
-                          <th scope="col">Job Title</th>
-                          <th scope="col">Shift Dates</th>
-                          <th scope="col">Booking By</th>
-                          <th scope="col">Booking Date</th>
-                          <th scope="col">Start</th>
-                          <th scope="col">End</th>
-                          <th scope="col">Break</th>
-                          <th scope="col">Duration</th>
-                          <th scope="col">Notes</th>
-                          <th scope="col">Mailed At</th>
-                          <th scope="col">Status</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="data in getBookingData" :key="data.id">
-                          <td scope="col">{{ data.booking_code }}</td>
-                          <td scope="col">{{ data.candidate }}</td>
-                          <td scope="col">{{ data.business_unit }}</td>
-                          <td scope="col">{{ data.job_title }}</td>
-                          <td>
-                            <span v-for="(date, index) in data.shift_dates" :key="index">
-                              {{ date }}
+                  <div class="d-flex justify-content-end align-items-center">
+                    <div class="d-flex align-items-center gap-2 justify-content-between">
+                      <div class="searchbox position-relative">
+                        <input
+                          class="form-control mr-sm-2"
+                          type="search"
+                          placeholder="Search..."
+                          aria-label="Search"
+                        />
+                      </div>
+                      <button type="button" class="btn btn-outline-success text-nowrap">
+                        Deleted Booking
+                      </button>
+                      <button type="button" class="btn btn-outline-success text-nowrap">
+                        <i class="bi bi-funnel"></i>
+                        Show Filters
+                      </button>
+                      <button
+                        class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
+                        type="button"
+                        id="navbarDropdown"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        :
 
-                              <template v-if="index !== data.shift_dates.length - 1"
-                                >,
-                              </template>
-                            </span>
-                          </td>
-                          <td scope="col">{{ data.booked_by }}</td>
-                          <td scope="col">{{ data.booking_date }}</td>
-                          <td scope="col">{{ data.start_time }}</td>
-                          <td scope="col">{{ data.end_time }}</td>
-                          <td scope="col">{{ data.break }}</td>
-                          <td scope="col">{{ data.duration }}</td>
-                          <td scope="col">{{ data.notes ? data.notes : "null" }}</td>
-                          <td scope="col">
-                            {{ data.mailed_at ? data.mailed_at : "null" }}
-                          </td>
-                          <td scope="col">{{ data.status ? data.status : "null" }}</td>
-                          <td scope="col">
-                            <i class="bi bi-trash text-danger"></i>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <li><a class="dropdown-item" href="#">Import</a></li>
+                          <li><hr class="dropdown-divider" /></li>
+                          <li><a class="dropdown-item" href="#">Export</a></li>
+                          <li><hr class="dropdown-divider" /></li>
+                          <li>
+                            <a class="dropdown-item" href="#">Export All</a>
+                          </li>
+                        </ul>
+                      </button>
+                    </div>
                   </div>
-                  <div
-                    class="tab-pane fade"
-                    id="pills-profile"
-                    role="tabpanel"
-                    aria-labelledby="pills-profile-tab"
-                  >
-                    ...
-                  </div>
+                </div>
+              </div>
+              <div class="tab-content mt-4" id="pills-tabContent">
+                <div
+                  class="tab-pane fade show active table-wrapper"
+                  id="pills-home"
+                  role="tabpanel"
+                  aria-labelledby="pills-home-tab"
+                >
+                  <table class="table bookingTable">
+                    <thead>
+                      <tr>
+                        <th scope="col">#Booking Code</th>
+                        <th scope="col">Staff</th>
+                        <th scope="col">Site</th>
+                        <th scope="col">Job Title</th>
+                        <th scope="col">Shift Dates</th>
+                        <th scope="col">Booking By</th>
+                        <th scope="col">Booking Date</th>
+                        <th scope="col">Start</th>
+                        <th scope="col">End</th>
+                        <th scope="col">Break</th>
+                        <th scope="col">Duration</th>
+                        <th scope="col">Notes</th>
+                        <th scope="col">Mailed At</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="data in paginationBooking" :key="data.id">
+                        <td scope="col">{{ data.booking_code }}</td>
+                        <td scope="col">{{ data.candidate }}</td>
+                        <td scope="col">{{ data.business_unit }}</td>
+                        <td scope="col">{{ data.job_title }}</td>
+                        <td>
+                          <span v-for="(date, index) in data.shift_dates" :key="index">
+                            {{ date }}
+
+                            <template v-if="index !== data.shift_dates.length - 1"
+                              >,
+                            </template>
+                          </span>
+                        </td>
+                        <td scope="col">{{ data.booked_by }}</td>
+                        <td scope="col">{{ data.booking_date }}</td>
+                        <td scope="col">{{ data.start_time }}</td>
+                        <td scope="col">{{ data.end_time }}</td>
+                        <td scope="col">{{ data.break }}</td>
+                        <td scope="col">{{ data.duration }}</td>
+                        <td scope="col">{{ data.notes ? data.notes : "null" }}</td>
+                        <td scope="col">
+                          {{ data.mailed_at ? data.mailed_at : "null" }}
+                        </td>
+                        <td scope="col">{{ data.status ? data.status : "null" }}</td>
+                        <td scope="col">
+                          <i class="bi bi-trash text-danger"></i>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div
+                  class="tab-pane fade"
+                  id="pills-profile"
+                  role="tabpanel"
+                  aria-labelledby="pills-profile-tab"
+                >
+                  ...
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <div class="mx-3" style="text-align: right" v-if="getBookingData.length >= 8">
+        <button class="btn btn-outline-dark btn-sm">
+          {{ totalRecordsOnPage }} Records Per Page
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm btn-primary mr-2"
+          :disabled="currentPage === 1"
+          @click="currentPage--"
+        >
+          Previous</button
+        >&nbsp;&nbsp; <span>{{ currentPage }}</span
+        >&nbsp;&nbsp;
+        <button
+          class="btn btn-sm btn-primary ml-2"
+          :disabled="currentPage * itemsPerPage >= getBookingData.length"
+          @click="currentPage++"
+        >
+          Next
+        </button>
       </div>
     </div>
   </div>
@@ -202,6 +261,8 @@ export default {
       startDate: new Date(),
       endDate: new Date(),
       getBookingData: "",
+      currentPage: 1,
+      itemsPerPage: 13,
     };
   },
   components: { Navbar },
@@ -228,6 +289,14 @@ export default {
       ).getDate();
       const monthDates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
       return monthDates;
+    },
+    paginationBooking() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.getBookingData.slice(startIndex, endIndex);
+    },
+    totalRecordsOnPage() {
+      return this.paginationBooking.length;
     },
   },
   methods: {

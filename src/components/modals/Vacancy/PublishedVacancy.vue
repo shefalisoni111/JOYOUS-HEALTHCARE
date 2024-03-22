@@ -24,7 +24,7 @@
               <li>Space left: 1</li>
             </ul> -->
           </div>
-          <div class="modal-body mx-3">
+          <div class="modal-body mx-3 overflow-x-auto">
             <div class="row g-3 align-items-center">
               <ul class="list-unstyled d-flex justify-content-end gap-3">
                 <li>

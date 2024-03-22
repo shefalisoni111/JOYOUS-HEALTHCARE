@@ -12,7 +12,7 @@
           <div class="modal-header">
             <h5 class="modal-title" id="assignDirectVacancy">Shift</h5>
           </div>
-          <div class="modal-body">
+          <div class="modal-body overflow-x-auto">
             <div class="row m-3">
               <div class="col-md-12">
                 <div
