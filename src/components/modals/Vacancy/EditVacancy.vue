@@ -65,7 +65,7 @@
                     </select>
                   </div>
                 </div>
-                <div class="mb-3 d-flex flex-wrap">
+                <div class="mb-3 d-flex gap-2 flex-wrap">
                   <!-- <div class="col-3">
                     <label class="form-label">Dates</label>
                   </div>
@@ -77,16 +77,16 @@
                       multiple
                     />
                   </div> -->
-                  <div class="mb-3 d-flex justify-content-between">
+                  <div class="mb-3 d-flex justify-content-between text-wrap">
                     <div class="col-3">
                       <label class="form-label">Date</label>
                     </div>
-                    <div class="mb-3 d-flex justify-content-between">
-                      <div
-                        class="col-3"
-                        v-for="(date, index) in fetchVacancy.dates"
-                        :key="index"
-                      >
+                    <div
+                      v-for="(date, index) in fetchVacancy.dates"
+                      :key="index"
+                      class="mb-3"
+                    >
+                      <div class="col-11">
                         <input
                           type="date"
                           class="form-control"
