@@ -90,6 +90,7 @@
           </div>
         </div>
       </div>
+      <SuccessAlert ref="successAlert" />
     </div>
 
     <div class="mt-3 float-end">
@@ -101,6 +102,7 @@
 
 <script>
 import axios from "axios";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
   props: {
@@ -138,6 +140,9 @@ export default {
       updatedStatusData: [],
       availabilityByDate: [],
     };
+  },
+  components: {
+    SuccessAlert,
   },
   created() {
     this.candidate_id = this.candidateId;
@@ -457,7 +462,9 @@ export default {
             alert("Availability updated successfully");
 
             // this.$emit("availability-updated");
-
+            // const message = "Availability updated successfully";
+            // // console.log("Showing success message:", message);
+            // this.$refs.successAlert.showSuccess(message);
             this.errorMessage = "";
             return;
           } else {
@@ -503,7 +510,9 @@ export default {
             alert("Availabilities added successfully");
 
             // this.$emit("availability-updated");
-
+            // const message = "Availability added successfully";
+            // // console.log("Showing success message:", message);
+            // this.$refs.successAlert.showSuccess(message);
             this.errorMessage = "";
             return;
           } else {

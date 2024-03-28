@@ -6,7 +6,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title text-center" id="addNextToKin">Add Next to Kin</h5>
-           
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
@@ -187,11 +186,13 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import SuccessAlert from "../../../Alerts/SuccessAlert.vue";
 
 export default {
   name: "NextToKinEdit",
@@ -215,6 +216,7 @@ export default {
       },
     };
   },
+  components: { SuccessAlert },
   computed: {
     isSubmitDisabled() {
       return (
@@ -320,6 +322,8 @@ export default {
           this.address_line_2 = "";
           this.city = "";
           this.postcode = "";
+          const message = "Add Next to Kin successfully";
+          this.$refs.successAlert.showSuccess(message);
         } else {
         }
       } catch (error) {

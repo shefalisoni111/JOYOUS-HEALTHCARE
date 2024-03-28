@@ -6,7 +6,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addDeduct">Add Candidate Deduction</h5>
-           
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -75,11 +74,14 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+
 export default {
   name: "AddDeduction",
   data() {
@@ -98,6 +100,7 @@ export default {
       return jobs_id ? jobs_id.name : "";
     },
   },
+  components: { SuccessAlert },
   methods: {
     async addDeductionMethod() {
       const data = {
@@ -117,7 +120,8 @@ export default {
         });
         if (response.ok) {
           this.$emit("updateList");
-
+          const message = "Add Deduction Successful";
+          this.$refs.successAlert.showSuccess(message);
           this.title = "";
           this.jobs_id = "";
           this.amount = "";

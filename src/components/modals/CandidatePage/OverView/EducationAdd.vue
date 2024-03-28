@@ -11,7 +11,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addEducation">Add Education</h5>
-           
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -77,10 +76,13 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
+import SuccessAlert from "../../../Alerts/SuccessAlert.vue";
+
 export default {
   name: "WorkExperience",
   data() {
@@ -92,6 +94,7 @@ export default {
       errors: {},
     };
   },
+  components: { SuccessAlert },
   computed: {
     isButtonDisabled() {
       return (
@@ -145,7 +148,10 @@ export default {
           }
         );
         if (data) {
-          location.reload();
+          // location.reload();
+          this.$emit("AddEducation");
+          const message = "Education details add  successfully";
+          this.$refs.successAlert.showSuccess(message);
         }
       } catch (error) {}
     },

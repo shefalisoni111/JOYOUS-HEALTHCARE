@@ -115,6 +115,10 @@ ul.generalsetting h6 {
                         <i class="bi bi-file-earmark"></i>
                         generate invoice
                       </router-link>
+                      <button type="button" class="btn btn-outline-success text-nowrap">
+                        <i class="bi bi-funnel"></i>
+                        Show Filters
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -183,7 +187,7 @@ ul.generalsetting h6 {
                           <td scope="col">done</td>
                           <td>
                             <router-link
-                              to="/invoice/vendor-invoice/VendorInvoiceView"
+                              to="/invoice/client-invoice/client-InvoiceView"
                               class="text-success"
                               ><i class="bi bi-eye"></i
                             ></router-link>

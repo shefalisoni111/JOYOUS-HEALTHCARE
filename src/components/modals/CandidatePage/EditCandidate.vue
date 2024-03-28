@@ -11,7 +11,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="editCandidate">Edit Staff</h5>
-           
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
@@ -106,10 +105,12 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 <script>
 import axios from "axios";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
   name: "EditCandidate",
@@ -137,6 +138,7 @@ export default {
       default: 0,
     },
   },
+  components: { SuccessAlert },
   computed: {
     getCandidatesData() {
       return this.$store.state.candidates;
@@ -178,8 +180,10 @@ export default {
           id: this.fetchCandidate.id,
           newData: response.data,
         });
-        this.$emit("client-updated");
-        alert("Candidate updated successfully");
+        this.$emit("Candidate-updated");
+        // alert("Candidate updated successfully");
+        const message = "Staff updated successfully";
+        this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         // console.error("Error updating candidate:", error);
       }

@@ -53,16 +53,37 @@ ul.generalsetting h6 {
               <div>
                 <div class="p-2">
                   <div class="d-flex justify-content-between">
+                    <div class="d-flex gap-3 align-items-center">
+                      <!-- <button type="button" class="btn btn-outline-success text-nowrap">
+                        <i class="bi bi-funnel"></i>
+                        Show Filters
+                      </button> -->
+                    </div>
+                  </div>
+                </div>
+                <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                   
+                  </ul> -->
+                <!-- <div v-if="currentView === 'weekly'">
+                  <div>
+                    <div v-for="(day, index) in daysOfWeek" :key="index"></div>
+                    <div v-for="(day, index) in getWeekDates" :key="index"></div>
+                  </div>
+                </div> -->
+
+                <div class="d-flex gap-2 mb-3 justify-content-between">
+                  <div class="d-flex gap-2">
+                    <div></div>
                     <div class="d-flex">
                       <div class="d-flex align-items-center gap-2">
-                        <select
-                          class="form-control"
-                          v-model="currentView"
-                          @change="updateDateRange"
-                        >
-                          <option value="weekly">Weekly</option>
-                          <option value="monthly">Monthly</option>
-                        </select>
+                        <!-- <select
+                        class="form-control"
+                        v-model="currentView"
+                        @change="updateDateRange"
+                      >
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                      </select> -->
                       </div>
 
                       &nbsp;&nbsp;
@@ -92,78 +113,59 @@ ul.generalsetting h6 {
                         <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
                       </div>
                     </div>
-
-                    <div class="d-flex gap-3 align-items-center">
-                      <button type="button" class="btn btn-outline-success text-nowrap">
-                        <i class="bi bi-funnel"></i>
-                        Show Filters
-                      </button>
+                    <div>
+                      <div>
+                        <div v-for="(day, index) in getMonthDates" :key="index"></div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                   
-                  </ul> -->
-                <div v-if="currentView === 'weekly'">
-                  <div>
-                    <div v-for="(day, index) in daysOfWeek" :key="index"></div>
-                    <div v-for="(day, index) in getWeekDates" :key="index"></div>
-                  </div>
-                </div>
+                    <select v-model="client_id" id="selectClients">
+                      <option value="">All Client</option>
+                      <option
+                        v-for="option in clientData"
+                        :key="option.id"
+                        :value="option.id"
+                        aria-placeholder="Select Job"
+                      >
+                        {{ option.first_name }}
+                      </option>
+                    </select>
+                    <select v-model="business_unit_id" id="selectBusinessUnit">
+                      <option value="">All Site</option>
+                      <option
+                        v-for="option in businessUnit"
+                        :key="option.id"
+                        :value="option.id"
+                        placeholder="Select BusinessUnit"
+                      >
+                        {{ option.name }}
+                      </option>
+                    </select>
 
-                <div v-else-if="currentView === 'monthly'">
+                    <select v-model="id" id="selectCandidateList">
+                      <option value="">All Staff</option>
+                      <option
+                        v-for="option in candidateLists"
+                        :key="option.id"
+                        :value="option.id"
+                      >
+                        {{ option.first_name }}
+                      </option>
+                    </select>
+                  </div>
                   <div>
-                    <div v-for="(day, index) in getMonthDates" :key="index"></div>
+                    <form
+                      class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
+                    >
+                      <input
+                        class="form-control mr-sm-2"
+                        type="search"
+                        placeholder="Search by Name"
+                        aria-label="Search"
+                      />
+                    </form>
                   </div>
                 </div>
-                <div class="d-flex gap-2 mb-3">
-                  <div></div>
-                </div>
-                <ul class="nav nav-pills mb-3 gap-2" id="pills-tab" role="tablist">
-                  <li class="nav-item" role="presentation">
-                    <button
-                      class="nav-link active"
-                      id="pills-pendingSigned-tab"
-                      data-bs-toggle="pill"
-                      data-bs-target="#pills-pendingSigned"
-                      type="button"
-                      role="tab"
-                      aria-controls="pills-pendingSigned"
-                      aria-selected="true"
-                    >
-                      Pending
-                    </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <button
-                      class="nav-link"
-                      id="pills-approvedSigned-tab"
-                      data-bs-toggle="pill"
-                      data-bs-target="#pills-approvedSigned"
-                      type="button"
-                      role="tab"
-                      aria-controls="pills-approvedSigned"
-                      aria-selected="false"
-                    >
-                      Approved
-                    </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <button
-                      class="nav-link"
-                      id="pills-deletedSigned-tab"
-                      data-bs-toggle="pill"
-                      data-bs-target="#pills-deletedSigned"
-                      type="button"
-                      role="tab"
-                      aria-controls="pills-deletedSigned"
-                      aria-selected="false"
-                    >
-                      Deleted
-                    </button>
-                  </li>
-                </ul>
-                <div class="tab-content" id="pills-tabContent">
+                <div class="tab-content mt-3" id="pills-tabContent">
                   <div
                     class="tab-pane fade show active"
                     id="pills-pendingSigned"
@@ -178,63 +180,58 @@ ul.generalsetting h6 {
                               <input class="form-check-input" type="checkbox" value="" />
                             </div>
                           </th>
+                          <th scope="col">ID</th>
                           <th scope="col">Type</th>
                           <th scope="col">Staff</th>
                           <th scope="col">Client</th>
                           <th scope="col">Site</th>
-                          <th scope="col">Job</th>
+
                           <th scope="col">Date</th>
 
                           <th scope="col">Start Time</th>
                           <th scope="col">End Time</th>
                           <th scope="col">Break</th>
                           <th scope="col">Total Hours</th>
-                          <th scope="col">Submitted Date</th>
-                          <th scope="col">View / Editt</th>
-                          <th scope="col">Approve / Status</th>
+                          <th scope="col">Approve</th>
+                          <th scope="col">View</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
+                        <tr v-for="data in getPendingSignedData" :key="data.id">
                           <td>
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
                             </div>
                           </td>
-                          <td scope="col">f5643r</td>
-                          <td scope="col">Aniket</td>
-                          <td scope="col">Site</td>
-                          <td scope="col">Site</td>
-                          <td scope="col">Manager</td>
+                          <td scope="col">{{ data.id }}</td>
+                          <td scope="col">{{ data.status }}</td>
+                          <td scope="col">{{ data.author_name }}</td>
+                          <td scope="col">{{ data.client }}</td>
+                          <td scope="col">{{ data.business_unit }}</td>
 
-                          <td scope="col">22:00</td>
-                          <td scope="col">10:00</td>
+                          <td scope="col">{{ data.date }}</td>
+                          <td scope="col">{{ data.start_time }}</td>
 
-                          <td scope="col">10 hours</td>
-                          <td scope="col">60%</td>
-                          <td scope="col">12</td>
-                          <td scope="col">testing</td>
-                          <td scope="col">view</td>
-                          <td scope="col">testing</td>
+                          <td scope="col">{{ data.end_time }}</td>
+                          <td scope="col">{{ data.break }}</td>
+                          <td scope="col">{{ data.total_hours }}</td>
+
+                          <td scope="col"></td>
+                          <td scope="col">
+                            <button
+                              type="button"
+                              class="btn btn-outline-success text-nowrap text-nowrap"
+                              data-bs-toggle="modal"
+                              data-bs-target="#signedTimeSheetView"
+                              data-bs-whatever="@mdo"
+                              @click="openSignedView(data.id)"
+                            >
+                              <i class="bi bi-eye"></i>
+                            </button>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
-                  </div>
-                  <div
-                    class="tab-pane fade"
-                    id="pills-approvedSigned"
-                    role="tabpanel"
-                    aria-labelledby="pills-approvedSigned-tab"
-                  >
-                    Work in Progress...
-                  </div>
-                  <div
-                    class="tab-pane fade"
-                    id="pills-deletedSigned"
-                    role="tabpanel"
-                    aria-labelledby="pills-deletedSigned-tab"
-                  >
-                    Work in Progress...
                   </div>
                 </div>
               </div>
@@ -243,21 +240,33 @@ ul.generalsetting h6 {
         </div>
       </div>
     </div>
+    <SignedTimesheetViewVue :id="selectedSignedTimesheetId" />
   </div>
 </template>
 <script>
 import axios from "axios";
 import Navbar from "../Navbar.vue";
+
+import SignedTimesheetViewVue from "../modals/TimeSheet/SignedTimesheetView.vue";
+
 export default {
   data() {
     return {
-      currentView: "weekly",
+      currentView: "monthly",
       daysOfWeek: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
       startDate: new Date(),
       endDate: new Date(),
+      client_id: "",
+      clientData: [],
+      business_unit_id: "",
+      businessUnit: [],
+      candidateLists: [],
+      id: "",
+      selectedSignedTimesheetId: "",
+      getPendingSignedData: [],
     };
   },
-  components: { Navbar },
+  components: { Navbar, SignedTimesheetViewVue },
   computed: {
     getWeekDates() {
       const currentDate = new Date();
@@ -282,8 +291,66 @@ export default {
       const monthDates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
       return monthDates;
     },
+
+    selectBusinessUnit() {
+      const business_unit_id = this.businessUnit.find(
+        (option) => option.id === this.business_unit_id
+      );
+      return business_unit_id ? business_unit_id.name : "";
+    },
+
+    selectClients() {
+      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      return client_id ? client_id.first_name : "";
+    },
+
+    selectCandidateList() {
+      const id = this.candidateLists.find((option) => option.id === this.id);
+      return id ? id.first_name : "";
+    },
   },
   methods: {
+    openSignedView(id) {
+      this.selectedSignedTimesheetId = id;
+    },
+
+    async getCandidateListMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/candidates`);
+        this.candidateLists = response.data.data;
+        this.candidateStatus = response.data.data.status;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    async getBusinessUnitMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/business_units`);
+        this.businessUnit = response.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    async getClientMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/clients`);
+        this.clientData = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
     moveToPrevious() {
       if (this.currentView === "weekly") {
         this.startDate.setDate(this.startDate.getDate() - 7);
@@ -358,30 +425,37 @@ export default {
     //     });
     //   // alert("Record Deleted ");
     // },
-    // async createVacancy() {
-    //   const token = localStorage.getItem("token");
-    //   axios
-    //     .get(`${VITE_API_URL}/vacancies`, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => (this.getVacancyDetail = response.data));
-    // },
+    async signedTimeSheetMethod() {
+      const token = localStorage.getItem("token");
+      axios
+        .get(`${VITE_API_URL}/find_sign_time_sheet_according_status/Pending`, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+        })
+        .then((response) => (this.getPendingSignedData = response.data.sign_timesheets));
+    },
   },
 
   mounted() {
-    // this.createVacancy();
-    this.loadDateRangeFromLocalStorage();
-    const currentDate = new Date();
-    const startOfWeek = new Date(currentDate);
-    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
-    this.startDate = startOfWeek;
+    this.currentView = "monthly";
+    this.updateDateRange();
+    this.getBusinessUnitMethod();
 
-    const endOfWeek = new Date(currentDate);
-    endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
-    this.endDate = endOfWeek;
+    this.getClientMethod();
+
+    this.getCandidateListMethod();
+    this.signedTimeSheetMethod();
+    // this.loadDateRangeFromLocalStorage();
+    // const currentDate = new Date();
+    // const startOfWeek = new Date(currentDate);
+    // startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
+    // this.startDate = startOfWeek;
+
+    // const endOfWeek = new Date(currentDate);
+    // endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
+    // this.endDate = endOfWeek;
   },
 };
 </script>

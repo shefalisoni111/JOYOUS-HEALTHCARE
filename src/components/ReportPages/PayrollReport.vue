@@ -46,7 +46,7 @@ export default {
                   </option>
                 </select>
                 <select v-model="business_unit_id" id="selectBusinessUnit">
-                  <option value="">All Business Unit</option>
+                  <option value="">All Site</option>
                   <option
                     v-for="option in businessUnit"
                     :key="option.id"
@@ -57,18 +57,14 @@ export default {
                   </option>
                 </select>
                 <select v-model="id" id="selectCandidateList">
-                  <option value="">All Candidate Status</option>
-                  <option
-                    v-for="option in candidateLists"
-                    :key="option.id"
-                    :value="option.id"
-                  >
-                    {{ option.status }}
-                  </option>
+                  <option value="">All Staff Status</option>
+                  <option>Approved</option>
+                  <option>Pending</option>
+                  <option>Rejected</option>
                 </select>
 
                 <select v-model="id" id="selectCandidateList">
-                  <option value="">All Candidate</option>
+                  <option value="">All Staff</option>
                   <option
                     v-for="option in candidateLists"
                     :key="option.id"
@@ -101,7 +97,7 @@ export default {
                 </select>
               </div>
               <div>
-                <div class="p-2">
+                <div class="p-2 mt-2">
                   <div
                     class="d-md-flex d-lg-flex justify-content-md-between justify-content-lg-between"
                   >
@@ -196,7 +192,7 @@ export default {
                           <th scope="col">Employee Last Name</th>
                           <th scope="col">Position</th>
                           <th scope="col">Client</th>
-                          <th scope="col">Business Unit</th>
+                          <th scope="col">Site</th>
                           <th scope="col">Shift Date</th>
                           <th scope="col">Approved Date</th>
                           <th scope="col">Payment Ref</th>
@@ -221,7 +217,7 @@ export default {
                           <td scope="col">Yadav</td>
                           <td scope="col">Manager</td>
                           <td scope="col">clientDemo</td>
-                          <td scope="col">BusinessUnit</td>
+                          <td scope="col">Site</td>
                           <td scope="col">23/2/2024</td>
                           <td scope="col">2/2/2024</td>
                           <td scope="col">online</td>

@@ -174,11 +174,14 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+
 export default {
   name: "CandidateAdd",
   data() {
@@ -208,6 +211,7 @@ export default {
       autofilled: false,
     };
   },
+  components: { SuccessAlert },
   computed: {
     isFormValid() {
       return (
@@ -307,7 +311,9 @@ export default {
           if (response.ok) {
             this.$emit("addCandidate");
             this.resetForm();
-            alert("Successful Staff added");
+            // alert("Successful Staff added");
+            const message = "Successful Staff added";
+            this.$refs.successAlert.showSuccess(message);
           } else {
             alert("Error adding Staff");
           }

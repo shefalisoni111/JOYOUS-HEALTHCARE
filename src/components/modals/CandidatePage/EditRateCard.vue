@@ -11,7 +11,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title text-center" id="editRateCard">Edit Rate Card</h5>
-           
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
@@ -140,11 +139,13 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
   name: "EditRateCard",
@@ -171,6 +172,7 @@ export default {
       default: 0,
     },
   },
+  components: { SuccessAlert },
   computed: {
     selectEmployeeType() {
       const employment_type = this.employeeData.find(
@@ -243,8 +245,10 @@ export default {
           this.fetchRateCard
         );
 
-        alert("Candidate updated successfully");
+        // alert("Candidate updated successfully");
         this.$emit("rateCardAdded");
+        const message = " Rate Card updated successfully";
+        this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         // console.error("Error updating candidate:", error);
       }

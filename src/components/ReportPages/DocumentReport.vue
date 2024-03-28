@@ -38,10 +38,10 @@ export default {
                   <option value="">All</option>
                 </select>
                 <select>
-                  <option value="">All Candidate Status</option>
+                  <option value="">All Staff Status</option>
                 </select>
                 <select>
-                  <option value="">All Candidate</option>
+                  <option value="">All Staff</option>
                 </select>
                 <select>
                   <option value="">All Document Category</option>
@@ -137,7 +137,7 @@ export default {
                       <thead>
                         <tr>
                           <th scope="col">Sl No</th>
-                          <th scope="col">Candidate</th>
+                          <th scope="col">Staff</th>
 
                           <th scope="col">Document Category</th>
                           <th scope="col">Document Type</th>

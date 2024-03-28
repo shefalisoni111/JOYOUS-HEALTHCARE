@@ -126,15 +126,17 @@
             <div v-if="selectedDate !== null" class="modal">
               <div class="modal-content">
                 <div class="close d-flex justify-content-between my-3">
-                  <h3 class="d-flex align-items-center mb-0">Edit Assigned Shift -</h3>
+                  <h3 class="d-flex align-items-center mb-0">
+                    Edit Assigned Shift -BOOKING CODE
+                  </h3>
                   <span class="close text-white" @click="closeModal">&times;</span>
                 </div>
 
                 <h4 class="text-capitalize">{{ getCandidateName() }}</h4>
                 <p>You clicked on {{ selectedDate }}</p>
-                <p>Status: {{ statusForSelectedDate }}</p>
+                <p>CandidateId: {{ selectedCandidateId }}</p>
                 <!-- Pass initialDate to the Calendar component -->
-                <AppointmentAdd
+                <WeekTimeSheetEdit
                   :initialDate="selectedDate"
                   :candidateId="selectedCandidateId"
                   @closeModal="closeModal"
@@ -145,7 +147,8 @@
           <table class="table">
             <thead>
               <tr>
-                <th rowspan="3">Name</th>
+                <th rowspan="3">ID</th>
+                <th rowspan="3" style="width: 11%">Name</th>
                 <th rowspan="3">Site</th>
                 <th rowspan="3">Shift</th>
                 <th>
@@ -155,11 +158,45 @@
                     </div>
                     <div v-for="date in selectedDateRow" :key="date" class="day-header">
                       {{ formatDate(date) }}
-                      <!-- <div v-if="formatDate(date)">
+                      <!-- <tr>
                         <th>Start</th>
                         <th>End</th>
                         <th>Total</th>
+                      </tr> -->
+                      <!-- <div class="column">
+                        <div class="column-header">Start</div>
+                      </div>
+                      <div class="column">
+                        <div class="column-header">End</div>
+                      </div>
+                      <div class="column">
+                        <div class="column-header">Total</div>
                       </div> -->
+                      <div
+                        class="additional-column day-header d-flex justify-content-center"
+                      >
+                        <tr>
+                          <th
+                            class="additional-header"
+                            style="border-right: 1px solid #e1d4d4; padding-right: 5px"
+                          >
+                            Start
+                          </th>
+                          <th
+                            class="additional-header"
+                            style="
+                              border-right: 1px solid #e1d4d4;
+                              padding-left: 5px;
+                              padding-right: 5px;
+                            "
+                          >
+                            End
+                          </th>
+                          <th class="additional-header" style="padding-left: 5px">
+                            Total
+                          </th>
+                        </tr>
+                      </div>
                     </div>
                   </div>
                 </th>
@@ -176,7 +213,16 @@
             </thead>
             <tbody>
               <tr v-for="data in paginateCandidates" :key="data.id">
-                <td class="text-capitalize fw-bold">{{ data.name }}</td>
+                <td>{{ data.id }}</td>
+                <td class="text-capitalize fw-bold">
+                  {{ data.candidate_name + " " }}
+
+                  <span class="fs-6 text-muted fw-100"
+                    ><br /><span style="background: rgb(209, 207, 207); padding: 3px">{{
+                      data.job
+                    }}</span></span
+                  >
+                </td>
 
                 <td>
                   {{ data.business_unit }}
@@ -195,11 +241,32 @@
                       }"
                     >
                       <div v-if="formatDate(day)">
-                        <td></td>
+                        <td>
+                          <div class="column">
+                            <div class="column-cell">
+                              {{ data.start_time }}
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="column">
+                            <div class="column-cell">
+                              {{ data.end_time }}
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="column">
+                            <div class="column-cell">
+                              {{ data.total_hours }}
+                            </div>
+                          </div>
+                        </td>
                       </div>
                     </div>
                   </div>
                 </td>
+
                 <td>{{ data.total_hours }}</td>
                 <td>{{ data.total_cost }}</td>
                 <td>{{ data.approved_by }}</td>
@@ -240,8 +307,9 @@
 
 <script>
 import axios from "axios";
-import AppointmentAdd from "../modals/Schedule/EditAssignedShift.vue";
+// import AppointmentAdd from "../modals/Schedule/EditAssignedShift.vue";
 import Navbar from "../Navbar.vue";
+import WeekTimeSheetEdit from "../modals/TimeSheet/WeekTimeSheetEdit.vue";
 
 export default {
   data() {
@@ -257,7 +325,7 @@ export default {
       statusForSelectedDate: null,
       vacancyList: [],
       currentPage: 1,
-      itemsPerPage: 8,
+      itemsPerPage: 5,
     };
   },
   computed: {
@@ -430,17 +498,10 @@ export default {
     openModal(candidateId, day) {
       try {
         const actualCandidateId = candidateId.id;
-
         const selectedDate = new Date(this.startDate);
         selectedDate.setDate(parseInt(day));
-        selectedDate.setDate(selectedDate.getDate() + 1);
 
-        this.selectedDate = selectedDate
-          .toISOString()
-          .split("T")[0]
-          .split("-")
-          .reverse()
-          .join("-");
+        this.selectedDate = selectedDate.toISOString().split("T")[0];
         this.selectedCandidateId = actualCandidateId;
 
         const selectedCandidate = this.candidateList.find(
@@ -467,13 +528,13 @@ export default {
     },
     async fetchCandidateList() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/weekly_timesheets`);
-        this.candidateList = response.data;
+        const response = await axios.get(`${VITE_API_URL}/weekly_timesheet_data`);
+        this.candidateList = response.data.Timesheet_fiter_data;
       } catch (error) {}
     },
   },
   components: {
-    AppointmentAdd,
+    WeekTimeSheetEdit,
     Navbar,
   },
   mounted() {
@@ -503,6 +564,7 @@ export default {
 input.dateInput {
   width: 1.3%;
 }
+
 .current-month {
   margin: 0 20px;
   font-size: 18px;

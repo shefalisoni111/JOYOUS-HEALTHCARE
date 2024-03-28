@@ -11,7 +11,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="editCustomSheet">Edit Custom TimeSheet</h5>
-           
           </div>
           <div class="modal-body mx-3">
             <form>
@@ -165,7 +164,7 @@ export default {
   methods: {
     async fetchCustomTimeSheetMethod(id) {
       try {
-        const response = await axios.get(`${VITE_API_URL}/custom_timesheets/${id}`);
+        const response = await axios.get(`${VITE_API_URL}/weekly_timesheets/${id}`);
 
         this.fetchCustomSheetData.business_unit_id = response.data.business_unit_id;
         this.fetchCustomSheetData.name = response.data.name;
@@ -178,7 +177,7 @@ export default {
     },
     async updateCustomTimeSheetMethod() {
       try {
-        const response = await axios.put(`${VITE_API_URL}/custom_timesheets/${id}`, {
+        const response = await axios.put(`${VITE_API_URL}/weekly_timesheets/${id}`, {
           business_unit_id: this.fetchCustomSheetData.business_unit_id,
           job_id: this.fetchCustomSheetData.job_id,
           name: this.fetchCustomSheetData.name,

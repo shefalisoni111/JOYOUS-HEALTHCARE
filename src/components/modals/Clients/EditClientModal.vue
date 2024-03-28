@@ -111,10 +111,12 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 <script>
 import axios from "axios";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
   name: "CandidateAdd",
@@ -139,6 +141,7 @@ export default {
       default: 0,
     },
   },
+  components: { SuccessAlert },
   methods: {
     cleanPhoneNumber() {
       this.fetchClients.phone_number = this.fetchClients.phone_number.replace(/\D/g, "");
@@ -159,7 +162,9 @@ export default {
           this.fetchClients
         );
         this.$emit("client-updated");
-        alert("Client updated successfully");
+        // alert("Client updated successfully");
+        const message = "Client Updated Successfully";
+        this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         // console.error("Error updating candidate:", error);
       }

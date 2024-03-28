@@ -11,7 +11,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="editDocCategory">Edit Category</h5>
-           
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
@@ -71,11 +70,12 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 <script>
 import axios from "axios";
-
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 export default {
   name: "EditCategoryDoc",
   data() {
@@ -93,6 +93,7 @@ export default {
       required: true,
     },
   },
+  components: { SuccessAlert },
   computed: {
     selectJobTitle() {
       const job_title = this.options.find(
@@ -116,7 +117,9 @@ export default {
         );
 
         this.$emit("onDocAdded");
-        alert("Category updated successfully");
+
+        const message = "Category updated successfully";
+        this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         // console.error("Error updating Category:", error);
       }

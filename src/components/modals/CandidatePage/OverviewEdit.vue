@@ -168,11 +168,13 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
   name: "CandidateAdd",
@@ -245,7 +247,9 @@ export default {
           this.fetchCandidate
         );
         this.$emit("overviewAdded");
-        alert("Candidate updated successfully");
+        // alert("Candidate updated successfully");
+        const message = " Staff updated successfully";
+        this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         // console.error("Error updating candidate:", error);
       }

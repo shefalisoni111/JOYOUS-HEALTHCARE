@@ -77,11 +77,13 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import SuccessAlert from "../../../Alerts/SuccessAlert.vue";
 
 export default {
   name: "NextToKinEdit",
@@ -94,7 +96,7 @@ export default {
       },
     };
   },
-
+  components: { SuccessAlert },
   methods: {
     cleanAndValidateBankNumber() {
       this.fetchCandidate.bank_number = this.fetchCandidate.bank_number.replace(
@@ -120,7 +122,9 @@ export default {
           this.fetchCandidate
         );
         this.$emit("bankDetailAdded");
-        alert("Candidate updated successfully");
+        // alert("Candidate updated successfully");
+        const message = "Staff updated successfully";
+        this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         // console.error("Error updating candidate:", error);
       }

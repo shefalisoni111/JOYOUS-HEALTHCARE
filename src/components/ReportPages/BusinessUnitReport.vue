@@ -47,7 +47,7 @@ export default {
                     </option>
                   </select>
                   <select v-model="business_unit_id" id="selectBusinessUnit">
-                    <option value="">All Business Unit</option>
+                    <option value="">All Site</option>
                     <option
                       v-for="option in businessUnit"
                       :key="option.id"
@@ -59,7 +59,7 @@ export default {
                   </select>
 
                   <select v-model="client_id">
-                    <option value="">All Candidate</option>
+                    <option value="">All Staff</option>
                   </select>
                 </div>
 

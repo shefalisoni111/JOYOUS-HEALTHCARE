@@ -152,11 +152,14 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+
 export default {
   name: "CandidateAdd",
   data() {
@@ -221,6 +224,7 @@ export default {
       this.isValidForm = newVal;
     },
   },
+  components: { SuccessAlert },
   methods: {
     // validatePassword() {
     //   this.showPasswordRequiredMessage = this.password === "";
@@ -309,7 +313,9 @@ export default {
             this.email = "";
             this.password = "";
             this.confirm_password = "";
-            alert("Successful Client added");
+            // alert("Successful Client added");
+            const message = "Successful Client added";
+            this.$refs.successAlert.showSuccess(message);
           } else {
             alert("Error adding Client");
           }

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <AlertMsg :message="successMessage" v-if="successMessage" />
     <!-- Modal -->
     <div
       class="modal fade"
@@ -12,7 +11,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addCandidateStatus">Add Candidate Status</h5>
-           
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -78,12 +76,14 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import AlertMsg from "../../../components/Alerts/AlertMsg.vue";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+
 export default {
   name: "AddCandidateStatus",
   data() {
@@ -92,11 +92,10 @@ export default {
       title: "",
       description: "",
       errors: {},
-      successMessage: "",
     };
   },
   components: {
-    AlertMsg,
+    SuccessAlert,
   },
   computed: {
     isButtonDisabled() {
@@ -108,6 +107,9 @@ export default {
   methods: {
     clearError(fieldName) {
       this.errors[fieldName] = null;
+    },
+    handleSuccessMessage(message) {
+      this.$refs.successAlert.showSuccess(message);
     },
     getError(fieldName) {
       return this.errors[fieldName];
@@ -153,7 +155,8 @@ export default {
           const newCandidateStatus = await response.json();
 
           this.$emit("updateList");
-          this.successMessage = "Staff Status Add Successful";
+          const message = "Staff Status Add Successful";
+          this.$refs.successAlert.showSuccess(message);
           this.title = "";
           this.description = "";
         } else {

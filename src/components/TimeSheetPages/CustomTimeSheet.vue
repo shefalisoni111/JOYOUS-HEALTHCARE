@@ -55,14 +55,14 @@ ul.generalsetting h6 {
                   <div class="d-flex justify-content-between">
                     <div class="d-flex">
                       <div class="d-flex align-items-center gap-2">
-                        <select
+                        <!-- <select
                           class="form-control"
                           v-model="currentView"
                           @change="updateDateRange"
                         >
                           <option value="weekly">Weekly</option>
                           <option value="monthly">Monthly</option>
-                        </select>
+                        </select> -->
                       </div>
 
                       &nbsp;&nbsp;
@@ -146,17 +146,17 @@ ul.generalsetting h6 {
                           </th>
                           <th scope="col">ID</th>
                           <th scope="col">Code</th>
-                          <th scope="col">Name</th>
+                          <th scope="col" style="width: 200px">Name</th>
                           <th scope="col">Site</th>
                           <th scope="col">Job</th>
                           <th scope="col">Shift Date</th>
                           <th scope="col">Start Time</th>
                           <th scope="col">End Time</th>
                           <th scope="col">Total Hours</th>
-                          <th scope="col">ClientRate</th>
+                          <th scope="col">Client Rate</th>
                           <th scope="col">Total Cost</th>
                           <th scope="col">Paper TimeSheet</th>
-                          <!-- <th scope="col">Action</th> -->
+                          <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody v-for="data in paginateCandidates" :key="data.id">
@@ -181,7 +181,18 @@ ul.generalsetting h6 {
                           <td scope="col">
                             {{ data.paper_timesheet ? data.paper_timesheet : "null" }}
                           </td>
-                          <!-- <td scope="col">Action</td> -->
+                          <td scope="col">
+                            <button
+                              type="button"
+                              class="btn btn-outline-success text-nowrap text-nowrap"
+                              data-bs-toggle="modal"
+                              data-bs-target="#editCustomTimeSheet"
+                              data-bs-whatever="@mdo"
+                              @click="openEditModal(data.id)"
+                            >
+                              <i class="bi bi-pencil"></i>
+                            </button>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -226,24 +237,31 @@ ul.generalsetting h6 {
         </button>
       </div>
     </div>
+    <CustomeTimeSheetEdit
+      :customDataId="selectedCustomTimesheetId"
+      @CustomTimeSheetData-updated="getCustomSheetMethod"
+    />
   </div>
 </template>
 <script>
 import axios from "axios";
 import Navbar from "../Navbar.vue";
+import CustomeTimeSheetEdit from "../modals/TimeSheet/CustomeTimeSheetEdit.vue";
+
 export default {
   data() {
     return {
-      currentView: "weekly",
+      currentView: "monthly",
       daysOfWeek: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
       startDate: new Date(),
       endDate: new Date(),
       getCustomTimeSheet: [],
       currentPage: 1,
-      itemsPerPage: 14,
+      itemsPerPage: 10,
+      selectedCustomTimesheetId: null,
     };
   },
-  components: { Navbar },
+  components: { Navbar, CustomeTimeSheetEdit },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -278,6 +296,9 @@ export default {
     },
   },
   methods: {
+    openEditModal(customDataId) {
+      this.selectedCustomTimesheetId = customDataId;
+    },
     moveToPrevious() {
       if (this.currentView === "weekly") {
         this.startDate.setDate(this.startDate.getDate() - 7);
@@ -366,16 +387,18 @@ export default {
   },
 
   mounted() {
+    this.currentView = "monthly";
+    this.updateDateRange();
     this.getCustomSheetMethod();
-    this.loadDateRangeFromLocalStorage();
-    const currentDate = new Date();
-    const startOfWeek = new Date(currentDate);
-    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
-    this.startDate = startOfWeek;
+    // this.loadDateRangeFromLocalStorage();
+    // const currentDate = new Date();
+    // const startOfWeek = new Date(currentDate);
+    // startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
+    // this.startDate = startOfWeek;
 
-    const endOfWeek = new Date(currentDate);
-    endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
-    this.endDate = endOfWeek;
+    // const endOfWeek = new Date(currentDate);
+    // endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
+    // this.endDate = endOfWeek;
   },
 };
 </script>
@@ -383,7 +406,7 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-  height: 100vh;
+
   padding-top: 65px;
   background-color: #fdce5e17;
 }

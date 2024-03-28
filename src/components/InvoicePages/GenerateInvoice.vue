@@ -40,7 +40,11 @@ ul.generalsetting h6 {
               <router-link class="nav-link d-inline" aria-current="page" to="/home"
                 >Dashboard</router-link
               >
-              / <span class="color-fonts">Client Invoice</span> /
+              /
+              <router-link to="/invoice/client-invoice" class="text-decoration-none"
+                ><span class="color-fonts">Client Invoice</span></router-link
+              >
+              /
               <span class="color-fonts">Generate Invoice</span>
             </li>
           </ol>
@@ -223,7 +227,7 @@ ul.generalsetting h6 {
                                 :key="date"
                                 class="day-header"
                               >
-                                {{ date }}
+                                {{ formatDate(date) }}
                               </div>
                             </div>
                           </th>
@@ -241,7 +245,7 @@ ul.generalsetting h6 {
                           <td scope="col">11:00Am</td>
                           <td scope="col">11:00Am</td>
                           <td scope="col">11:00Am</td>
-                          <td scope="col">11:00Am</td> -->
+                          <td scope="col">11:00Am</td>-->
 
                           <td scope="col">23/2/2024</td>
                         </tr>
@@ -254,15 +258,15 @@ ul.generalsetting h6 {
                     role="tabpanel"
                     aria-labelledby="pills-Daily-tab"
                   >
-                    ...
+                    Inprogress...
                   </div>
                   <div
                     class="tab-pane fade"
-                    id="pills-Montdly"
+                    id="pills-Monthly"
                     role="tabpanel"
                     aria-labelledby="pills-Monthly-tab"
                   >
-                    ...
+                    Inprogress...
                   </div>
                   <div
                     class="tab-pane fade"
@@ -270,7 +274,7 @@ ul.generalsetting h6 {
                     role="tabpanel"
                     aria-labelledby="pills-ShiftCandidate-tab"
                   >
-                    ...
+                    Inprogress...
                   </div>
                   <div
                     class="tab-pane fade"
@@ -278,7 +282,7 @@ ul.generalsetting h6 {
                     role="tabpanel"
                     aria-labelledby="pills-CandidateWeekly-tab"
                   >
-                    ...
+                    Inprogress...
                   </div>
                 </div>
               </div>
@@ -353,6 +357,34 @@ export default {
     formattedEndDate() {
       return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
     },
+    selectedDateRow() {
+      const selectedDate = new Date(this.startDate);
+      const selectedDateRow = [];
+      const dayOfWeek = selectedDate.getDay();
+      const startDay = (dayOfWeek - 1 + 7) % 7;
+
+      for (let i = 0; i < 7; i++) {
+        const currentDate = new Date(selectedDate);
+        currentDate.setDate(selectedDate.getDate() + i - startDay);
+
+        const lastDayOfMonth = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        ).getDate();
+        if (currentDate.getDate() > lastDayOfMonth) {
+          currentDate.setMonth(currentDate.getMonth() + 1);
+
+          currentDate.setDate(1);
+
+          currentDate.setDate(i + 1 - startDay);
+        }
+
+        selectedDateRow.push(currentDate);
+      }
+
+      return selectedDateRow;
+    },
   },
   methods: {
     async getBusinessUnitMethod() {
@@ -395,6 +427,7 @@ export default {
         );
       }
     },
+
     updateDateRange() {
       const currentDate = new Date();
       this.selectedDateRow = [];

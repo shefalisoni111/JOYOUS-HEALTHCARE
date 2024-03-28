@@ -294,7 +294,7 @@
           </div>
         </div>
       </div>
-      <SuccessAlert :show="showMessage" message="Mail sent successfully!" />
+      <SuccessAlert ref="successAlert" />
     </div>
   </div>
 </template>
@@ -413,6 +413,8 @@ export default {
 
           // this.getPublicVacancyMAil = response.data.data;
           alert(response.data.message);
+          // const message = response.data.message;
+          // this.$refs.successAlert.showSuccess(message);
           if (response.status === 200) {
             this.checkedCandidates = Object.fromEntries(
               Object.keys(this.checkedCandidates).map((key) => [key, false])
@@ -423,6 +425,8 @@ export default {
             this.showMessage = false;
             this.selectAll = false;
             this.$emit("publishVacancy");
+            const message = "Shift Published successfully";
+            this.$refs.successAlert.showSuccess(message);
           } else {
             // Handle error case if needed
           }

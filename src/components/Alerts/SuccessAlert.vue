@@ -1,34 +1,80 @@
 <template>
-  <div v-if="show" class="alert alert-success" :class="position" role="alert">
-    {{ message }}
+  <div>
+    <div class="container">
+      <div v-if="progressiveSuccess" class="success-alert">
+        <div class="progress" style="height: 5px">
+          <div
+            class="progress-bar bg-success"
+            role="progressbar"
+            :style="{ width: progress + '%' }"
+            :aria-valuenow="progress"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
+        </div>
+        <p class="px-3 pt-2 text-capitalize fw-bold">
+          SUCCESS <br />{{ message }} &nbsp;<i
+            class="bi bi-check-circle-fill text-white"
+          ></i>
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: {
-    show: {
-      type: Boolean,
-      required: true,
+  data() {
+    return {
+      message: "",
+      progressiveSuccess: false,
+      progress: 0,
+      intervalId: null,
+      duration: 3000,
+      intervalDuration: 100,
+    };
+  },
+  methods: {
+    startProgressBar() {
+      this.progress = 0;
+      this.intervalId = setInterval(() => {
+        if (this.progress < 100) {
+          this.progress += (this.intervalDuration / this.duration) * 100;
+        } else {
+          this.stopProgressBar();
+          this.progressiveSuccess = false;
+        }
+      }, this.intervalDuration);
     },
-    message: {
-      type: String,
-      required: true,
+
+    stopProgressBar() {
+      clearInterval(this.intervalId);
     },
-    position: {
-      type: String,
-      default: "fixed-top",
+
+    showSuccess(message) {
+      this.message = message;
+      this.progressiveSuccess = true;
+      this.startProgressBar();
     },
   },
 };
 </script>
 
 <style scoped>
-.alert {
-  position: relative;
-}
+.success-alert {
+  position: fixed;
+  top: 15%;
+  right: 0;
+  transform: translateX(-50%);
 
-.fixed-top {
-  top: 0;
+  background-color: #62c766;
+  color: white;
+  border-radius: 5px;
+  z-index: 9999;
+  border: 1px solid green;
+  border-top: none;
+}
+.progress-bar {
+  background-color: #2f9533 !important;
 }
 </style>

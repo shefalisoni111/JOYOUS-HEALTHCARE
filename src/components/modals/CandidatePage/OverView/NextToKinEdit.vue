@@ -11,7 +11,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title text-center" id="editNextToKin">Edit Details</h5>
-           
           </div>
           <div class="modal-body mx-3" v-if="fetchNExtToKinData">
             <div class="row align-items-center">
@@ -127,11 +126,13 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import SuccessAlert from "../../../Alerts/SuccessAlert.vue";
 
 export default {
   name: "NextToKinEdit",
@@ -150,6 +151,7 @@ export default {
       validatePhoneNumber: true,
     };
   },
+  components: { SuccessAlert },
   props: {
     nextKinID: {
       type: [String, Number, null],
@@ -183,8 +185,10 @@ export default {
           this.fetchNExtToKinData
         );
 
-        alert("NextToKin updated successfully");
+        // alert("NextToKin updated successfully");
         this.$emit("nextToKinAdded");
+        const message = "Next To Kin updated  successfully";
+        this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         // console.error("Error updating candidate:", error);
       }

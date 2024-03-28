@@ -11,7 +11,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addRestrictedLocation">Add Location</h5>
-           
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -63,11 +62,14 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+
 export default {
   name: "AddRestrictedLocation",
   data() {
@@ -78,7 +80,7 @@ export default {
       validationBusinessUnit: false,
     };
   },
-
+  components: { SuccessAlert },
   watch: {
     business_unit_id: function (newValue) {
       this.validateBusinessUnit(newValue);
@@ -126,6 +128,8 @@ export default {
         if (response.ok) {
           this.$emit("getLocationAdded");
           this.business_unit_id = "";
+          const message = "Successful add Restrict Location";
+          this.$refs.successAlert.showSuccess(message);
         } else {
         }
       } catch (error) {}

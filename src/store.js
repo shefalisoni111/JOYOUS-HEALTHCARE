@@ -16,10 +16,16 @@ export default createStore({
      adminData: {},
      noteCount: 0,
      vacancy_id: null,
-     
+     selectedSignedTimesheetId: null,
+     selectedCustomTimesheetId: null,
   },
   mutations: {
- 
+    setSelectedSignedTimesheetId(state, itemId) {
+      state.selectedSignedTimesheetId = itemId;
+    },
+    setSelectedCustomTimesheetId(state, itemData) {
+      state.selectedCustomTimesheetId = itemData;
+    },
     setSelectedAppliedItemId(state, itemId) {
       state.selectedAppliedItemId = itemId;
     },
@@ -73,6 +79,20 @@ export default createStore({
   
   },
   actions: {
+    async fetchSignedTimesheetData({ commit, state }) {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${VITE_API_URL}/sign_timesheets/${state.selectedSignedTimesheetId}`, {
+          headers: {
+            'content-type': 'application/json',
+            Authorization: 'bearer ' + token,
+          },
+        });
+        commit('setSelectedSignedTimesheetData', response.data.sign_timesheets);
+      } catch (error) {
+        // console.error('Error fetching signed timesheet data:', error);
+      }
+    },
     async updateNoteCount({ commit }) {
       try {
         const response = await fetch(`${VITE_API_URL}/get_note_count`);

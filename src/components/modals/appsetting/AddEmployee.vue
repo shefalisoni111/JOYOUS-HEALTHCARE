@@ -1,13 +1,11 @@
 <template>
   <div>
-    <AlertMsg :message="successMessage" v-if="successMessage" />
     <!-- Modal -->
     <div class="modal fade" id="addEmployee" aria-labelledby="addEmployee" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addEmployee">Add New Employee Type</h5>
-           
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -73,12 +71,14 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import AlertMsg from "../../../components/Alerts/AlertMsg.vue";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+
 export default {
   name: "AddEmployee",
   data() {
@@ -90,7 +90,7 @@ export default {
       errors: {},
     };
   },
-  components: { AlertMsg },
+  components: { SuccessAlert },
   computed: {
     isButtonDisabled() {
       return (
@@ -136,7 +136,8 @@ export default {
         const response = await axios.post(`${VITE_API_URL}/employment_types`, data);
         if (response.data) {
           this.$emit("updateList");
-          this.successMessage = "Employee type Add Successful";
+          const message = "Employee type Add Successful";
+          this.$refs.successAlert.showSuccess(message);
           this.title = "";
           this.description = "";
         }

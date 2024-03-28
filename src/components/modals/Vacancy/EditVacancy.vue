@@ -152,11 +152,14 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+
 import store from "@/store";
 export default {
   name: "VacancyEdit",
@@ -184,6 +187,7 @@ export default {
       required: true,
     },
   },
+  components: { SuccessAlert },
   computed: {
     selectBusinessUnit() {
       const businessUnit = this.businessUnit.find(
@@ -279,7 +283,9 @@ export default {
           alert("Please choose a date from today onwards.");
           return;
         } else if (invalidDate && invalidDate >= today) {
-          alert("Edit successful!");
+          // alert("Edit successful!");
+          const message = "Shift Updated successfully";
+          this.$refs.successAlert.showSuccess(message);
         }
         const response = await axios.put(
           `${VITE_API_URL}/vacancies/${this.fetchVacancy.id}`,
@@ -306,7 +312,9 @@ export default {
         });
         this.$emit("updateVacancy");
         this.$emit("updateVacancyInactive");
-        alert("Vacancy updated successfully");
+        // alert("Vacancy updated successfully");
+        const message = "Shift Updated successfully";
+        this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         // console.error("Error updating vacancy:", error);
       }

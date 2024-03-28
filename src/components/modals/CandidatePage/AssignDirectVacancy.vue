@@ -204,12 +204,14 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import { reactive } from "vue";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -235,6 +237,7 @@ export default {
       this.$set(this.checkedVacancies, data.id, false);
     });
   },
+  components: { SuccessAlert },
   computed: {
     selectedCandidateItemId() {
       this.assignedCandidate(
@@ -364,7 +367,9 @@ export default {
         });
 
         if (response.ok) {
-          alert("Staff Assigned Shift Successfully!");
+          // alert("");
+          const message = "Staff Assigned Shift Successfully";
+          this.$refs.successAlert.showSuccess(message);
           this.checkedVacancies = {};
           this.$emit("Candidate-updated");
         } else {

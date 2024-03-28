@@ -6,7 +6,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="rateCards">Add RateCard</h5>
-           
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -157,11 +156,14 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+
 export default {
   name: "RateCard",
   data() {
@@ -205,6 +207,7 @@ export default {
       this.validateDay(newValue);
     },
   },
+  components: { SuccessAlert },
   computed: {
     isValidForm() {
       return (
@@ -284,6 +287,8 @@ export default {
           this.$route.params.id = "";
           this.employment_type_id = "";
           this.shift_id = "";
+          const message = "Successful Rate Card added";
+          this.$refs.successAlert.showSuccess(message);
         } else {
         }
       } catch (error) {}

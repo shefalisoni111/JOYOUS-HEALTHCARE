@@ -6,7 +6,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addDoc">Add New Document</h5>
-           
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -92,11 +91,13 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
   name: "AddNewDoc",
@@ -118,7 +119,7 @@ export default {
       getCategoryData: [],
     };
   },
-
+  components: { SuccessAlert },
   methods: {
     async addCandidateStatus() {
       try {
@@ -140,7 +141,8 @@ export default {
         });
         if (response.ok) {
           this.$emit("documentAdded");
-
+          const message = "Staff Document Add Successful";
+          this.$refs.successAlert.showSuccess(message);
           this.document_name = "";
           this.document_category_id = "";
 

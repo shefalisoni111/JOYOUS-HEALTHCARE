@@ -638,7 +638,7 @@ input.dateInput {
   font-size: larger;
 }
 input[type="radio"]:checked {
-  background-color: #ca5507;
+  background-color: #ca5507 !important;
 }
 input.dateInput:focus-visible {
   outline: transparent !important;

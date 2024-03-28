@@ -183,11 +183,14 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+
 const axiosInstance = axios.create({
   headers: {
     "Cache-Control": "no-cache",
@@ -205,6 +208,7 @@ export default {
       errorMessage: "",
     };
   },
+  components: { SuccessAlert },
   computed: {
     selectedAssignedItemId() {
       this.getAssignedVacancyList(this.$store.state.selectedAssignedItemId);

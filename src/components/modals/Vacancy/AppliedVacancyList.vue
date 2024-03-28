@@ -239,11 +239,13 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 import { reactive } from "vue";
 const axiosInstance = axios.create({
@@ -270,7 +272,7 @@ export default {
       selectAll: false,
     };
   },
-
+  components: { SuccessAlert },
   created() {
     this.getVacancyDetail.forEach((data) => {
       this.$set(this.checkedCandidates, data.id, false);
@@ -461,9 +463,13 @@ export default {
             this.checkedCandidates = {};
             this.$emit("appliedVacancy");
             if (this.selectedAction === "1") {
-              alert("Staff assigned successfully!");
+              // alert("Staff assigned successfully!");
+              const message = "Staff assigned successfully";
+              this.$refs.successAlert.showSuccess(message);
             } else if (this.selectedAction === "2") {
-              alert("Staff rejected successfully!");
+              // alert("Staff rejected successfully!");
+              const message = "Staff rejected successfully";
+              this.$refs.successAlert.showSuccess(message);
             }
           } else {
           }

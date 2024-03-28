@@ -213,12 +213,14 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import { reactive } from "vue";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -248,6 +250,7 @@ export default {
       this.$set(this.checkedCandidates, data.id, false);
     });
   },
+  components: { SuccessAlert },
   computed: {
     selectedAllItemId() {
       // this.getallCandidateVacancyListMethod(this.$store.state.selectedAllItemId);
@@ -329,9 +332,12 @@ export default {
           });
 
           if (response.ok) {
-            alert("Candidates assigned successfully!");
+            // alert("Candidates assigned successfully!");
+
             this.checkedCandidates = {};
             this.$emit("allVacancy");
+            const message = "Staff assigned successfully";
+            this.$refs.successAlert.showSuccess(message);
           } else {
           }
         } catch (error) {}

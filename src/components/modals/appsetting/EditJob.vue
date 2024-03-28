@@ -6,7 +6,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="editJob">Edit Inactive Jobs</h5>
-           
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
@@ -59,10 +58,12 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 <script>
 import axios from "axios";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
   name: "EditJob",
@@ -80,7 +81,7 @@ export default {
       required: true,
     },
   },
-
+  components: { SuccessAlert },
   methods: {
     async fetchJobsMethod(id) {
       try {
@@ -97,7 +98,9 @@ export default {
         });
 
         this.$emit("jobUpdate");
-        alert("Job updated successfully");
+
+        const message = "Job updated successfully";
+        this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         // console.error("Error updating Category:", error);
       }

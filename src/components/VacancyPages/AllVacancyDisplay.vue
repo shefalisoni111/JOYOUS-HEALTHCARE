@@ -236,7 +236,7 @@ export default {
       getVacancyDetail: [],
       selectedVacancyId: 0,
       currentPage: 1,
-      itemsPerPage: 9,
+      itemsPerPage: 8,
       isLoading: false,
     };
   },

@@ -11,7 +11,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="editContactProfile">Edit Contact</h5>
-           
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
@@ -57,10 +56,12 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 <script>
 import axios from "axios";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
   name: "editContactProfile",
@@ -94,6 +95,7 @@ export default {
       return this.$store.state.candidates;
     },
   },
+  components: { SuccessAlert },
   methods: {
     cleanPhoneNumber() {
       this.fetchCandidate.phone_number = this.fetchCandidate.phone_number.replace(
@@ -119,7 +121,9 @@ export default {
           this.fetchCandidate
         );
         this.$emit("contactAdded");
-        alert("Candidate updated successfully");
+        // alert("Candidate updated successfully");
+        const message = "Staff Contact updated successfully";
+        this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         // console.error("Error updating candidate:", error);
       }

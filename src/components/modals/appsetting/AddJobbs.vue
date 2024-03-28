@@ -82,10 +82,13 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+
 export default {
   name: "AddJobbs",
   data() {
@@ -97,7 +100,7 @@ export default {
       errors: {},
     };
   },
-
+  components: { SuccessAlert },
   computed: {
     isButtonDisabled() {
       return (
@@ -111,6 +114,7 @@ export default {
     clearError(fieldName) {
       this.errors[fieldName] = null;
     },
+
     getError(fieldName) {
       return this.errors[fieldName];
     },
@@ -152,7 +156,9 @@ export default {
         });
         if (response.ok) {
           this.$emit("jobAdded");
-          alert("Add Jobs successfully");
+          // alert("Add Jobs successfully");
+          const message = "Add Jobs successfully";
+          this.$refs.successAlert.showSuccess(message);
           this.name = "";
           this.color = "#050505";
           this.description = "";

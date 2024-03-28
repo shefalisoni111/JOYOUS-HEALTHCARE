@@ -11,7 +11,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="viewDocCandidate">Document</h5>
-           
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -60,11 +59,14 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import SuccessAlert from "../../../Alerts/SuccessAlert.vue";
+
 export default {
   name: "ViewDocuments",
   data() {
@@ -78,6 +80,7 @@ export default {
       default: null,
     },
   },
+  components: { SuccessAlert },
   watch: {
     documentId: {
       immediate: true,

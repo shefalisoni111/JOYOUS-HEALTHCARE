@@ -1,13 +1,11 @@
 <template>
   <div>
-    <AlertMsg :message="successMessage" v-if="successMessage" />
     <!-- Modal -->
     <div class="modal fade" id="addShift" aria-labelledby="addShift" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addShift">Edit Shift</h5>
-           
           </div>
           <div class="modal-body mx-3">
             <div class="mt-3">
@@ -72,12 +70,13 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" :ref="successAlertRef" />
   </div>
 </template>
 
 <script>
 import { ref, onMounted, getCurrentInstance } from "vue";
-import AlertMsg from "../../../components/Alerts/AlertMsg.vue";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 import axios from "axios";
 function formatTime(time) {
   if (!time) {
@@ -101,8 +100,11 @@ function formatTime(time) {
 export default {
   setup() {
     const { emit } = getCurrentInstance();
+
     const shifts = ref([]);
-    const successMessage = ref("");
+
+    const successAlertRef = ref(null);
+
     const updateShift = async () => {
       let updatedShifts = [];
 
@@ -122,7 +124,12 @@ export default {
         );
 
         emit("shift-updated", updatedShifts);
-        successMessage.value = "Shift Add Successful";
+        // alert("Shift Add Successful");
+        const message = "Shift Add Successful";
+        if (successAlertRef.value) {
+          successAlertRef.value.showSuccess(message); // Access showSuccess method of SuccessAlert
+        }
+
         await fetchShifts();
       } catch (error) {
         // console.error("Error updating shifts:", error);
@@ -148,11 +155,11 @@ export default {
       updateShift,
       fetchShifts,
       updateTime,
-      successMessage,
+      successAlertRef,
     };
   },
   components: {
-    AlertMsg,
+    SuccessAlert,
   },
 };
 </script>

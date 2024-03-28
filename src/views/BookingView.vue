@@ -168,7 +168,7 @@ ul.generalsetting h6 {
                         <th scope="col">Staff</th>
                         <th scope="col">Site</th>
                         <th scope="col">Job Title</th>
-                        <th scope="col">Shift Dates</th>
+                        <th scope="col" style="width: 142px">Shift Dates</th>
                         <th scope="col">Booking By</th>
                         <th scope="col">Booking Date</th>
                         <th scope="col">Start</th>
@@ -264,7 +264,7 @@ export default {
       endDate: new Date(),
       getBookingData: "",
       currentPage: 1,
-      itemsPerPage: 13,
+      itemsPerPage: 11,
     };
   },
   components: { Navbar },
@@ -409,7 +409,7 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-  height: 100vh;
+
   padding-top: 65px;
   background-color: #fdce5e17;
 }

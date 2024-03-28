@@ -134,7 +134,7 @@
     </div>
     <AddNewDoc :categoryId="selectedCategoryId" @documentAdded="onDocumentAdded" />
     <EditCategoryDoc :categoryId="selectedCategoryId" @onDocAdded="getDocCAtegories" />
-    <AddCategory :categoryId="selectedCategoryId" />
+    <AddCategory :categoryId="selectedCategoryId" @onCategoryAdded="getDocCAtegories" />
   </div>
 </template>
 

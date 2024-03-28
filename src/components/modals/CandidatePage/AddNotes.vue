@@ -6,7 +6,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addNotes">Add Notes</h5>
-           
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -45,11 +44,14 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+
 export default {
   name: "AddNotes",
   data() {
@@ -62,6 +64,7 @@ export default {
       return this.notes.trim() !== "";
     },
   },
+  components: { SuccessAlert },
   methods: {
     submitForm() {
       if (this.isValidForm) {
@@ -89,6 +92,8 @@ export default {
         if (response.ok) {
           this.$emit("getNotesAdded");
           this.notes = "";
+          const message = "Successful Note added";
+          this.$refs.successAlert.showSuccess(message);
         } else {
         }
       } catch (error) {}
