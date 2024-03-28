@@ -11,6 +11,7 @@
                 class="form-control"
                 v-model="fetchCustomTimeShetData.candidate_name"
                 aria-describedby="name"
+                readonly
               />
             </div>
             <div class="mb-3">
@@ -20,6 +21,7 @@
                 class="form-control"
                 v-model="fetchCustomTimeShetData.business_unit"
                 aria-describedby="site"
+                readonly
               />
             </div>
           </div>
@@ -31,6 +33,7 @@
                 class="form-control"
                 v-model="fetchCustomTimeShetData.job"
                 aria-describedby="time"
+                readonly
               />
             </div>
             <div class="mb-3">
@@ -40,6 +43,7 @@
                 class="form-control"
                 v-model="fetchCustomTimeShetData.date"
                 aria-describedby="date"
+                readonly
               />
             </div>
           </div>
@@ -51,6 +55,7 @@
                 class="form-control"
                 v-model="fetchCustomTimeShetData.shift"
                 aria-describedby="position"
+                readonly
               />
             </div>
           </div>
@@ -65,7 +70,7 @@
                   <input
                     type="email"
                     class="form-control"
-                    v-model="fetchCustomTimeShetData.email"
+                    v-model="fetchCustomTimeShetData.start_time"
                   />
                 </div>
               </div>
@@ -77,7 +82,7 @@
                   <input
                     type="email"
                     class="form-control"
-                    v-model="fetchCustomTimeShetData.email"
+                    v-model="fetchCustomTimeShetData.end_time"
                   />
                 </div>
               </div>
@@ -89,7 +94,7 @@
                   <input
                     type="email"
                     class="form-control"
-                    v-model="fetchCustomTimeShetData.email"
+                    v-model="fetchCustomTimeShetData.break"
                   />
                 </div>
               </div>
@@ -101,7 +106,7 @@
                   <input
                     type="email"
                     class="form-control"
-                    v-model="fetchCustomTimeShetData.email"
+                    v-model="fetchCustomTimeShetData.total_hours"
                   />
                 </div>
               </div>
@@ -248,6 +253,10 @@ export default {
         id: "",
         shift_date: "",
         candidate_name: "",
+        total_hours: "",
+        start_time: "",
+        end_time: "",
+        break: "",
       },
       isPublished: false,
     };
@@ -265,18 +274,6 @@ export default {
     },
   },
   methods: {
-    async getJobTitleMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
-        this.options = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
     async fetchCustomTimeSheetData() {
       try {
         const response = await axios.get(
@@ -316,9 +313,7 @@ export default {
       },
     },
   },
-  mounted() {
-    this.getJobTitleMethod();
-  },
+  mounted() {},
 };
 </script>
 <style scoped>

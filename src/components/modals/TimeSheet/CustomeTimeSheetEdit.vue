@@ -85,6 +85,8 @@
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               v-on:click="updateCustomTimeSheetMethod()"
+              :disabled="isSaveDisabled"
+              data-bs-dismiss="modal"
             >
               Save
             </button>
@@ -131,21 +133,11 @@ export default {
   },
   components: { SuccessAlert },
   computed: {
-    getCandidatesData() {
-      return this.$store.state.candidates;
-    },
-
-    selectBusinessUnit() {
-      const businessUnit = this.businessUnit.find(
-        (option) => option.id === this.fetchCustomSheetData.business_unit_id
+    isSaveDisabled() {
+      return (
+        this.fetchCustomSheetData.client_rate === null ||
+        this.fetchCustomSheetData.client_rate <= 0
       );
-      return businessUnit ? businessUnit.name : "";
-    },
-    selectedOptionText() {
-      const job_id = this.options.find(
-        (option) => option.id === this.fetchCustomSheetData.job_id
-      );
-      return job_id ? job_id.name : "";
     },
   },
   methods: {
@@ -157,30 +149,7 @@ export default {
         this.validationClientRate = true;
       }
     },
-    async getJobTitleMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
-        this.options = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
-    async getBusinessUnitMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/custom_timesheets`);
-        this.businessUnit = response.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
+
     async fetchCustomTimeSheetData(id) {
       try {
         const response = await axios.get(`${VITE_API_URL}/custom_timesheets/${id}`);
@@ -218,20 +187,9 @@ export default {
       },
     },
   },
-  mounted() {
-    this.getJobTitleMethod();
-  },
+  mounted() {},
 };
 </script>
-<!-- <style scoped>
-select {
-  width: 100%;
-  padding: 9px;
-
-  border-radius: 4px;
-  border: 1px solid #80808059;
-}
-</style> -->
 
 <style scoped>
 .modal-body {
