@@ -191,8 +191,8 @@ ul.generalsetting h6 {
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
-                      <tbody v-for="data in paginateCandidates" :key="data.id">
-                        <tr>
+                      <tbody v-if="paginateCandidates?.length > 0">
+                        <tr v-for="data in paginateCandidates" :key="data.id">
                           <td>
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
@@ -224,6 +224,13 @@ ul.generalsetting h6 {
                             >
                               <i class="bi bi-pencil"></i>
                             </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr>
+                          <td colspan="14" class="text-danger text-center">
+                            {{ errorMessageCustom }}
                           </td>
                         </tr>
                       </tbody>
@@ -407,7 +414,7 @@ export default {
       searchResults: [],
       errorMessage: "",
       showFilters: false,
-
+      errorMessageCustom: "",
       business_unit_id: "",
       businessUnit: [],
       candidateLists: [],
@@ -509,7 +516,7 @@ export default {
           (error.response && error.response.status === 404) ||
           error.response.status === 400
         ) {
-          this.errorMessage = "No candidates found for the specified criteria";
+          this.errorMessage = "No Staff found for the specified criteria";
         }
       }
     },
@@ -669,6 +676,11 @@ export default {
           }
         );
         this.getCustomTimeSheet = response.data.custom_timesheets;
+        if (this.getCustomTimeSheet.length === 0) {
+          this.errorMessageCustom = "No Custom timesheets found for the specified month";
+        } else {
+          this.errorMessageCustom = "";
+        }
       } catch (error) {
         console.error("Error fetching custom timesheets:", error);
       }
