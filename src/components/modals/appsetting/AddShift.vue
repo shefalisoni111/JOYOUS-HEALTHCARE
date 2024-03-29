@@ -70,7 +70,7 @@
         </div>
       </div>
     </div>
-    <SuccessAlert ref="successAlert" :ref="successAlertRef" />
+    <SuccessAlert ref="successAlertRef" />
   </div>
 </template>
 
@@ -127,10 +127,8 @@ export default {
         // alert("Shift Add Successful");
         const message = "Shift Add Successful";
         if (successAlertRef.value) {
-          successAlertRef.value.showSuccess(message); // Access showSuccess method of SuccessAlert
+          successAlertRef.value.showSuccess(message);
         }
-
-        await fetchShifts();
       } catch (error) {
         // console.error("Error updating shifts:", error);
       }
