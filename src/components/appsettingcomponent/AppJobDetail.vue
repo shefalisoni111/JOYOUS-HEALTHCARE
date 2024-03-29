@@ -167,7 +167,7 @@
 import axios from "axios";
 import AddJobbs from "../modals/appsetting/AddJobbs.vue";
 import EditJob from "../modals/appsetting/EditJob.vue";
-import ConfirmationModal from "../../components/Alerts/ConfirmationAlert.vue";
+// import ConfirmationModal from "../../components/Alerts/ConfirmationAlert.vue";
 
 export default {
   name: "AppJobDetail",
@@ -183,7 +183,7 @@ export default {
   components: {
     AddJobbs,
     EditJob,
-    ConfirmationModal,
+    // ConfirmationModal,
   },
 
   methods: {
