@@ -157,7 +157,7 @@
         </div>
       </div>
     </div>
-    <ConfirmationModal :message="confirmMessage" @confirmed="performAction" />
+    <!-- <ConfirmationModal :message="confirmMessage" @confirmed="performAction" /> -->
     <AddJobbs @jobAdded="getJobData" />
     <EditJob :jobID="selectedjobID" @jobUpdate="getInactiveJobData" />
   </div>

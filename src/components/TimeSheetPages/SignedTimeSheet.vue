@@ -123,49 +123,49 @@ ul.generalsetting h6 {
                       <option
                         v-for="option in clientData"
                         :key="option.id"
-                        :value="option.id"
-                        aria-placeholder="Select Job"
+                        :value="option.first_name"
+                        aria-placeholder="Select Client"
                       >
                         {{ option.first_name }}
                       </option>
                     </select>
-                    <select v-model="business_unit_id" id="selectBusinessUnit">
+                    <select v-model="business_unit_value" id="selectBusinessUnit">
                       <option value="">All Site</option>
                       <option
                         v-for="option in businessUnit"
                         :key="option.id"
-                        :value="option.id"
+                        :value="option.name"
                         placeholder="Select BusinessUnit"
                       >
                         {{ option.name }}
                       </option>
                     </select>
 
-                    <select v-model="id" id="selectCandidateList">
+                    <select v-model="selectedCandidate" id="selectCandidateList">
                       <option value="">All Staff</option>
                       <option
                         v-for="option in candidateLists"
                         :key="option.id"
-                        :value="option.id"
+                        :value="`${option.first_name} ${option.last_name}`"
                       >
-                        {{ option.first_name }}
+                        {{ option.first_name }} {{ option.last_name }}
                       </option>
                     </select>
                   </div>
                   <div>
-                    <form
-                      class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
-                    >
+                    <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
                       <input
                         class="form-control mr-sm-2"
                         type="search"
-                        placeholder="Search by Name"
+                        placeholder="Search.."
                         aria-label="Search"
+                        v-model="searchQuery"
+                        @input="debounceSearch"
                       />
                     </form>
                   </div>
                 </div>
-                <div class="tab-content mt-3" id="pills-tabContent">
+                <div class="tab-content mt-3" id="pills-tabContent" v-if="!searchQuery">
                   <div
                     class="tab-pane fade show active"
                     id="pills-pendingSigned"
@@ -182,7 +182,7 @@ ul.generalsetting h6 {
                           </th>
                           <th scope="col">ID</th>
                           <th scope="col">Type</th>
-                          <th scope="col">Staff</th>
+                          <th scope="col" style="width: 11%">Staff</th>
                           <th scope="col">Client</th>
                           <th scope="col">Site</th>
 
@@ -197,7 +197,7 @@ ul.generalsetting h6 {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="data in getPendingSignedData" :key="data.id">
+                        <tr v-for="data in getSignedTimeSheetData" :key="data.id">
                           <td>
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
@@ -205,7 +205,7 @@ ul.generalsetting h6 {
                           </td>
                           <td scope="col">{{ data.id }}</td>
                           <td scope="col">{{ data.status }}</td>
-                          <td scope="col">{{ data.author_name }}</td>
+                          <td scope="col">{{ data.candidate_name }}</td>
                           <td scope="col">{{ data.client }}</td>
                           <td scope="col">{{ data.business_unit }}</td>
 
@@ -234,6 +234,82 @@ ul.generalsetting h6 {
                     </table>
                   </div>
                 </div>
+                <div class="tab-content mt-3" id="pills-tabContent" v-if="searchQuery">
+                  <div
+                    class="tab-pane fade show active"
+                    id="pills-pendingSigned"
+                    role="tabpanel"
+                    aria-labelledby="pills-pendingSigned-tab"
+                  >
+                    <table class="table candidateTable">
+                      <thead>
+                        <tr>
+                          <th>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" />
+                            </div>
+                          </th>
+                          <th scope="col">ID</th>
+                          <th scope="col">Type</th>
+                          <th scope="col" style="width: 11%">Staff</th>
+                          <th scope="col">Client</th>
+                          <th scope="col">Site</th>
+
+                          <th scope="col">Date</th>
+
+                          <th scope="col">Start Time</th>
+                          <th scope="col">End Time</th>
+                          <th scope="col">Break</th>
+                          <th scope="col">Total Hours</th>
+                          <th scope="col">Approve</th>
+                          <th scope="col">View</th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="searchResults?.length > 0">
+                        <tr v-for="data in searchResults" :key="data.id">
+                          <td>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" />
+                            </div>
+                          </td>
+                          <td scope="col">{{ data.id }}</td>
+                          <td scope="col">{{ data.status }}</td>
+                          <td scope="col">{{ data.candidate_name }}</td>
+                          <td scope="col">{{ data.client }}</td>
+                          <td scope="col">{{ data.business_unit }}</td>
+
+                          <td scope="col">{{ data.date }}</td>
+                          <td scope="col">{{ data.start_time }}</td>
+
+                          <td scope="col">{{ data.end_time }}</td>
+                          <td scope="col">{{ data.break }}</td>
+                          <td scope="col">{{ data.total_hours }}</td>
+
+                          <td scope="col"></td>
+                          <td scope="col">
+                            <button
+                              type="button"
+                              class="btn btn-outline-success text-nowrap text-nowrap"
+                              data-bs-toggle="modal"
+                              data-bs-target="#signedTimeSheetView"
+                              data-bs-whatever="@mdo"
+                              @click="openSignedView(data.id)"
+                            >
+                              <i class="bi bi-eye"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr>
+                          <td colspan="13" class="text-danger text-center">
+                            {{ errorMessage }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -249,6 +325,12 @@ import Navbar from "../Navbar.vue";
 
 import SignedTimesheetViewVue from "../modals/TimeSheet/SignedTimesheetView.vue";
 
+const axiosInstance = axios.create({
+  headers: {
+    "Cache-Control": "no-cache",
+  },
+});
+
 export default {
   data() {
     return {
@@ -262,8 +344,14 @@ export default {
       businessUnit: [],
       candidateLists: [],
       id: "",
+      selectedCandidate: "",
+      business_unit_value: "",
       selectedSignedTimesheetId: "",
-      getPendingSignedData: [],
+      getSignedTimeSheetData: [],
+      searchQuery: null,
+      debounceTimeout: null,
+      searchResults: [],
+      errorMessage: "",
     };
   },
   components: { Navbar, SignedTimesheetViewVue },
@@ -291,7 +379,6 @@ export default {
       const monthDates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
       return monthDates;
     },
-
     selectBusinessUnit() {
       const business_unit_id = this.businessUnit.find(
         (option) => option.id === this.business_unit_id
@@ -305,11 +392,60 @@ export default {
     },
 
     selectCandidateList() {
-      const id = this.candidateLists.find((option) => option.id === this.id);
-      return id ? id.first_name : "";
+      const candidate = this.candidateLists.find(
+        (option) => option.first_name === this.selectedCandidate
+      );
+      return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
+    },
+  },
+  watch: {
+    selectedCandidate(newValue) {
+      if (newValue !== "") {
+        this.makeFilterAPICall("candidate", newValue);
+      } else {
+      }
+    },
+    client_id(newValue) {
+      if (newValue !== "") {
+        this.makeFilterAPICall("client", newValue);
+      } else {
+      }
+    },
+    business_unit_value(newValue) {
+      if (newValue !== "") {
+        this.makeFilterAPICall("business_unit", newValue);
+      } else {
+      }
     },
   },
   methods: {
+    debounceSearch() {
+      clearTimeout(this.debounceTimeout);
+
+      this.debounceTimeout = setTimeout(() => {
+        this.search();
+      }, 100);
+    },
+    //search api start
+
+    async search() {
+      try {
+        this.searchResults = [];
+        const modifiedSearchQuery = this.searchQuery.replace(/ /g, "_");
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/sign_timesheet_searching/${modifiedSearchQuery}`
+        );
+
+        this.searchResults = response.data.sign_timesheets;
+      } catch (error) {
+        if (
+          (error.response && error.response.status === 404) ||
+          error.response.status === 400
+        ) {
+          this.errorMessage = "No candidates found for the specified criteria";
+        }
+      }
+    },
     openSignedView(id) {
       this.selectedSignedTimesheetId = id;
     },
@@ -351,34 +487,7 @@ export default {
         }
       }
     },
-    moveToPrevious() {
-      if (this.currentView === "weekly") {
-        this.startDate.setDate(this.startDate.getDate() - 7);
-        this.endDate.setDate(this.endDate.getDate() - 7);
-        this.updateDateRange();
-      } else if (this.currentView === "monthly") {
-        this.startDate.setMonth(this.startDate.getMonth() - 1);
-        this.endDate = new Date(
-          this.startDate.getFullYear(),
-          this.startDate.getMonth() + 1,
-          0
-        );
-      }
-    },
-    moveToNext() {
-      if (this.currentView === "weekly") {
-        this.startDate.setDate(this.startDate.getDate() + 7);
-        this.endDate.setDate(this.endDate.getDate() + 7);
-        this.updateDateRange();
-      } else if (this.currentView === "monthly") {
-        this.startDate.setMonth(this.startDate.getMonth() + 1);
-        this.endDate = new Date(
-          this.startDate.getFullYear(),
-          this.startDate.getMonth() + 1,
-          0
-        );
-      }
-    },
+
     updateDateRange() {
       const currentDate = new Date();
       if (this.currentView === "weekly") {
@@ -425,16 +534,101 @@ export default {
     //     });
     //   // alert("Record Deleted ");
     // },
-    async signedTimeSheetMethod() {
+    filterData() {
+      let filterType = "";
+      let filterValue = "";
+
+      if (this.client_id !== "") {
+        filterType = "client";
+        filterValue = this.client_id;
+      } else if (this.business_unit_value !== "") {
+        filterType = "business_unit";
+        filterValue = this.business_unit_value;
+      } else if (this.selectedCandidate !== "") {
+        filterType = "candidate";
+        filterValue = this.selectedCandidate;
+      }
+
+      this.makeFilterAPICall(filterType, filterValue);
+    },
+    async makeFilterAPICall(filterType, filterValue) {
       const token = localStorage.getItem("token");
-      axios
-        .get(`${VITE_API_URL}/find_sign_time_sheet_according_status/Pending`, {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/filter_sign_timesheets`, {
+          params: {
+            filter_type: filterType,
+            filter_value: filterValue,
+          },
           headers: {
             "content-type": "application/json",
             Authorization: "bearer " + token,
           },
+        });
+        this.getSignedTimeSheetData = response.data.sign_timesheets;
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          const errorMessages = error.response.data.error;
+          if (errorMessages === "No records found for the given filter") {
+            alert("No records found for the given filter");
+          } else {
+            alert(errorMessages);
+          }
+        } else {
+          // Handle other errors
+          // console.error("Error filtering custom timesheets:", error);
+        }
+      }
+    },
+    async signedTimeSheetMethod() {
+      const token = localStorage.getItem("token");
+      const startOfMonth = new Date(
+        this.startDate.getFullYear(),
+        this.startDate.getMonth(),
+        1
+      );
+      const endOfMonth = new Date(
+        this.endDate.getFullYear(),
+        this.endDate.getMonth() + 1,
+        0
+      );
+      const requestData = {
+        date: startOfMonth.toLocaleDateString(),
+        // end_date: endOfMonth.toLocaleDateString(),
+      };
+      axios
+        .get(`${VITE_API_URL}/find_sign_timesheet_according_mounth`, {
+          params: requestData,
+          headers: {
+            Authorization: "bearer " + token,
+          },
         })
-        .then((response) => (this.getPendingSignedData = response.data.sign_timesheets));
+        .then(
+          (response) => (this.getSignedTimeSheetData = response.data.sign_timesheets)
+        );
+    },
+    moveToPrevious() {
+      if (this.currentView === "weekly") {
+      } else if (this.currentView === "monthly") {
+        this.startDate.setMonth(this.startDate.getMonth() - 1);
+        this.endDate = new Date(
+          this.startDate.getFullYear(),
+          this.startDate.getMonth() + 1,
+          0
+        );
+        this.signedTimeSheetMethod();
+      }
+    },
+    moveToNext() {
+      if (this.currentView === "weekly") {
+      } else if (this.currentView === "monthly") {
+        this.startDate.setMonth(this.startDate.getMonth() + 1);
+        this.endDate = new Date(
+          this.startDate.getFullYear(),
+          this.startDate.getMonth() + 1,
+          0
+        );
+        this.signedTimeSheetMethod();
+      }
     },
   },
 

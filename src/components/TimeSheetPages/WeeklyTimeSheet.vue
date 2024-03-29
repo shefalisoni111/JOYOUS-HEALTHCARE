@@ -30,12 +30,43 @@
                   <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
                 </div>
               </div>
-              <button type="button" class="btn btn-outline-success text-nowrap">
+              <button
+                type="button"
+                class="btn btn-outline-success text-nowrap"
+                @click="toggleFilters"
+              >
                 <i class="bi bi-funnel"></i>
                 Show Filters
               </button>
             </div>
+            <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
+              <div class="d-flex gap-2">
+                <div></div>
 
+                <select v-model="business_unit_id" id="selectBusinessUnit">
+                  <option value="">All Site</option>
+                  <option
+                    v-for="option in businessUnit"
+                    :key="option.id"
+                    :value="option.id"
+                    placeholder="Select BusinessUnit"
+                  >
+                    {{ option.name }}
+                  </option>
+                </select>
+
+                <select v-model="id" id="selectCandidateList">
+                  <option value="">All Staff</option>
+                  <option
+                    v-for="option in candidateLists"
+                    :key="option.id"
+                    :value="option.id"
+                  >
+                    {{ option.first_name }}
+                  </option>
+                </select>
+              </div>
+            </div>
             <div class="row">
               <div class="col-3">
                 <div class="card border-0 bg-transparent">
@@ -321,11 +352,15 @@ export default {
       candidateList: [],
       selectedCandidateId: null,
       selectedCandidate: null,
-
+      business_unit_id: "",
+      businessUnit: [],
+      candidateLists: [],
+      id: "",
       statusForSelectedDate: null,
       vacancyList: [],
       currentPage: 1,
       itemsPerPage: 5,
+      showFilters: false,
     };
   },
   computed: {
@@ -382,9 +417,48 @@ export default {
     formattedEndDate() {
       return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
     },
+    selectBusinessUnit() {
+      const business_unit_id = this.businessUnit.find(
+        (option) => option.id === this.business_unit_id
+      );
+      return business_unit_id ? business_unit_id.name : "";
+    },
+
+    selectCandidateList() {
+      const id = this.candidateLists.find((option) => option.id === this.id);
+      return id ? id.first_name : "";
+    },
   },
 
   methods: {
+    toggleFilters() {
+      this.showFilters = !this.showFilters;
+    },
+    async getCandidateListMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/candidates`);
+        this.candidateLists = response.data.data;
+        this.candidateStatus = response.data.data.status;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    async getBusinessUnitMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/business_units`);
+        this.businessUnit = response.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
     moveToPrevious() {
       if (!this.formattedStartDate || !this.formattedEndDate) {
         return;
@@ -540,6 +614,9 @@ export default {
   mounted() {
     this.fetchCandidateList();
     this.loadStoredData();
+    this.getBusinessUnitMethod();
+
+    this.getCandidateListMethod();
     window.addEventListener("beforeunload", this.saveToLocalStorage);
 
     const currentDate = new Date();
@@ -564,7 +641,12 @@ export default {
 input.dateInput {
   width: 1.3%;
 }
-
+select {
+  padding: 10px;
+  border-radius: 4px;
+  border: 0px;
+  border: 1px solid rgb(202, 198, 198);
+}
 .current-month {
   margin: 0 20px;
   font-size: 18px;

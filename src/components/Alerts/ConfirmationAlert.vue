@@ -1,33 +1,14 @@
 <template>
-  <div
-    class="modal fade"
-    id="confirmationModal"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
+  <div>
+    <!-- Button to trigger the confirmation dialog -->
+    <button @click="showConfirmationDialog = true">Delete Item</button>
+
+    <!-- Confirmation dialog modal -->
+    <div v-if="showConfirmationDialog" class="modal">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body">
-          <p>{{ message }}</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            Cancel
-          </button>
-          <button type="button" class="btn btn-primary" @click="confirmAction">
-            Confirm
-          </button>
-        </div>
+        <p>Are you sure you want to delete this item?</p>
+        <button @click="cancelDelete">Cancel</button>
+        <button @click="confirmDelete">Confirm</button>
       </div>
     </div>
   </div>
@@ -35,11 +16,38 @@
 
 <script>
 export default {
-  props: ["message"],
+  data() {
+    return {
+      showConfirmationDialog: false,
+    };
+  },
   methods: {
-    confirmAction() {
-      this.$emit("confirmed");
+    cancelDelete() {
+      this.showConfirmationDialog = false;
+    },
+    confirmDelete() {
+      this.showConfirmationDialog = false;
     },
   },
 };
 </script>
+
+<style>
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+}
+</style>
