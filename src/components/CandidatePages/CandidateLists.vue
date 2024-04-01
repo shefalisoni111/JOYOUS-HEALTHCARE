@@ -592,7 +592,7 @@ a:link {
 }
 .nav-pills .nav-link {
   background-color: transparent;
-  border: 1px solid #ff5722;
+  border: 1px solid #ff5722 !important;
   border-radius: 22px;
   color: #ff5722;
 }

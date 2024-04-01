@@ -1,14 +1,14 @@
 <template>
-  <div>
-    <!-- Button to trigger the confirmation dialog -->
-    <button @click="showConfirmationDialog = true">Delete Item</button>
-
-    <!-- Confirmation dialog modal -->
-    <div v-if="showConfirmationDialog" class="modal">
+  <div class="modal" tabindex="-1" role="dialog" v-if="show">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <p>Are you sure you want to delete this item?</p>
-        <button @click="cancelDelete">Cancel</button>
-        <button @click="confirmDelete">Confirm</button>
+        <div class="modal-body">
+          <p>Are you Sure ?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" @click="cancel">Cancel</button>
+          <button type="button" class="btn btn-primary" @click="confirm">OK</button>
+        </div>
       </div>
     </div>
   </div>
@@ -16,38 +16,30 @@
 
 <script>
 export default {
+  props: {
+    message: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
-      showConfirmationDialog: false,
+      show: false,
     };
   },
   methods: {
-    cancelDelete() {
-      this.showConfirmationDialog = false;
+    confirm() {
+      this.$emit("confirmed");
+      this.show = false;
     },
-    confirmDelete() {
-      this.showConfirmationDialog = false;
+    cancel() {
+      this.$emit("canceled");
+      this.show = false;
     },
   },
 };
 </script>
 
 <style>
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 5px;
-}
+/* Add any necessary styles */
 </style>

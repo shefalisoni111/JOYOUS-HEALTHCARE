@@ -242,11 +242,11 @@
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody v-if="paginateCandidates?.length > 0">
               <tr v-for="data in paginateCandidates" :key="data.id">
                 <td>{{ data.id }}</td>
                 <td class="text-capitalize fw-bold">
-                  {{ data.candidate_name + " " }}
+                  {{ data.author_name + " " }}
 
                   <span class="fs-6 text-muted fw-100"
                     ><br /><span style="background: rgb(209, 207, 207); padding: 3px">{{
@@ -270,6 +270,7 @@
                         'calendar-day': true,
                         clickable: day !== '',
                       }"
+                      class="d-flex justify-content-between gap-2"
                     >
                       <div v-if="formatDate(day)">
                         <td>
@@ -306,6 +307,13 @@
                     <input class="form-check-input" type="checkbox" value="" />
                   </div>
                 </th>
+              </tr>
+            </tbody>
+            <tbody v-else>
+              <tr>
+                <td colspan="9" class="text-danger text-center">
+                  {{ errorMessage }}
+                </td>
               </tr>
             </tbody>
           </table>
@@ -361,6 +369,7 @@ export default {
       currentPage: 1,
       itemsPerPage: 5,
       showFilters: false,
+      errorMessage: "",
     };
   },
   computed: {
@@ -479,6 +488,7 @@ export default {
 
       this.startDate = startDate;
       this.endDate = endDate;
+      this.fetWeekTimeSheetData();
     },
     moveToNext() {
       if (!this.formattedStartDate || !this.formattedEndDate) {
@@ -500,6 +510,7 @@ export default {
 
       this.startDate = startDate;
       this.endDate = endDate;
+      this.fetWeekTimeSheetData();
     },
     async handleDrop(candidateId) {
       try {
@@ -600,10 +611,66 @@ export default {
 
       this.statusForSelectedDate = null;
     },
-    async fetchCandidateList() {
+    // filterData() {
+    //   let filterType = "";
+    //   let filterValue = "";
+
+    //   if (this.business_unit_value !== "") {
+    //     filterType = "business_unit";
+    //     filterValue = this.business_unit_value;
+    //   } else if (this.selectedCandidate !== "") {
+    //     filterType = "candidate";
+    //     filterValue = this.selectedCandidate;
+    //   }
+
+    //   this.makeFilterAPICall(filterType, filterValue);
+    // },
+    // async makeFilterAPICall(filterType, filterValue) {
+    //   const token = localStorage.getItem("token");
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/filter_sign_timesheets`, {
+    //       params: {
+    //         filter_type: filterType,
+    //         filter_value: filterValue,
+    //       },
+    //       headers: {
+    //         "content-type": "application/json",
+    //         Authorization: "bearer " + token,
+    //       },
+    //     });
+    //     this.getSignedTimeSheetData = response.data.sign_timesheets;
+    //   } catch (error) {
+    //     if (error.response && error.response.status === 404) {
+    //       const errorMessages = error.response.data.error;
+    //       if (errorMessages === "No records found for the given filter") {
+    //         alert("No records found for the given filter");
+    //       } else {
+    //         alert(errorMessages);
+    //       }
+    //     } else {
+    //       // Handle other errors
+    //       // console.error("Error filtering custom timesheets:", error);
+    //     }
+    //   }
+    // },
+    async fetWeekTimeSheetData() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/weekly_timesheet_data`);
-        this.candidateList = response.data.Timesheet_fiter_data;
+        const requestData = {
+          date: this.formattedStartDate,
+        };
+
+        const response = await axios.get(
+          `${VITE_API_URL}/find_timesheets_according_week`,
+          {
+            params: requestData,
+          }
+        );
+        this.candidateList = response.data.sign_timesheets;
+        if (this.candidateList.length === 0) {
+          this.errorMessage = "No Weekly timesheets found for the specified Week";
+        } else {
+          this.errorMessage = "";
+        }
       } catch (error) {}
     },
   },
@@ -612,7 +679,6 @@ export default {
     Navbar,
   },
   mounted() {
-    this.fetchCandidateList();
     this.loadStoredData();
     this.getBusinessUnitMethod();
 
@@ -624,6 +690,7 @@ export default {
     startOfWeek.setDate(currentDate.getDate() - currentDate.getDay() + 1);
 
     this.startDate = startOfWeek;
+    this.fetWeekTimeSheetData();
   },
 };
 </script>

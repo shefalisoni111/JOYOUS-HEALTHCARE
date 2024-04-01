@@ -157,9 +157,10 @@
         </div>
       </div>
     </div>
-    <!-- <ConfirmationModal :message="confirmMessage" @confirmed="performAction" /> -->
+    <ConfirmationModal />
     <AddJobbs @jobAdded="getJobData" />
     <EditJob :jobID="selectedjobID" @jobUpdate="getInactiveJobData" />
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
@@ -167,7 +168,8 @@
 import axios from "axios";
 import AddJobbs from "../modals/appsetting/AddJobbs.vue";
 import EditJob from "../modals/appsetting/EditJob.vue";
-// import ConfirmationModal from "../../components/Alerts/ConfirmationAlert.vue";
+import ConfirmationModal from "../../components/Alerts/ConfirmationAlert.vue";
+import SuccessAlert from "../Alerts/SuccessAlert.vue";
 
 export default {
   name: "AppJobDetail",
@@ -183,7 +185,8 @@ export default {
   components: {
     AddJobbs,
     EditJob,
-    // ConfirmationModal,
+    ConfirmationModal,
+    SuccessAlert,
   },
 
   methods: {
@@ -211,7 +214,9 @@ export default {
         this.getJobData();
         this.getInactiveJobData();
       });
-      alert("Record Activated ");
+      const message = "Record Activated successfully";
+      this.$refs.successAlert.showSuccess(message);
+      // alert("Record Activated ");
     },
 
     jobsInActive(id) {
@@ -222,9 +227,13 @@ export default {
         this.getJobData();
         this.getInactiveJobData();
         if (response.data.message) {
-          alert(response.data.message);
+          // alert(response.data.message);
+          const message = response.data.message;
+          this.$refs.successAlert.showSuccess(message);
         } else {
-          alert("Record Inactivated ");
+          // alert("");
+          const message = "Record Inactivated  successfully";
+          this.$refs.successAlert.showSuccess(message);
         }
       });
     },
