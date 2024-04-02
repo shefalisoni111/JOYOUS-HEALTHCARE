@@ -19,9 +19,15 @@
           <div class="full-page-calendar pt-1 pb-0">
             <div class="d-flex justify-content-between mb-3">
               <div class="calendar-header align-items-center">
-                <span v-if="formattedStartDate && formattedEndDate" class="fw-bold">
+                <span
+                  v-if="currentView === 'weekly' && startDate && endDate"
+                  class="fw-bold"
+                >
                   {{
-                    "Monday " + formattedStartDate + " to Sunday " + formattedEndDate
+                    "Monday " +
+                    formatDate(startDate) +
+                    " to Sunday " +
+                    formatDate(endDate)
                   }} </span
                 >&nbsp; &nbsp; &nbsp;&nbsp;
                 <div class="d-flex align-items-center fs-4">
@@ -365,13 +371,13 @@ import WeekTimeSheetEdit from "../modals/TimeSheet/WeekTimeSheetEdit.vue";
 export default {
   data() {
     return {
+      currentView: "weekly",
       startDate: new Date(),
-      endDate: { value: "", display: "" },
-      currentDate: new Date(),
+      endDate: new Date(),
       selectedDate: null,
       candidateList: [],
       selectedCandidateId: null,
-      selectedCandidate: null,
+
       business_unit_id: "",
       businessUnit: [],
       business_unit_value: "",
@@ -396,6 +402,28 @@ export default {
     totalRecordsOnPage() {
       return this.paginateCandidates.length;
     },
+    // getWeekDates() {
+    //   const currentDate = new Date();
+    //   const weekStart = new Date(currentDate);
+    //   weekStart.setDate(currentDate.getDate() - currentDate.getDay());
+    //   const weekDates = [];
+    //   for (let i = 0; i < 7; i++) {
+    //     const date = new Date(weekStart);
+    //     date.setDate(weekStart.getDate() + i);
+    //     weekDates.push(date.getDate());
+    //   }
+    //   return weekDates;
+    // },
+    // getMonthDates() {
+    //   const currentDate = new Date();
+    //   const daysInMonth = new Date(
+    //     currentDate.getFullYear(),
+    //     currentDate.getMonth() + 1,
+    //     0
+    //   ).getDate();
+    //   const monthDates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+    //   return monthDates;
+    // },
     daysOfWeek() {
       return [
         "Monday",
@@ -412,21 +440,7 @@ export default {
         (candidate) => candidate.id === this.selectedCandidateId
       );
     },
-    selectedDateRow() {
-      const selectedDate = new Date(this.startDate);
-      const selectedDateRow = [];
 
-      const dayOfWeek = selectedDate.getDay();
-      const startDay = (dayOfWeek - 1 + 7) % 7;
-
-      for (let i = 0; i < 7; i++) {
-        const currentDate = new Date(selectedDate);
-        currentDate.setDate(selectedDate.getDate() + i - startDay);
-        selectedDateRow.push(`${currentDate.getDate()}`);
-      }
-
-      return selectedDateRow;
-    },
     candidateName() {
       return this.selectedCandidate ? this.selectedCandidate.first_name : "";
     },
@@ -440,6 +454,34 @@ export default {
     },
     formattedEndDate() {
       return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
+    },
+    selectedDateRow() {
+      const selectedDate = new Date(this.startDate);
+      const selectedDateRow = [];
+      const dayOfWeek = selectedDate.getDay();
+      const startDay = (dayOfWeek - 1 + 7) % 7;
+
+      for (let i = 0; i < 7; i++) {
+        const currentDate = new Date(selectedDate);
+        currentDate.setDate(selectedDate.getDate() + i - startDay);
+
+        const lastDayOfMonth = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        ).getDate();
+        if (currentDate.getDate() > lastDayOfMonth) {
+          currentDate.setMonth(currentDate.getMonth() + 1);
+
+          currentDate.setDate(1);
+
+          currentDate.setDate(i + 1 - startDay);
+        }
+
+        selectedDateRow.push(currentDate);
+      }
+
+      return selectedDateRow;
     },
     selectBusinessUnit() {
       const business_unit_id = this.businessUnit.find(
@@ -512,48 +554,64 @@ export default {
       }
     },
     moveToPrevious() {
-      if (!this.formattedStartDate || !this.formattedEndDate) {
-        return;
+      if (this.currentView === "weekly") {
+        this.startDate.setDate(this.startDate.getDate() - 7);
+        this.endDate.setDate(this.endDate.getDate() - 7);
+        this.updateDateRange();
+      } else if (this.currentView === "monthly") {
+        this.startDate.setMonth(this.startDate.getMonth() - 1);
+        this.endDate = new Date(
+          this.startDate.getFullYear(),
+          this.startDate.getMonth() + 1,
+          0
+        );
       }
-
-      const startDateParts = this.formattedStartDate.split("/");
-      const endDateParts = this.formattedEndDate.split("/");
-      const formattedStartDate =
-        startDateParts[2] + "-" + startDateParts[1] + "-" + startDateParts[0];
-      const formattedEndDate =
-        endDateParts[2] + "-" + endDateParts[1] + "-" + endDateParts[0];
-
-      const startDate = new Date(formattedStartDate);
-      const endDate = new Date(formattedEndDate);
-
-      startDate.setDate(startDate.getDate() - 7);
-      endDate.setDate(endDate.getDate() - 7);
-
-      this.startDate = startDate;
-      this.endDate = endDate;
       this.fetWeekTimeSheetData();
     },
     moveToNext() {
-      if (!this.formattedStartDate || !this.formattedEndDate) {
-        return;
+      if (this.currentView === "weekly") {
+        this.startDate.setDate(this.startDate.getDate() + 7);
+        this.endDate.setDate(this.endDate.getDate() + 7);
+        this.updateDateRange();
+      } else if (this.currentView === "monthly") {
+        this.startDate.setMonth(this.startDate.getMonth() + 1);
+        this.endDate = new Date(
+          this.startDate.getFullYear(),
+          this.startDate.getMonth() + 1,
+          0
+        );
+      }
+      this.fetWeekTimeSheetData();
+    },
+    updateDateRange() {
+      if (this.currentView === "weekly") {
+        const weekStart = new Date(this.startDate);
+        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
+        this.startDate = weekStart;
+
+        const weekEnd = new Date(this.startDate);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+        this.endDate = weekEnd;
+      } else if (this.currentView === "monthly") {
+        const currentDate = new Date();
+        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
       }
 
-      const startDateParts = this.formattedStartDate.split("/");
-      const endDateParts = this.formattedEndDate.split("/");
-      const formattedStartDate =
-        startDateParts[2] + "-" + startDateParts[1] + "-" + startDateParts[0];
-      const formattedEndDate =
-        endDateParts[2] + "-" + endDateParts[1] + "-" + endDateParts[0];
+      localStorage.setItem("startDate", this.startDate.toISOString());
+      localStorage.setItem("endDate", this.endDate.toISOString());
+    },
+    loadDateRangeFromLocalStorage() {
+      const storedStartDate = localStorage.getItem("startDate");
+      const storedEndDate = localStorage.getItem("endDate");
 
-      const startDate = new Date(formattedStartDate);
-      const endDate = new Date(formattedEndDate);
-
-      startDate.setDate(startDate.getDate() + 7);
-      endDate.setDate(endDate.getDate() + 7);
-
-      this.startDate = startDate;
-      this.endDate = endDate;
-      this.fetWeekTimeSheetData();
+      if (storedStartDate && storedEndDate) {
+        this.startDate = new Date(storedStartDate);
+        this.endDate = new Date(storedEndDate);
+      }
+    },
+    formatDate(date) {
+      return date.toLocaleDateString();
     },
 
     async handleDrop(candidateId) {
@@ -586,43 +644,47 @@ export default {
       return this.selectedCandidate ? this.selectedCandidate.first_name : "Default Name";
     },
 
-    saveToLocalStorage() {
-      localStorage.setItem(
-        "calendarData",
-        JSON.stringify({
-          startDate: this.startDate,
-          endDate: this.endDate.value,
-        })
-      );
-    },
-    loadStoredData() {
-      const storedData = localStorage.getItem("calendarData");
+    // saveToLocalStorage() {
+    //   localStorage.setItem(
+    //     "calendarData",
+    //     JSON.stringify({
+    //       startDate: this.startDate,
+    //       endDate: this.endDate.value,
+    //     })
+    //   );
+    // },
+    // loadStoredData() {
+    //   const storedData = localStorage.getItem("calendarData");
 
-      if (storedData) {
-        const parsedData = JSON.parse(storedData);
-        this.startDate = parsedData.startDate;
-        this.endDate.value = parsedData.endDate;
-      }
-    },
-    updateSelectedDateRow(startDate, endDate) {
-      const selectedDateRow = [];
+    //   if (storedData) {
+    //     const parsedData = JSON.parse(storedData);
+    //     this.startDate = parsedData.startDate;
+    //     this.endDate.value = parsedData.endDate;
+    //   }
+    // },
+    // updateSelectedDateRow(startDate, endDate) {
+    //   const selectedDateRow = [];
+    //   const startDay = startDate.getDay();
 
-      const dayOfWeek = startDate.getDay();
-      const startDay = (dayOfWeek - 1 + 7) % 7;
+    //   for (let i = 0; i < 7; i++) {
+    //     const currentDate = new Date(startDate);
+    //     currentDate.setDate(startDate.getDate() + i - startDay);
 
-      for (let i = 0; i < 7; i++) {
-        const currentDate = new Date(startDate);
-        currentDate.setDate(startDate.getDate() + i - startDay);
-        selectedDateRow.push(`${currentDate.getDate()}`);
-      }
+    //     if (currentDate.getMonth() === startDate.getMonth()) {
+    //       selectedDateRow.push(`${currentDate.getDate()}`);
+    //     } else {
+    //       selectedDateRow.push("");
+    //     }
+    //   }
 
-      Vue.set(this, "selectedDateRow", selectedDateRow);
-    },
-    formatDate(day) {
-      const selectedDate = new Date(this.startDate);
-      selectedDate.setDate(day);
-      return selectedDate.toLocaleDateString();
-    },
+    //   Vue.set(this, "selectedDateRow", selectedDateRow);
+    //   // console.log(selectedDateRow);
+    // },
+    // formatDate(day) {
+    //   const selectedDate = new Date(this.startDate);
+    //   selectedDate.setDate(day);
+    //   return selectedDate.toLocaleDateString();
+    // },
 
     openModal(candidateId, day) {
       try {
@@ -735,18 +797,32 @@ export default {
     WeekTimeSheetEdit,
     Navbar,
   },
+  // created() {
+  //   if (!localStorage.getItem("calendarData")) {
+  //     const today = new Date();
+  //     const defaultStartDate = `${today.getFullYear()}-${(today.getMonth() + 1)
+  //       .toString()
+  //       .padStart(2, "0")}`;
+  //     this.selectedMonth = defaultStartDate;
+  //     this.updateDateRange();
+  //   }
+
+  //   this.loadDateRangeFromLocalStorage();
+  // },
   mounted() {
-    this.loadStoredData();
+    this.loadDateRangeFromLocalStorage();
     this.getBusinessUnitMethod();
 
     this.getCandidateListMethod();
-    window.addEventListener("beforeunload", this.saveToLocalStorage);
 
     const currentDate = new Date();
     const startOfWeek = new Date(currentDate);
-    startOfWeek.setDate(currentDate.getDate() - currentDate.getDay() + 1);
-
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
     this.startDate = startOfWeek;
+
+    const endOfWeek = new Date(currentDate);
+    endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
+    this.endDate = endOfWeek;
     this.fetWeekTimeSheetData();
   },
 };
