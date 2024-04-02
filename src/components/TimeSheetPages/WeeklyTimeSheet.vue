@@ -246,7 +246,7 @@
               <tr v-for="data in paginateCandidates" :key="data.id">
                 <td>{{ data.id }}</td>
                 <td class="text-capitalize fw-bold">
-                  {{ data.author_name + " " }}
+                  {{ data.author_name ? data.author_name + " " : data.name + " " }}
 
                   <span class="fs-6 text-muted fw-100"
                     ><br /><span style="background: rgb(209, 207, 207); padding: 3px">{{
@@ -370,6 +370,7 @@ export default {
       itemsPerPage: 5,
       showFilters: false,
       errorMessage: "",
+      dataCustomTimeSheet: [],
     };
   },
   computed: {
@@ -512,6 +513,7 @@ export default {
       this.endDate = endDate;
       this.fetWeekTimeSheetData();
     },
+
     async handleDrop(candidateId) {
       try {
         if (!this.vacancyBeingDragged || !this.vacancyBeingDragged.id) {
@@ -582,24 +584,28 @@ export default {
 
     openModal(candidateId, day) {
       try {
-        const actualCandidateId = candidateId.id;
-        const selectedDate = new Date(this.startDate);
-        selectedDate.setDate(parseInt(day));
+        if (this.dataCustomTimeSheet && this.dataCustomTimeSheet.length > 0) {
+          const actualCandidateId = candidateId.id;
+          const selectedDate = new Date(this.startDate);
+          selectedDate.setDate(parseInt(day));
 
-        this.selectedDate = selectedDate.toISOString().split("T")[0];
-        this.selectedCandidateId = actualCandidateId;
+          this.selectedDate = selectedDate.toISOString().split("T")[0];
+          this.selectedCandidateId = actualCandidateId;
 
-        const selectedCandidate = this.candidateList.find(
-          (candidate) => candidate.id === actualCandidateId
-        );
+          const selectedCandidate = this.candidateList.find(
+            (candidate) => candidate.id === actualCandidateId
+          );
 
-        if (selectedCandidate) {
-          this.$nextTick(() => {
-            this.selectedCandidate = selectedCandidate;
-          });
+          if (selectedCandidate) {
+            this.$nextTick(() => {
+              this.selectedCandidate = selectedCandidate;
+            });
+          } else {
+            this.selectedDate = null;
+            this.statusForSelectedDate = null;
+          }
         } else {
-          this.selectedDate = null;
-          this.statusForSelectedDate = null;
+          // Do something else or do nothing if dataCustomTimeSheet is empty
         }
       } catch (error) {
         this.selectedDate = null;
@@ -665,7 +671,12 @@ export default {
             params: requestData,
           }
         );
-        this.candidateList = response.data.sign_timesheets;
+        this.dataCustomTimeSheet = response.data.custom_timesheets;
+        const mergedTimeSheets = [
+          ...response.data.custom_timesheets,
+          ...response.data.sign_timesheets,
+        ];
+        this.candidateList = mergedTimeSheets;
         if (this.candidateList.length === 0) {
           this.errorMessage = "No Weekly timesheets found for the specified Week";
         } else {
