@@ -235,11 +235,15 @@ export default {
                     </tr>
 
                     <tr v-for="data in paginateCandidates" :key="data.id">
-                      <td
-                        class="text-capitalize fw-bold"
-                        style="border-right: 1px solid rgb(209, 208, 208)"
-                      >
-                        {{ data.first_name }}
+                      <td class="text-capitalize fw-bold">
+                        {{ data.first_name }} {{ data.last_name }}
+
+                        <span class="fs-6 text-muted fw-100"
+                          ><br /><span
+                            style="background: rgb(209, 207, 207); padding: 3px"
+                            >{{ data.position }}</span
+                          ></span
+                        >
                       </td>
 
                       <td>

@@ -43,26 +43,26 @@
               <div class="d-flex gap-2">
                 <div></div>
 
-                <select v-model="business_unit_id" id="selectBusinessUnit">
+                <select v-model="business_unit_value" id="selectBusinessUnit">
                   <option value="">All Site</option>
                   <option
                     v-for="option in businessUnit"
                     :key="option.id"
-                    :value="option.id"
+                    :value="option.name"
                     placeholder="Select BusinessUnit"
                   >
                     {{ option.name }}
                   </option>
                 </select>
 
-                <select v-model="id" id="selectCandidateList">
+                <select v-model="selectedCandidate" id="selectCandidateList">
                   <option value="">All Staff</option>
                   <option
                     v-for="option in candidateLists"
                     :key="option.id"
-                    :value="option.id"
+                    :value="`${option.first_name} ${option.last_name}`"
                   >
-                    {{ option.first_name }}
+                    {{ option.first_name }} {{ option.last_name }}
                   </option>
                 </select>
               </div>
@@ -276,21 +276,33 @@
                         <td>
                           <div class="column">
                             <div class="column-cell">
-                              {{ data.start_time }}
+                              {{
+                                typeof data.start_time === "number"
+                                  ? data.start_time.toFixed(2)
+                                  : data.start_time
+                              }}
                             </div>
                           </div>
                         </td>
                         <td>
                           <div class="column">
                             <div class="column-cell">
-                              {{ data.end_time }}
+                              {{
+                                typeof data.end_time === "number"
+                                  ? data.end_time.toFixed(2)
+                                  : data.end_time
+                              }}
                             </div>
                           </div>
                         </td>
                         <td>
                           <div class="column">
                             <div class="column-cell">
-                              {{ data.total_hours }}
+                              {{
+                                typeof data.total_hours === "number"
+                                  ? data.total_hours.toFixed(2)
+                                  : data.total_hours
+                              }}
                             </div>
                           </div>
                         </td>
@@ -362,6 +374,7 @@ export default {
       selectedCandidate: null,
       business_unit_id: "",
       businessUnit: [],
+      business_unit_value: "",
       candidateLists: [],
       id: "",
       statusForSelectedDate: null,
@@ -371,6 +384,7 @@ export default {
       showFilters: false,
       errorMessage: "",
       dataCustomTimeSheet: [],
+      selectedCandidate: "",
     };
   },
   computed: {
@@ -437,6 +451,34 @@ export default {
     selectCandidateList() {
       const id = this.candidateLists.find((option) => option.id === this.id);
       return id ? id.first_name : "";
+    },
+    selectBusinessUnit() {
+      const business_unit_id = this.businessUnit.find(
+        (option) => option.id === this.business_unit_id
+      );
+      return business_unit_id ? business_unit_id.name : "";
+    },
+
+    selectCandidateList() {
+      const candidate = this.candidateLists.find(
+        (option) => option.first_name === this.selectedCandidate
+      );
+      return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
+    },
+  },
+  watch: {
+    selectedCandidate(newValue) {
+      if (newValue !== "") {
+        this.makeFilterAPICall("candidate", newValue);
+      } else {
+      }
+    },
+
+    business_unit_value(newValue) {
+      if (newValue !== "") {
+        this.makeFilterAPICall("business_unit", newValue);
+      } else {
+      }
     },
   },
 
@@ -617,48 +659,52 @@ export default {
 
       this.statusForSelectedDate = null;
     },
-    // filterData() {
-    //   let filterType = "";
-    //   let filterValue = "";
+    filterData() {
+      let filterType = "";
+      let filterValue = "";
 
-    //   if (this.business_unit_value !== "") {
-    //     filterType = "business_unit";
-    //     filterValue = this.business_unit_value;
-    //   } else if (this.selectedCandidate !== "") {
-    //     filterType = "candidate";
-    //     filterValue = this.selectedCandidate;
-    //   }
+      if (this.business_unit_value !== "") {
+        filterType = "business_unit";
+        filterValue = this.business_unit_value;
+      } else if (this.selectedCandidate !== "") {
+        filterType = "candidate";
+        filterValue = this.selectedCandidate;
+      }
 
-    //   this.makeFilterAPICall(filterType, filterValue);
-    // },
-    // async makeFilterAPICall(filterType, filterValue) {
-    //   const token = localStorage.getItem("token");
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/filter_sign_timesheets`, {
-    //       params: {
-    //         filter_type: filterType,
-    //         filter_value: filterValue,
-    //       },
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     });
-    //     this.getSignedTimeSheetData = response.data.sign_timesheets;
-    //   } catch (error) {
-    //     if (error.response && error.response.status === 404) {
-    //       const errorMessages = error.response.data.error;
-    //       if (errorMessages === "No records found for the given filter") {
-    //         alert("No records found for the given filter");
-    //       } else {
-    //         alert(errorMessages);
-    //       }
-    //     } else {
-    //       // Handle other errors
-    //       // console.error("Error filtering custom timesheets:", error);
-    //     }
-    //   }
-    // },
+      this.makeFilterAPICall(filterType, filterValue);
+    },
+    async makeFilterAPICall(filterType, filterValue) {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get(`${VITE_API_URL}/filter_timesheets`, {
+          params: {
+            filter_type: filterType,
+            filter_value: filterValue,
+          },
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+        });
+        const mergedTimeSheets = [
+          ...response.data.custom_timesheets,
+          ...response.data.sign_timesheets,
+        ];
+        this.candidateList = mergedTimeSheets;
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          const errorMessages = error.response.data.error;
+          if (errorMessages === "No records found for the given filter") {
+            alert("No records found for the given filter");
+          } else {
+            alert(errorMessages);
+          }
+        } else {
+          // Handle other errors
+          // console.error("Error filtering custom timesheets:", error);
+        }
+      }
+    },
     async fetWeekTimeSheetData() {
       try {
         const requestData = {
