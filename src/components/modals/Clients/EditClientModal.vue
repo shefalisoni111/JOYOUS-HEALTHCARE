@@ -34,7 +34,7 @@
                         type="checkbox"
                         :id="'option_' + option.id + '_index_' + index"
                         :value="option.id"
-                        v-model="fetchClients.jobs"
+                        v-model="fetchClients.job_name"
                       />
                       <label
                         :for="'option_' + option.id + '_index_' + index"

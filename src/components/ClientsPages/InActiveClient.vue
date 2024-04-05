@@ -7,7 +7,7 @@
             <th scope="col">ID</th>
             <th scope="col">#RefCode</th>
             <th scope="col">ClientName</th>
-            <th scope="col">Jobs</th>
+            <th scope="col" style="width: 10%">Jobs</th>
             <th scope="col">Address</th>
             <th scope="col">PhoneNumber</th>
             <th scope="col">Email</th>
@@ -33,7 +33,12 @@
               <!-- {{ client.first_name }} -->
             </td>
             <td>
-              <span v-for="(job, index) in client.job_name" :key="index">
+              <span
+                v-for="(job, index) in client.job_name"
+                :key="index"
+                :style="{ backgroundColor: getColor(index) }"
+                class="p-1 me-2 mt-5 rounded-1"
+              >
                 {{ job }}
 
                 <template v-if="index !== client.job_name.length - 1"> </template>
@@ -124,12 +129,14 @@
     </div>
     <EditClientModal :clientID="selectedClientID || 0" @client-updated="createdClient" />
     <AddClients @client-updated="createdClient" />
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 <script>
 import axios from "axios";
 import EditClientModal from "../modals/Clients/EditClientModal.vue";
 import AddClients from "@/components/modals/Clients/AddClients.vue";
+import SuccessAlert from "../Alerts/SuccessAlert.vue";
 
 export default {
   data() {
@@ -140,10 +147,21 @@ export default {
       searchQuery: "",
       currentPage: 1,
       itemsPerPage: 8,
+      client: {
+        job_name: ["Job1", "Job2", "Job3", "Job4", "Job5", "Job6"],
+      },
+      colors: [
+        "lightblue",
+        "lightgreen",
+        "lightyellow",
+        "lightcoral",
+        "lightskyblue",
+        "lightpink",
+      ],
     };
   },
 
-  components: { EditClientModal, AddClients },
+  components: { EditClientModal, AddClients, SuccessAlert },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -158,6 +176,9 @@ export default {
     },
   },
   methods: {
+    getColor(index) {
+      return this.colors[index % this.colors.length];
+    },
     editClient(clientID) {
       this.selectedClientID = clientID;
     },
@@ -176,7 +197,9 @@ export default {
       axios
         .put(`${VITE_API_URL}/update_status/${id}?activated=${activated}`)
         .then((response) => {
-          alert("Staff re-activated successfully!");
+          // alert("Staff re-activated successfully!");
+          const message = "Client re-activated successfully!";
+          this.$refs.successAlert.showSuccess(message);
           // this.inactiveCandidateData = response.data;
           const updatedClient = this.getClientDetail.find((client) => client.id === id);
           if (updatedClient) {

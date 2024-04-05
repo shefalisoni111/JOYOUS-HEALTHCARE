@@ -393,7 +393,7 @@ export default {
 
       try {
         const response = await fetch(`${VITE_API_URL}/assigned_vacancy`, {
-          method: "POST",
+          method: "put",
           headers: {
             Accept: "application/json",
 

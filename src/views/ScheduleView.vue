@@ -235,7 +235,7 @@ export default {
                                 class="list-unstyled mb-0"
                               >
                                 <li
-                                  v-for="(vacancy, liIndex) in data.vacancy"
+                                  v-for="(vacancy, liIndex) in data.vacancies"
                                   :key="vacancy.id"
                                   :draggable="true"
                                   @dragstart="handleDragStart(vacancy.id)"
@@ -289,6 +289,26 @@ export default {
                               clickable: day !== '',
                             }"
                           >
+                            <!-- {{ console.log(data) }} -->
+                            <span
+                              v-for="avail in data.candidate_availability"
+                              :key="avail.id"
+                            >
+                              <span v-if="avail.date === formattedDate(day)">
+                                <span
+                                  v-if="avail.status"
+                                  style="font-size: small; padding: 0px 5px"
+                                  v-bind:class="{
+                                    'btn btn-warning ': avail.status === 'Late',
+                                    'btn btn-primary ': avail.status === 'Unavailable',
+                                    'btn btn-secondary ': avail.status === 'Night',
+                                    'btn btn-light ': avail.status === 'Early',
+                                  }"
+                                >
+                                  {{ avail.status ? avail.status[0].toUpperCase() : "" }}
+                                </span>
+                              </span>
+                            </span>
                             <div
                               v-if="dropCandidateId === data.id && dropDay === day"
                               class="drop-zone"
@@ -639,10 +659,13 @@ export default {
         const requestData = {
           date: this.formattedStartDate,
         };
-        const response = await axios.get(`${VITE_API_URL}/vacancy_of_week`, {
-          params: requestData,
-        });
-        this.vacancyList = response.data;
+        const response = await axios.get(
+          `${VITE_API_URL}/vacancies_and_candidates_availability`,
+          {
+            params: requestData,
+          }
+        );
+        this.vacancyList = response.data.data;
       } catch (error) {
         // console.error("Error in fetchVacancyListMethod:", error);
       }

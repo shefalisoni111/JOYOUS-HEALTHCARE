@@ -336,6 +336,7 @@ export default {
 
             this.checkedCandidates = {};
             this.$emit("allVacancy");
+            this.$emit("allVacancySearch");
             const message = "Staff assigned successfully";
             this.$refs.successAlert.showSuccess(message);
           } else {

@@ -462,6 +462,7 @@ export default {
           if (response.ok) {
             this.checkedCandidates = {};
             this.$emit("appliedVacancy");
+            this.$emit("appliedVacancySearch");
             if (this.selectedAction === "1") {
               // alert("Staff assigned successfully!");
               const message = "Staff assigned successfully";

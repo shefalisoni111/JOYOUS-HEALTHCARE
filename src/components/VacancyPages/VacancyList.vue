@@ -118,7 +118,7 @@
                           <th scope="col">Job Title</th>
                           <th scope="col">Date</th>
                           <th scope="col">Shift</th>
-
+                          <th scope="col" class="withShow">Staff Required</th>
                           <th scope="col">Notes</th>
                           <th scope="col">Publish</th>
                           <th scope="col" class="text-center">All</th>
@@ -129,8 +129,8 @@
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
-                      <tbody v-if="searchResults?.length > 0">
-                        <tr v-for="data in searchResults" :key="data.id">
+                      <tbody v-if="paginatedVacancies?.length > 0">
+                        <tr v-for="data in paginatedVacancies" :key="data.id">
                           <td v-text="data.id"></td>
                           <td v-text="data.ref_code"></td>
                           <td>
@@ -158,7 +158,9 @@
                           </td>
 
                           <td v-text="data.shift"></td>
-
+                          <td class="withShow text-center">
+                            {{ data.staff_required === null ? 0 : data.staff_required }}
+                          </td>
                           <td v-text="data.notes"></td>
 
                           <td>
@@ -269,6 +271,36 @@
         </div>
       </div>
     </div>
+    <div class="mt-3" style="text-align: right" v-if="searchResults?.length > 9">
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= searchResults.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
+    <EditVacancy
+      :vacancyId="selectedVacancyId || 0"
+      @updateVacancy="searchVacancyUpdated"
+    />
+    <PublishedVacancy @publishVacancySearch="searchVacancyUpdated" />
+    <AppliedVacancyList @appliedVacancySearch="searchVacancyUpdated" />
+    <AssignedVacancyList @updateAssignSearch="searchVacancyUpdated" />
+    <RejectedVacancyList @rejectVacancySearch="searchVacancyUpdated" />
+    <AllVacancyCandidateList @allVacancySearch="searchVacancyUpdated" />
   </div>
 </template>
 <script>
@@ -276,6 +308,12 @@ import axios from "axios";
 import AllVacancyList from "../VacancyPages/AllVacancyList.vue";
 import InActiveVacancyList from "../VacancyPages/InActiveVacancyList.vue";
 import AllVacancyDisplay from "../VacancyPages/AllVacancyDisplay.vue";
+import EditVacancy from "../modals/Vacancy/EditVacancy.vue";
+import PublishedVacancy from "../modals/Vacancy/PublishedVacancy.vue";
+import AppliedVacancyList from "../modals/Vacancy/AppliedVacancyList.vue";
+import AssignedVacancyList from "../modals/Vacancy/AssignedVacancyList.vue";
+import RejectedVacancyList from "../modals/Vacancy/RejectedVacancyList.vue";
+import AllVacancyCandidateList from "../modals/Vacancy/AllVacancyCandidateList.vue";
 const axiosInstance = axios.create({
   headers: {
     "Cache-Control": "no-cache",
@@ -286,10 +324,12 @@ export default {
   data() {
     return {
       vacancyCount: 0,
-
+      selectedVacancyId: 0,
       searchQuery: null,
       debounceTimeout: null,
+      getVacancyDetail: [],
       searchResults: [],
+      allVacancyCount: [],
       errorMessage: "",
       tabs: [
         { name: "All", component: "AllVacancyDisplay" },
@@ -298,16 +338,39 @@ export default {
       ],
       activeTab: 0,
       activeTabName: "",
+      currentPage: 1,
+      itemsPerPage: 8,
     };
   },
   computed: {
     activeComponent() {
       return this.tabs[this.activeTab].component;
     },
+    paginatedVacancies() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.searchResults.slice(startIndex, endIndex);
+    },
+    totalRecordsOnPage() {
+      return this.paginatedVacancies.length;
+    },
   },
-  components: { AllVacancyList, InActiveVacancyList, AllVacancyDisplay },
+  components: {
+    AllVacancyList,
+    InActiveVacancyList,
+    AllVacancyDisplay,
+    EditVacancy,
+    PublishedVacancy,
+    AppliedVacancyList,
+    AssignedVacancyList,
+    RejectedVacancyList,
+    AllVacancyCandidateList,
+  },
 
   methods: {
+    editVacancyId(vacancyId) {
+      this.selectedVacancyId = vacancyId;
+    },
     selectTab(index) {
       this.activeTab = index;
       this.activeTabName = this.tabs[index].name;
@@ -377,7 +440,99 @@ export default {
         }
       }
     },
-    async createVacancy() {
+    updateVacancyInList(updatedVacancy) {
+      const index = this.getVacancyDetail.findIndex(
+        (vacancy) => vacancy.id === updatedVacancy.id
+      );
+
+      if (index !== -1) {
+        this.$set(this.getVacancyDetail, index, updatedVacancy);
+      }
+    },
+    openPopup(id) {
+      this.$store.commit("setSelectedAppliedItemId", id);
+    },
+    openAssigned(id) {
+      this.$store.commit("setSelectedAssignedItemId", id);
+    },
+    openRejected(id) {
+      this.$store.commit("setSelectedRejectItemId", id);
+    },
+    async openAllApplied(id) {
+      this.$store.commit("setSelectedAllItemId", id);
+      const vacancyId = this.$store.state.vacancy_id;
+    },
+    openPublished(id) {
+      this.$store.commit("setSelectedPublishedItemId", id);
+    },
+    async vacancyInactiveMethod(id) {
+      if (!window.confirm("Are you Sure ?")) {
+        return;
+      }
+      const token = localStorage.getItem("token");
+
+      const isInactive = this.getVacancyDetail.find(
+        (vacancy) => vacancy.id === id && vacancy.activated === false
+      );
+
+      if (isInactive) {
+        alert("Vacancy already Inactive");
+        return;
+      }
+      await axios
+        .put(`${VITE_API_URL}/inactive_vacancy/` + id, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+        })
+        .then((response) => {
+          this.searchVacancyUpdated();
+        });
+      alert("InActive Vacancy");
+    },
+    async vacancyActiveMethod(id) {
+      if (!window.confirm("Are you Sure ?")) {
+        return;
+      }
+      const token = localStorage.getItem("token");
+      const isActive = this.getVacancyDetail.find(
+        (vacancy) => vacancy.id === id && vacancy.activated === true
+      );
+
+      if (isActive) {
+        alert("Vacancy already active");
+        return;
+      }
+
+      await axios
+        .put(`${VITE_API_URL}/active_vacancy/` + id, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+        })
+        .then((response) => {
+          this.searchVacancyUpdated();
+        });
+      alert("Active Vacancy");
+    },
+    reActivatedMethod(id) {
+      if (!window.confirm("Are you sure you want to re-activate?")) {
+        return;
+      }
+      axios
+        .put(`${VITE_API_URL}/active_vacancy/${id}`)
+        .then((response) => {
+          this.inactiveCandidateData = response.data;
+          this.getInactiveVacancyMethod();
+          alert("Successful Reactivate");
+        })
+        .catch((error) => {
+          // console.error("Error reactivating vacancy:", error);
+        });
+    },
+    async searchVacancyUpdated() {
       const token = localStorage.getItem("token");
       try {
         const response = await axios.get(`${VITE_API_URL}/vacancies`, {
@@ -387,6 +542,25 @@ export default {
           },
         });
         this.vacancyCount = response.data.data;
+        this.searchResults = response.data.data;
+        let appliedCount = 0;
+        let assignedCount = 0;
+        let rejectedCount = 0;
+        let allCandidatesCount = 0;
+
+        // Calculate counts
+        searchResults.forEach((vacancy) => {
+          appliedCount += vacancy.applied;
+          assignedCount += vacancy.assigned;
+          rejectedCount += vacancy.rejected;
+          allCandidatesCount += vacancy.all_candidate;
+        });
+
+        // Update counts
+        this.appliedCount = appliedCount;
+        this.assignedCount = assignedCount;
+        this.rejectedCount = rejectedCount;
+        this.allCandidatesCount = allCandidatesCount;
       } catch (error) {
         // console.error("Error fetching vacancy count:", error);
       }
@@ -394,8 +568,10 @@ export default {
   },
 
   mounted() {
-    this.createVacancy();
     this.setActiveTabNameOnLoad();
+  },
+  async created() {
+    await this.searchVacancyUpdated();
   },
   beforeRouteUpdate(to, from, next) {
     this.setActiveTabFromRoute();
@@ -407,6 +583,9 @@ export default {
 </script>
 
 <style scoped>
+.withShow {
+  width: 5%;
+}
 #main {
   transition: all 0.3s;
   padding-top: 63px;

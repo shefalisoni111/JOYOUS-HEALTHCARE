@@ -1,5 +1,38 @@
 <template>
   <div>
+    <div class="mt-2">
+      <button
+        type="button"
+        class="btn btn-outline-success text-nowrap"
+        @click="toggleFilters"
+      >
+        <i class="bi bi-funnel"></i>
+        Show Filters
+      </button>
+    </div>
+
+    <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
+      <div class="d-flex gap-2 mt-3">
+        <div></div>
+
+        <select @change="filterData($event.target.value)">
+          <option selected>Client Status</option>
+          <option value="true">Active</option>
+          <option class="false">In-Active</option>
+        </select>
+
+        <!-- <select v-model="selectedCandidate" id="selectCandidateList">
+                        <option value="">All Staff</option>
+                        <option
+                          v-for="option in candidateLists"
+                          :key="option.id"
+                          :value="`${option.first_name} ${option.last_name}`"
+                        >
+                          {{ option.first_name }} {{ option.last_name }}
+                        </option>
+                      </select> -->
+      </div>
+    </div>
     <div class="table-wrapper mt-3">
       <table class="table clientTable">
         <thead>
@@ -7,7 +40,7 @@
             <th scope="col">ID</th>
             <th scope="col">#RefCode</th>
             <th scope="col">ClientName</th>
-            <th scope="col">Jobs</th>
+            <th scope="col" style="width: 10%">Jobs</th>
             <th scope="col">Address</th>
             <th scope="col">PhoneNumber</th>
             <th scope="col">Email</th>
@@ -33,7 +66,12 @@
               <!-- {{ client.first_name }} -->
             </td>
             <td>
-              <span v-for="(job, index) in client.job_name" :key="index">
+              <span
+                v-for="(job, index) in client.job_name"
+                :key="index"
+                :style="{ backgroundColor: getColor(index) }"
+                class="p-1 me-2 mt-5 rounded-1"
+              >
                 {{ job }}
 
                 <template v-if="index !== client.job_name.length - 1"> </template>
@@ -130,12 +168,14 @@
 
     <EditClientModal :clientID="selectedClientID || 0" @client-updated="createdClient" />
     <AddClients @client-updated="createdClient" />
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 <script>
 import axios from "axios";
 import EditClientModal from "../modals/Clients/EditClientModal.vue";
 import AddClients from "@/components/modals/Clients/AddClients.vue";
+import SuccessAlert from "../Alerts/SuccessAlert.vue";
 
 export default {
   data() {
@@ -147,10 +187,22 @@ export default {
       currentPage: 1,
       itemsPerPage: 11,
       activated: false,
+      showFilters: false,
+      client: {
+        job_name: ["Job1", "Job2", "Job3", "Job4", "Job5", "Job6"],
+      },
+      colors: [
+        "lightblue",
+        "lightgreen",
+        "lightyellow",
+        "lightcoral",
+        "lightskyblue",
+        "lightpink",
+      ],
     };
   },
 
-  components: { EditClientModal, AddClients },
+  components: { EditClientModal, AddClients, SuccessAlert },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -165,6 +217,40 @@ export default {
     },
   },
   methods: {
+    toggleFilters() {
+      this.showFilters = !this.showFilters;
+    },
+    filterData(value) {
+      let client_type = "activated";
+      let client_value = value === "true" ? "true" : "false";
+
+      this.makeFilterAPICall(client_type, client_value);
+    },
+    async makeFilterAPICall(client_type, client_value) {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/client_filter`, {
+          params: {
+            client_type: client_type,
+            client_value: client_value,
+          },
+        });
+
+        this.getClientDetail = response.data.data;
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          const errorMessages = error.response.data.error;
+          if (errorMessages === "No records found for the given filter") {
+            alert("No records found for the given filter");
+          } else {
+            alert(errorMessages);
+          }
+        } else {
+        }
+      }
+    },
+    getColor(index) {
+      return this.colors[index % this.colors.length];
+    },
     clientStatusChangeMethod(id, activated) {
       if (!window.confirm("Are you sure?")) {
         return;
@@ -173,9 +259,13 @@ export default {
         .put(`${VITE_API_URL}/update_status/${id}?activated=${activated}`)
         .then((response) => {
           if (activated) {
-            alert("Staff activated successfully!");
+            // alert("Staff activated successfully!");
+            const message = "Client activated successfully!";
+            this.$refs.successAlert.showSuccess(message);
           } else {
-            alert("Staff inactivated successfully!");
+            // alert("Staff inactivated successfully!");
+            const message = "Client inactivated successfully!";
+            this.$refs.successAlert.showSuccess(message);
           }
           const updatedClient = this.getClientDetail.find((client) => client.id === id);
           if (updatedClient) {
@@ -225,6 +315,12 @@ export default {
 .btn-primary {
   border: none;
 }
+select {
+  padding: 10px;
+  border-radius: 4px;
+  border: 0px;
+  border: 1px solid rgb(202, 198, 198);
+}
 ul.nav-pills {
   border-bottom: none !important;
   height: auto !important;
@@ -243,6 +339,12 @@ ul.nav-pills {
 .color-fonts {
   color: #ff5f30;
   font-weight: bold;
+}
+.job-background-even {
+  background-color: lightblue;
+}
+.job-background-odd {
+  background-color: lightgreen;
 }
 .badge {
   background: #ffc107;

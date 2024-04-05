@@ -76,14 +76,14 @@
                         >
                           + Add Client
                         </button>
-                        <button
+                        <!-- <button
                           type="button"
                           class="btn btn-outline-success text-nowrap"
                           @click="toggleFilters"
                         >
                           <i class="bi bi-funnel"></i>
                           Show Filters
-                        </button>
+                        </button> -->
                         <button
                           class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
                           type="button"
@@ -107,7 +107,7 @@
                       </div>
                     </div>
                   </div>
-                  <div
+                  <!-- <div
                     class="d-flex gap-2 mb-3 justify-content-between"
                     v-if="showFilters"
                   >
@@ -120,7 +120,7 @@
                         <option class="false">In-Active</option>
                       </select>
 
-                      <!-- <select v-model="selectedCandidate" id="selectCandidateList">
+                       <select v-model="selectedCandidate" id="selectCandidateList">
                         <option value="">All Staff</option>
                         <option
                           v-for="option in candidateLists"
@@ -129,9 +129,9 @@
                         >
                           {{ option.first_name }} {{ option.last_name }}
                         </option>
-                      </select> -->
+                      </select> 
                     </div>
-                  </div>
+                  </div> -->
                   <div v-if="!searchQuery">
                     <component :is="activeComponent"></component>
                   </div>
@@ -294,7 +294,7 @@ export default {
       activeTabName: "",
       currentPage: 1,
       itemsPerPage: 11,
-      showFilters: false,
+      // showFilters: false,
       selectedClientStatus: "",
     };
   },
@@ -315,9 +315,9 @@ export default {
   components: { AllClient, InActiveClient, ActiveClient },
 
   methods: {
-    toggleFilters() {
-      this.showFilters = !this.showFilters;
-    },
+    // toggleFilters() {
+    //   this.showFilters = !this.showFilters;
+    // },
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
 
@@ -349,37 +349,37 @@ export default {
         }
       }
     },
-    filterData(value) {
-      let client_type = "activated";
-      let client_value = value === "true" ? "true" : "false";
+    // filterData(value) {
+    //   let client_type = "activated";
+    //   let client_value = value === "true" ? "true" : "false";
 
-      this.makeFilterAPICall(client_type, client_value);
-    },
-    async makeFilterAPICall(client_type, client_value) {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/client_filter`, {
-          params: {
-            client_type: client_type,
-            client_value: client_value,
-          },
-        });
-
-        this.getClientDetail = response.data.data;
-        // console.log(this.getClientDetail);
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
-          const errorMessages = error.response.data.error;
-          if (errorMessages === "No records found for the given filter") {
-            alert("No records found for the given filter");
-          } else {
-            alert(errorMessages);
-          }
-        } else {
-          // Handle other errors
-          // console.error("Error filtering custom timesheets:", error);
-        }
-      }
-    },
+    //   this.makeFilterAPICall(client_type, client_value);
+    // },
+    // async makeFilterAPICall(client_type, client_value) {
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/client_filter`, {
+    //       params: {
+    //         client_type: client_type,
+    //         client_value: client_value,
+    //       },
+    //     });
+    //     this.createdClient();
+    //     this.getClientDetail = response.data.data;
+    //     // console.log(this.getClientDetail);
+    //   } catch (error) {
+    //     if (error.response && error.response.status === 404) {
+    //       const errorMessages = error.response.data.error;
+    //       if (errorMessages === "No records found for the given filter") {
+    //         alert("No records found for the given filter");
+    //       } else {
+    //         alert(errorMessages);
+    //       }
+    //     } else {
+    //       // Handle other errors
+    //       // console.error("Error filtering custom timesheets:", error);
+    //     }
+    //   }
+    // },
     setActiveTabFromRoute() {
       const currentRouteName = this.$route.name;
       const matchingTabIndex = this.tabs.findIndex(
@@ -401,7 +401,7 @@ export default {
     },
     async createdClient() {
       await axios
-        .get(`${VITE_API_URL}/clients`)
+        .get(`${VITE_API_URL}/activated_client`)
 
         .then((response) => (this.getClientDetail = response.data.data));
     },

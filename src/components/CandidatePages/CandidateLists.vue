@@ -94,7 +94,17 @@
               <tbody v-if="searchResults?.length > 0">
                 <tr v-for="data in searchResults" :key="data.id">
                   <td>{{ data.id }}</td>
-                  <td>{{ data.first_name }}</td>
+                  <td>
+                    <router-link
+                      class="text-capitalize fw-bold"
+                      :to="{
+                        name: 'Profile',
+                        params: { id: data.id },
+                      }"
+                    >
+                      {{ data.first_name }}&nbsp; {{ data.last_name }}
+                    </router-link>
+                  </td>
                   <td>{{ data.position }}</td>
                   <td>{{ data.email }}</td>
                   <td>{{ data.phone_number }}</td>

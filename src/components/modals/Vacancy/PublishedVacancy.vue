@@ -425,6 +425,7 @@ export default {
             this.showMessage = false;
             this.selectAll = false;
             this.$emit("publishVacancy");
+            this.$emit("publishVacancySearch");
             const message = "Shift Published successfully";
             this.$refs.successAlert.showSuccess(message);
           } else {

@@ -235,6 +235,7 @@ export default {
           this.assignedVacancyData = response.data.data;
           this.vacancyDetails = response.data.vacancy_date;
           this.$emit("assignVacancy");
+          this.$emit("updateAssignSearch");
         } catch (error) {
           if (error.response) {
             if (error.response.status == 404) {
