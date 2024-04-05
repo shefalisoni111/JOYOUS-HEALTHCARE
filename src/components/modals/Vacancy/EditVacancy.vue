@@ -75,13 +75,26 @@
                       :key="index"
                       class=""
                     >
-                      <div class="col-11">
+                      <div class="col-11 position-relative">
                         <input
                           type="date"
                           class="form-control"
                           :value="formatDate(date)"
                           @input="updateDate($event.target.value, index)"
                         />
+                        <button
+                          style="
+                            position: absolute;
+                            bottom: 27px;
+                            right: -7px;
+                            border-radius: 50%;
+                            padding: 0 4px;
+                          "
+                          class="btn btn-danger btn-sm mt-2"
+                          @click="removeDate(index)"
+                        >
+                          X
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -218,8 +231,10 @@ export default {
     },
   },
   methods: {
+    removeDate(index) {
+      this.fetchVacancy.dates.splice(index, 1);
+    },
     formatDate(date) {
-      // Assuming date is in "DD-MM-YYYY" format
       const [day, month, year] = date.split("-");
       return `${year}-${month}-${day}`;
     },
