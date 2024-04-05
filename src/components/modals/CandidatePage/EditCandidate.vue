@@ -164,6 +164,7 @@ export default {
       }
     },
     async fetchCandidateMethod(id) {
+      if (!id) return;
       try {
         const response = await axios.get(`${VITE_API_URL}/candidates/${id}`);
         this.fetchCandidate = { ...this.fetchCandidate, ...response.data.data };

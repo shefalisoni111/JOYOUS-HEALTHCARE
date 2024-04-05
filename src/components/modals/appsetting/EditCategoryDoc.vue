@@ -104,6 +104,7 @@ export default {
   },
   methods: {
     async fetchCategoryMethod(id) {
+      if (!id) return;
       try {
         const response = await axios.get(`${VITE_API_URL}/document_categories/${id}`);
         this.fetchCategory = { ...this.fetchCategory, ...response.data.data };

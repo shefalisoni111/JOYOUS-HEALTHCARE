@@ -168,6 +168,7 @@ export default {
       this.validatePhoneNumber = this.fetchNExtToKinData.phone_number.length === 10;
     },
     async fetchNextToKinMethod(id) {
+      if (!id) return;
       try {
         const response = await axios.get(
           `${VITE_API_URL}/candidates/${this.$route.params.id}/next_of_kins/${id}`

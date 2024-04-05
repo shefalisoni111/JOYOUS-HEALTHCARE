@@ -40,15 +40,12 @@
 
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label for="exampleFormControlTextarea1" class="form-label"
-                      >DESC</label
-                    >
+                    <label class="form-label">DESC</label>
                   </div>
                   <div class="col-10 mt-1">
                     <textarea
                       type="text"
                       class="form-control"
-                      id="exampleFormControlTextarea1"
                       rows="3"
                       v-model="description"
                       @input="clearError('description')"

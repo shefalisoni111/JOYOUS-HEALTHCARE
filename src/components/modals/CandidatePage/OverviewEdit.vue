@@ -197,6 +197,9 @@ export default {
       employeeData: [],
     };
   },
+  components: {
+    SuccessAlert,
+  },
   computed: {
     selectEmployeeType() {
       const employment_type = this.employeeData.find(

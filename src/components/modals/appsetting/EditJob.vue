@@ -84,6 +84,7 @@ export default {
   components: { SuccessAlert },
   methods: {
     async fetchJobsMethod(id) {
+      if (!id) return;
       try {
         const response = await axios.get(`${VITE_API_URL}/jobs/${id}`);
         this.fetchJobs.name = response.data.data.name;

@@ -20,10 +20,10 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-4">
-                    <label class="form-label" for="selectOption">JOB</label>
+                    <label class="form-label" for="selectAddDeduction">JOB</label>
                   </div>
                   <div class="col-8 mt-1">
-                    <select v-model="jobs_id" id="selectOption">
+                    <select v-model="jobs_id" id="selectAddDeduction">
                       <option
                         v-for="option in options"
                         :key="option.id"

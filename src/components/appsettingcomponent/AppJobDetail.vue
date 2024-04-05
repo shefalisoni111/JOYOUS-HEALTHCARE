@@ -157,7 +157,7 @@
         </div>
       </div>
     </div>
-    <ConfirmationModal />
+    <!-- <ConfirmationModal /> -->
     <AddJobbs @jobAdded="getJobData" />
     <EditJob :jobID="selectedjobID" @jobUpdate="getInactiveJobData" />
     <SuccessAlert ref="successAlert" />
@@ -168,7 +168,7 @@
 import axios from "axios";
 import AddJobbs from "../modals/appsetting/AddJobbs.vue";
 import EditJob from "../modals/appsetting/EditJob.vue";
-import ConfirmationModal from "../../components/Alerts/ConfirmationAlert.vue";
+// import ConfirmationModal from "../../components/Alerts/ConfirmationAlert.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
 
 export default {
@@ -185,7 +185,7 @@ export default {
   components: {
     AddJobbs,
     EditJob,
-    ConfirmationModal,
+    // ConfirmationModal,
     SuccessAlert,
   },
 

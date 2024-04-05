@@ -17,10 +17,10 @@
               <form>
                 <div class="mb-3">
                   <div class="col-12">
-                    <label class="form-label" for="selectOption">Position</label>
+                    <label class="form-label" for="selectRatCardJob">Position</label>
                   </div>
                   <div class="col-12 mt-1">
-                    <select v-model="fetchRateCard.job_id" id="selectOption">
+                    <select v-model="fetchRateCard.job_id" id="selectRatCardJob">
                       <option
                         v-for="option in options"
                         :key="option.id"

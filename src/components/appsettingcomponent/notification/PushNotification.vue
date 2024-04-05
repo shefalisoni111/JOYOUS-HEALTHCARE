@@ -136,7 +136,6 @@
                           <div class="form-group">
                             <textarea
                               class="form-control"
-                              id="exampleFormControlTextarea1"
                               rows="7"
                               placeholder="A new vacancy has been added, please the app for more information"
                             ></textarea>
@@ -180,7 +179,6 @@
                           <div class="form-group">
                             <textarea
                               class="form-control"
-                              id="exampleFormControlTextarea1"
                               rows="7"
                               placeholder="A new vacancy has been added, please the app for more information"
                             ></textarea>
@@ -224,7 +222,6 @@
                           <div class="form-group">
                             <textarea
                               class="form-control"
-                              id="exampleFormControlTextarea1"
                               rows="7"
                               placeholder="A new vacancy has been added, please the app for more information"
                             ></textarea>
@@ -309,7 +306,6 @@
                           <div class="form-group">
                             <textarea
                               class="form-control"
-                              id="exampleFormControlTextarea1"
                               rows="7"
                               placeholder="Hi [candidate_name],your next shift with [job] on [date] starting at [date], please present on the site.If you are unable to make it, please call [agency] on [agency_number] Regards.[agency_name]"
                             ></textarea>
@@ -353,7 +349,6 @@
                           <div class="form-group">
                             <textarea
                               class="form-control"
-                              id="exampleFormControlTextarea1"
                               rows="7"
                               placeholder="A new vacancy has been added, please the app for more information"
                             ></textarea>

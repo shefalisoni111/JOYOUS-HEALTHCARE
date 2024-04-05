@@ -53,10 +53,10 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-4">
-                    <label class="form-label" for="selectOption">position</label>
+                    <label class="form-label">position</label>
                   </div>
                   <div class="col-8">
-                    <select v-model="job_id" id="selectOption" @change="clearError">
+                    <select v-model="job_id" @change="clearError">
                       <option
                         v-for="option in options"
                         :key="option.id"
