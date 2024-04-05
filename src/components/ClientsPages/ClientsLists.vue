@@ -56,7 +56,6 @@
                         <div class="searchbox position-relative">
                           <form @submit.prevent="search">
                             <input
-                              v-if="activeTab === 0"
                               class="form-control mr-sm-2"
                               type="search"
                               placeholder="Search..."
@@ -329,8 +328,19 @@ export default {
     async search() {
       try {
         this.searchResults = [];
+        let apiUrl = "";
 
-        const response = await axiosInstance.get(`${VITE_API_URL}/search_api`, {
+        if (this.activeTab === 0) {
+          apiUrl = `${VITE_API_URL}/search_api`;
+        } else if (this.activeTab === 1) {
+          apiUrl = `${VITE_API_URL}/active_search_api`;
+        } else if (this.activeTab === 2) {
+          apiUrl = `${VITE_API_URL}/inactive_search_api`;
+        } else {
+          return;
+        }
+
+        const response = await axiosInstance.get(apiUrl, {
           params: {
             query: this.searchQuery,
           },

@@ -222,7 +222,7 @@ export default {
                       <td>
                         <div
                           class="calendar-grid"
-                          style="max-height: 90px; overflow-y: auto"
+                          style="max-height: 90px; overflow-y: auto; overflow-x: hidden"
                         >
                           <div v-for="(data, index) in vacancyList" :key="index">
                             <div
@@ -235,6 +235,7 @@ export default {
                                 class="list-unstyled mb-0"
                               >
                                 <li
+                                  class="position-relative"
                                   v-for="(vacancy, liIndex) in data.vacancies"
                                   :key="vacancy.id"
                                   :draggable="true"
@@ -246,7 +247,12 @@ export default {
                                     'bg-primary': liIndex >= 3,
                                   }"
                                 >
-                                  {{ vacancy.business_unit }}
+                                  <span
+                                    >{{ vacancy.business_unit }} {{ vacancy.shift }}</span
+                                  >
+                                  <span class="staff-count-round text-white">{{
+                                    vacancy.staff_required
+                                  }}</span>
                                 </li>
                                 <!-- <li>business_unit</li> -->
                               </ul>
@@ -729,6 +735,17 @@ export default {
 
 .sidebar-container {
   display: flex; /* Make children inline */
+}
+.staff-count-round {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: red;
+  border-radius: 50%;
+  top: 0;
+  right: -4px;
+
+  line-height: 20px;
 }
 
 .sidebar-button {
