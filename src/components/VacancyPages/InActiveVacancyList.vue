@@ -85,7 +85,7 @@
         </table>
       </div>
     </div>
-    <div class="mt-3" style="text-align: right" v-if="getInactiveData.length >= 9">
+    <div class="mt-3" style="text-align: right" v-if="getInactiveData.length > 9">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>

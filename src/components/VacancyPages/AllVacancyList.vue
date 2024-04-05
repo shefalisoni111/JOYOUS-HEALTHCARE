@@ -178,7 +178,7 @@
     <RejectedVacancyList @rejectVacancy="createVacancy" />
     <AllVacancyCandidateList @allVacancy="createVacancy" />
     <AddVacancy @addVacancy="createVacancy" />
-    <div class="mt-3" style="text-align: right" v-if="getVacancyDetail.length >= 9">
+    <div class="mt-3" style="text-align: right" v-if="getVacancyDetail?.length > 9">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>

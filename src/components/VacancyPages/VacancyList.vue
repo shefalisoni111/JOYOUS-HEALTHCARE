@@ -271,7 +271,11 @@
         </div>
       </div>
     </div>
-    <div class="mt-3" style="text-align: right" v-if="searchResults?.length > 9">
+    <!-- <div
+      class="mt-3"
+      style="text-align: right"
+      v-if="searchResults && searchResults?.length > 8"
+    >
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -291,7 +295,7 @@
       >
         Next
       </button>
-    </div>
+    </div> -->
     <EditVacancy
       :vacancyId="selectedVacancyId || 0"
       @updateVacancy="searchVacancyUpdated"

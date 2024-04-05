@@ -88,12 +88,12 @@
                             bottom: 27px;
                             right: -7px;
                             border-radius: 50%;
-                            padding: 0 4px;
+                            padding: 0px 5px;
                           "
                           class="btn btn-danger btn-sm mt-2"
                           @click="removeDate(index)"
                         >
-                          X
+                          x
                         </button>
                       </div>
                     </div>
