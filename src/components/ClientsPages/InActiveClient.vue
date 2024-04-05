@@ -33,10 +33,10 @@
               <!-- {{ client.first_name }} -->
             </td>
             <td>
-              <span v-for="(job, index) in client.jobs" :key="index">
+              <span v-for="(job, index) in client.job_name" :key="index">
                 {{ job }}
 
-                <template v-if="index !== client.jobs.length - 1">, </template>
+                <template v-if="index !== client.job_name.length - 1"> </template>
               </span>
             </td>
             <td v-text="client.address"></td>

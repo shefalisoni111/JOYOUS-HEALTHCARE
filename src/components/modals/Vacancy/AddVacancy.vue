@@ -422,7 +422,6 @@ export default {
     },
     async getJobTitleMethod() {
       try {
-        console.log("Selected client ID:", this.client_id);
         const response = await axios.get(
           `${VITE_API_URL}/job_title_for_client/${this.client_id}`
         );
