@@ -27,7 +27,28 @@
                     >
                   </div>
                 </div>
-
+                <div class="mb-3">
+                  <div class="col-12">
+                    <label class="form-label" for="selectOption">Jobs</label>
+                  </div>
+                  <div class="col-12">
+                    <div v-for="option in options" :key="option.id">
+                      <input
+                        type="checkbox"
+                        :id="option.id"
+                        :value="option.id"
+                        v-model="job_id"
+                        @change="toggleJobsSelection"
+                      />
+                      <label :for="option.id" class="text-capitalize"
+                        >&nbsp;{{ option.name }}</label
+                      >
+                    </div>
+                    <div v-if="getError('job_id')" class="text-danger">
+                      {{ getError("job_id") }}
+                    </div>
+                  </div>
+                </div>
                 <div class="mb-3">
                   <div class="">
                     <div class="col-12">
@@ -82,9 +103,7 @@
                       type="password"
                       class="form-control"
                       v-model="password"
-                      @input="validatePassword"
                       @change="detectAutofill"
-                      @blur="validatePassword"
                       ref="password"
                       autocomplete="new-password"
                     />
@@ -140,8 +159,8 @@
               Cancel
             </button>
             <button
-              :disabled="!isFormFilledAndValid"
-              :class="{ disabled: !isFormFilledAndValid }"
+              :disabled="!isFormFilledAndValid || !isJobsSelected"
+              :class="{ disabled: !isFormFilledAndValid || !isJobsSelected }"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               v-on:click="addClients()"
@@ -169,9 +188,10 @@ export default {
       isPasswordValid: true,
       validateEmail: true,
       validatePhoneNumber: true,
-      validatePassword: null,
+      // validatePassword: null,
       showPasswordRequiredMessage: false,
       passwordsMatch: true,
+      isJobsSelected: false,
       first_name: "",
       ref_code: "",
       address: "",
@@ -181,6 +201,9 @@ export default {
       confirm_password: "",
       isValidForm: false,
       error: [],
+      job_id: [],
+      options: [],
+      errors: {},
       autofilled: false,
     };
   },
@@ -189,7 +212,7 @@ export default {
       return (
         this.validateEmail &&
         this.passwordsMatch &&
-        this.validatePassword &&
+        // this.validatePassword &&
         this.validatePhoneNumber &&
         this.validateClientName &&
         this.validateAddress
@@ -200,12 +223,13 @@ export default {
         this.first_name &&
         this.address &&
         this.email &&
+        this.job_id &&
         this.password &&
         this.confirm_password &&
         this.phone_number &&
         this.validateEmail &&
         this.passwordsMatch &&
-        this.validatePassword &&
+        // this.validatePassword &&
         this.validatePhoneNumber &&
         this.validateClientName &&
         this.validateAddress
@@ -235,9 +259,16 @@ export default {
         this.clearError();
       }, 10);
     },
+    clearError(fieldName) {
+      this.errors[fieldName] = null;
+    },
+    getError(fieldName) {
+      return this.errors[fieldName];
+    },
     clearFields() {
       this.first_name = "";
       this.address = "";
+      this.job_id = "";
       this.phone_number = "";
       this.email = "";
       this.password = "";
@@ -267,7 +298,10 @@ export default {
       this.phone_number = this.phone_number.replace(/\D/g, "");
       this.clearError();
     },
-
+    toggleJobsSelection() {
+      this.isJobsSelected = this.job_id.length > 0;
+      this.clearError();
+    },
     async addClients() {
       this.validateAddress = this.validateAddressFormat(this.address);
       this.validateClientName = this.validateNameFormat(this.first_name);
@@ -287,7 +321,7 @@ export default {
       ) {
         const data = {
           first_name: this.first_name,
-
+          job_id: this.job_id,
           address: this.address,
           phone_number: this.phone_number,
           email: this.email,
@@ -307,7 +341,7 @@ export default {
             // location.reload();
             this.$emit("client-updated");
             this.first_name = "";
-
+            this.job_id = "";
             this.address = "";
             this.phone_number = "";
             this.email = "";
@@ -349,10 +383,24 @@ export default {
       this.validateClientName = true;
       this.validateAddress = true;
     },
+    async getPositionMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+        this.options = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
   },
 
   mounted() {
+    // this.validatePassword = this.validatePassword.bind(this);
     this.isValidForm = this.isFormValid;
+    this.getPositionMethod();
   },
 };
 </script>

@@ -20,11 +20,16 @@
                     <label for="selectClients" class="form-label">Client</label>
                   </div>
                   <div class="col-10">
-                    <select v-model="client_id" id="selectClients">
+                    <select
+                      v-model="client_id"
+                      id="selectClients"
+                      @change="onClientSelect"
+                    >
                       <option
                         v-for="option in clientData"
                         :key="option.id"
                         :value="option.id"
+                        :id="option.id"
                         aria-placeholder="Select Job"
                       >
                         {{ option.first_name }}
@@ -266,7 +271,7 @@ export default {
 
     selectClients() {
       const client_id = this.clientData.find((option) => option.id === this.client_id);
-      return client_id ? client_id.first_name : "";
+      return this.client_id;
     },
 
     selectShifts() {
@@ -309,6 +314,11 @@ export default {
     },
   },
   methods: {
+    onClientSelect() {
+      const selectedClientId = this.client_id;
+
+      this.getJobTitleMethod(selectedClientId);
+    },
     validateStaffRequired() {
       if (this.staff_required <= 0) {
         // this.staff_required = null;
@@ -412,7 +422,10 @@ export default {
     },
     async getJobTitleMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+        console.log("Selected client ID:", this.client_id);
+        const response = await axios.get(
+          `${VITE_API_URL}/job_title_for_client/${this.client_id}`
+        );
         this.options = response.data.data;
       } catch (error) {
         if (error.response) {
@@ -498,8 +511,8 @@ export default {
     },
   },
   mounted() {
-    this.getJobTitleMethod();
     this.getBusinessUnitMethod();
+    // this.getJobTitleMethod();
     this.getClientMethod();
     this.getTimeShift();
     this.isValidForm = this.isFormValid;

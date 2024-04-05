@@ -30,7 +30,7 @@ export default {
     <Navbar />
     <div class="container-fluid p-0">
       <div id="main">
-        <div class="pagetitle d-flex justify-content-between px-2">
+        <div class="pagetitle d-flex justify-content-between px-2 pt-3">
           <div class="py-3">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active text-uppercase fs-6">
@@ -41,29 +41,31 @@ export default {
               </li>
             </ol>
           </div>
+          <div class="d-flex align-items-center">
+            <button class="btn btn-primary">Publish</button>
+          </div>
         </div>
-        <div class="row p-3">
+        <div class="row">
           <div class="full-page-calendar">
-            <div class="calendar-header">
-              <span v-if="formattedStartDate && formattedEndDate" class="fw-bold">
+            <!-- <div class="calendar-header">
+               <span
+                v-if="currentView === 'weekly' && startDate && endDate"
+                class="fw-bold"
+              >
                 {{
-                  "Monday " + formattedStartDate + " to Sunday " + formattedEndDate
+                  "Monday " + formatDate(startDate) + " to Sunday " + formatDate(endDate)
                 }} </span
-              >&nbsp; &nbsp; &nbsp;&nbsp;
-              <div class="d-flex align-items-center fs-4">
-                <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
-                <i class="bi bi-calendar2-check-fill"></i>
-                <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
-              </div>
-              <!-- <input
+              >&nbsp; &nbsp; &nbsp;&nbsp; -->
+
+            <!-- <input
                 type="date"
                 v-model="startDate"
                 @change="updateDateRange"
                 class="dateInput"
-              /> -->
-            </div>
+              /> 
+            </div> -->
 
-            <div v-if="selectedDate !== null" class="modal">
+            <!-- <div v-if="selectedDate !== null" class="modal">
               <div class="modal-content">
                 <div class="close d-flex justify-content-between my-3">
                   <h3 class="d-flex align-items-center mb-0">Edit Assigned Shift -</h3>
@@ -71,15 +73,23 @@ export default {
                 </div>
 
                 <h4 class="text-capitalize">{{ getCandidateName() }}</h4>
-                <p>You clicked on {{ selectedDate }}</p>
+               <p>You clicked on {{ selectedDate }}</p>
                 <p>Status: {{ statusForSelectedDate }}</p>
 
-                <AppointmentAdd
+                <ScheduleDirectAssignList
                   :initialDate="selectedDate"
                   :candidateId="selectedCandidateId"
                   @closeModal="closeModal"
                 />
               </div>
+            </div> -->
+            <div>
+              <ScheduleDirectAssignList
+                :columnDateMatch="columnDateMatch"
+                :initialDate="selectedDate"
+                :candidateId="selectedCandidateId"
+                @closeModal="closeModal"
+              />
             </div>
           </div>
           <div class="table-wrapper">
@@ -167,7 +177,17 @@ export default {
                 <table class="table">
                   <thead>
                     <tr>
-                      <th style="width: 15%">Shifts</th>
+                      <th style="width: 15%">
+                        <div class="d-flex justify-content-between">
+                          <div class="d-flex align-items-center">Shifts</div>
+                          &nbsp; &nbsp; &nbsp;&nbsp;
+                          <div class="d-flex align-items-center fs-4">
+                            <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
+                            <i class="bi bi-calendar2-check-fill"></i>
+                            <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                          </div>
+                        </div>
+                      </th>
 
                       <th>
                         <div class="calendar-grid">
@@ -200,13 +220,15 @@ export default {
                         </form>
                       </td>
                       <td>
-                        <div class="calendar-grid">
+                        <div
+                          class="calendar-grid"
+                          style="max-height: 90px; overflow-y: auto"
+                        >
                           <div v-for="(data, index) in vacancyList" :key="index">
                             <div
                               v-for="day in selectedDateRow"
                               :key="day"
                               class="text-center"
-                              style="max-height: 46px; overflow-y: auto"
                             >
                               <ul
                                 v-if="data.date === formattedDate(day)"
@@ -235,7 +257,10 @@ export default {
                     </tr>
 
                     <tr v-for="data in paginateCandidates" :key="data.id">
-                      <td class="text-capitalize fw-bold">
+                      <div
+                        class="text-capitalize fw-bold"
+                        style="border-right: 1px solid rgb(209, 208, 208)"
+                      >
                         {{ data.first_name }} {{ data.last_name }}
 
                         <span class="fs-6 text-muted fw-100"
@@ -244,7 +269,7 @@ export default {
                             >{{ data.position }}</span
                           ></span
                         >
-                      </td>
+                      </div>
 
                       <td>
                         <div
@@ -255,7 +280,10 @@ export default {
                           <div
                             v-for="day in selectedDateRow"
                             :key="day"
-                            @click="openModal(data, day)"
+                            data-bs-toggle="modal"
+                            data-bs-target="#scheduleDirectAssignList"
+                            data-bs-whatever="@mdo"
+                            @click="openModal(data, formattedDate(day))"
                             :class="{
                               'calendar-day': true,
                               clickable: day !== '',
@@ -306,19 +334,22 @@ export default {
 <script>
 import axios from "axios";
 import AppointmentAdd from "../components/modals/Schedule/EditAssignedShift.vue";
+import ScheduleDirectAssignList from "../components/modals/Schedule/ScheduleDirectAssignList.vue";
 import Navbar from "../components/Navbar.vue";
 
 export default {
   data() {
     return {
       isOpen: false,
+      currentView: "weekly",
       startDate: new Date(),
-      endDate: { value: "", display: "" },
+      endDate: new Date(),
       currentDate: new Date(),
       selectedDate: null,
       candidateList: [],
       selectedCandidateId: null,
       // selectedCandidate: null,
+      columnDateMatch: "",
       currentSelectedCandidate: null,
       statusForSelectedDate: null,
       vacancyList: [],
@@ -375,14 +406,27 @@ export default {
     selectedDateRow() {
       const selectedDate = new Date(this.startDate);
       const selectedDateRow = [];
-
       const dayOfWeek = selectedDate.getDay();
       const startDay = (dayOfWeek - 1 + 7) % 7;
 
       for (let i = 0; i < 7; i++) {
         const currentDate = new Date(selectedDate);
         currentDate.setDate(selectedDate.getDate() + i - startDay);
-        selectedDateRow.push(`${currentDate.getDate()}`);
+
+        const lastDayOfMonth = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        ).getDate();
+        if (currentDate.getDate() > lastDayOfMonth) {
+          currentDate.setMonth(currentDate.getMonth() + 1);
+
+          currentDate.setDate(1);
+
+          currentDate.setDate(i + 1 - startDay);
+        }
+
+        selectedDateRow.push(currentDate);
       }
 
       return selectedDateRow;
@@ -402,52 +446,79 @@ export default {
       return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
     },
   },
-
+  watch: {
+    columnDateMatch() {
+      this.filteredVacancies();
+    },
+  },
   methods: {
+    filteredVacancies() {
+      return this.vacancyList.filter((item) => item.date === this.columnDateMatch);
+    },
     toggleSidebar() {
       this.isOpen = !this.isOpen;
     },
     moveToPrevious() {
-      if (!this.formattedStartDate || !this.formattedEndDate) {
-        return;
+      if (this.currentView === "weekly") {
+        this.startDate.setDate(this.startDate.getDate() - 7);
+        this.endDate.setDate(this.endDate.getDate() - 7);
+        this.updateDateRange();
+      } else if (this.currentView === "monthly") {
+        this.startDate.setMonth(this.startDate.getMonth() - 1);
+        this.endDate = new Date(
+          this.startDate.getFullYear(),
+          this.startDate.getMonth() + 1,
+          0
+        );
       }
-
-      const startDateParts = this.formattedStartDate.split("/");
-      const endDateParts = this.formattedEndDate.split("/");
-      const formattedStartDate =
-        startDateParts[2] + "-" + startDateParts[1] + "-" + startDateParts[0];
-      const formattedEndDate =
-        endDateParts[2] + "-" + endDateParts[1] + "-" + endDateParts[0];
-
-      const startDate = new Date(formattedStartDate);
-      const endDate = new Date(formattedEndDate);
-
-      startDate.setDate(startDate.getDate() - 7);
-      endDate.setDate(endDate.getDate() - 7);
-
-      this.startDate = startDate;
-      this.endDate = endDate;
+      this.columnDateMatch = this.formattedStartDate;
+      this.fetchVacancyListMethod();
     },
     moveToNext() {
-      if (!this.formattedStartDate || !this.formattedEndDate) {
-        return;
+      if (this.currentView === "weekly") {
+        this.startDate.setDate(this.startDate.getDate() + 7);
+        this.endDate.setDate(this.endDate.getDate() + 7);
+        this.updateDateRange();
+      } else if (this.currentView === "monthly") {
+        this.startDate.setMonth(this.startDate.getMonth() + 1);
+        this.endDate = new Date(
+          this.startDate.getFullYear(),
+          this.startDate.getMonth() + 1,
+          0
+        );
+      }
+      this.columnDateMatch = this.formattedStartDate;
+      this.fetchVacancyListMethod();
+    },
+    updateDateRange() {
+      if (this.currentView === "weekly") {
+        const weekStart = new Date(this.startDate);
+        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
+        this.startDate = weekStart;
+
+        const weekEnd = new Date(this.startDate);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+        this.endDate = weekEnd;
+      } else if (this.currentView === "monthly") {
+        const currentDate = new Date();
+        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
       }
 
-      const startDateParts = this.formattedStartDate.split("/");
-      const endDateParts = this.formattedEndDate.split("/");
-      const formattedStartDate =
-        startDateParts[2] + "-" + startDateParts[1] + "-" + startDateParts[0];
-      const formattedEndDate =
-        endDateParts[2] + "-" + endDateParts[1] + "-" + endDateParts[0];
+      localStorage.setItem("startDate", this.startDate.toISOString());
+      localStorage.setItem("endDate", this.endDate.toISOString());
+    },
+    loadDateRangeFromLocalStorage() {
+      const storedStartDate = localStorage.getItem("startDate");
+      const storedEndDate = localStorage.getItem("endDate");
 
-      const startDate = new Date(formattedStartDate);
-      const endDate = new Date(formattedEndDate);
-
-      startDate.setDate(startDate.getDate() + 7);
-      endDate.setDate(endDate.getDate() + 7);
-
-      this.startDate = startDate;
-      this.endDate = endDate;
+      if (storedStartDate && storedEndDate) {
+        this.startDate = new Date(storedStartDate);
+        this.endDate = new Date(storedEndDate);
+      }
+    },
+    formatDate(date) {
+      return date.toLocaleDateString();
     },
 
     handleDragStart(vacancyId) {
@@ -478,61 +549,37 @@ export default {
     },
 
     formattedDate(day) {
-      const selectedDate = new Date(this.startDate);
-      selectedDate.setDate(parseInt(day));
-
-      if (!isNaN(selectedDate.getTime())) {
+      if (typeof day === "number") {
+        const selectedDate = new Date(this.startDate);
+        selectedDate.setDate(day);
         return selectedDate.toISOString().split("T")[0];
+      } else if (day instanceof Date && !isNaN(day)) {
+        return day.toISOString().split("T")[0];
       } else {
-        // console.error("Invalid date:", selectedDate);
-        return null;
+        return "Invalid Date";
       }
     },
     getCandidateName() {
-      return this.selectedCandidate ? this.selectedCandidate.first_name : "Default Name";
-    },
-
-    saveToLocalStorage() {
-      localStorage.setItem(
-        "calendarData",
-        JSON.stringify({
-          startDate: this.startDate,
-          endDate: this.endDate.value,
-        })
-      );
-    },
-    loadStoredData() {
-      const storedData = localStorage.getItem("calendarData");
-
-      if (storedData) {
-        const parsedData = JSON.parse(storedData);
-        this.startDate = parsedData.startDate;
-        this.endDate.value = parsedData.endDate;
+      if (this.selectedCandidate) {
+        if (this.selectedCandidate.first_name && this.selectedCandidate.last_name) {
+          return `${this.selectedCandidate.first_name} ${this.selectedCandidate.last_name}`;
+        } else {
+          return (
+            this.selectedCandidate.first_name ||
+            this.selectedCandidate.last_name ||
+            "Default Name"
+          );
+        }
+      } else {
+        return "Default Name";
       }
     },
-    updateSelectedDateRow(startDate, endDate) {
-      const selectedDateRow = [];
 
-      const dayOfWeek = startDate.getDay();
-      const startDay = (dayOfWeek - 1 + 7) % 7;
-
-      for (let i = 0; i < 7; i++) {
-        const currentDate = new Date(startDate);
-        currentDate.setDate(startDate.getDate() + i - startDay);
-        selectedDateRow.push(`${currentDate.getDate()}`);
-      }
-
-      Vue.set(this, "selectedDateRow", selectedDateRow);
-    },
-    formatDate(day) {
-      const selectedDate = new Date(this.startDate);
-      selectedDate.setDate(day);
-      return selectedDate.toLocaleDateString();
-    },
-
-    openModal(candidateId, day) {
+    async openModal(candidateId, day) {
       try {
-        const actualCandidateId = candidateId.id;
+        const actualCandidateId = candidateId.id.toString();
+
+        await this.fetchVacancyListMethod();
 
         const selectedDate = new Date(this.startDate);
         selectedDate.setDate(parseInt(day));
@@ -550,7 +597,8 @@ export default {
           (candidate) => candidate.id === actualCandidateId
         );
 
-        const columnDateMatch = this.formattedDate(day);
+        this.columnDateMatch = day;
+
         const vacancy = this.vacancyList.find(
           (vacancy) => vacancy.date === columnDateMatch
         );
@@ -588,7 +636,12 @@ export default {
     },
     async fetchVacancyListMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/vacancy_of_week`);
+        const requestData = {
+          date: this.formattedStartDate,
+        };
+        const response = await axios.get(`${VITE_API_URL}/vacancy_of_week`, {
+          params: requestData,
+        });
         this.vacancyList = response.data;
       } catch (error) {
         // console.error("Error in fetchVacancyListMethod:", error);
@@ -622,19 +675,25 @@ export default {
   components: {
     AppointmentAdd,
     Navbar,
+    ScheduleDirectAssignList,
   },
   mounted() {
+    this.loadDateRangeFromLocalStorage();
     this.fetchCandidateList();
     this.fetchVacancyListMethod();
     this.getBusinessUnitMethod();
-    this.loadStoredData();
-    window.addEventListener("beforeunload", this.saveToLocalStorage);
+
     this.getJobTitleMethod();
+
     const currentDate = new Date();
     const startOfWeek = new Date(currentDate);
-    startOfWeek.setDate(currentDate.getDate() - currentDate.getDay() + 1);
-
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
     this.startDate = startOfWeek;
+
+    const endOfWeek = new Date(currentDate);
+    endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
+    this.endDate = endOfWeek;
+    this.fetchVacancyListMethod();
   },
 };
 </script>
@@ -644,9 +703,7 @@ export default {
   background-color: #fdce5e17;
   padding-top: 65px;
 }
-.full-page-calendar {
-  padding: 20px;
-}
+
 .sidebar-container {
   display: flex; /* Make children inline */
 }

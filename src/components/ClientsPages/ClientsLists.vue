@@ -54,12 +54,17 @@
                         class="d-flex align-items-center gap-2 justify-content-between"
                       >
                         <div class="searchbox position-relative">
-                          <input
-                            class="form-control mr-sm-2"
-                            type="search"
-                            placeholder="Search..."
-                            aria-label="Search"
-                          />
+                          <form @submit.prevent="search">
+                            <input
+                              v-if="activeTab === 0"
+                              class="form-control mr-sm-2"
+                              type="search"
+                              placeholder="Search..."
+                              aria-label="Search"
+                              v-model="searchQuery"
+                              @input="debounceSearch"
+                            />
+                          </form>
                         </div>
                         <button
                           v-if="activeTab === 0"
@@ -71,7 +76,11 @@
                         >
                           + Add Client
                         </button>
-                        <button type="button" class="btn btn-outline-success text-nowrap">
+                        <button
+                          type="button"
+                          class="btn btn-outline-success text-nowrap"
+                          @click="toggleFilters"
+                        >
                           <i class="bi bi-funnel"></i>
                           Show Filters
                         </button>
@@ -98,9 +107,131 @@
                       </div>
                     </div>
                   </div>
+                  <div
+                    class="d-flex gap-2 mb-3 justify-content-between"
+                    v-if="showFilters"
+                  >
+                    <div class="d-flex gap-2 mt-3">
+                      <div></div>
 
-                  <div>
+                      <select @change="filterData($event.target.value)">
+                        <option selected>Client Status</option>
+                        <option value="true">Active</option>
+                        <option class="false">In-Active</option>
+                      </select>
+
+                      <!-- <select v-model="selectedCandidate" id="selectCandidateList">
+                        <option value="">All Staff</option>
+                        <option
+                          v-for="option in candidateLists"
+                          :key="option.id"
+                          :value="`${option.first_name} ${option.last_name}`"
+                        >
+                          {{ option.first_name }} {{ option.last_name }}
+                        </option>
+                      </select> -->
+                    </div>
+                  </div>
+                  <div v-if="!searchQuery">
                     <component :is="activeComponent"></component>
+                  </div>
+
+                  <div v-if="searchQuery">
+                    <table class="table clientTable">
+                      <thead>
+                        <tr>
+                          <th scope="col">ID</th>
+                          <th scope="col">#RefCode</th>
+                          <th scope="col">ClientName</th>
+                          <th scope="col">Jobs</th>
+                          <th scope="col">Address</th>
+                          <th scope="col">PhoneNumber</th>
+                          <th scope="col">Email</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">Portal Access</th>
+                          <th scope="col">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="paginateSearchResults?.length > 0">
+                        <tr v-for="client in paginateSearchResults" :key="client.id">
+                          <td v-text="client.id"></td>
+                          <td v-text="client.ref_code"></td>
+                          <td>
+                            <router-link
+                              class="text-capitalize"
+                              :to="{
+                                name: 'SingleClientProfile',
+                                params: { id: client.id },
+                              }"
+                            >
+                              {{ client.first_name }}
+                            </router-link>
+                            <!-- {{ client.first_name }} -->
+                          </td>
+                          <td>
+                            <span v-for="(job, index) in client.jobs" :key="index">
+                              {{ job }}
+
+                              <template v-if="index !== client.jobs.length - 1"
+                                >,
+                              </template>
+                            </span>
+                          </td>
+                          <td v-text="client.address"></td>
+
+                          <td v-text="client.phone_number"></td>
+
+                          <td v-text="client.email"></td>
+
+                          <td>
+                            <label class="switch" v-if="client.activated == true">
+                              <input type="checkbox" id="togBtn" checked />
+                              <div class="slider round"></div>
+                            </label>
+                            <label class="switch" v-else>
+                              <input type="checkbox" id="togBtn" />
+                              <div class="slider round"></div>
+                            </label>
+                          </td>
+                          <td v-text="client.portal_access"></td>
+                          <td class="cursor-pointer">
+                            <button
+                              type="button"
+                              class="btn btn-outline-success text-nowrap text-nowrap"
+                              data-bs-toggle="modal"
+                              data-bs-target="#editClient"
+                              data-bs-whatever="@mdo"
+                              @click="editClient(client.id)"
+                            >
+                              <i class="bi bi-pencil-square"></i>
+                            </button>
+                            &nbsp;&nbsp;
+                            <!-- <button class="btn btn-outline-success text-nowrap">
+                              <i
+                                class="bi bi-trash"
+                                v-on:click="clientsDeleteMethod(client.id)"
+                              ></i></button
+                            >&nbsp;&nbsp; -->
+                            <router-link
+                              :to="{
+                                name: 'SingleClientProfile',
+                                params: { id: client.id },
+                              }"
+                              class="btn btn-outline-success text-nowrap"
+                            >
+                              <i class="bi bi-eye"></i>
+                            </router-link>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr>
+                          <td colspan="10" class="text-danger text-center">
+                            {{ " No candidates found for the specified criteria" }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -109,12 +240,39 @@
         </div>
       </div>
     </div>
+    <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 11">
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= searchResults.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
   </div>
 </template>
 <script>
+import axios from "axios";
 import AllClient from "../ClientsPages/AllClient.vue";
 import InActiveClient from "../ClientsPages/InActiveClient.vue";
 import ActiveClient from "./ActiveClient.vue";
+const axiosInstance = axios.create({
+  headers: {
+    "Cache-Control": "no-cache",
+  },
+});
 
 export default {
   data() {
@@ -122,7 +280,10 @@ export default {
       getClientDetail: [],
 
       isActive: true,
-      searchQuery: "",
+      searchQuery: null,
+      debounceTimeout: null,
+      searchResults: [],
+      errorMessage: "",
       tabs: [
         { name: "All ", component: "AllClient", routeName: "AllClient" },
 
@@ -131,16 +292,94 @@ export default {
       ],
       activeTab: 0,
       activeTabName: "",
+      currentPage: 1,
+      itemsPerPage: 11,
+      showFilters: false,
+      selectedClientStatus: "",
     };
   },
+
   computed: {
     activeComponent() {
       return this.tabs[this.activeTab].component;
+    },
+    paginateSearchResults() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.searchResults.slice(startIndex, endIndex);
+    },
+    totalRecordsOnPage() {
+      return this.paginateSearchResults.length;
     },
   },
   components: { AllClient, InActiveClient, ActiveClient },
 
   methods: {
+    toggleFilters() {
+      this.showFilters = !this.showFilters;
+    },
+    debounceSearch() {
+      clearTimeout(this.debounceTimeout);
+
+      this.debounceTimeout = setTimeout(() => {
+        this.search();
+      }, 100);
+    },
+    //search api start
+    async search() {
+      try {
+        this.searchResults = [];
+
+        const response = await axiosInstance.get(`${VITE_API_URL}/search_api`, {
+          params: {
+            query: this.searchQuery,
+          },
+        });
+
+        this.searchResults = response.data.data;
+        // if (this.searchResults.length > 0) {
+        //   this.errorMessage = "No candidates found for the specified criteria";
+        // }
+      } catch (error) {
+        if (
+          (error.response && error.response.status === 404) ||
+          error.response.status === 400
+        ) {
+          this.errorMessage = "No candidates found for the specified criteria";
+        }
+      }
+    },
+    filterData(value) {
+      let client_type = "activated";
+      let client_value = value === "true" ? "true" : "false";
+
+      this.makeFilterAPICall(client_type, client_value);
+    },
+    async makeFilterAPICall(client_type, client_value) {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/client_filter`, {
+          params: {
+            client_type: client_type,
+            client_value: client_value,
+          },
+        });
+
+        this.getClientDetail = response.data.data;
+        // console.log(this.getClientDetail);
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          const errorMessages = error.response.data.error;
+          if (errorMessages === "No records found for the given filter") {
+            alert("No records found for the given filter");
+          } else {
+            alert(errorMessages);
+          }
+        } else {
+          // Handle other errors
+          // console.error("Error filtering custom timesheets:", error);
+        }
+      }
+    },
     setActiveTabFromRoute() {
       const currentRouteName = this.$route.name;
       const matchingTabIndex = this.tabs.findIndex(
@@ -160,10 +399,17 @@ export default {
       this.activeTabName = this.tabs[index].name;
       this.$router.push({ name: this.tabs[index].routeName });
     },
+    async createdClient() {
+      await axios
+        .get(`${VITE_API_URL}/clients`)
+
+        .then((response) => (this.getClientDetail = response.data.data));
+    },
   },
   mounted() {
     this.setActiveTabFromRoute();
     this.setActiveTabNameOnLoad();
+    this.createdClient();
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -306,7 +552,12 @@ a {
   margin: 12px 10px;
   min-height: 11px;
 }
-
+select {
+  padding: 10px;
+  border-radius: 4px;
+  border: 0px;
+  border: 1px solid rgb(202, 198, 198);
+}
 .switch .slider:before {
   position: absolute;
   background-color: #aaa;

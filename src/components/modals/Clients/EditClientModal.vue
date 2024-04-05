@@ -24,7 +24,27 @@
                     </div>
                   </div>
                 </div>
-
+                <div class="mb-3">
+                  <div class="col-12">
+                    <label class="form-label" for="selectJobTitle">Jobs</label>
+                  </div>
+                  <div class="col-12">
+                    <div v-for="(option, index) in options" :key="option.id">
+                      <input
+                        type="checkbox"
+                        :id="'option_' + option.id + '_index_' + index"
+                        :value="option.id"
+                        v-model="fetchClients.jobs"
+                      />
+                      <label
+                        :for="'option_' + option.id + '_index_' + index"
+                        class="text-capitalize"
+                      >
+                        &nbsp; {{ option.name }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
                 <div class="mb-3">
                   <div class="col-12">
                     <label class="form-label">Email</label>
@@ -125,7 +145,7 @@ export default {
       fetchClients: {
         id: "",
         first_name: "",
-
+        jobs: [],
         address: "",
         phone_number: "",
         email: "",
@@ -133,6 +153,7 @@ export default {
         confirm_password: "",
         error: [],
       },
+      options: [],
     };
   },
   props: {
@@ -141,12 +162,21 @@ export default {
       default: 0,
     },
   },
+  computed: {
+    selectJobTitle() {
+      const job_title = this.options.find(
+        (option) => option.id === this.fetchClients.job_id
+      );
+      return job_title ? job_title.name : "";
+    },
+  },
   components: { SuccessAlert },
   methods: {
     cleanPhoneNumber() {
       this.fetchClients.phone_number = this.fetchClients.phone_number.replace(/\D/g, "");
     },
     async fetchClientsMethod(id) {
+      if (!id) return;
       try {
         const response = await axios.get(`${VITE_API_URL}/clients/${id}`);
 
@@ -172,6 +202,18 @@ export default {
     validatePhoneNumberFormat(phone_number) {
       return /^\d{10}$/.test(phone_number);
     },
+    async getJobTitleMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+        this.options = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
   },
   watch: {
     clientID: {
@@ -183,6 +225,7 @@ export default {
   },
   mounted() {
     this.fetchClientsMethod(this.$route.params.id);
+    this.getJobTitleMethod();
   },
 };
 </script>

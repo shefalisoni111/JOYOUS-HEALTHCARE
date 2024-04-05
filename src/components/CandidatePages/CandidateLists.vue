@@ -47,7 +47,7 @@
                     <input
                       class="form-control mr-sm-2"
                       type="search"
-                      placeholder="Search by Name"
+                      placeholder="Search..."
                       aria-label="Search"
                       v-model="searchQuery"
                       @input="debounceSearch"
@@ -553,7 +553,7 @@ a {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   background-color: transparent;
-  border: 2px solid green;
+  border: 2px solid green !important;
   border-radius: 22px;
   color: green;
 }

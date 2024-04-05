@@ -7,12 +7,12 @@
             <th scope="col">ID</th>
             <th scope="col">#RefCode</th>
             <th scope="col">ClientName</th>
-            <!-- <th scope="col">Jobs</th> -->
+            <th scope="col">Jobs</th>
             <th scope="col">Address</th>
             <th scope="col">PhoneNumber</th>
             <th scope="col">Email</th>
             <th scope="col">Status</th>
-            <!-- <th scope="col">Portal Access</th> -->
+            <th scope="col">Portal Access</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -32,7 +32,13 @@
               </router-link>
               <!-- {{ client.first_name }} -->
             </td>
+            <td>
+              <span v-for="(job, index) in client.jobs" :key="index">
+                {{ job }}
 
+                <template v-if="index !== client.jobs.length - 1">, </template>
+              </span>
+            </td>
             <td v-text="client.address"></td>
 
             <td v-text="client.phone_number"></td>
@@ -40,14 +46,32 @@
             <td v-text="client.email"></td>
 
             <td>
-              <label class="switch" v-if="client.activated == true">
+              <!-- <label class="switch" v-if="client.activated == true">
                 <input type="checkbox" id="togBtn" checked />
                 <div class="slider round"></div>
-              </label>
-              <label class="switch" v-else>
-                <input type="checkbox" id="togBtn" />
+              </label> -->
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  id="togBtn"
+                  v-model="client.activated"
+                  @change="clientStatusChangeMethod(client.id, client.activated)"
+                  :checked="client.activated"
+                />
                 <div class="slider round"></div>
               </label>
+            </td>
+            <!-- <td v-text="client.portal_access"></td> -->
+            <td>
+              <span
+                class="text-white p-1 rounded-1"
+                style="font-size: 13px"
+                :class="{
+                  'bg-success': client.activated,
+                  'bg-danger': !client.activated,
+                }"
+                >{{ client.activated ? "Active" : "No Account" }}</span
+              >
             </td>
             <td class="cursor-pointer">
               <button
@@ -81,7 +105,7 @@
         </tbody>
       </table>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="getClientDetail.length >= 8">
+    <div class="mx-3" style="text-align: right" v-if="getClientDetail.length >= 11">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -102,6 +126,7 @@
         Next
       </button>
     </div>
+
     <EditClientModal :clientID="selectedClientID || 0" @client-updated="createdClient" />
     <AddClients @client-updated="createdClient" />
   </div>
@@ -119,7 +144,8 @@ export default {
       isActive: true,
       searchQuery: "",
       currentPage: 1,
-      itemsPerPage: 8,
+      itemsPerPage: 11,
+      activated: false,
     };
   },
 
@@ -133,11 +159,37 @@ export default {
     totalRecordsOnPage() {
       return this.paginateCandidates.length;
     },
+    portalAccessText() {
+      return this.client.activated ? "Active" : "No Account";
+    },
   },
   methods: {
+    clientStatusChangeMethod(id, activated) {
+      if (!window.confirm("Are you sure?")) {
+        return;
+      }
+      axios
+        .put(`${VITE_API_URL}/update_status/${id}?activated=${activated}`)
+        .then((response) => {
+          if (activated) {
+            alert("Staff activated successfully!");
+          } else {
+            alert("Staff inactivated successfully!");
+          }
+          const updatedClient = this.getClientDetail.find((client) => client.id === id);
+          if (updatedClient) {
+            updatedClient.activated = activated;
+          }
+          this.createdClient();
+        })
+        .catch((error) => {
+          console.error("Error updating staff status:", error);
+        });
+    },
     editClient(clientID) {
       this.selectedClientID = clientID;
     },
+
     // async clientsDeleteMethod(id) {
     //   if (!window.confirm("Are you Sure ?")) {
     //     return;
@@ -238,8 +290,8 @@ table th {
 }
 
 button.nav-link > li.nav-item {
-  border-bottom: 2px solid red; /* Replace with your desired border color */
-  padding-bottom: 5px; /* Optional: Add padding for spacing */
+  border-bottom: 2px solid red;
+  padding-bottom: 5px;
 }
 
 .searchbox {
