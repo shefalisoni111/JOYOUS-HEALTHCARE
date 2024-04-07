@@ -81,7 +81,7 @@
                       {{ errorMessage }}
                     </td>
                   </tr>
-                  <tr v-for="vacancyItem in getdata.vacancy" :key="vacancyItem.id">
+                  <tr v-for="vacancyItem in getdata.vacancies" :key="vacancyItem.id">
                     <td>
                       <input
                         class="form-check-input"
@@ -279,10 +279,13 @@ export default {
         const requestData = {
           date: this.formattedStartDate,
         };
-        const response = await axios.get(`${VITE_API_URL}/vacancy_of_week`, {
-          params: requestData,
-        });
-        this.vacancyList = response.data;
+        const response = await axios.get(
+          `${VITE_API_URL}/vacancies_and_candidates_availability`,
+          {
+            params: requestData,
+          }
+        );
+        this.vacancyList = response.data.data;
       } catch (error) {
         // console.error("Error in fetchVacancyListMethod:", error);
       }
@@ -387,13 +390,13 @@ export default {
       }
       // console.log(this.candidateId, checkedVacancyIds);
       const data = {
-        candidate_id: this.candidateId,
+        candidate_ids: this.candidateId,
         vacancy_id: checkedVacancyIds,
       };
 
       try {
-        const response = await fetch(`${VITE_API_URL}/assigned_vacancy`, {
-          method: "put",
+        const response = await fetch(`${VITE_API_URL}/assign_vacancy_to_candidates`, {
+          method: "POST",
           headers: {
             Accept: "application/json",
 

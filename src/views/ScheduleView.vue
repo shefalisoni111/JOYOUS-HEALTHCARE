@@ -267,12 +267,12 @@ export default {
                         class="text-capitalize fw-bold"
                         style="border-right: 1px solid rgb(209, 208, 208)"
                       >
-                        {{ data.first_name }} {{ data.last_name }}
+                        {{ data.candidate_name }}
 
                         <span class="fs-6 text-muted fw-100"
                           ><br /><span
                             style="background: rgb(209, 207, 207); padding: 3px"
-                            >{{ data.position }}</span
+                            >{{ data.job }}</span
                           ></span
                         >
                       </div>
@@ -295,11 +295,8 @@ export default {
                               clickable: day !== '',
                             }"
                           >
-                            <!-- {{ console.log(data) }} -->
-                            <span
-                              v-for="avail in data.candidate_availability"
-                              :key="avail.id"
-                            >
+                            <span v-for="avail in data.availability" :key="avail.id">
+                              <!-- {{ console.log(avail.date === formattedDate(day)) }} -->
                               <span v-if="avail.date === formattedDate(day)">
                                 <span
                                   v-if="avail.status"
@@ -315,6 +312,14 @@ export default {
                                 </span>
                               </span>
                             </span>
+                            <!-- <span
+                              v-for="assignedStaff in assignedCandidateList"
+                              :key="assignedStaff.id"
+                            >
+                              <span>
+                                <span>{{ assignedStaff.first_name }}</span>
+                              </span>
+                            </span> -->
                             <div
                               v-if="dropCandidateId === data.id && dropDay === day"
                               class="drop-zone"
@@ -388,7 +393,7 @@ export default {
       options: [],
       job_id: "",
       business_unit_id: "",
-
+      assignedCandidateList: [],
       businessUnit: [],
     };
   },
@@ -603,7 +608,7 @@ export default {
 
     async openModal(candidateId, day) {
       try {
-        const actualCandidateId = candidateId.id.toString();
+        const actualCandidateId = candidateId.candidate_id.toString();
 
         await this.fetchVacancyListMethod();
 
@@ -620,7 +625,7 @@ export default {
         this.selectedCandidateId = actualCandidateId;
 
         const selectedCandidate = this.candidateList.find(
-          (candidate) => candidate.id === actualCandidateId
+          (candidate) => candidate.candidate_id === actualCandidateId
         );
 
         this.columnDateMatch = day;
@@ -652,12 +657,36 @@ export default {
 
       this.statusForSelectedDate = null;
     },
+    // async fetchCandidateList() {
+    //   try {
+    //     const response = await axios.get(
+    //       `${VITE_API_URL}/approve_and_activated_candidates`
+    //     );
+    //     this.candidateList = response.data.data;
+    //   } catch (error) {}
+    // },
     async fetchCandidateList() {
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/approve_and_activated_candidates`
+          `${VITE_API_URL}/candidates_weekly_availability`,
+          {
+            params: { date: this.formattedStartDate },
+          }
         );
         this.candidateList = response.data.data;
+        // console.log(this.candidateList);
+        // this.candidateList.forEach((candidate) => {
+        //   candidate.availabilityByDate = {};
+        //   candidate.availability.forEach((avail) => {
+        //     candidate.availabilityByDate[avail.date] = avail.status;
+        //   });
+        // });
+
+        this.availabilityIds = this.candidateList.map((candidate) => {
+          return candidate.availability.map(
+            (availabilityItem) => availabilityItem.availability_id
+          );
+        });
       } catch (error) {}
     },
     async fetchVacancyListMethod() {
@@ -672,10 +701,26 @@ export default {
           }
         );
         this.vacancyList = response.data.data;
+        this.fetchCandidateList();
+        // this.fetchAssignVacancyStaffList();
       } catch (error) {
         // console.error("Error in fetchVacancyListMethod:", error);
       }
     },
+    // async fetchAssignVacancyStaffList() {
+    //   try {
+    //     const response = await axios.get(
+    //       `${VITE_API_URL}/find_assign_vacacy_and_candidate`
+    //     );
+    //     this.assignedCandidateList = response.data.candidates;
+    //   } catch (error) {
+    //     if (error.response) {
+    //       if (error.response.status == 404) {
+    //         // alert(error.response.data.message);
+    //       }
+    //     }
+    //   }
+    // },
     async getJobTitleMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/active_job_list`);
@@ -711,7 +756,7 @@ export default {
     this.fetchCandidateList();
     this.fetchVacancyListMethod();
     this.getBusinessUnitMethod();
-
+    // this.fetchAssignVacancyStaffList();
     this.getJobTitleMethod();
 
     const currentDate = new Date();

@@ -89,6 +89,7 @@
                             right: -7px;
                             border-radius: 50%;
                             padding: 0px 5px;
+                            font-size: small;
                           "
                           class="btn btn-danger btn-sm mt-2"
                           @click="removeDate(index)"

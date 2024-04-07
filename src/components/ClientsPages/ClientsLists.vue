@@ -504,16 +504,16 @@ a:link {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   background-color: transparent;
-  border: 1px solid green;
+  border: 1px solid green !important;
   border-radius: 22px;
   color: green;
 }
 
 .nav-pills .nav-link {
   background-color: transparent;
-  border: 1px solid #9e9e9e;
+  border: 1px solid #ff5722 !important;
   border-radius: 22px;
-  color: #607d8b;
+  color: #ff5722;
 }
 ul.nav-pills {
   height: 53px;
