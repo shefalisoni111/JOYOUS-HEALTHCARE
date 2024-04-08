@@ -53,12 +53,6 @@
             </div>
             <div class="row g-3 align-items-center" v-if="!searchQuery">
               <table class="table candidateTable" v-if="selectedCandidateItemId">
-                {{
-                  candidateId
-                }}
-                {{
-                  columnDateMatch
-                }}
                 <thead>
                   <tr>
                     <th scope="col"></th>
@@ -229,6 +223,7 @@ export default {
   name: "scheduleDirectAssignList",
   data() {
     return {
+      selectedWeekDate: null,
       getVacancyDetail: [],
       searchQuery: null,
       debounceTimeout: null,
@@ -269,15 +264,15 @@ export default {
       };
     },
     filteredVacancies() {
-      return this.vacancyList.filter((item) => item.date === this.columnDateMatch);
+      return this.vacancyList.filter((item) => item.date === this.selectedWeekDate);
     },
   },
 
   methods: {
-    async fetchVacancyListMethod() {
+    async fetchVacancyListMethod(selectedWeekDate) {
       try {
         const requestData = {
-          date: this.formattedStartDate,
+          date: selectedWeekDate,
         };
         const response = await axios.get(
           `${VITE_API_URL}/vacancies_and_candidates_availability`,
@@ -289,6 +284,10 @@ export default {
       } catch (error) {
         // console.error("Error in fetchVacancyListMethod:", error);
       }
+    },
+    async selectedWeekChanged(newWeekDate) {
+      this.selectedWeekDate = newWeekDate;
+      await this.fetchVacancyListMethod(newWeekDate);
     },
     //   debounceSearch() {
     //     clearTimeout(this.debounceTimeout);
@@ -390,12 +389,12 @@ export default {
       }
       // console.log(this.candidateId, checkedVacancyIds);
       const data = {
-        candidate_ids: this.candidateId,
+        candidate_id: this.candidateId,
         vacancy_id: checkedVacancyIds,
       };
 
       try {
-        const response = await fetch(`${VITE_API_URL}/assign_vacancy_to_candidates`, {
+        const response = await fetch(`${VITE_API_URL}/assign_vacancy_with_schedule`, {
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -421,8 +420,38 @@ export default {
       }
     },
   },
+  // created() {
+  //   console.log(
+  //     (this.selectedWeekDate = this.columnDateMatch),
+  //     this.columnDateMatch,
+  //     this.selectedWeekDate
+  //   );
+  //   this.fetchVacancyListMethod(this.columnDateMatch);
+  //   // this.fetchVacancyListMethod();
+  // },
   created() {
-    this.fetchVacancyListMethod();
+    if (!this.columnDateMatch) {
+      const currentDate = new Date();
+
+      const firstDayOfWeek = new Date(
+        currentDate.setDate(currentDate.getDate() - currentDate.getDay())
+      );
+
+      const formattedDate = firstDayOfWeek.toISOString().split("T")[0];
+      this.selectedWeekDate = formattedDate;
+    } else {
+      this.selectedWeekDate = this.columnDateMatch;
+    }
+  },
+  mounted() {
+    this.fetchVacancyListMethod(this.selectedWeekDate);
+  },
+  watch: {
+    columnDateMatch(newDate) {
+      this.selectedWeekDate = newDate;
+
+      this.fetchVacancyListMethod(this.selectedWeekDate);
+    },
   },
 };
 </script>

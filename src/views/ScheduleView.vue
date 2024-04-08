@@ -42,7 +42,15 @@ export default {
             </ol>
           </div>
           <div class="d-flex align-items-center">
-            <button class="btn btn-primary">Publish</button>
+            <button
+              type="button"
+              class="btn btn-primary text-nowrap border-0"
+              data-bs-toggle="modal"
+              data-bs-target="#schedulePublishStaffList"
+              data-bs-whatever="@mdo"
+            >
+              Publish
+            </button>
           </div>
         </div>
         <div class="row">
@@ -281,7 +289,7 @@ export default {
                         <div
                           class="calendar-grid"
                           @dragover.prevent="handleDragOver"
-                          @drop="handleDrop(data.id)"
+                          @drop="handleDrop(data.candidate_id)"
                         >
                           <div
                             v-for="day in selectedDateRow"
@@ -358,6 +366,8 @@ export default {
       >
         Next
       </button>
+      <SchedulePublishStaffList />
+      <SuccessAlert ref="successAlert" />
     </div>
   </div>
 </template>
@@ -367,6 +377,8 @@ import axios from "axios";
 import AppointmentAdd from "../components/modals/Schedule/EditAssignedShift.vue";
 import ScheduleDirectAssignList from "../components/modals/Schedule/ScheduleDirectAssignList.vue";
 import Navbar from "../components/Navbar.vue";
+import SchedulePublishStaffList from "../components/modals/Schedule/SchedulePublishStaffList.vue";
+import SuccessAlert from "../components/Alerts/SuccessAlert.vue";
 
 export default {
   data() {
@@ -569,7 +581,14 @@ export default {
           candidate_id: candidateId,
         };
 
-        const response = await axios.post(`${VITE_API_URL}/assign_vacancy`, payload);
+        const response = await axios.post(
+          `${VITE_API_URL}/assign_vacancy_with_schedule`,
+          payload
+        );
+        if (response.status >= 200 && response.status < 300) {
+          const message = "Staff Assigned Shift Successfully";
+          this.$refs.successAlert.showSuccess(message);
+        }
       } catch (error) {
       } finally {
         this.vacancyBeingDragged = null;
@@ -750,6 +769,8 @@ export default {
     AppointmentAdd,
     Navbar,
     ScheduleDirectAssignList,
+    SchedulePublishStaffList,
+    SuccessAlert,
   },
   mounted() {
     this.loadDateRangeFromLocalStorage();
