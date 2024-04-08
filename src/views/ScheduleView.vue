@@ -391,7 +391,7 @@ export default {
       selectedDate: null,
       candidateList: [],
       selectedCandidateId: null,
-      // selectedCandidate: null,
+
       columnDateMatch: "",
       currentSelectedCandidate: null,
       statusForSelectedDate: null,
@@ -775,7 +775,7 @@ export default {
   mounted() {
     this.loadDateRangeFromLocalStorage();
     this.fetchCandidateList();
-    this.fetchVacancyListMethod();
+
     this.getBusinessUnitMethod();
     // this.fetchAssignVacancyStaffList();
     this.getJobTitleMethod();
@@ -800,7 +800,7 @@ export default {
 }
 
 .sidebar-container {
-  display: flex; /* Make children inline */
+  display: flex;
 }
 .staff-count-round {
   position: absolute;
@@ -820,21 +820,21 @@ export default {
 }
 
 .sidebar-content {
-  flex: 1; /* Take remaining space */
+  flex: 1;
 }
 
 .sidebar {
-  width: 200px; /* Sidebar width */
+  width: 200px;
   padding: 20px;
   background-color: #f0f0f0;
 }
 
 .sidebar.open {
-  width: 400px; /* Sidebar width when open */
+  width: 400px;
 }
 
 .slide-left-content {
-  transition: margin-left 0.3s; /* Smooth transition for content */
+  transition: margin-left 0.3s;
 }
 
 .filters {
