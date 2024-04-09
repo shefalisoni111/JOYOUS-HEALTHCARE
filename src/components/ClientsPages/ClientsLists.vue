@@ -99,7 +99,9 @@
                             <li><a class="dropdown-item" href="#">Export</a></li>
                             <li><hr class="dropdown-divider" /></li>
                             <li>
-                              <a class="dropdown-item" href="#">Export All</a>
+                              <a class="dropdown-item" href="#" @click="exportAll"
+                                >Export All</a
+                              >
                             </li>
                           </ul>
                         </button>
@@ -317,6 +319,27 @@ export default {
     // toggleFilters() {
     //   this.showFilters = !this.showFilters;
     // },
+    exportAll() {
+      axios
+        .get(`${VITE_API_URL}/export_all_csv.csv`)
+        .then((response) => {
+          this.downloadCSV(response.data, "filename.csv");
+        })
+        .catch((error) => {
+          // console.error("Error:", error);
+        });
+    },
+    downloadCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    },
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
 

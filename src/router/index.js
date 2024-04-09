@@ -374,10 +374,10 @@ const router = createRouter({
             },
             {
               path: "/staffs/:id/candidate-preference",
-              name: "CandidatePreference",
+              name: "CandidateReference",
               component: () =>
                 import(
-                  "@/components/CandidatePages/ProfileDetail/CandidatePreference.vue"
+                  "@/components/CandidatePages/ProfileDetail/CandidateReference.vue"
                 ),
               meta: {
                  requiresAuth: true,

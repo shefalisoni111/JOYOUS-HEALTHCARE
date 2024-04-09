@@ -152,8 +152,55 @@
         <ul class="navbar-nav m-0 mb-2 mb-lg-0 inline-nav">
           <li class="nav-item dropdown mt-2">
             <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-              <i class="bi bi-chat-left-dots" @click="toggleChatBox"></i
+              <i class="bi bi-chat-left-dots"></i
             ></a>
+            <ul
+              class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
+              style="height: 300px; overflow-y: auto; width: 386px; overflow-x: hidden"
+            >
+              <li class="dropdown-header d-flex">
+                All Staff List for Chat
+                <a href="#" class="mt-2 ms-2"
+                  ><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a
+                >
+              </li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+
+              <li
+                class="notification-item p-2 d-flex gap-1 divide_sec"
+                v-for="candidate in getCandidatesData"
+                :key="candidate.id"
+              >
+                <div>
+                  <img
+                    v-if="candidate.profile_photo"
+                    :src="getProfilePhotoUrl(candidate.profile_photo)"
+                    class="img-fluid"
+                    alt="Profile Photo"
+                    loading="lazy"
+                  />
+                  <div
+                    class="else_profile"
+                    v-else
+                    v-html="getProfilePhotoUrl(candidate.profile_photo)"
+                  ></div>
+                </div>
+                <div>
+                  <h5
+                    class="text-capitalize chat-staff mb-0"
+                    style="color: #f6851d"
+                    @click="openChat(candidate)"
+                  >
+                    {{ candidate.first_name }} {{ candidate.last_name }}
+                  </h5>
+
+                  <span class="text-muted text-capitalize">{{ candidate.position }}</span>
+                </div>
+                <hr class="dropdown-divider" />
+              </li>
+            </ul>
           </li>
 
           <li class="nav-item dropdown mt-2">
@@ -293,16 +340,37 @@
           <!-- End Profile Nav -->
         </ul>
         <div v-if="showChatBox" class="chat-box">
-          <!-- Chat content goes here -->
           <div class="chat-container">
             <div class="chat-header">
-              <h5 class="mb-0">Chat</h5>
-              <button class="btn btn-danger btn-sm" @click="toggleChatBox">
+              <div class="divide_sec d-flex">
+                <img
+                  v-if="selectedCandidate.profile_photo"
+                  :src="getProfilePhotoUrl(selectedCandidate.profile_photo)"
+                  class="img-fluid"
+                  alt="Profile Photo"
+                  loading="lazy"
+                />
+                <div
+                  class="else_profile"
+                  v-else
+                  v-html="getProfilePhotoUrl(selectedCandidate.profile_photo)"
+                ></div>
+                <h5 class="mb-0 text-capitalize d-flex align-items-center ms-2">
+                  {{ selectedCandidate.first_name }}
+                  {{ selectedCandidate.last_name }}
+                </h5>
+              </div>
+
+              <button class="btn btn-danger btn-sm" @click="closeChatBox">
                 <i class="bi bi-x-lg"></i>
               </button>
             </div>
             <div class="chat-messages">
-              <div v-for="(message, index) in messages" :key="index" class="message">
+              <div
+                v-for="(message, index) in selectedCandidateMessages"
+                :key="index"
+                class="message"
+              >
                 <div class="message-sender">{{ message.sender }}</div>
                 <div class="message-content">{{ message.content }}</div>
               </div>
@@ -328,11 +396,10 @@ export default {
       getAdminData: [],
       showChatBox: false,
       getAdminProfile: [],
+      getCandidatesData: [],
       newMessage: "",
-      messages: [
-        { sender: "John", content: "Hello!" },
-        // { sender: "Jane", content: "Hi there!" },
-      ],
+      selectedCandidate: null,
+      messages: [],
     };
   },
   computed: {
@@ -341,12 +408,39 @@ export default {
 
       return storedImageUrl ? storedImageUrl : "./profile.png";
     },
+    selectedCandidateMessages() {
+      if (this.selectedCandidate) {
+        return this.messages.filter(
+          (message) => message.sender === this.selectedCandidate.id
+        );
+      } else {
+        return [];
+      }
+    },
   },
   methods: {
-    toggleChat() {
-      this.isOpen = !this.isOpen;
+    getProfilePhotoUrl(profilePhoto) {
+      if (profilePhoto !== null) {
+        return `${VITE_API_URL}${profilePhoto}`;
+      } else {
+        return '<i class="bi bi-person-fill"></i>';
+      }
     },
-    toggleChatBox() {
+    openChat(candidate) {
+      this.selectedCandidate = candidate;
+      this.showChatBox = true;
+    },
+    closeChatBox() {
+      this.showChatBox = false;
+      this.selectedCandidate = null;
+    },
+    fetchMessagesForCandidate(candidate) {
+      this.selectedCandidateMessages = this.messages.filter(
+        (message) => message.sender === candidate.id
+      );
+    },
+    toggleChatBox(candidate) {
+      this.selectedCandidate = candidate;
       this.showChatBox = !this.showChatBox;
     },
     sendMessage() {
@@ -382,15 +476,53 @@ export default {
         this.getAdminProfile = response.data.data;
       } catch (error) {}
     },
+    async getCandidateMethods() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/candidates`);
+
+        this.getCandidatesData = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+          }
+        } else {
+          // console.error("Error fetching candidates:", error);
+        }
+      }
+    },
   },
 
   mounted() {
     this.getAdminMethod();
+    this.getCandidateMethods();
   },
 };
 </script>
 
 <style scoped>
+.chat-staff {
+  cursor: pointer;
+}
+.divide_sec {
+  border-bottom: 1px solid #f0eeed;
+  width: 335px;
+  margin: auto;
+}
+.divide_sec img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid #fc7d4f;
+}
+.divide_sec .else_profile {
+  font-size: 29px;
+  padding-left: 3px;
+  border-radius: 50%;
+  border: 3px solid #fc7d4f;
+  color: #979493;
+  width: 40px;
+  height: 40px;
+}
 .cursor-pointer {
   cursor: pointer;
 }
