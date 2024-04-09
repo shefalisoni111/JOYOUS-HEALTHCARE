@@ -208,7 +208,7 @@ import RateCard from "../CandidatePages/ProfileDetail/RateCard.vue";
 import Notes from "../CandidatePages/ProfileDetail/Notes.vue";
 import StaffId from "../CandidatePages/ProfileDetail/StaffId.vue";
 import CandidateHistory from "../CandidatePages/ProfileDetail/CandidateHistory.vue";
-import CandidatePreference from "./ProfileDetail/CandidateReference.vue";
+import CandidateReference from "./ProfileDetail/CandidateReference.vue";
 import AddNotes from "../modals/CandidatePage/AddNotes.vue";
 
 import EditProfileContact from "../modals/CandidatePage/EditProfileContact.vue";
@@ -240,8 +240,8 @@ export default {
         },
         {
           name: "Staff Reference",
-          component: "CandidatePreference",
-          routeName: "CandidatePreference",
+          component: "CandidateReference",
+          routeName: "CandidateReference",
         },
       ],
       activeTab: 0,
@@ -258,7 +258,7 @@ export default {
     Notes,
     StaffId,
     CandidateHistory,
-    CandidatePreference,
+    CandidateReference,
 
     EditProfileContact,
   },
