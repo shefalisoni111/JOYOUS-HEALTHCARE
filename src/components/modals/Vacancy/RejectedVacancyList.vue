@@ -214,6 +214,7 @@ export default {
       this.$store.commit("setSelectedRejectItemId", null);
     },
     async getRejectedListMethod(id) {
+      if (!id) return;
       const token = localStorage.getItem("token");
       this.rejectedListData = [];
       this.vacancyDetails = [];

@@ -218,6 +218,7 @@ export default {
 
   methods: {
     async getAssignedVacancyList(id) {
+      if (!id) return;
       const token = localStorage.getItem("token");
       this.assignedVacancyData = [];
       this.vacancyDetails = [];
@@ -232,7 +233,8 @@ export default {
               },
             }
           );
-          this.assignedVacancyData = response.data.data;
+          this.assignedVacancyData = response.data.candidates_data;
+
           this.vacancyDetails = response.data.vacancy_date;
           this.$emit("assignVacancy");
           this.$emit("updateAssignSearch");

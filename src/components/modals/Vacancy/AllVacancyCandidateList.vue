@@ -276,6 +276,7 @@ export default {
     },
 
     async getAllCandidateListMethod(id) {
+      if (!id) return;
       const token = localStorage.getItem("token");
       this.getVacancyDetail = [];
       this.vacancyDetails = [];

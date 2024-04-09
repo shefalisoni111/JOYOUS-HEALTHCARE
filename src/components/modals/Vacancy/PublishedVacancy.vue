@@ -360,6 +360,7 @@ export default {
       }
     },
     async getAllCandidateListMethod(id) {
+      if (!id) return;
       this.getCandidatesData = [];
 
       if (this.$store.state.selectedPublishItemId) {

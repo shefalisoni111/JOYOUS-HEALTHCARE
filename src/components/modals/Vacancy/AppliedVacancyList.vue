@@ -341,12 +341,13 @@ export default {
       }
     },
     async assignedCandidate(id) {
+      if (!id) return;
       const token = localStorage.getItem("token");
 
       if (this.$store.state.selectedAssignedItemId) {
         try {
           const response = await axios.get(
-            `${VITE_API_URL}/assigned_candidate_list/${id}`,
+            `${VITE_API_URL}/assigned_candidate_list??vacancy_id=${id}`,
             {
               headers: {
                 "content-type": "application/json",
@@ -391,6 +392,7 @@ export default {
       }
     },
     async getAppliedVacancyMethod(id) {
+      if (!id) return;
       const token = localStorage.getItem("token");
 
       this.getVacancyDetail = [];
