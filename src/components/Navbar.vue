@@ -156,13 +156,19 @@
             ></a>
             <ul
               class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
-              style="height: 300px; overflow-y: auto; width: 386px; overflow-x: hidden"
+              style="height: 454px; overflow-y: auto; width: 386px; overflow-x: hidden"
             >
-              <li class="dropdown-header d-flex">
-                All Staff List for Chat
-                <a href="#" class="mt-2 ms-2"
-                  ><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a
-                >
+              <li class="dropdown-header">
+                <form @submit.prevent="search">
+                  <input
+                    class="form-control mr-sm-2"
+                    type="search"
+                    placeholder="Search..."
+                    aria-label="Search"
+                    v-model="searchQuery"
+                    @input="debounceSearch"
+                  />
+                </form>
               </li>
               <li>
                 <hr class="dropdown-divider" />
@@ -187,7 +193,7 @@
                     v-html="getProfilePhotoUrl(candidate.profile_photo)"
                   ></div>
                 </div>
-                <div>
+                <div class="ms-1">
                   <h5
                     class="text-capitalize chat-staff mb-0"
                     style="color: #f6851d"
@@ -376,8 +382,26 @@
               </div>
             </div>
             <div class="chat-input">
-              <input v-model="newMessage" type="text" placeholder="Type your message" />
-              <button @click="sendMessage" class="btn btn-primary btn-sm">Send</button>
+              <!-- <input v-model="newMessage" type="text"  placeholder="Type your message" /> -->
+              <input
+                ref="fileInput"
+                v-model="newMessage"
+                type="text"
+                class="form-control"
+                placeholder="Write a message..."
+                rows="3"
+                height="85px"
+              />
+            </div>
+            <div class="px-3 pb-2 d-flex justify-content-between">
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                @click="handleClick"
+              >
+                <i class="bi bi-paperclip"></i>
+              </button>
+              <button @click="sendMessage" class="btn btn-primary">Send</button>
             </div>
           </div>
         </div>
@@ -388,6 +412,13 @@
 
 <script>
 import axios from "axios";
+
+const axiosInstance = axios.create({
+  headers: {
+    "Cache-Control": "no-cache",
+  },
+});
+
 export default {
   name: "Navbar",
 
@@ -400,6 +431,10 @@ export default {
       newMessage: "",
       selectedCandidate: null,
       messages: [],
+      searchQuery: null,
+      debounceTimeout: null,
+      searchResults: [],
+      errorMessage: "",
     };
   },
   computed: {
@@ -419,6 +454,40 @@ export default {
     },
   },
   methods: {
+    handleClick() {
+      this.$nextTick(() => {
+        if (this.$refs.fileInput) {
+          this.$refs.fileInput.click();
+        }
+      });
+    },
+    //search api start
+
+    async search() {
+      try {
+        this.searchResults = [];
+
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/search_candidate/${this.searchQuery}`
+        );
+
+        this.searchResults = response.data.candidate;
+      } catch (error) {
+        if (
+          (error.response && error.response.status === 404) ||
+          error.response.status === 400
+        ) {
+          this.errorMessage = "No candidates found for the specified criteria";
+        }
+      }
+    },
+    debounceSearch() {
+      clearTimeout(this.debounceTimeout);
+
+      this.debounceTimeout = setTimeout(() => {
+        this.search();
+      }, 100);
+    },
     getProfilePhotoUrl(profilePhoto) {
       if (profilePhoto !== null) {
         return `${VITE_API_URL}${profilePhoto}`;
@@ -523,6 +592,7 @@ export default {
   width: 40px;
   height: 40px;
 }
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -536,7 +606,7 @@ export default {
   padding: 10px;
 }
 .chat-container {
-  width: 300px;
+  width: 400px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
@@ -554,7 +624,7 @@ export default {
   color: #fff !important;
 }
 .chat-messages {
-  max-height: 200px;
+  height: 190px;
   overflow-y: auto;
   padding: 10px;
 }

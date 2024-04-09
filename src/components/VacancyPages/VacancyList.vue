@@ -82,7 +82,7 @@
                           <input
                             class="form-control mr-sm-2"
                             type="search"
-                            placeholder="Search by Name"
+                            placeholder="Search..."
                             aria-label="Search"
                             v-model="searchQuery"
                             @input="debounceSearch"

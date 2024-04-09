@@ -255,9 +255,13 @@ export default {
                                     'bg-primary': liIndex >= 3,
                                   }"
                                 >
-                                  <span
-                                    >{{ vacancy.business_unit }} {{ vacancy.shift }}</span
-                                  >
+                                  <span class="d-flex flex-column align-items-baseline">
+                                    <span>{{ vacancy.business_unit }}</span>
+                                    <span class="text-capitalize">{{
+                                      vacancy.job_title
+                                    }}</span>
+                                    <span>{{ vacancy.shift }}</span>
+                                  </span>
                                   <span class="staff-count-round text-white">{{
                                     vacancy.staff_required
                                   }}</span>
@@ -304,7 +308,6 @@ export default {
                             }"
                           >
                             <span v-for="avail in data.availability" :key="avail.id">
-                              <!-- {{ console.log(avail.date === formattedDate(day)) }} -->
                               <span v-if="avail.date === formattedDate(day)">
                                 <span
                                   v-if="avail.status"

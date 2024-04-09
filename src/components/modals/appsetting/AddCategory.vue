@@ -121,6 +121,8 @@ export default {
           if (response.ok) {
             // location.reload();
             this.$emit("onCategoryAdded");
+            this.category_name = "";
+            this.job_id = "";
             const message = " Add Category Successful";
             this.$refs.successAlert.showSuccess(message);
           }

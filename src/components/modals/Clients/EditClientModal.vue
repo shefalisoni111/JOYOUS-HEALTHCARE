@@ -24,24 +24,24 @@
                     </div>
                   </div>
                 </div>
-                <!-- <div class="mb-3">
+                <div class="mb-3">
                   <div class="col-12">
                     <label class="form-label" for="selectJobTitle">Jobs</label>
                   </div>
                   <div class="col-12">
-                    <div v-for="option in options" :key="option.id">
+                    <div v-for="(option, index) in options" :key="index">
                       <input
                         type="checkbox"
-                        :id="option.id"
+                        :id="'checkbox_' + option.id"
                         :value="option.id"
-                        v-model="fetchClients.job_name"
+                        v-model="fetchClients.job_id"
                       />
-                      <label :for="option.id" class="text-capitalize">
+                      <label :for="'checkbox_' + option.id" class="text-capitalize">
                         &nbsp; {{ option.name }}
                       </label>
                     </div>
                   </div>
-                </div> -->
+                </div>
                 <div class="mb-3">
                   <div class="col-12">
                     <label class="form-label">Email</label>
@@ -142,7 +142,7 @@ export default {
       fetchClients: {
         id: "",
         first_name: "",
-        job_name: [],
+        job_id: [],
         address: "",
         phone_number: "",
         email: "",

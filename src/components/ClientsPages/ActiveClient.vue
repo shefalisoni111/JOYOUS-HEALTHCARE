@@ -37,7 +37,7 @@
                 v-for="(job, index) in client.job_name"
                 :key="index"
                 :style="{ backgroundColor: getColor(index) }"
-                class="p-1 me-2 mt-5 rounded-1"
+                class="p-1 me-2 pb-1 mt-5 rounded-1"
               >
                 {{ job }}
 
