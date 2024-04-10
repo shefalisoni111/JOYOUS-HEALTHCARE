@@ -351,6 +351,7 @@ export default {
     async search() {
       try {
         this.searchResults = [];
+        const modifiedSearchQuery = this.searchQuery.replace(/ /g, "_");
         let apiUrl = "";
 
         if (this.activeTab === 0) {
@@ -365,7 +366,7 @@ export default {
 
         const response = await axiosInstance.get(apiUrl, {
           params: {
-            query: this.searchQuery,
+            query: modifiedSearchQuery,
           },
         });
 

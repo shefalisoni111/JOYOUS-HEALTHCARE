@@ -426,6 +426,7 @@ export default {
         );
 
         this.searchResults = response.data;
+        consols.log(this.searchResults);
       } catch (error) {
         if (
           (error.response && error.response.status === 404) ||

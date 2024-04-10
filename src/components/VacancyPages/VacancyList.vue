@@ -129,8 +129,8 @@
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
-                      <tbody v-if="paginatedVacancies?.length > 0">
-                        <tr v-for="data in paginatedVacancies" :key="data.id">
+                      <tbody v-if="paginationVacancySearch?.length > 0">
+                        <tr v-for="data in paginationVacancySearch" :key="data.id">
                           <td v-text="data.id"></td>
                           <td v-text="data.ref_code"></td>
                           <td>
@@ -271,10 +271,10 @@
         </div>
       </div>
     </div>
-    <!-- <div
+    <div
       class="mt-3"
       style="text-align: right"
-      v-if="searchResults && searchResults?.length > 8"
+      v-if="searchQuery && searchResults?.length > 8"
     >
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
@@ -295,7 +295,7 @@
       >
         Next
       </button>
-    </div> -->
+    </div>
     <EditVacancy
       :vacancyId="selectedVacancyId || 0"
       @updateVacancy="searchVacancyUpdated"
@@ -350,13 +350,13 @@ export default {
     activeComponent() {
       return this.tabs[this.activeTab].component;
     },
-    paginatedVacancies() {
+    paginationVacancySearch() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.searchResults.slice(startIndex, endIndex);
     },
     totalRecordsOnPage() {
-      return this.paginatedVacancies.length;
+      return this.paginationVacancySearch.length;
     },
   },
   components: {
@@ -420,11 +420,11 @@ export default {
           activatedStatus = this.activeTab === 1 ? true : false;
         }
         const response = await axiosInstance.get(
-          `${VITE_API_URL}/searching_active_inactive_vacancies`,
+          `${VITE_API_URL}/vacancy_searching_active_and_inactive`,
           {
             params: {
               vacancy_query: modifiedSearchQuery,
-              active_status: activatedStatus,
+              activated: activatedStatus,
               tab: this.activeTabName.toLowerCase(),
             },
             headers: {
@@ -434,7 +434,7 @@ export default {
           }
         );
 
-        this.searchResults = response.data.vacancy;
+        this.searchResults = response.data;
       } catch (error) {
         if (
           (error.response && error.response.status === 400) ||

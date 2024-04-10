@@ -534,17 +534,17 @@ export default {
         );
         this.getCandidatesDataInProfileTab = response.data.candidate;
         if (this.getCandidatesDataInProfileTab) {
-          this.getCandidateProfileTabMethod();
+          // this.getCandidateProfileTabMethod();
           this.$emit("getBankDetail");
         }
       } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        } else {
-          // console.error("Error fetching candidates:", error);
-        }
+        // if (error.response) {
+        //   if (error.response.status == 404) {
+        //     // alert(error.response.data.message);
+        //   }
+        // } else {
+        //   // console.error("Error fetching candidates:", error);
+        // }
       }
     },
   },

@@ -173,8 +173,54 @@
               <li>
                 <hr class="dropdown-divider" />
               </li>
+              <li v-if="searchQuery">
+                <template v-if="searchResults.length > 0">
+                  <li
+                    class="notification-item p-2 d-flex gap-1 divide_sec"
+                    v-for="candidate in searchResults"
+                    :key="candidate.id"
+                  >
+                    <div>
+                      <img
+                        v-if="candidate.profile_photo"
+                        :src="getProfilePhotoUrl(candidate.profile_photo)"
+                        class="img-fluid"
+                        alt="Profile Photo"
+                        loading="lazy"
+                      />
+                      <div
+                        class="else_profile"
+                        v-else
+                        v-html="getProfilePhotoUrl(candidate.profile_photo)"
+                      ></div>
+                    </div>
+                    <div class="ms-1">
+                      <h5
+                        class="text-capitalize chat-staff mb-0"
+                        style="color: #f6851d"
+                        @click="openChat(candidate)"
+                      >
+                        {{ candidate.first_name }} {{ candidate.last_name }}
+                      </h5>
 
-              <li
+                      <span class="text-muted text-capitalize">{{
+                        candidate.position
+                      }}</span>
+                    </div>
+                    <hr class="dropdown-divider" />
+                  </li>
+                </template>
+                <template v-else>
+                  <li>
+                    <h6 class="text-danger text-center">
+                      {{ errorMessage }}
+                    </h6>
+                  </li>
+                </template>
+              </li>
+              <li v-else>
+                <li
+               
                 class="notification-item p-2 d-flex gap-1 divide_sec"
                 v-for="candidate in getCandidatesData"
                 :key="candidate.id"
@@ -205,6 +251,7 @@
                   <span class="text-muted text-capitalize">{{ candidate.position }}</span>
                 </div>
                 <hr class="dropdown-divider" />
+              </li>
               </li>
             </ul>
           </li>
@@ -390,7 +437,7 @@
                 class="form-control"
                 placeholder="Write a message..."
                 rows="3"
-                height="85px"
+                style="padding-bottom: 45px"
               />
             </div>
             <div class="px-3 pb-2 d-flex justify-content-between">
@@ -461,6 +508,13 @@ export default {
         }
       });
     },
+    debounceSearch() {
+      clearTimeout(this.debounceTimeout);
+
+      this.debounceTimeout = setTimeout(() => {
+        this.search();
+      }, 100);
+    },
     //search api start
 
     async search() {
@@ -477,17 +531,11 @@ export default {
           (error.response && error.response.status === 404) ||
           error.response.status === 400
         ) {
-          this.errorMessage = "No candidates found for the specified criteria";
+          this.errorMessage = "No Staff found for the specified criteria";
         }
       }
     },
-    debounceSearch() {
-      clearTimeout(this.debounceTimeout);
 
-      this.debounceTimeout = setTimeout(() => {
-        this.search();
-      }, 100);
-    },
     getProfilePhotoUrl(profilePhoto) {
       if (profilePhoto !== null) {
         return `${VITE_API_URL}${profilePhoto}`;
