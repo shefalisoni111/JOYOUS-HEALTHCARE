@@ -758,10 +758,23 @@ export default {
     },
     async fetchCandidateList() {
       try {
+        const formatDate = (dateString) => {
+          const parts = dateString.split("/");
+
+          if (parts.length === 3) {
+            const [day, month, year] = parts;
+            return `${parseInt(day)}/${month}/${year}`;
+          }
+
+          return dateString;
+        };
+
+        const formattedDate = formatDate(this.formattedStartDate);
+
         const response = await axios.get(
           `${VITE_API_URL}/candidates_weekly_availability`,
           {
-            params: { date: this.formattedStartDate },
+            params: { date: formattedDate },
           }
         );
         this.candidateList = response.data.data;
@@ -782,8 +795,21 @@ export default {
     },
     async fetchVacancyListMethod() {
       try {
+        const formatDate = (dateString) => {
+          const parts = dateString.split("/");
+
+          if (parts.length === 3) {
+            const [day, month, year] = parts;
+            return `${parseInt(day)}/${month}/${year}`;
+          }
+
+          return dateString;
+        };
+
+        const formattedDate = formatDate(this.formattedStartDate);
+
         const requestData = {
-          date: this.formattedStartDate,
+          date: formattedDate,
         };
         const response = await axios.get(
           `${VITE_API_URL}/vacancies_and_candidates_availability`,

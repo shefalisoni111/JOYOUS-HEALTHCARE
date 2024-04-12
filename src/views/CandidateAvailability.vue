@@ -380,6 +380,16 @@ export default {
   },
 
   methods: {
+    formatDate(dateString) {
+      const parts = dateString.split("/");
+
+      if (parts.length === 3) {
+        const [month, day, year] = parts;
+        return `${parseInt(day)}/${month}/${year}`;
+      }
+
+      return dateString;
+    },
     async fetchAvailabilityStatusMethod() {
       try {
         const response = await axios.get(
