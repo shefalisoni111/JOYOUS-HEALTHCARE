@@ -762,19 +762,27 @@ export default {
           const parts = dateString.split("/");
 
           if (parts.length === 3) {
-            const [day, month, year] = parts;
-            return `${parseInt(day)}/${month}/${year}`;
+            const [firstPart, secondPart, thirdPart] = parts;
+
+            if (parseInt(firstPart) > 12) {
+              return `${secondPart}/${firstPart}/${thirdPart}`;
+            } else {
+              return dateString;
+            }
           }
 
           return dateString;
         };
 
         const formattedDate = formatDate(this.formattedStartDate);
+        const requestData = {
+          date: formattedDate,
+        };
 
         const response = await axios.get(
           `${VITE_API_URL}/candidates_weekly_availability`,
           {
-            params: { date: formattedDate },
+            params: requestData,
           }
         );
         this.candidateList = response.data.data;
@@ -799,15 +807,19 @@ export default {
           const parts = dateString.split("/");
 
           if (parts.length === 3) {
-            const [month, day, year] = parts;
-            return `${month}/${parseInt(day)}/${year}`;
+            const [firstPart, secondPart, thirdPart] = parts;
+
+            if (parseInt(firstPart) > 12) {
+              return `${secondPart}/${firstPart}/${thirdPart}`;
+            } else {
+              return dateString;
+            }
           }
 
           return dateString;
         };
 
         const formattedDate = formatDate(this.formattedStartDate);
-        // console.log(this.formattedStartDate, formattedDate);
         const requestData = {
           date: formattedDate,
         };
