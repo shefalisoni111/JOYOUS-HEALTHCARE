@@ -17,11 +17,11 @@
 
         <div class="card mt-2">
           <div class="card-header">
-            <router-link
+            <!-- <router-link
               :to="{ name: 'SingleSiteprofile' }"
               class="text-decoration-none text-black"
               >Hospital 1</router-link
-            >
+            > -->
           </div>
           <div class="card-body">
             <h5 class="card-title"></h5>
@@ -40,11 +40,11 @@
         </div>
         <div class="card mt-2">
           <div class="card-header">
-            <router-link
+            <!-- <router-link
               :to="{ name: 'SingleSiteprofile' }"
               class="text-decoration-none text-black"
               >Hospital 2</router-link
-            >
+            > -->
           </div>
           <div class="card-body">
             <h5 class="card-title"></h5>

@@ -55,19 +55,23 @@
                         class="d-flex align-items-center gap-2 justify-content-between"
                       >
                         <div class="searchbox position-relative">
-                          <input
-                            class="form-control mr-sm-2"
-                            type="search"
-                            placeholder="Search..."
-                            aria-label="Search"
-                          />
+                          <form @submit.prevent="search">
+                            <input
+                              class="form-control mr-sm-2"
+                              type="search"
+                              placeholder="Search..."
+                              aria-label="Search"
+                              v-model="searchQuery"
+                              @input="debounceSearch"
+                            />
+                          </form>
                         </div>
                         <button
                           v-if="activeTab === 0"
                           type="button"
                           class="btn btn-outline-success text-nowrap"
                           data-bs-toggle="modal"
-                          data-bs-target="#addClients"
+                          data-bs-target="#addSite"
                           data-bs-whatever="@mdo"
                         >
                           + Add Site
@@ -87,12 +91,18 @@
                           :
 
                           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Import</a></li>
+                            <li>
+                              <a class="dropdown-item" href="#" @click="importAll"
+                                >Import</a
+                              >
+                            </li>
                             <li><hr class="dropdown-divider" /></li>
                             <li><a class="dropdown-item" href="#">Export</a></li>
                             <li><hr class="dropdown-divider" /></li>
                             <li>
-                              <a class="dropdown-item" href="#">Export All</a>
+                              <a class="dropdown-item" href="#" @click="exportAll"
+                                >Export All</a
+                              >
                             </li>
                           </ul>
                         </button>
@@ -100,8 +110,81 @@
                     </div>
                   </div>
 
-                  <div>
+                  <div v-if="!searchQuery">
                     <component :is="activeComponent"></component>
+                  </div>
+                  <div v-if="searchQuery">
+                    <table class="table siteTable">
+                      <thead>
+                        <tr>
+                          <th scope="col">ID</th>
+                          <th scope="col">#RefCode</th>
+                          <th scope="col">Site</th>
+                          <th scope="col">ClientName</th>
+                          <!-- <th scope="col">Jobs</th> -->
+                          <th scope="col">Address</th>
+                          <th scope="col">PhoneNumber</th>
+                          <th scope="col">Email</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">Portal Access</th>
+                          <th scope="col">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="paginateSearchResults?.length > 0">
+                        <tr v-for="data in paginateSearchResults" :key="data.id">
+                          <td>{{ data.id }}</td>
+                          <td v-text="data.refer_code"></td>
+                          <td v-text="data.site_name"></td>
+                          <td>
+                            <router-link
+                              class="text-capitalize text-decoration-underline text-black"
+                              :to="{
+                                name: 'SingleClientProfile',
+                                params: { id: data.client_id },
+                              }"
+                              >{{ data.client_name }}</router-link
+                            >
+                          </td>
+                          <td>{{ data.address }}</td>
+                          <td>{{ data.phone_number }}</td>
+                          <td>{{ data.email }}</td>
+                          <td>{{ data.status }}</td>
+                          <td>{{ data.portal_access }}</td>
+                          <td class="cursor-pointer">
+                            <button
+                              type="button"
+                              class="btn btn-outline-success text-nowrap text-nowrap"
+                              data-bs-toggle="modal"
+                              data-bs-target="#editSite"
+                              data-bs-whatever="@mdo"
+                              @click="editsiteId(data.id)"
+                            >
+                              <i class="bi bi-pencil-square"></i>
+                            </button>
+                            &nbsp;&nbsp;
+                            <!-- <button class="btn btn-outline-success text-nowrap">
+                              <i
+                                class="bi bi-trash"
+                                v-on:click="clientsDeleteMethod(client.id)"
+                              ></i></button
+                            >&nbsp;&nbsp; -->
+                            <router-link
+                              :to="{ name: 'SingleSiteprofile', params: { id: data.id } }"
+                              class="btn btn-outline-success text-nowrap"
+                            >
+                              <i class="bi bi-eye"></i>
+                            </router-link>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr>
+                          <td colspan="10" class="text-danger text-center">
+                            {{ " No Site found for the specified criteria" }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -110,20 +193,54 @@
         </div>
       </div>
     </div>
+    <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 11">
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= searchResults.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
+    <AddSite @addSite="getSiteAllDataMethod" />
+    <EditSite :siteId="selectedsiteId || 0" />
   </div>
 </template>
 <script>
+import axios from "axios";
 import AllSite from "../SitePages/AllSite.vue";
 import InActiveSite from "../SitePages/InActiveSite.vue";
 import ActiveSite from "../SitePages/ActiveSite.vue";
+import AddSite from "../../modals/Site/AddSite.vue";
+import EditSite from "../../modals/Site/EditSite.vue";
 
+const axiosInstance = axios.create({
+  headers: {
+    "Cache-Control": "no-cache",
+  },
+});
 export default {
   data() {
     return {
       getClientDetail: [],
-
+      selectedsiteId: 0,
       isActive: true,
-      searchQuery: "",
+      searchQuery: null,
+      debounceTimeout: null,
+      searchResults: [],
+      errorMessage: "",
       tabs: [
         { name: "All ", component: "AllSite", routeName: "AllSite" },
 
@@ -132,16 +249,29 @@ export default {
       ],
       activeTab: 0,
       activeTabName: "",
+      currentPage: 1,
+      itemsPerPage: 8,
     };
   },
   computed: {
     activeComponent() {
       return this.tabs[this.activeTab].component;
     },
+    paginateSearchResults() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.searchResults.slice(startIndex, endIndex);
+    },
+    totalRecordsOnPage() {
+      return this.paginateSearchResults.length;
+    },
   },
-  components: { AllSite, InActiveSite, ActiveSite },
+  components: { AllSite, InActiveSite, ActiveSite, AddSite, EditSite },
 
   methods: {
+    editsiteId(siteId) {
+      this.selectedsiteId = siteId;
+    },
     setActiveTabFromRoute() {
       const currentRouteName = this.$route.name;
       const matchingTabIndex = this.tabs.findIndex(
@@ -160,6 +290,102 @@ export default {
       this.activeTab = index;
       this.activeTabName = this.tabs[index].name;
       this.$router.push({ name: this.tabs[index].routeName });
+    },
+    debounceSearch() {
+      clearTimeout(this.debounceTimeout);
+
+      this.debounceTimeout = setTimeout(() => {
+        this.search();
+      }, 100);
+    },
+    //search api start
+    async search() {
+      try {
+        this.searchResults = [];
+        const modifiedSearchQuery = this.searchQuery.replace(/ /g, "_");
+        let apiUrl = "";
+
+        if (this.activeTab === 0) {
+          apiUrl = `${VITE_API_URL}/search_api_site`;
+        } else if (this.activeTab === 1) {
+          apiUrl = `${VITE_API_URL}/active_search_api_site`;
+        } else if (this.activeTab === 2) {
+          apiUrl = `${VITE_API_URL}/inactive_search_api_site`;
+        } else {
+          return;
+        }
+
+        const response = await axiosInstance.get(apiUrl, {
+          params: {
+            query: modifiedSearchQuery,
+          },
+        });
+
+        this.searchResults = response.data.data;
+        // if (this.searchResults.length > 0) {
+        //   this.errorMessage = "No candidates found for the specified criteria";
+        // }
+      } catch (error) {
+        if (
+          (error.response && error.response.status === 404) ||
+          error.response.status === 400
+        ) {
+          this.errorMessage = "No candidates found for the specified criteria";
+        }
+      }
+    },
+    async getSiteAllDataMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/sites`);
+      } catch (error) {
+        // console.error("Error fetching data:", error);
+      }
+    },
+    exportAll() {
+      axios
+        .get(`${VITE_API_URL}/export_all_csv_site.csv`)
+        .then((response) => {
+          this.downloadCSV(response.data, "filename.csv");
+        })
+        .catch((error) => {
+          // console.error("Error:", error);
+        });
+    },
+    downloadCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    },
+    importAll(fileData) {
+      const formData = new FormData();
+      formData.append("file", fileData);
+      axios
+        .post(`${VITE_API_URL}/import_all_csv_site.csv`, {
+          file: formData,
+        })
+        .then((response) => {
+          this.ImportCSV(response.data, "filename.csv");
+        })
+        .catch((error) => {
+          // console.error("Error:", error);
+        });
+    },
+    ImportCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
     },
   },
   mounted() {
@@ -186,12 +412,16 @@ export default {
 
     next();
   },
+  async created() {
+    await this.getSiteAllDataMethod();
+  },
 };
 </script>
 
 <style scoped>
 #main {
   transition: all 0.3s;
+  height: 100vh;
 }
 .main-content {
   transition: all 0.3s;
@@ -221,6 +451,9 @@ ul.nav-pills {
   color: #ff5f30;
   font-weight: bold;
 }
+.candidateTable tr:nth-child(odd) td {
+  background: #fdce5e17 !important;
+}
 .badge {
   background: #ffc107;
   border-radius: 50%;
@@ -238,8 +471,11 @@ a:link {
   color: black;
   text-decoration: none;
 }
-.candidateTable tr:nth-child(odd) td {
+.siteTable tr:nth-child(odd) td {
   background: #fdce5e17 !important;
+}
+table {
+  background-color: transparent !important;
 }
 .btn-primary {
   border-radius: 4px;

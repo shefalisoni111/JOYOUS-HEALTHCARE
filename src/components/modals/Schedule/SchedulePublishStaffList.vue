@@ -46,7 +46,7 @@
                   <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center gap-2">
                       <div class="searchbox position-relative">
-                        <form @submit.prevent="search">
+                        <!-- <form @submit.prevent="search">
                           <input
                             class="form-control mr-sm-2"
                             type="search"
@@ -55,7 +55,7 @@
                             v-model="searchQuery"
                             @input="debounceSearch"
                           />
-                        </form>
+                        </form> -->
                       </div>
                     </div>
                   </div>
@@ -68,47 +68,48 @@
                   <thead>
                     <tr>
                       <th></th>
-                      <th scope="col">staff code</th>
-                      <th scope="col" class="widthSet">First Name</th>
-                      <th scope="col" class="widthSet">Last Name</th>
-                      <th scope="col">Phone Number</th>
-
-                      <th scope="col" class="widthSet">Email</th>
-                      <th scope="col">Positions</th>
-                      <th scope="col">Status</th>
+                      <th scope="col">Staff ID</th>
+                      <th scope="col">Staff</th>
+                      <th scope="col">Vacancy ID</th>
+                      <th scope="col">Client</th>
+                      <th scope="col">Job Title</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="candidate in assignStaffList" :key="candidate.id">
+                    <tr v-for="candidate in fetchStaffAndVacancy" :key="candidate.id">
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
                           :value="candidate.id"
-                          :id="candidate.id"
-                          v-model="checkedCandidates[candidate.id]"
+                          :id="`checkbox-${candidate.id}`"
+                          @change="
+                            handleCheckboxChange(candidate.id, candidate.vacancy.id)
+                          "
                         />
                       </td>
-                      <td v-text="candidate.candidate_code"></td>
+                      <td v-text="candidate.candidate_id"></td>
+                      <td v-text="candidate.candidate_name"></td>
+                      <!-- <template v-for="data in candidate.vacancies" :key="data.id">
+                        <td>{{ data.id }}</td>
+                        <td>{{ data.client }}</td>
+                        <td>{{ data.job_title }}</td>
+                      </template> -->
                       <td>
-                        {{ candidate.first_name }}
+                        {{ concatenateIds(candidate.vacancies) }}
                       </td>
                       <td>
-                        {{ candidate.last_name }}
+                        {{ concatenateValues(candidate.vacancies, "client") }}
                       </td>
                       <td>
-                        {{ candidate.phone_number }}
+                        {{ concatenateValues(candidate.vacancies, "job_title") }}
                       </td>
-
-                      <td>{{ candidate.email }}</td>
-                      <td>{{ candidate.position }}</td>
-                      <td>{{ candidate.status }}</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
-            <div class="row" v-if="searchQuery">
+            <!-- <div class="row" v-if="searchQuery">
               <div class="col-md-12">
                 <table class="w-100">
                   <thead>
@@ -160,47 +161,11 @@
                   </tbody>
                 </table>
               </div>
-            </div>
+            </div> -->
           </div>
           <div class="modal-footer">
             <div class="row">
-              <div class="col-md-12 d-flex justify-content-between">
-                <div class="d-flex gap-3">
-                  <div class="d-flex justify-content-around gap-2">
-                    <div class="btn btn-success text-nowrap">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckDefault"
-                      />
-                      Push Notification
-                    </div>
-                  </div>
-                  <div class="d-flex justify-content-around gap-2">
-                    <div class="btn btn-success text-nowrap">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckDefault"
-                      />
-                      Text Notification
-                    </div>
-                  </div>
-                  <div class="d-flex justify-content-around gap-2">
-                    <div class="btn btn-success text-nowrap">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckDefault"
-                        v-model="enableMailNotification"
-                      />
-                      Mail Notification
-                    </div>
-                  </div>
-                </div>
+              <div class="col-md-12">
                 <div class="d-flex gap-3">
                   <button
                     class="btn btn-danger rounded-1"
@@ -210,13 +175,18 @@
                   >
                     Cancel
                   </button>
-                  <button
+                  <!-- <button
                     class="btn btn-success rounded-1 text-capitalize fw-medium"
                     data-bs-dismiss="modal"
+                    v-on:click="
+                      assignVacancyToCandidateDirectMethod(
+                        candidate.id,
+                        candidate.vacancy.id
+                      )
+                    "
                   >
-                    <!-- v-on:click="publicCandidateMail()" -->
                     Publish
-                  </button>
+                  </button> -->
                 </div>
               </div>
             </div>
@@ -243,7 +213,7 @@ export default {
   name: "PublishedVacancy",
   data() {
     return {
-      getCandidatesData: [],
+      fetchStaffAndVacancy: [],
       getPublicVacancyMAil: [],
       notification_type: null,
       assignStaffList: [],
@@ -277,6 +247,15 @@ export default {
     // },
   },
   methods: {
+    concatenateIds(vacancies) {
+      return vacancies.map((data) => data.id).join(", ");
+    },
+    concatenateValues(vacancies, field) {
+      return vacancies.map((data) => data[field]).join(", ");
+    },
+    handleCheckboxChange(candidateId, vacancyId) {
+      console.log("Clicked on checkbox with candidate ID:", candidateId, vacancyId);
+    },
     // selectAllCandidates() {
     //   if (this.selectAll) {
     //     this.getCandidatesData.forEach((data) => {
@@ -357,21 +336,47 @@ export default {
     //     // Handle case where selectedPublishItemId is falsy
     //   }
     // },
-    // async getActiveCandidateMethod() {
-    //   try {
-    //     const response = await axios.get(
-    //       `${VITE_API_URL}/approve_and_activated_candidates`
-    //     );
-    //     this.getCandidatesData = response.data.data;
-    //   } catch (error) {
-    //     if (error.response) {
-    //       if (error.response.status == 404) {
-    //       }
-    //     } else {
-    //       // console.error("Error fetching candidates:", error);
-    //     }
-    //   }
-    // },
+    async assignVacancyToCandidateDirectMethod(candidateId, vacancyId) {
+      const data = {
+        candidate_id: candidateId,
+        vacancy_id: vacancyId,
+      };
+
+      try {
+        // Make API call to publish vacancies
+        const response = await axios.put(
+          `${VITE_API_URL}/publish_schedule_vacancy`,
+          data
+        );
+        if (response.status === 200) {
+          // Handle success
+          const message = "Staff Assigned Shift Successfully";
+          this.$refs.successAlert.showSuccess(message);
+          // Clear checkbox selections
+          this.checkedCandidates = {};
+          // Emit event to notify parent component
+          this.$emit("Candidate-updated");
+        } else {
+          // Handle error
+        }
+      } catch (error) {
+        // Handle error
+      }
+    },
+
+    async getPublishStaffListMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/find_unpublish_vacancy`);
+        this.fetchStaffAndVacancy = response.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+          }
+        } else {
+          // console.error("Error fetching candidates:", error);
+        }
+      }
+    },
     // closePopup() {
     //   this.$store.commit("setSelectedPublishedItemId", null);
     // },
@@ -431,7 +436,8 @@ export default {
   },
 
   mounted() {
-    // this.getVacancyDataMethod();
+    // this.getVacancyDataM
+    this.getPublishStaffListMethod();
     // this.getAssignStaffListMethod();
     // this.getAllCandidateListMethod(this.$store.state.selectedPublishItemId);
   },

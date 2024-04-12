@@ -170,10 +170,10 @@ const router = createRouter({
              
             },
             {
-              path: "/site/site-profile",
+              path: "site-profile/:id",
               name: "SingleSiteprofile",
               component: () =>
-                import("@/components/ClientsPages/SingleSiteProfilePages/SingleSiteprofile.vue"),
+                import("@/components/ClientsPages/SitePages/SingleSiteprofile.vue"),
               props: true,
              
             },

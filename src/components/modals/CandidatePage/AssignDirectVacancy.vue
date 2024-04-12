@@ -349,7 +349,7 @@ export default {
       if (checkedVacancyIds.length === 0) {
         return;
       }
-      console.log(this.$store.state.selectedCandidateItemId, checkedVacancyIds);
+
       const data = {
         candidate_id: this.$store.state.selectedCandidateItemId,
         vacancy_id: checkedVacancyIds,

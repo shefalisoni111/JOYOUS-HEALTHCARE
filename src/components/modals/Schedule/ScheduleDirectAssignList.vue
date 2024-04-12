@@ -75,43 +75,53 @@
                       {{ errorMessage }}
                     </td>
                   </tr>
+                  <template v-if="!hasShiftsForCandidateJob(getdata.vacancies)">
+                    <tr>
+                      <td colspan="9" class="text-center text-danger fw-bolder">
+                        No Shifts Found for this Staff Position
+                      </td>
+                    </tr>
+                  </template>
                   <tr v-for="vacancyItem in getdata.vacancies" :key="vacancyItem.id">
-                    <td>
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        :value="vacancyItem.id"
-                        :id="vacancyItem.id"
-                        v-model="checkedVacancies[vacancyItem.id]"
-                      />
-                    </td>
-                    <td v-text="vacancyItem.id"></td>
-                    <td v-text="vacancyItem.ref_code"></td>
-                    <td>
-                      <router-link
-                        class="text-capitalize text-black text-decoration-underline fw-bold"
-                        to="/client"
-                        >{{ vacancyItem.client }}</router-link
-                      >
-                    </td>
-                    <td v-text="vacancyItem.business_unit"></td>
-                    <td v-text="vacancyItem.job_title"></td>
+                    <template v-if="candidateJob === vacancyItem.job_title">
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          :value="vacancyItem.id"
+                          :id="vacancyItem.id"
+                          v-model="checkedVacancies[vacancyItem.id]"
+                        />
+                      </td>
+                      <td v-text="vacancyItem.id"></td>
+                      <td v-text="vacancyItem.ref_code"></td>
+                      <td>
+                        <router-link
+                          class="text-capitalize text-black text-decoration-underline fw-bold"
+                          to="/client"
+                          >{{ vacancyItem.client }}</router-link
+                        >
+                      </td>
+                      <td v-text="vacancyItem.business_unit"></td>
+                      <td v-text="vacancyItem.job_title"></td>
 
-                    <td>
-                      <span v-for="(date, index) in vacancyItem.dates" :key="index">
-                        {{ date }}
+                      <td>
+                        <span v-for="(date, index) in vacancyItem.dates" :key="index">
+                          {{ date }}
 
-                        <template v-if="index !== vacancyItem.dates.length - 1"
-                          >,
-                        </template>
-                      </span>
-                    </td>
+                          <template v-if="index !== vacancyItem.dates.length - 1"
+                            >,
+                          </template>
+                        </span>
+                      </td>
 
-                    <td v-text="vacancyItem.shift"></td>
-                    <!-- <td v-text="getdata.staff_required"></td> -->
-                    <!-- <td v-text="getdata.notes"></td> -->
-
-                    <!-- <td v-text="getdata.create_by_and_time.split(' ')[0]"></td> -->
+                      <td v-text="vacancyItem.shift"></td>
+                    </template>
+                    <!-- <template v-else>
+                      <td colspan="8" class="text-danger text-center">
+                        No Shifts Found for this Staff Position
+                      </td>
+                    </template> -->
                   </tr>
                 </tbody>
               </table>
@@ -245,6 +255,10 @@ export default {
       type: String,
       default: null,
     },
+    candidateJob: {
+      type: [String, null],
+      required: true,
+    },
   },
   created() {
     this.getVacancyDetail.forEach((data) => {
@@ -253,6 +267,13 @@ export default {
   },
   components: { SuccessAlert },
   computed: {
+    hasShiftsForCandidateJob() {
+      return (vacancies) => {
+        return vacancies.some(
+          (vacancyItem) => vacancyItem.job_title === this.candidateJob
+        );
+      };
+    },
     selectedCandidateItemId() {
       this.assignedCandidate(
         this.$store.state.selectedCandidateItemId,
@@ -411,6 +432,7 @@ export default {
           this.$refs.successAlert.showSuccess(message);
           this.checkedVacancies = {};
           this.$emit("Candidate-updated");
+          this.fetchAssignList();
         } else {
           // throw new Error(`Failed to assign candidates. Status: ${response.status}`);
         }
@@ -418,6 +440,13 @@ export default {
         // console.error("Error assigning candidates:", error);
         // Optionally, display an error message to the user
       }
+    },
+    async fetchAssignList() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/find_assign_vacancies_and_candidates`
+        );
+      } catch (error) {}
     },
   },
   // created() {
@@ -445,12 +474,18 @@ export default {
   },
   mounted() {
     this.fetchVacancyListMethod(this.selectedWeekDate);
+    if (this.job) {
+      console.log(this.job);
+    } else {
+      return;
+    }
   },
   watch: {
     columnDateMatch(newDate) {
       this.selectedWeekDate = newDate;
 
       this.fetchVacancyListMethod(this.selectedWeekDate);
+      this.fetchAssignList();
     },
   },
 };

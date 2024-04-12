@@ -1,30 +1,3 @@
-<!-- <template>
-  <div>
-    <Navbar />
-    <div id="main">
-      <h6>Schedule Page in Progress.....</h6>
-    </div>
-  </div>
-</template>
-<script>
-import Navbar from "../components/Navbar.vue";
-
-export default {
-  components: {
-    Navbar,
-  },
-};
-</script>
-<style scoped>
-#main {
-  padding: 20px 20px;
-  transition: all 0.3s;
-  height: 100dvh;
-  
-  background-color: #fdce5e17;
-}
-</style> -->
-
 <template>
   <div>
     <Navbar />
@@ -92,10 +65,24 @@ export default {
               </div>
             </div> -->
             <div>
+              <!-- <template v-if="isModalOpen">
+                <EditAssignShceduleVaacncy />
+              </template> -->
+              <!-- <template>
+                <ScheduleDirectAssignList
+                  :columnDateMatch="columnDateMatch"
+                  :initialDate="selectedDate"
+                  :candidateId="selectedCandidateId"
+                  :candidateJob="candidateJob"
+                  @closeModal="closeModal"
+                />
+              </template> -->
+              <EditAssignShceduleVaacncy />
               <ScheduleDirectAssignList
                 :columnDateMatch="columnDateMatch"
                 :initialDate="selectedDate"
                 :candidateId="selectedCandidateId"
+                :candidateJob="candidateJob"
                 @closeModal="closeModal"
               />
             </div>
@@ -247,7 +234,7 @@ export default {
                                   v-for="(vacancy, liIndex) in data.vacancies"
                                   :key="vacancy.id"
                                   :draggable="true"
-                                  @dragstart="handleDragStart(vacancy.id)"
+                                  @dragstart="handleDragStart(vacancy)"
                                   :class="{
                                     'bg-info': liIndex === 0,
                                     'bg-warning': liIndex === 1,
@@ -256,11 +243,15 @@ export default {
                                   }"
                                 >
                                   <span class="d-flex flex-column align-items-baseline">
-                                    <span>{{ vacancy.business_unit }}</span>
-                                    <span class="text-capitalize">{{
-                                      vacancy.job_title
+                                    <span class="text-capitalize"
+                                      >{{ vacancy.business_unit }},{{
+                                        vacancy.job_title
+                                      }}</span
+                                    >
+
+                                    <span class="">{{
+                                      extractTimeRange(vacancy.shift)
                                     }}</span>
-                                    <span>{{ vacancy.shift }}</span>
                                   </span>
                                   <span class="staff-count-round text-white">{{
                                     vacancy.staff_required
@@ -290,40 +281,62 @@ export default {
                       </div>
 
                       <td>
-                        <div
-                          class="calendar-grid"
-                          @dragover.prevent="handleDragOver"
-                          @drop="handleDrop(data.candidate_id)"
-                        >
+                        <div>
                           <div
-                            v-for="day in selectedDateRow"
-                            :key="day"
-                            data-bs-toggle="modal"
-                            data-bs-target="#scheduleDirectAssignList"
-                            data-bs-whatever="@mdo"
-                            @click="openModal(data, formattedDate(day))"
-                            :class="{
-                              'calendar-day': true,
-                              clickable: day !== '',
-                            }"
+                            class="calendar-grid"
+                            @dragover.prevent="handleDragOver"
+                            @drop="handleDrop(data.candidate_id)"
                           >
-                            <span v-for="avail in data.availability" :key="avail.id">
-                              <span v-if="avail.date === formattedDate(day)">
-                                <span
-                                  v-if="avail.status"
-                                  style="font-size: small; padding: 0px 5px"
-                                  v-bind:class="{
-                                    'btn btn-warning ': avail.status === 'Late',
-                                    'btn btn-primary ': avail.status === 'Unavailable',
-                                    'btn btn-secondary ': avail.status === 'Night',
-                                    'btn btn-light ': avail.status === 'Early',
-                                  }"
-                                >
-                                  {{ avail.status ? avail.status[0].toUpperCase() : "" }}
+                            <div
+                              v-for="day in selectedDateRow"
+                              :key="day"
+                              data-bs-toggle="modal"
+                              data-bs-target="#scheduleDirectAssignList"
+                              data-bs-whatever="@mdo"
+                              @click="openModal(data, formattedDate(day))"
+                              :class="{
+                                'calendar-day': true,
+                                clickable: day !== '',
+                              }"
+                            >
+                              <span v-for="avail in data.availability" :key="avail.id">
+                                <span v-if="avail.date === formattedDate(day)">
+                                  <span
+                                    v-if="avail.status"
+                                    style="font-size: small; padding: 0px 5px"
+                                    v-bind:class="{
+                                      'btn btn-warning ': avail.status === 'Late',
+                                      'btn btn-primary ': avail.status === 'Unavailable',
+                                      'btn btn-secondary ': avail.status === 'Night',
+                                      'btn btn-light ': avail.status === 'Early',
+                                    }"
+                                  >
+                                    {{
+                                      avail.status ? avail.status[0].toUpperCase() : ""
+                                    }}
+                                  </span>
                                 </span>
                               </span>
-                            </span>
-                            <!-- <span
+                              &nbsp;&nbsp;
+                              <span v-for="assign in assignStaffDisplay" :key="assign.id">
+                                <span v-if="data.candidate_id === assign.candidate_id">
+                                  <span v-for="data in assign.vacancies" :key="data.id">
+                                    <span v-for="date in data.dates" :key="date">
+                                      <span
+                                        v-if="formatDates(date) === formattedDate(day)"
+                                      >
+                                        <span
+                                          class="assignVacancyDesign mt-1 text-capitalize"
+                                        >
+                                          {{ data.business_unit }}, &nbsp;
+                                          {{ data.job_title }}<br />
+                                        </span>
+                                      </span>
+                                    </span>
+                                  </span>
+                                </span>
+                              </span>
+                              <!-- <span
                               v-for="assignedStaff in assignedCandidateList"
                               :key="assignedStaff.id"
                             >
@@ -331,11 +344,16 @@ export default {
                                 <span>{{ assignedStaff.first_name }}</span>
                               </span>
                             </span> -->
-                            <div
-                              v-if="dropCandidateId === data.id && dropDay === day"
-                              class="drop-zone"
-                            >
-                              {{ droppedContent }}
+                              <div
+                                v-if="dropCandidateId === data.id && dropDay === day"
+                                class="drop-zone"
+                              >
+                                {{ droppedContent }}
+
+                                <!-- <span v-for="avail in data.availability" :key="avail.id">
+                                  {{ console.log(avail) }}
+                                </span> -->
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -370,6 +388,7 @@ export default {
         Next
       </button>
       <SchedulePublishStaffList />
+      <!-- <EditAssignedShift /> -->
       <SuccessAlert ref="successAlert" />
     </div>
   </div>
@@ -377,7 +396,7 @@ export default {
 
 <script>
 import axios from "axios";
-import AppointmentAdd from "../components/modals/Schedule/EditAssignedShift.vue";
+import EditAssignShceduleVaacncy from "../components/modals/Schedule/EditAssignShceduleVaacncy.vue";
 import ScheduleDirectAssignList from "../components/modals/Schedule/ScheduleDirectAssignList.vue";
 import Navbar from "../components/Navbar.vue";
 import SchedulePublishStaffList from "../components/modals/Schedule/SchedulePublishStaffList.vue";
@@ -392,24 +411,26 @@ export default {
       endDate: new Date(),
       currentDate: new Date(),
       selectedDate: null,
+      candidateJob: "",
       candidateList: [],
       selectedCandidateId: null,
-
+      assignStaffDisplay: [],
       columnDateMatch: "",
       currentSelectedCandidate: null,
       statusForSelectedDate: null,
       vacancyList: [],
-      vacancyBeingDragged: { id: null },
+      vacancyBeingDragged: {},
       dropCandidateId: null,
       dropDay: null,
       droppedContent: null,
       currentPage: 1,
-      itemsPerPage: 8,
+      itemsPerPage: 7,
       options: [],
       job_id: "",
       business_unit_id: "",
       assignedCandidateList: [],
       businessUnit: [],
+      isModalOpen: false,
     };
   },
 
@@ -491,6 +512,13 @@ export default {
     formattedEndDate() {
       return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
     },
+    filteredAssignStaff() {
+      return function (candidateId) {
+        return this.assignStaffDisplay.filter(
+          (assign) => assign.candidate_id === candidateId
+        );
+      };
+    },
   },
   watch: {
     columnDateMatch() {
@@ -498,6 +526,28 @@ export default {
     },
   },
   methods: {
+    extractTimeRange(shift) {
+      if (shift.includes("Holiday")) {
+        if (shift.includes("Day Shift")) {
+          return shift.replace("Holiday Day Shift", "Holiday Night Shift").split(" ")[3];
+        } else if (shift.includes("Night Shift")) {
+          return shift.replace("Holiday Night Shift", "Holiday Day Shift").split(" ")[3];
+        }
+      } else if (shift.includes("Day Shift")) {
+        return shift.split(" ")[2];
+      } else if (shift.includes("Night Shift")) {
+        return shift.split(" ")[2];
+      }
+    },
+    formatDates(dateString) {
+      if (!dateString) return "";
+      const parts = dateString.split(", ");
+      if (parts.length < 2) return "";
+      const [dayOfWeek, date] = parts;
+      const [day, month, year] = date.split("-");
+      const formattedDate = `${year}-${month}-${day}`;
+      return formattedDate;
+    },
     filteredVacancies() {
       return this.vacancyList.filter((item) => item.date === this.columnDateMatch);
     },
@@ -567,8 +617,10 @@ export default {
       return date.toLocaleDateString();
     },
 
-    handleDragStart(vacancyId) {
-      this.vacancyBeingDragged.id = vacancyId;
+    handleDragStart(vacancy) {
+      if (vacancy && vacancy.id) {
+        this.vacancyBeingDragged = vacancy;
+      }
     },
     handleDragOver(event) {
       event.preventDefault();
@@ -588,11 +640,20 @@ export default {
           `${VITE_API_URL}/assign_vacancy_with_schedule`,
           payload
         );
+
         if (response.status >= 200 && response.status < 300) {
           const message = "Staff Assigned Shift Successfully";
           this.$refs.successAlert.showSuccess(message);
+          this.fetchCandidateList();
         }
       } catch (error) {
+        if (error.response && error.response.status === 422) {
+          const errorMessage = error.response.data.error;
+
+          alert(errorMessage);
+        } else {
+          // Handle other errors if needed
+        }
       } finally {
         this.vacancyBeingDragged = null;
         this.dropCandidateId = null;
@@ -629,6 +690,13 @@ export default {
     },
 
     async openModal(candidateId, day) {
+      this.isModalOpen = true;
+      if (candidateId && candidateId.job !== null) {
+        this.candidateJob = candidateId.job.toString();
+      } else {
+        this.candidateJob = "";
+      }
+
       try {
         const actualCandidateId = candidateId.candidate_id.toString();
 
@@ -663,13 +731,13 @@ export default {
           this.statusForSelectedDate = null;
         }
 
-        if (vacancy) {
+        if (vacancy && vacancy.dates.includes(this.formatDates(day))) {
           this.statusForSelectedDate = "Vacancy Available";
         } else {
           this.statusForSelectedDate = "No Vacancy";
+          // this.isModalOpen = true; // Open ScheduleDirectAssignList modal
         }
       } catch (error) {
-        // Handle errors
         this.selectedDate = null;
         this.statusForSelectedDate = null;
       }
@@ -678,15 +746,16 @@ export default {
       this.selectedDate = null;
 
       this.statusForSelectedDate = null;
+      this.isModalOpen = false;
     },
-    // async fetchCandidateList() {
-    //   try {
-    //     const response = await axios.get(
-    //       `${VITE_API_URL}/approve_and_activated_candidates`
-    //     );
-    //     this.candidateList = response.data.data;
-    //   } catch (error) {}
-    // },
+    async fetchAssignList() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/find_assign_vacancies_and_candidates`
+        );
+        this.assignStaffDisplay = response.data.vacancies;
+      } catch (error) {}
+    },
     async fetchCandidateList() {
       try {
         const response = await axios.get(
@@ -769,7 +838,7 @@ export default {
     },
   },
   components: {
-    AppointmentAdd,
+    EditAssignShceduleVaacncy,
     Navbar,
     ScheduleDirectAssignList,
     SchedulePublishStaffList,
@@ -778,7 +847,7 @@ export default {
   mounted() {
     this.loadDateRangeFromLocalStorage();
     this.fetchCandidateList();
-
+    this.fetchAssignList();
     this.getBusinessUnitMethod();
     // this.fetchAssignVacancyStaffList();
     this.getJobTitleMethod();
@@ -932,6 +1001,14 @@ input.dateInput {
   float: right;
   font-size: 28px;
   font-weight: bold;
+}
+.assignVacancyDesign {
+  background: #e94141;
+  padding: 2px;
+  color: #fff;
+  font-weight: 600;
+  font-size: larger;
+  padding: 4px;
 }
 
 .close:hover,

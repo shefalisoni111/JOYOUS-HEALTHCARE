@@ -134,6 +134,67 @@
                     >
                   </div>
                 </div>
+                <div>
+                  <div class="mb-3 d-flex justify-content-between">
+                    <div class="col-2">
+                      <label class="form-label" for="selectShifts">Start Time</label>
+                    </div>
+                    <div class="col-10">
+                      <select
+                        class="form-select w-25"
+                        v-model="start_time"
+                        @change="validateStartTime"
+                      >
+                        <option v-for="hour in 24" :key="hour" :value="formatTime(hour)">
+                          {{ formatTime(hour) }}
+                        </option>
+                      </select>
+                      <span
+                        v-if="!validationStartTime && !start_time"
+                        class="text-danger"
+                      >
+                        Start Time is required
+                      </span>
+                    </div>
+                  </div>
+                  <div class="mb-3 d-flex justify-content-between">
+                    <div class="col-2">
+                      <label class="form-label" for="selectShifts">End Time</label>
+                    </div>
+                    <div class="col-10">
+                      <select
+                        class="form-select w-25"
+                        v-model="end_time"
+                        @change="validateEndTime"
+                      >
+                        <option v-for="hour in 24" :key="hour" :value="formatTime(hour)">
+                          {{ formatTime(hour) }}
+                        </option>
+                      </select>
+                      <span v-if="!validationEndTime && !end_time" class="text-danger">
+                        End Time is required
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
+                    <label class="form-label" for="selectShifts">Break Time</label>
+                  </div>
+                  <div class="col-10">
+                    <select
+                      class="form-select w-25"
+                      v-model="break"
+                      @change="validateBreak"
+                    >
+                      <option value="">Select Break Time</option>
+                    </select>
+                    <span v-if="!validationBreak && !break" class="text-danger">
+                      Break Time is required
+                    </span>
+                  </div>
+                </div> -->
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label class="form-label" for="selectShifts">Staff Required</label>
@@ -222,6 +283,11 @@ export default {
       validationShift: true,
       validationStaffRequired: true,
       validationDateType: true,
+      start_time: null,
+      end_time: null,
+
+      validationStartTime: true,
+      validationEndTime: true,
       business_unit_id: "",
       client_id: "",
       clientData: [],
@@ -248,13 +314,17 @@ export default {
         this.notes !== "" &&
         this.staff_required !== "" &&
         this.selectedDate !== null &&
+        this.start_time !== null &&
+        this.end_time !== null &&
         this.validationSelectedOptionText &&
         this.validationSelectedBusinessUnit &&
         this.validationSelectedClient &&
         this.validationNotesText &&
         this.validationShift &&
         this.validationDateType &&
-        this.validationStaffRequired
+        this.validationStaffRequired &&
+        this.validationStartTime &&
+        this.validationEndTime
       );
     },
     selectedOptionText() {
@@ -287,6 +357,8 @@ export default {
     staff_required: "validationStaffRequired",
     dates: "validationDateType",
     notes: "validationNotesText",
+    start_time: "validateStartTime",
+    end_time: "validateEndTime",
 
     isFormValid: function (newVal) {
       this.isValidForm = newVal;
@@ -314,6 +386,33 @@ export default {
     },
   },
   methods: {
+    validateStartTime() {
+      if (!this.start_time) {
+        this.validationStartTime = false;
+      } else {
+        this.validationStartTime = true;
+      }
+    },
+
+    validateEndTime() {
+      if (!this.end_time) {
+        this.validationEndTime = false;
+      } else {
+        this.validationEndTime = true;
+      }
+    },
+    formatTime(hour) {
+      if (hour <= 12) {
+        return `${String(hour).padStart(2, "0")}:00 AM`;
+      } else {
+        return `${String(hour - 12).padStart(2, "0")}:00 PM`;
+      }
+    },
+    formatTimeMinute(hour, minute) {
+      const hourStr = String(hour).padStart(2, "0");
+      const minuteStr = String(minute).padStart(2, "0");
+      return `${hourStr}:${minuteStr}`;
+    },
     onClientSelect() {
       const selectedClientId = this.client_id;
 
@@ -497,7 +596,10 @@ export default {
       this.validationSelectedClient = true;
       this.validationNotesText = true;
       this.validationShift = true;
-      (this.validationStaffRequired = true), (this.validationDateType = true);
+      (this.validationStartTime = true),
+        (this.validationEndTime = true),
+        (this.validationStaffRequired = true),
+        (this.validationDateType = true);
     },
     clearFields() {
       this.business_unit_id = "";
@@ -505,6 +607,8 @@ export default {
       this.job_id = "";
       this.dates = [];
       this.shift_id = "";
+      this.start_time = "";
+      this.end_time = "";
       (this.staff_required = ""), (this.notes = "");
       this.selectedDate = null;
     },
