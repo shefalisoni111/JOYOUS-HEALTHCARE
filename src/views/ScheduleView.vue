@@ -799,15 +799,15 @@ export default {
           const parts = dateString.split("/");
 
           if (parts.length === 3) {
-            const [day, month, year] = parts;
-            return `${parseInt(day)}/${month}/${year}`;
+            const [month, day, year] = parts;
+            return `${month}/${parseInt(day)}/${year}`;
           }
 
           return dateString;
         };
 
         const formattedDate = formatDate(this.formattedStartDate);
-
+        // console.log(this.formattedStartDate, formattedDate);
         const requestData = {
           date: formattedDate,
         };
