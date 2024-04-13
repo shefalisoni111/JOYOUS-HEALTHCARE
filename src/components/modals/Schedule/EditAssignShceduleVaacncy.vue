@@ -10,7 +10,9 @@
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header" style="background-color: #f9944b">
-            <h5 class="modal-title" id="editAssignScheduleVacancy">Edit Assign Shift</h5>
+            <h5 class="modal-title" id="editAssignScheduleVacancy">
+              Edit Assign Shift {{ vacancyId }}
+            </h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
@@ -242,8 +244,12 @@ export default {
   },
   props: {
     candidateId: {
+      type: [Number, String],
+      default: null,
+    },
+    vacancyId: {
       type: Number,
-      default: 0,
+      default: null,
     },
   },
   components: { SuccessAlert },

@@ -274,7 +274,7 @@ export default {
           this.createdClient();
         })
         .catch((error) => {
-          console.error("Error updating staff status:", error);
+          // console.error("Error updating staff status:", error);
         });
     },
     editClient(clientID) {

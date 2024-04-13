@@ -149,7 +149,7 @@ export default {
       const token = localStorage.getItem("token");
       const file = event.target.files[0];
       if (!file) {
-        console.error("No file selected");
+        // console.error("No file selected");
         return;
       }
       try {
@@ -168,7 +168,7 @@ export default {
         const imageUrl = `${VITE_API_URL}${response.data.data.profile_photo}`;
         localStorage.setItem("profileImage", imageUrl);
         this.profileImage = imageUrl;
-        console.log(this.profileImage);
+        // console.log(this.profileImage);
         if (response.data.error) {
           this.errorMessage = response.data.error;
 
@@ -178,11 +178,11 @@ export default {
             this.profileImage = `${VITE_API_URL}${response.data.data.profile_photo}`;
             this.errorMessage = null;
           } else {
-            console.error("Profile photo not found in response:", response.data);
+            // console.error("Profile photo not found in response:", response.data);
           }
         }
       } catch (error) {
-        console.error("Error uploading profile picture:", error);
+        // console.error("Error uploading profile picture:", error);
         // Handle error
       }
     },

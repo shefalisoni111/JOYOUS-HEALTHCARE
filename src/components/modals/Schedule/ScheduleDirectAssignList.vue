@@ -410,7 +410,7 @@ export default {
       }
       // console.log(this.candidateId, checkedVacancyIds);
       const data = {
-        candidate_id: this.candidateId,
+        candidate_id: parseInt(this.candidateId),
         vacancy_id: checkedVacancyIds,
       };
 

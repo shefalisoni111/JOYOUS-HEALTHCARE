@@ -10,7 +10,7 @@
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header d-inline-flex gap-3">
-            <h5 class="modal-title" id="schedulePublishStaffList">Publish Staff</h5>
+            <h5 class="modal-title" id="schedulePublishStaffList">Publish Staff Shift</h5>
             <!-- <ul
                 class="list-unstyled d-flex gap-3 mb-0 publish-ul"
                 v-for="data in vacancyData"
@@ -30,7 +30,7 @@
                 <div
                   class="pagetitle d-flex justify-content-between align-items-center p-2"
                 >
-                  <div class="d-flex justify-content-around gap-2">
+                  <!-- <div class="d-flex justify-content-around gap-2">
                     <input
                       class="form-check-input"
                       type="checkbox"
@@ -39,7 +39,7 @@
                       id="selectAllCheckbox"
                     />
                     Select All
-                  </div>
+                  </div> -->
 
                   <div></div>
 
@@ -67,12 +67,30 @@
                 <table class="w-100">
                   <thead>
                     <tr>
-                      <th></th>
-                      <th scope="col">Staff ID</th>
-                      <th scope="col">Staff</th>
-                      <th scope="col">Vacancy ID</th>
-                      <th scope="col">Client</th>
-                      <th scope="col">Job Title</th>
+                      <th style="width: 10px"></th>
+                      <th scope="col" style="width: 85px" class="text-center">
+                        Staff ID
+                      </th>
+                      <th scope="col" style="width: 161px" class="text-center">Staff</th>
+                      <th
+                        scope="colgroup"
+                        colspan="3"
+                        style="width: 40px"
+                        class="text-center"
+                      >
+                        Shift Details
+
+                        <!-- <table class="w-100 text-center me-5">
+                          <thead>
+                            <tr>
+                              <th></th>
+                              <th>Shift ID</th>
+                              <th>Client</th>
+                              <th>Job Title</th>
+                            </tr>
+                          </thead>
+                        </table> -->
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -84,25 +102,39 @@
                           :value="candidate.id"
                           :id="`checkbox-${candidate.id}`"
                           @change="
-                            handleCheckboxChange(candidate.id, candidate.vacancy.id)
+                            handleCheckboxChange(candidate.candidate_id, 'candidate')
                           "
                         />
                       </td>
-                      <td v-text="candidate.candidate_id"></td>
-                      <td v-text="candidate.candidate_name"></td>
-                      <!-- <template v-for="data in candidate.vacancies" :key="data.id">
-                        <td>{{ data.id }}</td>
-                        <td>{{ data.client }}</td>
-                        <td>{{ data.job_title }}</td>
-                      </template> -->
-                      <td>
-                        {{ concatenateIds(candidate.vacancies) }}
-                      </td>
-                      <td>
-                        {{ concatenateValues(candidate.vacancies, "client") }}
-                      </td>
-                      <td>
-                        {{ concatenateValues(candidate.vacancies, "job_title") }}
+                      <td v-text="candidate.candidate_id" class="text-center"></td>
+                      <td v-text="candidate.candidate_name" class="text-center"></td>
+                      <td colspan="4">
+                        <table class="w-100 text-center me-5">
+                          <thead>
+                            <tr>
+                              <th></th>
+                              <th>Shift ID</th>
+                              <th>Client</th>
+                              <th>Job Title</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr v-for="vacancy in candidate.vacancies" :key="vacancy.id">
+                              <td>
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  :value="candidate.id"
+                                  :id="`checkbox-${candidate.id}`"
+                                  @change="handleCheckboxChange(vacancy.id, 'vacancy')"
+                                />
+                              </td>
+                              <td>{{ vacancy.id }}</td>
+                              <td>{{ vacancy.client }}</td>
+                              <td>{{ vacancy.job_title }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </td>
                     </tr>
                   </tbody>
@@ -166,27 +198,23 @@
           <div class="modal-footer">
             <div class="row">
               <div class="col-md-12">
-                <div class="d-flex gap-3">
+                <div class="">
                   <button
                     class="btn btn-danger rounded-1"
                     data-bs-target="#schedulePublishStaffList"
                     data-bs-toggle="modal"
                     data-bs-dismiss="modal"
+                    v-on:click="clearFieldsData"
                   >
                     Cancel
                   </button>
-                  <!-- <button
-                    class="btn btn-success rounded-1 text-capitalize fw-medium"
+                  <button
+                    class="btn btn-success rounded-1 text-capitalize fw-medium ms-2"
                     data-bs-dismiss="modal"
-                    v-on:click="
-                      assignVacancyToCandidateDirectMethod(
-                        candidate.id,
-                        candidate.vacancy.id
-                      )
-                    "
+                    v-on:click="assignVacancyToCandidateDirectMethod()"
                   >
                     Publish
-                  </button> -->
+                  </button>
                 </div>
               </div>
             </div>
@@ -214,13 +242,9 @@ export default {
   data() {
     return {
       fetchStaffAndVacancy: [],
-      getPublicVacancyMAil: [],
-      notification_type: null,
-      assignStaffList: [],
-      enableMailNotification: false,
+
       showMessage: false,
-      publicationStatus: null,
-      checkedCandidates: reactive({}),
+
       selectAll: false,
       searchQuery: null,
       debounceTimeout: null,
@@ -253,9 +277,7 @@ export default {
     concatenateValues(vacancies, field) {
       return vacancies.map((data) => data[field]).join(", ");
     },
-    handleCheckboxChange(candidateId, vacancyId) {
-      console.log("Clicked on checkbox with candidate ID:", candidateId, vacancyId);
-    },
+
     // selectAllCandidates() {
     //   if (this.selectAll) {
     //     this.getCandidatesData.forEach((data) => {
@@ -336,31 +358,52 @@ export default {
     //     // Handle case where selectedPublishItemId is falsy
     //   }
     // },
-    async assignVacancyToCandidateDirectMethod(candidateId, vacancyId) {
+    clearFieldsData() {
+      this.checkedCandidates = {};
+      setTimeout(() => {
+        this.checkedCandidates = {};
+      }, 10);
+    },
+    handleCheckboxChange(id, type) {
+      if (type === "candidate") {
+        this.candidateId = id;
+      } else if (type === "vacancy") {
+        this.vacancyId = id;
+      }
+    },
+    async assignVacancyToCandidateDirectMethod() {
       const data = {
-        candidate_id: candidateId,
-        vacancy_id: vacancyId,
+        candidate_id: this.candidateId,
+        vacancy_id: this.vacancyId,
       };
 
       try {
-        // Make API call to publish vacancies
         const response = await axios.put(
           `${VITE_API_URL}/publish_schedule_vacancy`,
           data
         );
         if (response.status === 200) {
-          // Handle success
-          const message = "Staff Assigned Shift Successfully";
-          this.$refs.successAlert.showSuccess(message);
-          // Clear checkbox selections
-          this.checkedCandidates = {};
-          // Emit event to notify parent component
-          this.$emit("Candidate-updated");
+          alert("Staff Shift Publish Successfully");
+          // const message = "Staff Shift Publish Successfully";
+          // this.$refs.successAlert.showSuccess(message);
+          this.getPublishStaffListMethod();
+          // this.checkedCandidates = {};
+          // this.$emit("Candidate-updated");
         } else {
-          // Handle error
+          // const errorMessage = "Failed to publish staff shift";
+          // this.$refs.successAlert.showError(errorMessage);
+
+          this.checkedCandidates = {};
         }
       } catch (error) {
-        // Handle error
+        if (error.response && error.response.status === 404) {
+          const errorMessage = error.response.data.error || "Resource not found";
+          // Display alert error message
+          alert(errorMessage);
+        } else {
+          // Handle other errors
+          // console.error("Error:", error);
+        }
       }
     },
 
@@ -368,6 +411,10 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/find_unpublish_vacancy`);
         this.fetchStaffAndVacancy = response.data;
+        // if (response.status === 200) {
+        //   const message = "Staff Shift Publish Successfully";
+        //   this.$refs.successAlert.showSuccess(message);
+        // }
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
