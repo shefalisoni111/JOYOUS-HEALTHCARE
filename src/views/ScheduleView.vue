@@ -815,6 +815,7 @@ export default {
     },
 
     async openModal(candidateId, day) {
+      this.candidateJob = candidateId.job;
       if (candidateId && candidateId.id) {
         this.vacancyId = candidateId.id.toString();
       } else {

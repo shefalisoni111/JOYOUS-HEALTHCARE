@@ -67,6 +67,9 @@
                     <!-- <th scope="col">Notes</th> -->
 
                     <!-- <th scope="col">Created by</th> -->
+                    {{
+                      candidateId
+                    }}
                   </tr>
                 </thead>
                 <tbody v-for="getdata in filteredVacancies" :key="getdata.id">
@@ -432,7 +435,7 @@ export default {
           this.$refs.successAlert.showSuccess(message);
           this.checkedVacancies = {};
           this.$emit("Candidate-updated");
-          this.fetchAssignList();
+          // this.fetchAssignList();
         } else {
           // throw new Error(`Failed to assign candidates. Status: ${response.status}`);
         }
@@ -479,13 +482,15 @@ export default {
     } else {
       return;
     }
+
+    // this.fetchAssignList();
   },
   watch: {
     columnDateMatch(newDate) {
       this.selectedWeekDate = newDate;
 
       this.fetchVacancyListMethod(this.selectedWeekDate);
-      this.fetchAssignList();
+      // this.fetchAssignList();
     },
   },
 };
