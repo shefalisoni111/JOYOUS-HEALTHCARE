@@ -424,8 +424,8 @@ export default {
       startDate: new Date(),
       endDate: new Date(),
       currentDate: new Date(),
-      selectedDate: null,
-      candidateJob: "",
+      selectedDate: new Date(),
+      candidateJob: null,
       vacancyId: null,
       candidateList: [],
       selectedCandidateId: null,
@@ -631,7 +631,7 @@ export default {
       return formattedDate;
     },
     filteredVacancies() {
-      return this.vacancyList.filter((item) => item.date === this.columnDateMatch);
+      return this.vacancyList.filter((item) => item.date == this.columnDateMatch);
     },
     toggleSidebar() {
       this.isOpen = !this.isOpen;
@@ -815,6 +815,8 @@ export default {
     },
 
     async openModal(candidateId, day) {
+      this.columnDateMatch = day !== null ? day.toString() : "";
+      this.selectedCandidateId = candidateId.candidate_id.toString();
       this.candidateJob = candidateId.job;
       if (candidateId && candidateId.id) {
         this.vacancyId = candidateId.id.toString();
@@ -849,10 +851,8 @@ export default {
           (candidate) => candidate.candidate_id === actualCandidateId
         );
 
-        this.columnDateMatch = day;
-
         const vacancy = this.vacancyList.find(
-          (vacancy) => vacancy.date === columnDateMatch
+          (vacancy) => vacancy.date === this.columnDateMatch
         );
 
         if (selectedCandidate) {
@@ -895,25 +895,8 @@ export default {
     },
     async fetchCandidateList() {
       try {
-        const formatDate = (dateString) => {
-          const parts = dateString.split("/");
-
-          if (parts.length === 3) {
-            const [firstPart, secondPart, thirdPart] = parts;
-
-            if (parseInt(firstPart) > 12) {
-              return `${secondPart}/${firstPart}/${thirdPart}`;
-            } else {
-              return dateString;
-            }
-          }
-
-          return dateString;
-        };
-
-        const formattedDate = formatDate(this.formattedStartDate);
         const requestData = {
-          date: formattedDate,
+          date: this.formattedStartDate,
         };
 
         const response = await axios.get(
@@ -941,25 +924,8 @@ export default {
     },
     async fetchVacancyListMethod() {
       try {
-        const formatDate = (dateString) => {
-          const parts = dateString.split("/");
-
-          if (parts.length === 3) {
-            const [firstPart, secondPart, thirdPart] = parts;
-
-            if (parseInt(firstPart) > 12) {
-              return `${secondPart}/${firstPart}/${thirdPart}`;
-            } else {
-              return dateString;
-            }
-          }
-
-          return dateString;
-        };
-
-        const formattedDate = formatDate(this.formattedStartDate);
         const requestData = {
-          date: formattedDate,
+          date: this.formattedStartDate,
         };
         const response = await axios.get(
           `${VITE_API_URL}/vacancies_and_candidates_availability`,
@@ -1031,7 +997,7 @@ export default {
 
     const currentDate = new Date();
     const startOfWeek = new Date(currentDate);
-    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
     this.startDate = startOfWeek;
 
     const endOfWeek = new Date(currentDate);

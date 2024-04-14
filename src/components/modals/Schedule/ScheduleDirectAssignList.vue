@@ -53,6 +53,12 @@
             </div>
             <div class="row g-3 align-items-center" v-if="!searchQuery">
               <table class="table candidateTable" v-if="selectedCandidateItemId">
+                <!-- {{
+                  columnDateMatch
+                }}
+                {{
+                  candidateId
+                }} -->
                 <thead>
                   <tr>
                     <th scope="col"></th>
@@ -67,9 +73,6 @@
                     <!-- <th scope="col">Notes</th> -->
 
                     <!-- <th scope="col">Created by</th> -->
-                    {{
-                      candidateId
-                    }}
                   </tr>
                 </thead>
                 <tbody v-for="getdata in filteredVacancies" :key="getdata.id">
