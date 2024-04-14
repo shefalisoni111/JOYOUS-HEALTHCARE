@@ -11,7 +11,7 @@
         <div class="modal-content">
           <div class="modal-header" style="background-color: #f9944b">
             <h5 class="modal-title" id="editAssignScheduleVacancy">
-              Edit Assign Shift {{ vacancyId }}
+              Edit Assign Shift {{ vacancyId }} {{ candidateId }}
             </h5>
           </div>
           <div class="modal-body mx-3">
@@ -244,7 +244,7 @@ export default {
   },
   props: {
     candidateId: {
-      type: [Number, String],
+      type: String,
       default: null,
     },
     vacancyId: {

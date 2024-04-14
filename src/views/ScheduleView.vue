@@ -815,11 +815,25 @@ export default {
     },
 
     async openModal(candidateId, day) {
+      // this.vacancyId = candidateId.id.toString();
+      // this.columnDateMatch = day !== null ? day.toString() : "";
+      // this.selectedCandidateId = candidateId.candidate_id.toString();
+      // this.candidateJob = candidateId.job;
+      // if (candidateId && candidateId.id) {
+      //   this.vacancyId = candidateId.id;
+      // } else {
+      //   return;
+      // }
+      if (!candidateId || !candidateId.candidate_id) {
+        return;
+      }
+
       this.columnDateMatch = day !== null ? day.toString() : "";
       this.selectedCandidateId = candidateId.candidate_id.toString();
       this.candidateJob = candidateId.job;
+
       if (candidateId && candidateId.id) {
-        this.vacancyId = candidateId.id.toString();
+        this.vacancyId = candidateId.id;
       } else {
         return;
       }
