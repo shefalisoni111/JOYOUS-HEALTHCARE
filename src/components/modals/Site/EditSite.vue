@@ -171,14 +171,14 @@
       </div>
     </div>
     <SuccessAlert ref="successAlert" />
-    <AddClients @client-updated="createdClient" />
+    <!-- <AddClients @client-updated="createdClient" /> -->
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
-import AddClients from "../Clients/AddClients.vue";
+// import AddClients from "../Clients/AddClients.vue";
 
 import store from "@/store";
 export default {
@@ -207,7 +207,7 @@ export default {
       required: true,
     },
   },
-  components: { SuccessAlert, AddClients },
+  components: { SuccessAlert },
   computed: {
     selectedSplitRate: {
       get() {

@@ -32,7 +32,7 @@
             <td>{{ data.address }}</td>
             <td>{{ data.phone_number }}</td>
             <td>{{ data.email }}</td>
-            <td>{{ data.status }}</td>
+            <td>{{ data.status ? "Active" : "Inactive" }}</td>
             <td>{{ data.portal_access }}</td>
             <td class="cursor-pointer">
               <button
