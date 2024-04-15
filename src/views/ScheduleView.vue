@@ -1011,7 +1011,7 @@ export default {
 
     const currentDate = new Date();
     const startOfWeek = new Date(currentDate);
-    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
     this.startDate = startOfWeek;
 
     const endOfWeek = new Date(currentDate);
