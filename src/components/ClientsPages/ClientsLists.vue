@@ -170,11 +170,15 @@
                             <!-- {{ client.first_name }} -->
                           </td>
                           <td>
-                            <span v-for="(job, index) in client.jobs" :key="index">
+                            <span
+                              v-for="(job, index) in client.job_name"
+                              :key="index"
+                              :style="{ backgroundColor: getColor(index) }"
+                              class="p-1 me-2 pb-1 mt-5 rounded-1"
+                            >
                               {{ job }}
 
-                              <template v-if="index !== client.jobs.length - 1"
-                                >,
+                              <template v-if="index !== client.job_name.length - 1">
                               </template>
                             </span>
                           </td>
@@ -262,6 +266,7 @@
         Next
       </button>
     </div>
+    <EditClientModal :clientID="selectedClientID || 0" @client-updated="createdClient" />
   </div>
 </template>
 <script>
@@ -269,6 +274,7 @@ import axios from "axios";
 import AllClient from "../ClientsPages/AllClient.vue";
 import InActiveClient from "../ClientsPages/InActiveClient.vue";
 import ActiveClient from "./ActiveClient.vue";
+import EditClientModal from "../modals/Clients/EditClientModal.vue";
 const axiosInstance = axios.create({
   headers: {
     "Cache-Control": "no-cache",
@@ -279,7 +285,7 @@ export default {
   data() {
     return {
       getClientDetail: [],
-
+      selectedClientID: null,
       isActive: true,
       searchQuery: null,
       debounceTimeout: null,
@@ -297,6 +303,14 @@ export default {
       itemsPerPage: 11,
       // showFilters: false,
       selectedClientStatus: "",
+      colors: [
+        "lightblue",
+        "lightgreen",
+        "lightyellow",
+        "lightcoral",
+        "lightskyblue",
+        "lightpink",
+      ],
     };
   },
 
@@ -313,12 +327,18 @@ export default {
       return this.paginateSearchResults.length;
     },
   },
-  components: { AllClient, InActiveClient, ActiveClient },
+  components: { AllClient, InActiveClient, ActiveClient, EditClientModal },
 
   methods: {
     // toggleFilters() {
     //   this.showFilters = !this.showFilters;
     // },
+    editClient(clientID) {
+      this.selectedClientID = clientID;
+    },
+    getColor(index) {
+      return this.colors[index % this.colors.length];
+    },
     exportAll() {
       axios
         .get(`${VITE_API_URL}/export_all_csv.csv`)

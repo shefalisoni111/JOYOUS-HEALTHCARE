@@ -27,12 +27,7 @@
                         <td>MANDATORY</td>
                         <td>
                           <label class="switch">
-                            <input
-                              type="checkbox"
-                              id="togBtn"
-                              v-model="mandatory"
-                              checked
-                            />
+                            <input type="checkbox" id="togBtn" v-model="mandatory" />
                             <div class="slider round"></div>
                           </label>
                         </td>
@@ -112,7 +107,7 @@ export default {
       id: "",
       document_name: "",
       document_category_id: "",
-      mandatory: true,
+      mandatory: null,
       hide_document: null,
       profile_view: null,
       error: [],
@@ -126,7 +121,7 @@ export default {
         const data = {
           document_name: this.document_name,
           document_category_id: this.categoryId,
-          mandatory: true,
+          mandatory: this.mandatory,
           hide_document: this.hide_document,
           profile_view: this.profile_view,
         };
@@ -145,7 +140,7 @@ export default {
           this.$refs.successAlert.showSuccess(message);
           this.document_name = "";
           this.document_category_id = "";
-
+          this.mandatory = "";
           this.hide_document = "";
           this.profile_view = "";
         }

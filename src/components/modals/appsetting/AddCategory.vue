@@ -57,6 +57,7 @@
               data-bs-target="#addCategories"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
+              v-on:click="clearFieldsData"
             >
               Cancel
             </button>
@@ -101,6 +102,16 @@ export default {
     },
   },
   methods: {
+    clearFieldsData() {
+      this.clearFields();
+      setTimeout(() => {
+        this.clearError();
+      }, 10);
+    },
+    clearFields() {
+      this.category_name = "";
+      this.job_id = [];
+    },
     async addCandidateStatus() {
       this.validateForm();
 
@@ -122,7 +133,7 @@ export default {
             // location.reload();
             this.$emit("onCategoryAdded");
             this.category_name = "";
-            this.job_id = "";
+            this.job_id = [];
             const message = " Add Category Successful";
             this.$refs.successAlert.showSuccess(message);
           }

@@ -129,11 +129,13 @@
       </div>
     </div>
     <SuccessAlert ref="successAlert" />
+    <AddClients />
   </div>
 </template>
 <script>
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+import AddClients from "./AddClients.vue";
 
 export default {
   name: "CandidateAdd",
@@ -168,7 +170,7 @@ export default {
       return job_title ? job_title.name : "";
     },
   },
-  components: { SuccessAlert },
+  components: { SuccessAlert, AddClients },
   methods: {
     cleanPhoneNumber() {
       this.fetchClients.phone_number = this.fetchClients.phone_number.replace(/\D/g, "");

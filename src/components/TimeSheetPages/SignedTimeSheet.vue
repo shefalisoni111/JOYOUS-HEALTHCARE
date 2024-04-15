@@ -584,7 +584,10 @@ export default {
       }
     },
     formatDate(date) {
-      return date.toLocaleDateString();
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
     },
     // async vacancyDeleteMethod(id) {
     //   if (!window.confirm("Are you Sure ?")) {

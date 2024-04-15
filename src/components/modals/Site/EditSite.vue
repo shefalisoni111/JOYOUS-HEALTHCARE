@@ -171,12 +171,14 @@
       </div>
     </div>
     <SuccessAlert ref="successAlert" />
+    <AddClients @client-updated="createdClient" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+import AddClients from "../Clients/AddClients.vue";
 
 import store from "@/store";
 export default {
@@ -205,7 +207,7 @@ export default {
       required: true,
     },
   },
-  components: { SuccessAlert },
+  components: { SuccessAlert, AddClients },
   computed: {
     selectedSplitRate: {
       get() {
@@ -283,8 +285,8 @@ export default {
           id: this.fetchSite.id,
           newData: response.data,
         });
-        this.$emit("updateVacancy");
-        this.$emit("updateVacancyInactive");
+        this.$emit("editSite");
+        // this.$emit("updateVacancyInactive");
         // alert("Vacancy updated successfully");
         const message = "Site Updated successfully";
         this.$refs.successAlert.showSuccess(message);

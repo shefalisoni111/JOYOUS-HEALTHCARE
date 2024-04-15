@@ -17,7 +17,6 @@
               <div class="col-md-12">
                 <div
                   class="pagetitle d-flex justify-content-between align-items-center p-2"
-                  v-if="vacancyList.length > 0"
                 >
                   <div class="d-flex justify-content-around gap-2">
                     <input

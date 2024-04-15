@@ -326,11 +326,12 @@ export default {
           });
 
           if (response.ok) {
+            this.$emit("addSite");
             this.clearFields();
             setTimeout(() => {
               this.clearError();
             }, 100);
-            this.$emit("addSite");
+
             // alert("Successful Shift added");
             const message = "Site added Successfully";
             this.$refs.successAlert.showSuccess(message);

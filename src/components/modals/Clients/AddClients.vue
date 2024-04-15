@@ -268,7 +268,7 @@ export default {
     clearFields() {
       this.first_name = "";
       this.address = "";
-      this.job_id = "";
+      this.job_id = [];
       this.phone_number = "";
       this.email = "";
       this.password = "";
@@ -341,7 +341,7 @@ export default {
             // location.reload();
             this.$emit("client-updated");
             this.first_name = "";
-            this.job_id = "";
+            this.job_id = [];
             this.address = "";
             this.phone_number = "";
             this.email = "";

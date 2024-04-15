@@ -37,7 +37,7 @@
       <table class="table clientTable">
         <thead>
           <tr>
-            <th scope="col">ID</th>
+            <!-- <th scope="col">ID</th> -->
             <th scope="col">#RefCode</th>
             <th scope="col">ClientName</th>
             <th scope="col" style="width: 10%">Jobs</th>
@@ -51,7 +51,7 @@
         </thead>
         <tbody>
           <tr v-for="client in paginateCandidates" :key="client.id">
-            <td v-text="client.id"></td>
+            <!-- <td v-text="client.id"></td> -->
             <td v-text="client.ref_code"></td>
             <td>
               <router-link

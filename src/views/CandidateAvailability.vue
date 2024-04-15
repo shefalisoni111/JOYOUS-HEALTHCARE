@@ -518,8 +518,11 @@ export default {
       Vue.set(this, "selectedDateRow", selectedDateRow);
       // console.log(selectedDateRow);
     },
-    formatDate(day) {
-      return day.toLocaleDateString();
+    formatDate(date) {
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
     },
 
     openModal(candidateId, day) {

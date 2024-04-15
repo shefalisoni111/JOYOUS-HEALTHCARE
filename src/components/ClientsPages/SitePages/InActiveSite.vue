@@ -4,7 +4,7 @@
       <table class="table clientTable">
         <thead>
           <tr>
-            <th scope="col">ID</th>
+            <!-- <th scope="col">ID</th> -->
             <th scope="col">#RefCode</th>
             <th scope="col">Site</th>
             <th scope="col">ClientName</th>
@@ -19,7 +19,7 @@
         </thead>
         <tbody>
           <tr v-for="data in getSiteInactiveData" :key="data.id">
-            <td>{{ data.id }}</td>
+            <!-- <td>{{ data.id }}</td> -->
             <td v-text="data.refer_code"></td>
             <td v-text="data.site_name"></td>
             <td>

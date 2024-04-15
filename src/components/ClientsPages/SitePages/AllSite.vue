@@ -4,7 +4,7 @@
       <table class="table clientTable">
         <thead>
           <tr>
-            <th scope="col">ID</th>
+            <!-- <th scope="col">ID</th> -->
             <th scope="col">#RefCode</th>
             <th scope="col">Site</th>
             <th scope="col">ClientName</th>
@@ -19,7 +19,7 @@
         </thead>
         <tbody>
           <tr v-for="data in getSiteAllData" :key="data.id">
-            <td>{{ data.id }}</td>
+            <!-- <td>{{ data.id }}</td> -->
             <td v-text="data.refer_code"></td>
             <td v-text="data.site_name"></td>
             <td>
@@ -63,12 +63,14 @@
         </tbody>
       </table>
     </div>
-    <EditSite :siteId="selectedsiteId || 0" />
+    <AddSite @addSite="getSiteAllDataMethod" />
+    <EditSite :siteId="selectedsiteId || 0" @editSite="getSiteAllDataMethod" />
   </div>
 </template>
 <script>
 import axios from "axios";
 import EditSite from "../../modals/Site/EditSite.vue";
+import AddSite from "../../modals/Site/AddSite.vue";
 
 export default {
   data() {
@@ -78,7 +80,7 @@ export default {
     };
   },
 
-  components: { EditSite },
+  components: { EditSite, AddSite },
   methods: {
     editsiteId(siteId) {
       this.selectedsiteId = siteId;

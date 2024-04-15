@@ -528,29 +528,29 @@ export default {
   },
   components: { Navbar },
   computed: {
-    getWeekDates() {
-      const currentDate = new Date();
-      const weekStart = new Date(currentDate);
-      weekStart.setDate(currentDate.getDate() - currentDate.getDay());
-      const weekDates = [];
-      for (let i = 0; i < 7; i++) {
-        const date = new Date(weekStart);
-        date.setDate(weekStart.getDate() + i);
-        weekDates.push(date.getDate());
-      }
-      return weekDates;
-    },
+    // getWeekDates() {
+    //   const currentDate = new Date();
+    //   const weekStart = new Date(currentDate);
+    //   weekStart.setDate(currentDate.getDate() - currentDate.getDay());
+    //   const weekDates = [];
+    //   for (let i = 0; i < 7; i++) {
+    //     const date = new Date(weekStart);
+    //     date.setDate(weekStart.getDate() + i);
+    //     weekDates.push(date.getDate());
+    //   }
+    //   return weekDates;
+    // },
 
-    getMonthDates() {
-      const currentDate = new Date();
-      const daysInMonth = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth() + 1,
-        0
-      ).getDate();
-      const monthDates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-      return monthDates;
-    },
+    // getMonthDates() {
+    //   const currentDate = new Date();
+    //   const daysInMonth = new Date(
+    //     currentDate.getFullYear(),
+    //     currentDate.getMonth() + 1,
+    //     0
+    //   ).getDate();
+    //   const monthDates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+    //   return monthDates;
+    // },
     paginationBooking() {
       if (!this.getBookingData) return [];
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;

@@ -214,8 +214,8 @@
         Next
       </button>
     </div>
-    <AddSite @addSite="getSiteAllDataMethod" />
-    <EditSite :siteId="selectedsiteId || 0" />
+
+    <!-- <EditSite :siteId="selectedsiteId || 0" @editSite="getSiteAllDataMethod" /> -->
   </div>
 </template>
 <script>
@@ -223,8 +223,8 @@ import axios from "axios";
 import AllSite from "../SitePages/AllSite.vue";
 import InActiveSite from "../SitePages/InActiveSite.vue";
 import ActiveSite from "../SitePages/ActiveSite.vue";
-import AddSite from "../../modals/Site/AddSite.vue";
-import EditSite from "../../modals/Site/EditSite.vue";
+// import AddSite from "../../modals/Site/AddSite.vue";
+// import EditSite from "../../modals/Site/EditSite.vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -266,7 +266,7 @@ export default {
       return this.paginateSearchResults.length;
     },
   },
-  components: { AllSite, InActiveSite, ActiveSite, AddSite, EditSite },
+  components: { AllSite, InActiveSite, ActiveSite },
 
   methods: {
     editsiteId(siteId) {
@@ -412,8 +412,8 @@ export default {
 
     next();
   },
-  async created() {
-    await this.getSiteAllDataMethod();
+  mounted() {
+    this.getSiteAllDataMethod();
   },
 };
 </script>

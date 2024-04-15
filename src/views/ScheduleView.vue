@@ -696,7 +696,10 @@ export default {
       }
     },
     formatDate(date) {
-      return date.toLocaleDateString();
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
     },
 
     handleDragStart(vacancy) {
@@ -831,9 +834,9 @@ export default {
       this.columnDateMatch = day !== null ? day.toString() : "";
       this.selectedCandidateId = candidateId.candidate_id.toString();
       this.candidateJob = candidateId.job;
-
+      this.vacancyId = candidateId.id;
       if (candidateId && candidateId.id) {
-        this.vacancyId = candidateId.id;
+        // this.vacancyId = candidateId.id;
       } else {
         return;
       }

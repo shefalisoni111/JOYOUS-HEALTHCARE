@@ -389,7 +389,7 @@ export default {
   methods: {
     async getBusinessUnitMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/business_units`);
+        const response = await axios.get(`${VITE_API_URL}/activated_site`);
         this.businessUnit = response.data;
       } catch (error) {
         if (error.response) {
@@ -457,10 +457,10 @@ export default {
       }
     },
     formatDate(date) {
-      if (!(date instanceof Date)) {
-        date = new Date(this.startDate.getFullYear(), this.startDate.getMonth(), date);
-      }
-      return date.toLocaleDateString();
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
     },
     // async vacancyDeleteMethod(id) {
     //   if (!window.confirm("Are you Sure ?")) {
