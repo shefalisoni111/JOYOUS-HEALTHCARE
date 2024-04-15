@@ -99,7 +99,7 @@ ul.generalsetting h6 {
                     </div>
 
                     <div class="d-flex gap-3 align-items-center">
-                      <select v-model="business_unit_id" id="selectBusinessUnit">
+                      <select v-model="site_id" id="selectBusinessUnit">
                         <option value="">All Site</option>
                         <option
                           v-for="option in businessUnit"
@@ -107,7 +107,7 @@ ul.generalsetting h6 {
                           :value="option.id"
                           placeholder="Select BusinessUnit"
                         >
-                          {{ option.name }}
+                          {{ option.site_name }}
                         </option>
                       </select>
                     </div>
@@ -311,7 +311,7 @@ export default {
       ],
       startDate: new Date(),
       endDate: new Date(),
-      business_unit_id: "",
+      site_id: "",
       businessUnit: [],
       selectedDateRow: [],
     };
@@ -319,10 +319,8 @@ export default {
   components: { Navbar },
   computed: {
     selectBusinessUnit() {
-      const business_unit_id = this.businessUnit.find(
-        (option) => option.id === this.business_unit_id
-      );
-      return business_unit_id ? business_unit_id.name : "";
+      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      return site_id ? site_id.site_name : "";
     },
     getWeekDates() {
       const currentDate = new Date();

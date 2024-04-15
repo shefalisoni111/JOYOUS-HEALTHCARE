@@ -17,14 +17,14 @@
                     >
                   </div>
                   <div class="col-10">
-                    <select v-model="business_unit_id" id="selectBusinessUnit">
+                    <select v-model="site_id" id="selectBusinessUnit">
                       <option
                         v-for="option in businessUnit"
                         :key="option.id"
                         :value="option.id"
                         placeholder="Select BusinessUnit"
                       >
-                        {{ option.name }}
+                        {{ option.site_name }}
                       </option>
                     </select>
                     <span v-if="!validationBusinessUnit" class="text-danger"
@@ -170,7 +170,7 @@ export default {
     return {
       weekname: "",
       shift_id: "",
-      business_unit_id: "",
+      site_id: "",
       job_id: "",
       employment_type_id: "",
       staff_rate: "",
@@ -188,7 +188,7 @@ export default {
     };
   },
   watch: {
-    business_unit_id: function (newValue) {
+    site_id: function (newValue) {
       this.validateBusinessUnit(newValue);
     },
     shift_id: function (newValue) {
@@ -225,10 +225,8 @@ export default {
     },
 
     selectBusinessUnit() {
-      const business_unit_id = this.businessUnit.find(
-        (option) => option.id === this.business_unit_id
-      );
-      return business_unit_id ? business_unit_id.name : "";
+      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      return site_id ? site_id.name : "";
     },
 
     selectShifts() {
@@ -245,7 +243,7 @@ export default {
   },
   methods: {
     async submitForm() {
-      this.validateBusinessUnit(this.business_unit_id);
+      this.validateBusinessUnit(this.site_id);
       this.validateStaffRate(this.shift_id);
       this.validateJobID(this.job_id);
       this.validateShiftId(this.shift_id);
@@ -261,7 +259,7 @@ export default {
       const data = {
         weekname: this.weekname,
         staff_rate: this.staff_rate,
-        business_unit_id: this.business_unit_id,
+        site_id: this.site_id,
         job_id: this.job_id,
         candidate_id: this.$route.params.id,
         employment_type_id: this.employment_type_id,
@@ -282,7 +280,7 @@ export default {
 
           this.weekname = "";
           this.staff_rate = "";
-          this.business_unit_id = "";
+          this.site_id = "";
           this.job_id = "";
           this.$route.params.id = "";
           this.employment_type_id = "";
@@ -307,7 +305,7 @@ export default {
     },
     async getBusinessUnitMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/business_units`);
+        const response = await axios.get(`${VITE_API_URL}/activated_site`);
         this.businessUnit = response.data;
       } catch (error) {
         if (error.response) {

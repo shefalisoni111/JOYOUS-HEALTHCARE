@@ -148,7 +148,7 @@
                       :value="option.name"
                       placeholder="Select BusinessUnit"
                     >
-                      {{ option.name }}
+                      {{ option.site_name }}
                     </option>
                   </select>
 
@@ -509,7 +509,7 @@ export default {
       currentPage: 1,
       itemsPerPage: 11,
       showFilters: false,
-      business_unit_id: "",
+      site_id: "",
       businessUnit: [],
       candidateLists: [],
       id: "",
@@ -571,10 +571,8 @@ export default {
       return this.paginationBooking.length;
     },
     selectBusinessUnit() {
-      const business_unit_id = this.businessUnit.find(
-        (option) => option.id === this.business_unit_id
-      );
-      return business_unit_id ? business_unit_id.name : "";
+      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      return site_id ? site_id.site_name : "";
     },
 
     selectCandidateList() {
@@ -744,7 +742,7 @@ export default {
     },
     async getBusinessUnitMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/business_units`);
+        const response = await axios.get(`${VITE_API_URL}/activated_site`);
         this.businessUnit = response.data;
       } catch (error) {
         if (error.response) {

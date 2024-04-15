@@ -23,14 +23,14 @@
                   </div>
 
                   <div class="col-10">
-                    <select v-model="business_unit_id" id="selectBusinessUnit">
+                    <select v-model="site_id" id="selectBusinessUnit">
                       <option
                         v-for="option in businessUnit"
                         :key="option.id"
                         :value="option.id"
                         placeholder="Select BusinessUnit"
                       >
-                        {{ option.name }}
+                        {{ option.site_name }}
                       </option>
                     </select>
                     <span v-if="!validationBusinessUnit" class="text-danger"
@@ -74,7 +74,7 @@ export default {
   name: "AddRestrictedLocation",
   data() {
     return {
-      business_unit_id: "",
+      site_id: "",
       candidate_id: "",
       businessUnit: [],
       validationBusinessUnit: false,
@@ -82,7 +82,7 @@ export default {
   },
   components: { SuccessAlert },
   watch: {
-    business_unit_id: function (newValue) {
+    site_id: function (newValue) {
       this.validateBusinessUnit(newValue);
     },
   },
@@ -91,15 +91,13 @@ export default {
       return this.validationBusinessUnit;
     },
     selectBusinessUnit() {
-      const business_unit_id = this.businessUnit.find(
-        (option) => option.id === this.business_unit_id
-      );
-      return business_unit_id ? business_unit_id.name : "";
+      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      return site_id ? site_id.site_name : "";
     },
   },
   methods: {
     async submitForm() {
-      this.validateBusinessUnit(this.business_unit_id);
+      this.validateBusinessUnit(this.site_id);
 
       if (this.isValidForm) {
         this.addRestrictedLocationMethod();
@@ -111,7 +109,7 @@ export default {
     },
     async addRestrictedLocationMethod() {
       const data = {
-        business_unit_id: [this.business_unit_id],
+        site_id: [this.site_id],
         candidate_id: this.candidate_id,
       };
       try {
@@ -127,7 +125,7 @@ export default {
         );
         if (response.ok) {
           this.$emit("getLocationAdded");
-          this.business_unit_id = "";
+          this.site_id = "";
           const message = "Successful add Restrict Location";
           this.$refs.successAlert.showSuccess(message);
         } else {
@@ -136,7 +134,7 @@ export default {
     },
     async getBusinessUnitMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/business_units`);
+        const response = await axios.get(`${VITE_API_URL}/activated_site`);
         this.businessUnit = response.data;
       } catch (error) {
         if (error.response) {

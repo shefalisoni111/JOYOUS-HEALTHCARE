@@ -46,14 +46,14 @@
                   </div>
 
                   <div class="col-10">
-                    <select v-model="business_unit_id" id="selectBusinessUnit">
+                    <select v-model="site_id" id="selectBusinessUnit">
                       <option
                         v-for="option in businessUnit"
                         :key="option.id"
                         :value="option.id"
                         placeholder="Select BusinessUnit"
                       >
-                        {{ option.name }}
+                        {{ console.log(option.site_name) }}
                       </option>
                     </select>
                     <span v-if="!validationSelectedBusinessUnit" class="text-danger"
@@ -288,7 +288,7 @@ export default {
 
       validationStartTime: true,
       validationEndTime: true,
-      business_unit_id: "",
+      site_id: "",
       client_id: "",
       clientData: [],
       job_id: "",
@@ -307,7 +307,7 @@ export default {
   computed: {
     isFormValid() {
       return (
-        this.business_unit_id !== "" &&
+        this.site_id !== "" &&
         this.client_id !== "" &&
         this.job_id !== "" &&
         this.shift_id !== "" &&
@@ -333,10 +333,8 @@ export default {
     },
 
     selectBusinessUnit() {
-      const business_unit_id = this.businessUnit.find(
-        (option) => option.id === this.business_unit_id
-      );
-      return business_unit_id ? business_unit_id.name : "";
+      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      return site_id ? site_id.site_name : "";
     },
 
     selectClients() {
@@ -351,7 +349,7 @@ export default {
   },
   watch: {
     job_id: "validationSelectedOptionText",
-    business_unit_id: "validationSelectedBusinessUnit",
+    site_id: "validationSelectedBusinessUnit",
     client_id: "validationSelectedClient",
     shift_id: "validationShift",
     staff_required: "validationStaffRequired",
@@ -366,7 +364,7 @@ export default {
     job_id: function (newValue) {
       this.validationSelectedOptionText = this.validationSelectedFormate(newValue);
     },
-    business_unit_id: function (newValue) {
+    site_id: function (newValue) {
       this.validationSelectedBusinessUnit = this.ValidationBusinessUnit(newValue);
     },
     client_id: function (newValue) {
@@ -464,9 +462,7 @@ export default {
     },
     async addVacancyMethod() {
       this.validationSelectedOptionText = this.validationSelectedFormate(this.job_id);
-      this.validationSelectedBusinessUnit = this.ValidationBusinessUnit(
-        this.business_unit_id
-      );
+      this.validationSelectedBusinessUnit = this.ValidationBusinessUnit(this.site_id);
       this.validationSelectedClient = this.ValidationClient(this.client_id);
       this.validationNotesText = this.ValidationNotes(this.notes);
       this.validationShift = this.ValidationShift(this.shift_id);
@@ -482,7 +478,7 @@ export default {
         this.validationDateType
       ) {
         const data = {
-          business_unit_id: this.business_unit_id,
+          site_id: this.site_id,
           job_id: this.job_id,
           dates: this.dates,
           shift_id: this.shift_id,
@@ -535,7 +531,7 @@ export default {
     },
     async getBusinessUnitMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/business_units`);
+        const response = await axios.get(`${VITE_API_URL}/activated_site`);
         this.businessUnit = response.data;
       } catch (error) {
         if (error.response) {
@@ -602,7 +598,7 @@ export default {
         (this.validationDateType = true);
     },
     clearFields() {
-      this.business_unit_id = "";
+      this.site_id = "";
       this.client_id = "";
       this.job_id = "";
       this.dates = [];

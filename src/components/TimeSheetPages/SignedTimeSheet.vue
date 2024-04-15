@@ -134,7 +134,7 @@ ul.generalsetting h6 {
                       <option
                         v-for="option in businessUnit"
                         :key="option.id"
-                        :value="option.name"
+                        :value="option.site_name"
                         placeholder="Select BusinessUnit"
                       >
                         {{ option.name }}
@@ -393,7 +393,7 @@ export default {
       endDate: new Date(),
       client_id: "",
       clientData: [],
-      business_unit_id: "",
+      site_id: "",
       businessUnit: [],
       candidateLists: [],
       id: "",
@@ -449,10 +449,8 @@ export default {
       return monthDates;
     },
     selectBusinessUnit() {
-      const business_unit_id = this.businessUnit.find(
-        (option) => option.id === this.business_unit_id
-      );
-      return business_unit_id ? business_unit_id.name : "";
+      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      return site_id ? site_id.site_name : "";
     },
 
     selectClients() {
@@ -534,7 +532,7 @@ export default {
     },
     async getBusinessUnitMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/business_units`);
+        const response = await axios.get(`${VITE_API_URL}/activated_site`);
         this.businessUnit = response.data;
       } catch (error) {
         if (error.response) {

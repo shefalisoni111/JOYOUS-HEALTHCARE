@@ -46,7 +46,7 @@ export default {
                       {{ option.first_name }}
                     </option>
                   </select>
-                  <select v-model="business_unit_id" id="selectBusinessUnit">
+                  <select v-model="site_id" id="selectBusinessUnit">
                     <option value="">All Site</option>
                     <option
                       v-for="option in businessUnit"
@@ -54,7 +54,7 @@ export default {
                       :value="option.id"
                       placeholder="Select BusinessUnit"
                     >
-                      {{ option.name }}
+                      {{ option.site_name }}
                     </option>
                   </select>
 
@@ -217,7 +217,7 @@ export default {
       endDate: new Date(),
       client_id: "",
       clientData: [],
-      business_unit_id: "",
+      site_id: "",
       businessUnit: [],
       job_id: "",
       options: [],
@@ -228,10 +228,8 @@ export default {
   components: { Navbar },
   computed: {
     selectBusinessUnit() {
-      const business_unit_id = this.businessUnit.find(
-        (option) => option.id === this.business_unit_id
-      );
-      return business_unit_id ? business_unit_id.name : "";
+      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      return site_id ? site_id.site_name : "";
     },
     selectedOptionText() {
       const job_id = this.options.find((option) => option.id === this.job_id);
@@ -310,7 +308,7 @@ export default {
     },
     async getBusinessUnitMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/business_units`);
+        const response = await axios.get(`${VITE_API_URL}/activated_site`);
         this.businessUnit = response.data;
       } catch (error) {
         if (error.response) {

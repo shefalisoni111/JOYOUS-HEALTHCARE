@@ -15,17 +15,14 @@
                     <label class="form-label">Site</label>
                   </div>
                   <div class="col-9">
-                    <select
-                      v-model="fetchVacancy.business_unit_id"
-                      id="selectBusinessUnit"
-                    >
+                    <select v-model="fetchVacancy.site_id" id="selectBusinessUnit">
                       <option
                         v-for="option in businessUnit"
                         :key="option.id"
                         :value="option.id"
                         placeholder="Select BusinessUnit"
                       >
-                        {{ option.name }}
+                        {{ option.site_name }}
                       </option>
                     </select>
                   </div>
@@ -181,7 +178,7 @@ export default {
     return {
       fetchVacancy: {
         id: "",
-        business_unit_id: "",
+        site_id: "",
         client_id: "",
         staff_required: "",
         job_id: "",
@@ -205,9 +202,9 @@ export default {
   computed: {
     selectBusinessUnit() {
       const businessUnit = this.businessUnit.find(
-        (option) => option.id === this.fetchVacancy.business_unit_id
+        (option) => option.id === this.fetchVacancy.site_id
       );
-      return businessUnit ? businessUnit.name : "";
+      return businessUnit ? businessUnit.site_name : "";
     },
     selectClients() {
       const client = this.clientData.find(
@@ -262,7 +259,7 @@ export default {
           this.fetchVacancy.id = response.data.id;
         }
 
-        this.fetchVacancy.business_unit_id = response.data.business_unit_id;
+        this.fetchVacancy.site_id = response.data.site_id;
         this.fetchVacancy.client_id = response.data.client_id;
         this.fetchVacancy.job_id = response.data.job_id;
         this.fetchVacancy.staff_required = response.data.staff_required;
@@ -306,7 +303,7 @@ export default {
         const response = await axios.put(
           `${VITE_API_URL}/vacancies/${this.fetchVacancy.id}`,
           {
-            business_unit_id: this.fetchVacancy.business_unit_id,
+            site_id: this.fetchVacancy.site_id,
             client_id: this.fetchVacancy.client_id,
             job_id: this.fetchVacancy.job_id,
             dates: datesArray,
@@ -338,7 +335,7 @@ export default {
 
     async getBusinessUnitMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/business_units`);
+        const response = await axios.get(`${VITE_API_URL}/activated_site`);
         this.businessUnit = response.data;
       } catch (error) {
         if (error.response) {

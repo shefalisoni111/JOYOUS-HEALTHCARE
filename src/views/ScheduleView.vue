@@ -146,7 +146,7 @@
                   <div>
                     <div class="filters" v-show="isOpen">
                       <select
-                        v-model="business_unit_id"
+                        v-model="site_id"
                         id="selectBusinessUnit"
                         class="form-select"
                       >
@@ -156,7 +156,7 @@
                           :key="option.id"
                           :value="option.id"
                         >
-                          {{ option.name }}
+                          {{ option.site_name }}
                         </option>
                       </select>
                     </div>
@@ -442,7 +442,7 @@ export default {
       itemsPerPage: 7,
       options: [],
       job_id: "",
-      business_unit_id: "",
+      site_id: "",
       assignedCandidateList: [],
       businessUnit: [],
       isModalOpen: false,
@@ -456,10 +456,8 @@ export default {
 
   computed: {
     selectBusinessUnit() {
-      const business_unit_id = this.businessUnit.find(
-        (option) => option.id === this.business_unit_id
-      );
-      return business_unit_id ? business_unit_id.name : "";
+      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      return site_id ? site_id.site_name : "";
     },
     selectJobTitle() {
       const job_id = this.options.find((option) => option.id === this.job_id);
@@ -986,7 +984,7 @@ export default {
     },
     async getBusinessUnitMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/business_units`);
+        const response = await axios.get(`${VITE_API_URL}/activated_site`);
         this.businessUnit = response.data;
       } catch (error) {
         if (error.response) {
