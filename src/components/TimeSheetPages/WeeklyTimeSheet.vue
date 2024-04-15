@@ -540,7 +540,7 @@ export default {
     async getBusinessUnitMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/activated_site`);
-        this.businessUnit = response.data;
+        this.businessUnit = response.data.data;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {

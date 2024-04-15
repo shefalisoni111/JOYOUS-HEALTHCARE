@@ -53,7 +53,7 @@
                         :value="option.id"
                         placeholder="Select BusinessUnit"
                       >
-                        {{ console.log(option.site_name) }}
+                        {{ option.site_name }}
                       </option>
                     </select>
                     <span v-if="!validationSelectedBusinessUnit" class="text-danger"
@@ -126,7 +126,7 @@
                         :value="option.id"
                         aria-placeholder="Select Job"
                       >
-                        {{ option.shift_name }}
+                        {{ option.name }}
                       </option>
                     </select>
                     <span v-if="!validationShift" class="text-danger"
@@ -532,7 +532,7 @@ export default {
     async getBusinessUnitMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/activated_site`);
-        this.businessUnit = response.data;
+        this.businessUnit = response.data.data;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
