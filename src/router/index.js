@@ -582,11 +582,11 @@ const router = createRouter({
           },
         },
         {
-          path: "/report/RateCard",
-          name: "ReportRateCard",
+          path: "/report/RateCards",
+          name: "RateCardReport",
           component: () =>
             import(
-              "@/components/ReportPages/RateCard.vue"
+              "@/components/ReportPages/RateCardReport.vue"
             ),
           meta: {
              requiresAuth: true,

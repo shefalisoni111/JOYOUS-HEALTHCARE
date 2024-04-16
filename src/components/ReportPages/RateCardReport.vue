@@ -1,30 +1,3 @@
-<!-- <template>
-  <div>
-    <Navbar />
-    <div id="main">
-      <h6>PAyroll Page in Progress.....</h6>
-    </div>
-  </div>
-</template>
-<script>
-import Navbar from "../Navbar.vue";
-
-export default {
-  components: {
-    Navbar,
-  },
-};
-</script>
-<style scoped>
-#main {
-  padding: 20px 20px;
-  transition: all 0.3s;
-
-  height: 100dvh;
-  background-color: #fdce5e17;
-}
-</style> -->
-
 <template>
   <div>
     <Navbar />
@@ -347,19 +320,20 @@ export default {
       }
     },
     updateDateRange() {
-      const currentDate = new Date();
       if (this.currentView === "weekly") {
         const weekStart = new Date(this.startDate);
-        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay());
+        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
         this.startDate = weekStart;
-        this.endDate = new Date(weekStart);
-        this.endDate.setDate(this.endDate.getDate() + 6);
+
+        const weekEnd = new Date(this.startDate);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+        this.endDate = weekEnd;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
         this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
         this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
       }
-      // Save the values to localStorage
+
       localStorage.setItem("startDate", this.startDate.toISOString());
       localStorage.setItem("endDate", this.endDate.toISOString());
     },

@@ -96,7 +96,7 @@ import ClientReport from "../components/ReportPages/ClientReport.vue";
 import BusinessUnitReport from "../components/ReportPages/BusinessUnitReport.vue";
 import InvoiceReport from "../components/ReportPages/InvoiceReport.vue";
 import DocumentReport from "../components/ReportPages/DocumentReport.vue";
-import RateCard from "../components/ReportPages/RateCard.vue";
+import RateCardReport from "../components/ReportPages/RateCardReport.vue";
 import EmailReport from "../components/ReportPages/EmailReport.vue";
 
 export default {
@@ -132,8 +132,8 @@ export default {
         },
         {
           name: "RateCard",
-          component: "RateCard",
-          routeName: "RateCard",
+          component: "RateCardReport",
+          routeName: "RateCardReport",
         },
         {
           name: "EmailReport",
@@ -157,7 +157,7 @@ export default {
     BusinessUnitReport,
     InvoiceReport,
     DocumentReport,
-    RateCard,
+    RateCardReport,
     EmailReport,
   },
 

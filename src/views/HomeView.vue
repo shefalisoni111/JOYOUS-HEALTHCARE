@@ -605,7 +605,10 @@ export default {
   },
   methods: {
     formatDate(date) {
-      return date.toLocaleDateString();
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
     },
     moveToPrevious() {
       if (this.currentView === "weekly") {
@@ -636,19 +639,20 @@ export default {
       }
     },
     updateDateRange() {
-      const currentDate = new Date();
       if (this.currentView === "weekly") {
         const weekStart = new Date(this.startDate);
-        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay());
+        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
         this.startDate = weekStart;
-        this.endDate = new Date(weekStart);
-        this.endDate.setDate(this.endDate.getDate() + 6);
+
+        const weekEnd = new Date(this.startDate);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+        this.endDate = weekEnd;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
         this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
         this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
       }
-      // Save the values to localStorage
+
       localStorage.setItem("startDate", this.startDate.toISOString());
       localStorage.setItem("endDate", this.endDate.toISOString());
     },
