@@ -415,6 +415,7 @@ export default {
       const selectedClientId = this.client_id;
 
       this.getJobTitleMethod(selectedClientId);
+      this.getSiteAccordingClientMethod(selectedClientId);
     },
     validateStaffRequired() {
       if (this.staff_required <= 0) {
@@ -529,6 +530,20 @@ export default {
         }
       }
     },
+    async getSiteAccordingClientMethod() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/site_according_client/${this.client_id}`
+        );
+        this.businessUnit = response.data.site;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
     async getBusinessUnitMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/activated_site`);
@@ -610,9 +625,10 @@ export default {
     },
   },
   mounted() {
-    this.getBusinessUnitMethod();
+    // this.getBusinessUnitMethod();
     // this.getJobTitleMethod();
     this.getClientMethod();
+    // this.getSiteAccordingClientMethod();
     this.getTimeShift();
     this.isValidForm = this.isFormValid;
     this.clearError();

@@ -13,10 +13,9 @@
         <button
           class="btn btn-primary rounded-1 text-uppercase fw-medium"
           data-bs-toggle="modal"
-          data-bs-target="#myModal"
+          data-bs-target="#addHolidayCalender"
           data-bs-whatever="@mdo"
           type="button"
-          @click="showPopup"
         >
           + Add Holiday
         </button>
@@ -51,10 +50,13 @@
         </div>
       </div>
     </div>
+    <AddHolidayCalender />
   </div>
 </template>
 
 <script>
+import AddHolidayCalender from "../modals/appsetting/AddHolidayCalender.vue";
+
 export default {
   data() {
     return {
@@ -70,6 +72,9 @@ export default {
         "Sunday",
       ],
     };
+  },
+  components: {
+    AddHolidayCalender,
   },
   computed: {
     currentMonth() {
