@@ -352,8 +352,13 @@ export default {
             this.$refs.successAlert.showSuccess(message);
           } else {
             alert("Error adding Client");
+            this.resetForm();
+            this.clearError();
           }
-        } catch (error) {}
+        } catch (error) {
+          this.resetForm();
+          this.clearError();
+        }
       }
     },
     validateEmailFormat(email) {

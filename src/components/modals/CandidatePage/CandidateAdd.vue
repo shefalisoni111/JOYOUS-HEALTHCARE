@@ -316,9 +316,11 @@ export default {
             this.$refs.successAlert.showSuccess(message);
           } else {
             alert("Error adding Staff");
+            this.resetForm();
           }
         } catch (error) {
           alert("Error adding Staff");
+          this.resetForm();
         }
       } else {
         this.isPasswordRequired = !this.password;
