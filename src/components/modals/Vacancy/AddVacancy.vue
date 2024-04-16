@@ -114,7 +114,7 @@
                   </div>
                 </div>
 
-                <div class="mb-3 d-flex justify-content-between">
+                <!-- <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label class="form-label" for="selectShifts">Shift</label>
                   </div>
@@ -128,7 +128,9 @@
                       >
                         {{ option.shift_name }}
                       </option>
+                      <option>Custom Time</option>
                     </select>
+
                     <span v-if="!validationShift" class="text-danger"
                       >Shift Required</span
                     >
@@ -137,43 +139,191 @@
                 <div>
                   <div class="mb-3 d-flex justify-content-between">
                     <div class="col-2">
-                      <label class="form-label" for="selectShifts">Start Time</label>
+                      <label class="form-label" for="selectShiftStart">Start Time</label>
                     </div>
                     <div class="col-10">
                       <select
+                        id="selectShiftStart"
                         class="form-select w-25"
                         v-model="start_time"
-                        @change="validateStartTime"
+                        @change="updateStartTime"
                       >
-                        <option v-for="hour in 24" :key="hour" :value="formatTime(hour)">
-                          {{ formatTime(hour) }}
+                        <option
+                          v-for="shift in shiftsTime"
+                          :key="shift.id"
+                          :value="shift.start_time"
+                          :disabled="shift.id !== shift_id"
+                        >
+                          {{ shift.start_time }}
                         </option>
                       </select>
-                      <span
-                        v-if="!validationStartTime && !start_time"
-                        class="text-danger"
+                      <span v-if="!validationStartTime && !start_time" class="text-danger"
+                        >Start Time is required</span
                       >
-                        Start Time is required
-                      </span>
                     </div>
                   </div>
                   <div class="mb-3 d-flex justify-content-between">
                     <div class="col-2">
-                      <label class="form-label" for="selectShifts">End Time</label>
+                      <label class="form-label" for="selectShiftEnd">End Time</label>
                     </div>
                     <div class="col-10">
                       <select
+                        id="selectShiftEnd"
                         class="form-select w-25"
                         v-model="end_time"
-                        @change="validateEndTime"
+                        @change="updateEndTime"
                       >
-                        <option v-for="hour in 24" :key="hour" :value="formatTime(hour)">
-                          {{ formatTime(hour) }}
+                        <option
+                          v-for="shift in shiftsTime"
+                          :key="shift.id"
+                          :value="shift.end_time"
+                          :disabled="shift.id !== shift_id"
+                        >
+                          {{ shift.end_time }}
                         </option>
                       </select>
                       <span v-if="!validationEndTime && !end_time" class="text-danger">
                         End Time is required
                       </span>
+                    </div>
+                  </div>
+                </div> -->
+                <div>
+                  <div class="mb-3 d-flex justify-content-between">
+                    <div class="col-2">
+                      <label class="form-label" for="selectShifts">Shift</label>
+                    </div>
+                    <div class="col-10">
+                      <select
+                        v-model="shift_id"
+                        id="selectShifts"
+                        @change="handleShiftChange"
+                      >
+                        <option
+                          v-for="option in shiftsTime"
+                          :key="option.id"
+                          :value="option.id"
+                          aria-placeholder="Select Job"
+                        >
+                          {{ option.shift_name }}
+                        </option>
+                        <option>Custom Time</option>
+                      </select>
+                      <span v-if="!validationShift" class="text-danger"
+                        >Shift Required</span
+                      >
+                    </div>
+                  </div>
+                  <div v-if="shift_id === 'Custom Time'">
+                    <div class="mb-3 d-flex justify-content-between">
+                      <div class="col-2">
+                        <label class="form-label" for="selectCustomStartTime"
+                          >Start Time</label
+                        >
+                      </div>
+                      <div class="col-10">
+                        <select
+                          id="selectCustomStartTime"
+                          class="form-select w-25"
+                          v-model="start_time"
+                          @change="validateStartTime"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                        <span
+                          v-if="!validationStartTime && !start_time"
+                          class="text-danger"
+                          >Start Time is required</span
+                        >
+                      </div>
+                    </div>
+                    <div class="mb-3 d-flex justify-content-between">
+                      <div class="col-2">
+                        <label class="form-label" for="selectCustomEndTime"
+                          >End Time</label
+                        >
+                      </div>
+                      <div class="col-10">
+                        <select
+                          id="selectCustomEndTime"
+                          class="form-select w-25"
+                          v-model="end_time"
+                          @change="validateEndTime"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                        <span v-if="!validationEndTime && !end_time" class="text-danger"
+                          >End Time is required</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div v-else>
+                    <div class="mb-3 d-flex justify-content-between">
+                      <div class="col-2">
+                        <label class="form-label" for="selectShiftStart"
+                          >Start Time</label
+                        >
+                      </div>
+                      <div class="col-10">
+                        <select
+                          id="selectShiftStart"
+                          class="form-select w-25"
+                          v-model="start_time"
+                          @change="updateStartTime"
+                        >
+                          <option
+                            v-for="shift in shiftsTime"
+                            :key="shift.id"
+                            :value="shift.start_time"
+                            :disabled="shift.id !== shift_id"
+                          >
+                            {{ shift.start_time }}
+                          </option>
+                        </select>
+                        <span
+                          v-if="!validationStartTime && !start_time"
+                          class="text-danger"
+                          >Start Time is required</span
+                        >
+                      </div>
+                    </div>
+                    <div class="mb-3 d-flex justify-content-between">
+                      <div class="col-2">
+                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                      </div>
+                      <div class="col-10">
+                        <select
+                          id="selectShiftEnd"
+                          class="form-select w-25"
+                          v-model="end_time"
+                          @change="updateEndTime"
+                        >
+                          <option
+                            v-for="shift in shiftsTime"
+                            :key="shift.id"
+                            :value="shift.end_time"
+                            :disabled="shift.id !== shift_id"
+                          >
+                            {{ shift.end_time }}
+                          </option>
+                        </select>
+                        <span v-if="!validationEndTime && !end_time" class="text-danger"
+                          >End Time is required</span
+                        >
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -189,16 +339,16 @@
                       @change="validateBreak"
                     >
                       <option
-                        v-for="minute in 60"
+                        v-for="minute in [15, 30, 45, 60, 75, 90]"
                         :key="minute"
-                        :value="formatTimeMinute(minute)"
+                        :value="minute"
                       >
-                        {{ formatTimeMinute(minute) }}&nbsp; minute
+                        {{ formatBreakTime(minute) }}
                       </option>
                     </select>
                     <!-- <span v-if="!validationBreakTime && !break" class="text-danger">
                       Break Time is required
-                    </span> -->
+                    </span>  -->
                   </div>
                 </div>
 
@@ -356,6 +506,10 @@ export default {
       const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
       return shifts_id ? shifts_id.shift_name : "";
     },
+    selectShiftStart() {
+      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
+      return shifts_id ? shifts_id.start_time : "";
+    },
   },
   watch: {
     job_id: "validationSelectedOptionText",
@@ -395,6 +549,22 @@ export default {
     },
   },
   methods: {
+    handleShiftChange() {
+      if (this.shift_id === "Custom Time") {
+        this.start_time = "";
+        this.end_time = "";
+      }
+    },
+    updateStartTime() {
+      const selectedShift = this.shiftsTime.find((shift) => shift.id === this.shift_id);
+
+      this.start_time = selectedShift ? selectedShift.start_time : null;
+    },
+    updateEndTime() {
+      const selectedShift = this.shiftsTime.find((shift) => shift.id === this.shift_id);
+
+      this.end_time = selectedShift ? selectedShift.end_time : null;
+    },
     validateStartTime() {
       if (!this.start_time) {
         this.validationStartTime = false;
@@ -424,8 +594,21 @@ export default {
         return `${String(hour - 12).padStart(2, "0")}:00 PM`;
       }
     },
-    formatTimeMinute(minute) {
-      return ("0" + minute).slice(-2);
+    formatBreakTime(minute) {
+      // Calculate hours and minutes
+      const hours = Math.floor(minute / 60);
+      const mins = minute % 60;
+
+      // Format the time
+      let formattedTime = "";
+      if (hours > 0) {
+        formattedTime += `${hours} hour `;
+      }
+      if (mins > 0) {
+        formattedTime += `${mins} minute`;
+      }
+
+      return formattedTime;
     },
     // formatTimeMinute(hour, minute) {
     //   const hourStr = String(hour).padStart(2, "0");
@@ -642,6 +825,7 @@ export default {
       this.shift_id = "";
       this.start_time = "";
       this.end_time = "";
+      this.break = "";
       (this.staff_required = ""), (this.notes = "");
       this.selectedDate = null;
     },

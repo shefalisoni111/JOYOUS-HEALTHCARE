@@ -103,7 +103,7 @@ export default {
     },
     formatDate(day) {
       const year = this.currentDate.getFullYear();
-      const month = this.currentDate.getMonth() + 1; // Adding 1 because months are zero-indexed
+      const month = this.currentDate.getMonth() + 1;
       return new Date(year, month - 1, day).toLocaleDateString("en-GB");
     },
     nextMonth() {

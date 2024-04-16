@@ -17,9 +17,32 @@
               <form @submit.prevent="addRestrictedLocationMethod">
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectBusinessUnit"
-                      >Business Unit</label
+                    <label for="selectClients" class="form-label">Client</label>
+                  </div>
+                  <div class="col-10">
+                    <select
+                      v-model="client_id"
+                      id="selectClients"
+                      @change="onClientSelect"
                     >
+                      <option
+                        v-for="option in clientData"
+                        :key="option.id"
+                        :value="option.id"
+                        :id="option.id"
+                        aria-placeholder="Select Job"
+                      >
+                        {{ option.first_name }}
+                      </option>
+                    </select>
+                    <span v-if="!validationSelectedClient" class="text-danger"
+                      >Client Required</span
+                    >
+                  </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
+                    <label class="form-label" for="selectBusinessUnit">Site</label>
                   </div>
 
                   <div class="col-10">
@@ -33,9 +56,9 @@
                         {{ option.site_name }}
                       </option>
                     </select>
-                    <span v-if="!validationBusinessUnit" class="text-danger"
-                      >Business Unit Required</span
-                    >
+                    <!-- <span v-if="!validationBusinessUnit && !site_id" class="text-danger"
+                      >Site Required</span
+                    > -->
                   </div>
                 </div>
               </form>
@@ -46,14 +69,16 @@
                 data-bs-target="#addRestrictedLocation"
                 data-bs-toggle="modal"
                 data-bs-dismiss="modal"
+                v-on:click="clearFieldsData"
               >
                 Cancel
               </button>
               <button
+                :disabled="!isFormValid"
+                :class="{ disabled: !isFormValid }"
                 class="btn btn-primary rounded-1 text-capitalize fw-medium"
-                data-bs-dismiss="modal"
+                :data-bs-dismiss="isFormValid ? 'modal' : null"
                 @click="submitForm"
-                :disabled="!isValidForm"
               >
                 Add Location
               </button>
@@ -77,40 +102,102 @@ export default {
       site_id: "",
       candidate_id: "",
       businessUnit: [],
-      validationBusinessUnit: false,
+      client_id: "",
+      clientData: [],
+      validationSelectedClient: true,
+      validationBusinessUnit: true,
     };
   },
   components: { SuccessAlert },
   watch: {
+    client_id: "validationSelectedClient",
+    site_id: "validationBusinessUnit",
+
     site_id: function (newValue) {
-      this.validateBusinessUnit(newValue);
+      this.validationBusinessUnit = this.validateBusinessUnit(newValue);
+    },
+    client_id: function (newValue) {
+      this.validationSelectedClient = this.ValidationClient(newValue);
     },
   },
   computed: {
-    isValidForm() {
-      return this.validationBusinessUnit;
+    isFormValid() {
+      return this.site_id !== "" && this.client_id !== "";
     },
+    // isFormValid() {
+    //   return this.validationBusinessUnit && this.validationSelectedClient;
+    // },
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return site_id ? site_id.site_name : "";
     },
+
+    selectClients() {
+      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      return this.client_id;
+    },
   },
   methods: {
+    clearFieldsData() {
+      this.site_id = "";
+      this.client_id = "";
+      setTimeout(() => {
+        this.clearError();
+      }, 10);
+    },
+    async getClientMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/clients`);
+        this.clientData = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    ValidationClient(newValue) {
+      const clientRegex = /[a-zA-Z0-9]/;
+      return clientRegex.test(newValue);
+    },
+    onClientSelect() {
+      const selectedClientId = this.client_id;
+
+      this.getSiteAccordingClientMethod(selectedClientId);
+    },
     async submitForm() {
       this.validateBusinessUnit(this.site_id);
-
-      if (this.isValidForm) {
+      this.ValidationClient(this.client_id);
+      if (this.isFormValid) {
         this.addRestrictedLocationMethod();
       } else {
       }
     },
-    validateBusinessUnit(value) {
-      this.validationBusinessUnit = !!value;
+    async getSiteAccordingClientMethod() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/site_according_client/${this.client_id}`
+        );
+        this.businessUnit = response.data.site;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
     },
+    validateBusinessUnit(value) {
+      const businessUnitRegex = /[a-zA-Z0-9]/;
+      return businessUnitRegex.test(value);
+    },
+
     async addRestrictedLocationMethod() {
       const data = {
         site_id: [this.site_id],
         candidate_id: this.candidate_id,
+        client_id: this.client_id,
       };
       try {
         const response = await fetch(
@@ -126,6 +213,7 @@ export default {
         if (response.ok) {
           this.$emit("getLocationAdded");
           this.site_id = "";
+          this.client_id = "";
           const message = "Successful add Restrict Location";
           this.$refs.successAlert.showSuccess(message);
         } else {
@@ -144,10 +232,16 @@ export default {
         }
       }
     },
+    clearError() {
+      this.validationSelectedBusinessUnit = true;
+      this.validationSelectedClient = true;
+    },
   },
   mounted() {
     this.getBusinessUnitMethod();
     this.candidate_id = this.$route.params.id;
+    this.getClientMethod();
+    this.clearError();
   },
 };
 </script>
