@@ -44,15 +44,15 @@
           </div>
           <div class="days">
             <div v-for="day in days" :key="day" class="day">
-              <span :style="getDayPadding(day)">{{ formatDate(day) }}</span>
+              <span class="date_round" :style="getDayPadding(day)">{{ day }}</span>
 
-              <!-- <span v-for="date in getHolidayData" :key="date.id">
-                <template v-if="isHoliday(date.holiday_date, day)">
-                  <span :style="getDayPadding(day)"
-                    >{{ getDayOfMonth(date.holiday_date) }}{{ date.title }}</span
-                  >
-                </template>
-              </span> -->
+              <div v-for="date in getHolidayData" :key="date.id">
+                <span v-if="date.holiday_date === formatDate(day)">
+                  <span class="fw-bold text-success text-capitalize mt-2">{{
+                    date.title
+                  }}</span>
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -104,7 +104,8 @@ export default {
     formatDate(day) {
       const year = this.currentDate.getFullYear();
       const month = this.currentDate.getMonth() + 1;
-      return new Date(year, month - 1, day).toLocaleDateString("en-GB");
+      const formattedDay = day < 10 ? "0" + day : day; // Add leading zero if day is single digit
+      return `${year}-${month < 10 ? "0" + month : month}-${formattedDay}`;
     },
     nextMonth() {
       const newDate = new Date(this.currentDate);
@@ -172,7 +173,7 @@ export default {
   padding: 40px;
   border: 1px solid #ccc;
 }
-.day span {
+.day span.date_round {
   padding: 10px 14px;
   border-radius: 50%;
   background: #ff9800a3;
