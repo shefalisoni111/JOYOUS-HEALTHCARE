@@ -74,7 +74,7 @@
                   class="card-img-top position-relative"
                   height="400px"
                   alt="profile"
-                  loading="lazy"
+                   loading="eager"
                 />
                 <img
                   v-else
@@ -83,7 +83,7 @@
                   style="border: 1px solid #8080801a"
                   height="400px"
                   alt="Default profile"
-                  loading="lazy"
+                   loading="eager"
                 />
 
                 <!-- <div class="ribbon"><span>Active</span></div> -->

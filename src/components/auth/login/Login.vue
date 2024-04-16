@@ -3,7 +3,7 @@
     <div
       class="d-flex align-items-center justify-content-center whole-bg"
       style="background-image: url('src/assets/loginbggg11.png')"
-      loading="lazy"
+       loading="eager"
     >
       <div class="row no-gutter d-flex justify-content-center align-items-center w-100">
         <div class="col-4 d-flex wrapper-div p-0">

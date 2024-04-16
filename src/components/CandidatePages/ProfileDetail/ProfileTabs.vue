@@ -83,7 +83,7 @@
                 :src="completeImageUrl"
                 class="card-img-top position-relative profile"
                 alt="profile"
-                loading="lazy"
+                 loading="eager"
               />
               <img
                 v-else
@@ -91,7 +91,7 @@
                 class="card-img-top position-relative default-profile"
                 style="border: 1px solid #8080801a"
                 alt="Default profile"
-                loading="lazy"
+                 loading="eager"
               />
               <div class="text-capitalize fw-bolder ps-2">
                 <h6>
@@ -326,7 +326,7 @@
                       height="200px"
                       width="200px"
                       alt="profile"
-                      loading="lazy"
+                       loading="eager"
                     />
                     <img
                       v-else
@@ -336,7 +336,7 @@
                       height="200px"
                       width="200px"
                       alt="Default profile"
-                      loading="lazy"
+                       loading="eager"
                     />
                   </td>
                   <td class="d-flex align-items-center border-0">

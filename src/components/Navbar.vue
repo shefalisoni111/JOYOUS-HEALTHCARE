@@ -186,7 +186,7 @@
                         :src="getProfilePhotoUrl(candidate.profile_photo)"
                         class="img-fluid"
                         alt="Profile Photo"
-                        loading="lazy"
+                         loading="eager"
                       />
                       <div
                         class="else_profile"
@@ -231,7 +231,7 @@
                     :src="getProfilePhotoUrl(candidate.profile_photo)"
                     class="img-fluid"
                     alt="Profile Photo"
-                    loading="lazy"
+                     loading="eager"
                   />
                   <div
                     class="else_profile"
@@ -401,7 +401,7 @@
                   :src="getProfilePhotoUrl(selectedCandidate.profile_photo)"
                   class="img-fluid"
                   alt="Profile Photo"
-                  loading="lazy"
+                   loading="eager"
                 />
                 <div
                   class="else_profile"

@@ -87,12 +87,14 @@
       </div>
     </div>
     <AddRestrictedLocation @getLocationAdded="getRestrictedLocationMethod" />
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import AddRestrictedLocation from "../../modals/CandidatePage/AddRestrictedLocation.vue";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
   name: "Restricted",
@@ -106,6 +108,7 @@ export default {
   },
   components: {
     AddRestrictedLocation,
+    SuccessAlert,
   },
   methods: {
     async getTime() {
@@ -133,7 +136,9 @@ export default {
           `${VITE_API_URL}/candidates/${this.$route.params.id}/restricted_shifts`,
           data
         );
-        alert("Shift Added ");
+        // alert("Shift Added ");
+        const message = "Staff Shift Added successfully";
+        this.$refs.successAlert.showSuccess(message);
         if (data) {
           if (
             window.location.href ===
