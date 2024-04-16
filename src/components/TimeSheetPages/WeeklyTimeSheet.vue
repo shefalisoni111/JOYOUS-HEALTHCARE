@@ -262,7 +262,7 @@
                 </td>
 
                 <td>
-                  {{ data.business_unit }}
+                  {{ data.site }}
                 </td>
                 <td>{{ data.shift }}</td>
 

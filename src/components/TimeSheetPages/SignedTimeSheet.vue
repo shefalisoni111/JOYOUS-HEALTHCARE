@@ -207,7 +207,7 @@ ul.generalsetting h6 {
 
                           <td scope="col">{{ data.candidate_name }}</td>
                           <td scope="col">{{ data.client }}</td>
-                          <td scope="col">{{ data.business_unit }}</td>
+                          <td scope="col">{{ data.site }}</td>
 
                           <td scope="col">{{ data.date }}</td>
                           <td scope="col">{{ data.start_time }}</td>
@@ -283,7 +283,7 @@ ul.generalsetting h6 {
 
                           <td scope="col">{{ data.candidate_name }}</td>
                           <td scope="col">{{ data.client }}</td>
-                          <td scope="col">{{ data.business_unit }}</td>
+                          <td scope="col">{{ data.site }}</td>
 
                           <td scope="col">{{ data.date }}</td>
                           <td scope="col">{{ data.start_time }}</td>

@@ -126,7 +126,7 @@
                         :value="option.id"
                         aria-placeholder="Select Job"
                       >
-                        {{ option.name }}
+                        {{ option.shift_name }}
                       </option>
                     </select>
                     <span v-if="!validationShift" class="text-danger"

@@ -227,7 +227,7 @@
                         <td scope="col">{{ data.id }}</td>
                         <td scope="col">{{ data.booking_code }}</td>
                         <td scope="col">{{ data.candidate }}</td>
-                        <td scope="col">{{ data.business_unit }}</td>
+                        <td scope="col">{{ data.site }}</td>
                         <td scope="col">{{ data.job_title }}</td>
                         <td>
                           <span v-for="(date, index) in data.shift_dates" :key="index">
@@ -301,7 +301,7 @@
                         <td scope="col">{{ data.id }}</td>
                         <td scope="col">{{ data.booking_code }}</td>
                         <td scope="col">{{ data.candidate }}</td>
-                        <td scope="col">{{ data.business_unit }}</td>
+                        <td scope="col">{{ data.site }}</td>
                         <td scope="col">{{ data.job_title }}</td>
                         <td>
                           <span v-for="(date, index) in data.shift_dates" :key="index">
@@ -369,7 +369,7 @@
                         <td scope="col">{{ data.id }}</td>
                         <td scope="col">{{ data.booking_code }}</td>
                         <td scope="col">{{ data.candidate }}</td>
-                        <td scope="col">{{ data.business_unit }}</td>
+                        <td scope="col">{{ data.site }}</td>
                         <td scope="col">{{ data.job_title }}</td>
                         <td>
                           <span v-for="(date, index) in data.shift_dates" :key="index">
