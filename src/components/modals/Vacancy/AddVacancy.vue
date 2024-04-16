@@ -279,16 +279,17 @@
                       </div>
                       <div class="col-10">
                         <select
-                          id="selectShiftStart"
+                          id="selectShiftEnd"
                           class="form-select w-25"
                           v-model="start_time"
-                          @change="updateStartTime"
+                          @change="updateEndTime"
                         >
                           <option
                             v-for="shift in shiftsTime"
                             :key="shift.id"
                             :value="shift.start_time"
                             :disabled="shift.id !== shift_id"
+                            style="display: none"
                           >
                             {{ shift.start_time }}
                           </option>
@@ -316,6 +317,7 @@
                             :key="shift.id"
                             :value="shift.end_time"
                             :disabled="shift.id !== shift_id"
+                            style="display: none"
                           >
                             {{ shift.end_time }}
                           </option>
@@ -487,6 +489,11 @@ export default {
         this.validationBreak
       );
     },
+    updateStartTime() {
+      const selectedShift = this.shiftsTime.find((shift) => shift.id === this.shift_id);
+
+      this.start_time = selectedShift ? selectedShift.start_time : null;
+    },
     selectedOptionText() {
       const jobs_id = this.options.find((option) => option.id === this.jobs_id);
       return jobs_id ? jobs_id.name : "";
@@ -550,16 +557,16 @@ export default {
   },
   methods: {
     handleShiftChange() {
-      if (this.shift_id === "Custom Time") {
+      const selectedShift = this.shiftsTime.find((shift) => shift.id === this.shift_id);
+      if (selectedShift) {
+        this.start_time = selectedShift.start_time;
+        this.end_time = selectedShift.end_time;
+      } else {
         this.start_time = "";
         this.end_time = "";
       }
     },
-    updateStartTime() {
-      const selectedShift = this.shiftsTime.find((shift) => shift.id === this.shift_id);
 
-      this.start_time = selectedShift ? selectedShift.start_time : null;
-    },
     updateEndTime() {
       const selectedShift = this.shiftsTime.find((shift) => shift.id === this.shift_id);
 
@@ -713,9 +720,17 @@ export default {
             this.$refs.successAlert.showSuccess(message);
           } else {
             alert("Error adding Shift");
+            this.clearFields();
+            setTimeout(() => {
+              this.clearError();
+            }, 100);
           }
         } catch (error) {
           alert("Error adding Shift");
+          this.clearFields();
+          setTimeout(() => {
+            this.clearError();
+          }, 100);
         }
       } else {
       }
@@ -862,6 +877,10 @@ label.form-label {
 }
 .modal-footer {
   border-top: 0px;
+}
+.form-control {
+  background-color: #f7f5f4;
+  padding: 0.4rem 0.75rem;
 }
 .btn-primary {
   border: none;
