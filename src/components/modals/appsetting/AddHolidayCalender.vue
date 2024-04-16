@@ -58,6 +58,7 @@
               data-bs-target="#addHolidayCalender"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
+              v-on:click="clearFieldsData"
             >
               Cancel
             </button>
@@ -101,6 +102,16 @@ export default {
     },
   },
   methods: {
+    clearFieldsData() {
+      this.clearFields();
+      setTimeout(() => {
+        this.clearError();
+      }, 10);
+    },
+    clearFields() {
+      this.title = "";
+      this.holiday_date = "";
+    },
     clearError(fieldName) {
       this.errors[fieldName] = null;
     },
@@ -108,7 +119,7 @@ export default {
       return this.errors[fieldName];
     },
     isEmptyField() {
-      return !this.title.trim() || !this.description.trim();
+      return !this.title.trim() || !this.holiday_date.trim();
     },
     validateAndAddJob() {
       this.errors = {};
@@ -117,11 +128,10 @@ export default {
         this.$set(this.errors, "title", "Title is required.");
       }
 
-      if (!this.description.trim()) {
-        this.$set(this.errors, "description", "Description is required.");
+      if (!this.holiday_date.trim()) {
+        this.$set(this.errors, "holiday_date", "Holiday Date is required.");
       }
 
-      // If there are no errors, proceed to add job
       if (
         Object.values(this.errors).every((error) => error === null) &&
         !this.isEmptyField()
@@ -132,16 +142,16 @@ export default {
     async addHolidayCalender() {
       const data = {
         title: this.title,
-        description: this.description,
+        holiday_date: this.holiday_date,
       };
       try {
-        const response = await axios.post(`${VITE_API_URL}/employment_types`, data);
+        const response = await axios.post(`${VITE_API_URL}/holiday_calenders`, data);
         if (response.data) {
-          this.$emit("updateList");
+          this.$emit("updateListHoliday");
           const message = "Holiday Add Successful";
           this.$refs.successAlert.showSuccess(message);
           this.title = "";
-          this.description = "";
+          this.holiday_date = "";
         }
       } catch (error) {
         // console.error("Error adding employee:", error);

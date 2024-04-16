@@ -44,17 +44,26 @@
           </div>
           <div class="days">
             <div v-for="day in days" :key="day" class="day">
-              <span :style="getDayPadding(day)">{{ day }}</span>
+              <span :style="getDayPadding(day)">{{ formatDate(day) }}</span>
+
+              <!-- <span v-for="date in getHolidayData" :key="date.id">
+                <template v-if="isHoliday(date.holiday_date, day)">
+                  <span :style="getDayPadding(day)"
+                    >{{ getDayOfMonth(date.holiday_date) }}{{ date.title }}</span
+                  >
+                </template>
+              </span> -->
             </div>
           </div>
         </div>
       </div>
     </div>
-    <AddHolidayCalender />
+    <AddHolidayCalender @updateListHoliday="getHolidayDateMethod" />
   </div>
 </template>
 
 <script>
+import axios from "axios";
 import AddHolidayCalender from "../modals/appsetting/AddHolidayCalender.vue";
 
 export default {
@@ -71,6 +80,7 @@ export default {
         "Saturday",
         "Sunday",
       ],
+      getHolidayData: [],
     };
   },
   components: {
@@ -91,6 +101,11 @@ export default {
       this.currentDate = newDate;
       this.generateDays();
     },
+    formatDate(day) {
+      const year = this.currentDate.getFullYear();
+      const month = this.currentDate.getMonth() + 1; // Adding 1 because months are zero-indexed
+      return new Date(year, month - 1, day).toLocaleDateString("en-GB");
+    },
     nextMonth() {
       const newDate = new Date(this.currentDate);
       newDate.setMonth(newDate.getMonth() + 1);
@@ -106,9 +121,25 @@ export default {
     getDayPadding(day) {
       return day < 10 ? "padding: 10px 14px;" : "padding: 11px 11px;";
     },
+    async getHolidayDateMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/holiday_calenders`);
+
+        this.getHolidayData = response.data;
+      } catch (error) {
+        // if (error.response) {
+        //   if (error.response.status == 404) {
+        //     // alert(error.response.data.message);
+        //   }
+        // } else {
+        //   // console.error("Error fetching candidates:", error);
+        // }
+      }
+    },
   },
   mounted() {
     this.generateDays();
+    this.getHolidayDateMethod();
   },
 };
 </script>

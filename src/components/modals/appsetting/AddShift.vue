@@ -20,7 +20,7 @@
                       shift.shift_name
                     }}</label>
                   </div>
-                  <div class="col-10">
+                  <!-- <div class="col-10">
                     <div class="d-flex justify-content-around">
                       <div class="col-5">
                         <label for="start-time" class="form-label"
@@ -48,6 +48,50 @@
                           v-model="shift.end_time"
                           @input="updateTime(shift, 'end_time', $event.target.value)"
                         />
+                      </div>
+                    </div>
+                  </div> -->
+                  <div class="col-10">
+                    <div class="d-flex justify-content-around">
+                      <div class="col-5">
+                        <label for="start-time" class="form-label"
+                          >Start Time<span class="text-danger">*</span></label
+                        >
+                        <select
+                          :id="'start-time-' + shift.id"
+                          :name="'start-time-' + shift.id"
+                          class="form-select"
+                          v-model="shift.start_time"
+                          @change="updateTime(shift, 'start_time', $event.target.value)"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-5">
+                        <label for="end-time" class="form-label"
+                          >End Time<span class="text-danger">*</span></label
+                        >
+                        <select
+                          :id="'end-time-' + shift.id"
+                          :name="'end-time-' + shift.id"
+                          class="form-select"
+                          v-model="shift.end_time"
+                          @change="updateTime(shift, 'end_time', $event.target.value)"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
                       </div>
                     </div>
                   </div>
@@ -158,6 +202,15 @@ export default {
   },
   components: {
     SuccessAlert,
+  },
+  methods: {
+    formatTime(hour) {
+      if (hour <= 12) {
+        return `${String(hour).padStart(2, "0")}:00 AM`;
+      } else {
+        return `${String(hour - 12).padStart(2, "0")}:00 PM`;
+      }
+    },
   },
 };
 </script>

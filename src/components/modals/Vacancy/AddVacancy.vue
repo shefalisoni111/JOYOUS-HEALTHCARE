@@ -178,7 +178,7 @@
                   </div>
                 </div>
 
-                <!-- <div class="mb-3 d-flex justify-content-between">
+                <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label class="form-label" for="selectShifts">Break Time</label>
                   </div>
@@ -188,13 +188,20 @@
                       v-model="break"
                       @change="validateBreak"
                     >
-                      <option value="">Select Break Time</option>
+                      <option
+                        v-for="minute in 60"
+                        :key="minute"
+                        :value="formatTimeMinute(minute)"
+                      >
+                        {{ formatTimeMinute(minute) }}&nbsp; minute
+                      </option>
                     </select>
-                    <span v-if="!validationBreak && !break" class="text-danger">
+                    <!-- <span v-if="!validationBreakTime && !break" class="text-danger">
                       Break Time is required
-                    </span>
+                    </span> -->
                   </div>
-                </div> -->
+                </div>
+
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label class="form-label" for="selectShifts">Staff Required</label>
@@ -285,8 +292,9 @@ export default {
       validationDateType: true,
       start_time: null,
       end_time: null,
-
+      break: null,
       validationStartTime: true,
+      validationBreak: true,
       validationEndTime: true,
       site_id: "",
       client_id: "",
@@ -316,6 +324,7 @@ export default {
         this.selectedDate !== null &&
         this.start_time !== null &&
         this.end_time !== null &&
+        this.break !== null &&
         this.validationSelectedOptionText &&
         this.validationSelectedBusinessUnit &&
         this.validationSelectedClient &&
@@ -324,7 +333,8 @@ export default {
         this.validationDateType &&
         this.validationStaffRequired &&
         this.validationStartTime &&
-        this.validationEndTime
+        this.validationEndTime &&
+        this.validationBreak
       );
     },
     selectedOptionText() {
@@ -357,6 +367,7 @@ export default {
     notes: "validationNotesText",
     start_time: "validateStartTime",
     end_time: "validateEndTime",
+    break: "validateBreak",
 
     isFormValid: function (newVal) {
       this.isValidForm = newVal;
@@ -399,6 +410,13 @@ export default {
         this.validationEndTime = true;
       }
     },
+    validateBreak() {
+      if (!this.break) {
+        this.validationBreak = false;
+      } else {
+        this.validationBreak = true;
+      }
+    },
     formatTime(hour) {
       if (hour <= 12) {
         return `${String(hour).padStart(2, "0")}:00 AM`;
@@ -406,11 +424,14 @@ export default {
         return `${String(hour - 12).padStart(2, "0")}:00 PM`;
       }
     },
-    formatTimeMinute(hour, minute) {
-      const hourStr = String(hour).padStart(2, "0");
-      const minuteStr = String(minute).padStart(2, "0");
-      return `${hourStr}:${minuteStr}`;
+    formatTimeMinute(minute) {
+      return ("0" + minute).slice(-2);
     },
+    // formatTimeMinute(hour, minute) {
+    //   const hourStr = String(hour).padStart(2, "0");
+    //   const minuteStr = String(minute).padStart(2, "0");
+    //   return `${hourStr}:${minuteStr}`;
+    // },
     onClientSelect() {
       const selectedClientId = this.client_id;
 
@@ -610,7 +631,8 @@ export default {
       (this.validationStartTime = true),
         (this.validationEndTime = true),
         (this.validationStaffRequired = true),
-        (this.validationDateType = true);
+        (this.validationDateType = true),
+        (this.validationBreak = true);
     },
     clearFields() {
       this.site_id = "";
