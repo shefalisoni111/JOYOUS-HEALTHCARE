@@ -198,7 +198,7 @@ export default {
       first_name: "",
       last_name: "",
       password: "",
-      job_id: "",
+      job_id: [],
       options: [],
       confirm_password: "",
       address: "",
@@ -290,7 +290,7 @@ export default {
         const data = {
           first_name: this.first_name,
           last_name: this.last_name,
-          job_id: 1,
+          job_id: this.job_id,
           password: this.password,
           confirm_password: this.confirm_password,
           phone_number: this.phone_number,

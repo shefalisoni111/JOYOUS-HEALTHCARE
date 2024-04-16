@@ -906,7 +906,11 @@ export default {
 
         this.flattenedAssignVacancies = vacanciesInsideVacancies.flat();
         // this.fetchAssignList();
-      } catch (error) {}
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          return;
+        }
+      }
     },
     async fetchCandidateList() {
       try {
