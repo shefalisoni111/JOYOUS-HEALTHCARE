@@ -37,7 +37,7 @@
       <table class="table siteTable">
         <thead>
           <tr>
-            <!-- <th scope="col">ID</th> -->
+            <th scope="col"></th>
             <th scope="col">#RefCode</th>
             <th scope="col">Site</th>
             <th scope="col">ClientName</th>
@@ -52,7 +52,15 @@
         </thead>
         <tbody>
           <tr v-for="data in getSiteAllData" :key="data.id">
-            <!-- <td>{{ data.id }}</td> -->
+            <td>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                :value="data.id"
+                :id="data.id"
+                v-model="checkedCandidates[data.id]"
+              />
+            </td>
             <td v-text="data.refer_code"></td>
             <td v-text="data.site_name"></td>
             <td>
@@ -104,7 +112,7 @@
 import axios from "axios";
 import EditSite from "../../modals/Site/EditSite.vue";
 import AddSite from "../../modals/Site/AddSite.vue";
-
+import { reactive } from "vue";
 export default {
   data() {
     return {
@@ -112,7 +120,13 @@ export default {
       selectedsiteId: 0,
       showFilters: false,
       getSiteDetail: [],
+      checkedCandidates: reactive({}),
     };
+  },
+  created() {
+    this.getSiteAllData.forEach((data) => {
+      this.$set(this.checkedCandidates, data.id, false);
+    });
   },
 
   components: { EditSite, AddSite },

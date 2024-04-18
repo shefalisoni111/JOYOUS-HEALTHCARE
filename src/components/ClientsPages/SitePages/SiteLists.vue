@@ -91,13 +91,23 @@
                           :
 
                           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <input
+                              ref="fileInput"
+                              type="file"
+                              style="display: none"
+                              @change="handleFileUpload"
+                            />
                             <li>
-                              <a class="dropdown-item" href="#" @click="importAll"
+                              <a class="dropdown-item" href="#" @click="triggerFileInput"
                                 >Import</a
                               >
                             </li>
                             <li><hr class="dropdown-divider" /></li>
-                            <li><a class="dropdown-item" href="#">Export</a></li>
+                            <li>
+                              <a class="dropdown-item" href="#" @click="exportOneFile"
+                                >Export</a
+                              >
+                            </li>
                             <li><hr class="dropdown-divider" /></li>
                             <li>
                               <a class="dropdown-item" href="#" @click="exportAll"
@@ -214,7 +224,7 @@
         Next
       </button>
     </div>
-
+    <AddSiteNotes />
     <!-- <EditSite :siteId="selectedsiteId || 0" @editSite="getSiteAllDataMethod" /> -->
   </div>
 </template>
@@ -225,6 +235,7 @@ import InActiveSite from "../SitePages/InActiveSite.vue";
 import ActiveSite from "../SitePages/ActiveSite.vue";
 // import AddSite from "../../modals/Site/AddSite.vue";
 // import EditSite from "../../modals/Site/EditSite.vue";
+import AddSiteNotes from "../../modals/Site/AddSiteNotes.vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -266,7 +277,7 @@ export default {
       return this.paginateSearchResults.length;
     },
   },
-  components: { AllSite, InActiveSite, ActiveSite },
+  components: { AllSite, InActiveSite, ActiveSite, AddSiteNotes },
 
   methods: {
     editsiteId(siteId) {
@@ -362,12 +373,23 @@ export default {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     },
+    triggerFileInput() {
+      this.$refs.fileInput.click();
+    },
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.importAll(file);
+      }
+    },
     importAll(fileData) {
       const formData = new FormData();
       formData.append("file", fileData);
       axios
-        .post(`${VITE_API_URL}/import_all_csv_site.csv`, {
-          file: formData,
+        .post(`${VITE_API_URL}/import_all_csv_site.csv`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         })
         .then((response) => {
           this.ImportCSV(response.data, "filename.csv");
@@ -377,6 +399,32 @@ export default {
         });
     },
     ImportCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    },
+
+    exportOneFile() {
+      const siteIds = [1];
+      const queryParams = new URLSearchParams({
+        site_ids: JSON.stringify(siteIds),
+      }).toString();
+      axios
+        .get(`${VITE_API_URL}/selected_export_site.csv?${queryParams}`)
+        .then((response) => {
+          this.downloadOneCSV(response.data, "filename.csv");
+        })
+        .catch((error) => {
+          // console.error("Error:", error);
+        });
+    },
+    downloadOneCSV(csvData, filename) {
       const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");

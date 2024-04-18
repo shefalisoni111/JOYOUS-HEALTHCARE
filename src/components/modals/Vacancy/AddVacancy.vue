@@ -46,7 +46,11 @@
                   </div>
 
                   <div class="col-10">
-                    <select v-model="site_id" id="selectBusinessUnit">
+                    <select
+                      v-model="site_id"
+                      id="selectBusinessUnit"
+                      @change="onSiteSelect"
+                    >
                       <option
                         v-for="option in businessUnit"
                         :key="option.id"
@@ -207,14 +211,13 @@
                         >
                           {{ option.shift_name }}
                         </option>
-                        <option>Custom Time</option>
                       </select>
                       <span v-if="!validationShift" class="text-danger"
                         >Shift Required</span
                       >
                     </div>
                   </div>
-                  <div v-if="shift_id === 'Custom Time'">
+                  <!-- <div v-if="shift_id === 'Custom Time'">
                     <div class="mb-3 d-flex justify-content-between">
                       <div class="col-2">
                         <label class="form-label" for="selectCustomStartTime"
@@ -269,8 +272,8 @@
                         >
                       </div>
                     </div>
-                  </div>
-                  <div v-else>
+                  </div> -->
+                  <div>
                     <div class="mb-3 d-flex justify-content-between">
                       <div class="col-2">
                         <label class="form-label" for="selectShiftStart"
@@ -292,6 +295,13 @@
                             style="display: none"
                           >
                             {{ shift.start_time }}
+                          </option>
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
                           </option>
                         </select>
                         <span
@@ -320,6 +330,13 @@
                             style="display: none"
                           >
                             {{ shift.end_time }}
+                          </option>
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
                           </option>
                         </select>
                         <span v-if="!validationEndTime && !end_time" class="text-danger"
@@ -517,6 +534,10 @@ export default {
       const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
       return shifts_id ? shifts_id.start_time : "";
     },
+    selectShiftEnd() {
+      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
+      return shifts_id ? shifts_id.end_time : "";
+    },
   },
   watch: {
     job_id: "validationSelectedOptionText",
@@ -530,9 +551,6 @@ export default {
     end_time: "validateEndTime",
     break: "validateBreak",
 
-    isFormValid: function (newVal) {
-      this.isValidForm = newVal;
-    },
     job_id: function (newValue) {
       this.validationSelectedOptionText = this.validationSelectedFormate(newValue);
     },
@@ -554,6 +572,18 @@ export default {
     notes: function (newValue) {
       this.validationNotesText = this.ValidationNotes(newValue);
     },
+    // start_time: function (newValue) {
+    //   this.validationNotesText = this.validateStartTime(newValue);
+    // },
+    // end_time: function (newValue) {
+    //   this.validationNotesText = this.validateEndTime(newValue);
+    // },
+    // break: function (newValue) {
+    //   this.validationNotesText = this.validateBreak(newValue);
+    // },
+    isFormValid: function (newVal) {
+      this.isValidForm = newVal;
+    },
   },
   methods: {
     handleShiftChange() {
@@ -572,41 +602,52 @@ export default {
 
       this.end_time = selectedShift ? selectedShift.end_time : null;
     },
-    validateStartTime() {
-      if (!this.start_time) {
+    validateStartTime(newValue) {
+      if (!newValue) {
         this.validationStartTime = false;
+        return "Please enter a valid start time";
       } else {
         this.validationStartTime = true;
+        return "";
       }
     },
 
-    validateEndTime() {
-      if (!this.end_time) {
+    validateEndTime(newValue) {
+      if (!newValue) {
         this.validationEndTime = false;
+        return "Please enter a valid end time";
       } else {
         this.validationEndTime = true;
+        return "";
       }
     },
-    validateBreak() {
-      if (!this.break) {
+
+    validateBreak(newValue) {
+      if (!newValue) {
         this.validationBreak = false;
+        return "Please enter a valid break time";
       } else {
         this.validationBreak = true;
+        return "";
       }
     },
     formatTime(hour) {
-      if (hour <= 12) {
+      if (hour < 12) {
         return `${String(hour).padStart(2, "0")}:00 AM`;
+      } else if (hour === 12) {
+        return `${String(hour).padStart(2, "0")}:00 PM`;
+      } else if (hour === 24) {
+        return `00:00`;
+      } else if (hour > 12 && hour < 24) {
+        return `${String(hour).padStart(2, "0")}:00 PM`;
       } else {
         return `${String(hour - 12).padStart(2, "0")}:00 PM`;
       }
     },
     formatBreakTime(minute) {
-      // Calculate hours and minutes
       const hours = Math.floor(minute / 60);
       const mins = minute % 60;
 
-      // Format the time
       let formattedTime = "";
       if (hours > 0) {
         formattedTime += `${hours} hour `;
@@ -627,6 +668,10 @@ export default {
 
       this.getJobTitleMethod(selectedClientId);
       this.getSiteAccordingClientMethod(selectedClientId);
+    },
+    onSiteSelect() {
+      const selectedSiteId = this.site_id;
+      this.getTimeShift(selectedSiteId);
     },
     validateStaffRequired() {
       if (this.staff_required <= 0) {
@@ -680,6 +725,9 @@ export default {
       this.validationShift = this.ValidationShift(this.shift_id);
       this.validationStaffRequired = this.ValidationStaffRequired(this.staff_required);
       this.validationDateType = this.ValidationDate(this.dates);
+      // this.validationStartTime = this.validateStartTime(this.start_time);
+      // this.validationEndTime = this.validateEndTime(this.end_time);
+      // this.validationBreak = this.validateBreak(this.break);
       if (
         this.validationSelectedOptionText &&
         this.validationSelectedBusinessUnit &&
@@ -688,6 +736,9 @@ export default {
         this.validationShift &&
         this.validationStaffRequired &&
         this.validationDateType
+        // this.validationStartTime &&
+        // this.validationEndTime &&
+        // this.validationBreak
       ) {
         const data = {
           site_id: this.site_id,
@@ -697,6 +748,9 @@ export default {
           staff_required: this.staff_required,
           notes: this.notes,
           client_id: this.client_id,
+          // start_time: this.start_time,
+          // end_time: this.end_time,
+          // break: this.break,
         };
         try {
           const token = localStorage.getItem("token");
@@ -733,6 +787,10 @@ export default {
           }, 100);
         }
       } else {
+        this.clearFields();
+        setTimeout(() => {
+          this.clearError();
+        }, 100);
       }
     },
     async getJobTitleMethod() {
@@ -787,10 +845,32 @@ export default {
         }
       }
     },
+    // async getTimeShift() {
+    //   await axios
+    //     .get(`${VITE_API_URL}/shifts`)
+    //     .then((response) => (this.shiftsTime = response.data));
+    // },
     async getTimeShift() {
-      await axios
-        .get(`${VITE_API_URL}/shifts`)
-        .then((response) => (this.shiftsTime = response.data));
+      try {
+        const response = await axios.get(`${VITE_API_URL}/site_shift/${this.site_id}`);
+        this.shiftsTime =
+          response.data.site_shift_data.map((shift) => ({
+            ...shift,
+            start_time: this.convertTimeFormat(shift.start_time),
+            end_time: this.convertTimeFormat(shift.end_time),
+          })) || [];
+      } catch (error) {
+        // console.error("Error fetching shifts:", error);
+      }
+    },
+    convertTimeFormat(dateTimeString) {
+      const date = new Date(dateTimeString);
+      const hours = date.getUTCHours();
+      const minutes = date.getUTCMinutes();
+      const amPm = hours >= 12 ? "PM" : "AM";
+      const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+      const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+      return `${formattedHours}:${formattedMinutes} ${amPm}`;
     },
     validationSelectedFormate(newValue) {
       const positionRegex = /[a-zA-Z0-9]/;

@@ -28,59 +28,11 @@
         </div>
         <div class="row">
           <div class="full-page-calendar">
-            <!-- <div class="calendar-header">
-               <span
-                v-if="currentView === 'weekly' && startDate && endDate"
-                class="fw-bold"
-              >
-                {{
-                  "Monday " + formatDate(startDate) + " to Sunday " + formatDate(endDate)
-                }} </span
-              >&nbsp; &nbsp; &nbsp;&nbsp; -->
-
-            <!-- <input
-                type="date"
-                v-model="startDate"
-                @change="updateDateRange"
-                class="dateInput"
-              /> 
-            </div> -->
-
-            <!-- <div v-if="selectedDate !== null" class="modal">
-              <div class="modal-content">
-                <div class="close d-flex justify-content-between my-3">
-                  <h3 class="d-flex align-items-center mb-0">Edit Assigned Shift -</h3>
-                  <span class="close text-white" @click="closeModal">&times;</span>
-                </div>
-
-                <h4 class="text-capitalize">{{ getCandidateName() }}</h4>
-               <p>You clicked on {{ selectedDate }}</p>
-                <p>Status: {{ statusForSelectedDate }}</p>
-
-                <ScheduleDirectAssignList
-                  :initialDate="selectedDate"
-                  :candidateId="selectedCandidateId"
-                  @closeModal="closeModal"
-                />
-              </div>
-            </div> -->
             <div>
               <EditAssignShceduleVaacncy
                 :vacancyId="parseInt(vacancyId)"
                 :candidateId="selectedCandidateId"
               />
-              <!-- <template v-if="isModalOpen">
-                <EditAssignShceduleVaacncy />
-              </template> -->
-              <!-- <template>
-                <ScheduleDirectAssignList
-                  :columnDateMatch="columnDateMatch"
-                  :initialDate="selectedDate"
-                  :candidateId="selectedCandidateId"
-                  :candidateJob="candidateJob"
-                  @closeModal="closeModal"
-                />
-              </template> -->
             </div>
           </div>
           <div class="table-wrapper">
@@ -415,7 +367,11 @@ import ScheduleDirectAssignList from "../components/modals/Schedule/ScheduleDire
 import Navbar from "../components/Navbar.vue";
 import SchedulePublishStaffList from "../components/modals/Schedule/SchedulePublishStaffList.vue";
 import SuccessAlert from "../components/Alerts/SuccessAlert.vue";
-
+const axiosInstance = axios.create({
+  headers: {
+    "Cache-Control": "no-cache",
+  },
+});
 export default {
   data() {
     return {
@@ -482,17 +438,6 @@ export default {
         "Sunday",
       ];
     },
-    // selectedCandidate() {
-    //   return this.candidateList.find(
-    //     (candidate) => candidate.id === this.selectedCandidateId
-    //   );
-    // },
-    // selectedVacancy() {
-    //   // return this.flattenedAssignVacancies.find(
-    //   //   (vacancies) => vacancies.id === this.vacancyId
-    //   // );
-    //   console.log(this.flattenedAssignVacancies);
-    // },
 
     selectedDateRow() {
       const selectedDate = new Date(this.startDate);
@@ -543,11 +488,6 @@ export default {
         );
       };
     },
-    // filteredVacancyIdAssignStaff(vacancyId) {
-    //   return this.assignStaffDisplay.filter((assign) =>
-    //     assign.vacancies.some((vacancy) => vacancy.id === this.vacancyId)
-    //   );
-    // },
   },
   watch: {
     columnDateMatch() {
@@ -567,24 +507,6 @@ export default {
     async search() {
       try {
         this.searchResults = [];
-        // let activatedStatus = null;
-
-        // if (this.activeTab === 1) {
-        //   activatedStatus = true;
-        // } else if (this.activeTab === 2) {
-        //   activatedStatus = false;
-        // } else if (this.activeTab === 3 || this.activeTab === 4) {
-        //   await this.searchByStatus();
-        //   return;
-        // } else if (this.activeTab === 0) {
-        //   const response = await axiosInstance.get(
-        //     `${VITE_API_URL}/search_candidate/${this.searchQuery}`
-        //   );
-
-        //   this.searchResults = response.data.candidate;
-        // } else {
-        //   activatedStatus = this.activeTab === 1 ? true : false;
-        // }
 
         const response = await axiosInstance.get(
           `${VITE_API_URL}/candidate_searching_active_and_inactive`,
@@ -598,10 +520,7 @@ export default {
 
         this.searchResults = response.data;
       } catch (error) {
-        if (
-          (error.response && error.response.status === 404) ||
-          error.response.status === 400
-        ) {
+        if (error.response && error.response.status === 404) {
           this.errorMessage = "No Staff found for the specified criteria";
         }
       }
@@ -816,15 +735,6 @@ export default {
     },
 
     async openModal(candidateId, day) {
-      // this.vacancyId = candidateId.id.toString();
-      // this.columnDateMatch = day !== null ? day.toString() : "";
-      // this.selectedCandidateId = candidateId.candidate_id.toString();
-      // this.candidateJob = candidateId.job;
-      // if (candidateId && candidateId.id) {
-      //   this.vacancyId = candidateId.id;
-      // } else {
-      //   return;
-      // }
       if (!candidateId || !candidateId.candidate_id) {
         return;
       }
