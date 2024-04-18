@@ -123,7 +123,7 @@
                     <label class="form-label" for="selectShifts">Shift</label>
                   </div>
                   <div class="col-10">
-                    <select v-model="shift_id" id="selectShifts">
+                    <select v-model="site_shift_id" id="selectShifts">
                       <option
                         v-for="option in shiftsTime"
                         :key="option.id"
@@ -156,7 +156,7 @@
                           v-for="shift in shiftsTime"
                           :key="shift.id"
                           :value="shift.start_time"
-                          :disabled="shift.id !== shift_id"
+                          :disabled="shift.id !== site_shift_id"
                         >
                           {{ shift.start_time }}
                         </option>
@@ -181,7 +181,7 @@
                           v-for="shift in shiftsTime"
                           :key="shift.id"
                           :value="shift.end_time"
-                          :disabled="shift.id !== shift_id"
+                          :disabled="shift.id !== site_shift_id"
                         >
                           {{ shift.end_time }}
                         </option>
@@ -199,7 +199,7 @@
                     </div>
                     <div class="col-10">
                       <select
-                        v-model="shift_id"
+                        v-model="site_shift_id"
                         id="selectShifts"
                         @change="handleShiftChange"
                       >
@@ -217,7 +217,8 @@
                       >
                     </div>
                   </div>
-                  <!-- <div v-if="shift_id === 'Custom Time'">
+                </div>
+                <!-- <div v-if="site_shift_id === 'Custom Time'">
                     <div class="mb-3 d-flex justify-content-between">
                       <div class="col-2">
                         <label class="form-label" for="selectCustomStartTime"
@@ -273,86 +274,74 @@
                       </div>
                     </div>
                   </div> -->
-                  <div>
-                    <div class="mb-3 d-flex justify-content-between">
-                      <div class="col-2">
-                        <label class="form-label" for="selectShiftStart"
-                          >Start Time</label
-                        >
-                      </div>
-                      <div class="col-10">
-                        <select
-                          id="selectShiftEnd"
-                          class="form-select w-25"
-                          v-model="start_time"
-                          @change="updateEndTime"
-                        >
-                          <option
-                            v-for="shift in shiftsTime"
-                            :key="shift.id"
-                            :value="shift.start_time"
-                            :disabled="shift.id !== shift_id"
-                            style="display: none"
-                          >
-                            {{ shift.start_time }}
-                          </option>
-                          <option
-                            v-for="hour in 24"
-                            :key="hour"
-                            :value="formatTime(hour)"
-                          >
-                            {{ formatTime(hour) }}
-                          </option>
-                        </select>
-                        <span
-                          v-if="!validationStartTime && !start_time"
-                          class="text-danger"
-                          >Start Time is required</span
-                        >
-                      </div>
+                <div>
+                  <div class="mb-3 d-flex justify-content-between">
+                    <div class="col-2">
+                      <label class="form-label" for="selectShiftStart">Start Time</label>
                     </div>
-                    <div class="mb-3 d-flex justify-content-between">
-                      <div class="col-2">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
-                      </div>
-                      <div class="col-10">
-                        <select
-                          id="selectShiftEnd"
-                          class="form-select w-25"
-                          v-model="end_time"
-                          @change="updateEndTime"
+                    <div class="col-10">
+                      <select
+                        id="selectShiftEnd"
+                        class="form-select w-25"
+                        v-model="start_time"
+                        @change="updateEndTime"
+                      >
+                        <option
+                          v-for="shift in shiftsTime"
+                          :key="shift.id"
+                          :value="shift.start_time"
+                          :disabled="shift.id !== site_shift_id"
+                          style="display: none"
                         >
-                          <option
-                            v-for="shift in shiftsTime"
-                            :key="shift.id"
-                            :value="shift.end_time"
-                            :disabled="shift.id !== shift_id"
-                            style="display: none"
-                          >
-                            {{ shift.end_time }}
-                          </option>
-                          <option
-                            v-for="hour in 24"
-                            :key="hour"
-                            :value="formatTime(hour)"
-                          >
-                            {{ formatTime(hour) }}
-                          </option>
-                        </select>
-                        <span v-if="!validationEndTime && !end_time" class="text-danger"
-                          >End Time is required</span
+                          {{ shift.start_time }}
+                        </option>
+                        <option v-for="hour in 24" :key="hour" :value="formatTime(hour)">
+                          {{ formatTime(hour) }}
+                        </option>
+                      </select>
+                      <!-- <span v-if="!validationStartTime && !start_time" class="text-danger"
+                        >Start Time is required</span
+                      > -->
+                    </div>
+                  </div>
+                  <div class="mb-3 d-flex justify-content-between">
+                    <div class="col-2">
+                      <label class="form-label" for="selectShiftEnd">End Time</label>
+                    </div>
+                    <div class="col-10">
+                      <select
+                        id="selectShiftEnd"
+                        class="form-select w-25"
+                        v-model="end_time"
+                        @change="updateEndTime"
+                      >
+                        <option
+                          v-for="shift in shiftsTime"
+                          :key="shift.id"
+                          :value="shift.end_time"
+                          :disabled="shift.id !== site_shift_id"
+                          style="display: none"
                         >
-                      </div>
+                          {{ shift.end_time }}
+                        </option>
+                        <option v-for="hour in 24" :key="hour" :value="formatTime(hour)">
+                          {{ formatTime(hour) }}
+                        </option>
+                      </select>
+                      <!-- <span v-if="!validationEndTime && !end_time" class="text-danger"
+                        >End Time is required</span
+                      > -->
                     </div>
                   </div>
                 </div>
 
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectShifts">Break Time</label>
+                    <label class="form-label" for="selectShiftsBreak">Break Time</label>
                   </div>
                   <div class="col-10">
                     <select
+                      id="selectShiftsBreak"
                       class="form-select w-25"
                       v-model="break"
                       @change="validateBreak"
@@ -365,9 +354,9 @@
                         {{ formatBreakTime(minute) }}
                       </option>
                     </select>
-                    <!-- <span v-if="!validationBreakTime && !break" class="text-danger">
+                    <!-- <span v-if="!validationBreak && !break" class="text-danger">
                       Break Time is required
-                    </span>  -->
+                    </span> -->
                   </div>
                 </div>
 
@@ -462,9 +451,9 @@ export default {
       start_time: null,
       end_time: null,
       break: null,
-      validationStartTime: true,
-      validationBreak: true,
-      validationEndTime: true,
+      // validationStartTime: true,
+      // validationBreak: true,
+      // validationEndTime: true,
       site_id: "",
       client_id: "",
       clientData: [],
@@ -472,7 +461,7 @@ export default {
       options: [],
       businessUnit: [],
       dates: [],
-      shift_id: "",
+      site_shift_id: "",
       shiftsTime: [],
       notes: "",
       staff_required: "",
@@ -487,12 +476,12 @@ export default {
         this.site_id !== "" &&
         this.client_id !== "" &&
         this.job_id !== "" &&
-        this.shift_id !== "" &&
+        this.site_shift_id !== "" &&
         this.notes !== "" &&
         this.staff_required !== "" &&
         this.selectedDate !== null &&
-        this.start_time !== null &&
-        this.end_time !== null &&
+        // this.start_time !== null &&
+        // this.end_time !== null &&
         this.break !== null &&
         this.validationSelectedOptionText &&
         this.validationSelectedBusinessUnit &&
@@ -500,14 +489,16 @@ export default {
         this.validationNotesText &&
         this.validationShift &&
         this.validationDateType &&
-        this.validationStaffRequired &&
-        this.validationStartTime &&
-        this.validationEndTime &&
-        this.validationBreak
+        this.validationStaffRequired
+        // this.validationStartTime &&
+        // this.validationEndTime &&
+        // this.validationBreak
       );
     },
     updateStartTime() {
-      const selectedShift = this.shiftsTime.find((shift) => shift.id === this.shift_id);
+      const selectedShift = this.shiftsTime.find(
+        (shift) => shift.id === this.site_shift_id
+      );
 
       this.start_time = selectedShift ? selectedShift.start_time : null;
     },
@@ -543,13 +534,13 @@ export default {
     job_id: "validationSelectedOptionText",
     site_id: "validationSelectedBusinessUnit",
     client_id: "validationSelectedClient",
-    shift_id: "validationShift",
+    site_shift_id: "validationShift",
     staff_required: "validationStaffRequired",
     dates: "validationDateType",
     notes: "validationNotesText",
-    start_time: "validateStartTime",
-    end_time: "validateEndTime",
-    break: "validateBreak",
+    // start_time: "validateStartTime",
+    // end_time: "validateEndTime",
+    // break: "validateBreakFormate",
 
     job_id: function (newValue) {
       this.validationSelectedOptionText = this.validationSelectedFormate(newValue);
@@ -560,7 +551,7 @@ export default {
     client_id: function (newValue) {
       this.validationSelectedClient = this.ValidationClient(newValue);
     },
-    shift_id: function (newValue) {
+    site_shift_id: function (newValue) {
       this.validationShift = this.ValidationShift(newValue);
     },
     staff_required: function (newValue) {
@@ -579,7 +570,7 @@ export default {
     //   this.validationNotesText = this.validateEndTime(newValue);
     // },
     // break: function (newValue) {
-    //   this.validationNotesText = this.validateBreak(newValue);
+    //   this.validationBreak = this.validateBreakFormate(newValue);
     // },
     isFormValid: function (newVal) {
       this.isValidForm = newVal;
@@ -587,7 +578,9 @@ export default {
   },
   methods: {
     handleShiftChange() {
-      const selectedShift = this.shiftsTime.find((shift) => shift.id === this.shift_id);
+      const selectedShift = this.shiftsTime.find(
+        (shift) => shift.id === this.site_shift_id
+      );
       if (selectedShift) {
         this.start_time = selectedShift.start_time;
         this.end_time = selectedShift.end_time;
@@ -598,7 +591,9 @@ export default {
     },
 
     updateEndTime() {
-      const selectedShift = this.shiftsTime.find((shift) => shift.id === this.shift_id);
+      const selectedShift = this.shiftsTime.find(
+        (shift) => shift.id === this.site_shift_id
+      );
 
       this.end_time = selectedShift ? selectedShift.end_time : null;
     },
@@ -722,12 +717,12 @@ export default {
       this.validationSelectedBusinessUnit = this.ValidationBusinessUnit(this.site_id);
       this.validationSelectedClient = this.ValidationClient(this.client_id);
       this.validationNotesText = this.ValidationNotes(this.notes);
-      this.validationShift = this.ValidationShift(this.shift_id);
+      this.validationShift = this.ValidationShift(this.site_shift_id);
       this.validationStaffRequired = this.ValidationStaffRequired(this.staff_required);
       this.validationDateType = this.ValidationDate(this.dates);
       // this.validationStartTime = this.validateStartTime(this.start_time);
       // this.validationEndTime = this.validateEndTime(this.end_time);
-      // this.validationBreak = this.validateBreak(this.break);
+      // this.validationBreak = this.validateBreakFormate(this.break);
       if (
         this.validationSelectedOptionText &&
         this.validationSelectedBusinessUnit &&
@@ -744,14 +739,15 @@ export default {
           site_id: this.site_id,
           job_id: this.job_id,
           dates: this.dates,
-          shift_id: this.shift_id,
+          site_shift_id: this.site_shift_id,
           staff_required: this.staff_required,
           notes: this.notes,
           client_id: this.client_id,
-          // start_time: this.start_time,
-          // end_time: this.end_time,
-          // break: this.break,
+          start_time: this.start_time,
+          end_time: this.end_time,
+          break: this.break,
         };
+
         try {
           const token = localStorage.getItem("token");
           const response = await fetch(`${VITE_API_URL}/vacancies`, {
@@ -763,7 +759,7 @@ export default {
             body: JSON.stringify(data),
           });
 
-          if (response.ok) {
+          if (response.status === 201) {
             this.clearFields();
             setTimeout(() => {
               this.clearError();
@@ -859,6 +855,7 @@ export default {
             start_time: this.convertTimeFormat(shift.start_time),
             end_time: this.convertTimeFormat(shift.end_time),
           })) || [];
+        console.log(`${VITE_API_URL}/site_shift/${this.site_id}`);
       } catch (error) {
         // console.error("Error fetching shifts:", error);
       }
@@ -896,6 +893,10 @@ export default {
       const dateRegex = /(0[1-9]|[12][0-9]|3[01])/;
       return dateRegex.test(newValue);
     },
+    validateBreakFormate(newValue) {
+      const breakRegex = /^[1-9][0-9]*\s(hour|min)s?$/;
+      return breakRegex.test(newValue);
+    },
     ValidationClient(newValue) {
       const clientRegex = /[a-zA-Z0-9]/;
       return clientRegex.test(newValue);
@@ -917,7 +918,7 @@ export default {
       this.client_id = "";
       this.job_id = "";
       this.dates = [];
-      this.shift_id = "";
+      this.site_shift_id = "";
       this.start_time = "";
       this.end_time = "";
       this.break = "";

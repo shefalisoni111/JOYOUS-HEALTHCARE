@@ -54,7 +54,7 @@
               </td>
               <!-- <td v-for="(date, index) in getdata.dates" :key="index" v-text="date"></td> -->
 
-              <td v-text="getdata.shift"></td>
+              <td v-text="getdata.site_shift"></td>
               <td class="withShow text-center">
                 {{ getdata.staff_required === null ? 0 : getdata.staff_required }}
               </td>
