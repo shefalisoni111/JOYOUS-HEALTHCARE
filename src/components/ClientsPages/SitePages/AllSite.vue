@@ -1,7 +1,40 @@
 <template>
   <div>
+    <div class="mt-2">
+      <button
+        type="button"
+        class="btn btn-outline-success text-nowrap"
+        @click="toggleFilters"
+      >
+        <i class="bi bi-funnel"></i>
+        Show Filters
+      </button>
+    </div>
+
+    <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
+      <div class="d-flex gap-2 mt-3">
+        <div></div>
+
+        <select @change="filterData($event.target.value)">
+          <option selected>Site Status</option>
+          <option value="true">Active</option>
+          <option class="false">In-Active</option>
+        </select>
+
+        <!-- <select v-model="selectedCandidate" id="selectCandidateList">
+                        <option value="">All Staff</option>
+                        <option
+                          v-for="option in candidateLists"
+                          :key="option.id"
+                          :value="`${option.first_name} ${option.last_name}`"
+                        >
+                          {{ option.first_name }} {{ option.last_name }}
+                        </option>
+                      </select> -->
+      </div>
+    </div>
     <div class="table-wrapper mt-3">
-      <table class="table clientTable">
+      <table class="table siteTable">
         <thead>
           <tr>
             <!-- <th scope="col">ID</th> -->
@@ -77,11 +110,44 @@ export default {
     return {
       getSiteAllData: [],
       selectedsiteId: 0,
+      showFilters: false,
+      getSiteDetail: [],
     };
   },
 
   components: { EditSite, AddSite },
   methods: {
+    toggleFilters() {
+      this.showFilters = !this.showFilters;
+    },
+    filterData(value) {
+      let site_type = "status";
+      let site_value = value === "true" ? "true" : "false";
+
+      this.makeFilterAPICall(site_type, site_value);
+    },
+    async makeFilterAPICall(site_type, site_value) {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/site_filter`, {
+          params: {
+            site_type: site_type,
+            site_value: site_value,
+          },
+        });
+
+        this.getSiteAllData = response.data.data;
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          const errorMessages = error.response.data.error;
+          if (errorMessages === "No records found for the given filter") {
+            alert("No records found for the given filter");
+          } else {
+            alert(errorMessages);
+          }
+        } else {
+        }
+      }
+    },
     editsiteId(siteId) {
       this.selectedsiteId = siteId;
     },
@@ -111,5 +177,14 @@ export default {
 ul.generalsetting h6 {
   font-size: 14px;
   font-weight: bold;
+}
+.siteTable tr:nth-child(odd) td {
+  background: #fdce5e17 !important;
+}
+select {
+  padding: 10px;
+  border-radius: 4px;
+  border: 0px;
+  border: 1px solid rgb(202, 198, 198);
 }
 </style>

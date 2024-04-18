@@ -38,7 +38,7 @@
                   {{ getdata.client }}
                 </router-link>
               </td>
-              <td v-text="getdata.business_unit"></td>
+              <td v-text="getdata.site"></td>
               <td v-text="getdata.job_title"></td>
 
               <td class="widthDefine">

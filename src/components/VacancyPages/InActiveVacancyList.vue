@@ -33,7 +33,7 @@
                   {{ data.client }}
                 </router-link>
               </td>
-              <td v-text="data.business_unit"></td>
+              <td v-text="data.site"></td>
               <td v-text="data.job_title"></td>
               <td class="">
                 <div v-for="(date, index) in data.dates" :key="index">
