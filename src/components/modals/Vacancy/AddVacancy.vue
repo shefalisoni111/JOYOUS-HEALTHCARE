@@ -849,7 +849,7 @@ export default {
     // },
     async getTimeShift() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/site_shift/${this.site_id}`);
+        const response = await axios.get(`${VITE_API_URL}site_shift/${this.site_id}`);
         this.shiftsTime =
           response.data.site_shift_data.map((shift) => ({
             ...shift,

@@ -151,7 +151,7 @@
                   <tbody>
                     <tr>
                       <td style="border-right: 1px solid rgb(209, 208, 208)">
-                        <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
+                        <!-- <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
                           <input
                             class="form-control mr-sm-2"
                             type="search"
@@ -160,7 +160,7 @@
                             v-model="searchQuery"
                             @input="debounceSearch"
                           />
-                        </form>
+                        </form> -->
                       </td>
                       <td>
                         <div
@@ -194,13 +194,11 @@
                                 >
                                   <span class="d-flex flex-column align-items-baseline">
                                     <span class="text-capitalize"
-                                      >{{ vacancy.business_unit }},{{
-                                        vacancy.job_title
-                                      }}</span
+                                      >{{ vacancy.site }},{{ vacancy.job_title }}</span
                                     >
 
                                     <span class="">{{
-                                      extractTimeRange(vacancy.shift)
+                                      extractTimeRange(vacancy.site_shift)
                                     }}</span>
                                   </span>
                                   <span class="staff-count-round text-white">{{
@@ -295,8 +293,8 @@
                                             <span
                                               class="assignVacancyDesign mt-1 text-capitalize"
                                             >
-                                              {{ data.business_unit }}, &nbsp;
-                                              {{ data.job_title }}<br />
+                                              {{ data.site }}, &nbsp; {{ data.job_title
+                                              }}<br />
                                             </span>
                                           </div>
                                         </span>
@@ -526,15 +524,15 @@ export default {
       }
     },
     extractTimeRange(shift) {
-      if (shift.includes("Holiday")) {
-        if (shift.includes("Day Shift")) {
+      if (shift && shift.includes("Holiday")) {
+        if (shift && shift.includes("Day Shift")) {
           return shift.replace("Holiday Day Shift", "Holiday Night Shift").split(" ")[3];
-        } else if (shift.includes("Night Shift")) {
+        } else if (shift && shift.includes("Night Shift")) {
           return shift.replace("Holiday Night Shift", "Holiday Day Shift").split(" ")[3];
         }
-      } else if (shift.includes("Day Shift")) {
+      } else if (shift && shift.includes("Day Shift")) {
         return shift.split(" ")[2];
-      } else if (shift.includes("Night Shift")) {
+      } else if (shift && shift.includes("Night Shift")) {
         return shift.split(" ")[2];
       }
     },
@@ -806,7 +804,7 @@ export default {
     async fetchAssignList() {
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/find_assign_vacancies_and_candidates`
+          `${VITE_API_URL}find_assign_vacancies_and_candidates`
         );
         this.assignStaffDisplay = response.data.vacancies;
 

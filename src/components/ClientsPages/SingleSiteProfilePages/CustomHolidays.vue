@@ -6,7 +6,14 @@
           <h6 class="fw-bold d-flex align-items-center mb-0">
             You can add custom holidays here
           </h6>
-          <button class="btn btn-primary">
+
+          <button
+            type="button"
+            class="btn btn-primary text-nowrap text-nowrap"
+            data-bs-toggle="modal"
+            data-bs-target="#siteCustomHoliday"
+            data-bs-whatever="@mdo"
+          >
             <i class="bi bi-plus"></i> Add Custom Holiday
           </button>
         </div>
@@ -16,9 +23,10 @@
           <table class="table clientTable">
             <thead>
               <tr>
+                <th scope="col">Id</th>
                 <th scope="col">Title</th>
                 <th scope="col">Date</th>
-                <!-- <th scope="col">Jobs</th> -->
+                <th scope="col">Site ID</th>
                 <th scope="col">Type</th>
                 <th scope="col">Actions</th>
 
@@ -26,25 +34,29 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>be7b58ds</td>
-
-                <td>india</td>
-                <td>9897654322</td>
+              <tr v-for="data in getCustomHolidayData" :key="data.id">
+                <td>{{ data.id }}</td>
+                <td class="text-capitalize">{{ data.title }}</td>
+                <td>{{ data.site_id }}</td>
+                <td>{{ data.date }}</td>
+                <td>{{ data.holiday_type }}</td>
 
                 <td>
-                  <button
+                  <!-- <button
                     type="button"
                     class="btn btn-outline-success text-nowrap text-nowrap"
-                    data-bs-toggle="modal"
+                    data-bs-toggle="siteCustomHoliday"
                     data-bs-target="#"
                     data-bs-whatever="@mdo"
                   >
                     <i class="bi bi-pencil-square"></i>
-                  </button>
+                  </button> -->
                   &nbsp;&nbsp;
                   <button class="btn btn-outline-success text-nowrap">
-                    <i class="bi bi-trash"></i></button
+                    <i
+                      class="bi bi-trash"
+                      v-on:click="customHolidayDeleteMethod(data.id)"
+                    ></i></button
                   >&nbsp;&nbsp;
                 </td>
               </tr>
@@ -53,8 +65,46 @@
         </div>
       </div>
     </div>
+    <AddSiteCustomHoliday @addCustomHoliday="getCustomHolidayMethod" />
   </div>
 </template>
+<script>
+import axios from "axios";
+import AddSiteCustomHoliday from "../../modals/Site/AddSiteCustomHoliday.vue";
+
+export default {
+  data() {
+    return {
+      getCustomHolidayData: [],
+    };
+  },
+  components: {
+    AddSiteCustomHoliday,
+  },
+  methods: {
+    async getCustomHolidayMethod() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/custom_holidays/${this.$route.params.id}`
+        );
+
+        this.getCustomHolidayData = response.data.data;
+      } catch (error) {}
+    },
+    customHolidayDeleteMethod(id) {
+      if (!window.confirm("Are you Sure ?")) {
+        return;
+      }
+      axios.delete(`${VITE_API_URL}/custom_holidays/` + id).then((response) => {
+        this.getCustomHolidayMethod();
+      });
+    },
+  },
+  async created() {
+    await this.getCustomHolidayMethod();
+  },
+};
+</script>
 <style scoped>
 #main {
   padding: 20px 20px;

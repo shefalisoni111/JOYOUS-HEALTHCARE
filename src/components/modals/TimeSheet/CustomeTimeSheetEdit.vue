@@ -151,6 +151,9 @@ export default {
     },
 
     async fetchCustomTimeSheetData(id) {
+      if (!id) {
+        return;
+      }
       try {
         const response = await axios.get(`${VITE_API_URL}/custom_timesheets/${id}`);
         this.fetchCustomSheetData = {

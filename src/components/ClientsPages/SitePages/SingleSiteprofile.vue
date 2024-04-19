@@ -202,7 +202,7 @@ export default {
     async getClientMethod() {
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/clients/${this.$route.params.id}`
+          `${VITE_API_URL}clients/${this.$route.params.id}`
         );
 
         this.getClientDatas = response.data.data;

@@ -113,7 +113,7 @@ export default {
     async getTime() {
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/site_shift/${this.$route.params.id}`
+          `${VITE_API_URL}site_shift/${this.$route.params.id}`
         );
         this.shifts =
           response.data.site_shift_data.map((shift) => ({

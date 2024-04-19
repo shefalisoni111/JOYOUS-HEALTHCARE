@@ -135,6 +135,10 @@ export default {
   components: { Loader, EditVacancy },
   computed: {
     displayedVacancies() {
+      if (!Array.isArray(this.getInactiveData)) {
+        return [];
+      }
+
       return this.getInactiveData.length >= 8
         ? this.paginatedVacancies
         : this.getInactiveData;
