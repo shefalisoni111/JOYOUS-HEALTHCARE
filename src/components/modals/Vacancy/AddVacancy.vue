@@ -454,6 +454,7 @@ export default {
       // validationStartTime: true,
       // validationBreak: true,
       // validationEndTime: true,
+
       site_id: "",
       client_id: "",
       clientData: [],
@@ -855,7 +856,6 @@ export default {
             start_time: this.convertTimeFormat(shift.start_time),
             end_time: this.convertTimeFormat(shift.end_time),
           })) || [];
-        console.log(`${VITE_API_URL}/site_shift/${this.site_id}`);
       } catch (error) {
         // console.error("Error fetching shifts:", error);
       }
@@ -922,7 +922,11 @@ export default {
       this.start_time = "";
       this.end_time = "";
       this.break = "";
-      (this.staff_required = ""), (this.notes = "");
+      (this.options = []),
+        (this.businessUnit = []),
+        (this.shiftsTime = []),
+        (this.staff_required = ""),
+        (this.notes = "");
       this.selectedDate = null;
     },
   },

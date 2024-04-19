@@ -12,15 +12,42 @@
               <form>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-3">
-                    <label class="form-label">Site</label>
+                    <label class="form-label" for="selectClients">Client</label>
                   </div>
                   <div class="col-9">
-                    <select v-model="fetchVacancy.site_id" id="selectBusinessUnit">
+                    <select
+                      v-model="fetchVacancy.client_id"
+                      id="selectClients"
+                      @change="onClientSelect"
+                    >
+                      <option
+                        v-for="option in clientData"
+                        :key="option.id"
+                        :value="option.id"
+                        aria-placeholder="Select Job"
+                        style="display: none"
+                      >
+                        {{ option.first_name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-3">
+                    <label class="form-label">Site </label>
+                  </div>
+                  <div class="col-9">
+                    <select
+                      v-model="fetchVacancy.site_id"
+                      id="selectBusinessUnit"
+                      @change="onSiteSelect"
+                    >
                       <option
                         v-for="option in businessUnit"
                         :key="option.id"
                         :value="option.id"
                         placeholder="Select BusinessUnit"
+                        style="display: none"
                       >
                         {{ option.site_name }}
                       </option>
@@ -30,7 +57,7 @@
 
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-3">
-                    <label class="form-label">Job Title</label>
+                    <label class="form-label">Job Title </label>
                   </div>
                   <div class="col-9">
                     <select v-model="fetchVacancy.job_id" id="selectJobTitle">
@@ -39,29 +66,14 @@
                         :key="option.id"
                         :value="option.id"
                         aria-placeholder="Select Job"
+                        style="display: none"
                       >
                         {{ option.name }}
                       </option>
                     </select>
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-3">
-                    <label class="form-label">ClientID</label>
-                  </div>
-                  <div class="col-9">
-                    <select v-model="fetchVacancy.client_id" id="selectClients">
-                      <option
-                        v-for="option in clientData"
-                        :key="option.id"
-                        :value="option.id"
-                        aria-placeholder="Select Job"
-                      >
-                        {{ option.first_name }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
+
                 <div class="mb-3">
                   <div class="d-flex flex-wrap">
                     <div class="col-3">
@@ -99,10 +111,14 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-3">
-                    <label class="form-label">Shift</label>
+                    <label class="form-label" for="selectShifts">Shift</label>
                   </div>
                   <div class="col-9">
-                    <select v-model="fetchVacancy.shift_id" id="selectShifts">
+                    <select
+                      v-model="fetchVacancy.site_shift_id"
+                      id="selectShifts"
+                      @change="onShiftSelect"
+                    >
                       <option
                         v-for="option in shiftsTime"
                         :key="option.id"
@@ -114,18 +130,77 @@
                     </select>
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-3">
-                    <label class="form-label">Staff Required</label>
+                <div>
+                  <div class="mb-3 d-flex justify-content-between">
+                    <div class="col-2">
+                      <label class="form-label" for="selectCustomStartTime"
+                        >Start Time
+                      </label>
+                    </div>
+                    <div class="col-10">
+                      <select
+                        id="selectCustomStartTime"
+                        class="form-select w-25"
+                        v-model="fetchVacancy.start_time"
+                        @change="validateStartTime"
+                      >
+                        <option v-for="hour in 24" :key="hour" :value="formatTime(hour)">
+                          {{ formatTime(hour) }}
+                        </option>
+                      </select>
+                    </div>
                   </div>
-                  <div class="col-9">
-                    <input
-                      type="number"
-                      class="form-control w-25"
-                      v-model="fetchVacancy.staff_required"
-                      @input="validateStaffRequired"
-                      @keydown.prevent
-                    />
+                  <div class="mb-3 d-flex justify-content-between">
+                    <div class="col-2">
+                      <label class="form-label" for="selectCustomEndTime">End Time</label>
+                    </div>
+                    <div class="col-10">
+                      <select
+                        id="selectCustomEndTime"
+                        class="form-select w-25"
+                        v-model="fetchVacancy.end_time"
+                        @change="validateEndTime"
+                      >
+                        <option v-for="hour in 24" :key="hour" :value="formatTime(hour)">
+                          {{ formatTime(hour) }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="mb-3 d-flex justify-content-between">
+                    <div class="col-2">
+                      <label class="form-label" for="selectShiftsBreak">Break Time</label>
+                    </div>
+                    <div class="col-10">
+                      <select
+                        id="selectShiftsBreak"
+                        class="form-select w-25"
+                        v-model="fetchVacancy.break"
+                        @change="validateBreak"
+                      >
+                        <option
+                          v-for="minute in [15, 30, 45, 60, 75, 90]"
+                          :key="minute"
+                          :value="minute"
+                        >
+                          {{ formatBreakTime(minute) }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="mb-3 d-flex justify-content-between">
+                    <div class="col-3">
+                      <label class="form-label">Staff Required</label>
+                    </div>
+                    <div class="col-9">
+                      <input
+                        type="number"
+                        class="form-control w-25"
+                        v-model="fetchVacancy.staff_required"
+                        @input="validateStaffRequired"
+                        @keydown.prevent
+                      />
+                    </div>
                   </div>
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
@@ -178,13 +253,18 @@ export default {
     return {
       fetchVacancy: {
         id: "",
+        site_shift_id: "",
+        business_units_id: "",
         site_id: "",
         client_id: "",
         staff_required: "",
         job_id: "",
         dates: [],
-        shift_id: "",
+        site_shift: "",
         notes: "",
+        start_time: "",
+        end_time: "",
+        break: "",
       },
       businessUnit: [],
       shiftsTime: [],
@@ -214,7 +294,7 @@ export default {
     },
     selectShifts() {
       const shift = this.shiftsTime.find(
-        (option) => option.id === this.fetchVacancy.shift_id
+        (option) => option.id === this.fetchVacancy.site_id
       );
       return shift ? shift.shift_name : "";
     },
@@ -229,6 +309,60 @@ export default {
     },
   },
   methods: {
+    onShiftSelect() {
+      const selectedShift = this.shiftsTime.find(
+        (shift) => shift.id === this.fetchVacancy.site_shift_id
+      );
+      if (selectedShift) {
+        this.fetchVacancy.start_time = selectedShift.start_time;
+        this.fetchVacancy.end_time = selectedShift.end_time;
+      }
+    },
+    formatTime(hour) {
+      if (hour < 12) {
+        return `${String(hour).padStart(2, "0")}:00 AM`;
+      } else if (hour === 12) {
+        return `${String(hour).padStart(2, "0")}:00 PM`;
+      } else if (hour === 24) {
+        return `00:00`;
+      } else if (hour > 12 && hour < 24) {
+        return `${String(hour).padStart(2, "0")}:00 PM`;
+      } else {
+        return `${String(hour - 12).padStart(2, "0")}:00 PM`;
+      }
+    },
+    formatTimes(hour) {
+      if (hour < 12) {
+        return `${String(hour).padStart(2, "0")}:00 AM`;
+      } else if (hour === 12) {
+        return `${String(hour).padStart(2, "0")}:00 PM`;
+      } else if (hour === 24) {
+        return `00:00`;
+      }
+    },
+    formatBreakTime(minute) {
+      const hours = Math.floor(minute / 60);
+      const mins = minute % 60;
+
+      let formattedTime = "";
+      if (hours > 0) {
+        formattedTime += `${hours} hour `;
+      }
+      if (mins > 0) {
+        formattedTime += `${mins} minute`;
+      }
+
+      return formattedTime;
+    },
+    onSiteSelect() {
+      this.getTimeShift();
+    },
+    // onClientSelect() {
+    //   const selectedClientId = fetchVacancy.client_id;
+
+    //   this.getJobTitleMethod(selectedClientId);
+    //   this.getSiteAccordingClientMethod(selectedClientId);
+    // },
     removeDate(index) {
       this.fetchVacancy.dates.splice(index, 1);
     },
@@ -245,6 +379,7 @@ export default {
         this.fetchVacancy.staff_required = null;
       }
     },
+
     async fetchVacancyMethod(id) {
       const token = localStorage.getItem("token");
       try {
@@ -272,7 +407,10 @@ export default {
         });
         // this.fetchVacancy.dates = response.data.dates;
         this.fetchVacancy.notes = response.data.notes;
-        this.fetchVacancy.shift_id = response.data.shift_id;
+        this.fetchVacancy.site_shift_id = response.data.site_shift_id;
+        this.fetchVacancy.start_time = this.convertTimeFormat(response.data.start_time);
+        this.fetchVacancy.end_time = this.convertTimeFormat(response.data.end_time);
+        this.fetchVacancy.break = response.data.break;
       } catch (error) {}
     },
 
@@ -308,8 +446,11 @@ export default {
             job_id: this.fetchVacancy.job_id,
             dates: datesArray,
             notes: this.fetchVacancy.notes,
-            shift_id: this.fetchVacancy.shift_id,
+            site_shift_id: this.fetchVacancy.site_shift_id,
             staff_required: this.fetchVacancy.staff_required,
+            start_time: this.fetchVacancy.start_time,
+            end_time: this.fetchVacancy.end_time,
+            break: this.fetchVacancy.break,
           },
           {
             headers: {
@@ -345,6 +486,20 @@ export default {
         }
       }
     },
+    async getSiteAccordingClientMethod() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/site_according_client/${this.client_id}`
+        );
+        this.businessUnit = response.data.site;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
     async getClientMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/clients`);
@@ -357,10 +512,34 @@ export default {
         }
       }
     },
-    async getTimeShift() {
-      await axios
-        .get(`${VITE_API_URL}/shifts`)
-        .then((response) => (this.shiftsTime = response.data));
+    // async getTimeShifts() {
+    //   await axios
+    //     .get(`${VITE_API_URL}/shifts`)
+    //     .then((response) => (this.shiftsTime = response.data));
+    // },
+    async getTimeShift(siteId) {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/site_shift/${siteId}`);
+
+        this.shiftsTime =
+          response.data.site_shift_data.map((shift) => ({
+            ...shift,
+            start_time: this.convertTimeFormat(shift.start_time),
+            end_time: this.convertTimeFormat(shift.end_time),
+          })) || [];
+      } catch (error) {
+        // console.error("Error fetching shifts:", error);
+      }
+    },
+
+    convertTimeFormat(dateTimeString) {
+      const date = new Date(dateTimeString);
+      const hours = date.getUTCHours();
+      const minutes = date.getUTCMinutes();
+      const amPm = hours >= 12 ? "PM" : "AM";
+      const formattedHours = String(hours).padStart(2, "0");
+      const formattedMinutes = String(minutes).padStart(2, "0");
+      return `${formattedHours}:${formattedMinutes} ${amPm}`;
     },
     async getJobTitleMethod() {
       try {
@@ -378,11 +557,18 @@ export default {
 
   mounted() {
     this.getBusinessUnitMethod();
+    // this.getSiteAccordingClientMethod();
     this.getClientMethod();
     this.getTimeShift();
     this.getJobTitleMethod();
   },
   watch: {
+    "fetchVacancy.site_id": {
+      immediate: true,
+      handler(newSiteId) {
+        this.getTimeShift(newSiteId);
+      },
+    },
     vacancyId: {
       immediate: true,
       handler(newVacancyID) {
