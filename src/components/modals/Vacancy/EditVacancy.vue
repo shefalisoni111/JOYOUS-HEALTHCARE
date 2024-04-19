@@ -132,12 +132,12 @@
                 </div>
                 <div>
                   <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
+                    <div class="col-3">
                       <label class="form-label" for="selectCustomStartTime"
                         >Start Time
                       </label>
                     </div>
-                    <div class="col-10">
+                    <div class="col-9">
                       <select
                         id="selectCustomStartTime"
                         class="form-select w-25"
@@ -151,10 +151,10 @@
                     </div>
                   </div>
                   <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
+                    <div class="col-3">
                       <label class="form-label" for="selectCustomEndTime">End Time</label>
                     </div>
-                    <div class="col-10">
+                    <div class="col-9">
                       <select
                         id="selectCustomEndTime"
                         class="form-select w-25"
@@ -168,10 +168,10 @@
                     </div>
                   </div>
                   <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
+                    <div class="col-3">
                       <label class="form-label" for="selectShiftsBreak">Break Time</label>
                     </div>
-                    <div class="col-10">
+                    <div class="col-9">
                       <select
                         id="selectShiftsBreak"
                         class="form-select w-25"
@@ -518,6 +518,9 @@ export default {
     //     .then((response) => (this.shiftsTime = response.data));
     // },
     async getTimeShift(siteId) {
+      if (!siteId) {
+        return;
+      }
       try {
         const response = await axios.get(`${VITE_API_URL}/site_shift/${siteId}`);
 
