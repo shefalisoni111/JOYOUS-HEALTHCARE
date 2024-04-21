@@ -134,102 +134,106 @@
             <div class="row" v-if="!searchQuery">
               <div class="col-md-12">
                 <h6>Shifts List</h6>
-                <table v-if="selectedPublishItemId" class="w-100">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th scope="col">staff code</th>
-                      <th scope="col" class="widthSet">First Name</th>
-                      <th scope="col" class="widthSet">Last Name</th>
-                      <th scope="col">Phone Number</th>
+                <div class="wrapper-vacancy">
+                  <table class="table vacancyTable w-100" v-if="selectedPublishItemId">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th scope="col">staff code</th>
+                        <th scope="col" class="widthSet">First Name</th>
+                        <th scope="col" class="widthSet">Last Name</th>
+                        <th scope="col">Phone Number</th>
 
-                      <th scope="col" class="widthSet">Email</th>
-                      <th scope="col">Positions</th>
-                      <th scope="col">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="candidate in getCandidatesData" :key="candidate.id">
-                      <td>
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          :value="candidate.id"
-                          :id="candidate.id"
-                          v-model="checkedCandidates[candidate.id]"
-                        />
-                      </td>
-                      <td v-text="candidate.candidate_code"></td>
-                      <td>
-                        {{ candidate.first_name }}
-                      </td>
-                      <td>
-                        {{ candidate.last_name }}
-                      </td>
-                      <td>
-                        {{ candidate.phone_number }}
-                      </td>
+                        <th scope="col" class="widthSet">Email</th>
+                        <th scope="col">Positions</th>
+                        <th scope="col">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="candidate in getCandidatesData" :key="candidate.id">
+                        <td>
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            :value="candidate.id"
+                            :id="candidate.id"
+                            v-model="checkedCandidates[candidate.id]"
+                          />
+                        </td>
+                        <td v-text="candidate.candidate_code"></td>
+                        <td>
+                          {{ candidate.first_name }}
+                        </td>
+                        <td>
+                          {{ candidate.last_name }}
+                        </td>
+                        <td>
+                          {{ candidate.phone_number }}
+                        </td>
 
-                      <td>{{ candidate.email }}</td>
-                      <td>{{ candidate.position }}</td>
-                      <td>{{ candidate.status }}</td>
-                    </tr>
-                  </tbody>
-                </table>
+                        <td>{{ candidate.email }}</td>
+                        <td>{{ candidate.position }}</td>
+                        <td>{{ candidate.status }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
             <div class="row" v-if="searchQuery">
               <div class="col-md-12">
                 <h6>Shifts List</h6>
-                <table v-if="selectedPublishItemId" class="w-100">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th scope="col">staff code</th>
-                      <th scope="col" class="widthSet">First Name</th>
-                      <th scope="col" class="widthSet">Last Name</th>
-                      <th scope="col">Phone Number</th>
+                <div class="wrapper-vacancy">
+                  <table class="table vacancyTable w-100" v-if="selectedPublishItemId">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th scope="col">staff code</th>
+                        <th scope="col" class="widthSet">First Name</th>
+                        <th scope="col" class="widthSet">Last Name</th>
+                        <th scope="col">Phone Number</th>
 
-                      <th scope="col" class="widthSet">Email</th>
-                      <th scope="col">Positions</th>
-                      <th scope="col">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody v-if="searchResults.length > 0">
-                    <tr v-for="candidate in searchResults" :key="candidate.id">
-                      <td>
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          :value="candidate.id"
-                          :id="candidate.id"
-                          v-model="checkedCandidates[candidate.id]"
-                        />
-                      </td>
-                      <td v-text="candidate.candidate_code"></td>
-                      <td>
-                        {{ candidate.first_name }}
-                      </td>
-                      <td>
-                        {{ candidate.last_name }}
-                      </td>
-                      <td>
-                        {{ candidate.phone_number }}
-                      </td>
+                        <th scope="col" class="widthSet">Email</th>
+                        <th scope="col">Positions</th>
+                        <th scope="col">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody v-if="searchResults.length > 0">
+                      <tr v-for="candidate in searchResults" :key="candidate.id">
+                        <td>
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            :value="candidate.id"
+                            :id="candidate.id"
+                            v-model="checkedCandidates[candidate.id]"
+                          />
+                        </td>
+                        <td v-text="candidate.candidate_code"></td>
+                        <td>
+                          {{ candidate.first_name }}
+                        </td>
+                        <td>
+                          {{ candidate.last_name }}
+                        </td>
+                        <td>
+                          {{ candidate.phone_number }}
+                        </td>
 
-                      <td>{{ candidate.email }}</td>
-                      <td>{{ candidate.position }}</td>
-                      <td>{{ candidate.status }}</td>
-                    </tr>
-                  </tbody>
-                  <tbody v-else>
-                    <tr>
-                      <td colspan="7" class="text-danger text-center">
-                        Not Match Found !!
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                        <td>{{ candidate.email }}</td>
+                        <td>{{ candidate.position }}</td>
+                        <td>{{ candidate.status }}</td>
+                      </tr>
+                    </tbody>
+                    <tbody v-else>
+                      <tr>
+                        <td colspan="7" class="text-danger text-center">
+                          Not Match Found !!
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
@@ -560,5 +564,13 @@ label.form-label {
 
 .modal {
   --bs-modal-width: 881px;
+}
+@media (max-width: 1120px) {
+  .vacancyTable {
+    width: 1090px;
+  }
+  .wrapper-vacancy {
+    overflow-x: scroll;
+  }
 }
 </style>

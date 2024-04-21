@@ -922,13 +922,25 @@ export default {
     // this.fetchAssignVacancyStaffList();
     this.getJobTitleMethod();
 
+    // const currentDate = new Date();
+    // const startOfWeek = new Date(currentDate);
+    // startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
+    // this.startDate = startOfWeek;
+
+    // const endOfWeek = new Date(currentDate);
+    // endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
+    // this.endDate = endOfWeek;
     const currentDate = new Date();
+    const dayOfWeek = currentDate.getDay();
     const startOfWeek = new Date(currentDate);
-    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
+
+    const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    startOfWeek.setDate(startOfWeek.getDate() + diff);
+
     this.startDate = startOfWeek;
 
-    const endOfWeek = new Date(currentDate);
-    endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(endOfWeek.getDate() + 6);
     this.endDate = endOfWeek;
     this.fetchVacancyListMethod();
   },
