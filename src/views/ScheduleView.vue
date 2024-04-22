@@ -33,6 +33,13 @@
                 :vacancyId="parseInt(vacancyId)"
                 :candidateId="selectedCandidateId"
               />
+              <ScheduleDirectAssignList
+                :columnDateMatch="columnDateMatch"
+                :initialDate="selectedDate"
+                :candidateId="selectedCandidateId"
+                :candidateJob="candidateJob"
+                @closeModal="closeModal"
+              />
             </div>
           </div>
           <div class="table-wrapper">
@@ -230,13 +237,10 @@
 
                       <td>
                         <div>
-                          <div
-                            class="calendar-grid"
-                            @dragover.prevent="handleDragOver"
-                            @drop="handleDrop(data.candidate_id)"
-                          >
+                          <div class="calendar-grid" @dragover.prevent="handleDragOver">
                             <div
                               v-for="day in selectedDateRow"
+                              @drop="handleDrop(data, formattedDate(day))"
                               :key="day"
                               class="pt-2"
                               data-bs-toggle="modal"
@@ -347,13 +351,13 @@
       <!-- <EditAssignedShift /> -->
       <SuccessAlert ref="successAlert" />
 
-      <ScheduleDirectAssignList
+      <!-- <ScheduleDirectAssignList
         :columnDateMatch="columnDateMatch"
         :initialDate="selectedDate"
         :candidateId="selectedCandidateId"
         :candidateJob="candidateJob"
         @closeModal="closeModal"
-      />
+      /> -->
     </div>
   </div>
 </template>
@@ -667,15 +671,27 @@ export default {
     handleDragOver(event) {
       event.preventDefault();
     },
-    async handleDrop(candidateId) {
+    async handleDrop(candidateId, selectedDate) {
+      console.log(candidateId);
+      // const dateObject = new Date(selectedDate);
+
+      // const day = dateObject.getDate();
+      // const month = dateObject.getMonth() + 1;
+      // const year = dateObject.getFullYear();
+
+      // const formattedDate = `${day}/${month}/${year}`;
       try {
         if (!this.vacancyBeingDragged || !this.vacancyBeingDragged.id) {
           return;
         }
 
+        if (selectedDate !== this.formattedDate(this.dropDay)) {
+          return;
+        }
+
         const payload = {
           vacancy_id: this.vacancyBeingDragged.id,
-          candidate_id: candidateId,
+          candidate_id: candidateId.candidate_id,
         };
 
         const response = await axios.post(

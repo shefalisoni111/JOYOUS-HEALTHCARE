@@ -256,7 +256,7 @@ h6.tag:after {
   position: absolute;
   width: 0;
   height: 0;
-  left: -1px;
+  left: 0px;
   top: 100%;
   border-width: 5px 4px;
   border-style: solid;

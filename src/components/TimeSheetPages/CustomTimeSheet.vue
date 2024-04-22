@@ -1,34 +1,3 @@
-<!-- <template>
-  <div>
-    <Navbar />
-    <div id="main">
-      <h6>Client Invoice Page in Progress.....</h6>
-    </div>
-  </div>
-</template>
-<script>
-import Navbar from "../Navbar.vue";
-
-export default {
-  components: {
-    Navbar,
-  },
-};
-</script>
-<style scoped>
-#main {
-  padding: 20px 20px;
-  transition: all 0.3s;
-  height: 100dvh;
-  
-  background-color: #fdce5e17;
-}
-ul.generalsetting h6 {
-  font-size: 14px;
-  font-weight: bold;
-}
-</style> -->
-
 <template>
   <div>
     <Navbar />
@@ -204,12 +173,21 @@ ul.generalsetting h6 {
                           <td scope="col">{{ data.site }}</td>
                           <td scope="col">{{ data.job }}</td>
                           <td scope="col">{{ data.shift_date }}</td>
-                          <td scope="col">{{ data.start_time }}</td>
-                          <td scope="col">{{ data.end_time }}</td>
-
-                          <td scope="col">{{ data.total_hours }}</td>
-                          <td scope="col">{{ data.client_rate }}</td>
-                          <td scope="col">{{ data.total_cost }}</td>
+                          <td scope="col">
+                            {{ data.start_time ? data.start_time : "null" }}
+                          </td>
+                          <td scope="col">
+                            {{ data.end_time ? data.end_time : "null" }}
+                          </td>
+                          <td scope="col">
+                            {{ data.total_hours ? data.total_hours : "null" }}
+                          </td>
+                          <td scope="col">
+                            {{ data.client_rate ? data.client_rate : "null" }}
+                          </td>
+                          <td scope="col">
+                            {{ data.total_cost ? data.total_cost : "null" }}
+                          </td>
                           <td scope="col">
                             {{ data.paper_timesheet ? data.paper_timesheet : "null" }}
                           </td>
@@ -288,12 +266,21 @@ ul.generalsetting h6 {
                           <td scope="col">{{ data.site }}</td>
                           <td scope="col">{{ data.job }}</td>
                           <td scope="col">{{ data.shift_date }}</td>
-                          <td scope="col">{{ data.start_time }}</td>
-                          <td scope="col">{{ data.end_time }}</td>
-
-                          <td scope="col">{{ data.total_hours }}</td>
-                          <td scope="col">{{ data.client_rate }}</td>
-                          <td scope="col">{{ data.total_cost }}</td>
+                          <td scope="col">
+                            {{ data.start_time ? data.start_time : "null" }}
+                          </td>
+                          <td scope="col">
+                            {{ data.end_time ? data.end_time : "null" }}
+                          </td>
+                          <td scope="col">
+                            {{ data.total_hours ? data.total_hours : "null" }}
+                          </td>
+                          <td scope="col">
+                            {{ data.client_rate ? data.client_rate : "null" }}
+                          </td>
+                          <td scope="col">
+                            {{ data.total_cost ? data.total_cost : "null" }}
+                          </td>
                           <td scope="col">
                             {{ data.paper_timesheet ? data.paper_timesheet : "null" }}
                           </td>

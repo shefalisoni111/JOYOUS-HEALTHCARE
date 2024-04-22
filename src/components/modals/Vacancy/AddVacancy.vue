@@ -281,10 +281,9 @@
                     </div>
                     <div class="col-10">
                       <select
-                        id="selectShiftEnd"
+                        id="selectShiftStart"
                         class="form-select w-25"
                         v-model="start_time"
-                        @change="updateEndTime"
                       >
                         <option
                           v-for="shift in shiftsTime"
@@ -313,7 +312,6 @@
                         id="selectShiftEnd"
                         class="form-select w-25"
                         v-model="end_time"
-                        @change="updateEndTime"
                       >
                         <option
                           v-for="shift in shiftsTime"

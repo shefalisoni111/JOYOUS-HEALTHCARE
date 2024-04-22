@@ -74,7 +74,7 @@
                   class="card-img-top position-relative"
                   height="400px"
                   alt="profile"
-                   loading="eager"
+                  loading="eager"
                 />
                 <img
                   v-else
@@ -83,7 +83,7 @@
                   style="border: 1px solid #8080801a"
                   height="400px"
                   alt="Default profile"
-                   loading="eager"
+                  loading="eager"
                 />
 
                 <!-- <div class="ribbon"><span>Active</span></div> -->
@@ -411,7 +411,7 @@ h6.tag:after {
   position: absolute;
   width: 0;
   height: 0;
-  left: -1px;
+  left: 0px;
   top: 100%;
   border-width: 5px 4px;
   border-style: solid;

@@ -107,7 +107,7 @@
                           >{{ vacancyItem.client }}</router-link
                         >
                       </td>
-                      <td v-text="vacancyItem.business_unit"></td>
+                      <td v-text="vacancyItem.site"></td>
                       <td v-text="vacancyItem.job_title"></td>
 
                       <td>
@@ -169,7 +169,7 @@
                         >{{ getdata.client }}</router-link
                       >
                     </td>
-                    <td v-text="getdata.business_unit"></td>
+                    <td v-text="getdata.site"></td>
                     <td v-text="getdata.job_title"></td>
 
                     <td>
@@ -180,7 +180,7 @@
                       </span>
                     </td>
 
-                    <td v-text="getdata.shift"></td>
+                    <td v-text="getdata.site_shift"></td>
                     <!-- <td v-text="getdata.staff_required"></td> -->
                     <!-- <td v-text="getdata.notes"></td> -->
 

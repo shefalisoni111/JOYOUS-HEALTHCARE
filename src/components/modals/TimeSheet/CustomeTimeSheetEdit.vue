@@ -26,7 +26,7 @@
                   />
                 </div>
               </div>
-              <div class="mb-3">
+              <!-- <div class="mb-3">
                 <div class="col-12">
                   <label class="form-label">Start Time</label>
                 </div>
@@ -37,8 +37,44 @@
                     v-model="fetchCustomSheetData.start_time"
                   />
                 </div>
+              </div> -->
+              <div class="mb-3">
+                <div class="col-12">
+                  <label class="form-label" for="selectCustomStartTime"
+                    >Start Time
+                  </label>
+                </div>
+                <div class="col-12">
+                  <select
+                    id="selectCustomStartTime"
+                    class="form-select w-25"
+                    v-model="fetchCustomSheetData.start_time"
+                    @change="validateStartTime"
+                  >
+                    <option v-for="hour in 24" :key="hour" :value="formatTime(hour)">
+                      {{ formatTime(hour) }}
+                    </option>
+                  </select>
+                </div>
               </div>
               <div class="mb-3">
+                <div class="col-12">
+                  <label class="form-label" for="selectCustomStartTime">End Time </label>
+                </div>
+                <div class="col-12">
+                  <select
+                    id="selectCustomStartTime"
+                    class="form-select w-25"
+                    v-model="fetchCustomSheetData.end_time"
+                    @change="validateStartTime"
+                  >
+                    <option v-for="hour in 24" :key="hour" :value="formatTime(hour)">
+                      {{ formatTime(hour) }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- <div class="mb-3">
                 <div class="col-12">
                   <label class="form-label">End Time</label>
                 </div>
@@ -49,7 +85,7 @@
                     v-model="fetchCustomSheetData.end_time"
                   />
                 </div>
-              </div>
+              </div> -->
 
               <div class="mb-3">
                 <div class="col-12">
@@ -141,6 +177,19 @@ export default {
     },
   },
   methods: {
+    formatTime(hour) {
+      if (hour < 12) {
+        return `${String(hour).padStart(2, "0")}:00 AM`;
+      } else if (hour === 12) {
+        return `${String(hour).padStart(2, "0")}:00 PM`;
+      } else if (hour === 24) {
+        return `00:00`;
+      } else if (hour > 12 && hour < 24) {
+        return `${String(hour).padStart(2, "0")}:00 PM`;
+      } else {
+        return `${String(hour - 12).padStart(2, "0")}:00 PM`;
+      }
+    },
     validateClientRate() {
       if (this.fetchCustomSheetData.client_rate <= 0) {
         this.fetchCustomSheetData.client_rate = "";
