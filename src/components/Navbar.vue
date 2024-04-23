@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-light fixed-navbar">
     <div class="container-fluid">
       <a class="navbar-brand" href="/home"
-        ><img src="../assets/logo.png" class="img-fluid" alt="RecPal" width="119"
+        ><img src="../assets/logo.png" class="img-fluid" alt="RecPal" width="119" loading="eager"
       /></a>
       <button
         class="navbar-toggler"
@@ -310,6 +310,7 @@
                 class="rounded-circle profileAdminImg"
                 width="40"
                 height="40"
+                loading="eager"
               />
               <img
                 v-else
@@ -317,6 +318,7 @@
                 alt="USer"
                 class="rounded-circle profileAdminImg"
                 width="40"
+                loading="eager"
               />
             </a>
             <!-- End Profile Image Icon -->

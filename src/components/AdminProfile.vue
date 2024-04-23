@@ -25,6 +25,7 @@
                         height="150"
                         @click.prevent
                         style=""
+                        loading="eager"
                       />
                       <img
                         v-else
@@ -34,6 +35,7 @@
                         height="150"
                         @click.prevent
                         style=""
+                        loading="eager"
                       />
                     </router-view>
                     <label for="profilePicInput">

@@ -66,6 +66,7 @@
                 class="card-img-top position-relative"
                 height="317"
                 alt="..."
+                loading="eager"
               />
 
               <!-- <div class="ribbon"><span>Active</span></div> -->

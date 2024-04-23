@@ -4,11 +4,14 @@
     <div class="modal fade" id="inprogress" aria-labelledby="inprogress" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-          <div class="modal-header">
-           
-          </div>
+          <div class="modal-header"></div>
           <div class="modal-body mx-3">
-            <img src="./progress.gif" width="70%" title="work in progress" />
+            <img
+              src="./progress.gif"
+              width="70%"
+              title="work in progress"
+              loading="eager"
+            />
           </div>
           <!-- <div class="modal-footer">
             <button

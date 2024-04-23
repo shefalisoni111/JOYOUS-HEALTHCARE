@@ -37,6 +37,7 @@
                               margin: auto;
                               display: block;
                             "
+                            loading="eager"
                           />
                         </td>
                       </tr>

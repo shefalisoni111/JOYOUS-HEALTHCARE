@@ -8,14 +8,14 @@
             type="button"
             class="btn btn-outline-success text-nowrap"
             data-bs-toggle="modal"
-            data-bs-target="#addVacancies"
+            data-bs-target="#addSite"
             data-bs-whatever="@mdo"
           >
             + Add Site
           </button>
         </div>
 
-        <div class="card mt-2">
+        <div class="card mt-2" v-for="data in getClientDatas" :key="data.id">
           <div class="card-header">
             <!-- <router-link
               :to="{ name: 'SingleSiteprofile' }"
@@ -25,61 +25,59 @@
           </div>
           <div class="card-body">
             <h5 class="card-title"></h5>
-            <div class="card-text d-flex">
-              <div class="col-2 mt-3">
-                <span class="rounded-circle">HP1</span>
+            <div class="card-text d-flex gap-3">
+              <div class="mt-3">
+                <span class="rounded-circle p-3">{{
+                  getFirstCharAndNumber(data.site_name)
+                }}</span>
               </div>
-              <div class="col-10">
-                <span>hospital@gmail.com</span><br />
-                <span>+91 9867895645</span><br />
-                <span>United Kingdom</span><br />
-              </div>
-            </div>
-            <a class="btn btn-primary mt-3">Edit</a>
-          </div>
-        </div>
-        <div class="card mt-2">
-          <div class="card-header">
-            <!-- <router-link
-              :to="{ name: 'SingleSiteprofile' }"
-              class="text-decoration-none text-black"
-              >Hospital 2</router-link
-            > -->
-          </div>
-          <div class="card-body">
-            <h5 class="card-title"></h5>
-            <div class="card-text d-flex">
-              <div class="col-2 mt-3">
-                <span class="rounded-circle">HP2</span>
-              </div>
-              <div class="col-10">
-                <span>hospital@gmail.com</span><br />
-                <span>+91 9867895645</span><br />
-                <span>United Kingdom</span><br />
+              <div class="">
+                <span>{{ data.email }}</span
+                ><br />
+                <span>{{ data.phone_number }}</span
+                ><br />
+                <span>{{ data.address }}</span
+                ><br />
               </div>
             </div>
-            <a class="btn btn-primary mt-3">Edit</a>
+            <button
+              type="button"
+              class="btn btn-primary mt-3 text-nowrap text-nowrap"
+              data-bs-toggle="modal"
+              data-bs-target="#editClientSite"
+              data-bs-whatever="@mdo"
+              @click="editsiteId(data.id)"
+            >
+              Edit
+            </button>
           </div>
         </div>
       </div>
     </div>
+    <AddSite :id="$route.params.id" @addSite="getSiteAllDataMethod" />
+    <EditClientSite :siteId="selectedsiteId || 0" @UpdateSite="getClientMethod" />
   </div>
 </template>
 <script>
 import axios from "axios";
+import AddSite from "../../modals/Site/AddSite.vue";
+import EditClientSite from "../../modals/Clients/EditClientSite.vue";
 
 export default {
   data() {
     return {
       getClientDetail: [],
+      getClientDatas: [],
       selectedClientID: null,
       isActive: true,
       searchQuery: "",
+      // clientId: this.$route.params.id,
       currentPage: 1,
       itemsPerPage: 8,
+      selectedsiteId: 0,
     };
   },
-
+  components: { AddSite, EditClientSite },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -90,9 +88,30 @@ export default {
       return this.paginateCandidates.length;
     },
   },
+
   methods: {
+    editsiteId(siteId) {
+      this.selectedsiteId = siteId;
+    },
+    getFirstCharAndNumber(siteName) {
+      const firstChar = siteName.charAt(0);
+
+      const firstNumber = siteName.match(/\d/);
+
+      const formattedNumber = firstNumber ? firstNumber[0] : "";
+
+      return `${firstChar}${formattedNumber}`;
+    },
     editClient(clientID) {
       this.selectedClientID = clientID;
+    },
+    async getSiteAllDataMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/sites`);
+        this.getSiteAllData = response.data.data;
+      } catch (error) {
+        // console.error("Error fetching data:", error);
+      }
     },
     // async clientsDeleteMethod(id) {
     //   if (!window.confirm("Are you Sure ?")) {
@@ -108,9 +127,28 @@ export default {
 
         .then((response) => (this.getClientDetail = response.data.data));
     },
+    async getClientMethod() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}client_all_site/${this.$route.params.id}`
+        );
+
+        this.getClientDatas = response.data.client_sites;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        } else {
+          // console.error("Error fetching candidates:", error);
+        }
+      }
+    },
   },
   mounted() {
     this.createdClient();
+    this.getClientMethod();
+    this.getSiteAllDataMethod();
   },
 };
 </script>

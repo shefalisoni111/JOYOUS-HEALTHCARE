@@ -51,6 +51,7 @@
                           alt="Administrator Signature"
                           height="100px"
                           class="remove-white-background d-block m-auto"
+                          loading="eager"
                         />
                       </td>
                       <td scope="col">{{ getSignedStaffView.author_name }}</td>
@@ -60,6 +61,7 @@
                           alt="Administrator Signature"
                           height="100px"
                           class="remove-white-background d-block m-auto"
+                          loading="eager"
                         />
                       </td>
                     </tr>

@@ -669,7 +669,7 @@ export default {
     },
     validateStaffRequired() {
       if (this.staff_required <= 0) {
-        // this.staff_required = null;
+        this.staff_required = null;
         this.validationStaffRequired = false;
       } else {
         this.validationStaffRequired = true;

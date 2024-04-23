@@ -24,7 +24,7 @@
                       <input
                         type="text"
                         class="form-control"
-                        v-model="fetchAssignVacancy.candidate_name"
+                        v-model="fetchAssignVacancy.assign_to"
                         aria-describedby="name"
                         readonly
                       />
@@ -34,7 +34,7 @@
                       <input
                         type="text"
                         class="form-control"
-                        v-model="fetchAssignVacancy.business_unit"
+                        v-model="fetchAssignVacancy.site"
                         aria-describedby="site"
                         readonly
                       />
@@ -46,7 +46,7 @@
                       <input
                         type="text"
                         class="form-control"
-                        v-model="fetchAssignVacancy.job"
+                        v-model="fetchAssignVacancy.job_title"
                         aria-describedby="time"
                         readonly
                       />
@@ -56,7 +56,7 @@
                       <input
                         type="text"
                         class="form-control"
-                        v-model="fetchAssignVacancy.date"
+                        v-model="fetchAssignVacancy.dates"
                         aria-describedby="date"
                         readonly
                       />
@@ -68,7 +68,7 @@
                       <input
                         type="text"
                         class="form-control"
-                        v-model="fetchAssignVacancy.shift"
+                        v-model="fetchAssignVacancy.site_shift"
                         aria-describedby="position"
                         readonly
                       />
@@ -76,8 +76,8 @@
                   </div>
                   <div class="col-12">
                     <label class="form-label">Rate Cards</label>
-                    <div class="d-flex gap-2">
-                      <div class="mb-3">
+                    <div class="d-flex gap-2 justify-content-between">
+                      <!-- <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label">Start Time</label>
                         </div>
@@ -88,8 +88,32 @@
                             v-model="fetchAssignVacancy.start_time"
                           />
                         </div>
-                      </div>
+                      </div> -->
                       <div class="mb-3">
+                        <div class="col-12">
+                          <label class="form-label" for="selectCustomStartTime"
+                            >Start Time
+                          </label>
+                        </div>
+                        <div class="col-12">
+                          <select
+                            id="selectCustomStartTime"
+                            class="form-select"
+                            v-model="fetchAssignVacancy.start_time"
+                            @change="validateStartTime"
+                            style="width: 240px"
+                          >
+                            <option
+                              v-for="hour in 24"
+                              :key="hour"
+                              :value="formatTime(hour)"
+                            >
+                              {{ formatTime(hour) }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <!-- <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label">End Time</label>
                         </div>
@@ -100,8 +124,32 @@
                             v-model="fetchAssignVacancy.end_time"
                           />
                         </div>
-                      </div>
+                      </div> -->
                       <div class="mb-3">
+                        <div class="col-12">
+                          <label class="form-label" for="selectCustomEndTime"
+                            >End Time</label
+                          >
+                        </div>
+                        <div class="col-12">
+                          <select
+                            id="selectCustomEndTime"
+                            class="form-select"
+                            v-model="fetchAssignVacancy.end_time"
+                            @change="validateEndTime"
+                            style="width: 240px"
+                          >
+                            <option
+                              v-for="hour in 24"
+                              :key="hour"
+                              :value="formatTime(hour)"
+                            >
+                              {{ formatTime(hour) }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <!-- <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label">Break</label>
                         </div>
@@ -112,6 +160,30 @@
                             v-model="fetchAssignVacancy.break"
                           />
                         </div>
+                      </div> -->
+                      <div class="mb-3">
+                        <div class="col-12">
+                          <label class="form-label" for="selectShiftsBreak"
+                            >Break Time</label
+                          >
+                        </div>
+                        <div class="col-12">
+                          <select
+                            id="selectShiftsBreak"
+                            class="form-select"
+                            v-model="fetchAssignVacancy.break"
+                            @change="validateBreak"
+                            style="width: 240px"
+                          >
+                            <option
+                              v-for="minute in [15, 30, 45, 60, 75, 90]"
+                              :key="minute"
+                              :value="minute"
+                            >
+                              {{ formatBreakTime(minute) }}
+                            </option>
+                          </select>
+                        </div>
                       </div>
                       <div class="mb-3">
                         <div class="col-12">
@@ -121,20 +193,18 @@
                           <input
                             type="email"
                             class="form-control"
-                            v-model="fetchAssignVacancy.total_hours"
+                            v-model="fetchAssignVacancy.total_shift_hours"
                           />
                         </div>
                       </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
                       <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label">Client Rate</label>
                         </div>
                         <div class="col-12 mt-1">
-                          <input
-                            type="email"
-                            class="form-control"
-                            v-model="fetchAssignVacancy.email"
-                          />
+                          <input type="text" class="form-control" value="null" />
                         </div>
                       </div>
                       <div class="mb-3">
@@ -142,11 +212,7 @@
                           <label class="form-label">Client Pay Amount</label>
                         </div>
                         <div class="col-12 mt-1">
-                          <input
-                            type="email"
-                            class="form-control"
-                            v-model="fetchAssignVacancy.email"
-                          />
+                          <input type="text" class="form-control" value="null" />
                         </div>
                       </div>
                       <div class="mb-3">
@@ -154,11 +220,7 @@
                           <label class="form-label">Staff Rate</label>
                         </div>
                         <div class="col-12 mt-1">
-                          <input
-                            type="email"
-                            class="form-control"
-                            v-model="fetchAssignVacancy.email"
-                          />
+                          <input type="text" class="form-control" value="null" />
                         </div>
                       </div>
                       <div class="mb-3">
@@ -166,11 +228,7 @@
                           <label class="form-label">Staff Rate Amount</label>
                         </div>
                         <div class="col-12 mt-1">
-                          <input
-                            type="email"
-                            class="form-control"
-                            v-model="fetchAssignVacancy.email"
-                          />
+                          <input type="text" class="form-control" value="null" />
                         </div>
                       </div>
                     </div>
@@ -212,7 +270,7 @@
         </div>
       </div>
     </div>
-    <!-- <SuccessAlert ref="successAlert" /> -->
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 <script>
@@ -225,19 +283,18 @@ export default {
     return {
       fetchAssignVacancy: {
         id: "",
-        candidate_name: "",
+        assign_to: "",
         start_time: "",
-        shift_date: "",
+        rates: "",
+        site_shift: "",
         end_time: "",
-        business_unit: "",
+        site: "",
         client_rate: "",
         dates: [],
-
+        total_shift_hours: "",
         job_id: 1,
-        phone_number: "",
-        email: "",
-        activated: "",
-        employment_type_id: "",
+        job_title: "",
+        notes: "",
       },
       options: [],
     };
@@ -248,12 +305,22 @@ export default {
       default: null,
     },
     vacancyId: {
-      type: Number,
+      type: String,
       default: null,
+    },
+    columnDateMatch: {
+      type: String,
+      required: true,
     },
   },
   components: { SuccessAlert },
   computed: {
+    // formattedStartTime() {
+    //   return this.convertTimeFormat(this.fetchAssignVacancy.start_time);
+    // },
+    // formattedEndTime() {
+    //   return this.convertTimeFormat(this.fetchAssignVacancy.end_time);
+    // },
     getCandidatesData() {
       return this.$store.state.candidates;
     },
@@ -265,6 +332,58 @@ export default {
     },
   },
   methods: {
+    convertTimeFormat(dateTimeString) {
+      const date = new Date(dateTimeString);
+      const hours = date.getUTCHours();
+      const minutes = date.getUTCMinutes();
+      const amPm = hours >= 12 ? "PM" : "AM";
+      const formattedHours = String(hours).padStart(2, "0");
+      const formattedMinutes = String(minutes).padStart(2, "0");
+      return `${formattedHours}:${formattedMinutes} ${amPm}`;
+    },
+    formatTime(hour) {
+      if (hour < 12) {
+        return `${String(hour).padStart(2, "0")}:00 AM`;
+      } else if (hour === 12) {
+        return `${String(hour).padStart(2, "0")}:00 PM`;
+      } else if (hour === 24) {
+        return `00:00`;
+      } else if (hour > 12 && hour < 24) {
+        return `${String(hour).padStart(2, "0")}:00 PM`;
+      } else {
+        return `${String(hour - 12).padStart(2, "0")}:00 PM`;
+      }
+    },
+    formatBreakTime(minute) {
+      const hours = Math.floor(minute / 60);
+      const mins = minute % 60;
+
+      let formattedTime = "";
+      if (hours > 0) {
+        formattedTime += `${hours} hour `;
+      }
+      if (mins > 0) {
+        formattedTime += `${mins} minute`;
+      }
+
+      return formattedTime;
+    },
+    async fetchVacancyListMethod(selectedWeekDate) {
+      try {
+        const requestData = {
+          date: selectedWeekDate,
+        };
+        const response = await axios.get(
+          `${VITE_API_URL}/vacancies_and_candidates_availability`,
+          {
+            params: requestData,
+          }
+        );
+        this.vacancyList = response.data.data;
+      } catch (error) {
+        // console.error("Error in fetchVacancyListMethod:", error);
+      }
+    },
     async getJobTitleMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/active_job_list`);
@@ -277,43 +396,107 @@ export default {
         }
       }
     },
-    async fetchAssignVacancyMethod(id) {
+    // async fetchAssignVacancyMethod(id) {
+    //   if (!id) return;
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/candidates/${id}`);
+    //     this.fetchAssignVacancy = { ...this.fetchAssignVacancy, ...response.data.data };
+    //     this.fetchAssignVacancy.start_time = this.convertTimeFormat(
+    //       this.fetchAssignVacancy.start_time
+    //     );
+    //     this.fetchAssignVacancy.end_time = this.convertTimeFormat(
+    //       this.fetchAssignVacancy.end_time
+    //     );
+    //   } catch (error) {}
+    // },
+    async fetchVacancyIdMethod(id) {
       if (!id) return;
-      try {
-        const response = await axios.get(`${VITE_API_URL}/candidates/${id}`);
-        this.fetchAssignVacancy = { ...this.fetchAssignVacancy, ...response.data.data };
-      } catch (error) {}
+
+      const payload = {
+        vacancy_id: this.vacancyId,
+        candidate_id: this.candidateId,
+      };
+
+      const response = await axios.get(`${VITE_API_URL}schedule_vacancy`, {
+        params: payload,
+      });
+      const { assign_to, vacancy_data } = response.data;
+      this.fetchAssignVacancy = {
+        ...this.fetchAssignVacancy,
+        ...vacancy_data,
+      };
+      this.fetchAssignVacancy.start_time = this.convertTimeFormat(
+        vacancy_data.start_time
+      );
+      this.fetchAssignVacancy.end_time = this.convertTimeFormat(vacancy_data.end_time);
+      this.fetchAssignVacancy.assign_to = assign_to;
     },
     async updateCandidateMethod() {
+      const token = localStorage.getItem("token");
       try {
         const response = await axios.put(
-          `${VITE_API_URL}/update_assigned_vacancy/${this.fetchAssignVacancy.id}`,
-          this.fetchAssignVacancy
+          `${VITE_API_URL}/vacancies/${this.fetchAssignVacancy.id}`,
+          this.fetchAssignVacancy,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: "bearer " + token,
+            },
+          }
         );
 
-        this.$store.commit("updateCandidate", {
-          id: this.fetchAssignVacancy.id,
-          newData: response.data,
-        });
-        this.$emit("Candidate-updated");
+        // this.$store.commit("updateCandidate", {
+        //   id: this.fetchAssignVacancy.id,
+        //   newData: response.data,
+        // });
+        this.$emit("updated-assign");
         // alert("Candidate updated successfully");
-        const message = "Staff updated successfully";
+        const message = "Assigned Shift updated successfully";
         this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         // console.error("Error updating candidate:", error);
       }
     },
   },
+  mounted() {
+    this.getJobTitleMethod();
+    // this.fetchAssignVacancyMethod();
+    this.fetchVacancyIdMethod();
+    this.fetchVacancyListMethod(this.selectedWeekDate);
+  },
   watch: {
     candidateId: {
       immediate: true,
       handler(newCandidateId) {
-        this.fetchAssignVacancyMethod(newCandidateId);
+        this.fetchVacancyIdMethod(newCandidateId);
       },
     },
+    vacancyId: {
+      immediate: true,
+      handler(newvacancyId) {
+        this.fetchVacancyIdMethod(newvacancyId);
+      },
+    },
+    columnDateMatch(newDate) {
+      this.selectedWeekDate = newDate;
+
+      this.fetchVacancyListMethod(this.selectedWeekDate);
+      // this.fetchAssignList();
+    },
   },
-  mounted() {
-    this.getJobTitleMethod();
+  created() {
+    if (!this.columnDateMatch) {
+      const currentDate = new Date();
+
+      const firstDayOfWeek = new Date(
+        currentDate.setDate(currentDate.getDate() - currentDate.getDay())
+      );
+
+      const formattedDate = firstDayOfWeek.toISOString().split("T")[0];
+      this.selectedWeekDate = formattedDate;
+    } else {
+      this.selectedWeekDate = this.columnDateMatch;
+    }
   },
 };
 </script>

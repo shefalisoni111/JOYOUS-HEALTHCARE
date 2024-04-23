@@ -20,7 +20,23 @@
           </div>
         </div>
         <hr />
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex w-25 mt-3">
+          <form @submit.prevent="submitForm">
+            <input
+              class="form-control"
+              type="text"
+              placeholder="Add Note"
+              v-model="notes"
+            />
+          </form>
+          &nbsp;
+          <!-- <span v-if="!isValidForm" class="text-danger">Notes Required</span> -->
+          <button class="btn btn-primary" :disabled="!isValidForm" @click="submitForm">
+            Add
+          </button>
+        </div>
+        <br />
+        <div class="d-flex flex-column">
           <div v-for="data in getNotes" :key="data.id">
             <div class="d-flex gap-2">
               <div>
@@ -33,33 +49,18 @@
               </div>
             </div>
           </div>
-
-          <div><span>read more</span></div>
-        </div>
-        <div class="d-flex w-25 mt-3">
-          <form @submit.prevent="submitForm">
-            <input
-              class="form-control"
-              type="text"
-              placeholder="Add Note"
-              v-model="notes"
-            />
-          </form>
-          <span v-if="!isValidForm" class="text-danger">Notes Required</span>
-          <button class="btn btn-primary" :disabled="!isValidForm" @click="submitForm">
-            Add
-          </button>
         </div>
       </div>
     </div>
-    <AddClientNotesVue @addClientNote="getNotesMethod" />
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 
-import AddClientNotesVue from "../../modals/Clients/AddClientNotes.vue";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+
 export default {
   name: "Notes",
   data() {
@@ -73,7 +74,7 @@ export default {
       return this.notes.trim() !== "";
     },
   },
-  components: { AddClientNotesVue },
+  components: { SuccessAlert },
   methods: {
     // async notesDeleteMethod(id) {
     //   if (!window.confirm("Are you Sure ?")) {
@@ -123,10 +124,11 @@ export default {
           method: "POST",
           body: formData,
         });
-
+        this.getNotesMethod();
         if (response.ok) {
           this.$emit("addClientNote");
           this.notes = "";
+          this.clearError();
           const message = "Successful Note added";
           this.$refs.successAlert.showSuccess(message);
         } else {

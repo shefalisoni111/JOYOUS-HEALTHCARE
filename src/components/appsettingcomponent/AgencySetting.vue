@@ -51,7 +51,14 @@
               <div class="bg-white">
                 <div class="col-5">
                   <div class="d-flex justify-content-between align-items-center px-4">
-                    <img src="./logo.png" class="" alt="RecPal" width="180" height="51" />
+                    <img
+                      src="./logo.png"
+                      class=""
+                      alt="RecPal"
+                      width="180"
+                      height="51"
+                      loading="eager"
+                    />
                     <div class="d-flex flex-column text-capitalize">
                       <h5 class="mb-0">RecPal</h5>
                       <p class="mb-0">recruitment</p>

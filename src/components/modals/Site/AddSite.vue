@@ -10,7 +10,7 @@
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
               <form>
-                <div class="mb-3 d-flex justify-content-between">
+                <div class="mb-3 d-flex justify-content-between" v-if="selectedClientId">
                   <div class="col-2">
                     <label for="selectClients" class="form-label">Client Name</label>
                   </div>
@@ -19,6 +19,7 @@
                       v-model="client_id"
                       id="selectClients"
                       @change="onClientSelect"
+                      :disabled="clientData.length === 0"
                     >
                       <option
                         v-for="option in clientData"
@@ -26,6 +27,7 @@
                         :value="option.id"
                         :id="option.id"
                         aria-placeholder="Select Job"
+                        :disabled="option.id !== selectedClientId"
                       >
                         {{ option.first_name }}
                       </option>
@@ -121,7 +123,7 @@
                     <label class="form-label">Split Rate</label>
                   </div>
                   <div class="col-10">
-                    <select id="selectOption" v-model="split_rate">
+                    <select id="selectOptionSplitRate" v-model="split_rate">
                       <option value="true">True</option>
                       <option value="false">False</option>
                     </select>
@@ -132,9 +134,9 @@
                     <label class="form-label">Status</label>
                   </div>
                   <div class="col-10">
-                    <select id="selectOption" v-model="status">
-                      <option value="true">True</option>
-                      <option value="false">False</option>
+                    <select id="selectOptionStatus" v-model="status">
+                      <option value="true">Active</option>
+                      <option value="false">In-active</option>
                     </select>
                   </div>
                 </div>
@@ -144,7 +146,7 @@
                     <label class="form-label">Portal Access</label>
                   </div>
                   <div class="col-10">
-                    <select id="selectOption" v-model="portal_access">
+                    <select id="selectOptionPortalAccess" v-model="portal_access">
                       <option value="true">True</option>
                       <option value="false">False</option>
                     </select>
@@ -197,6 +199,7 @@ export default {
       site_name: "",
       address: "",
       phone_number: "",
+      selectedClientId: this.id,
       email: "",
       status: null,
       split_rate: null,
@@ -206,6 +209,7 @@ export default {
       autofilled: false,
     };
   },
+  props: ["id"],
   components: { SuccessAlert },
   computed: {
     isFormValid() {
@@ -401,6 +405,9 @@ export default {
     },
   },
   mounted() {
+    if (this.id) {
+      this.client_id = this.id;
+    }
     this.getClientMethod();
 
     this.isValidForm = this.isFormValid;

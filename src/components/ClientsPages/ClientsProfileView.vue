@@ -6,7 +6,13 @@
           <div class="card">
             <div class="card-body">
               <div class="d-flex flex-column align-items-center text-center">
-                <img src="./profile.png" alt="USer" class="rounded-circle" width="150" />
+                <img
+                  src="./profile.png"
+                  alt="USer"
+                  class="rounded-circle"
+                  width="150"
+                  loading="eager"
+                />
                 <div class="mt-3 text-capitalize">
                   <h4>
                     {{ getClients.first_name }}
