@@ -75,8 +75,36 @@
                       class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
                     >
                       <i
-                        class="bi bi-person-fill"
-                        style="border-radius: 50%; background: #ffeb3b; padding: 10px"
+                        class="bi bi-person-fill-add"
+                        style="border-radius: 50%; background: #ef5261; padding: 10px"
+                      ></i>
+                    </button>
+                  </div>
+                  <div>
+                    <div class="filters" v-show="isOpen">
+                      <select
+                        v-model="job_id"
+                        id="SelectAvailability"
+                        class="form-select"
+                      >
+                        <option value="" selected>All Availability</option>
+                        <option>Late</option>
+                        <option>Night</option>
+                        <option>Unavailable</option>
+                        <option>Early</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex mt-2">
+                  <div>
+                    <button
+                      @click="toggleSidebar"
+                      class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
+                    >
+                      <i
+                        class="bi bi-suitcase-lg-fill"
+                        style="border-radius: 50%; background: #28c77d; padding: 10px"
                       ></i>
                     </button>
                   </div>
@@ -102,8 +130,8 @@
                       class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
                     >
                       <i
-                        class="bi bi-briefcase-fill"
-                        style="border-radius: 50%; background: #ff6d3f; padding: 10px"
+                        class="bi bi-building"
+                        style="border-radius: 50%; background: #ffeb3b; padding: 10px"
                       ></i>
                     </button>
                   </div>
@@ -114,7 +142,7 @@
                         id="selectBusinessUnit"
                         class="form-select"
                       >
-                        <option value="" selected>Select BusinessUnit</option>
+                        <option value="" selected>Select Site</option>
                         <option
                           v-for="option in businessUnit"
                           :key="option.id"
@@ -122,6 +150,60 @@
                         >
                           {{ option.site_name }}
                         </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex mt-2">
+                  <div>
+                    <button
+                      @click="toggleSidebar"
+                      class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
+                    >
+                      <i
+                        class="bi bi-calendar3"
+                        style="border-radius: 50%; background: #ff6d3f; padding: 10px"
+                      ></i>
+                    </button>
+                  </div>
+                  <div>
+                    <div class="filters" v-show="isOpen">
+                      <select v-model="job_id" for="selectShifts" class="form-select">
+                        <option value="" selected>All Shift</option>
+                        <option
+                          v-for="option in shiftsTime"
+                          :key="option.id"
+                          :value="option.id"
+                          id="selectShifts"
+                        >
+                          {{ option.shift_name }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex mt-2">
+                  <div>
+                    <button
+                      @click="toggleSidebar"
+                      class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
+                    >
+                      <i
+                        class="bi bi-bell-fill"
+                        style="border-radius: 50%; background: #5388d5; padding: 10px"
+                      ></i>
+                    </button>
+                  </div>
+                  <div>
+                    <div class="filters" v-show="isOpen">
+                      <select
+                        v-model="job_id"
+                        id="selectPublishStatus"
+                        class="form-select"
+                      >
+                        <option value="" selected>Publish Status</option>
+                        <option>Publish</option>
+                        <option>UnPublish</option>
                       </select>
                     </div>
                   </div>
@@ -395,6 +477,7 @@ export default {
       candidateJob: null,
       vacancyId: "",
       candidateList: [],
+      shiftsTime: [],
       selectedCandidateId: null,
       assignStaffDisplay: [],
       columnDateMatch: "",
@@ -434,6 +517,10 @@ export default {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.candidateList.slice(startIndex, endIndex);
+    },
+    selectShifts() {
+      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
+      return shifts_id ? shifts_id.shift_name : "";
     },
     totalRecordsOnPage() {
       return this.paginateCandidates.length;
@@ -506,6 +593,11 @@ export default {
     },
   },
   methods: {
+    async getTimeShift() {
+      await axios
+        .get(`${VITE_API_URL}/shifts`)
+        .then((response) => (this.shiftsTime = response.data));
+    },
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
 
@@ -1049,6 +1141,7 @@ export default {
     this.getBusinessUnitMethod();
     // this.fetchAssignVacancyStaffList();
     this.getJobTitleMethod();
+    this.getTimeShift();
 
     // const currentDate = new Date();
     // const startOfWeek = new Date(currentDate);
