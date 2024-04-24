@@ -59,11 +59,11 @@
               </div>
               <div class="mb-3">
                 <div class="col-12">
-                  <label class="form-label" for="selectCustomStartTime">End Time </label>
+                  <label class="form-label" for="selectedEndTime">End Time </label>
                 </div>
                 <div class="col-12">
                   <select
-                    id="selectCustomStartTime"
+                    id="selectedEndTime"
                     class="form-select w-25"
                     v-model="fetchCustomSheetData.end_time"
                     @change="validateStartTime"
@@ -178,13 +178,11 @@ export default {
   },
   methods: {
     formatTime(hour) {
-      if (hour < 12) {
+      if (hour === 0 || hour === 24) {
+        return `12:00 AM`;
+      } else if (hour < 12) {
         return `${String(hour).padStart(2, "0")}:00 AM`;
       } else if (hour === 12) {
-        return `${String(hour).padStart(2, "0")}:00 PM`;
-      } else if (hour === 24) {
-        return `00:00`;
-      } else if (hour > 12 && hour < 24) {
         return `${String(hour).padStart(2, "0")}:00 PM`;
       } else {
         return `${String(hour - 12).padStart(2, "0")}:00 PM`;
