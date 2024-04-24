@@ -363,7 +363,7 @@ export default {
     },
 
     validateEmailFormat(email) {
-      const emailRegex = /^[^\s@]+@gmail\.com$/;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
     },
     ValidationClient(newValue) {

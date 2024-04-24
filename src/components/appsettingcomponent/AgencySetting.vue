@@ -43,6 +43,17 @@
                 </ol>
               </div>
               <!-- End Page Title -->
+              <div class="p-3">
+                <button
+                  type="button"
+                  class="btn btn-outline-success text-nowrap text-nowrap"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editSite"
+                  data-bs-whatever="@mdo"
+                >
+                  <i class="bi bi-pencil"></i> Edit
+                </button>
+              </div>
             </div>
           </div>
           <div class="col-12 bg-white"></div>
@@ -107,7 +118,7 @@
                         aria-controls="contact"
                         aria-selected="false"
                       >
-                        Logo
+                        Favicon & Logo
                       </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -121,7 +132,7 @@
                         aria-controls="contact"
                         aria-selected="false"
                       >
-                        Change Password
+                        Custom Url
                       </button>
                     </li>
                   </ul>
@@ -133,33 +144,41 @@
                       aria-labelledby="about"
                     >
                       <div class="p-4 table-wrapper">
-                        <table class="table table-borderless">
+                        <table
+                          class="table table-borderless"
+                          v-for="data in getAgencyData"
+                          :key="data.id"
+                        >
                           <thead>
                             <tr>
                               <th scope="col">Agency name</th>
-                              <th scope="col">RecPal</th>
+                              <th scope="col">{{ data.agency_name }}</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr>
                               <th scope="row">authorized person</th>
-                              <td>--</td>
+                              <td>
+                                {{
+                                  data.authorized_person ? data.authorized_person : "null"
+                                }}
+                              </td>
                             </tr>
                             <tr>
                               <th scope="row">email</th>
-                              <td>raj@gmail.com</td>
+                              <td>{{ data.email }}</td>
                             </tr>
                             <tr>
                               <th scope="row">address</th>
-                              <td colspan="2">nikunj bihar indore</td>
+                              <td colspan="2">{{ data.address }}</td>
                             </tr>
                             <tr>
                               <th scope="row">mobile number</th>
-                              <td colspan="2">...</td>
+                              <td colspan="2">{{ data.mobile_number }}</td>
                             </tr>
                             <tr>
                               <th scope="row">phone number</th>
-                              <td colspan="2">...</td>
+                              <td colspan="2">{{ data.phone_number }}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -179,17 +198,83 @@
                       </p>
                     </div>
                     <div
-                      class="tab-pane fade"
+                      class="tab-pane fade p-3"
                       id="contact"
                       role="tabpanel"
                       aria-labelledby="logoimg"
                     >
-                      <p class="p-4">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-                        dolore quasi architecto magni aperiam totam. Quibusdam magnam
-                        eaque possimus ipsum. Necessitatibus molestias rerum architecto
-                        ipsam quis labore quod quo sint?
-                      </p>
+                      <div class="col-12 d-flex gap-2">
+                        <div>
+                          <h6>
+                            <span class="ps-1 fs-6 fw-bold">Favicon</span>&nbsp;
+                            <span class="text-muted">(dimension 32px * 32px)</span>
+                          </h6>
+                          <div class="col-4">
+                            <div class="card" style="width: 400px">
+                              <div class="card-body">
+                                <img :src="logoPreview" class="img-fluid" />
+                                <input
+                                  type="file"
+                                  id="logoInput"
+                                  style="display: none"
+                                  accept="image/*"
+                                  @change="previewLogo"
+                                />
+                                <label
+                                  for="logoInput"
+                                  class="btn btn-primary w-100"
+                                  style="border-radius: 0px"
+                                  >Upload Favicon</label
+                                >
+                                <!-- <a
+                                  href="#"
+                                  class="btn btn-primary w-100"
+                                  style="border-radius: 0px"
+                                  >Upload Favicon</a
+                                > -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <h6>
+                            <span class="ps-1 fs-6 fw-bold">Agency logo</span> &nbsp;
+                            <span class="text-muted">(dimension 220px * 50px)</span>
+                          </h6>
+                          <div class="col-4">
+                            <div class="card" style="width: 400px">
+                              <div class="card-body">
+                                <img src="./pic-image.jpg" class="img-fluid" />
+                                <a
+                                  href="#"
+                                  class="btn btn-primary w-100"
+                                  style="border-radius: 0px"
+                                  >Upload Logo</a
+                                >
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <h6>
+                            <span class="ps-1 fs-6 fw-bold">Invoice Logo</span>&nbsp;
+                            <span class="text-muted">(dimension 150px * 75px)</span>
+                          </h6>
+                          <div class="col-4">
+                            <div class="card" style="width: 400px">
+                              <div class="card-body">
+                                <img src="./pic-image.jpg" class="img-fluid" />
+                                <a
+                                  href="#"
+                                  class="btn btn-primary w-100"
+                                  style="border-radius: 0px"
+                                  >Upload Logo</a
+                                >
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <div
                       class="tab-pane fade"
@@ -215,13 +300,79 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
 
 export default {
+  name: "AgencySetting",
+  data() {
+    return {
+      getAgencyData: [],
+      logoPreview: "./pic-image.jpg",
+    };
+  },
   components: {
     Navbar,
     Sidebar,
+  },
+  methods: {
+    previewLogo(event) {
+      const file = event.target.files[0];
+      const formData = new FormData();
+      formData.append("agency_setting[agency_logo]", file);
+      const token = localStorage.getItem("token");
+
+      fetch(`${VITE_API_URL}/agency_settings`, {
+        method: "POST",
+        headers: {
+          Authorization: "bearer " + token,
+        },
+        body: formData,
+      })
+        .then((response) => {
+          if (!response.ok) {
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Logo uploaded successfully:", data);
+        })
+        .catch((error) => {
+          // console.error("Error uploading logo:", error);
+        });
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.localStorageImage = e.target.result;
+        localStorage.setItem("logoPreview", e.target.result);
+      };
+      reader.readAsDataURL(file);
+    },
+    async getAgencyDataMethod() {
+      await axios
+        .get(`${VITE_API_URL}/agency_settings`)
+        .then((response) => {
+          this.getAgencyData = response.data;
+        })
+        .catch((error) => {
+          if (error.response) {
+            if (error.response.status == 404) {
+              // alert(error.response.data.message);
+            }
+          }
+        });
+    },
+    loadFromLocalStorage() {
+      const storedImage = localStorage.getItem("logoPreview");
+      if (storedImage) {
+        this.logoPreview = storedImage;
+      }
+    },
+  },
+  mounted() {
+    this.getAgencyDataMethod();
+    this.loadFromLocalStorage();
   },
 };
 </script>

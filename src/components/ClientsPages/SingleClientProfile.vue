@@ -81,7 +81,16 @@
                   </div>
 
                   <div>
-                    <button type="button" class="btn btn-primary">Edit</button>
+                    <button
+                      type="button"
+                      class="btn btn btn-primary text-nowrap text-nowrap"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editClientEmail"
+                      data-bs-whatever="@mdo"
+                      @click="editClient(getClientDatas.id)"
+                    >
+                      Edit
+                    </button>
                   </div>
                 </div>
                 <hr />
@@ -109,7 +118,16 @@
                         {{ getClientDatas.phone_number }}</span
                       >
                     </div>
-                    <button type="button" class="btn btn-primary">Edit</button>
+                    <button
+                      type="button"
+                      class="btn btn btn-primary text-nowrap text-nowrap"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editClientContact"
+                      data-bs-whatever="@mdo"
+                      @click="editClient(getClientDatas.id)"
+                    >
+                      Edit
+                    </button>
                   </div>
                 </div>
                 <hr />
@@ -150,6 +168,14 @@
         </div>
       </div>
     </div>
+    <EditSingleClientEmail
+      :clientID="selectedClientID || 0"
+      @client-updatedEmail="getClientMethod"
+    />
+    <EditSingleClientContact
+      :clientID="selectedClientID || 0"
+      @client-updatedContact="getClientMethod"
+    />
   </div>
 </template>
 
@@ -163,13 +189,15 @@ import ClientWTR from "../ClientsPages/ClientProfileDetails/ClientWTR.vue";
 import ClientNotes from "../ClientsPages/ClientProfileDetails/ClientNotes.vue";
 import ClientSetting from "../ClientsPages/ClientProfileDetails/ClientSetting.vue";
 import ClientUser from "../ClientsPages/ClientProfileDetails/ClientUser.vue";
+import EditSingleClientEmail from "../modals/Clients/EditSingleClientEmail.vue";
+import EditSingleClientContact from "../modals/Clients/EditSingleClientContact.vue";
 
 export default {
   name: "SingleClientProfile",
   data() {
     return {
       getClientDatas: [],
-
+      selectedClientID: null,
       tabs: [
         { name: "Active Location ", component: "ActiveLocation" },
         { name: "Passive Location ", component: "PassiveLocation" },
@@ -190,6 +218,8 @@ export default {
     ClientNotes,
     ClientSetting,
     ClientUser,
+    EditSingleClientContact,
+    EditSingleClientEmail,
   },
 
   props: ["id"],
@@ -209,6 +239,9 @@ export default {
   },
 
   methods: {
+    editClient(clientID) {
+      this.selectedClientID = clientID;
+    },
     getTabLink(tab) {
       return { name: tab.component, params: { id: this.$route.params.id } };
     },
@@ -227,6 +260,9 @@ export default {
     },
 
     async getClientMethod() {
+      if (!id) {
+        return;
+      }
       try {
         const response = await axios.get(
           `${VITE_API_URL}/clients/${this.$route.params.id}`
@@ -236,10 +272,9 @@ export default {
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            // alert(error.response.data.message);
+            return;
           }
         } else {
-          // console.error("Error fetching candidates:", error);
         }
       }
     },

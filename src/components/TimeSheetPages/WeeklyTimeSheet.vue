@@ -181,26 +181,27 @@
               </div>
             </div>
           </div>
-          <table class="table">
-            <thead>
-              <tr>
-                <th rowspan="3">ID</th>
-                <th rowspan="3" style="width: 11%">Name</th>
-                <th rowspan="3">Site</th>
-                <th rowspan="3">Shift</th>
-                <th>
-                  <div class="calendar-grid">
-                    <div v-for="day in daysOfWeek" :key="day" class="day-header">
-                      {{ day }}
-                    </div>
-                    <div v-for="date in selectedDateRow" :key="date" class="day-header">
-                      {{ formatDate(date) }}
-                      <!-- <tr>
+          <div class="col-12 wrapper-timeSheet">
+            <table class="table candidateTable">
+              <thead>
+                <tr>
+                  <th rowspan="3">ID</th>
+                  <th rowspan="3" style="width: 11%">Name</th>
+                  <th rowspan="3">Site</th>
+                  <th rowspan="3">Shift</th>
+                  <th>
+                    <div class="calendar-grid">
+                      <div v-for="day in daysOfWeek" :key="day" class="day-header">
+                        {{ day }}
+                      </div>
+                      <div v-for="date in selectedDateRow" :key="date" class="day-header">
+                        {{ formatDate(date) }}
+                        <!-- <tr>
                         <th>Start</th>
                         <th>End</th>
                         <th>Total</th>
                       </tr> -->
-                      <!-- <div class="column">
+                        <!-- <div class="column">
                         <div class="column-header">Start</div>
                       </div>
                       <div class="column">
@@ -209,132 +210,133 @@
                       <div class="column">
                         <div class="column-header">Total</div>
                       </div> -->
-                      <div
-                        class="additional-column day-header d-flex justify-content-center"
-                      >
-                        <tr>
-                          <th
-                            class="additional-header"
-                            style="border-right: 1px solid #e1d4d4; padding-right: 5px"
-                          >
-                            Start
-                          </th>
-                          <th
-                            class="additional-header"
-                            style="
-                              border-right: 1px solid #e1d4d4;
-                              padding-left: 5px;
-                              padding-right: 5px;
-                            "
-                          >
-                            End
-                          </th>
-                          <th class="additional-header" style="padding-left: 5px">
-                            Total
-                          </th>
-                        </tr>
+                        <div
+                          class="additional-column day-header d-flex justify-content-center"
+                        >
+                          <tr>
+                            <th
+                              class="additional-header"
+                              style="border-right: 1px solid #e1d4d4; padding-right: 5px"
+                            >
+                              Start
+                            </th>
+                            <th
+                              class="additional-header"
+                              style="
+                                border-right: 1px solid #e1d4d4;
+                                padding-left: 5px;
+                                padding-right: 5px;
+                              "
+                            >
+                              End
+                            </th>
+                            <th class="additional-header" style="padding-left: 5px">
+                              Total
+                            </th>
+                          </tr>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </th>
+                  </th>
 
-                <th rowspan="3">Total Hours</th>
-                <th rowspan="3">Total Cost</th>
-                <th rowspan="3">Approved By</th>
-                <th rowspan="3">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" checked />
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody v-if="paginateCandidates?.length > 0">
-              <tr v-for="data in paginateCandidates" :key="data.id">
-                <td>{{ data.id }}</td>
-                <td class="text-capitalize fw-bold">
-                  {{ data.author_name ? data.author_name + " " : data.name + " " }}
+                  <th rowspan="3">Total Hours</th>
+                  <th rowspan="3">Total Cost</th>
+                  <th rowspan="3">Approved By</th>
+                  <th rowspan="3">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" checked />
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody v-if="paginateCandidates?.length > 0">
+                <tr v-for="data in paginateCandidates" :key="data.id">
+                  <td>{{ data.id }}</td>
+                  <td class="text-capitalize fw-bold">
+                    {{ data.author_name ? data.author_name + " " : data.name + " " }}
 
-                  <span class="fs-6 text-muted fw-100"
-                    ><br /><span style="background: rgb(209, 207, 207); padding: 3px">{{
-                      data.job
-                    }}</span></span
-                  >
-                </td>
-
-                <td>
-                  {{ data.site }}
-                </td>
-                <td>{{ data.shift }}</td>
-
-                <td>
-                  <div class="calendar-grid">
-                    <div
-                      v-for="day in selectedDateRow"
-                      :key="day"
-                      @click="openModal(data, day)"
-                      :class="{
-                        'calendar-day': true,
-                        clickable: day !== '',
-                      }"
-                      class="d-flex justify-content-between gap-2"
+                    <span class="fs-6 text-muted fw-100"
+                      ><br /><span style="background: rgb(209, 207, 207); padding: 3px">{{
+                        data.job
+                      }}</span></span
                     >
-                      <div v-if="formatDate(day)">
-                        <td>
-                          <div class="column">
-                            <div class="column-cell">
-                              {{
-                                typeof data.start_time === "number"
-                                  ? data.start_time.toFixed(2)
-                                  : data.start_time
-                              }}
+                  </td>
+
+                  <td>
+                    {{ data.site }}
+                  </td>
+                  <td>{{ data.shift }}</td>
+
+                  <td>
+                    <div class="calendar-grid">
+                      <div
+                        v-for="day in selectedDateRow"
+                        :key="day"
+                        @click="openModal(data, day)"
+                        :class="{
+                          'calendar-day': true,
+                          clickable: day !== '',
+                        }"
+                        class="d-flex justify-content-between gap-2"
+                      >
+                        <div v-if="formatDate(day)">
+                          <td>
+                            <div class="column">
+                              <div class="column-cell">
+                                {{
+                                  typeof data.start_time === "number"
+                                    ? data.start_time.toFixed(2)
+                                    : data.start_time
+                                }}
+                              </div>
                             </div>
-                          </div>
-                        </td>
-                        <td>
-                          <div class="column">
-                            <div class="column-cell">
-                              {{
-                                typeof data.end_time === "number"
-                                  ? data.end_time.toFixed(2)
-                                  : data.end_time
-                              }}
+                          </td>
+                          <td>
+                            <div class="column">
+                              <div class="column-cell">
+                                {{
+                                  typeof data.end_time === "number"
+                                    ? data.end_time.toFixed(2)
+                                    : data.end_time
+                                }}
+                              </div>
                             </div>
-                          </div>
-                        </td>
-                        <td>
-                          <div class="column">
-                            <div class="column-cell">
-                              {{
-                                typeof data.total_hours === "number"
-                                  ? data.total_hours.toFixed(2)
-                                  : data.total_hours
-                              }}
+                          </td>
+                          <td>
+                            <div class="column">
+                              <div class="column-cell">
+                                {{
+                                  typeof data.total_hours === "number"
+                                    ? data.total_hours.toFixed(2)
+                                    : data.total_hours
+                                }}
+                              </div>
                             </div>
-                          </div>
-                        </td>
+                          </td>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </td>
+                  </td>
 
-                <td>{{ data.total_hours }}</td>
-                <td>{{ data.total_cost }}</td>
-                <td>{{ data.approved_by }}</td>
-                <th>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" />
-                  </div>
-                </th>
-              </tr>
-            </tbody>
-            <tbody v-else>
-              <tr>
-                <td colspan="9" class="text-danger text-center">
-                  {{ errorMessage }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                  <td>{{ data.total_hours }}</td>
+                  <td>{{ data.total_cost }}</td>
+                  <td>{{ data.approved_by }}</td>
+                  <th>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" />
+                    </div>
+                  </th>
+                </tr>
+              </tbody>
+              <tbody v-else>
+                <tr>
+                  <td colspan="9" class="text-danger text-center">
+                    {{ errorMessage }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -952,5 +954,17 @@ td {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+.candidateTable tr:nth-child(odd) td {
+  background: #fdce5e17 !important;
+}
+
+@media (max-width: 1120px) {
+  .candidateTable {
+    width: 1090px;
+  }
+  .wrapper-timeSheet {
+    overflow-x: scroll;
+  }
 }
 </style>

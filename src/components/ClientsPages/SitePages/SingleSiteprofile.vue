@@ -10,13 +10,17 @@
                   >Dashboard</router-link
                 >
                 /
-                <a
+                <router-link
                   class="text-capitalize text-decoration-underline"
                   style="color: #595b5b"
-                  >CLIENT</a
+                  :to="{
+                    name: 'AllSite',
+                  }"
+                  >SITE</router-link
                 >
                 /
-                <span class="color-fonts">Client Name</span>/ <span>Hospital 1</span>
+                <span class="color-fonts">{{ getSiteDatas.client_name }}</span
+                >/ <span>{{ getSiteDatas.site_name }}</span>
               </li>
             </ol>
           </div>
@@ -71,24 +75,33 @@
               <div class="card-body">
                 <div class="mt-3 d-flex justify-content-between align-items-top">
                   <div>
-                    <h6>Reference Code : BU570L03</h6>
-                    <h4>Hospital 1</h4>
-                    <h6>Email : {{ getClientDatas.email }}</h6>
-                    <h6>Address : {{ getClientDatas.address }}</h6>
-                    <h6>Mobile : {{ getClientDatas.phone_number }}</h6>
+                    <h6>Reference Code : {{ getSiteDatas.refer_code }}</h6>
+                    <h4>{{ getSiteDatas.site_name }}</h4>
+                    <h6>Email : {{ getSiteDatas.email }}</h6>
+                    <h6>Address : {{ getSiteDatas.address }}</h6>
+                    <h6>Mobile : {{ getSiteDatas.phone_number }}</h6>
                     <h6>Contact person's name:</h6>
                     <h6>Contact person's email:</h6>
                     <h6>Contact person's number:</h6>
                     <h6>Bookings email:</h6>
                   </div>
                   <div>
-                    <h6 class="card-title text-nowrap fw-bold text-capitalize">
-                      {{ getClientDatas.first_name }}
-                    </h6>
+                    <!-- <h6 class="card-title text-nowrap fw-bold text-capitalize">
+                      {{ getSiteDatas.site_name }}
+                    </h6> -->
                     <span class="text-lowercase"> </span>
                   </div>
                   <div>
-                    <button type="button" class="btn btn-primary">Edit</button>
+                    <button
+                      type="button"
+                      class="btn btn btn-primary text-nowrap text-nowrap"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editSiteProfileDetails"
+                      data-bs-whatever="@mdo"
+                      @click="editSite(getSiteDatas.id)"
+                    >
+                      Edit
+                    </button>
                   </div>
                 </div>
                 <hr />
@@ -99,7 +112,7 @@
                       Visit Us at:
                     </h6>
                     Address:
-                    <span class="text-lowercase">{{ getClientDatas.address }}</span>
+                    <span class="text-lowercase">{{ getSiteDatas.address }}</span>
                   </div>
                 </div>
               </div>
@@ -130,6 +143,10 @@
         </div>
       </div>
     </div>
+    <EditSiteProfileEmailContactNumberDetails
+      :siteID="selectedSiteID || 0"
+      @site-updatedProfileDetails="getSiteMethod"
+    />
   </div>
 </template>
 
@@ -141,13 +158,15 @@ import CustomHolidays from "../SingleSiteProfilePages/CustomHolidays.vue";
 import RestrictedCandidates from "../SingleSiteProfilePages/RestrictedCandidates.vue";
 import ShiftSettings from "../SingleSiteProfilePages/ShiftSettings.vue";
 import SiteNotes from "../SingleSiteProfilePages/SiteNotes.vue";
+import EditSiteProfileEmailContactNumberDetails from "../../modals/Site/EditSiteProfileEmailContactNumberDetails.vue";
 
 export default {
   name: "SingleClientProfile",
   data() {
     return {
       getClientDatas: [],
-
+      getSiteDatas: [],
+      selectedSiteID: null,
       tabs: [
         { name: "Rate & Invoice Settings ", component: "RateInvoiceSettings" },
         { name: "Custom Holidays", component: "CustomHolidays" },
@@ -164,6 +183,7 @@ export default {
     RestrictedCandidates,
     ShiftSettings,
     SiteNotes,
+    EditSiteProfileEmailContactNumberDetails,
   },
 
   props: ["id"],
@@ -183,6 +203,9 @@ export default {
   },
 
   methods: {
+    editSite(siteID) {
+      this.selectedSiteID = siteID;
+    },
     getTabLink(tab) {
       return { name: tab.component, params: { id: this.$route.params.id } };
     },
@@ -201,12 +224,35 @@ export default {
     },
 
     async getClientMethod() {
+      if (!this.$route.params.id) {
+        return;
+      }
       try {
         const response = await axios.get(
-          `${VITE_API_URL}clients/${this.$route.params.id}`
+          `${VITE_API_URL}/clients/${this.$route.params.id}`
         );
 
         this.getClientDatas = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        } else {
+          // console.error("Error fetching candidates:", error);
+        }
+      }
+    },
+    async getSiteMethod() {
+      if (!this.$route.params.id) {
+        return;
+      }
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/sites/${this.$route.params.id}`
+        );
+
+        this.getSiteDatas = response.data.data;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
@@ -221,6 +267,7 @@ export default {
 
   mounted() {
     this.getClientMethod();
+    this.getSiteMethod();
   },
 };
 </script>

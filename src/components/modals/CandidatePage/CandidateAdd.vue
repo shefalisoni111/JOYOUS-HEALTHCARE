@@ -330,7 +330,7 @@ export default {
       this.passwordsMatch = this.password === this.confirm_password;
     },
     validateEmailFormat(email) {
-      const emailRegex = /^[^\s@]+@gmail\.com$/;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
     },
 

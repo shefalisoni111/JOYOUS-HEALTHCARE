@@ -137,82 +137,92 @@
                     role="tabpanel"
                     aria-labelledby="pills-home-tab"
                   >
-                    <table class="table candidateTable">
-                      <thead>
-                        <tr>
-                          <th>
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" />
-                            </div>
-                          </th>
-                          <th scope="col">ID</th>
-                          <th scope="col">Code</th>
-                          <th scope="col" style="width: 200px">Name</th>
-                          <th scope="col">Site</th>
-                          <th scope="col">Job</th>
-                          <th scope="col">Shift Date</th>
-                          <th scope="col">Start Time</th>
-                          <th scope="col">End Time</th>
-                          <th scope="col">Total Hours</th>
-                          <th scope="col">Client Rate</th>
-                          <th scope="col">Total Cost</th>
-                          <th scope="col">Paper TimeSheet</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody v-if="paginateCandidates?.length > 0">
-                        <tr v-for="data in paginateCandidates" :key="data.id">
-                          <td>
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" />
-                            </div>
-                          </td>
-                          <td scope="col">{{ data.id }}</td>
-                          <td scope="col">{{ data.code }}</td>
-                          <td scope="col">{{ data.name }}</td>
-                          <td scope="col">{{ data.site }}</td>
-                          <td scope="col">{{ data.job }}</td>
-                          <td scope="col">{{ data.shift_date }}</td>
-                          <td scope="col">
-                            {{ data.start_time ? data.start_time : "null" }}
-                          </td>
-                          <td scope="col">
-                            {{ data.end_time ? data.end_time : "null" }}
-                          </td>
-                          <td scope="col">
-                            {{ data.total_hours ? data.total_hours : "null" }}
-                          </td>
-                          <td scope="col">
-                            {{ data.client_rate ? data.client_rate : "null" }}
-                          </td>
-                          <td scope="col">
-                            {{ data.total_cost ? data.total_cost : "null" }}
-                          </td>
-                          <td scope="col">
-                            {{ data.paper_timesheet ? data.paper_timesheet : "null" }}
-                          </td>
-                          <td scope="col">
-                            <button
-                              type="button"
-                              class="btn btn-outline-success text-nowrap text-nowrap"
-                              data-bs-toggle="modal"
-                              data-bs-target="#editCustomTimeSheet"
-                              data-bs-whatever="@mdo"
-                              @click="openEditModal(data.id)"
-                            >
-                              <i class="bi bi-pencil"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                      <tbody v-else>
-                        <tr>
-                          <td colspan="14" class="text-danger text-center">
-                            {{ errorMessageCustom }}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <div class="col-12 wrapper-timeSheet">
+                      <table class="table candidateTable">
+                        <thead>
+                          <tr>
+                            <th>
+                              <div class="form-check">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  value=""
+                                />
+                              </div>
+                            </th>
+                            <th scope="col">ID</th>
+                            <th scope="col">Code</th>
+                            <th scope="col" style="width: 200px">Name</th>
+                            <th scope="col">Site</th>
+                            <th scope="col">Job</th>
+                            <th scope="col">Shift Date</th>
+                            <th scope="col">Start Time</th>
+                            <th scope="col">End Time</th>
+                            <th scope="col">Total Hours</th>
+                            <th scope="col">Client Rate</th>
+                            <th scope="col">Total Cost</th>
+                            <th scope="col">Paper TimeSheet</th>
+                            <th scope="col">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody v-if="paginateCandidates?.length > 0">
+                          <tr v-for="data in paginateCandidates" :key="data.id">
+                            <td>
+                              <div class="form-check">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  value=""
+                                />
+                              </div>
+                            </td>
+                            <td scope="col">{{ data.id }}</td>
+                            <td scope="col">{{ data.code }}</td>
+                            <td scope="col">{{ data.name }}</td>
+                            <td scope="col">{{ data.site }}</td>
+                            <td scope="col">{{ data.job }}</td>
+                            <td scope="col">{{ data.shift_date }}</td>
+                            <td scope="col">
+                              {{ data.start_time ? data.start_time : "null" }}
+                            </td>
+                            <td scope="col">
+                              {{ data.end_time ? data.end_time : "null" }}
+                            </td>
+                            <td scope="col">
+                              {{ data.total_hours ? data.total_hours : "null" }}
+                            </td>
+                            <td scope="col">
+                              {{ data.client_rate ? data.client_rate : "null" }}
+                            </td>
+                            <td scope="col">
+                              {{ data.total_cost ? data.total_cost : "null" }}
+                            </td>
+                            <td scope="col">
+                              {{ data.paper_timesheet ? data.paper_timesheet : "null" }}
+                            </td>
+                            <td scope="col">
+                              <button
+                                type="button"
+                                class="btn btn-outline-success text-nowrap text-nowrap"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editCustomTimeSheet"
+                                data-bs-whatever="@mdo"
+                                @click="openEditModal(data.id)"
+                              >
+                                <i class="bi bi-pencil"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tbody v-else>
+                          <tr>
+                            <td colspan="14" class="text-danger text-center">
+                              {{ errorMessageCustom }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                   <div
                     class="tab-pane fade"
@@ -230,82 +240,92 @@
                     role="tabpanel"
                     aria-labelledby="pills-home-tab"
                   >
-                    <table class="table candidateTable">
-                      <thead>
-                        <tr>
-                          <th>
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" />
-                            </div>
-                          </th>
-                          <th scope="col">ID</th>
-                          <th scope="col">Code</th>
-                          <th scope="col" style="width: 200px">Name</th>
-                          <th scope="col">Site</th>
-                          <th scope="col">Job</th>
-                          <th scope="col">Shift Date</th>
-                          <th scope="col">Start Time</th>
-                          <th scope="col">End Time</th>
-                          <th scope="col">Total Hours</th>
-                          <th scope="col">Client Rate</th>
-                          <th scope="col">Total Cost</th>
-                          <th scope="col">Paper TimeSheet</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody v-if="paginateSearchResults?.length > 0">
-                        <tr v-for="data in paginateSearchResults" :key="data.id">
-                          <td>
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" />
-                            </div>
-                          </td>
-                          <td scope="col">{{ data.id }}</td>
-                          <td scope="col">{{ data.code }}</td>
-                          <td scope="col">{{ data.name }}</td>
-                          <td scope="col">{{ data.site }}</td>
-                          <td scope="col">{{ data.job }}</td>
-                          <td scope="col">{{ data.shift_date }}</td>
-                          <td scope="col">
-                            {{ data.start_time ? data.start_time : "null" }}
-                          </td>
-                          <td scope="col">
-                            {{ data.end_time ? data.end_time : "null" }}
-                          </td>
-                          <td scope="col">
-                            {{ data.total_hours ? data.total_hours : "null" }}
-                          </td>
-                          <td scope="col">
-                            {{ data.client_rate ? data.client_rate : "null" }}
-                          </td>
-                          <td scope="col">
-                            {{ data.total_cost ? data.total_cost : "null" }}
-                          </td>
-                          <td scope="col">
-                            {{ data.paper_timesheet ? data.paper_timesheet : "null" }}
-                          </td>
-                          <td scope="col">
-                            <button
-                              type="button"
-                              class="btn btn-outline-success text-nowrap text-nowrap"
-                              data-bs-toggle="modal"
-                              data-bs-target="#editCustomTimeSheet"
-                              data-bs-whatever="@mdo"
-                              @click="openEditModal(data.id)"
-                            >
-                              <i class="bi bi-pencil"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                      <tbody v-else>
-                        <tr>
-                          <td colspan="14" class="text-danger text-center">
-                            {{ errorMessage }}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <div class="col-12 wrapper-timeSheet">
+                      <table class="table candidateTable">
+                        <thead>
+                          <tr>
+                            <th>
+                              <div class="form-check">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  value=""
+                                />
+                              </div>
+                            </th>
+                            <th scope="col">ID</th>
+                            <th scope="col">Code</th>
+                            <th scope="col" style="width: 200px">Name</th>
+                            <th scope="col">Site</th>
+                            <th scope="col">Job</th>
+                            <th scope="col">Shift Date</th>
+                            <th scope="col">Start Time</th>
+                            <th scope="col">End Time</th>
+                            <th scope="col">Total Hours</th>
+                            <th scope="col">Client Rate</th>
+                            <th scope="col">Total Cost</th>
+                            <th scope="col">Paper TimeSheet</th>
+                            <th scope="col">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody v-if="paginateSearchResults?.length > 0">
+                          <tr v-for="data in paginateSearchResults" :key="data.id">
+                            <td>
+                              <div class="form-check">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  value=""
+                                />
+                              </div>
+                            </td>
+                            <td scope="col">{{ data.id }}</td>
+                            <td scope="col">{{ data.code }}</td>
+                            <td scope="col">{{ data.name }}</td>
+                            <td scope="col">{{ data.site }}</td>
+                            <td scope="col">{{ data.job }}</td>
+                            <td scope="col">{{ data.shift_date }}</td>
+                            <td scope="col">
+                              {{ data.start_time ? data.start_time : "null" }}
+                            </td>
+                            <td scope="col">
+                              {{ data.end_time ? data.end_time : "null" }}
+                            </td>
+                            <td scope="col">
+                              {{ data.total_hours ? data.total_hours : "null" }}
+                            </td>
+                            <td scope="col">
+                              {{ data.client_rate ? data.client_rate : "null" }}
+                            </td>
+                            <td scope="col">
+                              {{ data.total_cost ? data.total_cost : "null" }}
+                            </td>
+                            <td scope="col">
+                              {{ data.paper_timesheet ? data.paper_timesheet : "null" }}
+                            </td>
+                            <td scope="col">
+                              <button
+                                type="button"
+                                class="btn btn-outline-success text-nowrap text-nowrap"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editCustomTimeSheet"
+                                data-bs-whatever="@mdo"
+                                @click="openEditModal(data.id)"
+                              >
+                                <i class="bi bi-pencil"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tbody v-else>
+                          <tr>
+                            <td colspan="14" class="text-danger text-center">
+                              {{ errorMessage }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                   <div
                     class="tab-pane fade"
@@ -799,5 +819,14 @@ button.nav-link > li.nav-item {
 
 input::-webkit-input-placeholder {
   margin-left: 5px;
+}
+
+@media (max-width: 1120px) {
+  .candidateTable {
+    width: 1090px;
+  }
+  .wrapper-timeSheet {
+    overflow-x: scroll;
+  }
 }
 </style>

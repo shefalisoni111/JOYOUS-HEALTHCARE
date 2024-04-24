@@ -71,7 +71,9 @@ ul.generalsetting h6 {
                   </div>
                 </div> -->
 
-                <div class="d-flex gap-2 mb-3 justify-content-between">
+                <div
+                  class="d-xs-grid d-sm-grid d-md-grid d-lg-flex mb-3 justify-content-lg-between"
+                >
                   <div class="d-flex gap-2">
                     <div></div>
                     <div class="d-flex">
@@ -172,73 +174,83 @@ ul.generalsetting h6 {
                     role="tabpanel"
                     aria-labelledby="pills-pendingSigned-tab"
                   >
-                    <table class="table candidateTable">
-                      <thead>
-                        <tr>
-                          <th>
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" />
-                            </div>
-                          </th>
-                          <th scope="col">ID</th>
+                    <div class="col-12 wrapper-timeSheet">
+                      <table class="table candidateTable">
+                        <thead>
+                          <tr>
+                            <th>
+                              <div class="form-check">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  value=""
+                                />
+                              </div>
+                            </th>
+                            <th scope="col">ID</th>
 
-                          <th scope="col" style="width: 11%">Staff</th>
-                          <th scope="col">Client</th>
-                          <th scope="col">Site</th>
+                            <th scope="col" style="width: 11%">Staff</th>
+                            <th scope="col">Client</th>
+                            <th scope="col">Site</th>
 
-                          <th scope="col">Date</th>
+                            <th scope="col">Date</th>
 
-                          <th scope="col">Start Time</th>
-                          <th scope="col">End Time</th>
-                          <th scope="col">Break</th>
-                          <th scope="col">Total Hours</th>
-                          <th scope="col">Approve</th>
-                          <th scope="col">View</th>
-                        </tr>
-                      </thead>
-                      <tbody v-if="paginateCandidates?.length > 0">
-                        <tr v-for="data in paginateCandidates" :key="data.id">
-                          <td>
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" />
-                            </div>
-                          </td>
-                          <td scope="col">{{ data.id }}</td>
+                            <th scope="col">Start Time</th>
+                            <th scope="col">End Time</th>
+                            <th scope="col">Break</th>
+                            <th scope="col">Total Hours</th>
+                            <th scope="col">Approve</th>
+                            <th scope="col">View</th>
+                          </tr>
+                        </thead>
+                        <tbody v-if="paginateCandidates?.length > 0">
+                          <tr v-for="data in paginateCandidates" :key="data.id">
+                            <td>
+                              <div class="form-check">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  value=""
+                                />
+                              </div>
+                            </td>
+                            <td scope="col">{{ data.id }}</td>
 
-                          <td scope="col">{{ data.candidate_name }}</td>
-                          <td scope="col">{{ data.client }}</td>
-                          <td scope="col">{{ data.site }}</td>
+                            <td scope="col">{{ data.candidate_name }}</td>
+                            <td scope="col">{{ data.client }}</td>
+                            <td scope="col">{{ data.site }}</td>
 
-                          <td scope="col">{{ data.date }}</td>
-                          <td scope="col">{{ data.start_time }}</td>
+                            <td scope="col">{{ data.date }}</td>
+                            <td scope="col">{{ data.start_time }}</td>
 
-                          <td scope="col">{{ data.end_time }}</td>
-                          <td scope="col">{{ data.break }}</td>
-                          <td scope="col">{{ data.total_hours }}</td>
+                            <td scope="col">{{ data.end_time }}</td>
+                            <td scope="col">{{ data.break }}</td>
+                            <td scope="col">{{ data.total_hours }}</td>
 
-                          <td scope="col"></td>
-                          <td scope="col">
-                            <button
-                              type="button"
-                              class="btn btn-outline-success text-nowrap text-nowrap"
-                              data-bs-toggle="modal"
-                              data-bs-target="#signedTimeSheetView"
-                              data-bs-whatever="@mdo"
-                              @click="openSignedView(data.id)"
-                            >
-                              <i class="bi bi-eye"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                      <tbody v-else>
-                        <tr>
-                          <td colspan="12" class="text-danger text-center">
-                            {{ errorMessageSigned }}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                            <td scope="col"></td>
+                            <td scope="col">
+                              <button
+                                type="button"
+                                class="btn btn-outline-success text-nowrap text-nowrap"
+                                data-bs-toggle="modal"
+                                data-bs-target="#signedTimeSheetView"
+                                data-bs-whatever="@mdo"
+                                @click="openSignedView(data.id)"
+                              >
+                                <i class="bi bi-eye"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tbody v-else>
+                          <tr>
+                            <td colspan="12" class="text-danger text-center">
+                              {{ errorMessageSigned }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
                 <div class="tab-content mt-3" id="pills-tabContent" v-if="searchQuery">
@@ -248,73 +260,83 @@ ul.generalsetting h6 {
                     role="tabpanel"
                     aria-labelledby="pills-pendingSigned-tab"
                   >
-                    <table class="table candidateTable">
-                      <thead>
-                        <tr>
-                          <th>
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" />
-                            </div>
-                          </th>
-                          <th scope="col">ID</th>
+                    <div class="col-12 wrapper-timeSheet">
+                      <table class="table candidateTable">
+                        <thead>
+                          <tr>
+                            <th>
+                              <div class="form-check">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  value=""
+                                />
+                              </div>
+                            </th>
+                            <th scope="col">ID</th>
 
-                          <th scope="col" style="width: 11%">Staff</th>
-                          <th scope="col">Client</th>
-                          <th scope="col">Site</th>
+                            <th scope="col" style="width: 11%">Staff</th>
+                            <th scope="col">Client</th>
+                            <th scope="col">Site</th>
 
-                          <th scope="col">Date</th>
+                            <th scope="col">Date</th>
 
-                          <th scope="col">Start Time</th>
-                          <th scope="col">End Time</th>
-                          <th scope="col">Break</th>
-                          <th scope="col">Total Hours</th>
-                          <th scope="col">Approve</th>
-                          <th scope="col">View</th>
-                        </tr>
-                      </thead>
-                      <tbody v-if="paginateSearchResults?.length > 0">
-                        <tr v-for="data in paginateSearchResults" :key="data.id">
-                          <td>
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" />
-                            </div>
-                          </td>
-                          <td scope="col">{{ data.id }}</td>
+                            <th scope="col">Start Time</th>
+                            <th scope="col">End Time</th>
+                            <th scope="col">Break</th>
+                            <th scope="col">Total Hours</th>
+                            <th scope="col">Approve</th>
+                            <th scope="col">View</th>
+                          </tr>
+                        </thead>
+                        <tbody v-if="paginateSearchResults?.length > 0">
+                          <tr v-for="data in paginateSearchResults" :key="data.id">
+                            <td>
+                              <div class="form-check">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  value=""
+                                />
+                              </div>
+                            </td>
+                            <td scope="col">{{ data.id }}</td>
 
-                          <td scope="col">{{ data.candidate_name }}</td>
-                          <td scope="col">{{ data.client }}</td>
-                          <td scope="col">{{ data.site }}</td>
+                            <td scope="col">{{ data.candidate_name }}</td>
+                            <td scope="col">{{ data.client }}</td>
+                            <td scope="col">{{ data.site }}</td>
 
-                          <td scope="col">{{ data.date }}</td>
-                          <td scope="col">{{ data.start_time }}</td>
+                            <td scope="col">{{ data.date }}</td>
+                            <td scope="col">{{ data.start_time }}</td>
 
-                          <td scope="col">{{ data.end_time }}</td>
-                          <td scope="col">{{ data.break }}</td>
-                          <td scope="col">{{ data.total_hours }}</td>
+                            <td scope="col">{{ data.end_time }}</td>
+                            <td scope="col">{{ data.break }}</td>
+                            <td scope="col">{{ data.total_hours }}</td>
 
-                          <td scope="col"></td>
-                          <td scope="col">
-                            <button
-                              type="button"
-                              class="btn btn-outline-success text-nowrap text-nowrap"
-                              data-bs-toggle="modal"
-                              data-bs-target="#signedTimeSheetView"
-                              data-bs-whatever="@mdo"
-                              @click="openSignedView(data.id)"
-                            >
-                              <i class="bi bi-eye"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                      <tbody v-else>
-                        <tr>
-                          <td colspan="12" class="text-danger text-center">
-                            {{ errorMessage }}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                            <td scope="col"></td>
+                            <td scope="col">
+                              <button
+                                type="button"
+                                class="btn btn-outline-success text-nowrap text-nowrap"
+                                data-bs-toggle="modal"
+                                data-bs-target="#signedTimeSheetView"
+                                data-bs-whatever="@mdo"
+                                @click="openSignedView(data.id)"
+                              >
+                                <i class="bi bi-eye"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tbody v-else>
+                          <tr>
+                            <td colspan="12" class="text-danger text-center">
+                              {{ errorMessage }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -826,5 +848,14 @@ button.nav-link > li.nav-item {
 
 input::-webkit-input-placeholder {
   margin-left: 5px;
+}
+
+@media (max-width: 1120px) {
+  .candidateTable {
+    width: 1090px;
+  }
+  .wrapper-timeSheet {
+    overflow-x: scroll;
+  }
 }
 </style>
