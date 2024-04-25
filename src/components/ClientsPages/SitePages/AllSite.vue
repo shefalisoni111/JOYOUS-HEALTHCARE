@@ -267,7 +267,7 @@ export default {
           return response.json();
         })
         .then((data) => {
-          console.log("Logo uploaded successfully:", data);
+          // console.log("Logo uploaded successfully:", data);
         })
         .catch((error) => {
           // console.error("Error uploading logo:", error);
@@ -306,7 +306,7 @@ export default {
           this.siteIds.splice(index, 1);
         }
       }
-      console.log("Updated siteIds array:", this.siteIds);
+      // console.log("Updated siteIds array:", this.siteIds);
     },
     exportOneFile() {
       const queryParams = ` site_ids=${JSON.stringify(this.siteIds)}`.replace(

@@ -346,7 +346,7 @@ export default {
           this.clientId.splice(index, 1);
         }
       }
-      console.log("Updated clientId array:", this.clientId);
+      // console.log("Updated clientId array:", this.clientId);
     },
     exportOneFile() {
       const queryParams = `client_ids=${JSON.stringify(this.clientId)
@@ -401,7 +401,7 @@ export default {
         })
         .catch((error) => {
           // Handle error
-          console.log(error);
+          // console.log(error);
         });
     },
     ImportCSV(csvData, filename) {
