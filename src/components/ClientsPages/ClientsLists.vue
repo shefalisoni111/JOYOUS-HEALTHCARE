@@ -84,6 +84,7 @@
                           Show Filters
                         </button> -->
                         <button
+                          v-if="searchQuery"
                           class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
                           type="button"
                           id="navbarDropdown"

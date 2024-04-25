@@ -81,6 +81,7 @@
                           Show Filters
                         </button> -->
                         <button
+                          v-if="searchQuery"
                           class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
                           type="button"
                           id="navbarDropdown"
@@ -91,16 +92,35 @@
                           :
 
                           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <input
-                              ref="fileInput"
-                              type="file"
-                              style="display: none"
-                              @change="handleFileUpload"
-                            />
                             <li>
-                              <a class="dropdown-item" href="#" @click="triggerFileInput"
-                                >Import</a
+                              <label
+                                for="fileAll"
+                                class="custom-file-label dropdown-item"
+                                style="border-radius: 0px; cursor: pointer"
                               >
+                                Import
+                              </label>
+                              <!-- Hide the default file input -->
+                              <input
+                                ref="fileInput"
+                                id="fileAll"
+                                type="file"
+                                accept=".csv"
+                                style="display: none"
+                                @change="handleFileUpload"
+                              />
+                              <!-- <button class="import-button" >
+                                Import
+                              </button> -->
+                              <!-- <label
+                                for="fileAll"
+                                class="dropdown-item"
+                                style="border-radius: 0px"
+                                >Import</label
+                              > -->
+                              <!-- <a class="" href="#" @click="triggerFileInput"
+                                >Import</a
+                              > -->
                             </li>
                             <li><hr class="dropdown-divider" /></li>
                             <li>
@@ -127,6 +147,7 @@
                     <table class="table siteTable">
                       <thead>
                         <tr>
+                          <th></th>
                           <th scope="col">ID</th>
                           <th scope="col">#RefCode</th>
                           <th scope="col">Site</th>
@@ -142,6 +163,16 @@
                       </thead>
                       <tbody v-if="paginateSearchResults?.length > 0">
                         <tr v-for="data in paginateSearchResults" :key="data.id">
+                          <td>
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              :value="data.id"
+                              :id="data.id"
+                              v-model="checkedSites[data.id]"
+                              @change="handleCheckboxChange(data.id)"
+                            />
+                          </td>
                           <td>{{ data.id }}</td>
                           <td v-text="data.refer_code"></td>
                           <td v-text="data.site_name"></td>
@@ -250,6 +281,7 @@ export default {
       isActive: true,
       searchQuery: null,
       debounceTimeout: null,
+
       searchResults: [],
       errorMessage: "",
       tabs: [
@@ -277,6 +309,7 @@ export default {
       return this.paginateSearchResults.length;
     },
   },
+
   components: { AllSite, InActiveSite, ActiveSite, AddSiteNotes },
 
   methods: {
@@ -302,6 +335,7 @@ export default {
       this.activeTabName = this.tabs[index].name;
       this.$router.push({ name: this.tabs[index].routeName });
     },
+
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
 
@@ -373,29 +407,58 @@ export default {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     },
+    // triggerFileInput() {
+    //   this.$refs.fileInput.click();
+    // },
+    // handleFileUpload(event) {
+    //   const file = event.target.files[0];
+    //   if (file) {
+    //     this.importAll(file);
+    //   }
+    // },
+    // importAll(fileData) {
+    //   const formData = new FormData();
+    //   formData.append("file", fileData);
+    //   axios
+    //     .post(`${VITE_API_URL}/import_all_csv_site.csv`, formData, {
+    //       headers: {
+    //         "Content-Type": "multipart/form-data",
+    //       },
+    //     })
+    //     .then((response) => {
+    //       this.ImportCSV(response.data, "filename.csv");
+    //     })
+    //     .catch((error) => {
+    //       // console.error("Error:", error);
+    //     });
+    // },
     triggerFileInput() {
       this.$refs.fileInput.click();
     },
     handleFileUpload(event) {
       const file = event.target.files[0];
-      if (file) {
-        this.importAll(file);
+      if (!file) return;
+
+      const isValidFileType = file.type === "text/csv";
+      if (!isValidFileType) {
+        alert("Please select a CSV file.");
+        return;
       }
-    },
-    importAll(fileData) {
+
       const formData = new FormData();
-      formData.append("file", fileData);
+      formData.append("file", file);
       axios
-        .post(`${VITE_API_URL}/import_all_csv_site.csv`, formData, {
+        .post(`${VITE_API_URL}/import_all_csv_site`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         })
         .then((response) => {
-          this.ImportCSV(response.data, "filename.csv");
+          this.ImportCSV(response.data, file.name);
         })
         .catch((error) => {
-          // console.error("Error:", error);
+          // Handle error
+          console.log(error);
         });
     },
     ImportCSV(csvData, filename) {
@@ -409,14 +472,25 @@ export default {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     },
-
+    handleCheckboxChange(dataId) {
+      if (this.checkedSites[dataId]) {
+        // Checkbox is checked, add the site ID to the array
+        this.siteIds.push(dataId);
+      } else {
+        // Checkbox is unchecked, remove the site ID from the array
+        const index = this.siteIds.indexOf(dataId);
+        if (index !== -1) {
+          this.siteIds.splice(index, 1);
+        }
+      }
+      console.log("Updated siteIds array:", this.siteIds);
+    },
     exportOneFile() {
-      const siteIds = [1];
       const queryParams = new URLSearchParams({
-        site_ids: JSON.stringify(siteIds),
+        site_ids: JSON.stringify(this.siteIds),
       }).toString();
       axios
-        .get(`${VITE_API_URL}/selected_export_site.csv?${queryParams}`)
+        .get(`${VITE_API_URL}/selected_export_site?${queryParams}`)
         .then((response) => {
           this.downloadOneCSV(response.data, "filename.csv");
         })
@@ -435,6 +509,17 @@ export default {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     },
+    // ImportCSV(csvData, filename) {
+    //   const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+    //   const url = window.URL.createObjectURL(blob);
+    //   const a = document.createElement("a");
+    //   a.href = url;
+    //   a.download = filename;
+    //   document.body.appendChild(a);
+    //   a.click();
+    //   window.URL.revokeObjectURL(url);
+    //   document.body.removeChild(a);
+    // },
   },
   mounted() {
     this.setActiveTabFromRoute();
@@ -459,9 +544,6 @@ export default {
     }
 
     next();
-  },
-  mounted() {
-    this.getSiteAllDataMethod();
   },
 };
 </script>

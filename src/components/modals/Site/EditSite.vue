@@ -163,6 +163,7 @@
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="updateVacancyMethod()"
+              :disabled="isSaveDisabled"
             >
               Save
             </button>
@@ -226,6 +227,17 @@ export default {
 
     getVacancyDetail() {
       return this.$store.state.vacancies;
+    },
+    isPhoneNumberValid() {
+      return /^[0-9]{10}$/.test(this.fetchSite.phone_number);
+    },
+
+    isEmailValid() {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(this.fetchSite.email);
+    },
+    isSaveDisabled() {
+      return !this.isPhoneNumberValid || !this.isEmailValid;
     },
   },
   methods: {

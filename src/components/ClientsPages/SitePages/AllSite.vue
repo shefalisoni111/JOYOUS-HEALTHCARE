@@ -9,6 +9,59 @@
         <i class="bi bi-funnel"></i>
         Show Filters
       </button>
+      &nbsp;
+      <button
+        class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
+        type="button"
+        id="navbarDropdown"
+        role="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        :
+
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <li>
+            <!-- Hide the default file input -->
+            <input
+              ref="fileInput"
+              id="fileAll"
+              type="file"
+              accept=".csv"
+              style="display: none"
+              @change="handleFileUpload"
+            />
+            <label
+              for="fileAll"
+              class="custom-file-label dropdown-item"
+              style="border-radius: 0px; cursor: pointer"
+              @click="triggerFileInput"
+            >
+              Import
+            </label>
+            <!-- <button class="import-button" >
+            Import
+          </button> -->
+            <!-- <label
+            for="fileAll"
+            class="dropdown-item"
+            style="border-radius: 0px"
+            >Import</label
+          > -->
+            <!-- <a class="" href="#" @click="triggerFileInput"
+            >Import</a
+          > -->
+          </li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <a class="dropdown-item" href="#" @click="exportOneFile">Export</a>
+          </li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <a class="dropdown-item" href="#" @click="exportAll">Export All</a>
+          </li>
+        </ul>
+      </button>
     </div>
 
     <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
@@ -37,7 +90,8 @@
       <table class="table siteTable">
         <thead>
           <tr>
-            <th scope="col"></th>
+            <th></th>
+
             <th scope="col">#RefCode</th>
             <th scope="col">Site</th>
             <th scope="col">ClientName</th>
@@ -58,7 +112,8 @@
                 type="checkbox"
                 :value="data.id"
                 :id="data.id"
-                v-model="checkedCandidates[data.id]"
+                v-model="checkedSites[data.id]"
+                @change="handleCheckboxChange(data.id)"
               />
             </td>
             <td v-text="data.refer_code"></td>
@@ -120,12 +175,15 @@ export default {
       selectedsiteId: 0,
       showFilters: false,
       getSiteDetail: [],
-      checkedCandidates: reactive({}),
+      siteIds: [],
+      checkedSites: reactive({}),
     };
   },
   created() {
+    this.siteIds = this.getSiteAllData.map((data) => data.id);
+
     this.getSiteAllData.forEach((data) => {
-      this.$set(this.checkedCandidates, data.id, false);
+      this.$set(this.checkedSites, data.id, false);
     });
   },
 
@@ -165,7 +223,72 @@ export default {
     editsiteId(siteId) {
       this.selectedsiteId = siteId;
     },
+    triggerFileInput() {
+      this.$refs.fileInput.click();
+    },
+    handleFileUpload(event) {
+      // const file = event.target.files[0];
+      // if (!file) return;
 
+      // const isValidFileType = file.type === "text/csv";
+      // if (!isValidFileType) {
+      //   alert("Please select a CSV file.");
+      //   return;
+      // }
+
+      // const formData = new FormData();
+      // formData.append("file", file);
+      // axios
+      //   .post(`${VITE_API_URL}/import_all_csv_site`, formData, {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //   })
+      //   .then((response) => {
+      //     this.ImportCSV(response.data, file.name);
+      //   })
+      //   .catch((error) => {
+      //     // Handle error
+      //     console.log(error);
+      //   });
+
+      const file = event.target.files[0];
+      const formData = new FormData();
+      formData.append("agency_setting[agency_logo]", file);
+
+      fetch(`${VITE_API_URL}/import_all_csv_site`, {
+        method: "POST",
+
+        body: formData,
+      })
+        .then((response) => {
+          if (!response.ok) {
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Logo uploaded successfully:", data);
+        })
+        .catch((error) => {
+          // console.error("Error uploading logo:", error);
+        });
+
+      const reader = new FileReader();
+
+      reader.readAsDataURL(file);
+    },
+
+    ImportCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    },
     async getSiteAllDataMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/sites`);
@@ -173,6 +296,44 @@ export default {
       } catch (error) {
         // console.error("Error fetching data:", error);
       }
+    },
+    handleCheckboxChange(dataId) {
+      if (this.checkedSites[dataId]) {
+        this.siteIds.push(dataId);
+      } else {
+        const index = this.siteIds.indexOf(dataId);
+        if (index !== -1) {
+          this.siteIds.splice(index, 1);
+        }
+      }
+      console.log("Updated siteIds array:", this.siteIds);
+    },
+    exportOneFile() {
+      const queryParams = ` site_ids=${JSON.stringify(this.siteIds)}`.replace(
+        /%20/g,
+        " "
+      );
+      axios
+        .get(`${VITE_API_URL}/selected_export_site?${queryParams}`, {
+          queryParams,
+        })
+        .then((response) => {
+          this.downloadOneCSV(response.data, "filename.csv");
+        })
+        .catch((error) => {
+          // console.error("Error:", error);
+        });
+    },
+    downloadOneCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
     },
   },
   mounted() {

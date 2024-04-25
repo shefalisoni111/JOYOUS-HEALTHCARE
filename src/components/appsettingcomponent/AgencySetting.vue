@@ -43,35 +43,62 @@
                 </ol>
               </div>
               <!-- End Page Title -->
-              <div class="p-3">
-                <button
-                  type="button"
-                  class="btn btn-outline-success text-nowrap text-nowrap"
-                  data-bs-toggle="modal"
-                  data-bs-target="#editSite"
-                  data-bs-whatever="@mdo"
-                >
-                  <i class="bi bi-pencil"></i> Edit
-                </button>
-              </div>
             </div>
           </div>
           <div class="col-12 bg-white"></div>
           <div class="row">
             <div class="col-12">
-              <div class="bg-white">
+              <div class="bg-white" v-for="data in getAgencyData" :key="data.id">
+                <div class="p-5 float-end">
+                  <button
+                    type="button"
+                    class="btn btn-outline-success text-nowrap text-nowrap"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editAgencyData"
+                    data-bs-whatever="@mdo"
+                    @click="editagencyId(data.id)"
+                  >
+                    <i class="bi bi-pencil"></i> Edit
+                  </button>
+                </div>
                 <div class="col-5">
                   <div class="d-flex justify-content-between align-items-center px-4">
                     <img
-                      src="./logo.png"
+                      v-if="data.agency_logo"
+                      :src="completeImageUrl"
                       class=""
-                      alt="RecPal"
-                      width="180"
-                      height="51"
+                      alt="Agency Logo"
+                      width="220"
+                      height="50"
                       loading="eager"
                     />
+                    <div v-else class="position-relative">
+                      <img
+                        src="./pic-image.jpg"
+                        class="img-fluid"
+                        alt="RecPal"
+                        width="220"
+                        height="50"
+                        loading="eager"
+                      />
+                      <input
+                        type="file"
+                        id="agencyMainInput"
+                        style="display: none"
+                        accept="image/*"
+                        @change="previewAgencyLogo"
+                      />
+                      <label
+                        for="agencyMainInput"
+                        v-if="!data.agency_logo"
+                        class="fs-3 fw-bold w-25 position-absolute end-0 top-0 text-center"
+                        style="border-radius: 0px; background-color: #57bd8e"
+                        >+</label
+                      >
+                    </div>
+
                     <div class="d-flex flex-column text-capitalize">
-                      <h5 class="mb-0">RecPal</h5>
+                      <h5 class="mb-0">{{ data.agency_name }}</h5>
                       <p class="mb-0">recruitment</p>
                       <span>Description</span>
                     </div>
@@ -210,19 +237,30 @@
                             <span class="text-muted">(dimension 32px * 32px)</span>
                           </h6>
                           <div class="col-4">
-                            <div class="card" style="width: 400px">
-                              <div class="card-body">
-                                <img :src="logoPreview" class="img-fluid" />
+                            <div class="card" style="width: 400px; height: 345px">
+                              <div class="card-body position-relative">
+                                <img
+                                  v-if="!logoPreview"
+                                  src="./pic-image.jpg"
+                                  class="img-fluid"
+                                  loading="eager"
+                                />
+                                <img
+                                  v-else
+                                  :src="logoPreview"
+                                  class="img-fluid m-auto d-block"
+                                  loading="eager"
+                                />
                                 <input
                                   type="file"
-                                  id="logoInput"
+                                  id="faviconInput"
                                   style="display: none"
                                   accept="image/*"
                                   @change="previewLogo"
                                 />
                                 <label
-                                  for="logoInput"
-                                  class="btn btn-primary w-100"
+                                  for="faviconInput"
+                                  class="btn btn-primary w-100 position-absolute bottom-0 end-0"
                                   style="border-radius: 0px"
                                   >Upload Favicon</label
                                 >
@@ -242,15 +280,39 @@
                             <span class="text-muted">(dimension 220px * 50px)</span>
                           </h6>
                           <div class="col-4">
-                            <div class="card" style="width: 400px">
-                              <div class="card-body">
-                                <img src="./pic-image.jpg" class="img-fluid" />
-                                <a
+                            <div class="card" style="width: 400px; height: 345px">
+                              <div class="card-body position-relative">
+                                <img
+                                  v-if="!logoAgencyPreview"
+                                  src="./pic-image.jpg"
+                                  class="img-fluid"
+                                  loading="eager"
+                                />
+                                <img
+                                  v-else
+                                  :src="logoAgencyPreview"
+                                  class="img-fluid m-auto d-block"
+                                  loading="eager"
+                                />
+                                <input
+                                  type="file"
+                                  id="agencyInput"
+                                  style="display: none"
+                                  accept="image/*"
+                                  @change="previewAgencyLogo"
+                                />
+                                <label
+                                  for="agencyInput"
+                                  class="btn btn-primary w-100 position-absolute bottom-0 end-0"
+                                  style="border-radius: 0px"
+                                  >Upload Agency Logo</label
+                                >
+                                <!-- <a
                                   href="#"
                                   class="btn btn-primary w-100"
                                   style="border-radius: 0px"
-                                  >Upload Logo</a
-                                >
+                                  >Upload Favicon</a
+                                > -->
                               </div>
                             </div>
                           </div>
@@ -261,15 +323,39 @@
                             <span class="text-muted">(dimension 150px * 75px)</span>
                           </h6>
                           <div class="col-4">
-                            <div class="card" style="width: 400px">
-                              <div class="card-body">
-                                <img src="./pic-image.jpg" class="img-fluid" />
-                                <a
+                            <div class="card" style="width: 400px; height: 345px">
+                              <div class="card-body position-relative">
+                                <img
+                                  v-if="!logoInvoicePreview"
+                                  src="./pic-image.jpg"
+                                  class="img-fluid"
+                                  loading="eager"
+                                />
+                                <img
+                                  v-else
+                                  :src="logoInvoicePreview"
+                                  class="img-fluid m-auto d-block"
+                                  loading="eager"
+                                />
+                                <input
+                                  type="file"
+                                  id="invoiceInput"
+                                  style="display: none"
+                                  accept="image/*"
+                                  @change="previewInvoiceLogo"
+                                />
+                                <label
+                                  for="invoiceInput"
+                                  class="btn btn-primary w-100 position-absolute bottom-0 end-0"
+                                  style="border-radius: 0px"
+                                  >Upload Invoice Logo</label
+                                >
+                                <!-- <a
                                   href="#"
                                   class="btn btn-primary w-100"
                                   style="border-radius: 0px"
-                                  >Upload Logo</a
-                                >
+                                  >Upload Favicon</a
+                                > -->
                               </div>
                             </div>
                           </div>
@@ -297,57 +383,189 @@
         </div>
       </div>
     </div>
+    <EditAgencySetting
+      :agencyId="selectedAgencyId || 0"
+      @editAgency="getAgencyDataMethod"
+    />
   </div>
 </template>
 <script>
 import axios from "axios";
 import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
+import EditAgencySetting from "../modals/AgencySetting/EditAgencySetting.vue";
 
 export default {
   name: "AgencySetting",
   data() {
     return {
       getAgencyData: [],
-      logoPreview: "./pic-image.jpg",
+      logoPreview: "",
+      logoAgencyPreview: "",
+      logoInvoicePreview: "",
+      selectedAgencyId: 0,
     };
   },
   components: {
     Navbar,
     Sidebar,
+    EditAgencySetting,
+  },
+  computed: {
+    completeImageUrl() {
+      if (this.getAgencyData && this.getAgencyData.agency_logo) {
+        return `${VITE_API_URL}${this.getAgencyData.agency_logo}`;
+      }
+      return null;
+    },
   },
   methods: {
+    editagencyId(agencyId) {
+      this.selectedAgencyId = agencyId;
+    },
     previewLogo(event) {
       const file = event.target.files[0];
       const formData = new FormData();
-      formData.append("agency_setting[agency_logo]", file);
-      const token = localStorage.getItem("token");
 
-      fetch(`${VITE_API_URL}/agency_settings`, {
-        method: "POST",
-        headers: {
-          Authorization: "bearer " + token,
-        },
-        body: formData,
-      })
-        .then((response) => {
-          if (!response.ok) {
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log("Logo uploaded successfully:", data);
-        })
-        .catch((error) => {
-          // console.error("Error uploading logo:", error);
-        });
+      if (!file) {
+        alert("Please choose an image file.");
+        return;
+      }
 
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        this.localStorageImage = e.target.result;
-        localStorage.setItem("logoPreview", e.target.result);
+      const image = new Image();
+      image.src = URL.createObjectURL(file);
+      image.onload = () => {
+        if (image.width !== 32 || image.height !== 32) {
+          alert("Please choose an image with dimensions of 32pxX32px.");
+          return;
+        }
+
+        formData.append("agency_setting[agency_logo]", file);
+        const token = localStorage.getItem("token");
+
+        fetch(`${VITE_API_URL}/agency_settings`, {
+          method: "POST",
+          headers: {
+            Authorization: "bearer " + token,
+          },
+          body: formData,
+        })
+          .then((response) => {
+            if (!response.ok) {
+            }
+            return response.json();
+          })
+          .then((data) => {
+            // console.log("Logo uploaded successfully:", data);
+          })
+          .catch((error) => {
+            // Handle error
+          });
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.logoPreview = reader.result;
+          this.localStorageImage = e.target.result;
+          localStorage.setItem("logoPreview", e.target.result);
+        };
+        reader.readAsDataURL(file);
       };
-      reader.readAsDataURL(file);
+    },
+    previewAgencyLogo(event) {
+      const file = event.target.files[0];
+      const formData = new FormData();
+
+      if (!file) {
+        alert("Please choose an image file.");
+        return;
+      }
+
+      const image = new Image();
+      image.src = URL.createObjectURL(file);
+      image.onload = () => {
+        if (image.width !== 220 || image.height !== 50) {
+          alert("Please choose an image with dimensions of 220pxX50px.");
+          return;
+        }
+
+        formData.append("agency_setting[agency_logo]", file);
+        const token = localStorage.getItem("token");
+
+        fetch(`${VITE_API_URL}/agency_settings`, {
+          method: "POST",
+          headers: {
+            Authorization: "bearer " + token,
+          },
+          body: formData,
+        })
+          .then((response) => {
+            if (!response.ok) {
+            }
+            return response.json();
+          })
+          .then((data) => {
+            // console.log("Logo uploaded successfully:", data);
+          })
+          .catch((error) => {
+            // Handle error
+          });
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.logoAgencyPreview = reader.result;
+          this.localStorageImage = e.target.result;
+          localStorage.setItem("logoAgencyPreview", e.target.result);
+        };
+        reader.readAsDataURL(file);
+      };
+    },
+    previewInvoiceLogo(event) {
+      const file = event.target.files[0];
+      const formData = new FormData();
+
+      if (!file) {
+        alert("Please choose an image file.");
+        return;
+      }
+
+      const image = new Image();
+      image.src = URL.createObjectURL(file);
+      image.onload = () => {
+        if (image.width !== 150 || image.height !== 75) {
+          alert("Please choose an image with dimensions of 150pxX75px.");
+          return;
+        }
+
+        formData.append("agency_setting[invoice_logo]", file);
+        const token = localStorage.getItem("token");
+
+        fetch(`${VITE_API_URL}/agency_settings`, {
+          method: "POST",
+          headers: {
+            Authorization: "bearer " + token,
+          },
+          body: formData,
+        })
+          .then((response) => {
+            if (!response.ok) {
+            }
+            return response.json();
+          })
+          .then((data) => {
+            // console.log("Logo uploaded successfully:", data);
+          })
+          .catch((error) => {
+            // Handle error
+          });
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.logoInvoicePreview = reader.result;
+          this.localStorageImage = e.target.result;
+          localStorage.setItem("logoInvoicePreview", e.target.result);
+        };
+        reader.readAsDataURL(file);
+      };
     },
     async getAgencyDataMethod() {
       await axios
@@ -367,6 +585,14 @@ export default {
       const storedImage = localStorage.getItem("logoPreview");
       if (storedImage) {
         this.logoPreview = storedImage;
+      }
+      const storedImageAgency = localStorage.getItem("logoAgencyPreview");
+      if (storedImageAgency) {
+        this.logoAgencyPreview = storedImageAgency;
+      }
+      const storedImageInvoice = localStorage.getItem("logoInvoicePreview");
+      if (storedImageInvoice) {
+        this.logoInvoicePreview = storedImageInvoice;
       }
     },
   },

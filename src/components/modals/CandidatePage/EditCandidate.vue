@@ -98,6 +98,7 @@
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="updateCandidateMethod()"
+              :disabled="isSaveDisabled"
             >
               Save
             </button>
@@ -148,6 +149,20 @@ export default {
         (option) => option.id === this.fetchVacancy.job_id
       );
       return job_title ? job_title.name : "";
+    },
+    isPhoneNumberValid() {
+      return /^[0-9]{10}$/.test(this.fetchCandidate.phone_number);
+    },
+
+    isEmailValid() {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(this.fetchCandidate.email);
+    },
+    isPasswordMatch() {
+      return this.fetchCandidate.password === this.fetchCandidate.confirm_password;
+    },
+    isSaveDisabled() {
+      return !this.isPhoneNumberValid || !this.isEmailValid || !this.isPasswordMatch;
     },
   },
   methods: {

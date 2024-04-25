@@ -121,6 +121,7 @@
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="updateClientMethod"
+              :disabled="isSaveDisabled"
             >
               Save
             </button>
@@ -166,6 +167,20 @@ export default {
         (option) => option.id === this.fetchClients.job_id
       );
       return job_title ? job_title.name : "";
+    },
+    isPhoneNumberValid() {
+      return /^[0-9]{10}$/.test(this.fetchClients.phone_number);
+    },
+
+    isEmailValid() {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(this.fetchClients.email);
+    },
+    isPasswordMatch() {
+      return this.fetchClients.password === this.fetchClients.confirm_password;
+    },
+    isSaveDisabled() {
+      return !this.isPhoneNumberValid || !this.isEmailValid || !this.isPasswordMatch;
     },
   },
   components: { SuccessAlert },

@@ -9,6 +9,44 @@
         <i class="bi bi-funnel"></i>
         Show Filters
       </button>
+      &nbsp;
+      <button
+        class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
+        type="button"
+        id="navbarDropdown"
+        role="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        :
+
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <li>
+            <label
+              for="fileAll"
+              class="custom-file-label dropdown-item"
+              style="border-radius: 0px; cursor: pointer"
+            >
+              Import
+            </label>
+
+            <input
+              ref="fileInput"
+              id="fileAll"
+              type="file"
+              accept=".csv"
+              style="display: none"
+              @change="handleFileUpload"
+            />
+          </li>
+          <li><hr class="dropdown-divider" /></li>
+          <li><a class="dropdown-item" href="#" @click="exportOneFile">Export</a></li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <a class="dropdown-item" href="#" @click="exportAll">Export All</a>
+          </li>
+        </ul>
+      </button>
     </div>
 
     <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
@@ -37,7 +75,7 @@
       <table class="table clientTable">
         <thead>
           <tr>
-            <!-- <th scope="col">ID</th> -->
+            <th scope="col"></th>
             <th scope="col">#RefCode</th>
             <th scope="col">ClientName</th>
             <th scope="col" style="width: 10%">Jobs</th>
@@ -51,7 +89,18 @@
         </thead>
         <tbody>
           <tr v-for="client in paginateCandidates" :key="client.id">
+            <td>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                :value="client.id"
+                :id="client.id"
+                v-model="checkedClient[client.id]"
+                @change="handleCheckboxChange(client.id)"
+              />
+            </td>
             <!-- <td v-text="client.id"></td> -->
+
             <td v-text="client.ref_code"></td>
             <td>
               <router-link
@@ -176,7 +225,7 @@ import axios from "axios";
 import EditClientModal from "../modals/Clients/EditClientModal.vue";
 import AddClients from "@/components/modals/Clients/AddClients.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
-
+import { reactive } from "vue";
 export default {
   data() {
     return {
@@ -188,6 +237,7 @@ export default {
       itemsPerPage: 11,
       activated: false,
       showFilters: false,
+      checkedClient: reactive({}),
       client: {
         job_name: ["Job1", "Job2", "Job3", "Job4", "Job5", "Job6"],
       },
@@ -215,6 +265,13 @@ export default {
     portalAccessText() {
       return this.client.activated ? "Active" : "No Account";
     },
+  },
+  created() {
+    this.clientId = this.getClientDetail.map((data) => data.id);
+
+    this.getClientDetail.forEach((data) => {
+      this.$set(this.checkedClient, data.id, false);
+    });
   },
   methods: {
     toggleFilters() {
@@ -280,7 +337,84 @@ export default {
     editClient(clientID) {
       this.selectedClientID = clientID;
     },
+    handleCheckboxChange(dataId) {
+      if (this.checkedClient[dataId]) {
+        this.clientId.push(dataId);
+      } else {
+        const index = this.clientId.indexOf(dataId);
+        if (index !== -1) {
+          this.clientId.splice(index, 1);
+        }
+      }
+      console.log("Updated clientId array:", this.clientId);
+    },
+    exportOneFile() {
+      const queryParams = `client_ids=${JSON.stringify(this.clientId)
+        .replace(/%20/g, " ")
+        .split(",")
+        .join(",")}`;
+      axios
+        .get(`${VITE_API_URL}/selected_export?${queryParams}`, {
+          queryParams,
+        })
+        .then((response) => {
+          this.downloadOneCSV(response.data, "filename.csv");
+        })
+        .catch((error) => {
+          // console.error("Error:", error);
+        });
+    },
+    downloadOneCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    },
+    triggerFileInput() {
+      this.$refs.fileInput.click();
+    },
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
 
+      const isValidFileType = file.type === "text/csv";
+      if (!isValidFileType) {
+        alert("Please select a CSV file.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", file);
+      axios
+        .post(`${VITE_API_URL}/import_all_csv`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          this.ImportCSV(response.data, file.name);
+        })
+        .catch((error) => {
+          // Handle error
+          console.log(error);
+        });
+    },
+    ImportCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    },
     // async clientsDeleteMethod(id) {
     //   if (!window.confirm("Are you Sure ?")) {
     //     return;
@@ -289,6 +423,27 @@ export default {
     //     this.createdClient();
     //   });
     // },
+    exportAll() {
+      axios
+        .get(`${VITE_API_URL}/export_all_csv.csv`)
+        .then((response) => {
+          this.downloadCSV(response.data, "filename.csv");
+        })
+        .catch((error) => {
+          // console.error("Error:", error);
+        });
+    },
+    downloadCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    },
     async createdClient() {
       await axios
         .get(`${VITE_API_URL}/clients`)
