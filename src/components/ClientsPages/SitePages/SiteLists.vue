@@ -81,7 +81,6 @@
                           Show Filters
                         </button> -->
                         <button
-                          v-if="searchQuery"
                           class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
                           type="button"
                           id="navbarDropdown"
@@ -147,7 +146,7 @@
                     <table class="table siteTable">
                       <thead>
                         <tr>
-                          <th></th>
+                          <!-- <th></th> -->
                           <th scope="col">ID</th>
                           <th scope="col">#RefCode</th>
                           <th scope="col">Site</th>
@@ -163,7 +162,7 @@
                       </thead>
                       <tbody v-if="paginateSearchResults?.length > 0">
                         <tr v-for="data in paginateSearchResults" :key="data.id">
-                          <td>
+                          <!-- <td>
                             <input
                               class="form-check-input"
                               type="checkbox"
@@ -172,7 +171,7 @@
                               v-model="checkedSites[data.id]"
                               @change="handleCheckboxChange(data.id)"
                             />
-                          </td>
+                          </td> -->
                           <td>{{ data.id }}</td>
                           <td v-text="data.refer_code"></td>
                           <td v-text="data.site_name"></td>
