@@ -260,9 +260,6 @@ export default {
     },
 
     async getClientMethod() {
-      if (!id) {
-        return;
-      }
       try {
         const response = await axios.get(
           `${VITE_API_URL}/clients/${this.$route.params.id}`

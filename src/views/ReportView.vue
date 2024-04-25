@@ -1,30 +1,3 @@
-<!-- <template>
-  <div>
-    <Navbar />
-    <div id="main">
-      <h6>Reports Page in Progress.....</h6>
-    </div>
-  </div>
-</template>
-<script>
-import Navbar from "../components/Navbar.vue";
-
-export default {
-  components: {
-    Navbar,
-  },
-};
-</script>
-<style scoped>
-#main {
-  padding: 20px 20px;
-  transition: all 0.3s;
-  
-  height: 100dvh;
-  background-color: #fdce5e17;
-}
-</style> -->
-
 <template>
   <div>
     <div class="container-fluid p-0">
@@ -116,7 +89,7 @@ export default {
           routeName: "ClientReport",
         },
         {
-          name: "Business Unit Report",
+          name: "Site Report",
           component: "BusinessUnitReport",
           routeName: "BusinessUnitReport",
         },

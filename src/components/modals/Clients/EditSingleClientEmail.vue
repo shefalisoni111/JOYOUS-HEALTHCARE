@@ -78,7 +78,7 @@ export default {
   computed: {
     isEmailValid() {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailRegex.test(this.fetchSite.email);
+      return emailRegex.test(this.fetchClients.email);
     },
     isSaveDisabled() {
       return !this.isEmailValid;

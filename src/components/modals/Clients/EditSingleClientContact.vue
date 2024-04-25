@@ -82,7 +82,7 @@ export default {
   },
   computed: {
     isPhoneNumberValid() {
-      return /^[0-9]{10}$/.test(this.fetchSite.phone_number);
+      return /^[0-9]{10}$/.test(this.fetchClients.phone_number);
     },
     isSaveDisabled() {
       return !this.isPhoneNumberValid;
