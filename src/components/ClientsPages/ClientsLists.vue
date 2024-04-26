@@ -246,7 +246,7 @@
         </div>
       </div>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 11">
+    <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 8">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -301,7 +301,7 @@ export default {
       activeTab: 0,
       activeTabName: "",
       currentPage: 1,
-      itemsPerPage: 11,
+      itemsPerPage: 8,
       // showFilters: false,
       selectedClientStatus: "",
       colors: [

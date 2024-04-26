@@ -9,6 +9,14 @@
         <i class="bi bi-funnel"></i>
         Show Filters
       </button>
+      <input
+        ref="fileInput"
+        id="fileAll"
+        type="file"
+        accept=".csv"
+        style="display: none"
+        @change="handleFileUpload"
+      />
       &nbsp;
       <button
         class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
@@ -26,18 +34,10 @@
               for="fileAll"
               class="custom-file-label dropdown-item"
               style="border-radius: 0px; cursor: pointer"
+              @click="triggerFileInput"
             >
               Import
             </label>
-
-            <input
-              ref="fileInput"
-              id="fileAll"
-              type="file"
-              accept=".csv"
-              style="display: none"
-              @change="handleFileUpload"
-            />
           </li>
           <li><hr class="dropdown-divider" /></li>
           <li><a class="dropdown-item" href="#" @click="exportOneFile">Export</a></li>

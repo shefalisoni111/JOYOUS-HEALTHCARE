@@ -80,61 +80,6 @@
                           <i class="bi bi-funnel"></i>
                           Show Filters
                         </button> -->
-                        <button
-                          class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
-                          type="button"
-                          id="navbarDropdown"
-                          role="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          :
-
-                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li>
-                              <label
-                                for="fileAll"
-                                class="custom-file-label dropdown-item"
-                                style="border-radius: 0px; cursor: pointer"
-                              >
-                                Import
-                              </label>
-                              <!-- Hide the default file input -->
-                              <input
-                                ref="fileInput"
-                                id="fileAll"
-                                type="file"
-                                accept=".csv"
-                                style="display: none"
-                                @change="handleFileUpload"
-                              />
-                              <!-- <button class="import-button" >
-                                Import
-                              </button> -->
-                              <!-- <label
-                                for="fileAll"
-                                class="dropdown-item"
-                                style="border-radius: 0px"
-                                >Import</label
-                              > -->
-                              <!-- <a class="" href="#" @click="triggerFileInput"
-                                >Import</a
-                              > -->
-                            </li>
-                            <li><hr class="dropdown-divider" /></li>
-                            <li>
-                              <a class="dropdown-item" href="#" @click="exportOneFile"
-                                >Export</a
-                              >
-                            </li>
-                            <li><hr class="dropdown-divider" /></li>
-                            <li>
-                              <a class="dropdown-item" href="#" @click="exportAll"
-                                >Export All</a
-                              >
-                            </li>
-                          </ul>
-                        </button>
                       </div>
                     </div>
                   </div>
@@ -233,7 +178,7 @@
         </div>
       </div>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 11">
+    <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 9">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -292,7 +237,7 @@ export default {
       activeTab: 0,
       activeTabName: "",
       currentPage: 1,
-      itemsPerPage: 8,
+      itemsPerPage: 9,
     };
   },
   computed: {

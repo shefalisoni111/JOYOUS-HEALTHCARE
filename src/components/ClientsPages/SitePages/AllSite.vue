@@ -9,6 +9,14 @@
         <i class="bi bi-funnel"></i>
         Show Filters
       </button>
+      <input
+        ref="fileInput"
+        id="fileAll"
+        type="file"
+        accept=".csv"
+        style="display: none"
+        @change="handleFileUpload"
+      />
       &nbsp;
       <button
         class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
@@ -20,17 +28,9 @@
       >
         :
 
-        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <li>
             <!-- Hide the default file input -->
-            <input
-              ref="fileInput"
-              id="fileAll"
-              type="file"
-              accept=".csv"
-              style="display: none"
-              @change="handleFileUpload"
-            />
             <label
               for="fileAll"
               class="custom-file-label dropdown-item"
@@ -39,6 +39,8 @@
             >
               Import
             </label>
+            <!-- Trigger file input when label is clicked -->
+
             <!-- <button class="import-button" >
             Import
           </button> -->
@@ -60,7 +62,7 @@
           <li>
             <a class="dropdown-item" href="#" @click="exportAll">Export All</a>
           </li>
-        </ul>
+        </div>
       </button>
     </div>
 
@@ -227,55 +229,30 @@ export default {
       this.$refs.fileInput.click();
     },
     handleFileUpload(event) {
-      // const file = event.target.files[0];
-      // if (!file) return;
-
-      // const isValidFileType = file.type === "text/csv";
-      // if (!isValidFileType) {
-      //   alert("Please select a CSV file.");
-      //   return;
-      // }
-
-      // const formData = new FormData();
-      // formData.append("file", file);
-      // axios
-      //   .post(`${VITE_API_URL}/import_all_csv_site`, formData, {
-      //     headers: {
-      //       "Content-Type": "multipart/form-data",
-      //     },
-      //   })
-      //   .then((response) => {
-      //     this.ImportCSV(response.data, file.name);
-      //   })
-      //   .catch((error) => {
-      //     // Handle error
-      //     console.log(error);
-      //   });
-
       const file = event.target.files[0];
+      if (!file) return;
+
+      const isValidFileType = file.type === "text/csv";
+      if (!isValidFileType) {
+        alert("Please select a CSV file.");
+        return;
+      }
+
       const formData = new FormData();
-      formData.append("agency_setting[agency_logo]", file);
-
-      fetch(`${VITE_API_URL}/import_all_csv_site`, {
-        method: "POST",
-
-        body: formData,
-      })
-        .then((response) => {
-          if (!response.ok) {
-          }
-          return response.json();
+      formData.append("file", file);
+      axios
+        .post(`${VITE_API_URL}/import_all_csv_site.csv`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         })
-        .then((data) => {
-          // console.log("Logo uploaded successfully:", data);
+        .then((response) => {
+          this.ImportCSV(response.data, file.name);
         })
         .catch((error) => {
-          // console.error("Error uploading logo:", error);
+          // Handle error
+          // console.log(error);
         });
-
-      const reader = new FileReader();
-
-      reader.readAsDataURL(file);
     },
 
     ImportCSV(csvData, filename) {
