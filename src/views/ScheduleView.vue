@@ -1044,17 +1044,18 @@ export default {
         if (
           error.response &&
           error.response.status === 422 &&
-          typeof error.response.data === "object"
+          typeof error.response.data === "object" &&
+          error.response.data.error &&
+          error.response.data.error.base &&
+          Array.isArray(error.response.data.error.base) &&
+          error.response.data.error.base.length > 0
         ) {
-          if (error.response.data.error) {
-            errorMessage = error.response.data.error;
-          } else {
-            errorMessage = error.response.data.error.base[0];
-          }
-
-          alert(errorMessage);
+          errorMessage = error.response.data.error.base[0];
         } else {
+          errorMessage = "An error occurred while assigning shift.";
         }
+        alert(errorMessage);
+
         // if (error.response && error.response.status === 422) {
         //   let errorMessage;
 
@@ -1073,8 +1074,6 @@ export default {
         //     errorMessage = "Invalid error data structure";
         //   }
         // }
-
-        alert(errorMessage);
       } finally {
         this.vacancyBeingDragged = null;
         this.dropCandidateId = null;

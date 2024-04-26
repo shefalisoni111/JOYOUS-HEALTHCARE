@@ -92,7 +92,7 @@
                   <div class="mt-3 d-flex justify-content-between align-items-center">
                     <div>
                       <h6 class="card-title text-nowrap fw-bold text-capitalize">
-                        {{ getCandidates.first_name }}
+                        {{ getCandidates.first_name }}&nbsp;{{ getCandidates.last_name }}
                       </h6>
                       <span class="text-lowercase"> {{ getCandidates.email }}</span>
                     </div>
