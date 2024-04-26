@@ -166,12 +166,13 @@ export default {
         shift_id: "",
         staff_rate: "",
         site_id: "",
+        candidate_id: this.$route.params.id,
       },
       employeeData: [],
       options: [],
       businessUnit: [],
       shiftsTime: [],
-      daysOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      daysOfWeek: ["monday", "tuesday", "wednesday", "thursday", "friday"],
     };
   },
   props: {
