@@ -17,7 +17,7 @@
 
           <div class="d-flex align-items-center gap-2">
             <div>
-              <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
+              <!-- <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
                 <input
                   class="form-control mr-sm-2"
                   type="search"
@@ -26,7 +26,7 @@
                   v-model="searchQuery"
                   @input="debounceSearch"
                 />
-              </form>
+              </form> -->
             </div>
             <button
               type="button"
@@ -419,7 +419,7 @@
                     </tr>
                   </tbody>
                 </table>
-                <table class="table" v-if="searchQuery">
+                <!-- <table class="table" v-if="searchQuery">
                   <thead>
                     <tr>
                       <th style="width: 15%">
@@ -617,14 +617,14 @@
                       </td>
                     </tr>
                   </tbody>
-                </table>
+                </table> -->
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 8">
+    <!-- <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 8">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -644,7 +644,7 @@
       >
         Next
       </button>
-    </div>
+    </div> -->
     <div class="mx-3" style="text-align: right" v-if="candidateList.length >= 8">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
