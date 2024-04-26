@@ -3,34 +3,50 @@
     <!-- Modal -->
     <div
       class="modal fade"
-      id="editContactProfile"
-      aria-labelledby="editContactProfile"
+      id="editCustomHoliday"
+      aria-labelledby="editCustomHoliday"
       tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="editContactProfile">Edit Contact</h5>
+            <h5 class="modal-title" id="editCustomHoliday">Edit Custom Holiday</h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
               <form>
                 <div class="mb-3">
                   <div class="col-12">
-                    <label class="form-label">Phone Number</label>
+                    <label class="form-label">Title</label>
                   </div>
                   <div class="col-12 mt-1">
                     <input
                       type="text"
                       class="form-control"
-                      v-model="fetchCandidate.phone_number"
+                      v-model="fetchSite.title"
                       @input="cleanPhoneNumber"
                     />
-                    <!-- <span
-                      v-if="!validatePhoneNumber(fetchCandidate.phone_number)"
-                      class="text-danger"
-                      >Invalid Phone Number</span
-                    > -->
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="col-12">
+                    <label class="form-label">Date</label>
+                  </div>
+                  <div class="col-12 mt-1">
+                    <input type="date" class="form-control" v-model="fetchSite.date" />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="col-12">
+                    <label class="form-label">Holiday Type</label>
+                  </div>
+                  <div class="col-12 mt-1">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="fetchSite.holiday_type"
+                      @input="clearError('holiday_type')"
+                    />
                   </div>
                 </div>
               </form>
@@ -39,7 +55,7 @@
           <div class="modal-footer">
             <button
               class="btn btn-secondary rounded-1"
-              data-bs-target="#editContactProfile"
+              data-bs-target="#editCustomHoliday"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
             >
@@ -65,38 +81,26 @@ import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
-  name: "editContactProfile",
+  name: "editCustomHoliday",
   data() {
     return {
-      fetchCandidate: {
+      fetchSite: {
         id: "",
-
-        phone_number: "",
-        first_name: "",
-        last_name: "",
-        password: "",
-        confirm_password: "",
-        address: "",
-        jobs_id: 1,
-
-        email: "",
-        activated: "",
-        employment_type_id: "",
+        title: "",
+        date: "",
+        holiday_type: "",
       },
     };
   },
   props: {
-    candidateId: {
+    SiteID: {
       type: Number,
-      required: true,
+      default: null,
     },
   },
   computed: {
-    getCandidatesData() {
-      return this.$store.state.candidates;
-    },
     isPhoneNumberValid() {
-      return /^[0-9]{10}$/.test(this.fetchCandidate.phone_number);
+      return /^[0-9]{10}$/.test(this.fetchSite.phone_number);
     },
 
     isSaveDisabled() {
@@ -106,32 +110,29 @@ export default {
   components: { SuccessAlert },
   methods: {
     cleanPhoneNumber() {
-      this.fetchCandidate.phone_number = this.fetchCandidate.phone_number.replace(
-        /\D/g,
-        ""
-      );
+      this.fetchSite.phone_number = this.fetchSite.phone_number.replace(/\D/g, "");
     },
 
     validatePhoneNumber(phoneNumber) {
       const phoneRegex = /^\d{10}$/;
       return phoneRegex.test(phoneNumber);
     },
-    async fetchCandidateMethod(id) {
+    async fetchSiteMethod(id) {
       if (!id) return;
       try {
-        const response = await axios.get(`${VITE_API_URL}/candidates/${id}`);
-        this.fetchCandidate = { ...this.fetchCandidate, ...response.data.candidate };
+        const response = await axios.get(`${VITE_API_URL}/custom_holidays/${id}`);
+        this.fetchSite = { ...this.fetchSite, ...response.data.data };
       } catch (error) {}
     },
     async updateCandidateMethod() {
       try {
         const response = await axios.put(
-          `${VITE_API_URL}/candidates/${this.fetchCandidate.id}`,
-          this.fetchCandidate
+          `${VITE_API_URL}/custom_holidays/${this.fetchSite.id}`,
+          this.fetchSite
         );
-        this.$emit("contactAdded");
+        this.$emit("EditCustomHoliday");
         // alert("Candidate updated successfully");
-        const message = "Staff Contact updated successfully";
+        const message = "Custom Site Holiday updated successfully";
         this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         // console.error("Error updating candidate:", error);
@@ -139,10 +140,10 @@ export default {
     },
   },
   watch: {
-    candidateId: {
+    SiteID: {
       immediate: true,
-      handler(newCandidateId) {
-        this.fetchCandidateMethod(newCandidateId);
+      handler(newSiteID) {
+        this.fetchSiteMethod(newSiteID);
       },
     },
   },

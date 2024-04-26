@@ -56,7 +56,7 @@
         <select @change="filterData($event.target.value)">
           <option selected>Client Status</option>
           <option value="true">Active</option>
-          <option class="false">In-Active</option>
+          <option value="false">In-Active</option>
         </select>
 
         <!-- <select v-model="selectedCandidate" id="selectCandidateList">

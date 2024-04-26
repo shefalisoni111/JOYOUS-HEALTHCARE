@@ -97,9 +97,10 @@
                   </div>
                   <div class="col-12 mt-1">
                     <input
-                      type="number"
+                      type="text"
                       class="form-control"
                       v-model="fetchNExtToKinData.postcode"
+                      @input="cleanAndValidatePostcode"
                     />
                   </div>
                 </div>
@@ -119,6 +120,7 @@
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="updateNextToKinMethod()"
+              :disabled="isSaveDisabled"
             >
               Save
             </button>
@@ -152,6 +154,17 @@ export default {
     };
   },
   components: { SuccessAlert },
+  computed: {
+    isPhoneNumberValid() {
+      return /^[0-9]{10}$/.test(this.fetchNExtToKinData.phone_number);
+    },
+    isPostcodeValid() {
+      return /^[0-9]{1,6}$/.test(this.fetchNExtToKinData.postcode);
+    },
+    isSaveDisabled() {
+      return !this.isPhoneNumberValid || !this.isPostcodeValid;
+    },
+  },
   props: {
     nextKinID: {
       type: [String, Number, null],
@@ -166,6 +179,14 @@ export default {
       );
 
       this.validatePhoneNumber = this.fetchNExtToKinData.phone_number.length === 10;
+    },
+    cleanAndValidatePostcode() {
+      this.fetchNExtToKinData.postcode = this.fetchNExtToKinData.postcode.replace(
+        /\D/g,
+        ""
+      );
+
+      this.validatePhoneNumber = this.fetchNExtToKinData.postcode.length === 6;
     },
     async fetchNextToKinMethod(id) {
       if (!id) return;

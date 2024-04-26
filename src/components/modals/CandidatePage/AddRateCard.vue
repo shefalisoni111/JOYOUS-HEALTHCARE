@@ -17,7 +17,7 @@
                     >
                   </div>
                   <div class="col-10">
-                    <select v-model="site_id" id="selectBusinessUnit">
+                    <select v-model="business_unit_id" id="selectBusinessUnit">
                       <option
                         v-for="option in businessUnit"
                         :key="option.id"
@@ -141,14 +141,16 @@
               data-bs-target="#rateCards"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
+              v-on:click="clearFieldsData"
             >
               Cancel
             </button>
             <button
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              :class="{
+                'btn btn-primary rounded-1 text-capitalize fw-medium': true,
+              }"
               data-bs-dismiss="modal"
-              @click="submitForm"
-              :disabled="!isValidForm"
+              v-on:click="submitForm"
             >
               Add RateCard
             </button>
@@ -170,11 +172,12 @@ export default {
     return {
       weekname: "",
       shift_id: "",
-      site_id: "",
+      business_unit_id: "",
       job_id: "",
       employment_type_id: "",
       staff_rate: "",
       candidate_id: "",
+      site_id: "",
       employeeData: [],
       options: [],
       shiftsTime: [],
@@ -188,7 +191,7 @@ export default {
     };
   },
   watch: {
-    site_id: function (newValue) {
+    business_unit_id: function (newValue) {
       this.validateBusinessUnit(newValue);
     },
     shift_id: function (newValue) {
@@ -242,8 +245,33 @@ export default {
     },
   },
   methods: {
+    clearFieldsData() {
+      setTimeout(() => {
+        this.resetForm();
+      }, 10);
+    },
+    resetForm() {
+      this.weekname = "";
+      this.staff_rate = "";
+      this.business_unit_id = "";
+      this.job_id = "";
+      this.$route.params.id = "";
+      this.employment_type_id = "";
+      this.shift_id = "";
+    },
+    isFieldEmpty() {
+      return (
+        !this.weekname.trim() ||
+        !this.staff_rate.trim() ||
+        !this.business_unit_id.trim() ||
+        !this.$route.params.id.trim() ||
+        !this.employment_type_id.trim() ||
+        !this.shift_id.trim() ||
+        !this.job_id
+      );
+    },
     async submitForm() {
-      this.validateBusinessUnit(this.site_id);
+      this.validateBusinessUnit(this.business_unit_id);
       this.validateStaffRate(this.shift_id);
       this.validateJobID(this.job_id);
       this.validateShiftId(this.shift_id);
@@ -259,7 +287,7 @@ export default {
       const data = {
         weekname: this.weekname,
         staff_rate: this.staff_rate,
-        site_id: this.site_id,
+        business_unit_id: this.business_unit_id,
         job_id: this.job_id,
         candidate_id: this.$route.params.id,
         employment_type_id: this.employment_type_id,
@@ -278,13 +306,8 @@ export default {
         if (response.ok) {
           this.$emit("rateCard");
 
-          this.weekname = "";
-          this.staff_rate = "";
-          this.site_id = "";
-          this.job_id = "";
-          this.$route.params.id = "";
-          this.employment_type_id = "";
-          this.shift_id = "";
+          this.resetForm();
+          this.clearError();
           const message = "Successful Rate Card added";
           this.$refs.successAlert.showSuccess(message);
         } else {

@@ -19,11 +19,11 @@
           <i class="bi bi-file-earmark-text"></i>
         </router-link>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <router-link class="nav-link" to="/appsetting/SubscriptionSetting" exact>
           <i class="bi bi-card-list"></i>
         </router-link>
-      </li>
+      </li> -->
 
       <li class="nav-item">
         <router-link class="nav-link" to="/appsetting/notificationsetting" exact>

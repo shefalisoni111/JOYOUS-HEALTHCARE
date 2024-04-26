@@ -26,7 +26,6 @@
                 <th scope="col">Id</th>
                 <th scope="col">Title</th>
                 <th scope="col">Date</th>
-                <th scope="col">Site ID</th>
                 <th scope="col">Type</th>
                 <th scope="col">Actions</th>
 
@@ -37,20 +36,20 @@
               <tr v-for="data in getCustomHolidayData" :key="data.id">
                 <td>{{ data.id }}</td>
                 <td class="text-capitalize">{{ data.title }}</td>
-                <td>{{ data.site_id }}</td>
                 <td>{{ data.date }}</td>
                 <td>{{ data.holiday_type }}</td>
 
                 <td>
-                  <!-- <button
+                  <button
                     type="button"
                     class="btn btn-outline-success text-nowrap text-nowrap"
-                    data-bs-toggle="siteCustomHoliday"
-                    data-bs-target="#"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editCustomHoliday"
                     data-bs-whatever="@mdo"
+                    @click="editSite(data.id)"
                   >
                     <i class="bi bi-pencil-square"></i>
-                  </button> -->
+                  </button>
                   &nbsp;&nbsp;
                   <button class="btn btn-outline-success text-nowrap">
                     <i
@@ -66,22 +65,32 @@
       </div>
     </div>
     <AddSiteCustomHoliday @addCustomHoliday="getCustomHolidayMethod" />
+    <EditSiteCustomHoliday
+      :SiteID="selectedSiteID || 0"
+      @EditCustomHoliday="getCustomHolidayMethod"
+    />
   </div>
 </template>
 <script>
 import axios from "axios";
 import AddSiteCustomHoliday from "../../modals/Site/AddSiteCustomHoliday.vue";
+import EditSiteCustomHoliday from "../../modals/Site/EditSiteCustomHoliday.vue";
 
 export default {
   data() {
     return {
       getCustomHolidayData: [],
+      selectedSiteID: 0,
     };
   },
   components: {
     AddSiteCustomHoliday,
+    EditSiteCustomHoliday,
   },
   methods: {
+    editSite(SiteID) {
+      this.selectedSiteID = SiteID;
+    },
     async getCustomHolidayMethod() {
       try {
         const response = await axios.get(

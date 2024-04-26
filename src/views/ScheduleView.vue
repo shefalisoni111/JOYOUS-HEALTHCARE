@@ -17,7 +17,7 @@
 
           <div class="d-flex align-items-center gap-2">
             <div>
-              <!-- <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
+              <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
                 <input
                   class="form-control mr-sm-2"
                   type="search"
@@ -26,7 +26,7 @@
                   v-model="searchQuery"
                   @input="debounceSearch"
                 />
-              </form> -->
+              </form>
             </div>
             <button
               type="button"
@@ -211,13 +211,14 @@
                   <div>
                     <div class="filters" v-show="isOpen">
                       <select
+                        @change="filterData($event.target.value)"
                         v-model="job_id"
                         id="selectPublishStatus"
                         class="form-select"
                       >
                         <option value="" selected>Publish Status</option>
-                        <option>Publish</option>
-                        <option>UnPublish</option>
+                        <option value="true">Publish</option>
+                        <option value="false">UnPublish</option>
                       </select>
                     </div>
                   </div>
@@ -225,7 +226,7 @@
               </div>
 
               <div class="sidebar-content" :class="{ 'slide-left': isOpen }">
-                <table class="table">
+                <table class="table" v-if="!searchQuery">
                   <thead>
                     <tr>
                       <th style="width: 15%">
@@ -418,7 +419,7 @@
                     </tr>
                   </tbody>
                 </table>
-                <!-- <table class="table" v-if="searchQuery">
+                <table class="table" v-if="searchQuery">
                   <thead>
                     <tr>
                       <th style="width: 15%">
@@ -495,7 +496,6 @@
                                     vacancy.staff_required
                                   }}</span>
                                 </li>
-                               
                               </ul>
                             </div>
                           </div>
@@ -617,14 +617,14 @@
                       </td>
                     </tr>
                   </tbody>
-                </table> -->
+                </table>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 8">
+    <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 8">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -644,7 +644,7 @@
       >
         Next
       </button>
-    </div> -->
+    </div>
     <div class="mx-3" style="text-align: right" v-if="candidateList.length >= 8">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
@@ -825,6 +825,34 @@ export default {
     },
   },
   methods: {
+    filterData(value) {
+      let filter_type = "publish";
+      let filter_value = value === "true" ? "true" : "false";
+
+      this.makeFilterAPICall(filter_type, filter_value);
+    },
+    async makeFilterAPICall(filter_type, filter_value) {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/schedule_filter`, {
+          params: {
+            filter_type: filter_type,
+            filter_value: filter_value,
+          },
+        });
+
+        this.vacancyList = response.data.vacancies;
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          const errorMessages = error.response.data.error;
+          if (errorMessages === "No records found for the given filter") {
+            alert("No records found for the given filter");
+          } else {
+            alert(errorMessages);
+          }
+        } else {
+        }
+      }
+    },
     async getTimeShift() {
       await axios
         .get(`${VITE_API_URL}/shifts`)
@@ -1343,6 +1371,7 @@ export default {
           }
         );
         this.vacancyList = response.data.data;
+        this.searchResults = response.data.data;
         this.fetchCandidateList();
         this.fetchAssignList();
         // this.fetchAssignVacancyStaffList();

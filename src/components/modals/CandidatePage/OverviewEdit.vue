@@ -137,12 +137,12 @@
                   <div class="col-12">
                     <label class="form-label">Gender</label>
                   </div>
+
                   <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchCandidate.gender"
-                    />
+                    <select id="selectOption" v-model="fetchCandidate.gender">
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                    </select>
                   </div>
                 </div>
               </form>
