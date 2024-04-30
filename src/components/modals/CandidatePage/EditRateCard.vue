@@ -102,7 +102,7 @@
                       <option
                         v-for="day in daysOfWeek"
                         :key="day"
-                        :value="fetchRateCard.weekname"
+                        :value="day"
                         :selected="fetchRateCard.weekname == day"
                       >
                         {{ day }}
@@ -190,10 +190,10 @@ export default {
       return employment_type ? employment_type.title : "";
     },
     selectBusinessUnitIds() {
-      const site_id = this.businessUnit.find(
+      const business_unit_id = this.businessUnit.find(
         (option) => option.id === this.fetchRateCard.business_unit_id
       );
-      return site_id ? site_id.site_name : "";
+      return business_unit_id ? business_unit_id.site_name : "";
     },
     selectedOptionText() {
       const job_id = this.options.find(

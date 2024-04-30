@@ -20,12 +20,7 @@
                     <label class="form-label">Title</label>
                   </div>
                   <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchSite.title"
-                      @input="cleanPhoneNumber"
-                    />
+                    <input type="text" class="form-control" v-model="fetchSite.title" />
                   </div>
                 </div>
                 <div class="mb-3">
@@ -64,7 +59,7 @@
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              @click.prevent="updateCandidateMethod()"
+              @click.prevent="updateCandidateMethod(fetchSite.id)"
               :disabled="isSaveDisabled"
             >
               Save
@@ -85,7 +80,7 @@ export default {
   data() {
     return {
       fetchSite: {
-        id: "",
+        id: this.SiteID,
         title: "",
         date: "",
         holiday_type: "",
@@ -104,7 +99,11 @@ export default {
     },
 
     isSaveDisabled() {
-      return !this.isPhoneNumberValid;
+      return !(
+        this.fetchSite.title.trim() &&
+        this.fetchSite.date &&
+        this.fetchSite.holiday_type.trim()
+      );
     },
   },
   components: { SuccessAlert },
@@ -120,7 +119,9 @@ export default {
     async fetchSiteMethod(id) {
       if (!id) return;
       try {
-        const response = await axios.get(`${VITE_API_URL}/custom_holidays/${id}`);
+        const response = await axios.get(
+          `${VITE_API_URL}/custom_holidays/${this.$route.params.id}`
+        );
         this.fetchSite = { ...this.fetchSite, ...response.data.data };
       } catch (error) {}
     },

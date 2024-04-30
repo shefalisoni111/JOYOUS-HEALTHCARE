@@ -17,7 +17,7 @@
 
           <div class="d-flex align-items-center gap-2">
             <div>
-              <!-- <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
+              <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
                 <input
                   class="form-control mr-sm-2"
                   type="search"
@@ -26,7 +26,7 @@
                   v-model="searchQuery"
                   @input="debounceSearch"
                 />
-              </form> -->
+              </form>
             </div>
             <button
               type="button"
@@ -262,6 +262,7 @@
                       <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
                       <td>
                         <div
+                          v-if="!searchQuery"
                           class="calendar-grid"
                           style="max-height: 90px; overflow-y: auto; overflow-x: hidden"
                         >
@@ -419,7 +420,7 @@
                     </tr>
                   </tbody>
                 </table>
-                <!-- <table class="table" v-if="searchQuery">
+                <table class="table" v-if="searchQuery">
                   <thead>
                     <tr>
                       <th style="width: 15%">
@@ -450,6 +451,7 @@
                       </th>
                     </tr>
                   </thead>
+
                   <tbody v-if="searchResults?.length > 0">
                     <tr v-for="data in searchResults" :key="data.id">
                       <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
@@ -617,14 +619,14 @@
                       </td>
                     </tr>
                   </tbody>
-                </table> -->
+                </table>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 8">
+    <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 8">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -644,7 +646,7 @@
       >
         Next
       </button>
-    </div> -->
+    </div>
     <div class="mx-3" style="text-align: right" v-if="candidateList.length >= 8">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
@@ -841,6 +843,7 @@ export default {
         });
 
         this.vacancyList = response.data.vacancies;
+        this.searchResults = response.data.vacancies;
       } catch (error) {
         if (error.response && error.response.status === 404) {
           const errorMessages = error.response.data.error;
@@ -872,16 +875,10 @@ export default {
         this.searchResults = [];
 
         const response = await axiosInstance.get(
-          `${VITE_API_URL}/candidate_searching_active_and_inactive`,
-          {
-            params: {
-              candidate_query: this.searchQuery,
-              activated: true,
-            },
-          }
+          `${VITE_API_URL}/availability_searching/${this.searchQuery}`
         );
 
-        this.searchResults = response.data;
+        this.searchResults = response.data.data;
       } catch (error) {
         if (error.response && error.response.status === 404) {
           this.errorMessage = "No Staff found for the specified criteria";
@@ -1336,7 +1333,9 @@ export default {
           }
         );
         this.candidateList = response.data.data;
+
         this.searchResults = response.data.data;
+
         // console.log(this.candidateList);
         // this.candidateList.forEach((candidate) => {
         //   candidate.availabilityByDate = {};
@@ -1351,11 +1350,11 @@ export default {
           );
         });
 
-        // this.availabilityIds = this.searchResults.map((candidate) => {
-        //   return candidate.availability.map(
-        //     (availabilityItem) => availabilityItem.availability_id
-        //   );
-        // });
+        this.availabilityIds = this.searchResults.map((candidate) => {
+          return candidate.availability.map(
+            (availabilityItem) => availabilityItem.availability_id
+          );
+        });
         // this.fetchAssignList();
       } catch (error) {}
     },
@@ -1371,7 +1370,9 @@ export default {
           }
         );
         this.vacancyList = response.data.data;
+
         this.searchResults = response.data.data;
+
         this.fetchCandidateList();
         this.fetchAssignList();
         // this.fetchAssignVacancyStaffList();

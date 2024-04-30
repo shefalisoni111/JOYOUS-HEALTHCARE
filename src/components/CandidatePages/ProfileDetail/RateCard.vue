@@ -35,7 +35,7 @@
               <thead>
                 <tr>
                   <th scope="col">S.No</th>
-                  <th scope="col">Business Unit</th>
+                  <th scope="col">Site</th>
                   <th scope="col">Position</th>
                   <th scope="col">Day</th>
                   <th scope="col">Employment Type</th>
@@ -93,9 +93,9 @@
         </div>
       </div>
     </div>
-    <AddRateCard @rateCard="showRateCardMethod" @EditRateCard="showRateCardMethod" />
+    <AddRateCard @rateCard="showRateCardMethod" @rateCardAdded="showRateCardMethod" />
     <EditRateCard
-      @rateCardAdded="showRateCardMethod"
+      @EditRateCard="showRateCardMethod"
       :rateCardId="selectedRateCardId || 0"
     />
   </div>

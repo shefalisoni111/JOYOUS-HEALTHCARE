@@ -62,7 +62,7 @@
                   data-bs-whatever="@mdo"
                   type="button"
                 >
-                  <i class="bi bi-plus"></i> add user
+                  <i class="bi bi-person-plus-fill"></i> Create user
                 </button>
               </div>
             </div>
@@ -85,7 +85,7 @@
                         aria-selected="true"
                         @click="setActiveTab('active')"
                       >
-                        Active
+                        Active Users <span class="badge bg-success">0</span>
                       </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -100,7 +100,7 @@
                         aria-selected="false"
                         @click="setActiveTab('inactive')"
                       >
-                        Inactive
+                        Inactive Users <span class="badge bg-danger">0</span>
                       </button>
                     </li>
                   </ul>
@@ -122,7 +122,7 @@
                               <th scope="col" class="bg-primary text-white">
                                 Mobile No:
                               </th>
-                              <th scope="col" class="bg-primary text-white">Hote</th>
+                              <th scope="col" class="bg-primary text-white">Role</th>
 
                               <th scope="col" class="bg-primary text-white">Action</th>
                             </tr>

@@ -9,12 +9,10 @@
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
-              <form @submit.prevent="addRateCardMethod">
+              <form>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectBusinessUnit"
-                      >Business Unit</label
-                    >
+                    <label class="form-label" for="selectBusinessUnit">Site</label>
                   </div>
                   <div class="col-10">
                     <select v-model="business_unit_id" id="selectBusinessUnit">
@@ -28,7 +26,7 @@
                       </option>
                     </select>
                     <span v-if="!validationBusinessUnit" class="text-danger"
-                      >Business Unit Required</span
+                      >Site Required</span
                     >
                   </div>
                 </div>
@@ -141,7 +139,7 @@
               data-bs-target="#rateCards"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
-              v-on:click="clearFieldsData"
+              @click="clearFieldsData"
             >
               Cancel
             </button>
@@ -150,7 +148,7 @@
                 'btn btn-primary rounded-1 text-capitalize fw-medium': true,
               }"
               data-bs-dismiss="modal"
-              v-on:click="submitForm"
+              v-on:click="addRateCardMethod()"
             >
               Add RateCard
             </button>
@@ -247,18 +245,11 @@ export default {
   methods: {
     clearFieldsData() {
       setTimeout(() => {
+        this.clearError();
         this.resetForm();
       }, 10);
     },
-    resetForm() {
-      this.weekname = "";
-      this.staff_rate = "";
-      this.business_unit_id = "";
-      this.job_id = "";
-      this.$route.params.id = "";
-      this.employment_type_id = "";
-      this.shift_id = "";
-    },
+
     isFieldEmpty() {
       return (
         !this.weekname.trim() ||
@@ -270,7 +261,7 @@ export default {
         !this.job_id
       );
     },
-    async submitForm() {
+    async addRateCardMethod() {
       this.validateBusinessUnit(this.business_unit_id);
       this.validateStaffRate(this.shift_id);
       this.validateJobID(this.job_id);
@@ -304,12 +295,12 @@ export default {
           body: JSON.stringify(data),
         });
         if (response.ok) {
-          this.$emit("rateCard");
+          this.$emit("rateCardAdded");
 
-          this.resetForm();
-          this.clearError();
           const message = "Successful Rate Card added";
           this.$refs.successAlert.showSuccess(message);
+          this.resetForm();
+          this.clearError();
         } else {
         }
       } catch (error) {}
@@ -374,7 +365,15 @@ export default {
     validateDay(newValue) {
       this.validationDay = newValue !== "";
     },
-
+    resetForm() {
+      this.weekname = "";
+      this.staff_rate = "";
+      this.business_unit_id = "";
+      this.job_id = "";
+      this.$route.params.id = "";
+      this.employment_type_id = "";
+      this.shift_id = "";
+    },
     clearError() {
       this.validationBusinessUnit = true;
       this.validationStaffRate = true;

@@ -37,13 +37,23 @@
                     <label class="form-label"> Date</label>
                   </div>
                   <div class="col-10 mt-1">
-                    <input
+                    <!-- <input
                       type="date"
                       class="form-control"
                       v-model="date"
                       rows="3"
                       @input="clearError('date')"
+                    /> -->
+                    <input
+                      type="date"
+                      class="form-control"
+                      v-model="selectedDate"
+                      @change="addDate"
+                      style="padding-right: 1px"
                     />
+                    <span v-if="!validationDateType" class="text-danger"
+                      >Please choose a date from today onwards!</span
+                    >
                     <div v-if="getError('date')" class="text-danger">
                       {{ getError("date") }}
                     </div>
@@ -108,6 +118,8 @@ export default {
       date: "",
       holiday_type: "",
       errors: {},
+      selectedDate: null,
+      validationDateType: true,
     };
   },
   components: { SuccessAlert },
@@ -120,13 +132,14 @@ export default {
   },
   methods: {
     clearFieldsData() {
-      this.clearFields();
       setTimeout(() => {
+        this.clearFields();
         this.clearError();
       }, 10);
     },
     clearFields() {
       this.title = "";
+      this.selectedDate = null;
       this.date = "";
       this.holiday_type = "";
     },
@@ -138,7 +151,37 @@ export default {
       return this.errors[fieldName];
     },
     isEmptyField() {
-      return !this.title.trim() || !this.date.trim() || !this.holiday_type.trim();
+      return (
+        !this.title.trim() ||
+        !this.selectedDate ||
+        !this.holiday_type.trim() ||
+        !this.validationDateType
+      );
+    },
+    addDate() {
+      if (this.selectedDate) {
+        const currentDate = new Date();
+        const selectedDate = new Date(this.selectedDate);
+
+        if (selectedDate >= currentDate) {
+          this.validationDateType = true;
+          this.clearError("date");
+          this.date = selectedDate.toISOString().split("T")[0];
+        } else {
+          this.validationDateType = false;
+          this.$set(this.errors, "date", "Please choose a date from today onwards.");
+        }
+      } else {
+        this.validationDateType = false;
+        this.$set(this.errors, "date", "Holiday Date is required.");
+      }
+    },
+    isToday(selectedDate, currentDate) {
+      return (
+        selectedDate.getDate() === currentDate.getDate() &&
+        selectedDate.getMonth() === currentDate.getMonth() &&
+        selectedDate.getFullYear() === currentDate.getFullYear()
+      );
     },
     validateAndAddJob() {
       this.errors = {};
@@ -149,9 +192,12 @@ export default {
 
       if (!this.date.trim()) {
         this.$set(this.errors, "date", "Holiday Date is required.");
+      } else if (!this.validationDateType) {
+        this.$set(this.errors, "date", "Please choose a date from today onwards.");
       }
+
       if (!this.holiday_type.trim()) {
-        this.$set(this.errors, "date", "Holiday Type is required.");
+        this.$set(this.errors, "holiday_type", "Holiday Type is required.");
       }
 
       if (
