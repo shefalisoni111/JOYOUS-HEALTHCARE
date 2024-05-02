@@ -268,7 +268,6 @@
                       <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
                       <td>
                         <div
-                          v-if="!searchQuery"
                           class="calendar-grid"
                           style="max-height: 90px; overflow-y: auto; overflow-x: hidden"
                         >
@@ -632,7 +631,11 @@
         </div>
       </div>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 8">
+    <!-- <div
+      class="mx-3"
+      style="text-align: right"
+      v-if="!candidateList && searchResults?.length >= 8"
+    >
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -652,8 +655,8 @@
       >
         Next
       </button>
-    </div>
-    <div class="mx-3" style="text-align: right" v-if="candidateList.length >= 8">
+    </div> -->
+    <div class="mx-3" style="text-align: right" v-if="candidateList?.length >= 8">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -721,7 +724,7 @@ export default {
       dropDay: null,
       droppedContent: null,
       currentPage: 1,
-      itemsPerPage: 7,
+      itemsPerPage: 9,
       options: [],
       job_id: "",
       site_id: "",
@@ -915,6 +918,9 @@ export default {
     },
     filteredVacancies() {
       return this.vacancyList.filter((item) => item.date == this.columnDateMatch);
+    },
+    filteredVacancies() {
+      return this.searchResults.filter((item) => item.date == this.columnDateMatch);
     },
     toggleSidebar() {
       this.isOpen = !this.isOpen;

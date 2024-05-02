@@ -392,14 +392,14 @@
       :customDataId="selectedCustomTimesheetId"
       @CustomTimeSheetData-updated="getCustomSheetMethod"
     />
-    <WeekTimeSheetEdit @CustomTimeSheetData-updated="getCustomSheetMethod" />
+    <!-- <WeekTimeSheetEdit @CustomTimeSheetData-updated="getCustomSheetMethod" /> -->
   </div>
 </template>
 <script>
 import axios from "axios";
 import Navbar from "../Navbar.vue";
 import CustomeTimeSheetEdit from "../modals/TimeSheet/CustomeTimeSheetEdit.vue";
-import WeekTimeSheetEdit from "../modals/TimeSheet/WeekTimeSheetEdit.vue";
+// import WeekTimeSheetEdit from "../modals/TimeSheet/WeekTimeSheetEdit.vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -432,7 +432,7 @@ export default {
       business_unit_value: "",
     };
   },
-  components: { Navbar, CustomeTimeSheetEdit, WeekTimeSheetEdit },
+  components: { Navbar, CustomeTimeSheetEdit },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
