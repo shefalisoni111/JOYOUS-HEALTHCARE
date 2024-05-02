@@ -183,7 +183,14 @@
                                 <i
                                   class="bi bi-trash text-danger"
                                   v-on:click="rolesDeleteMethod(data.id)"
-                                ></i>
+                                ></i
+                                >&nbsp;
+                                <button
+                                  class="btn btn-primary btn-sm text-nowrap"
+                                  v-on:click="rolesReActiveMethod(data.id)"
+                                >
+                                  Re-Activate
+                                </button>
                               </td>
 
                               <!-- <td>
@@ -206,7 +213,7 @@
                               </td> -->
                             </tr>
                           </tbody>
-                          <tbody>
+                          <tbody v-else>
                             <tr>
                               <td colspan="6" class="text-danger fw-bold">
                                 {{ "Inactive users not found!" }}
@@ -316,11 +323,38 @@ export default {
             Authorization: "bearer " + token,
           },
         });
-        this.deleteRole(id);
+
         this.getRolesActiveMethod();
         const message = "Privilege User InActivated successfully";
         this.$refs.successAlert.showSuccess(message);
-        this.$emit("confirm-delete", id);
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status === 404) {
+          } else if (error.response.status === 422) {
+            alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    async rolesReActiveMethod(id) {
+      if (!confirm("Are you sure?")) {
+        return;
+      }
+      // const confirmationMessage = await this.$confirm("Are you sure you want to delete?");
+      // this.confirmationMessage = "Are you sure you want to delete this role?";
+      // this.showConfirmation = true;
+
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.put(`${VITE_API_URL}/active_user/${id}`, null, {
+          headers: {
+            Authorization: "bearer " + token,
+          },
+        });
+
+        this.getRolesInActiveMethod();
+        const message = "Privilege User Re-activated successfully";
+        this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         if (error.response) {
           if (error.response.status === 404) {
@@ -344,11 +378,10 @@ export default {
             Authorization: "bearer " + token,
           },
         });
-        this.deleteRole(id);
+
         this.getRolesActiveMethod();
         const message = "Privilege User Deleted successfully";
         this.$refs.successAlert.showSuccess(message);
-        this.$emit("confirm-delete", id);
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
