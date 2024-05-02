@@ -163,12 +163,15 @@
     </div>
     <AddSite @addSite="getSiteAllDataMethod" />
     <EditSite :siteId="selectedsiteId || 0" @editSite="getSiteAllDataMethod" />
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 <script>
 import axios from "axios";
 import EditSite from "../../modals/Site/EditSite.vue";
 import AddSite from "../../modals/Site/AddSite.vue";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+
 import { reactive } from "vue";
 export default {
   data() {
@@ -189,7 +192,7 @@ export default {
     });
   },
 
-  components: { EditSite, AddSite },
+  components: { EditSite, AddSite, SuccessAlert },
   methods: {
     toggleFilters() {
       this.showFilters = !this.showFilters;
@@ -247,6 +250,8 @@ export default {
           },
         })
         .then((response) => {
+          const message = "Import Successfully";
+          this.$refs.successAlert.showSuccess(message);
           this.ImportCSV(response.data, file.name);
         })
         .catch((error) => {
@@ -286,6 +291,13 @@ export default {
       // console.log("Updated siteIds array:", this.siteIds);
     },
     exportOneFile() {
+      const siteIds = this.siteIds.valueOf();
+      if (!siteIds || typeof siteIds !== "string" || siteIds.trim() === "") {
+        alert("Please select at least one Site.");
+        // const errorMessage = "Please select at least one site.";
+        // this.$refs.errorAlert.showError(errorMessage);
+        return;
+      }
       const queryParams = `site_ids=${this.siteIds}`;
       axios
         .get(`${VITE_API_URL}selected_export_site?${queryParams}`, {
@@ -294,6 +306,8 @@ export default {
           },
         })
         .then((response) => {
+          const message = "Export file download Successfully";
+          this.$refs.successAlert.showSuccess(message);
           this.checkedSites = [{}];
           this.downloadOneCSV(response.data, "filename.csv");
         })

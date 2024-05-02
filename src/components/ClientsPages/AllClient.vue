@@ -349,6 +349,13 @@ export default {
       // console.log("Updated clientId array:", this.clientId);
     },
     exportOneFile() {
+      const clientId = this.clientId.valueOf();
+      if (!clientId || typeof clientId !== "string" || clientId.trim() === "") {
+        alert("Please select at least one Client.");
+        // const errorMessage = "Please select at least one site.";
+        // this.$refs.errorAlert.showError(errorMessage);
+        return;
+      }
       const queryParams = `client_ids=${this.clientId}`;
       axios
         .get(`${VITE_API_URL}/selected_export?${queryParams}`, {
@@ -357,6 +364,8 @@ export default {
           },
         })
         .then((response) => {
+          const message = "Export file download Successfully";
+          this.$refs.successAlert.showSuccess(message);
           this.checkedClient = [{}];
           this.downloadOneCSV(response.data, "filename.csv");
         })

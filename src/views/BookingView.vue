@@ -420,8 +420,8 @@
         style="text-align: right"
         v-if="
           getBookingData?.length >= 8 &&
-          !searchResults.length &&
-          !deleteBookingData.length
+          (!searchResults || searchResults.length === 0) &&
+          (!deleteBookingData || deleteBookingData.length === 0)
         "
       >
         <button class="btn btn-outline-dark btn-sm">

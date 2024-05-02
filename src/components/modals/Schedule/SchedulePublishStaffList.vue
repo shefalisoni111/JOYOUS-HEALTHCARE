@@ -67,70 +67,37 @@
                 <table class="w-100">
                   <thead>
                     <tr>
-                      <th style="width: 10px"></th>
-                      <th scope="col" style="width: 85px" class="text-center">
-                        Staff ID
-                      </th>
-                      <th scope="col" style="width: 161px" class="text-center">Staff</th>
-                      <th
-                        scope="colgroup"
-                        colspan="3"
-                        style="width: 40px"
-                        class="text-center"
-                      >
-                        Shift Details
-
-                        <!-- <table class="w-100 text-center me-5">
-                          <thead>
-                            <tr>
-                              <th></th>
-                              <th>Shift ID</th>
-                              <th>Client</th>
-                              <th>Job Title</th>
-                            </tr>
-                          </thead>
-                        </table> -->
-                      </th>
+                      <th></th>
+                      <th scope="col" class="text-center">Staff ID</th>
+                      <th scope="col" class="text-center">Staff</th>
+                      <th scope="col" class="text-center">Client</th>
+                      <th scope="col" class="text-center">Site</th>
+                      <th scope="col" class="text-center">Shift</th>
+                      <th scope="col" class="text-center">Job Title</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="candidate in fetchStaffAndVacancy" :key="candidate.id">
-                      <td>
+                      <td v-for="vacancy in candidate.vacancies" :key="vacancy.id">
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          :value="candidate.id"
-                          :id="`checkbox-${candidate.id}`"
+                          :value="vacancy.id"
+                          :id="`checkbox-${candidate.id}-${vacancy.id}`"
                           @change="
-                            handleCheckboxChange(candidate.candidate_id, 'candidate')
+                            handleCheckboxChange(candidate.candidate_id, vacancy.id)
                           "
                         />
                       </td>
-                      <td v-text="candidate.candidate_id" class="text-center"></td>
-                      <td v-text="candidate.candidate_name" class="text-center"></td>
+                      <td class="text-center" v-text="candidate.candidate_id"></td>
+                      <td class="text-center" v-text="candidate.candidate_name"></td>
                       <td colspan="4">
-                        <table class="w-100 text-center me-5">
-                          <thead>
-                            <tr>
-                              <th></th>
-                              <th>Shift ID</th>
-                              <th>Client</th>
-                              <th>Job Title</th>
-                            </tr>
-                          </thead>
+                        <table class="w-100 me-5">
                           <tbody>
                             <tr v-for="vacancy in candidate.vacancies" :key="vacancy.id">
-                              <td>
-                                <input
-                                  class="form-check-input"
-                                  type="checkbox"
-                                  :value="candidate.id"
-                                  :id="`checkbox-${candidate.id}`"
-                                  @change="handleCheckboxChange(vacancy.id, 'vacancy')"
-                                />
-                              </td>
-                              <td>{{ vacancy.id }}</td>
                               <td>{{ vacancy.client }}</td>
+                              <td>{{ vacancy.site }}</td>
+                              <td>{{ vacancy.site_shift }}</td>
                               <td>{{ vacancy.job_title }}</td>
                             </tr>
                           </tbody>
@@ -364,12 +331,10 @@ export default {
         this.checkedCandidates = {};
       }, 10);
     },
-    handleCheckboxChange(id, type) {
-      if (type === "candidate") {
-        this.candidateId = id;
-      } else if (type === "vacancy") {
-        this.vacancyId = id;
-      }
+    handleCheckboxChange(id, vacancyId) {
+      this.candidateId = id;
+
+      this.vacancyId = vacancyId;
     },
     async assignVacancyToCandidateDirectMethod() {
       const data = {
@@ -384,6 +349,7 @@ export default {
         );
         if (response.status === 200) {
           alert("Staff Shift Publish Successfully");
+          this.$emit("updated-assignPublish");
           // const message = "Staff Shift Publish Successfully";
           // this.$refs.successAlert.showSuccess(message);
           this.getPublishStaffListMethod();
