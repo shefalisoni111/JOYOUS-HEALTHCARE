@@ -58,7 +58,7 @@
                 <button
                   class="btn btn-primary rounded-1 text-uppercase fw-medium"
                   data-bs-toggle="modal"
-                  data-bs-target="#myModal"
+                  data-bs-target="#AddPrivileges"
                   data-bs-whatever="@mdo"
                   type="button"
                 >
@@ -85,7 +85,8 @@
                         aria-selected="true"
                         @click="setActiveTab('active')"
                       >
-                        Active Users <span class="badge bg-success">0</span>
+                        Active Users
+                        <span class="badge bg-success">{{ totalActiveUserCount }}</span>
                       </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -100,7 +101,8 @@
                         aria-selected="false"
                         @click="setActiveTab('inactive')"
                       >
-                        Inactive Users <span class="badge bg-danger">0</span>
+                        Inactive Users
+                        <span class="badge bg-danger">{{ totalInActiveUserCount }}</span>
                       </button>
                     </li>
                   </ul>
@@ -128,22 +130,21 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
+                            <tr v-for="data in rolesActive" :key="data.id">
+                              <td>{{ data.id }}</td>
+                              <td scope="row">{{ data.user_role }}</td>
+                              <td>{{ data.email }}</td>
+                              <td>{{ data.phone_number }}</td>
                               <td>1</td>
-                              <td scope="row">Demo</td>
-                              <td class="text-capitalize">demo@gmail.com</td>
-                              <td>6756454534</td>
-                              <td>4</td>
-                              <td><i class="bi bi-trash text-danger"></i></td>
+                              <!-- <td><i class="bi bi-trash text-danger"></i></td> -->
 
-                              <!-- <td>
-                                <button
-                                  class="btn btn-primary text-nowrap"
-                                  v-on:click="jobsInActive(jobs.id)"
+                              <td>
+                                <i
+                                  class="bi bi-trash text-danger text-nowrap"
+                                  v-on:click="rolesInActiveMethod(data.id)"
                                 >
-                                  In-Active
-                                </button>
-                              </td> -->
+                                </i>
+                              </td>
                             </tr>
                           </tbody>
                         </table>
@@ -171,17 +172,22 @@
                               <th scope="col" class="bg-primary text-white">Action</th>
                             </tr>
                           </thead>
-                          <tbody>
-                            <tr>
+                          <tbody v-if="rolesInActive">
+                            <tr v-for="data in rolesInActive" :key="data.id">
+                              <td>{{ data.id }}</td>
+                              <td scope="row">{{ data.user_role }}</td>
+                              <td>{{ data.email }}</td>
+                              <td>{{ data.phone_number }}</td>
                               <td>1</td>
-                              <td scope="row">Demo</td>
-                              <td class="text-capitalize">demo@gmail.com</td>
-                              <td>6756454534</td>
-                              <td>4</td>
-                              <td><i class="bi bi-trash text-danger"></i></td>
+                              <td>
+                                <i
+                                  class="bi bi-trash text-danger"
+                                  v-on:click="rolesDeleteMethod(data.id)"
+                                ></i>
+                              </td>
 
                               <!-- <td>
-                              <button
+                                <button
                                 class="bi bi-pencil btn-sm btn btn-primary rounded-1 text-uppercase fw-medium"
                                 data-bs-toggle="modal"
                                 data-bs-target="#editJob"
@@ -190,14 +196,21 @@
                                 v-on:click="jobsEdit(jobs.id)"
                               ></button>
 
-                              <span>&nbsp;</span>
-                              <button
-                                class="btn btn-primary btn-sm text-nowrap"
-                                v-on:click="jobActive(jobs.id)"
-                              >
-                                Re-Activate
-                              </button>
-                            </td> -->
+                                <span>&nbsp;</span>
+                                <button
+                                  class="btn btn-primary btn-sm text-nowrap"
+                                  v-on:click="jobActive(data.id)"
+                                >
+                                  Re-Activate
+                                </button>
+                              </td> -->
+                            </tr>
+                          </tbody>
+                          <tbody>
+                            <tr>
+                              <td colspan="6" class="text-danger fw-bold">
+                                {{ "Inactive users not found!" }}
+                              </td>
                             </tr>
                           </tbody>
                         </table>
@@ -211,21 +224,37 @@
         </div>
       </div>
     </div>
+    <AddPrivileges @AddPrivileges="getRolesActiveMethod" />
+    <SuccessAlert ref="successAlert" />
+    <ConfirmationAlert ref="message" />
+    <!-- <ConfirmationAlert /> -->
   </div>
 </template>
 
 <script>
+import axios from "axios";
 import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
+import AddPrivileges from "../modals/privilege Setting/AddPrivileges.vue";
+import SuccessAlert from "../Alerts/SuccessAlert.vue";
+import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
+
 export default {
   data() {
     return {
       activeTab: "active",
+      rolesActive: [],
+      totalActiveUserCount: 0,
+      rolesInActive: [],
+      totalInActiveUserCount: 0,
     };
   },
   components: {
     Navbar,
     Sidebar,
+    AddPrivileges,
+    SuccessAlert,
+    ConfirmationAlert,
   },
   methods: {
     setActiveTab(tab) {
@@ -234,6 +263,102 @@ export default {
     jobsEdit(jobID) {
       this.selectedjobID = jobID;
     },
+
+    async getRolesActiveMethod() {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get(`${VITE_API_URL}/find_active_user`, {
+          headers: {
+            Authorization: "bearer " + token,
+          },
+        });
+        this.totalActiveUserCount = response.data.total_user;
+        this.rolesActive = response.data.users;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    async getRolesInActiveMethod() {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get(`${VITE_API_URL}/find_inactive_user`, {
+          headers: {
+            Authorization: "bearer " + token,
+          },
+        });
+        this.totalInActiveUserCount = response.data.total_user;
+        this.rolesInActive = response.data.users;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+
+    async rolesInActiveMethod(id) {
+      const confirmationMessage = await this.$confirm("Are you sure you want to delete?");
+      // this.confirmationMessage = "Are you sure you want to delete this role?";
+      // this.showConfirmation = true;
+      this.$refs.message.showConfirmation(confirmationMessage, async () => {
+        const token = localStorage.getItem("token");
+        try {
+          const response = await axios.put(`${VITE_API_URL}/inactive_user/${id}`, null, {
+            headers: {
+              Authorization: "bearer " + token,
+            },
+          });
+          this.deleteRole(id);
+          this.getRolesActiveMethod();
+          const message = "Privilege User InActivated successfully";
+          this.$refs.successAlert.showSuccess(message);
+          this.$emit("confirm-delete", id);
+        } catch (error) {
+          if (error.response) {
+            if (error.response.status === 404) {
+            } else if (error.response.status === 422) {
+              alert(error.response.data.message);
+            }
+          }
+        }
+      });
+    },
+    async rolesDeleteMethod(id) {
+      // if (!confirm("Are you sure?")) {
+      //   return;
+      // }
+      this.confirmationMessage = "Are you sure you want to delete this role?";
+      this.showConfirmation = true;
+
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.delete(`${VITE_API_URL}/merchants/${id}`, {
+          headers: {
+            Authorization: "bearer " + token,
+          },
+        });
+        this.deleteRole(id);
+        this.getRolesActiveMethod();
+        const message = "Privilege User Deleted successfully";
+        this.$refs.successAlert.showSuccess(message);
+        this.$emit("confirm-delete", id);
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+  },
+  mounted() {
+    this.getRolesActiveMethod();
+    this.getRolesInActiveMethod();
   },
 };
 </script>

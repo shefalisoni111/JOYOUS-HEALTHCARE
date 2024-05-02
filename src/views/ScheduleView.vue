@@ -98,14 +98,16 @@
                     <div class="filters" v-show="isOpen">
                       <select
                         v-model="job_id"
-                        id="SelectAvailability"
+                        for="SelectAvailability"
                         class="form-select"
                       >
-                        <option value="" selected>All Availability</option>
-                        <option>Late</option>
-                        <option>Night</option>
-                        <option>Unavailable</option>
-                        <option>Early</option>
+                        <option value="" selected for="SelectAvailability">
+                          All Availability
+                        </option>
+                        <option id="SelectAvailability">Late</option>
+                        <option id="SelectAvailability">Night</option>
+                        <option id="SelectAvailability">Unavailable</option>
+                        <option id="SelectAvailability">Early</option>
                       </select>
                     </div>
                   </div>
@@ -124,9 +126,10 @@
                   </div>
                   <div>
                     <div class="filters" v-show="isOpen">
-                      <select v-model="job_id" id="selectJobTitle" class="form-select">
+                      <select v-model="job_id" for="selectJobTitle" class="form-select">
                         <option value="" selected>Select Jobs</option>
                         <option
+                          id="selectJobTitle"
                           v-for="option in options"
                           :key="option.id"
                           :value="option.id"
@@ -153,11 +156,12 @@
                     <div class="filters" v-show="isOpen">
                       <select
                         v-model="site_id"
-                        id="selectBusinessUnit"
+                        for="selectBusinessUnit"
                         class="form-select"
                       >
                         <option value="" selected>Select Site</option>
                         <option
+                          id="selectBusinessUnit"
                           v-for="option in businessUnit"
                           :key="option.id"
                           :value="option.id"
@@ -213,12 +217,14 @@
                       <select
                         @change="filterData($event.target.value)"
                         v-model="job_id"
-                        id="selectPublishStatus"
+                        for="selectPublishStatus"
                         class="form-select"
                       >
-                        <option value="" selected>Publish Status</option>
-                        <option value="true">Publish</option>
-                        <option value="false">UnPublish</option>
+                        <option value="" id="selectPublishStatus" selected>
+                          Publish Status
+                        </option>
+                        <option value="true" id="selectPublishStatus">Publish</option>
+                        <option value="false" id="selectPublishStatus">UnPublish</option>
                       </select>
                     </div>
                   </div>
@@ -843,7 +849,7 @@ export default {
         });
 
         this.vacancyList = response.data.vacancies;
-        this.searchResults = response.data.vacancies;
+        //this.searchResults = response.data.vacancies;
       } catch (error) {
         if (error.response && error.response.status === 404) {
           const errorMessages = error.response.data.error;

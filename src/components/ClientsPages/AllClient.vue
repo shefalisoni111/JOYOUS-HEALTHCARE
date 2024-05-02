@@ -349,15 +349,15 @@ export default {
       // console.log("Updated clientId array:", this.clientId);
     },
     exportOneFile() {
-      const queryParams = `client_ids=${JSON.stringify(this.clientId)
-        .replace(/%20/g, " ")
-        .split(",")
-        .join(",")}`;
+      const queryParams = `client_ids=${this.clientId}`;
       axios
         .get(`${VITE_API_URL}/selected_export?${queryParams}`, {
-          queryParams,
+          headers: {
+            Accept: "*/*",
+          },
         })
         .then((response) => {
+          this.checkedClient = [{}];
           this.downloadOneCSV(response.data, "filename.csv");
         })
         .catch((error) => {

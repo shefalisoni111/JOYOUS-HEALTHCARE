@@ -242,11 +242,11 @@
                   <th rowspan="3">Total Hours</th>
                   <th rowspan="3">Total Cost</th>
                   <th rowspan="3">Approved By</th>
-                  <th rowspan="3">
+                  <!-- <th rowspan="3">
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" value="" checked />
                     </div>
-                  </th>
+                  </th> -->
                 </tr>
               </thead>
               <tbody v-if="paginateCandidates?.length > 0">
@@ -257,21 +257,24 @@
 
                     <span class="fs-6 text-muted fw-100"
                       ><br /><span style="background: rgb(209, 207, 207); padding: 3px">{{
-                        data.job
+                        data.job ? data.job : "Null"
                       }}</span></span
                     >
                   </td>
 
                   <td>
-                    {{ data.site }}
+                    {{ data.site ? data.site : "Null" }}
                   </td>
-                  <td>{{ data.shift }}</td>
+                  <td>{{ data.shift_date }}</td>
 
                   <td>
                     <div class="calendar-grid">
                       <div
                         v-for="day in selectedDateRow"
                         :key="day"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editWeeklyTs"
+                        data-bs-whatever="@mdo"
                         @click="openModal(data, day)"
                         :class="{
                           'calendar-day': true,
@@ -279,24 +282,29 @@
                         }"
                         class="d-flex justify-content-between gap-2"
                       >
-                        <div v-if="formatDate(day)">
+                        <div v-if="formatDate(day)" class="d-flex gap-2">
                           <td>
                             <div class="column">
                               <div class="column-cell">
                                 {{
                                   typeof data.start_time === "number"
                                     ? data.start_time.toFixed(2)
+                                    : data.start_time === null
+                                    ? "null"
                                     : data.start_time
                                 }}
                               </div>
                             </div>
                           </td>
+
                           <td>
                             <div class="column">
                               <div class="column-cell">
                                 {{
                                   typeof data.end_time === "number"
                                     ? data.end_time.toFixed(2)
+                                    : data.end_time === null
+                                    ? "null"
                                     : data.end_time
                                 }}
                               </div>
@@ -307,8 +315,10 @@
                               <div class="column-cell">
                                 {{
                                   typeof data.total_hours === "number"
-                                    ? data.total_hours.toFixed(2)
-                                    : data.total_hours
+                                    ? data.total_hours.toFixed(2) + " hours"
+                                    : data.total_hours === null
+                                    ? "null"
+                                    : data.total_hours + " hours"
                                 }}
                               </div>
                             </div>
@@ -318,14 +328,14 @@
                     </div>
                   </td>
 
-                  <td>{{ data.total_hours }}</td>
-                  <td>{{ data.total_cost }}</td>
-                  <td>{{ data.approved_by }}</td>
-                  <th>
+                  <td>{{ data.total_hours ? data.total_hours : "Null" }}</td>
+                  <td>{{ data.total_cost ? data.total_cost : "Null" }}</td>
+                  <td>{{ data.approved_by ? data.approved_by : "Null" }}</td>
+                  <!-- <th>
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" value="" />
                     </div>
-                  </th>
+                  </th> -->
                 </tr>
               </tbody>
               <tbody v-else>
@@ -361,6 +371,12 @@
         Next
       </button>
     </div>
+    <!-- <AppointmentAdd /> -->
+    <WeekTimeSheetEdit
+      :initialDate="selectedDate"
+      :vacancyId="vacancyId"
+      @closeModal="closeModal"
+    />
   </div>
 </template>
 
@@ -379,7 +395,7 @@ export default {
       selectedDate: null,
       candidateList: [],
       selectedCandidateId: null,
-
+      vacancyId: "",
       site_id: "",
       businessUnit: [],
       business_unit_value: "",
@@ -395,6 +411,7 @@ export default {
       selectedCandidate: "",
     };
   },
+
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -688,6 +705,8 @@ export default {
     // },
 
     openModal(candidateId, day) {
+      this.vacancyId = candidateId.id.toString() || "";
+
       try {
         if (this.dataCustomTimeSheet && this.dataCustomTimeSheet.length > 0) {
           const actualCandidateId = candidateId.id;

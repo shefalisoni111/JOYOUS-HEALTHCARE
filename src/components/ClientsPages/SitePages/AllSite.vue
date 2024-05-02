@@ -286,15 +286,15 @@ export default {
       // console.log("Updated siteIds array:", this.siteIds);
     },
     exportOneFile() {
-      const queryParams = ` site_ids=${JSON.stringify(this.siteIds)}`.replace(
-        /%20/g,
-        " "
-      );
+      const queryParams = `site_ids=${this.siteIds}`;
       axios
-        .get(`${VITE_API_URL}/selected_export_site?${queryParams}`, {
-          queryParams,
+        .get(`${VITE_API_URL}selected_export_site?${queryParams}`, {
+          headers: {
+            Accept: "*/*",
+          },
         })
         .then((response) => {
+          this.checkedSites = [{}];
           this.downloadOneCSV(response.data, "filename.csv");
         })
         .catch((error) => {

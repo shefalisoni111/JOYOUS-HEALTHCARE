@@ -40,7 +40,6 @@
                       type="text"
                       class="form-control"
                       v-model="fetchSite.holiday_type"
-                      @input="clearError('holiday_type')"
                     />
                   </div>
                 </div>
@@ -80,7 +79,7 @@ export default {
   data() {
     return {
       fetchSite: {
-        id: this.SiteID,
+        id: null,
         title: "",
         date: "",
         holiday_type: "",
@@ -122,7 +121,12 @@ export default {
         const response = await axios.get(
           `${VITE_API_URL}/custom_holidays/${this.$route.params.id}`
         );
-        this.fetchSite = { ...this.fetchSite, ...response.data.data };
+        const data = response.data.data;
+        if (Array.isArray(data) && data.length > 0) {
+          this.fetchSite = { ...this.fetchSite, ...data[0] };
+        } else {
+          this.fetchSite = { ...this.fetchSite, ...data };
+        }
       } catch (error) {}
     },
     async updateCandidateMethod() {
@@ -140,13 +144,20 @@ export default {
       }
     },
   },
-  watch: {
-    SiteID: {
-      immediate: true,
-      handler(newSiteID) {
-        this.fetchSiteMethod(newSiteID);
-      },
-    },
+  // watch: {
+  //   SiteID: {
+  //     immediate: true,
+  //     handler(newSiteID) {
+  //       this.fetchSiteMethod(newSiteID);
+  //     },
+  //   },
+  // },
+  mounted() {
+    this.fetchSiteMethod(this.$route.params.id);
+  },
+  created() {
+    this.fetchSite.id = this.SiteID;
+    this.fetchSiteMethod(this.$route.params.id);
   },
 };
 </script>

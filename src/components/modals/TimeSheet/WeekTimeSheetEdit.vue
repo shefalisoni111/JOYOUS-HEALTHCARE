@@ -1,244 +1,287 @@
 <template>
   <div>
-    <div class="container-fluid">
-      <form>
-        <div class="row">
-          <div class="col-6">
-            <div class="mb-3">
-              <label class="form-label">Assign To</label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="fetchCustomTimeShetData.candidate_name"
-                aria-describedby="name"
-                readonly
-              />
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Site</label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="fetchCustomTimeShetData.business_unit"
-                aria-describedby="site"
-                readonly
-              />
-            </div>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="editWeeklyTs"
+      aria-labelledby="editWeeklyTs"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: #f9944b">
+            <h5 class="modal-title" id="editWeeklyTs">
+              Edit Assign Shift {{ vacancyId }}
+            </h5>
           </div>
-          <div class="col-6">
-            <div class="mb-3">
-              <label class="form-label">Position</label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="fetchCustomTimeShetData.job"
-                aria-describedby="time"
-                readonly
-              />
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Date</label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="fetchCustomTimeShetData.date"
-                aria-describedby="date"
-                readonly
-              />
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="mb-3">
-              <label class="form-label">Shift</label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="fetchCustomTimeShetData.shift"
-                aria-describedby="position"
-                readonly
-              />
-            </div>
-          </div>
-          <div class="col-12">
-            <label class="form-label">Rate Cards</label>
-            <div class="d-flex gap-2">
-              <div class="mb-3">
-                <div class="col-12">
-                  <label class="form-label">Start Time</label>
-                </div>
-                <div class="col-12 mt-1">
-                  <input
-                    type="email"
-                    class="form-control"
-                    v-model="fetchCustomTimeShetData.start_time"
-                  />
-                </div>
-              </div>
-              <div class="mb-3">
-                <div class="col-12">
-                  <label class="form-label">End Time</label>
-                </div>
-                <div class="col-12 mt-1">
-                  <input
-                    type="email"
-                    class="form-control"
-                    v-model="fetchCustomTimeShetData.end_time"
-                  />
-                </div>
-              </div>
-              <div class="mb-3">
-                <div class="col-12">
-                  <label class="form-label">Break</label>
-                </div>
-                <div class="col-12 mt-1">
-                  <input
-                    type="email"
-                    class="form-control"
-                    v-model="fetchCustomTimeShetData.break"
-                  />
-                </div>
-              </div>
-              <div class="mb-3">
-                <div class="col-12">
-                  <label class="form-label">Total Hours</label>
-                </div>
-                <div class="col-12 mt-1">
-                  <input
-                    type="email"
-                    class="form-control"
-                    v-model="fetchCustomTimeShetData.total_hours"
-                  />
-                </div>
-              </div>
-              <div class="mb-3">
-                <div class="col-12">
-                  <label class="form-label">Client Rate</label>
-                </div>
-                <div class="col-12 mt-1">
-                  <input
-                    type="email"
-                    class="form-control"
-                    v-model="fetchCustomTimeShetData.email"
-                  />
-                </div>
-              </div>
-              <div class="mb-3">
-                <div class="col-12">
-                  <label class="form-label">Client Pay Amount</label>
-                </div>
-                <div class="col-12 mt-1">
-                  <input
-                    type="email"
-                    class="form-control"
-                    v-model="fetchCustomTimeShetData.email"
-                  />
-                </div>
-              </div>
-              <div class="mb-3">
-                <div class="col-12">
-                  <label class="form-label">Staff Rate</label>
-                </div>
-                <div class="col-12 mt-1">
-                  <input
-                    type="email"
-                    class="form-control"
-                    v-model="fetchCustomTimeShetData.email"
-                  />
-                </div>
-              </div>
-              <div class="mb-3">
-                <div class="col-12">
-                  <label class="form-label">Staff Rate Amount</label>
-                </div>
-                <div class="col-12 mt-1">
-                  <input
-                    type="email"
-                    class="form-control"
-                    v-model="fetchCustomTimeShetData.email"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+          <div class="modal-body mx-3">
+            <div class="row align-items-center">
+              <form>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <label class="form-label">Assign To</label>
+                      <input
+                        type="text"
+                        class="form-control text-capitalize"
+                        v-model="fetchCustomTimeShetData.name"
+                        aria-describedby="name"
+                        readonly
+                      />
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Site</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="fetchCustomTimeShetData.site"
+                        aria-describedby="site"
+                        readonly
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <label class="form-label">Position</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="fetchCustomTimeShetData.job"
+                        aria-describedby="time"
+                        readonly
+                      />
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Date</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="fetchCustomTimeShetData.shift_date"
+                        aria-describedby="date"
+                        readonly
+                      />
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="mb-3">
+                      <label class="form-label">Shift</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="fetchCustomTimeShetData.shift_name"
+                        aria-describedby="position"
+                        readonly
+                      />
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">Rate Cards</label>
+                    <div class="d-flex gap-2 justify-content-between">
+                      <!-- <div class="mb-3">
+                        <div class="col-12">
+                          <label class="form-label">Start Time</label>
+                        </div>
+                        <div class="col-12 mt-1">
+                          <input
+                            type="email"
+                            class="form-control"
+                            v-model="fetchCustomTimeShetData.start_time"
+                          />
+                        </div>
+                      </div> -->
+                      <div class="mb-3">
+                        <div class="col-12">
+                          <label class="form-label" for="selectCustomStartTime"
+                            >Start Time
+                          </label>
+                        </div>
+                        <div class="col-12">
+                          <select
+                            id="selectCustomStartTime"
+                            class="form-select"
+                            v-model="fetchCustomTimeShetData.start_time"
+                            @change="validateStartTime"
+                            style="width: 240px"
+                          >
+                            <option
+                              v-for="hour in 24"
+                              :key="hour"
+                              :value="formatTime(hour)"
+                            >
+                              {{ formatTime(hour) }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <!-- <div class="mb-3">
+                        <div class="col-12">
+                          <label class="form-label">End Time</label>
+                        </div>
+                        <div class="col-12 mt-1">
+                          <input
+                            type="email"
+                            class="form-control"
+                            v-model="fetchCustomTimeShetData.end_time"
+                          />
+                        </div>
+                      </div> -->
+                      <div class="mb-3">
+                        <div class="col-12">
+                          <label class="form-label" for="selectCustomEndTime"
+                            >End Time</label
+                          >
+                        </div>
+                        <div class="col-12">
+                          <select
+                            id="selectCustomEndTime"
+                            class="form-select"
+                            v-model="fetchCustomTimeShetData.end_time"
+                            @change="validateEndTime"
+                            style="width: 240px"
+                          >
+                            <option
+                              v-for="hour in 24"
+                              :key="hour"
+                              :value="formatTime(hour)"
+                            >
+                              {{ formatTime(hour) }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <!-- <div class="mb-3">
+                        <div class="col-12">
+                          <label class="form-label">Break</label>
+                        </div>
+                        <div class="col-12 mt-1">
+                          <input
+                            type="email"
+                            class="form-control"
+                            v-model="fetchCustomTimeShetData.break"
+                          />
+                        </div>
+                      </div> -->
+                      <div class="mb-3">
+                        <div class="col-12">
+                          <label class="form-label" for="selectShiftsBreak"
+                            >Break Time</label
+                          >
+                        </div>
+                        <div class="col-12">
+                          <select
+                            id="selectShiftsBreak"
+                            class="form-select"
+                            v-model="fetchCustomTimeShetData.break"
+                            @change="validateBreak"
+                            style="width: 240px"
+                          >
+                            <option
+                              v-for="minute in [15, 30, 45, 60, 75, 90]"
+                              :key="minute"
+                              :value="minute"
+                            >
+                              {{ formatBreakTime(minute) }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <div class="col-12">
+                          <label class="form-label">Total Hours</label>
+                        </div>
+                        <div class="col-12 mt-1">
+                          <!-- <input
+                            type="email"
+                            class="form-control"
+                            v-model="fetchCustomTimeShetData.total_shift_hours"
+                          /> -->
+                          <select
+                            id="selectCustomStartTime"
+                            class="form-select"
+                            v-model="fetchCustomTimeShetData.total_hours"
+                            @change="validateStartTime"
+                            style="width: 240px"
+                          >
+                            <option v-for="hour in 24" :key="hour" :value="hour">
+                              {{ hour }} hour{{ hour > 1 ? "s" : "" }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                      <div class="mb-3">
+                        <div class="col-12">
+                          <label class="form-label">Client Rate</label>
+                        </div>
+                        <div class="col-12 mt-1">
+                          <input type="text" class="form-control" value="null" />
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <div class="col-12">
+                          <label class="form-label">Client Pay Amount</label>
+                        </div>
+                        <div class="col-12 mt-1">
+                          <input type="text" class="form-control" value="null" />
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <div class="col-12">
+                          <label class="form-label">Staff Rate</label>
+                        </div>
+                        <div class="col-12 mt-1">
+                          <input type="text" class="form-control" value="null" />
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <div class="col-12">
+                          <label class="form-label">Staff Rate Amount</label>
+                        </div>
+                        <div class="col-12 mt-1">
+                          <input type="text" class="form-control" value="null" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-          <div class="mb-3">
-            <div class="col-12">
-              <label class="form-label">Notes</label>
+                  <div class="mb-3">
+                    <div class="col-12">
+                      <label class="form-label">Notes</label>
+                    </div>
+                    <div class="col-12 mt-1">
+                      <textarea
+                        class="form-control"
+                        v-model="fetchCustomTimeShetData.notes"
+                        rows="3"
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+              </form>
             </div>
-            <div class="col-12 mt-1">
-              <textarea
-                class="form-control"
-                v-model="fetchCustomTimeShetData.notes"
-                rows="3"
-              ></textarea>
-            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-secondary rounded-1"
+              data-bs-target="#editWeeklyTs"
+              data-bs-toggle="modal"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              data-bs-dismiss="modal"
+              @click.prevent="updateCandidateMethod()"
+            >
+              Save
+            </button>
           </div>
         </div>
-        <div class="d-flex gap-2 justify-content-between">
-          <div class="d-flex gap-3 align-items-center">
-            <div v-if="isPublished" class="d-flex gap-3 align-items-center">
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="pushNotificationCheckbox"
-                />
-                <label class="form-check-label" for="pushNotificationCheckbox">
-                  Push Notification
-                </label>
-              </div>
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="textNotificationCheckbox"
-                />
-                <label class="form-check-label" for="textNotificationCheckbox">
-                  Text Notification
-                </label>
-              </div>
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="emailNotificationCheckbox"
-                />
-                <label class="form-check-label" for="emailNotificationCheckbox">
-                  Email Notification
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="d-flex gap-3">
-            <div class="d-flex align-items-center">
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  v-model="isPublished"
-                  id="publishCheckbox"
-                />
-                <label class="form-check-label" for="publishCheckbox">
-                  Tick here to publish
-                </label>
-              </div>
-            </div>
-
-            <div class="d-flex gap-2">
-              <button class="btn btn-danger">Delete</button>
-              <button type="submit" class="btn btn-success" v-if="!isPublished">
-                Save
-              </button>
-              <button class="btn btn-primary" v-if="!isPublished">Approve & Save</button>
-              <button class="btn btn-primary" v-if="isPublished">Save & Publish</button>
-            </div>
-          </div>
-        </div>
-      </form>
+      </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 <script>
@@ -251,18 +294,22 @@ export default {
     return {
       fetchCustomTimeShetData: {
         id: "",
+        name: "",
         shift_date: "",
         candidate_name: "",
         total_hours: "",
         start_time: "",
         end_time: "",
         break: "",
+        client_rate: "",
+        total_cost: "",
+        notes: "",
       },
       isPublished: false,
     };
   },
   props: {
-    candidateId: {
+    vacancyId: {
       type: String,
       required: true,
     },
@@ -274,14 +321,52 @@ export default {
     },
   },
   methods: {
+    convertTimeFormat(dateTimeString) {
+      const date = new Date(dateTimeString);
+      const hours = date.getUTCHours();
+      const minutes = date.getUTCMinutes();
+      const amPm = hours >= 12 ? "PM" : "AM";
+      const formattedHours = String(hours).padStart(2, "0");
+      const formattedMinutes = String(minutes).padStart(2, "0");
+      return `${formattedHours}:${formattedMinutes} ${amPm}`;
+    },
+    formatTime(hour) {
+      if (hour < 12) {
+        return `${String(hour).padStart(2, "0")}:00 AM`;
+      } else if (hour === 12) {
+        return `${String(hour).padStart(2, "0")}:00 PM`;
+      } else if (hour === 24) {
+        return `00:00`;
+      } else {
+        const adjustedHour = hour % 12;
+        return `${String(adjustedHour).padStart(2, "0")}:00 PM`;
+      }
+    },
+    formatBreakTime(minute) {
+      if (minute === 60) {
+        return "1 hour";
+      } else {
+        const hours = Math.floor(minute / 60);
+        const mins = minute % 60;
+
+        let formattedTime = "";
+        if (hours > 0) {
+          formattedTime += `${hours} hour `;
+        }
+        if (mins > 0) {
+          formattedTime += `${mins} minute`;
+        }
+        return formattedTime.trim();
+      }
+    },
     async fetchCustomTimeSheetData() {
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/weekly_timesheets/${this.candidateId}`
+          `${VITE_API_URL}/custom_timesheets/${this.vacancyId}`
         );
         this.fetchCustomTimeShetData = {
           ...this.fetchCustomTimeShetData,
-          ...response.data,
+          ...response.data.custom_sheets,
         };
       } catch (error) {}
     },
@@ -294,11 +379,11 @@ export default {
 
         this.$store.commit("updateCandidate", {
           id: this.fetchCustomTimeShetData.id,
-          newData: response.data,
+          newData: response.data.custom_sheets,
         });
         this.$emit("CustomTimeSheetData-updated");
         // alert("Candidate updated successfully");
-        const message = "Custom TimeSheet Staff updated successfully";
+        const message = "TimeSheet updated successfully";
         this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         // console.error("Error updating candidate:", error);
@@ -306,10 +391,10 @@ export default {
     },
   },
   watch: {
-    candidateId: {
+    vacancyId: {
       immediate: true,
-      handler(newcandidateId) {
-        this.fetchCustomTimeSheetData(newcandidateId);
+      handler(newvacancyId) {
+        this.fetchCustomTimeSheetData(newvacancyId);
       },
     },
   },
@@ -323,12 +408,5 @@ select {
 
   border-radius: 4px;
   border: 1px solid #80808059;
-}
-
-.form-check-input {
-  border: 2px solid grey;
-}
-label {
-  font-weight: bold;
 }
 </style>
