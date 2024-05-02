@@ -379,7 +379,7 @@ export default {
           },
         });
 
-        this.getRolesActiveMethod();
+        this.getRolesInActiveMethod();
         const message = "Privilege User Deleted successfully";
         this.$refs.successAlert.showSuccess(message);
       } catch (error) {
