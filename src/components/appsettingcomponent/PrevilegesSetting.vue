@@ -226,7 +226,7 @@
     </div>
     <AddPrivileges @AddPrivileges="getRolesActiveMethod" />
     <SuccessAlert ref="successAlert" />
-    <ConfirmationAlert ref="message" />
+    <!-- <ConfirmationAlert ref="message" /> -->
     <!-- <ConfirmationAlert /> -->
   </div>
 </template>
@@ -237,7 +237,7 @@ import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
 import AddPrivileges from "../modals/privilege Setting/AddPrivileges.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
-import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
+// import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
 
 export default {
   data() {
@@ -254,7 +254,7 @@ export default {
     Sidebar,
     AddPrivileges,
     SuccessAlert,
-    ConfirmationAlert,
+    // ConfirmationAlert,
   },
   methods: {
     setActiveTab(tab) {
@@ -302,38 +302,40 @@ export default {
     },
 
     async rolesInActiveMethod(id) {
-      const confirmationMessage = await this.$confirm("Are you sure you want to delete?");
+      if (!confirm("Are you sure?")) {
+        return;
+      }
+      // const confirmationMessage = await this.$confirm("Are you sure you want to delete?");
       // this.confirmationMessage = "Are you sure you want to delete this role?";
       // this.showConfirmation = true;
-      this.$refs.message.showConfirmation(confirmationMessage, async () => {
-        const token = localStorage.getItem("token");
-        try {
-          const response = await axios.put(`${VITE_API_URL}/inactive_user/${id}`, null, {
-            headers: {
-              Authorization: "bearer " + token,
-            },
-          });
-          this.deleteRole(id);
-          this.getRolesActiveMethod();
-          const message = "Privilege User InActivated successfully";
-          this.$refs.successAlert.showSuccess(message);
-          this.$emit("confirm-delete", id);
-        } catch (error) {
-          if (error.response) {
-            if (error.response.status === 404) {
-            } else if (error.response.status === 422) {
-              alert(error.response.data.message);
-            }
+
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.put(`${VITE_API_URL}/inactive_user/${id}`, null, {
+          headers: {
+            Authorization: "bearer " + token,
+          },
+        });
+        this.deleteRole(id);
+        this.getRolesActiveMethod();
+        const message = "Privilege User InActivated successfully";
+        this.$refs.successAlert.showSuccess(message);
+        this.$emit("confirm-delete", id);
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status === 404) {
+          } else if (error.response.status === 422) {
+            alert(error.response.data.message);
           }
         }
-      });
+      }
     },
     async rolesDeleteMethod(id) {
-      // if (!confirm("Are you sure?")) {
-      //   return;
-      // }
-      this.confirmationMessage = "Are you sure you want to delete this role?";
-      this.showConfirmation = true;
+      if (!confirm("Are you sure?")) {
+        return;
+      }
+      // this.confirmationMessage = "Are you sure you want to delete this role?";
+      // this.showConfirmation = true;
 
       const token = localStorage.getItem("token");
       try {
