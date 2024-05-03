@@ -126,13 +126,18 @@
                   </div>
                   <div>
                     <div class="filters" v-show="isOpen">
-                      <select v-model="job_id" for="selectJobTitle" class="form-select">
+                      <select
+                        v-model="job_id"
+                        for="selectJobTitle"
+                        class="form-select"
+                        @change="filterData($event.target.value, 'job_title')"
+                      >
                         <option value="" selected>Select Jobs</option>
                         <option
                           id="selectJobTitle"
                           v-for="option in options"
                           :key="option.id"
-                          :value="option.id"
+                          :value="option.name"
                         >
                           {{ option.name }}
                         </option>
@@ -186,12 +191,17 @@
                   </div>
                   <div>
                     <div class="filters" v-show="isOpen">
-                      <select v-model="job_id" for="selectShifts" class="form-select">
+                      <select
+                        v-model="job_id"
+                        for="selectShifts"
+                        class="form-select"
+                        @change="filterData($event.target.value, 'site_shift')"
+                      >
                         <option value="" selected>All Shift</option>
                         <option
                           v-for="option in shiftsTime"
                           :key="option.id"
-                          :value="option.id"
+                          :value="option.shift_name"
                           id="selectShifts"
                         >
                           {{ option.shift_name }}
@@ -215,7 +225,7 @@
                   <div>
                     <div class="filters" v-show="isOpen">
                       <select
-                        @change="filterData($event.target.value)"
+                        @change="filterData($event.target.value, 'publish')"
                         v-model="job_id"
                         for="selectPublishStatus"
                         class="form-select"
@@ -301,9 +311,10 @@
                                       >{{ vacancy.site }},{{ vacancy.job_title }}</span
                                     >
 
-                                    <span class="">{{
+                                    <!-- <span class="">{{
                                       extractTimeRange(vacancy.site_shift)
-                                    }}</span>
+                                    }}</span> -->
+                                    <span class="">{{ vacancy.site_shift }}</span>
                                   </span>
                                   <span class="staff-count-round text-white">{{
                                     vacancy.staff_required
@@ -631,7 +642,7 @@
         </div>
       </div>
     </div>
-    <!-- <div
+    <div
       class="mx-3"
       style="text-align: right"
       v-if="!candidateList && searchResults?.length >= 8"
@@ -655,7 +666,7 @@
       >
         Next
       </button>
-    </div> -->
+    </div>
     <div class="mx-3" style="text-align: right" v-if="candidateList?.length >= 8">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
@@ -724,7 +735,7 @@ export default {
       dropDay: null,
       droppedContent: null,
       currentPage: 1,
-      itemsPerPage: 9,
+      itemsPerPage: 7,
       options: [],
       job_id: "",
       site_id: "",
@@ -836,20 +847,36 @@ export default {
     },
   },
   methods: {
-    filterData(value) {
-      let filter_type = "publish";
-      let filter_value = value === "true" ? "true" : "false";
-
-      this.makeFilterAPICall(filter_type, filter_value);
+    filterData(value, filterType) {
+      if (filterType === "publish") {
+        let filter_type = "publish";
+        let filter_value = value === "true" ? "true" : "false";
+        this.makeFilterAPICall(filter_type, filter_value);
+      } else if (filterType === "job_title") {
+        let filter_type = "job_title";
+        let filter_value = value;
+        this.makeFilterAPICall(filter_type, filter_value);
+      } else if (filterType === "site_shift") {
+        let filter_type = "site";
+        let filter_value = value;
+        this.makeFilterAPICall(filter_type, filter_value);
+      }
     },
     async makeFilterAPICall(filter_type, filter_value) {
+      const requestData = {
+        date: this.formattedStartDate,
+      };
       try {
-        const response = await axios.get(`${VITE_API_URL}/schedule_filter`, {
-          params: {
-            filter_type: filter_type,
-            filter_value: filter_value,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/vacancies_and_candidates_availability`,
+          {
+            params: {
+              filter_type: filter_type,
+              filter_value: filter_value,
+              requestData,
+            },
+          }
+        );
 
         this.vacancyList = response.data.vacancies;
         //this.searchResults = response.data.vacancies;
@@ -918,6 +945,7 @@ export default {
     },
     filteredVacancies() {
       return this.vacancyList.filter((item) => item.date == this.columnDateMatch);
+      return this.searchResults.filter((item) => item.date == this.columnDateMatch);
     },
     filteredVacancies() {
       return this.searchResults.filter((item) => item.date == this.columnDateMatch);

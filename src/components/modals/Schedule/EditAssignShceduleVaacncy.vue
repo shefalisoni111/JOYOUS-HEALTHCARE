@@ -266,6 +266,13 @@
             >
               Save
             </button>
+            <button
+              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              data-bs-dismiss="modal"
+              @click.prevent="assignVacancyToCandidateDirectMethodPublish()"
+            >
+              Publish
+            </button>
           </div>
         </div>
       </div>
@@ -332,6 +339,42 @@ export default {
     },
   },
   methods: {
+    async assignVacancyToCandidateDirectMethodPublish() {
+      const data = {
+        candidate_id: this.candidateId,
+        vacancy_id: this.vacancyId,
+      };
+
+      try {
+        const response = await axios.put(
+          `${VITE_API_URL}/publish_schedule_vacancy`,
+          data
+        );
+        if (response.status === 200) {
+          alert("Staff Shift Publish Successfully");
+          this.$emit("updated-assignPublish");
+          const message = "Staff Shift Publish Successfully";
+          this.$refs.successAlert.showSuccess(message);
+          this.getPublishStaffListMethod();
+          // this.checkedCandidates = {};
+          // this.$emit("Candidate-updated");
+        } else {
+          // const errorMessage = "Failed to publish staff shift";
+          // this.$refs.successAlert.showError(errorMessage);
+
+          this.checkedCandidates = {};
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          const errorMessage = error.response.data.error || "Resource not found";
+          // Display alert error message
+          alert(errorMessage);
+        } else {
+          // Handle other errors
+          // console.error("Error:", error);
+        }
+      }
+    },
     convertTimeFormat(dateTimeString) {
       const date = new Date(dateTimeString);
       const hours = date.getUTCHours();

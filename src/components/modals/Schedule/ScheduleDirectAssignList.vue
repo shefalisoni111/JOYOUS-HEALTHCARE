@@ -8,7 +8,7 @@
       tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content">
+        <div class="modal-content" style="overflow-y: auto">
           <div class="modal-header">
             <h5 class="modal-title" id="scheduleDirectAssignList">Shift List</h5>
           </div>
@@ -207,6 +207,7 @@
               Close
             </button>
             <button
+              v-if="selectedCandidateItemId"
               class="btn btn-primary rounded-1"
               data-bs-target="#scheduleDirectAssignList"
               data-bs-toggle="modal"
@@ -411,6 +412,7 @@ export default {
         .map((vacancy_id) => parseInt(vacancy_id));
 
       if (checkedVacancyIds.length === 0) {
+        alert("Please select staff !");
         return;
       }
       // console.log(this.candidateId, checkedVacancyIds);
@@ -534,9 +536,7 @@ label.form-label {
   width: 40px;
   height: 40px;
 }
-.modal-content {
-  height: 930px;
-}
+
 table th {
   text-transform: capitalize;
 }

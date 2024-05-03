@@ -67,43 +67,57 @@
                 <table class="w-100">
                   <thead>
                     <tr>
-                      <th></th>
-                      <th scope="col" class="text-center">Staff ID</th>
+                      <th class="text-center"></th>
+
                       <th scope="col" class="text-center">Staff</th>
                       <th scope="col" class="text-center">Client</th>
                       <th scope="col" class="text-center">Site</th>
+                      <th scope="col" class="text-center">Date</th>
                       <th scope="col" class="text-center">Shift</th>
                       <th scope="col" class="text-center">Job Title</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="candidate in fetchStaffAndVacancy" :key="candidate.id">
-                      <td v-for="vacancy in candidate.vacancies" :key="vacancy.id">
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          :value="vacancy.id"
-                          :id="`checkbox-${candidate.id}-${vacancy.id}`"
-                          @change="
-                            handleCheckboxChange(candidate.candidate_id, vacancy.id)
-                          "
-                        />
-                      </td>
-                      <td class="text-center" v-text="candidate.candidate_id"></td>
-                      <td class="text-center" v-text="candidate.candidate_name"></td>
-                      <td colspan="4">
-                        <table class="w-100 me-5">
-                          <tbody>
-                            <tr v-for="vacancy in candidate.vacancies" :key="vacancy.id">
-                              <td>{{ vacancy.client }}</td>
-                              <td>{{ vacancy.site }}</td>
-                              <td>{{ vacancy.site_shift }}</td>
-                              <td>{{ vacancy.job_title }}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </td>
-                    </tr>
+                    <template
+                      v-for="candidate in fetchStaffAndVacancy"
+                      :key="candidate.id"
+                    >
+                      <tr v-for="(vacancy, index) in candidate.vacancies" :key="index">
+                        <td class="text-center">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            :value="vacancy.id"
+                            :id="`checkbox-${candidate.candidate_id}-${vacancy.id}`"
+                            @change="
+                              handleCheckboxChange(candidate.candidate_id, vacancy.id)
+                            "
+                          />
+                        </td>
+
+                        <!-- <template v-if="index === 0">
+                          <td :rowspan="candidate.vacancies.length" class="text-center">
+                            {{ candidate.candidate_id }}
+                          </td>
+                        </template> -->
+
+                        <td class="text-center">{{ candidate.candidate_name }}</td>
+
+                        <td class="text-center">{{ vacancy.client }}</td>
+                        <td class="text-center">{{ vacancy.site }}</td>
+                        <td class="text-center">
+                          <span v-for="(date, index) in vacancy.dates" :key="index">
+                            {{ date }}
+
+                            <template v-if="index !== vacancy.dates.length - 1"
+                              >,
+                            </template>
+                          </span>
+                        </td>
+                        <td class="text-center">{{ vacancy.site_shift }}</td>
+                        <td class="text-center">{{ vacancy.job_title }}</td>
+                      </tr>
+                    </template>
                   </tbody>
                 </table>
               </div>
