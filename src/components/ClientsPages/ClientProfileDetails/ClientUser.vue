@@ -169,7 +169,7 @@ export default {
     // },
   },
   mounted() {
-    this.createdClient();
+    // this.createdClient();
   },
 };
 </script>

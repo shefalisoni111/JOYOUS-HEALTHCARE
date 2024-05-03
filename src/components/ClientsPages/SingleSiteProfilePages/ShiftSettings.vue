@@ -81,7 +81,7 @@
         </div>
       </div>
     </div>
-    <SuccessAlert ref="successAlertRef" />
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 <script>
@@ -137,10 +137,31 @@ export default {
       } else {
         hours = hours === 0 ? 12 : hours;
       }
-
+      const formattedHours = String(hours).padStart(2, "0");
       const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-      return `${hours}:${formattedMinutes} ${amPm}`;
+      return `${formattedHours}:${formattedMinutes} ${amPm}`;
     },
+    // convertTimeFormatEndTime(dateTimeString) {
+    //   const date = new Date(dateTimeString);
+    //   let hours = date.getUTCHours();
+    //   const minutes = date.getUTCMinutes();
+    //   let amPm = "AM";
+
+    //   if (hours >= 12) {
+    //     amPm = "PM";
+    //     if (hours > 12) {
+    //       hours -= 12;
+    //     }
+    //   } else if (hours === 0) {
+    //     hours = 12;
+    //   }
+
+    //   const formattedHours = String(hours).padStart(2, "0");
+    //   const formattedMinutes = String(minutes).padStart(2, "0");
+
+    //   return `${formattedHours}:${formattedMinutes} ${amPm}`;
+    // },
+
     setShiftIdToUpdate(shiftId) {
       this.shiftIdToUpdate = shiftId;
     },
@@ -172,9 +193,9 @@ export default {
         axios
           .put(`${VITE_API_URL}/update_site_shifts`, requestData)
           .then((response) => {
-            // const message = "Shift Updated Successfully";
-            // this.$refs.successAlert.showSuccess(message);
-            alert("Shift Updated Successfully");
+            const message = "Shift Updated Successfully";
+            this.$refs.successAlert.showSuccess(message);
+            // alert("Shift Updated Successfully");
             this.shiftIdToUpdate = null;
           })
           .catch((error) => {

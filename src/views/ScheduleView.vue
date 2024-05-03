@@ -362,19 +362,22 @@
                             >
                               <span v-for="avail in data.availability" :key="avail.id">
                                 <span v-if="avail.date === formattedDate(day)">
-                                  <span
-                                    v-if="avail.status"
-                                    style="font-size: small; padding: 0px 5px"
-                                    v-bind:class="{
-                                      'btn btn-warning ': avail.status === 'Late',
-                                      'btn btn-primary ': avail.status === 'Unavailable',
-                                      'btn btn-secondary ': avail.status === 'Night',
-                                      'btn btn-light ': avail.status === 'Early',
-                                    }"
-                                  >
-                                    {{
-                                      avail.status ? avail.status[0].toUpperCase() : ""
-                                    }}
+                                  <span>
+                                    <span
+                                      v-if="avail.status"
+                                      style="font-size: small; padding: 0px 5px"
+                                      v-bind:class="{
+                                        'btn btn-warning ': avail.status === 'Late',
+                                        'btn btn-primary ':
+                                          avail.status === 'Unavailable',
+                                        'btn btn-secondary ': avail.status === 'Night',
+                                        'btn btn-light ': avail.status === 'Early',
+                                      }"
+                                    >
+                                      {{
+                                        avail.status ? avail.status[0].toUpperCase() : ""
+                                      }}
+                                    </span>
                                   </span>
                                 </span>
                               </span>
@@ -409,8 +412,10 @@
                                               class="assignVacancyDesign mt-1 text-capitalize d-flex justify-content-center"
                                             >
                                               {{ data.site }},
-                                              {{ extractTimeRange(data.site_shift)
-                                              }}<br />
+                                              <!-- {{ extractTimeRange(data.site_shift)
+                                              }} -->
+                                              <br />
+                                              {{ data.site_shift }}
                                               {{ data.job_title }} &nbsp;
 
                                               <br />
@@ -602,8 +607,10 @@
                                               class="assignVacancyDesign mt-1 text-capitalize d-flex justify-content-center"
                                             >
                                               {{ data.site }},
-                                              {{ extractTimeRange(data.site_shift)
-                                              }}<br />
+                                              <!-- {{ extractTimeRange(data.site_shift)
+                                              }}-->
+                                              {{ data.site_shift }}
+                                              <br />
                                               {{ data.job_title }} &nbsp;
 
                                               <br />

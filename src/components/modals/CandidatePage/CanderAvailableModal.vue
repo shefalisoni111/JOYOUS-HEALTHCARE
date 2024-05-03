@@ -90,13 +90,13 @@
           </div>
         </div>
       </div>
-      <SuccessAlert ref="successAlertRef" />
     </div>
 
     <div class="mt-3 float-end">
       <button class="btn btn-primary" @click="closeNestedCalendar">Cancel</button>&nbsp;
       <button class="btn btn-primary" @click="handleButtonClick">Add Availability</button>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
@@ -139,7 +139,7 @@ export default {
       selectedMonth: "",
       updatedStatusData: [],
       availabilityByDate: [],
-      successAlertRef: ref(null),
+      // successAlert: ref(null),
     };
   },
   components: {
@@ -460,11 +460,11 @@ export default {
                 };
               }
             });
-            alert("Availability updated successfully");
+            // alert("Availability updated successfully");
 
             // this.$emit("availability-updated");
-            // const message = "Availability updated successfully";
-            // this.$refs.successAlertRef.showSuccess(message);
+            const message = "Availability updated successfully";
+            this.$refs.successAlert.showSuccess(message);
             this.errorMessage = "";
             return;
           } else {
@@ -507,12 +507,12 @@ export default {
               }
             });
 
-            alert("Availabilities added successfully");
+            // alert("Availabilities added successfully");
 
             // this.$emit("availability-updated");
-            // const message = "Availability added successfully";
-            // // console.log("Showing success message:", message);
-            // this.$refs.successAlert.showSuccess(message);
+            const message = "Availability added successfully";
+            // console.log("Showing success message:", message);
+            this.$refs.successAlert.showSuccess(message);
             this.errorMessage = "";
             return;
           } else {

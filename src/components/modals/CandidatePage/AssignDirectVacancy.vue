@@ -59,7 +59,7 @@
                     <th scope="col">ID</th>
                     <th scope="col">#RefCode</th>
                     <th scope="col">Client</th>
-                    <th scope="col">Business Unit</th>
+                    <th scope="col">Site</th>
                     <th scope="col">Job Title</th>
                     <th scope="col" class="widthDefine">Date</th>
                     <th scope="col">Shift</th>
@@ -94,7 +94,7 @@
                         >{{ getdata.client }}</router-link
                       >
                     </td>
-                    <td v-text="getdata.business_unit"></td>
+                    <td v-text="getdata.site"></td>
                     <td v-text="getdata.job_title"></td>
 
                     <td>
@@ -105,7 +105,7 @@
                       </span>
                     </td>
 
-                    <td v-text="getdata.shift"></td>
+                    <td v-text="getdata.site_shift"></td>
                     <!-- <td v-text="getdata.staff_required"></td> -->
                     <!-- <td v-text="getdata.notes"></td> -->
 

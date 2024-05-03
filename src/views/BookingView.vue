@@ -242,8 +242,8 @@
                         <td scope="col">{{ data.booking_date }}</td>
                         <td scope="col">{{ data.start_time }}</td>
                         <td scope="col">{{ data.end_time }}</td>
-                        <td scope="col">{{ data.break }}</td>
-                        <td scope="col">{{ data.duration }}</td>
+                        <td scope="col">{{ data.break ? data.break : "null" }}</td>
+                        <td scope="col">{{ data.duration ? data.duration : "null" }}</td>
                         <td scope="col">{{ data.notes ? data.notes : "null" }}</td>
                         <!-- <td scope="col">
                           {{ data.mailed_at ? data.mailed_at : "null" }}
@@ -261,9 +261,7 @@
                     </tbody>
                     <tbody v-else>
                       <tr>
-                        <td colspan="15" class="text-danger text-center">
-                          {{ errorMessageBooking }}
-                        </td>
+                        <td colspan="15" class="text-danger text-center"></td>
                       </tr>
                     </tbody>
                   </table>
@@ -297,7 +295,7 @@
                       </tr>
                     </thead>
                     <tbody v-if="paginateDeleteResults?.length > 0">
-                      <tr v-for="data in deleteBookingData" :key="data.id">
+                      <tr v-for="data in paginateDeleteResults" :key="data.id">
                         <td scope="col">{{ data.id }}</td>
                         <td scope="col">{{ data.booking_code }}</td>
                         <td scope="col">{{ data.candidate }}</td>
@@ -316,8 +314,8 @@
                         <td scope="col">{{ data.booking_date }}</td>
                         <td scope="col">{{ data.start_time }}</td>
                         <td scope="col">{{ data.end_time }}</td>
-                        <td scope="col">{{ data.break }}</td>
-                        <td scope="col">{{ data.duration }}</td>
+                        <td scope="col">{{ data.break ? data.break : "null" }}</td>
+                        <td scope="col">{{ data.duration ? data.duration : "null" }}</td>
                         <td scope="col">{{ data.notes ? data.notes : "null" }}</td>
                         <!-- <td scope="col">
                         {{ data.mailed_at ? data.mailed_at : "null" }}
@@ -331,6 +329,13 @@
                             ></i>
                           </button>
                         </td> -->
+                      </tr>
+                    </tbody>
+                    <tbody v-else>
+                      <tr>
+                        <td colspan="15" class="text-danger text-center">
+                          {{ errorDelete }}
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -384,8 +389,8 @@
                         <td scope="col">{{ data.booking_date }}</td>
                         <td scope="col">{{ data.start_time }}</td>
                         <td scope="col">{{ data.end_time }}</td>
-                        <td scope="col">{{ data.break }}</td>
-                        <td scope="col">{{ data.duration }}</td>
+                        <td scope="col">{{ data.break ? data.break : "null" }}</td>
+                        <td scope="col">{{ data.duration ? data.duration : "null" }}</td>
                         <td scope="col">{{ data.notes ? data.notes : "null" }}</td>
                         <!-- <td scope="col">
                           {{ data.mailed_at ? data.mailed_at : "null" }}
@@ -404,7 +409,7 @@
                     <tbody v-else>
                       <tr>
                         <td colspan="15" class="text-danger text-center">
-                          {{ errorMessage }}
+                          <!-- {{ errorMessage }} -->
                         </td>
                       </tr>
                     </tbody>
@@ -415,13 +420,14 @@
           </div>
         </div>
       </div>
+      <!-- Pagination for getBookingData -->
       <div
         class="mx-3"
         style="text-align: right"
         v-if="
-          getBookingData?.length >= 8 &&
-          (!searchResults || searchResults.length === 0) &&
-          (!deleteBookingData || deleteBookingData.length === 0)
+          getBookingData.length >= 8 &&
+          deleteBookingData.length < 8 &&
+          searchResults.length < 8
         "
       >
         <button class="btn btn-outline-dark btn-sm">
@@ -433,9 +439,11 @@
           :disabled="currentPage === 1"
           @click="currentPage--"
         >
-          Previous</button
-        >&nbsp;&nbsp; <span>{{ currentPage }}</span
-        >&nbsp;&nbsp;
+          Previous
+        </button>
+        &nbsp;&nbsp;
+        <span>{{ currentPage }}</span>
+        &nbsp;&nbsp;
         <button
           class="btn btn-sm btn-primary ml-2"
           :disabled="currentPage * itemsPerPage >= getBookingData.length"
@@ -444,58 +452,66 @@
           Next
         </button>
       </div>
-      <div
-        class="mx-3"
-        style="text-align: right"
-        v-if="deleteBookingData && deleteBookingData.length >= 8"
-      >
+
+      <!-- Pagination for deleteBookingData -->
+      <div class="mx-3" style="text-align: right" v-if="deleteBookingData.length >= 8">
         <button class="btn btn-outline-dark btn-sm">
-          {{ totalRecordsOnPage }} Records Per Page
+          {{ totalRecordsOnPageDelete }} Records Per Page
         </button>
         &nbsp;&nbsp;
         <button
           class="btn btn-sm btn-primary mr-2"
-          :disabled="currentPage === 1"
-          @click="currentPage--"
+          :disabled="currentPageDelete === 1"
+          @click="currentPageDelete--"
         >
-          Previous</button
-        >&nbsp;&nbsp; <span>{{ currentPage }}</span
-        >&nbsp;&nbsp;
+          Previous
+        </button>
+        &nbsp;&nbsp;
+        <span>{{ currentPageDelete }}</span>
+        &nbsp;&nbsp;
         <button
           class="btn btn-sm btn-primary ml-2"
-          :disabled="currentPage * itemsPerPage >= deleteBookingData.length"
-          @click="currentPage++"
+          :disabled="currentPageDelete * itemsPerPage >= deleteBookingData.length"
+          @click="currentPageDelete++"
         >
           Next
         </button>
       </div>
+
+      <!-- Pagination for searchResults -->
       <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 8">
         <button class="btn btn-outline-dark btn-sm">
-          {{ totalRecordsOnPage }} Records Per Page
+          {{ totalRecordsOnPageSearch }} Records Per Page
         </button>
         &nbsp;&nbsp;
         <button
           class="btn btn-sm btn-primary mr-2"
-          :disabled="currentPage === 1"
-          @click="currentPage--"
+          :disabled="currentPageSearch === 1"
+          @click="currentPageSearch--"
         >
-          Previous</button
-        >&nbsp;&nbsp; <span>{{ currentPage }}</span
-        >&nbsp;&nbsp;
+          Previous
+        </button>
+        &nbsp;&nbsp;
+        <span>{{ currentPageSearch }}</span>
+        &nbsp;&nbsp;
         <button
           class="btn btn-sm btn-primary ml-2"
-          :disabled="currentPage * itemsPerPage >= searchResults.length"
-          @click="currentPage++"
+          :disabled="currentPageSearch * itemsPerPage >= searchResults.length"
+          @click="currentPageSearch++"
         >
           Next
         </button>
       </div>
     </div>
+    <loader :isLoading="isLoading"></loader>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 <script>
 import axios from "axios";
 import Navbar from "../components/Navbar.vue";
+import Loader from "../components/Loader/Loader.vue";
+import SuccessAlert from "../components/Alerts/SuccessAlert.vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -511,7 +527,9 @@ export default {
       endDate: new Date(),
       getBookingData: [],
       currentPage: 1,
-      itemsPerPage: 11,
+      itemsPerPage: 9,
+      currentPageDelete: 1,
+      currentPageSearch: 1,
       showFilters: false,
       site_id: "",
       businessUnit: [],
@@ -528,9 +546,11 @@ export default {
       options: [],
       deleteBookingData: [],
       errorMessageBooking: [],
+      isLoading: false,
+      errorDelete: [],
     };
   },
-  components: { Navbar },
+  components: { Navbar, Loader, SuccessAlert },
   computed: {
     getWeekDates() {
       const currentDate = new Date();
@@ -562,17 +582,25 @@ export default {
       return this.getBookingData.slice(startIndex, endIndex);
     },
     paginateSearchResults() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      if (!this.searchResults) return [];
+      const startIndex = (this.currentPageSearch - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.searchResults.slice(startIndex, endIndex);
     },
     paginateDeleteResults() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      if (!this.deleteBookingData) return [];
+      const startIndex = (this.currentPageDelete - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.deleteBookingData.slice(startIndex, endIndex);
     },
     totalRecordsOnPage() {
       return this.paginationBooking.length;
+    },
+    totalRecordsOnPageSearch() {
+      return this.paginateSearchResults.length;
+    },
+    totalRecordsOnPageDelete() {
+      return this.paginateDeleteResults.length;
     },
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
@@ -660,6 +688,7 @@ export default {
     },
     async makeFilterAPICall(filterType, filterValue) {
       const token = localStorage.getItem("token");
+      this.isLoading = true;
       try {
         const response = await axios.get(`${VITE_API_URL}/booking_filter`, {
           params: {
@@ -684,19 +713,32 @@ export default {
           // Handle other errors
           // console.error("Error filtering custom timesheets:", error);
         }
+      } finally {
+        this.isLoading = false;
       }
     },
     async getDeleteBookingData() {
+      this.isLoading = true;
       try {
         const response = await axios.get(`${VITE_API_URL}/find_deleted_bookings`);
 
         this.deleteBookingData = response.data.booking_data;
+        if (response.status === 200) {
+          if (!this.deleteBookingData || this.deleteBookingData.length === 0) {
+            this.errorDelete = "Record not found!";
+          } else {
+            this.errorDelete = "";
+          }
+        }
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
             // alert(error.response.data.message);
           }
         }
+        this.errorDelete = "An error occurred while fetching data.";
+      } finally {
+        this.isLoading = false;
       }
     },
 
@@ -705,6 +747,7 @@ export default {
         return;
       }
       const token = localStorage.getItem("token");
+
       await axios
         .put(`${VITE_API_URL}/delete_booking/` + id, {
           headers: {
@@ -713,9 +756,12 @@ export default {
           },
         })
         .then((response) => {
+          const message = "Booking Deleted!";
+          this.$refs.successAlert.showSuccess(message);
           this.fetchBookingDataMethod();
           this.getDeleteBookingData();
         });
+
       // alert("Record Deleted ");
     },
 
@@ -822,6 +868,7 @@ export default {
 
     async fetchBookingDataMethod() {
       const token = localStorage.getItem("token");
+      this.isLoading = true;
       let url = "";
       let requestData = {};
 
@@ -857,6 +904,8 @@ export default {
       } catch (error) {
         // Handle error
         // console.error("Error fetching booking data:", error);
+      } finally {
+        this.isLoading = false;
       }
     },
 
