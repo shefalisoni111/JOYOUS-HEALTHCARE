@@ -112,6 +112,13 @@
             </td>
           </tr>
         </tbody>
+        <tbody>
+          <tr>
+            <td colspan="9" class="text-center text-danger">
+              {{ "Not Client Data Found!" }}
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
     <div class="mx-3" style="text-align: right" v-if="getClientDetail.length >= 8">
@@ -138,6 +145,7 @@
     <EditClientModal :clientID="selectedClientID || 0" @client-updated="createdClient" />
     <AddClients @client-updated="createdClient" />
     <SuccessAlert ref="successAlert" />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 <script>
@@ -145,6 +153,7 @@ import axios from "axios";
 import EditClientModal from "../modals/Clients/EditClientModal.vue";
 import AddClients from "@/components/modals/Clients/AddClients.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
+import Loader from "../Loader/Loader.vue";
 
 export default {
   data() {
@@ -155,6 +164,7 @@ export default {
       searchQuery: "",
       currentPage: 1,
       itemsPerPage: 8,
+      isLoading: false,
       client: {
         job_name: ["Job1", "Job2", "Job3", "Job4", "Job5", "Job6"],
       },
@@ -169,7 +179,7 @@ export default {
     };
   },
 
-  components: { EditClientModal, AddClients, SuccessAlert },
+  components: { EditClientModal, AddClients, SuccessAlert, Loader },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -220,10 +230,15 @@ export default {
     //   });
     // },
     async createdClient() {
-      await axios
-        .get(`${VITE_API_URL}/activated_client`)
-
-        .then((response) => (this.getClientDetail = response.data.data));
+      this.isLoading = true;
+      try {
+        const response = await axios.get(`${VITE_API_URL}/activated_client`);
+        this.getClientDetail = response.data.data;
+      } catch (error) {
+        // console.error("Error fetching client data:", error);
+      } finally {
+        this.isLoading = false;
+      }
     },
   },
   mounted() {

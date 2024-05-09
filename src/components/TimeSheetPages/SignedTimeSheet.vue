@@ -392,6 +392,7 @@ ul.generalsetting h6 {
       </button>
     </div>
     <SignedTimesheetViewVue :id="selectedSignedTimesheetId" />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 <script>
@@ -399,6 +400,7 @@ import axios from "axios";
 import Navbar from "../Navbar.vue";
 
 import SignedTimesheetViewVue from "../modals/TimeSheet/SignedTimesheetView.vue";
+import Loader from "../Loader/Loader.vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -418,6 +420,7 @@ export default {
       site_id: "",
       businessUnit: [],
       candidateLists: [],
+      isLoading: false,
       id: "",
       selectedCandidate: "",
       business_unit_value: "",
@@ -432,7 +435,7 @@ export default {
       itemsPerPage: 5,
     };
   },
-  components: { Navbar, SignedTimesheetViewVue },
+  components: { Navbar, SignedTimesheetViewVue, Loader },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -672,6 +675,7 @@ export default {
       }
     },
     async signedTimeSheetMethod() {
+      this.isLoading = true;
       const token = localStorage.getItem("token");
       const startOfMonth = new Date(
         this.startDate.getFullYear(),
@@ -713,6 +717,8 @@ export default {
       } catch (error) {
         // console.error("Error fetching signed timesheets:", error);
         // this.errorMessage = "Error fetching signed timesheets";
+      } finally {
+        this.isLoading = false;
       }
     },
     moveToPrevious() {

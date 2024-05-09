@@ -218,11 +218,13 @@
     <EditClientModal :clientID="selectedClientID || 0" @client-updated="createdClient" />
     <AddClients @client-updated="createdClient" />
     <SuccessAlert ref="successAlert" />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 <script>
 import axios from "axios";
 import EditClientModal from "../modals/Clients/EditClientModal.vue";
+import Loader from "../Loader/Loader.vue";
 import AddClients from "@/components/modals/Clients/AddClients.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
 import { reactive } from "vue";
@@ -237,6 +239,7 @@ export default {
       itemsPerPage: 11,
       activated: false,
       showFilters: false,
+      isLoading: false,
       checkedClient: reactive({}),
       client: {
         job_name: ["Job1", "Job2", "Job3", "Job4", "Job5", "Job6"],
@@ -252,7 +255,7 @@ export default {
     };
   },
 
-  components: { EditClientModal, AddClients, SuccessAlert },
+  components: { EditClientModal, AddClients, SuccessAlert, Loader },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -454,10 +457,15 @@ export default {
       document.body.removeChild(a);
     },
     async createdClient() {
-      await axios
-        .get(`${VITE_API_URL}/clients`)
-
-        .then((response) => (this.getClientDetail = response.data.data));
+      this.isLoading = true;
+      try {
+        const response = await axios.get(`${VITE_API_URL}/clients`);
+        this.getClientDetail = response.data.data;
+      } catch (error) {
+        // console.error('Error fetching client data:', error);
+      } finally {
+        this.isLoading = false;
+      }
     },
   },
   mounted() {

@@ -53,6 +53,7 @@
                 @updated-assign="fetchAssignList"
               />
               <ScheduleDirectAssignList
+                :vacancyId="String(vacancyId)"
                 :columnDateMatch="columnDateMatch"
                 :initialDate="selectedDate"
                 :candidateId="selectedCandidateId"
@@ -97,7 +98,7 @@
                   <div>
                     <div class="filters" v-show="isOpen">
                       <select
-                        v-model="job_id"
+                        v-model="availability_id"
                         for="SelectAvailability"
                         class="form-select"
                       >
@@ -136,7 +137,7 @@
                         <option
                           id="selectJobTitle"
                           v-for="option in options"
-                          :key="option.id"
+                          :key="option.name"
                           :value="option.name"
                         >
                           {{ option.name }}
@@ -160,15 +161,16 @@
                   <div>
                     <div class="filters" v-show="isOpen">
                       <select
-                        v-model="site_id"
+                        v-model="site_shift_id"
                         for="selectBusinessUnit"
                         class="form-select"
+                        @change="filterData($event.target.value, 'site')"
                       >
                         <option value="" selected>Select Site</option>
                         <option
                           id="selectBusinessUnit"
                           v-for="option in businessUnit"
-                          :key="option.id"
+                          :key="option.site_name"
                           :value="option.id"
                         >
                           {{ option.site_name }}
@@ -192,15 +194,15 @@
                   <div>
                     <div class="filters" v-show="isOpen">
                       <select
-                        v-model="job_id"
+                        v-model="site_id"
                         for="selectShifts"
                         class="form-select"
-                        @change="filterData($event.target.value, 'site_shift')"
+                        @change="filterData($event.target.value, 'site')"
                       >
                         <option value="" selected>All Shift</option>
                         <option
                           v-for="option in shiftsTime"
-                          :key="option.id"
+                          :key="option.shift_name"
                           :value="option.shift_name"
                           id="selectShifts"
                         >
@@ -226,7 +228,7 @@
                     <div class="filters" v-show="isOpen">
                       <select
                         @change="filterData($event.target.value, 'publish')"
-                        v-model="job_id"
+                        v-model="publish"
                         for="selectPublishStatus"
                         class="form-select"
                       >
@@ -258,7 +260,7 @@
                       </th>
 
                       <th>
-                        <div class="calendar-grid">
+                        <div class="calendar-grid" v-if="!searchQuery">
                           <div v-for="day in daysOfWeek" :key="day" class="day-header">
                             {{ day }}
                           </div>
@@ -273,6 +275,7 @@
                       </th>
                     </tr>
                   </thead>
+
                   <tbody>
                     <tr>
                       <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
@@ -288,8 +291,8 @@
                               class="text-center"
                             >
                               <ul
-                                v-if="data.date === formattedDate(day)"
                                 class="list-unstyled mb-0"
+                                v-if="data.day === formattedDate(day)"
                               >
                                 <li
                                   class="position-relative"
@@ -297,7 +300,7 @@
                                   :key="vacancy.id"
                                   :draggable="true"
                                   @dragstart="handleDragStart(vacancy)"
-                                  @drop="handleRevertDrop(data.candidate_id, $event)"
+                                  @drop="handleRevertDrop(vacancy.id, $event)"
                                   @dragover.prevent="handleDragOver"
                                   :class="{
                                     'bg-info': liIndex === 0,
@@ -312,8 +315,8 @@
                                     >
 
                                     <!-- <span class="">{{
-                                      extractTimeRange(vacancy.site_shift)
-                                    }}</span> -->
+                                    extractTimeRange(vacancy.site_shift)
+                                  }}</span> -->
                                     <span class="">{{ vacancy.site_shift }}</span>
                                   </span>
                                   <span class="staff-count-round text-white">{{
@@ -441,6 +444,7 @@
                     </tr>
                   </tbody>
                 </table>
+                <loader :isLoading="isLoading"></loader>
                 <table class="table" v-if="searchQuery">
                   <thead>
                     <tr>
@@ -478,6 +482,7 @@
                       <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
                       <td>
                         <div
+                          v-if="searchQuery"
                           class="calendar-grid"
                           style="max-height: 90px; overflow-y: auto; overflow-x: hidden"
                         >
@@ -488,8 +493,8 @@
                               class="text-center"
                             >
                               <ul
-                                v-if="data.date === formattedDate(day)"
                                 class="list-unstyled mb-0"
+                                v-if="data.day === formattedDate(day)"
                               >
                                 <li
                                   class="position-relative"
@@ -497,7 +502,7 @@
                                   :key="vacancy.id"
                                   :draggable="true"
                                   @dragstart="handleDragStart(vacancy)"
-                                  @drop="handleRevertDrop(data.candidate_id, $event)"
+                                  @drop="handleRevertDrop(vacancy.id, $event)"
                                   @dragover.prevent="handleDragOver"
                                   :class="{
                                     'bg-info': liIndex === 0,
@@ -511,9 +516,10 @@
                                       >{{ vacancy.site }},{{ vacancy.job_title }}</span
                                     >
 
-                                    <span class="">{{
-                                      extractTimeRange(vacancy.site_shift)
-                                    }}</span>
+                                    <!-- <span class="">{{
+                                  extractTimeRange(vacancy.site_shift)
+                                }}</span> -->
+                                    <span class="">{{ vacancy.site_shift }}</span>
                                   </span>
                                   <span class="staff-count-round text-white">{{
                                     vacancy.staff_required
@@ -649,7 +655,7 @@
         </div>
       </div>
     </div>
-    <div
+    <!-- <div
       class="mx-3"
       style="text-align: right"
       v-if="!candidateList && searchResults?.length >= 8"
@@ -673,7 +679,7 @@
       >
         Next
       </button>
-    </div>
+    </div> -->
     <div class="mx-3" style="text-align: right" v-if="candidateList?.length >= 8">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
@@ -713,6 +719,8 @@ import ScheduleDirectAssignList from "../components/modals/Schedule/ScheduleDire
 import Navbar from "../components/Navbar.vue";
 import SchedulePublishStaffList from "../components/modals/Schedule/SchedulePublishStaffList.vue";
 import SuccessAlert from "../components/Alerts/SuccessAlert.vue";
+import Loader from "../components/Loader/Loader.vue";
+
 const axiosInstance = axios.create({
   headers: {
     "Cache-Control": "no-cache",
@@ -728,8 +736,12 @@ export default {
       currentDate: new Date(),
       selectedDate: new Date(),
       candidateJob: null,
+      availability_id: "",
+      publish: "",
+      site_shift_id: "",
       vacancyId: "",
       candidateList: [],
+      allDates: [],
       shiftsTime: [],
       selectedCandidateId: null,
       assignStaffDisplay: [],
@@ -754,6 +766,9 @@ export default {
       debounceTimeout: null,
       searchResults: [],
       errorMessage: "",
+
+      ColumnDateMatchDates: [],
+      isLoading: false,
     };
   },
 
@@ -850,24 +865,37 @@ export default {
   },
   watch: {
     columnDateMatch() {
-      this.filteredVacancies();
+      // this.filteredVacancies();
     },
   },
   methods: {
     filterData(value, filterType) {
-      if (filterType === "publish") {
-        let filter_type = "publish";
-        let filter_value = value === "true" ? "true" : "false";
-        this.makeFilterAPICall(filter_type, filter_value);
-      } else if (filterType === "job_title") {
-        let filter_type = "job_title";
-        let filter_value = value;
-        this.makeFilterAPICall(filter_type, filter_value);
-      } else if (filterType === "site_shift") {
-        let filter_type = "site";
-        let filter_value = value;
-        this.makeFilterAPICall(filter_type, filter_value);
+      switch (filterType) {
+        case "job_title":
+          this.site_id = "";
+          this.site_shift = "";
+          this.publish = "";
+          break;
+        case "site":
+          this.job_id = "";
+          this.site_shift = "";
+          this.publish = "";
+          break;
+        case "site_shift":
+          this.job_id = "";
+          this.site_id = "";
+          this.publish = "";
+          break;
+        case "publish":
+          this.job_id = "";
+          this.site_id = "";
+          this.site_shift = "";
+          break;
+        default:
+          break;
       }
+
+      this.makeFilterAPICall(filterType, value);
     },
     async makeFilterAPICall(filter_type, filter_value) {
       const requestData = {
@@ -875,18 +903,30 @@ export default {
       };
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/vacancies_and_candidates_availability`,
+          `${VITE_API_URL}/candidates_availability_vacancies`,
           {
             params: {
               filter_type: filter_type,
               filter_value: filter_value,
-              requestData,
+              date: this.formattedStartDate,
             },
           }
         );
+        this.candidateList = response.data.data;
 
+        this.searchResults = response.data.data;
         this.vacancyList = response.data.vacancies;
-        //this.searchResults = response.data.vacancies;
+        // this.vacancyList = response.data.vacancies;
+        // this.searchResults = response.data.vacancies;
+        // console.log(this.vacancyList);
+        // const allVacancies = this.candidateList.flatMap(
+        //   (candidate) => candidate.vacancies
+        // );
+        // const vacancyMap = new Map();
+        // allVacancies.forEach((vacancy) => vacancyMap.set(vacancy.id, vacancy));
+        // this.vacancyList = Array.from(vacancyMap.values());
+        // console.log(this.vacancyList);
+        this.fetchVacancyListMethod();
       } catch (error) {
         if (error.response && error.response.status === 404) {
           const errorMessages = error.response.data.error;
@@ -950,13 +990,13 @@ export default {
       const formattedDate = `${year}-${month}-${day}`;
       return formattedDate;
     },
-    filteredVacancies() {
-      return this.vacancyList.filter((item) => item.date == this.columnDateMatch);
-      return this.searchResults.filter((item) => item.date == this.columnDateMatch);
-    },
-    filteredVacancies() {
-      return this.searchResults.filter((item) => item.date == this.columnDateMatch);
-    },
+    // filteredVacancies() {
+    //   return this.allDatesVacancy.filter((item) => item.date == this.columnDateMatch);
+    //   return this.searchResults.filter((item) => item.date == this.columnDateMatch);
+    // },
+    // filteredVacancies() {
+    //   return this.searchResults.filter((item) => item.date == this.columnDateMatch);
+    // },
     toggleSidebar() {
       this.isOpen = !this.isOpen;
     },
@@ -975,6 +1015,7 @@ export default {
       }
       this.columnDateMatch = this.formattedStartDate;
       this.fetchVacancyListMethod();
+      this.fetchCandidateList();
     },
     moveToNext() {
       if (this.currentView === "weekly") {
@@ -991,6 +1032,7 @@ export default {
       }
       this.columnDateMatch = this.formattedStartDate;
       this.fetchVacancyListMethod();
+      this.fetchCandidateList();
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
@@ -1124,7 +1166,7 @@ export default {
         ) {
           errorMessage = error.response.data.error.base[0];
         } else {
-          errorMessage = "An error occurred while assigning shift.";
+          errorMessage = error.response.data.error;
         }
         alert(errorMessage);
 
@@ -1165,6 +1207,18 @@ export default {
         return "Invalid Date";
       }
     },
+    // (dateString) {
+    //   const datePart = dateString.split(", ")[1];
+
+    //   // Split the date part by dash to get day, month, and year
+    //   const [day, month, year] = datePart.split("-");
+
+    //   // Construct the formatted date string in "YYYY-MM-DD" format
+    //   const formattedDate = `${year}-${month}-${day}`;
+
+    //   // Return the formatted date
+    //   return formattedDate;
+    // },
     getCandidateName() {
       if (this.selectedCandidate) {
         if (this.selectedCandidate.first_name && this.selectedCandidate.last_name) {
@@ -1224,7 +1278,7 @@ export default {
         const actualCandidateId = candidateId.candidate_id.toString();
 
         await this.fetchVacancyListMethod();
-
+        await this.fetchCandidateList();
         const selectedDate = new Date(this.startDate);
         selectedDate.setDate(parseInt(day));
         selectedDate.setDate(selectedDate.getDate() + 1);
@@ -1263,6 +1317,12 @@ export default {
       }
     },
     async openModal(candidateId, day) {
+      // const allVacancies = this.candidateList.flatMap((candidate) => candidate.vacancies);
+      // const vacancyMap = new Map();
+      // allVacancies.forEach((vacancy) => vacancyMap.set(vacancy.id, vacancy));
+      // this.vacancyList = Array.from(vacancyMap.values());
+      // console.log(this.vacancyList);
+
       if (!candidateId || !candidateId.candidate_id) {
         return;
       }
@@ -1305,6 +1365,7 @@ export default {
 
         await this.fetchVacancyListMethod();
 
+        await this.fetchCandidateList();
         const selectedDate = new Date(this.startDate);
         selectedDate.setDate(parseInt(day));
         selectedDate.setDate(selectedDate.getDate() + 1);
@@ -1368,13 +1429,14 @@ export default {
       }
     },
     async fetchCandidateList() {
+      this.isLoading = true;
       try {
         const requestData = {
           date: this.formattedStartDate,
         };
 
         const response = await axios.get(
-          `${VITE_API_URL}/candidates_weekly_availability`,
+          `${VITE_API_URL}/candidates_availability_vacancies`,
           {
             params: requestData,
           }
@@ -1382,14 +1444,10 @@ export default {
         this.candidateList = response.data.data;
 
         this.searchResults = response.data.data;
-
-        // console.log(this.candidateList);
-        // this.candidateList.forEach((candidate) => {
-        //   candidate.availabilityByDate = {};
-        //   candidate.availability.forEach((avail) => {
-        //     candidate.availabilityByDate[avail.date] = avail.status;
-        //   });
-        // });
+        this.vacancyList = response.data.vacancies;
+        this.ColumnDateMatchDates = this.candidateList.map((candidate) =>
+          candidate.availability.map((avail) => avail.date)
+        );
 
         this.availabilityIds = this.candidateList.map((candidate) => {
           return candidate.availability.map(
@@ -1403,7 +1461,10 @@ export default {
           );
         });
         // this.fetchAssignList();
-      } catch (error) {}
+      } catch (error) {
+      } finally {
+        this.isLoading = false;
+      }
     },
     async fetchVacancyListMethod() {
       try {
@@ -1416,9 +1477,9 @@ export default {
             params: requestData,
           }
         );
-        this.vacancyList = response.data.data;
+        // this.vacancyList = response.data.data;
 
-        this.searchResults = response.data.data;
+        //  this.searchResults = response.data.data;
 
         this.fetchCandidateList();
         this.fetchAssignList();
@@ -1472,10 +1533,11 @@ export default {
     ScheduleDirectAssignList,
     SchedulePublishStaffList,
     SuccessAlert,
+    Loader,
   },
   mounted() {
     this.loadDateRangeFromLocalStorage();
-    this.fetchCandidateList();
+
     this.fetchAssignList();
     this.getBusinessUnitMethod();
     // this.fetchAssignVacancyStaffList();
@@ -1502,6 +1564,7 @@ export default {
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(endOfWeek.getDate() + 6);
     this.endDate = endOfWeek;
+    this.fetchCandidateList();
     this.fetchVacancyListMethod();
   },
 };

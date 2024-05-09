@@ -377,6 +377,7 @@
       :vacancyId="vacancyId"
       @closeModal="closeModal"
     />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
@@ -385,6 +386,7 @@ import axios from "axios";
 // import AppointmentAdd from "../modals/Schedule/EditAssignedShift.vue";
 import Navbar from "../Navbar.vue";
 import WeekTimeSheetEdit from "../modals/TimeSheet/WeekTimeSheetEdit.vue";
+import Loader from "../Loader/Loader.vue";
 
 export default {
   data() {
@@ -401,6 +403,7 @@ export default {
       business_unit_value: "",
       candidateLists: [],
       id: "",
+      isLoading: false,
       statusForSelectedDate: null,
       vacancyList: [],
       currentPage: 1,
@@ -788,6 +791,7 @@ export default {
       }
     },
     async fetWeekTimeSheetData() {
+      this.isLoading = true;
       try {
         const requestData = {
           date: this.formattedStartDate,
@@ -810,12 +814,16 @@ export default {
         } else {
           this.errorMessage = "";
         }
-      } catch (error) {}
+      } catch (error) {
+      } finally {
+        this.isLoading = false;
+      }
     },
   },
   components: {
     WeekTimeSheetEdit,
     Navbar,
+    Loader,
   },
   // created() {
   //   if (!localStorage.getItem("calendarData")) {

@@ -392,14 +392,14 @@
       :customDataId="selectedCustomTimesheetId"
       @CustomTimeSheetData-updated="getCustomSheetMethod"
     />
-    <!-- <WeekTimeSheetEdit @CustomTimeSheetData-updated="getCustomSheetMethod" /> -->
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 <script>
 import axios from "axios";
 import Navbar from "../Navbar.vue";
 import CustomeTimeSheetEdit from "../modals/TimeSheet/CustomeTimeSheetEdit.vue";
-// import WeekTimeSheetEdit from "../modals/TimeSheet/WeekTimeSheetEdit.vue";
+import Loader from "../Loader/Loader.vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -430,9 +430,10 @@ export default {
       id: "",
       selectedCandidate: "",
       business_unit_value: "",
+      isLoading: false,
     };
   },
-  components: { Navbar, CustomeTimeSheetEdit },
+  components: { Navbar, CustomeTimeSheetEdit, Loader },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -660,6 +661,7 @@ export default {
       }
     },
     async getCustomSheetMethod() {
+      this.isLoading = true;
       const token = localStorage.getItem("token");
       const startOfMonth = new Date(
         this.startDate.getFullYear(),
@@ -693,6 +695,8 @@ export default {
         }
       } catch (error) {
         console.error("Error fetching custom timesheets:", error);
+      } finally {
+        this.isLoading = false;
       }
     },
     moveToPrevious() {

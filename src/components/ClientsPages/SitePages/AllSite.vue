@@ -106,7 +106,7 @@
             <th scope="col">Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-if="getSiteAllData?.length > 0">
           <tr v-for="data in getSiteAllData" :key="data.id">
             <td>
               <input
@@ -164,6 +164,7 @@
     <AddSite @addSite="getSiteAllDataMethod" />
     <EditSite :siteId="selectedsiteId || 0" @editSite="getSiteAllDataMethod" />
     <SuccessAlert ref="successAlert" />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 <script>
@@ -171,6 +172,7 @@ import axios from "axios";
 import EditSite from "../../modals/Site/EditSite.vue";
 import AddSite from "../../modals/Site/AddSite.vue";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+import Loader from "../../Loader/Loader.vue";
 
 import { reactive } from "vue";
 export default {
@@ -181,6 +183,7 @@ export default {
       showFilters: false,
       getSiteDetail: [],
       siteIds: [],
+      isLoading: false,
       checkedSites: reactive({}),
     };
   },
@@ -192,7 +195,7 @@ export default {
     });
   },
 
-  components: { EditSite, AddSite, SuccessAlert },
+  components: { EditSite, AddSite, SuccessAlert, Loader },
   methods: {
     toggleFilters() {
       this.showFilters = !this.showFilters;
@@ -272,11 +275,14 @@ export default {
       document.body.removeChild(a);
     },
     async getSiteAllDataMethod() {
+      this.isLoading = true;
       try {
         const response = await axios.get(`${VITE_API_URL}/sites`);
         this.getSiteAllData = response.data.data;
       } catch (error) {
         // console.error("Error fetching data:", error);
+      } finally {
+        this.isLoading = false;
       }
     },
     handleCheckboxChange(dataId) {

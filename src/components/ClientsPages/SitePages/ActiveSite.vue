@@ -64,30 +64,37 @@
       </table>
     </div>
     <EditSite :siteId="selectedsiteId || 0" />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 <script>
 import axios from "axios";
 import EditSite from "../../modals/Site/EditSite.vue";
+import Loader from "../../Loader/Loader.vue";
 
 export default {
   data() {
     return {
       getSiteActiveData: [],
       selectedsiteId: 0,
+      isLoading: false,
     };
   },
 
-  components: { EditSite },
+  components: { EditSite, Loader },
   methods: {
     editsiteId(siteId) {
       this.selectedsiteId = siteId;
     },
     async getSiteActiveMethod() {
-      await axios
-        .get(`${VITE_API_URL}/activated_site`)
-
-        .then((response) => (this.getSiteActiveData = response.data.data));
+      this.isLoading = true;
+      try {
+        const response = await axios.get(`${VITE_API_URL}/activated_site`);
+        this.getSiteActiveData = response.data.data;
+      } catch (error) {
+      } finally {
+        this.isLoading = false;
+      }
     },
   },
   mounted() {

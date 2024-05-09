@@ -83,7 +83,7 @@
                 :src="completeImageUrl"
                 class="card-img-top position-relative profile"
                 alt="profile"
-                 loading="eager"
+                loading="eager"
               />
               <img
                 v-else
@@ -91,7 +91,7 @@
                 class="card-img-top position-relative default-profile"
                 style="border: 1px solid #8080801a"
                 alt="Default profile"
-                 loading="eager"
+                loading="eager"
               />
               <div class="text-capitalize fw-bolder ps-2">
                 <h6>
@@ -107,7 +107,7 @@
             </div>
             <div class="col-md-4"></div>
             <div class="col-md-2 d-flex align-items-center flex-column">
-              <img src="./logo.png" class="img-fluid" />
+              <img src="./logo.png" class="img-fluid" loading="eager" />
             </div>
           </div>
         </div>
@@ -326,7 +326,7 @@
                       height="200px"
                       width="200px"
                       alt="profile"
-                       loading="eager"
+                      loading="eager"
                     />
                     <img
                       v-else
@@ -336,7 +336,7 @@
                       height="200px"
                       width="200px"
                       alt="Default profile"
-                       loading="eager"
+                      loading="eager"
                     />
                   </td>
                   <td class="d-flex align-items-center border-0">
@@ -353,7 +353,12 @@
                   </td>
                   <td class="d-flex align-items-center">
                     <div>
-                      <img src="./logo.png" class="img-fluid" width="200" />
+                      <img
+                        src="./logo.png"
+                        class="img-fluid"
+                        width="200"
+                        loading="eager"
+                      />
                       <!-- <button
                         type="button"
                         class="btn btn-secondary"

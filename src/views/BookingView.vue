@@ -196,7 +196,7 @@
               </ul>
               <div class="tab-content mt-2" id="pills-tabContent" v-if="!searchQuery">
                 <div
-                  class="tab-pane fade show active table-wrapper"
+                  class="tab-pane fade show active table-wrapper AllBooking"
                   id="pills-AllBooking"
                   role="tabpanel"
                   aria-labelledby="pills-AllBooking-tab"
@@ -261,17 +261,18 @@
                     </tbody>
                     <tbody v-else>
                       <tr>
-                        <td colspan="15" class="text-danger text-center"></td>
+                        <td colspan="15" class="text-danger text-center">
+                          Not Data Found !
+                        </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
                 <div
-                  class="tab-pane fade"
+                  class="tab-pane fade DeleteBooking"
                   id="pills-deleteBooking"
                   role="tabpanel"
                   aria-labelledby="pills-deleteBooking-tab"
-                  v-if="deleteBookingData && deleteBookingData.length > 0"
                 >
                   <table class="table bookingTable">
                     <thead>
@@ -294,7 +295,7 @@
                         <!-- <th scope="col">Action</th> -->
                       </tr>
                     </thead>
-                    <tbody v-if="paginateDeleteResults?.length > 0">
+                    <tbody v-if="paginateDeleteResults?.length > 0 && deleteBookingData">
                       <tr v-for="data in paginateDeleteResults" :key="data.id">
                         <td scope="col">{{ data.id }}</td>
                         <td scope="col">{{ data.booking_code }}</td>
@@ -334,7 +335,7 @@
                     <tbody v-else>
                       <tr>
                         <td colspan="15" class="text-danger text-center">
-                          {{ errorDelete }}
+                          Not Data Found !
                         </td>
                       </tr>
                     </tbody>
@@ -369,8 +370,8 @@
                         <th scope="col">Action</th>
                       </tr>
                     </thead>
-                    <tbody v-if="paginateSearchResults?.length > 0">
-                      <tr v-for="data in paginateSearchResults" :key="data.id">
+                    <tbody v-if="searchResults?.length > 0">
+                      <tr v-for="data in searchResults" :key="data.id">
                         <td scope="col">{{ data.id }}</td>
                         <td scope="col">{{ data.booking_code }}</td>
                         <td scope="col">{{ data.candidate }}</td>
@@ -420,14 +421,47 @@
           </div>
         </div>
       </div>
+      <!-- Pagination for deleteBookingData -->
+      <div
+        class="mx-3"
+        id="delete-pagination"
+        style="text-align: right"
+        v-if="
+          paginateDeleteResults &&
+          currentTab === 'DeleteBooking' &&
+          deleteBookingData?.length >= 8
+        "
+      >
+        <button class="btn btn-outline-dark btn-sm">
+          {{ totalRecordsOnPageDelete }} Records Per Page
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm btn-primary mr-2"
+          :disabled="deleteBookingDataPage === 1"
+          @click="deleteBookingDataPage--"
+        >
+          Previous
+        </button>
+        &nbsp;&nbsp;
+        <span>{{ deleteBookingDataPage }}</span>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm btn-primary ml-2"
+          :disabled="deleteBookingDataPage * itemsPerPage >= deleteBookingData.length"
+          @click="deleteBookingDataPage++"
+        >
+          Next
+        </button>
+      </div>
+
       <!-- Pagination for getBookingData -->
       <div
         class="mx-3"
+        id="get-pagination"
         style="text-align: right"
         v-if="
-          getBookingData.length >= 8 &&
-          deleteBookingData.length < 8 &&
-          searchResults.length < 8
+          paginationBooking && currentTab === 'AllBooking' && getBookingData?.length >= 8
         "
       >
         <button class="btn btn-outline-dark btn-sm">
@@ -445,6 +479,7 @@
         <span>{{ currentPage }}</span>
         &nbsp;&nbsp;
         <button
+          v-if="paginationBooking"
           class="btn btn-sm btn-primary ml-2"
           :disabled="currentPage * itemsPerPage >= getBookingData.length"
           @click="currentPage++"
@@ -453,33 +488,12 @@
         </button>
       </div>
 
-      <!-- Pagination for deleteBookingData -->
-      <div class="mx-3" style="text-align: right" v-if="deleteBookingData.length >= 8">
-        <button class="btn btn-outline-dark btn-sm">
-          {{ totalRecordsOnPageDelete }} Records Per Page
-        </button>
-        &nbsp;&nbsp;
-        <button
-          class="btn btn-sm btn-primary mr-2"
-          :disabled="currentPageDelete === 1"
-          @click="currentPageDelete--"
-        >
-          Previous
-        </button>
-        &nbsp;&nbsp;
-        <span>{{ currentPageDelete }}</span>
-        &nbsp;&nbsp;
-        <button
-          class="btn btn-sm btn-primary ml-2"
-          :disabled="currentPageDelete * itemsPerPage >= deleteBookingData.length"
-          @click="currentPageDelete++"
-        >
-          Next
-        </button>
-      </div>
-
       <!-- Pagination for searchResults -->
-      <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 8">
+      <!-- <div
+        class="mx-3"
+        style="text-align: right"
+        v-if="searchQuery && searchResults?.length >= 8"
+      >
         <button class="btn btn-outline-dark btn-sm">
           {{ totalRecordsOnPageSearch }} Records Per Page
         </button>
@@ -501,7 +515,7 @@
         >
           Next
         </button>
-      </div>
+      </div> -->
     </div>
     <loader :isLoading="isLoading"></loader>
     <SuccessAlert ref="successAlert" />
@@ -521,6 +535,7 @@ const axiosInstance = axios.create({
 export default {
   data() {
     return {
+      currentTab: "AllBooking",
       currentView: "weekly",
       daysOfWeek: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
       startDate: new Date(),
@@ -528,7 +543,7 @@ export default {
       getBookingData: [],
       currentPage: 1,
       itemsPerPage: 9,
-      currentPageDelete: 1,
+      deleteBookingDataPage: 1,
       currentPageSearch: 1,
       showFilters: false,
       site_id: "",
@@ -581,15 +596,15 @@ export default {
       const endIndex = startIndex + this.itemsPerPage;
       return this.getBookingData.slice(startIndex, endIndex);
     },
-    paginateSearchResults() {
-      if (!this.searchResults) return [];
-      const startIndex = (this.currentPageSearch - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.searchResults.slice(startIndex, endIndex);
-    },
+    // paginateSearchResults() {
+    //   if (!this.searchResults) return [];
+    //   const startIndex = (this.currentPageSearch - 1) * this.itemsPerPage;
+    //   const endIndex = startIndex + this.itemsPerPage;
+    //   return this.searchResults.slice(startIndex, endIndex);
+    // },
     paginateDeleteResults() {
       if (!this.deleteBookingData) return [];
-      const startIndex = (this.currentPageDelete - 1) * this.itemsPerPage;
+      const startIndex = (this.deleteBookingDataPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.deleteBookingData.slice(startIndex, endIndex);
     },
@@ -963,6 +978,9 @@ export default {
 .color-fonts {
   color: #ff5f30;
   font-weight: bold;
+}
+.hidden {
+  display: none;
 }
 .btn-primary {
   border: none;

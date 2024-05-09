@@ -17,7 +17,7 @@
             <th scope="col">Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-if="getSiteInactiveData?.length > 0">
           <tr v-for="data in getSiteInactiveData" :key="data.id">
             <!-- <td>{{ data.id }}</td> -->
             <td v-text="data.refer_code"></td>
@@ -61,33 +61,47 @@
             </td>
           </tr>
         </tbody>
+        <tbody v-else>
+          <tr>
+            <td colspan="9" class="text-danger text-center">
+              {{ "Not Found Site Data" }}
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
     <EditSite :siteId="selectedsiteId || 0" />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 <script>
 import axios from "axios";
 import EditSite from "../../modals/Site/EditSite.vue";
+import Loader from "../../Loader/Loader.vue";
 
 export default {
   data() {
     return {
       getSiteInactiveData: [],
       selectedsiteId: 0,
+      isLoading: false,
     };
   },
 
-  components: { EditSite },
+  components: { EditSite, Loader },
   methods: {
     editsiteId(siteId) {
       this.selectedsiteId = siteId;
     },
     async getSiteInactiveMethod() {
-      await axios
-        .get(`${VITE_API_URL}/inactivated_site`)
-
-        .then((response) => (this.getSiteInactiveData = response.data.data));
+      this.isLoading = true;
+      try {
+        const response = await axios.get(`${VITE_API_URL}/inactivated_site`);
+        this.getSiteInactiveData = response.data.data;
+      } catch (error) {
+      } finally {
+        this.isLoading = false;
+      }
     },
   },
   mounted() {
