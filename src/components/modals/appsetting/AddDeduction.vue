@@ -39,7 +39,12 @@
                     <label class="form-label">AMOUNT</label>
                   </div>
                   <div class="col-8 mt-1">
-                    <input type="text" class="form-control" v-model="amount" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="amount"
+                      v-on:input="handleAmountInput($event)"
+                    />
                   </div>
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
@@ -60,6 +65,7 @@
               data-bs-target="#addDeduct"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
+              v-on:click="clearFieldsData"
             >
               Cancel
             </button>
@@ -67,6 +73,7 @@
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               v-on:click="addDeductionMethod()"
+              :disabled="isFormInvalid"
             >
               Add Deduction
             </button>
@@ -99,9 +106,20 @@ export default {
       const jobs_id = this.options.find((option) => option.id === this.jobs_id);
       return jobs_id ? jobs_id.name : "";
     },
+    isFormInvalid() {
+      return !this.title || !this.jobs_id || !this.amount || !this.frequency;
+    },
   },
   components: { SuccessAlert },
   methods: {
+    clearFieldsData() {
+      setTimeout(() => {
+        this.title = "";
+        this.jobs_id = "";
+        this.amount = "";
+        this.frequency = "";
+      }, 10);
+    },
     async addDeductionMethod() {
       const data = {
         title: this.title,
@@ -143,6 +161,9 @@ export default {
           }
         }
       }
+    },
+    handleAmountInput(event) {
+      this.amount = event.target.value.replace(/\D/g, "");
     },
   },
   async mounted() {

@@ -1,37 +1,36 @@
+<!-- AlertModal.vue -->
 <template>
-  <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">{{ title }}</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>{{ message }}</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
-            Cancel
-          </button>
-          <button type="button" class="btn btn-primary" @click="confirm">Confirm</button>
-        </div>
-      </div>
+  <div class="modal" v-show="isOpen">
+    <div class="modal-content">
+      <p>{{ message }}</p>
+      <button @click="confirm">OK</button>
+      <button @click="cancel">Cancel</button>
     </div>
   </div>
 </template>
+
 <script>
 export default {
-  props: {
-    title: String,
-    message: String,
-    onConfirm: Function,
+  data() {
+    return {
+      isOpen: false,
+      message: "",
+    };
+  },
+  created() {
+    // Listen for alert event
+    this.$root.$on("showAlert", ({ message }) => {
+      this.isOpen = true;
+      this.message = message;
+    });
   },
   methods: {
     confirm() {
-      this.onConfirm();
-      $("#confirmationModal").modal("hide");
+      this.isOpen = false;
+      this.$emit("confirmed");
+    },
+    cancel() {
+      this.isOpen = false;
     },
   },
 };

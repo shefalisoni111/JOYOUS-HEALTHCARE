@@ -122,7 +122,7 @@
                 <th scope="col" class="bg-primary text-white">Action</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody v-if="getInActiveJobs?.length > 0">
               <tr v-for="jobs in getInActiveJobs" :key="jobs.id">
                 <td v-text="jobs.id"></td>
                 <td scope="row">
@@ -153,6 +153,13 @@
                 </td>
               </tr>
             </tbody>
+            <tbody>
+              <tr>
+                <td colspan="8" class="text-center text-danger">
+                  {{ "Not Data Found !" }}
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>
@@ -161,6 +168,7 @@
     <AddJobbs @jobAdded="getJobData" />
     <EditJob :jobID="selectedjobID" @jobUpdate="getInactiveJobData" />
     <SuccessAlert ref="successAlert" />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
@@ -170,6 +178,7 @@ import AddJobbs from "../modals/appsetting/AddJobbs.vue";
 import EditJob from "../modals/appsetting/EditJob.vue";
 // import ConfirmationModal from "../../components/Alerts/ConfirmationAlert.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
+import Loader from "../Loader/Loader.vue";
 
 export default {
   name: "AppJobDetail",
@@ -180,6 +189,7 @@ export default {
       activeTab: "active",
       selectedjobID: null,
       confirmMessage: "",
+      isLoading: false,
     };
   },
   components: {
@@ -187,6 +197,7 @@ export default {
     EditJob,
     // ConfirmationModal,
     SuccessAlert,
+    Loader,
   },
 
   methods: {
@@ -238,48 +249,40 @@ export default {
       });
     },
     async getJobData() {
-      await axios
-        .get(`${VITE_API_URL}/active_job_list`)
-        .then((response) => {
-          this.getJobs = response.data.data;
-        })
-        .catch((error) => {
-          if (error.response) {
-            if (error.response.status == 404) {
-              // alert(error.response.data.message);
-            }
-          }
-        });
+      this.isLoading = true;
+      try {
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+        this.getJobs = response.data.data;
+      } catch (error) {
+      } finally {
+        this.isLoading = false;
+      }
     },
     async getInactiveJobData() {
-      await axios
-        .get(`${VITE_API_URL}/inactive_job_list`)
-        .then((response) => {
-          this.getInActiveJobs = response.data.data;
-          // this.getInactiveDataMethod();
-        })
-        .catch((error) => {
-          if (error.response) {
-            if (error.response.status == 404) {
-              // alert(error.response.data.message);
-            }
-          }
-        });
+      this.isLoading = true;
+      try {
+        const response = await axios.get(`${VITE_API_URL}/inactive_job_list`);
+        this.getInActiveJobs = response.data.data;
+        // this.getInactiveDataMethod();
+      } catch (error) {
+      } finally {
+        this.isLoading = false;
+      }
     },
-    async getInactiveDataMethod() {
-      await axios
-        .get(`${VITE_API_URL}/inactive_job_list`)
-        .then((response) => {
-          // this.getInactiveJobData();
-        })
-        .catch((error) => {
-          if (error.response) {
-            if (error.response.status == 404) {
-              // alert(error.response.data.message);
-            }
-          }
-        });
-    },
+    // async getInactiveDataMethod() {
+    //   await axios
+    //     .get(`${VITE_API_URL}/inactive_job_list`)
+    //     .then((response) => {
+    //       // this.getInactiveJobData();
+    //     })
+    //     .catch((error) => {
+    //       if (error.response) {
+    //         if (error.response.status == 404) {
+    //           // alert(error.response.data.message);
+    //         }
+    //       }
+    //     });
+    // },
   },
 
   mounted() {

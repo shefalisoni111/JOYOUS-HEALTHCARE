@@ -23,7 +23,7 @@
     </div>
     <div class="col-12">
       <div class="mt-5">
-        <div class="calendar">
+        <div class="calendar candidateTable">
           <div class="header gap-3 mb-3">
             <button
               @click="prevMonth"
@@ -42,13 +42,14 @@
           <div class="weekdays">
             <div class="weekday" v-for="day in daysOfWeek" :key="day">{{ day }}</div>
           </div>
-          <div class="days">
+
+          <div class="days overflow-x-auto">
             <div v-for="day in days" :key="day" class="day">
               <span class="date_round" :style="getDayPadding(day)">{{ day }}</span>
 
-              <div v-for="date in getHolidayData" :key="date.id">
-                <span v-if="date.holiday_date === formatDate(day)">
-                  <span class="fw-bold text-success text-capitalize mt-2">{{
+              <div v-for="date in getHolidayData" :key="date.id" class="mt-3">
+                <span v-if="date.holiday_date === formatDate(day)" class="event-data">
+                  <span class="fw-bold text-white text-capitalize mt-2">{{
                     date.title
                   }}</span>
                 </span>
@@ -164,6 +165,12 @@ export default {
   text-align: center;
   padding: 5px;
 }
+.event-data {
+  background: #198754;
+
+  padding: 5px;
+  margin-top: 8px;
+}
 .days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -227,7 +234,10 @@ table {
   width: 16% !important;
 }
 
-@media (max-width: 1200) {
+@media (max-width: 1308) {
+  .candidateTable {
+    width: 800px;
+  }
   .day {
     padding: 16px;
   }

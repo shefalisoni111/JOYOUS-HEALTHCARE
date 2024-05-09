@@ -79,7 +79,7 @@
                           <th scope="col" class="col-1 bg-primary text-white">Action</th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody v-if="getCandidateDeduction?.length > 0">
                         <tr
                           v-for="getDeduction in getCandidateDeduction"
                           :key="getDeduction.id"
@@ -108,6 +108,13 @@
                           </td>
                         </tr>
                       </tbody>
+                      <tbody v-else>
+                        <tr>
+                          <td colspan="6" class="text-center text-danger">
+                            {{ "Not Data Found!" }}
+                          </td>
+                        </tr>
+                      </tbody>
                     </table>
                   </div>
                 </div>
@@ -127,22 +134,25 @@
       </div>
     </div>
     <AddDeductionComponent @updateList="fetchCandidateDeductions" />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
+import Loader from "../Loader/Loader.vue";
 import AddDeductionComponent from "../modals/appsetting/AddDeduction.vue";
 export default {
   name: "CandidateDeduction",
   data() {
     return {
       getCandidateDeduction: [],
+      isLoading: false,
     };
   },
   components: {
     AddDeductionComponent,
+    Loader,
   },
 
   methods: {
@@ -155,9 +165,13 @@ export default {
       });
     },
     async fetchCandidateDeductions() {
+      this.isLoading = true;
       await axios
         .get(`${VITE_API_URL}/candidate_deductions`)
-        .then((response) => (this.getCandidateDeduction = response.data || []));
+        .then((response) => (this.getCandidateDeduction = response.data || []))
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
   },
 

@@ -247,12 +247,14 @@
         Next
       </button>
     </div>
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import Calendar from "../components/modals/CandidatePage/CanderAvailableModal.vue";
+import Loader from "../components/Loader/Loader.vue";
 const axiosInstance = axios.create({
   headers: {
     "Cache-Control": "no-cache",
@@ -281,6 +283,7 @@ export default {
       statusForSelectedDate: null,
       currentPage: 1,
       itemsPerPage: 8,
+      isLoading: false,
     };
   },
   computed: {
@@ -391,6 +394,7 @@ export default {
       return dateString;
     },
     async fetchAvailabilityStatusMethod() {
+      this.isLoading = true;
       try {
         const response = await axios.get(
           `${VITE_API_URL}/weekly_availability_for_candidate?candidate_id=${
@@ -414,6 +418,8 @@ export default {
         );
       } catch (error) {
         // console.error("Error fetching availability:", error);
+      } finally {
+        this.isLoading = false;
       }
     },
     debounceSearch() {
@@ -606,6 +612,7 @@ export default {
   },
   components: {
     Calendar,
+    Loader,
   },
   async created() {
     try {

@@ -135,6 +135,7 @@
     <AddNewDoc :categoryId="selectedCategoryId" @documentAdded="onDocumentAdded" />
     <EditCategoryDoc :categoryId="selectedCategoryId" @onDocAdded="getDocCAtegories" />
     <AddCategory :categoryId="selectedCategoryId" @onCategoryAdded="getDocCAtegories" />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
@@ -143,6 +144,7 @@ import axios from "axios";
 import AddNewDoc from "../modals/appsetting/AddNewDoc.vue";
 import AddCategory from "../modals/appsetting/AddCategory.vue";
 import EditCategoryDoc from "../modals/appsetting/EditCategoryDoc.vue";
+import Loader from "../Loader/Loader.vue";
 
 export default {
   name: "DocumentCategories",
@@ -152,12 +154,14 @@ export default {
       getCategory: [],
       getDocument: [],
       selectedCategoryId: null,
+      isLoading: false,
     };
   },
   components: {
     AddNewDoc,
     AddCategory,
     EditCategoryDoc,
+    Loader,
   },
 
   methods: {
@@ -204,12 +208,15 @@ export default {
         .then((response) => (this.getDocument = response.data));
     },
     async getDocCAtegories() {
+      this.isLoading = true;
       try {
         const response = await axios.get(`${VITE_API_URL}/document_categories`);
 
         this.getCategory = response.data;
       } catch (error) {
         // console.error("Error fetching document categories:", error);
+      } finally {
+        this.isLoading = false;
       }
     },
   },

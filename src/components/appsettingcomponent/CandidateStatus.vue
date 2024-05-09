@@ -36,7 +36,7 @@
             <th scope="col" class="col-2 bg-primary text-white jusfycenter">Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-if="getCandidateStatus?.length > 0">
           <tr v-for="getCandidate in getCandidateStatus" :key="getCandidate.id">
             <td :v-text="getCandidate.id">{{ getCandidate.id }}</td>
             <td :v-text="getCandidate.title">{{ getCandidate.title }}</td>
@@ -49,15 +49,21 @@
             </td>
           </tr>
         </tbody>
+        <tbody>
+          <tr>
+            <td colspan="5" class="text-danger text-center">{{ "Not Data Found!" }}</td>
+          </tr>
+        </tbody>
       </table>
     </div>
     <AddCandidateStatus @updateList="getCandidateData" />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
+import Loader from "../Loader/Loader.vue";
 import AddCandidateStatus from "../modals/appsetting/AddCandidateStatus.vue";
 
 export default {
@@ -65,10 +71,12 @@ export default {
   data() {
     return {
       getCandidateStatus: [],
+      isLoading: false,
     };
   },
   components: {
     AddCandidateStatus,
+    Loader,
   },
   onMounted() {
     const addCandidateStatus = new bootstrap.Modal(
@@ -91,6 +99,7 @@ export default {
     },
 
     getCandidateData() {
+      this.isLoading = true;
       axios
         .get(`${VITE_API_URL}/candidate_statuses`)
         .then((response) => {
@@ -102,6 +111,9 @@ export default {
               // alert(error.response.data.message);
             }
           }
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
   },

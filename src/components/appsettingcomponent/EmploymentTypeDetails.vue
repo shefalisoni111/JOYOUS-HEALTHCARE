@@ -101,12 +101,13 @@
       </div>
     </div>
     <AddEmployee @updateList="getEmployeeDAta" />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
+import Loader from "../Loader/Loader.vue";
 import AddEmployee from "../modals/appsetting/AddEmployee.vue";
 
 export default {
@@ -115,10 +116,12 @@ export default {
     return {
       getEmployeeStatus: [],
       addEmployeeModal: null,
+      isLoading: false,
     };
   },
   components: {
     AddEmployee,
+    Loader,
   },
 
   methods: {
@@ -138,9 +141,13 @@ export default {
     },
 
     getEmployeeDAta() {
+      this.isLoading = true;
       axios
         .get(`${VITE_API_URL}/employment_types`)
-        .then((response) => (this.getEmployeeStatus = response.data || []));
+        .then((response) => (this.getEmployeeStatus = response.data || []))
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
   },
 
