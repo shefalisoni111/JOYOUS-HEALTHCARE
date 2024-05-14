@@ -58,7 +58,7 @@
                       />
                     </div>
                   </td>
-                  <td v-text="getrate.business_unit_id"></td>
+                  <td>{{ getrate.site ? getrate.site : "Null" }}</td>
                   <td v-text="getrate.job_id"></td>
                   <td v-text="getrate.weekname" class="text-capitalize"></td>
                   <td v-text="getrate.employment_type_id"></td>

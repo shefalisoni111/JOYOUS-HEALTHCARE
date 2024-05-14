@@ -15,7 +15,7 @@
                     <label class="form-label" for="selectBusinessUnit">Site</label>
                   </div>
                   <div class="col-10">
-                    <select v-model="business_unit_id" id="selectBusinessUnit">
+                    <select v-model="site_id" id="selectBusinessUnit">
                       <option
                         v-for="option in businessUnit"
                         :key="option.id"
@@ -170,7 +170,7 @@ export default {
     return {
       weekname: "",
       shift_id: "",
-      business_unit_id: "",
+      site_id: "",
       job_id: "",
       employment_type_id: "",
       staff_rate: "",
@@ -189,7 +189,7 @@ export default {
     };
   },
   watch: {
-    business_unit_id: function (newValue) {
+    site_id: function (newValue) {
       this.validateBusinessUnit(newValue);
     },
     shift_id: function (newValue) {
@@ -254,7 +254,7 @@ export default {
       return (
         !this.weekname.trim() ||
         !this.staff_rate.trim() ||
-        !this.business_unit_id.trim() ||
+        !this.site_id.trim() ||
         !this.$route.params.id.trim() ||
         !this.employment_type_id.trim() ||
         !this.shift_id.trim() ||
@@ -262,7 +262,7 @@ export default {
       );
     },
     async addRateCardMethod() {
-      this.validateBusinessUnit(this.business_unit_id);
+      this.validateBusinessUnit(this.site_id);
       this.validateStaffRate(this.shift_id);
       this.validateJobID(this.job_id);
       this.validateShiftId(this.shift_id);
@@ -278,7 +278,7 @@ export default {
       const data = {
         weekname: this.weekname,
         staff_rate: this.staff_rate,
-        business_unit_id: this.business_unit_id,
+        site_id: this.site_id,
         job_id: this.job_id,
         candidate_id: this.$route.params.id,
         employment_type_id: this.employment_type_id,
@@ -368,7 +368,7 @@ export default {
     resetForm() {
       this.weekname = "";
       this.staff_rate = "";
-      this.business_unit_id = "";
+      this.site_id = "";
       this.job_id = "";
       this.$route.params.id = "";
       this.employment_type_id = "";

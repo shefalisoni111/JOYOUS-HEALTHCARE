@@ -86,7 +86,7 @@
                   </td>
                   <td class="text-capitalize" v-text="jobs.name"></td>
                   <td v-text="jobs.job_code"></td>
-                  <td v-text="jobs.no_of_client"></td>
+                  <td v-text="jobs.vendors"></td>
                   <td v-text="jobs.no_of_candidates"></td>
                   <td>2</td>
                   <td>
@@ -130,7 +130,7 @@
                 </td>
                 <td class="text-capitalize" v-text="jobs.name"></td>
                 <td v-text="jobs.job_code"></td>
-                <td v-text="jobs.no_of_client"></td>
+                <td v-text="jobs.vendors"></td>
                 <td v-text="jobs.no_of_candidates"></td>
                 <td>2</td>
                 <td>
