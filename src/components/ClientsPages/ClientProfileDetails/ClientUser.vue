@@ -16,7 +16,7 @@
             <th scope="col">Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-if="getClientDetail?.length > 0">
           <tr v-for="client in getClientDetail" :key="client.id">
             <!-- <td v-text="client.id"></td> -->
             <td v-text="client.ref_code"></td>
@@ -109,6 +109,13 @@
             </td>
           </tr>
         </tbody>
+        <tbody v-else>
+          <tr>
+            <td colspan="9" class="text-danger text-center" v-if="!isLoading">
+              {{ "Not Data Found!" }}
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
     <!-- <div class="mx-3" style="text-align: right" v-if="getClientDetail.length >= 11">
@@ -134,12 +141,14 @@
     </div> -->
 
     <SuccessAlert ref="successAlert" />
+    <!-- <loader :isLoading="isLoading"></loader> -->
   </div>
 </template>
 <script>
 import axios from "axios";
 
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+import Loader from "../../Loader/Loader.vue";
 
 export default {
   data() {
@@ -153,7 +162,7 @@ export default {
     };
   },
 
-  components: { SuccessAlert },
+  components: { SuccessAlert, Loader },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;

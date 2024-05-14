@@ -36,7 +36,7 @@
           </button>
         </div>
         <br />
-        <div class="d-flex flex-column">
+        <div class="d-flex flex-column" v-if="getNotes?.length > 0">
           <div v-for="data in getNotes" :key="data.id">
             <div class="d-flex gap-2">
               <div>
@@ -50,9 +50,15 @@
             </div>
           </div>
         </div>
+        <div v-else>
+          <div class="text-danger text-center mt-2" v-if="!isLoading">
+            {{ "Data Not Found!" }}
+          </div>
+        </div>
       </div>
     </div>
     <SuccessAlert ref="successAlert" />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
@@ -60,6 +66,7 @@
 import axios from "axios";
 
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+import Loader from "../../Loader/Loader.vue";
 
 export default {
   name: "Notes",
@@ -67,6 +74,7 @@ export default {
     return {
       getNotes: [],
       notes: "",
+      isLoading: false,
     };
   },
   computed: {
@@ -74,7 +82,7 @@ export default {
       return this.notes.trim() !== "";
     },
   },
-  components: { SuccessAlert },
+  components: { SuccessAlert, Loader },
   methods: {
     // async notesDeleteMethod(id) {
     //   if (!window.confirm("Are you Sure ?")) {
@@ -86,6 +94,7 @@ export default {
     //   window.location.reload();
     // },
     async getNotesMethod() {
+      this.isLoading = true;
       try {
         const response = await axios.get(
           `${VITE_API_URL}/show_client_notes/${this.$route.params.id}`
@@ -102,6 +111,8 @@ export default {
             // alert(error.response.data.message);
           }
         }
+      } finally {
+        this.isLoading = false;
       }
     },
 

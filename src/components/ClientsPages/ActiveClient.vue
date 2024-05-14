@@ -16,7 +16,7 @@
             <th scope="col">Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-if="paginateCandidates?.length > 0">
           <tr v-for="client in paginateCandidates" :key="client.id">
             <!-- <td v-text="client.id"></td> -->
             <td v-text="client.ref_code"></td>
@@ -112,7 +112,7 @@
             </td>
           </tr>
         </tbody>
-        <tbody>
+        <tbody v-else>
           <tr>
             <td colspan="9" class="text-center text-danger">
               {{ "Not Client Data Found!" }}

@@ -23,7 +23,7 @@
                 <div class="p-2">
                   <div class="d-flex justify-content-between">
                     <div class="d-flex">
-                      <div class="d-flex align-items-center gap-2">
+                      <!-- <div class="d-flex align-items-center gap-2">
                         <select
                           class="form-control"
                           v-model="currentView"
@@ -32,7 +32,7 @@
                           <option value="weekly">Weekly</option>
                           <option value="monthly">Monthly</option>
                         </select>
-                      </div>
+                      </div> -->
 
                       &nbsp;&nbsp;
                       <div class="d-flex align-items-center">
@@ -253,7 +253,7 @@
                           <button class="btn btn-danger">
                             <i
                               class="bi bi-trash text-white"
-                              @click="bookingDeleteMethod(data.id)"
+                              @click="confirmed(data.id)"
                             ></i>
                           </button>
                         </td>
@@ -261,7 +261,11 @@
                     </tbody>
                     <tbody v-else>
                       <tr>
-                        <td colspan="15" class="text-danger text-center">
+                        <td
+                          colspan="15"
+                          class="text-danger text-center"
+                          v-if="!isLoading"
+                        >
                           Not Data Found !
                         </td>
                       </tr>
@@ -334,7 +338,11 @@
                     </tbody>
                     <tbody v-else>
                       <tr>
-                        <td colspan="15" class="text-danger text-center">
+                        <td
+                          colspan="15"
+                          class="text-danger text-center"
+                          v-if="!isLoading"
+                        >
                           Not Data Found !
                         </td>
                       </tr>
@@ -409,7 +417,11 @@
                     </tbody>
                     <tbody v-else>
                       <tr>
-                        <td colspan="15" class="text-danger text-center">
+                        <td
+                          colspan="15"
+                          class="text-danger text-center"
+                          v-if="!isLoading"
+                        >
                           <!-- {{ errorMessage }} -->
                         </td>
                       </tr>
@@ -519,6 +531,12 @@
     </div>
     <loader :isLoading="isLoading"></loader>
     <SuccessAlert ref="successAlert" />
+    <ConfirmationAlert
+      :show-modal="isModalVisible"
+      :message="confirmMessage"
+      @confirm="confirmCallback"
+      @cancel="canceled"
+    />
   </div>
 </template>
 <script>
@@ -526,6 +544,7 @@ import axios from "axios";
 import Navbar from "../components/Navbar.vue";
 import Loader from "../components/Loader/Loader.vue";
 import SuccessAlert from "../components/Alerts/SuccessAlert.vue";
+import ConfirmationAlert from "../components/Alerts/ConfirmationAlert.vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -563,9 +582,12 @@ export default {
       errorMessageBooking: [],
       isLoading: false,
       errorDelete: [],
+      isModalVisible: false,
+      confirmMessage: "",
+      confirmCallback: null,
     };
   },
-  components: { Navbar, Loader, SuccessAlert },
+  components: { Navbar, Loader, SuccessAlert, ConfirmationAlert },
   computed: {
     getWeekDates() {
       const currentDate = new Date();
@@ -654,6 +676,14 @@ export default {
     },
   },
   methods: {
+    confirmed(id) {
+      this.isModalVisible = false;
+
+      this.bookingDeleteMethod(id);
+    },
+    canceled() {
+      this.isModalVisible = false;
+    },
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
 
@@ -734,8 +764,15 @@ export default {
     },
     async getDeleteBookingData() {
       this.isLoading = true;
+      const formattedStartDate = this.formatDate(this.startDate);
+
+      let requestData = {
+        date: formattedStartDate,
+      };
       try {
-        const response = await axios.get(`${VITE_API_URL}/find_deleted_bookings`);
+        const response = await axios.get(`${VITE_API_URL}/find_deleted_bookings`, {
+          params: requestData,
+        });
 
         this.deleteBookingData = response.data.booking_data;
         if (response.status === 200) {
@@ -758,25 +795,26 @@ export default {
     },
 
     async bookingDeleteMethod(id) {
-      if (!window.confirm("Are you Sure ?")) {
-        return;
-      }
-      const token = localStorage.getItem("token");
+      this.confirmMessage = "Are you sure you want to delete this booking?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        const token = localStorage.getItem("token");
 
-      await axios
-        .put(`${VITE_API_URL}/delete_booking/` + id, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: "bearer " + token,
-          },
-        })
-        .then((response) => {
-          const message = "Booking Deleted!";
-          this.$refs.successAlert.showSuccess(message);
-          this.fetchBookingDataMethod();
-          this.getDeleteBookingData();
-        });
-
+        await axios
+          .put(`${VITE_API_URL}/delete_booking/` + id, {
+            headers: {
+              "content-type": "application/json",
+              Authorization: "bearer " + token,
+            },
+          })
+          .then((response) => {
+            const message = "Booking Deleted!";
+            this.$refs.successAlert.showSuccess(message);
+            this.fetchBookingDataMethod();
+            this.getDeleteBookingData();
+          });
+        this.isModalVisible = false;
+      };
       // alert("Record Deleted ");
     },
 
@@ -831,6 +869,7 @@ export default {
         );
       }
       this.fetchBookingDataMethod();
+      this.getDeleteBookingData();
     },
     moveToNext() {
       if (this.currentView === "weekly") {
@@ -846,6 +885,7 @@ export default {
         );
       }
       this.fetchBookingDataMethod();
+      this.getDeleteBookingData();
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
@@ -943,7 +983,7 @@ export default {
     this.getPositionMethod();
 
     this.getBusinessUnitMethod();
-    this.getDeleteBookingData();
+
     this.getCandidateListMethod();
     const currentDate = new Date();
     const dayOfWeek = currentDate.getDay();
@@ -958,6 +998,7 @@ export default {
     endOfWeek.setDate(endOfWeek.getDate() + 6);
     this.endDate = endOfWeek;
     this.fetchBookingDataMethod();
+    this.getDeleteBookingData();
   },
 };
 </script>

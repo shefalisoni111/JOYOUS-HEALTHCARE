@@ -14,54 +14,66 @@
             + Add Site
           </button>
         </div>
-
-        <div class="card mt-2" v-for="data in getClientDatas" :key="data.id">
-          <div class="card-header">
-            <!-- <router-link
+        <div v-if="getClientDatas?.length > 0">
+          <div class="card mt-2" v-for="data in getClientDatas" :key="data.id">
+            <div class="card-header">
+              <!-- <router-link
               :to="{ name: 'SingleSiteprofile' }"
               class="text-decoration-none text-black"
               >Hospital 1</router-link
             > -->
-          </div>
-          <div class="card-body">
-            <h5 class="card-title"></h5>
-            <div class="card-text d-flex gap-3">
-              <div class="mt-3">
-                <span class="rounded-circle p-3">{{
-                  getFirstCharAndNumber(data.site_name)
-                }}</span>
-              </div>
-              <div class="">
-                <span>{{ data.email }}</span
-                ><br />
-                <span>{{ data.phone_number }}</span
-                ><br />
-                <span>{{ data.address }}</span
-                ><br />
-              </div>
             </div>
-            <button
-              type="button"
-              class="btn btn-primary mt-3 text-nowrap text-nowrap"
-              data-bs-toggle="modal"
-              data-bs-target="#editClientSite"
-              data-bs-whatever="@mdo"
-              @click="editsiteId(data.id)"
-            >
-              Edit
-            </button>
+            <div class="card-body">
+              <h5 class="card-title"></h5>
+              <div class="card-text d-flex gap-3">
+                <div class="mt-3">
+                  <router-link
+                    :to="{ name: 'SingleSiteprofile', params: { id: data.id } }"
+                  >
+                    <span class="rounded-circle p-3 text-decoration-none text-black">{{
+                      getFirstCharAndNumber(data.site_name)
+                    }}</span></router-link
+                  >
+                </div>
+                <div class="">
+                  <span>{{ data.email }}</span
+                  ><br />
+                  <span>{{ data.phone_number }}</span
+                  ><br />
+                  <span>{{ data.address }}</span
+                  ><br />
+                </div>
+              </div>
+              <button
+                type="button"
+                class="btn btn-primary mt-3 text-nowrap text-nowrap"
+                data-bs-toggle="modal"
+                data-bs-target="#editClientSite"
+                data-bs-whatever="@mdo"
+                @click="editsiteId(data.id)"
+              >
+                Edit
+              </button>
+            </div>
+          </div>
+        </div>
+        <div v-else>
+          <div class="text-danger text-center mt-2" v-if="!isLoading">
+            {{ "Data Not Found!" }}
           </div>
         </div>
       </div>
     </div>
     <AddSite :id="$route.params.id" @addSite="getSiteAllDataMethod" />
     <EditClientSite :siteId="selectedsiteId || 0" @UpdateSite="getClientMethod" />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 <script>
 import axios from "axios";
 import AddSite from "../../modals/Site/AddSite.vue";
 import EditClientSite from "../../modals/Clients/EditClientSite.vue";
+import Loader from "../../Loader/Loader.vue";
 
 export default {
   data() {
@@ -71,13 +83,14 @@ export default {
       selectedClientID: null,
       isActive: true,
       searchQuery: "",
+      isLoading: false,
       // clientId: this.$route.params.id,
       currentPage: 1,
       itemsPerPage: 8,
       selectedsiteId: 0,
     };
   },
-  components: { AddSite, EditClientSite },
+  components: { AddSite, EditClientSite, Loader },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -128,6 +141,7 @@ export default {
         .then((response) => (this.getClientDetail = response.data.data));
     },
     async getClientMethod() {
+      this.isLoading = true;
       try {
         const response = await axios.get(
           `${VITE_API_URL}client_all_site/${this.$route.params.id}`
@@ -142,6 +156,8 @@ export default {
         } else {
           // console.error("Error fetching candidates:", error);
         }
+      } finally {
+        this.isLoading = false;
       }
     },
   },

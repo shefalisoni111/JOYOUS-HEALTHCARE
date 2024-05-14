@@ -104,7 +104,7 @@
             </td>
           </tr>
         </tbody>
-        <tbody>
+        <tbody v-else>
           <tr>
             <td colspan="9" class="text-center text-danger">
               {{ "Not Client Data Found!" }}

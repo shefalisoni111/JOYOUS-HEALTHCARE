@@ -371,7 +371,7 @@ export default {
             const message = "Export file download Successfully";
             this.$refs.successAlert.showSuccess(message);
             this.checkedClient = [{}];
-            this.downloadCSV(response.data, `filename_${clientId}.csv`);
+            this.downloadOneCSV(response.data, `filename_${clientId}.csv`);
           })
           .catch((error) => {
             // console.error("Error:", error);
@@ -380,7 +380,7 @@ export default {
 
       this.clientId = [];
     },
-    downloadCSV(csvData, filename) {
+    downloadOneCSV(csvData, filename) {
       const blob = new Blob([csvData], { type: "text/csv" });
 
       const url = window.URL.createObjectURL(blob);
