@@ -298,37 +298,46 @@ export default {
     },
     exportOneFile() {
       const siteIds = this.siteIds.valueOf();
-      if (!siteIds || typeof siteIds !== "string" || siteIds.trim() === "") {
+      if (!siteIds || this.siteIds.length === 0) {
         alert("Please select at least one Site.");
         // const errorMessage = "Please select at least one site.";
         // this.$refs.errorAlert.showError(errorMessage);
         return;
       }
-      const queryParams = `site_ids=${this.siteIds}`;
-      axios
-        .get(`${VITE_API_URL}selected_export_site?${queryParams}`, {
-          headers: {
-            Accept: "*/*",
-          },
-        })
-        .then((response) => {
-          const message = "Export file download Successfully";
-          this.$refs.successAlert.showSuccess(message);
-          this.checkedSites = [{}];
-          this.downloadOneCSV(response.data, "filename.csv");
-        })
-        .catch((error) => {
-          // console.error("Error:", error);
-        });
+      this.siteIds.forEach((siteIds) => {
+        const queryParams = `site_ids=${siteIds}`;
+        axios
+          .get(`${VITE_API_URL}selected_export_site?${queryParams}`, {
+            headers: {
+              Accept: "text/csv",
+            },
+            responseType: "blob",
+          })
+          .then((response) => {
+            const message = "Export file download Successfully";
+            this.$refs.successAlert.showSuccess(message);
+            this.checkedSites = [{}];
+
+            this.downloadOneCSV(response.data, `filename_${siteIds}.csv`);
+          })
+          .catch((error) => {
+            // console.error("Error:", error);
+          });
+      });
+      this.siteIds = [];
     },
     downloadOneCSV(csvData, filename) {
-      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+      const blob = new Blob([csvData], { type: "text/csv" });
+
       const url = window.URL.createObjectURL(blob);
+
       const a = document.createElement("a");
       a.href = url;
       a.download = filename;
+
       document.body.appendChild(a);
       a.click();
+
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     },

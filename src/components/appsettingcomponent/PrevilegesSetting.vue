@@ -140,8 +140,8 @@
 
                               <td>
                                 <i
-                                  class="bi bi-trash text-danger text-nowrap"
-                                  v-on:click="rolesInActiveMethod(data.id)"
+                                  class="bi bi-trash text-danger text-nowrap cursor-pointer"
+                                  v-on:click="confirmed(data.id)"
                                 >
                                 </i>
                               </td>
@@ -181,7 +181,7 @@
                               <td>1</td>
                               <td>
                                 <i
-                                  class="bi bi-trash text-danger"
+                                  class="bi bi-trash text-danger cursor-pointer"
                                   v-on:click="rolesDeleteMethod(data.id)"
                                 ></i
                                 >&nbsp;
@@ -223,6 +223,7 @@
                         </table>
                       </div>
                     </div>
+                    <Loader :isLoading="isLoading"></Loader>
                   </div>
                 </div>
               </div>
@@ -233,8 +234,12 @@
     </div>
     <AddPrivileges @AddPrivileges="getRolesActiveMethod" />
     <SuccessAlert ref="successAlert" />
-    <!-- <ConfirmationAlert ref="message" /> -->
-    <!-- <ConfirmationAlert /> -->
+    <ConfirmationAlert
+      :show-modal="isModalVisible"
+      :message="confirmMessage"
+      @confirm="confirmCallback"
+      @cancel="canceled"
+    />
   </div>
 </template>
 
@@ -244,7 +249,8 @@ import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
 import AddPrivileges from "../modals/privilege Setting/AddPrivileges.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
-// import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
+import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
+import Loader from "../Loader/Loader.vue";
 
 export default {
   data() {
@@ -254,6 +260,10 @@ export default {
       totalActiveUserCount: 0,
       rolesInActive: [],
       totalInActiveUserCount: 0,
+      isLoading: false,
+      isModalVisible: false,
+      confirmMessage: "",
+      confirmCallback: null,
     };
   },
   components: {
@@ -261,9 +271,19 @@ export default {
     Sidebar,
     AddPrivileges,
     SuccessAlert,
-    // ConfirmationAlert,
+    Loader,
+    ConfirmationAlert,
   },
   methods: {
+    confirmed(id) {
+      this.isModalVisible = false;
+
+      this.rolesInActiveMethod(id);
+      this.rolesReActiveMethod(id);
+    },
+    canceled() {
+      this.isModalVisible = false;
+    },
     setActiveTab(tab) {
       this.activeTab = tab;
     },
@@ -272,6 +292,7 @@ export default {
     },
 
     async getRolesActiveMethod() {
+      this.isLoading = true;
       const token = localStorage.getItem("token");
       try {
         const response = await axios.get(`${VITE_API_URL}/find_active_user`, {
@@ -287,9 +308,12 @@ export default {
             // alert(error.response.data.message);
           }
         }
+      } finally {
+        this.isLoading = false;
       }
     },
     async getRolesInActiveMethod() {
+      this.isLoading = true;
       const token = localStorage.getItem("token");
       try {
         const response = await axios.get(`${VITE_API_URL}/find_inactive_user`, {
@@ -305,90 +329,98 @@ export default {
             // alert(error.response.data.message);
           }
         }
+      } finally {
+        this.isLoading = false;
       }
     },
 
     async rolesInActiveMethod(id) {
-      if (!confirm("Are you sure?")) {
-        return;
-      }
-      // const confirmationMessage = await this.$confirm("Are you sure you want to delete?");
-      // this.confirmationMessage = "Are you sure you want to delete this role?";
-      // this.showConfirmation = true;
+      this.confirmMessage = "Are you sure you want to In-activate this User?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        // const confirmationMessage = await this.$confirm("Are you sure you want to delete?");
+        // this.confirmationMessage = "Are you sure you want to delete this role?";
+        // this.showConfirmation = true;
 
-      const token = localStorage.getItem("token");
-      try {
-        const response = await axios.put(`${VITE_API_URL}/inactive_user/${id}`, null, {
-          headers: {
-            Authorization: "bearer " + token,
-          },
-        });
+        const token = localStorage.getItem("token");
+        try {
+          const response = await axios.put(`${VITE_API_URL}/inactive_user/${id}`, null, {
+            headers: {
+              Authorization: "bearer " + token,
+            },
+          });
 
-        this.getRolesActiveMethod();
-        const message = "Privilege User InActivated successfully";
-        this.$refs.successAlert.showSuccess(message);
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status === 404) {
-          } else if (error.response.status === 422) {
-            alert(error.response.data.message);
+          this.getRolesActiveMethod();
+          const message = "Privilege User InActivated successfully";
+          this.$refs.successAlert.showSuccess(message);
+        } catch (error) {
+          if (error.response) {
+            if (error.response.status === 404) {
+            } else if (error.response.status === 422) {
+              alert(error.response.data.message);
+            }
           }
         }
-      }
+        this.isModalVisible = false;
+      };
     },
     async rolesReActiveMethod(id) {
-      if (!confirm("Are you sure?")) {
-        return;
-      }
-      // const confirmationMessage = await this.$confirm("Are you sure you want to delete?");
-      // this.confirmationMessage = "Are you sure you want to delete this role?";
-      // this.showConfirmation = true;
+      this.confirmMessage = "Are you sure you want to delete this role?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        // const confirmationMessage = await this.$confirm("Are you sure you want to delete?");
+        // this.confirmationMessage = "Are you sure you want to delete this role?";
+        // this.showConfirmation = true;
 
-      const token = localStorage.getItem("token");
-      try {
-        const response = await axios.put(`${VITE_API_URL}/active_user/${id}`, null, {
-          headers: {
-            Authorization: "bearer " + token,
-          },
-        });
+        const token = localStorage.getItem("token");
+        try {
+          const response = await axios.put(`${VITE_API_URL}/active_user/${id}`, null, {
+            headers: {
+              Authorization: "bearer " + token,
+            },
+          });
 
-        this.getRolesInActiveMethod();
-        const message = "Privilege User Re-activated successfully";
-        this.$refs.successAlert.showSuccess(message);
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status === 404) {
-          } else if (error.response.status === 422) {
-            alert(error.response.data.message);
+          this.getRolesInActiveMethod();
+          const message = "Privilege User Re-activated successfully";
+          this.$refs.successAlert.showSuccess(message);
+        } catch (error) {
+          if (error.response) {
+            if (error.response.status === 404) {
+            } else if (error.response.status === 422) {
+              alert(error.response.data.message);
+            }
           }
         }
-      }
+        this.isModalVisible = false;
+      };
     },
     async rolesDeleteMethod(id) {
-      if (!confirm("Are you sure?")) {
-        return;
-      }
-      // this.confirmationMessage = "Are you sure you want to delete this role?";
-      // this.showConfirmation = true;
+      this.confirmMessage = "Are you sure you want to delete this role?";
+      this.isModalVisible = true;
+      (this.confirmCallback = async () => {
+        // this.confirmationMessage = "Are you sure you want to delete this role?";
+        // this.showConfirmation = true;
 
-      const token = localStorage.getItem("token");
-      try {
-        const response = await axios.delete(`${VITE_API_URL}/merchants/${id}`, {
-          headers: {
-            Authorization: "bearer " + token,
-          },
-        });
+        const token = localStorage.getItem("token");
+        try {
+          const response = await axios.delete(`${VITE_API_URL}/merchants/${id}`, {
+            headers: {
+              Authorization: "bearer " + token,
+            },
+          });
 
-        this.getRolesInActiveMethod();
-        const message = "Privilege User Deleted successfully";
-        this.$refs.successAlert.showSuccess(message);
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
+          this.getRolesInActiveMethod();
+          const message = "Privilege User Deleted successfully";
+          this.$refs.successAlert.showSuccess(message);
+        } catch (error) {
+          if (error.response) {
+            if (error.response.status == 404) {
+              // alert(error.response.data.message);
+            }
           }
         }
-      }
+      }),
+        (this.isModalVisible = false);
     },
   },
   mounted() {
@@ -425,6 +457,9 @@ ul.generalsetting li i.rounded-circle {
 }
 .nav-pills .nav-link {
   color: #464444;
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 ul.generalsetting li a .job p {
   font-size: 12px;

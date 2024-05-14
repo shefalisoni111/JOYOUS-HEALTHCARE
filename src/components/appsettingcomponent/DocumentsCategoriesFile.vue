@@ -58,8 +58,8 @@
                 </li>
                 <li class="p-3">
                   <i
-                    class="bi bi-trash btn btn-outline-success text-nowrap text-nowrap"
-                    v-on:click="categoryDelete(getCate.id)"
+                    class="bi bi-trash btn btn-outline-success text-nowrap text-nowrap cursor-pointer"
+                    v-on:click="confirmed(getCate.id)"
                   ></i>
                 </li>
                 <li class="p-3">
@@ -121,7 +121,7 @@
                         </label>
                       </td>
                       <td>
-                        <i class="bi bi-trash" @click="documentDelete(getDocs.id)"></i>
+                        <i class="bi bi-trash" @click="confirmed(getDocs.id)"></i>
                       </td>
                     </tr>
                   </tbody>
@@ -132,6 +132,12 @@
         </div>
       </div>
     </div>
+    <ConfirmationAlert
+      :show-modal="isModalVisible"
+      :message="confirmMessage"
+      @confirm="confirmCallback"
+      @cancel="canceled"
+    />
     <AddNewDoc :categoryId="selectedCategoryId" @documentAdded="onDocumentAdded" />
     <EditCategoryDoc :categoryId="selectedCategoryId" @onDocAdded="getDocCAtegories" />
     <AddCategory :categoryId="selectedCategoryId" @onCategoryAdded="getDocCAtegories" />
@@ -145,6 +151,7 @@ import AddNewDoc from "../modals/appsetting/AddNewDoc.vue";
 import AddCategory from "../modals/appsetting/AddCategory.vue";
 import EditCategoryDoc from "../modals/appsetting/EditCategoryDoc.vue";
 import Loader from "../Loader/Loader.vue";
+import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
 
 export default {
   name: "DocumentCategories",
@@ -155,6 +162,9 @@ export default {
       getDocument: [],
       selectedCategoryId: null,
       isLoading: false,
+      isModalVisible: false,
+      confirmMessage: "",
+      confirmCallback: null,
     };
   },
   components: {
@@ -162,6 +172,7 @@ export default {
     AddCategory,
     EditCategoryDoc,
     Loader,
+    ConfirmationAlert,
   },
 
   methods: {
@@ -186,21 +197,35 @@ export default {
     selectCategory(categoryId) {
       this.selectedCategoryId = categoryId;
     },
-    categoryDelete(id) {
-      if (!window.confirm("Are you Sure ?")) {
-        return;
-      }
-      axios.delete(`${VITE_API_URL}/document_categories/` + id).then((response) => {
-        this.getDocCAtegories();
-      });
+    confirmed(id) {
+      this.isModalVisible = false;
+
+      this.confirmed(id);
+      this.documentDelete(id);
+    },
+    canceled() {
+      this.isModalVisible = false;
+    },
+
+    confirmed(id) {
+      this.confirmMessage = "Are you sure want to delete?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        axios.delete(`${VITE_API_URL}/document_categories/` + id).then((response) => {
+          this.getDocCAtegories();
+        });
+        this.isModalVisible = false;
+      };
     },
     documentDelete(id) {
-      if (!window.confirm("Are you Sure ?")) {
-        return;
-      }
-      axios.delete(`${VITE_API_URL}/documents/` + id).then((response) => {
-        this.getDocCAtegories();
-      });
+      this.confirmMessage = "Are you sure want to delete?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        axios.delete(`${VITE_API_URL}/documents/` + id).then((response) => {
+          this.getDocCAtegories();
+        });
+        this.isModalVisible = false;
+      };
     },
     getDocumentCategories() {
       axios
@@ -239,6 +264,9 @@ ul li i {
 }
 .accordion-button {
   width: 25%;
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 .accordion-button:focus {
   z-index: 3;

@@ -80,8 +80,8 @@
                   </td>
                   <td>
                     <i
-                      class="bi bi-trash"
-                      v-on:click="employeeDelete(getEmployee.id)"
+                      class="bi bi-trash cursor-pointer"
+                      v-on:click="confirmed(getEmployee.id)"
                     ></i>
                   </td>
                 </tr>
@@ -100,6 +100,12 @@
         </div>
       </div>
     </div>
+    <ConfirmationAlert
+      :show-modal="isModalVisible"
+      :message="confirmMessage"
+      @confirm="confirmCallback"
+      @cancel="canceled"
+    />
     <AddEmployee @updateList="getEmployeeDAta" />
     <loader :isLoading="isLoading"></loader>
   </div>
@@ -109,6 +115,7 @@
 import axios from "axios";
 import Loader from "../Loader/Loader.vue";
 import AddEmployee from "../modals/appsetting/AddEmployee.vue";
+import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
 
 export default {
   name: "EmploymentTypeDetails",
@@ -117,27 +124,41 @@ export default {
       getEmployeeStatus: [],
       addEmployeeModal: null,
       isLoading: false,
+      isModalVisible: false,
+      confirmMessage: "",
+      confirmCallback: null,
     };
   },
   components: {
     AddEmployee,
     Loader,
+    ConfirmationAlert,
   },
 
   methods: {
+    confirmed(id) {
+      this.isModalVisible = false;
+
+      this.employeeDelete(id);
+    },
+    canceled() {
+      this.isModalVisible = false;
+    },
     employeeDelete(id) {
-      if (!window.confirm("Are you Sure ?")) {
-        return;
-      }
-      axios.delete(`${VITE_API_URL}/employment_types/` + id).then((response) => {
-        if (response.data.error === "record could not deleted !") {
-          alert(
-            "Cannot Delete Employee Type: This record associated with candidate employee type records."
-          );
-        } else {
-          this.getEmployeeDAta();
-        }
-      });
+      this.confirmMessage = "Are you sure want to delete?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        axios.delete(`${VITE_API_URL}/employment_types/` + id).then((response) => {
+          if (response.data.error === "record could not deleted !") {
+            alert(
+              "Cannot Delete Employee Type: This record associated with candidate employee type records."
+            );
+          } else {
+            this.getEmployeeDAta();
+          }
+        });
+        this.isModalVisible = false;
+      };
     },
 
     getEmployeeDAta() {
@@ -160,6 +181,9 @@ export default {
 <style scoped>
 .showdata .nav-link {
   color: #000;
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 .showdata .nav-link.active {
   background: #e8e3e3;

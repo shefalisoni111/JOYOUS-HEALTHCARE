@@ -182,7 +182,7 @@
                               <th scope="col">{{ data.agency_name }}</th>
                             </tr>
                           </thead>
-                          <tbody>
+                          <tbody v-if="getAgencyData?.length > 0">
                             <tr>
                               <th scope="row">authorized person</th>
                               <td>
@@ -206,6 +206,13 @@
                             <tr>
                               <th scope="row">phone number</th>
                               <td colspan="2">{{ data.phone_number }}</td>
+                            </tr>
+                          </tbody>
+                          <tbody v-else>
+                            <tr>
+                              <td colspan="6" class="text-center text-danger">
+                                {{ "Not Data Found !" }}
+                              </td>
                             </tr>
                           </tbody>
                         </table>
@@ -375,6 +382,7 @@
                         ipsam quis labore quod quo sint?
                       </p>
                     </div>
+                    <Loader :isLoading="isLoading"></Loader>
                   </div>
                 </div>
               </div>
@@ -383,6 +391,7 @@
         </div>
       </div>
     </div>
+
     <EditAgencySetting
       :agencyId="selectedAgencyId || 0"
       @editAgency="getAgencyDataMethod"
@@ -394,6 +403,7 @@ import axios from "axios";
 import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
 import EditAgencySetting from "../modals/AgencySetting/EditAgencySetting.vue";
+import Loader from "../Loader/Loader.vue";
 
 export default {
   name: "AgencySetting",
@@ -404,12 +414,14 @@ export default {
       logoAgencyPreview: "",
       logoInvoicePreview: "",
       selectedAgencyId: 0,
+      isLoading: false,
     };
   },
   components: {
     Navbar,
     Sidebar,
     EditAgencySetting,
+    Loader,
   },
   computed: {
     completeImageUrl() {
@@ -568,6 +580,7 @@ export default {
       };
     },
     async getAgencyDataMethod() {
+      this.isLoading = true;
       await axios
         .get(`${VITE_API_URL}/agency_settings`)
         .then((response) => {
@@ -579,6 +592,9 @@ export default {
               // alert(error.response.data.message);
             }
           }
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
     loadFromLocalStorage() {

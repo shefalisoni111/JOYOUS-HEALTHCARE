@@ -9,7 +9,9 @@
           <div class="leftside">
             <div class="heading mb-3 position-relative">
               <p class="bforeline"></p>
-              <p class="mb-0 text-uppercase fw-bold genSetting">General Settings</p>
+              <p class="mb-0 text-uppercase fw-bold genSetting ms-3 ms-lg-0">
+                General Settings
+              </p>
               <p class="afterline"></p>
             </div>
             <div>
@@ -219,6 +221,11 @@ ul.generalsetting li i.rounded-circle a.router-link-active:active {
 @media (max-width: 1400px) {
   #main {
     padding-top: 51px;
+  }
+}
+@media (max-width: 420px) {
+  .docSetting {
+    margin-left: -4px !important;
   }
 }
 </style>

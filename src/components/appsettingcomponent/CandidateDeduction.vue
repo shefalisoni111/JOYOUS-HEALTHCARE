@@ -102,8 +102,8 @@
 
                           <td>
                             <i
-                              class="bi bi-trash"
-                              v-on:click="candidateDeductionDelete(getDeduction.id)"
+                              class="bi bi-trash cursor-pointer"
+                              v-on:click="confirmed(getDeduction.id)"
                             ></i>
                           </td>
                         </tr>
@@ -133,6 +133,12 @@
         </div>
       </div>
     </div>
+    <ConfirmationAlert
+      :show-modal="isModalVisible"
+      :message="confirmMessage"
+      @confirm="confirmCallback"
+      @cancel="canceled"
+    />
     <AddDeductionComponent @updateList="fetchCandidateDeductions" />
     <loader :isLoading="isLoading"></loader>
   </div>
@@ -142,27 +148,43 @@
 import axios from "axios";
 import Loader from "../Loader/Loader.vue";
 import AddDeductionComponent from "../modals/appsetting/AddDeduction.vue";
+import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
+
 export default {
   name: "CandidateDeduction",
   data() {
     return {
       getCandidateDeduction: [],
       isLoading: false,
+      isModalVisible: false,
+      confirmMessage: "",
+      confirmCallback: null,
     };
   },
   components: {
     AddDeductionComponent,
     Loader,
+    ConfirmationAlert,
   },
 
   methods: {
-    candidateDeductionDelete(id) {
-      if (!window.confirm("Are you Sure ?")) {
-        return;
-      }
-      axios.delete(`${VITE_API_URL}/candidate_deductions/` + id).then((response) => {
-        this.fetchCandidateDeductions();
-      });
+    confirmed(id) {
+      this.isModalVisible = false;
+
+      this.confirmed(id);
+    },
+    canceled() {
+      this.isModalVisible = false;
+    },
+    confirmed(id) {
+      this.confirmMessage = "Are you sure want to delete?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        axios.delete(`${VITE_API_URL}/candidate_deductions/` + id).then((response) => {
+          this.fetchCandidateDeductions();
+        });
+        this.isModalVisible = false;
+      };
     },
     async fetchCandidateDeductions() {
       this.isLoading = true;
@@ -196,6 +218,9 @@ table th {
 }
 .showdata .nav-link {
   color: #000;
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 .showdata .nav-link.active {
   background: none;

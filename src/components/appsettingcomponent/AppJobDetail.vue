@@ -92,7 +92,7 @@
                   <td>
                     <button
                       class="btn btn-primary text-nowrap"
-                      v-on:click="jobsInActive(jobs.id)"
+                      v-on:click="confirmed(jobs.id)"
                     >
                       In-Active
                     </button>
@@ -153,7 +153,7 @@
                 </td>
               </tr>
             </tbody>
-            <tbody>
+            <tbody v-else>
               <tr>
                 <td colspan="8" class="text-center text-danger">
                   {{ "Not Data Found !" }}
@@ -164,7 +164,17 @@
         </div>
       </div>
     </div>
-    <!-- <ConfirmationModal /> -->
+    <ConfirmationAlert
+      :show-modal="isModalVisible"
+      :message="confirmMessage"
+      @confirm="confirmCallback"
+      @cancel="canceled"
+    />
+    <ShowDetailsMessage
+      :show-modal="showModal"
+      :message="alertMessage"
+      @close="closeModal"
+    />
     <AddJobbs @jobAdded="getJobData" />
     <EditJob :jobID="selectedjobID" @jobUpdate="getInactiveJobData" />
     <SuccessAlert ref="successAlert" />
@@ -176,9 +186,10 @@
 import axios from "axios";
 import AddJobbs from "../modals/appsetting/AddJobbs.vue";
 import EditJob from "../modals/appsetting/EditJob.vue";
-// import ConfirmationModal from "../../components/Alerts/ConfirmationAlert.vue";
+import ConfirmationAlert from "../../components/Alerts/ConfirmationAlert.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
 import Loader from "../Loader/Loader.vue";
+import ShowDetailsMessage from "../Alerts/ShowDetailsMessage.vue";
 
 export default {
   name: "AppJobDetail",
@@ -188,29 +199,33 @@ export default {
       getInActiveJobs: [],
       activeTab: "active",
       selectedjobID: null,
-      confirmMessage: "",
       isLoading: false,
+      isModalVisible: false,
+      confirmMessage: "",
+      confirmCallback: null,
+      showModal: false,
+      alertMessage: "",
     };
   },
   components: {
     AddJobbs,
     EditJob,
-    // ConfirmationModal,
+    ConfirmationAlert,
     SuccessAlert,
     Loader,
+    ShowDetailsMessage,
   },
 
   methods: {
-    showConfirmation(message, callback) {
-      this.confirmMessage = message;
-      this.confirmCallback = callback;
-      $("#confirmationModal").modal("show");
+    confirmed(id) {
+      this.isModalVisible = false;
+
+      this.jobsInActive(id);
     },
-    performAction() {
-      if (typeof this.confirmCallback === "function") {
-        this.confirmCallback();
-      }
+    canceled() {
+      this.isModalVisible = false;
     },
+
     setActiveTab(tab) {
       this.activeTab = tab;
     },
@@ -218,36 +233,67 @@ export default {
       this.selectedjobID = jobID;
     },
     jobActive(id) {
-      if (!window.confirm("Are you Sure ?")) {
-        return;
-      }
-      axios.put(`${VITE_API_URL}/active_job/` + id).then((response) => {
-        this.getJobData();
-        this.getInactiveJobData();
-      });
-      const message = "Record Activated successfully";
-      this.$refs.successAlert.showSuccess(message);
-      // alert("Record Activated ");
+      this.confirmMessage = "Are you sure you want to Re-activate this job?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        axios.put(`${VITE_API_URL}/active_job/` + id).then((response) => {
+          this.getJobData();
+          this.getInactiveJobData();
+        });
+        const message = "Record Activated successfully";
+        this.$refs.successAlert.showSuccess(message);
+        // alert("Record Activated ");
+        this.isModalVisible = false;
+      };
     },
+    async jobsInActive(id) {
+      this.confirmMessage = "Are you sure you want to In-activate this job?";
 
-    jobsInActive(id) {
-      if (!window.confirm("Are you Sure ?")) {
-        return;
-      }
-      axios.put(`${VITE_API_URL}/inactivate_job/` + id).then((response) => {
-        this.getJobData();
-        this.getInactiveJobData();
-        if (response.data.message) {
-          // alert(response.data.message);
-          const message = response.data.message;
-          this.$refs.successAlert.showSuccess(message);
-        } else {
-          // alert("");
-          const message = "Record Inactivated  successfully";
-          this.$refs.successAlert.showSuccess(message);
+      this.isModalVisible = true;
+
+      this.confirmCallback = async () => {
+        try {
+          const response = await axios.put(`${VITE_API_URL}/inactivate_job/` + id);
+          this.getJobData();
+          this.getInactiveJobData();
+
+          if (response.data.message) {
+            alert(response.data.message);
+
+            // this.alertMessage = response.data.message;
+            // this.showModal = true;
+          } else {
+            const message = "Record Inactivated  successfully";
+            this.$refs.successAlert.showSuccess(message);
+          }
+        } catch (error) {
+          // Handle error
         }
-      });
+
+        this.isModalVisible = false;
+      };
     },
+    closeModal() {
+      this.showModal = false;
+    },
+    // jobsInActive(id) {
+    //   if (!window.confirm("Are you Sure ?")) {
+    //     return;
+    //   }
+    //   axios.put(`${VITE_API_URL}/inactivate_job/` + id).then((response) => {
+    //     this.getJobData();
+    //     this.getInactiveJobData();
+    //     if (response.data.message) {
+    //       // alert(response.data.message);
+    //       const message = response.data.message;
+    //       this.$refs.successAlert.showSuccess(message);
+    //     } else {
+    //       // alert("");
+    //       const message = "Record Inactivated  successfully";
+    //       this.$refs.successAlert.showSuccess(message);
+    //     }
+    //   });
+    // },
     async getJobData() {
       this.isLoading = true;
       try {

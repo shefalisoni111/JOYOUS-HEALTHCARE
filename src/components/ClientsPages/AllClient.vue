@@ -352,38 +352,46 @@ export default {
       // console.log("Updated clientId array:", this.clientId);
     },
     exportOneFile() {
-      const clientId = this.clientId.valueOf();
-      if (!clientId || typeof clientId !== "string" || clientId.trim() === "") {
+      if (!this.clientId || this.clientId.length === 0) {
         alert("Please select at least one Client.");
-        // const errorMessage = "Please select at least one site.";
-        // this.$refs.errorAlert.showError(errorMessage);
         return;
       }
-      const queryParams = `client_ids=${this.clientId}`;
-      axios
-        .get(`${VITE_API_URL}/selected_export?${queryParams}`, {
-          headers: {
-            Accept: "*/*",
-          },
-        })
-        .then((response) => {
-          const message = "Export file download Successfully";
-          this.$refs.successAlert.showSuccess(message);
-          this.checkedClient = [{}];
-          this.downloadOneCSV(response.data, "filename.csv");
-        })
-        .catch((error) => {
-          // console.error("Error:", error);
-        });
+
+      this.clientId.forEach((clientId) => {
+        const queryParams = `client_ids=${clientId}`;
+
+        axios
+          .get(`${VITE_API_URL}/selected_export?${queryParams}`, {
+            headers: {
+              Accept: "text/csv",
+            },
+            responseType: "blob",
+          })
+          .then((response) => {
+            const message = "Export file download Successfully";
+            this.$refs.successAlert.showSuccess(message);
+            this.checkedClient = [{}];
+            this.downloadCSV(response.data, `filename_${clientId}.csv`);
+          })
+          .catch((error) => {
+            // console.error("Error:", error);
+          });
+      });
+
+      this.clientId = [];
     },
-    downloadOneCSV(csvData, filename) {
-      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+    downloadCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv" });
+
       const url = window.URL.createObjectURL(blob);
+
       const a = document.createElement("a");
       a.href = url;
       a.download = filename;
+
       document.body.appendChild(a);
       a.click();
+
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     },

@@ -45,7 +45,10 @@
             </td>
             <td></td>
             <td>
-              <i class="bi bi-trash" v-on:click="candidateDelete(getCandidate.id)"></i>
+              <i
+                class="bi bi-trash cursor-pointer"
+                v-on:click="confirmed(getCandidate.id)"
+              ></i>
             </td>
           </tr>
         </tbody>
@@ -56,6 +59,12 @@
         </tbody>
       </table>
     </div>
+    <ConfirmationAlert
+      :show-modal="isModalVisible"
+      :message="confirmMessage"
+      @confirm="confirmCallback"
+      @cancel="canceled"
+    />
     <AddCandidateStatus @updateList="getCandidateData" />
     <loader :isLoading="isLoading"></loader>
   </div>
@@ -65,6 +74,7 @@
 import axios from "axios";
 import Loader from "../Loader/Loader.vue";
 import AddCandidateStatus from "../modals/appsetting/AddCandidateStatus.vue";
+import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
 
 export default {
   name: "CandidateStatus",
@@ -72,11 +82,15 @@ export default {
     return {
       getCandidateStatus: [],
       isLoading: false,
+      isModalVisible: false,
+      confirmMessage: "",
+      confirmCallback: null,
     };
   },
   components: {
     AddCandidateStatus,
     Loader,
+    ConfirmationAlert,
   },
   onMounted() {
     const addCandidateStatus = new bootstrap.Modal(
@@ -86,16 +100,26 @@ export default {
   },
 
   methods: {
+    confirmed(id) {
+      this.isModalVisible = false;
+
+      this.candidateDelete(id);
+    },
+    canceled() {
+      this.isModalVisible = false;
+    },
     showPopups() {
       addCandidateStatus.show();
     },
-    candidateDelete(id) {
-      if (!window.confirm("Are you Sure ?")) {
-        return;
-      }
-      axios.delete(`${VITE_API_URL}/candidate_statuses/` + id).then((response) => {
-        this.getCandidateData();
-      });
+    confirmed(id) {
+      this.confirmMessage = "Are you sure want to delete?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        axios.delete(`${VITE_API_URL}/candidate_statuses/` + id).then((response) => {
+          this.getCandidateData();
+        });
+        this.isModalVisible = false;
+      };
     },
 
     getCandidateData() {
@@ -134,7 +158,9 @@ td i.bi-trash {
 .pagesetting p span::after {
   content: "";
 }
-
+.cursor-pointer {
+  cursor: pointer;
+}
 table thead th {
   background-color: #f9944b !important;
 }

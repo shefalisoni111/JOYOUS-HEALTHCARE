@@ -1,10 +1,15 @@
-<!-- AlertModal.vue -->
 <template>
-  <div class="modal" v-show="isOpen">
-    <div class="modal-content">
-      <p>{{ message }}</p>
-      <button @click="confirm">OK</button>
-      <button @click="cancel">Cancel</button>
+  <div class="modal" v-show="showModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body pb-0">
+          <p>{{ message }}</p>
+        </div>
+        <div class="modal-footer">
+          <button @click="cancel" class="btn btn-secondary">Cancel</button>
+          <button @click="confirm" class="btn btn-primary">Ok</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -12,25 +17,15 @@
 <script>
 export default {
   data() {
-    return {
-      isOpen: false,
-      message: "",
-    };
+    return {};
   },
-  created() {
-    // Listen for alert event
-    this.$root.$on("showAlert", ({ message }) => {
-      this.isOpen = true;
-      this.message = message;
-    });
-  },
+  props: ["message", "showModal"],
   methods: {
     confirm() {
-      this.isOpen = false;
-      this.$emit("confirmed");
+      this.$emit("confirm");
     },
     cancel() {
-      this.isOpen = false;
+      this.$emit("cancel");
     },
   },
 };

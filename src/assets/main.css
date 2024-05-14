@@ -25,6 +25,10 @@ body {
 
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 
 @media (max-width: 1690px) {
   html {font-size: small;}
