@@ -145,6 +145,12 @@
         Next
       </button>
     </div>
+    <ConfirmationAlert
+      :show-modal="isModalVisible"
+      :message="confirmMessage"
+      @confirm="confirmCallback"
+      @cancel="canceled"
+    />
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
@@ -154,6 +160,7 @@ import axios from "axios";
 import Loader from "../Loader/Loader.vue";
 import EditCandidate from "../modals/CandidatePage/EditCandidate.vue";
 import AssignDirectVacancy from "../modals/CandidatePage/AssignDirectVacancy.vue";
+import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
 
 export default {
   name: "ActiveCandidate",
@@ -165,6 +172,9 @@ export default {
       currentPage: 1,
       itemsPerPage: 11,
       isLoading: false,
+      isModalVisible: false,
+      confirmMessage: "",
+      confirmCallback: null,
     };
   },
 
@@ -172,6 +182,7 @@ export default {
     EditCandidate,
     AssignDirectVacancy,
     Loader,
+    ConfirmationAlert,
   },
   computed: {
     paginateCandidates() {
@@ -198,19 +209,21 @@ export default {
       this.$store.commit("setSelectedAssignedItemId", id);
     },
     deleteCandidate(id) {
-      if (!window.confirm("Are you Sure?")) {
-        return;
-      }
-      axios
-        .put(`${VITE_API_URL}/inactivate_candidate/${id}`)
-        .then((response) => {
-          alert("Staff In-activated successfully!");
-          this.inactiveCandidateData = response.data;
-          this.getCandidateMethods();
-        })
-        .catch((error) => {
-          // console.error("Error deleting candidate:", error);
-        });
+      this.confirmMessage = "Are you sure want to In-activate this Staff?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        axios
+          .put(`${VITE_API_URL}/inactivate_candidate/${id}`)
+          .then((response) => {
+            alert("Staff In-activated successfully!");
+            this.inactiveCandidateData = response.data;
+            this.getCandidateMethods();
+          })
+          .catch((error) => {
+            // console.error("Error deleting candidate:", error);
+          });
+        this.isModalVisible = false;
+      };
     },
     // async assignedCandidate(id) {
     //   const token = localStorage.getItem("token");

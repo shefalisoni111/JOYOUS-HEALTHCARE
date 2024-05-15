@@ -38,29 +38,42 @@
         </div>
       </div>
     </div>
+    <ConfirmationAlert
+      :show-modal="isModalVisible"
+      :message="confirmMessage"
+      @confirm="confirmCallback"
+      @cancel="canceled"
+    />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import AddNotes from "../../modals/CandidatePage/AddNotes.vue";
+import ConfirmationAlert from "../../Alerts/ConfirmationAlert.vue";
+
 export default {
   name: "Notes",
   data() {
     return {
       getNotes: [],
+      isModalVisible: false,
+      confirmMessage: "",
+      confirmCallback: null,
     };
   },
 
-  components: { AddNotes },
+  components: { AddNotes, ConfirmationAlert },
   methods: {
     async notesDeleteMethod(id) {
-      if (!window.confirm("Are you Sure ?")) {
-        return;
-      }
-      await axios.delete(
-        `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes/` + id
-      );
+      this.confirmMessage = "Are you sure want to Delete Note?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        await axios.delete(
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes/` + id
+        );
+        this.isModalVisible = false;
+      };
       window.location.reload();
     },
     async getNotesMethod() {

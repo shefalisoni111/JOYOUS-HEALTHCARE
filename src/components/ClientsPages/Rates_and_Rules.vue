@@ -44,7 +44,7 @@
                         type="button"
                         class="btn btn-outline-success text-nowrap"
                         data-bs-toggle="modal"
-                        data-bs-target="#"
+                        data-bs-target="#addRateRules"
                         data-bs-whatever="@mdo"
                       >
                         + Add Rate
@@ -101,19 +101,25 @@
                           <th scope="col">Client</th>
 
                           <th scope="col">Site</th>
-                          <th scope="col">Position</th>
+                          <th scope="col">Job</th>
                           <th scope="col">Day</th>
-                          <th scope="col">Shit End</th>
-                          <th scope="col">1 Time</th>
+                          <th scope="col">
+                            Shift Type<br />
+                            Start-End Time
+                          </th>
+
                           <th scope="col">Client Rate</th>
-                          <th scope="col">Primate Limited</th>
-                          <th scope="col">Self Employes</th>
+                          <th scope="col">
+                            Private<br />
+                            Limited
+                          </th>
+                          <th scope="col">Self <br />Employes</th>
                           <th scope="col">Umbrella</th>
                           <th scope="col">PAYE</th>
                           <th scope="col">Created By and Time</th>
                           <th scope="col">Last Update</th>
 
-                          <!-- <th scope="col">Action</th> -->
+                          <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -136,7 +142,8 @@
                           <td scope="col">£235</td>
                           <td scope="col">testing</td>
                           <td scope="col">£235</td>
-                          <td scope="col">testing</td>
+
+                          <td scope="col">edit</td>
                         </tr>
                       </tbody>
                     </table>
@@ -156,15 +163,18 @@
         </div>
       </div>
     </div>
+    <AddRateRules />
   </div>
 </template>
 <script>
 import Navbar from "../Navbar.vue";
+import AddRateRules from "../modals/Rate&Rules/AddRateRules.vue";
+
 export default {
   data() {
     return {};
   },
-  components: { Navbar },
+  components: { Navbar, AddRateRules },
   computed: {},
   methods: {},
 

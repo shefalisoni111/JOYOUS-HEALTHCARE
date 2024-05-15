@@ -384,7 +384,7 @@
               </li>
 
               <li class="cursor-pointer">
-                <a class="dropdown-item d-flex align-items-center" v-on:click="signout">
+                <a class="dropdown-item d-flex align-items-center" v-on:click="confirmed">
                   <i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp;
                   <span>Sign Out</span>
                 </a>
@@ -456,11 +456,18 @@
         </div>
       </div>
     </div>
+    <ConfirmationAlert
+    :show-modal="isModalVisible"
+    :message="confirmMessage"
+    @confirm="confirmCallback"
+    @cancel="canceled"
+  />
   </nav>
 </template>
 
 <script>
 import axios from "axios";
+import ConfirmationAlert from "./Alerts/ConfirmationAlert.vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -484,7 +491,13 @@ export default {
       debounceTimeout: null,
       searchResults: [],
       errorMessage: "",
+      isModalVisible: false,
+      confirmMessage: "",
+      confirmCallback: null,
     };
+  },
+  components:{
+    ConfirmationAlert
   },
   computed: {
     profilePhotoUrl() {
@@ -503,6 +516,14 @@ export default {
     },
   },
   methods: {
+    confirmed() {
+      this.isModalVisible = false;
+
+      this.confirmed();
+    },
+    canceled() {
+      this.isModalVisible = false;
+    },
     handleClick() {
       this.$nextTick(() => {
         if (this.$refs.fileInput) {
@@ -568,12 +589,16 @@ export default {
         this.newMessage = "";
       }
     },
-    signout() {
+    confirmed() {
+      this.confirmMessage = "Are you sure want to sign out?";
       if (localStorage.getItem("token")) {
-        if (confirm("Are you sure you want to sign out?")) {
+        if (this.confirmMessage) {
+          this.isModalVisible = true;
+      this.confirmCallback = async () => {
           localStorage.removeItem("token");
           localStorage.removeItem("tokenExpiration");
           this.$router.replace({ name: "Login" });
+      }
         }
       }
     },

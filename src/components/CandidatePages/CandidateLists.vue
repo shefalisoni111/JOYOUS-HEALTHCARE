@@ -203,7 +203,12 @@
         </div>
       </div>
     </div>
-
+    <ConfirmationAlert
+      :show-modal="isModalVisible"
+      :message="confirmMessage"
+      @confirm="confirmCallback"
+      @cancel="canceled"
+    />
     <CandidateAdd @addCandidate="getActiveCAndidateMethod" />
     <AssignDirectVacancy
       :candidateId="selectedCandidateId || 0"
@@ -221,6 +226,7 @@ import InActiveCandidate from "../CandidatePages/InActiveCandidate.vue";
 import Rejected from "../CandidatePages/Rejected.vue";
 import AssignDirectVacancy from "../modals/CandidatePage/AssignDirectVacancy.vue";
 // import RejectCandidate from "../CandidatePages/RejectCandidate.vue";
+import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -255,6 +261,9 @@ export default {
       ],
       activeTab: 0,
       activeTabName: "",
+      isModalVisible: false,
+      confirmMessage: "",
+      confirmCallback: null,
     };
   },
   computed: {
@@ -267,6 +276,7 @@ export default {
     ActiveCandidate,
     InActiveCandidate,
     Rejected,
+    ConfirmationAlert,
     // RejectCandidate,
     AllCandidateListsDisplay,
     AssignDirectVacancy,
@@ -293,18 +303,20 @@ export default {
     },
 
     async approvedCandidate(id) {
-      if (!window.confirm("Are you Sure?")) {
-        return;
-      }
-      try {
-        const response = await axios.put(
-          `${VITE_API_URL}/candidate/approve_candidate/${id}`
-        );
-        alert("Staff reactivated successfully!");
-        this.pendingCandidateMethod();
-      } catch (error) {
-        // console.error("Error approving candidate:", error);
-      }
+      this.confirmMessage = "Are you sure want to Approve this Staff?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        try {
+          const response = await axios.put(
+            `${VITE_API_URL}/candidate/approve_candidate/${id}`
+          );
+          alert("Staff reactivated successfully!");
+          this.pendingCandidateMethod();
+        } catch (error) {
+          // console.error("Error approving candidate:", error);
+        }
+        this.isModalVisible = false;
+      };
     },
 
     async getCandidate() {
@@ -328,19 +340,21 @@ export default {
       }
     },
     async activeCandidateMethod(id) {
-      if (!window.confirm("Are you Sure?")) {
-        return;
-      }
-      const response = await axios
-        .put(`${VITE_API_URL}/re_activate_candidate/${id}`)
-        .then((response) => {
-          alert("Staff reactivated successfully!");
-          this.getCandidate();
-        })
+      this.confirmMessage = "Are you sure want to Re-activate this Staff?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        const response = await axios
+          .put(`${VITE_API_URL}/re_activate_candidate/${id}`)
+          .then((response) => {
+            alert("Staff reactivated successfully!");
+            this.getCandidate();
+          })
 
-        .catch((error) => {
-          // console.error("Error deleting candidate:", error);
-        });
+          .catch((error) => {
+            // console.error("Error deleting candidate:", error);
+          });
+        this.isModalVisible = false;
+      };
     },
     openAssigned(id) {
       this.$store.commit("setSelectedAssignedItemId", id);
@@ -376,19 +390,21 @@ export default {
       this.$router.push({ name: this.tabs[index].routeName });
     },
     deleteCandidate(id) {
-      if (!window.confirm("Are you Sure?")) {
-        return;
-      }
-      axios
-        .put(`${VITE_API_URL}/inactivate_candidate/${id}`)
-        .then((response) => {
-          alert("Staff In-activated successfully!");
-          // this.inactiveCandidateData = response.data;
-          this.getCandidateMethods();
-        })
-        .catch((error) => {
-          // console.error("Error deleting candidate:", error);
-        });
+      this.confirmMessage = "Are you sure want to In-activate this Staff?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        axios
+          .put(`${VITE_API_URL}/inactivate_candidate/${id}`)
+          .then((response) => {
+            alert("Staff In-activated successfully!");
+            // this.inactiveCandidateData = response.data;
+            this.getCandidateMethods();
+          })
+          .catch((error) => {
+            // console.error("Error deleting candidate:", error);
+          });
+        this.isModalVisible = false;
+      };
     },
     //search api start
 

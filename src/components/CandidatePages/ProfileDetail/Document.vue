@@ -303,6 +303,12 @@
       </div>
     </div>
     <AddCategory />
+    <ConfirmationAlert
+      :show-modal="isModalVisible"
+      :message="confirmMessage"
+      @confirm="confirmCallback"
+      @cancel="canceled"
+    />
     <ViewDocuments :documentId="selectedDocumentId" ref="viewDocuments" />
   </div>
 </template>
@@ -312,6 +318,7 @@ import axios from "axios";
 import AddCategory from "../../modals/appsetting/AddCategory.vue";
 import ViewDocuments from "../../modals/CandidatePage/Documents/ViewDocuments.vue";
 import { saveAs } from "file-saver";
+import ConfirmationAlert from "../../Alerts/ConfirmationAlert.vue";
 
 export default {
   name: "Document",
@@ -329,9 +336,12 @@ export default {
       selectedFile: null,
       selectedCandidateId: null,
       errorMessage: null,
+      isModalVisible: false,
+      confirmMessage: "",
+      confirmCallback: null,
     };
   },
-  components: { AddCategory, ViewDocuments },
+  components: { AddCategory, ViewDocuments, ConfirmationAlert },
   methods: {
     isDownloadDisabled() {
       return !this.getCate.documents;
@@ -426,13 +436,15 @@ export default {
 
     documentDelete(id, event) {
       event.stopPropagation();
-      if (!window.confirm("Are you Sure ?")) {
-        return;
-      }
-      axios.put(`${VITE_API_URL}/delete_candidate_document/` + id).then((response) => {
-        this.getDocCAtegories();
-        this.getDeletedDocumentListMethod();
-      });
+      this.confirmMessage = "Are you sure want to Approve this Staff?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        axios.put(`${VITE_API_URL}/delete_candidate_document/` + id).then((response) => {
+          this.getDocCAtegories();
+          this.getDeletedDocumentListMethod();
+        });
+        this.isModalVisible = false;
+      };
     },
 
     async getDocumentCategories() {

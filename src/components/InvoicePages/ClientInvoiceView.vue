@@ -29,9 +29,9 @@
                 <div class="col-12">
                   <div class="row">
                     <div class="col-4">
-                      <h5 class="fw-bold">Logezy Demo1</h5>
+                      <h5 class="fw-bold">Recpal Demo1</h5>
                       <p class="mb-0">Mob No: +91 70206 07635</p>
-                      <p class="mb-0">Email: geethu@logezy.co.uk</p>
+                      <p class="mb-0">Email: geethu@recpal.co.uk</p>
                     </div>
                     <div class="col-4"></div>
                     <div class="col-4">

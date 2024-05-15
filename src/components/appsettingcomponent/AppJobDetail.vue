@@ -170,11 +170,7 @@
       @confirm="confirmCallback"
       @cancel="canceled"
     />
-    <ShowDetailsMessage
-      :show-modal="showModal"
-      :message="alertMessage"
-      @close="closeModal"
-    />
+    <ShowDetailsMessage v-if="showModal" :message="alertMessage" @close="closeModal" />
     <AddJobbs @jobAdded="getJobData" />
     <EditJob :jobID="selectedjobID" @jobUpdate="getInactiveJobData" />
     <SuccessAlert ref="successAlert" />
@@ -258,10 +254,10 @@ export default {
           this.getInactiveJobData();
 
           if (response.data.message) {
-            alert(response.data.message);
+            //alert(response.data.message);
 
-            // this.alertMessage = response.data.message;
-            // this.showModal = true;
+            this.alertMessage = response.data.message;
+            this.showModal = true;
           } else {
             const message = "Record Inactivated  successfully";
             this.$refs.successAlert.showSuccess(message);

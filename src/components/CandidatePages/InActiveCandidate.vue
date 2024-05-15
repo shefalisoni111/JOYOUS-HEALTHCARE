@@ -66,6 +66,12 @@
         Next
       </button>
     </div>
+    <ConfirmationAlert
+      :show-modal="isModalVisible"
+      :message="confirmMessage"
+      @confirm="confirmCallback"
+      @cancel="canceled"
+    />
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
@@ -83,6 +89,8 @@ a {
 <script>
 import axios from "axios";
 import Loader from "../Loader/Loader.vue";
+import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
+
 export default {
   name: "InActiveCandidate",
   data() {
@@ -91,9 +99,12 @@ export default {
       currentPage: 1,
       itemsPerPage: 11,
       isLoading: false,
+      isModalVisible: false,
+      confirmMessage: "",
+      confirmCallback: null,
     };
   },
-  components: { Loader },
+  components: { Loader, ConfirmationAlert },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -126,9 +137,9 @@ export default {
       }
     },
     async activeCandidateMethod(id) {
-      if (!window.confirm("Are you Sure?")) {
-        return;
-      }
+      this.confirmMessage = "Are you sure want to Re-activate this Staff?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
       const response = await axios
         .put(`${VITE_API_URL}/re_activate_candidate/${id}`)
         .then((response) => {
@@ -139,7 +150,9 @@ export default {
         .catch((error) => {
           // console.error("Error deleting candidate:", error);
         });
+        this.isModalVisible = false;
     },
+  },
   },
   mounted() {
     this.getCandidate();

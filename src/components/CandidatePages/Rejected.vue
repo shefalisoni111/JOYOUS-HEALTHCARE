@@ -86,6 +86,12 @@
         Next
       </button>
     </div>
+    <ConfirmationAlert
+      :show-modal="isModalVisible"
+      :message="confirmMessage"
+      @confirm="confirmCallback"
+      @cancel="canceled"
+    />
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
@@ -93,6 +99,8 @@
 <script>
 import axios from "axios";
 import Loader from "../Loader/Loader.vue";
+import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
+
 export default {
   name: "Rejected",
   data() {
@@ -101,9 +109,12 @@ export default {
       currentPage: 1,
       itemsPerPage: 11,
       isLoading: false,
+      isModalVisible: false,
+      confirmMessage: "",
+      confirmCallback: null,
     };
   },
-  components: { Loader },
+  components: { Loader, ConfirmationAlert },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -135,35 +146,39 @@ export default {
     },
 
     async activeCandidateMethod(id) {
-      if (!window.confirm("Are you Sure?")) {
-        return;
-      }
-      try {
-        const response = await axios.put(
-          `${VITE_API_URL}/candidate/approve_candidate/${id}`
-        );
+      this.confirmMessage = "Are you sure want to Approve this Staff?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        try {
+          const response = await axios.put(
+            `${VITE_API_URL}/candidate/approve_candidate/${id}`
+          );
 
-        this.pendingCandidateMethod();
-      } catch (error) {
-        // console.error("Error approving candidate:", error);
-      }
+          this.pendingCandidateMethod();
+        } catch (error) {
+          // console.error("Error approving candidate:", error);
+        }
+        this.isModalVisible = false;
+      };
     },
 
     async rejectCandidateMethod(id) {
-      if (!window.confirm("Are you Sure?")) {
-        return;
-      }
-      try {
-        const response = await axios.put(
-          `${VITE_API_URL}/candidate/reject_candidate/${id}`
-        );
-        // console.log("Response after approval:", response);
+      this.confirmMessage = "Are you sure want to Reject this Staff?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        try {
+          const response = await axios.put(
+            `${VITE_API_URL}/candidate/reject_candidate/${id}`
+          );
+          // console.log("Response after approval:", response);
 
-        this.pendingCandidateMethod();
-        alert("reject staff successful");
-      } catch (error) {
-        // console.error("Error approving candidate:", error);
-      }
+          this.pendingCandidateMethod();
+          alert("reject staff successful");
+        } catch (error) {
+          // console.error("Error approving candidate:", error);
+        }
+        this.isModalVisible = false;
+      };
     },
   },
   mounted() {

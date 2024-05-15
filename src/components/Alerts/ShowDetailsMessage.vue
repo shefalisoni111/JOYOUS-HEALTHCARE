@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" v-show="showModal">
+  <div class="modal" v-if="showModal">
     <div class="modal-content">
       <span class="close" @click="closeModal">Ok</span>
       <p>{{ message }}</p>
@@ -12,7 +12,13 @@ export default {
   props: ["message", "showModal"],
   methods: {
     closeModal() {
+      // console.log("Closing modal in ShowDetailsMessage component");
       this.$emit("close");
+    },
+  },
+  watch: {
+    showModal(newValue) {
+      // console.log("showModal prop changed to:", newValue);
     },
   },
 };
