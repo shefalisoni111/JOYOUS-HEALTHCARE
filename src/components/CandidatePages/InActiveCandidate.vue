@@ -140,20 +140,21 @@ export default {
       this.confirmMessage = "Are you sure want to Re-activate this Staff?";
       this.isModalVisible = true;
       this.confirmCallback = async () => {
-      const response = await axios
-        .put(`${VITE_API_URL}/re_activate_candidate/${id}`)
-        .then((response) => {
-          alert("Staff reactivated successfully!");
-          this.getCandidate();
-        })
+        const response = await axios
+          .put(`${VITE_API_URL}/re_activate_candidate/${id}`)
+          .then((response) => {
+            alert("Staff reactivated successfully!");
+            this.getCandidate();
+          })
 
-        .catch((error) => {
-          // console.error("Error deleting candidate:", error);
-        });
+          .catch((error) => {
+            // console.error("Error deleting candidate:", error);
+          });
         this.isModalVisible = false;
+      };
     },
   },
-  },
+
   mounted() {
     this.getCandidate();
   },
