@@ -40,7 +40,7 @@
               data-bs-toggle="tooltip"
               data-bs-placement="top"
               title="Tooltip on top"
-              v-on:click="activeCandidateMethod(pending.id)"
+              v-on:click="confirmed(pending.id)"
             >
               Approve
             </button>
@@ -127,7 +127,14 @@ export default {
         this.isLoading = false;
       }
     },
+    // confirmed(id) {
+    //   this.isModalVisible = false;
 
+    //   this.activeCandidateMethod(id);
+    // },
+    canceled() {
+      this.isModalVisible = false;
+    },
     async activeCandidateMethod(id) {
       this.confirmMessage = "Are you sure want to Approve this Staff?";
       this.isModalVisible = true;

@@ -161,7 +161,7 @@
                 &nbsp;&nbsp;
                 <button
                   class="btn btn-outline-danger text-nowrap"
-                  v-on:click="vacancyDeleteMethod(getdata.id)"
+                  v-on:click="confirmed(getdata.id)"
                 >
                   In-Active
                 </button>
@@ -199,6 +199,12 @@
         Next
       </button>
     </div>
+    <ConfirmationAlert
+      :show-modal="isModalVisible"
+      :message="confirmMessage"
+      @confirm="confirmCallback"
+      @cancel="canceled"
+    />
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
@@ -213,6 +219,8 @@ import RejectedVacancyList from "../modals/Vacancy/RejectedVacancyList.vue";
 import AllVacancyCandidateList from "../modals/Vacancy/AllVacancyCandidateList.vue";
 import EditVacancy from "../modals/Vacancy/EditVacancy.vue";
 import AddVacancy from "../modals/Vacancy/AddVacancy.vue";
+import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
+
 export default {
   data() {
     return {
@@ -221,6 +229,9 @@ export default {
       currentPage: 1,
       itemsPerPage: 9,
       isLoading: false,
+      isModalVisible: false,
+      confirmMessage: "",
+      confirmCallback: null,
     };
   },
   components: {
@@ -232,6 +243,7 @@ export default {
     EditVacancy,
     AddVacancy,
     Loader,
+    ConfirmationAlert,
   },
   computed: {
     displayedVacancies() {
@@ -285,27 +297,37 @@ export default {
     openPublished(id) {
       this.$store.commit("setSelectedPublishedItemId", id);
     },
-    async vacancyDeleteMethod(id) {
-      if (!window.confirm("Are you Sure ?")) {
-        return;
-      }
-      const token = localStorage.getItem("token");
+    confirmed(id) {
+      this.isModalVisible = false;
 
-      await axios
-        .put(
-          `${VITE_API_URL}/inactive_vacancy/` + id,
-          {},
-          {
-            headers: {
-              "content-type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        )
-        .then((response) => {
-          this.createVacancy();
-        });
-      alert("InActive Vacancy");
+      this.vacancyDeleteMethod(id);
+    },
+    canceled() {
+      this.isModalVisible = false;
+    },
+    async vacancyDeleteMethod(id) {
+      this.confirmMessage = "Are you Sure want to In-active Shift?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        const token = localStorage.getItem("token");
+
+        await axios
+          .put(
+            `${VITE_API_URL}/inactive_vacancy/` + id,
+            {},
+            {
+              headers: {
+                "content-type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((response) => {
+            this.createVacancy();
+          });
+        alert("InActive Shift");
+        this.isModalVisible = false;
+      };
     },
 
     async createVacancy() {

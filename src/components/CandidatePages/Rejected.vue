@@ -38,7 +38,7 @@
               data-bs-toggle="tooltip"
               data-bs-placement="top"
               title="Tooltip on top"
-              v-on:click="activeCandidateMethod(pending.id)"
+              v-on:click="confirmed(pending.id)"
             >
               Approve</button
             >&nbsp;&nbsp;
@@ -48,7 +48,7 @@
               data-bs-toggle="tooltip"
               data-bs-placement="top"
               title="Tooltip on top"
-              v-on:click="rejectCandidateMethod(pending.id)"
+              v-on:click="confirmedReject(pending.id)"
             >
               Reject
             </button>
@@ -144,8 +144,20 @@ export default {
         this.isLoading = false;
       }
     },
+    confirmed(id) {
+      this.isModalVisible = false;
 
-    async activeCandidateMethod(id) {
+      this.activeCandidatesMethod(id);
+    },
+    confirmedReject(id) {
+      this.isModalVisible = false;
+
+      this.rejectCandidateMethod(id);
+    },
+    canceled() {
+      this.isModalVisible = false;
+    },
+    async activeCandidatesMethod(id) {
       this.confirmMessage = "Are you sure want to Approve this Staff?";
       this.isModalVisible = true;
       this.confirmCallback = async () => {

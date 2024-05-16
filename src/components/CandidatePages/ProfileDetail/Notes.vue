@@ -30,7 +30,7 @@
             <button
               type="button"
               class="btn btn-outline-success text-nowrap"
-              v-on:click="notesDeleteMethod(data.id)"
+              v-on:click="confirmed(data.id)"
             >
               Delete
             </button>
@@ -65,6 +65,14 @@ export default {
 
   components: { AddNotes, ConfirmationAlert },
   methods: {
+    confirmed(id) {
+      this.isModalVisible = false;
+
+      this.notesDeleteMethod(id);
+    },
+    canceled() {
+      this.isModalVisible = false;
+    },
     async notesDeleteMethod(id) {
       this.confirmMessage = "Are you sure want to Delete Note?";
       this.isModalVisible = true;
@@ -74,7 +82,7 @@ export default {
         );
         this.isModalVisible = false;
       };
-      window.location.reload();
+      // window.location.reload();
     },
     async getNotesMethod() {
       try {

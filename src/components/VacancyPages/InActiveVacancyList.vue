@@ -77,7 +77,7 @@
                 ></i> -->
                 &nbsp;&nbsp;
                 <button class="btn btn-outline-danger text-nowrap">
-                  <i class="bi bi-trash" v-on:click="vacancyDeleteMethod(data.id)"></i>
+                  <i class="bi bi-trash" v-on:click="confirmed(data.id)"></i>
                 </button>
               </td>
             </tr>
@@ -110,6 +110,12 @@
       :vacancyId="selectedVacancyId || 0"
       @updateVacancyInactive="getInactiveVacancyMethod"
     />
+    <ConfirmationAlert
+      :show-modal="isModalVisible"
+      :message="confirmMessage"
+      @confirm="confirmCallback"
+      @cancel="canceled"
+    />
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
@@ -118,6 +124,8 @@
 import axios from "axios";
 import Loader from "../Loader/Loader.vue";
 import EditVacancy from "../modals/Vacancy/EditVacancy.vue";
+import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
+
 export default {
   name: "ActiveCandidate",
   data() {
@@ -130,9 +138,12 @@ export default {
       itemsPerPage: 9,
       isLoading: false,
       today: new Date(),
+      isModalVisible: false,
+      confirmMessage: "",
+      confirmCallback: null,
     };
   },
-  components: { Loader, EditVacancy },
+  components: { Loader, EditVacancy, ConfirmationAlert },
   computed: {
     displayedVacancies() {
       if (!Array.isArray(this.getInactiveData)) {
@@ -172,6 +183,14 @@ export default {
     editAndReactivate(vacancyId) {
       this.reActivatedMethod(vacancyId);
       this.editVacancyId(vacancyId);
+    },
+    confirmed(id) {
+      this.isModalVisible = false;
+
+      this.vacancyDeleteMethod(id);
+    },
+    canceled() {
+      this.isModalVisible = false;
     },
     async vacancyDeleteMethod(id) {
       if (!window.confirm("Are you Sure ?")) {

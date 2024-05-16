@@ -37,7 +37,7 @@
               data-bs-toggle="tooltip"
               data-bs-placement="top"
               title="Tooltip on top"
-              v-on:click="activeCandidateMethod(datas.id)"
+              v-on:click="confirmed(datas.id)"
             >
               Re-Activate
             </button>
@@ -135,6 +135,14 @@ export default {
       } finally {
         this.isLoading = false;
       }
+    },
+    confirmed(id) {
+      this.isModalVisible = false;
+
+      this.activeCandidateMethod(id);
+    },
+    canceled() {
+      this.isModalVisible = false;
     },
     async activeCandidateMethod(id) {
       this.confirmMessage = "Are you sure want to Re-activate this Staff?";

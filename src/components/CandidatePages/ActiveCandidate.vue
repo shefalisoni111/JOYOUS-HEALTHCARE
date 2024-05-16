@@ -67,7 +67,7 @@
                   data-bs-toggle="tooltip"
                   data-bs-placement="top"
                   title="Tooltip on top"
-                  v-on:click="deleteCandidate(candidate.id)"
+                  v-on:click="confirmed(candidate.id)"
                 >
                   In-Activate
                 </button>
@@ -207,6 +207,14 @@ export default {
     },
     openAssigned(id) {
       this.$store.commit("setSelectedAssignedItemId", id);
+    },
+    confirmed(id) {
+      this.isModalVisible = false;
+
+      this.deleteCandidate(id);
+    },
+    canceled() {
+      this.isModalVisible = false;
     },
     deleteCandidate(id) {
       this.confirmMessage = "Are you sure want to In-activate this Staff?";

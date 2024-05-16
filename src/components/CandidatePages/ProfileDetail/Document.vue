@@ -176,10 +176,7 @@
                                     <i
                                       class="bi bi-trash"
                                       v-on:click="
-                                        documentDelete(
-                                          getDocs.candidate_document.id,
-                                          $event
-                                        )
+                                        confirmed(getDocs.candidate_document.id, $event)
                                       "
                                     ></i>
                                   </button>
@@ -433,10 +430,17 @@ export default {
     onDocumentAdded() {
       this.getDocCAtegories();
     },
+    confirmed(id, event) {
+      this.isModalVisible = false;
 
+      this.documentDelete(id, event);
+    },
+    canceled() {
+      this.isModalVisible = false;
+    },
     documentDelete(id, event) {
       event.stopPropagation();
-      this.confirmMessage = "Are you sure want to Approve this Staff?";
+      this.confirmMessage = "Are you sure want to delete?";
       this.isModalVisible = true;
       this.confirmCallback = async () => {
         axios.put(`${VITE_API_URL}/delete_candidate_document/` + id).then((response) => {
