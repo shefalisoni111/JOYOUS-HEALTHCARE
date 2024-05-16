@@ -537,6 +537,7 @@
       @confirm="confirmCallback"
       @cancel="canceled"
     />
+    <ShowDetailsMessage v-if="showModal" :message="alertMessage" @close="closeModal" />
   </div>
 </template>
 <script>
@@ -545,6 +546,7 @@ import Navbar from "../components/Navbar.vue";
 import Loader from "../components/Loader/Loader.vue";
 import SuccessAlert from "../components/Alerts/SuccessAlert.vue";
 import ConfirmationAlert from "../components/Alerts/ConfirmationAlert.vue";
+import ShowDetailsMessage from "../components/Alerts/ShowDetailsMessage.vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -585,9 +587,10 @@ export default {
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,
+      showModal: false,
     };
   },
-  components: { Navbar, Loader, SuccessAlert, ConfirmationAlert },
+  components: { Navbar, Loader, SuccessAlert, ConfirmationAlert, ShowDetailsMessage },
   computed: {
     getWeekDates() {
       const currentDate = new Date();
@@ -780,6 +783,14 @@ export default {
             this.errorDelete = "Record not found!";
           } else {
             this.errorDelete = "";
+            const deletedBookingIDs = response.data.booking_data.map(
+              (booking) => booking.id
+            );
+            if (deletedBookingIDs.includes(this.currentBookingID)) {
+              this.errorDelete = "Booking is already deleted!";
+            } else {
+              this.deleteBookingData = response.data.booking_data;
+            }
           }
         }
       } catch (error) {
@@ -817,7 +828,9 @@ export default {
       };
       // alert("Record Deleted ");
     },
-
+    closeModal() {
+      this.showModal = false;
+    },
     async getCandidateListMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/candidates`);
