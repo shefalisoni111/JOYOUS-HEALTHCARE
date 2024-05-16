@@ -67,8 +67,8 @@
               </tbody>
               <tbody v-else>
                 <tr>
-                  <td colspan="9" class="text-center text-danger">
-                    {{ this.noReferData }}
+                  <td colspan="9" class="text-center text-danger" v-if="!isLoading">
+                    {{ "Data Not Found!" }}
                   </td>
                 </tr>
               </tbody>
@@ -77,11 +77,13 @@
         </div>
       </div>
     </div>
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import Loader from "../../Loader/Loader.vue";
 
 export default {
   name: "RateCard",
@@ -89,9 +91,10 @@ export default {
     return {
       getReferData: [],
       noReferData: [],
+      isLoading: false,
     };
   },
-  components: {},
+  components: { Loader },
   methods: {
     // editRateCard(rateCardId) {
     //   this.selectedRateCardId = rateCardId;
@@ -106,6 +109,7 @@ export default {
     //   });
     // },
     async staffReferDataMethod() {
+      this.isLoading = true;
       const candidateId = this.$route.params.id;
       await axios
         .get(`${VITE_API_URL}/refer_friends`, {
@@ -126,6 +130,9 @@ export default {
               // alert(error.response.data.message);
             }
           }
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
   },

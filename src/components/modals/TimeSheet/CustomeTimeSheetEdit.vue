@@ -107,6 +107,22 @@
                   </span>
                 </div>
               </div>
+              <div class="mb-3">
+                <div class="col-12">
+                  <label class="form-label">Paper TimeSheet</label>
+                </div>
+                <div class="col-12 mt-1">
+                  <input
+                    type="file"
+                    class="form-control"
+                    accept=".pdf,.doc,.docx,.xls,.xlsx,.csv"
+                    @change="handleFileUpload"
+                  />
+                  <span v-if="!validationPaperTimeSheet" class="text-danger">
+                    Paper TimeSheet is required
+                  </span>
+                </div>
+              </div>
             </form>
           </div>
           <div class="modal-footer">
@@ -149,7 +165,7 @@ export default {
         name: "",
         business_unit: "",
         job: "",
-
+        paper_timesheet: "",
         start_time: "",
         end_time: "",
         client_rate: "",
@@ -158,6 +174,7 @@ export default {
       },
       options: [],
       validationClientRate: true,
+      validationPaperTimeSheet: true,
       businessUnit: [],
     };
   },
@@ -172,11 +189,22 @@ export default {
     isSaveDisabled() {
       return (
         this.fetchCustomSheetData.client_rate === null ||
-        this.fetchCustomSheetData.client_rate <= 0
+        this.fetchCustomSheetData.client_rate <= 0 ||
+        !this.fetchCustomSheetData.paper_timesheet
       );
     },
   },
   methods: {
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.fetchCustomSheetData.paper_timesheet = file;
+        this.validatePaperTimeSheet();
+      }
+    },
+    validatePaperTimeSheet() {
+      this.validationPaperTimeSheet = !!this.fetchCustomSheetData.paper_timesheet;
+    },
     formatTime(hour) {
       if (hour === 0 || hour === 24) {
         return `12:00 AM`;

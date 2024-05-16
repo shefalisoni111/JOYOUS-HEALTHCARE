@@ -45,7 +45,7 @@
                   <th scope="col">Action</th>
                 </tr>
               </thead>
-              <tbody v-if="getRateCard.length > 0">
+              <tbody v-if="getRateCard?.length > 0">
                 <tr v-for="(getrate, index) in getRateCard" :key="index">
                   <td scope="row">
                     <div class="form-check">
@@ -85,7 +85,9 @@
               </tbody>
               <tbody v-else>
                 <tr>
-                  <td colspan="9"></td>
+                  <td colspan="9" class="text-center text-danger" v-if="!isLoading">
+                    {{ "Data Not Found!" }}
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -98,6 +100,7 @@
       @EditRateCard="showRateCardMethod"
       :rateCardId="selectedRateCardId || 0"
     />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
@@ -105,15 +108,18 @@
 import axios from "axios";
 import AddRateCard from "../../../components/modals/CandidatePage/AddRateCard.vue";
 import EditRateCard from "../../modals/CandidatePage/EditRateCard.vue";
+import Loader from "../../Loader/Loader.vue";
+
 export default {
   name: "RateCard",
   data() {
     return {
       getRateCard: [],
       selectedRateCardId: 0,
+      isLoading: false,
     };
   },
-  components: { AddRateCard, EditRateCard },
+  components: { AddRateCard, EditRateCard, Loader },
   methods: {
     editRateCard(rateCardId) {
       this.selectedRateCardId = rateCardId;
@@ -128,6 +134,7 @@ export default {
       });
     },
     async showRateCardMethod() {
+      this.isLoading = true;
       await axios
         .get(`${VITE_API_URL}/candidate_rate_card_list/${this.$route.params.id}`)
         .then((response) => (this.getRateCard = response.data))
@@ -137,6 +144,9 @@ export default {
               // alert(error.response.data.message);
             }
           }
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
 

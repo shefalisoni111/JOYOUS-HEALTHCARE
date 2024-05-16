@@ -297,34 +297,72 @@ export default {
       // console.log("Updated siteIds array:", this.siteIds);
     },
     exportOneFile() {
-      const siteIds = this.siteIds.valueOf();
-      if (!siteIds || this.siteIds.length === 0) {
+      if (!this.siteIds || this.siteIds.length === 0) {
         alert("Please select at least one Site.");
-        // const errorMessage = "Please select at least one site.";
-        // this.$refs.errorAlert.showError(errorMessage);
         return;
       }
-      this.siteIds.forEach((siteIds) => {
-        const queryParams = `site_ids=${siteIds}`;
-        axios
-          .get(`${VITE_API_URL}selected_export_site?${queryParams}`, {
-            headers: {
-              Accept: "text/csv",
-            },
-            responseType: "blob",
-          })
-          .then((response) => {
-            const message = "Export file download Successfully";
-            this.$refs.successAlert.showSuccess(message);
-            this.checkedSites = [{}];
 
-            this.downloadOneCSV(response.data, `filename_${siteIds}.csv`);
-          })
-          .catch((error) => {
-            // console.error("Error:", error);
-          });
+      const promises = this.siteIds.map((siteId) => {
+        const queryParams = `site_ids=${siteId}`;
+        return axios.get(`${VITE_API_URL}selected_export_site?${queryParams}`, {
+          headers: {
+            Accept: "text/csv",
+          },
+          responseType: "blob",
+        });
       });
-      this.siteIds = [];
+
+      Promise.all(promises)
+        .then((responses) => {
+          const csvDataArray = responses.map((response) =>
+            this.blobToText(response.data)
+          );
+          Promise.all(csvDataArray)
+            .then((dataArray) => {
+              const combinedCsvData = this.combineCsvData(dataArray);
+              const filename = "combined_data.csv";
+              this.downloadOneCSV(combinedCsvData, filename);
+              const message = "Export file download Successfully";
+              this.$refs.successAlert.showSuccess(message);
+            })
+            .catch((error) => {
+              console.error("Error reading CSV data:", error);
+            });
+        })
+        .catch((error) => {
+          console.error("Error fetching CSV data:", error);
+        })
+        .finally(() => {
+          this.siteIds = [];
+          this.checkedSites = {};
+        });
+    },
+    blobToText(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          resolve(reader.result);
+        };
+        reader.onerror = reject;
+        reader.readAsText(blob);
+      });
+    },
+
+    combineCsvData(csvDataArray) {
+      let combinedCsvData = "";
+      csvDataArray.forEach((csvData, index) => {
+        if (index > 0) {
+          const lines = csvData.split("\n");
+          lines.shift();
+          csvData = lines.join("\n");
+        }
+
+        combinedCsvData += csvData;
+        if (index < csvDataArray.length - 1) {
+          combinedCsvData += "\n";
+        }
+      });
+      return combinedCsvData;
     },
     downloadOneCSV(csvData, filename) {
       const blob = new Blob([csvData], { type: "text/csv" });

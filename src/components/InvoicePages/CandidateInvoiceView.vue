@@ -55,7 +55,7 @@
                     </div>
                     <div class="col-4">
                       <p class="mb-1">SHIP TO</p>
-                      <h5 class="fw-bold">Logezy Demo1</h5>
+                      <h5 class="fw-bold">Recpal Demo1</h5>
                       <p class="mb-0">+91 70206 07635</p>
                       <p class="mb-0">Email: geethu@recpal.co.uk</p>
                     </div>

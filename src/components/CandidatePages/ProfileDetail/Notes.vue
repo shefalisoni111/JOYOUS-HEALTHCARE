@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <div class="row m-4">
+    <div class="row m-4" v-if="getNotes?.length > 0">
       <div class="mb-3" v-for="data in getNotes" :key="data.id">
         <div class="d-flex justify-content-between border-1 border-success">
           <div class="">
@@ -38,12 +38,16 @@
         </div>
       </div>
     </div>
+    <div class="row m-4" v-else>
+      <div class="text-center text-danger" v-if="!isLoading">{{ "Data Not Found!" }}</div>
+    </div>
     <ConfirmationAlert
       :show-modal="isModalVisible"
       :message="confirmMessage"
       @confirm="confirmCallback"
       @cancel="canceled"
     />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
@@ -51,6 +55,7 @@
 import axios from "axios";
 import AddNotes from "../../modals/CandidatePage/AddNotes.vue";
 import ConfirmationAlert from "../../Alerts/ConfirmationAlert.vue";
+import Loader from "../../Loader/Loader.vue";
 
 export default {
   name: "Notes",
@@ -60,10 +65,11 @@ export default {
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,
+      isLoading: false,
     };
   },
 
-  components: { AddNotes, ConfirmationAlert },
+  components: { AddNotes, ConfirmationAlert, Loader },
   methods: {
     confirmed(id) {
       this.isModalVisible = false;
@@ -85,6 +91,7 @@ export default {
       // window.location.reload();
     },
     async getNotesMethod() {
+      this.isLoading = true;
       try {
         const response = await axios.get(
           `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes_list`
@@ -101,6 +108,8 @@ export default {
             // alert(error.response.data.message);
           }
         }
+      } finally {
+        this.isLoading = false;
       }
     },
 

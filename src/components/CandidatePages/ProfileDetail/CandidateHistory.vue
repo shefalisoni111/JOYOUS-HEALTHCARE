@@ -51,7 +51,7 @@
                   <th scope="col">Status</th>
                 </tr>
               </thead>
-              <tbody v-if="getHistoryData.length > 0">
+              <tbody v-if="getHistoryData?.length > 0">
                 <tr v-for="(data, index) in getHistoryData" :key="index">
                   <td scope="col">{{ data.id }}</td>
                   <td scope="col">{{ data.booking_code }}</td>
@@ -78,8 +78,8 @@
               </tbody>
               <tbody v-else>
                 <tr>
-                  <td colspan="14" class="text-center text-danger">
-                    {{ this.noHistoryData }}
+                  <td colspan="14" class="text-center text-danger" v-if="!isLoading">
+                    {{ "Data Not Found!" }}
                   </td>
                 </tr>
               </tbody>
@@ -88,11 +88,13 @@
         </div>
       </div>
     </div>
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import Loader from "../../Loader/Loader.vue";
 
 export default {
   name: "RateCard",
@@ -100,9 +102,10 @@ export default {
     return {
       getHistoryData: [],
       noHistoryData: [],
+      isLoading: false,
     };
   },
-  components: {},
+  components: { Loader },
   methods: {
     // editRateCard(rateCardId) {
     //   this.selectedRateCardId = rateCardId;
@@ -117,6 +120,7 @@ export default {
     //   });
     // },
     async staffBookingHistoryMethod() {
+      this.isLoading = true;
       const candidateId = this.$route.params.id;
       await axios
         .get(`${VITE_API_URL}/booking_history_web`, {
@@ -138,6 +142,9 @@ export default {
               this.noHistoryData = error.response.data.error;
             }
           }
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
   },

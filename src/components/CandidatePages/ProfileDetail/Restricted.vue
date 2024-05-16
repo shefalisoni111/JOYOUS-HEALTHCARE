@@ -64,7 +64,7 @@
               </div>
             </div>
           </div>
-          <div class="card-body">
+          <div class="card-body" v-if="getLocationData?.length > 0">
             <ul
               class="list-unstyled d-inline-flex gap-3"
               v-for="data in getLocationData"
@@ -83,11 +83,17 @@
               </li>
             </ul>
           </div>
+          <div class="card-body" v-else>
+            <div class="text-danger text-center" v-if="!isLoading">
+              {{ "Data Not Found!" }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <AddRestrictedLocation @getLocationAdded="getRestrictedLocationMethod" />
     <SuccessAlert ref="successAlert" />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
@@ -95,6 +101,7 @@
 import axios from "axios";
 import AddRestrictedLocation from "../../modals/CandidatePage/AddRestrictedLocation.vue";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+import Loader from "../../Loader/Loader.vue";
 
 export default {
   name: "Restricted",
@@ -104,11 +111,13 @@ export default {
       selectedShifts: [],
       getRestrictedShiftData: [],
       getLocationData: [],
+      isLoading: false,
     };
   },
   components: {
     AddRestrictedLocation,
     SuccessAlert,
+    Loader,
   },
   methods: {
     async getTime() {
@@ -164,6 +173,7 @@ export default {
     },
 
     async getRestrictedLocationMethod() {
+      this.isLoading = true;
       try {
         const response = await axios.get(
           `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_restricted_location`
@@ -171,6 +181,8 @@ export default {
         this.getLocationData = response.data;
       } catch (error) {
         // console.error("Error fetching restricted shifts:", error);
+      } finally {
+        this.isLoading = false;
       }
     },
   },

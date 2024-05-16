@@ -284,7 +284,7 @@
                 <!-- <th scope="col" class="width-row">Image Url</th> -->
               </tr>
             </thead>
-            <tbody>
+            <tbody v-if="getDeletedDocument?.length > 0">
               <tr v-for="data in getDeletedDocument" :key="data.id">
                 <td>{{ data.id }}</td>
                 <td>{{ data.document_name }}</td>
@@ -293,6 +293,13 @@
                 <td>{{ data.description }}</td>
                 <!-- <td>{{ `${VITE_API_URL}${data.url}` }}</td> -->
                 <td></td>
+              </tr>
+            </tbody>
+            <tbody v-else>
+              <tr>
+                <td colspan="5" class="text-center text-danger" v-if="!isLoading">
+                  {{ "Not Data Found!" }}
+                </td>
               </tr>
             </tbody>
           </table>
@@ -306,7 +313,9 @@
       @confirm="confirmCallback"
       @cancel="canceled"
     />
+    <ShowDetailsMessage v-if="showModal" :message="alertMessage" @close="closeModal" />
     <ViewDocuments :documentId="selectedDocumentId" ref="viewDocuments" />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
@@ -316,6 +325,7 @@ import AddCategory from "../../modals/appsetting/AddCategory.vue";
 import ViewDocuments from "../../modals/CandidatePage/Documents/ViewDocuments.vue";
 import { saveAs } from "file-saver";
 import ConfirmationAlert from "../../Alerts/ConfirmationAlert.vue";
+import Loader from "../../Loader/Loader.vue";
 
 export default {
   name: "Document",
@@ -325,7 +335,7 @@ export default {
       getDocument: [],
       getDeletedDocument: [],
       selectedDocumentId: 0,
-
+      isLoading: false,
       issue_date: null,
       expiry_date: null,
       description: null,
@@ -336,9 +346,11 @@ export default {
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,
+      showModal: false,
+      alertMessage: "",
     };
   },
-  components: { AddCategory, ViewDocuments, ConfirmationAlert },
+  components: { AddCategory, ViewDocuments, ConfirmationAlert, Loader },
   methods: {
     isDownloadDisabled() {
       return !this.getCate.documents;
@@ -452,6 +464,7 @@ export default {
     },
 
     async getDocumentCategories() {
+      this.isLoading = true;
       try {
         const response = await axios.get(`${VITE_API_URL}/documents`);
         this.getDocument = response.data;
@@ -461,7 +474,12 @@ export default {
         });
       } catch (error) {
         // console.error("Error fetching documents:", error);
+      } finally {
+        this.isLoading = false;
       }
+    },
+    closeModal() {
+      this.showModal = false;
     },
     async getDownloadDocMethod() {
       try {
@@ -486,7 +504,9 @@ export default {
           }
         } catch (error) {
           if (error.response && error.response.status === 404) {
-            alert("Candidate document not found");
+            // alert("Candidate document not found");
+            this.alertMessage = "Staff document not found";
+            this.showModal = true;
           }
           // console.error("Error fetching document:", error);
         }
@@ -495,6 +515,7 @@ export default {
       }
     },
     async getDeletedDocumentListMethod() {
+      this.isLoading = true;
       try {
         const candidateId = this.$route.params.id;
         const response = await axios.get(
@@ -504,6 +525,8 @@ export default {
         // this.getDeletedDocumentListMethod();
       } catch (error) {
         // console.error("Error fetching documents:", error);
+      } finally {
+        this.isLoading = false;
       }
     },
     async getDocCAtegories() {

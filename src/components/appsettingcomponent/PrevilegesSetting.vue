@@ -167,7 +167,7 @@
                               <th scope="col" class="bg-primary text-white">
                                 Mobile No:
                               </th>
-                              <th scope="col" class="bg-primary text-white">Hote</th>
+                              <th scope="col" class="bg-primary text-white">Role</th>
 
                               <th scope="col" class="bg-primary text-white">Action</th>
                             </tr>
