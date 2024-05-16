@@ -106,8 +106,8 @@
         </tbody>
         <tbody v-else>
           <tr>
-            <td colspan="9" class="text-center text-danger">
-              {{ "Not Client Data Found!" }}
+            <td colspan="9" class="text-center text-danger" v-if="!isLoading">
+              {{ "No Client Data Found!" }}
             </td>
           </tr>
         </tbody>
@@ -201,9 +201,6 @@ export default {
     //   });
     // },
     clientStatusChangeMethod(id, activated) {
-      if (!window.confirm("Are you Sure?")) {
-        return;
-      }
       axios
         .put(`${VITE_API_URL}/update_status/${id}?activated=${activated}`)
         .then((response) => {

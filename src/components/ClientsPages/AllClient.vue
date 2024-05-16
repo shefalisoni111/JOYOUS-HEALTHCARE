@@ -312,9 +312,6 @@ export default {
       return this.colors[index % this.colors.length];
     },
     clientStatusChangeMethod(id, activated) {
-      if (!window.confirm("Are you sure?")) {
-        return;
-      }
       axios
         .put(`${VITE_API_URL}/update_status/${id}?activated=${activated}`)
         .then((response) => {
@@ -357,28 +354,69 @@ export default {
         return;
       }
 
-      this.clientId.forEach((clientId) => {
+      const promises = this.clientId.map((clientId) => {
         const queryParams = `client_ids=${clientId}`;
-
-        axios
-          .get(`${VITE_API_URL}/selected_export?${queryParams}`, {
-            headers: {
-              Accept: "text/csv",
-            },
-            responseType: "blob",
-          })
-          .then((response) => {
-            const message = "Export file download Successfully";
-            this.$refs.successAlert.showSuccess(message);
-            this.checkedClient = [{}];
-            this.downloadOneCSV(response.data, `filename_${clientId}.csv`);
-          })
-          .catch((error) => {
-            // console.error("Error:", error);
-          });
+        return axios.get(`${VITE_API_URL}/selected_export?${queryParams}`, {
+          headers: {
+            Accept: "text/csv",
+          },
+          responseType: "blob",
+        });
       });
 
+      Promise.all(promises)
+        .then((responses) => {
+          const csvDataArray = responses.map((response) =>
+            this.blobToText(response.data)
+          );
+          Promise.all(csvDataArray)
+            .then((dataArray) => {
+              const combinedCsvData = this.combineCsvData(dataArray);
+              const filename = "combined_data.csv";
+              this.downloadOneCSV(combinedCsvData, filename);
+              const message = "Export file download Successfully";
+              this.$refs.successAlert.showSuccess(message);
+            })
+            .catch((error) => {
+              console.error("Error reading CSV data:", error);
+            });
+        })
+        .catch((error) => {
+          console.error("Error fetching CSV data:", error);
+        })
+        .finally(() => {
+          this.clientId = [];
+          this.checkedClient = {};
+        });
       this.clientId = [];
+    },
+
+    blobToText(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          resolve(reader.result);
+        };
+        reader.onerror = reject;
+        reader.readAsText(blob);
+      });
+    },
+
+    combineCsvData(csvDataArray) {
+      let combinedCsvData = "";
+      csvDataArray.forEach((csvData, index) => {
+        if (index > 0) {
+          const lines = csvData.split("\n");
+          lines.shift();
+          csvData = lines.join("\n");
+        }
+
+        combinedCsvData += csvData;
+        if (index < csvDataArray.length - 1) {
+          combinedCsvData += "\n";
+        }
+      });
+      return combinedCsvData;
     },
     downloadOneCSV(csvData, filename) {
       const blob = new Blob([csvData], { type: "text/csv" });
