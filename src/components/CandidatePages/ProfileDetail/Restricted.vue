@@ -73,11 +73,11 @@
               <li>
                 <div class="d-flex justify-content-start border-box m-2 rounded-2">
                   <div>
-                    <div class="hround">H{{ data.id }}</div>
+                    <div class="hround">{{ data.site_name[0] }}</div>
                   </div>
-                  <div>
-                    <h5 class="fw-bold">{{ data.name }}</h5>
-                    <span>Hospital {{ data.id }}</span>
+                  <div class="d-flex align-items-center">
+                    <h5 class="fw-bold mb-0">{{ data.site_name }}</h5>
+                    <!-- <span>Hospital {{ data.id }}</span> -->
                   </div>
                 </div>
               </li>
@@ -260,7 +260,7 @@ table th {
 .card .hround {
   background: #ff9800;
   border-radius: 50%;
-  padding: 10px 11px;
+  padding: 10px 16px;
   margin-right: 8px;
 }
 .card .dround {
