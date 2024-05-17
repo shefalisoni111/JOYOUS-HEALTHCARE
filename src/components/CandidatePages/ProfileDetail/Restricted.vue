@@ -73,8 +73,16 @@
               <li>
                 <div class="d-flex justify-content-start border-box m-2 rounded-2">
                   <div>
-                    <div class="hround">{{ data.site_name[0] }}</div>
+                    <div class="hround">
+                      {{
+                        data.site_name
+                          .split(" ")
+                          .map((word) => word.charAt(0))
+                          .join("")
+                      }}
+                    </div>
                   </div>
+                  &nbsp;
                   <div class="d-flex align-items-center">
                     <h5 class="fw-bold mb-0">{{ data.site_name }}</h5>
                     <!-- <span>Hospital {{ data.id }}</span> -->
@@ -259,9 +267,13 @@ table th {
 
 .card .hround {
   background: #ff9800;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  padding: 10px 16px;
-  margin-right: 8px;
+  align-items: center;
+  text-align: center;
+  display: block;
+  line-height: 40px;
 }
 .card .dround {
   background: #ff572266;
