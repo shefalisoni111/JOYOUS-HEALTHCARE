@@ -91,7 +91,13 @@
                           :value="formatDate(date)"
                           @input="updateDate($event.target.value, index)"
                         />
+                        <span
+                          v-if="!isValidDate && fetchVacancy.dates.length > 0"
+                          class="text-danger"
+                          >Please choose a date from today onwards!</span
+                        >
                         <button
+                          v-if="fetchVacancy.dates.length > 1 && !isValidDate"
                           style="
                             position: absolute;
                             bottom: 27px;
@@ -101,7 +107,7 @@
                             font-size: small;
                           "
                           class="btn btn-danger btn-sm mt-2"
-                          @click="removeDate(index)"
+                          @click.prevent="removeDate(index)"
                         >
                           x
                         </button>
@@ -231,6 +237,7 @@
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="updateVacancyMethod()"
+              :disabled="!isValidDate"
             >
               Save
             </button>
@@ -270,6 +277,9 @@ export default {
       shiftsTime: [],
       clientData: [],
       options: [],
+      isDateValid: true,
+      selectedDate: "",
+      invalidDate: false,
     };
   },
   props: {
@@ -307,8 +317,27 @@ export default {
     getVacancyDetail() {
       return this.$store.state.vacancies;
     },
+    isFormValid() {
+      const today = new Date();
+      return this.fetchVacancy.dates.every((date) => new Date(date) >= today);
+    },
+    isValidDate() {
+      if (this.fetchVacancy.dates.length === 0) {
+        return true;
+      }
+      const today = new Date().toISOString().slice(0, 10);
+      return this.fetchVacancy.dates.every((date) => date >= today);
+    },
   },
   methods: {
+    validateDates() {
+      const today = new Date();
+      this.invalidDate = this.fetchVacancy.dates.some((date) => new Date(date) < today);
+    },
+    updateDate(newDate, index) {
+      this.fetchVacancy.dates[index] = newDate;
+      this.validateDates();
+    },
     onShiftSelect() {
       const selectedShift = this.shiftsTime.find(
         (shift) => shift.id === this.fetchVacancy.site_shift_id
@@ -364,7 +393,10 @@ export default {
     //   this.getSiteAccordingClientMethod(selectedClientId);
     // },
     removeDate(index) {
-      this.fetchVacancy.dates.splice(index, 1);
+      // this.fetchVacancy.dates.splice(index, 1);
+      const updatedDates = this.fetchVacancy.dates.filter((_, i) => i !== index);
+
+      this.fetchVacancy.dates = updatedDates;
     },
     formatDate(date) {
       const [day, month, year] = date.split("-");
@@ -438,13 +470,16 @@ export default {
           const message = "Shift Updated successfully";
           this.$refs.successAlert.showSuccess(message);
         }
+        this.fetchVacancy.dates = this.fetchVacancy.dates.filter(
+          (date) => date !== undefined
+        );
         const response = await axios.put(
           `${VITE_API_URL}/vacancies/${this.fetchVacancy.id}`,
           {
             site_id: this.fetchVacancy.site_id,
             client_id: this.fetchVacancy.client_id,
             job_id: this.fetchVacancy.job_id,
-            dates: datesArray,
+            dates: this.fetchVacancy.dates,
             notes: this.fetchVacancy.notes,
             site_shift_id: this.fetchVacancy.site_shift_id,
             staff_required: this.fetchVacancy.staff_required,
@@ -570,6 +605,12 @@ export default {
       immediate: true,
       handler(newSiteId) {
         this.getTimeShift(newSiteId);
+      },
+      fetchVacancy: {
+        deep: true,
+        handler() {
+          this.validateDates();
+        },
       },
     },
     vacancyId: {

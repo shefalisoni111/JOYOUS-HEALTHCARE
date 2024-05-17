@@ -199,6 +199,22 @@
                             </td>
                             <td scope="col">
                               {{ data.paper_timesheet ? data.paper_timesheet : "null" }}
+                              &nbsp;
+                              <button
+                                v-if="data.paper_timesheet === null"
+                                class="d-none"
+                              ></button>
+                              <button
+                                v-else
+                                type="button"
+                                class="btn border-primary-subtle"
+                                data-bs-toggle="modal"
+                                data-bs-target="#viewPaperTimeSheet"
+                                data-bs-whatever="@mdo"
+                                @click="viewPaperSheet(data.id, $event)"
+                              >
+                                <i class="bi bi-eye"></i>
+                              </button>
                             </td>
                             <td scope="col">
                               <button
@@ -302,6 +318,22 @@
                             </td>
                             <td scope="col">
                               {{ data.paper_timesheet ? data.paper_timesheet : "null" }}
+                              &nbsp;
+                              <button
+                                v-if="data.paper_timesheet === null"
+                                class="d-none"
+                              ></button>
+                              <button
+                                v-else
+                                type="button"
+                                class="btn border-primary-subtle"
+                                data-bs-toggle="modal"
+                                data-bs-target="#viewPaperTimeSheet"
+                                data-bs-whatever="@mdo"
+                                @click="viewPaperSheet(data.id, $event)"
+                              >
+                                <i class="bi bi-eye"></i>
+                              </button>
                             </td>
                             <td scope="col">
                               <button
@@ -393,6 +425,7 @@
       @CustomTimeSheetData-updated="getCustomSheetMethod"
     />
     <loader :isLoading="isLoading"></loader>
+    <PaperTimeSheetViewVue :customDataId="selectedCustomTimesheetId" />
   </div>
 </template>
 <script>
@@ -400,6 +433,8 @@ import axios from "axios";
 import Navbar from "../Navbar.vue";
 import CustomeTimeSheetEdit from "../modals/TimeSheet/CustomeTimeSheetEdit.vue";
 import Loader from "../Loader/Loader.vue";
+
+import PaperTimeSheetViewVue from "../modals/TimeSheet/PaperTimeSheetView.vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -433,7 +468,7 @@ export default {
       isLoading: false,
     };
   },
-  components: { Navbar, CustomeTimeSheetEdit, Loader },
+  components: { Navbar, CustomeTimeSheetEdit, Loader, PaperTimeSheetViewVue },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -498,6 +533,10 @@ export default {
   },
 
   methods: {
+    viewPaperSheet(customDataId, event) {
+      event.stopPropagation();
+      this.selectedCustomTimesheetId = customDataId;
+    },
     toggleFilters() {
       this.showFilters = !this.showFilters;
     },
