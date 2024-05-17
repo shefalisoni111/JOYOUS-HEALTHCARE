@@ -712,8 +712,14 @@ export default {
         this.endDate.getMonth() + 1,
         0
       );
+      const formatDate = (date) => {
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+      };
       const requestData = {
-        date: startOfMonth.toLocaleDateString(),
+        date: formatDate(startOfMonth),
         // end_date: endOfMonth.toLocaleDateString(),
       };
       try {
