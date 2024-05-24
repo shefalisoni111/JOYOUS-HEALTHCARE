@@ -184,7 +184,7 @@ const router = createRouter({
         {
           path: "/rates_and_rules",
           name: "Rates_and_Rules",
-          component: () => import("@/components/ClientsPages/Rates_and_Rules.vue"),
+          component: () => import("@/components/ClientsPages/RateAndRules/Rates_and_Rules.vue"),
           meta: {
              requiresAuth: true,
           },

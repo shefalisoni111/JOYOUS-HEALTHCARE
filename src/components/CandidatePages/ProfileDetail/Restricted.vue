@@ -75,7 +75,7 @@
                   <div>
                     <div class="hround">
                       {{
-                        data.site_name
+                        data.client_name
                           .split(" ")
                           .map((word) => word.charAt(0))
                           .join("")
@@ -83,8 +83,11 @@
                     </div>
                   </div>
                   &nbsp;
-                  <div class="d-flex align-items-center">
-                    <h5 class="fw-bold mb-0">{{ data.site_name }}</h5>
+                  <div class="d-flex align-items-center flex-column">
+                    <h5 class="fw-bold mb-0">{{ data.client_name }}</h5>
+
+                    <span class="fw-bold mb-0">{{ data.site_name }}</span>
+
                     <!-- <span>Hospital {{ data.id }}</span> -->
                   </div>
                 </div>

@@ -175,12 +175,12 @@
         Next
       </button>
     </div>
-    <ConfirmationAlert
+    <!-- <ConfirmationAlert
       :show-modal="isModalVisible"
       :message="confirmMessage"
       @confirm="confirmCallback"
       @cancel="canceled"
-    />
+    /> -->
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
@@ -252,6 +252,7 @@ export default {
     editCandidate(candidateId) {
       this.selectedCandidateId = candidateId;
     },
+
     openAssigned(id) {
       this.$store.commit("setSelectedAssignedItemId", id);
     },
@@ -271,6 +272,9 @@ export default {
           });
         this.isModalVisible = false;
       };
+    },
+    canceled() {
+      this.isModalVisible = false;
     },
     // async assignedCandidate(id) {
     //   if (!window.confirm("Are you Sure?")) {

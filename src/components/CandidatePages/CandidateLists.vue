@@ -363,6 +363,10 @@ export default {
       this.$store.commit("setSelectedCandidateId", candidate.id);
       this.$store.commit("setSelectedJobId", candidate.job_id);
     },
+    canceled() {
+      this.isModalVisible = false;
+    },
+
     setActiveTabFromRoute() {
       const currentRouteName = this.$route.name;
       const matchingTabIndex = this.tabs.findIndex(

@@ -34,9 +34,6 @@
                         {{ option.first_name }}
                       </option>
                     </select>
-                    <span v-if="!validationSelectedClient" class="text-danger"
-                      >Client Required</span
-                    >
                   </div>
 
                   <div class="col-4">
@@ -56,9 +53,6 @@
                         {{ option.site_name }}
                       </option>
                     </select>
-                    <span v-if="!validationSelectedBusinessUnit" class="text-danger"
-                      >Site Required</span
-                    >
                   </div>
 
                   <div class="col-4">
@@ -74,227 +68,569 @@
                         {{ option.name }}
                       </option>
                     </select>
-                    <span v-if="!validationSelectedOptionText" class="text-danger"
-                      >Position Required</span
-                    >
                   </div>
                 </div>
-                <div style="background-color: #bdbdbd; padding: 10px; border-radius: 3px">
-                  <h5 class="fw-bold">Monday</h5>
-                  <div class="mb-3 d-flex justify-content-between gap-1 me-3">
-                    <div class="col-3 d-flex gap-2">
-                      <div class="col-4">
-                        <label class="form-label" for="selectShifts">Shift</label>
 
-                        <select v-model="site_shift_id" id="selectShifts">
-                          <option
-                            v-for="option in shiftsTime"
-                            :key="option.id"
-                            :value="option.id"
-                            aria-placeholder="Select Job"
+                <div
+                  v-for="(day, index) in days"
+                  :key="index"
+                  :value="day"
+                  class="mt-2"
+                  style="
+                    background-color: rgb(203 203 203);
+                    padding: 10px;
+                    border-radius: 3px;
+                  "
+                >
+                  <h5 class="fw-bold text-capitalize">{{ day }}</h5>
+                  <template v-if="day !== 'Saturday' && day !== 'Sunday'">
+                    <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                      <div class="col-3 d-flex gap-2">
+                        <div class="col-4">
+                          <label class="form-label">Shift</label>
+
+                          <select
+                            v-model="day_shift_id"
+                            @change="handleShiftChange('day')"
                           >
-                            {{ option.shift_name }}
-                          </option>
-                        </select>
+                            <option
+                              v-for="option in filteredShiftsTime"
+                              :key="option.id"
+                              :value="option.id"
+                            >
+                              {{ option.shift_name }}
+                            </option>
+                          </select>
+                        </div>
 
-                        <span v-if="!validationShift" class="text-danger"
-                          >Shift Required</span
-                        >
+                        <div class="col-4">
+                          <label class="form-label" for="selectShiftStart"
+                            >Start Time</label
+                          >
+
+                          <select
+                            id="selectShiftStart"
+                            class="form-select w-25"
+                            v-model="day_start_time"
+                            @change="updateStartTime"
+                          >
+                            <option
+                              v-for="shift in filteredShiftsTime"
+                              :key="shift.id"
+                              :value="shift.start_time"
+                              :disabled="shift.id !== day_shift_id"
+                            >
+                              {{ shift.start_time }}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label" for="selectShiftEnd">End Time</label>
+
+                          <select
+                            id="selectShiftEnd"
+                            class="form-select w-25"
+                            v-model="day_end_time"
+                            @change="updateEndTime"
+                          >
+                            <option
+                              v-for="shift in filteredShiftsTime"
+                              :key="shift.id"
+                              :value="shift.end_time"
+                              :disabled="shift.id !== day_shift_id"
+                            >
+                              {{ shift.end_time }}
+                            </option>
+                          </select>
+                        </div>
                       </div>
+                      <div class="col-4 d-flex gap-2">
+                        <div class="col-4">
+                          <label class="form-label">Rate Type</label>
 
-                      <div class="col-4">
-                        <label class="form-label" for="selectShiftStart"
-                          >Start Time</label
-                        >
+                          <select>
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
 
-                        <select
-                          id="selectShiftStart"
-                          class="form-select w-25"
-                          v-model="start_time"
-                          @change="updateStartTime"
-                        >
-                          <option
-                            v-for="shift in shiftsTime"
-                            :key="shift.id"
-                            :value="shift.start_time"
-                            :disabled="shift.id !== site_shift_id"
-                          >
-                            {{ shift.start_time }}
-                          </option>
-                        </select>
-                        <span
-                          v-if="!validationStartTime && !start_time"
-                          class="text-danger"
-                          >Start Time is required</span
-                        >
+                        <div class="col-4">
+                          <label class="form-label">Client Rate</label>
+
+                          <select class="form-select w-25" v-model="client_rate">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">Private Limited</label>
+
+                          <select class="form-select w-25" v-model="private_limited_day">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
                       </div>
+                      <div class="col-4 d-flex gap-2">
+                        <div class="col-4">
+                          <label class="form-label">Self Employed</label>
 
-                      <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                          <select v-model="self_employed_day">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
 
-                        <select
-                          id="selectShiftEnd"
-                          class="form-select w-25"
-                          v-model="end_time"
-                          @change="updateEndTime"
-                        >
-                          <option
-                            v-for="shift in shiftsTime"
-                            :key="shift.id"
-                            :value="shift.end_time"
-                            :disabled="shift.id !== site_shift_id"
-                          >
-                            {{ shift.end_time }}
-                          </option>
-                        </select>
-                        <span v-if="!validationEndTime && !end_time" class="text-danger">
-                          End Time is required
-                        </span>
-                      </div>
-                    </div>
-                    <div class="col-4 d-flex gap-2">
-                      <div class="col-4">
-                        <label class="form-label" for="selectShifts">Rate Type</label>
+                        <div class="col-4">
+                          <label class="form-label">Umbrella</label>
+                          <select class="form-select w-25" v-model="umbrella_day">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
 
-                        <select v-model="site_shift_id" id="selectShifts">
-                          <option
-                            v-for="option in shiftsTime"
-                            :key="option.id"
-                            :value="option.id"
-                            aria-placeholder="Select Job"
-                          >
-                            {{ option.shift_name }}
-                          </option>
-                          <option>Custom Time</option>
-                        </select>
-
-                        <span v-if="!validationShift" class="text-danger"
-                          >Shift Required</span
-                        >
-                      </div>
-
-                      <div class="col-4">
-                        <label class="form-label" for="selectShiftStart"
-                          >Client Rate</label
-                        >
-
-                        <select
-                          id="selectShiftStart"
-                          class="form-select w-25"
-                          v-model="start_time"
-                          @change="updateStartTime"
-                        >
-                          <option
-                            v-for="shift in shiftsTime"
-                            :key="shift.id"
-                            :value="shift.start_time"
-                            :disabled="shift.id !== site_shift_id"
-                          >
-                            {{ shift.start_time }}
-                          </option>
-                        </select>
-                        <span
-                          v-if="!validationStartTime && !start_time"
-                          class="text-danger"
-                          >Start Time is required</span
-                        >
-                      </div>
-
-                      <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd"
-                          >Private Limited</label
-                        >
-
-                        <select
-                          id="selectShiftEnd"
-                          class="form-select w-25"
-                          v-model="end_time"
-                          @change="updateEndTime"
-                        >
-                          <option
-                            v-for="shift in shiftsTime"
-                            :key="shift.id"
-                            :value="shift.end_time"
-                            :disabled="shift.id !== site_shift_id"
-                          >
-                            {{ shift.end_time }}
-                          </option>
-                        </select>
-                        <span v-if="!validationEndTime && !end_time" class="text-danger">
-                          End Time is required
-                        </span>
-                      </div>
-                    </div>
-                    <div class="col-4 d-flex gap-2">
-                      <div class="col-4">
-                        <label class="form-label" for="selectShifts">Self Employed</label>
-
-                        <select v-model="site_shift_id" id="selectShifts">
-                          <option
-                            v-for="option in shiftsTime"
-                            :key="option.id"
-                            :value="option.id"
-                            aria-placeholder="Select Job"
-                          >
-                            {{ option.shift_name }}
-                          </option>
-                          <option>Custom Time</option>
-                        </select>
-
-                        <span v-if="!validationShift" class="text-danger"
-                          >Shift Required</span
-                        >
-                      </div>
-
-                      <div class="col-4">
-                        <label class="form-label" for="selectShiftStart">Umbrella</label>
-
-                        <select
-                          id="selectShiftStart"
-                          class="form-select w-25"
-                          v-model="start_time"
-                          @change="updateStartTime"
-                        >
-                          <option
-                            v-for="shift in shiftsTime"
-                            :key="shift.id"
-                            :value="shift.start_time"
-                            :disabled="shift.id !== site_shift_id"
-                          >
-                            {{ shift.start_time }}
-                          </option>
-                        </select>
-                        <span
-                          v-if="!validationStartTime && !start_time"
-                          class="text-danger"
-                          >Start Time is required</span
-                        >
-                      </div>
-
-                      <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">PAYE</label>
-
-                        <select
-                          id="selectShiftEnd"
-                          class="form-select w-25"
-                          v-model="end_time"
-                          @change="updateEndTime"
-                        >
-                          <option
-                            v-for="shift in shiftsTime"
-                            :key="shift.id"
-                            :value="shift.end_time"
-                            :disabled="shift.id !== site_shift_id"
-                          >
-                            {{ shift.end_time }}
-                          </option>
-                        </select>
-                        <span v-if="!validationEndTime && !end_time" class="text-danger">
-                          End Time is required
-                        </span>
+                        <div class="col-4">
+                          <label class="form-label">PAYE</label>
+                          <select class="form-select w-25" v-model="paye">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                    <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                      <div class="col-3 d-flex gap-2">
+                        <div class="col-4">
+                          <label class="form-label">Shift</label>
+
+                          <select
+                            v-model="night_shift_id"
+                            @change="handleShiftChange('night')"
+                          >
+                            <option
+                              v-for="option in filteredShiftsTimeNight"
+                              :key="option.id"
+                              :value="option.id"
+                              aria-placeholder="Select Job"
+                            >
+                              {{ option.shift_name }}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label" for="selectShiftStartNight"
+                            >Start Time</label
+                          >
+
+                          <select
+                            id="selectShiftStartNight"
+                            class="form-select w-25"
+                            v-model="night_start_time"
+                            @change="updateStartTime"
+                          >
+                            <option
+                              v-for="shift in filteredShiftsTimeNight"
+                              :key="shift.id"
+                              :value="shift.start_time"
+                              :disabled="shift.id !== night_shift_id"
+                            >
+                              {{ shift.start_time }}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label" for="selectShiftEndNight"
+                            >End Time</label
+                          >
+
+                          <select
+                            id="selectShiftEndNight"
+                            class="form-select w-25"
+                            v-model="night_end_time"
+                            @change="updateEndTime"
+                          >
+                            <option
+                              v-for="shift in filteredShiftsTimeNight"
+                              :key="shift.id"
+                              :value="shift.end_time"
+                              :disabled="shift.id !== night_shift_id"
+                            >
+                              {{ shift.end_time }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-4 d-flex gap-2">
+                        <div class="col-4">
+                          <label class="form-label">Rate Type</label>
+                          <select>
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">Client Rate</label>
+
+                          <select class="form-select w-25" v-model="client_rate">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">Private Limited</label>
+
+                          <select
+                            class="form-select w-25"
+                            v-model="private_limited_night"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-4 d-flex gap-2">
+                        <div class="col-4">
+                          <label class="form-label">Self Employed</label>
+
+                          <select v-model="self_employed_night">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">Umbrella</label>
+
+                          <select class="form-select w-25" v-model="umbrella_night">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">PAYE</label>
+                          <select class="form-select w-25" v-model="paye">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                      <div class="col-3 d-flex gap-2">
+                        <div class="col-4">
+                          <label class="form-label">Shift</label>
+
+                          <select
+                            v-model="dayShiftId"
+                            @change="handleShiftChange('holiday_day_shift')"
+                          >
+                            <option
+                              v-for="option in filteredShiftsTimeHoliday"
+                              :key="option.id"
+                              :value="option.id"
+                            >
+                              {{ option.shift_name }}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">Start Time</label>
+
+                          <select
+                            class="form-select w-25"
+                            v-model="holiday_start_time"
+                            @change="updateStartTime"
+                          >
+                            <option
+                              v-for="shift in filteredShiftsTimeHoliday"
+                              :key="shift.id"
+                              :value="shift.start_time"
+                              :disabled="shift.id !== dayShiftId"
+                            >
+                              {{ shift.start_time }}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">End Time</label>
+
+                          <select
+                            class="form-select w-25"
+                            v-model="holiday_end_time"
+                            @change="updateEndTime"
+                          >
+                            <option
+                              v-for="shift in filteredShiftsTimeHoliday"
+                              :key="shift.id"
+                              :value="shift.end_time"
+                              :disabled="shift.id !== dayShiftId"
+                            >
+                              {{ shift.end_time }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-4 d-flex gap-2">
+                        <div class="col-4">
+                          <label class="form-label">Rate Type</label>
+
+                          <select>
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">Client Rate</label>
+
+                          <select class="form-select w-25" v-model="client_rate">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">Private Limited</label>
+
+                          <select
+                            class="form-select w-25"
+                            v-model="private_limited_holiday_day"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-4 d-flex gap-2">
+                        <div class="col-4">
+                          <label class="form-label">Self Employed</label>
+
+                          <select v-model="self_employed_holiday_day">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">Umbrella</label>
+                          <select class="form-select w-25" v-model="umbrella_holiday_day">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">PAYE</label>
+                          <select class="form-select w-25" v-model="paye">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                      <div class="col-3 d-flex gap-2">
+                        <div class="col-4">
+                          <label class="form-label">Shift</label>
+
+                          <select
+                            v-model="nightShiftId"
+                            @change="handleShiftChange('holiday_night_shift')"
+                          >
+                            <option
+                              v-for="option in filteredShiftsTimeHolidayNight"
+                              :key="option.id"
+                              :value="option.id"
+                              aria-placeholder="Select Job"
+                            >
+                              {{ option.shift_name }}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">Start Time</label>
+
+                          <select
+                            class="form-select w-25"
+                            v-model="holiday_night_start_time"
+                            @change="updateStartTime"
+                          >
+                            <option
+                              v-for="shift in filteredShiftsTimeHolidayNight"
+                              :key="shift.id"
+                              :value="shift.start_time"
+                              :disabled="shift.id !== nightShiftId"
+                            >
+                              {{ shift.start_time }}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">End Time</label>
+
+                          <select
+                            class="form-select w-25"
+                            v-model="holiday_night_end_time"
+                            @change="updateEndTime"
+                          >
+                            <option
+                              v-for="shift in filteredShiftsTimeHolidayNight"
+                              :key="shift.id"
+                              :value="shift.end_time"
+                              :disabled="shift.id !== nightShiftId"
+                            >
+                              {{ shift.end_time }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-4 d-flex gap-2">
+                        <div class="col-4">
+                          <label class="form-label">Rate Type</label>
+                          <select>
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">Client Rate</label>
+
+                          <select class="form-select w-25" v-model="client_rate">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">Private Limited</label>
+
+                          <select
+                            class="form-select w-25"
+                            v-model="private_limited_holiday_night"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-4 d-flex gap-2">
+                        <div class="col-4">
+                          <label class="form-label">Self Employed</label>
+
+                          <select v-model="self_employed_holiday_night">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">Umbrella</label>
+
+                          <select
+                            class="form-select w-25"
+                            v-model="umbrella_holiday_night"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">PAYE</label>
+                          <select class="form-select w-25" v-model="paye">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </template>
                 </div>
               </form>
             </div>
@@ -310,10 +646,7 @@
               Cancel
             </button>
             <button
-              :disabled="!isFormValid"
-              :class="{ disabled: !isFormValid }"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
-              :data-bs-dismiss="isFormValid ? 'modal' : null"
               v-on:click="addVacancyMethod()"
             >
               Add Rate
@@ -331,35 +664,82 @@ import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
-  name: "AddVacancy",
+  name: "AddRateRules",
   data() {
     return {
-      validationSelectedOptionText: true,
-      validationSelectedBusinessUnit: true,
-      validationSelectedClient: true,
-      validationNotesText: true,
-      validationShift: true,
-      validationStaffRequired: true,
-      validationDateType: true,
       start_time: null,
       end_time: null,
-      break: null,
+      day_start_time: null,
+      day_end_time: null,
+      night_start_time: null,
+      night_end_time: null,
+      holiday_start_time: null,
+      holiday_end_time: null,
+      holiday_night_start_time: null,
+      holiday_night_end_time: null,
+      day_shift_id: null,
+      night_shift_id: null,
+      client_rate: "",
+      self_employed: "",
+      private_limited: "",
 
-      site_id: "",
+      day: "",
+      umbrella: "",
+      paye: "",
+      shift_type: "",
+      dayShiftId: "",
+      nightShiftId: "",
+      filteredShiftsTime: [],
+      filteredShiftsTimeNight: [],
+      validationStartTime: true,
+      filteredShiftsTimeHoliday: [],
+      filteredShiftsTimeHolidayNight: [],
+      validationEndTime: true,
+      client_rate_day: null,
+      client_rate_night: null,
+      client_rate_holiday_day: null,
+      client_rate_holiday_night: null,
+
+      private_limited_day: null,
+      private_limited_night: null,
+      private_limited_holiday_day: null,
+      private_limited_holiday_night: null,
+      self_employed_day: null,
+      self_employed_night: null,
+      self_employed_holiday_day: null,
+      self_employed_holiday_night: null,
+      umbrella_day: null,
+      umbrella_night: null,
+      umbrella_holiday_day: null,
+      umbrella_holiday_night: null,
+      days: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
+
+      clientRateModels: [{ value: null }, { value: null }],
+      showDayShift: true,
+      showNightShift: false,
+      site_id: null,
       client_id: "",
       clientData: [],
       job_id: "",
       options: [],
       businessUnit: [],
-      dates: [],
+
       site_shift_id: "",
       shiftsTime: [],
-      notes: "",
-      staff_required: "",
+
       isValidForm: false,
       selectedDate: null,
     };
   },
+
   components: { SuccessAlert },
   computed: {
     isFormValid() {
@@ -367,32 +747,45 @@ export default {
         this.site_id !== "" &&
         this.client_id !== "" &&
         this.job_id !== "" &&
-        this.site_shift_id !== "" &&
-        this.notes !== "" &&
-        this.staff_required !== "" &&
-        this.selectedDate !== null &&
-        // this.start_time !== null &&
-        // this.end_time !== null &&
-        this.break !== null &&
-        this.validationSelectedOptionText &&
-        this.validationSelectedBusinessUnit &&
-        this.validationSelectedClient &&
-        this.validationNotesText &&
-        this.validationShift &&
-        this.validationDateType &&
-        this.validationStaffRequired
-        // this.validationStartTime &&
-        // this.validationEndTime &&
+        this.day_shift_id !== null &&
+        this.night_shift_id !== null &&
+        this.client_rate !== "" &&
+        this.self_employed !== "" &&
+        this.private_limited !== "" &&
+        this.day_start_time !== null &&
+        this.day_end_time !== null &&
+        this.night_start_time !== null &&
+        this.night_end_time !== null &&
+        this.umbrella !== null &&
+        this.paye !== null
+        // this.client_rate !== null &&
+        // this.private_limited !== null &&
+        // this.self_employed !== null &&
+        // this.client_rate_day !== null &&
+        // this.client_rate_night !== null &&
+        // this.client_rate_holiday_day !== null &&
+        // this.client_rate_holiday_night !== null &&
+        // this.private_limited_day !== null &&
+        // this.private_limited_night !== null &&
+        // this.private_limited_holiday_day !== null &&
+        // this.private_limited_holiday_night !== null &&
+        // this.self_employed_day !== null &&
+        // this.self_employed_night !== null &&
+        // this.self_employed_holiday_day !== null &&
+        // this.self_employed_holiday_night !== null &&
+        // this.umbrella_day !== null &&
+        // this.umbrella_night !== null &&
+        // this.umbrella_holiday_day !== null &&
+        // this.umbrella_holiday_night !== null &&
+        // this.holiday_start_time !== null &&
+        // this.holiday_end_time !== null &&
+        // this.holiday_night_start_time !== null &&
+        // this.holiday_night_end_time !== null
+
         // this.validationBreak
       );
     },
-    updateStartTime() {
-      const selectedShift = this.shiftsTime.find(
-        (shift) => shift.id === this.site_shift_id
-      );
 
-      this.start_time = selectedShift ? selectedShift.start_time : null;
-    },
     selectedOptionText() {
       const jobs_id = this.options.find((option) => option.id === this.jobs_id);
       return jobs_id ? jobs_id.name : "";
@@ -408,86 +801,37 @@ export default {
       return this.client_id;
     },
 
-    selectShifts() {
-      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
-      return shifts_id ? shifts_id.shift_name : "";
-    },
     selectShiftStart() {
-      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
-      return shifts_id ? shifts_id.start_time : "";
+      const shift = this.filteredShiftsTime.find(
+        (shift) => shift.id === this.day_shift_id
+      );
+      return shift ? shift.start_time : "";
     },
     selectShiftEnd() {
-      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
-      return shifts_id ? shifts_id.end_time : "";
+      const shift = this.filteredShiftsTime.find(
+        (shift) => shift.id === this.day_shift_id
+      );
+      return shift ? shift.end_time : "";
+    },
+    selectShiftStartNight() {
+      const shift = this.filteredShiftsTimeNight.find(
+        (shift) => shift.id === this.night_shift_id
+      );
+      return shift ? shift.start_time : "";
+    },
+    selectShiftEndNight() {
+      const shift = this.filteredShiftsTimeNight.find(
+        (shift) => shift.id === this.night_shift_id
+      );
+      return shift ? shift.end_time : "";
     },
   },
   watch: {
-    job_id: "validationSelectedOptionText",
-    site_id: "validationSelectedBusinessUnit",
-    client_id: "validationSelectedClient",
-    site_shift_id: "validationShift",
-    staff_required: "validationStaffRequired",
-    dates: "validationDateType",
-    notes: "validationNotesText",
-    // start_time: "validateStartTime",
-    // end_time: "validateEndTime",
-    // break: "validateBreakFormate",
-
-    job_id: function (newValue) {
-      this.validationSelectedOptionText = this.validationSelectedFormate(newValue);
-    },
-    site_id: function (newValue) {
-      this.validationSelectedBusinessUnit = this.ValidationBusinessUnit(newValue);
-    },
-    client_id: function (newValue) {
-      this.validationSelectedClient = this.ValidationClient(newValue);
-    },
-    site_shift_id: function (newValue) {
-      this.validationShift = this.ValidationShift(newValue);
-    },
-    staff_required: function (newValue) {
-      this.validationStaffRequired = this.ValidationStaffRequired(newValue);
-    },
-    dates: function (newValue) {
-      this.validationDateType = this.ValidationDate(newValue);
-    },
-    notes: function (newValue) {
-      this.validationNotesText = this.ValidationNotes(newValue);
-    },
-    // start_time: function (newValue) {
-    //   this.validationNotesText = this.validateStartTime(newValue);
-    // },
-    // end_time: function (newValue) {
-    //   this.validationNotesText = this.validateEndTime(newValue);
-    // },
-    // break: function (newValue) {
-    //   this.validationBreak = this.validateBreakFormate(newValue);
-    // },
-    isFormValid: function (newVal) {
-      this.isValidForm = newVal;
+    client_rate(newVal) {
+      // console.log("client_rate changed to:", newVal);
     },
   },
   methods: {
-    handleShiftChange() {
-      const selectedShift = this.shiftsTime.find(
-        (shift) => shift.id === this.site_shift_id
-      );
-      if (selectedShift) {
-        this.start_time = selectedShift.start_time;
-        this.end_time = selectedShift.end_time;
-      } else {
-        this.start_time = "";
-        this.end_time = "";
-      }
-    },
-
-    updateEndTime() {
-      const selectedShift = this.shiftsTime.find(
-        (shift) => shift.id === this.site_shift_id
-      );
-
-      this.end_time = selectedShift ? selectedShift.end_time : null;
-    },
     validateStartTime(newValue) {
       if (!newValue) {
         this.validationStartTime = false;
@@ -508,15 +852,6 @@ export default {
       }
     },
 
-    validateBreak(newValue) {
-      if (!newValue) {
-        this.validationBreak = false;
-        return "Please enter a valid break time";
-      } else {
-        this.validationBreak = true;
-        return "";
-      }
-    },
     formatTime(hour) {
       if (hour < 12) {
         return `${String(hour).padStart(2, "0")}:00 AM`;
@@ -530,155 +865,175 @@ export default {
         return `${String(hour - 12).padStart(2, "0")}:00 PM`;
       }
     },
-    formatBreakTime(minute) {
-      const hours = Math.floor(minute / 60);
-      const mins = minute % 60;
-
-      let formattedTime = "";
-      if (hours > 0) {
-        formattedTime += `${hours} hour `;
-      }
-      if (mins > 0) {
-        formattedTime += `${mins} minute`;
-      }
-
-      return formattedTime;
-    },
-    // formatTimeMinute(hour, minute) {
-    //   const hourStr = String(hour).padStart(2, "0");
-    //   const minuteStr = String(minute).padStart(2, "0");
-    //   return `${hourStr}:${minuteStr}`;
-    // },
     onClientSelect() {
       const selectedClientId = this.client_id;
 
       this.getJobTitleMethod(selectedClientId);
       this.getSiteAccordingClientMethod(selectedClientId);
     },
-    onSiteSelect() {
+    async onSiteSelect() {
       const selectedSiteId = this.site_id;
-      this.getTimeShift(selectedSiteId);
-    },
-    validateStaffRequired() {
-      if (this.staff_required <= 0) {
-        this.staff_required = null;
-        this.validationStaffRequired = false;
-      } else {
-        this.validationStaffRequired = true;
+      await this.getTimeShift(selectedSiteId);
+      const dayShift = this.filteredShiftsTime.find(
+        (shift) => shift.shift_name.toLowerCase() === "day_shift"
+      );
+      if (dayShift) {
+        this.day_shift_id = dayShift.id;
+        this.day_start_time = dayShift.start_time;
+        this.day_end_time = dayShift.end_time;
+      }
+
+      const nightShift = this.filteredShiftsTimeNight.find(
+        (shift) => shift.shift_name.toLowerCase() === "night_shift"
+      );
+      if (nightShift) {
+        this.night_shift_id = nightShift.id;
+        this.night_start_time = nightShift.start_time;
+        this.night_end_time = nightShift.end_time;
+      }
+
+      const holidayDayShift = this.filteredShiftsTimeHoliday.find(
+        (shift) => shift.shift_name.toLowerCase() === "holiday_day_shift"
+      );
+      if (holidayDayShift) {
+        this.dayShiftId = holidayDayShift.id;
+        this.holiday_start_time = holidayDayShift.start_time;
+        this.holiday_end_time = holidayDayShift.end_time;
+      }
+
+      const holidayNightShift = this.filteredShiftsTimeHolidayNight.find(
+        (shift) => shift.shift_name.toLowerCase() === "holiday_night_shift"
+      );
+      if (holidayNightShift) {
+        this.nightShiftId = holidayNightShift.id;
+        this.holiday_night_start_time = holidayNightShift.start_time;
+        this.holiday_night_end_time = holidayNightShift.end_time;
       }
     },
+
     clearFieldsData() {
       this.clearFields();
       setTimeout(() => {
-        this.clearError();
+        // this.clearError();
       }, 10);
     },
 
-    addDate() {
-      if (this.selectedDate) {
-        const currentDate = new Date();
-        const selectedDate = new Date(this.selectedDate);
-
-        if (selectedDate > currentDate || this.isToday(selectedDate, currentDate)) {
-          const formattedDate = selectedDate.toLocaleDateString("en-GB");
-          if (!this.dates.includes(formattedDate)) {
-            this.dates.push(formattedDate);
-          }
-          this.selectedDate = "";
-          this.clearError();
-          this.validationDateType = true;
-        } else {
-          this.validationDateType = false;
-        }
-      }
-    },
-    isToday(selectedDate, currentDate) {
-      return (
-        selectedDate.getDate() === currentDate.getDate() &&
-        selectedDate.getMonth() === currentDate.getMonth() &&
-        selectedDate.getFullYear() === currentDate.getFullYear()
-      );
-    },
-    removeDate(index) {
-      this.dates.splice(index, 1);
-      this.clearError();
-    },
     async addVacancyMethod() {
-      this.validationSelectedOptionText = this.validationSelectedFormate(this.job_id);
-      this.validationSelectedBusinessUnit = this.ValidationBusinessUnit(this.site_id);
-      this.validationSelectedClient = this.ValidationClient(this.client_id);
-      this.validationNotesText = this.ValidationNotes(this.notes);
-      this.validationShift = this.ValidationShift(this.site_shift_id);
-      this.validationStaffRequired = this.ValidationStaffRequired(this.staff_required);
-      this.validationDateType = this.ValidationDate(this.dates);
-      // this.validationStartTime = this.validateStartTime(this.start_time);
-      // this.validationEndTime = this.validateEndTime(this.end_time);
-      // this.validationBreak = this.validateBreakFormate(this.break);
-      if (
-        this.validationSelectedOptionText &&
-        this.validationSelectedBusinessUnit &&
-        this.validationSelectedClient &&
-        this.validationNotesText &&
-        this.validationShift &&
-        this.validationStaffRequired &&
-        this.validationDateType
-        // this.validationStartTime &&
-        // this.validationEndTime &&
-        // this.validationBreak
-      ) {
-        const data = {
-          site_id: this.site_id,
-          job_id: this.job_id,
-          dates: this.dates,
-          site_shift_id: this.site_shift_id,
-          staff_required: this.staff_required,
-          notes: this.notes,
-          client_id: this.client_id,
-          start_time: this.start_time,
-          end_time: this.end_time,
-          break: this.break,
-        };
+      const rateAndRules = [];
 
-        try {
-          const token = localStorage.getItem("token");
-          const response = await fetch(`${VITE_API_URL}/vacancies`, {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-              Authorization: "bearer " + token,
-            },
-            body: JSON.stringify(data),
-          });
+      this.days.forEach((day) => {
+        let dayShiftEntry = {};
+        let nightShiftEntry = {};
 
-          if (response.status === 201) {
-            this.clearFields();
-            setTimeout(() => {
-              this.clearError();
-            }, 100);
-            this.$emit("addVacancy");
-            // alert("Successful Shift added");
-            const message = "Successful Shift added";
-            this.$refs.successAlert.showSuccess(message);
-          } else {
-            alert("Error adding Shift");
-            this.clearFields();
-            setTimeout(() => {
-              this.clearError();
-            }, 100);
-          }
-        } catch (error) {
-          alert("Error adding Shift");
+        if (day === "Saturday" || day === "Sunday") {
+          this.dayShiftId = day === "Saturday" ? 16 : 16;
+          this.nightShiftId = day === "Saturday" ? 13 : 13;
+
+          dayShiftEntry = {
+            site_id: this.site_id,
+            job_id: this.job_id,
+            day: day,
+            client_rate: this.client_rate || "",
+            self_employed: this.shifts?.self_employed_holiday_day || "",
+            private_limited: this.shifts?.private_limited_holiday_day || "",
+            umbrella: this.shifts?.umbrella_holiday_day || "",
+            site_shift_id: this.dayShiftId,
+            client_id: this.client_id,
+            start_time: this.holiday_start_time,
+            end_time: this.holiday_end_time,
+            paye: this.paye,
+            holiday_start_time: this.holiday_start_time,
+            holiday_end_time: this.holiday_end_time,
+            holiday_night_start_time: this.holiday_night_start_time,
+            holiday_night_end_time: this.holiday_night_end_time,
+          };
+
+          nightShiftEntry = {
+            site_id: this.site_id,
+            job_id: this.job_id,
+            day: day,
+            client_rate: this.client_rate || "",
+            self_employed: this.shifts?.self_employed_holiday_night || "",
+            private_limited: this.shifts?.private_limited_holiday_night || "",
+            umbrella: this.shifts?.umbrella_holiday_night || "",
+            site_shift_id: this.nightShiftId,
+            client_id: this.client_id,
+            start_time: this.night_start_time,
+            end_time: this.night_end_time,
+            paye: this.paye,
+            holiday_start_time: this.holiday_start_time,
+            holiday_end_time: this.holiday_end_time,
+            holiday_night_start_time: this.holiday_night_start_time,
+            holiday_night_end_time: this.holiday_night_end_time,
+          };
+        } else {
+          dayShiftEntry = {
+            site_id: this.site_id,
+            job_id: this.job_id,
+            day: day,
+            client_rate: this.client_rate || "",
+            self_employed: this.shifts?.self_employed_day || "",
+            private_limited: this.shifts?.private_limited_day || "",
+            umbrella: this.shifts?.umbrella_day || "",
+            site_shift_id: this.day_shift_id,
+            client_id: this.client_id,
+            start_time: this.day_start_time,
+            end_time: this.day_end_time,
+            paye: this.paye,
+            holiday_start_time: this.holiday_start_time,
+            holiday_end_time: this.holiday_end_time,
+            holiday_night_start_time: this.holiday_night_start_time,
+            holiday_night_end_time: this.holiday_night_end_time,
+          };
+
+          nightShiftEntry = {
+            site_id: this.site_id,
+            job_id: this.job_id,
+            day: day,
+            client_rate_night: this.client_rate || "",
+            self_employed: this.shifts?.self_employed_night || "",
+            private_limited: this.shifts?.private_limited_night || "",
+            umbrella: this.shifts?.umbrella_night || "",
+            site_shift_id: this.night_shift_id,
+            client_id: this.client_id,
+            start_time: this.night_start_time,
+            end_time: this.night_end_time,
+            paye: this.paye,
+            holiday_start_time: this.holiday_start_time,
+            holiday_end_time: this.holiday_end_time,
+            holiday_night_start_time: this.holiday_night_start_time,
+            holiday_night_end_time: this.holiday_night_end_time,
+          };
+        }
+
+        rateAndRules.push(dayShiftEntry, nightShiftEntry);
+      });
+      // console.log("Rate and Rules:", rateAndRules);
+      const data = { rate_and_rules: rateAndRules };
+
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(`${VITE_API_URL}/create_multiple_rates_and_rules`, {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (response.status === 201) {
           this.clearFields();
           setTimeout(() => {
-            this.clearError();
+            // this.clearError();
           }, 100);
+          this.$emit("UpdatedRateRules");
+          // alert("Successful Shift added");
+          const message = "Rate and Rules Added Successful ";
+          this.$refs.successAlert.showSuccess(message);
+        } else {
         }
-      } else {
-        this.clearFields();
-        setTimeout(() => {
-          this.clearError();
-        }, 100);
-      }
+      } catch (error) {}
     },
     async getJobTitleMethod() {
       try {
@@ -691,6 +1046,41 @@ export default {
           if (error.response.status == 404) {
             // alert(error.response.data.message);
           }
+        }
+      }
+    },
+    handleShiftChange(shiftType) {
+      if (shiftType === "day") {
+        const selectedShift = this.filteredShiftsTime.find(
+          (shift) => shift.id === this.day_shift_id
+        );
+        if (selectedShift) {
+          this.start_time = selectedShift.start_time;
+          this.end_time = selectedShift.end_time;
+        }
+      } else if (shiftType === "night") {
+        const selectedShift = this.filteredShiftsTimeNight.find(
+          (shift) => shift.id === this.night_shift_id
+        );
+        if (selectedShift) {
+          this.start_time = selectedShift.start_time;
+          this.end_time = selectedShift.end_time;
+        }
+      } else if (shiftType === "holiday_day_shift") {
+        const selectedShift = this.filteredShiftsTimeHoliday.find(
+          (shift) => shift.id === this.night_shift_id
+        );
+        if (selectedShift) {
+          this.start_time = selectedShift.start_time;
+          this.end_time = selectedShift.end_time;
+        }
+      } else if (shiftType === "holiday_night_shift") {
+        const selectedShift = this.filteredShiftsTimeHolidayNight.find(
+          (shift) => shift.id === this.night_shift_id
+        );
+        if (selectedShift) {
+          this.start_time = selectedShift.start_time;
+          this.end_time = selectedShift.end_time;
         }
       }
     },
@@ -732,11 +1122,7 @@ export default {
         }
       }
     },
-    // async getTimeShift() {
-    //   await axios
-    //     .get(`${VITE_API_URL}/shifts`)
-    //     .then((response) => (this.shiftsTime = response.data));
-    // },
+
     async getTimeShift() {
       try {
         const response = await axios.get(`${VITE_API_URL}site_shift/${this.site_id}`);
@@ -746,6 +1132,24 @@ export default {
             start_time: this.convertTimeFormat(shift.start_time),
             end_time: this.convertTimeFormat(shift.end_time),
           })) || [];
+        this.filteredShiftsTime = this.shiftsTime.filter(
+          (shift) => shift.shift_name.toLowerCase() === "day_shift"
+        );
+
+        this.filteredShiftsTimeNight = this.shiftsTime.filter(
+          (shift) => shift.shift_name.toLowerCase() === "night_shift"
+        );
+
+        this.filteredShiftsTimeHoliday = this.shiftsTime.filter(
+          (shift) => shift.shift_name.toLowerCase() === "holiday_day_shift"
+        );
+        this.filteredShiftsTimeHolidayNight = this.shiftsTime.filter(
+          (shift) => shift.shift_name.toLowerCase() === "holiday_night_shift"
+        );
+
+        if (this.filteredShiftsTime.length === 0) {
+          this.filteredShiftsTime = this.shiftsTime;
+        }
       } catch (error) {
         // console.error("Error fetching shifts:", error);
       }
@@ -759,65 +1163,32 @@ export default {
       const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
       return `${formattedHours}:${formattedMinutes} ${amPm}`;
     },
-    validationSelectedFormate(newValue) {
-      const positionRegex = /[a-zA-Z0-9]/;
-      return positionRegex.test(newValue);
-    },
-    ValidationBusinessUnit(newValue) {
-      const businessUnitRegex = /[a-zA-Z0-9]/;
-      return businessUnitRegex.test(newValue);
-    },
-    ValidationNotes(newValue) {
-      const notesRegex = /[a-zA-Z0-9]/;
-      return notesRegex.test(newValue);
-    },
-    ValidationShift(newValue) {
-      const shiftRegex = /[a-zA-Z0-9]/;
-      return shiftRegex.test(newValue);
-    },
-    ValidationStaffRequired(newValue) {
-      const staffRequired = /^(0?[1-9]|[12][0-9]|3[01])$/;
-      return staffRequired.test(newValue);
-    },
-    ValidationDate(newValue) {
-      const dateRegex = /(0[1-9]|[12][0-9]|3[01])/;
-      return dateRegex.test(newValue);
-    },
-    validateBreakFormate(newValue) {
-      const breakRegex = /^[1-9][0-9]*\s(hour|min)s?$/;
-      return breakRegex.test(newValue);
-    },
-    ValidationClient(newValue) {
-      const clientRegex = /[a-zA-Z0-9]/;
-      return clientRegex.test(newValue);
-    },
-    clearError() {
-      this.validationSelectedOptionText = true;
-      this.validationSelectedBusinessUnit = true;
-      this.validationSelectedClient = true;
-      this.validationNotesText = true;
-      this.validationShift = true;
-      (this.validationStartTime = true),
-        (this.validationEndTime = true),
-        (this.validationStaffRequired = true),
-        (this.validationDateType = true),
-        (this.validationBreak = true);
-    },
+
+    // clearError() {
+    //   this.validationSelectedOptionText = true;
+    //   this.validationSelectedBusinessUnit = true;
+    //   this.validationSelectedClient = true;
+    //   this.validationNotesText = true;
+    //   this.validationShift = true;
+    //   (this.validationStartTime = true),
+    //     (this.validationEndTime = true),
+    //     (this.validationStaffRequired = true),
+    //     (this.validationDateType = true),
+    //     (this.validationBreak = true);
+    // },
     clearFields() {
       this.site_id = "";
       this.client_id = "";
       this.job_id = "";
-      this.dates = [];
+
       this.site_shift_id = "";
       this.start_time = "";
       this.end_time = "";
-      this.break = "";
+
       (this.options = []),
         (this.businessUnit = []),
         (this.shiftsTime = []),
-        (this.staff_required = ""),
-        (this.notes = "");
-      this.selectedDate = null;
+        (this.selectedDate = null);
     },
   },
   mounted() {
@@ -827,7 +1198,7 @@ export default {
     // this.getSiteAccordingClientMethod();
     this.getTimeShift();
     this.isValidForm = this.isFormValid;
-    this.clearError();
+    // this.clearError();
   },
 };
 </script>
