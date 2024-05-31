@@ -57,20 +57,31 @@
                 </div>
               </div>
             </div>
-          </div>
-        </form>
-        <div class="row mt-4">
-          <div class="col-2">
-            <label for="" class="form-label fw-medium">Break Time</label>
-          </div>
-          <div class="col-10">
-            <div class="ms-5">
-              <div class="col-5 ms-2">
-                <input type="text" class="form-control" readonly />
+            <div class="row mt-4">
+              <div class="mb-3 d-flex justify-content-between">
+                <div class="col-3">
+                  <label class="form-label" for="selectShiftsBreak">Break Time</label>
+                </div>
+                <div class="col-9">
+                  <select
+                    id="selectShiftsBreak"
+                    class="form-select w-25"
+                    v-model="shift.break"
+                  >
+                    <option
+                      v-for="minute in [15, 30, 45, 60, 75, 90]"
+                      :key="minute"
+                      :value="minute"
+                    >
+                      {{ formatBreakTime(minute) }}
+                    </option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </form>
+
         <div class="row mt-3">
           <div>
             <button class="btn btn-primary text-nowrap" v-on:click="updateShiftTimes()">
@@ -120,11 +131,26 @@ export default {
             ...shift,
             start_time: this.convertTimeFormat(shift.start_time),
             end_time: this.convertTimeFormat(shift.end_time),
+            break: shift.break !== undefined ? shift.break : null,
           })) || [];
         // console.log(this.shifts);
       } catch (error) {
         // console.error("Error fetching shifts:", error);
       }
+    },
+    formatBreakTime(minute) {
+      const hours = Math.floor(minute / 60);
+      const mins = minute % 60;
+
+      let formattedTime = "";
+      if (hours > 0) {
+        formattedTime += `${hours} hour `;
+      }
+      if (mins > 0) {
+        formattedTime += `${mins} minute`;
+      }
+
+      return formattedTime;
     },
     convertTimeFormat(dateTimeString) {
       const date = new Date(dateTimeString);
@@ -141,39 +167,10 @@ export default {
       const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
       return `${formattedHours}:${formattedMinutes} ${amPm}`;
     },
-    // convertTimeFormatEndTime(dateTimeString) {
-    //   const date = new Date(dateTimeString);
-    //   let hours = date.getUTCHours();
-    //   const minutes = date.getUTCMinutes();
-    //   let amPm = "AM";
-
-    //   if (hours >= 12) {
-    //     amPm = "PM";
-    //     if (hours > 12) {
-    //       hours -= 12;
-    //     }
-    //   } else if (hours === 0) {
-    //     hours = 12;
-    //   }
-
-    //   const formattedHours = String(hours).padStart(2, "0");
-    //   const formattedMinutes = String(minutes).padStart(2, "0");
-
-    //   return `${formattedHours}:${formattedMinutes} ${amPm}`;
-    // },
 
     setShiftIdToUpdate(shiftId) {
       this.shiftIdToUpdate = shiftId;
     },
-    // updateShiftInList(updatedShifts) {
-    //   updatedShifts.forEach((updatedShift) => {
-    //     const updatedIndex = this.shifts.findIndex((s) => s.id === updatedShift.id);
-
-    //     if (updatedIndex !== -1) {
-    //       this.shifts[updatedIndex] = updatedShift;
-    //     }
-    //   });
-    // },
 
     updateShiftTimes() {
       const shiftIndex = this.shifts.findIndex(
@@ -186,6 +183,7 @@ export default {
               id: this.shiftIdToUpdate,
               start_time: this.shifts[shiftIndex].start_time,
               end_time: this.shifts[shiftIndex].end_time,
+              break: this.shifts[shiftIndex].break,
             },
           ],
         };

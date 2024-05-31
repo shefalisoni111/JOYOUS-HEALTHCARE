@@ -39,7 +39,7 @@
                   <th scope="col">Position</th>
                   <th scope="col">Day</th>
                   <th scope="col">Employment Type</th>
-                  <th scope="col">Shift Type</th>
+                  <th scope="col" style="width: 180px">Shift Type</th>
                   <th scope="col">Staff Rate</th>
                   <th scope="col">Last Update</th>
                   <th scope="col">Action</th>
@@ -62,7 +62,7 @@
                   <td v-text="getrate.job_id"></td>
                   <td v-text="getrate.weekname" class="text-capitalize"></td>
                   <td v-text="getrate.employment_type_id"></td>
-                  <td v-text="getrate.shift_id"></td>
+                  <td v-text="getrate.shift"></td>
                   <td v-text="getrate.staff_rate"></td>
                   <td v-text="getrate.last_updated"></td>
                   <td class="cursor-pointer d-flex">

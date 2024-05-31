@@ -187,7 +187,7 @@ export default {
       this.isLoading = true;
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_restricted_location`
+          `${VITE_API_URL}/candidate_restricted_location?candidate_id=${this.$route.params.id}`
         );
         this.getLocationData = response.data;
       } catch (error) {

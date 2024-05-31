@@ -3,19 +3,44 @@
     <!-- Modal -->
     <div
       class="modal fade"
-      id="addRestrictedLocation"
-      aria-labelledby="addRestrictedLocation"
+      id="AddSitRestrictedStaff"
+      aria-labelledby="AddSitRestrictedStaff"
       tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addRestrictedLocation">Add Location</h5>
+            <h5 class="modal-title" id="AddSitRestrictedStaff">Add Location</h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
               <form @submit.prevent="addRestrictedLocationMethod">
                 <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
+                    <label for="selectedStaff" class="form-label">Staff</label>
+                  </div>
+                  <div class="col-10">
+                    <select
+                      v-model="Staff_id"
+                      id="selectedStaff"
+                      @change="onClientSelect"
+                    >
+                      <option
+                        v-for="option in Staff"
+                        :key="option.id"
+                        :value="option.id"
+                        :id="option.id"
+                        aria-placeholder="Select Job"
+                      >
+                        {{ option.first_name }}
+                      </option>
+                    </select>
+                    <span v-if="!validationSelectedClient" class="text-danger"
+                      >Client Required</span
+                    >
+                  </div>
+                </div>
+                <!-- <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label for="selectClients" class="form-label">Client</label>
                   </div>
@@ -39,14 +64,19 @@
                       >Client Required</span
                     >
                   </div>
-                </div>
+                </div> -->
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label class="form-label" for="selectBusinessUnit">Site</label>
                   </div>
 
                   <div class="col-10">
-                    <select v-model="site_id" id="selectBusinessUnit">
+                    <select
+                      v-model="site_id"
+                      id="selectBusinessUnit"
+                      :disabled="true"
+                      class="text-black"
+                    >
                       <option
                         v-for="option in businessUnit"
                         :key="option.id"
@@ -57,8 +87,8 @@
                       </option>
                     </select>
                     <!-- <span v-if="!validationBusinessUnit && !site_id" class="text-danger"
-                      >Site Required</span
-                    > -->
+                        >Site Required</span
+                      > -->
                   </div>
                 </div>
               </form>
@@ -66,7 +96,7 @@
             <div class="modal-footer">
               <button
                 class="btn btn-secondary rounded-1"
-                data-bs-target="#addRestrictedLocation"
+                data-bs-target="#AddSitRestrictedStaff"
                 data-bs-toggle="modal"
                 data-bs-dismiss="modal"
                 v-on:click="clearFieldsData"
@@ -96,7 +126,7 @@ import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
-  name: "AddRestrictedLocation",
+  name: "AddSitRestrictedStaff",
   data() {
     return {
       site_id: "",
@@ -104,6 +134,8 @@ export default {
       businessUnit: [],
       client_id: "",
       clientData: [],
+      Staff: [],
+      Staff_id: "",
       validationSelectedClient: true,
       validationBusinessUnit: true,
     };
@@ -122,7 +154,7 @@ export default {
   },
   computed: {
     isFormValid() {
-      return this.site_id !== "" && this.client_id !== "";
+      return this.site_id !== "" && this.Staff_id !== "";
     },
     // isFormValid() {
     //   return this.validationBusinessUnit && this.validationSelectedClient;
@@ -136,11 +168,16 @@ export default {
       const client_id = this.clientData.find((option) => option.id === this.client_id);
       return this.client_id;
     },
+    selectedStaff() {
+      const Staff_id = this.Staff.find((option) => option.id === this.Staff_id);
+      return this.Staff_id;
+    },
   },
   methods: {
     clearFieldsData() {
       this.site_id = "";
       this.client_id = "";
+      this.Staff_id = "";
       setTimeout(() => {
         this.clearError();
       }, 10);
@@ -149,6 +186,18 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/clients`);
         this.clientData = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    async getStaffMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/candidates`);
+        this.Staff = response.data.data;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
@@ -195,8 +244,8 @@ export default {
 
     async addRestrictedLocationMethod() {
       const data = {
-        site_id: [this.site_id],
-        candidate_id: this.$route.params.id,
+        site_id: [this.$route.params.id],
+        candidate_id: this.Staff_id,
         client_id: this.client_id,
       };
       try {
@@ -208,11 +257,11 @@ export default {
           body: JSON.stringify(data),
         });
         if (response.ok) {
-          this.$emit("getLocationAdded");
+          this.$emit("getRestrictedStaffAdded");
           this.site_id = "";
           this.client_id = "";
           this.Staff_id = "";
-          const message = "Successful added Restrict Location";
+          const message = "Successful add Restrict Staff";
           this.$refs.successAlert.showSuccess(message);
         } else {
         }
@@ -237,8 +286,9 @@ export default {
   },
   mounted() {
     this.getBusinessUnitMethod();
-    this.candidate_id = this.$route.params.id;
+    this.site_id = this.$route.params.id;
     this.getClientMethod();
+    this.getStaffMethod();
     this.clearError();
   },
 };

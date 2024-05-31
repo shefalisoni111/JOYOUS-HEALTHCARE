@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <div class="row m-4">
+    <div class="row m-4" v-if="getNotes?.length > 0">
       <div class="mb-3" v-for="data in getNotes" :key="data.id">
         <div class="d-flex justify-content-between border-1 border-success">
           <div class="">
@@ -36,6 +36,11 @@
             </button>
           </div> -->
         </div>
+      </div>
+    </div>
+    <div class="row" v-else>
+      <div class="text-danger text-center" v-if="!isLoading">
+        {{ "Data Not Found!" }}
       </div>
     </div>
     <AddSiteNotes @addSiteNote="getNotesMethod" />

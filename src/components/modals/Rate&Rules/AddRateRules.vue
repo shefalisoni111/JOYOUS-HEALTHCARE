@@ -12,7 +12,7 @@
           <div class="modal-header">
             <h5 class="modal-title" id="addRateRules">Add Rate</h5>
           </div>
-          <div class="modal-body mx-3">
+          <div class="modal-body mx-3" style="height: 600px; overflow: auto">
             <div class="row g-3 align-items-center">
               <form>
                 <div class="mb-3 d-flex justify-content-between gap-2 me-3">
@@ -90,6 +90,7 @@
                           <label class="form-label">Shift</label>
 
                           <select
+                            class="form-select w-25"
                             v-model="day_shift_id"
                             @change="handleShiftChange('day')"
                           >
@@ -149,19 +150,23 @@
                         <div class="col-4">
                           <label class="form-label">Rate Type</label>
 
-                          <select>
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
+                          <select
+                            class="form-select w-25"
+                            v-model="this.selectedRateType[`${day}-day`]"
+                          >
+                            <option value="Hourly">Hourly</option>
+                            <option value="Monthly">Monthly</option>
+                            <option value="Yearly">Yearly</option>
                           </select>
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">Client Rate</label>
 
-                          <select class="form-select w-25" v-model="client_rate">
+                          <select
+                            class="form-select w-25"
+                            v-model="selectedClientRate[`${day}-day`]"
+                          >
                             <option value="1">1</option>
                             <option value="5">5</option>
                             <option value="10">10</option>
@@ -173,7 +178,10 @@
                         <div class="col-4">
                           <label class="form-label">Private Limited</label>
 
-                          <select class="form-select w-25" v-model="private_limited_day">
+                          <select
+                            class="form-select w-25"
+                            v-model="selectedPrivateLimited[`${day}-day`]"
+                          >
                             <option value="1">1</option>
                             <option value="5">5</option>
                             <option value="10">10</option>
@@ -186,7 +194,10 @@
                         <div class="col-4">
                           <label class="form-label">Self Employed</label>
 
-                          <select v-model="self_employed_day">
+                          <select
+                            v-model="selectedSelfEmployee[`${day}-day`]"
+                            class="form-select w-25"
+                          >
                             <option value="1">1</option>
                             <option value="5">5</option>
                             <option value="10">10</option>
@@ -197,7 +208,10 @@
 
                         <div class="col-4">
                           <label class="form-label">Umbrella</label>
-                          <select class="form-select w-25" v-model="umbrella_day">
+                          <select
+                            class="form-select w-25"
+                            v-model="selectedUmbrella[`${day}-day`]"
+                          >
                             <option value="1">1</option>
                             <option value="5">5</option>
                             <option value="10">10</option>
@@ -208,7 +222,10 @@
 
                         <div class="col-4">
                           <label class="form-label">PAYE</label>
-                          <select class="form-select w-25" v-model="paye">
+                          <select
+                            class="form-select w-25"
+                            v-model="selectedPaye[`${day}-day`]"
+                          >
                             <option value="1">1</option>
                             <option value="5">5</option>
                             <option value="10">10</option>
@@ -224,6 +241,7 @@
                           <label class="form-label">Shift</label>
 
                           <select
+                            class="form-select w-25"
                             v-model="night_shift_id"
                             @change="handleShiftChange('night')"
                           >
@@ -285,19 +303,23 @@
                       <div class="col-4 d-flex gap-2">
                         <div class="col-4">
                           <label class="form-label">Rate Type</label>
-                          <select>
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
+                          <select
+                            v-model="this.selectedRateType[`${day}-night`]"
+                            class="form-select w-25"
+                          >
+                            <option value="Hourly">Hourly</option>
+                            <option value="Monthly">Monthly</option>
+                            <option value="Yearly">Yearly</option>
                           </select>
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">Client Rate</label>
 
-                          <select class="form-select w-25" v-model="client_rate">
+                          <select
+                            class="form-select w-25"
+                            v-model="selectedClientRate[`${day}-night`]"
+                          >
                             <option value="1">1</option>
                             <option value="5">5</option>
                             <option value="10">10</option>
@@ -311,7 +333,7 @@
 
                           <select
                             class="form-select w-25"
-                            v-model="private_limited_night"
+                            v-model="selectedPrivateLimited[`${day}-night`]"
                           >
                             <option value="1">1</option>
                             <option value="5">5</option>
@@ -325,7 +347,10 @@
                         <div class="col-4">
                           <label class="form-label">Self Employed</label>
 
-                          <select v-model="self_employed_night">
+                          <select
+                            v-model="selectedSelfEmployee[`${day}-night`]"
+                            class="form-select w-25"
+                          >
                             <option value="1">1</option>
                             <option value="5">5</option>
                             <option value="10">10</option>
@@ -337,7 +362,10 @@
                         <div class="col-4">
                           <label class="form-label">Umbrella</label>
 
-                          <select class="form-select w-25" v-model="umbrella_night">
+                          <select
+                            class="form-select w-25"
+                            v-model="selectedUmbrella[`${day}-night`]"
+                          >
                             <option value="1">1</option>
                             <option value="5">5</option>
                             <option value="10">10</option>
@@ -348,7 +376,10 @@
 
                         <div class="col-4">
                           <label class="form-label">PAYE</label>
-                          <select class="form-select w-25" v-model="paye">
+                          <select
+                            class="form-select w-25"
+                            v-model="selectedPaye[`${day}-night`]"
+                          >
                             <option value="1">1</option>
                             <option value="5">5</option>
                             <option value="10">10</option>
@@ -367,6 +398,7 @@
 
                           <select
                             v-model="dayShiftId"
+                            class="form-select w-25"
                             @change="handleShiftChange('holiday_day_shift')"
                           >
                             <option
@@ -421,19 +453,23 @@
                         <div class="col-4">
                           <label class="form-label">Rate Type</label>
 
-                          <select>
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
+                          <select
+                            v-model="selectedRateType[`${day}-holiday`]"
+                            class="form-select w-25"
+                          >
+                            <option value="Hourly">Hourly</option>
+                            <option value="Monthly">Monthly</option>
+                            <option value="Yearly">Yearly</option>
                           </select>
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">Client Rate</label>
 
-                          <select class="form-select w-25" v-model="client_rate">
+                          <select
+                            class="form-select w-25"
+                            v-model="selectedClientRate[`${day}-holiday`]"
+                          >
                             <option value="1">1</option>
                             <option value="5">5</option>
                             <option value="10">10</option>
@@ -447,7 +483,7 @@
 
                           <select
                             class="form-select w-25"
-                            v-model="private_limited_holiday_day"
+                            v-model="selectedPrivateLimited[`${day}-holiday`]"
                           >
                             <option value="1">1</option>
                             <option value="5">5</option>
@@ -461,7 +497,10 @@
                         <div class="col-4">
                           <label class="form-label">Self Employed</label>
 
-                          <select v-model="self_employed_holiday_day">
+                          <select
+                            v-model="selectedSelfEmployee[`${day}-holiday`]"
+                            class="form-select w-25"
+                          >
                             <option value="1">1</option>
                             <option value="5">5</option>
                             <option value="10">10</option>
@@ -472,7 +511,10 @@
 
                         <div class="col-4">
                           <label class="form-label">Umbrella</label>
-                          <select class="form-select w-25" v-model="umbrella_holiday_day">
+                          <select
+                            class="form-select w-25"
+                            v-model="selectedUmbrella[`${day}-holiday`]"
+                          >
                             <option value="1">1</option>
                             <option value="5">5</option>
                             <option value="10">10</option>
@@ -483,7 +525,10 @@
 
                         <div class="col-4">
                           <label class="form-label">PAYE</label>
-                          <select class="form-select w-25" v-model="paye">
+                          <select
+                            class="form-select w-25"
+                            v-model="selectedPaye[`${day}-holiday`]"
+                          >
                             <option value="1">1</option>
                             <option value="5">5</option>
                             <option value="10">10</option>
@@ -500,6 +545,7 @@
 
                           <select
                             v-model="nightShiftId"
+                            class="form-select w-25"
                             @change="handleShiftChange('holiday_night_shift')"
                           >
                             <option
@@ -554,19 +600,23 @@
                       <div class="col-4 d-flex gap-2">
                         <div class="col-4">
                           <label class="form-label">Rate Type</label>
-                          <select>
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
+                          <select
+                            v-model="selectedRateType[`${day}-holiday_night`]"
+                            class="form-select w-25"
+                          >
+                            <option value="Hourly">Hourly</option>
+                            <option value="Monthly">Monthly</option>
+                            <option value="Yearly">Yearly</option>
                           </select>
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">Client Rate</label>
 
-                          <select class="form-select w-25" v-model="client_rate">
+                          <select
+                            class="form-select w-25"
+                            v-model="selectedClientRate[`${day}-holiday_night`]"
+                          >
                             <option value="1">1</option>
                             <option value="5">5</option>
                             <option value="10">10</option>
@@ -580,7 +630,7 @@
 
                           <select
                             class="form-select w-25"
-                            v-model="private_limited_holiday_night"
+                            v-model="selectedPrivateLimited[`${day}-holiday_night`]"
                           >
                             <option value="1">1</option>
                             <option value="5">5</option>
@@ -594,7 +644,10 @@
                         <div class="col-4">
                           <label class="form-label">Self Employed</label>
 
-                          <select v-model="self_employed_holiday_night">
+                          <select
+                            v-model="selectedSelfEmployee[`${day}-holiday_night`]"
+                            class="form-select w-25"
+                          >
                             <option value="1">1</option>
                             <option value="5">5</option>
                             <option value="10">10</option>
@@ -608,7 +661,7 @@
 
                           <select
                             class="form-select w-25"
-                            v-model="umbrella_holiday_night"
+                            v-model="selectedUmbrella[`${day}-holiday_night`]"
                           >
                             <option value="1">1</option>
                             <option value="5">5</option>
@@ -620,7 +673,10 @@
 
                         <div class="col-4">
                           <label class="form-label">PAYE</label>
-                          <select class="form-select w-25" v-model="paye">
+                          <select
+                            class="form-select w-25"
+                            v-model="selectedPaye[`${day}-holiday_night`]"
+                          >
                             <option value="1">1</option>
                             <option value="5">5</option>
                             <option value="10">10</option>
@@ -646,7 +702,9 @@
               Cancel
             </button>
             <button
+              :disabled="!isFormValid"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              v-bind:data-bs-dismiss="isFormValid ? 'modal' : null"
               v-on:click="addVacancyMethod()"
             >
               Add Rate
@@ -680,6 +738,8 @@ export default {
       day_shift_id: null,
       night_shift_id: null,
       client_rate: "",
+      rate_type: "",
+
       self_employed: "",
       private_limited: "",
 
@@ -687,31 +747,15 @@ export default {
       umbrella: "",
       paye: "",
       shift_type: "",
-      dayShiftId: "",
-      nightShiftId: "",
+      dayShiftId: null,
+      nightShiftId: null,
       filteredShiftsTime: [],
       filteredShiftsTimeNight: [],
       validationStartTime: true,
       filteredShiftsTimeHoliday: [],
       filteredShiftsTimeHolidayNight: [],
       validationEndTime: true,
-      client_rate_day: null,
-      client_rate_night: null,
-      client_rate_holiday_day: null,
-      client_rate_holiday_night: null,
 
-      private_limited_day: null,
-      private_limited_night: null,
-      private_limited_holiday_day: null,
-      private_limited_holiday_night: null,
-      self_employed_day: null,
-      self_employed_night: null,
-      self_employed_holiday_day: null,
-      self_employed_holiday_night: null,
-      umbrella_day: null,
-      umbrella_night: null,
-      umbrella_holiday_day: null,
-      umbrella_holiday_night: null,
       days: [
         "Monday",
         "Tuesday",
@@ -721,14 +765,18 @@ export default {
         "Saturday",
         "Sunday",
       ],
-
-      clientRateModels: [{ value: null }, { value: null }],
+      selectedClientRate: {},
+      selectedRateType: {},
+      selectedPrivateLimited: {},
+      selectedSelfEmployee: {},
+      selectedUmbrella: {},
+      selectedPaye: {},
       showDayShift: true,
       showNightShift: false,
       site_id: null,
-      client_id: "",
+      client_id: null,
       clientData: [],
-      job_id: "",
+      job_id: null,
       options: [],
       businessUnit: [],
 
@@ -743,52 +791,56 @@ export default {
   components: { SuccessAlert },
   computed: {
     isFormValid() {
-      return (
-        this.site_id !== "" &&
-        this.client_id !== "" &&
-        this.job_id !== "" &&
-        this.day_shift_id !== null &&
-        this.night_shift_id !== null &&
-        this.client_rate !== "" &&
-        this.self_employed !== "" &&
-        this.private_limited !== "" &&
-        this.day_start_time !== null &&
-        this.day_end_time !== null &&
-        this.night_start_time !== null &&
-        this.night_end_time !== null &&
-        this.umbrella !== null &&
-        this.paye !== null
-        // this.client_rate !== null &&
-        // this.private_limited !== null &&
-        // this.self_employed !== null &&
-        // this.client_rate_day !== null &&
-        // this.client_rate_night !== null &&
-        // this.client_rate_holiday_day !== null &&
-        // this.client_rate_holiday_night !== null &&
-        // this.private_limited_day !== null &&
-        // this.private_limited_night !== null &&
-        // this.private_limited_holiday_day !== null &&
-        // this.private_limited_holiday_night !== null &&
-        // this.self_employed_day !== null &&
-        // this.self_employed_night !== null &&
-        // this.self_employed_holiday_day !== null &&
-        // this.self_employed_holiday_night !== null &&
-        // this.umbrella_day !== null &&
-        // this.umbrella_night !== null &&
-        // this.umbrella_holiday_day !== null &&
-        // this.umbrella_holiday_night !== null &&
-        // this.holiday_start_time !== null &&
-        // this.holiday_end_time !== null &&
-        // this.holiday_night_start_time !== null &&
-        // this.holiday_night_end_time !== null
+      const site_id_valid = this.site_id !== null;
+      const job_id_valid = this.job_id !== null;
 
-        // this.validationBreak
+      const night_shift_id_valid = this.night_shift_id !== null;
+      const client_id_valid = this.client_id !== null;
+      const night_start_time_valid = this.night_start_time !== "";
+      const night_end_time_valid = this.night_end_time !== "";
+      const selectedClientRate_valid = this.areAllFieldsFilled(this.selectedClientRate);
+      const selectedRateType_valid = this.areAllFieldsFilled(this.selectedRateType);
+      const selectedPrivateLimited_valid = this.areAllFieldsFilled(
+        this.selectedPrivateLimited
       );
-    },
+      const selectedSelfEmployee_valid = this.areAllFieldsFilled(
+        this.selectedSelfEmployee
+      );
+      const selectedUmbrella_valid = this.areAllFieldsFilled(this.selectedUmbrella);
+      const selectedPaye_valid = this.areAllFieldsFilled(this.selectedPaye);
+      const holiday_start_time_valid = this.holiday_start_time !== "";
+      const holiday_end_time_valid = this.holiday_end_time !== "";
+      const holiday_night_start_time_valid = this.holiday_night_start_time !== "";
+      const holiday_night_end_time_valid = this.holiday_night_end_time !== "";
+      const day_start_time_valid = this.day_start_time !== "";
+      const day_end_time_valid = this.day_end_time !== "";
+      const dayShiftId_valid = this.dayShiftId !== null;
+      const nightShiftId_valid = this.nightShiftId !== null;
+      const day_shift_id_valid = this.day_shift_id !== null;
 
-    selectedOptionText() {
-      const jobs_id = this.options.find((option) => option.id === this.jobs_id);
-      return jobs_id ? jobs_id.name : "";
+      const allFieldsFilled =
+        site_id_valid &&
+        job_id_valid &&
+        night_shift_id_valid &&
+        client_id_valid &&
+        night_start_time_valid &&
+        night_end_time_valid &&
+        selectedClientRate_valid &&
+        selectedRateType_valid &&
+        selectedPrivateLimited_valid &&
+        selectedSelfEmployee_valid &&
+        selectedUmbrella_valid &&
+        selectedPaye_valid &&
+        holiday_start_time_valid &&
+        holiday_end_time_valid &&
+        holiday_night_start_time_valid &&
+        holiday_night_end_time_valid &&
+        day_start_time_valid &&
+        day_end_time_valid &&
+        dayShiftId_valid &&
+        nightShiftId_valid &&
+        day_shift_id_valid;
+      return allFieldsFilled;
     },
 
     selectBusinessUnit() {
@@ -827,11 +879,18 @@ export default {
     },
   },
   watch: {
-    client_rate(newVal) {
-      // console.log("client_rate changed to:", newVal);
+    isFormValid(newValue) {
+      // console.log("isFormValid:", newValue);
     },
   },
   methods: {
+    areAllFieldsFilled(object) {
+      const keys = Object.keys(object);
+      const allFieldsFilled =
+        keys.length === 14 && keys.every((key) => object[key] !== "");
+
+      return allFieldsFilled;
+    },
     validateStartTime(newValue) {
       if (!newValue) {
         this.validationStartTime = false;
@@ -921,27 +980,55 @@ export default {
     async addVacancyMethod() {
       const rateAndRules = [];
 
-      this.days.forEach((day) => {
+      for (let i = 0; i < this.days.length; i++) {
+        const day = this.days[i];
+        const dayClientRate = this.selectedClientRate[`${day}-day`] || "";
+        const nightClientRate = this.selectedClientRate[`${day}-night`] || "";
+        const holidayNightRate = this.selectedClientRate[`${day}-holiday_night`] || "";
+        const holidayDayRate = this.selectedClientRate[`${day}-holiday`] || "";
+        const dayRateType = this.selectedRateType[`${day}-day`] || "";
+        const nightRateType = this.selectedRateType[`${day}-night`] || "";
+        const holidayNightRateType = this.selectedRateType[`${day}-holiday_night`] || "";
+        const holidayDayRateType = this.selectedRateType[`${day}-holiday`] || "";
+        const dayPrivateLimited = this.selectedPrivateLimited[`${day}-day`] || "";
+        const nightPrivateLimited = this.selectedPrivateLimited[`${day}-night`] || "";
+        const holidayNightPrivateLimited =
+          this.selectedPrivateLimited[`${day}-holiday_night`] || "";
+        const holidayDayPrivateLimited =
+          this.selectedPrivateLimited[`${day}-holiday`] || "";
+        const daySelfEmployee = this.selectedSelfEmployee[`${day}-day`] || "";
+        const nightSelfEmployee = this.selectedSelfEmployee[`${day}-night`] || "";
+        const holidayNightSelfEmployee =
+          this.selectedSelfEmployee[`${day}-holiday_night`] || "";
+        const holidayDaySelfEmployee = this.selectedSelfEmployee[`${day}-holiday`] || "";
+        const dayUmbrella = this.selectedUmbrella[`${day}-day`] || "";
+        const nightUmbrella = this.selectedUmbrella[`${day}-night`] || "";
+        const holidayNightUmbrella = this.selectedUmbrella[`${day}-holiday_night`] || "";
+        const holidayDayUmbrella = this.selectedUmbrella[`${day}-holiday`] || "";
+        const dayPaye = this.selectedPaye[`${day}-day`] || "";
+        const nightPaye = this.selectedPaye[`${day}-night`] || "";
+        const holidayNightPaye = this.selectedPaye[`${day}-holiday_night`] || "";
+        const holidayDayPaye = this.selectedPaye[`${day}-holiday`] || "";
+
         let dayShiftEntry = {};
         let nightShiftEntry = {};
 
         if (day === "Saturday" || day === "Sunday") {
-          this.dayShiftId = day === "Saturday" ? 16 : 16;
-          this.nightShiftId = day === "Saturday" ? 13 : 13;
-
           dayShiftEntry = {
             site_id: this.site_id,
             job_id: this.job_id,
             day: day,
-            client_rate: this.client_rate || "",
-            self_employed: this.shifts?.self_employed_holiday_day || "",
-            private_limited: this.shifts?.private_limited_holiday_day || "",
-            umbrella: this.shifts?.umbrella_holiday_day || "",
+            client_rate: holidayDayRate || "",
+            self_employed: holidayDaySelfEmployee || "",
+            private_limited: holidayDayPrivateLimited || "",
+            umbrella: holidayDayUmbrella || "",
+            rate_type: holidayDayRateType || "",
+            paye: holidayDayPaye || "",
             site_shift_id: this.dayShiftId,
             client_id: this.client_id,
             start_time: this.holiday_start_time,
             end_time: this.holiday_end_time,
-            paye: this.paye,
+
             holiday_start_time: this.holiday_start_time,
             holiday_end_time: this.holiday_end_time,
             holiday_night_start_time: this.holiday_night_start_time,
@@ -952,15 +1039,17 @@ export default {
             site_id: this.site_id,
             job_id: this.job_id,
             day: day,
-            client_rate: this.client_rate || "",
-            self_employed: this.shifts?.self_employed_holiday_night || "",
-            private_limited: this.shifts?.private_limited_holiday_night || "",
-            umbrella: this.shifts?.umbrella_holiday_night || "",
+            client_rate: holidayNightRate || "",
+            self_employed: holidayNightSelfEmployee || "",
+            private_limited: holidayNightPrivateLimited || "",
+            umbrella: holidayNightUmbrella || "",
+            rate_type: holidayNightRateType || "",
+            paye: holidayNightPaye || "",
             site_shift_id: this.nightShiftId,
             client_id: this.client_id,
             start_time: this.night_start_time,
             end_time: this.night_end_time,
-            paye: this.paye,
+
             holiday_start_time: this.holiday_start_time,
             holiday_end_time: this.holiday_end_time,
             holiday_night_start_time: this.holiday_night_start_time,
@@ -971,15 +1060,17 @@ export default {
             site_id: this.site_id,
             job_id: this.job_id,
             day: day,
-            client_rate: this.client_rate || "",
-            self_employed: this.shifts?.self_employed_day || "",
-            private_limited: this.shifts?.private_limited_day || "",
-            umbrella: this.shifts?.umbrella_day || "",
+            client_rate: dayClientRate || "",
+            self_employed: daySelfEmployee || "",
+            private_limited: dayPrivateLimited || "",
+            umbrella: dayUmbrella || "",
+            rate_type: dayRateType || "",
+            paye: dayPaye || "",
             site_shift_id: this.day_shift_id,
             client_id: this.client_id,
             start_time: this.day_start_time,
             end_time: this.day_end_time,
-            paye: this.paye,
+
             holiday_start_time: this.holiday_start_time,
             holiday_end_time: this.holiday_end_time,
             holiday_night_start_time: this.holiday_night_start_time,
@@ -990,15 +1081,18 @@ export default {
             site_id: this.site_id,
             job_id: this.job_id,
             day: day,
-            client_rate_night: this.client_rate || "",
-            self_employed: this.shifts?.self_employed_night || "",
-            private_limited: this.shifts?.private_limited_night || "",
-            umbrella: this.shifts?.umbrella_night || "",
+            client_rate: nightClientRate || "",
+            self_employed: nightSelfEmployee || "",
+            private_limited: nightPrivateLimited || "",
+            umbrella: nightUmbrella || "",
+            rate_type: nightRateType || "",
+            paye: nightPaye || "",
+
             site_shift_id: this.night_shift_id,
             client_id: this.client_id,
             start_time: this.night_start_time,
             end_time: this.night_end_time,
-            paye: this.paye,
+
             holiday_start_time: this.holiday_start_time,
             holiday_end_time: this.holiday_end_time,
             holiday_night_start_time: this.holiday_night_start_time,
@@ -1007,8 +1101,10 @@ export default {
         }
 
         rateAndRules.push(dayShiftEntry, nightShiftEntry);
-      });
+      }
+
       // console.log("Rate and Rules:", rateAndRules);
+
       const data = { rate_and_rules: rateAndRules };
 
       try {
@@ -1028,12 +1124,14 @@ export default {
             // this.clearError();
           }, 100);
           this.$emit("UpdatedRateRules");
-          // alert("Successful Shift added");
-          const message = "Rate and Rules Added Successful ";
+          const message = "Rate and Rules Added Successfully";
           this.$refs.successAlert.showSuccess(message);
         } else {
+          // Handle response errors
         }
-      } catch (error) {}
+      } catch (error) {
+        // Handle fetch errors
+      }
     },
     async getJobTitleMethod() {
       try {
@@ -1068,7 +1166,7 @@ export default {
         }
       } else if (shiftType === "holiday_day_shift") {
         const selectedShift = this.filteredShiftsTimeHoliday.find(
-          (shift) => shift.id === this.night_shift_id
+          (shift) => shift.id === this.dayShiftId
         );
         if (selectedShift) {
           this.start_time = selectedShift.start_time;
@@ -1076,7 +1174,7 @@ export default {
         }
       } else if (shiftType === "holiday_night_shift") {
         const selectedShift = this.filteredShiftsTimeHolidayNight.find(
-          (shift) => shift.id === this.night_shift_id
+          (shift) => shift.id === this.nightShiftId
         );
         if (selectedShift) {
           this.start_time = selectedShift.start_time;
@@ -1098,6 +1196,7 @@ export default {
         }
       }
     },
+
     async getBusinessUnitMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/activated_site`);
@@ -1164,41 +1263,37 @@ export default {
       return `${formattedHours}:${formattedMinutes} ${amPm}`;
     },
 
-    // clearError() {
-    //   this.validationSelectedOptionText = true;
-    //   this.validationSelectedBusinessUnit = true;
-    //   this.validationSelectedClient = true;
-    //   this.validationNotesText = true;
-    //   this.validationShift = true;
-    //   (this.validationStartTime = true),
-    //     (this.validationEndTime = true),
-    //     (this.validationStaffRequired = true),
-    //     (this.validationDateType = true),
-    //     (this.validationBreak = true);
-    // },
     clearFields() {
-      this.site_id = "";
-      this.client_id = "";
-      this.job_id = "";
-
-      this.site_shift_id = "";
-      this.start_time = "";
-      this.end_time = "";
-
-      (this.options = []),
-        (this.businessUnit = []),
-        (this.shiftsTime = []),
-        (this.selectedDate = null);
+      (this.site_id = ""),
+        (this.job_id = ""),
+        (this.night_shift_id = ""),
+        (this.client_id = ""),
+        (this.night_start_time = ""),
+        (this.night_end_time = ""),
+        (this.selectedClientRate = {});
+      this.selectedRateType = {};
+      this.selectedPrivateLimited = {};
+      this.selectedSelfEmployee = {};
+      this.selectedUmbrella = {};
+      this.selectedPaye = {};
+      (this.holiday_start_time = ""),
+        (this.holiday_end_time = ""),
+        (this.holiday_night_start_time = ""),
+        (this.holiday_night_end_time = ""),
+        (this.day_start_time = ""),
+        (this.day_end_time = ""),
+        (this.dayShiftId = ""),
+        (this.nightShiftId = ""),
+        (this.day_shift_id = "");
     },
   },
-  mounted() {
-    // this.getBusinessUnitMethod();
-    // this.getJobTitleMethod();
-    this.getClientMethod();
-    // this.getSiteAccordingClientMethod();
+  created() {
     this.getTimeShift();
+  },
+  mounted() {
+    this.getClientMethod();
     this.isValidForm = this.isFormValid;
-    // this.clearError();
+    this.getTimeShift();
   },
 };
 </script>

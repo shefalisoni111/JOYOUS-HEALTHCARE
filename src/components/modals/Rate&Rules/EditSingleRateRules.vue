@@ -13,6 +13,7 @@
             <h5 class="modal-title" id="editSingleRateRules">Edit Rate and Rules</h5>
           </div>
           <div class="modal-body mx-3">
+            <!-- {{ console.log(fetchRateRulesData) }} -->
             <div class="row g-3 align-items-center">
               <form>
                 <div class="mb-3 d-flex justify-content-between gap-2 me-3">
@@ -23,6 +24,8 @@
                       v-model="fetchRateRulesData.client_id"
                       id="selectClients"
                       @change="onClientSelect"
+                      :disabled="true"
+                      class="text-black"
                     >
                       <option
                         v-for="option in clientData"
@@ -43,6 +46,8 @@
                       v-model="fetchRateRulesData.site_id"
                       id="selectBusinessUnit"
                       @change="onSiteSelect"
+                      :disabled="true"
+                      class="text-black"
                     >
                       <option
                         v-for="option in businessUnit"
@@ -58,7 +63,12 @@
                   <div class="col-4">
                     <label class="form-label" for="selectJobTitle">Jobs</label>
 
-                    <select v-model="fetchRateRulesData.job_id" id="selectJobTitle">
+                    <select
+                      v-model="fetchRateRulesData.job_id"
+                      id="selectJobTitle"
+                      :disabled="true"
+                      class="text-black"
+                    >
                       <option
                         v-for="option in options"
                         :key="option.id"
@@ -85,19 +95,40 @@
                     <div class="col-3 d-flex gap-2">
                       <div class="col-4">
                         <label class="form-label">Shift</label>
-
-                        <select
-                          v-model="fetchRateRulesData.day_shift_id"
-                          @change="handleShiftChange('day')"
+                        <template
+                          v-if="
+                            fetchRateRulesData.day !== 'Saturday' &&
+                            fetchRateRulesData.day !== 'Sunday'
+                          "
                         >
-                          <option
-                            v-for="option in filteredShiftsTime"
-                            :key="option.id"
-                            :value="option.id"
+                          <select
+                            v-model="fetchRateRulesData.site_shift_id"
+                            :disabled="true"
+                            class="form-select w-25 text-black"
                           >
-                            {{ option.shift_name }}
-                          </option>
-                        </select>
+                            <option
+                              v-for="option in shiftsTime"
+                              :key="option.id"
+                              :value="option.id"
+                            >
+                              {{ option.shift_name }}
+                            </option>
+                          </select>
+                        </template>
+                        <template v-else>
+                          <select
+                            v-model="fetchRateRulesData.site_shift_id"
+                            :disabled="true"
+                          >
+                            <option
+                              v-for="option in shiftsTime"
+                              :key="option.id"
+                              :value="option.id"
+                            >
+                              {{ option.shift_name }}
+                            </option>
+                          </select>
+                        </template>
                       </div>
 
                       <div class="col-4">
@@ -108,16 +139,16 @@
                         <select
                           id="selectShiftStart"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData.day_start_time"
+                          v-model="fetchRateRulesData.start_time"
+                          :disabled="true"
                           @change="updateStartTime"
                         >
                           <option
-                            v-for="shift in filteredShiftsTime"
-                            :key="shift.id"
-                            :value="shift.start_time"
-                            :disabled="shift.id !== day_shift_id"
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
                           >
-                            {{ shift.start_time }}
+                            {{ formatTime(hour) }}
                           </option>
                         </select>
                       </div>
@@ -128,16 +159,16 @@
                         <select
                           id="selectShiftEnd"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData.day_end_time"
+                          v-model="fetchRateRulesData.end_time"
+                          :disabled="true"
                           @change="updateEndTime"
                         >
                           <option
-                            v-for="shift in filteredShiftsTime"
-                            :key="shift.id"
-                            :value="shift.end_time"
-                            :disabled="shift.id !== day_shift_id"
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
                           >
-                            {{ shift.end_time }}
+                            {{ formatTime(hour) }}
                           </option>
                         </select>
                       </div>
@@ -146,12 +177,13 @@
                       <div class="col-4">
                         <label class="form-label">Rate Type</label>
 
-                        <select>
-                          <option>1</option>
-                          <option>5</option>
-                          <option>10</option>
-                          <option>15</option>
-                          <option>20</option>
+                        <select
+                          v-model="fetchRateRulesData.rate_type"
+                          class="form-select w-25"
+                        >
+                          <option value="Hourly">Hourly</option>
+                          <option value="Monthly">Monthly</option>
+                          <option value="Yearly">Yearly</option>
                         </select>
                       </div>
 
@@ -189,7 +221,10 @@
                       <div class="col-4">
                         <label class="form-label">Self Employed</label>
 
-                        <select v-model="fetchRateRulesData.self_employed">
+                        <select
+                          v-model="fetchRateRulesData.self_employed"
+                          class="form-select w-25"
+                        >
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -268,17 +303,19 @@ export default {
         id: "",
         start_time: null,
         end_time: null,
-        day_start_time: null,
-        day_end_time: null,
-        night_start_time: null,
-        night_end_time: null,
-        holiday_start_time: null,
-        holiday_end_time: null,
-        holiday_night_start_time: null,
-        holiday_night_end_time: null,
-        day_shift_id: null,
+        // day_start_time: null,
+        // day_end_time: null,
+        // night_start_time: null,
+        // night_end_time: null,
+        // holiday_start_time: null,
+        // holiday_end_time: null,
+        // holiday_night_start_time: null,
+        // holiday_night_end_time: null,
+        // day_shift_id: null,
+        site_shift_id: "",
         night_shift_id: null,
         client_rate: "",
+        rate_type: "",
         self_employed: "",
         private_limited: "",
         day: "",
@@ -292,13 +329,7 @@ export default {
         validationEndTime: true,
       },
       businessUnit: [],
-      filteredShiftsTimeHolidayNight: [],
-      filteredShiftsTimeHoliday: [],
-      filteredShiftsTime: [],
-      filteredShiftsTimeNight: [],
 
-      filteredShiftsTime: [],
-      filteredShiftsTimeNight: [],
       shiftsTime: [],
       clientData: [],
       options: [],
@@ -328,8 +359,9 @@ export default {
       return client ? client.first_name : "";
     },
     selectShifts() {
+      this.shiftsTime();
       const shift = this.shiftsTime.find(
-        (option) => option.id === this.fetchRateRulesData.site_id
+        (option) => option.id === this.fetchRateRulesData.site_shift_id
       );
       return shift ? shift.shift_name : "";
     },
@@ -340,61 +372,99 @@ export default {
       return job_title ? job_title.name : "";
     },
     selectShiftStart() {
-      const shift = this.filteredShiftsTime.find(
-        (shift) => shift.id === this.day_shift_id
+      this.shiftsTime();
+      const shift = this.shiftsTime.find(
+        (shift) => shift.id === this.fetchRateRulesData.site_shift_id
       );
       return shift ? shift.start_time : "";
     },
     selectShiftEnd() {
-      const shift = this.filteredShiftsTime.find(
-        (shift) => shift.id === this.day_shift_id
+      this.shiftsTime();
+      const shift = this.shiftsTime.find(
+        (shift) => shift.id === this.fetchRateRulesData.site_shift_id
       );
       return shift ? shift.end_time : "";
     },
     selectShiftStartNight() {
-      const shift = this.filteredShiftsTimeNight.find(
-        (shift) => shift.id === this.night_shift_id
+      this.shiftsTime();
+      const shift = this.shiftsTime.find(
+        (shift) => shift.id === this.fetchRateRulesData.site_shift_id
       );
       return shift ? shift.start_time : "";
     },
     selectShiftEndNight() {
-      const shift = this.filteredShiftsTimeNight.find(
-        (shift) => shift.id === this.night_shift_id
+      this.shiftsTime();
+      const shift = this.shiftsTime.find(
+        (shift) => shift.id === this.fetchRateRulesData.site_shift_id
       );
       return shift ? shift.end_time : "";
     },
   },
   methods: {
+    async onSiteSelect() {
+      const selectedSiteId = this.site_id;
+      await this.getTimeShift(selectedSiteId);
+      const dayShift = this.getTimeShift.find(
+        (shift) => shift.shift_name.toLowerCase() === "day_shift"
+      );
+      if (dayShift) {
+        this.fetchRateRulesData.site_shift_id = dayShift.id;
+        this.fetchRateRulesData.start_time = dayShift.start_time;
+        this.fetchRateRulesData.end_time = dayShift.end_time;
+      }
+
+      const nightShift = this.getTimeShift.find(
+        (shift) => shift.shift_name.toLowerCase() === "night_shift"
+      );
+      if (nightShift) {
+        this.fetchRateRulesData.site_shift_id = nightShift.id;
+        this.fetchRateRulesData.start_time = nightShift.start_time;
+        this.fetchRateRulesData.end_time = nightShift.end_time;
+      }
+
+      const holidayDayShift = this.getTimeShift.find(
+        (shift) => shift.shift_name.toLowerCase() === "holiday_day_shift"
+      );
+      if (holidayDayShift) {
+        this.fetchRateRulesData.site_shift_id = holidayDayShift.id;
+        this.fetchRateRulesData.start_time = holidayDayShift.start_time;
+        this.fetchRateRulesData.end_time = holidayDayShift.end_time;
+      }
+
+      const holidayNightShift = this.getTimeShift.find(
+        (shift) => shift.shift_name.toLowerCase() === "holiday_night_shift"
+      );
+      if (holidayNightShift) {
+        this.fetchRateRulesData.site_shift_id = holidayNightShift.id;
+        this.fetchRateRulesData.start_time = holidayNightShift.start_time;
+        this.fetchRateRulesData.end_time = holidayNightShift.end_time;
+      }
+    },
     onShiftSelect() {
-      const selectedShift = this.shiftsTime.find(
+      const selectedShift = this.filteredShiftsTime.find(
         (shift) => shift.id === this.fetchRateRulesData.site_shift_id
       );
       if (selectedShift) {
-        this.fetchRateRulesData.start_time = selectedShift.start_time;
-        this.fetchRateRulesData.end_time = selectedShift.end_time;
+        this.fetchRateRulesData.shift_type = selectedShift.shift_type;
       }
     },
     formatTime(hour) {
-      if (hour < 12) {
-        return `${String(hour).padStart(2, "0")}:00 AM`;
-      } else if (hour === 12) {
-        return `${String(hour).padStart(2, "0")}:00 PM`;
-      } else if (hour === 24) {
-        return `00:00`;
-      } else if (hour > 12 && hour < 24) {
-        return `${String(hour).padStart(2, "0")}:00 PM`;
-      } else {
-        return `${String(hour - 12).padStart(2, "0")}:00 PM`;
+      if (typeof hour !== "number" || hour < 0 || hour >= 24) {
+        return "Invalid Time";
       }
+      const period = hour >= 12 ? "PM" : "AM";
+      const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+      return `${String(formattedHour).padStart(2, "0")}:00 ${period}`;
+    },
+    formatFrom24HourTo12Hour(timeString) {
+      const [hours, minutes] = timeString.split(":");
+      const hour = parseInt(hours);
+      const period = hour >= 12 ? "PM" : "AM";
+      const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+      return `${String(formattedHour).padStart(2, "0")}:${minutes} ${period}`;
     },
     formatTimes(hour) {
-      if (hour < 12) {
-        return `${String(hour).padStart(2, "0")}:00 AM`;
-      } else if (hour === 12) {
-        return `${String(hour).padStart(2, "0")}:00 PM`;
-      } else if (hour === 24) {
-        return `00:00`;
-      }
+      return this.formatTime(hour);
     },
     formatBreakTime(minute) {
       const hours = Math.floor(minute / 60);
@@ -409,9 +479,6 @@ export default {
       }
 
       return formattedTime;
-    },
-    onSiteSelect() {
-      this.getTimeShift();
     },
 
     async fetchRateRulesDataMethod(id) {
@@ -432,28 +499,42 @@ export default {
             client_id: rateAndRules.client_id,
             site: rateAndRules.site,
             job_id: rateAndRules.job_id,
+            site_shift_id: rateAndRules.site_shift_id,
             day: rateAndRules.day,
+            rate_type: rateAndRules.rate_type,
             client_rate: rateAndRules.client_rate,
             self_employed: rateAndRules.self_employed,
             private_limited: rateAndRules.private_limited,
-            start_time: rateAndRules.start_time,
-            end_time: rateAndRules.end_time,
+            start_time: this.formatFrom24HourTo12Hour(rateAndRules.start_time),
+            end_time: this.formatFrom24HourTo12Hour(rateAndRules.end_time),
             paye: rateAndRules.paye,
             umbrella: rateAndRules.umbrella,
             site_id: rateAndRules.site_id,
             shift_type: rateAndRules.shift_type,
             // Add other necessary fields here
           };
+          this.getTimeShift(rateAndRules.site_id);
         }
       } catch (error) {}
     },
-
+    convertTo24Hour(timeString) {
+      const [time, period] = timeString.split(" ");
+      let [hours, minutes] = time.split(":");
+      hours = parseInt(hours);
+      if (period === "PM" && hours !== 12) {
+        hours += 12;
+      }
+      if (period === "AM" && hours === 12) {
+        hours = 0;
+      }
+      return `${String(hours).padStart(2, "0")}:${minutes}:00`;
+    },
     async updateSingleRate() {
       const token = localStorage.getItem("token");
 
       try {
         const response = await axios.put(
-          `${VITE_API_URL}/update_multiple_rates/${this.fetchRateRulesData.id}`,
+          `${VITE_API_URL}/rate_and_rules/${this.fetchRateRulesData.id}`,
           {
             id: this.fetchRateRulesData.id,
             site_id: this.fetchRateRulesData.site_id,
@@ -463,12 +544,14 @@ export default {
             day_shift_id: this.fetchRateRulesData.day_shift_id,
             night_shift_id: this.fetchRateRulesData.night_shift_id,
             site_shift_id: this.fetchRateRulesData.site_shift_id,
-            day_start_time: this.fetchRateRulesData.day_start_time,
-            day_end_time: this.fetchRateRulesData.day_end_time,
-            night_start_time: this.fetchRateRulesData.night_start_time,
-            night_end_time: this.fetchRateRulesData.night_end_time,
-            start_time: this.fetchRateRulesData.start_time,
-            end_time: this.fetchRateRulesData.end_time,
+            rate_type: this.fetchRateRulesData.rate_type,
+            start_time: this.convertTo24Hour(this.fetchRateRulesData.start_time),
+            end_time: this.convertTo24Hour(this.fetchRateRulesData.end_time),
+            client_rate: this.fetchRateRulesData.client_rate,
+            self_employed: this.fetchRateRulesData.self_employed,
+            private_limited: this.fetchRateRulesData.private_limited,
+            umbrella: this.fetchRateRulesData.umbrella,
+            paye: this.fetchRateRulesData.paye,
             // break: this.fetchRateRulesData.break,
           },
           {
@@ -542,22 +625,35 @@ export default {
         this.shiftsTime =
           response.data.site_shift_data.map((shift) => ({
             ...shift,
-            start_time: this.convertTimeFormat(shift.start_time),
-            end_time: this.convertTimeFormat(shift.end_time),
+            site_shift_id: shift.id,
+            start_time: shift.start_time,
+            end_time: shift.end_time,
           })) || [];
+        // console.log(this.shiftsTime);
       } catch (error) {
         // console.error("Error fetching shifts:", error);
       }
     },
 
-    convertTimeFormat(dateTimeString) {
+    convertTimeFormat(timeString) {
+      if (!timeString) {
+        return "";
+      }
+
+      const dateTimeString = `1970-01-01T${timeString}Z`;
       const date = new Date(dateTimeString);
+
+      if (isNaN(date.getTime())) {
+        // console.error(`Invalid date string: ${timeString}`);
+        return "";
+      }
+
       const hours = date.getUTCHours();
       const minutes = date.getUTCMinutes();
       const amPm = hours >= 12 ? "PM" : "AM";
-      const formattedHours = String(hours).padStart(2, "0");
+      const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
       const formattedMinutes = String(minutes).padStart(2, "0");
-      return `${formattedHours}:${formattedMinutes} ${amPm}`;
+      return `${String(formattedHours).padStart(2, "0")}:${formattedMinutes} ${amPm}`;
     },
     async getJobTitleMethod() {
       try {
@@ -581,18 +677,7 @@ export default {
     this.getJobTitleMethod();
   },
   watch: {
-    "fetchRateRulesData.site_id": {
-      immediate: true,
-      handler(newSiteId) {
-        this.getTimeShift(newSiteId);
-      },
-      fetchRateRulesData: {
-        deep: true,
-        handler() {
-          this.validateDates();
-        },
-      },
-    },
+    "fetchRateRulesData.site_id": "getTimeShift",
     RateRulesId: {
       immediate: true,
       handler(newVacancyID) {

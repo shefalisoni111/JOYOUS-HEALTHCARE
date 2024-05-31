@@ -33,12 +33,16 @@
 
                     <div class="d-flex gap-3 align-items-center">
                       <div class="searchbox position-relative">
-                        <input
-                          class="form-control mr-sm-2"
-                          type="search"
-                          placeholder="Search..."
-                          aria-label="Search"
-                        />
+                        <form @submit.prevent="search">
+                          <input
+                            class="form-control mr-sm-2"
+                            type="search"
+                            placeholder="Search..."
+                            aria-label="Search"
+                            v-model="searchQuery"
+                            @input="debounceSearch"
+                          />
+                        </form>
                       </div>
                       <button
                         type="button"
@@ -49,7 +53,11 @@
                       >
                         + Add Rate
                       </button>
-                      <button type="button" class="btn btn-outline-success text-nowrap">
+                      <button
+                        type="button"
+                        class="btn btn-outline-success text-nowrap"
+                        @click="toggleFilters"
+                      >
                         <i class="bi bi-funnel"></i>
                         Show Filters
                       </button>
@@ -79,7 +87,44 @@
                 <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                    
                   </ul> -->
+                <div class="d-flex gap-2 mb-3 justify-content-center" v-if="showFilters">
+                  <div class="d-flex gap-2 mt-3">
+                    <div></div>
 
+                    <select v-model="client_id" id="selectClients">
+                      <option value="">All Client</option>
+                      <option
+                        v-for="option in clientData"
+                        :key="option.id"
+                        :value="option.id"
+                        aria-placeholder="Select Job"
+                      >
+                        {{ option.first_name }}
+                      </option>
+                    </select>
+                    <select v-model="site_id" id="selectBusinessUnit">
+                      <option value="">All Site</option>
+                      <option
+                        v-for="option in businessUnit"
+                        :key="option.id"
+                        :value="option.id"
+                        placeholder="Select BusinessUnit"
+                      >
+                        {{ option.site_name }}
+                      </option>
+                    </select>
+                    <select v-model="job_id" id="selectOption">
+                      <option value="">All Position</option>
+                      <option
+                        v-for="option in options"
+                        :key="option.id"
+                        :value="option.id"
+                      >
+                        {{ option.name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
                 <div class="d-flex gap-2">
                   <div></div>
                 </div>
@@ -90,7 +135,7 @@
                     role="tabpanel"
                     aria-labelledby="pills-home-tab"
                   >
-                    <table class="table candidateTable">
+                    <table class="table candidateTable" v-if="!searchQuery">
                       <thead>
                         <tr>
                           <th>
@@ -103,6 +148,7 @@
                           <th scope="col">Job</th>
                           <th scope="col">Day</th>
                           <th scope="col">Shift Type<br />Start-End Time</th>
+                          <th scope="col">Rate Type</th>
                           <th scope="col">Client Rate</th>
                           <th scope="col">Private Limited</th>
                           <th scope="col">Self Employed</th>
@@ -124,12 +170,19 @@
                           <td>{{ data.client }}</td>
                           <td
                             @click="
-                              toggleDetails(index, data.site_id, data.client, data.job)
+                              toggleDetails(
+                                index,
+                                data.site_id,
+                                data.client,
+                                data.job,
+                                data.job_id
+                              )
                             "
                           >
                             {{ data.site }}
                           </td>
                           <td>{{ data.job }}</td>
+                          <td>&nbsp;</td>
                           <td>&nbsp;</td>
                           <td>&nbsp;</td>
                           <td>&nbsp;</td>
@@ -146,7 +199,14 @@
                               data-bs-toggle="modal"
                               data-bs-target="#EditMultipleRateRules"
                               data-bs-whatever="@mdo"
-                              @click="editRateRulesMultiId(data.id, data.site_id)"
+                              @click="
+                                editRateRulesMultiId(
+                                  data.id,
+                                  data.site_id,
+                                  data.job_id,
+                                  data.job
+                                )
+                              "
                             >
                               <i class="bi bi-pencil"></i>
                             </button>
@@ -174,6 +234,9 @@
                             {{ rate.shift_type }}<br />{{
                               formatTime(rate.start_time)
                             }}-{{ formatTime(rate.end_time) }}
+                          </td>
+                          <td v-if="activeSiteId === index">
+                            {{ rate.rate_type ? rate.rate_type : "Null" }}
                           </td>
                           <td v-if="activeSiteId === index">{{ rate.client_rate }}</td>
                           <td v-if="activeSiteId === index">
@@ -205,6 +268,144 @@
                         </tr>
                       </tbody>
                     </table>
+
+                    <table class="table candidateTable" v-if="searchQuery">
+                      <thead>
+                        <tr>
+                          <th>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" />
+                            </div>
+                          </th>
+                          <th scope="col">Client</th>
+                          <th scope="col">Site</th>
+                          <th scope="col">Job</th>
+                          <th scope="col">Day</th>
+                          <th scope="col">Shift Type<br />Start-End Time</th>
+                          <th scope="col">Rate Type</th>
+                          <th scope="col">Client Rate</th>
+                          <th scope="col">Private Limited</th>
+                          <th scope="col">Self Employed</th>
+                          <th scope="col">Umbrella</th>
+                          <th scope="col">PAYE</th>
+                          <th scope="col" style="width: 10%">Created By and Time</th>
+                          <th scope="col">Last Update</th>
+                          <th scope="col">Action</th>
+                        </tr>
+                      </thead>
+
+                      <tbody v-if="searchResults?.length > 0">
+                        <tr v-for="(data, index) in groupedRateRulesData" :key="index">
+                          <td>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" />
+                            </div>
+                          </td>
+                          <td>{{ data.client }}</td>
+                          <td
+                            @click="
+                              toggleDetails(
+                                index,
+                                data.site_id,
+                                data.client,
+                                data.job,
+                                data.job_id
+                              )
+                            "
+                          >
+                            {{ data.site }}
+                          </td>
+                          <td>{{ data.job }}</td>
+                          <td>&nbsp;</td>
+                          <td>&nbsp;</td>
+                          <td>&nbsp;</td>
+                          <td>&nbsp;</td>
+                          <td>&nbsp;</td>
+                          <td>&nbsp;</td>
+                          <td>&nbsp;</td>
+                          <td>&nbsp;</td>
+                          <td>&nbsp;</td>
+                          <td>&nbsp;</td>
+                          <td>
+                            <button
+                              type="button"
+                              class="btn btn-outline-success text-nowrap"
+                              data-bs-toggle="modal"
+                              data-bs-target="#EditMultipleRateRules"
+                              data-bs-whatever="@mdo"
+                              @click="
+                                editRateRulesMultiId(
+                                  data.id,
+                                  data.site_id,
+                                  data.job_id,
+                                  data.job
+                                )
+                              "
+                            >
+                              <i class="bi bi-pencil"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr v-for="rate in searchResults" :key="rate.rate_and_rule_id">
+                          <td>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" />
+                            </div>
+                          </td>
+                          <td>{{ rate.client }}</td>
+                          <td>{{ rate.site }}</td>
+                          <td>{{ rate.job }}</td>
+                          <td class="text-capitalize">
+                            <span
+                              style="background: orange; padding: 3px; border-radius: 4px"
+                              >{{ rate.day }}</span
+                            >
+                          </td>
+                          <td>
+                            {{ rate.shift_type }}<br />{{
+                              formatTime(rate.start_time)
+                            }}-{{ formatTime(rate.end_time) }}
+                          </td>
+                          <td>
+                            {{ rate.rate_type ? rate.rate_type : "Null" }}
+                          </td>
+                          <td>{{ rate.client_rate }}</td>
+                          <td>
+                            {{ rate.private_limited }}
+                          </td>
+                          <td>{{ rate.self_employed }}</td>
+                          <td>
+                            {{ rate.umbrella ? rate.umbrella : "Null" }}
+                          </td>
+                          <td>
+                            {{ rate.paye ? rate.paye : "Null" }}
+                          </td>
+                          <td>
+                            {{ rate.created_by_and_time }}
+                          </td>
+                          <td>{{ rate.last_update }}</td>
+                          <td>
+                            <button
+                              type="button"
+                              class="btn btn-outline-success text-nowrap"
+                              data-bs-toggle="modal"
+                              data-bs-target="#editSingleRateRules"
+                              data-bs-whatever="@mdo"
+                              @click="editRateRulesId(rate.id)"
+                            >
+                              <i class="bi bi-pencil"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr>
+                          <td colspan="14" class="text-danger text-center">
+                            Not Match Found !!
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                   <div
                     class="tab-pane fade"
@@ -229,6 +430,8 @@
     <EditMultipleRateRules
       :RateRulesId="selectedRatesRulesId || 0"
       :SiteID="selectedSiteID || 0"
+      :jobID="selectedJobID || 0"
+      :ids="ids"
       @editMultipleUpdatedRateRules="getRateRulesDataMethod"
     />
     <loader :isLoading="isLoading"></loader>
@@ -241,7 +444,11 @@ import AddRateRules from "../../modals/Rate&Rules/AddRateRules.vue";
 import Loader from "../../Loader/Loader.vue";
 import EditSingleRateRules from "../../modals/Rate&Rules/EditSingleRateRules.vue";
 import EditMultipleRateRules from "../../modals/Rate&Rules/EditMultipleRateRules.vue";
-
+const axiosInstance = axios.create({
+  headers: {
+    "Cache-Control": "no-cache",
+  },
+});
 export default {
   data() {
     return {
@@ -250,10 +457,22 @@ export default {
       selectedSiteID: null,
       getRateRulesWeekData: [],
       isLoading: false,
+      showFilters: false,
       activeSiteId: null,
       detailsShow: false,
+      selectedJobID: null,
       rateRulesIds: [],
       filteredRateRulesData: [],
+      ids: [],
+      searchQuery: null,
+      debounceTimeout: null,
+      searchResults: [],
+      client_id: "",
+      clientData: [],
+      site_id: "",
+      businessUnit: [],
+      job_id: "",
+      options: [],
     };
   },
   components: {
@@ -274,6 +493,7 @@ export default {
             site: data.site,
             client: data.client,
             job: data.job,
+            job_id: data.job_id,
             data: [],
           };
         }
@@ -281,20 +501,143 @@ export default {
       });
       return Object.values(groupedData);
     },
+    selectBusinessUnit() {
+      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      return site_id ? site_id.site_name : "";
+    },
+    selectedOptionText() {
+      const job_id = this.options.find((option) => option.id === this.job_id);
+      return job_id ? job_id.name : "";
+    },
+    selectClients() {
+      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      return client_id ? client_id.first_name : "";
+    },
   },
   methods: {
+    toggleFilters() {
+      this.showFilters = !this.showFilters;
+    },
+    // filterData(value) {
+    //   let site_type = "status";
+    //   let site_value = value === "true" ? "true" : "false";
+
+    //   this.makeFilterAPICall(site_type, site_value);
+    // },
+    // async makeFilterAPICall(site_type, site_value) {
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/site_filter`, {
+    //       params: {
+    //         site_type: site_type,
+    //         site_value: site_value,
+    //       },
+    //     });
+
+    //     this.getSiteAllData = response.data.data;
+    //   } catch (error) {
+    //     if (error.response && error.response.status === 404) {
+    //       const errorMessages = error.response.data.error;
+    //       if (errorMessages === "No records found for the given filter") {
+    //         alert("No records found for the given filter");
+    //       } else {
+    //         alert(errorMessages);
+    //       }
+    //     } else {
+    //     }
+    //   }
+    // },
     editRateRulesId(RateRulesId) {
       this.selectedRatesRulesId = RateRulesId;
     },
-    editRateRulesMultiId(RateRulesId, siteID) {
+    extractFilteredRateRulesIds() {
+      this.ids = this.filteredRateRulesData.map((rate) => rate.id);
+    },
+    editRateRulesMultiId(RateRulesId, siteID, jobID, job) {
       this.selectedRatesRulesId = RateRulesId;
       this.selectedSiteID = siteID;
+      this.selectedJobID = jobID;
     },
+    async getClientMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/clients`);
+        this.clientData = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+
+    async getPositionMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+        this.options = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    async getBusinessUnitMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/activated_site`);
+        this.businessUnit = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    debounceSearch() {
+      clearTimeout(this.debounceTimeout);
+
+      this.debounceTimeout = setTimeout(() => {
+        this.search();
+      }, 100);
+    },
+    // search api start
+
+    async search() {
+      try {
+        this.searchResults = [];
+
+        const modifiedSearchQuery = this.searchQuery.replace(/ /g, "_");
+
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/rate_and_rules_search`,
+          {
+            params: {
+              search_rates: modifiedSearchQuery,
+            },
+            headers: {
+              "content-type": "application/json",
+            },
+          }
+        );
+
+        this.searchResults = response.data.rates;
+      } catch (error) {
+        if (
+          (error.response && error.response.status === 400) ||
+          error.response.status === 404
+        ) {
+          // this.errorMessage = "No vacancy found for the specified criteria";
+        }
+      }
+    },
+
     async getRateRulesDataMethod() {
       this.isLoading = true;
       try {
         const response = await axios.get(`${VITE_API_URL}/rate_and_rules`);
-        this.getRateRulesData = response.data.rate_and_rules;
+        this.getRateRulesData = response.data.rates;
+        this.filteredRateRulesData = this.getRateRulesData;
       } catch (error) {
         // console.error('Error fetching client data:', error);
       } finally {
@@ -325,6 +668,9 @@ export default {
 
   mounted() {
     this.getRateRulesDataMethod();
+    this.getBusinessUnitMethod();
+    this.getPositionMethod();
+    this.getClientMethod();
   },
 };
 </script>

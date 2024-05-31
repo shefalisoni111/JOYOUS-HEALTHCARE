@@ -123,7 +123,7 @@
                       type="text"
                       class="form-control"
                       v-model="staff_rate"
-                      @input="clearError"
+                      @input="validateStaffRate"
                     />
                     <span v-if="!validationStaffRate" class="text-danger"
                       >Staff Rate Required</span
@@ -243,11 +243,20 @@ export default {
     },
   },
   methods: {
+    validateStaffRate() {
+      this.staff_rate = this.staff_rate.replace(/[^0-9-]/g, "");
+
+      if (this.staff_rate === "" || isNaN(this.staff_rate)) {
+        this.validationStaffRate = false;
+      } else {
+        this.validationStaffRate = true;
+      }
+    },
     clearFieldsData() {
+      this.resetForm();
       setTimeout(() => {
         this.clearError();
-        this.resetForm();
-      }, 10);
+      }, 3);
     },
 
     isFieldEmpty() {

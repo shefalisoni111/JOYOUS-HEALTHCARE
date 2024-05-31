@@ -8,7 +8,13 @@
             <div>Split rate:</div>
             <div>
               <label class="switch">
-                <input type="checkbox" id="togBtn" checked />
+                <input
+                  type="checkbox"
+                  id="togBtn"
+                  v-model="split_rate"
+                  filed="split_rate"
+                  @change="updateSplitRate"
+                />
                 <div class="slider round"></div>
               </label>
             </div>
@@ -17,7 +23,13 @@
             <div>Enable split rate only for Holidays:</div>
             <div>
               <label class="switch">
-                <input type="checkbox" id="togBtn" checked />
+                <input
+                  type="checkbox"
+                  id="togBtn"
+                  v-model="holiday_split_rate"
+                  filed="holiday_split_rate"
+                  @change="updateSplitRateHoliday"
+                />
                 <div class="slider round"></div>
               </label>
             </div>
@@ -172,14 +184,86 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 <script>
+import axios from "axios";
 import TextFormator from "../../textformator/TextFormator.vue";
 
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+
 export default {
+  name: "RateInvoiceSettings",
+  data() {
+    return { holiday_split_rate: false, split_rate: false };
+  },
   components: {
     TextFormator,
+    SuccessAlert,
+  },
+  created() {
+    this.loadInitialSplitRate();
+  },
+  methods: {
+    loadInitialSplitRate() {
+      const savedHolidaySplitRate = localStorage.getItem(
+        `holiday_split_rate_${this.$route.params.id}`
+      );
+      const savedSplitRate = localStorage.getItem(`split_rate_${this.$route.params.id}`);
+
+      if (savedHolidaySplitRate !== null) {
+        this.holiday_split_rate = savedHolidaySplitRate === "true";
+      }
+
+      if (savedSplitRate !== null) {
+        this.split_rate = savedSplitRate === "true";
+      }
+    },
+    async updateRate(field) {
+      try {
+        const formData = new FormData();
+        formData.append("site_id", this.$route.params.id);
+        formData.append("field", field);
+        formData.append(field, this[field] ? "true" : "false");
+
+        const response = await axios.put(
+          `${VITE_API_URL}/disable_splite_rate_and_holiday_splite_rate`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        localStorage.setItem(
+          `${field}_${this.$route.params.id}`,
+          this[field] ? "true" : "false"
+        );
+
+        if (field === "holiday_split_rate") {
+          const message = this.holiday_split_rate
+            ? "Site enabled for holidays successfully!"
+            : "Site disabled for holidays successfully!";
+          this.$refs.successAlert.showSuccess(message);
+        } else if (field === "split_rate" && this.holiday_split_rate) {
+          const message = "Site enabled successfully!";
+          this.$refs.successAlert.showSuccess(message);
+        } else {
+          const message = "Site disabled successfully!";
+          this.$refs.successAlert.showSuccess(message);
+        }
+      } catch (error) {
+        console.error("Error updating profile view:", error);
+      }
+    },
+    async updateSplitRateHoliday() {
+      await this.updateRate("holiday_split_rate");
+    },
+    async updateSplitRate() {
+      await this.updateRate("split_rate");
+    },
   },
 };
 </script>
