@@ -75,10 +75,7 @@
                     <label class="form-label" for="selectBusinessUnitIds">Site</label>
                   </div>
                   <div class="col-12 mt-1">
-                    <select
-                      v-model="fetchRateCard.business_unit_id"
-                      id="selectBusinessUnitIds"
-                    >
+                    <select v-model="fetchRateCard.site_id" id="selectBusinessUnitIds">
                       <option
                         v-for="option in businessUnit"
                         :key="option.id"
@@ -162,7 +159,7 @@ export default {
         employment_type_id: "",
         job_id: "",
         weekname: "",
-        business_unit_id: "",
+        site_id: "",
         shift_id: "",
         staff_rate: "",
         site_id: "",
@@ -190,10 +187,10 @@ export default {
       return employment_type ? employment_type.title : "";
     },
     selectBusinessUnitIds() {
-      const business_unit_id = this.businessUnit.find(
-        (option) => option.id === this.fetchRateCard.business_unit_id
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.fetchRateCard.site_id
       );
-      return business_unit_id ? business_unit_id.site_name : "";
+      return site_id ? site_id.site_name : "";
     },
     selectedOptionText() {
       const job_id = this.options.find(

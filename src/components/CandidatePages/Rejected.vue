@@ -13,7 +13,7 @@
           <th scope="col">Action</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="paginateCandidates?.length > 0">
         <tr v-for="pending in paginateCandidates" :key="pending.id">
           <td v-text="pending.id"></td>
           <td class="text-capitalize">
@@ -27,7 +27,7 @@
               {{ pending.first_name }}&nbsp;&nbsp;{{ pending.last_name }}</router-link
             >
           </td>
-          <td v-text="pending.position"></td>
+          <td class="text-capitalize" v-text="pending.possition"></td>
           <td v-text="pending.email"></td>
           <td v-text="pending.phone_number"></td>
           <td class="text-capitalize" v-text="pending.status"></td>
@@ -55,11 +55,13 @@
           </td>
         </tr>
       </tbody>
-      <!-- <tbody v-else>
+      <tbody v-else>
         <tr>
-          <td colspan="6"></td>
+          <td colspan="7" v-if="!isLoading" class="text-center text-danger">
+            {{ "Data Not Found!" }}
+          </td>
         </tr>
-      </tbody> -->
+      </tbody>
     </table>
     <div
       class="mx-3"
@@ -129,7 +131,10 @@ export default {
     async pendingCandidateMethod() {
       this.isLoading = true;
       try {
-        const response = await axios.get(`${VITE_API_URL}/pending_candidates`);
+        const params = {
+          status_value: "pending",
+        };
+        const response = await axios.get(`${VITE_API_URL}/candidates`, { params });
 
         this.getPendingCandidatesData = response.data.data;
       } catch (error) {

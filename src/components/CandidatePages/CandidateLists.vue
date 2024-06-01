@@ -322,9 +322,11 @@ export default {
     async getCandidate() {
       this.isLoading = true;
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/approve_and_notactivated_candidates`
-        );
+        const params = {
+          status_value: "approved",
+          activated_value: "false",
+        };
+        const response = await axios.get(`${VITE_API_URL}/candidates`, { params });
 
         // this.getCandidatesData = response.data.data;
       } catch (error) {
@@ -491,8 +493,12 @@ export default {
       }
     },
     async getActiveCAndidateMethod() {
+      const params = {
+        status_value: "approved",
+        activated_value: "true",
+      };
       await axios
-        .get(`${VITE_API_URL}/approve_and_activated_candidates`)
+        .get(`${VITE_API_URL}/candidates`, { params })
         .then((response) => (this.activeCandidate = response.data))
         .catch((error) => {
           if (error.response) {
@@ -522,13 +528,13 @@ export default {
   },
 
   mounted() {
-    this.getActiveCAndidateMethod();
+    // this.getActiveCAndidateMethod();
     // this.getCandidateMethods();
     this.setActiveTabFromRoute();
     this.setActiveTabNameOnLoad();
-    this.getCandidateMethods();
-    this.getCandidate();
-    this.pendingCandidateMethod();
+    // this.getCandidateMethods();
+    // this.getCandidate();
+    // this.pendingCandidateMethod();
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {

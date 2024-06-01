@@ -171,9 +171,10 @@
                       :class="{ active: activeTab === index }"
                       :to="getTabLink(tab)"
                     >
-                      <span class="badge bg-success">{{
-                        index === 5 ? getCount : ""
-                      }}</span>
+                      <!-- <span class="badge bg-success">{{
+                        index === 5 ? getCandidates.candidate_notes_count : ""
+                      }}</span> -->
+                      <span class="badge bg-success"></span>
                       {{ tab.name }}</router-link
                     >
                   </button>
@@ -191,7 +192,7 @@
         :candidateId="selectedCandidateId || 0"
         @contactAdded="getCandidate"
       />
-      <AddNotes @getNotesAdded="GetNotesCount" />
+
       <!-- <ProfileTabs @getContactDetail="getCandidate" /> -->
     </div>
   </div>
@@ -366,7 +367,7 @@ export default {
 
         this.getCandidates = response.data.candidate;
         this.contactDetailChecked = this.getCandidates.contact_information;
-        this.GetNotesCount();
+        // this.GetNotesCount();
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
@@ -378,29 +379,29 @@ export default {
       }
     },
 
-    async GetNotesCount() {
-      try {
-        const response = await axios.get(
-          `${VITE_API_URL}/candidate_notes_count_lists/${this.$route.params.id}`
-        );
+    // async GetNotesCount() {
+    //   try {
+    //     const response = await axios.get(
+    //       `${VITE_API_URL}/candidate_notes_count_lists/${this.$route.params.id}`
+    //     );
 
-        this.getCount = response.data.Candidate_notes;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        } else {
-          // console.error("Error fetching candidates:", error);
-        }
-      }
-    },
+    //     this.getCount = response.data.Candidate_notes;
+    //   } catch (error) {
+    //     if (error.response) {
+    //       if (error.response.status == 404) {
+    //         // alert(error.response.data.message);
+    //       }
+    //     } else {
+    //       // console.error("Error fetching candidates:", error);
+    //     }
+    //   }
+    // },
   },
 
   async created() {
     await this.updateActiveTab();
     await this.getCandidate();
-    await this.GetNotesCount();
+    // await this.GetNotesCount();
   },
 };
 </script>

@@ -26,11 +26,11 @@
               </div>
             </div>
           </div>
-          <div class="d-fle align-items-center gap-2">
+          <div class="d-flex align-items-center gap-2">
             <button
               type="button"
               class="btn btn-outline-success text-nowrap"
-              v-on:click="confirmed(data.id)"
+              v-on:click="showConfirmationModal(data.id)"
             >
               Delete
             </button>
@@ -47,7 +47,8 @@
       @confirm="confirmCallback"
       @cancel="canceled"
     />
-    <loader :isLoading="isLoading"></loader>
+    <Loader :isLoading="isLoading" />
+    <AddNotes @getNotesAdded="getNotesMethod" />
   </div>
 </template>
 
@@ -70,25 +71,26 @@ export default {
   },
 
   components: { AddNotes, ConfirmationAlert, Loader },
-  methods: {
-    confirmed(id) {
-      this.isModalVisible = false;
 
-      this.notesDeleteMethod(id);
-    },
-    canceled() {
-      this.isModalVisible = false;
+  methods: {
+    showConfirmationModal(id) {
+      this.confirmMessage = "Are you sure you want to delete this note?";
+      this.isModalVisible = true;
+      this.confirmCallback = () => this.notesDeleteMethod(id);
     },
     async notesDeleteMethod(id) {
-      this.confirmMessage = "Are you sure want to Delete Note?";
-      this.isModalVisible = true;
-      this.confirmCallback = async () => {
+      try {
         await axios.delete(
           `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes/` + id
         );
         this.isModalVisible = false;
-      };
-      // window.location.reload();
+        this.getNotesMethod();
+      } catch (error) {
+        console.error("Error deleting note:", error);
+      }
+    },
+    canceled() {
+      this.isModalVisible = false;
     },
     async getNotesMethod() {
       this.isLoading = true;
@@ -96,24 +98,33 @@ export default {
         const response = await axios.get(
           `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes_list`
         );
-
         if (response.status === 200) {
           this.getNotes = response.data;
-          this.getNotesMethod();
         }
+        this.getCandidate();
       } catch (error) {
         if (error.response) {
           if (error.response.status === 404) {
-            // Handle 404 error if needed
-            // alert(error.response.data.message);
+            console.error("Error 404: Notes not found");
           }
+        } else {
+          console.error("Error fetching notes:", error);
         }
       } finally {
         this.isLoading = false;
       }
     },
-
-    //  ratecard apis end
+    async getCandidate() {
+      try {
+        await axios.get(`${VITE_API_URL}/candidates/${this.$route.params.id}`);
+      } catch (error) {
+        if (error.response && error.response.status == 404) {
+          console.error("Error 404: Candidate not found");
+        } else {
+          console.error("Error fetching candidate:", error);
+        }
+      }
+    },
   },
   async created() {
     await this.getNotesMethod();

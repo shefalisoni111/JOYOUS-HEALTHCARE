@@ -313,7 +313,7 @@
       @confirm="confirmCallback"
       @cancel="canceled"
     />
-    <ShowDetailsMessage v-if="showModal" :message="alertMessage" @close="closeModal" />
+    <!-- <ShowDetailsMessage v-if="showModal" :message="alertMessage" @close="closeModal" /> -->
     <ViewDocuments :documentId="selectedDocumentId" ref="viewDocuments" />
     <loader :isLoading="isLoading"></loader>
   </div>
@@ -346,8 +346,8 @@ export default {
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,
-      showModal: false,
-      alertMessage: "",
+      // showModal: false,
+      // alertMessage: "",
     };
   },
   components: { AddCategory, ViewDocuments, ConfirmationAlert, Loader },
@@ -478,9 +478,9 @@ export default {
         this.isLoading = false;
       }
     },
-    closeModal() {
-      this.showModal = false;
-    },
+    // closeModal() {
+    //   this.showModal = false;
+    // },
     async getDownloadDocMethod() {
       try {
         try {
@@ -506,7 +506,7 @@ export default {
           if (error.response && error.response.status === 404) {
             // alert("Candidate document not found");
             this.alertMessage = "Staff document not found";
-            this.showModal = true;
+            // this.showModal = true;
           }
           // console.error("Error fetching document:", error);
         }

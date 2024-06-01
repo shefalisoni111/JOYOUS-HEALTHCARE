@@ -58,11 +58,11 @@
                       />
                     </div>
                   </td>
-                  <td>{{ getrate.site ? getrate.site : "Null" }}</td>
-                  <td v-text="getrate.job_id"></td>
+                  <td>{{ getrate.site ? getrate.site.name : "Null" }}</td>
+                  <td v-text="getrate.position.name"></td>
                   <td v-text="getrate.weekname" class="text-capitalize"></td>
-                  <td v-text="getrate.employment_type_id"></td>
-                  <td v-text="getrate.shift"></td>
+                  <td v-text="getrate.employment_type.title"></td>
+                  <td v-text="getrate.shift.shift"></td>
                   <td v-text="getrate.staff_rate"></td>
                   <td v-text="getrate.last_updated"></td>
                   <td class="cursor-pointer d-flex">

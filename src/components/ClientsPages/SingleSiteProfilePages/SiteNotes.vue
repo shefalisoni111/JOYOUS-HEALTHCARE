@@ -44,12 +44,14 @@
       </div>
     </div>
     <AddSiteNotes @addSiteNote="getNotesMethod" />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import AddSiteNotes from "../../modals/Site/AddSiteNotes.vue";
+import Loader from "../../Loader/Loader.vue";
 
 export default {
   name: "Notes",
@@ -59,7 +61,7 @@ export default {
     };
   },
 
-  components: { AddSiteNotes },
+  components: { AddSiteNotes, Loader },
   methods: {
     // async notesDeleteMethod(id) {
     //   if (!window.confirm("Are you Sure ?")) {
@@ -71,6 +73,7 @@ export default {
     //   window.location.reload();
     // },
     async getNotesMethod() {
+      this.isLoading = true;
       try {
         const response = await axios.get(
           `${VITE_API_URL}/show_site_notes/${this.$route.params.id}`
@@ -87,6 +90,8 @@ export default {
             // alert(error.response.data.message);
           }
         }
+      } finally {
+        this.isLoading = false;
       }
     },
 

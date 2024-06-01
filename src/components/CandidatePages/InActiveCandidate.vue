@@ -26,7 +26,7 @@
               {{ datas.first_name }}&nbsp;&nbsp;{{ datas.last_name }}</router-link
             >
           </td>
-          <td v-text="datas.position"></td>
+          <td class="text-capitalize" v-text="datas.possition"></td>
           <td v-text="datas.email"></td>
           <td v-text="datas.phone_number"></td>
           <td class="text-capitalize" v-text="datas.status"></td>
@@ -119,9 +119,11 @@ export default {
     async getCandidate() {
       this.isLoading = true;
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/approve_and_notactivated_candidates`
-        );
+        const params = {
+          status_value: "approved",
+          activated_value: "false",
+        };
+        const response = await axios.get(`${VITE_API_URL}/candidates`, { params });
 
         this.getCandidatesData = response.data.data;
       } catch (error) {

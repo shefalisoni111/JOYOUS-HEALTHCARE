@@ -33,7 +33,7 @@
                 </router-link>
               </td>
 
-              <td v-text="candidate.position"></td>
+              <td class="text-capitalize" v-text="candidate.possition"></td>
               <td>{{ candidate.email }}</td>
               <td>
                 {{ candidate.phone_number }}
@@ -276,35 +276,7 @@ export default {
     canceled() {
       this.isModalVisible = false;
     },
-    // async assignedCandidate(id) {
-    //   if (!window.confirm("Are you Sure?")) {
-    //     return;
-    //   }
-    //   const token = localStorage.getItem("token");
 
-    //   if (this.$store.state.selectedAssignedItemId) {
-    //     try {
-    //       const response = await axios.get(
-    //         `${VITE_API_URL}/assigned_candidate_list/${id}`,
-    //         {
-    //           headers: {
-    //             "content-type": "application/json",
-    //             Authorization: "bearer " + token,
-    //           },
-    //         }
-    //       );
-    //       this.getAssignedList = response.data.data;
-    //       this.$emit("assignVacancy");
-    //       alert("Assigned Vacancy Successful");
-    //     } catch (error) {
-    //       if (error.response) {
-    //         if (error.response.status == 404) {
-    //           // alert(error.response.data.message);
-    //         }
-    //       }
-    //     }
-    //   }
-    // },
     async getCandidateMethods() {
       this.isLoading = true;
       try {

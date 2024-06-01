@@ -65,7 +65,7 @@
                         :value="option.id"
                         aria-placeholder="Select Job"
                       >
-                        {{ option.name }}
+                        {{ option.job_name }}
                       </option>
                     </select>
                   </div>
@@ -779,12 +779,14 @@ export default {
       job_id: null,
       options: [],
       businessUnit: [],
-
+      selectedSiteId: null,
       site_shift_id: "",
       shiftsTime: [],
 
       isValidForm: false,
       selectedDate: null,
+      splitRate: false,
+      holidaySplitRate: false,
     };
   },
 
@@ -927,12 +929,10 @@ export default {
     onClientSelect() {
       const selectedClientId = this.client_id;
 
-      this.getJobTitleMethod(selectedClientId);
-      this.getSiteAccordingClientMethod(selectedClientId);
+      this.getClientFetchSiteMethod(selectedClientId);
     },
     async onSiteSelect() {
-      const selectedSiteId = this.site_id;
-      await this.getTimeShift(selectedSiteId);
+      await this.getTimeShift(this.selectedSiteId);
       const dayShift = this.filteredShiftsTime.find(
         (shift) => shift.shift_name.toLowerCase() === "day_shift"
       );
@@ -1103,8 +1103,6 @@ export default {
         rateAndRules.push(dayShiftEntry, nightShiftEntry);
       }
 
-      // console.log("Rate and Rules:", rateAndRules);
-
       const data = { rate_and_rules: rateAndRules };
 
       try {
@@ -1133,20 +1131,7 @@ export default {
         // Handle fetch errors
       }
     },
-    async getJobTitleMethod() {
-      try {
-        const response = await axios.get(
-          `${VITE_API_URL}/job_title_for_client/${this.client_id}`
-        );
-        this.options = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
+
     handleShiftChange(shiftType) {
       if (shiftType === "day") {
         const selectedShift = this.filteredShiftsTime.find(
@@ -1182,33 +1167,7 @@ export default {
         }
       }
     },
-    async getSiteAccordingClientMethod() {
-      try {
-        const response = await axios.get(
-          `${VITE_API_URL}/site_according_client/${this.client_id}`
-        );
-        this.businessUnit = response.data.site;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
 
-    async getBusinessUnitMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/activated_site`);
-        this.businessUnit = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
     async getClientMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/clients`);
@@ -1221,10 +1180,35 @@ export default {
         }
       }
     },
+    async getClientFetchSiteMethod() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/fetch_site_by_client_id/${this.client_id}`
+        );
+        this.businessUnit = response.data.sites;
+
+        if (this.businessUnit.length > 0) {
+          this.selectedSiteId = this.businessUnit[0].site_id;
+          this.splitRate = this.businessUnit[0].split_rate;
+          this.holidaySplitRate = this.businessUnit[0].holiday_split_rate;
+        } else {
+          this.selectedSiteId = null;
+        }
+        this.options = response.data.jobs;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
 
     async getTimeShift() {
       try {
-        const response = await axios.get(`${VITE_API_URL}site_shift/${this.site_id}`);
+        const response = await axios.get(
+          `${VITE_API_URL}site_shift/${this.selectedSiteId}`
+        );
         this.shiftsTime =
           response.data.site_shift_data.map((shift) => ({
             ...shift,

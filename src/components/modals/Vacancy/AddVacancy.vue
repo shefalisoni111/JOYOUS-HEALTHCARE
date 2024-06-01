@@ -840,11 +840,7 @@ export default {
         }
       }
     },
-    // async getTimeShift() {
-    //   await axios
-    //     .get(`${VITE_API_URL}/shifts`)
-    //     .then((response) => (this.shiftsTime = response.data));
-    // },
+
     async getTimeShift() {
       try {
         const response = await axios.get(`${VITE_API_URL}site_shift/${this.site_id}`);
@@ -929,10 +925,8 @@ export default {
     },
   },
   mounted() {
-    // this.getBusinessUnitMethod();
-    // this.getJobTitleMethod();
     this.getClientMethod();
-    // this.getSiteAccordingClientMethod();
+
     this.getTimeShift();
     this.isValidForm = this.isFormValid;
     this.clearError();

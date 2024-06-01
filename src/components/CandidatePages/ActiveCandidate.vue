@@ -32,7 +32,7 @@
                 </router-link>
               </td>
 
-              <td v-text="candidate.position"></td>
+              <td class="text-capitalize" v-text="candidate.possition"></td>
               <td>{{ candidate.email }}</td>
               <td>
                 {{ candidate.phone_number }}
@@ -233,38 +233,15 @@ export default {
         this.isModalVisible = false;
       };
     },
-    // async assignedCandidate(id) {
-    //   const token = localStorage.getItem("token");
 
-    //   if (this.$store.state.selectedAssignedItemId) {
-    //     try {
-    //       const response = await axios.get(
-    //         `${VITE_API_URL}/assigned_candidate_list/${id}`,
-    //         {
-    //           headers: {
-    //             "content-type": "application/json",
-    //             Authorization: "bearer " + token,
-    //           },
-    //         }
-    //       );
-    //       this.getAssignedList = response.data.data;
-    //       this.$emit("assignVacancy");
-    //       alert("Assigned Vacancy Successful");
-    //     } catch (error) {
-    //       if (error.response) {
-    //         if (error.response.status == 404) {
-    //           // alert(error.response.data.message);
-    //         }
-    //       }
-    //     }
-    //   }
-    // },
     async getCandidateMethods() {
       this.isLoading = true;
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/approve_and_activated_candidates`
-        );
+        const params = {
+          status_value: "approved",
+          activated_value: "true",
+        };
+        const response = await axios.get(`${VITE_API_URL}/candidates`, { params });
 
         this.getCandidatesData = response.data.data;
       } catch (error) {

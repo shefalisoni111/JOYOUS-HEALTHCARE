@@ -18,14 +18,7 @@
                   <label for="start-time" class="form-label"
                     >Start Time<span class="text-danger">*</span></label
                   >
-                  <!-- <input
-                    type="text"
-                    :id="'start-time-' + shift.id"
-                    :name="'start-time-' + shift.id"
-                    class="form-control"
-                    :value="shift.start_time"
-                    readonly
-                  /> -->
+
                   <select
                     :id="'start-time-' + shift.id"
                     :name="'start-time-' + shift.id"
@@ -60,18 +53,20 @@
             <div class="row mt-4">
               <div class="mb-3 d-flex justify-content-between">
                 <div class="col-3">
-                  <label class="form-label" for="selectShiftsBreak">Break Time</label>
+                  <label class="form-label" for="break">Break Time</label>
                 </div>
                 <div class="col-9">
                   <select
-                    id="selectShiftsBreak"
+                    :id="'break-' + shift.id"
+                    :name="'break-' + shift.id"
                     class="form-select w-25"
                     v-model="shift.break"
+                    @change="setShiftIdToUpdate(shift.id)"
                   >
                     <option
                       v-for="minute in [15, 30, 45, 60, 75, 90]"
                       :key="minute"
-                      :value="minute"
+                      :value="formatBreakTime(minute)"
                     >
                       {{ formatBreakTime(minute) }}
                     </option>
@@ -131,7 +126,7 @@ export default {
             ...shift,
             start_time: this.convertTimeFormat(shift.start_time),
             end_time: this.convertTimeFormat(shift.end_time),
-            break: shift.break !== undefined ? shift.break : null,
+            break: shift.break,
           })) || [];
         // console.log(this.shifts);
       } catch (error) {
