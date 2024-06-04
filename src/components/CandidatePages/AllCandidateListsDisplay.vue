@@ -146,10 +146,10 @@
         </table>
       </div>
     </div>
-    <EditCandidate
+    <!-- <EditCandidate
       :candidateId="selectedCandidateId || 0"
       @Candidate-updated="getCandidateMethods"
-    />
+    /> -->
     <AssignDirectVacancy
       :candidateId="selectedCandidateId || 0"
       @Candidate-updated="getCandidateMethods"
@@ -188,7 +188,7 @@
 <script>
 import axios from "axios";
 import Loader from "../Loader/Loader.vue";
-import EditCandidate from "../modals/CandidatePage/EditCandidate.vue";
+// import EditCandidate from "../modals/CandidatePage/EditCandidate.vue";
 import AssignDirectVacancy from "../modals/CandidatePage/AssignDirectVacancy.vue";
 import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
 
@@ -209,7 +209,6 @@ export default {
   },
 
   components: {
-    EditCandidate,
     AssignDirectVacancy,
     Loader,
     ConfirmationAlert,

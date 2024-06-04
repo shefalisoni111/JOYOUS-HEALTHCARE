@@ -292,7 +292,11 @@ export default {
     },
   },
   watch: {
-    "$route.params.id": "updateActiveTab",
+    candidateId(newVal, oldVal) {
+      if (newVal !== oldVal) {
+        this.fetchCandidateData(newVal);
+      }
+    },
   },
 
   methods: {
@@ -400,7 +404,7 @@ export default {
 
   async created() {
     await this.updateActiveTab();
-    await this.getCandidate();
+    await this.getCandidate(this.candidateId);
     // await this.GetNotesCount();
   },
 };

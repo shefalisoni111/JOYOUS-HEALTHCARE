@@ -1,6 +1,7 @@
 import NotFound from "@/views/NotFound.vue";
 
 import { createRouter, createWebHistory } from "vue-router";
+import CandidateLists from '@/components/CandidatePages/CandidateLists.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -213,8 +214,7 @@ const router = createRouter({
         {
           path: "/staff-list",
           name: "CandidateLists",
-          component: () =>
-            import("@/components/CandidatePages/CandidateLists.vue"),
+          component: CandidateLists,
           props: true,
           children: [
             {

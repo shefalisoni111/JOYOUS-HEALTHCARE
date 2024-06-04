@@ -259,9 +259,9 @@ export default {
     },
   },
 
-  mounted() {
-    this.fetchCandidateOverviewMethod();
-    this.getEmployeeTypeData();
+  async created() {
+    await this.fetchCandidateOverviewMethod();
+    await this.getEmployeeTypeData();
   },
 };
 </script>

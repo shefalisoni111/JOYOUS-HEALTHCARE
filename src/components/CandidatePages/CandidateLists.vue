@@ -390,9 +390,18 @@ export default {
     setActiveTabNameOnLoad() {
       this.activeTabName = this.tabs[this.activeTab].name;
     },
-    selectTab(index) {
+    async selectTab(index) {
       this.activeTab = index;
       this.activeTabName = this.tabs[index].name;
+
+      // Dynamically import the component when the tab is selected
+      const componentName = this.tabs[index].component;
+      if (!this.$options.components[componentName]) {
+        this.$options.components[componentName] = (
+          await import(`../CandidatePages/${componentName}.vue`)
+        ).default;
+      }
+
       this.$router.push({ name: this.tabs[index].routeName });
     },
     deleteCandidate(id) {
@@ -539,7 +548,6 @@ export default {
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
-
       if (matchingTabIndex !== -1) {
         vm.activeTab = matchingTabIndex;
         vm.activeTabName = vm.tabs[matchingTabIndex].name;
@@ -548,12 +556,10 @@ export default {
   },
   beforeRouteUpdate(to, from, next) {
     const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
-
     if (matchingTabIndex !== -1) {
       this.activeTab = matchingTabIndex;
       this.activeTabName = this.tabs[matchingTabIndex].name;
     }
-
     next();
   },
 };

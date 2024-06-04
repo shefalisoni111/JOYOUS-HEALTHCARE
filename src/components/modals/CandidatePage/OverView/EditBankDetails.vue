@@ -115,6 +115,7 @@ export default {
         // console.error("Error fetching todo:", error);
       }
     },
+
     async updateCandidateMethod() {
       try {
         await axios.put(
@@ -131,8 +132,8 @@ export default {
     },
   },
 
-  mounted() {
-    this.fetchCandidateOverviewMethod();
+  async created() {
+    await this.fetchCandidateOverviewMethod();
   },
 };
 </script>

@@ -66,7 +66,7 @@
     <div
       class="mx-3"
       style="text-align: right"
-      v-if="getPendingCandidatesData.length >= 8"
+      v-if="getPendingCandidatesData?.length >= 8"
     >
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
@@ -82,7 +82,7 @@
       >&nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getPendingCandidatesData.length"
+        :disabled="currentPage * itemsPerPage >= getPendingCandidatesData?.length"
         @click="currentPage++"
       >
         Next
@@ -119,6 +119,7 @@ export default {
   components: { Loader, ConfirmationAlert },
   computed: {
     paginateCandidates() {
+      if (!this.getPendingCandidatesData) return [];
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.getPendingCandidatesData.slice(startIndex, endIndex);
@@ -130,6 +131,7 @@ export default {
   methods: {
     async pendingCandidateMethod() {
       this.isLoading = true;
+
       try {
         const params = {
           status_value: "pending",
@@ -198,8 +200,8 @@ export default {
       };
     },
   },
-  mounted() {
-    this.pendingCandidateMethod();
+  async created() {
+    await this.pendingCandidateMethod();
   },
 };
 </script>

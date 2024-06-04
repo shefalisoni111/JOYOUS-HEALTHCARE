@@ -442,7 +442,7 @@
       @nextToKinAdded="getCandidateNextToKineMethod"
       :nextKinID="selectedNextKinId"
     />
-    <EditBankDetails @bankDetailAdded="getCandidateMethod" />
+    <!-- <EditBankDetails @bankDetailAdded="getCandidateMethod" /> -->
     <OverviewEdit @overviewAdded="getCandidateMethod" />
     <!-- <ProfileTabs @getBankDetail="getCandidateMethod" /> -->
   </div>
@@ -507,11 +507,12 @@ export default {
           formData
         );
 
-        this.getCandidateMethod();
+        // await this.getCandidateMethod();
       } catch (error) {
         // console.error("Error updating profile view:", error);
       }
     },
+
     async getCandidateMethod() {
       try {
         const response = await axios.get(
@@ -599,18 +600,20 @@ export default {
     },
   },
   async created() {
-    await this.getCandidateNextToKineMethod();
     await this.getCandidateMethod();
+    await this.getCandidateWorkExperienceMethod();
+    await this.getCandidateEducationMethod();
+    await this.getCandidateNextToKineMethod();
   },
   async mounted() {
-    try {
-      await this.getCandidateMethod();
-      await this.getCandidateWorkExperienceMethod();
-      await this.getCandidateEducationMethod();
-      await this.getCandidateNextToKineMethod();
-    } catch (error) {
-      // console.error("Error during component initialization:", error);
-    }
+    // try {
+    //   await this.getCandidateMethod();
+    //   await this.getCandidateWorkExperienceMethod();
+    //   await this.getCandidateEducationMethod();
+    //   await this.getCandidateNextToKineMethod();
+    // } catch (error) {
+    //   // console.error("Error during component initialization:", error);
+    // }
   },
 };
 </script>
