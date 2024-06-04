@@ -402,7 +402,7 @@ export default {
     // },
   },
 
-  async created() {
+  async mounted() {
     await this.updateActiveTab();
     await this.getCandidate(this.candidateId);
     // await this.GetNotesCount();

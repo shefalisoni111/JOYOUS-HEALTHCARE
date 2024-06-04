@@ -277,8 +277,8 @@ export default {
     },
   },
 
-  mounted() {
-    this.getClientMethod();
+  async mounted() {
+    await this.getClientMethod();
   },
 };
 </script>

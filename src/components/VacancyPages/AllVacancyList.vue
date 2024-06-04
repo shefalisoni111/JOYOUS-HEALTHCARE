@@ -23,7 +23,7 @@
               <th scope="col">Action</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="displayedVacancies?.length > 0">
             <tr v-for="getdata in displayedVacancies" :key="getdata.id">
               <td v-text="getdata.id"></td>
               <td v-text="getdata.ref_code"></td>
@@ -40,11 +40,11 @@
                     params: { id: getdata.client_id },
                   }"
                 >
-                  {{ getdata.client }}
+                  {{ getdata.client_name }}
                 </router-link>
               </td>
-              <td v-text="getdata.site"></td>
-              <td v-text="getdata.job_title"></td>
+              <td v-text="getdata.site_name"></td>
+              <td v-text="getdata.job_name"></td>
               <td class="widthDefine">
                 <span v-for="(date, index) in getdata.dates" :key="index">
                   {{ date }}
@@ -54,7 +54,7 @@
               </td>
               <!-- <td v-for="(date, index) in getdata.dates" :key="index" v-text="date"></td> -->
 
-              <td v-text="getdata.site_shift"></td>
+              <td v-text="getdata.shift"></td>
               <td class="withShow text-center">
                 {{ getdata.staff_required === null ? 0 : getdata.staff_required }}
               </td>
@@ -148,7 +148,13 @@
                   >
                 </button>
               </td>
-              <td v-text="getdata.create_by_and_time.split(' ')[0]"></td>
+              <td>
+                {{
+                  getdata.create_by_and_time
+                    ? getdata.create_by_and_time.split(" ")[0]
+                    : ""
+                }}
+              </td>
 
               <td class="cursor-pointer">
                 <i
@@ -165,6 +171,13 @@
                 >
                   In-Active
                 </button>
+              </td>
+            </tr>
+          </tbody>
+          <tbody v-else>
+            <tr>
+              <td colspan="16" class="text-center text-danger" v-if="!isLoading">
+                {{ "Data Not Found!" }}
               </td>
             </tr>
           </tbody>
@@ -247,14 +260,16 @@ export default {
   },
   computed: {
     displayedVacancies() {
-      return this.getVacancyDetail.length >= 8
-        ? this.paginatedVacancies
-        : this.getVacancyDetail;
+      if (!this.getVacancyDetail) return [];
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.getVacancyDetail.slice(startIndex, endIndex);
     },
     getIconClass() {
       return this.publish ? "bi bi-bell" : "bi bi-check-circle-fill";
     },
     paginatedVacancies() {
+      if (!this.getVacancyDetail) return [];
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.getVacancyDetail.slice(startIndex, endIndex);
@@ -266,7 +281,10 @@ export default {
 
   methods: {
     getPadding(value) {
-      // Calculate padding based on the number of digits
+      if (value == null) {
+        return "8px 8px";
+      }
+
       const digitCount = value.toString().length;
       return digitCount === 1 ? "7px 11px" : "8px 8px";
     },
@@ -350,7 +368,7 @@ export default {
     },
   },
 
-  async created() {
+  async mounted() {
     await this.createVacancy();
   },
 };

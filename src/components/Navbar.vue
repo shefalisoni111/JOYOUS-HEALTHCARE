@@ -602,43 +602,43 @@ export default {
         }
       }
     },
-    async getAdminMethod() {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        this.$router.replace({ name: "Login" });
-        return;
-      }
-      try {
-        const response = await axios.get(`${VITE_API_URL}/merchant_dashboard`, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: "bearer " + token,
-          },
-        });
+    // async getAdminMethod() {
+    //   const token = localStorage.getItem("token");
+    //   if (!token) {
+    //     this.$router.replace({ name: "Login" });
+    //     return;
+    //   }
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/merchant_dashboard`, {
+    //       headers: {
+    //         "content-type": "application/json",
+    //         Authorization: "bearer " + token,
+    //       },
+    //     });
 
-        this.getAdminData = response.data.merchant_data;
-        this.getAdminProfile = response.data.data;
-      } catch (error) {}
-    },
-    async getCandidateMethods() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/candidates`);
+    //     this.getAdminData = response.data.merchant_data;
+    //     this.getAdminProfile = response.data.data;
+    //   } catch (error) {}
+    // },
+    // async getCandidateMethods() {
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/candidates`);
 
-        this.getCandidatesData = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-          }
-        } else {
-          // console.error("Error fetching candidates:", error);
-        }
-      }
-    },
+    //     this.getCandidatesData = response.data.data;
+    //   } catch (error) {
+    //     if (error.response) {
+    //       if (error.response.status == 404) {
+    //       }
+    //     } else {
+    //       // console.error("Error fetching candidates:", error);
+    //     }
+    //   }
+    // },
   },
 
-  mounted() {
-    this.getAdminMethod();
-    this.getCandidateMethods();
+ async mounted() {
+  // await   this.getAdminMethod();
+  // await  this.getCandidateMethods();
   },
 };
 </script>

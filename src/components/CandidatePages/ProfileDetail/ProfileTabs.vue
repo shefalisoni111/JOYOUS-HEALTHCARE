@@ -554,8 +554,8 @@ export default {
     },
   },
 
-  mounted() {
-    this.getCandidateProfileTabMethod();
+  async mounted() {
+    await this.getCandidateProfileTabMethod();
   },
 };
 </script>

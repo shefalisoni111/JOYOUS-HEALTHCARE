@@ -102,8 +102,8 @@ export default {
       }
     },
   },
-  mounted() {
-    this.getClientsProfile();
+  async mounted() {
+    await this.getClientsProfile();
   },
 };
 </script>

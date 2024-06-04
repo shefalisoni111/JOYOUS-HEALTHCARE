@@ -35,11 +35,11 @@
                     params: { id: getdata.client_id },
                   }"
                 >
-                  {{ getdata.client }}
+                  {{ getdata.client_name }}
                 </router-link>
               </td>
-              <td v-text="getdata.site"></td>
-              <td v-text="getdata.job_title"></td>
+              <td v-text="getdata.site_name"></td>
+              <td v-text="getdata.job_name"></td>
 
               <td class="widthDefine">
                 <span v-for="(date, index) in getdata.dates" :key="index">
@@ -49,7 +49,7 @@
                 </span>
               </td>
 
-              <td v-text="getdata.site_shift" class="widthDefine"></td>
+              <td v-text="getdata.shift" class="widthDefine"></td>
               <td class="withShow text-center">
                 {{ getdata.staff_required === null ? 0 : getdata.staff_required }}
               </td>
@@ -155,7 +155,13 @@
                   >
                 </button>
               </td>
-              <td v-text="getdata.create_by_and_time.split(' ')[0]"></td>
+              <td>
+                {{
+                  getdata.create_by_and_time
+                    ? getdata.create_by_and_time.split(" ")[0]
+                    : ""
+                }}
+              </td>
 
               <td class="cursor-pointer">
                 <i
@@ -282,7 +288,10 @@ export default {
         });
     },
     getPadding(value) {
-      // Calculate padding based on the number of digits
+      if (value == null) {
+        return "8px 8px";
+      }
+
       const digitCount = value.toString().length;
       return digitCount === 1 ? "7px 11px" : "8px 8px";
     },
@@ -369,25 +378,29 @@ export default {
     },
 
     async createVacancy() {
-      const token = localStorage.getItem("token");
-      this.isLoading = true;
-      await axios
-        .get(`${VITE_API_URL}/vacancies`, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: "bearer " + token,
-          },
-        })
-        .then((response) => {
-          this.getVacancyDetail = response.data.data;
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
+      if (this.getVacancyDetail.length === 0) {
+        const token = localStorage.getItem("token");
+        this.isLoading = true;
+        await axios
+          .get(`${VITE_API_URL}/vacancies`, {
+            headers: {
+              "content-type": "application/json",
+              Authorization: "bearer " + token,
+            },
+          })
+          .then((response) => {
+            this.getVacancyDetail = response.data.data;
+
+            localStorage.setItem("vacancies", JSON.stringify(this.getVacancyDetail));
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      }
     },
   },
 
-  async created() {
+  async mounted() {
     await this.createVacancy();
   },
 };

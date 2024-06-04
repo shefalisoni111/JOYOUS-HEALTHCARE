@@ -30,11 +30,11 @@
                     params: { id: data.client_id },
                   }"
                 >
-                  {{ data.client }}
+                  {{ data.client_name }}
                 </router-link>
               </td>
-              <td v-text="data.site"></td>
-              <td v-text="data.job_title"></td>
+              <td v-text="data.site_name"></td>
+              <td v-text="data.job_name"></td>
               <td class="">
                 <div v-for="(date, index) in data.dates" :key="index">
                   {{ date }}
@@ -44,7 +44,7 @@
               </td>
               <!-- <td v-for="(date, index) in data.dates" :key="index" v-text="date"></td> -->
 
-              <td v-text="data.site_shift"></td>
+              <td v-text="data.shift"></td>
               <td class="withShow text-center">
                 {{ data.staff_required === null ? 0 : data.staff_required }}
               </td>
@@ -146,13 +146,7 @@ export default {
   components: { Loader, EditVacancy, ConfirmationAlert },
   computed: {
     displayedVacancies() {
-      if (!Array.isArray(this.getInactiveData)) {
-        return [];
-      }
-
-      return this.getInactiveData.length >= 8
-        ? this.paginatedVacancies
-        : this.getInactiveData;
+      return this.getInactiveData.slice(0, 20);
     },
     paginatedVacancies() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -246,8 +240,8 @@ export default {
     },
   },
 
-  mounted() {
-    this.getInactiveVacancyMethod();
+  async mounted() {
+    await this.getInactiveVacancyMethod();
   },
 };
 </script>

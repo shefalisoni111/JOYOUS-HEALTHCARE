@@ -200,8 +200,8 @@ export default {
       };
     },
   },
-  async created() {
-    await this.pendingCandidateMethod();
+  created() {
+    this.pendingCandidateMethod();
   },
 };
 </script>

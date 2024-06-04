@@ -514,8 +514,8 @@ export default {
       }
     },
   },
-  mounted() {
-    this.createdClient();
+  async mounted() {
+    await this.createdClient();
   },
 };
 </script>

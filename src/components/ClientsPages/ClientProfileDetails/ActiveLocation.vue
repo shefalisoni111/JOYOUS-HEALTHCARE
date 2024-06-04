@@ -161,10 +161,10 @@ export default {
       }
     },
   },
-  mounted() {
-    this.createdClient();
-    this.getClientMethod();
-    this.getSiteAllDataMethod();
+  async mounted() {
+    await this.createdClient();
+    await this.getClientMethod();
+    await this.getSiteAllDataMethod();
   },
 };
 </script>

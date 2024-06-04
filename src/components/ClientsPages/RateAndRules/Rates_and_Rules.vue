@@ -666,11 +666,11 @@ export default {
     },
   },
 
-  mounted() {
-    this.getRateRulesDataMethod();
-    this.getBusinessUnitMethod();
-    this.getPositionMethod();
-    this.getClientMethod();
+  async mounted() {
+    await this.getRateRulesDataMethod();
+    await this.getBusinessUnitMethod();
+    await this.getPositionMethod();
+    await this.getClientMethod();
   },
 };
 </script>

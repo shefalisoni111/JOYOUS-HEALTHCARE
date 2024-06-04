@@ -599,22 +599,22 @@ export default {
         });
     },
   },
-  async created() {
+  async mounted() {
     await this.getCandidateMethod();
     await this.getCandidateWorkExperienceMethod();
     await this.getCandidateEducationMethod();
     await this.getCandidateNextToKineMethod();
   },
-  async mounted() {
-    // try {
-    //   await this.getCandidateMethod();
-    //   await this.getCandidateWorkExperienceMethod();
-    //   await this.getCandidateEducationMethod();
-    //   await this.getCandidateNextToKineMethod();
-    // } catch (error) {
-    //   // console.error("Error during component initialization:", error);
-    // }
-  },
+  // async mounted() {
+  //   // try {
+  //   //   await this.getCandidateMethod();
+  //   //   await this.getCandidateWorkExperienceMethod();
+  //   //   await this.getCandidateEducationMethod();
+  //   //   await this.getCandidateNextToKineMethod();
+  //   // } catch (error) {
+  //   //   // console.error("Error during component initialization:", error);
+  //   // }
+  // },
 };
 </script>
 

@@ -156,9 +156,9 @@ export default {
     },
   },
 
-  mounted() {
-    this.setActiveTabFromRoute();
-    this.setActiveTabNameOnLoad();
+  async mounted() {
+    await this.setActiveTabFromRoute();
+    await this.setActiveTabNameOnLoad();
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {

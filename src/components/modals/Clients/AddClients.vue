@@ -402,10 +402,10 @@ export default {
     },
   },
 
-  mounted() {
+  async mounted() {
     // this.validatePassword = this.validatePassword.bind(this);
     this.isValidForm = this.isFormValid;
-    this.getPositionMethod();
+    await this.getPositionMethod();
   },
 };
 </script>

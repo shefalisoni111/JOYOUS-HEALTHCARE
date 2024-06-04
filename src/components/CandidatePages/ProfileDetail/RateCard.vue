@@ -152,7 +152,7 @@ export default {
 
     //  ratecard apis end
   },
-  async created() {
+  async mounted() {
     await this.showRateCardMethod();
   },
 };

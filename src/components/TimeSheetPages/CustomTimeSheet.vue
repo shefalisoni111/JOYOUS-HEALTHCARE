@@ -770,13 +770,13 @@ export default {
     },
   },
 
-  mounted() {
+  async mounted() {
     this.currentView = "monthly";
-    this.updateDateRange();
-    this.getCustomSheetMethod();
-    this.getBusinessUnitMethod();
+    await this.updateDateRange();
+    await this.getCustomSheetMethod();
+    await this.getBusinessUnitMethod();
 
-    this.getCandidateListMethod();
+    await this.getCandidateListMethod();
     // this.loadDateRangeFromLocalStorage();
     // const currentDate = new Date();
     // const startOfWeek = new Date(currentDate);

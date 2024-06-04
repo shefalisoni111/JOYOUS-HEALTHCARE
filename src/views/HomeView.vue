@@ -699,12 +699,10 @@ export default {
     }
 
     this.loadDateRangeFromLocalStorage();
-    this.fetchData();
-    this.FetchShiftsMethod();
   },
 
-  mounted() {
-    this.loadDateRangeFromLocalStorage();
+  async mounted() {
+    await this.loadDateRangeFromLocalStorage();
 
     const currentDate = new Date();
     const dayOfWeek = currentDate.getDay();
@@ -718,6 +716,8 @@ export default {
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(endOfWeek.getDate() + 6);
     this.endDate = endOfWeek;
+    await this.fetchData();
+    await this.FetchShiftsMethod();
   },
 };
 </script>

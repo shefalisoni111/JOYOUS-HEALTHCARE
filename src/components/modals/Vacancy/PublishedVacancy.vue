@@ -512,9 +512,9 @@ export default {
     },
   },
 
-  mounted() {
-    this.getVacancyDataMethod();
-    this.getAllCandidateListMethod(this.$store.state.selectedPublishItemId);
+  async mounted() {
+    // await this.getVacancyDataMethod();
+    await this.getAllCandidateListMethod(this.$store.state.selectedPublishItemId);
   },
 };
 </script>

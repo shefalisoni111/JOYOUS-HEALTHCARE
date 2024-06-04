@@ -30,23 +30,6 @@
                   </div> -->
 
                   <div></div>
-
-                  <!-- <div class="d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center gap-2">
-                      <div class="searchbox position-relative">
-                        <form @submit.prevent="search">
-                          <input
-                            class="form-control mr-sm-2"
-                            type="search"
-                            placeholder="Search by Name"
-                            aria-label="Search"
-                            v-model="searchQuery"
-                            @input="debounceSearch"
-                          />
-                        </form>
-                      </div>
-                    </div>
-                  </div> -->
                 </div>
               </div>
             </div>

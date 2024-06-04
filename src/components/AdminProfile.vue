@@ -209,7 +209,7 @@ export default {
       }
     },
   },
-  async created() {
+  async mounted() {
     const storedProfileImage = localStorage.getItem("profileImage");
     if (storedProfileImage) {
       this.profileImage = storedProfileImage;

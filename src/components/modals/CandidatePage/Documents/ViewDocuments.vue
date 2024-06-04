@@ -113,7 +113,7 @@ export default {
       }
     },
   },
-  async created() {
+  async mounted() {
     await this.getDocumentDetails();
   },
 };

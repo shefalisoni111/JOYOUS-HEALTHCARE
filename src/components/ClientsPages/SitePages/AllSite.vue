@@ -380,8 +380,8 @@ export default {
       document.body.removeChild(a);
     },
   },
-  mounted() {
-    this.getSiteAllDataMethod();
+  async mounted() {
+    await this.getSiteAllDataMethod();
   },
 };
 </script>

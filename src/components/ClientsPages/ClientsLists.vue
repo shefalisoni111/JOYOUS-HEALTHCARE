@@ -461,10 +461,10 @@ export default {
         .then((response) => (this.getClientDetail = response.data.data));
     },
   },
-  mounted() {
-    this.setActiveTabFromRoute();
-    this.setActiveTabNameOnLoad();
-    this.createdClient();
+  async mounted() {
+    await this.setActiveTabFromRoute();
+    await this.setActiveTabNameOnLoad();
+    await this.createdClient();
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {

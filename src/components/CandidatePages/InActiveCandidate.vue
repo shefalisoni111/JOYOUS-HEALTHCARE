@@ -165,7 +165,7 @@ export default {
     },
   },
 
-  mounted() {
+  created() {
     this.getCandidate();
   },
 };

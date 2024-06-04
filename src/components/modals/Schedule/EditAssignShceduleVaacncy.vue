@@ -501,11 +501,11 @@ export default {
       }
     },
   },
-  mounted() {
-    this.getJobTitleMethod();
+  async mounted() {
+    await this.getJobTitleMethod();
     // this.fetchAssignVacancyMethod();
-    this.fetchVacancyIdMethod();
-    this.fetchVacancyListMethod(this.selectedWeekDate);
+    await this.fetchVacancyIdMethod();
+    await this.fetchVacancyListMethod(this.selectedWeekDate);
   },
   watch: {
     candidateId: {

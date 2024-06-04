@@ -295,8 +295,8 @@ export default {
     },
   },
 
-  async created() {
-    await this.getCandidateMethods();
+  created() {
+    this.getCandidateMethods();
   },
 };
 </script>

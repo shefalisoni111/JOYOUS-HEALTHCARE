@@ -152,8 +152,8 @@ export default {
       };
     },
   },
-  mounted() {
-    this.rejectCandidate();
+  async mounted() {
+    await this.rejectCandidate();
   },
 };
 </script>

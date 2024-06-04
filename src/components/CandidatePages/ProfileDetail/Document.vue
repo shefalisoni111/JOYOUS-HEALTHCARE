@@ -546,7 +546,7 @@ export default {
     },
   },
 
-  async created() {
+  async mounted() {
     await this.getDocumentCategories();
     await this.getDocCAtegories();
     await this.getDeletedDocumentListMethod();

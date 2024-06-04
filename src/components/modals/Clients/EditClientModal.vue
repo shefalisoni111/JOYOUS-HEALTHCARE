@@ -236,9 +236,9 @@ export default {
       },
     },
   },
-  mounted() {
-    this.fetchClientsMethod(this.$route.params.id);
-    this.getJobTitleMethod();
+  async mounted() {
+    await this.fetchClientsMethod(this.$route.params.id);
+    await this.getJobTitleMethod();
   },
 };
 </script>

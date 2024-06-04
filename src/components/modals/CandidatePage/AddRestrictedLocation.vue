@@ -235,11 +235,11 @@ export default {
       this.validationSelectedClient = true;
     },
   },
-  mounted() {
-    this.getBusinessUnitMethod();
+  async mounted() {
+    await this.getBusinessUnitMethod();
     this.candidate_id = this.$route.params.id;
-    this.getClientMethod();
-    this.clearError();
+    await this.getClientMethod();
+    await this.clearError();
   },
 };
 </script>

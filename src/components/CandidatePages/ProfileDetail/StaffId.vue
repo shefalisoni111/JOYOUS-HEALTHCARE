@@ -180,8 +180,8 @@ export default {
     },
   },
 
-  mounted() {
-    this.getCandidateMethods();
+  async mounted() {
+    await this.getCandidateMethods();
   },
 };
 </script>

@@ -97,8 +97,8 @@ export default {
       }
     },
   },
-  mounted() {
-    this.getSiteActiveMethod();
+  async mounted() {
+    await this.getSiteActiveMethod();
   },
 };
 </script>

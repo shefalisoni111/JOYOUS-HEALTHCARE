@@ -584,7 +584,7 @@ export default {
     },
   },
 
-  async created() {
+  async mounted() {
     await Promise.all([
       this.initializeCalendar(),
       this.updateCurrentMonth(new Date(this.initialDate)),

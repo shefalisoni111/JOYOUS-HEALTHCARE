@@ -837,11 +837,11 @@ export default {
 
   //   this.loadDateRangeFromLocalStorage();
   // },
-  mounted() {
-    this.loadDateRangeFromLocalStorage();
-    this.getBusinessUnitMethod();
+  async mounted() {
+    await this.loadDateRangeFromLocalStorage();
+    await this.getBusinessUnitMethod();
 
-    this.getCandidateListMethod();
+    await this.getCandidateListMethod();
 
     // const currentDate = new Date();
     // const startOfWeek = new Date(currentDate);
@@ -863,7 +863,7 @@ export default {
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(endOfWeek.getDate() + 6);
     this.endDate = endOfWeek;
-    this.fetWeekTimeSheetData();
+    await this.fetWeekTimeSheetData();
   },
 };
 </script>

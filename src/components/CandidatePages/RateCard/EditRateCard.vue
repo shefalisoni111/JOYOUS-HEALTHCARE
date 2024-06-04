@@ -79,7 +79,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import axios from "axios";
 
 export default {
@@ -114,10 +114,7 @@ export default {
     },
     async updateCandidateMethod() {
       try {
-        await axios.put(
-          `${VITE_API_URL}/rate_cards/${this.fetchCandidate.id}`,
-          {}
-        );
+        await axios.put(`${VITE_API_URL}/rate_cards/${this.fetchCandidate.id}`, {});
 
         alert("Candidate updated successfully");
       } catch (error) {
@@ -126,8 +123,8 @@ export default {
     },
   },
 
-  mounted() {
-    this.fetchCandidateMethod(this.$route.params.id);
+  async mounted() {
+    await this.fetchCandidateMethod(this.$route.params.id);
   },
 };
 </script>

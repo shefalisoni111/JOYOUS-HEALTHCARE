@@ -129,8 +129,8 @@ export default {
       },
     },
   },
-  mounted() {
-    this.fetchClientsMethod(this.$route.params.id);
+  async mounted() {
+    await this.fetchClientsMethod(this.$route.params.id);
   },
 };
 </script>

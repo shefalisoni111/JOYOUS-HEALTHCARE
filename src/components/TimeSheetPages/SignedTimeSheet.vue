@@ -1,34 +1,3 @@
-<!-- <template>
-  <div>
-    <Navbar />
-    <div id="main">
-      <h6>Client Invoice Page in Progress.....</h6>
-    </div>
-  </div>
-</template>
-<script>
-import Navbar from "../Navbar.vue";
-
-export default {
-  components: {
-    Navbar,
-  },
-};
-</script>
-<style scoped>
-#main {
-  padding: 20px 20px;
-  transition: all 0.3s;
-  height: 100dvh;
-  
-  background-color: #fdce5e17;
-}
-ul.generalsetting h6 {
-  font-size: 14px;
-  font-weight: bold;
-}
-</style> -->
-
 <template>
   <div>
     <Navbar />
@@ -747,15 +716,15 @@ export default {
     },
   },
 
-  mounted() {
+  async mounted() {
     this.currentView = "monthly";
-    this.updateDateRange();
-    this.getBusinessUnitMethod();
+    await this.updateDateRange();
+    await this.getBusinessUnitMethod();
 
-    this.getClientMethod();
+    await this.getClientMethod();
 
-    this.getCandidateListMethod();
-    this.signedTimeSheetMethod();
+    await this.getCandidateListMethod();
+    await this.signedTimeSheetMethod();
     // this.loadDateRangeFromLocalStorage();
     // const currentDate = new Date();
     // const startOfWeek = new Date(currentDate);

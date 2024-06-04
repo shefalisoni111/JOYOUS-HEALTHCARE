@@ -288,6 +288,7 @@ export default {
       required: true,
     },
   },
+
   components: { SuccessAlert },
   computed: {
     selectBusinessUnit() {
@@ -593,12 +594,12 @@ export default {
     },
   },
 
-  mounted() {
-    this.getBusinessUnitMethod();
+  async mounted() {
+    await this.getBusinessUnitMethod();
     // this.getSiteAccordingClientMethod();
-    this.getClientMethod();
-    this.getTimeShift();
-    this.getJobTitleMethod();
+    await this.getClientMethod();
+    await this.getTimeShift();
+    await this.getJobTitleMethod();
   },
   watch: {
     "fetchVacancy.site_id": {

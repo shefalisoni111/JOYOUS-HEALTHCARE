@@ -118,80 +118,6 @@
                   </div>
                 </div>
 
-                <!-- <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label" for="selectShifts">Shift</label>
-                  </div>
-                  <div class="col-10">
-                    <select v-model="site_shift_id" id="selectShifts">
-                      <option
-                        v-for="option in shiftsTime"
-                        :key="option.id"
-                        :value="option.id"
-                        aria-placeholder="Select Job"
-                      >
-                        {{ option.shift_name }}
-                      </option>
-                      <option>Custom Time</option>
-                    </select>
-
-                    <span v-if="!validationShift" class="text-danger"
-                      >Shift Required</span
-                    >
-                  </div>
-                </div>
-                <div>
-                  <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
-                      <label class="form-label" for="selectShiftStart">Start Time</label>
-                    </div>
-                    <div class="col-10">
-                      <select
-                        id="selectShiftStart"
-                        class="form-select w-25"
-                        v-model="start_time"
-                        @change="updateStartTime"
-                      >
-                        <option
-                          v-for="shift in shiftsTime"
-                          :key="shift.id"
-                          :value="shift.start_time"
-                          :disabled="shift.id !== site_shift_id"
-                        >
-                          {{ shift.start_time }}
-                        </option>
-                      </select>
-                      <span v-if="!validationStartTime && !start_time" class="text-danger"
-                        >Start Time is required</span
-                      >
-                    </div>
-                  </div>
-                  <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
-                      <label class="form-label" for="selectShiftEnd">End Time</label>
-                    </div>
-                    <div class="col-10">
-                      <select
-                        id="selectShiftEnd"
-                        class="form-select w-25"
-                        v-model="end_time"
-                        @change="updateEndTime"
-                      >
-                        <option
-                          v-for="shift in shiftsTime"
-                          :key="shift.id"
-                          :value="shift.end_time"
-                          :disabled="shift.id !== site_shift_id"
-                        >
-                          {{ shift.end_time }}
-                        </option>
-                      </select>
-                      <span v-if="!validationEndTime && !end_time" class="text-danger">
-                        End Time is required
-                      </span>
-                    </div>
-                  </div>
-                </div> -->
                 <div>
                   <div class="mb-3 d-flex justify-content-between">
                     <div class="col-2">
@@ -218,62 +144,7 @@
                     </div>
                   </div>
                 </div>
-                <!-- <div v-if="site_shift_id === 'Custom Time'">
-                    <div class="mb-3 d-flex justify-content-between">
-                      <div class="col-2">
-                        <label class="form-label" for="selectCustomStartTime"
-                          >Start Time</label
-                        >
-                      </div>
-                      <div class="col-10">
-                        <select
-                          id="selectCustomStartTime"
-                          class="form-select w-25"
-                          v-model="start_time"
-                          @change="validateStartTime"
-                        >
-                          <option
-                            v-for="hour in 24"
-                            :key="hour"
-                            :value="formatTime(hour)"
-                          >
-                            {{ formatTime(hour) }}
-                          </option>
-                        </select>
-                        <span
-                          v-if="!validationStartTime && !start_time"
-                          class="text-danger"
-                          >Start Time is required</span
-                        >
-                      </div>
-                    </div>
-                    <div class="mb-3 d-flex justify-content-between">
-                      <div class="col-2">
-                        <label class="form-label" for="selectCustomEndTime"
-                          >End Time</label
-                        >
-                      </div>
-                      <div class="col-10">
-                        <select
-                          id="selectCustomEndTime"
-                          class="form-select w-25"
-                          v-model="end_time"
-                          @change="validateEndTime"
-                        >
-                          <option
-                            v-for="hour in 24"
-                            :key="hour"
-                            :value="formatTime(hour)"
-                          >
-                            {{ formatTime(hour) }}
-                          </option>
-                        </select>
-                        <span v-if="!validationEndTime && !end_time" class="text-danger"
-                          >End Time is required</span
-                        >
-                      </div>
-                    </div>
-                  </div> -->
+
                 <div>
                   <div class="mb-3 d-flex justify-content-between">
                     <div class="col-2">
@@ -924,12 +795,12 @@ export default {
       this.selectedDate = null;
     },
   },
-  mounted() {
-    this.getClientMethod();
+  async mounted() {
+    await this.getClientMethod();
 
-    this.getTimeShift();
+    await this.getTimeShift();
     this.isValidForm = this.isFormValid;
-    this.clearError();
+    await this.clearError();
   },
 };
 </script>

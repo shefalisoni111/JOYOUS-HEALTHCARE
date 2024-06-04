@@ -154,7 +154,7 @@ export default {
       this.notes = "";
     },
   },
-  async created() {
+  async mounted() {
     await this.getNotesMethod();
   },
 };

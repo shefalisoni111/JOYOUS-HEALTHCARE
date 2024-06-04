@@ -104,8 +104,8 @@ export default {
       }
     },
   },
-  mounted() {
-    this.getProfileViewData();
+  async mounted() {
+    await this.getProfileViewData();
   },
 };
 </script>

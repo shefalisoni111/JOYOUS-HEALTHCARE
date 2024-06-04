@@ -831,43 +831,43 @@ export default {
     closeModal() {
       this.showModal = false;
     },
-    async getCandidateListMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/candidates`);
-        this.candidateLists = response.data.data;
-        this.candidateStatus = response.data.data.status;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
-    async getPositionMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
-        this.options = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
-    async getBusinessUnitMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/activated_site`);
-        this.businessUnit = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
+    // async getCandidateListMethod() {
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/candidates`);
+    //     this.candidateLists = response.data.data;
+    //     this.candidateStatus = response.data.data.status;
+    //   } catch (error) {
+    //     if (error.response) {
+    //       if (error.response.status == 404) {
+    //         // alert(error.response.data.message);
+    //       }
+    //     }
+    //   }
+    // },
+    // async getPositionMethod() {
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+    //     this.options = response.data.data;
+    //   } catch (error) {
+    //     if (error.response) {
+    //       if (error.response.status == 404) {
+    //         // alert(error.response.data.message);
+    //       }
+    //     }
+    //   }
+    // },
+    // async getBusinessUnitMethod() {
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/activated_site`);
+    //     this.businessUnit = response.data.data;
+    //   } catch (error) {
+    //     if (error.response) {
+    //       if (error.response.status == 404) {
+    //         // alert(error.response.data.message);
+    //       }
+    //     }
+    //   }
+    // },
     moveToPrevious() {
       if (this.currentView === "weekly") {
         this.startDate.setDate(this.startDate.getDate() - 7);
@@ -976,28 +976,16 @@ export default {
         this.isLoading = false;
       }
     },
-
-    // async fetchBookingDataMethod() {
-    //   const token = localStorage.getItem("token");
-    //   axios
-    //     .get(`${VITE_API_URL}/bookings`, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => (this.getBookingData = response.data.booking_datas));
-    // },
   },
 
-  mounted() {
+  async mounted() {
     this.loadDateRangeFromLocalStorage();
 
-    this.getPositionMethod();
+    // await this.getPositionMethod();
 
-    this.getBusinessUnitMethod();
+    // await this.getBusinessUnitMethod();
 
-    this.getCandidateListMethod();
+    // await this.getCandidateListMethod();
     const currentDate = new Date();
     const dayOfWeek = currentDate.getDay();
     const startOfWeek = new Date(currentDate);
@@ -1010,8 +998,8 @@ export default {
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(endOfWeek.getDate() + 6);
     this.endDate = endOfWeek;
-    this.fetchBookingDataMethod();
-    this.getDeleteBookingData();
+    await this.fetchBookingDataMethod();
+    await this.getDeleteBookingData();
   },
 };
 </script>

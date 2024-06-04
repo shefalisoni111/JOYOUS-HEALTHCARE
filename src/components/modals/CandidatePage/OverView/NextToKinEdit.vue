@@ -227,7 +227,7 @@ export default {
   beforeDestroy() {
     this.$options.watch.nextKinID = null;
   },
-  async created() {
+  async mounted() {
     await this.fetchNextToKinMethod();
   },
 };

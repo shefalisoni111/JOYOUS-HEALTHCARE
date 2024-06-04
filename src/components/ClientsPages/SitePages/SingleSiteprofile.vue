@@ -265,9 +265,9 @@ export default {
     },
   },
 
-  mounted() {
-    this.getClientMethod();
-    this.getSiteMethod();
+  async mounted() {
+    await this.getClientMethod();
+    await this.getSiteMethod();
   },
 };
 </script>

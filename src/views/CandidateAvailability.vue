@@ -614,7 +614,7 @@ export default {
     Calendar,
     Loader,
   },
-  async created() {
+  async mounted() {
     try {
       const currentDate = new Date();
       const mondayIndex = 1;
@@ -623,8 +623,8 @@ export default {
         dayOfWeek < mondayIndex ? mondayIndex - dayOfWeek - 7 : mondayIndex - dayOfWeek;
       currentDate.setDate(currentDate.getDate() + daysToAdd);
       this.startDate = currentDate.toISOString().split("T")[0];
-      this.fetchCandidateList(this.formattedStartDate);
-      this.fetchAvailabilityStatusMethod();
+      await this.fetchCandidateList(this.formattedStartDate);
+      await this.fetchAvailabilityStatusMethod();
     } catch (error) {
       // Handle error
     }

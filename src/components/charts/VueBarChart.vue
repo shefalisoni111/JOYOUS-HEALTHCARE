@@ -120,8 +120,8 @@ export default {
         });
     },
   },
-  mounted() {
-    this.fetchData();
+  async mounted() {
+    await this.fetchData();
   },
 };
 </script>

@@ -462,9 +462,9 @@ export default {
     // },
   },
 
-  mounted() {
+  async mounted() {
     // this.getVacancyDataM
-    this.getPublishStaffListMethod();
+    await this.getPublishStaffListMethod();
     // this.getAssignStaffListMethod();
     // this.getAllCandidateListMethod(this.$store.state.selectedPublishItemId);
   },

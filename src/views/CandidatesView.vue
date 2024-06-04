@@ -2,7 +2,7 @@
   <div>
     <Navbar />
 
-    <CandidateAdd />
+    <!-- <CandidateAdd /> -->
 
     <router-view />
   </div>
@@ -11,14 +11,14 @@
 <script>
 import Navbar from "../components/Navbar.vue";
 
-import CandidateAdd from "../components/modals/CandidatePage/CandidateAdd.vue";
+// import CandidateAdd from "../components/modals/CandidatePage/CandidateAdd.vue";
 
 export default {
   name: "CandidatesView",
   components: {
     Navbar,
 
-    CandidateAdd,
+    // CandidateAdd,
   },
 };
 </script>

@@ -1488,20 +1488,7 @@ export default {
         // console.error("Error in fetchVacancyListMethod:", error);
       }
     },
-    // async fetchAssignVacancyStaffList() {
-    //   try {
-    //     const response = await axios.get(
-    //       `${VITE_API_URL}/find_assign_vacacy_and_candidate`
-    //     );
-    //     this.assignedCandidateList = response.data.candidates;
-    //   } catch (error) {
-    //     if (error.response) {
-    //       if (error.response.status == 404) {
-    //         // alert(error.response.data.message);
-    //       }
-    //     }
-    //   }
-    // },
+
     async getJobTitleMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/active_job_list`);
@@ -1535,23 +1522,15 @@ export default {
     SuccessAlert,
     Loader,
   },
-  mounted() {
-    this.loadDateRangeFromLocalStorage();
+  async mounted() {
+    await this.loadDateRangeFromLocalStorage();
 
-    this.fetchAssignList();
-    this.getBusinessUnitMethod();
+    await this.fetchAssignList();
+    await this.getBusinessUnitMethod();
     // this.fetchAssignVacancyStaffList();
-    this.getJobTitleMethod();
-    this.getTimeShift();
+    await this.getJobTitleMethod();
+    await this.getTimeShift();
 
-    // const currentDate = new Date();
-    // const startOfWeek = new Date(currentDate);
-    // startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
-    // this.startDate = startOfWeek;
-
-    // const endOfWeek = new Date(currentDate);
-    // endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
-    // this.endDate = endOfWeek;
     const currentDate = new Date();
     const dayOfWeek = currentDate.getDay();
     const startOfWeek = new Date(currentDate);
@@ -1564,8 +1543,8 @@ export default {
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(endOfWeek.getDate() + 6);
     this.endDate = endOfWeek;
-    this.fetchCandidateList();
-    this.fetchVacancyListMethod();
+    await this.fetchCandidateList();
+    await this.fetchVacancyListMethod();
   },
 };
 </script>

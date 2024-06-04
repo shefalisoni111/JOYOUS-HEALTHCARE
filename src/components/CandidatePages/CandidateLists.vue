@@ -536,7 +536,7 @@ export default {
     },
   },
 
-  mounted() {
+  created() {
     // this.getActiveCAndidateMethod();
     // this.getCandidateMethods();
     this.setActiveTabFromRoute();

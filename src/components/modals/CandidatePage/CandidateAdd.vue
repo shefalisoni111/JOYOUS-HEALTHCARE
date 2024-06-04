@@ -386,8 +386,8 @@ export default {
       this.isValidForm = true;
     },
   },
-  mounted() {
-    this.getPositionMethod();
+  async mounted() {
+    await this.getPositionMethod();
     this.isValidForm = this.isFormValid;
   },
 };

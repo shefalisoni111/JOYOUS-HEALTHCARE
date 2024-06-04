@@ -104,8 +104,8 @@ export default {
       }
     },
   },
-  mounted() {
-    this.getSiteInactiveMethod();
+  async mounted() {
+    await this.getSiteInactiveMethod();
   },
 };
 </script>

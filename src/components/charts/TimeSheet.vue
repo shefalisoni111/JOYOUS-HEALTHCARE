@@ -45,8 +45,8 @@ export default {
       },
     };
   },
-  mounted() {
-    this.renderChart();
+  async mounted() {
+    await this.renderChart();
   },
   methods: {
     renderChart() {

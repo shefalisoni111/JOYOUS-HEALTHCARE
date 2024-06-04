@@ -213,8 +213,8 @@ export default {
       },
     },
   },
-  mounted() {
-    this.getJobTitleMethod();
+  async mounted() {
+    await this.getJobTitleMethod();
   },
 };
 </script>

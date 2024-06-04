@@ -148,7 +148,7 @@
                 'btn btn-primary rounded-1 text-capitalize fw-medium': true,
               }"
               data-bs-dismiss="modal"
-              v-on:click="addRateCardMethod()"
+              v-on:click="sendRateCardData()"
             >
               Add RateCard
             </button>
@@ -314,6 +314,9 @@ export default {
         }
       } catch (error) {}
     },
+    async sendRateCardData() {
+      await this.addRateCardMethod();
+    },
     async getJobTitleMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/active_job_list`);
@@ -392,12 +395,12 @@ export default {
       this.validationPosition = true;
     },
   },
-  mounted() {
+  async mounted() {
     // this.addRateCardMethod();
-    this.getJobTitleMethod();
-    this.getBusinessUnitMethod();
-    this.getTimeShift();
-    this.getEmployeeTypeData();
+    await this.getJobTitleMethod();
+    await this.getBusinessUnitMethod();
+    await this.getTimeShift();
+    await this.getEmployeeTypeData();
   },
 };
 </script>

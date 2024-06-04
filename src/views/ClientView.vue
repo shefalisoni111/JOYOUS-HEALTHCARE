@@ -9,7 +9,7 @@
 </template>
 <script>
 import Navbar from "../components/Navbar.vue";
-import ClientsProfileView from "../components/ClientsPages/ClientsProfileView.vue";
+// import ClientsProfileView from "../components/ClientsPages/ClientsProfileView.vue";
 
 export default {
   data() {
@@ -17,7 +17,7 @@ export default {
   },
   components: {
     Navbar,
-    ClientsProfileView,
+    // ClientsProfileView,
   },
 
   methods: {},
