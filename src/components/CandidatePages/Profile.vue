@@ -403,7 +403,7 @@ export default {
   },
 
   async mounted() {
-    await this.updateActiveTab();
+    // await this.updateActiveTab();
     await this.getCandidate(this.candidateId);
     // await this.GetNotesCount();
   },

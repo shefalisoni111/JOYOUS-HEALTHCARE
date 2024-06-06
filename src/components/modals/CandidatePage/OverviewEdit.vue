@@ -181,7 +181,7 @@ export default {
   data() {
     return {
       fetchCandidate: {
-        id: "",
+        id: this.$route.params.id,
         employment_type: "",
         employment_type_id: "",
         DBS_PVG_no: null,
@@ -199,6 +199,12 @@ export default {
   },
   components: {
     SuccessAlert,
+  },
+  props: {
+    overViewId: {
+      type: Number,
+      default: 0,
+    },
   },
   computed: {
     selectEmployeeType() {
@@ -258,11 +264,27 @@ export default {
       }
     },
   },
-
-  async mounted() {
-    await this.fetchCandidateOverviewMethod();
-    await this.getEmployeeTypeData();
+  watch: {
+    $route(to, from) {
+      this.fetchCandidateOverviewMethod();
+      this.getEmployeeTypeData();
+    },
   },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.fetchCandidateOverviewMethod();
+      vm.getEmployeeTypeData();
+    });
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.fetchCandidateOverviewMethod();
+    this.getEmployeeTypeData();
+    next();
+  },
+  // mounted() {
+  //   this.fetchCandidateOverviewMethod();
+  //   this.getEmployeeTypeData();
+  // },
 };
 </script>
 

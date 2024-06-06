@@ -101,7 +101,6 @@ export default {
         if (response.status === 200) {
           this.getNotes = response.data;
         }
-        this.getCandidate();
       } catch (error) {
         if (error.response) {
           if (error.response.status === 404) {
@@ -114,20 +113,18 @@ export default {
         this.isLoading = false;
       }
     },
-    async getCandidate() {
-      try {
-        await axios.get(`${VITE_API_URL}/candidates/${this.$route.params.id}`);
-      } catch (error) {
-        if (error.response && error.response.status == 404) {
-          console.error("Error 404: Candidate not found");
-        } else {
-          console.error("Error fetching candidate:", error);
-        }
-      }
-    },
   },
-  async mounted() {
-    await this.getNotesMethod();
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.this.getNotesMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.getNotesMethod();
+    next();
+  },
+  mounted() {
+    this.getNotesMethod();
   },
 };
 </script>

@@ -27,6 +27,7 @@
                   data-bs-toggle="modal"
                   data-bs-target="#editOverview"
                   data-bs-whatever="@mdo"
+                  @click="handleOverViewEdit()"
                 >
                   Edit
                 </button>
@@ -437,13 +438,13 @@
     <WorkExperience @AddExperienceData="getCandidateWorkExperienceMethod" />
     <EducationAdd @AddEducation="getCandidateEducationMethod" />
     <AddNextKin @AddNextKin="getCandidateNextToKineMethod" />
-    <EditBankDetails @bankDetailAdded="getCandidateMethod" />
+    <EditBankDetails @bankDetailAdded="getCandidateMethod" ref="editBankDetail" />
     <NextToKinEdit
       @nextToKinAdded="getCandidateNextToKineMethod"
       :nextKinID="selectedNextKinId"
     />
     <!-- <EditBankDetails @bankDetailAdded="getCandidateMethod" /> -->
-    <OverviewEdit @overviewAdded="getCandidateMethod" />
+    <OverviewEdit @overviewAdded="getCandidateMethod" ref="overviewEdit" />
     <!-- <ProfileTabs @getBankDetail="getCandidateMethod" /> -->
   </div>
 </template>
@@ -466,6 +467,7 @@ export default {
       getEducationExpData: [],
       getWorkExpData: [],
       getNextToKin: [],
+
       fetchCandidate: {
         id: "",
         first_name: "",
@@ -493,6 +495,12 @@ export default {
     ProfileTabs,
   },
   methods: {
+    handleOverViewEdit() {
+      this.$refs.overviewEdit.getEmployeeTypeData();
+    },
+    // handleBankDetailEdit(){
+    //   this.$refs.editBankDetail.getEmployeeTypeData();
+    // },
     nextKinEdit(nextKinID) {
       this.selectedNextKinId = nextKinID;
     },
@@ -599,11 +607,27 @@ export default {
         });
     },
   },
-  async mounted() {
-    await this.getCandidateMethod();
-    await this.getCandidateWorkExperienceMethod();
-    await this.getCandidateEducationMethod();
-    await this.getCandidateNextToKineMethod();
+
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.this.getCandidateMethod();
+      vm.this.getCandidateWorkExperienceMethod();
+      vm.this.getCandidateEducationMethod();
+      vm.this.getCandidateNextToKineMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.getCandidateMethod();
+    this.getCandidateWorkExperienceMethod();
+    this.getCandidateEducationMethod();
+    this.getCandidateNextToKineMethod();
+    next();
+  },
+  mounted() {
+    this.getCandidateMethod();
+    this.getCandidateWorkExperienceMethod();
+    this.getCandidateEducationMethod();
+    this.getCandidateNextToKineMethod();
   },
   // async mounted() {
   //   // try {

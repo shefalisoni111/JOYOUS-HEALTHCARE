@@ -244,6 +244,7 @@ export default {
       currentPage: 1,
       itemsPerPage: 8,
       isLoading: false,
+      dataFetched: false,
     };
   },
 
@@ -400,8 +401,8 @@ export default {
     },
   },
 
-  async mounted() {
-    await this.createVacancy();
+  created() {
+    this.createVacancy();
   },
 };
 </script>

@@ -146,6 +146,7 @@
     <EditSiteProfileEmailContactNumberDetails
       :siteID="selectedSiteID || 0"
       @site-updatedProfileDetails="getSiteMethod"
+      ref="editSiteProfileEmailContact"
     />
   </div>
 </template>
@@ -264,10 +265,20 @@ export default {
       }
     },
   },
-
-  async mounted() {
-    await this.getClientMethod();
-    await this.getSiteMethod();
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.getClientMethod();
+      vm.getSiteMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.getClientMethod();
+    this.getSiteMethod();
+    next();
+  },
+  mounted() {
+    this.getClientMethod();
+    this.getSiteMethod();
   },
 };
 </script>

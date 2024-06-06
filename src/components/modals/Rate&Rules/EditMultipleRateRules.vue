@@ -112,18 +112,6 @@
                             color: black;
                           "
                         />
-                        <!-- <select
-                          v-model="fetchRateRulesData[0].site_shift_id"
-                          :disabled="true"
-                        >
-                           <option
-                            v-for="option in shiftsTime"
-                            :key="option.id"
-                            :value="option.id"
-                          >
-                            {{ option.shift_name }}
-                          </option> 
-                        </select> -->
                       </div>
 
                       <div class="col-4">
@@ -281,18 +269,6 @@
                             color: black;
                           "
                         />
-                        <!-- <select
-                          v-model="fetchRateRulesData[1].site_shift_id"
-                          :disabled="true"
-                        >
-                          <option
-                            v-for="option in shiftsTime"
-                            :key="option.id"
-                            :value="option.id"
-                          >
-                            {{ option.shift_name }}
-                          </option>
-                        </select> -->
                       </div>
 
                       <div class="col-4">
@@ -463,18 +439,6 @@
                             color: black;
                           "
                         />
-                        <!-- <select
-                        v-model="fetchRateRulesData[2].site_shift_id"
-                        :disabled="true"
-                      >
-                        <option
-                          v-for="option in shiftsTime"
-                          :key="option.id"
-                          :value="option.id"
-                        >
-                          {{ option.shift_name }}
-                        </option>
-                      </select> -->
                       </div>
 
                       <div class="col-4">
@@ -626,18 +590,6 @@
                             color: black;
                           "
                         />
-                        <!-- <select
-                        v-model="fetchRateRulesData[3].site_shift_id"
-                        :disabled="true"
-                      >
-                        <option
-                          v-for="option in shiftsTime"
-                          :key="option.id"
-                          :value="option.id"
-                        >
-                          {{ option.shift_name }}
-                        </option>
-                      </select> -->
                       </div>
 
                       <div class="col-4">
@@ -802,18 +754,6 @@
                             color: black;
                           "
                         />
-                        <!-- <select
-                        v-model="fetchRateRulesData[4].site_shift_id"
-                        :disabled="true"
-                      >
-                        <option
-                          v-for="option in shiftsTime"
-                          :key="option.id"
-                          :value="option.id"
-                        >
-                          {{ option.shift_name }}
-                        </option>
-                      </select> -->
                       </div>
 
                       <div class="col-4">
@@ -965,18 +905,6 @@
                             color: black;
                           "
                         />
-                        <!-- <select
-                        v-model="fetchRateRulesData[4].site_shift_id"
-                        :disabled="true"
-                      >
-                        <option
-                          v-for="option in shiftsTime"
-                          :key="option.id"
-                          :value="option.id"
-                        >
-                          {{ option.shift_name }}
-                        </option>
-                      </select> -->
                       </div>
 
                       <div class="col-4">
@@ -1141,18 +1069,6 @@
                             color: black;
                           "
                         />
-                        <!-- <select
-                        v-model="fetchRateRulesData[6].site_shift_id"
-                        :disabled="true"
-                      >
-                        <option
-                          v-for="option in shiftsTime"
-                          :key="option.id"
-                          :value="option.id"
-                        >
-                          {{ option.shift_name }}
-                        </option>
-                      </select> -->
                       </div>
 
                       <div class="col-4">
@@ -1304,18 +1220,6 @@
                             color: black;
                           "
                         />
-                        <!-- <select
-                        v-model="fetchRateRulesData[4].site_shift_id"
-                        :disabled="true"
-                      >
-                        <option
-                          v-for="option in shiftsTime"
-                          :key="option.id"
-                          :value="option.id"
-                        >
-                          {{ option.shift_name }}
-                        </option>
-                      </select> -->
                       </div>
 
                       <div class="col-4">
@@ -1640,18 +1544,6 @@
                             color: black;
                           "
                         />
-                        <!-- <select
-                        v-model="fetchRateRulesData[9].site_shift_id"
-                        :disabled="true"
-                      >
-                        <option
-                          v-for="option in shiftsTime"
-                          :key="option.id"
-                          :value="option.id"
-                        >
-                          {{ option.shift_name }}
-                        </option>
-                      </select> -->
                       </div>
 
                       <div class="col-4">
@@ -1813,18 +1705,6 @@
                             color: black;
                           "
                         />
-                        <!-- <select
-                        v-model="fetchRateRulesData[10].site_shift_id"
-                        :disabled="true"
-                      >
-                        <option
-                          v-for="option in shiftsTime"
-                          :key="option.id"
-                          :value="option.id"
-                        >
-                          {{ option.shift_name }}
-                        </option>
-                      </select> -->
                       </div>
 
                       <div class="col-4">
@@ -1976,18 +1856,6 @@
                             color: black;
                           "
                         />
-                        <!-- <select
-                        v-model="fetchRateRulesData[11].site_shift_id"
-                        :disabled="true"
-                      >
-                        <option
-                          v-for="option in shiftsTime"
-                          :key="option.id"
-                          :value="option.id"
-                        >
-                          {{ option.shift_name }}
-                        </option>
-                      </select> -->
                       </div>
 
                       <div class="col-4">
@@ -2152,18 +2020,6 @@
                             color: black;
                           "
                         />
-                        <!-- <select
-                        v-model="fetchRateRulesData[12].site_shift_id"
-                        :disabled="true"
-                      >
-                        <option
-                          v-for="option in shiftsTime"
-                          :key="option.id"
-                          :value="option.id"
-                        >
-                          {{ option.shift_name }}
-                        </option>
-                      </select> -->
                       </div>
 
                       <div class="col-4">
@@ -2315,18 +2171,6 @@
                             color: black;
                           "
                         />
-                        <!-- <select
-                        v-model="fetchRateRulesData[13].site_shift_id"
-                        :disabled="true"
-                      >
-                        <option
-                          v-for="option in shiftsTime"
-                          :key="option.id"
-                          :value="option.id"
-                        >
-                          {{ option.shift_name }}
-                        </option>
-                      </select> -->
                       </div>
 
                       <div class="col-4">
@@ -2749,11 +2593,7 @@ export default {
         }
       }
     },
-    // async getTimeShifts() {
-    //   await axios
-    //     .get(`${VITE_API_URL}/shifts`)
-    //     .then((response) => (this.shiftsTime = response.data));
-    // },
+
     async getTimeShift(SiteID) {
       if (!SiteID) {
         return;
@@ -2798,12 +2638,12 @@ export default {
   },
 
   mounted() {
-    this.getBusinessUnitMethod();
+    // this.getBusinessUnitMethod();
     // this.getSiteAccordingClientMethod();
-    // this.fetchRateRulesDataMethod(this.SiteID, this.jobID);
-    this.getClientMethod();
+    this.fetchRateRulesDataMethod(this.SiteID, this.jobID);
+    // this.getClientMethod();
     this.getTimeShift(this.SiteID);
-    this.getJobTitleMethod();
+    // this.getJobTitleMethod();
   },
   watch: {
     SiteID(newSiteID, oldSiteID) {

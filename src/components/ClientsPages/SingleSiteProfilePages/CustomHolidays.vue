@@ -67,6 +67,7 @@
     <AddSiteCustomHoliday @addCustomHoliday="getCustomHolidayMethod" />
     <EditSiteCustomHoliday
       :SiteID="selectedSiteID || 0"
+      ref="editCustomHoliday"
       @EditCustomHoliday="getCustomHolidayMethod"
     />
   </div>
@@ -90,6 +91,7 @@ export default {
   methods: {
     editSite(SiteID) {
       this.selectedSiteID = SiteID;
+      this.$refs.editCustomHoliday.fetchSiteMethod(this.$route.params.id);
     },
     async getCustomHolidayMethod() {
       try {

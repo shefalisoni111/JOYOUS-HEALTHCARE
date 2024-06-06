@@ -162,7 +162,11 @@
       </table>
     </div>
     <AddSite @addSite="getSiteAllDataMethod" />
-    <EditSite :siteId="selectedsiteId || 0" @editSite="getSiteAllDataMethod" />
+    <EditSite
+      :siteId="selectedsiteId || 0"
+      @editSite="getSiteAllDataMethod"
+      ref="refSite"
+    />
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
   </div>
@@ -230,6 +234,7 @@ export default {
     },
     editsiteId(siteId) {
       this.selectedsiteId = siteId;
+      this.$refs.refSite.getClientMethod();
     },
     triggerFileInput() {
       this.$refs.fileInput.click();

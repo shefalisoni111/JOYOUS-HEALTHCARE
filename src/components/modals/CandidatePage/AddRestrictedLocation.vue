@@ -235,11 +235,22 @@ export default {
       this.validationSelectedClient = true;
     },
   },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.this.getClientMethod();
+      vm.this.getBusinessUnitMethod();
+    });
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.getClientMethod();
+    this.getBusinessUnitMethod();
+    next();
+  },
   async mounted() {
-    await this.getBusinessUnitMethod();
+    // await this.getBusinessUnitMethod();
     this.candidate_id = this.$route.params.id;
-    await this.getClientMethod();
-    await this.clearError();
+    // await this.getClientMethod();
+    this.clearError();
   },
 };
 </script>

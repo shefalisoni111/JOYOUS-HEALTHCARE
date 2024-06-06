@@ -136,8 +136,17 @@ export default {
         });
     },
   },
-  async mounted() {
-    await this.staffReferDataMethod();
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.this.staffReferDataMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.staffReferDataMethod();
+    next();
+  },
+  mounted() {
+    this.staffReferDataMethod();
   },
 };
 </script>

@@ -278,15 +278,15 @@ export default {
         }
       }
     },
-    async fetchData() {
+    async fetchData(rateCardId) {
       try {
-        await this.fetchRateCardMethod();
+        await this.fetchRateCardMethod(rateCardId);
         await this.getEmployeeTypeData();
         await this.getPositionMethod();
         await this.getBusinessUnitMethod();
         await this.getTimeShift();
       } catch (error) {
-        console.error("Error fetching data:", error);
+        // console.error("Error fetching data:", error);
       }
     },
   },
@@ -298,9 +298,18 @@ export default {
       },
     },
   },
-  async mounted() {
-    await this.fetchData();
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.fetchData(vm.rateCardId);
+    });
   },
+  async beforeRouteUpdate(to, from, next) {
+    await this.fetchData(this.rateCardId);
+    next();
+  },
+  // mounted() {
+  //   this.fetchData(this.rateCardId);
+  // },
 };
 </script>
 

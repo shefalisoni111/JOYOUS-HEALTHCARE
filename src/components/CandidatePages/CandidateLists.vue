@@ -63,6 +63,7 @@
                     data-bs-toggle="modal"
                     data-bs-target="#addCandidate"
                     data-bs-whatever="@mdo"
+                    @click="handleCandidateAdded"
                   >
                     <i class="bi bi-person-plus-fill"></i>
                     Add Staff
@@ -209,7 +210,11 @@
       @confirm="confirmCallback"
       @cancel="canceled"
     />
-    <CandidateAdd @addCandidate="getActiveCAndidateMethod" />
+    <CandidateAdd
+      @addCandidate="getActiveCAndidateMethod"
+      @addStaff="handleCandidateAdded"
+      ref="addStaff"
+    />
     <AssignDirectVacancy
       :candidateId="selectedCandidateId || 0"
       @Candidate-updated="getCandidateMethods"
@@ -283,6 +288,9 @@ export default {
   },
 
   methods: {
+    handleCandidateAdded() {
+      this.$refs.addStaff.getPositionMethod();
+    },
     async pendingCandidateMethod() {
       this.isLoading = true;
       try {

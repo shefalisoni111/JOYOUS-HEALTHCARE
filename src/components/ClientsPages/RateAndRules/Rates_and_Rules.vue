@@ -50,6 +50,7 @@
                         data-bs-toggle="modal"
                         data-bs-target="#addRateRules"
                         data-bs-whatever="@mdo"
+                        @click="AddRateRules"
                       >
                         + Add Rate
                       </button>
@@ -422,10 +423,15 @@
         </div>
       </div>
     </div>
-    <AddRateRules @UpdatedRateRules="getRateRulesDataMethod" />
+    <AddRateRules
+      @UpdatedRateRules="getRateRulesDataMethod"
+      ref="add_rate_rules"
+      @rateRules="AddRateRules"
+    />
     <EditSingleRateRules
       :RateRulesId="selectedRatesRulesId || 0"
       @editUpdatedRateRules="getRateRulesDataMethod"
+      ref="singleEdit_rate_rules"
     />
     <EditMultipleRateRules
       :RateRulesId="selectedRatesRulesId || 0"
@@ -433,6 +439,7 @@
       :jobID="selectedJobID || 0"
       :ids="ids"
       @editMultipleUpdatedRateRules="getRateRulesDataMethod"
+      ref="multipleEdit_rate_rules"
     />
     <loader :isLoading="isLoading"></loader>
   </div>
@@ -515,39 +522,30 @@ export default {
     },
   },
   methods: {
+    AddRateRules() {
+      this.$refs.add_rate_rules.getTimeShift();
+      setTimeout(() => {
+        this.$refs.add_rate_rules.getClientMethod();
+      }, 100);
+    },
     toggleFilters() {
       this.showFilters = !this.showFilters;
     },
-    // filterData(value) {
-    //   let site_type = "status";
-    //   let site_value = value === "true" ? "true" : "false";
 
-    //   this.makeFilterAPICall(site_type, site_value);
-    // },
-    // async makeFilterAPICall(site_type, site_value) {
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/site_filter`, {
-    //       params: {
-    //         site_type: site_type,
-    //         site_value: site_value,
-    //       },
-    //     });
-
-    //     this.getSiteAllData = response.data.data;
-    //   } catch (error) {
-    //     if (error.response && error.response.status === 404) {
-    //       const errorMessages = error.response.data.error;
-    //       if (errorMessages === "No records found for the given filter") {
-    //         alert("No records found for the given filter");
-    //       } else {
-    //         alert(errorMessages);
-    //       }
-    //     } else {
-    //     }
-    //   }
-    // },
     editRateRulesId(RateRulesId) {
       this.selectedRatesRulesId = RateRulesId;
+      this.$refs.singleEdit_rate_rules.getTimeShift();
+      setTimeout(() => {
+        this.$refs.singleEdit_rate_rules.getClientMethod();
+      }, 100);
+
+      setTimeout(() => {
+        this.$refs.singleEdit_rate_rules.getBusinessUnitMethod();
+      }, 200);
+
+      setTimeout(() => {
+        this.$refs.singleEdit_rate_rules.getJobTitleMethod();
+      }, 300);
     },
     extractFilteredRateRulesIds() {
       this.ids = this.filteredRateRulesData.map((rate) => rate.id);
@@ -556,44 +554,20 @@ export default {
       this.selectedRatesRulesId = RateRulesId;
       this.selectedSiteID = siteID;
       this.selectedJobID = jobID;
-    },
-    async getClientMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/clients`);
-        this.clientData = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
+      this.$refs.multipleEdit_rate_rules.getSiteAccordingClientMethod();
+      setTimeout(() => {
+        this.$refs.multipleEdit_rate_rules.getClientMethod();
+      }, 100);
+
+      setTimeout(() => {
+        this.$refs.multipleEdit_rate_rules.getBusinessUnitMethod();
+      }, 200);
+
+      setTimeout(() => {
+        this.$refs.multipleEdit_rate_rules.getJobTitleMethod();
+      }, 300);
     },
 
-    async getPositionMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
-        this.options = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
-    async getBusinessUnitMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/activated_site`);
-        this.businessUnit = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
 
@@ -665,12 +639,18 @@ export default {
       return time.slice(0, 5);
     },
   },
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.getRateRulesDataMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.getRateRulesDataMethod();
 
-  async mounted() {
-    await this.getRateRulesDataMethod();
-    await this.getBusinessUnitMethod();
-    await this.getPositionMethod();
-    await this.getClientMethod();
+    next();
+  },
+  mounted() {
+    this.getRateRulesDataMethod();
   },
 };
 </script>

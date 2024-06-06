@@ -8,8 +8,9 @@
             type="button"
             class="btn btn-outline-success text-nowrap"
             data-bs-toggle="modal"
-            data-bs-target="#addSite"
+            data-bs-target="#addClientSite"
             data-bs-whatever="@mdo"
+            @click="handleActiveClientSite"
           >
             + Add Site
           </button>
@@ -64,16 +65,26 @@
         </div>
       </div>
     </div>
-    <AddSite :id="$route.params.id" @addSite="getSiteAllDataMethod" />
-    <EditClientSite :siteId="selectedsiteId || 0" @UpdateSite="getClientMethod" />
+    <AddClientSite
+      :id="$route.params.id"
+      @addSite="getSiteAllDataMethod"
+      ref="addClientSiteRef"
+      @addClientSiteRefs="handleActiveClientSite"
+    />
+    <EditClientSite
+      :siteId="selectedsiteId || 0"
+      @UpdateSite="getClientMethod"
+      ref="editClientSites"
+    />
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 <script>
 import axios from "axios";
-import AddSite from "../../modals/Site/AddSite.vue";
+
 import EditClientSite from "../../modals/Clients/EditClientSite.vue";
 import Loader from "../../Loader/Loader.vue";
+import AddClientSite from "../../modals/Clients/AddClientSite.vue";
 
 export default {
   data() {
@@ -90,7 +101,7 @@ export default {
       selectedsiteId: 0,
     };
   },
-  components: { AddSite, EditClientSite, Loader },
+  components: { AddClientSite, EditClientSite, Loader },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -103,8 +114,12 @@ export default {
   },
 
   methods: {
+    handleActiveClientSite() {
+      this.$refs.addClientSiteRef.getClientMethod();
+    },
     editsiteId(siteId) {
       this.selectedsiteId = siteId;
+      // this.$refs.editClientSites.getClientMethod();
     },
     getFirstCharAndNumber(siteName) {
       const firstChar = siteName.charAt(0);

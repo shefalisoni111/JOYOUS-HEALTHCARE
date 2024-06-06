@@ -98,7 +98,15 @@ export default {
         }
       } catch (error) {}
     },
-
+    async beforeRouteEnter(to, from, next) {
+      next((vm) => {
+        vm.this.addNotes();
+      });
+    },
+    async beforeRouteUpdate(to, from, next) {
+      this.addNotes();
+      next();
+    },
     clearError() {
       this.notes = "";
     },

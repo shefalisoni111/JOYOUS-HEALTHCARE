@@ -222,23 +222,10 @@ export default {
         // console.error("Error updating vacancy:", error);
       }
     },
-
-    async getClientMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/clients`);
-        this.clientData = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
   },
 
   mounted() {
-    this.getClientMethod();
+    // this.getClientMethod();
   },
   watch: {
     siteID: {

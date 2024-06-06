@@ -24,7 +24,6 @@
                         v-for="option in clientData"
                         :key="option.id"
                         :value="option.id"
-                        :id="option.id"
                         aria-placeholder="Select Job"
                       >
                         {{ option.first_name }}
@@ -321,9 +320,6 @@ export default {
     },
   },
 
-  mounted() {
-    this.getClientMethod();
-  },
   watch: {
     siteId: {
       immediate: true,
@@ -334,6 +330,19 @@ export default {
         }
       },
     },
+  },
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.getClientMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.getClientMethod();
+
+    next();
+  },
+  mounted() {
+    // this.getClientMethod();
   },
 };
 </script>

@@ -131,10 +131,19 @@ export default {
       }
     },
   },
-
-  async mounted() {
-    await this.fetchCandidateOverviewMethod();
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.fetchCandidateOverviewMethod();
+    });
   },
+  beforeRouteUpdate(to, from, next) {
+    this.fetchCandidateOverviewMethod();
+
+    next();
+  },
+  // async mounted() {
+  //   await this.fetchCandidateOverviewMethod();
+  // },
 };
 </script>
 

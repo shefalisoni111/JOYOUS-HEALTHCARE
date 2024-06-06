@@ -73,6 +73,7 @@
                           data-bs-toggle="modal"
                           data-bs-target="#addSite"
                           data-bs-whatever="@mdo"
+                          @click="handleSiteAdded"
                         >
                           + Add Site
                         </button>
@@ -200,7 +201,12 @@
       </button>
     </div>
     <AddSiteNotes />
-    <!-- <EditSite :siteId="selectedsiteId || 0" @editSite="getSiteAllDataMethod" /> -->
+    <AddSite @site="handleSiteAdded" ref="addSite" />
+    <EditSite
+      :siteId="selectedsiteId || 0"
+      @editSite="getSiteAllDataMethod"
+      ref="refSite"
+    />
   </div>
 </template>
 <script>
@@ -208,8 +214,8 @@ import axios from "axios";
 import AllSite from "../SitePages/AllSite.vue";
 import InActiveSite from "../SitePages/InActiveSite.vue";
 import ActiveSite from "../SitePages/ActiveSite.vue";
-// import AddSite from "../../modals/Site/AddSite.vue";
-// import EditSite from "../../modals/Site/EditSite.vue";
+import AddSite from "../../modals/Site/AddSite.vue";
+import EditSite from "../../modals/Site/EditSite.vue";
 import AddSiteNotes from "../../modals/Site/AddSiteNotes.vue";
 
 const axiosInstance = axios.create({
@@ -254,11 +260,17 @@ export default {
     },
   },
 
-  components: { AllSite, InActiveSite, ActiveSite, AddSiteNotes },
+  components: { AllSite, InActiveSite, ActiveSite, AddSiteNotes, AddSite, EditSite },
 
   methods: {
+    handleSiteAdded() {
+      // this.$refs.addSite.();
+      // console.log(this.$refs, addSite);
+    },
     editsiteId(siteId) {
       this.selectedsiteId = siteId;
+
+      this.$refs.refSite.getClientMethod();
     },
     setActiveTabFromRoute() {
       const currentRouteName = this.$route.name;

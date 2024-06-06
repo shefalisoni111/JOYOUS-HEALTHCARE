@@ -148,8 +148,17 @@ export default {
         });
     },
   },
-  async mounted() {
-    await this.staffBookingHistoryMethod();
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.this.staffBookingHistoryMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.staffBookingHistoryMethod();
+    next();
+  },
+  mounted() {
+    this.staffBookingHistoryMethod();
   },
 };
 </script>

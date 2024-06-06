@@ -63,7 +63,7 @@
         </tbody>
       </table>
     </div>
-    <EditSite :siteId="selectedsiteId || 0" />
+    <EditSite :siteId="selectedsiteId || 0" ref="refSite" />
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
@@ -85,6 +85,7 @@ export default {
   methods: {
     editsiteId(siteId) {
       this.selectedsiteId = siteId;
+      this.$refs.refSite.getClientMethod();
     },
     async getSiteActiveMethod() {
       this.isLoading = true;

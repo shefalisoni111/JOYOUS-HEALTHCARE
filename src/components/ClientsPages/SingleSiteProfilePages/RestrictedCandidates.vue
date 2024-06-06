@@ -11,6 +11,7 @@
               data-bs-toggle="modal"
               data-bs-target="#AddSitRestrictedStaff"
               data-bs-whatever="@mdo"
+              @click="handleAddRestrictedStaff"
             >
               + Add
             </button>
@@ -51,7 +52,11 @@
         </div>
       </div>
     </div>
-    <AddSiteRestrictedStaff @getRestrictedStaffAdded="getRestrictedLocationMethod" />
+    <AddSiteRestrictedStaff
+      @getRestrictedStaffAdded="getRestrictedLocationMethod"
+      @siteAdded="handleAddRestrictedStaff"
+      ref="addSite"
+    />
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
   </div>
@@ -81,6 +86,15 @@ export default {
     Loader,
   },
   methods: {
+    handleAddRestrictedStaff() {
+      this.$refs.addSite.getBusinessUnitMethod();
+      setTimeout(() => {
+        this.$refs.addSite.getClientMethod();
+      }, 100);
+      setTimeout(() => {
+        this.$refs.addSite.getStaffMethod();
+      }, 200);
+    },
     async getTime() {
       try {
         const response = await axios.get(`${VITE_API_URL}/shifts`);

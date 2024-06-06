@@ -113,9 +113,18 @@ export default {
       }
     },
   },
-  async mounted() {
-    await this.getDocumentDetails();
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.this.getDocumentDetails();
+    });
   },
+  async beforeRouteUpdate(to, from, next) {
+    this.getDocumentDetails();
+    next();
+  },
+  // mounted() {
+  //   this.getDocumentDetails();
+  // },
 };
 </script>
 

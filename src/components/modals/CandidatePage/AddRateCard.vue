@@ -395,12 +395,29 @@ export default {
       this.validationPosition = true;
     },
   },
-  async mounted() {
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.this.addRateCardMethod();
+      vm.this.getJobTitleMethod();
+      vm.this.getBusinessUnitMethod();
+      vm.this.getTimeShift();
+      vm.this.getEmployeeTypeData();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.addRateCardMethod();
+    this.getJobTitleMethod();
+    this.getBusinessUnitMethod();
+    this.getTimeShift();
+    this.getEmployeeTypeData();
+    next();
+  },
+  mounted() {
     // this.addRateCardMethod();
-    await this.getJobTitleMethod();
-    await this.getBusinessUnitMethod();
-    await this.getTimeShift();
-    await this.getEmployeeTypeData();
+    // this.getJobTitleMethod();
+    // this.getBusinessUnitMethod();
+    // this.getTimeShift();
+    // this.getEmployeeTypeData();
   },
 };
 </script>

@@ -225,7 +225,7 @@ export default {
   },
 
   async mounted() {
-    await this.getClientMethod();
+    // await this.getClientMethod();
   },
   watch: {
     siteId: {

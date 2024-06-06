@@ -175,7 +175,6 @@ export default {
   },
   methods: {
     clearFieldsData() {
-      this.site_id = "";
       this.client_id = "";
       this.Staff_id = "";
       setTimeout(() => {
@@ -284,11 +283,25 @@ export default {
       this.validationSelectedClient = true;
     },
   },
-  mounted() {
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.getBusinessUnitMethod();
+      vm.getClientMethod();
+      vm.getStaffMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
     this.getBusinessUnitMethod();
-    this.site_id = this.$route.params.id;
     this.getClientMethod();
     this.getStaffMethod();
+
+    next();
+  },
+  mounted() {
+    // this.getBusinessUnitMethod();
+    this.site_id = this.$route.params.id;
+    // this.getClientMethod();
+    // this.getStaffMethod();
     this.clearError();
   },
 };

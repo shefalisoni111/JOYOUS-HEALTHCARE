@@ -14,6 +14,7 @@
               data-bs-toggle="modal"
               data-bs-target="#rateCards"
               data-bs-whatever="@mdo"
+              @click="handleRateCardAdded"
             >
               + Add Or Update Rate Card
             </button>
@@ -95,10 +96,15 @@
         </div>
       </div>
     </div>
-    <AddRateCard @rateCard="showRateCardMethod" @rateCardAdded="showRateCardMethod" />
+    <AddRateCard
+      @rateCard="handleRateCardAdded"
+      ref="addRateCard"
+      @rateCardAdded="showRateCardMethod"
+    />
     <EditRateCard
       @EditRateCard="showRateCardMethod"
       :rateCardId="selectedRateCardId || 0"
+      ref="editRateCard"
     />
     <loader :isLoading="isLoading"></loader>
   </div>
@@ -120,9 +126,42 @@ export default {
     };
   },
   components: { AddRateCard, EditRateCard, Loader },
+  watch: {
+    selectedRateCardId(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.showRateCardMethod();
+      }
+    },
+  },
   methods: {
+    handleRateCardAdded() {
+      this.$refs.addRateCard.getEmployeeTypeData();
+      setTimeout(() => {
+        this.$refs.addRateCard.getJobTitleMethod();
+      }, 100);
+
+      setTimeout(() => {
+        this.$refs.addRateCard.getBusinessUnitMethod();
+      }, 200);
+
+      setTimeout(() => {
+        this.$refs.addRateCard.getTimeShift();
+      }, 300);
+    },
     editRateCard(rateCardId) {
       this.selectedRateCardId = rateCardId;
+      this.$refs.editRateCard.getEmployeeTypeData();
+      setTimeout(() => {
+        this.$refs.editRateCard.getPositionMethod();
+      }, 100);
+
+      setTimeout(() => {
+        this.$refs.editRateCard.getBusinessUnitMethod();
+      }, 200);
+
+      setTimeout(() => {
+        this.$refs.editRateCard.getTimeShift();
+      }, 300);
     },
     //  rateCard apis start
     async rateCardDelete(id) {
@@ -133,6 +172,7 @@ export default {
         this.showRateCardMethod();
       });
     },
+
     async showRateCardMethod() {
       this.isLoading = true;
       await axios
@@ -152,8 +192,17 @@ export default {
 
     //  ratecard apis end
   },
-  async mounted() {
-    await this.showRateCardMethod();
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.showRateCardMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.showRateCardMethod();
+    next();
+  },
+  mounted() {
+    this.showRateCardMethod();
   },
 };
 </script>

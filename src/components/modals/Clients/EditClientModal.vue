@@ -236,9 +236,18 @@ export default {
       },
     },
   },
-  async mounted() {
-    await this.fetchClientsMethod(this.$route.params.id);
-    await this.getJobTitleMethod();
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.getJobTitleMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.getJobTitleMethod();
+    next();
+  },
+  mounted() {
+    // await this.fetchClientsMethod(this.$route.params.id);
+    // this.getJobTitleMethod();
   },
 };
 </script>

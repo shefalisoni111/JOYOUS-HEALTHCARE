@@ -31,6 +31,7 @@
                   <div class="col-12">
                     <label class="form-label" for="selectOption">Jobs</label>
                   </div>
+
                   <div class="col-12">
                     <div v-for="option in options" :key="option.id">
                       <input
@@ -391,7 +392,9 @@ export default {
     async getPositionMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/active_job_list`);
-        this.options = response.data.data;
+        this.options = response.data.data.map((job) => {
+          return { id: job.id, name: job.name };
+        });
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
@@ -401,11 +404,19 @@ export default {
       }
     },
   },
-
-  async mounted() {
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.getPositionMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.$options.methods.getPositionMethod.call(this);
+    next();
+  },
+  mounted() {
     // this.validatePassword = this.validatePassword.bind(this);
     this.isValidForm = this.isFormValid;
-    await this.getPositionMethod();
+    // this.getPositionMethod();
   },
 };
 </script>

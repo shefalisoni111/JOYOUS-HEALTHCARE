@@ -386,8 +386,18 @@ export default {
       this.isValidForm = true;
     },
   },
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.getPositionMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.getPositionMethod();
+
+    next();
+  },
   async mounted() {
-    await this.getPositionMethod();
+    // await this.getPositionMethod();
     this.isValidForm = this.isFormValid;
   },
 };

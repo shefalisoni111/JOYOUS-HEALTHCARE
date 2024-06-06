@@ -368,8 +368,8 @@ export default {
     },
   },
 
-  async mounted() {
-    await this.createVacancy();
+  created() {
+    this.createVacancy();
   },
 };
 </script>

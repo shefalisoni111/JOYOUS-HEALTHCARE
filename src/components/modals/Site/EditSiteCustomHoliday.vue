@@ -152,12 +152,21 @@ export default {
   //     },
   //   },
   // },
-  mounted() {
-    this.fetchSiteMethod(this.$route.params.id);
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.fetchSiteMethod(this.$route.params.id);
+    });
   },
+  async beforeRouteUpdate(to, from, next) {
+    await this.fetchSiteMethod(this.$route.params.id);
+    next();
+  },
+  // mounted() {
+  //   this.fetchSiteMethod(this.$route.params.id);
+  // },
   created() {
     this.fetchSite.id = this.SiteID;
-    this.fetchSiteMethod(this.$route.params.id);
+    // this.fetchSiteMethod(this.$route.params.id);
   },
 };
 </script>

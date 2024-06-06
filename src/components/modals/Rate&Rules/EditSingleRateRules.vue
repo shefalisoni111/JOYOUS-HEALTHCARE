@@ -668,14 +668,6 @@ export default {
       }
     },
   },
-
-  mounted() {
-    this.getBusinessUnitMethod();
-    // this.getSiteAccordingClientMethod();
-    this.getClientMethod();
-    this.getTimeShift();
-    this.getJobTitleMethod();
-  },
   watch: {
     "fetchRateRulesData.site_id": "getTimeShift",
     RateRulesId: {
@@ -688,6 +680,28 @@ export default {
       },
     },
   },
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.getBusinessUnitMethod();
+      vm.getClientMethod();
+      vm.getTimeShift();
+      vm.getJobTitleMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.getBusinessUnitMethod();
+    this.getClientMethod();
+    this.getTimeShift();
+    this.getJobTitleMethod();
+    next();
+  },
+  // mounted() {
+  //   this.getBusinessUnitMethod();
+  //   // this.getSiteAccordingClientMethod();
+  //   this.getClientMethod();
+  //   this.getTimeShift();
+  //   this.getJobTitleMethod();
+  // },
 };
 </script>
 

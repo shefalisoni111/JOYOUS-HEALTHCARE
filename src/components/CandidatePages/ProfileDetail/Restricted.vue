@@ -58,6 +58,7 @@
                   data-bs-toggle="modal"
                   data-bs-target="#addRestrictedLocation"
                   data-bs-whatever="@mdo"
+                  @click="handleAddRestrictedLocation"
                 >
                   + Add
                 </button>
@@ -102,7 +103,10 @@
         </div>
       </div>
     </div>
-    <AddRestrictedLocation @getLocationAdded="getRestrictedLocationMethod" />
+    <AddRestrictedLocation
+      @getLocationAdded="getRestrictedLocationMethod"
+      ref="addRestrictedLocation"
+    />
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
   </div>
@@ -131,6 +135,12 @@ export default {
     Loader,
   },
   methods: {
+    handleAddRestrictedLocation() {
+      this.$refs.addRestrictedLocation.getBusinessUnitMethod();
+      setTimeout(() => {
+        this.$refs.addRestrictedLocation.getClientMethod();
+      }, 100);
+    },
     async getTime() {
       try {
         const response = await axios.get(`${VITE_API_URL}/shifts`);
@@ -197,11 +207,23 @@ export default {
       }
     },
   },
-
-  async mounted() {
-    await this.getTime();
-    await this.getRestrictedShifts();
-    await this.getRestrictedLocationMethod();
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.this.getTime();
+      vm.this.getRestrictedShifts();
+      vm.this.getRestrictedLocationMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.getTime();
+    this.getRestrictedShifts();
+    this.getRestrictedLocationMethod();
+    next();
+  },
+  mounted() {
+    this.getTime();
+    this.getRestrictedShifts();
+    this.getRestrictedLocationMethod();
   },
 };
 </script>

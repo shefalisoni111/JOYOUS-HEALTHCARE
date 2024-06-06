@@ -1,11 +1,16 @@
 <template>
   <div>
     <!-- Modal -->
-    <div class="modal fade" id="addSite" aria-labelledby="addSite" tabindex="-1">
+    <div
+      class="modal fade"
+      id="addClientSite"
+      aria-labelledby="addClientSite"
+      tabindex="-1"
+    >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addSite">Add Site</h5>
+            <h5 class="modal-title" id="addClientSite">Add Site</h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -18,16 +23,14 @@
                     <select
                       v-model="client_id"
                       id="selectClients"
-                      @change="onClientSelect"
-                      :disabled="clientData.length === 0"
+                      class="text-black"
+                      :disabled="true"
                     >
                       <option
                         v-for="option in clientData"
                         :key="option.id"
                         :value="option.id"
-                        :id="option.id"
                         aria-placeholder="Select Job"
-                        :disabled="option.id !== selectedClientId"
                       >
                         {{ option.first_name }}
                       </option>
@@ -158,7 +161,7 @@
           <div class="modal-footer">
             <button
               class="btn btn-secondary rounded-1"
-              data-bs-target="#addSite"
+              data-bs-target="#addClientSite"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
               v-on:click="clearFieldsData"
@@ -170,7 +173,7 @@
               :class="{ disabled: !isFormValid }"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               :data-bs-dismiss="isFormValid ? 'modal' : null"
-              v-on:click="addSiteMethod()"
+              v-on:click="addClientSiteMethod()"
             >
               Add Site
             </button>
@@ -230,7 +233,7 @@ export default {
 
     selectClients() {
       const client_id = this.clientData.find((option) => option.id === this.client_id);
-      return this.client_id;
+      return client_id ? client_id.first_name : "";
     },
   },
   watch: {
@@ -265,9 +268,7 @@ export default {
       return this.portal_access !== null;
     },
     onClientSelect() {
-      const selectedClientId = this.client_id;
-
-      this.getJobTitleMethod(selectedClientId);
+      const selectedClientId = this.id;
     },
 
     clearFieldsData() {
@@ -295,7 +296,7 @@ export default {
       this.dates.splice(index, 1);
       this.clearError();
     },
-    async addSiteMethod() {
+    async addClientSiteMethod() {
       this.validateEmail = this.validateEmailFormat(this.email);
       this.validationSelectedClient = this.ValidationClient(this.client_id);
       this.validatePhoneNumber = this.validatePhoneNumberFormat(this.phone_number);
@@ -330,7 +331,7 @@ export default {
           });
 
           if (response.ok) {
-            this.$emit("addSite");
+            this.$emit("addClientSite");
             this.$emit("getSiteAllDataMethod");
             this.clearFields();
             setTimeout(() => {
@@ -389,24 +390,47 @@ export default {
       this.split_rate = "";
       this.status = "";
       this.portal_access = "";
-      this.client_id = "";
+    },
+    async getClientMethod() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/clients/${this.$route.params.id}`
+        );
+
+        if (response.data && response.data.data && response.data.data.id) {
+          const client = response.data.data;
+
+          this.clientData = [{ id: client.id, first_name: client.first_name }];
+        } else {
+          // console.error("Invalid response data:", response.data);
+        }
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        } else {
+          // console.error("Error fetching candidates:", error);
+        }
+      }
     },
   },
-  // async beforeRouteEnter(to, from, next) {
-  //   next((vm) => {
-  //     vm.getClientMethod();
-  //   });
-  // },
-  // async beforeRouteUpdate(to, from, next) {
-  //   this.getClientMethod();
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.getClientMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.getClientMethod();
 
-  //   next();
-  // },
+    next();
+  },
   mounted() {
-    if (this.id) {
-      this.client_id = this.id;
-    }
+    // if (this.id) {
+    //   this.client_id = this.id;
+    // }
     // this.getClientMethod();
+    this.client_id = this.$route.params.id;
 
     this.isValidForm = this.isFormValid;
     this.clearError();

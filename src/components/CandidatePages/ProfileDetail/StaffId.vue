@@ -179,9 +179,17 @@ export default {
       }
     },
   },
-
-  async mounted() {
-    await this.getCandidateMethods();
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.this.getCandidateMethods();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.getCandidateMethods();
+    next();
+  },
+  mounted() {
+    this.getCandidateMethods();
   },
 };
 </script>

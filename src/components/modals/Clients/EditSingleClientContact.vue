@@ -129,9 +129,18 @@ export default {
       },
     },
   },
-  async mounted() {
-    await this.fetchClientsMethod(this.$route.params.id);
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.fetchClientsMethod(this.$route.params.id);
+    });
   },
+  async beforeRouteUpdate(to, from, next) {
+    await this.fetchClientsMethod(this.$route.params.id);
+    next();
+  },
+  // async mounted() {
+  //   await this.fetchClientsMethod(this.$route.params.id);
+  // },
 };
 </script>
 

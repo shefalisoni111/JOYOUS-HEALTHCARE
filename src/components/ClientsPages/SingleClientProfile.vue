@@ -124,7 +124,7 @@
                       data-bs-toggle="modal"
                       data-bs-target="#editClientContact"
                       data-bs-whatever="@mdo"
-                      @click="editClient(getClientDatas.id)"
+                      @click="editClientEmail(getClientDatas.id)"
                     >
                       Edit
                     </button>
@@ -170,10 +170,12 @@
     </div>
     <EditSingleClientEmail
       :clientID="selectedClientID || 0"
+      ref="emailClientEmail"
       @client-updatedEmail="getClientMethod"
     />
     <EditSingleClientContact
       :clientID="selectedClientID || 0"
+      ref="emailClientContact"
       @client-updatedContact="getClientMethod"
     />
   </div>
@@ -241,6 +243,12 @@ export default {
   methods: {
     editClient(clientID) {
       this.selectedClientID = clientID;
+
+      this.$refs.emailClientContact.fetchClientsMethod(clientID);
+    },
+    editClientEmail(clientID) {
+      this.selectedClientID = clientID;
+      this.$refs.emailClientEmail.fetchClientsMethod(clientID);
     },
     getTabLink(tab) {
       return { name: tab.component, params: { id: this.$route.params.id } };

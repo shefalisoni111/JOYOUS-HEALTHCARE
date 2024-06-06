@@ -72,6 +72,7 @@
                           data-bs-toggle="modal"
                           data-bs-target="#addClients"
                           data-bs-whatever="@mdo"
+                          @click="handleAddClient"
                         >
                           + Add Client
                         </button>
@@ -172,14 +173,14 @@
                           </td>
                           <td>
                             <span
-                              v-for="(job, index) in client.job_name"
-                              :key="index"
+                              v-for="(job, index) in client.jobs"
+                              :key="job.job_id"
                               :style="{ backgroundColor: getColor(index) }"
                               class="p-1 me-2 pb-1 mt-5 rounded-1"
                             >
-                              {{ job }}
+                              {{ job.job_name }}
 
-                              <template v-if="index !== client.job_name.length - 1">
+                              <template v-if="index !== client.jobs.length - 1">
                               </template>
                             </span>
                           </td>
@@ -267,12 +268,18 @@
         Next
       </button>
     </div>
-    <EditClientModal :clientID="selectedClientID || 0" @client-updated="createdClient" />
+    <AddClients ref="addClient" />
+    <EditClientModal
+      :clientID="selectedClientID || 0"
+      @client-updated="createdClient"
+      ref="editClientModal"
+    />
   </div>
 </template>
 <script>
 import axios from "axios";
 import AllClient from "../ClientsPages/AllClient.vue";
+import AddClients from "@/components/modals/Clients/AddClients.vue";
 import InActiveClient from "../ClientsPages/InActiveClient.vue";
 import ActiveClient from "./ActiveClient.vue";
 import EditClientModal from "../modals/Clients/EditClientModal.vue";
@@ -328,14 +335,21 @@ export default {
       return this.paginateSearchResults.length;
     },
   },
-  components: { AllClient, InActiveClient, ActiveClient, EditClientModal },
+  components: { AllClient, InActiveClient, ActiveClient, EditClientModal, AddClients },
 
   methods: {
     // toggleFilters() {
     //   this.showFilters = !this.showFilters;
     // },
+    handleAddClient() {
+      this.$refs.addClient.getPositionMethod();
+    },
     editClient(clientID) {
       this.selectedClientID = clientID;
+      this.$refs.editClientModal.getPositionMethod();
+      setTimeout(() => {
+        this.$refs.editClientModal.getJobTitleMethod();
+      }, 100);
     },
     getColor(index) {
       return this.colors[index % this.colors.length];
@@ -456,7 +470,7 @@ export default {
     },
     async createdClient() {
       await axios
-        .get(`${VITE_API_URL}/activated_client`)
+        .get(`${VITE_API_URL}/clients`)
 
         .then((response) => (this.getClientDetail = response.data.data));
     },

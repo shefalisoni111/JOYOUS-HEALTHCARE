@@ -553,9 +553,17 @@ export default {
       }
     },
   },
-
-  async mounted() {
-    await this.getCandidateProfileTabMethod();
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.this.getCandidateProfileTabMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.getCandidateProfileTabMethod();
+    next();
+  },
+  mounted() {
+    this.getCandidateProfileTabMethod();
   },
 };
 </script>

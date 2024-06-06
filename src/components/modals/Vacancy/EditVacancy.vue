@@ -595,12 +595,14 @@ export default {
   },
 
   async mounted() {
+    await this.fetchVacancyMethod(this.vacancyId);
     await this.getBusinessUnitMethod();
     // this.getSiteAccordingClientMethod();
     await this.getClientMethod();
     await this.getTimeShift();
     await this.getJobTitleMethod();
   },
+
   watch: {
     "fetchVacancy.site_id": {
       immediate: true,

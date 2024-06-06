@@ -10,11 +10,7 @@ import Navbar from "../components/Navbar.vue";
 
 export default {
   data() {
-    return {
-      getVacancyDetail: [],
-      isActive: true,
-      searchQuery: "",
-    };
+    return {};
   },
 
   components: {
@@ -30,7 +26,7 @@ export default {
   padding: 20px 20px;
   transition: all 0.3s;
   height: 100dvh;
-  
+
   background-color: #fdce5e17;
 }
 .main-content {

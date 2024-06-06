@@ -1271,13 +1271,24 @@ export default {
         (this.day_shift_id = "");
     },
   },
-  created() {
+  // created() {
+  //   this.getTimeShift();
+  // },
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.getTimeShift();
+      vm.getClientMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
     this.getTimeShift();
+    this.getClientMethod();
+    next();
   },
   mounted() {
-    this.getClientMethod();
+    // this.getClientMethod();
     this.isValidForm = this.isFormValid;
-    this.getTimeShift();
+    // this.getTimeShift();
   },
 };
 </script>

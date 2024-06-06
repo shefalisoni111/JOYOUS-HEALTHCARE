@@ -116,14 +116,14 @@
             </td>
             <td>
               <span
-                v-for="(job, index) in client.job_name"
-                :key="index"
+                v-for="(job, index) in client.jobs"
+                :key="job.job_id"
                 :style="{ backgroundColor: getColor(index) }"
                 class="p-1 me-2 pb-1 mt-5 rounded-1"
               >
-                {{ job }}
+                {{ job.job_name }}
 
-                <template v-if="index !== client.job_name.length - 1"> </template>
+                <template v-if="index !== client.jobs.length - 1"> </template>
               </span>
             </td>
 

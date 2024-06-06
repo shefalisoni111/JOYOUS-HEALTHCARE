@@ -34,14 +34,14 @@
             </td>
             <td>
               <span
-                v-for="(job, index) in client.job_name"
-                :key="index"
+                v-for="(job, index) in client.jobs"
+                :key="job.job_id"
                 :style="{ backgroundColor: getColor(index) }"
-                class="p-1 me-2 mt-5 rounded-1"
+                class="p-1 me-2 pb-1 mt-5 rounded-1"
               >
-                {{ job }}
+                {{ job.job_name }}
 
-                <template v-if="index !== client.job_name.length - 1"> </template>
+                <template v-if="index !== client.jobs.length - 1"> </template>
               </span>
             </td>
             <td v-text="client.address"></td>
@@ -106,14 +106,14 @@
         </tbody>
         <tbody v-else>
           <tr>
-            <td colspan="9" class="text-center text-danger" v-if="!isLoading">
+            <td colspan="9" class="text-center text-danger">
               {{ "No Client Data Found!" }}
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="getClientDetail.length >= 8">
+    <div class="mx-3" style="text-align: right" v-if="getClientDetail?.length >= 8">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -128,7 +128,7 @@
       >&nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getClientDetail.length"
+        :disabled="currentPage * itemsPerPage >= getClientDetail?.length"
         @click="currentPage++"
       >
         Next
@@ -174,6 +174,7 @@ export default {
   components: { EditClientModal, AddClients, SuccessAlert, Loader },
   computed: {
     paginateCandidates() {
+      if (!this.getClientDetail) return [];
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.getClientDetail.slice(startIndex, endIndex);
@@ -219,14 +220,14 @@ export default {
         });
     },
     async createdClient() {
-      this.isLoading = true;
       try {
-        const response = await axios.get(`${VITE_API_URL}/inactivated_client`);
+        const params = {
+          filter_value: "false",
+        };
+        const response = await axios.get(`${VITE_API_URL}/clients`, { params });
         this.getClientDetail = response.data.data;
       } catch (error) {
         // console.error("Error fetching client data:", error);
-      } finally {
-        this.isLoading = false;
       }
     },
   },

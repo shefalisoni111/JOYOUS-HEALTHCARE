@@ -306,7 +306,7 @@
         </div>
       </div>
     </div>
-    <AddCategory />
+    <!-- <AddCategory /> -->
     <ConfirmationAlert
       :show-modal="isModalVisible"
       :message="confirmMessage"
@@ -321,7 +321,7 @@
 
 <script>
 import axios from "axios";
-import AddCategory from "../../modals/appsetting/AddCategory.vue";
+// import AddCategory from "../../modals/appsetting/AddCategory.vue";
 import ViewDocuments from "../../modals/CandidatePage/Documents/ViewDocuments.vue";
 import { saveAs } from "file-saver";
 import ConfirmationAlert from "../../Alerts/ConfirmationAlert.vue";
@@ -350,7 +350,7 @@ export default {
       // alertMessage: "",
     };
   },
-  components: { AddCategory, ViewDocuments, ConfirmationAlert, Loader },
+  components: { ViewDocuments, ConfirmationAlert, Loader },
   methods: {
     isDownloadDisabled() {
       return !this.getCate.documents;
@@ -545,11 +545,24 @@ export default {
       event.stopPropagation();
     },
   },
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.this.getDocumentCategories();
+      vm.this.getDocCAtegories();
+      vm.this.getDeletedDocumentListMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.getDocumentCategories();
+    this.getDocCAtegories();
+    this.getDeletedDocumentListMethod();
+    next();
+  },
 
-  async mounted() {
-    await this.getDocumentCategories();
-    await this.getDocCAtegories();
-    await this.getDeletedDocumentListMethod();
+  mounted() {
+    this.getDocumentCategories();
+    this.getDocCAtegories();
+    this.getDeletedDocumentListMethod();
   },
 };
 </script>

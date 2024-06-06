@@ -58,20 +58,12 @@ export default {
   data() {
     return {
       getNotes: [],
+      isLoading: false,
     };
   },
 
   components: { AddSiteNotes, Loader },
   methods: {
-    // async notesDeleteMethod(id) {
-    //   if (!window.confirm("Are you Sure ?")) {
-    //     return;
-    //   }
-    //   await axios.delete(
-    //     `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes/` + id
-    //   );
-    //   window.location.reload();
-    // },
     async getNotesMethod() {
       this.isLoading = true;
       try {

@@ -141,6 +141,7 @@ export default {
   data() {
     return {
       fetchNExtToKinData: {
+        id: this.$route.params.id,
         name: "",
         phone_number: "",
         relation: "",
