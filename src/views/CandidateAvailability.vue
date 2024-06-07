@@ -614,6 +614,7 @@ export default {
     Calendar,
     Loader,
   },
+
   async mounted() {
     try {
       const currentDate = new Date();
@@ -628,9 +629,9 @@ export default {
     } catch (error) {
       // Handle error
     }
-    setInterval(() => {
-      this.fetchCandidateList(this.formattedStartDate);
-    }, 5000);
+    // setInterval(() => {
+    //   this.fetchCandidateList(this.formattedStartDate);
+    // }, 5000);
     window.addEventListener("beforeunload", this.saveToLocalStorage);
   },
 };

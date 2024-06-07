@@ -23,6 +23,7 @@
           data-bs-target="#addCategories"
           data-bs-whatever="@mdo"
           type="button"
+          @click="handleAddCategory()"
         >
           Add categories
         </button>
@@ -138,9 +139,21 @@
       @confirm="confirmCallback"
       @cancel="canceled"
     />
-    <AddNewDoc :categoryId="selectedCategoryId" @documentAdded="onDocumentAdded" />
-    <EditCategoryDoc :categoryId="selectedCategoryId" @onDocAdded="getDocCAtegories" />
-    <AddCategory :categoryId="selectedCategoryId" @onCategoryAdded="getDocCAtegories" />
+    <AddNewDoc
+      :categoryId="selectedCategoryId"
+      @documentAdded="onDocumentAdded"
+      ref="addNewDoc"
+    />
+    <EditCategoryDoc
+      :categoryId="selectedCategoryId"
+      @onDocAdded="getDocCAtegories"
+      ref="editCategory"
+    />
+    <AddCategory
+      :categoryId="selectedCategoryId"
+      @onCategoryAdded="getDocCAtegories"
+      ref="addCategory"
+    />
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
@@ -176,9 +189,15 @@ export default {
   },
 
   methods: {
+    handleAddCategory() {
+      this.$refs.addCategory.getPositionMethod();
+    },
     editCategory(event, categoryId) {
       event.stopPropagation();
       this.selectedCategoryId = categoryId;
+
+      this.$refs.editCategory.getJobTitleMethod();
+      this.$refs.editCategory.fetchCategoryMethod(categoryId);
     },
     toggleAccordion(index) {
       // Close all accordions
@@ -196,6 +215,7 @@ export default {
     },
     selectCategory(categoryId) {
       this.selectedCategoryId = categoryId;
+      this.$refs.addNewDoc.addNewDocMEthod();
     },
     confirmed(id) {
       this.isModalVisible = false;
@@ -245,9 +265,13 @@ export default {
       }
     },
   },
-  async created() {
+  beforeRouteUpdate(to, from, next) {
+    this.getDocCAtegories();
+    next();
+  },
+  mounted() {
     // this.getDocumentCategories();
-    await this.getDocCAtegories();
+    this.getDocCAtegories();
   },
 };
 </script>

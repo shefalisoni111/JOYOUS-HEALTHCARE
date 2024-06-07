@@ -61,6 +61,7 @@
                   data-bs-target="#AddPrivileges"
                   data-bs-whatever="@mdo"
                   type="button"
+                  @click="handlePrivilegesAdd"
                 >
                   <i class="bi bi-person-plus-fill"></i> Create user
                 </button>
@@ -232,7 +233,7 @@
         </div>
       </div>
     </div>
-    <AddPrivileges @AddPrivileges="getRolesActiveMethod" />
+    <AddPrivileges @AddPrivileges="getRolesActiveMethod" ref="addPrivileges" />
     <SuccessAlert ref="successAlert" />
     <ConfirmationAlert
       :show-modal="isModalVisible"
@@ -275,6 +276,9 @@ export default {
     ConfirmationAlert,
   },
   methods: {
+    handlePrivilegesAdd() {
+      this.$refs.addPrivileges.getRolesMethod();
+    },
     confirmed(id) {
       this.isModalVisible = false;
 

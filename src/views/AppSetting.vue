@@ -118,20 +118,20 @@
 <script>
 import Navbar from "../components/Navbar.vue";
 import Sidebar from "../components/Sidebar.vue";
-import AppJobDetail from "../components/appsettingcomponent/AppJobDetail.vue";
+// import AppJobDetail from "../components/appsettingcomponent/AppJobDetail.vue";
 
-import CandidateStatus from "../components/appsettingcomponent/CandidateStatus.vue";
-import EmploymentTypeDetails from "../components/appsettingcomponent/EmploymentTypeDetails.vue";
-import Shift from "../components/appsettingcomponent/Shift.vue";
+// import CandidateStatus from "../components/appsettingcomponent/CandidateStatus.vue";
+// import EmploymentTypeDetails from "../components/appsettingcomponent/EmploymentTypeDetails.vue";
+// import Shift from "../components/appsettingcomponent/Shift.vue";
 
 export default {
   components: {
     Navbar,
     Sidebar,
-    AppJobDetail,
-    CandidateStatus,
-    EmploymentTypeDetails,
-    Shift,
+    // AppJobDetail,
+    // CandidateStatus,
+    // EmploymentTypeDetails,
+    // Shift,
   },
   data() {
     return {};

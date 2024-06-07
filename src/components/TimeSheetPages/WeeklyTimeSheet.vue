@@ -373,6 +373,7 @@
     </div>
     <!-- <AppointmentAdd /> -->
     <WeekTimeSheetEdit
+      ref="editWeekly"
       :initialDate="selectedDate"
       :vacancyId="vacancyId"
       @closeModal="closeModal"
@@ -710,6 +711,7 @@ export default {
     openModal(candidateId, day) {
       this.vacancyId = candidateId.id.toString() || "";
 
+      this.$refs.editWeekly.fetchCustomTimeSheetData(this.vacancyId);
       try {
         if (this.dataCustomTimeSheet && this.dataCustomTimeSheet.length > 0) {
           const actualCandidateId = candidateId.id;
@@ -825,32 +827,13 @@ export default {
     Navbar,
     Loader,
   },
-  // created() {
-  //   if (!localStorage.getItem("calendarData")) {
-  //     const today = new Date();
-  //     const defaultStartDate = `${today.getFullYear()}-${(today.getMonth() + 1)
-  //       .toString()
-  //       .padStart(2, "0")}`;
-  //     this.selectedMonth = defaultStartDate;
-  //     this.updateDateRange();
-  //   }
 
-  //   this.loadDateRangeFromLocalStorage();
-  // },
   async mounted() {
     await this.loadDateRangeFromLocalStorage();
     await this.getBusinessUnitMethod();
 
     await this.getCandidateListMethod();
 
-    // const currentDate = new Date();
-    // const startOfWeek = new Date(currentDate);
-    // startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
-    // this.startDate = startOfWeek;
-
-    // const endOfWeek = new Date(currentDate);
-    // endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
-    // this.endDate = endOfWeek;
     const currentDate = new Date();
     const dayOfWeek = currentDate.getDay();
     const startOfWeek = new Date(currentDate);

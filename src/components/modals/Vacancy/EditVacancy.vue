@@ -92,7 +92,7 @@
                           @input="updateDate($event.target.value, index)"
                         />
                         <span
-                          v-if="!isValidDate && fetchVacancy.dates.length > 0"
+                          v-if="!isValidDate && fetchVacancy.dates[index].length > 0"
                           class="text-danger"
                           >Please choose a date from today onwards!</span
                         >
@@ -327,16 +327,25 @@ export default {
         return true;
       }
       const today = new Date().toISOString().slice(0, 10);
-      return this.fetchVacancy.dates.every((date) => date >= today);
+      return this.fetchVacancy.dates.every((date) => {
+        const [day, month, year] = date.split("-");
+        const formattedDate = `${year}-${month}-${day}`;
+        return formattedDate >= today;
+      });
     },
   },
   methods: {
     validateDates() {
-      const today = new Date();
-      this.invalidDate = this.fetchVacancy.dates.some((date) => new Date(date) < today);
+      const today = new Date().toISOString().slice(0, 10);
+      this.invalidDate = this.fetchVacancy.dates.some((date) => {
+        const [day, month, year] = date.split("-");
+        const formattedDate = `${year}-${month}-${day}`;
+        return formattedDate < today;
+      });
     },
-    updateDate(newDate, index) {
-      this.fetchVacancy.dates[index] = newDate;
+    updateDate(value, index) {
+      const [year, month, day] = value.split("-");
+      this.fetchVacancy.dates[index] = `${day}-${month}-${year}`;
       this.validateDates();
     },
     onShiftSelect() {
@@ -593,14 +602,22 @@ export default {
       }
     },
   },
-
-  async mounted() {
-    await this.fetchVacancyMethod(this.vacancyId);
-    await this.getBusinessUnitMethod();
-    // this.getSiteAccordingClientMethod();
-    await this.getClientMethod();
-    await this.getTimeShift();
-    await this.getJobTitleMethod();
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.getBusinessUnitMethod();
+      vm.getClientMethod();
+      vm.getTimeShift();
+      vm.getJobTitleMethod();
+      vm.fetchVacancyMethod(this.vacancyId);
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.getBusinessUnitMethod();
+    this.getClientMethod();
+    this.getTimeShift();
+    this.getJobTitleMethod();
+    this.fetchVacancyMethod(this.vacancyId);
+    next();
   },
 
   watch: {

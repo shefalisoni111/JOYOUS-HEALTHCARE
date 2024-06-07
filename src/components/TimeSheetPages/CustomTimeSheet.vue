@@ -423,6 +423,7 @@
     <CustomeTimeSheetEdit
       :customDataId="selectedCustomTimesheetId"
       @CustomTimeSheetData-updated="getCustomSheetMethod"
+      ref="customEdit"
     />
     <loader :isLoading="isLoading"></loader>
     <PaperTimeSheetViewVue :customDataId="selectedCustomTimesheetId" />
@@ -595,6 +596,7 @@ export default {
 
     openEditModal(customDataId) {
       this.selectedCustomTimesheetId = customDataId;
+      this.$refs.customEdit.fetchCustomTimeSheetData(customDataId);
     },
 
     updateDateRange() {
@@ -769,14 +771,29 @@ export default {
       }
     },
   },
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.updateDateRange();
+      vm.getCustomSheetMethod();
+      vm.getBusinessUnitMethod();
+      vm.getCandidateListMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.updateDateRange();
+    this.getCustomSheetMethod();
+    this.getBusinessUnitMethod();
 
+    this.getCandidateListMethod();
+    next();
+  },
   async mounted() {
     this.currentView = "monthly";
-    await this.updateDateRange();
-    await this.getCustomSheetMethod();
-    await this.getBusinessUnitMethod();
+    this.updateDateRange();
+    this.getCustomSheetMethod();
+    this.getBusinessUnitMethod();
 
-    await this.getCandidateListMethod();
+    this.getCandidateListMethod();
     // this.loadDateRangeFromLocalStorage();
     // const currentDate = new Date();
     // const startOfWeek = new Date(currentDate);

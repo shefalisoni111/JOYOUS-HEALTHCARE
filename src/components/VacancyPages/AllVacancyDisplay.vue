@@ -192,13 +192,16 @@
         </table>
       </div>
     </div>
-    <EditVacancy :vacancyId="selectedVacancyId || 0" @updateVacancy="createVacancy" />
+    <EditVacancy
+      :vacancyId="selectedVacancyId || 0"
+      @updateVacancy="createVacancy"
+      ref="editShift"
+    />
     <PublishedVacancy @publishVacancy="createVacancy" />
     <AppliedVacancyList @appliedVacancy="createVacancy" />
     <AssignedVacancyList @assignVacancy="createVacancy" />
     <RejectedVacancyList @rejectVacancy="createVacancy" />
     <AllVacancyCandidateList @allVacancy="createVacancy" />
-    <AddVacancy @addVacancy="createVacancy" />
 
     <div class="mt-3" style="text-align: right" v-if="getVacancyDetail?.length > 8">
       <button class="btn btn-outline-dark btn-sm">
@@ -299,6 +302,23 @@ export default {
 
     editVacancyId(vacancyId) {
       this.selectedVacancyId = vacancyId;
+      this.$refs.editShift.getBusinessUnitMethod();
+
+      setTimeout(() => {
+        this.$refs.editShift.getClientMethod();
+      }, 100);
+
+      setTimeout(() => {
+        this.$refs.editShift.getTimeShift();
+      }, 200);
+
+      setTimeout(() => {
+        this.$refs.editShift.getJobTitleMethod();
+      }, 300);
+
+      setTimeout(() => {
+        this.$refs.editShift.fetchVacancyMethod(vacancyId);
+      }, 400);
     },
     updateVacancyInList(updatedVacancy) {
       const index = this.getVacancyDetail.findIndex(
@@ -400,7 +420,16 @@ export default {
       }
     },
   },
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.createVacancy();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.createVacancy();
 
+    next();
+  },
   created() {
     this.createVacancy();
   },

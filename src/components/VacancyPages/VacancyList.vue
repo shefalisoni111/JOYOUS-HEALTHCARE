@@ -79,12 +79,13 @@
                       </div>
                       <div>
                         <button
-                          v-if="activeTab === 0 || activeTab === 1"
+                          v-if="activeTab === 0"
                           type="button"
                           class="btn btn-outline-success text-nowrap"
                           data-bs-toggle="modal"
                           data-bs-target="#addVacancies"
                           data-bs-whatever="@mdo"
+                          @click="handleShiftAdd"
                         >
                           + Add Shift
                         </button>
@@ -293,6 +294,7 @@
     <AssignedVacancyList @updateAssignSearch="searchVacancyUpdated" />
     <RejectedVacancyList @rejectVacancySearch="searchVacancyUpdated" />
     <AllVacancyCandidateList @allVacancySearch="searchVacancyUpdated" />
+    <AddVacancy @addVacancy="createVacancy" ref="addShiftRef" />
   </div>
 </template>
 <script>
@@ -306,6 +308,7 @@ import AppliedVacancyList from "../modals/Vacancy/AppliedVacancyList.vue";
 import AssignedVacancyList from "../modals/Vacancy/AssignedVacancyList.vue";
 import RejectedVacancyList from "../modals/Vacancy/RejectedVacancyList.vue";
 import AllVacancyCandidateList from "../modals/Vacancy/AllVacancyCandidateList.vue";
+import AddVacancy from "../modals/Vacancy/AddVacancy.vue";
 const axiosInstance = axios.create({
   headers: {
     "Cache-Control": "no-cache",
@@ -352,6 +355,7 @@ export default {
     InActiveVacancyList,
     AllVacancyDisplay,
     EditVacancy,
+    AddVacancy,
     PublishedVacancy,
     AppliedVacancyList,
     AssignedVacancyList,
@@ -360,6 +364,9 @@ export default {
   },
 
   methods: {
+    handleShiftAdd() {
+      this.$refs.addShiftRef.getClientMethod();
+    },
     editVacancyId(vacancyId) {
       this.selectedVacancyId = vacancyId;
     },
@@ -439,6 +446,27 @@ export default {
 
       if (index !== -1) {
         this.$set(this.getVacancyDetail, index, updatedVacancy);
+      }
+    },
+    async createVacancy() {
+      if (this.getVacancyDetail.length === 0) {
+        const token = localStorage.getItem("token");
+        this.isLoading = true;
+        await axios
+          .get(`${VITE_API_URL}/vacancies`, {
+            headers: {
+              "content-type": "application/json",
+              Authorization: "bearer " + token,
+            },
+          })
+          .then((response) => {
+            this.getVacancyDetail = response.data.data;
+
+            localStorage.setItem("vacancies", JSON.stringify(this.getVacancyDetail));
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
       }
     },
     openPopup(id) {
@@ -562,9 +590,7 @@ export default {
   async mounted() {
     await this.setActiveTabNameOnLoad();
   },
-  created() {
-    // this.searchVacancyUpdated();
-  },
+
   beforeRouteUpdate(to, from, next) {
     this.setActiveTabFromRoute();
 

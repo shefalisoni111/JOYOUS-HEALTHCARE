@@ -34,6 +34,7 @@
               data-bs-toggle="modal"
               data-bs-target="#schedulePublishStaffList"
               data-bs-whatever="@mdo"
+              @click="handleShiftPublishStaffList"
             >
               Publish
             </button>
@@ -42,17 +43,22 @@
 
         <div class="row">
           <div class="full-page-calendar">
-            <SchedulePublishStaffList @updated-assignPublish="fetchAssignList" />
+            <SchedulePublishStaffList
+              @updated-assignPublish="fetchAssignList"
+              ref="shiftPublishStaff"
+            />
 
             <SuccessAlert ref="successAlert" />
             <div>
               <EditAssignShceduleVaacncy
+                ref="editAssignScheduleShift"
                 :vacancyId="String(vacancyId)"
                 :candidateId="selectedCandidateId"
                 :columnDateMatch="columnDateMatch"
                 @updated-assign="fetchAssignList"
               />
               <ScheduleDirectAssignList
+                ref="directAssignShiftList"
                 :vacancyId="String(vacancyId)"
                 :columnDateMatch="columnDateMatch"
                 :initialDate="selectedDate"
@@ -700,14 +706,6 @@
       >
         Next
       </button>
-
-      <!-- <ScheduleDirectAssignList
-        :columnDateMatch="columnDateMatch"
-        :initialDate="selectedDate"
-        :candidateId="selectedCandidateId"
-        :candidateJob="candidateJob"
-        @closeModal="closeModal"
-      /> -->
     </div>
   </div>
 </template>
@@ -869,6 +867,9 @@ export default {
     },
   },
   methods: {
+    handleShiftPublishStaffList() {
+      this.$refs.shiftPublishStaff.getPublishStaffListMethod();
+    },
     filterData(value, filterType) {
       switch (filterType) {
         case "job_title":
@@ -916,16 +917,7 @@ export default {
 
         this.searchResults = response.data.data;
         this.vacancyList = response.data.vacancies;
-        // this.vacancyList = response.data.vacancies;
-        // this.searchResults = response.data.vacancies;
-        // console.log(this.vacancyList);
-        // const allVacancies = this.candidateList.flatMap(
-        //   (candidate) => candidate.vacancies
-        // );
-        // const vacancyMap = new Map();
-        // allVacancies.forEach((vacancy) => vacancyMap.set(vacancy.id, vacancy));
-        // this.vacancyList = Array.from(vacancyMap.values());
-        // console.log(this.vacancyList);
+
         this.fetchVacancyListMethod();
       } catch (error) {
         if (error.response && error.response.status === 404) {
@@ -990,13 +982,7 @@ export default {
       const formattedDate = `${year}-${month}-${day}`;
       return formattedDate;
     },
-    // filteredVacancies() {
-    //   return this.allDatesVacancy.filter((item) => item.date == this.columnDateMatch);
-    //   return this.searchResults.filter((item) => item.date == this.columnDateMatch);
-    // },
-    // filteredVacancies() {
-    //   return this.searchResults.filter((item) => item.date == this.columnDateMatch);
-    // },
+
     toggleSidebar() {
       this.isOpen = !this.isOpen;
     },
@@ -1119,22 +1105,10 @@ export default {
       event.preventDefault();
     },
     async handleDrop(candidateId, date) {
-      // console.log(date);
-      // const dateObject = new Date(selectedDate);
-
-      // const day = dateObject.getDate();
-      // const month = dateObject.getMonth() + 1;
-      // const year = dateObject.getFullYear();
-
-      // const formattedDate = `${day}/${month}/${year}`;
       try {
         if (!this.vacancyBeingDragged || !this.vacancyBeingDragged.id) {
           return;
         }
-
-        // if (date !== this.formattedDate(this.dropDay)) {
-        //   return;
-        // }
 
         const payload = {
           vacancy_id: this.vacancyBeingDragged.id,
@@ -1169,25 +1143,6 @@ export default {
           errorMessage = error.response.data.error;
         }
         alert(errorMessage);
-
-        // if (error.response && error.response.status === 422) {
-        //   let errorMessage;
-
-        //   if (error.response.data && typeof error.response.data === "object") {
-        //     if (error.response.data.error) {
-        //       errorMessage = error.response.data.error;
-        //     } else if (
-        //       error.response.data.error &&
-        //       Array.isArray(error.response.data.error.base)
-        //     ) {
-        //       errorMessage = error.response.data.error.base[0];
-        //     } else {
-        //       errorMessage = "Unknown error occurred";
-        //     }
-        //   } else {
-        //     errorMessage = "Invalid error data structure";
-        //   }
-        // }
       } finally {
         this.vacancyBeingDragged = null;
         this.dropCandidateId = null;
@@ -1207,18 +1162,7 @@ export default {
         return "Invalid Date";
       }
     },
-    // (dateString) {
-    //   const datePart = dateString.split(", ")[1];
 
-    //   // Split the date part by dash to get day, month, and year
-    //   const [day, month, year] = datePart.split("-");
-
-    //   // Construct the formatted date string in "YYYY-MM-DD" format
-    //   const formattedDate = `${year}-${month}-${day}`;
-
-    //   // Return the formatted date
-    //   return formattedDate;
-    // },
     getCandidateName() {
       if (this.selectedCandidate) {
         if (this.selectedCandidate.first_name && this.selectedCandidate.last_name) {
@@ -1236,37 +1180,26 @@ export default {
     },
 
     async openModalEdit(candidateId, day) {
+      if (this.$refs.editAssignScheduleShift) {
+        await this.$refs.editAssignScheduleShift.fetchVacancyIdMethod();
+        await this.$refs.editAssignScheduleShift.getJobTitleMethod();
+        await this.$refs.editAssignScheduleShift.fetchVacancyListMethod();
+      }
+
       this.vacancyId = candidateId.id.toString() || "";
       if (!candidateId || !candidateId.candidate_id) {
         return;
       }
 
-      // if (!candidateId || !candidateId.candidate_id) {
-      //   return;
-      // }
-
       this.columnDateMatch = day !== null ? day.toString() : "";
       this.selectedCandidateId = candidateId.candidate_id.toString();
       this.candidateJob = candidateId.job;
-      // this.vacancyId = candidateId.id;
-      // this.vacancyId = candidateId.id.toString() || "";
+
       if (candidateId && candidateId.id) {
         // this.vacancyId = candidateId.id;
       } else {
         return;
       }
-
-      // this.columnDateMatch = day !== null ? day.toString() : "";
-
-      // this.selectedCandidateId = candidateId.candidate_id.toString();
-
-      // this.candidateJob = candidateId.job;
-
-      // if (candidateId && candidateId.id) {
-      //   this.vacancyId = candidateId.id.toString();
-      // } else {
-      //   return;
-      // }
 
       if (candidateId && candidateId.job !== undefined && candidateId.job !== null) {
         this.candidateJob = candidateId.job.toString();
@@ -1317,42 +1250,21 @@ export default {
       }
     },
     async openModal(candidateId, day) {
-      // const allVacancies = this.candidateList.flatMap((candidate) => candidate.vacancies);
-      // const vacancyMap = new Map();
-      // allVacancies.forEach((vacancy) => vacancyMap.set(vacancy.id, vacancy));
-      // this.vacancyList = Array.from(vacancyMap.values());
-      // console.log(this.vacancyList);
+      this.$refs.directAssignShiftList.fetchVacancyListMethod();
 
       if (!candidateId || !candidateId.candidate_id) {
         return;
       }
 
-      // if (!candidateId || !candidateId.candidate_id) {
-      //   return;
-      // }
-
       this.columnDateMatch = day !== null ? day.toString() : "";
       this.selectedCandidateId = candidateId.candidate_id.toString();
       this.candidateJob = candidateId.job;
-      // this.vacancyId = candidateId.id;
-      // this.vacancyId = candidateId.id.toString() || "";
+
       if (candidateId && candidateId.id) {
         // this.vacancyId = candidateId.id;
       } else {
         return;
       }
-
-      // this.columnDateMatch = day !== null ? day.toString() : "";
-
-      // this.selectedCandidateId = candidateId.candidate_id.toString();
-
-      // this.candidateJob = candidateId.job;
-
-      // if (candidateId && candidateId.id) {
-      //   this.vacancyId = candidateId.id.toString();
-      // } else {
-      //   return;
-      // }
 
       if (candidateId && candidateId.job !== undefined && candidateId.job !== null) {
         this.candidateJob = candidateId.job.toString();
@@ -1477,9 +1389,6 @@ export default {
             params: requestData,
           }
         );
-        // this.vacancyList = response.data.data;
-
-        //  this.searchResults = response.data.data;
 
         this.fetchCandidateList();
         this.fetchAssignList();
@@ -1522,14 +1431,29 @@ export default {
     SuccessAlert,
     Loader,
   },
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.fetchAssignList();
+      vm.getBusinessUnitMethod();
+      vm.getJobTitleMethod();
+      vm.getTimeShift();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.fetchAssignList();
+    this.getBusinessUnitMethod();
+    this.getJobTitleMethod();
+    this.getTimeShift();
+    next();
+  },
   async mounted() {
     await this.loadDateRangeFromLocalStorage();
 
-    await this.fetchAssignList();
-    await this.getBusinessUnitMethod();
+    // await this.fetchAssignList();
+    // await this.getBusinessUnitMethod();
     // this.fetchAssignVacancyStaffList();
-    await this.getJobTitleMethod();
-    await this.getTimeShift();
+    // await this.getJobTitleMethod();
+    // await this.getTimeShift();
 
     const currentDate = new Date();
     const dayOfWeek = currentDate.getDay();
@@ -1544,7 +1468,7 @@ export default {
     endOfWeek.setDate(endOfWeek.getDate() + 6);
     this.endDate = endOfWeek;
     await this.fetchCandidateList();
-    await this.fetchVacancyListMethod();
+    // await this.fetchVacancyListMethod();
   },
 };
 </script>

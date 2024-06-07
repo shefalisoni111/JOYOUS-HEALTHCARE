@@ -438,8 +438,17 @@ export default {
       this.postcode = "";
     },
   },
-  mounted() {
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.getRolesMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
     this.getRolesMethod();
+    next();
+  },
+  mounted() {
+    // this.getRolesMethod();
     this.isValidForm = this.isFormValid;
   },
 };

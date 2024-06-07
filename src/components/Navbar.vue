@@ -375,8 +375,8 @@
               </li>
 
               <li class="cursor-pointer my-1">
-                <a class="dropdown-item d-flex align-items-center">
-                  <i class="bi bi-brightness-low pe-2"></i><span>Support</span>
+                <a class="dropdown-item d-flex align-items-center" href="https://recpal.co.uk/support/">
+                  <i class="bi bi-brightness-low pe-2" ></i><span>Support</span>
                 </a>
               </li>
               <li>

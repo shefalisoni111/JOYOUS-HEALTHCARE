@@ -347,46 +347,6 @@ export default {
       this.$emit("assignCandidate", { candidateId, jobId });
     },
 
-    // async assignedCandidate(candidateId) {
-    //   const token = localStorage.getItem("token");
-
-    //   if (this.$store.state.selectedCandidateItemId) {
-    //     try {
-    //       const response = await axios.get(
-    //         `${VITE_API_URL}/find_vacancy_according_candidate_job/${this.$store.state.selectedCandidateItemId}`,
-    //         {
-    //           headers: {
-    //             "content-type": "application/json",
-    //             Authorization: "bearer " + token,
-    //           },
-    //         }
-    //       );
-
-    //       // console.log(
-    //       //   "candidate_id",
-    //       //   this.$store.state.selectedCandidateItemId,
-    //       //   "job_id",
-    //       //   this.$store.state.selectedJobItemId
-    //       // );
-
-    //       this.errorMessage = response.data.message;
-    //       this.getVacancyDetail = response.data.vacancies;
-
-    //       this.vacancyList = [];
-
-    //       // this.getVacancyDetail.forEach((vacancyItem) => {
-    //       //   this.vacancyList.push(vacancyItem.vacancy);
-    //       // });
-    //       this.$emit("assignVacancy");
-    //     } catch (error) {
-    //       if (error.response) {
-    //         if (error.response.status == 404) {
-    //           // Handle 404 error
-    //         }
-    //       }
-    //     }
-    //   }
-    // },
     async assignVacancyToCandidateDirectMethod(event) {
       event.stopPropagation();
       const token = localStorage.getItem("token");
@@ -462,8 +422,17 @@ export default {
       this.selectedWeekDate = this.columnDateMatch;
     }
   },
-  mounted() {
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.fetchVacancyListMethod(this.selectedWeekDate);
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
     this.fetchVacancyListMethod(this.selectedWeekDate);
+    next();
+  },
+  mounted() {
+    // this.fetchVacancyListMethod(this.selectedWeekDate);
     if (this.job) {
       console.log(this.job);
     } else {

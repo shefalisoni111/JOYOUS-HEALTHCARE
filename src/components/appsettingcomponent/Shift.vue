@@ -17,6 +17,7 @@
             data-bs-target="#addShift"
             data-bs-whatever="@mdo"
             type="button"
+            @click="handleShift"
           >
             Update Shift
           </button>
@@ -63,7 +64,7 @@
         </form>
       </div>
     </div>
-    <AddShift :shifts="shifts" @shift-updated="getTime" />
+    <AddShift :shifts="shifts" @shift-updated="getTime" ref="addShift" />
   </div>
 </template>
 
@@ -79,6 +80,9 @@ export default {
   },
   components: { AddShift },
   methods: {
+    handleShift() {
+      this.$refs.addShift.fetchShifts();
+    },
     async getTime() {
       try {
         const response = await axios.get(`${VITE_API_URL}/shifts`);

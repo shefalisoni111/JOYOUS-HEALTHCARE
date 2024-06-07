@@ -269,11 +269,7 @@
       </button>
     </div>
     <AddClients ref="addClient" />
-    <EditClientModal
-      :clientID="selectedClientID || 0"
-      @client-updated="createdClient"
-      ref="editClientModal"
-    />
+    <EditClientModal :clientID="selectedClientID || 0" @client-updated="createdClient" />
   </div>
 </template>
 <script>
@@ -346,10 +342,7 @@ export default {
     },
     editClient(clientID) {
       this.selectedClientID = clientID;
-      this.$refs.editClientModal.getPositionMethod();
-      setTimeout(() => {
-        this.$refs.editClientModal.getJobTitleMethod();
-      }, 100);
+      // this.$refs.editClientModalList.getJobTitleMethod();
     },
     getColor(index) {
       return this.colors[index % this.colors.length];
@@ -478,7 +471,7 @@ export default {
   async mounted() {
     await this.setActiveTabFromRoute();
     await this.setActiveTabNameOnLoad();
-    await this.createdClient();
+    // await this.createdClient();
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {

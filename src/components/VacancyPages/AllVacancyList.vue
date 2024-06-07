@@ -184,13 +184,17 @@
         </table>
       </div>
     </div>
-    <EditVacancy :vacancyId="selectedVacancyId || 0" @updateVacancy="createVacancy" />
+    <EditVacancy
+      :vacancyId="selectedVacancyId || 0"
+      @updateVacancy="createVacancy"
+      ref="editShift"
+    />
     <PublishedVacancy @publishVacancy="createVacancy" />
     <AppliedVacancyList @appliedVacancy="createVacancy" />
     <AssignedVacancyList @assignVacancy="createVacancy" />
     <RejectedVacancyList @rejectVacancy="createVacancy" />
     <AllVacancyCandidateList @allVacancy="createVacancy" />
-    <AddVacancy @addVacancy="createVacancy" />
+    <!-- <AddVacancy @addVacancy="createVacancy" /> -->
     <div class="mt-3" style="text-align: right" v-if="getVacancyDetail?.length > 9">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
@@ -290,6 +294,23 @@ export default {
     },
     editVacancyId(vacancyId) {
       this.selectedVacancyId = vacancyId;
+      this.$refs.editShift.getBusinessUnitMethod();
+
+      setTimeout(() => {
+        this.$refs.editShift.getClientMethod();
+      }, 100);
+
+      setTimeout(() => {
+        this.$refs.editShift.getTimeShift();
+      }, 200);
+
+      setTimeout(() => {
+        this.$refs.editShift.getJobTitleMethod();
+      }, 300);
+
+      setTimeout(() => {
+        this.$refs.editShift.fetchVacancyMethod(vacancyId);
+      }, 400);
     },
     updateVacancyInList(updatedVacancy) {
       const index = this.getVacancyDetail.findIndex(

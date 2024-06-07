@@ -398,6 +398,15 @@ export default {
       },
     },
   },
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.fetchCustomTimeSheetData(newvacancyId);
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.fetchCustomTimeSheetData(newvacancyId);
+    next();
+  },
   mounted() {},
 };
 </script>

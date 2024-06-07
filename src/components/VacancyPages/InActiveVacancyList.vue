@@ -109,6 +109,7 @@
     <EditVacancy
       :vacancyId="selectedVacancyId || 0"
       @updateVacancyInactive="getInactiveVacancyMethod"
+      ref="editShift"
     />
     <ConfirmationAlert
       :show-modal="isModalVisible"
@@ -220,6 +221,23 @@ export default {
     },
     editVacancyId(vacancyId) {
       this.selectedVacancyId = vacancyId;
+      this.$refs.editShift.getBusinessUnitMethod();
+
+      setTimeout(() => {
+        this.$refs.editShift.getClientMethod();
+      }, 100);
+
+      setTimeout(() => {
+        this.$refs.editShift.getTimeShift();
+      }, 200);
+
+      setTimeout(() => {
+        this.$refs.editShift.getJobTitleMethod();
+      }, 300);
+
+      setTimeout(() => {
+        this.$refs.editShift.fetchVacancyMethod(vacancyId);
+      }, 400);
     },
     async getInactiveVacancyMethod() {
       this.isLoading = true;

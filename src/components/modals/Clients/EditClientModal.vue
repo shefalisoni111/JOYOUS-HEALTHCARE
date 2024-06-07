@@ -29,16 +29,17 @@
                     <label class="form-label" for="selectJobTitle">Jobs</label>
                   </div>
                   <div class="col-12">
-                    <div v-for="(option, index) in options" :key="index">
+                    <div v-for="option in options" :key="option.id">
                       <input
                         type="checkbox"
-                        :id="'checkbox_' + option.id"
+                        :id="option.id"
                         :value="option.id"
-                        v-model="fetchClients.job_id"
+                        v-model="option.checked"
+                        @change="toggleJobsSelection"
                       />
-                      <label :for="'checkbox_' + option.id" class="text-capitalize">
-                        &nbsp; {{ option.name }}
-                      </label>
+                      <label :for="option.id" class="text-capitalize"
+                        >&nbsp;{{ option.name }}</label
+                      >
                     </div>
                   </div>
                 </div>
@@ -193,7 +194,10 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/clients/${id}`);
 
-        this.fetchClients = { ...this.fetchClients, ...response.data.data };
+        this.fetchClients = { ...this.fetchClients, ...response.data };
+        this.options.forEach((option) => {
+          option.checked = this.fetchClients.job_id.includes(option.id);
+        });
       } catch (error) {
         // console.error("Error fetching todo:", error);
       }
@@ -236,18 +240,18 @@ export default {
       },
     },
   },
-  async beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      vm.getJobTitleMethod();
-    });
-  },
-  async beforeRouteUpdate(to, from, next) {
-    this.getJobTitleMethod();
-    next();
-  },
+  // async beforeRouteEnter(to, from, next) {
+  //   next((vm) => {
+  //     vm.getJobTitleMethod();
+  //   });
+  // },
+  // async beforeRouteUpdate(to, from, next) {
+  //   this.getJobTitleMethod();
+  //   next();
+  // },
   mounted() {
-    // await this.fetchClientsMethod(this.$route.params.id);
-    // this.getJobTitleMethod();
+    this.fetchClientsMethod(this.$route.params.id);
+    this.getJobTitleMethod();
   },
 };
 </script>

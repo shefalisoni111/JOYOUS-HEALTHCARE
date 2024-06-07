@@ -326,7 +326,12 @@ export default {
     //     });
     // },
   },
+  beforeRouteUpdate(to, from, next) {
+    this.getJobData();
 
+    this.getInactiveJobData();
+    next();
+  },
   mounted() {
     this.getJobData();
     this.getInactiveJobData();

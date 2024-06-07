@@ -148,30 +148,34 @@ export default {
         // console.error("Error adding document:", error);
       }
     },
+    async newDocAdd() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/document_categories`);
+        this.getCategoryData = response.data;
+
+        const currentCategory = this.getCategoryData.find(
+          (category) => category.document_category_id !== null
+        );
+
+        if (currentCategory) {
+          this.document_category_id = currentCategory.id;
+        }
+      } catch (error) {
+        // console.error("Error fetching documents:", error);
+      }
+    },
   },
-
-  created() {
-    try {
-      axios
-        .get(`${VITE_API_URL}/document_categories`)
-        .then((response) => {
-          this.getCategoryData = response.data;
-
-          const currentCategory = this.getCategoryData.find((category) => {
-            return category.document_category_id !== null;
-          });
-
-          if (currentCategory) {
-            this.document_category_id = currentCategory.id;
-          }
-        })
-        .catch((error) => {
-          // console.error("Error fetching documents:", error);
-        });
-    } catch (error) {
-      // console.error("Error fetching documents:", error);
-    }
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.newDocAdd();
+    });
   },
+  async beforeRouteUpdate(to, from, next) {
+    this.newDocAdd();
+
+    next();
+  },
+  created() {},
 };
 </script>
 

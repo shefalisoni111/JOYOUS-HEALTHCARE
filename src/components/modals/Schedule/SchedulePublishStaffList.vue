@@ -461,10 +461,18 @@ export default {
     //   }
     // },
   },
-
-  async mounted() {
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.getPublishStaffListMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.getPublishStaffListMethod();
+    next();
+  },
+  mounted() {
     // this.getVacancyDataM
-    await this.getPublishStaffListMethod();
+    //  this.getPublishStaffListMethod();
     // this.getAssignStaffListMethod();
     // this.getAllCandidateListMethod(this.$store.state.selectedPublishItemId);
   },

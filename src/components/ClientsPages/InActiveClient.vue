@@ -134,7 +134,11 @@
         Next
       </button>
     </div>
-    <EditClientModal :clientID="selectedClientID || 0" @client-updated="createdClient" />
+    <EditClientModal
+      :clientID="selectedClientID || 0"
+      @client-updated="createdClient"
+      ref="editClientModalInactive"
+    />
     <AddClients @client-updated="createdClient" />
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
@@ -192,6 +196,7 @@ export default {
     },
     editClient(clientID) {
       this.selectedClientID = clientID;
+      // this.$refs.editClientModalInactive.getJobTitleMethod();
     },
     // async clientsDeleteMethod(id) {
     //   if (!window.confirm("Are you Sure ?")) {

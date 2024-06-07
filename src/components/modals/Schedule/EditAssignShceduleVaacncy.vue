@@ -439,19 +439,7 @@ export default {
         }
       }
     },
-    // async fetchAssignVacancyMethod(id) {
-    //   if (!id) return;
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/candidates/${id}`);
-    //     this.fetchAssignVacancy = { ...this.fetchAssignVacancy, ...response.data.data };
-    //     this.fetchAssignVacancy.start_time = this.convertTimeFormat(
-    //       this.fetchAssignVacancy.start_time
-    //     );
-    //     this.fetchAssignVacancy.end_time = this.convertTimeFormat(
-    //       this.fetchAssignVacancy.end_time
-    //     );
-    //   } catch (error) {}
-    // },
+
     async fetchVacancyIdMethod(id) {
       if (!id) return;
 
@@ -501,11 +489,24 @@ export default {
       }
     },
   },
-  async mounted() {
-    await this.getJobTitleMethod();
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.fetchVacancyIdMethod();
+      vm.getJobTitleMethod();
+      vm.fetchVacancyListMethod(this.selectedWeekDate);
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.fetchVacancyIdMethod();
+    this.getJobTitleMethod();
+    this.fetchVacancyListMethod(this.selectedWeekDate);
+    next();
+  },
+  mounted() {
+    // await this.getJobTitleMethod();
     // this.fetchAssignVacancyMethod();
-    await this.fetchVacancyIdMethod();
-    await this.fetchVacancyListMethod(this.selectedWeekDate);
+    // await this.fetchVacancyIdMethod();
+    // this.fetchVacancyListMethod(this.selectedWeekDate);
   },
   watch: {
     candidateId: {

@@ -321,48 +321,6 @@ export default {
         };
       });
     },
-    // updateDate(selectedDate, shift) {
-    //   this.date = selectedDate;
-
-    //   const dayData = this.calendarData.find((data) => data.date === selectedDate);
-    //   if (dayData) {
-    //     // If all shifts are already selected, disable them
-    //     if (
-    //       dayData.shifts.early &&
-    //       dayData.shifts.late &&
-    //       dayData.shifts.night &&
-    //       dayData.shifts.unavailable
-    //     ) {
-    //       // Do nothing or show a message indicating that all shifts are already selected
-    //       return;
-    //     }
-
-    //     dayData.shifts[shift] = !dayData.shifts[shift];
-
-    //     // Check if all shifts are now selected, disable them if needed
-    //     if (
-    //       dayData.shifts.early &&
-    //       dayData.shifts.late &&
-    //       dayData.shifts.night &&
-    //       dayData.shifts.unavailable
-    //     ) {
-    //       // Disable all shifts
-    //       dayData.shifts.early = false;
-    //       dayData.shifts.late = false;
-    //       dayData.shifts.night = false;
-    //       dayData.shifts.unavailable = false;
-
-    //       // Optionally, you can show a message indicating that all shifts are disabled
-    //       alert("All shifts are disabled for this date.");
-    //     }
-    //   }
-
-    //   const selectedShifts = Object.keys(dayData.shifts)
-    //     .filter((key) => dayData.shifts[key])
-    //     .join(", ");
-
-    //   this.status = selectedShifts ? selectedShifts : "";
-    // },
 
     updateDate(selectedDate, shift) {
       this.date = selectedDate;
@@ -465,6 +423,7 @@ export default {
             // this.$emit("availability-updated");
             const message = "Availability updated successfully";
             this.$refs.successAlert.showSuccess(message);
+            await this.fetchCandidateList(this.startDate);
             this.errorMessage = "";
             return;
           } else {
@@ -513,6 +472,7 @@ export default {
             const message = "Availability added successfully";
             // console.log("Showing success message:", message);
             this.$refs.successAlert.showSuccess(message);
+            await this.fetchCandidateList(this.startDate);
             this.errorMessage = "";
             return;
           } else {
@@ -543,7 +503,30 @@ export default {
         }
       }
     },
+    async fetchCandidateList(startDate) {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/candidates_weekly_availability`,
+          {
+            params: { date: startDate },
+          }
+        );
+        this.candidateList = response.data.data;
 
+        // this.candidateList.forEach((candidate) => {
+        //   candidate.availabilityByDate = {};
+        //   candidate.availability.forEach((avail) => {
+        //     candidate.availabilityByDate[avail.date] = avail.status;
+        //   });
+        // });
+
+        this.availabilityIds = this.candidateList.map((candidate) => {
+          return candidate.availability.map(
+            (availabilityItem) => availabilityItem.availability_id
+          );
+        });
+      } catch (error) {}
+    },
     async fetchAvailabilityStatusMethod() {
       try {
         const response = await axios.get(

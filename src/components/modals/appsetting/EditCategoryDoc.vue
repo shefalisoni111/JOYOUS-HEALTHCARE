@@ -148,9 +148,8 @@ export default {
   },
   beforeDestroy() {
     this.$options.watch.categoryId = null;
-  },
-  mounted() {
     this.getJobTitleMethod();
   },
+  mounted() {},
 };
 </script>

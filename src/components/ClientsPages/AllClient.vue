@@ -215,7 +215,11 @@
       </button>
     </div>
 
-    <EditClientModal :clientID="selectedClientID || 0" @client-updated="createdClient" />
+    <EditClientModal
+      :clientID="selectedClientID || 0"
+      @client-updated="createdClient"
+      ref="editClientModalAll"
+    />
     <AddClients @client-updated="createdClient" />
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
@@ -336,6 +340,7 @@ export default {
     },
     editClient(clientID) {
       this.selectedClientID = clientID;
+      this.$refs.editClientModalAll.getJobTitleMethod();
     },
     handleCheckboxChange(dataId) {
       if (this.checkedClient[dataId]) {

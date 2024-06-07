@@ -218,8 +218,17 @@ export default {
       }
     },
   },
-  mounted() {
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.fetchShifts();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
     this.fetchShifts();
+    next();
+  },
+  mounted() {
+    // this.fetchShifts();
   },
 };
 </script>

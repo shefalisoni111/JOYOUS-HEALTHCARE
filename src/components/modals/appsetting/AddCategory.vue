@@ -178,8 +178,18 @@ export default {
       }
     },
   },
-  mounted() {
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.getPositionMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
     this.getPositionMethod();
+
+    next();
+  },
+  mounted() {
+    // this.getPositionMethod();
   },
 };
 </script>

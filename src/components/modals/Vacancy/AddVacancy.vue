@@ -660,6 +660,9 @@ export default {
       }
     },
     async getJobTitleMethod() {
+      if (!this.client_id) {
+        return;
+      }
       try {
         const response = await axios.get(
           `${VITE_API_URL}/job_title_for_client/${this.client_id}`
@@ -674,6 +677,9 @@ export default {
       }
     },
     async getSiteAccordingClientMethod() {
+      if (!this.client_id) {
+        return;
+      }
       try {
         const response = await axios.get(
           `${VITE_API_URL}/site_according_client/${this.client_id}`
@@ -713,6 +719,9 @@ export default {
     },
 
     async getTimeShift() {
+      if (!this.site_id) {
+        return;
+      }
       try {
         const response = await axios.get(`${VITE_API_URL}site_shift/${this.site_id}`);
         this.shiftsTime =
@@ -795,10 +804,20 @@ export default {
       this.selectedDate = null;
     },
   },
-  async mounted() {
-    await this.getClientMethod();
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.getClientMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.getClientMethod();
 
-    await this.getTimeShift();
+    next();
+  },
+  async mounted() {
+    // this.getClientMethod();
+
+    // await this.getTimeShift();
     this.isValidForm = this.isFormValid;
     await this.clearError();
   },
