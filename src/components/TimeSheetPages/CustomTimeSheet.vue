@@ -152,7 +152,7 @@
                             </th>
                             <th scope="col">ID</th>
                             <th scope="col">Code</th>
-                            <th scope="col" style="width: 200px">Name</th>
+                            <th scope="col" style="width: 153px">Name</th>
                             <th scope="col">Site</th>
                             <th scope="col">Job</th>
                             <th scope="col">Shift Date</th>
@@ -162,6 +162,7 @@
                             <th scope="col">Client Rate</th>
                             <th scope="col">Total Cost</th>
                             <th scope="col">Paper TimeSheet</th>
+                            <th scope="col">Approved</th>
                             <th scope="col">Action</th>
                           </tr>
                         </thead>
@@ -198,23 +199,28 @@
                               {{ data.total_cost ? data.total_cost : "null" }}
                             </td>
                             <td scope="col">
-                              {{ data.paper_timesheet ? data.paper_timesheet : "null" }}
-                              &nbsp;
-                              <button
-                                v-if="data.paper_timesheet === null"
-                                class="d-none"
-                              ></button>
-                              <button
-                                v-else
-                                type="button"
-                                class="btn border-primary-subtle"
-                                data-bs-toggle="modal"
-                                data-bs-target="#viewPaperTimeSheet"
-                                data-bs-whatever="@mdo"
-                                @click="viewPaperSheet(data.id, $event)"
-                              >
-                                <i class="bi bi-eye"></i>
-                              </button>
+                              <div v-if="data.paper_timesheet">
+                                <img
+                                  :src="fullPaperTimeSheetUrl(data.paper_timesheet)"
+                                  alt="Current Paper TimeSheet"
+                                  class="img-fluid"
+                                  style="width: 60px"
+                                />
+                                &nbsp;
+                                <button
+                                  type="button"
+                                  class="btn border-primary-subtle"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#viewPaperTimeSheet"
+                                  @click="viewPaperSheet(data.id)"
+                                >
+                                  <i class="bi bi-eye"></i>
+                                </button>
+                              </div>
+                              <div v-else>Null</div>
+                            </td>
+                            <td scope="col">
+                              {{ data.approved_hour ? "Approved" : "Not Approved" }}
                             </td>
                             <td scope="col">
                               <button
@@ -232,7 +238,7 @@
                         </tbody>
                         <tbody v-else>
                           <tr>
-                            <td colspan="14" class="text-danger text-center">
+                            <td colspan="15" class="text-danger text-center">
                               {{ errorMessageCustom }}
                             </td>
                           </tr>
@@ -271,7 +277,7 @@
                             </th>
                             <th scope="col">ID</th>
                             <th scope="col">Code</th>
-                            <th scope="col" style="width: 200px">Name</th>
+                            <th scope="col" style="width: 153px">Name</th>
                             <th scope="col">Site</th>
                             <th scope="col">Job</th>
                             <th scope="col">Shift Date</th>
@@ -281,6 +287,7 @@
                             <th scope="col">Client Rate</th>
                             <th scope="col">Total Cost</th>
                             <th scope="col">Paper TimeSheet</th>
+                            <th scope="col">Approved</th>
                             <th scope="col">Action</th>
                           </tr>
                         </thead>
@@ -317,23 +324,27 @@
                               {{ data.total_cost ? data.total_cost : "null" }}
                             </td>
                             <td scope="col">
-                              {{ data.paper_timesheet ? data.paper_timesheet : "null" }}
-                              &nbsp;
-                              <button
-                                v-if="data.paper_timesheet === null"
-                                class="d-none"
-                              ></button>
-                              <button
-                                v-else
-                                type="button"
-                                class="btn border-primary-subtle"
-                                data-bs-toggle="modal"
-                                data-bs-target="#viewPaperTimeSheet"
-                                data-bs-whatever="@mdo"
-                                @click="viewPaperSheet(data.id, $event)"
-                              >
-                                <i class="bi bi-eye"></i>
-                              </button>
+                              <div v-if="data.paper_timesheet">
+                                <img
+                                  :src="fullPaperTimeSheetUrl(data.paper_timesheet)"
+                                  alt="Current Paper TimeSheet"
+                                  class="img-fluid"
+                                  style="width: 60px"
+                                />&nbsp;
+                                <button
+                                  type="button"
+                                  class="btn border-primary-subtle"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#viewPaperTimeSheet"
+                                  @click="viewPaperSheet(data.id)"
+                                >
+                                  <i class="bi bi-eye"></i>
+                                </button>
+                              </div>
+                              <div v-else>Null</div>
+                            </td>
+                            <td scope="col">
+                              {{ data.approved_hour ? "Approved" : "Not Approved" }}
                             </td>
                             <td scope="col">
                               <button
@@ -351,7 +362,7 @@
                         </tbody>
                         <tbody v-else>
                           <tr>
-                            <td colspan="14" class="text-danger text-center">
+                            <td colspan="15" class="text-danger text-center">
                               {{ errorMessage }}
                             </td>
                           </tr>
@@ -471,6 +482,11 @@ export default {
   },
   components: { Navbar, CustomeTimeSheetEdit, Loader, PaperTimeSheetViewVue },
   computed: {
+    fullPaperTimeSheetUrl() {
+      return (paper_timesheet) => {
+        return paper_timesheet ? `${VITE_API_URL}${paper_timesheet}` : "";
+      };
+    },
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;

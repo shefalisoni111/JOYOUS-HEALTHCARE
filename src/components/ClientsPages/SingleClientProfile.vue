@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container-fluid p-0 mt-3">
+    <div class="container-fluid p-0 mt-3" v-if="getClientDatas">
       <div id="main" class="bg-orange-light">
         <div class="pagetitle d-flex justify-content-between">
           <div class="">
@@ -75,9 +75,9 @@
                 <div class="mt-3 d-flex justify-content-between align-items-center">
                   <div>
                     <h6 class="card-title text-nowrap fw-bold text-capitalize">
-                      {{ getClientDatas.first_name }}
+                      {{ getClientDatas?.first_name }}
                     </h6>
-                    <span class="text-lowercase"> {{ getClientDatas.email }}</span>
+                    <span class="text-lowercase"> {{ getClientDatas?.email }}</span>
                   </div>
 
                   <div>
@@ -87,7 +87,7 @@
                       data-bs-toggle="modal"
                       data-bs-target="#editClientEmail"
                       data-bs-whatever="@mdo"
-                      @click="editClient(getClientDatas.id)"
+                      @click="editClient(getClientDatas?.id)"
                     >
                       Edit
                     </button>
@@ -115,7 +115,7 @@
                     <div class="d-flex align-items-center">
                       <span
                         ><i class="bi bi-telephone"></i>
-                        {{ getClientDatas.phone_number }}</span
+                        {{ getClientDatas?.phone_number }}</span
                       >
                     </div>
                     <button
@@ -124,7 +124,7 @@
                       data-bs-toggle="modal"
                       data-bs-target="#editClientContact"
                       data-bs-whatever="@mdo"
-                      @click="editClientEmail(getClientDatas.id)"
+                      @click="editClientEmail(getClientDatas?.id)"
                     >
                       Edit
                     </button>
@@ -137,7 +137,7 @@
                       Visit Us at:
                     </h6>
                     Address:
-                    <span class="text-lowercase">{{ getClientDatas.address }}</span>
+                    <span class="text-lowercase">{{ getClientDatas?.address }}</span>
                   </div>
                 </div>
               </div>
@@ -268,18 +268,22 @@ export default {
     },
 
     async getClientMethod() {
+      if (!this.$route.params.id) {
+        return;
+      }
       try {
         const response = await axios.get(
           `${VITE_API_URL}/clients/${this.$route.params.id}`
         );
 
-        this.getClientDatas = response.data.data;
+        this.getClientDatas = response.data;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            return;
+            this.getClientDatas = null;
           }
         } else {
+          this.getClientDatas = null;
         }
       }
     },

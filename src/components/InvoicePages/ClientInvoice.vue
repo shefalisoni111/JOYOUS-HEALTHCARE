@@ -169,22 +169,22 @@ ul.generalsetting h6 {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td scope="col">#1</td>
-                          <td scope="col">ClientDemo</td>
-                          <td scope="col">Site</td>
-                          <td scope="col">25/01/2024</td>
-                          <td scope="col">25/01/2025</td>
-                          <td scope="col">mobile</td>
-                          <td scope="col">25/02/2024</td>
-                          <td scope="col">£567</td>
-                          <td scope="col">£345</td>
-                          <td scope="col">£123</td>
-                          <td scope="col">04/02/2025</td>
-                          <td scope="col">Active</td>
-                          <td scope="col">#564f</td>
-                          <td scope="col">merchant</td>
-                          <td scope="col">done</td>
+                        <tr v-for="data in getClientInvoiceDetail" :key="data.id">
+                          <td scope="col">{{ data.invoice_number }}</td>
+                          <td scope="col">{{ data.client }}</td>
+                          <td scope="col">{{ data.site }}</td>
+                          <td scope="col">{{ data.start_date }}</td>
+                          <td scope="col">{{ data.end_date }}</td>
+                          <td scope="col">{{ data.created_on }}</td>
+                          <td scope="col">{{ data.due_date }}</td>
+                          <td scope="col">{{ data.total_amount }}</td>
+                          <td scope="col">{{ data.paid_amount }}</td>
+                          <td scope="col">{{ data.balance_amount }}</td>
+                          <td scope="col">{{ data.status }}</td>
+                          <td scope="col">{{ data.invoice_creation_period }}</td>
+                          <td scope="col">{{ data.invoice_lock }}</td>
+                          <td scope="col">{{ data.generated_by }}</td>
+                          <td scope="col">{{ data.email_status }}</td>
                           <td>
                             <router-link
                               to="/invoice/client-invoice/client-InvoiceView"
@@ -223,18 +223,17 @@ export default {
       daysOfWeek: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
       startDate: new Date(),
       endDate: new Date(),
+      getClientInvoiceDetail: [],
     };
   },
   components: { Navbar },
   computed: {
     getWeekDates() {
-      const currentDate = new Date();
-      const weekStart = new Date(currentDate);
-      weekStart.setDate(currentDate.getDate() - currentDate.getDay());
+      const currentDate = new Date(this.startDate);
       const weekDates = [];
       for (let i = 0; i < 7; i++) {
-        const date = new Date(weekStart);
-        date.setDate(weekStart.getDate() + i);
+        const date = new Date(currentDate);
+        date.setDate(currentDate.getDate() + i);
         weekDates.push(date.getDate());
       }
       return weekDates;
@@ -282,13 +281,16 @@ export default {
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
-        const weekStart = new Date(this.startDate);
-        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
-        this.startDate = weekStart;
+        const currentDate = new Date();
+        const dayOfWeek = currentDate.getDay();
+        const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+        const startOfWeek = new Date(currentDate);
+        startOfWeek.setDate(currentDate.getDate() + diff);
+        this.startDate = startOfWeek;
 
-        const weekEnd = new Date(this.startDate);
-        weekEnd.setDate(weekEnd.getDate() + 6);
-        this.endDate = weekEnd;
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+        this.endDate = endOfWeek;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
         this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
@@ -330,22 +332,23 @@ export default {
     //     });
     //   // alert("Record Deleted ");
     // },
-    // async createVacancy() {
-    //   const token = localStorage.getItem("token");
-    //   axios
-    //     .get(`${VITE_API_URL}/vacancies`, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => (this.getVacancyDetail = response.data));
-    // },
+    async createVacancy() {
+      const token = localStorage.getItem("token");
+      axios
+        .get(`${VITE_API_URL}/client_invoices`, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+        })
+        .then((response) => (this.getClientInvoiceDetail = response.data.data));
+    },
   },
 
   mounted() {
-    // this.createVacancy();
+    this.createVacancy();
     this.loadDateRangeFromLocalStorage();
+    this.updateDateRange();
     // const currentDate = new Date();
     // const startOfWeek = new Date(currentDate);
     // startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
@@ -354,18 +357,18 @@ export default {
     // const endOfWeek = new Date(currentDate);
     // endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
     // this.endDate = endOfWeek;
-    const currentDate = new Date();
-    const dayOfWeek = currentDate.getDay();
-    const startOfWeek = new Date(currentDate);
+    // const currentDate = new Date();
+    // const dayOfWeek = currentDate.getDay();
+    // const startOfWeek = new Date(currentDate);
 
-    const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-    startOfWeek.setDate(startOfWeek.getDate() + diff);
+    // const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    // startOfWeek.setDate(startOfWeek.getDate() + diff);
 
-    this.startDate = startOfWeek;
+    // this.startDate = startOfWeek;
 
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(endOfWeek.getDate() + 6);
-    this.endDate = endOfWeek;
+    // const endOfWeek = new Date(startOfWeek);
+    // endOfWeek.setDate(endOfWeek.getDate() + 6);
+    // this.endDate = endOfWeek;
   },
 };
 </script>

@@ -428,13 +428,16 @@ export default {
 
     updateDateRange() {
       if (this.currentView === "weekly") {
-        const weekStart = new Date(this.startDate);
-        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
-        this.startDate = weekStart;
+        const currentDate = new Date();
+        const dayOfWeek = currentDate.getDay();
+        const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+        const startOfWeek = new Date(currentDate);
+        startOfWeek.setDate(currentDate.getDate() + diff);
+        this.startDate = startOfWeek;
 
-        const weekEnd = new Date(this.startDate);
-        weekEnd.setDate(weekEnd.getDate() + 6);
-        this.endDate = weekEnd;
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+        this.endDate = endOfWeek;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
         this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
@@ -493,6 +496,7 @@ export default {
     // this.createVacancy();
     this.loadDateRangeFromLocalStorage();
     this.getBusinessUnitMethod();
+    this.updateDateRange();
     window.addEventListener("beforeunload", this.saveToLocalStorage);
     // const currentDate = new Date();
     // const startOfWeek = new Date(currentDate);
@@ -502,18 +506,18 @@ export default {
     // const endOfWeek = new Date(currentDate);
     // endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
     // this.endDate = endOfWeek;
-    const currentDate = new Date();
-    const dayOfWeek = currentDate.getDay();
-    const startOfWeek = new Date(currentDate);
+    // const currentDate = new Date();
+    // const dayOfWeek = currentDate.getDay();
+    // const startOfWeek = new Date(currentDate);
 
-    const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-    startOfWeek.setDate(startOfWeek.getDate() + diff);
+    // const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    // startOfWeek.setDate(startOfWeek.getDate() + diff);
 
-    this.startDate = startOfWeek;
+    // this.startDate = startOfWeek;
 
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(endOfWeek.getDate() + 6);
-    this.endDate = endOfWeek;
+    // const endOfWeek = new Date(startOfWeek);
+    // endOfWeek.setDate(endOfWeek.getDate() + 6);
+    // this.endDate = endOfWeek;
   },
 };
 </script>

@@ -225,7 +225,7 @@
                 v-for="candidate in getCandidatesData"
                 :key="candidate.id"
               >
-                <div>
+                <!-- <div>
                   <img
                     v-if="candidate.profile_photo"
                     :src="getProfilePhotoUrl(candidate.profile_photo)"
@@ -238,7 +238,7 @@
                     v-else
                     v-html="getProfilePhotoUrl(candidate.profile_photo)"
                   ></div>
-                </div>
+                </div> -->
                 <div class="ms-1">
                   <h5
                     class="text-capitalize chat-staff mb-0"
@@ -248,7 +248,7 @@
                     {{ candidate.first_name }} {{ candidate.last_name }}
                   </h5>
 
-                  <span class="text-muted text-capitalize">{{ candidate.position }}</span>
+                  <span class="text-muted text-capitalize">{{ candidate.possition }}</span>
                 </div>
                 <hr class="dropdown-divider" />
               </li>
@@ -620,25 +620,25 @@ export default {
     //     this.getAdminProfile = response.data.data;
     //   } catch (error) {}
     // },
-    // async getCandidateMethods() {
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/candidates`);
+    async getCandidateMethods() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/candidates`);
 
-    //     this.getCandidatesData = response.data.data;
-    //   } catch (error) {
-    //     if (error.response) {
-    //       if (error.response.status == 404) {
-    //       }
-    //     } else {
-    //       // console.error("Error fetching candidates:", error);
-    //     }
-    //   }
-    // },
+        this.getCandidatesData = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+          }
+        } else {
+          // console.error("Error fetching candidates:", error);
+        }
+      }
+    },
   },
 
  async mounted() {
   // await   this.getAdminMethod();
-  // await  this.getCandidateMethods();
+  await  this.getCandidateMethods();
   },
 };
 </script>

@@ -340,7 +340,7 @@ export default {
     },
     editClient(clientID) {
       this.selectedClientID = clientID;
-      this.$refs.editClientModalAll.getJobTitleMethod();
+      // this.$refs.editClientModalAll.getJobTitleMethod();
     },
     handleCheckboxChange(dataId) {
       if (this.checkedClient[dataId]) {

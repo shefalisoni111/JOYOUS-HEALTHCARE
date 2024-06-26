@@ -230,7 +230,7 @@ export default {
       }
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/clients/${this.$route.params.id}`
+          `${VITE_API_URL.replace(/\/$/, "")}/clients/${this.$route.params.id}`
         );
 
         this.getClientDatas = response.data.data;
@@ -250,7 +250,7 @@ export default {
       }
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/sites/${this.$route.params.id}`
+          `${VITE_API_URL.replace(/\/$/, "")}/sites/${this.$route.params.id}`
         );
 
         this.getSiteDatas = response.data.data;
@@ -266,9 +266,9 @@ export default {
     },
   },
   async beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      vm.getClientMethod();
-      vm.getSiteMethod();
+    next(async (vm) => {
+      await vm.getClientMethod();
+      await vm.getSiteMethod();
     });
   },
   async beforeRouteUpdate(to, from, next) {

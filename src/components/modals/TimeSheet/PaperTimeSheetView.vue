@@ -20,8 +20,18 @@
                 <div class="main-body mt-5">
                   <div>
                     <div v-if="customTimeSheetPaperSheetView">
-                      <div>{{ customTimeSheetPaperSheetView.id }}</div>
+                      <!-- <div>{{ customTimeSheetPaperSheetView.id }}</div> -->
                       <!-- Other content -->
+                    </div>
+                    <div
+                      class="col-12 mt-1 m-auto text-center"
+                      v-if="customTimeSheetPaperSheetView.paper_timesheet"
+                    >
+                      <img
+                        :src="fullCustomImageUrl"
+                        alt="Current Paper TimeSheet"
+                        class="img-fluid"
+                      />
                     </div>
                     <!-- <img
                       v-if="group.paper_timesheet"
@@ -78,6 +88,11 @@ export default {
       },
     },
   },
+  computed: {
+    fullCustomImageUrl() {
+      return `${VITE_API_URL}${this.customTimeSheetPaperSheetView.paper_timesheet}`;
+    },
+  },
   methods: {
     completeImageUrl(url) {
       if (url) {
@@ -88,6 +103,9 @@ export default {
       return null;
     },
     async fetchCustomTimeSheetData() {
+      if (!this.customDataId) {
+        return;
+      }
       try {
         const response = await axios.get(
           `${VITE_API_URL}/custom_timesheets/${this.customDataId}`

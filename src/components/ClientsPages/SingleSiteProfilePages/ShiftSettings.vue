@@ -121,12 +121,13 @@ export default {
         const response = await axios.get(
           `${VITE_API_URL}site_shift/${this.$route.params.id}`
         );
+
         this.shifts =
           response.data.site_shift_data.map((shift) => ({
             ...shift,
             start_time: this.convertTimeFormat(shift.start_time),
             end_time: this.convertTimeFormat(shift.end_time),
-            break: shift.break,
+            break: shift.break !== null ? shift.break : "00:00",
           })) || [];
         // console.log(this.shifts);
       } catch (error) {
@@ -145,7 +146,7 @@ export default {
         formattedTime += `${mins} minute`;
       }
 
-      return formattedTime;
+      return formattedTime.trim();
     },
     convertTimeFormat(dateTimeString) {
       const date = new Date(dateTimeString);
@@ -167,7 +168,7 @@ export default {
       this.shiftIdToUpdate = shiftId;
     },
 
-    updateShiftTimes() {
+    async updateShiftTimes() {
       const shiftIndex = this.shifts.findIndex(
         (shift) => shift.id === this.shiftIdToUpdate
       );
@@ -183,17 +184,18 @@ export default {
           ],
         };
 
-        axios
-          .put(`${VITE_API_URL}/update_site_shifts`, requestData)
-          .then((response) => {
-            const message = "Shift Updated Successfully";
-            this.$refs.successAlert.showSuccess(message);
-            // alert("Shift Updated Successfully");
-            this.shiftIdToUpdate = null;
-          })
-          .catch((error) => {
-            // console.error(error);
-          });
+        try {
+          const response = await axios.put(
+            `${VITE_API_URL}/update_site_shifts`,
+            requestData
+          );
+          const message = "Shift Updated Successfully";
+          this.$refs.successAlert.showSuccess(message);
+
+          this.shiftIdToUpdate = null;
+        } catch (error) {
+          // console.error("Error updating shifts:", error);
+        }
       }
     },
   },

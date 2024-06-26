@@ -111,11 +111,19 @@
                 <div class="col-12">
                   <label class="form-label">Paper TimeSheet</label>
                 </div>
-                <div class="col-12 mt-1">
+                <div class="col-12 mt-1" v-if="fetchCustomSheetData.custom_image">
+                  <img
+                    :src="fullCustomImageUrl"
+                    alt="Current Paper TimeSheet"
+                    class="img-fluid"
+                    width="20%"
+                  />
+                </div>
+                <div class="col-12 mt-1" v-else>
                   <input
                     type="file"
                     class="form-control"
-                    accept=".pdf,.doc,.docx,.xls,.xlsx,.csv"
+                    accept="image/*"
                     @change="handleFileUpload"
                   />
                   <span v-if="!validationPaperTimeSheet" class="text-danger">
@@ -123,6 +131,17 @@
                   </span>
                 </div>
               </div>
+              <!-- <div class="mb-3">
+                <div class="col-12">
+                  <label class="form-label">Approved</label>
+                </div>
+                <div class="col-12">
+                  <select id="selectOption" v-model="fetchCustomSheetData.approved_hour">
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                  </select>
+                </div>
+              </div> -->
             </form>
           </div>
           <div class="modal-footer">
@@ -141,6 +160,12 @@
               data-bs-dismiss="modal"
             >
               Save
+            </button>
+            <button
+              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              v-on:click="approved_hourMethod()"
+            >
+              Approved
             </button>
           </div>
         </div>
@@ -166,11 +191,12 @@ export default {
         business_unit: "",
         job: "",
         paper_timesheet: "",
+        approved_hour: "",
         start_time: "",
         end_time: "",
         client_rate: "",
         total_cost: "",
-        paper_timesheet: "",
+        custom_image: "",
       },
       options: [],
       validationClientRate: true,
@@ -192,6 +218,9 @@ export default {
         this.fetchCustomSheetData.client_rate <= 0 ||
         !this.fetchCustomSheetData.paper_timesheet
       );
+    },
+    fullCustomImageUrl() {
+      return `${VITE_API_URL}${this.fetchCustomSheetData.custom_image}`;
     },
   },
   methods: {
@@ -234,14 +263,37 @@ export default {
         this.fetchCustomSheetData = {
           ...this.fetchCustomSheetData,
           ...response.data.custom_sheets,
+          custom_image: response.data.custom_sheets.paper_timesheet,
         };
       } catch (error) {}
     },
     async updateCustomTimeSheetMethod() {
       try {
+        const formData = new FormData();
+        for (const key in this.fetchCustomSheetData) {
+          if (
+            key !== "paper_timesheet_url" &&
+            this.fetchCustomSheetData.hasOwnProperty(key)
+          ) {
+            formData.append(`custom_timesheet[${key}]`, this.fetchCustomSheetData[key]);
+          }
+        }
+
+        if (this.fetchCustomSheetData.paper_timesheet) {
+          formData.append(
+            "custom_timesheet[custome_image]",
+            this.fetchCustomSheetData.paper_timesheet
+          );
+        }
+
         const response = await axios.put(
           `${VITE_API_URL}/custom_timesheets/${this.fetchCustomSheetData.id}`,
-          this.fetchCustomSheetData
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
         );
 
         this.$store.commit("updateCandidate", {
@@ -251,6 +303,24 @@ export default {
         this.$emit("CustomTimeSheetData-updated");
         // alert("Candidate updated successfully");
         const message = "Custom TimeSheet Staff updated successfully";
+        this.$refs.successAlert.showSuccess(message);
+      } catch (error) {
+        // console.error("Error updating candidate:", error);
+      }
+    },
+    async approved_hourMethod() {
+      try {
+        const response = await axios.put(
+          `${VITE_API_URL}/approved_timesheet_hours/${this.fetchCustomSheetData.id}`,
+
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        this.$emit("CustomTimeSheetData-updated");
+        const message = "Custom TimeSheet Approved successfully";
         this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         // console.error("Error updating candidate:", error);
