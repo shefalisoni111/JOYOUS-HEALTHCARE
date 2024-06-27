@@ -391,14 +391,18 @@ export default {
       const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
       return shifts_id ? shifts_id.shift_name : "";
     },
-    selectShiftStart() {
-      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
-      return shifts_id ? shifts_id.start_time : "";
-    },
-    selectShiftEnd() {
-      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
-      return shifts_id ? shifts_id.end_time : "";
-    },
+    // selectShiftStart() {
+    //   const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
+    //   return shifts_id ? shifts_id.start_time : "";
+    // },
+    // selectShiftEnd() {
+    //   const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
+    //   return shifts_id ? shifts_id.end_time : "";
+    // },
+    // selectShiftsBreak() {
+    //   const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
+    //   return shifts_id ? shifts_id.break_duration : "";
+    // },
   },
   watch: {
     job_id: "validationSelectedOptionText",
@@ -454,9 +458,11 @@ export default {
       if (selectedShift) {
         this.start_time = selectedShift.start_time;
         this.end_time = selectedShift.end_time;
+        this.break = selectedShift.break_duration;
       } else {
         this.start_time = "";
         this.end_time = "";
+        this.break = "";
       }
     },
 
@@ -522,6 +528,20 @@ export default {
       }
 
       return formattedTime;
+    },
+    formatBreakTimeDisplay(minute) {
+      const hours = Math.floor(minute / 60);
+      const mins = minute % 60;
+
+      let formattedTime = "";
+      if (hours > 0) {
+        formattedTime += `${hours}  `;
+      }
+      if (mins > 0) {
+        formattedTime += `${mins} `;
+      }
+
+      return formattedTime.trim();
     },
     // formatTimeMinute(hour, minute) {
     //   const hourStr = String(hour).padStart(2, "0");

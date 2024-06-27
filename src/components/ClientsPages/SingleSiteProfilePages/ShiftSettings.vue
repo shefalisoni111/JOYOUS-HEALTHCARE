@@ -53,20 +53,20 @@
             <div class="row mt-4">
               <div class="mb-3 d-flex justify-content-between">
                 <div class="col-3">
-                  <label class="form-label" for="break">Break Time</label>
+                  <label class="form-label" for="break_duration">Break Time</label>
                 </div>
                 <div class="col-9">
                   <select
-                    :id="'break-' + shift.id"
-                    :name="'break-' + shift.id"
+                    :id="'break_duration-' + shift.id"
+                    :name="'break_duration-' + shift.id"
                     class="form-select w-25"
-                    v-model="shift.break"
+                    v-model="shift.break_duration"
                     @change="setShiftIdToUpdate(shift.id)"
                   >
                     <option
                       v-for="minute in [15, 30, 45, 60, 75, 90]"
                       :key="minute"
-                      :value="formatBreakTime(minute)"
+                      :value="formatBreakTimeDisplay(minute)"
                     >
                       {{ formatBreakTime(minute) }}
                     </option>
@@ -127,7 +127,8 @@ export default {
             ...shift,
             start_time: this.convertTimeFormat(shift.start_time),
             end_time: this.convertTimeFormat(shift.end_time),
-            break: shift.break !== null ? shift.break : "00:00",
+            break_duration:
+              shift.break_duration !== null ? shift.break_duration : "00:00",
           })) || [];
         // console.log(this.shifts);
       } catch (error) {
@@ -144,6 +145,20 @@ export default {
       }
       if (mins > 0) {
         formattedTime += `${mins} minute`;
+      }
+
+      return formattedTime.trim();
+    },
+    formatBreakTimeDisplay(minute) {
+      const hours = Math.floor(minute / 60);
+      const mins = minute % 60;
+
+      let formattedTime = "";
+      if (hours > 0) {
+        formattedTime += `${hours}  `;
+      }
+      if (mins > 0) {
+        formattedTime += `${mins} `;
       }
 
       return formattedTime.trim();
@@ -179,7 +194,7 @@ export default {
               id: this.shiftIdToUpdate,
               start_time: this.shifts[shiftIndex].start_time,
               end_time: this.shifts[shiftIndex].end_time,
-              break: this.shifts[shiftIndex].break,
+              break_duration: this.shifts[shiftIndex].break_duration,
             },
           ],
         };

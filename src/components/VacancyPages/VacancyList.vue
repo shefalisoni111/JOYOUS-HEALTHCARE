@@ -589,6 +589,7 @@ export default {
 
   async mounted() {
     await this.setActiveTabNameOnLoad();
+    await this.createVacancy();
   },
 
   beforeRouteUpdate(to, from, next) {
