@@ -225,7 +225,7 @@
                 v-for="candidate in getCandidatesData"
                 :key="candidate.id"
               >
-                <!-- <div>
+                <div>
                   <img
                     v-if="candidate.profile_photo"
                     :src="getProfilePhotoUrl(candidate.profile_photo)"
@@ -238,7 +238,7 @@
                     v-else
                     v-html="getProfilePhotoUrl(candidate.profile_photo)"
                   ></div>
-                </div> -->
+                </div>
                 <div class="ms-1">
                   <h5
                     class="text-capitalize chat-staff mb-0"

@@ -75,6 +75,8 @@
                   height="400px"
                   alt="profile"
                   loading="eager"
+                  :style="{ visibility: isImageLoaded ? 'visible' : 'hidden' }"
+                  @load="onImageLoad"
                 />
                 <img
                   v-else
@@ -84,6 +86,8 @@
                   height="400px"
                   alt="Default profile"
                   loading="eager"
+                  :style="{ visibility: isImageLoaded ? 'visible' : 'hidden' }"
+                  @load="onImageLoad"
                 />
 
                 <!-- <div class="ribbon"><span>Active</span></div> -->
@@ -246,6 +250,7 @@ export default {
         },
       ],
       activeTab: 0,
+      isImageLoaded: false,
     };
   },
 
@@ -272,6 +277,9 @@ export default {
     },
   },
   computed: {
+    onImageLoad() {
+      this.isImageLoaded = true;
+    },
     userId() {
       return this.id;
     },
