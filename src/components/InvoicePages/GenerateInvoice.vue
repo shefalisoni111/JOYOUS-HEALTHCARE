@@ -412,19 +412,15 @@ export default {
         );
       }
     },
-
     updateDateRange() {
       if (this.currentView === "weekly") {
-        const currentDate = new Date();
-        const dayOfWeek = currentDate.getDay();
-        const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-        const startOfWeek = new Date(currentDate);
-        startOfWeek.setDate(currentDate.getDate() + diff);
-        this.startDate = startOfWeek;
+        const weekStart = new Date(this.startDate);
+        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
+        this.startDate = weekStart;
 
-        const endOfWeek = new Date(startOfWeek);
-        endOfWeek.setDate(startOfWeek.getDate() + 6);
-        this.endDate = endOfWeek;
+        const weekEnd = new Date(this.startDate);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+        this.endDate = weekEnd;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
         this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
