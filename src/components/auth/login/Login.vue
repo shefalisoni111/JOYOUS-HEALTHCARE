@@ -8,7 +8,7 @@
       <div class="row no-gutter d-flex justify-content-center align-items-center w-100">
         <div class="col-4 d-flex wrapper-div p-0">
           <!-- <div class="col-md-6 d-none d-md-flex bg-image"></div> -->
-
+          <!-- <div class="col-md-6 d-none d-md-flex bg-image"></div> -->
           <div class="login-form">
             <img
               src="../logo.png"
