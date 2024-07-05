@@ -587,14 +587,17 @@ export default {
     },
   },
 
-  async mounted() {
-    await this.setActiveTabNameOnLoad();
-    await this.createVacancy();
+  created() {
+    this.setActiveTabNameOnLoad();
+    this.createVacancy();
   },
+  // mounted() {
+  //   this.createVacancy();
+  // },
 
   beforeRouteUpdate(to, from, next) {
     this.setActiveTabFromRoute();
-
+    this.createVacancy();s
     this.setActiveTabNameOnLoad();
     next();
   },

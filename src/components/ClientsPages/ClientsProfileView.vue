@@ -85,9 +85,12 @@ export default {
   },
   methods: {
     async getClientsProfile() {
+      if (!this.$route.params.id) {
+        return;
+      }
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/clients/${this.$route.params.id}`
+          `${VITE_API_URL.replace(/\/$/, "")}/clients/${this.$route.params.id}`
         );
 
         this.getClients = response.data.data;

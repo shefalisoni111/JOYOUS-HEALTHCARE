@@ -11,7 +11,9 @@
               >
               /
               <router-link to="/invoice/client-invoice" class="text-decoration-none"
-                ><span class="color-fonts">Client Invoices</span></router-link
+                ><span class="color-fonts"
+                  >Client Invoices / INVOICE NUMBER</span
+                ></router-link
               >
             </li>
           </ol>
@@ -21,101 +23,9 @@
       <div class="container-fluid pt-3">
         <div class="row">
           <div class="col-sm-12 col-md-7">
-            <div
-              class="text-muted bg-white p-3"
-              style="border: 1px solid #f8f8f8; box-shadow: 2px 2px 7px 2px #e7d7d7"
-            >
-              <div class="">
-                <div class="col-12">
-                  <div class="row">
-                    <div class="col-4">
-                      <h5 class="fw-bold">Recpal Demo1</h5>
-                      <p class="mb-0">Mob No: +91 70206 07635</p>
-                      <p class="mb-0">Email: geethu@recpal.co.uk</p>
-                    </div>
-                    <div class="col-4"></div>
-                    <div class="col-4">
-                      <div class="float-end">
-                        <h5 class="fw-bold">Demo</h5>
-                        <p class="mb-0">London, UK</p>
-                        <p class="mb-0">Mob No: +91 90000 20001</p>
-                        <p class="mb-0">Email: abc@abc.com</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="mt-4">
-                <div class="col-12">
-                  <div class="row">
-                    <div class="col-4">
-                      <h5>DATE: 07-07-2023</h5>
-                      <h5>DUE DATE: 06-08-2023</h5>
-                    </div>
-                    <div class="col-4 text-center"><p>#INV--59</p></div>
-                    <div class="col-4">
-                      <div class="pe-3 float-end">
-                        <h5>FROM: 03-07-2023</h5>
-                        <h5>TO : 09-07-2023</h5>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 mt-4">
-                <div class="table-wrapper">
-                  <table class="table candidateTable">
-                    <thead>
-                      <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">Start</th>
-                        <th scope="col">End</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Job</th>
-                        <th scope="col">Unit</th>
-                        <th scope="col">Rate</th>
-                        <th scope="col">Total</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td scope="col">07-07-2023</td>
-                        <td scope="col">07:40</td>
-                        <td scope="col">08:00</td>
-                        <td scope="col">Zeba S</td>
-                        <td scope="col">Nurse</td>
-                        <td scope="col">0.33</td>
-                        <td scope="col">14.00</td>
-                        <td scope="col">4.62</td>
-                      </tr>
-                      <tr>
-                        <td scope="col">07-07-2023</td>
-                        <td scope="col">07:40</td>
-                        <td scope="col">08:00</td>
-                        <td scope="col">Zeba S</td>
-                        <td scope="col">Nurse</td>
-                        <td scope="col">0.33</td>
-                        <td scope="col">14.00</td>
-                        <td scope="col">4.62</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="mt-3">
-                  <div class="col-12">
-                    <div class="row mt-5">
-                      <div class="col-4">
-                        <h6>NOTES</h6>
-                        <p class="mb-0">Thanks for doing business with us!</p>
-                        <p class="mb-0">Account Number:</p>
-                        <p class="mb-0">Sort Code:</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <component :is="selectedTemplate"></component>
           </div>
+
           <div class="col-sm-12 col-md-5 mt-4 mt-lg-0 mt-md-0">
             <div
               class="text-muted bg-white p-3"
@@ -129,15 +39,17 @@
                     <option value="2">Two</option>
                     <option value="3">Three</option>
                   </select>
-                  <select class="form-select form-select-sm">
-                    <option selected>Template</option>
-                    <option value="1">Template 1</option>
-                    <option value="2">Template 2</option>
-                    <option value="3">Template 3</option>
+                  <select
+                    v-model="selectedTemplate"
+                    @change="updateTemplate"
+                    class="form-select form-select-sm"
+                  >
+                    <option value="TemplateOne">Template One</option>
+                    <option value="TemplateTwo">Template Two</option>
                   </select>
                 </div>
               </div>
-              <div class="row mt-5">
+              <div class="row mt-4">
                 <div class="d-flex gap-2">
                   <button
                     type="button"
@@ -161,6 +73,65 @@
                   >
                     <i class="bi bi-file-earmark-pdf"></i> PDF
                   </button>
+                  <button
+                    type="button"
+                    class="btn btn-outline-success text-nowrap text-nowrap"
+                  >
+                    <i class="bi bi-file-earmark-pdf"></i> Signed Timesheet PDF
+                  </button>
+                </div>
+              </div>
+              <div class="row mt-2 p-4">
+                <div>
+                  <ul class="list-unstyled">
+                    <li class="d-flex mb-1">
+                      <div>
+                        <i class="bi bi-asterisk"></i>
+                      </div>
+
+                      <div class="ps-2">
+                        Invoice created for £1116.00 by Claudiu Burtica<br />
+                        29-04-2024|
+                      </div>
+                    </li>
+                    <li class="d-flex mb-1">
+                      <div>
+                        <i class="bi bi-asterisk"></i>
+                      </div>
+                      <div class="ps-2">
+                        Invoice has been opened<br />
+                        29-04-2024|
+                      </div>
+                    </li>
+                    <li class="d-flex mb-1">
+                      <div>
+                        <i class="bi bi-asterisk"></i>
+                      </div>
+                      <div class="ps-2">
+                        Invoice has been delivered<br />
+                        29-04-2024|
+                      </div>
+                    </li>
+                    <li class="d-flex mb-1">
+                      <div>
+                        <i class="bi bi-asterisk"></i>
+                      </div>
+                      <div class="ps-2">
+                        Invoice has been sent to lakeview.admin@cinnamoncc.com by Claudiu
+                        Burtica<br />
+                        29-04-2024|
+                      </div>
+                    </li>
+                    <li class="d-flex mb-1">
+                      <div>
+                        <i class="bi bi-asterisk"></i>
+                      </div>
+                      <div class="ps-2">
+                        Edited invoice by Claudiu Burtica<br />
+                        29-04-2024|
+                      </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -174,16 +145,35 @@
 <script>
 import Navbar from "../Navbar.vue";
 import MailInvoice from "../modals/InvoicePagesModal/ClientMailInvoice.vue";
-
+import { defineAsyncComponent } from "vue";
+import { mapState } from "vuex";
 export default {
   data() {
-    return {};
+    return { selectedTemplate: this.$store.state.selectedTemplate };
   },
-  components: { Navbar, MailInvoice },
+  computed: {
+    ...mapState(["selectedTemplates"]),
+  },
+  components: {
+    Navbar,
+    MailInvoice,
+    TemplateOne: defineAsyncComponent(() =>
+      import("../InvoicePages/TemplatesDesign/First_Templates.vue")
+    ),
+    TemplateTwo: defineAsyncComponent(() =>
+      import("../InvoicePages/TemplatesDesign/Second_Template.vue")
+    ),
+  },
 
-  methods: {},
+  methods: {
+    updateTemplate() {
+      this.$store.commit("setSelectedTemplate", this.selectedTemplate);
+    },
+  },
 
-  mounted() {},
+  created() {
+    this.selectedTemplate = this.$store.state.selectedTemplate;
+  },
 };
 </script>
 

@@ -391,18 +391,6 @@ export default {
       const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
       return shifts_id ? shifts_id.shift_name : "";
     },
-    // selectShiftStart() {
-    //   const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
-    //   return shifts_id ? shifts_id.start_time : "";
-    // },
-    // selectShiftEnd() {
-    //   const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
-    //   return shifts_id ? shifts_id.end_time : "";
-    // },
-    // selectShiftsBreak() {
-    //   const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
-    //   return shifts_id ? shifts_id.break_duration : "";
-    // },
   },
   watch: {
     job_id: "validationSelectedOptionText",
@@ -412,9 +400,6 @@ export default {
     staff_required: "validationStaffRequired",
     dates: "validationDateType",
     notes: "validationNotesText",
-    // start_time: "validateStartTime",
-    // end_time: "validateEndTime",
-    // break: "validateBreakFormate",
 
     job_id: function (newValue) {
       this.validationSelectedOptionText = this.validationSelectedFormate(newValue);
@@ -437,15 +422,7 @@ export default {
     notes: function (newValue) {
       this.validationNotesText = this.ValidationNotes(newValue);
     },
-    // start_time: function (newValue) {
-    //   this.validationNotesText = this.validateStartTime(newValue);
-    // },
-    // end_time: function (newValue) {
-    //   this.validationNotesText = this.validateEndTime(newValue);
-    // },
-    // break: function (newValue) {
-    //   this.validationBreak = this.validateBreakFormate(newValue);
-    // },
+
     isFormValid: function (newVal) {
       this.isValidForm = newVal;
     },
@@ -543,11 +520,7 @@ export default {
 
       return formattedTime.trim();
     },
-    // formatTimeMinute(hour, minute) {
-    //   const hourStr = String(hour).padStart(2, "0");
-    //   const minuteStr = String(minute).padStart(2, "0");
-    //   return `${hourStr}:${minuteStr}`;
-    // },
+
     onClientSelect() {
       const selectedClientId = this.client_id;
 
@@ -610,9 +583,7 @@ export default {
       this.validationShift = this.ValidationShift(this.site_shift_id);
       this.validationStaffRequired = this.ValidationStaffRequired(this.staff_required);
       this.validationDateType = this.ValidationDate(this.dates);
-      // this.validationStartTime = this.validateStartTime(this.start_time);
-      // this.validationEndTime = this.validateEndTime(this.end_time);
-      // this.validationBreak = this.validateBreakFormate(this.break);
+
       if (
         this.validationSelectedOptionText &&
         this.validationSelectedBusinessUnit &&
@@ -621,9 +592,6 @@ export default {
         this.validationShift &&
         this.validationStaffRequired &&
         this.validationDateType
-        // this.validationStartTime &&
-        // this.validationEndTime &&
-        // this.validationBreak
       ) {
         const data = {
           site_id: this.site_id,

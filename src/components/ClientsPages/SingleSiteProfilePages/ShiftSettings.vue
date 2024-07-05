@@ -60,13 +60,13 @@
                     :id="'break_duration-' + shift.id"
                     :name="'break_duration-' + shift.id"
                     class="form-select w-25"
-                    v-model="shift.break_duration"
+                    v-model.number="shift.break_duration"
                     @change="setShiftIdToUpdate(shift.id)"
                   >
                     <option
                       v-for="minute in [15, 30, 45, 60, 75, 90]"
                       :key="minute"
-                      :value="formatBreakTimeDisplay(minute)"
+                      :value="minute"
                     >
                       {{ formatBreakTime(minute) }}
                     </option>
@@ -121,16 +121,13 @@ export default {
         const response = await axios.get(
           `${VITE_API_URL}site_shift/${this.$route.params.id}`
         );
-
         this.shifts =
           response.data.site_shift_data.map((shift) => ({
             ...shift,
             start_time: this.convertTimeFormat(shift.start_time),
             end_time: this.convertTimeFormat(shift.end_time),
-            break_duration:
-              shift.break_duration !== null ? shift.break_duration : "00:00",
+            break_duration: shift.break_duration !== null ? shift.break_duration : 0,
           })) || [];
-        // console.log(this.shifts);
       } catch (error) {
         // console.error("Error fetching shifts:", error);
       }
@@ -149,20 +146,7 @@ export default {
 
       return formattedTime.trim();
     },
-    formatBreakTimeDisplay(minute) {
-      const hours = Math.floor(minute / 60);
-      const mins = minute % 60;
 
-      let formattedTime = "";
-      if (hours > 0) {
-        formattedTime += `${hours}  `;
-      }
-      if (mins > 0) {
-        formattedTime += `${mins} `;
-      }
-
-      return formattedTime.trim();
-    },
     convertTimeFormat(dateTimeString) {
       const date = new Date(dateTimeString);
       let hours = date.getUTCHours();
@@ -178,11 +162,9 @@ export default {
       const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
       return `${formattedHours}:${formattedMinutes} ${amPm}`;
     },
-
     setShiftIdToUpdate(shiftId) {
       this.shiftIdToUpdate = shiftId;
     },
-
     async updateShiftTimes() {
       const shiftIndex = this.shifts.findIndex(
         (shift) => shift.id === this.shiftIdToUpdate
@@ -209,12 +191,11 @@ export default {
 
           this.shiftIdToUpdate = null;
         } catch (error) {
-          // console.error("Error updating shifts:", error);
+          console.error("Error updating shifts:", error);
         }
       }
     },
   },
-
   async mounted() {
     await this.getTime();
   },

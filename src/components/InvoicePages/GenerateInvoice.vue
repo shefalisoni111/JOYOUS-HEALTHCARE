@@ -1,34 +1,3 @@
-<!-- <template>
-  <div>
-    <Navbar />
-    <div id="main">
-      <h6>Client Invoice Page in Progress.....</h6>
-    </div>
-  </div>
-</template>
-<script>
-import Navbar from "../Navbar.vue";
-
-export default {
-  components: {
-    Navbar,
-  },
-};
-</script>
-<style scoped>
-#main {
-  padding: 20px 20px;
-  transition: all 0.3s;
-  height: 100dvh;
-  
-  background-color: #fdce5e17;
-}
-ul.generalsetting h6 {
-  font-size: 14px;
-  font-weight: bold;
-}
-</style> -->
-
 <template>
   <div>
     <Navbar />
@@ -130,78 +99,30 @@ ul.generalsetting h6 {
                 </div>
 
                 <ul class="nav nav-pills mt-3 gap-2" id="pills-tab" role="tablist">
-                  <li class="nav-item" role="presentation">
+                  <li
+                    class="nav-item d-inline-flex align-items-baseline gap-2"
+                    role="presentation"
+                  >
                     <button
-                      class="nav-link active"
-                      id="pills-Weekly-tab"
-                      data-bs-toggle="pill"
-                      data-bs-target="#pills-Weekly"
-                      type="button"
-                      role="tab"
-                      aria-controls="pills-Weekly"
+                      class="nav-link text-nowrap"
+                      :class="{ active: activeTab === index }"
+                      :to="`/${tab.routeName}`"
                       aria-selected="true"
-                    >
-                      Weekly
-                    </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <button
-                      class="nav-link"
-                      id="pills-Daily-tab"
-                      data-bs-toggle="pill"
-                      data-bs-target="#pills-Daily"
                       type="button"
                       role="tab"
-                      aria-controls="pills-Daily"
-                      aria-selected="false"
-                    >
-                      Daily
-                    </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <button
-                      class="nav-link"
-                      id="pills-Monthly-tab"
                       data-bs-toggle="pill"
-                      data-bs-target="#pills-Monthly"
-                      type="button"
-                      role="tab"
-                      aria-controls="pills-Monthly"
-                      aria-selected="false"
+                      v-for="(tab, index) in tabs"
+                      :key="index"
+                      @click="selectTab(index)"
                     >
-                      Monthly
-                    </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <button
-                      class="nav-link"
-                      id="pills-ShiftCandidate-tab"
-                      data-bs-toggle="pill"
-                      data-bs-target="#pills-ShiftCandidate"
-                      type="button"
-                      role="tab"
-                      aria-controls="pills-ShiftCandidate"
-                      aria-selected="false"
-                    >
-                      Shift & Staff
-                    </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <button
-                      class="nav-link"
-                      id="pills-CandidateWeekly-tab"
-                      data-bs-toggle="pill"
-                      data-bs-target="#pills-CandidateWeekly"
-                      type="button"
-                      role="tab"
-                      aria-controls="pills-CandidateWeekly"
-                      aria-selected="false"
-                    >
-                      Staff Weekly
+                      {{ tab.name }}
                     </button>
                   </li>
                 </ul>
-                <div class="tab-content" id="pills-tabContent">
+                <div>
+                  <component :is="activeComponent"></component>
+                </div>
+                <!-- <div class="tab-content" id="pills-tabContent">
                   <div
                     class="tab-pane fade show active"
                     id="pills-Weekly"
@@ -232,7 +153,7 @@ ul.generalsetting h6 {
                             </div>
                           </th>
                           <th scope="col">Holiday</th>
-                          <!-- <th scope="col">Action</th> -->
+                         
                         </tr>
                       </thead>
                       <tbody>
@@ -240,12 +161,7 @@ ul.generalsetting h6 {
                           <td scope="col">Site</td>
                           <td scope="col">weekend</td>
                           <td scope="col">11:00Am</td>
-                          <!-- <td scope="col">11:00Am</td>
-                          <td scope="col">11:00Am</td>
-                          <td scope="col">11:00Am</td>
-                          <td scope="col">11:00Am</td>
-                          <td scope="col">11:00Am</td>
-                          <td scope="col">11:00Am</td>-->
+                     
 
                           <td scope="col">23/2/2024</td>
                         </tr>
@@ -284,7 +200,7 @@ ul.generalsetting h6 {
                   >
                     Inprogress...
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -296,6 +212,12 @@ ul.generalsetting h6 {
 <script>
 import axios from "axios";
 import Navbar from "../Navbar.vue";
+import WeeklyGenerateInvoice from "../InvoicePages/GenerateInvoices/WeeklyGenerateInvoice.vue";
+import DailyGenerateInvoice from "../InvoicePages/GenerateInvoices/DailyGenerateInvoice.vue";
+import MonthlyGenerateInvoice from "../InvoicePages/GenerateInvoices/MonthlyGenerateInvoice.vue";
+import Shift_Staff_GenerateInvoice from "../InvoicePages/GenerateInvoices/Shift_Staff_GenerateInvoice.vue";
+import Staff_Weekly_GenerateInvoice from "../InvoicePages/GenerateInvoices/Staff_Weekly_GenerateInvoice.vue";
+
 export default {
   data() {
     return {
@@ -313,11 +235,49 @@ export default {
       endDate: new Date(),
       site_id: "",
       businessUnit: [],
-      selectedDateRow: [],
+      tabs: [
+        {
+          name: "Weekly ",
+          component: "WeeklyGenerateInvoice",
+          routeName: "WeeklyGenerateInvoice",
+        },
+        {
+          name: "Daily ",
+          component: "DailyGenerateInvoice",
+          routeName: "DailyGenerateInvoice",
+        },
+        {
+          name: "Monthly",
+          component: "MonthlyGenerateInvoice",
+          routeName: "MonthlyGenerateInvoice",
+        },
+        {
+          name: "Shift & Staff",
+          component: "Shift_Staff_GenerateInvoice",
+          routeName: "Shift_Staff_GenerateInvoice",
+        },
+        {
+          name: "Staff Weekly",
+          component: "Staff_Weekly_GenerateInvoice",
+          routeName: "Staff_Weekly_GenerateInvoice",
+        },
+      ],
+      activeTab: 0,
+      activeTabName: "",
     };
   },
-  components: { Navbar },
+  components: {
+    Navbar,
+    WeeklyGenerateInvoice,
+    DailyGenerateInvoice,
+    MonthlyGenerateInvoice,
+    Shift_Staff_GenerateInvoice,
+    Staff_Weekly_GenerateInvoice,
+  },
   computed: {
+    activeComponent() {
+      return this.tabs[this.activeTab].component;
+    },
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return site_id ? site_id.site_name : "";
@@ -385,6 +345,33 @@ export default {
     },
   },
   methods: {
+    setActiveTabFromRoute() {
+      const currentRouteName = this.$route.name;
+      const matchingTabIndex = this.tabs.findIndex(
+        (tab) => tab.routeName === currentRouteName
+      );
+
+      if (matchingTabIndex !== -1) {
+        this.selectTab(matchingTabIndex);
+      }
+    },
+
+    setActiveTabNameOnLoad() {
+      this.activeTabName = this.tabs[this.activeTab].name;
+    },
+    async selectTab(index) {
+      this.activeTab = index;
+      this.activeTabName = this.tabs[index].name;
+
+      const componentName = this.tabs[index].component;
+      if (!this.$options.components[componentName]) {
+        this.$options.components[componentName] = (
+          await import(`../InvoicePages/GenerateInvoices/${componentName}.vue`)
+        ).default;
+      }
+
+      this.$router.push({ name: this.tabs[index].routeName });
+    },
     async getBusinessUnitMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/activated_site`);
@@ -462,34 +449,6 @@ export default {
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
-    // async vacancyDeleteMethod(id) {
-    //   if (!window.confirm("Are you Sure ?")) {
-    //     return;
-    //   }
-    //   const token = localStorage.getItem("token");
-    //   await axios
-    //     .delete(`${VITE_API_URL}/vacancies/` + id, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => {
-    //       this.createVacancy();
-    //     });
-    //   // alert("Record Deleted ");
-    // },
-    // async createVacancy() {
-    //   const token = localStorage.getItem("token");
-    //   axios
-    //     .get(`${VITE_API_URL}/vacancies`, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => (this.getVacancyDetail = response.data));
-    // },
   },
 
   mounted() {
@@ -518,6 +477,23 @@ export default {
     // const endOfWeek = new Date(startOfWeek);
     // endOfWeek.setDate(endOfWeek.getDate() + 6);
     // this.endDate = endOfWeek;
+  },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
+      if (matchingTabIndex !== -1) {
+        vm.activeTab = matchingTabIndex;
+        vm.activeTabName = vm.tabs[matchingTabIndex].name;
+      }
+    });
+  },
+  beforeRouteUpdate(to, from, next) {
+    const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
+    if (matchingTabIndex !== -1) {
+      this.activeTab = matchingTabIndex;
+      this.activeTabName = this.tabs[matchingTabIndex].name;
+    }
+    next();
   },
 };
 </script>

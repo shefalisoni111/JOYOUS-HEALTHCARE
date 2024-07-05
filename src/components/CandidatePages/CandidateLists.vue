@@ -211,7 +211,7 @@
       @cancel="canceled"
     />
     <CandidateAdd
-      @addCandidate="getActiveCAndidateMethod"
+      @addCandidate="getCandidateMethods"
       @addStaff="handleCandidateAdded"
       ref="addStaff"
     />
@@ -402,7 +402,6 @@ export default {
       this.activeTab = index;
       this.activeTabName = this.tabs[index].name;
 
-      // Dynamically import the component when the tab is selected
       const componentName = this.tabs[index].component;
       if (!this.$options.components[componentName]) {
         this.$options.components[componentName] = (
@@ -420,7 +419,7 @@ export default {
           .put(`${VITE_API_URL}/inactivate_candidate/${id}`)
           .then((response) => {
             alert("Staff In-activated successfully!");
-            // this.inactiveCandidateData = response.data;
+
             this.getCandidateMethods();
           })
           .catch((error) => {

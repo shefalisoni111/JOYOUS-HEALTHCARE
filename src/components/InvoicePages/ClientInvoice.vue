@@ -348,7 +348,7 @@ export default {
   mounted() {
     this.createVacancy();
     this.loadDateRangeFromLocalStorage();
-    this.updateDateRange();
+    // this.updateDateRange();
     // const currentDate = new Date();
     // const startOfWeek = new Date(currentDate);
     // startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
@@ -357,18 +357,18 @@ export default {
     // const endOfWeek = new Date(currentDate);
     // endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
     // this.endDate = endOfWeek;
-    // const currentDate = new Date();
-    // const dayOfWeek = currentDate.getDay();
-    // const startOfWeek = new Date(currentDate);
+    const currentDate = new Date();
+    const dayOfWeek = currentDate.getDay();
+    const startOfWeek = new Date(currentDate);
 
-    // const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-    // startOfWeek.setDate(startOfWeek.getDate() + diff);
+    const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    startOfWeek.setDate(startOfWeek.getDate() + diff);
 
-    // this.startDate = startOfWeek;
+    this.startDate = startOfWeek;
 
-    // const endOfWeek = new Date(startOfWeek);
-    // endOfWeek.setDate(endOfWeek.getDate() + 6);
-    // this.endDate = endOfWeek;
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(endOfWeek.getDate() + 6);
+    this.endDate = endOfWeek;
   },
 };
 </script>

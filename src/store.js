@@ -18,8 +18,13 @@ export default createStore({
      vacancy_id: null,
      selectedSignedTimesheetId: null,
      selectedCustomTimesheetId: null,
+     selectedTemplate: localStorage.getItem('selectedTemplate') || 'TemplateOne',
   },
   mutations: {
+    setSelectedTemplate(state, template) {
+      state.selectedTemplate = template;
+      localStorage.setItem('selectedTemplate', template);
+    },
     setSelectedSignedTimesheetId(state, itemId) {
       state.selectedSignedTimesheetId = itemId;
     },
@@ -46,7 +51,7 @@ export default createStore({
 
       const index = state.candidates.findIndex(candidate => candidate.id === id);
       if (index !== -1) {
-        // Update the candidate in the array
+
         state.candidates.splice(index, 1, newData);
       }
     },
@@ -79,6 +84,9 @@ export default createStore({
   
   },
   actions: {
+    updateSelectedTemplate({ commit }, template) {
+      commit('setSelectedTemplate', template);
+    },
     async fetchSignedTimesheetData({ commit, state }) {
       try {
         const token = localStorage.getItem('token');
@@ -113,6 +121,8 @@ export default createStore({
     },
     
   },
-  
+   getters: {
+    getSelectedTemplate: (state) => state.selectedTemplate,
+  },
  
 });

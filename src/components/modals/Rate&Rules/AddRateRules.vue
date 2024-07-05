@@ -39,7 +39,7 @@
                   <div class="col-4">
                     <label class="form-label" for="selectBusinessUnit">Site</label>
 
-                    <select
+                    <!-- <select
                       v-model="site_id"
                       id="selectBusinessUnit"
                       @change="onSiteSelect"
@@ -52,18 +52,34 @@
                       >
                         {{ option.site_name }}
                       </option>
+                    </select> -->
+                    <select
+                      id="siteSelect"
+                      v-model="selectedSiteId"
+                      @change="onSiteSelect"
+                    >
+                      <option
+                        v-for="site in businessUnit"
+                        :key="site.site_id"
+                        :value="site.site_id"
+                      >
+                        {{ site.site_name }}
+                      </option>
                     </select>
                   </div>
 
                   <div class="col-4">
                     <label class="form-label" for="selectJobTitle">Jobs</label>
 
-                    <select v-model="job_id" id="selectJobTitle">
+                    <select
+                      v-model="selectedJobId"
+                      id="selectJobTitle"
+                      @change="onJobTitleChange"
+                    >
                       <option
                         v-for="option in options"
-                        :key="option.id"
-                        :value="option.id"
-                        aria-placeholder="Select Job"
+                        :key="option.job_id"
+                        :value="option.job_id"
                       >
                         {{ option.job_name }}
                       </option>
@@ -93,6 +109,7 @@
                             class="form-select w-25"
                             v-model="day_shift_id"
                             @change="handleShiftChange('day')"
+                            disabled
                           >
                             <option
                               v-for="option in filteredShiftsTime"
@@ -114,6 +131,7 @@
                             class="form-select w-25"
                             v-model="day_start_time"
                             @change="updateStartTime"
+                            disabled
                           >
                             <option
                               v-for="shift in filteredShiftsTime"
@@ -134,6 +152,7 @@
                             class="form-select w-25"
                             v-model="day_end_time"
                             @change="updateEndTime"
+                            disabled
                           >
                             <option
                               v-for="shift in filteredShiftsTime"
@@ -244,6 +263,7 @@
                             class="form-select w-25"
                             v-model="night_shift_id"
                             @change="handleShiftChange('night')"
+                            disabled
                           >
                             <option
                               v-for="option in filteredShiftsTimeNight"
@@ -266,6 +286,7 @@
                             class="form-select w-25"
                             v-model="night_start_time"
                             @change="updateStartTime"
+                            disabled
                           >
                             <option
                               v-for="shift in filteredShiftsTimeNight"
@@ -288,6 +309,7 @@
                             class="form-select w-25"
                             v-model="night_end_time"
                             @change="updateEndTime"
+                            disabled
                           >
                             <option
                               v-for="shift in filteredShiftsTimeNight"
@@ -300,7 +322,53 @@
                           </select>
                         </div>
                       </div>
-                      <div class="col-4 d-flex gap-2">
+                      <div class="col-4 d-flex gap-2" v-if="splitRate">
+                        <div class="col-4">
+                          <label class="form-label">Rate Type</label>
+                          <select
+                            v-model="this.selectedRateType[`${day}-day`]"
+                            class="form-select w-25"
+                            disabled
+                          >
+                            <option value="Hourly">Hourly</option>
+                            <option value="Monthly">Monthly</option>
+                            <option value="Yearly">Yearly</option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">Client Rate</label>
+
+                          <select
+                            class="form-select w-25"
+                            v-model="selectedClientRate[`${day}-day`]"
+                            disabled
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">Private Limited</label>
+
+                          <select
+                            class="form-select w-25"
+                            v-model="selectedPrivateLimited[`${day}-day`]"
+                            disabled
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-4 d-flex gap-2" v-else>
                         <div class="col-4">
                           <label class="form-label">Rate Type</label>
                           <select
@@ -343,7 +411,55 @@
                           </select>
                         </div>
                       </div>
-                      <div class="col-4 d-flex gap-2">
+                      <div class="col-4 d-flex gap-2" v-if="splitRate">
+                        <div class="col-4">
+                          <label class="form-label">Self Employed</label>
+
+                          <select
+                            v-model="selectedSelfEmployee[`${day}-day`]"
+                            class="form-select w-25"
+                            disabled
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">Umbrella</label>
+
+                          <select
+                            class="form-select w-25"
+                            v-model="selectedUmbrella[`${day}-day`]"
+                            disabled
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">PAYE</label>
+                          <select
+                            class="form-select w-25"
+                            v-model="selectedPaye[`${day}-day`]"
+                            disabled
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-4 d-flex gap-2" v-else>
                         <div class="col-4">
                           <label class="form-label">Self Employed</label>
 
@@ -400,6 +516,7 @@
                             v-model="dayShiftId"
                             class="form-select w-25"
                             @change="handleShiftChange('holiday_day_shift')"
+                            disabled
                           >
                             <option
                               v-for="option in filteredShiftsTimeHoliday"
@@ -418,6 +535,7 @@
                             class="form-select w-25"
                             v-model="holiday_start_time"
                             @change="updateStartTime"
+                            disabled
                           >
                             <option
                               v-for="shift in filteredShiftsTimeHoliday"
@@ -437,6 +555,7 @@
                             class="form-select w-25"
                             v-model="holiday_end_time"
                             @change="updateEndTime"
+                            disabled
                           >
                             <option
                               v-for="shift in filteredShiftsTimeHoliday"
@@ -547,6 +666,7 @@
                             v-model="nightShiftId"
                             class="form-select w-25"
                             @change="handleShiftChange('holiday_night_shift')"
+                            disabled
                           >
                             <option
                               v-for="option in filteredShiftsTimeHolidayNight"
@@ -566,6 +686,7 @@
                             class="form-select w-25"
                             v-model="holiday_night_start_time"
                             @change="updateStartTime"
+                            disabled
                           >
                             <option
                               v-for="shift in filteredShiftsTimeHolidayNight"
@@ -585,6 +706,7 @@
                             class="form-select w-25"
                             v-model="holiday_night_end_time"
                             @change="updateEndTime"
+                            disabled
                           >
                             <option
                               v-for="shift in filteredShiftsTimeHolidayNight"
@@ -597,7 +719,53 @@
                           </select>
                         </div>
                       </div>
-                      <div class="col-4 d-flex gap-2">
+                      <div class="col-4 d-flex gap-2" v-if="holidaySplitRate">
+                        <div class="col-4">
+                          <label class="form-label">Rate Type</label>
+                          <select
+                            v-model="selectedRateType[`${day}-holiday`]"
+                            class="form-select w-25"
+                            disabled
+                          >
+                            <option value="Hourly">Hourly</option>
+                            <option value="Monthly">Monthly</option>
+                            <option value="Yearly">Yearly</option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">Client Rate</label>
+
+                          <select
+                            class="form-select w-25"
+                            v-model="selectedClientRate[`${day}-holiday`]"
+                            disabled
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">Private Limited</label>
+
+                          <select
+                            class="form-select w-25"
+                            v-model="selectedPrivateLimited[`${day}-holiday`]"
+                            disabled
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-4 d-flex gap-2" v-else>
                         <div class="col-4">
                           <label class="form-label">Rate Type</label>
                           <select
@@ -640,7 +808,55 @@
                           </select>
                         </div>
                       </div>
-                      <div class="col-4 d-flex gap-2">
+                      <div class="col-4 d-flex gap-2" v-if="holidaySplitRate">
+                        <div class="col-4">
+                          <label class="form-label">Self Employed</label>
+
+                          <select
+                            v-model="selectedSelfEmployee[`${day}-holiday`]"
+                            class="form-select w-25"
+                            disabled
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">Umbrella</label>
+
+                          <select
+                            class="form-select w-25"
+                            v-model="selectedUmbrella[`${day}-holiday`]"
+                            disabled
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label class="form-label">PAYE</label>
+                          <select
+                            class="form-select w-25"
+                            v-model="selectedPaye[`${day}-holiday`]"
+                            disabled
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-4 d-flex gap-2" v-else>
                         <div class="col-4">
                           <label class="form-label">Self Employed</label>
 
@@ -780,9 +996,10 @@ export default {
       options: [],
       businessUnit: [],
       selectedSiteId: null,
+      selectedJobId: null,
       site_shift_id: "",
       shiftsTime: [],
-
+      selectedJob: null,
       isValidForm: false,
       selectedDate: null,
       splitRate: false,
@@ -845,11 +1062,6 @@ export default {
       return allFieldsFilled;
     },
 
-    selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
-      return site_id ? site_id.site_name : "";
-    },
-
     selectClients() {
       const client_id = this.clientData.find((option) => option.id === this.client_id);
       return this.client_id;
@@ -880,11 +1092,7 @@ export default {
       return shift ? shift.end_time : "";
     },
   },
-  watch: {
-    isFormValid(newValue) {
-      // console.log("isFormValid:", newValue);
-    },
-  },
+  watch: {},
   methods: {
     areAllFieldsFilled(object) {
       const keys = Object.keys(object);
@@ -927,46 +1135,60 @@ export default {
       }
     },
     onClientSelect() {
-      const selectedClientId = this.client_id;
+      // const selectedClientId = this.client_id;
 
-      this.getClientFetchSiteMethod(selectedClientId);
+      this.getClientFetchSiteMethod();
+    },
+    onJobTitleChange() {
+      this.selectedJob = this.options.find(
+        (option) => option.job_id === this.selectedJobId
+      );
     },
     async onSiteSelect() {
-      await this.getTimeShift(this.selectedSiteId);
-      const dayShift = this.filteredShiftsTime.find(
-        (shift) => shift.shift_name.toLowerCase() === "day_shift"
+      const selectedSite = this.businessUnit.find(
+        (site) => site.site_id === this.selectedSiteId
       );
-      if (dayShift) {
-        this.day_shift_id = dayShift.id;
-        this.day_start_time = dayShift.start_time;
-        this.day_end_time = dayShift.end_time;
-      }
 
-      const nightShift = this.filteredShiftsTimeNight.find(
-        (shift) => shift.shift_name.toLowerCase() === "night_shift"
-      );
-      if (nightShift) {
-        this.night_shift_id = nightShift.id;
-        this.night_start_time = nightShift.start_time;
-        this.night_end_time = nightShift.end_time;
-      }
+      if (selectedSite) {
+        this.splitRate = selectedSite.split_rate;
+        this.holidaySplitRate = selectedSite.holiday_split_rate;
 
-      const holidayDayShift = this.filteredShiftsTimeHoliday.find(
-        (shift) => shift.shift_name.toLowerCase() === "holiday_day_shift"
-      );
-      if (holidayDayShift) {
-        this.dayShiftId = holidayDayShift.id;
-        this.holiday_start_time = holidayDayShift.start_time;
-        this.holiday_end_time = holidayDayShift.end_time;
-      }
+        await this.getTimeShift(this.selectedSiteId);
+        const dayShift = this.filteredShiftsTime.find(
+          (shift) => shift.shift_name.toLowerCase() === "day_shift"
+        );
+        if (dayShift) {
+          this.day_shift_id = dayShift.id;
+          this.day_start_time = dayShift.start_time;
+          this.day_end_time = dayShift.end_time;
+        }
 
-      const holidayNightShift = this.filteredShiftsTimeHolidayNight.find(
-        (shift) => shift.shift_name.toLowerCase() === "holiday_night_shift"
-      );
-      if (holidayNightShift) {
-        this.nightShiftId = holidayNightShift.id;
-        this.holiday_night_start_time = holidayNightShift.start_time;
-        this.holiday_night_end_time = holidayNightShift.end_time;
+        const nightShift = this.filteredShiftsTimeNight.find(
+          (shift) => shift.shift_name.toLowerCase() === "night_shift"
+        );
+        if (nightShift) {
+          this.night_shift_id = nightShift.id;
+          this.night_start_time = nightShift.start_time;
+          this.night_end_time = nightShift.end_time;
+        }
+
+        const holidayDayShift = this.filteredShiftsTimeHoliday.find(
+          (shift) => shift.shift_name.toLowerCase() === "holiday_day_shift"
+        );
+        if (holidayDayShift) {
+          this.dayShiftId = holidayDayShift.id;
+          this.holiday_start_time = holidayDayShift.start_time;
+          this.holiday_end_time = holidayDayShift.end_time;
+        }
+
+        const holidayNightShift = this.filteredShiftsTimeHolidayNight.find(
+          (shift) => shift.shift_name.toLowerCase() === "holiday_night_shift"
+        );
+        if (holidayNightShift) {
+          this.nightShiftId = holidayNightShift.id;
+          this.holiday_night_start_time = holidayNightShift.start_time;
+          this.holiday_night_end_time = holidayNightShift.end_time;
+        }
       }
     },
 
@@ -1187,13 +1409,10 @@ export default {
         );
         this.businessUnit = response.data.sites;
 
-        if (this.businessUnit.length > 0) {
-          this.selectedSiteId = this.businessUnit[0].site_id;
-          this.splitRate = this.businessUnit[0].split_rate;
-          this.holidaySplitRate = this.businessUnit[0].holiday_split_rate;
-        } else {
-          this.selectedSiteId = null;
-        }
+        // this.selectedSiteId = this.businessUnit[0].site_id;
+        // this.splitRate = this.businessUnit[0].split_rate;
+        // this.holidaySplitRate = this.businessUnit[0].holiday_split_rate;
+
         this.options = response.data.jobs;
       } catch (error) {
         if (error.response) {
@@ -1248,8 +1467,8 @@ export default {
     },
 
     clearFields() {
-      (this.site_id = ""),
-        (this.job_id = ""),
+      (this.selectedSiteId = ""),
+        (this.selectedJobId = ""),
         (this.night_shift_id = ""),
         (this.client_id = ""),
         (this.night_start_time = ""),
@@ -1276,18 +1495,19 @@ export default {
   // },
   async beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.getTimeShift();
+      // vm.getTimeShift();
       vm.getClientMethod();
     });
   },
   async beforeRouteUpdate(to, from, next) {
-    this.getTimeShift();
+    // this.getTimeShift();
     this.getClientMethod();
     next();
   },
   mounted() {
     // this.getClientMethod();
     this.isValidForm = this.isFormValid;
+
     // this.getTimeShift();
   },
 };

@@ -507,6 +507,64 @@ const router = createRouter({
           name: "GenerateInvoice",
           component: () => import("@/components/InvoicePages/GenerateInvoice.vue"),
           props: true,
+         
+          children: [
+            {
+              path: "/Generate-invoice/Weekly",
+              name: "WeeklyGenerateInvoice",
+              component: () =>
+                import(
+                  "@/components/InvoicePages/GenerateInvoices/WeeklyGenerateInvoice.vue"
+                ),
+              meta: {
+                 requiresAuth: true,
+              },
+            },
+            {
+              path: "/Generate-invoice/daily",
+              name: "DailyGenerateInvoice",
+              component: () =>
+                import(
+                  "@/components/InvoicePages/GenerateInvoices/DailyGenerateInvoice.vue"
+                ),
+              meta: {
+                 requiresAuth: true,
+              },
+            },
+            {
+              path: "/Generate-invoice/monthly",
+              name: "MonthlyGenerateInvoice",
+              component: () =>
+                import(
+                  "@/components/InvoicePages/GenerateInvoices/MonthlyGenerateInvoice.vue"
+                ),
+              meta: {
+                 requiresAuth: true,
+              },
+            },
+            {
+              path: "/Generate-invoice/shift_staff",
+              name: "Shift_Staff_GenerateInvoice",
+              component: () =>
+                import(
+                  "@/components/InvoicePages/GenerateInvoices/Shift_Staff_GenerateInvoice.vue"
+                ),
+              meta: {
+                 requiresAuth: true,
+              },
+            },
+            {
+              path: "/Generate-invoice/staff_weekly",
+              name: "Staff_Weekly_GenerateInvoice",
+              component: () =>
+                import(
+                  "@/components/InvoicePages/GenerateInvoices/Staff_Weekly_GenerateInvoice.vue"
+                ),
+              meta: {
+                 requiresAuth: true,
+              },
+            },
+          ]
         },
       ],
     },
