@@ -1,15 +1,10 @@
 <template>
   <div class="container-fluid p-0">
-    <img :src="backgroundImageUrl" @load="onBackgroundImageLoad" style="display: none" />
-    <div
-      class="d-flex align-items-center justify-content-center whole-bg"
-      v-if="backgroundImageLoaded"
-      :style="divStyle"
-    >
+    <div class="d-flex align-items-center justify-content-center whole-bg">
       <div class="row no-gutter d-flex justify-content-center align-items-center w-100">
         <div class="col-4 d-flex wrapper-div p-0">
           <!-- <div class="col-md-6 d-none d-md-flex bg-image"></div> -->
-
+          <!-- <div class="col-md-6 d-none d-md-flex bg-image"></div> -->
           <div class="login-form">
             <img
               src="../logo.png"
@@ -116,25 +111,12 @@ export default {
       loading: false,
       token: null,
       tokenExpiration: null,
-      isImageLoaded: false,
-      backgroundImageLoaded: false,
-      backgroundImageUrl: "src/assets/loginbggg11.png",
     };
   },
   components: {
     Loader,
   },
-  computed: {
-    divStyle() {
-      return {
-        backgroundImage: `url(${this.backgroundImageUrl})`,
-        visibility: this.backgroundImageLoaded ? "visible" : "hidden",
-      };
-    },
-    onBackgroundImageLoad() {
-      this.backgroundImageLoaded = true;
-    },
-  },
+
   methods: {
     async login() {
       this.loading = true;
@@ -226,6 +208,7 @@ export default {
   align-items: center;
   justify-content: center;
   position: relative;
+  background-image: url("src/assets/loginbggg11.png");
 }
 
 .wrapper-div {

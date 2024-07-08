@@ -70,6 +70,7 @@
                   <button
                     type="button"
                     class="btn btn-outline-success text-nowrap text-nowrap"
+                    @click="generatePDF"
                   >
                     <i class="bi bi-file-earmark-pdf"></i> PDF
                   </button>
@@ -143,6 +144,7 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 import Navbar from "../Navbar.vue";
 import MailInvoice from "../modals/InvoicePagesModal/ClientMailInvoice.vue";
 import { defineAsyncComponent } from "vue";
@@ -168,6 +170,25 @@ export default {
   methods: {
     updateTemplate() {
       this.$store.commit("setSelectedTemplate", this.selectedTemplate);
+    },
+    async generatePDF() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/generate_pdf/${this.$route.params.id}`,
+          {
+            responseType: "blob",
+          }
+        );
+
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `invoice_${this.id}.pdf`);
+        document.body.appendChild(link);
+        link.click();
+      } catch (error) {
+        // console.error("Error generating PDF:", error);
+      }
     },
   },
 

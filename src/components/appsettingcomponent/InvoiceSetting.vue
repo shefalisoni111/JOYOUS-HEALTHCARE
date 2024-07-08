@@ -160,7 +160,12 @@
                   <div>Hash (#):</div>
                   <div>
                     <label class="switch">
-                      <input type="checkbox" id="togBtn" />
+                      <input
+                        type="checkbox"
+                        id="togBtn"
+                        @change="handleToggle"
+                        v-model="isHashEnabled"
+                      />
                       <div class="slider round"></div>
                     </label>
                   </div>
@@ -426,6 +431,7 @@ export default {
         "Sunday",
       ],
       selectedDay: "Monday",
+      isHashEnabled: false,
     };
   },
   components: {
@@ -434,6 +440,24 @@ export default {
     TextFormator,
     StaffInvoiceTemplates,
     ClientInvoiceTemplatesVue,
+  },
+  methods: {
+    async handleToggle() {
+      try {
+        if (this.isHashEnabled) {
+          await axios.put(`${VITE_API_URL}/add_hash_to_invoice_number`, { enable: true });
+        } else {
+          await axios.put(`${VITE_API_URL}/remove_hash_from_invoice_number`, {
+            enable: false,
+          });
+        }
+      } catch (error) {
+        // console.error('Error toggling hash:', error);
+      }
+    },
+    handleSubmit() {
+      // Handle form submission logic here
+    },
   },
 };
 </script>

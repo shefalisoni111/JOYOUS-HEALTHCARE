@@ -11,77 +11,174 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="clientInvoiceMail">Mail to Client</h5>
-           
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
-              <form>
+              <form @submit.prevent="sendInvoice">
                 <div>
                   <div class="row align-items-center mt-3">
                     <div class="col-2">
                       <label for="mailto" class="col-form-label">MAIL TO:</label>
                     </div>
                     <div class="col-10">
-                      <input type="text" id="mailto" class="form-control" />
+                      <input
+                        type="text"
+                        id="mailto"
+                        class="form-control"
+                        v-model="email"
+                      />
                     </div>
                   </div>
                   <div class="row align-items-center mt-3">
                     <div class="col-2">
-                      <label for="mailto" class="col-form-label">SUBJECT:</label>
+                      <label for="subject" class="col-form-label">SUBJECT:</label>
                     </div>
                     <div class="col-10">
-                      <input type="text" id="mailto" class="form-control" />
+                      <input
+                        type="text"
+                        id="subject"
+                        class="form-control"
+                        v-model="subject"
+                      />
                     </div>
                   </div>
                   <div class="row align-items-center mt-3 ms-3">
                     <div class="col-1">
-                      <label for="mailto" class="col-form-label"></label>
+                      <label for="body" class="col-form-label"></label>
                     </div>
                     <div class="col-11 ms-5 p-0" style="margin-left: 90px">
-                      <TextFormator />
+                      <TextFormator v-model="body" />
                     </div>
                   </div>
                   <div class="row align-items-center mt-3">
                     <div class="col-2">
-                      <label for="formFile" class="col-form-label">ATTACHMENTS:</label>
+                      <label for="attachments" class="col-form-label">ATTACHMENTS:</label>
                     </div>
                     <div class="col-10">
-                      <input class="form-control" type="file" id="formFile" />
+                      <input
+                        class="form-control"
+                        type="file"
+                        id="attachments"
+                        multiple
+                        @change="handleFileUpload"
+                      />
                     </div>
                   </div>
+                  <div class="row align-items-center mt-3">
+                    <div class="col-2">
+                      <label for="signAttachments" class="col-form-label"
+                        >SIGN ATTACHMENTS:</label
+                      >
+                    </div>
+                    <div class="col-10">
+                      <input
+                        class="form-control"
+                        type="file"
+                        id="signAttachments"
+                        @change="handleSignUpload"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    class="btn btn-secondary rounded-1"
+                    data-bs-target="#clientInvoiceMail"
+                    data-bs-toggle="modal"
+                    data-bs-dismiss="modal"
+                    @click="resetForm"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-primary rounded-1 text-capitalize fw-medium"
+                  >
+                    <i class="bi bi-send"></i>
+                    Send
+                  </button>
                 </div>
               </form>
             </div>
           </div>
-          <div class="modal-footer">
-            <button
-              class="btn btn-secondary rounded-1"
-              data-bs-target="#clientInvoiceMail"
-              data-bs-toggle="modal"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <button class="btn btn-primary rounded-1 text-capitalize fw-medium">
-              <i class="bi bi-send"></i>
-              Send
-            </button>
-          </div>
         </div>
       </div>
     </div>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
 <script>
+import axios from "axios";
 import TextFormator from "../../textformator/TextFormator.vue";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+
 export default {
-  name: "Mail-Invoice",
-  data() {
-    return {};
-  },
+  name: "MailInvoice",
   components: {
     TextFormator,
+    SuccessAlert,
+  },
+  data() {
+    return {
+      email: "",
+      subject: "",
+      body: "",
+      attachments: [],
+      signAttachments: null,
+    };
+  },
+  methods: {
+    handleFileUpload(event) {
+      this.attachments = Array.from(event.target.files);
+    },
+    handleSignUpload(event) {
+      this.signAttachments = event.target.files[0];
+    },
+    async sendInvoice() {
+      const formData = new FormData();
+      formData.append("client_invoice[email][]", this.email);
+      formData.append("client_invoice[subject]", this.subject);
+      formData.append("client_invoice[body]", this.body);
+
+      this.attachments.forEach((file, index) => {
+        formData.append(`client_invoice[attachments][]`, file);
+      });
+
+      if (this.signAttachments) {
+        formData.append("client_invoice[sign_attachments]", this.signAttachments);
+      }
+
+      try {
+        const response = await axios.put(
+          `${VITE_API_URL}/send_invoice_with_attachments/${this.$route.params.id}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        if (response.status === 200) {
+          this.resetForm();
+          const message = "Successfully Mail Send";
+          this.$refs.successAlert.showSuccess(message);
+        }
+        // console.log("Invoice sent:", response.data);
+      } catch (error) {
+        // console.error("Error sending invoice:", error);
+      }
+    },
+    resetForm() {
+      this.email = "";
+      this.subject = "";
+      this.body = "";
+      this.attachments = [];
+      this.signAttachments = null;
+
+      document.getElementById("attachments").value = null;
+      document.getElementById("signAttachments").value = null;
+    },
   },
 };
 </script>

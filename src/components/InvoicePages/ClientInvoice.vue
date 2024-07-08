@@ -1,34 +1,3 @@
-<!-- <template>
-  <div>
-    <Navbar />
-    <div id="main">
-      <h6>Client Invoice Page in Progress.....</h6>
-    </div>
-  </div>
-</template>
-<script>
-import Navbar from "../Navbar.vue";
-
-export default {
-  components: {
-    Navbar,
-  },
-};
-</script>
-<style scoped>
-#main {
-  padding: 20px 20px;
-  transition: all 0.3s;
-  height: 100dvh;
-  
-  background-color: #fdce5e17;
-}
-ul.generalsetting h6 {
-  font-size: 14px;
-  font-weight: bold;
-}
-</style> -->
-
 <template>
   <div>
     <Navbar />
@@ -98,13 +67,16 @@ ul.generalsetting h6 {
 
                     <div class="d-flex gap-3 align-items-center">
                       <form
+                        @submit.prevent="search"
                         class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
                       >
                         <input
                           class="form-control mr-sm-2"
                           type="search"
-                          placeholder="Search by Name"
+                          placeholder="Search..."
                           aria-label="Search"
+                          v-model="searchQuery"
+                          @input="debounceSearch"
                         />
                       </form>
                       <router-link
@@ -147,7 +119,7 @@ ul.generalsetting h6 {
                     role="tabpanel"
                     aria-labelledby="pills-home-tab"
                   >
-                    <table class="table candidateTable">
+                    <table class="table candidateTable" v-if="!searchQuery">
                       <thead>
                         <tr>
                           <th scope="col">#Number</th>
@@ -157,9 +129,9 @@ ul.generalsetting h6 {
                           <th scope="col">To</th>
                           <th scope="col">Created On</th>
                           <th scope="col">Due Date</th>
-                          <th scope="col">Total Amount</th>
-                          <th scope="col">Paid Amount</th>
-                          <th scope="col">Balance Amount</th>
+                          <th scope="col" class="text-center">Total Amount</th>
+                          <th scope="col" class="text-center">Paid Amount</th>
+                          <th scope="col" class="text-center">Balance Amount</th>
                           <th scope="col">Status</th>
                           <th scope="col">Invoice Creation Period</th>
                           <th scope="col">Invoice Lock</th>
@@ -176,21 +148,88 @@ ul.generalsetting h6 {
                           <td scope="col">{{ data.start_date }}</td>
                           <td scope="col">{{ data.end_date }}</td>
                           <td scope="col">{{ data.created_on }}</td>
-                          <td scope="col">{{ data.due_date }}</td>
-                          <td scope="col">{{ data.total_amount }}</td>
-                          <td scope="col">{{ data.paid_amount }}</td>
-                          <td scope="col">{{ data.balance_amount }}</td>
-                          <td scope="col">{{ data.status }}</td>
+                          <td scope="col">
+                            {{ data.due_date ? data.due_date : "Null" }}
+                          </td>
+                          <td scope="col" class="text-center">{{ data.total_amount }}</td>
+                          <td scope="col" class="text-center">{{ data.paid_amount }}</td>
+                          <td scope="col" class="text-center">
+                            {{ data.balance_amount }}
+                          </td>
+                          <td scope="col">{{ data.status ? data.status : "Null" }}</td>
                           <td scope="col">{{ data.invoice_creation_period }}</td>
                           <td scope="col">{{ data.invoice_lock }}</td>
                           <td scope="col">{{ data.generated_by }}</td>
-                          <td scope="col">{{ data.email_status }}</td>
+                          <td scope="col">
+                            {{ data.email_status ? data.email_status : "Null" }}
+                          </td>
                           <td>
                             <router-link
-                              to="/invoice/client-invoice/client-InvoiceView"
+                              :to="{ name: 'ClientInvoiceView', params: { id: data.id } }"
                               class="text-success"
                               ><i class="bi bi-eye"></i
                             ></router-link>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table class="table candidateTable" v-else>
+                      <thead>
+                        <tr>
+                          <th scope="col">#Number</th>
+                          <th scope="col">Vendor</th>
+                          <th scope="col">Site</th>
+                          <th scope="col">From</th>
+                          <th scope="col">To</th>
+                          <th scope="col">Created On</th>
+                          <th scope="col">Due Date</th>
+                          <th scope="col" class="text-center">Total Amount</th>
+                          <th scope="col" class="text-center">Paid Amount</th>
+                          <th scope="col" class="text-center">Balance Amount</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">Invoice Creation Period</th>
+                          <th scope="col">Invoice Lock</th>
+                          <th scope="col">Generated By</th>
+                          <th scope="col">Email Status</th>
+                          <th scope="col">View</th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="searchResults?.length > 0">
+                        <tr v-for="data in searchResults" :key="data.id">
+                          <td scope="col">{{ data.invoice_number }}</td>
+                          <td scope="col">{{ data.client }}</td>
+                          <td scope="col">{{ data.site }}</td>
+                          <td scope="col">{{ data.start_date }}</td>
+                          <td scope="col">{{ data.end_date }}</td>
+                          <td scope="col">{{ data.created_on }}</td>
+                          <td scope="col">
+                            {{ data.due_date ? data.due_date : "Null" }}
+                          </td>
+                          <td scope="col" class="text-center">{{ data.total_amount }}</td>
+                          <td scope="col" class="text-center">{{ data.paid_amount }}</td>
+                          <td scope="col" class="text-center">
+                            {{ data.balance_amount }}
+                          </td>
+                          <td scope="col">{{ data.status ? data.status : "Null" }}</td>
+                          <td scope="col">{{ data.invoice_creation_period }}</td>
+                          <td scope="col">{{ data.invoice_lock }}</td>
+                          <td scope="col">{{ data.generated_by }}</td>
+                          <td scope="col">
+                            {{ data.email_status ? data.email_status : "Null" }}
+                          </td>
+                          <td>
+                            <router-link
+                              :to="{ name: 'ClientInvoiceView', params: { id: data.id } }"
+                              class="text-success"
+                              ><i class="bi bi-eye"></i
+                            ></router-link>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr>
+                          <td colspan="16" class="text-danger text-center">
+                            {{ "Not Match Found !" }}
                           </td>
                         </tr>
                       </tbody>
@@ -216,6 +255,13 @@ ul.generalsetting h6 {
 <script>
 import axios from "axios";
 import Navbar from "../Navbar.vue";
+
+const axiosInstance = axios.create({
+  headers: {
+    "Cache-Control": "no-cache",
+  },
+});
+
 export default {
   data() {
     return {
@@ -224,6 +270,9 @@ export default {
       startDate: new Date(),
       endDate: new Date(),
       getClientInvoiceDetail: [],
+      searchQuery: null,
+      debounceTimeout: null,
+      searchResults: [],
     };
   },
   components: { Navbar },
@@ -278,6 +327,38 @@ export default {
           0
         );
       }
+    },
+    //search api start
+
+    async search() {
+      try {
+        this.searchResults = [];
+        const modifiedSearchQuery = this.searchQuery.replace(/ /g, "_");
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/client_invoice_serching`,
+          {
+            params: {
+              invoice_query: modifiedSearchQuery,
+            },
+          }
+        );
+
+        this.searchResults = response.data.candidate;
+      } catch (error) {
+        if (
+          (error.response && error.response.status === 404) ||
+          error.response.status === 400
+        ) {
+          // this.errorMessage = "No candidates found for the specified criteria";
+        }
+      }
+    },
+    debounceSearch() {
+      clearTimeout(this.debounceTimeout);
+
+      this.debounceTimeout = setTimeout(() => {
+        this.search();
+      }, 100);
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
@@ -341,7 +422,13 @@ export default {
         .then((response) => (this.getClientInvoiceDetail = response.data.data));
     },
   },
-
+  watch: {
+    searchQuery(newQuery) {
+      if (newQuery.trim() === "") {
+        this.searchResults = [];
+      }
+    },
+  },
   mounted() {
     this.createVacancy();
     // this.updateDateRange();
