@@ -39,6 +39,20 @@
                   <div class="col-4">
                     <label class="form-label" for="selectBusinessUnit">Site</label>
 
+                    <!-- <select
+                      v-model="site_id"
+                      id="selectBusinessUnit"
+                      @change="onSiteSelect"
+                    >
+                      <option
+                        v-for="option in businessUnit"
+                        :key="option.id"
+                        :value="option.id"
+                        placeholder="Select BusinessUnit"
+                      >
+                        {{ option.site_name }}
+                      </option>
+                    </select> -->
                     <select
                       id="siteSelect"
                       v-model="selectedSiteId"
@@ -312,10 +326,9 @@
                         <div class="col-4">
                           <label class="form-label">Rate Type</label>
                           <select
-                            v-model="selectedRateType[`${day}-day`]"
+                            v-model="this.selectedRateType[`${day}-day`]"
                             class="form-select w-25"
-                            :class="{ 'disabled-select': isDisabled }"
-                            :disabled="isDisabled"
+                            disabled
                           >
                             <option value="Hourly">Hourly</option>
                             <option value="Monthly">Monthly</option>
@@ -329,7 +342,7 @@
                           <select
                             class="form-select w-25"
                             v-model="selectedClientRate[`${day}-day`]"
-                            :disabled="isDisabled"
+                            disabled
                           >
                             <option value="1">1</option>
                             <option value="5">5</option>
@@ -345,7 +358,7 @@
                           <select
                             class="form-select w-25"
                             v-model="selectedPrivateLimited[`${day}-day`]"
-                            :disabled="true"
+                            disabled
                           >
                             <option value="1">1</option>
                             <option value="5">5</option>
@@ -405,7 +418,7 @@
                           <select
                             v-model="selectedSelfEmployee[`${day}-day`]"
                             class="form-select w-25"
-                            :disabled="true"
+                            disabled
                           >
                             <option value="1">1</option>
                             <option value="5">5</option>
@@ -421,7 +434,7 @@
                           <select
                             class="form-select w-25"
                             v-model="selectedUmbrella[`${day}-day`]"
-                            :disabled="true"
+                            disabled
                           >
                             <option value="1">1</option>
                             <option value="5">5</option>
@@ -436,7 +449,7 @@
                           <select
                             class="form-select w-25"
                             v-model="selectedPaye[`${day}-day`]"
-                            :disabled="true"
+                            disabled
                           >
                             <option value="1">1</option>
                             <option value="5">5</option>
@@ -905,6 +918,7 @@
               Cancel
             </button>
             <button
+              :disabled="!isFormValid"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               v-bind:data-bs-dismiss="isFormValid ? 'modal' : null"
               v-on:click="addVacancyMethod()"
@@ -990,7 +1004,6 @@ export default {
       selectedDate: null,
       splitRate: false,
       holidaySplitRate: false,
-      isDisabled: true,
     };
   },
 
@@ -1290,12 +1303,6 @@ export default {
             site_id: this.site_id,
             job_id: this.job_id,
             day: day,
-            client_rate: dayClientRate || "",
-            self_employed: daySelfEmployee || "",
-            private_limited: dayPrivateLimited || "",
-            umbrella: dayUmbrella || "",
-            rate_type: dayRateType || "",
-            paye: dayPaye || "",
             client_rate: nightClientRate || "",
             self_employed: nightSelfEmployee || "",
             private_limited: nightPrivateLimited || "",
