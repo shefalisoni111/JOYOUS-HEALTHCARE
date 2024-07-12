@@ -2,49 +2,95 @@
   <div class="container-fluid p-0">
     <div class="row">
       <div class="col-12 table-wrapper">
+        <div class="p-2">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex">
+              <div class="d-flex align-items-center">
+                <select
+                  class="form-control"
+                  v-model="currentView"
+                  @change="updateDateRange"
+                >
+                  <option value="weekly">Weekly</option>
+                  <option value="monthly">Monthly</option>
+                </select>
+              </div>
+
+              &nbsp;&nbsp;
+              <div class="d-flex align-items-center">
+                <span
+                  v-if="currentView === 'weekly' && startDate && endDate"
+                  class="fw-bold"
+                >
+                  {{
+                    "Monday " +
+                    formatDate(startDate) +
+                    " to Sunday " +
+                    formatDate(endDate)
+                  }}
+                </span>
+                <span
+                  v-else-if="currentView === 'monthly' && startDate && endDate"
+                  class="fw-bold"
+                >
+                  {{ formatDate(startDate) + " to " + formatDate(endDate) }}
+                </span>
+              </div>
+              &nbsp;&nbsp;
+              <div class="d-flex align-items-center fs-4">
+                <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
+                <i class="bi bi-calendar2-check-fill"></i>
+                <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+              </div>
+            </div>
+
+            <div class="d-flex gap-3 align-items-center">
+              <select v-model="site_id" id="selectBusinessUnit">
+                <option value="">All Site</option>
+                <option
+                  v-for="option in businessUnit"
+                  :key="option.id"
+                  :value="option.id"
+                  placeholder="Select BusinessUnit"
+                >
+                  {{ option.site_name }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+           
+          </ul> -->
+        <div v-if="currentView === 'weekly'">
+          <div>
+            <div v-for="(day, index) in daysOfWeek" :key="index"></div>
+            <div v-for="(day, index) in getWeekDates" :key="index"></div>
+          </div>
+        </div>
+
+        <div v-else-if="currentView === 'monthly'">
+          <div>
+            <div v-for="(day, index) in getMonthDates" :key="index"></div>
+          </div>
+        </div>
         <table class="table candidateTable">
           <thead>
             <tr>
               <th rowspan="3">ID</th>
 
-              <th rowspan="3">Site</th>
-              <th rowspan="3">Shift</th>
-              <th>
-                <div class="calendar-grid text-center">
-                  <div v-for="day in daysOfWeek" :key="day" class="day-header">
-                    {{ day }}
-                  </div>
-                  <div v-for="date in selectedDateRow" :key="date" class="day-header">
-                    {{ formatDate(date) }}
+              <th scope="col" style="width: 153px">Name</th>
+              <th scope="col">Site</th>
+              <th scope="col">Job</th>
+              <th scope="col">Shift Date</th>
+              <th scope="col">Start Time</th>
+              <th scope="col">End Time</th>
+              <th scope="col">Total Hours</th>
+              <th scope="col">Client Rate</th>
+              <th scope="col">Total Cost</th>
 
-                    <div
-                      class="additional-column day-header d-flex justify-content-center"
-                    >
-                      <tr>
-                        <th
-                          class="additional-header"
-                          style="border-right: 1px solid #e1d4d4; padding-right: 5px"
-                        >
-                          Start
-                        </th>
-                        <th
-                          class="additional-header"
-                          style="
-                            border-right: 1px solid #e1d4d4;
-                            padding-left: 5px;
-                            padding-right: 5px;
-                          "
-                        >
-                          End
-                        </th>
-                        <th class="additional-header" style="padding-left: 5px">Total</th>
-                      </tr>
-                    </div>
-                  </div>
-                </div>
-              </th>
-              <th rowspan="3">Holiday</th>
-              <th rowspan="3">Approved By</th>
+              <th rowspan="3">Approved Status</th>
+              <th rowspan="3">Action</th>
               <!-- <th rowspan="3">
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" checked />
@@ -56,73 +102,50 @@
             <tr v-for="data in candidateList" :key="data.id">
               <td>{{ data.id }}</td>
 
-              <td>
-                {{ data.site ? data.site : "Null" }}
+              <td scope="col" class="text-capitalize">{{ data.name }}</td>
+              <td scope="col">{{ data.site }}</td>
+              <td scope="col">{{ data.job }}</td>
+              <td scope="col">{{ data.shift_date }}</td>
+              <td scope="col">
+                {{ data.start_time ? data.start_time : "null" }}
               </td>
-              <td>{{ data.shift_date }}</td>
-
-              <td>
-                <div class="calendar-grid">
-                  <div
-                    v-for="day in selectedDateRow"
-                    :key="day"
-                    data-bs-toggle="modal"
-                    data-bs-target="#editWeeklyTs"
-                    data-bs-whatever="@mdo"
-                    @click="openModal(data, day)"
-                    :class="{
-                      'calendar-day': true,
-                      clickable: day !== '',
-                    }"
-                    class="d-flex justify-content-between gap-2"
-                  >
-                    <div v-if="formatDate(day)" class="d-flex gap-2">
-                      <td>
-                        <div class="column">
-                          <div class="column-cell">
-                            {{
-                              typeof data.start_time === "number"
-                                ? data.start_time.toFixed(2)
-                                : data.start_time === null
-                                ? "null"
-                                : data.start_time
-                            }}
-                          </div>
-                        </div>
-                      </td>
-
-                      <td>
-                        <div class="column">
-                          <div class="column-cell">
-                            {{
-                              typeof data.end_time === "number"
-                                ? data.end_time.toFixed(2)
-                                : data.end_time === null
-                                ? "null"
-                                : data.end_time
-                            }}
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="column">
-                          <div class="column-cell">
-                            {{
-                              typeof data.total_hours === "number"
-                                ? data.total_hours.toFixed(2) + " hours"
-                                : data.total_hours === null
-                                ? "null"
-                                : data.total_hours + " hours"
-                            }}
-                          </div>
-                        </div>
-                      </td>
-                    </div>
-                  </div>
-                </div>
+              <td scope="col">
+                {{ data.end_time ? data.end_time : "null" }}
               </td>
-              <td>Holiday</td>
-              <td>{{ data.approved_by ? data.approved_by : "Null" }}</td>
+              <td scope="col">
+                {{ data.total_hours ? data.total_hours : "null" }}
+              </td>
+              <td scope="col">
+                {{ data.client_rate ? data.client_rate : "null" }}
+              </td>
+              <td scope="col">
+                {{ data.total_cost ? data.total_cost : "null" }}
+              </td>
+
+              <td>{{ data.approved_hour }}</td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-outline-success text-nowrap text-nowrap"
+                  data-bs-toggle="modal"
+                  data-bs-target="#generateInvoice"
+                  data-bs-whatever="@mdo"
+                >
+                  <i class="bi bi-receipt-cutoff"></i>
+                  +
+                </button>
+                &nbsp;
+                <button
+                  type="button"
+                  class="btn btn-outline-success text-nowrap text-nowrap"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editGenerateInvoice"
+                  data-bs-whatever="@mdo"
+                  @click="openEditModal(data.id)"
+                >
+                  <i class="bi bi-pencil"></i>
+                </button>
+              </td>
               <!-- <th>
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" />
@@ -132,7 +155,7 @@
           </tbody>
           <tbody v-else>
             <tr>
-              <td colspan="6" class="text-danger text-center">
+              <td colspan="12" class="text-danger text-center">
                 {{ errorMessage }}
               </td>
             </tr>
@@ -140,12 +163,20 @@
         </table>
       </div>
     </div>
+    <GenerateInvoiceAdd />
+    <GenerateInvoiceEdit
+      :customDataId="selectedCustomTimesheetId"
+      @CustomTimeSheetData-updated="fetWeekTimeSheetData"
+      ref="customEdit"
+    />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 
+import GenerateInvoiceAdd from "../../modals/InvoicePagesModal/GenerateInvoiceAdd.vue";
+import GenerateInvoiceEdit from "../../modals/InvoicePagesModal/GenerateInvoiceEdit.vue";
 export default {
   data() {
     return {
@@ -165,9 +196,10 @@ export default {
       businessUnit: [],
       candidateList: [],
       errorMessage: "",
+      selectedCustomTimesheetId: null,
     };
   },
-  components: {},
+  components: { GenerateInvoiceAdd, GenerateInvoiceEdit },
   computed: {
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
@@ -236,6 +268,10 @@ export default {
     },
   },
   methods: {
+    openEditModal(customDataId) {
+      this.selectedCustomTimesheetId = customDataId;
+      this.$refs.customEdit.fetchCustomTimeSheetData(customDataId);
+    },
     async getBusinessUnitMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/activated_site`);
@@ -261,6 +297,7 @@ export default {
           0
         );
       }
+      this.fetWeekTimeSheetData();
     },
     moveToNext() {
       if (this.currentView === "weekly") {
@@ -275,20 +312,18 @@ export default {
           0
         );
       }
+      this.fetWeekTimeSheetData();
     },
 
     updateDateRange() {
       if (this.currentView === "weekly") {
-        const currentDate = new Date();
-        const dayOfWeek = currentDate.getDay();
-        const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-        const startOfWeek = new Date(currentDate);
-        startOfWeek.setDate(currentDate.getDate() + diff);
-        this.startDate = startOfWeek;
+        const weekStart = new Date(this.startDate);
+        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
+        this.startDate = weekStart;
 
-        const endOfWeek = new Date(startOfWeek);
-        endOfWeek.setDate(startOfWeek.getDate() + 6);
-        this.endDate = endOfWeek;
+        const weekEnd = new Date(this.startDate);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+        this.endDate = weekEnd;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
         this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
@@ -344,12 +379,12 @@ export default {
     },
   },
 
-  mounted() {
+  async mounted() {
     // this.createVacancy();
-    this.loadDateRangeFromLocalStorage();
-    this.getBusinessUnitMethod();
-    this.updateDateRange();
-    window.addEventListener("beforeunload", this.saveToLocalStorage);
+    await this.loadDateRangeFromLocalStorage();
+    await this.getBusinessUnitMethod();
+    // this.updateDateRange();
+    // window.addEventListener("beforeunload", this.saveToLocalStorage);
     // const currentDate = new Date();
     // const startOfWeek = new Date(currentDate);
     // startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
@@ -358,18 +393,19 @@ export default {
     // const endOfWeek = new Date(currentDate);
     // endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
     // this.endDate = endOfWeek;
-    // const currentDate = new Date();
-    // const dayOfWeek = currentDate.getDay();
-    // const startOfWeek = new Date(currentDate);
+    const currentDate = new Date();
+    const dayOfWeek = currentDate.getDay();
+    const startOfWeek = new Date(currentDate);
 
-    // const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-    // startOfWeek.setDate(startOfWeek.getDate() + diff);
+    const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    startOfWeek.setDate(startOfWeek.getDate() + diff);
 
-    // this.startDate = startOfWeek;
+    this.startDate = startOfWeek;
 
-    // const endOfWeek = new Date(startOfWeek);
-    // endOfWeek.setDate(endOfWeek.getDate() + 6);
-    // this.endDate = endOfWeek;
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(endOfWeek.getDate() + 6);
+    this.endDate = endOfWeek;
+    await this.fetWeekTimeSheetData();
   },
 };
 </script>

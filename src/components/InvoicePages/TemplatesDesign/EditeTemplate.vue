@@ -3,14 +3,14 @@
     <!-- Modal -->
     <div
       class="modal fade"
-      id="editCustomTimeSheet"
-      aria-labelledby="editCustomTimeSheet"
+      id="editInvoiceFirstTemplate"
+      aria-labelledby="editInvoiceFirstTemplate"
       tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="editCustomTimeSheet">Edit Custom TimeSheet</h5>
+            <h5 class="modal-title" id="editInvoiceFirstTemplate">Edit Invoice</h5>
           </div>
           <div class="modal-body mx-3">
             <form>
@@ -28,18 +28,6 @@
               </div>
               <!-- <div class="mb-3">
                 <div class="col-12">
-                  <label class="form-label">Start Time</label>
-                </div>
-                <div class="col-12 mt-1">
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="fetchCustomSheetData.start_time"
-                  />
-                </div>
-              </div> -->
-              <div class="mb-3">
-                <div class="col-12">
                   <label class="form-label" for="selectCustomStartTime"
                     >Start Time
                   </label>
@@ -48,7 +36,7 @@
                   <select
                     id="selectCustomStartTime"
                     class="form-select w-25"
-                    v-model="fetchCustomSheetData.start_time"
+                    v-model="fetchCustomSheetData.start_date"
                     @change="validateStartTime"
                   >
                     <option v-for="hour in 24" :key="hour" :value="formatTime(hour)">
@@ -65,7 +53,7 @@
                   <select
                     id="selectedEndTime"
                     class="form-select w-25"
-                    v-model="fetchCustomSheetData.end_time"
+                    v-model="fetchCustomSheetData.end_date"
                     @change="validateStartTime"
                   >
                     <option v-for="hour in 24" :key="hour" :value="formatTime(hour)">
@@ -73,20 +61,7 @@
                     </option>
                   </select>
                 </div>
-              </div>
-              <!-- <div class="mb-3">
-                <div class="col-12">
-                  <label class="form-label">End Time</label>
-                </div>
-                <div class="col-12 mt-1">
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="fetchCustomSheetData.end_time"
-                  />
-                </div>
               </div> -->
-
               <div class="mb-3">
                 <div class="col-12">
                   <label class="form-label">Client Rate</label>
@@ -107,47 +82,12 @@
                   </span>
                 </div>
               </div>
-              <div class="mb-3">
-                <div class="col-12">
-                  <label class="form-label">Paper TimeSheet</label>
-                </div>
-                <div class="col-12 mt-1" v-if="fetchCustomSheetData.custom_image">
-                  <img
-                    :src="fullCustomImageUrl"
-                    alt="Current Paper TimeSheet"
-                    class="img-fluid"
-                    width="20%"
-                  />
-                </div>
-                <div class="col-12 mt-1" v-else>
-                  <input
-                    type="file"
-                    class="form-control"
-                    accept="image/*"
-                    @change="handleFileUpload"
-                  />
-                  <span v-if="!validationPaperTimeSheet" class="text-danger">
-                    Paper TimeSheet is required
-                  </span>
-                </div>
-              </div>
-              <!-- <div class="mb-3">
-                <div class="col-12">
-                  <label class="form-label">Approved</label>
-                </div>
-                <div class="col-12">
-                  <select id="selectOption" v-model="fetchCustomSheetData.approved_hour">
-                    <option value="true">True</option>
-                    <option value="false">False</option>
-                  </select>
-                </div>
-              </div> -->
             </form>
           </div>
           <div class="modal-footer">
             <button
               class="btn btn-secondary rounded-1"
-              data-bs-target="#editCustomTimeSheet"
+              data-bs-target="#editInvoiceFirstTemplate"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
             >
@@ -156,15 +96,10 @@
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               v-on:click="updateCustomTimeSheetMethod()"
+              :disabled="isSaveDisabled"
               data-bs-dismiss="modal"
             >
               Save
-            </button>
-            <button
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
-              v-on:click="approved_hourMethod()"
-            >
-              Approved
             </button>
           </div>
         </div>
@@ -179,7 +114,7 @@ import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
-  name: "editCustomTimeSheet",
+  name: "EditeTemplate",
   data() {
     return {
       fetchCustomSheetData: {
@@ -189,7 +124,6 @@ export default {
         name: "",
         business_unit: "",
         job: "",
-        paper_timesheet: "",
         approved_hour: "",
         start_time: "",
         end_time: "",
@@ -199,12 +133,11 @@ export default {
       },
       options: [],
       validationClientRate: true,
-      validationPaperTimeSheet: true,
       businessUnit: [],
     };
   },
   props: {
-    customDataId: {
+    InvoiceId: {
       type: Number,
       default: 0,
     },
@@ -214,8 +147,7 @@ export default {
     isSaveDisabled() {
       return (
         this.fetchCustomSheetData.client_rate === null ||
-        this.fetchCustomSheetData.client_rate <= 0 ||
-        !this.fetchCustomSheetData.paper_timesheet
+        this.fetchCustomSheetData.client_rate <= 0
       );
     },
     fullCustomImageUrl() {
@@ -223,16 +155,6 @@ export default {
     },
   },
   methods: {
-    handleFileUpload(event) {
-      const file = event.target.files[0];
-      if (file) {
-        this.fetchCustomSheetData.paper_timesheet = file;
-        this.validatePaperTimeSheet();
-      }
-    },
-    validatePaperTimeSheet() {
-      this.validationPaperTimeSheet = !!this.fetchCustomSheetData.paper_timesheet;
-    },
     formatTime(hour) {
       if (hour === 0 || hour === 24) {
         return `12:00 AM`;
@@ -252,59 +174,47 @@ export default {
         this.validationClientRate = true;
       }
     },
-
     async fetchCustomTimeSheetData(id) {
       if (!id) {
         return;
       }
       try {
-        const response = await axios.get(`${VITE_API_URL}/custom_timesheets/${id}`);
+        const response = await axios.get(`${VITE_API_URL}/client_invoices/${id}`);
         this.fetchCustomSheetData = {
-          ...this.fetchCustomSheetData,
-          ...response.data.custom_sheets,
-          custom_image: response.data.custom_sheets.paper_timesheet,
+          id: response.data.client_invoice.id,
+          shift_date: response.data.client_invoice.start_date,
+          job: response.data.client_invoice.job,
+          start_date: response.data.client_invoice.start_date,
+          end_date: response.data.client_invoice.end_date,
+          client_rate: response.data.client_invoice.client_rate,
+          total_amount: response.data.client_invoice.total_amount,
+          paid_amount: response.data.client_invoice.paid_amount,
+          balance_amount: response.data.client_invoice.balance_amount,
         };
-      } catch (error) {}
+      } catch (error) {
+        // console.error("Error fetching custom timesheet data:", error);
+      }
     },
+
     async updateCustomTimeSheetMethod() {
       try {
-        const formData = new FormData();
-
-        for (const key in this.fetchCustomSheetData) {
-          if (this.fetchCustomSheetData.hasOwnProperty(key)) {
-            if (key === "paper_timesheet" && this.fetchCustomSheetData[key]) {
-              formData.append(
-                "custom_timesheet[paper_timesheet]",
-                this.fetchCustomSheetData[key]
-              );
-            } else {
-              const value =
-                this.fetchCustomSheetData[key] === null
-                  ? ""
-                  : this.fetchCustomSheetData[key];
-              formData.append(`custom_timesheet[${key}]`, value);
-            }
-          }
-        }
-
-        // Log FormData for debugging
-        // for (let pair of formData.entries()) {
-        //   console.log(`${pair[0]}: ${pair[1]}`);
-        // }
+        const payload = {
+          custom_timesheet: this.fetchCustomSheetData,
+        };
 
         const response = await axios.put(
-          `${VITE_API_URL}/custom_timesheets/${this.fetchCustomSheetData.id}`,
-          formData,
+          `${VITE_API_URL}/update_client_invoice/${this.fetchCustomSheetData.id}`,
+          payload,
           {
             headers: {
-              "Content-Type": "multipart/form-data",
+              "Content-Type": "application/json",
             },
           }
         );
 
         this.$store.commit("updateCandidate", {
           id: this.fetchCustomSheetData.id,
-          newData: response.data.custom_sheets,
+          newData: response.data.client_invoice,
         });
         this.$emit("CustomTimeSheetData-updated");
 
@@ -312,29 +222,14 @@ export default {
         this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         // console.error("Error updating custom timesheet:", error);
-      }
-    },
-    async approved_hourMethod() {
-      try {
-        const response = await axios.put(
-          `${VITE_API_URL}/approved_timesheet_hours/${this.fetchCustomSheetData.id}`,
-
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        this.$emit("CustomTimeSheetData-updated");
-        const message = "Custom TimeSheet Approved successfully";
-        this.$refs.successAlert.showSuccess(message);
-      } catch (error) {
-        // console.error("Error updating candidate:", error);
+        if (error.response && error.response.data) {
+          //   console.error("Server response:", error.response.data);
+        }
       }
     },
   },
   watch: {
-    customDataId: {
+    InvoiceId: {
       immediate: true,
       handler(newcustomDataId) {
         this.fetchCustomTimeSheetData(newcustomDataId);

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <!-- <Navbar /> -->
     <div id="main">
       <div class="pagetitle d-flex justify-content-between px-2">
         <div class="py-3">
@@ -12,7 +12,7 @@
               /
               <router-link to="/invoice/client-invoice" class="text-decoration-none"
                 ><span class="color-fonts"
-                  >Client Invoices / INVOICE NUMBER</span
+                  >Client Invoices / {{ getClientInvoiceDetail.number }}</span
                 ></router-link
               >
             </li>
@@ -54,6 +54,10 @@
                   <button
                     type="button"
                     class="btn btn-outline-success text-nowrap text-nowrap"
+                    @click="toggleEditMode(getClientInvoiceDetail.id)"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editInvoiceFirstTemplate"
+                    data-bs-whatever="@mdo"
                   >
                     <i class="bi bi-pencil-fill"></i> Edit
                   </button>
@@ -141,24 +145,31 @@
       </div>
     </div>
     <MailInvoice />
+    <EditeTemplate :InvoiceId="selectedInvoiceId" />
   </div>
 </template>
 <script>
 import axios from "axios";
-import Navbar from "../Navbar.vue";
+// import Navbar from "../Navbar.vue";
 import MailInvoice from "../modals/InvoicePagesModal/ClientMailInvoice.vue";
+import EditeTemplate from "../InvoicePages/TemplatesDesign/EditeTemplate.vue";
 import { defineAsyncComponent } from "vue";
 import { mapState } from "vuex";
 export default {
   data() {
-    return { selectedTemplate: this.$store.state.selectedTemplate };
+    return {
+      selectedTemplate: this.$store.state.selectedTemplate,
+      getClientInvoiceDetail: [],
+      selectedID: null,
+      selectedInvoiceId: null,
+    };
   },
   computed: {
     ...mapState(["selectedTemplates"]),
   },
   components: {
-    Navbar,
     MailInvoice,
+    EditeTemplate,
     TemplateOne: defineAsyncComponent(() =>
       import("../InvoicePages/TemplatesDesign/First_Templates.vue")
     ),
@@ -168,6 +179,9 @@ export default {
   },
 
   methods: {
+    toggleEditMode(id) {
+      this.selectedInvoiceId = id;
+    },
     updateTemplate() {
       this.$store.commit("setSelectedTemplate", this.selectedTemplate);
     },
@@ -190,10 +204,23 @@ export default {
         // console.error("Error generating PDF:", error);
       }
     },
+    async createClientInvoice() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/client_invoices/${this.$route.params.id}`
+        );
+        const clientInvoice = response.data.client_invoice;
+
+        this.getClientInvoiceDetail = clientInvoice;
+      } catch (error) {
+        // console.error("Error fetching client invoice:", error);
+      }
+    },
   },
 
   created() {
     this.selectedTemplate = this.$store.state.selectedTemplate;
+    this.createClientInvoice();
   },
 };
 </script>

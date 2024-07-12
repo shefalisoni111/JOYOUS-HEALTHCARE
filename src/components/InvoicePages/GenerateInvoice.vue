@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <!-- <Navbar /> -->
     <div id="main">
       <div class="pagetitle d-flex justify-content-between px-2">
         <div class="py-3">
@@ -25,7 +25,7 @@
           <div class="col-12">
             <div class="">
               <div>
-                <div class="p-2">
+                <!-- <div class="p-2">
                   <div class="d-flex justify-content-between">
                     <div class="d-flex">
                       <div class="d-flex align-items-center">
@@ -81,11 +81,11 @@
                       </select>
                     </div>
                   </div>
-                </div>
+                </div> -->
                 <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                    
                   </ul> -->
-                <div v-if="currentView === 'weekly'">
+                <!-- <div v-if="currentView === 'weekly'">
                   <div>
                     <div v-for="(day, index) in daysOfWeek" :key="index"></div>
                     <div v-for="(day, index) in getWeekDates" :key="index"></div>
@@ -96,7 +96,7 @@
                   <div>
                     <div v-for="(day, index) in getMonthDates" :key="index"></div>
                   </div>
-                </div>
+                </div> -->
 
                 <ul class="nav nav-pills mt-3 gap-2" id="pills-tab" role="tablist">
                   <li
@@ -211,7 +211,7 @@
 </template>
 <script>
 import axios from "axios";
-import Navbar from "../Navbar.vue";
+
 import WeeklyGenerateInvoice from "../InvoicePages/GenerateInvoices/WeeklyGenerateInvoice.vue";
 import DailyGenerateInvoice from "../InvoicePages/GenerateInvoices/DailyGenerateInvoice.vue";
 import MonthlyGenerateInvoice from "../InvoicePages/GenerateInvoices/MonthlyGenerateInvoice.vue";
@@ -267,7 +267,6 @@ export default {
     };
   },
   components: {
-    Navbar,
     WeeklyGenerateInvoice,
     DailyGenerateInvoice,
     MonthlyGenerateInvoice,
@@ -282,67 +281,67 @@ export default {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return site_id ? site_id.site_name : "";
     },
-    getWeekDates() {
-      const currentDate = new Date();
-      const weekStart = new Date(currentDate);
-      weekStart.setDate(currentDate.getDate() - currentDate.getDay());
-      const weekDates = [];
-      for (let i = 0; i < 7; i++) {
-        const date = new Date(weekStart);
-        date.setDate(weekStart.getDate() + i);
-        weekDates.push(date.getDate());
-      }
-      return weekDates;
-    },
-    getMonthDates() {
-      const currentDate = new Date();
-      const daysInMonth = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth() + 1,
-        0
-      ).getDate();
-      const monthDates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-      return monthDates;
-    },
+    // getWeekDates() {
+    //   const currentDate = new Date();
+    //   const weekStart = new Date(currentDate);
+    //   weekStart.setDate(currentDate.getDate() - currentDate.getDay());
+    //   const weekDates = [];
+    //   for (let i = 0; i < 7; i++) {
+    //     const date = new Date(weekStart);
+    //     date.setDate(weekStart.getDate() + i);
+    //     weekDates.push(date.getDate());
+    //   }
+    //   return weekDates;
+    // },
+    // getMonthDates() {
+    //   const currentDate = new Date();
+    //   const daysInMonth = new Date(
+    //     currentDate.getFullYear(),
+    //     currentDate.getMonth() + 1,
+    //     0
+    //   ).getDate();
+    //   const monthDates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+    //   return monthDates;
+    // },
 
-    formattedDates() {
-      return this.selectedDateRow.map((day) => this.formatDate(day));
-    },
+    // formattedDates() {
+    //   return this.selectedDateRow.map((day) => this.formatDate(day));
+    // },
 
-    formattedStartDate() {
-      return this.formatDate(this.selectedDateRow[0]);
-    },
-    formattedEndDate() {
-      return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
-    },
-    selectedDateRow() {
-      const selectedDate = new Date(this.startDate);
-      const selectedDateRow = [];
-      const dayOfWeek = selectedDate.getDay();
-      const startDay = (dayOfWeek - 1 + 7) % 7;
+    // formattedStartDate() {
+    //   return this.formatDate(this.selectedDateRow[0]);
+    // },
+    // formattedEndDate() {
+    //   return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
+    // },
+    // selectedDateRow() {
+    //   const selectedDate = new Date(this.startDate);
+    //   const selectedDateRow = [];
+    //   const dayOfWeek = selectedDate.getDay();
+    //   const startDay = (dayOfWeek - 1 + 7) % 7;
 
-      for (let i = 0; i < 7; i++) {
-        const currentDate = new Date(selectedDate);
-        currentDate.setDate(selectedDate.getDate() + i - startDay);
+    //   for (let i = 0; i < 7; i++) {
+    //     const currentDate = new Date(selectedDate);
+    //     currentDate.setDate(selectedDate.getDate() + i - startDay);
 
-        const lastDayOfMonth = new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth() + 1,
-          0
-        ).getDate();
-        if (currentDate.getDate() > lastDayOfMonth) {
-          currentDate.setMonth(currentDate.getMonth() + 1);
+    //     const lastDayOfMonth = new Date(
+    //       currentDate.getFullYear(),
+    //       currentDate.getMonth() + 1,
+    //       0
+    //     ).getDate();
+    //     if (currentDate.getDate() > lastDayOfMonth) {
+    //       currentDate.setMonth(currentDate.getMonth() + 1);
 
-          currentDate.setDate(1);
+    //       currentDate.setDate(1);
 
-          currentDate.setDate(i + 1 - startDay);
-        }
+    //       currentDate.setDate(i + 1 - startDay);
+    //     }
 
-        selectedDateRow.push(currentDate);
-      }
+    //     selectedDateRow.push(currentDate);
+    //   }
 
-      return selectedDateRow;
-    },
+    //   return selectedDateRow;
+    // },
   },
   methods: {
     setActiveTabFromRoute() {
@@ -414,13 +413,16 @@ export default {
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
-        const weekStart = new Date(this.startDate);
-        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
-        this.startDate = weekStart;
+        const currentDate = new Date();
+        const dayOfWeek = currentDate.getDay();
+        const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+        const startOfWeek = new Date(currentDate);
+        startOfWeek.setDate(currentDate.getDate() + diff);
+        this.startDate = startOfWeek;
 
-        const weekEnd = new Date(this.startDate);
-        weekEnd.setDate(weekEnd.getDate() + 6);
-        this.endDate = weekEnd;
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+        this.endDate = endOfWeek;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
         this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);

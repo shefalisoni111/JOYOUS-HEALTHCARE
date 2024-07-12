@@ -2459,6 +2459,10 @@ export default {
       return `${String(hours).padStart(2, "0")}:${minutes}:00`;
     },
     async fetchRateRulesDataMethod(SiteID, jobID) {
+      if (!SiteID || !jobID) {
+        // console.error("Invalid SiteID or jobID:", SiteID, jobID);
+        return;
+      }
       const token = localStorage.getItem("token");
       if (!isNaN(jobID)) {
         try {

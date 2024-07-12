@@ -42,16 +42,26 @@
             <div>Rate per mile in client invoice:</div>
             <div>
               <label class="switch">
-                <input type="checkbox" id="togBtn" checked />
+                <input
+                  type="checkbox"
+                  id="togBtn"
+                  @change="ratePerMileClientInvoice"
+                  v-model="isRatePerMileClient"
+                />
                 <div class="slider round"></div>
               </label>
             </div>
           </div>
           <div class="d-flex justify-content-between my-3">
-            <div>Rate per mile in candidate invoice:</div>
+            <div>Rate per mile in Staff invoice:</div>
             <div>
               <label class="switch">
-                <input type="checkbox" id="togBtn" checked />
+                <input
+                  type="checkbox"
+                  id="togBtn"
+                  @change="ratePerMileStaffInvoice"
+                  v-model="isRatePerMileStaff"
+                />
                 <div class="slider round"></div>
               </label>
             </div>
@@ -71,7 +81,12 @@
           <div class="d-flex my-3" style="gap: 22%">
             <div>Invoice Due Period:</div>
             <div style="width: 50%">
-              <input class="form-control" type="text" />
+              <select
+                class="form-control"
+                id="invoiceDuePeriod"
+                v-model="duePeriod"
+                @change="updateDuePeriod"
+              ></select>
             </div>
           </div>
           <div class="d-flex my-3" style="gap: 20%">
@@ -222,7 +237,8 @@ export default {
       holiday_split_rate: false,
       split_rate: false,
       siteData: {},
-
+      isRatePerMileClient: localStorage.getItem("isRatePerMileClient") === "true",
+      isRatePerMileStaff: localStorage.getItem("isRatePerMileStaff") === "true",
       weekDays: [
         "Monday",
         "Tuesday",
@@ -233,6 +249,8 @@ export default {
         "Sunday",
       ],
       selectedDay: "Monday",
+      duePeriod: Number(localStorage.getItem("duePeriod")) || 0,
+      duePeriodDays: Array.from({ length: 30 }, (_, i) => i + 1),
     };
   },
   components: {
@@ -243,7 +261,49 @@ export default {
   created() {
     this.loadInitialSplitRate();
   },
+  mounted() {
+    this.populateInvoiceDuePeriod();
+  },
   methods: {
+    async ratePerMileClientInvoice() {
+      try {
+        let response;
+
+        if (this.isRatePerMileClient) {
+          response = await axios.put(`${VITE_API_URL}/add_hash_to_invoice_number`);
+        } else {
+          response = await axios.put(
+            `${VITE_API_URL}/remove_site_name_to_invoice_number`
+          );
+        }
+
+        localStorage.setItem("isRatePerMileClient", this.isRatePerMileClient.toString());
+
+        this.$refs.successAlert.showSuccess(
+          this.isRatePerMileClient
+            ? "Rate Per Mile enabled successfully!"
+            : "Rate Per Mile disabled successfully!"
+        );
+      } catch (error) {
+        // console.error('Error toggling booking code:', error);
+        // Handle error, e.g., show error message
+      }
+    },
+    async ratePerMileStaffInvoice() {
+      try {
+        const response = await axios.put(`${VITE_API_URL}/staff_rate_enable_and_disable`);
+
+        localStorage.setItem("isRatePerMileStaff", this.isRatePerMileStaff.toString());
+
+        this.$refs.successAlert.showSuccess(
+          this.isRatePerMileStaff
+            ? "Rate Per Mile enabled successfully!"
+            : "Rate Per Mile disabled successfully!"
+        );
+      } catch (error) {
+        // console.error('Error toggling booking code:', error);
+      }
+    },
     async loadInitialSplitRate() {
       await this.getSiteAllDataMethod();
       const savedHolidaySplitRate = localStorage.getItem(
@@ -266,12 +326,12 @@ export default {
       this.showSplitRate = this.split_rate;
       this.showHolidaySplitRate = this.holiday_split_rate;
     },
+
     async updateRate(field) {
       try {
         const formData = new FormData();
         formData.append("site_id", this.$route.params.id);
         formData.append("field", field);
-        // formData.append(field, this[field] ? "true" : "false");
 
         let apiUrl;
         if (field === "split_rate") {
@@ -297,16 +357,23 @@ export default {
 
         if (field === "holiday_split_rate") {
           const message = this.holiday_split_rate
-            ? "Site enabled   for holidays successfully!"
-            : "Site disabled  for holidays successfully!";
-          this.$refs.successAlert.showSuccess(message);
-        } else if (field === "split_rate" && this.holiday_split_rate) {
-          const message = "Site disabled successfully!";
-          this.$refs.successAlert.showSuccess(message);
-        } else {
-          const message = "Site enabled successfully!";
+            ? "Site enabled for holidays successfully!"
+            : "Site disabled for holidays successfully!";
           this.$refs.successAlert.showSuccess(message);
         }
+        // } else if (field === "split_rate") {
+        //   const message = "Site disabled successfully!";
+        //   this.$refs.successAlert.showSuccess(message);
+        // } else {
+        //   const message = "Site enabled successfully!";
+        //   this.$refs.successAlert.showSuccess(message);
+        // }
+
+        const message = this[field]
+          ? "Site enabled successfully!"
+          : "Site disabled successfully!";
+
+        this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         // console.error("Error updating profile view:", error);
       }
@@ -330,6 +397,26 @@ export default {
         this.siteData = siteData;
       } catch (error) {
         // console.error("Error fetching site data:", error);
+      }
+    },
+    async updateDuePeriod() {
+      try {
+        const response = await axios.put(`${VITE_API_URL}/due_period`, {
+          due_period: parseInt(this.duePeriod),
+        });
+        localStorage.setItem("duePeriod", this.duePeriod.toString());
+        this.$refs.successAlert.showSuccess("Invoice due period updated successfully!");
+      } catch (error) {
+        // console.error("Error updating invoice due period:", error);
+      }
+    },
+    populateInvoiceDuePeriod() {
+      const selectElement = document.getElementById("invoiceDuePeriod");
+      for (let day = 1; day <= 30; day++) {
+        const option = document.createElement("option");
+        option.value = day;
+        option.textContent = day;
+        selectElement.appendChild(option);
       }
     },
   },

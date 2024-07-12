@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <!-- <Navbar /> -->
     <div id="main">
       <div class="pagetitle d-flex justify-content-between px-2">
         <div class="py-3">
@@ -242,7 +242,7 @@
 </template>
 <script>
 import axios from "axios";
-import Navbar from "../Navbar.vue";
+// import Navbar from "../Navbar.vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -263,7 +263,7 @@ export default {
       searchResults: [],
     };
   },
-  components: { Navbar },
+  components: {},
   computed: {
     getWeekDates() {
       const currentDate = new Date();

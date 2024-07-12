@@ -52,7 +52,12 @@
                   <div>Split rate:</div>
                   <div>
                     <label class="switch">
-                      <input type="checkbox" id="togBtn" />
+                      <input
+                        type="checkbox"
+                        id="togBtn"
+                        v-model="split_rate"
+                        @change="updateSplitRate"
+                      />
                       <div class="slider round"></div>
                     </label>
                   </div>
@@ -73,7 +78,12 @@
                     <div>Rate per mile in client invoice:</div>
                     <div>
                       <label class="switch">
-                        <input type="checkbox" id="togBtn" />
+                        <input
+                          type="checkbox"
+                          id="togBtn"
+                          @change="ratePerMileClientInvoice"
+                          v-model="isRatePerMileClient"
+                        />
                         <div class="slider round"></div>
                       </label>
                     </div>
@@ -84,7 +94,12 @@
                 <div>Rate per mile in Staff invoice:</div>
                 <div>
                   <label class="switch">
-                    <input type="checkbox" id="togBtn" />
+                    <input
+                      type="checkbox"
+                      id="togBtn"
+                      @change="ratePerMileStaffInvoice"
+                      v-model="isRatePerMileStaff"
+                    />
                     <div class="slider round"></div>
                   </label>
                 </div>
@@ -174,7 +189,12 @@
                   <div>Enable Business unit name in the invoice number:</div>
                   <div>
                     <label class="switch">
-                      <input type="checkbox" id="togBtn" />
+                      <input
+                        type="checkbox"
+                        id="togBtn"
+                        @change="handleBusinessUnitName"
+                        v-model="isBUNumber"
+                      />
                       <div class="slider round"></div>
                     </label>
                   </div>
@@ -354,7 +374,12 @@
                   <div>Enable Booking Code:</div>
                   <div>
                     <label class="switch">
-                      <input type="checkbox" id="togBtn" />
+                      <input
+                        type="checkbox"
+                        id="togBtn"
+                        v-model="booking"
+                        @change="bookingToggle"
+                      />
                       <div class="slider round"></div>
                     </label>
                   </div>
@@ -407,20 +432,29 @@
       </div>
       <ClientInvoiceTemplatesVue />
       <StaffInvoiceTemplates />
+      <SuccessAlert ref="successAlert" />
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 import ClientInvoiceTemplatesVue from "../modals/appsetting/InvoiceSetting/ClientInvoiceTemplates.vue";
 import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
 import TextFormator from "../textformator/TextFormator.vue";
+import SuccessAlert from "../Alerts/SuccessAlert.vue";
 import StaffInvoiceTemplates from "../modals/appsetting/InvoiceSetting/StaffInvoiceTemplates.vue";
 
 export default {
   data() {
     return {
+      split_rate: localStorage.getItem("split_rate") === "true",
+      isHashEnabled: localStorage.getItem("isHashEnabled") === "true",
+      booking: localStorage.getItem("booking") === "true",
+      isBUNumber: localStorage.getItem("isBUNumber") === "true",
+      isRatePerMileClient: localStorage.getItem("isRatePerMileClient") === "true",
+      isRatePerMileStaff: localStorage.getItem("isRatePerMileStaff") === "true",
       weekDays: [
         "Monday",
         "Tuesday",
@@ -431,17 +465,112 @@ export default {
         "Sunday",
       ],
       selectedDay: "Monday",
-      isHashEnabled: false,
     };
   },
   components: {
     Navbar,
     Sidebar,
     TextFormator,
+    SuccessAlert,
     StaffInvoiceTemplates,
     ClientInvoiceTemplatesVue,
   },
   methods: {
+    async ratePerMileClientInvoice() {
+      try {
+        let response;
+
+        if (this.isRatePerMileClient) {
+          response = await axios.put(`${VITE_API_URL}/add_hash_to_invoice_number`);
+        } else {
+          response = await axios.put(
+            `${VITE_API_URL}/remove_site_name_to_invoice_number`
+          );
+        }
+
+        localStorage.setItem("isRatePerMileClient", this.isRatePerMileClient.toString());
+
+        this.$refs.successAlert.showSuccess(
+          this.isRatePerMileClient
+            ? "Rate Per Mile enabled successfully!"
+            : "Rate Per Mile disabled successfully!"
+        );
+      } catch (error) {
+        // console.error('Error toggling booking code:', error);
+        // Handle error, e.g., show error message
+      }
+    },
+    async ratePerMileStaffInvoice() {
+      try {
+        const response = await axios.put(`${VITE_API_URL}/staff_rate_enable_and_disable`);
+
+        localStorage.setItem("isRatePerMileStaff", this.isRatePerMileStaff.toString());
+
+        this.$refs.successAlert.showSuccess(
+          this.isRatePerMileStaff
+            ? "Rate Per Mile enabled successfully!"
+            : "Rate Per Mile disabled successfully!"
+        );
+      } catch (error) {
+        // console.error('Error toggling booking code:', error);
+      }
+    },
+    async handleBusinessUnitName() {
+      try {
+        const response = await axios.put(
+          `${VITE_API_URL}/add_hash_and_site_to_invoice_number`,
+          {
+            booking: this.isBUNumber ? "true" : "false",
+          }
+        );
+
+        localStorage.setItem("booking", this.isBUNumber.toString());
+
+        this.$refs.successAlert.showSuccess(
+          this.booking
+            ? "Booking code enabled successfully!"
+            : "Booking code disabled successfully!"
+        );
+      } catch (error) {
+        // console.error('Error toggling booking code:', error);
+      }
+    },
+    async bookingToggle() {
+      try {
+        const response = await axios.put(
+          `${VITE_API_URL}/enable_and_disable_booking_code`,
+          {
+            booking: this.booking ? "true" : "false",
+          }
+        );
+
+        localStorage.setItem("booking", this.booking.toString());
+
+        this.$refs.successAlert.showSuccess(
+          this.booking
+            ? "Booking code enabled successfully!"
+            : "Booking code disabled successfully!"
+        );
+      } catch (error) {
+        // console.error('Error toggling booking code:', error);
+      }
+    },
+    async updateSplitRate() {
+      try {
+        const response = await axios.put(`${VITE_API_URL}/rate_enable_and_disable`, {
+          rate_value: this.split_rate ? "true" : "false",
+        });
+        this.$refs.successAlert.showSuccess(
+          this.split_rate
+            ? "Split rate enabled successfully!"
+            : "Split rate disabled successfully!"
+        );
+        localStorage.setItem("split_rate", this.split_rate.toString());
+      } catch (error) {
+        // console.error('Error updating split rate:', error);
+      }
+    },
+
     async handleToggle() {
       try {
         if (this.isHashEnabled) {
@@ -451,6 +580,10 @@ export default {
             enable: false,
           });
         }
+        localStorage.setItem("isHashEnabled", this.isHashEnabled.toString());
+        this.$refs.successAlert.showSuccess(
+          this.isHashEnabled ? "Hash Add successfully!" : "Hash Remove successfully!"
+        );
       } catch (error) {
         // console.error('Error toggling hash:', error);
       }

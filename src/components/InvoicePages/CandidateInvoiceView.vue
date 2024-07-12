@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <!-- <Navbar /> -->
     <div id="main">
       <div class="pagetitle d-flex justify-content-between px-2">
         <div class="py-3">
@@ -144,6 +144,10 @@
                   <button
                     type="button"
                     class="btn btn-outline-success text-nowrap text-nowrap"
+                    @click="toggleEditMode(getClientInvoiceDetail.id)"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editInvoiceFirstTemplate"
+                    data-bs-whatever="@mdo"
                   >
                     <i class="bi bi-pencil-fill"></i> Edit
                   </button>
@@ -172,17 +176,20 @@
     </div>
     <ClientMailInvoice />
     <CandidateMail />
+    <EditeTemplate :InvoiceId="selectedInvoiceId" />
   </div>
 </template>
 <script>
-import Navbar from "../Navbar.vue";
+import axios from "axios";
+// import Navbar from "../Navbar.vue";
 import ClientMailInvoice from "../modals/InvoicePagesModal/ClientMailInvoice.vue";
 import CandidateMail from "../modals/InvoicePagesModal/CandidateMail.vue";
+import EditeTemplate from "../InvoicePages/TemplatesDesign/EditeTemplate.vue";
 export default {
   data() {
-    return {};
+    return { selectedInvoiceId: null, getClientInvoiceDetail: [] };
   },
-  components: { Navbar, ClientMailInvoice, CandidateMail },
+  components: { ClientMailInvoice, CandidateMail, EditeTemplate },
 
   methods: {},
 
