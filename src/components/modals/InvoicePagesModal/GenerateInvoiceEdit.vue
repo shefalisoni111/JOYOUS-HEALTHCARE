@@ -176,15 +176,15 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/custom_timesheets/${id}`);
         this.fetchCustomSheetData = {
-          id: response.data.client_invoice.id,
-          shift_date: response.data.client_invoice.start_date,
-          job: response.data.client_invoice.job,
-          start_date: response.data.client_invoice.start_date,
-          end_date: response.data.client_invoice.end_date,
-          client_rate: response.data.client_invoice.client_rate,
-          total_amount: response.data.client_invoice.total_amount,
-          paid_amount: response.data.client_invoice.paid_amount,
-          balance_amount: response.data.client_invoice.balance_amount,
+          id: response.data.custom_sheets.id,
+          shift_date: response.data.custom_sheets.shift_date,
+          job: response.data.custom_sheets.job,
+          start_date: response.data.custom_sheets.start_date,
+          end_date: response.data.custom_sheets.end_date,
+          client_rate: response.data.custom_sheets.client_rate,
+          total_amount: response.data.custom_sheets.total_amount,
+          paid_amount: response.data.custom_sheets.paid_amount,
+          balance_amount: response.data.custom_sheets.balance_amount,
         };
       } catch (error) {
         // console.error("Error fetching custom timesheet data:", error);
@@ -213,7 +213,7 @@ export default {
         });
         this.$emit("CustomTimeSheetData-updated");
 
-        const message = "Custom TimeSheet Staff updated successfully";
+        const message = "Invoice Staff updated successfully";
         this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         // console.error("Error updating custom timesheet:", error);

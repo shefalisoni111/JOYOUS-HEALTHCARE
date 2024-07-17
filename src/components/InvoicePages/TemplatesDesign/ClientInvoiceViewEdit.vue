@@ -11,7 +11,7 @@
               >
               /
               <router-link to="/invoice/staff-invoice" class="text-decoration-none"
-                ><span class="color-fonts">Staff Invoices</span> /
+                ><span class="color-fonts">CLIENT INVOICE</span> /
                 <span class="color-fonts">{{
                   getClientInvoiceDetail.invoice_number
                 }}</span>
@@ -78,7 +78,7 @@
 
               <div class="col-12 mt-4">
                 <div class="table-wrapper">
-                  <table class="table candidateTable">
+                  <!-- <table class="table candidateTable">
                     <thead>
                       <tr>
                         <th scope="col">Date</th>
@@ -117,6 +117,52 @@
                         <td scope="col">{{ getClientInvoiceDetail.total_amount }}</td>
                       </tr>
                     </tbody>
+                  </table> -->
+
+                  <table class="table candidateTable">
+                    <thead>
+                      <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Start</th>
+                        <th scope="col">End</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Job</th>
+                        <th scope="col">Unit</th>
+                        <th scope="col">Rate</th>
+                        <th scope="col">Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td scope="col">
+                          {{ getClientInvoiceDetail.start_date }}
+                        </td>
+                        <td scope="col">
+                          <input type="time" v-model="fetchCustomSheetData.start_time" />
+                        </td>
+                        <td scope="col">
+                          <input type="time" v-model="fetchCustomSheetData.end_time" />
+                        </td>
+                        <td scope="col" class="text-capitalize">
+                          {{ getClientInvoiceDetail.candidate }}
+                        </td>
+                        <td scope="col">
+                          {{ getClientInvoiceDetail.job }}
+                        </td>
+                        <td scope="col">
+                          <input type="number" v-model="fetchCustomSheetData.unit" />
+                        </td>
+                        <td scope="col">
+                          <input type="number" v-model="fetchCustomSheetData.rate" />
+                        </td>
+                        <td scope="col">
+                          <input
+                            type="text"
+                            v-model="getClientInvoiceDetail.total_amount"
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
                   </table>
                 </div>
                 <div class="mt-3">
@@ -139,50 +185,23 @@
               class="text-muted bg-white p-3"
               style="border: 1px solid #f8f8f8; box-shadow: 2px 2px 7px 2px #e7d7d7"
             >
-              <div class="row">
-                <div class="d-flex gap-4">
-                  <select class="form-select form-select-sm">
-                    <option selected>Created</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                </div>
-              </div>
+              <div class="row"></div>
               <div class="row mt-5">
                 <div class="d-flex gap-2">
-                  <router-link
-                    :to="{
-                      name: 'StaffInvoiceViewEdit',
-                      params: { id: getClientInvoiceDetail.id },
-                    }"
-                    class="btn btn-outline-success text-nowrap"
-                    @click="toggleEditMode(getClientInvoiceDetail.id)"
-                  >
-                    <i class="bi bi-pencil-fill"></i> Edit
-                  </router-link>
-                  <!-- <button
-                    v-else
-                    type="button"
-                    class="btn btn-outline-success text-nowrap text-nowrap"
-                    @click="toggleEditMode(getClientInvoiceDetail.id)"
-                  >
-                    <i class="bi bi-pencil-fill"></i> Edit
-                  </button> -->
                   <button
                     type="button"
                     class="btn btn-outline-success text-nowrap text-nowrap"
-                    data-bs-toggle="modal"
-                    data-bs-target="#candidateMail"
-                    data-bs-whatever="@mdo"
+                    v-on:click="updateCustomTimeSheetMethod()"
                   >
-                    <i class="bi bi-envelope"></i> Email
+                    <i class="bi bi-envelope"></i> Save
                   </button>
+                  &nbsp;
                   <button
                     type="button"
                     class="btn btn-outline-success text-nowrap text-nowrap"
+                    @click="cancelButtonClicked"
                   >
-                    <i class="bi bi-file-earmark-pdf"></i> PDF
+                    <i class="bi bi-envelope"></i> Cancel
                   </button>
                 </div>
               </div>
@@ -191,30 +210,49 @@
         </div>
       </div>
     </div>
-    <ClientMailInvoice />
-    <CandidateMail />
-    <EditeTemplate :InvoiceId="selectedInvoiceId" />
-    <StaffInvoiceViewEdit />
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
+
 <script>
 import axios from "axios";
-// import Navbar from "../Navbar.vue";
-import ClientMailInvoice from "../modals/InvoicePagesModal/ClientMailInvoice.vue";
-import CandidateMail from "../modals/InvoicePagesModal/CandidateMail.vue";
-import EditeTemplate from "../InvoicePages/TemplatesDesign/EditeTemplate.vue";
-import StaffInvoiceViewEdit from "../InvoicePages/TemplatesDesign/StaffInvoiceViewEdit.vue";
+
+import SuccessAlertVue from "../../Alerts/SuccessAlert.vue";
 
 export default {
   data() {
-    return { selectedInvoiceId: null, getClientInvoiceDetail: [], isEditMode: false };
+    return {
+      selectedInvoiceId: null,
+      getClientInvoiceDetail: [],
+      isEditMode: false,
+      fetchCustomSheetData: {
+        id: "",
+        shift_date: "",
+        code: "",
+        name: "",
+        business_unit: "",
+        job: "",
+        approved_hour: "",
+        start_time: "",
+        end_time: "",
+        client_rate: "",
+        total_cost: "",
+        custom_image: "",
+      },
+      options: [],
+      validationClientRate: true,
+      businessUnit: [],
+    };
   },
-  components: { ClientMailInvoice, CandidateMail, EditeTemplate, StaffInvoiceViewEdit },
+  components: { SuccessAlertVue },
 
   methods: {
+    cancelButtonClicked() {
+      this.$router.push("/invoice/client-invoice");
+    },
     toggleEditMode(invoiceId) {
       this.$router.push({
-        name: "StaffInvoiceViewEdit",
+        name: "ClientInvoiceViewEdit",
         params: { id: invoiceId },
       });
     },
@@ -243,16 +281,40 @@ export default {
         // console.error("Error generating PDF:", error);
       }
     },
+    async createStaffInvoice(id) {
+      if (!this.$route.params.id) {
+        return;
+      }
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/staff_invoices/${this.$route.params.id}`
+        );
+        this.fetchCustomSheetData = {
+          id: response.data.client_invoice.id,
+          shift_date: response.data.client_invoice.start_date,
+          job: response.data.client_invoice.job,
+          start_date: response.data.client_invoice.start_date,
+          end_date: response.data.client_invoice.end_date,
+          client_rate: response.data.client_invoice.client_rate,
+          total_amount: response.data.client_invoice.total_amount,
+          paid_amount: response.data.client_invoice.paid_amount,
+          balance_amount: response.data.client_invoice.balance_amount,
+        };
+      } catch (error) {
+        // console.error("Error fetching custom timesheet data:", error);
+      }
+    },
     async createClientInvoice() {
       const id = this.$route.params.id;
       if (!id) {
         return;
       }
       try {
-        const response = await axios.get(`${VITE_API_URL}/staff_invoices/${id}`);
-        const clientInvoice = response.data.staff_invoice;
+        const response = await axios.get(`${VITE_API_URL}/client_invoices/${id}`);
+        const clientInvoice = response.data.client_invoice;
 
         this.getClientInvoiceDetail = clientInvoice;
+
         this.invoiceLogs = clientInvoice.logs.map((log) => ({
           ...log,
           isEditing: false,
@@ -261,17 +323,36 @@ export default {
         // console.error("Error fetching client invoice:", error);
       }
     },
-    saveLog(log) {
-      log.isEditing = false;
-      // Perform save operation here (e.g., send updated log to server)
-      axios
-        .put(`${VITE_API_URL}/update_log/${log.id}`, { message: log.message })
-        .then((response) => {
-          // console.log("Log updated successfully:", response.data);
-        })
-        .catch((error) => {
-          // console.error("Error updating log:", error);
+    async updateCustomTimeSheetMethod() {
+      try {
+        const payload = {
+          custom_timesheet: this.fetchCustomSheetData,
+        };
+
+        const response = await axios.put(
+          `${VITE_API_URL}/update_client_invoice/${this.$route.params.id}`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        this.$store.commit("updateCandidate", {
+          id: this.fetchCustomSheetData.id,
+          newData: response.data.client_invoice,
         });
+        this.$emit("CustomTimeSheetData-updated");
+
+        const message = "Client Invoice updated successfully";
+        this.$refs.successAlert.showSuccess(message);
+      } catch (error) {
+        // console.error("Error updating custom timesheet:", error);
+        if (error.response && error.response.data) {
+          //   console.error("Server response:", error.response.data);
+        }
+      }
     },
   },
 

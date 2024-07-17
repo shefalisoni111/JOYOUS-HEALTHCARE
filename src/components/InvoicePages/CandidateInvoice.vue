@@ -153,7 +153,10 @@
                           </td>
                           <td>
                             <router-link
-                              to="/invoice/staff-invoice/StaffInvoiceView"
+                              :to="{
+                                name: 'CandidateInvoiceView',
+                                params: { id: data.id },
+                              }"
                               class="text-success"
                               ><i class="bi bi-eye"></i
                             ></router-link>
@@ -184,7 +187,7 @@
                       </thead>
                       <tbody v-if="searchResults?.length > 0">
                         <tr v-for="data in searchResults" :key="data.id">
-                          <td scope="col">#1</td>
+                          <td scope="col">#{{ data.id }}</td>
                           <td scope="col">{{ data.staff }}</td>
 
                           <td scope="col">{{ data.start_date }}</td>
@@ -203,11 +206,14 @@
                           <td scope="col">{{ data.invoice_lock }}</td>
                           <td scope="col">{{ data.generated_by }}</td>
                           <td scope="col">
-                            {{ data.email_status ? email_status : "Null" }}
+                            {{ data.email_status ? data.email_status : "Null" }}
                           </td>
                           <td>
                             <router-link
-                              to="/invoice/staff-invoice/StaffInvoiceView"
+                              :to="{
+                                name: 'CandidateInvoiceView',
+                                params: { id: data.id },
+                              }"
                               class="text-success"
                               ><i class="bi bi-eye"></i
                             ></router-link>

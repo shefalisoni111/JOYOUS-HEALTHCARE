@@ -326,7 +326,7 @@
                         <div class="col-4">
                           <label class="form-label">Rate Type</label>
                           <select
-                            v-model="this.selectedRateType[`${day}-day`]"
+                            v-model="selectedRateType[`${day}-day`]"
                             class="form-select w-25"
                             disabled
                           >
@@ -917,8 +917,15 @@
             >
               Cancel
             </button>
-            <button
+            <!-- <button
               :disabled="!isFormValid"
+              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              v-bind:data-bs-dismiss="isFormValid ? 'modal' : null"
+              v-on:click="addVacancyMethod()"
+            >
+              Add Rate
+            </button> -->
+            <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               v-bind:data-bs-dismiss="isFormValid ? 'modal' : null"
               v-on:click="addVacancyMethod()"
@@ -1206,31 +1213,10 @@ export default {
         const day = this.days[i];
         const dayClientRate = this.selectedClientRate[`${day}-day`] || "";
         const nightClientRate = this.selectedClientRate[`${day}-night`] || "";
-        const holidayNightRate = this.selectedClientRate[`${day}-holiday_night`] || "";
-        const holidayDayRate = this.selectedClientRate[`${day}-holiday`] || "";
         const dayRateType = this.selectedRateType[`${day}-day`] || "";
         const nightRateType = this.selectedRateType[`${day}-night`] || "";
-        const holidayNightRateType = this.selectedRateType[`${day}-holiday_night`] || "";
-        const holidayDayRateType = this.selectedRateType[`${day}-holiday`] || "";
         const dayPrivateLimited = this.selectedPrivateLimited[`${day}-day`] || "";
         const nightPrivateLimited = this.selectedPrivateLimited[`${day}-night`] || "";
-        const holidayNightPrivateLimited =
-          this.selectedPrivateLimited[`${day}-holiday_night`] || "";
-        const holidayDayPrivateLimited =
-          this.selectedPrivateLimited[`${day}-holiday`] || "";
-        const daySelfEmployee = this.selectedSelfEmployee[`${day}-day`] || "";
-        const nightSelfEmployee = this.selectedSelfEmployee[`${day}-night`] || "";
-        const holidayNightSelfEmployee =
-          this.selectedSelfEmployee[`${day}-holiday_night`] || "";
-        const holidayDaySelfEmployee = this.selectedSelfEmployee[`${day}-holiday`] || "";
-        const dayUmbrella = this.selectedUmbrella[`${day}-day`] || "";
-        const nightUmbrella = this.selectedUmbrella[`${day}-night`] || "";
-        const holidayNightUmbrella = this.selectedUmbrella[`${day}-holiday_night`] || "";
-        const holidayDayUmbrella = this.selectedUmbrella[`${day}-holiday`] || "";
-        const dayPaye = this.selectedPaye[`${day}-day`] || "";
-        const nightPaye = this.selectedPaye[`${day}-night`] || "";
-        const holidayNightPaye = this.selectedPaye[`${day}-holiday_night`] || "";
-        const holidayDayPaye = this.selectedPaye[`${day}-holiday`] || "";
 
         let dayShiftEntry = {};
         let nightShiftEntry = {};
@@ -1240,42 +1226,32 @@ export default {
             site_id: this.site_id,
             job_id: this.job_id,
             day: day,
-            client_rate: holidayDayRate || "",
-            self_employed: holidayDaySelfEmployee || "",
-            private_limited: holidayDayPrivateLimited || "",
-            umbrella: holidayDayUmbrella || "",
-            rate_type: holidayDayRateType || "",
-            paye: holidayDayPaye || "",
+            client_rate: this.selectedClientRate[`${day}-holiday`] || "",
+            self_employed: this.selectedSelfEmployee[`${day}-holiday`] || "",
+            private_limited: this.selectedPrivateLimited[`${day}-holiday`] || "",
+            umbrella: this.selectedUmbrella[`${day}-holiday`] || "",
+            rate_type: this.selectedRateType[`${day}-holiday`] || "",
+            paye: this.selectedPaye[`${day}-holiday`] || "",
             site_shift_id: this.dayShiftId,
             client_id: this.client_id,
             start_time: this.holiday_start_time,
             end_time: this.holiday_end_time,
-
-            holiday_start_time: this.holiday_start_time,
-            holiday_end_time: this.holiday_end_time,
-            holiday_night_start_time: this.holiday_night_start_time,
-            holiday_night_end_time: this.holiday_night_end_time,
           };
 
           nightShiftEntry = {
             site_id: this.site_id,
             job_id: this.job_id,
             day: day,
-            client_rate: holidayNightRate || "",
-            self_employed: holidayNightSelfEmployee || "",
-            private_limited: holidayNightPrivateLimited || "",
-            umbrella: holidayNightUmbrella || "",
-            rate_type: holidayNightRateType || "",
-            paye: holidayNightPaye || "",
+            client_rate: this.selectedClientRate[`${day}-holiday_night`] || "",
+            self_employed: this.selectedSelfEmployee[`${day}-holiday_night`] || "",
+            private_limited: this.selectedPrivateLimited[`${day}-holiday_night`] || "",
+            umbrella: this.selectedUmbrella[`${day}-holiday_night`] || "",
+            rate_type: this.selectedRateType[`${day}-holiday_night`] || "",
+            paye: this.selectedPaye[`${day}-holiday_night`] || "",
             site_shift_id: this.nightShiftId,
             client_id: this.client_id,
-            start_time: this.night_start_time,
-            end_time: this.night_end_time,
-
-            holiday_start_time: this.holiday_start_time,
-            holiday_end_time: this.holiday_end_time,
-            holiday_night_start_time: this.holiday_night_start_time,
-            holiday_night_end_time: this.holiday_night_end_time,
+            start_time: this.holiday_night_start_time,
+            end_time: this.holiday_night_end_time,
           };
         } else {
           dayShiftEntry = {
@@ -1283,20 +1259,15 @@ export default {
             job_id: this.job_id,
             day: day,
             client_rate: dayClientRate || "",
-            self_employed: daySelfEmployee || "",
+            self_employed: this.selectedSelfEmployee[`${day}-day`] || "",
             private_limited: dayPrivateLimited || "",
-            umbrella: dayUmbrella || "",
+            umbrella: this.selectedUmbrella[`${day}-day`] || "",
             rate_type: dayRateType || "",
-            paye: dayPaye || "",
+            paye: this.selectedPaye[`${day}-day`] || "",
             site_shift_id: this.day_shift_id,
             client_id: this.client_id,
             start_time: this.day_start_time,
             end_time: this.day_end_time,
-
-            holiday_start_time: this.holiday_start_time,
-            holiday_end_time: this.holiday_end_time,
-            holiday_night_start_time: this.holiday_night_start_time,
-            holiday_night_end_time: this.holiday_night_end_time,
           };
 
           nightShiftEntry = {
@@ -1304,21 +1275,15 @@ export default {
             job_id: this.job_id,
             day: day,
             client_rate: nightClientRate || "",
-            self_employed: nightSelfEmployee || "",
+            self_employed: this.selectedSelfEmployee[`${day}-night`] || "",
             private_limited: nightPrivateLimited || "",
-            umbrella: nightUmbrella || "",
+            umbrella: this.selectedUmbrella[`${day}-night`] || "",
             rate_type: nightRateType || "",
-            paye: nightPaye || "",
-
+            paye: this.selectedPaye[`${day}-night`] || "",
             site_shift_id: this.night_shift_id,
             client_id: this.client_id,
             start_time: this.night_start_time,
             end_time: this.night_end_time,
-
-            holiday_start_time: this.holiday_start_time,
-            holiday_end_time: this.holiday_end_time,
-            holiday_night_start_time: this.holiday_night_start_time,
-            holiday_night_end_time: this.holiday_night_end_time,
           };
         }
 

@@ -51,16 +51,16 @@
               </div>
               <div class="row mt-4">
                 <div class="d-flex gap-2">
-                  <button
-                    type="button"
-                    class="btn btn-outline-success text-nowrap text-nowrap"
+                  <router-link
+                    :to="{
+                      name: 'ClientInvoiceViewEdit',
+                      params: { id: getClientInvoiceDetail.id },
+                    }"
+                    class="btn btn-outline-success text-nowrap"
                     @click="toggleEditMode(getClientInvoiceDetail.id)"
-                    data-bs-toggle="modal"
-                    data-bs-target="#editInvoiceFirstTemplate"
-                    data-bs-whatever="@mdo"
                   >
                     <i class="bi bi-pencil-fill"></i> Edit
-                  </button>
+                  </router-link>
 
                   <button
                     type="button"
@@ -180,7 +180,10 @@ export default {
 
   methods: {
     toggleEditMode(id) {
-      this.selectedInvoiceId = id;
+      this.$router.push({
+        name: "ClientInvoiceViewEdit",
+        params: { id: invoiceId },
+      });
     },
     updateTemplate() {
       this.$store.commit("setSelectedTemplate", this.selectedTemplate);
