@@ -77,7 +77,7 @@
                       <th scope="col" class="text-center">Job Title</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody v-if="fetchStaffAndVacancy.length > 0">
                     <template
                       v-for="candidate in fetchStaffAndVacancy"
                       :key="candidate.id"
@@ -118,6 +118,20 @@
                         <td class="text-center">{{ vacancy.job_title }}</td>
                       </tr>
                     </template>
+                    <!-- <template v-else>
+                      <tr>
+                        <td colspan="7" class="text-danger text-center">
+                          Not Match Found !!
+                        </td>
+                      </tr>
+                    </template> -->
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="7" class="text-danger text-center mt-2">
+                        Not List Found !!
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -191,7 +205,6 @@
                   </button>
                   <button
                     class="btn btn-success rounded-1 text-capitalize fw-medium ms-2"
-                    data-bs-dismiss="modal"
                     v-on:click="assignVacancyToCandidateDirectMethod()"
                   >
                     Publish
@@ -219,7 +232,7 @@ const axiosInstance = axios.create({
 });
 
 export default {
-  name: "PublishedVacancy",
+  name: "SchedulePublishStaffList",
   data() {
     return {
       fetchStaffAndVacancy: [],
@@ -236,21 +249,8 @@ export default {
     SuccessAlert,
   },
 
-  created() {
-    // this.getCandidatesData.forEach((data) => {
-    //   this.$set(this.checkedCandidates, data.id, false);
-    // });
-  },
-  computed: {
-    // selectedPublishItemId() {
-    //   this.getAllCandidateListMethod(this.$store.state.selectedPublishItemId);
-    //   return this.$store.state.selectedPublishItemId;
-    // },
-    // selectedAllItemId() {
-    //   this.getAllCandidateListMethod(this.$store.state.selectedPublishItemId);
-    //   return this.$store.state.selectedPublishItemId;
-    // },
-  },
+  created() {},
+  computed: {},
   methods: {
     concatenateIds(vacancies) {
       return vacancies.map((data) => data.id).join(", ");
@@ -259,86 +259,6 @@ export default {
       return vacancies.map((data) => data[field]).join(", ");
     },
 
-    // selectAllCandidates() {
-    //   if (this.selectAll) {
-    //     this.getCandidatesData.forEach((data) => {
-    //       this.checkedCandidates[data.id] = true;
-    //     });
-    //   } else {
-    //     this.checkedCandidates = {};
-    //   }
-    // },
-    // async getAllCandidateListMethod(id) {
-    //   this.getCandidatesData = [];
-    //   if (this.$store.state.selectedPublishItemId) {
-    //     try {
-    //       const response = await axios.get(
-    //         `${VITE_API_URL}/candidate_list_of_vacancy?vacancy_id=${id}`
-    //       );
-    //       this.getCandidatesData = response.data.candidates_data;
-    //       // this.vacancyDetails = response.data.vacancy_data;
-    //       this.$emit("allVacancy");
-    //       // console.log(this.getCandidatesData);
-    //     } catch (error) {
-    //       if (error.response) {
-    //         if (error.response.status == 404) {
-    //           // alert(error.response.data.message);
-    //         }
-    //       }
-    //     }
-    //   } else {
-    //   }
-    // },
-    // async publicCandidateMail() {
-    //   const token = localStorage.getItem("token");
-    //   if (this.$store.state.selectedPublishItemId) {
-    //     const checkedCandidateIds = Object.keys(this.checkedCandidates)
-    //       .filter((candidate_ids) => this.checkedCandidates[candidate_ids])
-    //       .map((candidate_ids) => parseInt(candidate_ids));
-    //     // if (checkedCandidateIds.length === 0) {
-    //     //   alert("Please select at least one candidate before proceeding.");
-    //     //   return;
-    //     // }
-    //     try {
-    //       const notificationType = this.enableMailNotification
-    //         ? "email_notification"
-    //         : null;
-    //       const response = await axios.put(
-    //         `${VITE_API_URL}/send_notification/${this.$store.state.selectedPublishItemId}`,
-    //         { notification_type: notificationType, candidate_ids: checkedCandidateIds },
-    //         {
-    //           headers: {
-    //             "content-type": "application/json",
-    //             Authorization: "bearer " + token,
-    //           },
-    //         }
-    //       );
-    //       // this.getPublicVacancyMAil = response.data.data;
-    //       alert(response.data.message);
-    //       // const message = response.data.message;
-    //       // this.$refs.successAlert.showSuccess(message);
-    //       if (response.status === 200) {
-    //         this.checkedCandidates = Object.fromEntries(
-    //           Object.keys(this.checkedCandidates).map((key) => [key, false])
-    //         );
-    //         this.enableMailNotification = false;
-    //         this.showMessage = false;
-    //         this.selectAll = false;
-    //         this.$emit("schedulePublishStaffList");
-    //         this.$emit("schedulePublishStaffListSearch");
-    //         const message = "Shift Published successfully";
-    //         this.$refs.successAlert.showSuccess(message);
-    //       } else {
-    //         // Handle error case if needed
-    //       }
-    //     } catch (error) {
-    //       // console.error("Error sending notification:", error);
-    //       // Handle error
-    //     }
-    //   } else {
-    //     // Handle case where selectedPublishItemId is falsy
-    //   }
-    // },
     clearFieldsData() {
       this.checkedCandidates = {};
       setTimeout(() => {
@@ -350,7 +270,13 @@ export default {
 
       this.vacancyId = vacancyId;
     },
+    showSuccess(message) {
+      alert(message);
+    },
     async assignVacancyToCandidateDirectMethod() {
+      if (!this.candidateId && !this.vacancyId) {
+        return;
+      }
       const data = {
         candidate_id: this.candidateId,
         vacancy_id: this.vacancyId,
@@ -362,13 +288,16 @@ export default {
           data
         );
         if (response.status === 200) {
-          alert("Staff Shift Publish Successfully");
+          // alert("Staff Shift Publish Successfully");
+          const message = response.data.message || "Staff Shift Publish Successfully";
+          this.$refs.successAlert.showSuccess(message);
+
+          await this.getPublishStaffListMethod();
+
+          this.checkedCandidates = {};
+          this.clearFieldsData();
+
           this.$emit("updated-assignPublish");
-          // const message = "Staff Shift Publish Successfully";
-          // this.$refs.successAlert.showSuccess(message);
-          this.getPublishStaffListMethod();
-          // this.checkedCandidates = {};
-          // this.$emit("Candidate-updated");
         } else {
           // const errorMessage = "Failed to publish staff shift";
           // this.$refs.successAlert.showError(errorMessage);
@@ -398,68 +327,13 @@ export default {
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
+            return;
           }
         } else {
           // console.error("Error fetching candidates:", error);
         }
       }
     },
-    // closePopup() {
-    //   this.$store.commit("setSelectedPublishedItemId", null);
-    // },
-    // async getVacancyDataMethod() {
-    //   const token = localStorage.getItem("token");
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/vacancies`, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     });
-    //     this.vacancyData = response.data.data;
-    //   } catch (error) {
-    //     //console.error("Error fetching vacancies:", error);
-    //   }
-    // },
-    //search api start
-    // async search() {
-    //   try {
-    //     this.searchResults = [];
-    //     const response = await axiosInstance.get(
-    //       `${VITE_API_URL}/searching_publish_candidates`,
-    //       {
-    //         params: {
-    //           candidate_query: this.searchQuery,
-    //           vacancy_id: this.$store.state.selectedPublishItemId,
-    //         },
-    //       }
-    //     );
-    //     this.searchResults = response.data;
-    //   } catch (error) {
-    //     if (
-    //       (error.response && error.response.status === 404) ||
-    //       error.response.status === 400
-    //     ) {
-    //       this.errorMessage = "No candidates found for the specified criteria";
-    //     }
-    //   }
-    // },
-    // debounceSearch() {
-    //   clearTimeout(this.debounceTimeout);
-    //   this.debounceTimeout = setTimeout(() => {
-    //     this.search();
-    //   }, 100);
-    // },
-    // async getAssignStaffListMethod() {
-    //   try {
-    //     const response = await axios.get(
-    //       `${VITE_API_URL}/find_assign_vacacy_and_candidate`
-    //     );
-    //     this.assignStaffList = response.data.candidates;
-    //   } catch (error) {
-    //     //console.error("Error fetching vacancies:", error);
-    //   }
-    // },
   },
   async beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -467,15 +341,10 @@ export default {
     });
   },
   async beforeRouteUpdate(to, from, next) {
-    this.getPublishStaffListMethod();
+    await this.getPublishStaffListMethod();
     next();
   },
-  mounted() {
-    // this.getVacancyDataM
-    //  this.getPublishStaffListMethod();
-    // this.getAssignStaffListMethod();
-    // this.getAllCandidateListMethod(this.$store.state.selectedPublishItemId);
-  },
+  mounted() {},
 };
 </script>
 

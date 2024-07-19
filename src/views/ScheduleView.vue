@@ -1333,6 +1333,7 @@ export default {
         });
 
         this.flattenedAssignVacancies = vacanciesInsideVacancies.flat();
+
         // this.fetchAssignList();
       } catch (error) {
         if (error.response && error.response.status === 404) {

@@ -87,11 +87,65 @@
                         <i class="bi bi-file-earmark"></i>
                         generate invoice
                       </router-link>
-                      <button type="button" class="btn btn-outline-success text-nowrap">
+                      <button
+                        type="button"
+                        class="btn btn-outline-success text-nowrap"
+                        @click="toggleFilters"
+                      >
                         <i class="bi bi-funnel"></i>
                         Show Filters
                       </button>
                     </div>
+                  </div>
+                </div>
+                <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
+                  <div class="d-flex gap-2 mt-3">
+                    <div></div>
+
+                    <select
+                      @change="filterData('site', $event.target.value)"
+                      v-model="site_id"
+                      id="selectBusinessUnit"
+                    >
+                      <option value="">All Site</option>
+                      <option
+                        v-for="option in businessUnit"
+                        :key="option.id"
+                        :value="option.id"
+                        placeholder="Select BusinessUnit"
+                      >
+                        {{ option.site_name }}
+                      </option>
+                    </select>
+                    <select
+                      @change="filterData('client', $event.target.value)"
+                      v-model="client_id"
+                      id="selectClients"
+                    >
+                      <option value="">All Client</option>
+                      <option
+                        v-for="option in clientData"
+                        :key="option.id"
+                        :value="option.id"
+                        aria-placeholder="Select Job"
+                      >
+                        {{ option.first_name }}
+                      </option>
+                    </select>
+                    <select
+                      @change="filterData('staff', $event.target.value)"
+                      v-model="id"
+                      id="selectCandidateList"
+                    >
+                      <option value="">All Staff</option>
+                      <option
+                        v-for="option in candidateLists"
+                        :key="option.id"
+                        :value="option.id"
+                      >
+                        {{ option.first_name }}
+                      </option>
+                    </select>
                   </div>
                 </div>
                 <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -273,10 +327,29 @@ export default {
       searchQuery: null,
       debounceTimeout: null,
       searchResults: [],
+      showFilters: false,
+      clientData: [],
+      candidateLists: [],
+      businessUnit: [],
+      client_id: "",
+      site_id: "",
+      id: "",
     };
   },
   components: {},
   computed: {
+    selectBusinessUnit() {
+      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      return site_id ? site_id.site_name : "";
+    },
+    selectClients() {
+      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      return client_id ? client_id.first_name : "";
+    },
+    selectCandidateList() {
+      const id = this.candidateLists.find((option) => option.id === this.id);
+      return id ? id.first_name : "";
+    },
     getWeekDates() {
       const currentDate = new Date(this.startDate);
       const weekDates = [];
@@ -300,6 +373,43 @@ export default {
     },
   },
   methods: {
+    async getBusinessUnitMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/activated_site`);
+        this.businessUnit = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    async getCandidateListMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/candidates`);
+        this.candidateLists = response.data.data;
+        this.candidateStatus = response.data.data.status;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    async getClientMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/clients`);
+        this.clientData = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
     moveToPrevious() {
       if (this.currentView === "weekly") {
         this.startDate.setDate(this.startDate.getDate() - 7);
@@ -326,6 +436,45 @@ export default {
           this.startDate.getMonth() + 1,
           0
         );
+      }
+    },
+    toggleFilters() {
+      this.showFilters = !this.showFilters;
+    },
+    filterData(filter_type, value) {
+      this.makeFilterAPICall(filter_type, value);
+    },
+
+    async makeFilterAPICall(filterType, filterValue) {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/invoice_filter`, {
+          params: {
+            filter_type: filterType,
+            filter_value: filterValue,
+          },
+        });
+
+        // console.log("API response data:", response.data);
+
+        if (response.data && response.data.data) {
+          this.getClientInvoiceDetail = response.data.data;
+        } else {
+          // console.error("Unexpected response structure:", response.data);
+        }
+      } catch (error) {
+        if (error.response) {
+          // console.error("API error response:", error.response);
+          if (error.response.status === 404) {
+            const errorMessages = error.response.data.error;
+            if (errorMessages === "No records found for the given filter") {
+              alert("No records found for the given filter");
+            } else {
+              alert(errorMessages);
+            }
+          }
+        } else {
+          // console.error("API call error:", error);
+        }
       }
     },
     //search api start
@@ -431,6 +580,11 @@ export default {
   },
   mounted() {
     this.createVacancy();
+    this.getBusinessUnitMethod();
+
+    this.getClientMethod();
+
+    this.getCandidateListMethod();
     // this.updateDateRange();
     // this.loadDateRangeFromLocalStorage();
 

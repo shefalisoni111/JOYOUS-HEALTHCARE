@@ -181,7 +181,7 @@ import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
-  name: "CandidateAdd",
+  name: "AddClients",
   data() {
     return {
       validateAddress: true,

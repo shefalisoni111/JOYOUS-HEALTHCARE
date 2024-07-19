@@ -39,20 +39,6 @@
                   <div class="col-4">
                     <label class="form-label" for="selectBusinessUnit">Site</label>
 
-                    <!-- <select
-                      v-model="site_id"
-                      id="selectBusinessUnit"
-                      @change="onSiteSelect"
-                    >
-                      <option
-                        v-for="option in businessUnit"
-                        :key="option.id"
-                        :value="option.id"
-                        placeholder="Select BusinessUnit"
-                      >
-                        {{ option.site_name }}
-                      </option>
-                    </select> -->
                     <select
                       id="siteSelect"
                       v-model="selectedSiteId"
@@ -917,21 +903,21 @@
             >
               Cancel
             </button>
+            <button
+              :disabled="!isFormValid()"
+              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              v-bind:data-bs-dismiss="isFormValid() ? 'modal' : null"
+              v-on:click="addVacancyMethod()"
+            >
+              Add Rate
+            </button>
             <!-- <button
-              :disabled="!isFormValid"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               v-bind:data-bs-dismiss="isFormValid ? 'modal' : null"
               v-on:click="addVacancyMethod()"
             >
               Add Rate
             </button> -->
-            <button
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
-              v-bind:data-bs-dismiss="isFormValid ? 'modal' : null"
-              v-on:click="addVacancyMethod()"
-            >
-              Add Rate
-            </button>
           </div>
         </div>
       </div>
@@ -1016,10 +1002,94 @@ export default {
 
   components: { SuccessAlert },
   computed: {
-    isFormValid() {
-      const site_id_valid = this.site_id !== null;
-      const job_id_valid = this.job_id !== null;
+    // isFormValid() {
+    //   const site_id_valid = this.selectedSiteId !== null;
+    //   const job_id_valid = this.selectedJobId !== null;
 
+    //   const night_shift_id_valid = this.night_shift_id !== null;
+    //   const client_id_valid = this.client_id !== null;
+    //   const night_start_time_valid = this.night_start_time !== "";
+    //   const night_end_time_valid = this.night_end_time !== "";
+    //   const selectedClientRate_valid = this.areAllFieldsFilled(this.selectedClientRate);
+    //   const selectedRateType_valid = this.areAllFieldsFilled(this.selectedRateType);
+    //   const selectedPrivateLimited_valid = this.areAllFieldsFilled(
+    //     this.selectedPrivateLimited
+    //   );
+    //   const selectedSelfEmployee_valid = this.areAllFieldsFilled(
+    //     this.selectedSelfEmployee
+    //   );
+    //   const selectedUmbrella_valid = this.areAllFieldsFilled(this.selectedUmbrella);
+    //   const selectedPaye_valid = this.areAllFieldsFilled(this.selectedPaye);
+    //   const holiday_start_time_valid = this.holiday_start_time !== "";
+    //   const holiday_end_time_valid = this.holiday_end_time !== "";
+    //   const holiday_night_start_time_valid = this.holiday_night_start_time !== "";
+    //   const holiday_night_end_time_valid = this.holiday_night_end_time !== "";
+    //   const day_start_time_valid = this.day_start_time !== "";
+    //   const day_end_time_valid = this.day_end_time !== "";
+    //   const dayShiftId_valid = this.dayShiftId !== null;
+    //   const nightShiftId_valid = this.nightShiftId !== null;
+    //   const day_shift_id_valid = this.day_shift_id !== null;
+
+    //   const allFieldsFilled =
+    //     site_id_valid &&
+    //     job_id_valid &&
+    //     night_shift_id_valid &&
+    //     client_id_valid &&
+    //     night_start_time_valid &&
+    //     night_end_time_valid &&
+    //     selectedClientRate_valid &&
+    //     selectedRateType_valid &&
+    //     selectedPrivateLimited_valid &&
+    //     selectedSelfEmployee_valid &&
+    //     selectedUmbrella_valid &&
+    //     selectedPaye_valid &&
+    //     holiday_start_time_valid &&
+    //     holiday_end_time_valid &&
+    //     holiday_night_start_time_valid &&
+    //     holiday_night_end_time_valid &&
+    //     day_start_time_valid &&
+    //     day_end_time_valid &&
+    //     dayShiftId_valid &&
+    //     nightShiftId_valid &&
+    //     day_shift_id_valid;
+    //   return allFieldsFilled;
+    // },
+
+    selectClients() {
+      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      return this.client_id;
+    },
+
+    selectShiftStart() {
+      const shift = this.filteredShiftsTime.find(
+        (shift) => shift.id === this.day_shift_id
+      );
+      return shift ? shift.start_time : "";
+    },
+    selectShiftEnd() {
+      const shift = this.filteredShiftsTime.find(
+        (shift) => shift.id === this.day_shift_id
+      );
+      return shift ? shift.end_time : "";
+    },
+    selectShiftStartNight() {
+      const shift = this.filteredShiftsTimeNight.find(
+        (shift) => shift.id === this.night_shift_id
+      );
+      return shift ? shift.start_time : "";
+    },
+    selectShiftEndNight() {
+      const shift = this.filteredShiftsTimeNight.find(
+        (shift) => shift.id === this.night_shift_id
+      );
+      return shift ? shift.end_time : "";
+    },
+  },
+  watch: {},
+  methods: {
+    isFormValid() {
+      const site_id_valid = this.selectedSiteId !== null;
+      const job_id_valid = this.selectedJobId !== null;
       const night_shift_id_valid = this.night_shift_id !== null;
       const client_id_valid = this.client_id !== null;
       const night_start_time_valid = this.night_start_time !== "";
@@ -1066,46 +1136,39 @@ export default {
         dayShiftId_valid &&
         nightShiftId_valid &&
         day_shift_id_valid;
+
       return allFieldsFilled;
     },
+    // areAllFieldsFilled(object) {
+    //   const keys = Object.keys(object);
+    //   const allFieldsFilled =
+    //     keys.length === 14 && keys.every((key) => object[key] !== "");
 
-    selectClients() {
-      const client_id = this.clientData.find((option) => option.id === this.client_id);
-      return this.client_id;
-    },
-
-    selectShiftStart() {
-      const shift = this.filteredShiftsTime.find(
-        (shift) => shift.id === this.day_shift_id
-      );
-      return shift ? shift.start_time : "";
-    },
-    selectShiftEnd() {
-      const shift = this.filteredShiftsTime.find(
-        (shift) => shift.id === this.day_shift_id
-      );
-      return shift ? shift.end_time : "";
-    },
-    selectShiftStartNight() {
-      const shift = this.filteredShiftsTimeNight.find(
-        (shift) => shift.id === this.night_shift_id
-      );
-      return shift ? shift.start_time : "";
-    },
-    selectShiftEndNight() {
-      const shift = this.filteredShiftsTimeNight.find(
-        (shift) => shift.id === this.night_shift_id
-      );
-      return shift ? shift.end_time : "";
-    },
-  },
-  watch: {},
-  methods: {
+    //   return allFieldsFilled;
+    // },
+    // areAllFieldsFilled(object) {
+    //   const keys = Object.keys(object);
+    //   return keys.length === 7 && keys.every((key) => object[key] !== "");
+    // },
     areAllFieldsFilled(object) {
       const keys = Object.keys(object);
-      const allFieldsFilled =
-        keys.length === 14 && keys.every((key) => object[key] !== "");
+      let requiredFieldCount;
 
+      if (this.splitRate === false && this.holidaySplitRate === false) {
+        requiredFieldCount = 14;
+      } else if (this.splitRate === false && this.holidaySplitRate === true) {
+        requiredFieldCount = 12;
+      } else if (this.splitRate === true && this.holidaySplitRate === false) {
+        requiredFieldCount = 9;
+      } else if (this.splitRate === true && this.holidaySplitRate === true) {
+        requiredFieldCount = 7;
+      }
+
+      // console.log(this.splitRate, this.holidaySplitRate);
+
+      const allFieldsFilled =
+        keys.length === requiredFieldCount && keys.every((key) => object[key] !== "");
+      // console.log("All Fields Filled:", allFieldsFilled);
       return allFieldsFilled;
     },
     validateStartTime(newValue) {
@@ -1141,26 +1204,31 @@ export default {
         return `${String(hour - 12).padStart(2, "0")}:00 PM`;
       }
     },
-    onClientSelect() {
-      // const selectedClientId = this.client_id;
-
-      this.getClientFetchSiteMethod();
+    async onClientSelect() {
+      await this.getClientFetchSiteMethod();
     },
-    onJobTitleChange() {
-      this.selectedJob = this.options.find(
+
+    async onJobTitleChange() {
+      const selectedJob = this.options.find(
         (option) => option.job_id === this.selectedJobId
       );
+      if (selectedJob) {
+        this.job_id = selectedJob.job_id;
+      }
     },
+
     async onSiteSelect() {
       const selectedSite = this.businessUnit.find(
         (site) => site.site_id === this.selectedSiteId
       );
 
       if (selectedSite) {
+        this.site_id = selectedSite.site_id;
         this.splitRate = selectedSite.split_rate;
         this.holidaySplitRate = selectedSite.holiday_split_rate;
 
-        await this.getTimeShift(this.selectedSiteId);
+        await this.getTimeShift(this.site_id);
+
         const dayShift = this.filteredShiftsTime.find(
           (shift) => shift.shift_name.toLowerCase() === "day_shift"
         );
@@ -1242,12 +1310,24 @@ export default {
             site_id: this.site_id,
             job_id: this.job_id,
             day: day,
-            client_rate: this.selectedClientRate[`${day}-holiday_night`] || "",
-            self_employed: this.selectedSelfEmployee[`${day}-holiday_night`] || "",
-            private_limited: this.selectedPrivateLimited[`${day}-holiday_night`] || "",
-            umbrella: this.selectedUmbrella[`${day}-holiday_night`] || "",
-            rate_type: this.selectedRateType[`${day}-holiday_night`] || "",
-            paye: this.selectedPaye[`${day}-holiday_night`] || "",
+            client_rate: this.holidaySplitRate
+              ? this.selectedClientRate[`${day}-holiday`]
+              : this.selectedClientRate[`${day}-holiday_night`] || "",
+            self_employed: this.holidaySplitRate
+              ? this.selectedSelfEmployee[`${day}-holiday`]
+              : this.selectedSelfEmployee[`${day}-holiday_night`] || "",
+            private_limited: this.holidaySplitRate
+              ? this.selectedPrivateLimited[`${day}-holiday`]
+              : this.selectedPrivateLimited[`${day}-holiday_night`] || "",
+            umbrella: this.holidaySplitRate
+              ? this.selectedUmbrella[`${day}-holiday`]
+              : this.selectedUmbrella[`${day}-holiday_night`] || "",
+            rate_type: this.holidaySplitRate
+              ? this.selectedRateType[`${day}-holiday`]
+              : this.selectedRateType[`${day}-holiday_night`] || "",
+            paye: this.holidaySplitRate
+              ? this.selectedPaye[`${day}-holiday`]
+              : this.selectedPaye[`${day}-holiday_night`] || "",
             site_shift_id: this.nightShiftId,
             client_id: this.client_id,
             start_time: this.holiday_night_start_time,
@@ -1274,12 +1354,26 @@ export default {
             site_id: this.site_id,
             job_id: this.job_id,
             day: day,
-            client_rate: nightClientRate || "",
-            self_employed: this.selectedSelfEmployee[`${day}-night`] || "",
-            private_limited: nightPrivateLimited || "",
-            umbrella: this.selectedUmbrella[`${day}-night`] || "",
-            rate_type: nightRateType || "",
-            paye: this.selectedPaye[`${day}-night`] || "",
+            // client_rate: nightClientRate || "",
+            client_rate: this.splitRate ? dayClientRate : nightClientRate || "",
+            // self_employed: this.selectedSelfEmployee[`${day}-night`] || "",
+            // private_limited: nightPrivateLimited || "",
+            // umbrella: this.selectedUmbrella[`${day}-night`] || "",
+            // rate_type: nightRateType || "",
+            // paye: this.selectedPaye[`${day}-night`] || "",
+            self_employed: this.splitRate
+              ? this.selectedSelfEmployee[`${day}-day`]
+              : this.selectedSelfEmployee[`${day}-night`] || "",
+            private_limited: this.splitRate
+              ? dayPrivateLimited
+              : nightPrivateLimited || "",
+            umbrella: this.splitRate
+              ? this.selectedUmbrella[`${day}-day`]
+              : this.selectedUmbrella[`${day}-night`] || "",
+            rate_type: this.splitRate ? dayRateType : nightRateType || "",
+            paye: this.splitRate
+              ? this.selectedPaye[`${day}-day`]
+              : this.selectedPaye[`${day}-night`] || "",
             site_shift_id: this.night_shift_id,
             client_id: this.client_id,
             start_time: this.night_start_time,
@@ -1388,14 +1482,12 @@ export default {
       }
     },
 
-    async getTimeShift() {
-      if (!this.selectedSiteId) {
+    async getTimeShift(selectedSiteId) {
+      if (!selectedSiteId) {
         return;
       }
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}site_shift/${this.selectedSiteId}`
-        );
+        const response = await axios.get(`${VITE_API_URL}site_shift/${selectedSiteId}`);
         this.shiftsTime =
           response.data.site_shift_data.map((shift) => ({
             ...shift,
