@@ -158,24 +158,38 @@ export default {
                     <table class="table reportTable">
                       <thead>
                         <tr>
-                          <th scope="col">Sender</th>
+                          <th scope="col">Sl No</th>
+                          <th scope="col">Client</th>
 
-                          <th scope="col">Recipient</th>
+                          <th scope="col">Employee Name</th>
+                          <th scope="col">Job</th>
+                          <th scope="col">Shift Date</th>
+                          <th scope="col">Payment Ref</th>
+                          <th scope="col">Time From</th>
+                          <th scope="col">Time To</th>
+                          <th scope="col">Hours</th>
+                          <th scope="col">Charge Rate</th>
+                          <th scope="col">Total Charge</th>
                           <th scope="col">Status</th>
-                          <th scope="col">Subject</th>
-                          <th scope="col">Recipient Domain</th>
-                          <th scope="col">Date Time</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td scope="col">Aniket</td>
+                        <tr v-for="(data, index) in getClientInvoiceDetail" :key="index">
+                          <td scope="col">{{ index + 1 }}</td>
+                          <td scope="col">{{ data.client }}</td>
+                          <td scope="col">{{ data.candidate }}</td>
+                          <td scope="col">{{ data.job }}</td>
+                          <td scope="col">{{ data.start_date }}</td>
+                          <td scope="col">{{ data.end_date }}</td>
+                          <td scope="col">{{ data.end_date }}</td>
+                          <td scope="col" class="text-center">{{ data.paid_amount }}</td>
+                          <td scope="col" class="text-center">
+                            {{ data.balance_amount }}
+                          </td>
+                          <td scope="col">{{ data.status ? data.status : "Null" }}</td>
+                          <td scope="col">{{ data.invoice_creation_period }}</td>
 
-                          <td scope="col">Prabhu</td>
-                          <td scope="col">Active</td>
-                          <td scope="col">BusinessUnit Report</td>
-                          <td scope="col">Recipient Domain</td>
-                          <td scope="col">23/2/2024</td>
+                          <td><button class="btn btn-success">Approved</button></td>
                         </tr>
                       </tbody>
                     </table>
@@ -410,10 +424,22 @@ export default {
     //     })
     //     .then((response) => (this.getVacancyDetail = response.data));
     // },
+    async getClientInvoiceReport() {
+      const token = localStorage.getItem("token");
+      axios
+        .get(`${VITE_API_URL}/client_invoices`, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+        })
+        .then((response) => (this.getClientInvoiceDetail = response.data.data));
+    },
   },
 
   mounted() {
     // this.createVacancy();
+    this.getClientInvoiceReport();
     this.loadDateRangeFromLocalStorage();
     this.getBusinessUnitMethod();
     this.getPositionMethod();

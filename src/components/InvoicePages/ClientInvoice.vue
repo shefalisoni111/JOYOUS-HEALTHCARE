@@ -555,11 +555,11 @@ export default {
     //       },
     //     })
     //     .then((response) => {
-    //       this.createVacancy();
+    //       this.getClientInvoice();
     //     });
     //   // alert("Record Deleted ");
     // },
-    async createVacancy() {
+    async getClientInvoice() {
       const token = localStorage.getItem("token");
       axios
         .get(`${VITE_API_URL}/client_invoices`, {
@@ -579,7 +579,7 @@ export default {
     },
   },
   mounted() {
-    this.createVacancy();
+    this.getClientInvoice();
     this.getBusinessUnitMethod();
 
     this.getClientMethod();
