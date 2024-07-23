@@ -33,15 +33,15 @@
                   </div>
 
                   <div class="col-12">
-                    <div v-for="option in options" :key="option.id">
+                    <div v-for="(option, index) in options" :key="option.id">
                       <input
                         type="checkbox"
-                        :id="option.id"
+                        :id="`option_${option.id}_${index}`"
                         :value="option.id"
                         v-model="job_id"
                         @change="toggleJobsSelection"
                       />
-                      <label :for="option.id" class="text-capitalize"
+                      <label :for="`option_${option.id}_${index}`" class="text-capitalize"
                         >&nbsp;{{ option.name }}</label
                       >
                     </div>
@@ -416,7 +416,7 @@ export default {
   mounted() {
     // this.validatePassword = this.validatePassword.bind(this);
     this.isValidForm = this.isFormValid;
-    // this.getPositionMethod();
+    this.getPositionMethod();
   },
 };
 </script>

@@ -207,6 +207,7 @@
         </div>
       </div>
     </div>
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 <script>
@@ -217,6 +218,7 @@ import DailyGenerateInvoice from "../InvoicePages/GenerateInvoices/DailyGenerate
 import MonthlyGenerateInvoice from "../InvoicePages/GenerateInvoices/MonthlyGenerateInvoice.vue";
 import Shift_Staff_GenerateInvoice from "../InvoicePages/GenerateInvoices/Shift_Staff_GenerateInvoice.vue";
 import Staff_Weekly_GenerateInvoice from "../InvoicePages/GenerateInvoices/Staff_Weekly_GenerateInvoice.vue";
+import Loader from "../Loader/Loader.vue";
 
 export default {
   data() {
@@ -264,6 +266,7 @@ export default {
       ],
       activeTab: 0,
       activeTabName: "",
+      isLoading: false,
     };
   },
   components: {
@@ -272,6 +275,7 @@ export default {
     MonthlyGenerateInvoice,
     Shift_Staff_GenerateInvoice,
     Staff_Weekly_GenerateInvoice,
+    Loader,
   },
   computed: {
     activeComponent() {

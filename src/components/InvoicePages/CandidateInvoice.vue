@@ -244,11 +244,14 @@
         </div>
       </div>
     </div>
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 <script>
 import axios from "axios";
 // import Navbar from "../Navbar.vue";
+
+import Loader from "../Loader/Loader.vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -267,9 +270,10 @@ export default {
       searchQuery: null,
       debounceTimeout: null,
       searchResults: [],
+      isLoading: false,
     };
   },
-  components: {},
+  components: { Loader },
   computed: {
     getWeekDates() {
       const currentDate = new Date();
@@ -408,15 +412,26 @@ export default {
     //   // alert("Record Deleted ");
     // },
     async createVacancy() {
+      this.isLoading = true;
       const token = localStorage.getItem("token");
-      axios
-        .get(`${VITE_API_URL}/staff_invoices`, {
+
+      try {
+        const response = await axios.get(`${VITE_API_URL}/staff_invoices`, {
           headers: {
             "content-type": "application/json",
             Authorization: "bearer " + token,
           },
-        })
-        .then((response) => (this.getStaffInvoiceDetail = response.data.data));
+        });
+
+        this.getStaffInvoiceDetail = response.data.data;
+      } catch (error) {
+        // console.error(
+        //   "Error fetching staff invoices:",
+        //   error.response ? error.response.data : error.message
+        // );
+      } finally {
+        this.isLoading = false;
+      }
     },
   },
 
