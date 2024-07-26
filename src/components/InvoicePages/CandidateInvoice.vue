@@ -24,9 +24,9 @@
                   <div class="d-lg-flex justify-content-lg-between">
                     <div class="d-flex">
                       <div class="d-flex align-items-center gap-2">
-                        <select>
+                        <!-- <select>
                           <option>By Created Date :</option>
-                        </select>
+                        </select> -->
                         <select
                           class="form-control"
                           v-model="currentView"

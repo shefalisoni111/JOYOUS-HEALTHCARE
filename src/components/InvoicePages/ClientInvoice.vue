@@ -350,7 +350,7 @@ export default {
       daysOfWeek: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
       startDate: new Date(),
       endDate: new Date(),
-      getClientInvoiceDetail: {},
+      getClientInvoiceDetail: [],
       searchQuery: null,
 
       debounceTimeout: null,

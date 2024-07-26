@@ -47,6 +47,9 @@
               </div>
             </div>
             <div class="col-12 mt-4">
+              <div v-if="showEditComponent" class="table-wrapper">
+                <First_TemplateEdit :invoice-id="getClientInvoiceDetail.id" />
+              </div>
               <div class="table-wrapper">
                 <table class="table candidateTable">
                   <thead>
@@ -75,7 +78,7 @@
                       <td scope="col">{{ getClientInvoiceDetail.total_amount }}</td>
                     </tr>
                     <tr>
-                      <td scope="col">07-07-2023</td>
+                      <td scope="col">{{ getClientInvoiceDetail.end_date }}</td>
                       <td scope="col">07:40</td>
                       <td scope="col">08:00</td>
                       <td scope="col" class="text-capitalize">
@@ -89,6 +92,7 @@
                   </tbody>
                 </table>
               </div>
+
               <div class="mt-3">
                 <div class="col-12">
                   <div class="row mt-5">
@@ -111,6 +115,8 @@
 
 <script>
 import axios from "axios";
+import First_TemplateEdit from "../../InvoicePages/TemplatesDesign/First_TemplateEdit.vue";
+
 export default {
   name: "TemplateOne",
   data() {
@@ -118,8 +124,12 @@ export default {
       getClientInvoiceDetail: [],
       agencySetting: [],
       siteData: [],
-      isEditing: false,
+      showEditComponent: false,
     };
+  },
+
+  components: {
+    First_TemplateEdit,
   },
   methods: {
     async createClientInvoice() {

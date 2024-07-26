@@ -71,6 +71,9 @@
               </div>
             </div>
             <div class="col-12 mt-4">
+              <div v-if="showEditComponentTwo" class="table-wrapper">
+                <ClientSecontTemplateEdit :invoice-id="getClientInvoiceDetail.id" />
+              </div>
               <div class="table-wrapper">
                 <table class="table candidateTable">
                   <thead>
@@ -135,14 +138,21 @@
 
 <script>
 import axios from "axios";
+import ClientSecontTemplateEdit from "../../InvoicePages/TemplatesDesign/ClientSecontTemplateEdit.vue";
+
 export default {
-  name: "Second_Template",
+  name: "TemplateOne",
   data() {
     return {
       getClientInvoiceDetail: [],
       agencySetting: [],
       siteData: [],
+      showEditComponentTwo: false,
     };
+  },
+
+  components: {
+    ClientSecontTemplateEdit,
   },
   methods: {
     async createClientInvoice() {

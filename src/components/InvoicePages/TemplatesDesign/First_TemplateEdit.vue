@@ -10,8 +10,8 @@
                 >Dashboard</router-link
               >
               /
-              <router-link to="/invoice/staff-invoice" class="text-decoration-none"
-                ><span class="color-fonts">Staff Invoices</span> /
+              <router-link to="/invoice/client-invoice" class="text-decoration-none"
+                ><span class="color-fonts">Client Invoices</span> /
                 <span class="color-fonts">{{
                   getClientInvoiceDetail.invoice_number
                 }}</span>
@@ -76,8 +76,8 @@
                         <th scope="col">Date</th>
                         <th scope="col">Start</th>
                         <th scope="col">End</th>
-                        <!-- <th scope="col">Name</th>
-                        <th scope="col">Job</th> -->
+                        <th scope="col">Name</th>
+                        <th scope="col">Job</th>
                         <th scope="col">Unit</th>
                         <th scope="col">Rate</th>
                         <th scope="col">Total</th>
@@ -102,20 +102,17 @@
                         <td scope="col">
                           <input type="time" v-model="fetchCustomSheetData.end_time" />
                         </td> -->
-                        <!-- <td scope="col" class="text-capitalize">
+                        <td scope="col" class="text-capitalize">
                           {{ getClientInvoiceDetail.candidate }}
                         </td>
                         <td scope="col">
                           {{ getClientInvoiceDetail.job }}
-                        </td> -->
+                        </td>
                         <td scope="col">
                           <input type="number" v-model="fetchCustomSheetData.unit" />
                         </td>
                         <td scope="col">
-                          <input
-                            type="number"
-                            v-model="fetchCustomSheetData.staff_rate"
-                          />
+                          <input type="number" v-model="fetchCustomSheetData.rate" />
                         </td>
                         <td scope="col">
                           <input
@@ -142,20 +139,17 @@
                         <td scope="col">
                           <input type="time" v-model="fetchCustomSheetData.end_time" />
                         </td> -->
-                        <!-- <td scope="col" class="text-capitalize">
+                        <td scope="col" class="text-capitalize">
                           {{ getClientInvoiceDetail.candidate }}
                         </td>
                         <td scope="col">
                           {{ getClientInvoiceDetail.job }}
-                        </td> -->
+                        </td>
                         <td scope="col">
                           <input type="number" v-model="fetchCustomSheetData.unit" />
                         </td>
                         <td scope="col">
-                          <input
-                            type="number"
-                            v-model="fetchCustomSheetData.staff_rate"
-                          />
+                          <input type="number" v-model="fetchCustomSheetData.rate" />
                         </td>
                         <td scope="col">
                           <input
@@ -238,7 +232,7 @@ export default {
         approved_hour: "",
         start_time: "",
         end_time: "",
-        staff_rate: "",
+        rate: "",
         total_amount: "",
         custom_image: "",
       },
@@ -258,7 +252,7 @@ export default {
   },
   methods: {
     cancelButtonClicked() {
-      this.$router.push("/invoice/staff-invoice");
+      this.$router.push("/invoice/client-invoice");
     },
     // toggleEditMode(invoiceId) {
     //   this.$router.push({
@@ -269,13 +263,13 @@ export default {
     updateTemplate() {
       this.$store.commit("setSelectedTemplate", this.selectedTemplate);
     },
-    async genestaff_ratePDF() {
+    async generatePDF() {
       if (!this.$route.params.id) {
         return;
       }
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/genestaff_rate_pdf/${this.$route.params.id}`,
+          `${VITE_API_URL}/generate_pdf/${this.$route.params.id}`,
           {
             responseType: "blob",
           }
@@ -291,15 +285,44 @@ export default {
         // console.error("Error generating PDF:", error);
       }
     },
-
+    // async createStaffInvoice(id) {
+    //   if (!this.$route.params.id) {
+    //     return;
+    //   }
+    //   try {
+    //     const response = await axios.get(
+    //       `${VITE_API_URL}/client_invoices/${this.$route.params.id}`
+    //     );
+    //     this.fetchCustomSheetData = {
+    //       id: response.data.client_invoice.id,
+    //       shift_date: response.data.client_invoice.start_date,
+    //       job: response.data.client_invoice.job,
+    //       start_date: response.data.client_invoice.start_date,
+    //       end_date: response.data.client_invoice.end_date,
+    //       unit: response.data.client_invoice.unit,
+    //       rate: response.data.client_invoice.rate,
+    //       total_amount: response.data.client_invoice.total_amount,
+    //       paid_amount: response.data.client_invoice.paid_amount,
+    //       balance_amount: response.data.client_invoice.balance_amount,
+    //     };
+    //   } catch (error) {
+    //     // console.error("Error fetching custom timesheet data:", error);
+    //   }
+    // },
     validatePayload(payload) {
       let isValid = true;
 
       // Example validation rules
       if (!payload.shift_date) {
-        // console.error("Validation Error: shift_date is required");
+        console.error("Validation Error: shift_date is required");
         isValid = false;
       }
+
+      if (!payload.name) {
+        console.error("Validation Error: name is required");
+        isValid = false;
+      }
+      // Add more validation rules as per your API requirements
 
       return isValid;
     },
@@ -309,34 +332,34 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(`${VITE_API_URL}/staff_invoices/${id}`);
-        const staffInvoice = response.data.staff_invoice;
+        const response = await axios.get(`${VITE_API_URL}/client_invoices/${id}`);
+        const clientInvoice = response.data.client_invoice;
 
-        this.getClientInvoiceDetail = staffInvoice;
+        this.getClientInvoiceDetail = clientInvoice;
 
-        this.getClientInvoiceDetail = staffInvoice;
+        this.getClientInvoiceDetail = clientInvoice;
 
-        this.agencySetting = staffInvoice.agency_setting;
+        this.agencySetting = clientInvoice.agency_setting;
 
-        this.siteData = staffInvoice.site_data;
+        this.siteData = clientInvoice.site_data;
 
-        // this.invoiceLogs = staffInvoice.logs.map((log) => ({
+        // this.invoiceLogs = clientInvoice.logs.map((log) => ({
         //   ...log,
         //   isEditing: false,
         // }));
         this.fetchCustomSheetData = {
-          shift_date: staffInvoice.start_date,
+          shift_date: clientInvoice.start_date,
 
-          name: staffInvoice.candidate,
-          business_unit: staffInvoice.business_unit,
-
-          unit: staffInvoice.unit,
-          approved_hour: staffInvoice.approved_hour,
-          start_time: staffInvoice.start_time,
-          end_time: staffInvoice.end_time,
-          staff_rate: staffInvoice.staff_rate,
-          total_amount: staffInvoice.total_amount,
-          custom_image: staffInvoice.custom_image,
+          name: clientInvoice.candidate,
+          business_unit: clientInvoice.business_unit,
+          job: clientInvoice.job,
+          unit: clientInvoice.unit,
+          approved_hour: clientInvoice.approved_hour,
+          start_time: clientInvoice.start_time,
+          end_time: clientInvoice.end_time,
+          rate: clientInvoice.rate,
+          total_amount: clientInvoice.total_amount,
+          custom_image: clientInvoice.custom_image,
         };
       } catch (error) {
         // console.error("Error fetching client invoice:", error);
@@ -345,9 +368,16 @@ export default {
     async updateCustomTimeSheetMethod() {
       const payload = { ...this.fetchCustomSheetData };
 
+      if (!this.validatePayload(payload)) {
+        // console.error("Payload validation failed");
+        return;
+      }
+
       try {
+        const payload = { ...this.fetchCustomSheetData };
+
         const response = await axios.put(
-          `${VITE_API_URL}/update_staff_invoice/${this.$route.params.id}`,
+          `${VITE_API_URL}/update_client_invoice/${this.$route.params.id}`,
           payload,
           {
             headers: {
@@ -360,27 +390,21 @@ export default {
         //   id: this.fetchCustomSheetData.id,
         //   newData: response.data.client_invoice,
         // });
-        this.$emit("StaffInvoice-updated");
+        this.$emit("ClientInvoice-updated");
 
-        const message = "Staff Invoice updated successfully";
+        const message = "Client Invoice updated successfully";
         this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         // if (error.response) {
-        //   // Server responded with a status other than 2xx
         //   console.error("Error response data:", error.response.data);
         //   console.error("Error response status:", error.response.status);
         //   console.error("Error response headers:", error.response.headers);
-        //   // Display validation errors to the user
         //   if (error.response.data.errors) {
-        //     // Handle and display validation errors
         //     console.error("Validation errors:", error.response.data.errors);
-        //     // Optionally, you can display these errors to the user
         //   }
         // } else if (error.request) {
-        //   // Request was made but no response received
         //   console.error("Error request:", error.request);
         // } else {
-        //   // Something else happened in setting up the request
         //   console.error("Error message:", error.message);
         // }
       }

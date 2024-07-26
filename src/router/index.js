@@ -492,9 +492,21 @@ const router = createRouter({
          
         },
         {
-          path: "invoice/client-InvoiceView/:id",
-          name: "ClientInvoiceViewEdit",
-          component: () => import("@/components/InvoicePages/TemplatesDesign/ClientInvoiceViewEdit.vue"),
+          path: "invoice/client-InvoiceView/:id/template1",
+          name: "First_TemplateEdit",
+          component: () => import("@/components/InvoicePages/TemplatesDesign/First_TemplateEdit.vue"),
+          props: true,
+        },
+        {
+          path: "invoice/client-InvoiceView/:id/template2",
+          name: "ClientSecontTemplateEdit",
+          component: () => import("@/components/InvoicePages/TemplatesDesign/ClientSecontTemplateEdit.vue"),
+          props: true,
+        },
+        {
+          path: '/edit/:id/:templateType',
+          name: 'First_Templates',
+          component: () => import("@/components/InvoicePages/TemplatesDesign/First_Templates.vue"),
           props: true,
         },
         {

@@ -53,11 +53,14 @@
                 <div class="d-flex gap-2">
                   <router-link
                     :to="{
-                      name: 'ClientInvoiceViewEdit',
-                      params: { id: getClientInvoiceDetail.id },
+                      name: 'First_TemplateEdit',
+                      params: {
+                        id: getClientInvoiceDetail.id,
+                      },
                     }"
                     class="btn btn-outline-success text-nowrap"
-                    @click="toggleEditMode(getClientInvoiceDetail.id)"
+                    :class="{ 'disabled-link': getClientInvoiceDetail.invoice_lock }"
+                    @click.prevent="handleEditClick(getClientInvoiceDetail.invoice_lock)"
                   >
                     <i class="bi bi-pencil-fill"></i> Edit
                   </router-link>
@@ -144,15 +147,29 @@
         </div>
       </div>
     </div>
+    <div v-if="showEditComponent" class="table-wrapper">
+      <First_TemplateEdit
+        :invoice-id="getClientInvoiceDetail.id"
+        @ClientInvoice-updated="createClientInvoice"
+      />
+    </div>
+    <div v-if="showEditComponentTwo" class="table-wrapper">
+      <ClientSecontTemplateEdit
+        :invoice-id="getClientInvoiceDetail.id"
+        @ClientInvoice-updated="createClientInvoice"
+      />
+    </div>
     <MailInvoice />
-    <EditeTemplate :InvoiceId="selectedInvoiceId" />
   </div>
 </template>
 <script>
 import axios from "axios";
 // import Navbar from "../Navbar.vue";
 import MailInvoice from "../modals/InvoicePagesModal/ClientMailInvoice.vue";
-import EditeTemplate from "../InvoicePages/TemplatesDesign/EditeTemplate.vue";
+
+import First_TemplateEdit from "../InvoicePages/TemplatesDesign/First_TemplateEdit.vue";
+import ClientSecontTemplateEdit from "../InvoicePages/TemplatesDesign/ClientSecontTemplateEdit.vue";
+
 import { defineAsyncComponent } from "vue";
 import { mapState } from "vuex";
 export default {
@@ -162,6 +179,8 @@ export default {
       getClientInvoiceDetail: [],
       selectedID: null,
       selectedInvoiceId: null,
+      showEditComponent: false,
+      showEditComponentTwo: false,
     };
   },
   computed: {
@@ -169,21 +188,54 @@ export default {
   },
   components: {
     MailInvoice,
-    EditeTemplate,
+
     TemplateOne: defineAsyncComponent(() =>
       import("../InvoicePages/TemplatesDesign/First_Templates.vue")
     ),
     TemplateTwo: defineAsyncComponent(() =>
       import("../InvoicePages/TemplatesDesign/Second_Template.vue")
     ),
+    First_TemplateEdit,
+    ClientSecontTemplateEdit,
   },
 
   methods: {
-    toggleEditMode(id) {
-      this.$router.push({
-        name: "ClientInvoiceViewEdit",
-        params: { id: invoiceId },
-      });
+    // handleEditClick() {
+    //   if (!this.getClientInvoiceDetail.invoice_lock) {
+    //     this.toggleEditMode(this.getClientInvoiceDetail.id);
+    //     this.showEditComponent = true;
+    //     this.showEditComponentTwo = false;
+    //   } else {
+    //     this.showEditComponent = false;
+    //     this.showEditComponentTwo = true;
+    //   }
+    // },
+    handleEditClick(isLocked) {
+      if (isLocked) {
+        alert("Cannot edit. Invoice is locked.");
+      } else {
+        if (this.selectedTemplate === "TemplateOne") {
+          this.showEditComponent = true;
+          this.showEditComponentTwo = false;
+        } else if (this.selectedTemplate === "TemplateTwo") {
+          this.showEditComponent = false;
+          this.showEditComponentTwo = true;
+        }
+        this.toggleEditMode(this.getClientInvoiceDetail.id);
+      }
+    },
+    toggleEditMode(invoiceId) {
+      if (this.showEditComponent) {
+        this.$router.push({
+          name: "First_TemplateEdit",
+          params: { id: invoiceId },
+        });
+      } else {
+        this.$router.push({
+          name: "ClientSecontTemplateEdit",
+          params: { id: invoiceId },
+        });
+      }
     },
     updateTemplate() {
       this.$store.commit("setSelectedTemplate", this.selectedTemplate);
@@ -234,6 +286,11 @@ export default {
   height: 100vh;
   padding-top: 65px;
   background-color: #fdce5e17;
+}
+.disabled-link {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 .main-content {
   transition: all 0.3s;

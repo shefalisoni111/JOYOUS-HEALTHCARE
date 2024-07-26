@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <Navbar /> -->
     <div id="main">
       <div class="pagetitle d-flex justify-content-between px-2">
         <div class="py-3">
@@ -10,8 +9,8 @@
                 >Dashboard</router-link
               >
               /
-              <router-link to="/invoice/staff-invoice" class="text-decoration-none"
-                ><span class="color-fonts">CLIENT INVOICE</span> /
+              <router-link to="/invoice/client-invoice" class="text-decoration-none"
+                ><span class="color-fonts">Client Invoices</span> /
                 <span class="color-fonts">{{
                   getClientInvoiceDetail.invoice_number
                 }}</span>
@@ -20,105 +19,78 @@
           </ol>
         </div>
       </div>
-
-      <div class="container-fluid pt-3">
+      <div class="container-fluid">
         <div class="row">
           <div class="col-sm-12 col-md-7">
             <div
               class="text-muted bg-white p-3"
               style="border: 1px solid #f8f8f8; box-shadow: 2px 2px 7px 2px #e7d7d7"
             >
-              <div class="">
+              <div class="row">
                 <div class="col-12">
                   <div class="row">
                     <div class="col-4">
-                      <p class="mb-1">BILLED FROM</p>
-                      <h5 class="fw-bold">Recpal Demo1</h5>
-                      <p class="mb-0">Mob No: +91 70206 07635</p>
-                      <p class="mb-0">Email: geethu@recpal.co.uk</p>
+                      <h6 class="text-muted">BILLED FROM</h6>
+                      <h5 class="fw-bold">Thema Healthcare</h5>
+                      <p class="mb-0">Mob No: {{ agencySetting.contact }}</p>
+                      <p class="mb-0">Email: {{ agencySetting.email }}</p>
+                      <p class="mb-0">Address: {{ agencySetting.address }}</p>
+                    </div>
+                    <div class="col-4">
+                      <div class="m-auto text-center mt-3">
+                        <img src="../recpal_favicon.png" class="img-fluid" width="20%" />
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="float-end">
+                        <h6 class="text-muted">INVOICE NUMBER</h6>
+                        <h1 class="mb-0">{{ getClientInvoiceDetail.invoice_number }}</h1>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="my-3">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-4">
+                      <h6 class="text-muted">BILLED TO</h6>
+                      <h5 class="fw-bold">Recpal Demo2</h5>
+                      <p class="mb-0">{{ siteData.address }}</p>
                     </div>
                     <div class="col-4"></div>
-                    <div class="col-4">
+                    <div class="col-4 my-3">
                       <div class="float-end">
-                        <p class="mb-0">INVOICE NUMBER</p>
-                        <h6>{{ getClientInvoiceDetail.invoice_number }}</h6>
+                        <h5 class="fw-bold">Demo</h5>
+                        <p class="mb-0">London, UK</p>
+                        <p class="mb-0">Mob No: {{ siteData.contact_person_number }}</p>
+                        <p class="mb-0">Email: {{ siteData.contact_person_email }}</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="mt-5">
+              <div class="mt-4">
                 <div class="col-12">
                   <div class="row">
                     <div class="col-4">
-                      <p class="mb-1">SUPPLIER</p>
-                      <h5 class="fw-bold">Zeba S</h5>
-                      <p class="mb-0">Mob No: +91 70206 07635</p>
-                      <p class="mb-0">Email: geethu@recpal.co.uk</p>
+                      <h5>DATE: {{ getClientInvoiceDetail.start_date }}</h5>
+                      <h5>DUE DATE: {{ getClientInvoiceDetail.due_date }}</h5>
+                    </div>
+                    <div class="col-4 text-center">
+                      <p>{{ getClientInvoiceDetail.number }}</p>
                     </div>
                     <div class="col-4">
-                      <p class="mb-1">SHIP TO</p>
-                      <h5 class="fw-bold">Recpal Demo1</h5>
-                      <p class="mb-0">+91 70206 07635</p>
-                      <p class="mb-0">Email: geethu@recpal.co.uk</p>
-                    </div>
-                    <div class="col-4">
-                      <div class="float-end">
-                        <p class="mb-1">INVOICE INFORMATION</p>
-
-                        <p class="mb-0">Date: 07-07-2023 15:33</p>
-                        <p class="mb-0">Due Date:19-07-2023</p>
-                        <p class="mb-0">From: 03-07-2023</p>
-                        <p class="mb-0">To: 09-07-2023</p>
+                      <div class="pe-3 float-end">
+                        <h5>FROM: 03-07-2023</h5>
+                        <h5>TO : 09-07-2023</h5>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-
               <div class="col-12 mt-4">
                 <div class="table-wrapper">
-                  <!-- <table class="table candidateTable">
-                    <thead>
-                      <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">Start</th>
-                        <th scope="col">End</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Job</th>
-                        <th scope="col">Unit</th>
-                        <th scope="col">Rate</th>
-                        <th scope="col">Total</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td scope="col">{{ getClientInvoiceDetail.start_date }}</td>
-                        <td scope="col">07:40</td>
-                        <td scope="col">08:00</td>
-                        <td scope="col" class="text-capitalize">
-                          {{ getClientInvoiceDetail.candidate }}
-                        </td>
-                        <td scope="col">{{ getClientInvoiceDetail.job }}</td>
-                        <td scope="col">{{ getClientInvoiceDetail.unit }}</td>
-                        <td scope="col">{{ getClientInvoiceDetail.rate }}</td>
-                        <td scope="col">{{ getClientInvoiceDetail.total_amount }}</td>
-                      </tr>
-                      <tr>
-                        <td scope="col">07-07-2023</td>
-                        <td scope="col">07:40</td>
-                        <td scope="col">08:00</td>
-                        <td scope="col" class="text-capitalize">
-                          {{ getClientInvoiceDetail.candidate }}
-                        </td>
-                        <td scope="col">{{ getClientInvoiceDetail.job }}</td>
-                        <td scope="col">{{ getClientInvoiceDetail.unit }}</td>
-                        <td scope="col">{{ getClientInvoiceDetail.rate }}</td>
-                        <td scope="col">{{ getClientInvoiceDetail.total_amount }}</td>
-                      </tr>
-                    </tbody>
-                  </table> -->
-
                   <table class="table candidateTable">
                     <thead>
                       <tr>
@@ -137,12 +109,57 @@
                         <td scope="col">
                           {{ getClientInvoiceDetail.start_date }}
                         </td>
+                        <!-- <td scope="col">
+                          {{ getClientInvoiceDetail.start_time }}
+                        </td>
                         <td scope="col">
+                          {{ getClientInvoiceDetail.end_time }}
+                        </td> -->
+                        <td scope="col">07:40</td>
+                        <td scope="col">08:00</td>
+                        <!-- <td scope="col">
                           <input type="time" v-model="fetchCustomSheetData.start_time" />
                         </td>
                         <td scope="col">
                           <input type="time" v-model="fetchCustomSheetData.end_time" />
+                        </td> -->
+                        <td scope="col" class="text-capitalize">
+                          {{ getClientInvoiceDetail.candidate }}
                         </td>
+                        <td scope="col">
+                          {{ getClientInvoiceDetail.job }}
+                        </td>
+                        <td scope="col">
+                          <input type="number" v-model="fetchCustomSheetData.unit" />
+                        </td>
+                        <td scope="col">
+                          <input type="number" v-model="fetchCustomSheetData.rate" />
+                        </td>
+                        <td scope="col">
+                          <input
+                            type="text"
+                            v-model="getClientInvoiceDetail.total_amount"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td scope="col">
+                          {{ getClientInvoiceDetail.end_date }}
+                        </td>
+                        <!-- <td scope="col">
+                          {{ getClientInvoiceDetail.start_time }}
+                        </td>
+                        <td scope="col">
+                          {{ getClientInvoiceDetail.end_time }}
+                        </td> -->
+                        <td scope="col">07:40</td>
+                        <td scope="col">08:00</td>
+                        <!-- <td scope="col">
+                          <input type="time" v-model="fetchCustomSheetData.start_time" />
+                        </td>
+                        <td scope="col">
+                          <input type="time" v-model="fetchCustomSheetData.end_time" />
+                        </td> -->
                         <td scope="col" class="text-capitalize">
                           {{ getClientInvoiceDetail.candidate }}
                         </td>
@@ -201,7 +218,7 @@
                     class="btn btn-outline-success text-nowrap text-nowrap"
                     @click="cancelButtonClicked"
                   >
-                    <i class="bi bi-envelope"></i> Cancel
+                    Cancel
                   </button>
                 </div>
               </div>
@@ -217,7 +234,7 @@
 <script>
 import axios from "axios";
 
-import SuccessAlertVue from "../../Alerts/SuccessAlert.vue";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
   data() {
@@ -226,36 +243,44 @@ export default {
       getClientInvoiceDetail: [],
       isEditMode: false,
       fetchCustomSheetData: {
-        id: "",
+        // id: "",
         shift_date: "",
         code: "",
         name: "",
         business_unit: "",
         job: "",
+        unit: "",
         approved_hour: "",
         start_time: "",
         end_time: "",
-        client_rate: "",
-        total_cost: "",
+        rate: "",
+        total_amount: "",
         custom_image: "",
       },
       options: [],
       validationClientRate: true,
       businessUnit: [],
+      agencySetting: [],
+      siteData: [],
+      showEditComponentTwo: false,
     };
   },
-  components: { SuccessAlertVue },
-
+  components: { SuccessAlert },
+  props: {
+    invoiceId: {
+      type: Number,
+    },
+  },
   methods: {
     cancelButtonClicked() {
       this.$router.push("/invoice/client-invoice");
     },
-    toggleEditMode(invoiceId) {
-      this.$router.push({
-        name: "ClientInvoiceViewEdit",
-        params: { id: invoiceId },
-      });
-    },
+    // toggleEditMode(invoiceId) {
+    //   this.$router.push({
+    //     name: "ClientInvoiceViewEdit",
+    //     params: { id: invoiceId },
+    //   });
+    // },
     updateTemplate() {
       this.$store.commit("setSelectedTemplate", this.selectedTemplate);
     },
@@ -281,28 +306,45 @@ export default {
         // console.error("Error generating PDF:", error);
       }
     },
-    async createStaffInvoice(id) {
-      if (!this.$route.params.id) {
-        return;
+    // async createStaffInvoice(id) {
+    //   if (!this.$route.params.id) {
+    //     return;
+    //   }
+    //   try {
+    //     const response = await axios.get(
+    //       `${VITE_API_URL}/client_invoices/${this.$route.params.id}`
+    //     );
+    //     this.fetchCustomSheetData = {
+    //       id: response.data.client_invoice.id,
+    //       shift_date: response.data.client_invoice.start_date,
+    //       job: response.data.client_invoice.job,
+    //       start_date: response.data.client_invoice.start_date,
+    //       end_date: response.data.client_invoice.end_date,
+    //       unit: response.data.client_invoice.unit,
+    //       rate: response.data.client_invoice.rate,
+    //       total_amount: response.data.client_invoice.total_amount,
+    //       paid_amount: response.data.client_invoice.paid_amount,
+    //       balance_amount: response.data.client_invoice.balance_amount,
+    //     };
+    //   } catch (error) {
+    //     // console.error("Error fetching custom timesheet data:", error);
+    //   }
+    // },
+    validatePayload(payload) {
+      let isValid = true;
+
+      // Example validation rules
+      if (!payload.shift_date) {
+        console.error("Validation Error: shift_date is required");
+        isValid = false;
       }
-      try {
-        const response = await axios.get(
-          `${VITE_API_URL}/staff_invoices/${this.$route.params.id}`
-        );
-        this.fetchCustomSheetData = {
-          id: response.data.client_invoice.id,
-          shift_date: response.data.client_invoice.start_date,
-          job: response.data.client_invoice.job,
-          start_date: response.data.client_invoice.start_date,
-          end_date: response.data.client_invoice.end_date,
-          client_rate: response.data.client_invoice.client_rate,
-          total_amount: response.data.client_invoice.total_amount,
-          paid_amount: response.data.client_invoice.paid_amount,
-          balance_amount: response.data.client_invoice.balance_amount,
-        };
-      } catch (error) {
-        // console.error("Error fetching custom timesheet data:", error);
+
+      if (!payload.name) {
+        console.error("Validation Error: name is required");
+        isValid = false;
       }
+
+      return isValid;
     },
     async createClientInvoice() {
       const id = this.$route.params.id;
@@ -315,19 +357,44 @@ export default {
 
         this.getClientInvoiceDetail = clientInvoice;
 
-        this.invoiceLogs = clientInvoice.logs.map((log) => ({
-          ...log,
-          isEditing: false,
-        })); // Initialize logs
+        this.getClientInvoiceDetail = clientInvoice;
+
+        this.agencySetting = clientInvoice.agency_setting;
+
+        this.siteData = clientInvoice.site_data;
+
+        // this.invoiceLogs = clientInvoice.logs.map((log) => ({
+        //   ...log,
+        //   isEditing: false,
+        // }));
+        this.fetchCustomSheetData = {
+          shift_date: clientInvoice.start_date,
+
+          name: clientInvoice.candidate,
+          business_unit: clientInvoice.business_unit,
+          job: clientInvoice.job,
+          unit: clientInvoice.unit,
+          approved_hour: clientInvoice.approved_hour,
+          start_time: clientInvoice.start_time,
+          end_time: clientInvoice.end_time,
+          rate: clientInvoice.rate,
+          total_amount: clientInvoice.total_amount,
+          custom_image: clientInvoice.custom_image,
+        };
       } catch (error) {
         // console.error("Error fetching client invoice:", error);
       }
     },
     async updateCustomTimeSheetMethod() {
+      const payload = { ...this.fetchCustomSheetData };
+
+      if (!this.validatePayload(payload)) {
+        // console.error("Payload validation failed");
+        return;
+      }
+
       try {
-        const payload = {
-          custom_timesheet: this.fetchCustomSheetData,
-        };
+        const payload = { ...this.fetchCustomSheetData };
 
         const response = await axios.put(
           `${VITE_API_URL}/update_client_invoice/${this.$route.params.id}`,
@@ -339,19 +406,24 @@ export default {
           }
         );
 
-        this.$store.commit("updateCandidate", {
-          id: this.fetchCustomSheetData.id,
-          newData: response.data.client_invoice,
-        });
-        this.$emit("CustomTimeSheetData-updated");
+        this.$emit("ClientInvoice-updated");
 
         const message = "Client Invoice updated successfully";
         this.$refs.successAlert.showSuccess(message);
       } catch (error) {
-        // console.error("Error updating custom timesheet:", error);
-        if (error.response && error.response.data) {
-          //   console.error("Server response:", error.response.data);
-        }
+        // if (error.response) {
+        //   // Server responded with a status other than 2xx
+        //   console.error("Error response data:", error.response.data);
+        //   console.error("Error response status:", error.response.status);
+        //   console.error("Error response headers:", error.response.headers);
+        //   if (error.response.data.errors) {
+        //     console.error("Validation errors:", error.response.data.errors);
+        //   }
+        // } else if (error.request) {
+        //   console.error("Error request:", error.request);
+        // } else {
+        //   console.error("Error message:", error.message);
+        // }
       }
     },
   },
@@ -391,6 +463,13 @@ select {
   border-radius: 4px;
   border: 0px;
   border: 1px solid rgb(202, 198, 198);
+}
+input,
+button,
+select,
+optgroup,
+textarea {
+  width: 55%;
 }
 .rounded-circle {
   border: 1px solid #ff5f30;

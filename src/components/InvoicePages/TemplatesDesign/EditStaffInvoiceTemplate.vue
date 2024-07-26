@@ -114,7 +114,7 @@ import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
-  name: "EditeTemplate",
+  name: "EditStaffInvoiceTemplate",
   data() {
     return {
       fetchCustomSheetData: {

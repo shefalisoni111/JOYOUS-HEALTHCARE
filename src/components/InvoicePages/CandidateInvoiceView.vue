@@ -84,8 +84,8 @@
                         <th scope="col">Date</th>
                         <th scope="col">Start</th>
                         <th scope="col">End</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Job</th>
+                        <!-- <th scope="col">Name</th>
+                        <th scope="col">Job</th> -->
                         <th scope="col">Unit</th>
                         <th scope="col">Rate</th>
                         <th scope="col">Total</th>
@@ -96,10 +96,10 @@
                         <td scope="col">{{ getClientInvoiceDetail.start_date }}</td>
                         <td scope="col">07:40</td>
                         <td scope="col">08:00</td>
-                        <td scope="col" class="text-capitalize">
+                        <!-- <td scope="col" class="text-capitalize">
                           {{ getClientInvoiceDetail.candidate }}
                         </td>
-                        <td scope="col">{{ getClientInvoiceDetail.job }}</td>
+                        <td scope="col">{{ getClientInvoiceDetail.job }}</td> -->
                         <td scope="col">{{ getClientInvoiceDetail.unit }}</td>
                         <td scope="col">{{ getClientInvoiceDetail.rate }}</td>
                         <td scope="col">{{ getClientInvoiceDetail.total_amount }}</td>
@@ -108,10 +108,10 @@
                         <td scope="col">07-07-2023</td>
                         <td scope="col">07:40</td>
                         <td scope="col">08:00</td>
-                        <td scope="col" class="text-capitalize">
+                        <!-- <td scope="col" class="text-capitalize">
                           {{ getClientInvoiceDetail.candidate }}
                         </td>
-                        <td scope="col">{{ getClientInvoiceDetail.job }}</td>
+                        <td scope="col">{{ getClientInvoiceDetail.job }}</td> -->
                         <td scope="col">{{ getClientInvoiceDetail.unit }}</td>
                         <td scope="col">{{ getClientInvoiceDetail.rate }}</td>
                         <td scope="col">{{ getClientInvoiceDetail.total_amount }}</td>
@@ -154,10 +154,13 @@
                   <router-link
                     :to="{
                       name: 'StaffInvoiceViewEdit',
-                      params: { id: getClientInvoiceDetail.id },
+                      params: {
+                        id: getClientInvoiceDetail.id,
+                      },
                     }"
                     class="btn btn-outline-success text-nowrap"
-                    @click="toggleEditMode(getClientInvoiceDetail.id)"
+                    :class="{ 'disabled-link': getClientInvoiceDetail.invoice_lock }"
+                    @click.prevent="handleEditClick"
                   >
                     <i class="bi bi-pencil-fill"></i> Edit
                   </router-link>
@@ -193,8 +196,8 @@
     </div>
     <ClientMailInvoice />
     <CandidateMail />
-    <EditeTemplate :InvoiceId="selectedInvoiceId" />
-    <StaffInvoiceViewEdit />
+    <!-- <EditStaffInvoiceTemplate :InvoiceId="selectedInvoiceId" /> -->
+    <StaffInvoiceViewEdit @StaffInvoice-updated="createStaffInvoice" />
   </div>
 </template>
 <script>
@@ -202,16 +205,26 @@ import axios from "axios";
 // import Navbar from "../Navbar.vue";
 import ClientMailInvoice from "../modals/InvoicePagesModal/ClientMailInvoice.vue";
 import CandidateMail from "../modals/InvoicePagesModal/CandidateMail.vue";
-import EditeTemplate from "../InvoicePages/TemplatesDesign/EditeTemplate.vue";
+import EditStaffInvoiceTemplate from "../InvoicePages/TemplatesDesign/EditStaffInvoiceTemplate.vue";
 import StaffInvoiceViewEdit from "../InvoicePages/TemplatesDesign/StaffInvoiceViewEdit.vue";
 
 export default {
   data() {
     return { selectedInvoiceId: null, getClientInvoiceDetail: [], isEditMode: false };
   },
-  components: { ClientMailInvoice, CandidateMail, EditeTemplate, StaffInvoiceViewEdit },
-
+  components: {
+    ClientMailInvoice,
+    CandidateMail,
+    EditStaffInvoiceTemplate,
+    StaffInvoiceViewEdit,
+  },
+  computed: {},
   methods: {
+    handleEditClick() {
+      if (!this.getClientInvoiceDetail.invoice_lock) {
+        this.toggleEditMode(this.getClientInvoiceDetail.id);
+      }
+    },
     toggleEditMode(invoiceId) {
       this.$router.push({
         name: "StaffInvoiceViewEdit",
@@ -243,7 +256,7 @@ export default {
         // console.error("Error generating PDF:", error);
       }
     },
-    async createClientInvoice() {
+    async createStaffInvoice() {
       const id = this.$route.params.id;
       if (!id) {
         return;
@@ -263,7 +276,7 @@ export default {
     },
     saveLog(log) {
       log.isEditing = false;
-      // Perform save operation here (e.g., send updated log to server)
+
       axios
         .put(`${VITE_API_URL}/update_log/${log.id}`, { message: log.message })
         .then((response) => {
@@ -277,7 +290,7 @@ export default {
 
   created() {
     this.selectedTemplate = this.$store.state.selectedTemplate;
-    this.createClientInvoice();
+    this.createStaffInvoice();
   },
 };
 </script>
@@ -288,6 +301,10 @@ export default {
   height: 100vh;
   padding-top: 65px;
   background-color: #fdce5e17;
+}
+.disabled-link {
+  pointer-events: none;
+  opacity: 0.5;
 }
 .main-content {
   transition: all 0.3s;
