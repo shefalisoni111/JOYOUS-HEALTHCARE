@@ -24,9 +24,9 @@
                   <div class="d-lg-flex justify-content-lg-between">
                     <div class="d-flex">
                       <div class="d-flex align-items-center gap-2">
-                        <select>
+                        <!-- <select>
                           <option>By Created Date :</option>
-                        </select>
+                        </select> -->
                         <select
                           class="form-control"
                           v-model="currentView"
@@ -224,8 +224,13 @@
                             <label class="switch">
                               <input
                                 type="checkbox"
-                                :checked="isInvoiceLocked"
+                                :id="data.id"
+                                :checked="data.invoice_lock"
                                 @change="toggleInvoiceLock(data)"
+                                :class="{
+                                  locked: data.invoice_lock,
+                                  unlocked: !data.invoice_lock,
+                                }"
                               />
                               <div class="slider round"></div>
                             </label>
@@ -347,6 +352,7 @@ export default {
       endDate: new Date(),
       getClientInvoiceDetail: {},
       searchQuery: null,
+
       debounceTimeout: null,
       searchResults: [],
       showFilters: false,
@@ -361,12 +367,6 @@ export default {
   },
   components: { SuccessAlert, Loader },
   computed: {
-    isInvoiceLocked() {
-      return this.getClientInvoiceDetail &&
-        typeof this.getClientInvoiceDetail.invoice_lock !== "undefined"
-        ? this.getClientInvoiceDetail.invoice_lock
-        : false;
-    },
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return site_id ? site_id.site_name : "";
@@ -411,33 +411,40 @@ export default {
       const newLockValue = !data.invoice_lock;
 
       const payload = {
-        lock_value: newLockValue,
+        lock_value: newLockValue.toString(),
       };
 
       try {
         const response = await axios.put(
           `${VITE_API_URL}/enable_and_disable_invoice_lock/${data.id}`,
-          payload
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
 
         if (response.status === 200) {
-          // Update the local data to reflect the new state
           data.invoice_lock = newLockValue;
 
-          // Show success message
           const message = newLockValue
             ? "Client Invoice locked successfully!"
             : "Client Invoice unlocked successfully!";
           this.$refs.successAlert.showSuccess(message);
-
-          // Fetch updated invoice data to ensure UI is in sync
+          // const updatedClient = this.getClientInvoiceDetail.find(
+          //   (client) => client.id === data.id
+          // );
+          // if (updatedClient) {
+          //   updatedClient.invoice_lock = newLockValue;
+          // }
           this.getClientInvoice();
         } else {
-          console.error("Failed to update invoice lock:", response.data);
+          // console.error("Failed to update invoice lock:", response.data);
           // Handle failure
         }
       } catch (error) {
-        console.error("API call error:", error.response?.data || error.message);
+        // console.error("API call error:", error.response?.data || error.message);
         // Handle error
       }
     },

@@ -148,16 +148,22 @@ export default {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td scope="col">1</td>
-                          <td scope="col">Aniket</td>
+                        <tr v-for="data in paginateDocumentReport" :key="data.id">
+                          <td scope="col">{{ data.id }}</td>
+                          <td scope="col">{{ data.candidate_name }}</td>
 
-                          <td scope="col">ID Proof</td>
-                          <td scope="col">Pancard</td>
-                          <td scope="col">24/1/2024</td>
-                          <td scope="col">3/2/2024</td>
-                          <td scope="col">7/8/2024</td>
-                          <td scope="col">Active</td>
+                          <td scope="col">
+                            {{ data.document_category.document_category }}
+                          </td>
+                          <td scope="col">{{ data.document_name }}</td>
+                          <td scope="col">{{ "null" }}</td>
+                          <td scope="col">
+                            {{ data.issue_date ? data.issue_date : "null" }}
+                          </td>
+                          <td scope="col">
+                            {{ data.expiry_date ? data.expiry_date : "null" }}
+                          </td>
+                          <td scope="col">{{ data.document_category.status }}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -193,11 +199,35 @@ export default {
         </div>
       </div>
     </div>
+    <div class="mx-3" style="text-align: right" v-if="getDocumentReportData.length >= 8">
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= getDocumentReportData.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 <script>
 import axios from "axios";
 import Navbar from "../Navbar.vue";
+import Loader from "../Loader/Loader.vue";
+
 export default {
   data() {
     return {
@@ -213,10 +243,22 @@ export default {
       ],
       startDate: new Date(),
       endDate: new Date(),
+      getDocumentReportData: [],
+      isLoading: false,
+      currentPage: 1,
+      itemsPerPage: 11,
     };
   },
-  components: { Navbar },
+  components: { Navbar, Loader },
   computed: {
+    paginateDocumentReport() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.getDocumentReportData.slice(startIndex, endIndex);
+    },
+    totalRecordsOnPage() {
+      return this.paginateDocumentReport.length;
+    },
     getWeekDates() {
       const currentDate = new Date();
       const weekStart = new Date(currentDate);
@@ -320,21 +362,21 @@ export default {
     //     });
     //   // alert("Record Deleted ");
     // },
-    // async createVacancy() {
-    //   const token = localStorage.getItem("token");
-    //   axios
-    //     .get(`${VITE_API_URL}/vacancies`, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => (this.getVacancyDetail = response.data));
-    // },
+    async getDocumentReport() {
+      this.isLoading = true;
+      try {
+        const response = await axios.get(`${VITE_API_URL}/candidate_documents`);
+        this.getDocumentReportData = response.data;
+      } catch (error) {
+        // console.error("Error fetching document report data:", error);
+      } finally {
+        this.isLoading = false;
+      }
+    },
   },
 
   mounted() {
-    // this.createVacancy();
+    this.getDocumentReport();
     this.updateDateRange();
     this.loadDateRangeFromLocalStorage();
     // const currentDate = new Date();
@@ -364,7 +406,6 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-  height: 100vh;
 
   background-color: #fdce5e17;
 }
