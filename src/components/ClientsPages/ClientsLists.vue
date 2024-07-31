@@ -268,7 +268,7 @@
         Next
       </button>
     </div>
-    <AddClients ref="addClient" />
+    <AddClients ref="addClient" @client-updated="createdClient" />
     <EditClientModal :clientID="selectedClientID || 0" @client-updated="createdClient" />
   </div>
 </template>
@@ -339,6 +339,7 @@ export default {
     // },
     handleAddClient() {
       this.$refs.addClient.getPositionMethod();
+      this.$refs.addClient.createdClient();
     },
     editClient(clientID) {
       this.selectedClientID = clientID;
@@ -411,37 +412,7 @@ export default {
         }
       }
     },
-    // filterData(value) {
-    //   let client_type = "activated";
-    //   let client_value = value === "true" ? "true" : "false";
 
-    //   this.makeFilterAPICall(client_type, client_value);
-    // },
-    // async makeFilterAPICall(client_type, client_value) {
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/client_filter`, {
-    //       params: {
-    //         client_type: client_type,
-    //         client_value: client_value,
-    //       },
-    //     });
-    //     this.createdClient();
-    //     this.getClientDetail = response.data.data;
-    //     // console.log(this.getClientDetail);
-    //   } catch (error) {
-    //     if (error.response && error.response.status === 404) {
-    //       const errorMessages = error.response.data.error;
-    //       if (errorMessages === "No records found for the given filter") {
-    //         alert("No records found for the given filter");
-    //       } else {
-    //         alert(errorMessages);
-    //       }
-    //     } else {
-    //       // Handle other errors
-    //       // console.error("Error filtering custom timesheets:", error);
-    //     }
-    //   }
-    // },
     setActiveTabFromRoute() {
       const currentRouteName = this.$route.name;
       const matchingTabIndex = this.tabs.findIndex(
@@ -469,9 +440,9 @@ export default {
     },
   },
   async mounted() {
-    await this.setActiveTabFromRoute();
-    await this.setActiveTabNameOnLoad();
-    // await this.createdClient();
+    this.setActiveTabFromRoute();
+    this.setActiveTabNameOnLoad();
+    this.createdClient();
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {

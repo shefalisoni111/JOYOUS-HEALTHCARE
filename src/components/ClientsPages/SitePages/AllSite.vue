@@ -106,8 +106,8 @@
             <th scope="col">Action</th>
           </tr>
         </thead>
-        <tbody v-if="getSiteAllData?.length > 0">
-          <tr v-for="data in getSiteAllData" :key="data.id">
+        <tbody v-if="paginateSiteData?.length > 0">
+          <tr v-for="data in paginateSiteData" :key="data.id">
             <td>
               <input
                 class="form-check-input"
@@ -169,6 +169,27 @@
     />
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
+    <div class="mx-3" style="text-align: right" v-if="getSiteAllData?.length >= 8">
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= getSiteAllData?.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
   </div>
 </template>
 <script>
@@ -186,6 +207,8 @@ export default {
       selectedsiteId: 0,
       showFilters: false,
       getSiteDetail: [],
+      currentPage: 1,
+      itemsPerPage: 11,
       siteIds: [],
       isLoading: false,
       checkedSites: reactive({}),
@@ -200,6 +223,19 @@ export default {
   },
 
   components: { EditSite, AddSite, SuccessAlert, Loader },
+  computed: {
+    paginateSiteData() {
+      if (this.getSiteAllData && Array.isArray(this.getSiteAllData)) {
+        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        const endIndex = startIndex + this.itemsPerPage;
+        return this.getSiteAllData.slice(startIndex, endIndex);
+      }
+      return [];
+    },
+    totalRecordsOnPage() {
+      return this.paginateSiteData.length;
+    },
+  },
   methods: {
     toggleFilters() {
       this.showFilters = !this.showFilters;
@@ -219,7 +255,7 @@ export default {
           },
         });
 
-        this.getSiteAllData = response.data.data;
+        this.paginateSiteData = response.data.data;
       } catch (error) {
         if (error.response && error.response.status === 404) {
           const errorMessages = error.response.data.error;

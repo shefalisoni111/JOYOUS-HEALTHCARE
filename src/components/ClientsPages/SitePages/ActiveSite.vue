@@ -18,7 +18,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="data in getSiteActiveData" :key="data.id">
+          <tr v-for="data in paginateSiteData" :key="data.id">
             <!-- <td>{{ data.id }}</td> -->
             <td v-text="data.refer_code"></td>
             <td v-text="data.site_name"></td>
@@ -65,6 +65,27 @@
     </div>
     <EditSite :siteId="selectedsiteId || 0" ref="refSite" />
     <loader :isLoading="isLoading"></loader>
+    <div class="mx-3" style="text-align: right" v-if="getSiteActiveData?.length >= 8">
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= getSiteActiveData?.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
   </div>
 </template>
 <script>
@@ -78,10 +99,25 @@ export default {
       getSiteActiveData: [],
       selectedsiteId: 0,
       isLoading: false,
+      currentPage: 1,
+      itemsPerPage: 11,
     };
   },
 
   components: { EditSite, Loader },
+  computed: {
+    paginateSiteData() {
+      if (this.getSiteActiveData && Array.isArray(this.getSiteActiveData)) {
+        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        const endIndex = startIndex + this.itemsPerPage;
+        return this.getSiteActiveData.slice(startIndex, endIndex);
+      }
+      return [];
+    },
+    totalRecordsOnPage() {
+      return this.paginateSiteData.length;
+    },
+  },
   methods: {
     editsiteId(siteId) {
       this.selectedsiteId = siteId;

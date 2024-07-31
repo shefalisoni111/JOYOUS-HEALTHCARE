@@ -1,30 +1,3 @@
-<!-- <template>
-  <div>
-    <Navbar />
-    <div id="main">
-      <h6>PAyroll Page in Progress.....</h6>
-    </div>
-  </div>
-</template>
-<script>
-import Navbar from "../Navbar.vue";
-
-export default {
-  components: {
-    Navbar,
-  },
-};
-</script>
-<style scoped>
-#main {
-  padding: 20px 20px;
-  transition: all 0.3s;
-
-  height: 100dvh;
-  background-color: #fdce5e17;
-}
-</style> -->
-
 <template>
   <div>
     <Navbar />
@@ -37,17 +10,44 @@ export default {
                 <select>
                   <option value="">All</option>
                 </select>
-                <select>
+                <select v-model="selectedStaffStatus" @change="filterData">
                   <option value="">All Staff Status</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                  <option value="pending">Pending</option>
                 </select>
-                <select>
+
+                <select v-model="selectedStaff" @change="filterData">
                   <option value="">All Staff</option>
+                  <option
+                    v-for="option in getCandidatesData"
+                    :key="option.id"
+                    :value="option.id"
+                  >
+                    {{ option.first_name }}
+                  </option>
                 </select>
-                <select>
+
+                <select v-model="selectedDocumentCategory" @change="filterData">
                   <option value="">All Document Category</option>
+                  <option
+                    v-for="option in getCategoryData"
+                    :key="option.id"
+                    :value="option.id"
+                  >
+                    {{ option.category_name }}
+                  </option>
                 </select>
-                <select>
+
+                <select v-model="selectedDocumentType" @change="filterData">
                   <option value="">All Document Type</option>
+                  <option
+                    v-for="option in documentNames"
+                    :key="option.id"
+                    :value="option.id"
+                  >
+                    {{ option.document_name }}
+                  </option>
                 </select>
               </div>
               <div>
@@ -147,7 +147,7 @@ export default {
                           <th scope="col">Status</th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody v-if="paginateDocumentReport?.length > 0">
                         <tr v-for="data in paginateDocumentReport" :key="data.id">
                           <td scope="col">{{ data.id }}</td>
                           <td scope="col">{{ data.candidate_name }}</td>
@@ -164,6 +164,13 @@ export default {
                             {{ data.expiry_date ? data.expiry_date : "null" }}
                           </td>
                           <td scope="col">{{ data.document_category.status }}</td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr>
+                          <td colspan="8" class="text-danger text-center">
+                            {{ "Staff document not found! " }}
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -199,7 +206,7 @@ export default {
         </div>
       </div>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="getDocumentReportData.length >= 8">
+    <div class="mx-3" style="text-align: right" v-if="getDocumentReportData?.length >= 8">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -214,7 +221,7 @@ export default {
       >&nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getDocumentReportData.length"
+        :disabled="currentPage * itemsPerPage >= getDocumentReportData?.length"
         @click="currentPage++"
       >
         Next
@@ -243,18 +250,34 @@ export default {
       ],
       startDate: new Date(),
       endDate: new Date(),
+      getCandidatesData: [],
       getDocumentReportData: [],
+      documentNames: [],
       isLoading: false,
       currentPage: 1,
       itemsPerPage: 11,
+      getCategoryData: [],
+      selectedStaffStatus: "",
+      selectedStaff: "",
+      selectedDocumentCategory: "",
+      selectedDocumentType: "",
+      selectedDocumentStatus: "",
+      selectedDocumentFilterType: "",
+      selectedDocumentFilter: "",
     };
   },
   components: { Navbar, Loader },
   computed: {
+    selectedOptionText() {
+      const id = this.options.find((option) => option.id === this.id);
+      return id ? id.name : "";
+    },
     paginateDocumentReport() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
-      return this.getDocumentReportData.slice(startIndex, endIndex);
+      return Array.isArray(this.getDocumentReportData)
+        ? this.getDocumentReportData.slice(startIndex, endIndex)
+        : [];
     },
     totalRecordsOnPage() {
       return this.paginateDocumentReport.length;
@@ -284,6 +307,76 @@ export default {
     },
   },
   methods: {
+    async filterData() {
+      let filters = {};
+
+      if (this.selectedStaffStatus) {
+        filters.document_filter_type = "staff_status";
+        filters.document_filter = this.selectedStaffStatus;
+      } else if (this.selectedStaff) {
+        filters.document_filter_type = "staff";
+        filters.document_filter = this.selectedStaff;
+      } else if (this.selectedDocumentCategory) {
+        filters.document_filter_type = "document_category";
+        filters.document_filter = this.selectedDocumentCategory;
+      } else if (this.selectedDocumentType) {
+        filters.document_filter_type = "document_type";
+        filters.document_filter = this.selectedDocumentType;
+      } else if (this.selectedDocumentStatus) {
+        filters.document_filter_type = "document_status";
+        filters.document_filter = this.selectedDocumentStatus;
+      } else if (this.selectedDocumentFilterType) {
+        filters.document_filter_type = this.selectedDocumentFilterType;
+        filters.document_filter = this.selectedDocumentFilter;
+      } else {
+        filters.document_filter_type = "";
+        filters.document_filter = "";
+      }
+
+      await this.makeFilterAPICall(filters.document_filter_type, filters.document_filter);
+    },
+    async documentCategoryDocumentTypeMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/document_categories`);
+        this.getCategoryData = response.data;
+
+        this.documentNames = response.data.reduce((acc, category) => {
+          if (category.documents && category.documents.length > 0) {
+            acc.push(
+              ...category.documents.map((doc) => {
+                return { id: doc.id, document_name: doc.document_name };
+              })
+            );
+          }
+          return acc;
+        }, []);
+      } catch (error) {
+        // console.error("Error fetching documents:", error);
+      }
+    },
+    async makeFilterAPICall(document_filter_type, document_filter) {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/candidate_documents`, {
+          params: {
+            document_filter_type: document_filter_type,
+            document_filter: document_filter,
+          },
+        });
+
+        this.getDocumentReportData = response.data;
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          const errorMessages = error.response.data.error;
+          if (errorMessages === "No records found for the given filter") {
+            alert("No records found for the given filter");
+          } else {
+            alert(errorMessages);
+          }
+        } else {
+          console.error(error);
+        }
+      }
+    },
     moveToPrevious() {
       if (this.currentView === "weekly") {
         this.startDate.setDate(this.startDate.getDate() - 7);
@@ -373,12 +466,28 @@ export default {
         this.isLoading = false;
       }
     },
+    async getCandidateMethods() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/candidates`);
+
+        this.getCandidatesData = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+          }
+        } else {
+          // console.error("Error fetching candidates:", error);
+        }
+      }
+    },
   },
 
   mounted() {
-    this.getDocumentReport();
+    // this.getDocumentReport();
     this.updateDateRange();
-    this.loadDateRangeFromLocalStorage();
+    this.getCandidateMethods();
+    this.documentCategoryDocumentTypeMethod();
+    // this.loadDateRangeFromLocalStorage();
     // const currentDate = new Date();
     // const startOfWeek = new Date(currentDate);
     // startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
@@ -399,6 +508,10 @@ export default {
     // const endOfWeek = new Date(startOfWeek);
     // endOfWeek.setDate(endOfWeek.getDate() + 6);
     // this.endDate = endOfWeek;
+  },
+  created() {
+    this.getDocumentReport();
+    this.loadDateRangeFromLocalStorage();
   },
 };
 </script>

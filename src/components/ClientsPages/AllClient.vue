@@ -193,7 +193,7 @@
         </tbody>
       </table>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="getClientDetail.length >= 11">
+    <div class="mx-3" style="text-align: right" v-if="getClientDetail.length >= 10">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -220,7 +220,7 @@
       @client-updated="createdClient"
       ref="editClientModalAll"
     />
-    <AddClients @client-updated="createdClient" />
+    <!-- <AddClients @client-updated="createdClient" /> -->
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
   </div>
@@ -240,7 +240,7 @@ export default {
       isActive: true,
       searchQuery: "",
       currentPage: 1,
-      itemsPerPage: 11,
+      itemsPerPage: 10,
       activated: false,
       showFilters: false,
       isLoading: false,
@@ -527,7 +527,6 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-  height: 100dvh;
 }
 .main-content {
   transition: all 0.3s;

@@ -68,6 +68,12 @@
                       inputmode="numeric"
                       pattern="[0-9]*"
                     />
+                    <div
+                      v-if="!isPhoneNumberValid && fetchClients.phone_number.length > 0"
+                      class="text-danger"
+                    >
+                      Phone number must be exactly 10 digits.
+                    </div>
                   </div>
                 </div>
                 <div class="mb-3">
@@ -113,7 +119,7 @@
             <button
               class="btn btn-secondary rounded-1"
               data-bs-target="#editClient"
-              data-bs-toggle="modal"
+              @click="resetChanges"
               data-bs-dismiss="modal"
             >
               Cancel
@@ -153,6 +159,7 @@ export default {
         error: [],
       },
       options: [],
+      originalData: null,
       // selectedJobNames: [],
     };
   },
@@ -169,9 +176,6 @@ export default {
       );
       return job_title ? job_title.name : "";
     },
-    isPhoneNumberValid() {
-      return /^[0-9]{10}$/.test(this.fetchClients.phone_number);
-    },
 
     isEmailValid() {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -183,11 +187,28 @@ export default {
     isSaveDisabled() {
       return !this.isPhoneNumberValid || !this.isEmailValid || !this.isPasswordMatch;
     },
+    isPhoneNumberValid() {
+      return /^[0-9]{10}$/.test(this.fetchClients.phone_number);
+    },
   },
   components: { SuccessAlert },
   methods: {
+    toggleJobsSelection() {
+      this.fetchClients.job_id = this.options
+        .filter((option) => option.checked)
+        .map((option) => option.id);
+    },
+    resetChanges() {
+      this.fetchClients = { ...this.originalData };
+      this.options.forEach((option) => {
+        option.checked = this.fetchClients.job_id.includes(option.id);
+      });
+    },
     cleanPhoneNumber() {
-      this.fetchClients.phone_number = this.fetchClients.phone_number.replace(/\D/g, "");
+      this.fetchClients.phone_number = this.fetchClients.phone_number.replace(
+        /[^0-9]/g,
+        ""
+      );
     },
     async fetchClientsMethod(id) {
       if (!id) return;
@@ -195,6 +216,7 @@ export default {
         const response = await axios.get(`${VITE_API_URL}/clients/${id}`);
 
         this.fetchClients = { ...this.fetchClients, ...response.data };
+        this.originalData = { ...this.fetchClients };
         this.options.forEach((option) => {
           option.checked = this.fetchClients.job_id.includes(option.id);
         });

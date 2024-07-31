@@ -121,7 +121,7 @@
         </tbody>
       </table>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="getClientDetail.length >= 8">
+    <div class="mx-3" style="text-align: right" v-if="getClientDetail.length >= 10">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -167,7 +167,7 @@ export default {
       isActive: true,
       searchQuery: "",
       currentPage: 1,
-      itemsPerPage: 8,
+      itemsPerPage: 10,
       isLoading: false,
       client: {
         job_name: ["Job1", "Job2", "Job3", "Job4", "Job5", "Job6"],

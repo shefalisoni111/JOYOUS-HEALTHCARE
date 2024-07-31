@@ -1,30 +1,3 @@
-<!-- <template>
-  <div>
-    <Navbar />
-    <div id="main">
-      <h6>PAyroll Page in Progress.....</h6>
-    </div>
-  </div>
-</template>
-<script>
-import Navbar from "../Navbar.vue";
-
-export default {
-  components: {
-    Navbar,
-  },
-};
-</script>
-<style scoped>
-#main {
-  padding: 20px 20px;
-  transition: all 0.3s;
-
-  height: 100dvh;
-  background-color: #fdce5e17;
-}
-</style> -->
-
 <template>
   <div>
     <Navbar />
@@ -35,7 +8,7 @@ export default {
             <div class="">
               <div class="d-flex ms-2 justify-content-between">
                 <div class="d-flex gap-2">
-                  <select v-model="client_id" id="selectClients">
+                  <select v-model="client_id" id="selectClients" @change="filterData">
                     <option value="">All Client</option>
                     <option
                       v-for="option in clientData"
@@ -46,7 +19,7 @@ export default {
                       {{ option.first_name }}
                     </option>
                   </select>
-                  <select v-model="site_id" id="selectBusinessUnit">
+                  <select v-model="site_id" id="selectBusinessUnit" @change="filterData">
                     <option value="">All Site</option>
                     <option
                       v-for="option in businessUnit"
@@ -58,8 +31,16 @@ export default {
                     </option>
                   </select>
 
-                  <select v-model="client_id">
+                  <select v-model="id" @change="filterData">
                     <option value="">All Staff</option>
+                    <option
+                      v-for="option in getCandidatesData"
+                      :key="option.id"
+                      :value="option.id"
+                      placeholder="Select Staff"
+                    >
+                      {{ option.first_name + option.last_name }}
+                    </option>
                   </select>
                 </div>
 
@@ -174,7 +155,7 @@ export default {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="(data, index) in getClientInvoiceDetail" :key="index">
+                        <tr v-for="(data, index) in paginateClientReport" :key="index">
                           <td scope="col">{{ index + 1 }}</td>
                           <td scope="col">{{ data.client }}</td>
                           <td scope="col">{{ data.candidate }}</td>
@@ -209,11 +190,39 @@ export default {
         </div>
       </div>
     </div>
+    <div
+      class="mx-3"
+      style="text-align: right"
+      v-if="getClientInvoiceDetail?.length >= 8"
+    >
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= getClientInvoiceDetail?.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 <script>
 import axios from "axios";
 import Navbar from "../Navbar.vue";
+import Loader from "../Loader/Loader.vue";
+
 export default {
   data() {
     return {
@@ -231,23 +240,29 @@ export default {
       endDate: new Date(),
       client_id: "",
       clientData: [],
+      currentPage: 1,
+      itemsPerPage: 9,
+      isLoading: false,
       site_id: "",
       businessUnit: [],
+      getCandidatesData: [],
+      getClientInvoiceDetail: [],
       job_id: "",
       options: [],
       employeeData: [],
       employment_type_id: "",
+      id: "",
     };
   },
-  components: { Navbar },
+  components: { Navbar, Loader },
   computed: {
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return site_id ? site_id.site_name : "";
     },
     selectedOptionText() {
-      const job_id = this.options.find((option) => option.id === this.job_id);
-      return job_id ? job_id.name : "";
+      const id = this.options.find((option) => option.id === this.id);
+      return id ? id.name : "";
     },
     selectClients() {
       const client_id = this.clientData.find((option) => option.id === this.client_id);
@@ -282,8 +297,73 @@ export default {
       const monthDates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
       return monthDates;
     },
+    paginateClientReport() {
+      if (!Array.isArray(this.getClientInvoiceDetail)) {
+        return [];
+      }
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.getClientInvoiceDetail.slice(startIndex, endIndex);
+    },
+    totalRecordsOnPage() {
+      return this.paginateClientReport.length;
+    },
   },
   methods: {
+    async filterData() {
+      const filters = {
+        filter_type: this.client_id
+          ? "client"
+          : this.site_id
+          ? "site"
+          : this.id
+          ? "staff"
+          : "",
+        filter_value: this.client_id || this.site_id || this.id || "",
+      };
+
+      this.makeFilterAPICall(filters.filter_type, filters.filter_value);
+    },
+    async makeFilterAPICall(filter_type, filter_value) {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/client_report`,
+          {
+            params: {
+              filter_type: filter_type,
+              filter_value: filter_value,
+            },
+          }
+        );
+
+        this.getClientDetail = response.data.data;
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          const errorMessages = error.response.data.error;
+          if (errorMessages === "No records found for the given filter") {
+            alert("No records found for the given filter");
+          } else {
+            alert(errorMessages);
+          }
+        } else {
+          console.error(error);
+        }
+      }
+    },
+    async getCandidateMethods() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/candidates`);
+
+        this.getCandidatesData = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+          }
+        } else {
+          // console.error("Error fetching candidates:", error);
+        }
+      }
+    },
     async getClientMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/clients`);
@@ -296,30 +376,7 @@ export default {
         }
       }
     },
-    async getEmployeeTypeMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/employment_types`);
-        this.employeeData = response.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
-    async getPositionMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
-        this.options = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
+
     async getBusinessUnitMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/activated_site`);
@@ -425,6 +482,7 @@ export default {
     //     .then((response) => (this.getVacancyDetail = response.data));
     // },
     async getClientInvoiceReport() {
+      this.isLoading = true;
       const token = localStorage.getItem("token");
       axios
         .get(`${VITE_API_URL}/client_invoices`, {
@@ -433,7 +491,10 @@ export default {
             Authorization: "bearer " + token,
           },
         })
-        .then((response) => (this.getClientInvoiceDetail = response.data.data));
+        .then((response) => (this.getClientInvoiceDetail = response.data.data))
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
   },
 
@@ -442,9 +503,9 @@ export default {
     this.getClientInvoiceReport();
     this.loadDateRangeFromLocalStorage();
     this.getBusinessUnitMethod();
-    this.getPositionMethod();
+    this.getCandidateMethods();
     this.getClientMethod();
-    this.getEmployeeTypeMethod();
+
     this.updateDateRange();
     // const currentDate = new Date();
     // const startOfWeek = new Date(currentDate);
@@ -473,7 +534,6 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-  height: 100vh;
 
   background-color: #fdce5e17;
 }

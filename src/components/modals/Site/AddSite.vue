@@ -10,7 +10,7 @@
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
               <form>
-                <div class="mb-3 d-flex justify-content-between" v-if="selectedClientId">
+                <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label for="selectClients" class="form-label">Client Name</label>
                   </div>
@@ -19,7 +19,6 @@
                       v-model="client_id"
                       id="selectClients"
                       @change="onClientSelect"
-                      :disabled="clientData.length === 0"
                     >
                       <option
                         v-for="option in clientData"
@@ -27,7 +26,6 @@
                         :value="option.id"
                         :id="option.id"
                         aria-placeholder="Select Job"
-                        :disabled="option.id !== selectedClientId"
                       >
                         {{ option.first_name }}
                       </option>
@@ -214,24 +212,25 @@ export default {
   computed: {
     isFormValid() {
       return (
-        this.client_id !== "" &&
+        this.selectedClientId !== "" &&
         this.site_name !== "" &&
         this.email !== "" &&
         this.phone_number !== "" &&
         this.address !== "" &&
         this.status !== null &&
         this.split_rate !== null &&
-        this.portal_access !== null &&
-        this.validateStatus() &&
-        this.validateSplitRate() &&
-        this.validatePortalAccess()
+        this.portal_access !== null
+        // this.validateEmailFormat(this.email) &&
+        // this.validatePhoneNumberFormat(this.phone_number) &&
+        // this.validateAddressFormat(this.address) &&
+        // this.validateSiteNameFormate(this.site_name)
       );
     },
 
-    selectClients() {
-      const client_id = this.clientData.find((option) => option.id === this.client_id);
-      return this.client_id;
-    },
+    // selectClients() {
+    //   const client_id = this.clientData.find((option) => option.id === this.client_id);
+    //   return this.first_name;
+    // },
   },
   watch: {
     client_id: "validationSelectedClient",
@@ -251,10 +250,16 @@ export default {
     notes: function (newValue) {
       this.validationNotesText = this.ValidationNotes(newValue);
     },
+    client_id(newValue) {
+      this.validationSelectedClient = this.ValidationClient(newValue);
+    },
   },
   methods: {
     validateStatus() {
       return this.status !== null;
+    },
+    ValidationClient(newValue) {
+      return !!newValue;
     },
 
     validateSplitRate() {
@@ -266,8 +271,6 @@ export default {
     },
     onClientSelect() {
       const selectedClientId = this.client_id;
-
-      this.getJobTitleMethod(selectedClientId);
     },
 
     clearFieldsData() {
@@ -294,6 +297,14 @@ export default {
     removeDate(index) {
       this.dates.splice(index, 1);
       this.clearError();
+    },
+    async getClientData() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/clients`);
+        this.clientData = response.data.data;
+      } catch (error) {
+        // console.error("Error fetching client data:", error);
+      }
     },
     async addSiteMethod() {
       this.validateEmail = this.validateEmailFormat(this.email);
@@ -407,7 +418,7 @@ export default {
       this.client_id = this.id;
     }
     // this.getClientMethod();
-
+    this.getClientData();
     this.isValidForm = this.isFormValid;
     this.clearError();
   },

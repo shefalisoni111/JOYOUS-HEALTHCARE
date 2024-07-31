@@ -15,17 +15,13 @@
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
               <form>
-                <div class="mb-3 d-flex justify-content-between" v-if="selectedClientId">
+                <!-- <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label for="selectClients" class="form-label">Client Name</label>
                   </div>
                   <div class="col-10">
-                    <select
-                      v-model="client_id"
-                      id="selectClients"
-                      class="text-black"
-                      :disabled="true"
-                    >
+                    <select v-model="client_id" id="selectClients" @change="filterData">
+                      <option value="">All Client</option>
                       <option
                         v-for="option in clientData"
                         :key="option.id"
@@ -39,7 +35,7 @@
                       >Client Required</span
                     >
                   </div>
-                </div>
+                </div> -->
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label class="form-label" for="selectBusinessUnit">Site Name</label>
@@ -190,7 +186,7 @@ import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
-  name: "AddVacancy",
+  name: "AddClientSite",
   data() {
     return {
       validationSelectedClient: true,
@@ -253,6 +249,10 @@ export default {
 
     notes: function (newValue) {
       this.validationNotesText = this.ValidationNotes(newValue);
+    },
+    id(newVal) {
+      this.client_id = newVal;
+      this.getClientMethod();
     },
   },
   methods: {
@@ -397,12 +397,10 @@ export default {
           `${VITE_API_URL}/clients/${this.$route.params.id}`
         );
 
-        if (response.data && response.data.data && response.data.data.id) {
+        if (response.data && response.data.data) {
           const client = response.data.data;
-
           this.clientData = [{ id: client.id, first_name: client.first_name }];
-        } else {
-          // console.error("Invalid response data:", response.data);
+          this.client_id = client.id;
         }
       } catch (error) {
         if (error.response) {
@@ -417,10 +415,12 @@ export default {
   },
   async beforeRouteEnter(to, from, next) {
     next((vm) => {
+      vm.client_id = to.params.id;
       vm.getClientMethod();
     });
   },
   async beforeRouteUpdate(to, from, next) {
+    this.client_id = to.params.id;
     this.getClientMethod();
 
     next();
@@ -429,11 +429,11 @@ export default {
     // if (this.id) {
     //   this.client_id = this.id;
     // }
-    // this.getClientMethod();
-    this.client_id = this.$route.params.id;
 
-    this.isValidForm = this.isFormValid;
-    this.clearError();
+    this.client_id = this.$route.params.id;
+    this.getClientMethod();
+    // this.isValidForm = this.isFormValid;
+    // this.clearError();
   },
 };
 </script>

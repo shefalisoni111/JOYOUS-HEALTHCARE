@@ -433,35 +433,12 @@ export default {
     async search() {
       try {
         this.searchResults = [];
-        let activatedStatus = null;
-
-        if (this.activeTab === 1) {
-          activatedStatus = true;
-        } else if (this.activeTab === 2) {
-          activatedStatus = false;
-        } else if (this.activeTab === 3 || this.activeTab === 4) {
-          await this.searchByStatus();
-          return;
-        } else if (this.activeTab === 0) {
-          const response = await axiosInstance.get(
-            `${VITE_API_URL}/search_candidate/${this.searchQuery}`
-          );
-
-          this.searchResults = response.data.candidate;
-        } else {
-          activatedStatus = this.activeTab === 1 ? true : false;
-        }
 
         const response = await axiosInstance.get(
-          `${VITE_API_URL}/candidate_searching_active_and_inactive`,
-          {
-            params: {
-              candidate_query: this.searchQuery,
-              activated: activatedStatus,
-              tab: this.activeTabName.toLowerCase(),
-            },
-          }
+          `${VITE_API_URL}/search_candidate/${this.searchQuery}`
         );
+
+        this.searchResults = response.data.candidate;
 
         this.searchResults = response.data;
       } catch (error) {

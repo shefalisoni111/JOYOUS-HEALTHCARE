@@ -100,15 +100,15 @@
                         {{ option.first_name }}
                       </option>
                     </select>
-                    <select v-model="business_unit_value" id="selectBusinessUnit">
+                    <select v-model="site_id" id="selectBusinessUnit">
                       <option value="">All Site</option>
                       <option
                         v-for="option in businessUnit"
                         :key="option.id"
-                        :value="option.site_name"
+                        :value="option.id"
                         placeholder="Select BusinessUnit"
                       >
-                        {{ option.name }}
+                        {{ option.site_name }}
                       </option>
                     </select>
 

@@ -17,8 +17,8 @@
             <th scope="col">Action</th>
           </tr>
         </thead>
-        <tbody v-if="getSiteInactiveData?.length > 0">
-          <tr v-for="data in getSiteInactiveData" :key="data.id">
+        <tbody v-if="paginateSiteData?.length > 0">
+          <tr v-for="data in paginateSiteData" :key="data.id">
             <!-- <td>{{ data.id }}</td> -->
             <td v-text="data.refer_code"></td>
             <td v-text="data.site_name"></td>
@@ -72,6 +72,27 @@
     </div>
     <EditSite :siteId="selectedsiteId || 0" ref="refSite" />
     <loader :isLoading="isLoading"></loader>
+    <div class="mx-3" style="text-align: right" v-if="getSiteInactiveData?.length >= 8">
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= getSiteInactiveData?.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
   </div>
 </template>
 <script>
@@ -85,10 +106,25 @@ export default {
       getSiteInactiveData: [],
       selectedsiteId: 0,
       isLoading: false,
+      currentPage: 1,
+      itemsPerPage: 11,
     };
   },
 
   components: { EditSite, Loader },
+  computed: {
+    paginateSiteData() {
+      if (this.getSiteInactiveData && Array.isArray(this.getSiteInactiveData)) {
+        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        const endIndex = startIndex + this.itemsPerPage;
+        return this.getSiteInactiveData.slice(startIndex, endIndex);
+      }
+      return [];
+    },
+    totalRecordsOnPage() {
+      return this.paginateSiteData.length;
+    },
+  },
   methods: {
     editsiteId(siteId) {
       this.selectedsiteId = siteId;
