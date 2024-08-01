@@ -24,7 +24,12 @@
                       type="email"
                       class="form-control"
                       v-model="fetchClients.email"
+                      @input="validateEmailFormat"
+                      @change="detectAutofill"
                     />
+                    <span v-if="fetchClients.email && !isEmailValid" class="text-danger">
+                      Please enter a valid email address.
+                    </span>
                   </div>
                 </div>
               </form>
@@ -34,7 +39,7 @@
             <button
               class="btn btn-secondary rounded-1"
               data-bs-target="#editClientEmail"
-              data-bs-toggle="modal"
+              @click="resetChanges"
               data-bs-dismiss="modal"
             >
               Cancel
@@ -42,7 +47,7 @@
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              @click.prevent="updateClientMethod"
+              @click.prevent="updateClientMethod()"
               :disabled="isSaveDisabled"
             >
               Save
@@ -67,6 +72,8 @@ export default {
 
         email: "",
       },
+      originalData: null,
+      emailValid: true,
     };
   },
   props: {
@@ -77,21 +84,36 @@ export default {
   },
   computed: {
     isEmailValid() {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailRegex.test(this.fetchClients.email);
+      return this.emailValid;
     },
     isSaveDisabled() {
-      return !this.isEmailValid;
+      return !this.emailValid;
     },
   },
   components: { SuccessAlert },
   methods: {
+    detectAutofill() {
+      setTimeout(() => {
+        const isAutofilled = this.fetchClients.email !== "";
+        this.emailValid = isAutofilled
+          ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.fetchClients.email)
+          : false;
+      }, 100);
+    },
+    resetChanges() {
+      this.fetchClients = { ...this.originalData };
+    },
+    validateEmailFormat() {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      this.emailValid = emailRegex.test(this.fetchClients.email);
+    },
     async fetchClientsMethod(id) {
       if (!id) return;
       try {
         const response = await axios.get(`${VITE_API_URL}/clients/${id}`);
 
-        this.fetchClients = { ...this.fetchClients, ...response.data.data };
+        this.fetchClients = { ...this.fetchClients, ...response.data };
+        this.originalData = { ...this.fetchClients };
       } catch (error) {
         // console.error("Error fetching todo:", error);
       }
@@ -124,7 +146,7 @@ export default {
   },
   async beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.fetchClientsMethod(this.$route.params.id);
+      vm.fetchClientsMethod(vm.$route.params.id);
     });
   },
   async beforeRouteUpdate(to, from, next) {

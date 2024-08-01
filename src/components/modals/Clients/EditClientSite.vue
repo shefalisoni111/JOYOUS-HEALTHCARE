@@ -41,11 +41,15 @@
                       type="email"
                       class="form-control"
                       v-model="fetchSite.email"
-                      @input="validateEmailFormat(email)"
+                      @input="validateEmailFormat"
                       @change="detectAutofill"
                       ref="email"
                       autocomplete="new-email"
                     />
+
+                    <span v-if="fetchSite.email && !isEmailValid" class="text-danger">
+                      Please enter a valid email address.
+                    </span>
                     <!-- <span
                               v-if="email && !validateEmailFormat(email)"
                               class="text-danger"
@@ -64,6 +68,8 @@
                       v-model="fetchSite.phone_number"
                       @input="cleanPhoneNumber"
                       @change="detectAutofill"
+                      inputmode="numeric"
+                      pattern="[0-9]*"
                     />
                     <!-- <span v-if="!validatePhoneNumber" class="text-danger"
                             >Invalid Phone Number</span
@@ -82,7 +88,7 @@
             <button
               class="btn btn-secondary rounded-1"
               data-bs-target="#editClientSite"
-              data-bs-toggle="modal"
+              @click="resetChanges"
               data-bs-dismiss="modal"
             >
               Cancel
@@ -91,6 +97,7 @@
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="updateVacancyMethod()"
+              :disabled="isSaveDisabled"
             >
               Save
             </button>
@@ -123,6 +130,8 @@ export default {
       },
 
       clientData: [],
+      emailValid: true,
+      originalData: null,
     };
   },
   props: {
@@ -151,10 +160,30 @@ export default {
     getVacancyDetail() {
       return this.$store.state.vacancies;
     },
+    isPhoneNumberValid() {
+      // return /^[0-9]{10}$/.test(this.fetchSite.phone_number);
+      return /^[789]\d{9}$/.test(this.fetchSite.phone_number);
+    },
+    isEmailValid() {
+      return this.emailValid;
+    },
+    isSaveDisabled() {
+      return !this.isPhoneNumberValid && !this.emailValid;
+    },
   },
   methods: {
+    resetChanges() {
+      this.fetchSite = { ...this.originalData };
+    },
+    validateEmailFormat() {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      this.emailValid = emailRegex.test(this.fetchSite.email);
+    },
     removeDate(index) {
       this.fetchSite.dates.splice(index, 1);
+    },
+    cleanPhoneNumber() {
+      this.fetchSite.phone_number = this.fetchSite.phone_number.replace(/\D/g, "");
     },
     formatDate(date) {
       const [day, month, year] = date.split("-");
@@ -176,6 +205,7 @@ export default {
         this.fetchSite.address = response.data.data.address;
         this.fetchSite.phone_number = response.data.data.phone_number;
         this.fetchSite.email = response.data.data.email;
+        this.originalData = { ...this.fetchSite };
       } catch (error) {}
     },
 

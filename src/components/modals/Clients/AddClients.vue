@@ -97,36 +97,39 @@
                 </div>
                 <div class="mb-3">
                   <div class="col-12">
-                    <label class="form-label">password</label>
+                    <label class="form-label">Password</label>
                   </div>
                   <div class="col-12">
                     <input
                       type="password"
                       class="form-control"
                       v-model="password"
+                      @input="validatePasswordCriteria"
                       @change="detectAutofill"
                       ref="password"
                       autocomplete="new-password"
                     />
-                    <span v-if="showPasswordRequiredMessage" class="text-danger">
-                      Password is required
+                    <span v-if="password && !isPasswordValid" class="text-danger">
+                      Password must be at least 8 characters long and include uppercase,
+                      lowercase, numeric, and special characters.
                     </span>
                   </div>
                 </div>
                 <div class="mb-3">
                   <div class="col-12">
-                    <label class="form-label">Confirm-Password</label>
+                    <label class="form-label">Confirm Password</label>
                   </div>
                   <div class="col-12">
                     <input
                       type="password"
                       class="form-control"
                       v-model="confirm_password"
-                      @input="validateConfirmPassword"
+                      @input="validatePasswordMatch"
+                      @change="detectAutofill"
                     />
-                    <span v-if="!passwordsMatch" class="text-danger"
-                      >Passwords do not Match</span
-                    >
+                    <span v-if="confirm_password && !passwordsMatch" class="text-danger">
+                      Passwords do not match.
+                    </span>
                   </div>
                 </div>
                 <div class="mb-3">
@@ -274,6 +277,15 @@ export default {
       this.email = "";
       this.password = "";
       this.confirm_password = "";
+    },
+    validatePasswordCriteria() {
+      const sanitizedPassword = this.password.replace(/\s+/g, "");
+
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+      this.isPasswordValid = passwordRegex.test(sanitizedPassword);
+
+      this.password = sanitizedPassword;
+      this.validatePasswordMatch();
     },
     validatePasswordMatch() {
       this.passwordsMatch = this.password === this.confirm_password;

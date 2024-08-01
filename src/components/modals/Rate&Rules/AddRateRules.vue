@@ -11,6 +11,12 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addRateRules">Add Rate</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body mx-3" style="height: 600px; overflow: auto">
             <div class="row g-3 align-items-center">
@@ -1002,59 +1008,6 @@ export default {
 
   components: { SuccessAlert },
   computed: {
-    // isFormValid() {
-    //   const site_id_valid = this.selectedSiteId !== null;
-    //   const job_id_valid = this.selectedJobId !== null;
-
-    //   const night_shift_id_valid = this.night_shift_id !== null;
-    //   const client_id_valid = this.client_id !== null;
-    //   const night_start_time_valid = this.night_start_time !== "";
-    //   const night_end_time_valid = this.night_end_time !== "";
-    //   const selectedClientRate_valid = this.areAllFieldsFilled(this.selectedClientRate);
-    //   const selectedRateType_valid = this.areAllFieldsFilled(this.selectedRateType);
-    //   const selectedPrivateLimited_valid = this.areAllFieldsFilled(
-    //     this.selectedPrivateLimited
-    //   );
-    //   const selectedSelfEmployee_valid = this.areAllFieldsFilled(
-    //     this.selectedSelfEmployee
-    //   );
-    //   const selectedUmbrella_valid = this.areAllFieldsFilled(this.selectedUmbrella);
-    //   const selectedPaye_valid = this.areAllFieldsFilled(this.selectedPaye);
-    //   const holiday_start_time_valid = this.holiday_start_time !== "";
-    //   const holiday_end_time_valid = this.holiday_end_time !== "";
-    //   const holiday_night_start_time_valid = this.holiday_night_start_time !== "";
-    //   const holiday_night_end_time_valid = this.holiday_night_end_time !== "";
-    //   const day_start_time_valid = this.day_start_time !== "";
-    //   const day_end_time_valid = this.day_end_time !== "";
-    //   const dayShiftId_valid = this.dayShiftId !== null;
-    //   const nightShiftId_valid = this.nightShiftId !== null;
-    //   const day_shift_id_valid = this.day_shift_id !== null;
-
-    //   const allFieldsFilled =
-    //     site_id_valid &&
-    //     job_id_valid &&
-    //     night_shift_id_valid &&
-    //     client_id_valid &&
-    //     night_start_time_valid &&
-    //     night_end_time_valid &&
-    //     selectedClientRate_valid &&
-    //     selectedRateType_valid &&
-    //     selectedPrivateLimited_valid &&
-    //     selectedSelfEmployee_valid &&
-    //     selectedUmbrella_valid &&
-    //     selectedPaye_valid &&
-    //     holiday_start_time_valid &&
-    //     holiday_end_time_valid &&
-    //     holiday_night_start_time_valid &&
-    //     holiday_night_end_time_valid &&
-    //     day_start_time_valid &&
-    //     day_end_time_valid &&
-    //     dayShiftId_valid &&
-    //     nightShiftId_valid &&
-    //     day_shift_id_valid;
-    //   return allFieldsFilled;
-    // },
-
     selectClients() {
       const client_id = this.clientData.find((option) => option.id === this.client_id);
       return this.client_id;

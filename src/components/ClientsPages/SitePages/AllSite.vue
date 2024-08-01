@@ -169,7 +169,7 @@
     />
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
-    <div class="mx-3" style="text-align: right" v-if="getSiteAllData?.length >= 8">
+    <div class="mx-3" style="text-align: right" v-if="getSiteAllData?.length >= 10">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -208,7 +208,7 @@ export default {
       showFilters: false,
       getSiteDetail: [],
       currentPage: 1,
-      itemsPerPage: 11,
+      itemsPerPage: 10,
       siteIds: [],
       isLoading: false,
       checkedSites: reactive({}),

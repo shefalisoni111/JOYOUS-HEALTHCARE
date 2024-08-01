@@ -193,23 +193,25 @@
         </tbody>
       </table>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="getClientDetail.length >= 10">
+    <div class="mx-3" style="text-align: right" v-if="getClientDetail?.length > 0">
       <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
+        {{ itemsPerPage }} Records Per Page
       </button>
       &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary mr-2"
         :disabled="currentPage === 1"
-        @click="currentPage--"
+        @click="changePage(currentPage - 1)"
       >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
+        Previous
+      </button>
+      &nbsp;&nbsp;
+      <span>{{ currentPage }} of {{ totalPages }}</span>
+      &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getClientDetail.length"
-        @click="currentPage++"
+        :disabled="currentPage === totalPages"
+        @click="changePage(currentPage + 1)"
       >
         Next
       </button>
@@ -240,6 +242,7 @@ export default {
       isActive: true,
       searchQuery: "",
       currentPage: 1,
+      totalPages: 1,
       itemsPerPage: 10,
       activated: false,
       showFilters: false,
@@ -281,6 +284,11 @@ export default {
     });
   },
   methods: {
+    async changePage(newPage) {
+      if (newPage < 1 || newPage > this.totalPages) return;
+      this.currentPage = newPage;
+      await this.createdClient();
+    },
     toggleFilters() {
       this.showFilters = !this.showFilters;
     },
@@ -300,6 +308,8 @@ export default {
         });
 
         this.getClientDetail = response.data.data;
+        this.totalPages = response.data.total_pages;
+        this.currentPage = 1;
       } catch (error) {
         if (error.response && error.response.status === 404) {
           const errorMessages = error.response.data.error;
@@ -510,8 +520,15 @@ export default {
     async createdClient() {
       this.isLoading = true;
       try {
-        const response = await axios.get(`${VITE_API_URL}/clients`);
+        const response = await axios.get(`${VITE_API_URL}/clients`, {
+          params: {
+            filter_value: "true",
+            page: this.currentPage,
+          },
+        });
         this.getClientDetail = response.data.data;
+        this.currentPage = response.data.current_page;
+        this.totalPages = response.data.total_pages;
       } catch (error) {
         // console.error('Error fetching client data:', error);
       } finally {

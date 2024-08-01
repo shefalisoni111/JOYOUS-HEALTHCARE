@@ -37,7 +37,7 @@
             <button
               class="btn btn-secondary rounded-1"
               data-bs-target="#editClientContact"
-              data-bs-toggle="modal"
+              @click="resetChanges"
               data-bs-dismiss="modal"
             >
               Cancel
@@ -72,6 +72,8 @@ export default {
 
         error: [],
       },
+      originalData: null,
+      emailValid: true,
     };
   },
   props: {
@@ -82,7 +84,8 @@ export default {
   },
   computed: {
     isPhoneNumberValid() {
-      return /^[0-9]{10}$/.test(this.fetchClients.phone_number);
+      // return /^[0-9]{10}$/.test(this.fetchClients.phone_number);
+      return /^[789]\d{9}$/.test(this.fetchClients.phone_number);
     },
     isSaveDisabled() {
       return !this.isPhoneNumberValid;
@@ -90,15 +93,20 @@ export default {
   },
   components: { SuccessAlert },
   methods: {
+    resetChanges() {
+      this.fetchClients = { ...this.originalData };
+    },
     cleanPhoneNumber() {
       this.fetchClients.phone_number = this.fetchClients.phone_number.replace(/\D/g, "");
     },
+
     async fetchClientsMethod(id) {
       if (!id) return;
       try {
         const response = await axios.get(`${VITE_API_URL}/clients/${id}`);
 
-        this.fetchClients = { ...this.fetchClients, ...response.data.data };
+        this.fetchClients = { ...this.fetchClients, ...response.data };
+        this.originalData = { ...this.fetchClients };
       } catch (error) {
         // console.error("Error fetching todo:", error);
       }

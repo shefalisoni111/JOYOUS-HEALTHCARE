@@ -72,7 +72,7 @@
     </div>
     <EditSite :siteId="selectedsiteId || 0" ref="refSite" />
     <loader :isLoading="isLoading"></loader>
-    <div class="mx-3" style="text-align: right" v-if="getSiteInactiveData?.length >= 8">
+    <div class="mx-3" style="text-align: right" v-if="getSiteInactiveData?.length >= 10">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -107,7 +107,7 @@ export default {
       selectedsiteId: 0,
       isLoading: false,
       currentPage: 1,
-      itemsPerPage: 11,
+      itemsPerPage: 10,
     };
   },
 

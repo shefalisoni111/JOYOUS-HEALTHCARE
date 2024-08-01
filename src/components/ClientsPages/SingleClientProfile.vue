@@ -59,7 +59,7 @@
                 class="position-absolute p-2 z-1 text-white text-capitalize tag"
                 style="background: #68a325; margin-left: -7px"
               >
-                Active
+                {{ getClientDatas?.activated ? "Active" : "In-Active" }}
               </h6>
               <img
                 src="./location.jpg"

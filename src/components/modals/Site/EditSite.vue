@@ -78,11 +78,13 @@
                       type="email"
                       class="form-control"
                       v-model="fetchSite.email"
-                      @input="validateEmailFormat(email)"
-                      @change="detectAutofill"
+                      @input="validateEmailFormat"
                       ref="email"
                       autocomplete="new-email"
                     />
+                    <span v-if="fetchSite.email && !isEmailValid" class="text-danger">
+                      Invalid Email format
+                    </span>
                     <!-- <span
                             v-if="email && !validateEmailFormat(email)"
                             class="text-danger"
@@ -153,7 +155,7 @@
             <button
               class="btn btn-secondary rounded-1"
               data-bs-target="#editSite"
-              data-bs-toggle="modal"
+              @click="resetChanges"
               data-bs-dismiss="modal"
             >
               Cancel
@@ -199,6 +201,8 @@ export default {
       },
 
       clientData: [],
+      originalData: null,
+      emailValid: true,
     };
   },
   props: {
@@ -232,14 +236,20 @@ export default {
     },
 
     isEmailValid() {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailRegex.test(this.fetchSite.email);
+      return this.emailValid;
     },
     isSaveDisabled() {
       return !this.isPhoneNumberValid || !this.isEmailValid;
     },
   },
   methods: {
+    validateEmailFormat() {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      this.emailValid = emailRegex.test(this.fetchSite.email);
+    },
+    resetChanges() {
+      this.fetchSite = { ...this.originalData };
+    },
     removeDate(index) {
       this.fetchSite.dates.splice(index, 1);
     },
@@ -268,6 +278,8 @@ export default {
         this.fetchSite.split_rate = response.data.data.split_rate;
         this.fetchSite.status = response.data.data.status;
         this.fetchSite.portal_access = response.data.data.portal_access;
+
+        this.originalData = { ...this.fetchSite };
       } catch (error) {}
     },
 
