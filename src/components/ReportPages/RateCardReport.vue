@@ -412,7 +412,7 @@ export default {
           if (errorMessages === "No records found for the given filter") {
             alert("No records found for the given filter");
           } else {
-            alert(errorMessages);
+            // alert(errorMessages);
           }
         } else {
           // console.error(error);

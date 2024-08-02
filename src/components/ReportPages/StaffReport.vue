@@ -193,8 +193,8 @@
                           <td scope="col">{{ data.id }}</td>
                           <td scope="col">{{ data.code }}</td>
                           <td scope="col">{{ data.name }}</td>
-                          <td scope="col">{{ data.site }}</td>
-                          <td scope="col">{{ data.job }}</td>
+                          <td scope="col">{{ data.site ? data.site : "null" }}</td>
+                          <td scope="col">{{ data.job ? data.job : "null" }}</td>
                           <td scope="col">{{ data.shift_date }}</td>
                           <td scope="col">
                             {{ data.start_time ? data.start_time : "null" }}
@@ -415,7 +415,7 @@ export default {
             alert(errorMessages);
           }
         } else {
-          console.error(error);
+          // console.error(error);
         }
       }
     },

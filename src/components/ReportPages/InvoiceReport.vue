@@ -178,7 +178,7 @@
                           <th scope="col">Status</th>
                         </tr>
                       </thead>
-                      <tbody v-if="paginateClientReport?.lenght > 0">
+                      <tbody v-if="paginateClientReport?.length > 0">
                         <tr v-for="(data, index) in paginateClientReport" :key="index">
                           <td scope="col">{{ index + 1 }}</td>
                           <td scope="col">{{ data.client }}</td>
@@ -359,7 +359,7 @@ export default {
         filter_value: this.client_id || this.site_id || this.id || "",
       };
 
-      this.makeFilterAPICall(filters.filter_type, filters.filter_value);
+      await this.makeFilterAPICall(filters.filter_type, filters.filter_value);
     },
     async makeFilterAPICall(filter_type, filter_value) {
       try {
@@ -378,14 +378,11 @@ export default {
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {
-          const errorMessages = error.response.data.error;
-          if (errorMessages === "No records found for the given filter") {
-            alert("No records found for the given filter");
-          } else {
-            alert(errorMessages);
-          }
+          // Handle 404 error specifically
+          // alert("No records found for the given filter.");
         } else {
-          console.error(error);
+          // Handle other errors
+          // alert("An unexpected error occurred. Please try again later.");
         }
       }
     },
