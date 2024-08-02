@@ -63,25 +63,25 @@
 </template>
 
 <script>
-import PayrollReport from "../components/ReportPages/PayrollReport.vue";
+// import PayrollReport from "../components/ReportPages/PayrollReport.vue";
 import StaffReport from "../components/ReportPages/StaffReport.vue";
 import ClientReport from "../components/ReportPages/ClientReport.vue";
 import BusinessUnitReport from "../components/ReportPages/BusinessUnitReport.vue";
 import InvoiceReport from "../components/ReportPages/InvoiceReport.vue";
 import DocumentReport from "../components/ReportPages/DocumentReport.vue";
 import RateCardReport from "../components/ReportPages/RateCardReport.vue";
-import EmailReport from "../components/ReportPages/EmailReport.vue";
+// import EmailReport from "../components/ReportPages/EmailReport.vue";
 
 export default {
   name: "ReportView",
   data() {
     return {
       tabs: [
-        {
-          name: "Payroll Report ",
-          component: "PayrollReport",
-          routeName: "PayrollReport",
-        },
+        // {
+        //   name: "Payroll Report ",
+        //   component: "PayrollReport",
+        //   routeName: "PayrollReport",
+        // },
         { name: "Staff Report ", component: "StaffReport", routeName: "StaffReport" },
         {
           name: "Client Report ",
@@ -108,11 +108,11 @@ export default {
           component: "RateCardReport",
           routeName: "RateCardReport",
         },
-        {
-          name: "EmailReport",
-          component: "EmailReport",
-          routeName: "EmailReport",
-        },
+        // {
+        //   name: "EmailReport",
+        //   component: "EmailReport",
+        //   routeName: "EmailReport",
+        // },
       ],
       activeTab: 0,
       activeTabName: "",
@@ -124,14 +124,14 @@ export default {
     },
   },
   components: {
-    PayrollReport,
+    // PayrollReport,
     StaffReport,
     ClientReport,
     BusinessUnitReport,
     InvoiceReport,
     DocumentReport,
     RateCardReport,
-    EmailReport,
+    // EmailReport,
   },
 
   methods: {

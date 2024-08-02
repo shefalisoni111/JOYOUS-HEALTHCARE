@@ -13,7 +13,7 @@
                     <option
                       v-for="option in clientData"
                       :key="option.id"
-                      :value="option.id"
+                      :value="option.first_name"
                       aria-placeholder="Select Job"
                     >
                       {{ option.first_name }}
@@ -24,7 +24,7 @@
                     <option
                       v-for="option in businessUnit"
                       :key="option.id"
-                      :value="option.id"
+                      :value="option.site_name"
                       placeholder="Select BusinessUnit"
                     >
                       {{ option.site_name }}
@@ -36,7 +36,7 @@
                     <option
                       v-for="option in getCandidatesData"
                       :key="option.id"
-                      :value="option.id"
+                      :value="option.first_name"
                       placeholder="Select Staff"
                     >
                       {{ option.first_name + option.last_name }}
@@ -136,7 +136,7 @@
                     role="tabpanel"
                     aria-labelledby="pills-home-tab"
                   >
-                    <table class="table reportTable">
+                    <!-- <table class="table reportTable">
                       <thead>
                         <tr>
                           <th scope="col">Sl No</th>
@@ -173,6 +173,96 @@
                           <td><button class="btn btn-success">Approved</button></td>
                         </tr>
                       </tbody>
+                    </table> -->
+                    <table class="table reportTable">
+                      <thead>
+                        <tr>
+                          <th>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" />
+                            </div>
+                          </th>
+                          <th scope="col">ID</th>
+                          <th scope="col">Code</th>
+                          <th scope="col" style="width: 153px">Name</th>
+                          <th scope="col">Site</th>
+                          <th scope="col">Job</th>
+                          <th scope="col">Shift Date</th>
+                          <th scope="col">Start Time</th>
+                          <th scope="col">End Time</th>
+                          <th scope="col">Total Hours</th>
+                          <th scope="col">Client Rate</th>
+                          <th scope="col">Total Cost</th>
+                          <th scope="col">Paper TimeSheet</th>
+                          <th scope="col">Approved</th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="paginateCandidates?.length > 0">
+                        <tr v-for="data in paginateCandidates" :key="data.id">
+                          <td>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" />
+                            </div>
+                          </td>
+                          <td scope="col">{{ data.id }}</td>
+                          <td scope="col">{{ data.code }}</td>
+                          <td scope="col">{{ data.name }}</td>
+                          <td scope="col">{{ data.site }}</td>
+                          <td scope="col">{{ data.job }}</td>
+                          <td scope="col">{{ data.shift_date }}</td>
+                          <td scope="col">
+                            {{ data.start_time ? data.start_time : "null" }}
+                          </td>
+                          <td scope="col">
+                            {{ data.end_time ? data.end_time : "null" }}
+                          </td>
+                          <td scope="col">
+                            {{ data.total_hours ? data.total_hours : "null" }}
+                          </td>
+                          <td scope="col">
+                            {{ data.client_rate ? data.client_rate : "null" }}
+                          </td>
+                          <td scope="col">
+                            {{ data.total_cost ? data.total_cost : "null" }}
+                          </td>
+                          <td scope="col">
+                            <div v-if="data.paper_timesheet">
+                              <img
+                                :src="fullPaperTimeSheetUrl(data.paper_timesheet)"
+                                alt="Current Paper TimeSheet"
+                                class="img-fluid"
+                                style="width: 60px"
+                              />
+                              &nbsp;
+                              <button
+                                type="button"
+                                class="btn border-primary-subtle"
+                                data-bs-toggle="modal"
+                                data-bs-target="#viewPaperTimeSheet"
+                                @click="viewPaperSheet(data.id)"
+                              >
+                                <i class="bi bi-eye"></i>
+                              </button>
+                            </div>
+                            <div v-else>Null</div>
+                          </td>
+                          <td scope="col">
+                            {{ data.approved_hour ? "Approved" : "Not Approved" }}
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr v-if="errorMessageFilter">
+                          <td colspan="15" class="text-danger text-center">
+                            {{ errorMessageFilter }}
+                          </td>
+                        </tr>
+                        <tr v-else>
+                          <td colspan="15" class="text-danger text-center">
+                            {{ errorMessageCustom }}
+                          </td>
+                        </tr>
+                      </tbody>
                     </table>
                   </div>
                   <div
@@ -190,11 +280,7 @@
         </div>
       </div>
     </div>
-    <div
-      class="mx-3"
-      style="text-align: right"
-      v-if="getClientInvoiceDetail?.length >= 8"
-    >
+    <div class="mx-3" style="text-align: right" v-if="getSiteReportData?.length >= 8">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -209,7 +295,7 @@
       >&nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getClientInvoiceDetail?.length"
+        :disabled="currentPage * itemsPerPage >= getSiteReportData?.length"
         @click="currentPage++"
       >
         Next
@@ -222,11 +308,10 @@
 import axios from "axios";
 import Navbar from "../Navbar.vue";
 import Loader from "../Loader/Loader.vue";
-
 export default {
   data() {
     return {
-      currentView: "weekly",
+      currentView: "monthly",
       daysOfWeek: [
         "Sunday",
         "Monday",
@@ -238,20 +323,20 @@ export default {
       ],
       startDate: new Date(),
       endDate: new Date(),
+      currentPage: 1,
+      itemsPerPage: 10,
+      errorMessageCustom: "",
       client_id: "",
       clientData: [],
-      currentPage: 1,
-      itemsPerPage: 9,
       isLoading: false,
       site_id: "",
       businessUnit: [],
-      getCandidatesData: [],
-      getClientInvoiceDetail: [],
       job_id: "",
       options: [],
-      employeeData: [],
-      employment_type_id: "",
       id: "",
+      errorMessageFilter: "",
+      getSiteReportData: [],
+      getCandidatesData: [],
     };
   },
   components: { Navbar, Loader },
@@ -261,18 +346,24 @@ export default {
       return site_id ? site_id.site_name : "";
     },
     selectedOptionText() {
-      const id = this.options.find((option) => option.id === this.id);
-      return id ? id.name : "";
+      const job_id = this.options.find((option) => option.id === this.job_id);
+      return job_id ? job_id.name : "";
     },
-    selectClients() {
-      const client_id = this.clientData.find((option) => option.id === this.client_id);
-      return client_id ? client_id.first_name : "";
+    selectStaff() {
+      const id = this.candidateLists.find((option) => option.id === this.id);
+      return id ? id.first_name : "";
     },
-    selectEmployeeType() {
-      const employment_type_id = this.employeeData.find(
-        (option) => option.id === this.employment_type_id
-      );
-      return employment_type_id ? employment_type_id.title : "";
+    paginateCandidates() {
+      if (!this.getSiteReportData) {
+        return [];
+      }
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.getSiteReportData.slice(startIndex, endIndex);
+    },
+
+    totalRecordsOnPage() {
+      return this.paginateCandidates.length;
     },
     getWeekDates() {
       const currentDate = new Date();
@@ -297,17 +388,6 @@ export default {
       const monthDates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
       return monthDates;
     },
-    paginateClientReport() {
-      if (!Array.isArray(this.getClientInvoiceDetail)) {
-        return [];
-      }
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.getClientInvoiceDetail.slice(startIndex, endIndex);
-    },
-    totalRecordsOnPage() {
-      return this.paginateClientReport.length;
-    },
   },
   methods: {
     async filterData() {
@@ -326,17 +406,20 @@ export default {
     },
     async makeFilterAPICall(filter_type, filter_value) {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/client_report`,
-          {
-            params: {
-              filter_type: filter_type,
-              filter_value: filter_value,
-            },
-          }
-        );
+        const response = await axios.get(`${VITE_API_URL}/client_report`, {
+          params: {
+            filter_type: filter_type,
+            filter_value: filter_value,
+          },
+        });
 
-        this.getClientDetail = response.data.data;
+        this.getSiteReportData = response.data.data || [];
+
+        if (this.getSiteReportData.length === 0) {
+          this.errorMessageFilter = "Report not Found!";
+        } else {
+          this.errorMessageFilter = "";
+        }
       } catch (error) {
         if (error.response && error.response.status === 404) {
           const errorMessages = error.response.data.error;
@@ -347,20 +430,6 @@ export default {
           }
         } else {
           console.error(error);
-        }
-      }
-    },
-    async getCandidateMethods() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/candidates`);
-
-        this.getCandidatesData = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-          }
-        } else {
-          // console.error("Error fetching candidates:", error);
         }
       }
     },
@@ -376,11 +445,68 @@ export default {
         }
       }
     },
-
+    async getSiteReportMethod() {
+      this.isLoading = true;
+      const token = localStorage.getItem("token");
+      const startOfMonth = new Date(
+        this.startDate.getFullYear(),
+        this.startDate.getMonth(),
+        1
+      );
+      const endOfMonth = new Date(
+        this.endDate.getFullYear(),
+        this.endDate.getMonth() + 1,
+        0
+      );
+      const formatDate = (date) => {
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+      };
+      const requestData = {
+        date: formatDate(startOfMonth),
+        // end_date: endOfMonth.toLocaleDateString(),
+      };
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/find_custom_timesheet_according_mounth`,
+          {
+            params: requestData,
+            headers: {
+              Authorization: "bearer " + token,
+            },
+          }
+        );
+        this.getSiteReportData = response.data.custom_timesheets;
+        if (this.getSiteReportData.length === 0) {
+          this.errorMessageCustom = "No Custom timesheets found for the specified month";
+        } else {
+          this.errorMessageCustom = "";
+        }
+      } catch (error) {
+        console.error("Error fetching custom timesheets:", error);
+      } finally {
+        this.isLoading = false;
+      }
+    },
     async getBusinessUnitMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/activated_site`);
         this.businessUnit = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    async getCandidateListMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/candidates`);
+        this.getCandidatesData = response.data.data;
+        this.candidateStatus = response.data.data.status;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
@@ -402,6 +528,7 @@ export default {
           0
         );
       }
+      this.getSiteReportMethod();
     },
     moveToNext() {
       if (this.currentView === "weekly") {
@@ -416,6 +543,7 @@ export default {
           0
         );
       }
+      this.getSiteReportMethod();
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
@@ -481,31 +609,33 @@ export default {
     //     })
     //     .then((response) => (this.getVacancyDetail = response.data));
     // },
-    async getClientInvoiceReport() {
-      this.isLoading = true;
-      const token = localStorage.getItem("token");
-      axios
-        .get(`${VITE_API_URL}/client_invoices`, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: "bearer " + token,
-          },
-        })
-        .then((response) => (this.getClientInvoiceDetail = response.data.data))
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
   },
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.getClientMethod();
+      vm.getBusinessUnitMethod();
+      vm.updateDateRange();
+      vm.getCandidateListMethod();
+      vm.getSiteReportMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.getBusinessUnitMethod();
 
+    this.getClientMethod();
+    this.getCandidateListMethod();
+    this.updateDateRange();
+    this.getSiteReportMethod();
+    next();
+  },
   mounted() {
     // this.createVacancy();
-    this.getClientInvoiceReport();
+    this.currentView = "monthly";
     this.loadDateRangeFromLocalStorage();
     this.getBusinessUnitMethod();
-    this.getCandidateMethods();
+    this.getCandidateListMethod();
     this.getClientMethod();
-
+    this.getSiteReportMethod();
     this.updateDateRange();
     // const currentDate = new Date();
     // const startOfWeek = new Date(currentDate);

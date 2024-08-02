@@ -13,7 +13,7 @@
                     <option
                       v-for="option in clientData"
                       :key="option.id"
-                      :value="option.id"
+                      :value="option.first_name"
                       aria-placeholder="Select Job"
                     >
                       {{ option.first_name }}
@@ -24,7 +24,7 @@
                     <option
                       v-for="option in businessUnit"
                       :key="option.id"
-                      :value="option.id"
+                      :value="option.site_name"
                       placeholder="Select BusinessUnit"
                     >
                       {{ option.site_name }}
@@ -36,7 +36,7 @@
                     <option
                       v-for="option in getCandidatesData"
                       :key="option.id"
-                      :value="option.id"
+                      :value="option.first_name"
                       placeholder="Select Staff"
                     >
                       {{ option.first_name + option.last_name }}
@@ -178,7 +178,7 @@
                           <th scope="col">Status</th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody v-if="paginateClientReport?.lenght > 0">
                         <tr v-for="(data, index) in paginateClientReport" :key="index">
                           <td scope="col">{{ index + 1 }}</td>
                           <td scope="col">{{ data.client }}</td>
@@ -195,6 +195,18 @@
                           <td scope="col">{{ data.invoice_creation_period }}</td>
 
                           <td><button class="btn btn-success">Approved</button></td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr v-if="errorMessageFilter">
+                          <td colspan="12" class="text-danger text-center">
+                            {{ errorMessageFilter }}
+                          </td>
+                        </tr>
+                        <tr v-else>
+                          <td colspan="12" class="text-danger text-center">
+                            {{ errorMessageCustom }}
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -239,11 +251,13 @@
         Next
       </button>
     </div>
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 <script>
 import axios from "axios";
 import Navbar from "../Navbar.vue";
+import Loader from "../Loader/Loader.vue";
 export default {
   data() {
     return {
@@ -263,10 +277,13 @@ export default {
       clientData: [],
       currentPage: 1,
       itemsPerPage: 9,
+      isLoading: false,
       site_id: "",
       businessUnit: [],
       job_id: "",
       options: [],
+      errorMessageFilter: "",
+      errorMessageCustom: "",
       getClientInvoiceDetail: [],
       employeeData: [],
       employment_type_id: "",
@@ -274,7 +291,7 @@ export default {
       getCandidatesData: [],
     };
   },
-  components: { Navbar },
+  components: { Navbar, Loader },
   computed: {
     paginateClientReport() {
       if (!Array.isArray(this.getClientInvoiceDetail)) {
@@ -346,17 +363,19 @@ export default {
     },
     async makeFilterAPICall(filter_type, filter_value) {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/invoice_report_filter`,
-          {
-            params: {
-              filter_type: filter_type,
-              filter_value: filter_value,
-            },
-          }
-        );
+        const response = await axios.get(`${VITE_API_URL}/invoice_report_filter`, {
+          params: {
+            filter_type: filter_type,
+            filter_value: filter_value,
+          },
+        });
 
-        this.getClientDetail = response.data.data;
+        this.getClientInvoiceDetail = response.data.data || [];
+        if (this.getClientInvoiceDetail.length === 0) {
+          this.errorMessageFilter = "Report not Found!";
+        } else {
+          this.errorMessageFilter = "";
+        }
       } catch (error) {
         if (error.response && error.response.status === 404) {
           const errorMessages = error.response.data.error;

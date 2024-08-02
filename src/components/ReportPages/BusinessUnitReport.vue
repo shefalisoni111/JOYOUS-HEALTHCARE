@@ -24,7 +24,7 @@
                     <option
                       v-for="option in businessUnit"
                       :key="option.id"
-                      :value="option.id"
+                      :value="option.site_name"
                       placeholder="Select BusinessUnit"
                     >
                       {{ option.site_name }}
@@ -36,7 +36,7 @@
                     <option
                       v-for="option in candidateLists"
                       :key="option.id"
-                      :value="option.id"
+                      :value="option.first_name"
                       placeholder="Select Staff"
                     >
                       {{ option.first_name + option.last_name }}
@@ -160,7 +160,7 @@
                         </tr>
                       </tbody>
                     </table> -->
-                    <table class="table candidateTable">
+                    <table class="table reportTable">
                       <thead>
                         <tr>
                           <th>
@@ -238,8 +238,13 @@
                         </tr>
                       </tbody>
                       <tbody v-else>
-                        <tr>
-                          <td colspan="15" class="text-danger text-center">
+                        <tr v-if="errorMessageFilter">
+                          <td colspan="14" class="text-danger text-center">
+                            {{ errorMessageFilter }}
+                          </td>
+                        </tr>
+                        <tr v-else>
+                          <td colspan="14" class="text-danger text-center">
                             {{ errorMessageCustom }}
                           </td>
                         </tr>
@@ -286,11 +291,13 @@
         Next
       </button>
     </div>
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 <script>
 import axios from "axios";
 import Navbar from "../Navbar.vue";
+import Loader from "../Loader/Loader.vue";
 export default {
   data() {
     return {
@@ -315,12 +322,14 @@ export default {
       businessUnit: [],
       job_id: "",
       options: [],
+      errorMessageFilter: "",
       id: "",
       candidateLists: [],
       getSiteReportData: [],
+      isLoading: false,
     };
   },
-  components: { Navbar },
+  components: { Navbar, Loader },
   computed: {
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
@@ -370,7 +379,7 @@ export default {
   methods: {
     async filterData() {
       const filters = {
-        filter_type: this.job_id
+        filter_type: this.client_id
           ? "client"
           : this.site_id
           ? "site"
@@ -384,17 +393,20 @@ export default {
     },
     async makeFilterAPICall(filter_type, filter_value) {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/invoice_report_filter`,
-          {
-            params: {
-              filter_type: filter_type,
-              filter_value: filter_value,
-            },
-          }
-        );
+        const response = await axios.get(`${VITE_API_URL}/client_report`, {
+          params: {
+            filter_type: filter_type,
+            filter_value: filter_value,
+          },
+        });
 
-        this.getClientDetail = response.data.data;
+        this.getSiteReportData = response.data.data || [];
+
+        if (this.getSiteReportData.length === 0) {
+          this.errorMessageFilter = "Report not Found!";
+        } else {
+          this.errorMessageFilter = "";
+        }
       } catch (error) {
         if (error.response && error.response.status === 404) {
           const errorMessages = error.response.data.error;

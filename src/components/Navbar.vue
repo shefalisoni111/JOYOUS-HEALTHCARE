@@ -174,7 +174,7 @@
                 <hr class="dropdown-divider" />
               </li>
               <li v-if="searchQuery">
-                <template v-if="searchResults.length > 0">
+                <template v-if="searchResults?.length > 0">
                   <li
                     class="notification-item p-2 d-flex gap-1 divide_sec"
                     v-for="candidate in searchResults"
@@ -257,41 +257,26 @@
           </li>
 
           <li class="nav-item dropdown mt-2">
-            <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown"  @click="toggleDropdown">
+            <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" @click="toggleDropdown">
               <i class="bi bi-bell"></i>
-              <span v-if="showBadge" class="badge bg-primary badge-number">2</span>
-              
+              <span v-if="!dropdownOpen && showBadge" class="badge bg-primary badge-number">2</span>
             </a>
-
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" @click="dropdownOpen = false">
               <li class="dropdown-header d-flex">
-                You have 2 new notifications
-                <a href="#" class="mt-2 ms-2"
-                  ><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a
-                >
+                You have {{ notifications.length }} new notifications
+                <a href="#" class="mt-2 ms-2" @click="showAllNotifications">
+                  <span class="badge rounded-pill bg-primary p-2 ms-2">View all</span>
+                </a>
               </li>
               <li>
                 <hr class="dropdown-divider" />
               </li>
-
-              <li class="notification-item p-2 d-flex gap-1">
+              <li v-for="(notification, index) in visibleNotifications" :key="index" class="notification-item p-2 d-flex gap-1">
                 <i class="bi bi-exclamation-circle text-warning"></i>
                 <div>
-                  <h4>Lorem Ipsum</h4>
-                  <p>Quae dolorem earum veritatis oditseno</p>
-                  <p>30 min. ago</p>
-                </div>
-              </li>
-
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li class="notification-item p-2 d-flex gap-1">
-                <i class="bi bi-exclamation-circle text-warning"></i>
-                <div>
-                  <h4>Lorem Ipsum</h4>
-                  <p>Quae dolorem earum veritatis oditseno</p>
-                  <p>30 min. ago</p>
+                  <h4>{{ notification.title }}</h4>
+                  <p>{{ notification.message }}</p>
+                  <p>{{ notification.time }}</p>
                 </div>
               </li>
             </ul>
@@ -495,13 +480,26 @@ export default {
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,
-      showBadge: true
+      showBadge: true,
+      dropdownOpen: false,
+      showAll: false,
+      notifications: [
+        { title: "Lorem Ipsum", message: "Quae dolorem earum veritatis oditseno", time: "30 min. ago" },
+        { title: "Lorem Ipsum", message: "Quae dolorem earum veritatis oditseno", time: "30 min. ago" },
+        { title: "Lorem Ipsum", message: "Quae dolorem earum veritatis oditseno", time: "30 min. ago" },
+        { title: "Lorem Ipsum", message: "Quae dolorem earum veritatis oditseno", time: "30 min. ago" },
+       
+      ],
     };
   },
   components:{
     ConfirmationAlert
   },
   computed: {
+    visibleNotifications() {
+     
+      return this.showAll ? this.notifications : this.notifications.slice(0, 2);
+    },
     profilePhotoUrl() {
       const storedImageUrl = localStorage.getItem("profileImage");
 
@@ -518,10 +516,17 @@ export default {
     },
   },
   methods: {
-    toggleDropdown(event) {
-
+    toggleDropdown() {
+      this.dropdownOpen = !this.dropdownOpen;
+      if (this.dropdownOpen) {
+        this.showBadge = false;
+      } else {
+        this.showBadge = true;
+      }
+    },
+    showAllNotifications(event) {
       event.preventDefault();
-      this.showBadge = !this.showBadge;
+      this.showAll = true; 
     },
     confirmed() {
       this.isModalVisible = false;
@@ -551,9 +556,11 @@ export default {
       try {
         this.searchResults = [];
 
-        const response = await axiosInstance.get(
-          `${VITE_API_URL}/search_candidate/${this.searchQuery}`
-        );
+        const response = await axiosInstance.get(`${VITE_API_URL}/search_candidate`, {
+      params: {
+        candidate_query: this.searchQuery
+      }
+    });
 
         this.searchResults = response.data.candidate;
       } catch (error) {

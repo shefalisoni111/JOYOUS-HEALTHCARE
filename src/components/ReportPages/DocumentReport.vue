@@ -7,8 +7,11 @@
           <div class="col-12">
             <div class="">
               <div class="gap-2 d-xs-grid d-sm-grid d-md-grid d-lg-flex ms-2">
-                <select>
-                  <option value="">All</option>
+                <select v-model="selectedAllStatus" @change="filterData">
+                  <option value="">All Status</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Expired</option>
+                  <option value="pending">Due30days</option>
                 </select>
                 <select v-model="selectedStaffStatus" @change="filterData">
                   <option value="">All Staff Status</option>
@@ -22,7 +25,7 @@
                   <option
                     v-for="option in getCandidatesData"
                     :key="option.id"
-                    :value="option.id"
+                    :value="option.first_name"
                   >
                     {{ option.first_name }}
                   </option>
@@ -33,7 +36,7 @@
                   <option
                     v-for="option in getCategoryData"
                     :key="option.id"
-                    :value="option.id"
+                    :value="option.category_name"
                   >
                     {{ option.category_name }}
                   </option>
@@ -44,7 +47,7 @@
                   <option
                     v-for="option in documentNames"
                     :key="option.id"
-                    :value="option.id"
+                    :value="option.document_name"
                   >
                     {{ option.document_name }}
                   </option>
@@ -167,9 +170,14 @@
                         </tr>
                       </tbody>
                       <tbody v-else>
-                        <tr>
+                        <tr v-if="errorMessageFilter">
                           <td colspan="8" class="text-danger text-center">
-                            {{ "Staff document not found! " }}
+                            {{ errorMessageFilter }}
+                          </td>
+                        </tr>
+                        <tr v-else>
+                          <td colspan="8" class="text-danger text-center">
+                            {{ errorMessageCustom }}
                           </td>
                         </tr>
                       </tbody>
@@ -257,7 +265,10 @@ export default {
       currentPage: 1,
       itemsPerPage: 11,
       getCategoryData: [],
+      errorMessageCustom: "",
+      errorMessageFilter: "",
       selectedStaffStatus: "",
+      selectedAllStatus: "",
       selectedStaff: "",
       selectedDocumentCategory: "",
       selectedDocumentType: "",
@@ -309,8 +320,9 @@ export default {
   methods: {
     async filterData() {
       let filters = {};
-
-      if (this.selectedStaffStatus) {
+      if (this.selectedAllStatus) {
+        filters.document_status = "Active";
+      } else if (this.selectedStaffStatus) {
         filters.document_filter_type = "staff_status";
         filters.document_filter = this.selectedStaffStatus;
       } else if (this.selectedStaff) {
@@ -333,12 +345,27 @@ export default {
         filters.document_filter = "";
       }
 
-      await this.makeFilterAPICall(filters.document_filter_type, filters.document_filter);
+      this.errorMessageFilter = "";
+      this.errorMessageCustom = "";
+
+      try {
+        await this.makeFilterAPICall(
+          filters.document_filter_type,
+          filters.document_filter
+        );
+      } catch (error) {
+        this.errorMessageFilter = "An error occurred while fetching data.";
+      }
     },
     async documentCategoryDocumentTypeMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/document_categories`);
         this.getCategoryData = response.data;
+        if (this.getCategoryData.length === 0) {
+          this.errorMessageFilter = "Report not Found!";
+        } else {
+          this.errorMessageFilter = "";
+        }
 
         this.documentNames = response.data.reduce((acc, category) => {
           if (category.documents && category.documents.length > 0) {
@@ -364,6 +391,11 @@ export default {
         });
 
         this.getDocumentReportData = response.data;
+        if (this.getDocumentReportData.length === 0) {
+          this.errorMessageFilter = "Report not Found!";
+        } else {
+          this.errorMessageFilter = "";
+        }
       } catch (error) {
         if (error.response && error.response.status === 404) {
           const errorMessages = error.response.data.error;
@@ -460,6 +492,11 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/candidate_documents`);
         this.getDocumentReportData = response.data;
+        if (this.getDocumentReportData.length === 0) {
+          this.errorMessageCustom = "No report found for the specified month";
+        } else {
+          this.errorMessageCustom = "";
+        }
       } catch (error) {
         // console.error("Error fetching document report data:", error);
       } finally {

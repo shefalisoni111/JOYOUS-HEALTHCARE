@@ -1,30 +1,3 @@
-<!-- <template>
-  <div>
-    <Navbar />
-    <div id="main">
-      <h6>PAyroll Page in Progress.....</h6>
-    </div>
-  </div>
-</template>
-<script>
-import Navbar from "../Navbar.vue";
-
-export default {
-  components: {
-    Navbar,
-  },
-};
-</script>
-<style scoped>
-#main {
-  padding: 20px 20px;
-  transition: all 0.3s;
-
-  height: 100dvh;
-  background-color: #fdce5e17;
-}
-</style> -->
-
 <template>
   <div>
     <Navbar />
@@ -35,31 +8,39 @@ export default {
             <div class="">
               <div class="d-flex ms-2 justify-content-between">
                 <div class="d-flex gap-2">
-                  <select v-model="client_id" id="selectClients">
+                  <select v-model="client_id" id="selectClients" @change="filterData">
                     <option value="">All Client</option>
                     <option
                       v-for="option in clientData"
                       :key="option.id"
-                      :value="option.id"
+                      :value="option.first_name"
                       aria-placeholder="Select Job"
                     >
                       {{ option.first_name }}
                     </option>
                   </select>
-                  <select v-model="site_id" id="selectBusinessUnit">
+                  <select v-model="site_id" id="selectBusinessUnit" @change="filterData">
                     <option value="">All Site</option>
                     <option
                       v-for="option in businessUnit"
                       :key="option.id"
-                      :value="option.id"
+                      :value="option.site_name"
                       placeholder="Select BusinessUnit"
                     >
                       {{ option.site_name }}
                     </option>
                   </select>
 
-                  <select v-model="client_id">
+                  <select v-model="id" @change="filterData">
                     <option value="">All Staff</option>
+                    <option
+                      v-for="option in getCandidatesData"
+                      :key="option.id"
+                      :value="option.first_name"
+                      placeholder="Select Staff"
+                    >
+                      {{ option.first_name + option.last_name }}
+                    </option>
                   </select>
                 </div>
 
@@ -155,7 +136,7 @@ export default {
                     role="tabpanel"
                     aria-labelledby="pills-home-tab"
                   >
-                    <table class="table reportTable">
+                    <!-- <table class="table reportTable">
                       <thead>
                         <tr>
                           <th scope="col">Sender</th>
@@ -178,6 +159,96 @@ export default {
                           <td scope="col">23/2/2024</td>
                         </tr>
                       </tbody>
+                    </table> -->
+                    <table class="table reportTable">
+                      <thead>
+                        <tr>
+                          <th>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" />
+                            </div>
+                          </th>
+                          <th scope="col">ID</th>
+                          <th scope="col">Code</th>
+                          <th scope="col" style="width: 153px">Name</th>
+                          <th scope="col">Site</th>
+                          <th scope="col">Job</th>
+                          <th scope="col">Shift Date</th>
+                          <th scope="col">Start Time</th>
+                          <th scope="col">End Time</th>
+                          <th scope="col">Total Hours</th>
+                          <th scope="col">Client Rate</th>
+                          <th scope="col">Total Cost</th>
+                          <th scope="col">Paper TimeSheet</th>
+                          <th scope="col">Approved</th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="paginateCandidates?.length > 0">
+                        <tr v-for="data in paginateCandidates" :key="data.id">
+                          <td>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" />
+                            </div>
+                          </td>
+                          <td scope="col">{{ data.id }}</td>
+                          <td scope="col">{{ data.code }}</td>
+                          <td scope="col">{{ data.name }}</td>
+                          <td scope="col">{{ data.site }}</td>
+                          <td scope="col">{{ data.job }}</td>
+                          <td scope="col">{{ data.shift_date }}</td>
+                          <td scope="col">
+                            {{ data.start_time ? data.start_time : "null" }}
+                          </td>
+                          <td scope="col">
+                            {{ data.end_time ? data.end_time : "null" }}
+                          </td>
+                          <td scope="col">
+                            {{ data.total_hours ? data.total_hours : "null" }}
+                          </td>
+                          <td scope="col">
+                            {{ data.client_rate ? data.client_rate : "null" }}
+                          </td>
+                          <td scope="col">
+                            {{ data.total_cost ? data.total_cost : "null" }}
+                          </td>
+                          <td scope="col">
+                            <div v-if="data.paper_timesheet">
+                              <img
+                                :src="fullPaperTimeSheetUrl(data.paper_timesheet)"
+                                alt="Current Paper TimeSheet"
+                                class="img-fluid"
+                                style="width: 60px"
+                              />
+                              &nbsp;
+                              <button
+                                type="button"
+                                class="btn border-primary-subtle"
+                                data-bs-toggle="modal"
+                                data-bs-target="#viewPaperTimeSheet"
+                                @click="viewPaperSheet(data.id)"
+                              >
+                                <i class="bi bi-eye"></i>
+                              </button>
+                            </div>
+                            <div v-else>Null</div>
+                          </td>
+                          <td scope="col">
+                            {{ data.approved_hour ? "Approved" : "Not Approved" }}
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr v-if="errorMessageFilter">
+                          <td colspan="15" class="text-danger text-center">
+                            {{ errorMessageFilter }}
+                          </td>
+                        </tr>
+                        <tr v-else>
+                          <td colspan="15" class="text-danger text-center">
+                            {{ errorMessageCustom }}
+                          </td>
+                        </tr>
+                      </tbody>
                     </table>
                   </div>
                   <div
@@ -195,15 +266,42 @@ export default {
         </div>
       </div>
     </div>
+    <div
+      class="mx-3 mb-2"
+      style="text-align: right"
+      v-if="getSiteReportData?.length >= 8"
+    >
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= getSiteReportData?.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 <script>
 import axios from "axios";
 import Navbar from "../Navbar.vue";
+import Loader from "../Loader/Loader.vue";
 export default {
   data() {
     return {
-      currentView: "weekly",
+      currentView: "monthly",
       daysOfWeek: [
         "Sunday",
         "Monday",
@@ -215,17 +313,23 @@ export default {
       ],
       startDate: new Date(),
       endDate: new Date(),
+      currentPage: 1,
+      itemsPerPage: 10,
+      errorMessageFilter: "",
+      errorMessageCustom: "",
       client_id: "",
       clientData: [],
+      isLoading: false,
       site_id: "",
       businessUnit: [],
       job_id: "",
       options: [],
-      employeeData: [],
-      employment_type_id: "",
+      id: "",
+      getCandidatesData: [],
+      getSiteReportData: [],
     };
   },
-  components: { Navbar },
+  components: { Navbar, Loader },
   computed: {
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
@@ -235,15 +339,18 @@ export default {
       const job_id = this.options.find((option) => option.id === this.job_id);
       return job_id ? job_id.name : "";
     },
-    selectClients() {
-      const client_id = this.clientData.find((option) => option.id === this.client_id);
-      return client_id ? client_id.first_name : "";
+    selectStaff() {
+      const id = this.getCandidatesData.find((option) => option.id === this.id);
+      return id ? id.first_name : "";
     },
-    selectEmployeeType() {
-      const employment_type_id = this.employeeData.find(
-        (option) => option.id === this.employment_type_id
-      );
-      return employment_type_id ? employment_type_id.title : "";
+    paginateCandidates() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.getSiteReportData.slice(startIndex, endIndex);
+    },
+
+    totalRecordsOnPage() {
+      return this.paginateCandidates.length;
     },
     getWeekDates() {
       const currentDate = new Date();
@@ -270,6 +377,48 @@ export default {
     },
   },
   methods: {
+    async filterData() {
+      const filters = {
+        filter_type: this.client_id
+          ? "client"
+          : this.site_id
+          ? "site"
+          : this.id
+          ? "staff"
+          : "",
+        filter_value: this.client_id || this.site_id || this.id || "",
+      };
+
+      this.makeFilterAPICall(filters.filter_type, filters.filter_value);
+    },
+    async makeFilterAPICall(filter_type, filter_value) {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/client_report`, {
+          params: {
+            filter_type: filter_type,
+            filter_value: filter_value,
+          },
+        });
+
+        this.getSiteReportData = response.data.data || [];
+        if (this.getSiteReportData.length === 0) {
+          this.errorMessageFilter = "Report not Found!";
+        } else {
+          this.errorMessageFilter = "";
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          const errorMessages = error.response.data.error;
+          if (errorMessages === "No records found for the given filter") {
+            alert("No records found for the given filter");
+          } else {
+            alert(errorMessages);
+          }
+        } else {
+          console.error(error);
+        }
+      }
+    },
     async getClientMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/clients`);
@@ -282,34 +431,68 @@ export default {
         }
       }
     },
-    async getEmployeeTypeMethod() {
+    async getSiteReportMethod() {
+      this.isLoading = true;
+      const token = localStorage.getItem("token");
+      const startOfMonth = new Date(
+        this.startDate.getFullYear(),
+        this.startDate.getMonth(),
+        1
+      );
+      const endOfMonth = new Date(
+        this.endDate.getFullYear(),
+        this.endDate.getMonth() + 1,
+        0
+      );
+      const formatDate = (date) => {
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+      };
+      const requestData = {
+        date: formatDate(startOfMonth),
+        // end_date: endOfMonth.toLocaleDateString(),
+      };
       try {
-        const response = await axios.get(`${VITE_API_URL}/employment_types`);
-        this.employeeData = response.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
+        const response = await axios.get(
+          `${VITE_API_URL}/find_custom_timesheet_according_mounth`,
+          {
+            params: requestData,
+            headers: {
+              Authorization: "bearer " + token,
+            },
           }
+        );
+        this.getSiteReportData = response.data.custom_timesheets;
+        if (this.getSiteReportData.length === 0) {
+          this.errorMessageCustom = "No Custom timesheets found for the specified month";
+        } else {
+          this.errorMessageCustom = "";
         }
-      }
-    },
-    async getPositionMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
-        this.options = response.data.data;
       } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
+        console.error("Error fetching custom timesheets:", error);
+      } finally {
+        this.isLoading = false;
       }
     },
     async getBusinessUnitMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/activated_site`);
         this.businessUnit = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    async getCandidateListMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/candidates`);
+        this.getCandidatesData = response.data.data;
+        this.candidateStatus = response.data.data.status;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
@@ -331,6 +514,7 @@ export default {
           0
         );
       }
+      this.getSiteReportMethod();
     },
     moveToNext() {
       if (this.currentView === "weekly") {
@@ -345,6 +529,7 @@ export default {
           0
         );
       }
+      this.getSiteReportMethod();
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
@@ -411,14 +596,32 @@ export default {
     //     .then((response) => (this.getVacancyDetail = response.data));
     // },
   },
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.getClientMethod();
+      vm.getBusinessUnitMethod();
+      vm.updateDateRange();
+      vm.getCandidateListMethod();
+      vm.getSiteReportMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.getBusinessUnitMethod();
 
+    this.getClientMethod();
+    this.getCandidateListMethod();
+    this.updateDateRange();
+    this.getSiteReportMethod();
+    next();
+  },
   mounted() {
     // this.createVacancy();
+    this.currentView = "monthly";
     this.loadDateRangeFromLocalStorage();
     this.getBusinessUnitMethod();
-    this.getPositionMethod();
+    this.getCandidateListMethod();
     this.getClientMethod();
-    this.getEmployeeTypeMethod();
+    this.getSiteReportMethod();
     this.updateDateRange();
     // const currentDate = new Date();
     // const startOfWeek = new Date(currentDate);
