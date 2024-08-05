@@ -45,7 +45,7 @@
         </tr>
       </tbody>
     </table>
-    <div class="mx-3" style="text-align: right" v-if="getCandidatesData.length >= 8">
+    <div class="mx-3" style="text-align: right" v-if="totalPages > 1">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -53,15 +53,17 @@
       <button
         class="btn btn-sm btn-primary mr-2"
         :disabled="currentPage === 1"
-        @click="currentPage--"
+        @click="previousPage"
       >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
+        Previous
+      </button>
+      &nbsp;&nbsp;
+      <span>{{ currentPage }}</span>
+      &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getCandidatesData.length"
-        @click="currentPage++"
+        :disabled="currentPage >= totalPages"
+        @click="nextPage"
       >
         Next
       </button>
@@ -97,7 +99,9 @@ export default {
     return {
       getCandidatesData: [],
       currentPage: 1,
-      itemsPerPage: 11,
+      itemsPerPage: 10,
+      totalPages: 1,
+      totalCount: 0,
       isLoading: false,
       isModalVisible: false,
       confirmMessage: "",
@@ -173,7 +177,7 @@ export default {
 
 <style scoped>
 table th.widthSet {
-  width: 15%;
+  width: 16%;
 }
 
 .table-wrapper {

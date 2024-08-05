@@ -193,9 +193,9 @@
         </tbody>
       </table>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="getClientDetail?.length > 0">
+    <div class="mx-3" style="text-align: right" v-if="totalCount > 0">
       <button class="btn btn-outline-dark btn-sm">
-        {{ itemsPerPage }} Records Per Page
+        {{ getClientDetail.length }} Records Per Page
       </button>
       &nbsp;&nbsp;
       <button
@@ -244,6 +244,7 @@ export default {
       currentPage: 1,
       totalPages: 1,
       itemsPerPage: 10,
+      totalCount: 0,
       activated: false,
       showFilters: false,
       isLoading: false,
@@ -265,13 +266,14 @@ export default {
   components: { EditClientModal, AddClients, SuccessAlert, Loader },
   computed: {
     paginateCandidates() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.getClientDetail.slice(startIndex, endIndex);
+      // const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      // const endIndex = startIndex + this.itemsPerPage;
+      // return this.getClientDetail.slice(startIndex, endIndex);
+      return this.getClientDetail;
     },
-    totalRecordsOnPage() {
-      return this.paginateCandidates.length;
-    },
+    // totalRecordsOnPage() {
+    //   return this.paginateCandidates.length;
+    // },
     portalAccessText() {
       return this.client.activated ? "Active" : "No Account";
     },
@@ -309,7 +311,8 @@ export default {
 
         this.getClientDetail = response.data.data;
         this.totalPages = response.data.total_pages;
-        this.currentPage = 1;
+        this.currentPage = response.data.current_page;
+        this.totalCount = response.data.clients_count;
       } catch (error) {
         if (error.response && error.response.status === 404) {
           const errorMessages = error.response.data.error;
@@ -522,13 +525,14 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/clients`, {
           params: {
-            filter_value: "true",
+            activated: "false",
             page: this.currentPage,
           },
         });
         this.getClientDetail = response.data.data;
         this.currentPage = response.data.current_page;
         this.totalPages = response.data.total_pages;
+        this.totalCount = response.data.clients_count;
       } catch (error) {
         // console.error('Error fetching client data:', error);
       } finally {

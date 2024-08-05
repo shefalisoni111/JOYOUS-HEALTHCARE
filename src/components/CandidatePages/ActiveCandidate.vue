@@ -124,23 +124,25 @@
       :candidateId="selectedCandidateId || 0"
       @Candidate-updated="getCandidateMethods"
     />
-    <div class="mx-3" style="text-align: right" v-if="getCandidatesData.length >= 8">
+    <div class="mx-3" style="text-align: right" v-if="totalCount > 0">
       <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
+        {{ getCandidatesData.length }} Records Per Page
       </button>
       &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary mr-2"
         :disabled="currentPage === 1"
-        @click="currentPage--"
+        @click="previousPage"
       >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
+        Previous
+      </button>
+      &nbsp;&nbsp;
+      <span>{{ currentPage }}</span>
+      &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getCandidatesData.length"
-        @click="currentPage++"
+        :disabled="currentPage >= totalPages"
+        @click="nextPage"
       >
         Next
       </button>
@@ -170,7 +172,9 @@ export default {
       inactiveCandidateData: [],
       selectedCandidateId: null,
       currentPage: 1,
-      itemsPerPage: 11,
+      itemsPerPage: 10,
+      totalPages: 1,
+      totalCount: 0,
       isLoading: false,
       isModalVisible: false,
       confirmMessage: "",
@@ -185,13 +189,15 @@ export default {
     ConfirmationAlert,
   },
   computed: {
+    // paginateCandidates() {
+    //   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    //   return this.getCandidatesData.slice(startIndex, startIndex + this.itemsPerPage);
+    // },
+    // totalRecordsOnPage() {
+    //   return this.paginateCandidates.length;
+    // },
     paginateCandidates() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.getCandidatesData.slice(startIndex, endIndex);
-    },
-    totalRecordsOnPage() {
-      return this.paginateCandidates.length;
+      return this.getCandidatesData;
     },
   },
   methods: {
@@ -239,20 +245,29 @@ export default {
       try {
         const params = {
           status_value: "approved",
-          activated_value: "true",
+          page: this.currentPage,
         };
         const response = await axios.get(`${VITE_API_URL}/candidates`, { params });
-
         this.getCandidatesData = response.data.data;
+        this.totalPages = response.data.total_pages;
+        this.currentPage = response.data.current_page;
+        this.totalCount = response.data.total_count;
       } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-          }
-        } else {
-          // console.error("Error fetching candidates:", error);
-        }
+        // Handle error
       } finally {
         this.isLoading = false;
+      }
+    },
+    previousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.getCandidateMethods();
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+        this.getCandidateMethods();
       }
     },
   },
@@ -265,7 +280,7 @@ export default {
 
 <style scoped>
 table th.widthSet {
-  width: 11%;
+  width: 16%;
 }
 
 .candidateTable tr:nth-child(odd) td {

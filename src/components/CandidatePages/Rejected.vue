@@ -63,11 +63,7 @@
         </tr>
       </tbody>
     </table>
-    <div
-      class="mx-3"
-      style="text-align: right"
-      v-if="getPendingCandidatesData?.length >= 8"
-    >
+    <div class="mx-3" style="text-align: right" v-if="totalCount > 0">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -109,7 +105,9 @@ export default {
     return {
       getPendingCandidatesData: [],
       currentPage: 1,
-      itemsPerPage: 11,
+      itemsPerPage: 10,
+      totalPages: 1,
+      totalCount: 0,
       isLoading: false,
       isModalVisible: false,
       confirmMessage: "",
@@ -119,36 +117,43 @@ export default {
   components: { Loader, ConfirmationAlert },
   computed: {
     paginateCandidates() {
-      if (!this.getPendingCandidatesData) return [];
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.getPendingCandidatesData.slice(startIndex, endIndex);
+      return this.getPendingCandidatesData;
     },
     totalRecordsOnPage() {
       return this.paginateCandidates.length;
     },
   },
   methods: {
-    async pendingCandidateMethod() {
+    async fetchPendingCandidates(page = 1) {
       this.isLoading = true;
-
       try {
         const params = {
           status_value: "pending",
+          page: page,
+          per_page: this.itemsPerPage,
         };
         const response = await axios.get(`${VITE_API_URL}/candidates`, { params });
 
         this.getPendingCandidatesData = response.data.data;
+        this.totalPages = response.data.total_pages;
+        this.totalCount = response.data.total_count;
+        this.currentPage = response.data.current_page;
       } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        } else {
-          // console.error("Error fetching candidates:", error);
-        }
+        // Handle error
       } finally {
         this.isLoading = false;
+      }
+    },
+    previousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.fetchPendingCandidates(this.currentPage);
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+        this.fetchPendingCandidates(this.currentPage);
       }
     },
     confirmed(id) {
@@ -173,7 +178,7 @@ export default {
             `${VITE_API_URL}/candidate/approve_candidate/${id}`
           );
 
-          this.pendingCandidateMethod();
+          this.fetchPendingCandidates();
         } catch (error) {
           // console.error("Error approving candidate:", error);
         }
@@ -191,7 +196,7 @@ export default {
           );
           // console.log("Response after approval:", response);
 
-          this.pendingCandidateMethod();
+          this.fetchPendingCandidates();
           alert("reject staff successful");
         } catch (error) {
           // console.error("Error approving candidate:", error);
@@ -201,14 +206,14 @@ export default {
     },
   },
   created() {
-    this.pendingCandidateMethod();
+    this.fetchPendingCandidates();
   },
 };
 </script>
 
 <style scoped>
 table th.widthSet {
-  width: 15%;
+  width: 16%;
 }
 
 .candidateTable tr:nth-child(odd) td {

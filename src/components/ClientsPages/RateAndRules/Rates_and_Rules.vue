@@ -501,6 +501,7 @@ export default {
             client: data.client,
             job: data.job,
             job_id: data.job_id,
+
             data: [],
           };
         }

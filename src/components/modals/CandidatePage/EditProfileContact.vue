@@ -26,11 +26,11 @@
                       v-model="fetchCandidate.phone_number"
                       @input="cleanPhoneNumber"
                     />
-                    <!-- <span
-                      v-if="!validatePhoneNumber(fetchCandidate.phone_number)"
+                    <span
+                      v-if="!isPhoneNumberValid && fetchCandidate.phone_number.length > 0"
                       class="text-danger"
                       >Invalid Phone Number</span
-                    > -->
+                    >
                   </div>
                 </div>
               </form>
@@ -40,7 +40,7 @@
             <button
               class="btn btn-secondary rounded-1"
               data-bs-target="#editContactProfile"
-              data-bs-toggle="modal"
+              @click="resetChanges"
               data-bs-dismiss="modal"
             >
               Cancel
@@ -60,6 +60,7 @@
     <SuccessAlert ref="successAlert" />
   </div>
 </template>
+
 <script>
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
@@ -70,7 +71,6 @@ export default {
     return {
       fetchCandidate: {
         id: "",
-
         phone_number: "",
         first_name: "",
         last_name: "",
@@ -78,11 +78,11 @@ export default {
         confirm_password: "",
         address: "",
         jobs_id: 1,
-
         email: "",
         activated: "",
         employment_type_id: "",
       },
+      originalData: null,
     };
   },
   props: {
@@ -96,24 +96,25 @@ export default {
       return this.$store.state.candidates;
     },
     isPhoneNumberValid() {
-      return /^[0-9]{10}$/.test(this.fetchCandidate.phone_number);
+      return this.validatePhoneNumber(this.fetchCandidate.phone_number);
     },
-
     isSaveDisabled() {
       return !this.isPhoneNumberValid;
     },
   },
   components: { SuccessAlert },
   methods: {
+    resetChanges() {
+      this.fetchCandidate = { ...this.originalData };
+    },
     cleanPhoneNumber() {
       this.fetchCandidate.phone_number = this.fetchCandidate.phone_number.replace(
         /\D/g,
         ""
       );
     },
-
     validatePhoneNumber(phoneNumber) {
-      const phoneRegex = /^\d{10}$/;
+      const phoneRegex = /^[789]\d{9}$/;
       return phoneRegex.test(phoneNumber);
     },
     async fetchCandidateMethod(id) {
@@ -121,6 +122,7 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/candidates/${id}`);
         this.fetchCandidate = { ...this.fetchCandidate, ...response.data.candidate };
+        this.originalData = { ...this.fetchCandidate };
       } catch (error) {}
     },
     async updateCandidateMethod() {
@@ -130,11 +132,10 @@ export default {
           this.fetchCandidate
         );
         this.$emit("contactAdded");
-        // alert("Candidate updated successfully");
         const message = "Staff Contact updated successfully";
         this.$refs.successAlert.showSuccess(message);
       } catch (error) {
-        // console.error("Error updating candidate:", error);
+        // Handle error
       }
     },
   },
@@ -145,6 +146,15 @@ export default {
         this.fetchCandidateMethod(newCandidateId);
       },
     },
+  },
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.fetchCandidateMethod(this.$route.params.id);
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    await this.fetchCandidateMethod(this.$route.params.id);
+    next();
   },
 };
 </script>

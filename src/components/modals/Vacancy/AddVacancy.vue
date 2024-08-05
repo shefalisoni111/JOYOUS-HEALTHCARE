@@ -87,11 +87,11 @@
                   </div>
                 </div>
 
-                <div class="mb-3 d-flex justify-content-between">
+                <div class="mb-3 d-flex">
                   <div class="col-2">
                     <label class="form-label">Dated</label>
                   </div>
-                  <div class="col-10">
+                  <div class="col-9">
                     <input
                       type="date"
                       class="form-control"

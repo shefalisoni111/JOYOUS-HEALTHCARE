@@ -8,46 +8,29 @@
               <th scope="col">ID</th>
               <th scope="col" class="widthSet">Name</th>
               <th scope="col">Positions</th>
-              <!-- <th scope="col">Employment Type</th> -->
               <th scope="col" class="widthSet">Email</th>
               <th scope="col">Phone</th>
               <th scope="col">Status</th>
-              <!-- <th scope="col">Access</th> -->
               <th scope="col">Assign</th>
               <th scope="col">Last Login</th>
               <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="candidate in paginateCandidates" :key="candidate.id">
+            <tr v-for="candidate in getCandidatesData" :key="candidate.id">
               <td v-text="candidate.id"></td>
               <td>
                 <router-link
                   class="text-capitalize fw-bold"
-                  :to="{
-                    name: 'Profile',
-                    params: { id: candidate.id },
-                  }"
+                  :to="{ name: 'Profile', params: { id: candidate.id } }"
                 >
                   {{ candidate.first_name }}&nbsp; {{ candidate.last_name }}
                 </router-link>
               </td>
-
               <td class="text-capitalize" v-text="candidate.possition"></td>
               <td>{{ candidate.email }}</td>
-              <td>
-                {{ candidate.phone_number }}
-              </td>
-              <td class="text-capitalize">
-                {{ candidate.status }}
-              </td>
-
-              <!-- <td>
-                  <label class="switch">
-                    <input type="checkbox" id="togBtn" checked />
-                    <div class="slider round"></div>
-                  </label>
-                </td> -->
+              <td>{{ candidate.phone_number }}</td>
+              <td class="text-capitalize">{{ candidate.status }}</td>
               <td>
                 <button
                   class="btn"
@@ -81,106 +64,48 @@
               </td>
               <td>{{ candidate.last_login }}</td>
               <td class="cursor-pointer">
-                <!-- <button
-                  type="button"
-                  class="btn btn-danger"
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="top"
-                  title="Tooltip on top"
-                  v-on:click="deleteCandidate(candidate.id)"
-                >
-                  In-Activate
-                </button>
-
-                &nbsp;&nbsp;
-                <button
-                  type="button"
-                  class="btn btn-success"
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="top"
-                  title="Tooltip on top"
-                  v-on:click="activeCandidateMethod(candidate.id)"
-                >
-                  Activate
-                </button> -->
-                &nbsp;&nbsp;
-                <!-- <router-link
-                    :to="{
-                      name: 'EditCandidate',
-                      params: { id: candidate.id },
-                    }"
-                    class="btn btn-outline-success text-nowrap"
-                  >
-                    </router-link
-                  > -->
-
-                <!-- <i
-                  class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
-                  data-bs-toggle="modal"
-                  data-bs-target="#editCandidate"
-                  data-bs-whatever="@mdo"
-                  @click="editCandidate(candidate.id)"
-                ></i
-                >&nbsp;&nbsp; -->
                 <router-link
                   class="btn btn-outline-success text-nowrap"
-                  :to="{
-                    name: 'Profile',
-                    params: { id: candidate.id },
-                  }"
+                  :to="{ name: 'Profile', params: { id: candidate.id } }"
                 >
                   <i class="bi bi-eye"></i>
                 </router-link>
-                <!-- <router-link
-                  :to="{
-                    name: 'ProfileView',
-                    params: { id: candidate.id },
-                  }"
-                  class="btn btn-outline-success text-nowrap"
-                >
-                  <i class="bi bi-eye"></i
-                ></router-link> -->
               </td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-    <!-- <EditCandidate
-      :candidateId="selectedCandidateId || 0"
-      @Candidate-updated="getCandidateMethods"
-    /> -->
+
     <AssignDirectVacancy
       :candidateId="selectedCandidateId || 0"
       @Candidate-updated="getCandidateMethods"
     />
-    <div class="mx-3" style="text-align: right" v-if="getCandidatesData.length >= 8">
+
+    <div class="mx-3" style="text-align: right" v-if="totalCount > 0">
       <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
+        {{ getCandidatesData.length }} Records Per Page
       </button>
       &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary mr-2"
         :disabled="currentPage === 1"
-        @click="currentPage--"
+        @click="previousPage"
       >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
+        Previous
+      </button>
+      &nbsp;&nbsp;
+      <span>{{ currentPage }}</span>
+      &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getCandidatesData.length"
-        @click="currentPage++"
+        :disabled="currentPage === totalPages"
+        @click="nextPage"
       >
         Next
       </button>
     </div>
-    <!-- <ConfirmationAlert
-      :show-modal="isModalVisible"
-      :message="confirmMessage"
-      @confirm="confirmCallback"
-      @cancel="canceled"
-    /> -->
+
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
@@ -188,113 +113,68 @@
 <script>
 import axios from "axios";
 import Loader from "../Loader/Loader.vue";
-// import EditCandidate from "../modals/CandidatePage/EditCandidate.vue";
 import AssignDirectVacancy from "../modals/CandidatePage/AssignDirectVacancy.vue";
-import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
 
 export default {
   name: "ActiveCandidate",
   data() {
     return {
       getCandidatesData: [],
-      inactiveCandidateData: [],
       selectedCandidateId: null,
       currentPage: 1,
-      itemsPerPage: 11,
+      itemsPerPage: 10,
+      totalCount: 0,
+      totalPages: 1,
       isLoading: false,
-      isModalVisible: false,
-      confirmMessage: "",
-      confirmCallback: null,
     };
   },
-
   components: {
     AssignDirectVacancy,
     Loader,
-    ConfirmationAlert,
   },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.getCandidatesData.slice(startIndex, endIndex);
+      return this.getCandidatesData.slice(startIndex, startIndex + this.itemsPerPage);
     },
-    totalRecordsOnPage() {
-      return this.paginateCandidates.length;
-    },
+    // totalRecordsOnPage() {
+    //   return this.paginateCandidates.length;
+    // },
   },
   methods: {
-    async activeCandidateMethod(id) {
-      this.confirmMessage = "Are you sure want to Re-activate this Staff?";
-      this.isModalVisible = true;
-      this.confirmCallback = async () => {
-        const response = await axios
-          .put(`${VITE_API_URL}/re_activate_candidate/${id}`)
-          .then((response) => {
-            alert("Staff reactivated successfully!");
-            this.getCandidateMethods();
-          })
-
-          .catch((error) => {
-            // console.error("Error deleting candidate:", error);
-          });
-        this.isModalVisible = false;
-      };
+    async getCandidateMethods() {
+      this.isLoading = true;
+      try {
+        const response = await axios.get(`${VITE_API_URL}/candidates`, {
+          params: { page: this.currentPage, per_page: this.itemsPerPage },
+        });
+        this.getCandidatesData = response.data.data;
+        this.totalCount = response.data.total_count;
+        this.totalPages = response.data.total_pages;
+        this.currentPage = response.data.current_page;
+      } catch (error) {
+        // Handle error
+      } finally {
+        this.isLoading = false;
+      }
     },
     updateSelectedIds(candidate) {
       this.$store.commit("setSelectedCandidateId", candidate.id);
       this.$store.commit("setSelectedJobId", candidate.job_id);
     },
-    selectTab(index) {
-      this.activeTab = index;
+    previousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.getCandidateMethods();
+      }
     },
-    editCandidate(candidateId) {
-      this.selectedCandidateId = candidateId;
-    },
-
-    openAssigned(id) {
-      this.$store.commit("setSelectedAssignedItemId", id);
-    },
-    deleteCandidate(id) {
-      this.confirmMessage = "Are you sure  want to In-activate this Staff?";
-      this.isModalVisible = true;
-      this.confirmCallback = async () => {
-        axios
-          .put(`${VITE_API_URL}/inactivate_candidate/${id}`)
-          .then((response) => {
-            alert("Staff In-activated successfully!");
-            this.inactiveCandidateData = response.data;
-            this.getCandidateMethods();
-          })
-          .catch((error) => {
-            // console.error("Error deleting candidate:", error);
-          });
-        this.isModalVisible = false;
-      };
-    },
-    canceled() {
-      this.isModalVisible = false;
-    },
-
-    async getCandidateMethods() {
-      this.isLoading = true;
-      try {
-        const response = await axios.get(`${VITE_API_URL}/candidates`);
-
-        this.getCandidatesData = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-          }
-        } else {
-          // console.error("Error fetching candidates:", error);
-        }
-      } finally {
-        this.isLoading = false;
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+        this.getCandidateMethods();
       }
     },
   },
-
   created() {
     this.getCandidateMethods();
   },
@@ -367,7 +247,7 @@ a {
   content: "";
 }
 table th.widthSet {
-  width: 11%;
+  width: 16%;
 }
 
 .switch input:checked + .slider {

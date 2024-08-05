@@ -2400,9 +2400,7 @@ export default {
       return businessUnit ? businessUnit.site_name : "";
     },
     selectClients() {
-      const client = this.clientData.find(
-        (option) => option.id === this.fetchRateRulesData.client_id
-      );
+      const client = this.clientData.find((option) => option.id === this.clientId);
       return client ? client.first_name : "";
     },
 
@@ -2574,7 +2572,7 @@ export default {
     async getSiteAccordingClientMethod() {
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/site_according_client/${this.client_id}`
+          `${VITE_API_URL}/site_according_client/${this.clientId}`
         );
         this.businessUnit = response.data.site;
       } catch (error) {
@@ -2648,6 +2646,9 @@ export default {
     // this.getClientMethod();
     this.getTimeShift(this.SiteID);
     // this.getJobTitleMethod();
+    if (this.clientId) {
+      this.getSiteAccordingClientMethod();
+    }
   },
   watch: {
     SiteID(newSiteID, oldSiteID) {
@@ -2676,6 +2677,10 @@ export default {
           this.fetchRateRulesDataMethod(newIds);
         }
       },
+    },
+    clientId(newClientId) {
+      this.fetchRateRulesData.client_id = newClientId;
+      this.getSiteAccordingClientMethod();
     },
   },
 };

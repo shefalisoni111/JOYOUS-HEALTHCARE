@@ -121,23 +121,25 @@
         </tbody>
       </table>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="getClientDetail.length >= 10">
+    <div class="mx-3" style="text-align: right" v-if="totalCount > 0">
       <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
+        {{ getClientDetail.length }} Records Per Page
       </button>
       &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary mr-2"
         :disabled="currentPage === 1"
-        @click="currentPage--"
+        @click="changePage(currentPage - 1)"
       >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
+        Previous
+      </button>
+      &nbsp;&nbsp;
+      <span>{{ currentPage }} of {{ totalPages }}</span>
+      &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getClientDetail.length"
-        @click="currentPage++"
+        :disabled="currentPage === totalPages"
+        @click="changePage(currentPage + 1)"
       >
         Next
       </button>
@@ -167,7 +169,9 @@ export default {
       isActive: true,
       searchQuery: "",
       currentPage: 1,
+      totalPages: 1,
       itemsPerPage: 10,
+      totalCount: 0,
       isLoading: false,
       client: {
         job_name: ["Job1", "Job2", "Job3", "Job4", "Job5", "Job6"],
@@ -186,18 +190,24 @@ export default {
   components: { EditClientModal, AddClients, SuccessAlert, Loader },
   computed: {
     paginateCandidates() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.getClientDetail.slice(startIndex, endIndex);
+      // const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      // const endIndex = startIndex + this.itemsPerPage;
+      // return this.getClientDetail.slice(startIndex, endIndex);
+      return this.getClientDetail;
     },
-    totalRecordsOnPage() {
-      return this.paginateCandidates.length;
-    },
+    // totalRecordsOnPage() {
+    //   return this.paginateCandidates.length;
+    // },
     portalAccessText() {
       return this.client.activated ? "Active" : "No Account";
     },
   },
   methods: {
+    async changePage(newPage) {
+      if (newPage < 1 || newPage > this.totalPages) return;
+      this.currentPage = newPage;
+      await this.createdClient();
+    },
     getColor(index) {
       return this.colors[index % this.colors.length];
     },
@@ -235,10 +245,14 @@ export default {
       this.isLoading = true;
       try {
         const params = {
-          filter_value: "true",
+          filter_value: "all",
+          page: this.currentPage,
         };
         const response = await axios.get(`${VITE_API_URL}/clients`, { params });
         this.getClientDetail = response.data.data;
+        this.currentPage = response.data.current_page;
+        this.totalPages = response.data.total_pages;
+        this.totalCount = response.data.clients_count;
       } catch (error) {
         // console.error("Error fetching client data:", error);
       } finally {
