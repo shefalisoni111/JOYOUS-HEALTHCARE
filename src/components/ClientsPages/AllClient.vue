@@ -266,10 +266,10 @@ export default {
   components: { EditClientModal, AddClients, SuccessAlert, Loader },
   computed: {
     paginateCandidates() {
-      // const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      // const endIndex = startIndex + this.itemsPerPage;
-      // return this.getClientDetail.slice(startIndex, endIndex);
-      return this.getClientDetail;
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.getClientDetail.slice(startIndex, endIndex);
+      // return this.getClientDetail;
     },
     // totalRecordsOnPage() {
     //   return this.paginateCandidates.length;

@@ -26,7 +26,11 @@
                       type="text"
                       class="form-control"
                       v-model="fetchCandidate.bank_name"
+                      @input="cleanAndValidateBankName"
                     />
+                    <span v-if="!isBankNameValid" class="text-danger">
+                      Bank Name must not exceed 50 characters.
+                    </span>
                   </div>
                 </div>
                 <div class="mb-3">
@@ -40,6 +44,9 @@
                       v-model="fetchCandidate.bank_number"
                       @input="cleanAndValidateBankNumber"
                     />
+                    <span v-if="!isBankNumberValid" class="text-danger">
+                      Bank Account number must be between 8 and 15 digits.
+                    </span>
                   </div>
                 </div>
                 <div class="mb-3">
@@ -51,7 +58,11 @@
                       type="text"
                       class="form-control"
                       v-model="fetchCandidate.ifsc_code"
+                      @input="cleanAndValidateIfscCode"
                     />
+                    <span v-if="!isIfscCodeValid" class="text-danger">
+                      IFSC Code must be up to 15 alphanumeric characters.
+                    </span>
                   </div>
                 </div>
               </form>
@@ -61,7 +72,7 @@
             <button
               class="btn btn-secondary rounded-1"
               data-bs-target="#editBankDetailsOverview"
-              data-bs-toggle="modal"
+              @click="resetChanges"
               data-bs-dismiss="modal"
             >
               Cancel
@@ -69,6 +80,7 @@
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
+              :disabled="!isBankNumberValid || !isBankNameValid || !isIfscCodeValid"
               @click.prevent="updateCandidateMethod()"
             >
               Save
@@ -86,7 +98,7 @@ import axios from "axios";
 import SuccessAlert from "../../../Alerts/SuccessAlert.vue";
 
 export default {
-  name: "NextToKinEdit",
+  name: "EditBankDetails",
   data() {
     return {
       fetchCandidate: {
@@ -94,13 +106,47 @@ export default {
         bank_number: "",
         ifsc_code: "",
       },
+      originalData: null,
     };
   },
   components: { SuccessAlert },
+  computed: {
+    isBankNumberValid() {
+      const bankNumberLength = this.fetchCandidate.bank_number.length;
+      return bankNumberLength >= 8 && bankNumberLength <= 15;
+    },
+    isBankNameValid() {
+      const bankName = this.fetchCandidate.bank_name;
+      const isAlphabetic = /^[A-Za-z\s]*$/.test(bankName);
+      const isLengthValid = bankName.length <= 50;
+      return isAlphabetic && isLengthValid;
+    },
+    isIfscCodeValid() {
+      const ifscCode = this.fetchCandidate.ifsc_code;
+      const isLengthValid = ifscCode.length <= 15;
+      const isAlphanumeric = /^[A-Za-z0-9]*$/.test(ifscCode);
+      return isLengthValid && isAlphanumeric;
+    },
+  },
   methods: {
+    resetChanges() {
+      this.fetchCandidate = { ...this.originalData };
+    },
     cleanAndValidateBankNumber() {
       this.fetchCandidate.bank_number = this.fetchCandidate.bank_number.replace(
         /\D/g,
+        ""
+      );
+    },
+    cleanAndValidateBankName() {
+      this.fetchCandidate.bank_name = this.fetchCandidate.bank_name.replace(
+        /[^A-Za-z\s]/g,
+        ""
+      );
+    },
+    cleanAndValidateIfscCode() {
+      this.fetchCandidate.ifsc_code = this.fetchCandidate.ifsc_code.replace(
+        /[^A-Za-z0-9]/g,
         ""
       );
     },
@@ -111,12 +157,15 @@ export default {
         );
 
         this.fetchCandidate = response.data.candidate;
+        this.originalData = { ...this.fetchCandidate };
       } catch (error) {
         // console.error("Error fetching todo:", error);
       }
     },
 
     async updateCandidateMethod() {
+      if (!this.isBankNumberValid || !this.isBankNameValid || !this.isIfscCodeValid)
+        return;
       try {
         await axios.put(
           `${VITE_API_URL}/candidates/${this.$route.params.id}`,

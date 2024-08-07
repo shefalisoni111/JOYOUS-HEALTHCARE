@@ -185,7 +185,7 @@ import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
-  name: "AddVacancy",
+  name: "AddSite",
   data() {
     return {
       validationSelectedClient: true,
@@ -269,8 +269,18 @@ export default {
     validatePortalAccess() {
       return this.portal_access !== null;
     },
-    onClientSelect() {
+    async onClientSelect() {
       const selectedClientId = this.client_id;
+      if (selectedClientId) {
+        try {
+          const response = await axios.get(
+            `${VITE_API_URL}/sites?client_id=${selectedClientId}`
+          );
+          this.clientSites = response.data.data;
+        } catch (error) {
+          // console.error("Error fetching sites data:", error);
+        }
+      }
     },
 
     clearFieldsData() {
@@ -313,10 +323,16 @@ export default {
       this.validateAddress = this.validateAddressFormat(this.address);
       this.validateSiteName = this.validateSiteNameFormate(this.first_name);
 
+      const isEmailUnique = this.clientSites.every((site) => site.email !== this.email);
+
+      if (!isEmailUnique) {
+        alert("This email is already in use for the selected client.");
+        return;
+      }
+
       if (
         this.validateEmail &&
         this.validationSelectedClient &&
-        this.validationNotesText &&
         this.validatePhoneNumber &&
         this.validateAddress &&
         this.validateSiteName
