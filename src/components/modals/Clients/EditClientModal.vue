@@ -185,7 +185,12 @@ export default {
       return this.fetchClients.password === this.fetchClients.confirm_password;
     },
     isSaveDisabled() {
-      return !this.isPhoneNumberValid || !this.isEmailValid || !this.isPasswordMatch;
+      return (
+        !this.isPhoneNumberValid ||
+        !this.isEmailValid ||
+        !this.isPasswordMatch ||
+        this.fetchClients.job_id.length === 0
+      );
     },
     isPhoneNumberValid() {
       return /^[0-9]{10}$/.test(this.fetchClients.phone_number);

@@ -6,7 +6,7 @@
           <div class="card-header">Manage Client Jobs here</div>
           <div class="card-body">
             <h5 class="card-title"></h5>
-            <div class="card-text d-flex justify-content-between gap-3 mb-3">
+            <div class="card-text d-flex gap-2 mb-3">
               <div class="gap-2 d-flex" v-for="data in getJobs" :key="data.id">
                 <span class="btn btn-primary">{{ data.name }}</span>
                 <!-- <span class="btn btn-primary">Nurse</span>

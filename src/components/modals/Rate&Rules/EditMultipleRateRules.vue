@@ -11,7 +11,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="EditMultipleRateRules">
-              Edit Multiple Rate and Rules
+              Edit Multiple Rate and Rules {{ jobID }} {{ SiteID }}
             </h5>
           </div>
           <div class="modal-body mx-3" style="height: 600px; overflow: auto">

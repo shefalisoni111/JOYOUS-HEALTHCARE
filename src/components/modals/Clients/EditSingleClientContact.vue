@@ -84,8 +84,6 @@ export default {
   },
   computed: {
     isPhoneNumberValid() {
-      // return /^[0-9]{10}$/.test(this.fetchClients.phone_number);
-      // return /^[789]\d{9}$/.test(this.fetchClients.phone_number);
       return /^[0-9]{10}$/.test(this.fetchClients?.phone_number);
     },
     isSaveDisabled() {

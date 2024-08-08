@@ -76,7 +76,7 @@
         </table>
       </div>
     </div>
-
+    <CandidateAdd @addCandidate="getCandidateMethods" />
     <AssignDirectVacancy
       :candidateId="selectedCandidateId || 0"
       @Candidate-updated="getCandidateMethods"
@@ -115,6 +115,8 @@ import axios from "axios";
 import Loader from "../Loader/Loader.vue";
 import AssignDirectVacancy from "../modals/CandidatePage/AssignDirectVacancy.vue";
 
+import CandidateAdd from "../modals/CandidatePage/CandidateAdd.vue";
+
 export default {
   name: "ActiveCandidate",
   data() {
@@ -131,6 +133,7 @@ export default {
   components: {
     AssignDirectVacancy,
     Loader,
+    CandidateAdd,
   },
   computed: {
     paginateCandidates() {

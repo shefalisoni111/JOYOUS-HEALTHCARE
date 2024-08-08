@@ -269,7 +269,7 @@
         Next
       </button>
     </div>
-    <AddClients ref="addClient" @client-updated="createdClient" />
+    <!-- <AddClients ref="addClient" @client-updated="createdClient" /> -->
     <EditClientModal :clientID="selectedClientID || 0" @client-updated="createdClient" />
   </div>
 </template>

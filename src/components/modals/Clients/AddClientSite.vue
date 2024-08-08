@@ -331,8 +331,8 @@ export default {
           });
 
           if (response.ok) {
-            this.$emit("addClientSite");
-            this.$emit("getSiteAllDataMethod");
+            this.$emit("addSite");
+            // this.$emit("getSiteAllDataMethod");
             this.clearFields();
             setTimeout(() => {
               this.clearError();

@@ -201,7 +201,7 @@
       </button>
     </div>
     <AddSiteNotes />
-    <AddSite @site="handleSiteAdded" ref="addSite" />
+    <!-- <AddSite @site="handleSiteAdded" ref="addSite" /> -->
     <EditSite
       :siteId="selectedsiteId || 0"
       @editSite="getSiteAllDataMethod"

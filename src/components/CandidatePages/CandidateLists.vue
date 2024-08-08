@@ -210,11 +210,11 @@
       @confirm="confirmCallback"
       @cancel="canceled"
     />
-    <CandidateAdd
+    <!-- <CandidateAdd
       @addCandidate="getCandidateMethods"
       @addStaff="handleCandidateAdded"
       ref="addStaff"
-    />
+    /> -->
     <AssignDirectVacancy
       :candidateId="selectedCandidateId || 0"
       @Candidate-updated="getCandidateMethods"

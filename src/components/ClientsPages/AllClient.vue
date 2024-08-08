@@ -222,7 +222,7 @@
       @client-updated="createdClient"
       ref="editClientModalAll"
     />
-    <!-- <AddClients @client-updated="createdClient" /> -->
+    <AddClients @client-updated="createdClient" />
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
   </div>

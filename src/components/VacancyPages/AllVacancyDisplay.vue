@@ -202,7 +202,7 @@
     <AssignedVacancyList @assignVacancy="createVacancy" />
     <RejectedVacancyList @rejectVacancy="createVacancy" />
     <AllVacancyCandidateList @allVacancy="createVacancy" />
-    <!-- <AddVacancy @addVacancy="createVacancy" /> -->
+    <AddVacancy @addVacancy="createVacancy" />
     <div class="mt-3" style="text-align: right" v-if="getVacancyDetail?.length > 8">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page

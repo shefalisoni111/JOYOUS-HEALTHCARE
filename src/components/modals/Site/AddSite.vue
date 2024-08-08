@@ -95,6 +95,11 @@
                       class="text-danger"
                       >Invalid Email</span
                     >
+                    <span
+                      v-if="email && !isEmailUnique && !autofilled"
+                      class="text-danger"
+                      >Email already in use</span
+                    >
                   </div>
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
@@ -194,6 +199,7 @@ export default {
       validateCandidateLName: true,
       client_id: "",
       clientData: [],
+      clientSites: [],
       site_name: "",
       address: "",
       phone_number: "",
@@ -205,6 +211,10 @@ export default {
       isValidForm: false,
       selectedDate: null,
       autofilled: false,
+      validateEmail: true,
+      validatePhoneNumber: true,
+      validateSiteName: true,
+      isEmailUnique: true,
     };
   },
   props: ["id"],
@@ -219,10 +229,11 @@ export default {
         this.address !== "" &&
         this.status !== null &&
         this.split_rate !== null &&
-        this.portal_access !== null
-        // this.validateEmailFormat(this.email) &&
-        // this.validatePhoneNumberFormat(this.phone_number) &&
-        // this.validateAddressFormat(this.address) &&
+        this.portal_access !== null &&
+        this.validateEmailFormat(this.email) &&
+        this.validatePhoneNumberFormat(this.phone_number) &&
+        this.isEmailUnique &&
+        this.validateAddressFormat(this.address)
         // this.validateSiteNameFormate(this.site_name)
       );
     },
@@ -236,7 +247,7 @@ export default {
     client_id: "validationSelectedClient",
     email: "validateEmailFormat",
     site_name: "validateSiteNameFormate",
-    notes: "validationNotesText",
+
     phone_number: "validatePhoneNumberFormat",
     address: "validateAddressFormat",
     isFormValid: function (newVal) {
@@ -247,11 +258,8 @@ export default {
       this.validationSelectedClient = this.ValidationClient(newValue);
     },
 
-    notes: function (newValue) {
-      this.validationNotesText = this.ValidationNotes(newValue);
-    },
-    client_id(newValue) {
-      this.validationSelectedClient = this.ValidationClient(newValue);
+    email: function (newEmail) {
+      this.isEmailUnique = this.checkEmailUnique(newEmail);
     },
   },
   methods: {
@@ -276,7 +284,7 @@ export default {
           const response = await axios.get(
             `${VITE_API_URL}/sites?client_id=${selectedClientId}`
           );
-          this.clientSites = response.data.data;
+          this.clientSites = response.data.data || [];
         } catch (error) {
           // console.error("Error fetching sites data:", error);
         }
@@ -292,22 +300,11 @@ export default {
     cleanPhoneNumber() {
       this.phone_number = this.phone_number.replace(/\D/g, "");
     },
-    detectAutofill() {
-      const isPhoneNumberFilled = this.phone_number.trim() !== "";
-      const isPositionSelected = !!this.job_id;
-      const isPhoneNumberFocused = document.activeElement === this.$refs.phone_number;
-
-      if (!isPositionSelected) {
-        this.showPhoneNumberValidation = !isPhoneNumberFocused && !isPhoneNumberFilled;
-      } else {
-        this.showPhoneNumberValidation = false;
-      }
+    detectAutofill(event) {
+      const inputField = event.target;
+      this.autofilled = !!inputField.matches(":-webkit-autofill");
     },
 
-    removeDate(index) {
-      this.dates.splice(index, 1);
-      this.clearError();
-    },
     async getClientData() {
       try {
         const response = await axios.get(`${VITE_API_URL}/clients`);
@@ -317,63 +314,25 @@ export default {
       }
     },
     async addSiteMethod() {
-      this.validateEmail = this.validateEmailFormat(this.email);
-      this.validationSelectedClient = this.ValidationClient(this.client_id);
-      this.validatePhoneNumber = this.validatePhoneNumberFormat(this.phone_number);
-      this.validateAddress = this.validateAddressFormat(this.address);
-      this.validateSiteName = this.validateSiteNameFormate(this.first_name);
-
-      const isEmailUnique = this.clientSites.every((site) => site.email !== this.email);
-
-      if (!isEmailUnique) {
-        alert("This email is already in use for the selected client.");
-        return;
-      }
-
-      if (
-        this.validateEmail &&
-        this.validationSelectedClient &&
-        this.validatePhoneNumber &&
-        this.validateAddress &&
-        this.validateSiteName
-      ) {
-        const data = {
+      if (this.isFormValid) {
+        const payload = {
+          client_id: this.client_id,
           site_name: this.site_name,
           address: this.address,
-          phone_number: this.phone_number,
           email: this.email,
-          split_rate: this.split_rate,
+          phone_number: this.phone_number,
           status: this.status,
+          split_rate: this.split_rate,
           portal_access: this.portal_access,
-          client_id: this.client_id,
         };
+
         try {
-          const response = await fetch(`${VITE_API_URL}/sites`, {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-            },
-            body: JSON.stringify(data),
-          });
-
-          if (response.ok) {
-            this.$emit("addSite");
-            this.$emit("getSiteAllDataMethod");
-            this.clearFields();
-            setTimeout(() => {
-              this.clearError();
-            }, 100);
-
-            // alert("Successful Shift added");
-            const message = "Site added Successfully";
-            this.$refs.successAlert.showSuccess(message);
-          } else {
-            alert("Error adding Shift");
-          }
+          const response = await axios.post(`${VITE_API_URL}/sites`, payload);
+          this.$refs.successAlert.show("Site added successfully!");
+          this.clearFields();
         } catch (error) {
-          alert("Error adding Shift");
+          // console.error("Error adding site:", error);
         }
-      } else {
       }
     },
 
@@ -385,9 +344,9 @@ export default {
       const clientRegex = /[a-zA-Z0-9]/;
       return clientRegex.test(newValue);
     },
-    validatePhoneNumberFormat(phoneNumber) {
+    validatePhoneNumberFormat(phone_number) {
       const phoneRegex = /^\d{10}$/;
-      return phoneRegex.test(phoneNumber);
+      return phoneRegex.test(phone_number);
     },
     validateAddressFormat(address) {
       const addressRegex = /^[#.0-9a-zA-Z\s,-]+$/;
@@ -397,16 +356,19 @@ export default {
       const nameRegex = /[A-Za-z]/;
       return nameRegex.test(site_name);
     },
-    clearError() {
-      if (this.autofilled) {
-        this.autofilled = false;
-      } else {
-        this.validateEmail = true;
-        this.validatePhoneNumber = true;
-        this.validationSelectedClient = true;
-        this.validateAddress = true;
-        this.validateSiteName = true;
+    checkEmailUnique(email) {
+      if (this.clientSites.length > 0) {
+        return !this.clientSites.some((site) => site.email === email);
       }
+      return true;
+    },
+    clearError() {
+      this.validationSelectedClient = true;
+
+      this.validateAddress = true;
+      this.validateCandidateLName = true;
+      this.autofilled = false;
+      this.isEmailUnique = true;
     },
     clearFields() {
       this.site_name = "";
