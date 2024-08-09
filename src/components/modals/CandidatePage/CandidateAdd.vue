@@ -397,7 +397,7 @@ export default {
     next();
   },
   async mounted() {
-    // await this.getPositionMethod();
+    await this.getPositionMethod();
     this.isValidForm = this.isFormValid;
   },
 };

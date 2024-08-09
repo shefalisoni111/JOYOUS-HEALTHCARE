@@ -434,13 +434,13 @@ export default {
       try {
         this.searchResults = [];
 
-        const response = await axiosInstance.get(
-          `${VITE_API_URL}/search_candidate/${this.searchQuery}`
-        );
+        const response = await axiosInstance.get(`${VITE_API_URL}/search_candidate`, {
+          params: {
+            candidate_query: this.searchQuery,
+          },
+        });
 
         this.searchResults = response.data.candidate;
-
-        this.searchResults = response.data;
       } catch (error) {
         if (
           (error.response && error.response.status === 404) ||

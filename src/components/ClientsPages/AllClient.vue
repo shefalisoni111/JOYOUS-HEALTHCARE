@@ -87,7 +87,7 @@
             <th scope="col">Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-if="paginateCandidates?.length > 0">
           <tr v-for="client in paginateCandidates" :key="client.id">
             <td>
               <input
@@ -195,7 +195,7 @@
     </div>
     <div class="mx-3" style="text-align: right" v-if="totalCount > 0">
       <button class="btn btn-outline-dark btn-sm">
-        {{ getClientDetail.length }} Records Per Page
+        {{ itemsPerPage }} Records Per Page
       </button>
       &nbsp;&nbsp;
       <button
@@ -216,7 +216,6 @@
         Next
       </button>
     </div>
-
     <EditClientModal
       :clientID="selectedClientID || 0"
       @client-updated="createdClient"
@@ -265,11 +264,16 @@ export default {
 
   components: { EditClientModal, AddClients, SuccessAlert, Loader },
   computed: {
+    // paginateCandidates() {
+    //   // const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    //   // const endIndex = startIndex + this.itemsPerPage;
+    //   // return this.getClientDetail.slice(startIndex, endIndex);
+    //   return this.getClientDetail;
+    // },
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.getClientDetail.slice(startIndex, endIndex);
-      // return this.getClientDetail;
     },
     // totalRecordsOnPage() {
     //   return this.paginateCandidates.length;
@@ -286,6 +290,11 @@ export default {
     });
   },
   methods: {
+    async changePage(newPage) {
+      if (newPage < 1 || newPage > this.totalPages) return;
+      this.currentPage = newPage;
+      await this.createdClient();
+    },
     async changePage(newPage) {
       if (newPage < 1 || newPage > this.totalPages) return;
       this.currentPage = newPage;
@@ -525,7 +534,6 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/clients`, {
           params: {
-            activated: "false",
             page: this.currentPage,
           },
         });

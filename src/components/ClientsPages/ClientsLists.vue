@@ -248,23 +248,25 @@
         </div>
       </div>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 8">
+    <div class="mx-3" style="text-align: right" v-if="totalCount > 0">
       <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
+        {{ getClientDetail.length }} Records Per Page
       </button>
       &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary mr-2"
         :disabled="currentPage === 1"
-        @click="currentPage--"
+        @click="changePage(currentPage - 1)"
       >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
+        Previous
+      </button>
+      &nbsp;&nbsp;
+      <span>{{ currentPage }} of {{ totalPages }}</span>
+      &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= searchResults.length"
-        @click="currentPage++"
+        :disabled="currentPage === totalPages"
+        @click="changePage(currentPage + 1)"
       >
         Next
       </button>
@@ -306,7 +308,9 @@ export default {
       activeTab: 0,
       activeTabName: "",
       currentPage: 1,
-      itemsPerPage: 8,
+      totalPages: 1,
+      itemsPerPage: 10,
+      totalCount: 0,
       // showFilters: false,
       selectedClientStatus: "",
       colors: [
@@ -325,13 +329,14 @@ export default {
       return this.tabs[this.activeTab].component;
     },
     paginateSearchResults() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.searchResults.slice(startIndex, endIndex);
+      // const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      // const endIndex = startIndex + this.itemsPerPage;
+      // return this.searchResults.slice(startIndex, endIndex);
+      return this.getClientDetail;
     },
-    totalRecordsOnPage() {
-      return this.paginateSearchResults.length;
-    },
+    // totalRecordsOnPage() {
+    //   return this.paginateSearchResults.length;
+    // },
   },
   components: { AllClient, InActiveClient, ActiveClient, EditClientModal, AddClients },
 
@@ -463,10 +468,19 @@ export default {
       this.$router.push({ name: this.tabs[index].routeName });
     },
     async createdClient() {
-      await axios
-        .get(`${VITE_API_URL}/clients`)
-
-        .then((response) => (this.getClientDetail = response.data.data));
+      try {
+        const response = await axios.get(`${VITE_API_URL}/clients`, {
+          params: {
+            page: this.currentPage,
+          },
+        });
+        this.getClientDetail = response.data.data;
+        this.currentPage = response.data.current_page;
+        this.totalPages = response.data.total_pages;
+        this.totalCount = response.data.clients_count;
+      } catch (error) {
+        // console.error('Error fetching client data:', error);
+      }
     },
   },
   async mounted() {
