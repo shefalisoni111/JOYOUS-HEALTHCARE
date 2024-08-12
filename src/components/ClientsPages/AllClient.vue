@@ -264,17 +264,17 @@ export default {
 
   components: { EditClientModal, AddClients, SuccessAlert, Loader },
   computed: {
-    // paginateCandidates() {
-    //   // const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    //   // const endIndex = startIndex + this.itemsPerPage;
-    //   // return this.getClientDetail.slice(startIndex, endIndex);
-    //   return this.getClientDetail;
-    // },
     paginateCandidates() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.getClientDetail.slice(startIndex, endIndex);
+      // const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      // const endIndex = startIndex + this.itemsPerPage;
+      // return this.getClientDetail.slice(startIndex, endIndex);
+      return this.getClientDetail;
     },
+    // paginateCandidates() {
+    //   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    //   const endIndex = startIndex + this.itemsPerPage;
+    //   return this.getClientDetail.slice(startIndex, endIndex);
+    // },
     // totalRecordsOnPage() {
     //   return this.paginateCandidates.length;
     // },
