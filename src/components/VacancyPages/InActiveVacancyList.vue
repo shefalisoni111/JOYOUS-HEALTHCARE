@@ -85,7 +85,7 @@
         </table>
       </div>
     </div>
-    <div class="mt-3" style="text-align: right" v-if="getInactiveData.length > 9">
+    <div class="mt-3" style="text-align: right" v-if="getInactiveData.length >= 10">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -136,7 +136,7 @@ export default {
       selectedVacancyId: 0,
       createVacancy: null,
       currentPage: 1,
-      itemsPerPage: 9,
+      itemsPerPage: 10,
       isLoading: false,
       today: new Date(),
       isModalVisible: false,

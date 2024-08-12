@@ -195,7 +195,7 @@
     <RejectedVacancyList @rejectVacancy="createVacancy" />
     <AllVacancyCandidateList @allVacancy="createVacancy" />
     <!-- <AddVacancy @addVacancy="createVacancy" /> -->
-    <div class="mt-3" style="text-align: right" v-if="getVacancyDetail?.length > 9">
+    <div class="mt-3" style="text-align: right" v-if="getVacancyDetail?.length >= 10">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -244,7 +244,7 @@ export default {
       getVacancyDetail: [],
       selectedVacancyId: 0,
       currentPage: 1,
-      itemsPerPage: 9,
+      itemsPerPage: 10,
       isLoading: false,
       isModalVisible: false,
       confirmMessage: "",

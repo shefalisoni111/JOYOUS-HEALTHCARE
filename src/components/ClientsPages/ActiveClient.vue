@@ -121,7 +121,7 @@
         </tbody>
       </table>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="totalCount > 0">
+    <div class="mx-3" style="text-align: right" v-if="getClientDetail?.length >= 10">
       <button class="btn btn-outline-dark btn-sm">
         {{ getClientDetail.length }} Records Per Page
       </button>
