@@ -323,7 +323,7 @@ export default {
         paye: "",
         dayShiftId: "",
         nightShiftId: "",
-
+        client_id: "",
         validationStartTime: true,
 
         validationEndTime: true,
@@ -343,6 +343,10 @@ export default {
       type: Number,
       required: true,
     },
+    ClientID: {
+      type: Number,
+      required: true,
+    },
   },
   components: { SuccessAlert },
   computed: {
@@ -353,11 +357,17 @@ export default {
       return businessUnit ? businessUnit.site_name : "";
     },
     selectClients() {
-      const client = this.clientData.find(
+      const clientData = this.clientData.find(
         (option) => option.id === this.fetchRateRulesData.client_id
       );
-      return client ? client.first_name : "";
+      return clientData ? clientData.first_name : "";
     },
+    // selectClients() {
+    //   const client = this.clientData.find(
+    //     (option) => option.id === this.fetchRateRulesData.ClientID
+    //   );
+    //   return client ? client.first_name : "";
+    // },
     selectShifts() {
       this.shiftsTime();
       const shift = this.shiftsTime.find(
@@ -587,7 +597,7 @@ export default {
     async getSiteAccordingClientMethod() {
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/site_according_client/${this.client_id}`
+          `${VITE_API_URL}/site_according_client/${this.ClientID}`
         );
         this.businessUnit = response.data.site;
       } catch (error) {
@@ -598,18 +608,18 @@ export default {
         }
       }
     },
-    async getClientMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/clients`);
-        this.clientData = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
+    // async getClientMethod() {
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/clients`);
+    //     this.clientData = response.data.data;
+    //   } catch (error) {
+    //     if (error.response) {
+    //       if (error.response.status == 404) {
+    //         // alert(error.response.data.message);
+    //       }
+    //     }
+    //   }
+    // },
     // async getTimeShifts() {
     //   await axios
     //     .get(`${VITE_API_URL}/shifts`)
@@ -683,14 +693,16 @@ export default {
   async beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.getBusinessUnitMethod();
-      vm.getClientMethod();
+      // vm.getClientMethod();
       vm.getTimeShift();
       vm.getJobTitleMethod();
+      vm.getSiteAccordingClientMethod();
     });
   },
   async beforeRouteUpdate(to, from, next) {
     this.getBusinessUnitMethod();
-    this.getClientMethod();
+    // this.getClientMethod();
+    this.getSiteAccordingClientMethod();
     this.getTimeShift();
     this.getJobTitleMethod();
     next();

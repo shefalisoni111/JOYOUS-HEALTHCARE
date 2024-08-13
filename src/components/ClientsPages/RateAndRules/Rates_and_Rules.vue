@@ -205,7 +205,8 @@
                                   data.id,
                                   data.site_id,
                                   data.job_id,
-                                  data.job
+                                  data.job,
+                                  data.client_id
                                 )
                               "
                             >
@@ -339,7 +340,8 @@
                                   data.id,
                                   data.site_id,
                                   data.job_id,
-                                  data.job
+                                  data.job,
+                                  data.client_id
                                 )
                               "
                             >
@@ -431,6 +433,7 @@
     <EditSingleRateRules
       :RateRulesId="selectedRatesRulesId || 0"
       @editUpdatedRateRules="getRateRulesDataMethod"
+      :ClientID="selectedClientID || 0"
       ref="singleEdit_rate_rules"
     />
     <EditMultipleRateRules
@@ -438,6 +441,7 @@
       :SiteID="selectedSiteID || 0"
       :jobID="selectedJobID || 0"
       :ids="ids"
+      :ClientID="selectedClientID || 0"
       @editMultipleUpdatedRateRules="getRateRulesDataMethod"
       ref="multipleEdit_rate_rules"
     />
@@ -451,6 +455,7 @@ import AddRateRules from "../../modals/Rate&Rules/AddRateRules.vue";
 import Loader from "../../Loader/Loader.vue";
 import EditSingleRateRules from "../../modals/Rate&Rules/EditSingleRateRules.vue";
 import EditMultipleRateRules from "../../modals/Rate&Rules/EditMultipleRateRules.vue";
+
 const axiosInstance = axios.create({
   headers: {
     "Cache-Control": "no-cache",
@@ -463,6 +468,7 @@ export default {
       selectedRatesRulesId: null,
       selectedSiteID: null,
       getRateRulesWeekData: [],
+      selectedClientID: null,
       isLoading: false,
       showFilters: false,
       activeSiteId: null,
@@ -493,12 +499,13 @@ export default {
     groupedRateRulesData() {
       const groupedData = {};
       this.getRateRulesData.forEach((data) => {
-        const groupKey = `${data.site_id}-${data.client}-${data.job}`;
+        const groupKey = `${data.site_id}-${data.client}-${data.client_id}-${data.job}`;
         if (!groupedData[groupKey]) {
           groupedData[groupKey] = {
             site_id: data.site_id,
             site: data.site,
             client: data.client,
+            client_id: data.client_id,
             job: data.job,
             job_id: data.job_id,
 
@@ -536,8 +543,9 @@ export default {
     editRateRulesId(RateRulesId) {
       this.selectedRatesRulesId = RateRulesId;
       this.$refs.singleEdit_rate_rules.getTimeShift();
+
       setTimeout(() => {
-        this.$refs.singleEdit_rate_rules.getClientMethod();
+        this.$refs.singleEdit_rate_rules.getSiteAccordingClientMethod();
       }, 100);
 
       setTimeout(() => {
@@ -547,18 +555,22 @@ export default {
       setTimeout(() => {
         this.$refs.singleEdit_rate_rules.getJobTitleMethod();
       }, 300);
+      // setTimeout(() => {
+      //   this.$refs.singleEdit_rate_rules.getSiteAccordingClientMethod();
+      // }, 400);
     },
     extractFilteredRateRulesIds() {
       this.ids = this.filteredRateRulesData.map((rate) => rate.id);
     },
-    editRateRulesMultiId(RateRulesId, siteID, jobID, job) {
+    editRateRulesMultiId(RateRulesId, siteID, jobID, job, clientID) {
       this.selectedRatesRulesId = RateRulesId;
       this.selectedSiteID = siteID;
       this.selectedJobID = jobID;
+      this.selectedClientID = clientID;
       this.$refs.multipleEdit_rate_rules.getSiteAccordingClientMethod();
-      setTimeout(() => {
-        this.$refs.multipleEdit_rate_rules.getClientMethod();
-      }, 100);
+      // setTimeout(() => {
+      //   this.$refs.multipleEdit_rate_rules.getClientMethod();
+      // }, 100);
 
       setTimeout(() => {
         this.$refs.multipleEdit_rate_rules.getBusinessUnitMethod();

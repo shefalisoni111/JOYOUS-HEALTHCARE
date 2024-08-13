@@ -11,7 +11,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="EditMultipleRateRules">
-              Edit Multiple Rate and Rules {{ jobID }} {{ SiteID }}
+              Edit Multiple Rate and Rules {{ jobID }} {{ SiteID }} {{ ClientID }}
             </h5>
           </div>
           <div class="modal-body mx-3" style="height: 600px; overflow: auto">
@@ -2389,6 +2389,10 @@ export default {
       type: Array,
       required: true,
     },
+    ClientID: {
+      type: Number,
+      required: true,
+    },
   },
 
   components: { SuccessAlert },
@@ -2572,7 +2576,7 @@ export default {
     async getSiteAccordingClientMethod() {
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/site_according_client/${this.clientId}`
+          `${VITE_API_URL}/site_according_client/${this.ClientID}`
         );
         this.businessUnit = response.data.site;
       } catch (error) {
@@ -2646,8 +2650,8 @@ export default {
     // this.getClientMethod();
     this.getTimeShift(this.SiteID);
     // this.getJobTitleMethod();
-    if (this.clientId) {
-      this.getSiteAccordingClientMethod();
+    if (this.ClientID) {
+      this.getSiteAccordingClientMethod(this.ClientID);
     }
   },
   watch: {
@@ -2680,7 +2684,7 @@ export default {
     },
     clientId(newClientId) {
       this.fetchRateRulesData.client_id = newClientId;
-      this.getSiteAccordingClientMethod();
+      this.getSiteAccordingClientMethod(newClientId);
     },
   },
 };

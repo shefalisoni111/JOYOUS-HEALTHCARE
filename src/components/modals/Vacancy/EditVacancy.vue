@@ -11,10 +11,10 @@
             <div class="row g-3 align-items-center">
               <form>
                 <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-3">
+                  <div class="col-2">
                     <label class="form-label" for="selectClients">Client</label>
                   </div>
-                  <div class="col-9">
+                  <div class="col-10">
                     <select
                       v-model="fetchVacancy.client_id"
                       id="selectClients"
@@ -33,10 +33,10 @@
                   </div>
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-3">
+                  <div class="col-2">
                     <label class="form-label">Site </label>
                   </div>
-                  <div class="col-9">
+                  <div class="col-10">
                     <select
                       v-model="fetchVacancy.site_id"
                       id="selectBusinessUnit"
@@ -56,10 +56,10 @@
                 </div>
 
                 <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-3">
+                  <div class="col-2">
                     <label class="form-label">Job Title </label>
                   </div>
-                  <div class="col-9">
+                  <div class="col-10">
                     <select v-model="fetchVacancy.job_id" id="selectJobTitle">
                       <option
                         v-for="option in options"
@@ -75,16 +75,17 @@
                 </div>
 
                 <div class="mb-3">
-                  <div class="d-flex flex-wrap">
-                    <div class="col-3">
+                  <div class="d-flex">
+                    <div class="col-2">
                       <label class="form-label">Date</label>
                     </div>
+                    <div></div>
                     <div
                       v-for="(date, index) in fetchVacancy.dates"
                       :key="index"
                       class=""
                     >
-                      <div class="col-11 position-relative">
+                      <div class="col-10 position-relative">
                         <input
                           type="date"
                           class="form-control"
@@ -92,15 +93,17 @@
                           @input="updateDate($event.target.value, index)"
                         />
                         <span
-                          v-if="!isValidDate && fetchVacancy.dates[index].length > 0"
+                          v-if="
+                            !isDateValid(date) && fetchVacancy.dates[index].length > 0
+                          "
                           class="text-danger"
                           >Please choose a date from today onwards!</span
                         >
                         <button
-                          v-if="fetchVacancy.dates.length > 1 && !isValidDate"
+                          v-if="fetchVacancy.dates.length > 1 && !isDateValid(date)"
                           style="
                             position: absolute;
-                            bottom: 27px;
+                            bottom: 96px;
                             right: -7px;
                             border-radius: 50%;
                             padding: 0px 5px;
@@ -116,10 +119,10 @@
                   </div>
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-3">
+                  <div class="col-2">
                     <label class="form-label" for="selectShifts">Shift</label>
                   </div>
-                  <div class="col-9">
+                  <div class="col-10">
                     <select
                       v-model="fetchVacancy.site_shift_id"
                       id="selectShifts"
@@ -138,12 +141,12 @@
                 </div>
                 <div>
                   <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-3">
+                    <div class="col-2">
                       <label class="form-label" for="selectCustomStartTime"
                         >Start Time
                       </label>
                     </div>
-                    <div class="col-9">
+                    <div class="col-10">
                       <select
                         id="selectCustomStartTime"
                         class="form-select w-25"
@@ -157,10 +160,10 @@
                     </div>
                   </div>
                   <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-3">
+                    <div class="col-2">
                       <label class="form-label" for="selectCustomEndTime">End Time</label>
                     </div>
-                    <div class="col-9">
+                    <div class="col-10">
                       <select
                         id="selectCustomEndTime"
                         class="form-select w-25"
@@ -174,10 +177,10 @@
                     </div>
                   </div>
                   <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-3">
+                    <div class="col-2">
                       <label class="form-label" for="selectShiftsBreak">Break Time</label>
                     </div>
-                    <div class="col-9">
+                    <div class="col-10">
                       <select
                         id="selectShiftsBreak"
                         class="form-select w-25"
@@ -195,10 +198,10 @@
                     </div>
                   </div>
                   <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-3">
+                    <div class="col-2">
                       <label class="form-label">Staff Required</label>
                     </div>
-                    <div class="col-9">
+                    <div class="col-10">
                       <input
                         type="number"
                         class="form-control w-25"
@@ -210,10 +213,10 @@
                   </div>
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-3">
+                  <div class="col-2">
                     <label class="form-label">Notes</label>
                   </div>
-                  <div class="col-9">
+                  <div class="col-10">
                     <input
                       type="text"
                       class="form-control"
@@ -277,7 +280,7 @@ export default {
       shiftsTime: [],
       clientData: [],
       options: [],
-      isDateValid: true,
+      // isDateValid: true,
       selectedDate: "",
       invalidDate: false,
     };
@@ -332,6 +335,12 @@ export default {
         const formattedDate = `${year}-${month}-${day}`;
         return formattedDate >= today;
       });
+    },
+    isFormValid() {
+      const today = new Date();
+      return this.fetchVacancy.dates.every(
+        (date) => new Date(this.formatDate(date)) >= today
+      );
     },
   },
   methods: {
@@ -402,12 +411,18 @@ export default {
     //   this.getJobTitleMethod(selectedClientId);
     //   this.getSiteAccordingClientMethod(selectedClientId);
     // },
+    isDateValid(date) {
+      const today = new Date();
+      const selectedDate = new Date(this.formatDate(date));
+      return selectedDate >= today;
+    },
     removeDate(index) {
       // this.fetchVacancy.dates.splice(index, 1);
       const updatedDates = this.fetchVacancy.dates.filter((_, i) => i !== index);
 
       this.fetchVacancy.dates = updatedDates;
     },
+
     formatDate(date) {
       const [day, month, year] = date.split("-");
       return `${year}-${month}-${day}`;
