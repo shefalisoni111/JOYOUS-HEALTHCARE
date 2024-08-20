@@ -80,9 +80,30 @@
                     <h6>Email : {{ getSiteDatas.email }}</h6>
                     <h6>Address : {{ getSiteDatas.address }}</h6>
                     <h6>Mobile : {{ getSiteDatas.phone_number }}</h6>
-                    <h6>Contact person's name:</h6>
-                    <h6>Contact person's email:</h6>
-                    <h6>Contact person's number:</h6>
+                    <h6 class="text-capitalize">
+                      Contact person's name:
+                      {{
+                        getSiteDatas.contact_person_name
+                          ? getSiteDatas.contact_person_name
+                          : "Null"
+                      }}
+                    </h6>
+                    <h6>
+                      Contact person's email:
+                      {{
+                        getSiteDatas.contact_person_email
+                          ? getSiteDatas.contact_person_email
+                          : "Null"
+                      }}
+                    </h6>
+                    <h6>
+                      Contact person's number:
+                      {{
+                        getSiteDatas.contact_person_number
+                          ? getSiteDatas.contact_person_number
+                          : "Null"
+                      }}
+                    </h6>
                     <h6>Bookings email:</h6>
                   </div>
                   <div>

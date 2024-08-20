@@ -545,7 +545,7 @@ export default {
       this.$refs.singleEdit_rate_rules.getTimeShift();
 
       setTimeout(() => {
-        this.$refs.singleEdit_rate_rules.getSiteAccordingClientMethod();
+        this.$refs.singleEdit_rate_rules.getClientMethod();
       }, 100);
 
       setTimeout(() => {
@@ -568,9 +568,9 @@ export default {
       this.selectedJobID = jobID;
       this.selectedClientID = clientID;
       this.$refs.multipleEdit_rate_rules.getSiteAccordingClientMethod();
-      // setTimeout(() => {
-      //   this.$refs.multipleEdit_rate_rules.getClientMethod();
-      // }, 100);
+      setTimeout(() => {
+        this.$refs.multipleEdit_rate_rules.getClientMethod();
+      }, 100);
 
       setTimeout(() => {
         this.$refs.multipleEdit_rate_rules.getBusinessUnitMethod();

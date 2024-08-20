@@ -390,7 +390,7 @@ export default {
       if (phoneNumber.trim() === "") {
         return false;
       }
-      const phoneRegex = /^\d{10}$/;
+      const phoneRegex = /^0\d{9}$|^\d{10}$/;
       return phoneRegex.test(phoneNumber);
     },
     clearError() {

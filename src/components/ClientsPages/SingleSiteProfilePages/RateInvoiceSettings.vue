@@ -95,8 +95,8 @@
               <input
                 type="text"
                 class="form-control"
-                placeholder="Specify invoice number formal"
-                aria-label="Specify invoice number formal"
+                placeholder="Specify invoice number format"
+                aria-label="Specify invoice number format"
                 aria-describedby="basic-addon2"
               />
               <span class="input-group-text" id="basic-addon2">1234</span>
@@ -108,7 +108,7 @@
               <input
                 class="form-control"
                 type="text"
-                placeholder="Specily Invoice Start numbel"
+                placeholder="Specily Invoice Start number"
               />
             </div>
           </div>

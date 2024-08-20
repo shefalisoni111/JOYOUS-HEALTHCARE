@@ -35,7 +35,7 @@
                         :id="option.id"
                         aria-placeholder="Select Job"
                       >
-                        {{ option.first_name }}
+                        {{ option.client_name }}
                       </option>
                     </select>
                   </div>
@@ -2404,8 +2404,8 @@ export default {
       return businessUnit ? businessUnit.site_name : "";
     },
     selectClients() {
-      const client = this.clientData.find((option) => option.id === this.clientId);
-      return client ? client.first_name : "";
+      const clientData = this.clientData.find((option) => option.id === this.ClientID);
+      return clientData ? clientData.client_name : "";
     },
 
     selectJobTitle() {
@@ -2578,7 +2578,7 @@ export default {
         const response = await axios.get(
           `${VITE_API_URL}/site_according_client/${this.ClientID}`
         );
-        this.businessUnit = response.data.site;
+        this.clientData = response.data.site;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
@@ -2588,14 +2588,31 @@ export default {
       }
     },
     async getClientMethod() {
+      const pagesToFetch = [1, 2, 3];
+      let allClientData = [];
+
       try {
-        const response = await axios.get(`${VITE_API_URL}/clients`);
-        this.clientData = response.data.data;
+        const responses = await Promise.all(
+          pagesToFetch.map((page) =>
+            axios.get(`${VITE_API_URL}/clients`, {
+              params: {
+                page: page,
+              },
+            })
+          )
+        );
+
+        responses.forEach((response) => {
+          allClientData = allClientData.concat(response.data.data);
+        });
+
+        this.clientData = allClientData;
       } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
+        if (error.response && error.response.status === 404) {
+          // Handle 404 error
+          // console.error('Error fetching client data:', error.response.data.message);
+        } else {
+          // console.error('Error fetching client data:', error);
         }
       }
     },
@@ -2647,7 +2664,7 @@ export default {
     // this.getBusinessUnitMethod();
     // this.getSiteAccordingClientMethod();
     this.fetchRateRulesDataMethod(this.SiteID, this.jobID);
-    // this.getClientMethod();
+    this.getClientMethod();
     this.getTimeShift(this.SiteID);
     // this.getJobTitleMethod();
     if (this.ClientID) {
@@ -2682,9 +2699,9 @@ export default {
         }
       },
     },
-    clientId(newClientId) {
+    ClientID(newClientId) {
       this.fetchRateRulesData.client_id = newClientId;
-      this.getSiteAccordingClientMethod(newClientId);
+      // this.getSiteAccordingClientMethod(newClientId);
     },
   },
 };
