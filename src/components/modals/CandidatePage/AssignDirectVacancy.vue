@@ -299,7 +299,7 @@ export default {
       this.$emit("assignCandidate", { candidateId, jobId });
     },
 
-    async assignedCandidate(candidateId) {
+    async assignedCandidate() {
       const token = localStorage.getItem("token");
 
       if (this.$store.state.selectedCandidateItemId) {
@@ -350,34 +350,34 @@ export default {
         return;
       }
 
-      const data = {
-        candidate_id: this.$store.state.selectedCandidateItemId,
-        vacancy_id: checkedVacancyIds,
-      };
-
       try {
-        const response = await fetch(`${VITE_API_URL}/assigned_vacancy`, {
-          method: "PUT",
-          headers: {
-            Accept: "application/json",
+        for (const vacancyId of checkedVacancyIds) {
+          const data = {
+            candidate_id: this.$store.state.selectedCandidateItemId,
+            vacancy_id: vacancyId,
+          };
 
-            Authorization: "bearer " + token,
-          },
-          body: JSON.stringify(data),
-        });
+          const response = await fetch(`${VITE_API_URL}/assigned_vacancy`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "bearer " + token,
+            },
+            body: JSON.stringify(data),
+          });
 
-        if (response.ok) {
-          // alert("");
-          const message = "Staff Assigned Shift Successfully";
-          this.$refs.successAlert.showSuccess(message);
-          this.checkedVacancies = {};
-          this.$emit("Candidate-updated");
-        } else {
-          // throw new Error(`Failed to assign candidates. Status: ${response.status}`);
+          if (!response.ok) {
+            // throw new Error(`Failed to assign candidates. Status: ${response.status}`);
+          }
         }
+
+        const message = "Staff Assigned Shift Successfully";
+        this.$refs.successAlert.showSuccess(message);
+        this.checkedVacancies = {};
+
+        this.$emit("Candidate-updated");
       } catch (error) {
         // console.error("Error assigning candidates:", error);
-        // Optionally, display an error message to the user
       }
     },
   },

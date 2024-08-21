@@ -261,7 +261,7 @@
               <i class="bi bi-bell"></i>
               <span v-if="!dropdownOpen && showBadge" class="badge bg-primary badge-number">2</span>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" @click="dropdownOpen = false">
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" @click.self="dropdownOpen = false">
               <li class="dropdown-header d-flex">
                 You have {{ notifications.length }} new notifications
                 <a href="#" class="mt-2 ms-2" @click="showAllNotifications">
@@ -653,7 +653,9 @@ export default {
  async mounted() {
   // await   this.getAdminMethod();
   await  this.getCandidateMethods();
+  
   },
+  
 };
 </script>
 

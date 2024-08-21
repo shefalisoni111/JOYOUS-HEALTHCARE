@@ -95,7 +95,12 @@
                       <td>{{ getDocs.display_name }}</td>
                       <td>
                         <label class="switch" :class="{ checked: getDocs.mandatory }">
-                          <input type="checkbox" id="togBtn" checked />
+                          <input
+                            type="checkbox"
+                            id="togBtn"
+                            :checked="getDocs.mandatory"
+                            @change="getDocumentCategories"
+                          />
                           <div class="slider round"></div>
                         </label>
                       </td>
