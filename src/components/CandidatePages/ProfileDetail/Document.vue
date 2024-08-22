@@ -405,9 +405,9 @@ export default {
           if (response.ok) {
             this.getDocCAtegories();
             alert("Successful Submit Data");
-            this.issue_date = "";
-            this.expiry_date = "";
-            this.description = "";
+            this.issue_date = null;
+            this.expiry_date = null;
+            this.description = null;
             this.url = null;
           } else {
             // Handle error appropriately
