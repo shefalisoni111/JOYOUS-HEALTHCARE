@@ -240,11 +240,11 @@ export default {
     toggleFilters() {
       this.showFilters = !this.showFilters;
     },
-    filterData(value) {
+    async filterData(value) {
       let site_type = "status";
-      let site_value = value === "true" ? "true" : "false";
+      let site_value = value === "true";
 
-      this.makeFilterAPICall(site_type, site_value);
+      await this.makeFilterAPICall(site_type, site_value);
     },
     async makeFilterAPICall(site_type, site_value) {
       try {
@@ -254,17 +254,18 @@ export default {
             site_value: site_value,
           },
         });
-
-        this.paginateSiteData = response.data.data;
+        this.getSiteAllData = response.data.data;
+        this.currentPage = 1; // Reset to the first page after filtering
       } catch (error) {
         if (error.response && error.response.status === 404) {
           const errorMessages = error.response.data.error;
           if (errorMessages === "No records found for the given filter") {
-            alert("No records found for the given filter");
+            // alert("No records found for the given filter");
           } else {
-            alert(errorMessages);
+            // alert(errorMessages);
           }
         } else {
+          // console.error("Error fetching filtered data:", error);
         }
       }
     },
