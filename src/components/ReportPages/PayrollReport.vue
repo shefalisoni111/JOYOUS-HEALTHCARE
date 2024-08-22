@@ -307,14 +307,31 @@ export default {
   },
   methods: {
     async getClientMethod() {
+      const pagesToFetch = [1, 2, 3];
+      let allClientData = [];
+
       try {
-        const response = await axios.get(`${VITE_API_URL}/clients`);
-        this.clientData = response.data.data;
+        const responses = await Promise.all(
+          pagesToFetch.map((page) =>
+            axios.get(`${VITE_API_URL}/clients`, {
+              params: {
+                page: page,
+              },
+            })
+          )
+        );
+
+        responses.forEach((response) => {
+          allClientData = allClientData.concat(response.data.data);
+        });
+
+        this.clientData = allClientData;
       } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
+        if (error.response && error.response.status === 404) {
+          // Handle 404 error
+          // console.error('Error fetching client data:', error.response.data.message);
+        } else {
+          // console.error('Error fetching client data:', error);
         }
       }
     },

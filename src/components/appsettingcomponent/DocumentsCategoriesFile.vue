@@ -236,10 +236,14 @@ export default {
       this.confirmMessage = "Are you sure want to delete?";
       this.isModalVisible = true;
       this.confirmCallback = async () => {
-        axios.delete(`${VITE_API_URL}/document_categories/` + id).then((response) => {
+        try {
+          await axios.delete(`${VITE_API_URL}/documents/` + id);
           this.getDocCAtegories();
-        });
-        this.isModalVisible = false;
+        } catch (error) {
+          // console.error("Error deleting document:", error);
+        } finally {
+          this.isModalVisible = false;
+        }
       };
     },
     documentDelete(id) {
