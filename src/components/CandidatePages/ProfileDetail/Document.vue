@@ -244,6 +244,7 @@
                                     <button
                                       type="button"
                                       class="btn btn-primary"
+                                      :disabled="!isFormValid"
                                       v-on:click="
                                         addCandidateDocument(getDocs.document.id)
                                       "
@@ -351,6 +352,11 @@ export default {
     };
   },
   components: { ViewDocuments, ConfirmationAlert, Loader },
+  computed: {
+    isFormValid() {
+      return this.issue_date && this.expiry_date && this.description && this.url;
+    },
+  },
   methods: {
     isDownloadDisabled() {
       return !this.getCate.documents;
