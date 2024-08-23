@@ -97,9 +97,9 @@
                         <label class="switch" :class="{ checked: getDocs.mandatory }">
                           <input
                             type="checkbox"
-                            id="togBtn"
+                            :id="'togBtn-' + getDocs.id"
                             :checked="getDocs.mandatory"
-                            @change="getDocumentCategories"
+                            :disabled="isCheckboxDisabled(getDocs, 'mandatory')"
                           />
                           <div class="slider round"></div>
                         </label>
@@ -108,9 +108,9 @@
                         <label class="switch" :class="{ checked: getDocs.hide_document }">
                           <input
                             type="checkbox"
-                            id="togBtn"
+                            :id="'togBtn-' + getDocs.id"
                             :checked="getDocs.hide_document"
-                            @change="getDocumentCategories"
+                            :disabled="isCheckboxDisabled(getDocs, 'hide_document')"
                           />
                           <div class="slider round"></div>
                         </label>
@@ -119,9 +119,9 @@
                         <label class="switch" :class="{ checked: getDocs.profile_view }">
                           <input
                             type="checkbox"
-                            id="togBtn"
+                            :id="'togBtn-' + getDocs.id"
                             :checked="getDocs.profile_view"
-                            @change="getDocumentCategories"
+                            :disabled="isCheckboxDisabled(getDocs, 'profile_view')"
                           />
                           <div class="slider round"></div>
                         </label>
@@ -194,6 +194,9 @@ export default {
   },
 
   methods: {
+    isCheckboxDisabled(doc, field) {
+      return doc[field] === true || doc[field] === false;
+    },
     handleAddCategory() {
       this.$refs.addCategory.getPositionMethod();
     },
@@ -205,14 +208,12 @@ export default {
       this.$refs.editCategory.fetchCategoryMethod(categoryId);
     },
     toggleAccordion(index) {
-      // Close all accordions
       this.getCategory.forEach((getCate, i) => {
         if (i !== index) {
           getCate.isOpen = false;
         }
       });
 
-      // Toggle the clicked accordion
       this.getCategory[index].isOpen = !this.getCategory[index].isOpen;
     },
     onDocumentAdded() {
