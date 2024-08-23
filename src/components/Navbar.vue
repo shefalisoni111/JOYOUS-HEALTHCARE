@@ -261,11 +261,11 @@
               <i class="bi bi-bell"></i>
               <span v-if="!dropdownOpen && showBadge" class="badge bg-primary badge-number">2</span>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" @click.self="dropdownOpen = false">
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" @click.self="dropdownOpen = false" style="height:390px;"  @scroll="onScroll"  ref="notificationDropdown">
               <li class="dropdown-header d-flex">
                 You have {{ notifications.length }} new notifications
-                <a href="#" class="mt-2 ms-2" @click="showAllNotifications">
-                  <span class="badge rounded-pill bg-primary p-2 ms-2">View all</span>
+                <a href="#" class="mt-2 ms-2" @click.prevent="toggleShowAll">
+                  <span class="badge rounded-pill bg-primary p-2 ms-2">{{ showAll ? 'Show less' : 'View all' }}</span>
                 </a>
               </li>
               <li>
@@ -498,7 +498,11 @@ export default {
   computed: {
     visibleNotifications() {
      
-      return this.showAll ? this.notifications : this.notifications.slice(0, 2);
+     return this.showAll ? this.notifications : this.notifications.slice(0, 2);
+    //  return this.notifications.slice(0, 5);
+    },
+    isScrollable() {
+      return this.notifications.length > this.visibleNotifications.length;
     },
     profilePhotoUrl() {
       const storedImageUrl = localStorage.getItem("profileImage");
@@ -518,11 +522,7 @@ export default {
   methods: {
     toggleDropdown() {
       this.dropdownOpen = !this.dropdownOpen;
-      if (this.dropdownOpen) {
-        this.showBadge = false;
-      } else {
-        this.showBadge = true;
-      }
+     
     },
     showAllNotifications(event) {
       event.preventDefault();
@@ -535,6 +535,12 @@ export default {
     },
     canceled() {
       this.isModalVisible = false;
+    },
+    handleClickOutside(event) {
+      if (!this.$el.contains(event.target)) {
+        this.dropdownOpen = false; 
+        this.showBadge = true; 
+      }
     },
     handleClick() {
       this.$nextTick(() => {
@@ -616,24 +622,7 @@ export default {
         }
       }
     },
-    // async getAdminMethod() {
-    //   const token = localStorage.getItem("token");
-    //   if (!token) {
-    //     this.$router.replace({ name: "Login" });
-    //     return;
-    //   }
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/merchant_dashboard`, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     });
-
-    //     this.getAdminData = response.data.merchant_data;
-    //     this.getAdminProfile = response.data.data;
-    //   } catch (error) {}
-    // },
+  
     async getCandidateMethods() {
       try {
         const response = await axios.get(`${VITE_API_URL}/candidates`);
@@ -653,9 +642,12 @@ export default {
  async mounted() {
   // await   this.getAdminMethod();
   await  this.getCandidateMethods();
+  document.addEventListener('click', this.handleClickOutside);
   
   },
-  
+  beforeDestroy() {
+    document.removeEventListener('click', this.handleClickOutside);
+  }
 };
 </script>
 
