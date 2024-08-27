@@ -366,8 +366,11 @@ export default {
       return clientRegex.test(newValue);
     },
     validatePhoneNumberFormat(phone_number) {
-      const phoneRegex = /^\d{10}$/;
-      return phoneRegex.test(phone_number);
+      const phoneRegexWithZero = /^0\d{10}$/;
+      const phoneRegexWithoutZero = /^\d{10}$/;
+      return (
+        phoneRegexWithZero.test(phone_number) || phoneRegexWithoutZero.test(phone_number)
+      );
     },
     validateAddressFormat(address) {
       const addressRegex = /^[#.0-9a-zA-Z\s,-]+$/;

@@ -85,9 +85,9 @@
                       @input="cleanPhoneNumber"
                       @change="detectAutofill"
                     />
-                    <span v-if="!validatePhoneNumber" class="text-danger"
+                    <!-- <span v-if="!validatePhoneNumber" class="text-danger"
                       >Invalid Phone Number</span
-                    >
+                    > -->
                     <span
                       v-if="phone_number && !validatePhoneNumberFormat(phone_number)"
                       class="text-danger"
@@ -386,25 +386,12 @@ export default {
       const addressRegex = /^[#.0-9a-zA-Z\s,-]+$/;
       return addressRegex.test(address);
     },
-    validatePhoneNumberFormat(phoneNumber) {
-      if (phoneNumber.trim() === "") {
-        return false;
-      }
-
-      const cleanedNumber = phoneNumber.replace(/\D/g, "");
-
-      const startsWithZeroAndHasElevenDigits = /^0\d{10}$/;
-      const startsWithOneToNineAndHasElevenDigits = /^[1-9]\d{10}$/;
-
-      if (startsWithZeroAndHasElevenDigits.test(cleanedNumber)) {
-        return true;
-      }
-
-      if (startsWithOneToNineAndHasElevenDigits.test(cleanedNumber)) {
-        return false;
-      }
-
-      return true;
+    validatePhoneNumberFormat(phone_number) {
+      const phoneRegexWithZero = /^0\d{10}$/;
+      const phoneRegexWithoutZero = /^\d{10}$/;
+      return (
+        phoneRegexWithZero.test(phone_number) || phoneRegexWithoutZero.test(phone_number)
+      );
     },
     clearError() {
       this.validateEmail = true;

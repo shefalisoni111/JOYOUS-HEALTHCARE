@@ -399,7 +399,7 @@ export default {
           Promise.all(csvDataArray)
             .then((dataArray) => {
               const combinedCsvData = this.combineCsvData(dataArray);
-              const filename = "combined_data.csv";
+              const filename = "All_clientData.csv";
               this.downloadOneCSV(combinedCsvData, filename);
               const message = "Export file download Successfully";
               this.$refs.successAlert.showSuccess(message);
