@@ -390,8 +390,21 @@ export default {
       if (phoneNumber.trim() === "") {
         return false;
       }
-      const phoneRegex = /^0\d{9}$|^\d{10}$/;
-      return phoneRegex.test(phoneNumber);
+
+      const cleanedNumber = phoneNumber.replace(/\D/g, "");
+
+      const startsWithZeroAndHasElevenDigits = /^0\d{10}$/;
+      const startsWithOneToNineAndHasElevenDigits = /^[1-9]\d{10}$/;
+
+      if (startsWithZeroAndHasElevenDigits.test(cleanedNumber)) {
+        return true;
+      }
+
+      if (startsWithOneToNineAndHasElevenDigits.test(cleanedNumber)) {
+        return false;
+      }
+
+      return true;
     },
     clearError() {
       this.validateEmail = true;
