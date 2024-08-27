@@ -195,7 +195,7 @@ export default {
 
   methods: {
     isCheckboxDisabled(doc, field) {
-      return doc[field] === true || doc[field] === false;
+      return doc[field] !== undefined;
     },
     handleAddCategory() {
       this.$refs.addCategory.getPositionMethod();
@@ -417,5 +417,9 @@ table thead th {
 
 .btn-primary {
   border: none;
+}
+.switch input:disabled + .slider {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
 }
 </style>

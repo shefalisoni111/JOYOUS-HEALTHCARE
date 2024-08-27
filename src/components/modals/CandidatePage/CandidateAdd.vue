@@ -136,9 +136,9 @@
                       @input="cleanPhoneNumber"
                       @change="detectAutofill"
                     />
-                    <!-- <span v-if="showPhoneNumberValidation" class="text-danger"
-                      >Required Phone Number</span
-                    > -->
+                    <span v-if="!validatePhoneNumber" class="text-danger"
+                      >Invalid Phone Number</span
+                    >
                     <span
                       v-if="phone_number && !validatePhoneNumberFormat(phone_number)"
                       class="text-danger"
@@ -346,8 +346,24 @@ export default {
       this.validationSelectedOptionText = !!this.job_id;
     },
     validatePhoneNumberFormat(phoneNumber) {
-      const phoneRegex = /^\d{10}$/;
-      return phoneRegex.test(phoneNumber);
+      if (phoneNumber.trim() === "") {
+        return false;
+      }
+
+      const cleanedNumber = phoneNumber.replace(/\D/g, "");
+
+      const startsWithZeroAndHasElevenDigits = /^0\d{10}$/;
+      const startsWithOneToNineAndHasElevenDigits = /^[1-9]\d{10}$/;
+
+      if (startsWithZeroAndHasElevenDigits.test(cleanedNumber)) {
+        return true;
+      }
+
+      if (startsWithOneToNineAndHasElevenDigits.test(cleanedNumber)) {
+        return false;
+      }
+
+      return true;
     },
     clearError() {
       if (this.autofilled) {

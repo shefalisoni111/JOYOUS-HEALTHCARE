@@ -288,9 +288,9 @@ export default {
   },
 
   methods: {
-    handleCandidateAdded() {
-      this.$refs.addStaff.getPositionMethod();
-    },
+    // handleCandidateAdded() {
+    //   this.$refs.addStaff.getPositionMethod();
+    // },
     async pendingCandidateMethod() {
       this.isLoading = true;
       try {

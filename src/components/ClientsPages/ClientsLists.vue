@@ -373,7 +373,7 @@ export default {
       }
     },
     handleAddClient() {
-      this.$refs.addClient.getPositionMethod();
+      // this.$refs.addClient.getPositionMethod();
       // this.$refs.addClient.createdClient();
     },
     editClient(clientID) {
