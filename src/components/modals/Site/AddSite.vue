@@ -367,9 +367,11 @@ export default {
     },
     validatePhoneNumberFormat(phone_number) {
       const phoneRegexWithZero = /^0\d{10}$/;
-      const phoneRegexWithoutZero = /^\d{10}$/;
+      const phoneRegexWithCountryCode = /^91\d{10}$/;
+
       return (
-        phoneRegexWithZero.test(phone_number) || phoneRegexWithoutZero.test(phone_number)
+        phoneRegexWithZero.test(phone_number) ||
+        phoneRegexWithCountryCode.test(phone_number)
       );
     },
     validateAddressFormat(address) {
