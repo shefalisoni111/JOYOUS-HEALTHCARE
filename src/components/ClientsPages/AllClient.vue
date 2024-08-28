@@ -399,7 +399,7 @@ export default {
           Promise.all(csvDataArray)
             .then((dataArray) => {
               const combinedCsvData = this.combineCsvData(dataArray);
-              const filename = "All_clientData.csv";
+              const filename = "All_Clients.csv";
               this.downloadOneCSV(combinedCsvData, filename);
               const message = "Export file download Successfully";
               this.$refs.successAlert.showSuccess(message);
@@ -512,7 +512,7 @@ export default {
       axios
         .get(`${VITE_API_URL}/export_all_csv.csv`)
         .then((response) => {
-          this.downloadCSV(response.data, "filename.csv");
+          this.downloadCSV(response.data, "All_Clients.csv");
         })
         .catch((error) => {
           // console.error("Error:", error);

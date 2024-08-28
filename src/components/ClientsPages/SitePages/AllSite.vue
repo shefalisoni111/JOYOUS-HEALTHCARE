@@ -304,7 +304,27 @@ export default {
           // console.log(error);
         });
     },
-
+    exportAll() {
+      axios
+        .get(`${VITE_API_URL}/export_all_csv_site.csv`)
+        .then((response) => {
+          this.downloadCSV(response.data, "All_SiteData.csv");
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    },
+    downloadCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    },
     ImportCSV(csvData, filename) {
       const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
       const url = window.URL.createObjectURL(blob);

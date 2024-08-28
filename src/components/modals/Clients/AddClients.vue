@@ -61,7 +61,7 @@
                         class="form-control"
                         v-model="email"
                         @input="validateEmailFormat(email)"
-                        @change="detectAutofill"
+                        @change="checkEmailUniqueness"
                         ref="email"
                         autocomplete="new-email"
                       />
@@ -70,6 +70,9 @@
                         class="text-danger"
                         >Invalid Email format</span
                       >
+                      <span v-if="emailInUse" class="text-danger">
+                        This email is already in use.
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -163,7 +166,7 @@
               Cancel
             </button>
             <button
-              :disabled="!isFormFilledAndValid || !isJobsSelected"
+              :disabled="!isFormFilledAndValid || !isJobsSelected || emailInUse"
               :class="{ disabled: !isFormFilledAndValid || !isJobsSelected }"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
@@ -209,6 +212,7 @@ export default {
       options: [],
       errors: {},
       autofilled: false,
+      emailInUse: false,
     };
   },
   computed: {
@@ -257,6 +261,21 @@ export default {
     // validatePassword() {
     //   this.showPasswordRequiredMessage = this.password === "";
     // },
+    async checkEmailUniqueness() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/clients`, {
+          params: {
+            email: this.email,
+          },
+        });
+
+        this.emailInUse = response.data.data.some(
+          (client) => client.email === this.email
+        );
+      } catch (error) {
+        console.error("Error checking email uniqueness:", error);
+      }
+    },
     clearFieldsData() {
       this.clearFields();
       setTimeout(() => {
