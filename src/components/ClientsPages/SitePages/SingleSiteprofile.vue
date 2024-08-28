@@ -104,7 +104,12 @@
                           : "Null"
                       }}
                     </h6>
-                    <h6>Bookings email:</h6>
+                    <h6>
+                      Bookings email:
+                      {{
+                        getSiteDatas.booking_email ? getSiteDatas.booking_email : "Null"
+                      }}
+                    </h6>
                   </div>
                   <div>
                     <!-- <h6 class="card-title text-nowrap fw-bold text-capitalize">
