@@ -74,6 +74,48 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-4">
+                    <label class="form-label" for="selectOptionEmployee">Employee</label>
+                  </div>
+
+                  <div class="col-8">
+                    <select
+                      v-model="employ_type"
+                      id="selectOptionEmployee"
+                      @change="clearError"
+                    >
+                      <option selected>Please Select Employee Type</option>
+                      <option value="Self_employed">Self Employed</option>
+                      <option value="Private_limited">Private limited</option>
+                      <option value="umbrella">Umbrella</option>
+                      <option value="paye">Paye</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-4">
+                    <label class="form-label" for="selectEmployeeType"
+                      >Employment Type</label
+                    >
+                  </div>
+                  <div class="col-8 mt-1">
+                    <select
+                      v-model="employment_type_id"
+                      id="selectEmployeeType"
+                      @change="clearError"
+                    >
+                      <option
+                        v-for="option in employeeData"
+                        :key="option.id"
+                        :value="option.id"
+                        aria-placeholder="Select Job"
+                      >
+                        {{ option.title }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-4">
                     <label class="form-label">email</label>
                   </div>
                   <div class="col-8">
@@ -101,10 +143,15 @@
                       type="password"
                       class="form-control"
                       v-model="password"
-                      @input="validatePasswordMatch"
+                      @input="validatePasswordCriteria"
                       @change="detectAutofill"
+                      ref="password"
                       autocomplete="new-password"
                     />
+                    <span v-if="password && !isPasswordValid" class="text-danger">
+                      Password must be at least 8 characters long and include uppercase,
+                      lowercase, numeric, and special characters.
+                    </span>
                   </div>
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
@@ -119,9 +166,9 @@
                       @input="validatePasswordMatch"
                       @change="detectAutofill"
                     />
-                    <span v-if="!passwordsMatch" class="text-danger"
-                      >Passwords do not Match</span
-                    >
+                    <span v-if="confirm_password && !passwordsMatch" class="text-danger">
+                      Passwords do not match.
+                    </span>
                   </div>
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
@@ -187,10 +234,13 @@ export default {
   data() {
     return {
       validateEmail: true,
-      isPasswordRequired: true,
+      isPasswordValid: true,
       validateCandidateName: true,
       validateCandidateLName: true,
       validatePhoneNumber: true,
+      validateEmployee: true,
+      validateEmployeeType: true,
+      showPasswordRequiredMessage: false,
       passwordsMatch: true,
       selectedOption: null,
       validationSelectedOptionText: true,
@@ -198,9 +248,12 @@ export default {
       first_name: "",
       last_name: "",
       password: "",
+      employ_type: "",
       job_id: [],
       options: [],
+      employeeData: [],
       confirm_password: "",
+      employment_type_id: "",
       address: "",
       phone_number: "",
       email: "",
@@ -220,12 +273,20 @@ export default {
         this.validatePhoneNumber &&
         this.validateCandidateName &&
         this.validateCandidateLName &&
-        this.validationSelectedOptionText
+        this.validationSelectedOptionText &&
+        this.validateEmployeeType &&
+        this.validateEmployee
       );
     },
     selectedOptionText() {
       const job_id = this.options.find((option) => option.id === this.job_id);
       return job_id ? job_id.name : "";
+    },
+    selectEmployeeType() {
+      const employment_type = this.employeeData.find(
+        (option) => option.id === this.employment_type
+      );
+      return employment_type ? employment_type.title : "";
     },
   },
   watch: {
@@ -253,8 +314,22 @@ export default {
         !this.phone_number.trim() ||
         !this.password.trim() ||
         !this.confirm_password.trim() ||
-        !this.job_id
+        !this.job_id ||
+        !this.employ_type ||
+        !this.employment_type_id
       );
+    },
+    validatePasswordCriteria() {
+      const sanitizedPassword = this.password.replace(/\s+/g, "");
+
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+      this.isPasswordValid = passwordRegex.test(sanitizedPassword);
+
+      this.password = sanitizedPassword;
+      this.validatePasswordMatch();
+    },
+    validatePasswordMatch() {
+      this.passwordsMatch = this.password === this.confirm_password;
     },
     cleanPhoneNumber() {
       this.phone_number = this.phone_number.replace(/\D/g, "");
@@ -276,17 +351,11 @@ export default {
       this.validateCandidateLName = this.validateLNameFormat(this.last_name);
       this.validateEmail = this.validateEmailFormat(this.email);
       this.validatePhoneNumber = this.validatePhoneNumberFormat(this.phone_number);
+      this.validatePassword = !!this.password.trim();
+      this.passwordsMatch = this.password === this.confirm_password;
 
       this.validatePasswordMatch();
       if (this.isFormValid) {
-        if (this.isPasswordRequired && !this.password) {
-          return;
-        }
-
-        if (!this.passwordsMatch) {
-          return;
-        }
-
         const data = {
           first_name: this.first_name,
           last_name: this.last_name,
@@ -296,6 +365,8 @@ export default {
           phone_number: this.phone_number,
           email: this.email,
           activated: this.activated,
+          employ_type: this.employ_type,
+          employment_type_id: this.employment_type_id,
         };
 
         try {
@@ -377,6 +448,18 @@ export default {
         }
       }
     },
+    async getEmployeeTypeData() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/employment_types`);
+        this.employeeData = response.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
     resetForm() {
       this.first_name = "";
       this.last_name = "";
@@ -386,21 +469,25 @@ export default {
       this.phone_number = "";
       this.email = "";
       this.activated = "";
+      this.employ_type = "";
+      this.employment_type_id = "";
       this.isValidForm = true;
     },
   },
   async beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.getPositionMethod();
+      vm.getEmployeeTypeData();
     });
   },
   async beforeRouteUpdate(to, from, next) {
     this.getPositionMethod();
-
+    this.getEmployeeTypeData();
     next();
   },
   async mounted() {
     await this.getPositionMethod();
+    await this.getEmployeeTypeData();
     this.isValidForm = this.isFormValid;
   },
 };

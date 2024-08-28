@@ -346,7 +346,7 @@ export default {
       axios
         .get(`${VITE_API_URL}/export_all_csv_site.csv`)
         .then((response) => {
-          this.downloadCSV(response.data, "filename.csv");
+          this.downloadCSV(response.data, "All_SiteData.csv");
         })
         .catch((error) => {
           // console.error("Error:", error);
@@ -448,7 +448,7 @@ export default {
       axios
         .get(`${VITE_API_URL}/selected_export_site?${queryParams}`)
         .then((response) => {
-          this.downloadOneCSV(response.data, "filename.csv");
+          this.downloadOneCSV(response.data, "All_SiteData.csv");
         })
         .catch((error) => {
           // console.error("Error:", error);
