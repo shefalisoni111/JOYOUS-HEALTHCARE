@@ -430,8 +430,8 @@ export default {
 
     next();
   },
-  created() {
-    this.createVacancy();
+  async mounted() {
+    await this.createVacancy();
   },
 };
 </script>
