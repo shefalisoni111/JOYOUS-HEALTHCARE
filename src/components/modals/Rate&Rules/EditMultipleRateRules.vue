@@ -11,18 +11,19 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="EditMultipleRateRules">
-              Edit Multiple Rate and Rules {{ jobID }} {{ SiteID }} {{ ClientID }}
+              Edit Multiple Rate and Rules
+              <!-- {{ jobID }} {{ SiteID }} {{ ClientID }} -->
             </h5>
           </div>
           <div class="modal-body mx-3" style="height: 600px; overflow: auto">
             <div class="row g-3 align-items-center">
-              <form v-if="fetchRateRulesData && fetchRateRulesData.length > 0">
+              <form v-if="ratesArray && ratesArray.length > 0">
                 <div class="mb-3 d-flex justify-content-between gap-2 me-3">
                   <div class="col-4">
                     <label for="selectClients" class="form-label">Client</label>
-                    <!-- {{ console.log(fetchRateRulesData) }} -->
+
                     <select
-                      v-model="fetchRateRulesData[0].client_id"
+                      v-model="ratesArray[0].client_id"
                       id="selectClients"
                       @change="onClientSelect"
                       :disabled="true"
@@ -35,7 +36,7 @@
                         :id="option.id"
                         aria-placeholder="Select Job"
                       >
-                        {{ option.client_name }}
+                        {{ option.first_name }}
                       </option>
                     </select>
                   </div>
@@ -44,7 +45,7 @@
                     <label class="form-label" for="selectBusinessUnit">Site</label>
 
                     <select
-                      v-model="fetchRateRulesData[0].site_id"
+                      v-model="ratesArray[0].site_id"
                       id="selectBusinessUnit"
                       @change="onSiteSelect"
                       :disabled="true"
@@ -65,7 +66,7 @@
                     <label class="form-label" for="selectJobTitle">Jobs</label>
 
                     <select
-                      v-model="fetchRateRulesData[0].job_id"
+                      v-model="ratesArray[0].job_id"
                       id="selectJobTitle"
                       :disabled="true"
                       class="text-black"
@@ -91,7 +92,7 @@
                   "
                 >
                   <h5 class="fw-bold text-capitalize">
-                    {{ fetchRateRulesData[0].day }}
+                    {{ ratesArray[0].day }}
                   </h5>
 
                   <div class="mb-3 d-flex justify-content-between gap-1 me-3">
@@ -100,7 +101,7 @@
                         <label class="form-label">Shift</label>
                         <input
                           type="text"
-                          v-model="fetchRateRulesData[0].shift_type"
+                          v-model="ratesArray[0].shift_type"
                           :disabled="true"
                           style="
                             width: 100%;
@@ -122,7 +123,7 @@
                         <select
                           id="selectShiftStart"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[0].start_time"
+                          v-model="ratesArray[0].start_time"
                           @change="updateStartTime"
                           :disabled="true"
                         >
@@ -142,7 +143,7 @@
                         <select
                           id="selectShiftEnd"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[0].end_time"
+                          v-model="ratesArray[0].end_time"
                           @change="updateEndTime"
                           :disabled="true"
                         >
@@ -161,7 +162,7 @@
                         <label class="form-label">Rate Type</label>
 
                         <select
-                          v-model="fetchRateRulesData[0].rate_type"
+                          v-model="ratesArray[0].rate_type"
                           class="form-select w-25"
                           @change="handleClientRateChange($event, 0)"
                         >
@@ -176,7 +177,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[0].client_rate"
+                          v-model="ratesArray[0].client_rate"
                           @change="handleClientRateChange($event, 0)"
                         >
                           <option>1</option>
@@ -192,7 +193,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[0].private_limited"
+                          v-model="ratesArray[0].private_limited"
                           @change="handleClientRateChange($event, 0)"
                         >
                           <option>1</option>
@@ -208,7 +209,7 @@
                         <label class="form-label">Self Employed</label>
 
                         <select
-                          v-model="fetchRateRulesData[0].self_employed"
+                          v-model="ratesArray[0].self_employed"
                           class="form-select w-25"
                           @change="handleClientRateChange($event, 0)"
                         >
@@ -224,7 +225,7 @@
                         <label class="form-label">Umbrella</label>
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[0].umbrella"
+                          v-model="ratesArray[0].umbrella"
                           @change="handleClientRateChange($event, 0)"
                         >
                           <option>1</option>
@@ -239,7 +240,7 @@
                         <label class="form-label">PAYE</label>
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[0].paye"
+                          v-model="ratesArray[0].paye"
                           @change="handleClientRateChange($event, 0)"
                         >
                           <option>1</option>
@@ -257,7 +258,7 @@
                         <label class="form-label">Shift</label>
                         <input
                           type="text"
-                          v-model="fetchRateRulesData[1].shift_type"
+                          v-model="ratesArray[1].shift_type"
                           :disabled="true"
                           style="
                             width: 100%;
@@ -279,7 +280,7 @@
                         <select
                           id="selectShiftStart"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[1].start_time"
+                          v-model="ratesArray[1].start_time"
                           @change="updateStartTime"
                           :disabled="true"
                         >
@@ -299,7 +300,7 @@
                         <select
                           id="selectShiftEnd"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[1].end_time"
+                          v-model="ratesArray[1].end_time"
                           @change="updateEndTime"
                           :disabled="true"
                         >
@@ -318,7 +319,7 @@
                         <label class="form-label">Rate Type</label>
 
                         <select
-                          v-model="fetchRateRulesData[1].rate_type"
+                          v-model="ratesArray[1].rate_type"
                           class="form-select w-25"
                           @change="handleClientRateChange($event, 1)"
                         >
@@ -333,7 +334,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[1].client_rate"
+                          v-model="ratesArray[1].client_rate"
                           @change="handleClientRateChange($event, 1)"
                         >
                           <option>1</option>
@@ -349,7 +350,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[1].private_limited"
+                          v-model="ratesArray[1].private_limited"
                           @change="handleClientRateChange($event, 1)"
                         >
                           <option>1</option>
@@ -365,7 +366,7 @@
                         <label class="form-label">Self Employed</label>
 
                         <select
-                          v-model="fetchRateRulesData[1].self_employed"
+                          v-model="ratesArray[1].self_employed"
                           class="form-select w-25"
                           @change="handleClientRateChange($event, 1)"
                         >
@@ -381,7 +382,7 @@
                         <label class="form-label">Umbrella</label>
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[1].umbrella"
+                          v-model="ratesArray[1].umbrella"
                           @change="handleClientRateChange($event, 1)"
                         >
                           <option>1</option>
@@ -396,7 +397,7 @@
                         <label class="form-label">PAYE</label>
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[1].paye"
+                          v-model="ratesArray[1].paye"
                           @change="handleClientRateChange($event, 1)"
                         >
                           <option>1</option>
@@ -418,7 +419,7 @@
                   "
                 >
                   <h5 class="fw-bold text-capitalize">
-                    {{ fetchRateRulesData[2].day }}
+                    {{ ratesArray[2].day }}
                   </h5>
 
                   <div class="mb-3 d-flex justify-content-between gap-1 me-3">
@@ -427,7 +428,7 @@
                         <label class="form-label">Shift</label>
                         <input
                           type="text"
-                          v-model="fetchRateRulesData[1].shift_type"
+                          v-model="ratesArray[1].shift_type"
                           :disabled="true"
                           style="
                             width: 100%;
@@ -449,7 +450,7 @@
                         <select
                           id="selectShiftStart"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[2].start_time"
+                          v-model="ratesArray[2].start_time"
                           @change="updateStartTime"
                           :disabled="true"
                         >
@@ -469,7 +470,7 @@
                         <select
                           id="selectShiftEnd"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[2].end_time"
+                          v-model="ratesArray[2].end_time"
                           @change="updateEndTime"
                           :disabled="true"
                         >
@@ -488,7 +489,7 @@
                         <label class="form-label">Rate Type</label>
 
                         <select
-                          v-model="fetchRateRulesData[2].rate_type"
+                          v-model="ratesArray[2].rate_type"
                           class="form-select w-25"
                         >
                           <option value="Hourly">Hourly</option>
@@ -502,7 +503,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[2].client_rate"
+                          v-model="ratesArray[2].client_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -517,7 +518,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[2].private_limited"
+                          v-model="ratesArray[2].private_limited"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -532,7 +533,7 @@
                         <label class="form-label">Self Employed</label>
 
                         <select
-                          v-model="fetchRateRulesData[2].self_employed"
+                          v-model="ratesArray[2].self_employed"
                           class="form-select w-25"
                         >
                           <option>1</option>
@@ -545,10 +546,7 @@
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select
-                          class="form-select w-25"
-                          v-model="fetchRateRulesData[2].umbrella"
-                        >
+                        <select class="form-select w-25" v-model="ratesArray[2].umbrella">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -559,10 +557,7 @@
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select
-                          class="form-select w-25"
-                          v-model="fetchRateRulesData[2].paye"
-                        >
+                        <select class="form-select w-25" v-model="ratesArray[2].paye">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -578,7 +573,7 @@
                         <label class="form-label">Shift</label>
                         <input
                           type="text"
-                          v-model="fetchRateRulesData[1].shift_type"
+                          v-model="ratesArray[1].shift_type"
                           :disabled="true"
                           style="
                             width: 100%;
@@ -600,7 +595,7 @@
                         <select
                           id="selectShiftStart"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[3].start_time"
+                          v-model="ratesArray[3].start_time"
                           :disabled="true"
                           @change="updateStartTime"
                         >
@@ -620,7 +615,7 @@
                         <select
                           id="selectShiftEnd"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[3].end_time"
+                          v-model="ratesArray[3].end_time"
                           :disabled="true"
                           @change="updateEndTime"
                         >
@@ -639,7 +634,7 @@
                         <label class="form-label">Rate Type</label>
 
                         <select
-                          v-model="fetchRateRulesData[3].rate_type"
+                          v-model="ratesArray[3].rate_type"
                           class="form-select w-25"
                         >
                           <option value="Hourly">Hourly</option>
@@ -653,7 +648,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[3].client_rate"
+                          v-model="ratesArray[3].client_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -668,7 +663,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[3].private_limited"
+                          v-model="ratesArray[3].private_limited"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -683,7 +678,7 @@
                         <label class="form-label">Self Employed</label>
 
                         <select
-                          v-model="fetchRateRulesData[3].self_employed"
+                          v-model="ratesArray[3].self_employed"
                           class="form-select w-25"
                         >
                           <option>1</option>
@@ -696,10 +691,7 @@
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select
-                          class="form-select w-25"
-                          v-model="fetchRateRulesData[3].umbrella"
-                        >
+                        <select class="form-select w-25" v-model="ratesArray[3].umbrella">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -710,10 +702,7 @@
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select
-                          class="form-select w-25"
-                          v-model="fetchRateRulesData[3].paye"
-                        >
+                        <select class="form-select w-25" v-model="ratesArray[3].paye">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -733,7 +722,7 @@
                   "
                 >
                   <h5 class="fw-bold text-capitalize">
-                    {{ fetchRateRulesData[4].day }}
+                    {{ ratesArray[4].day }}
                   </h5>
 
                   <div class="mb-3 d-flex justify-content-between gap-1 me-3">
@@ -742,7 +731,7 @@
                         <label class="form-label">Shift</label>
                         <input
                           type="text"
-                          v-model="fetchRateRulesData[4].shift_type"
+                          v-model="ratesArray[4].shift_type"
                           :disabled="true"
                           style="
                             width: 100%;
@@ -764,7 +753,7 @@
                         <select
                           id="selectShiftStart"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[4].start_time"
+                          v-model="ratesArray[4].start_time"
                           @change="updateStartTime"
                           :disabled="true"
                         >
@@ -784,7 +773,7 @@
                         <select
                           id="selectShiftEnd"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[4].end_time"
+                          v-model="ratesArray[4].end_time"
                           @change="updateEndTime"
                           :disabled="true"
                         >
@@ -803,7 +792,7 @@
                         <label class="form-label">Rate Type</label>
 
                         <select
-                          v-model="fetchRateRulesData[4].rate_type"
+                          v-model="ratesArray[4].rate_type"
                           class="form-select w-25"
                         >
                           <option value="Hourly">Hourly</option>
@@ -817,7 +806,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[4].client_rate"
+                          v-model="ratesArray[4].client_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -832,7 +821,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[4].private_limited"
+                          v-model="ratesArray[4].private_limited"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -847,7 +836,7 @@
                         <label class="form-label">Self Employed</label>
 
                         <select
-                          v-model="fetchRateRulesData[4].self_employed"
+                          v-model="ratesArray[4].self_employed"
                           class="form-select w-25"
                         >
                           <option>1</option>
@@ -860,10 +849,7 @@
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select
-                          class="form-select w-25"
-                          v-model="fetchRateRulesData[4].umbrella"
-                        >
+                        <select class="form-select w-25" v-model="ratesArray[4].umbrella">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -874,10 +860,7 @@
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select
-                          class="form-select w-25"
-                          v-model="fetchRateRulesData[4].paye"
-                        >
+                        <select class="form-select w-25" v-model="ratesArray[4].paye">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -893,7 +876,7 @@
                         <label class="form-label">Shift</label>
                         <input
                           type="text"
-                          v-model="fetchRateRulesData[4].shift_type"
+                          v-model="ratesArray[4].shift_type"
                           :disabled="true"
                           style="
                             width: 100%;
@@ -915,7 +898,7 @@
                         <select
                           id="selectShiftStart"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[5].start_time"
+                          v-model="ratesArray[5].start_time"
                           :disabled="true"
                           @change="updateStartTime"
                         >
@@ -935,7 +918,7 @@
                         <select
                           id="selectShiftEnd"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[5].end_time"
+                          v-model="ratesArray[5].end_time"
                           :disabled="true"
                           @change="updateEndTime"
                         >
@@ -954,7 +937,7 @@
                         <label class="form-label">Rate Type</label>
 
                         <select
-                          v-model="fetchRateRulesData[5].rate_type"
+                          v-model="ratesArray[5].rate_type"
                           class="form-select w-25"
                         >
                           <option value="Hourly">Hourly</option>
@@ -968,7 +951,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[5].client_rate"
+                          v-model="ratesArray[5].client_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -983,7 +966,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[5].private_limited"
+                          v-model="ratesArray[5].private_limited"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -998,7 +981,7 @@
                         <label class="form-label">Self Employed</label>
 
                         <select
-                          v-model="fetchRateRulesData[5].self_employed"
+                          v-model="ratesArray[5].self_employed"
                           class="form-select w-25"
                         >
                           <option>1</option>
@@ -1011,10 +994,7 @@
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select
-                          class="form-select w-25"
-                          v-model="fetchRateRulesData[5].umbrella"
-                        >
+                        <select class="form-select w-25" v-model="ratesArray[5].umbrella">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -1025,10 +1005,7 @@
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select
-                          class="form-select w-25"
-                          v-model="fetchRateRulesData[5].paye"
-                        >
+                        <select class="form-select w-25" v-model="ratesArray[5].paye">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -1048,7 +1025,7 @@
                   "
                 >
                   <h5 class="fw-bold text-capitalize">
-                    {{ fetchRateRulesData[6].day }}
+                    {{ ratesArray[6].day }}
                   </h5>
 
                   <div class="mb-3 d-flex justify-content-between gap-1 me-3">
@@ -1057,7 +1034,7 @@
                         <label class="form-label">Shift</label>
                         <input
                           type="text"
-                          v-model="fetchRateRulesData[6].shift_type"
+                          v-model="ratesArray[6].shift_type"
                           :disabled="true"
                           style="
                             width: 100%;
@@ -1079,7 +1056,7 @@
                         <select
                           id="selectShiftStart"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[6].start_time"
+                          v-model="ratesArray[6].start_time"
                           @change="updateStartTime"
                           :disabled="true"
                         >
@@ -1099,7 +1076,7 @@
                         <select
                           id="selectShiftEnd"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[6].end_time"
+                          v-model="ratesArray[6].end_time"
                           @change="updateEndTime"
                           :disabled="true"
                         >
@@ -1118,7 +1095,7 @@
                         <label class="form-label">Rate Type</label>
 
                         <select
-                          v-model="fetchRateRulesData[6].rate_type"
+                          v-model="ratesArray[6].rate_type"
                           class="form-select w-25"
                         >
                           <option value="Hourly">Hourly</option>
@@ -1132,7 +1109,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[6].client_rate"
+                          v-model="ratesArray[6].client_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -1147,7 +1124,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[6].private_limited"
+                          v-model="ratesArray[6].private_limited"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -1162,7 +1139,7 @@
                         <label class="form-label">Self Employed</label>
 
                         <select
-                          v-model="fetchRateRulesData[6].self_employed"
+                          v-model="ratesArray[6].self_employed"
                           class="form-select w-25"
                         >
                           <option>1</option>
@@ -1175,10 +1152,7 @@
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select
-                          class="form-select w-25"
-                          v-model="fetchRateRulesData[6].umbrella"
-                        >
+                        <select class="form-select w-25" v-model="ratesArray[6].umbrella">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -1189,10 +1163,7 @@
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select
-                          class="form-select w-25"
-                          v-model="fetchRateRulesData[6].paye"
-                        >
+                        <select class="form-select w-25" v-model="ratesArray[6].paye">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -1208,7 +1179,7 @@
                         <label class="form-label">Shift</label>
                         <input
                           type="text"
-                          v-model="fetchRateRulesData[7].shift_type"
+                          v-model="ratesArray[7].shift_type"
                           :disabled="true"
                           style="
                             width: 100%;
@@ -1230,7 +1201,7 @@
                         <select
                           id="selectShiftStart"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[7].start_time"
+                          v-model="ratesArray[7].start_time"
                           :disabled="true"
                           @change="updateStartTime"
                         >
@@ -1250,7 +1221,7 @@
                         <select
                           id="selectShiftEnd"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[7].end_time"
+                          v-model="ratesArray[7].end_time"
                           :disabled="true"
                           @change="updateEndTime"
                         >
@@ -1269,7 +1240,7 @@
                         <label class="form-label">Rate Type</label>
 
                         <select
-                          v-model="fetchRateRulesData[7].rate_type"
+                          v-model="ratesArray[7].rate_type"
                           class="form-select w-25"
                         >
                           <option value="Hourly">Hourly</option>
@@ -1283,7 +1254,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[7].client_rate"
+                          v-model="ratesArray[7].client_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -1298,7 +1269,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[7].private_limited"
+                          v-model="ratesArray[7].private_limited"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -1312,7 +1283,7 @@
                       <div class="col-4">
                         <label class="form-label">Self Employed</label>
 
-                        <select v-model="fetchRateRulesData[7].self_employed">
+                        <select v-model="ratesArray[7].self_employed">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -1323,10 +1294,7 @@
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select
-                          class="form-select w-25"
-                          v-model="fetchRateRulesData[7].umbrella"
-                        >
+                        <select class="form-select w-25" v-model="ratesArray[7].umbrella">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -1337,10 +1305,7 @@
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select
-                          class="form-select w-25"
-                          v-model="fetchRateRulesData[7].paye"
-                        >
+                        <select class="form-select w-25" v-model="ratesArray[7].paye">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -1360,7 +1325,7 @@
                   "
                 >
                   <h5 class="fw-bold text-capitalize">
-                    {{ fetchRateRulesData[8].day }}
+                    {{ ratesArray[8].day }}
                   </h5>
 
                   <div class="mb-3 d-flex justify-content-between gap-1 me-3">
@@ -1369,7 +1334,7 @@
                         <label class="form-label">Shift</label>
                         <input
                           type="text"
-                          v-model="fetchRateRulesData[8].shift_type"
+                          v-model="ratesArray[8].shift_type"
                           :disabled="true"
                           style="
                             width: 100%;
@@ -1382,7 +1347,7 @@
                           "
                         />
                         <!-- <select
-                        v-model="fetchRateRulesData[8].site_shift_id"
+                        v-model="ratesArray[8].site_shift_id"
                         :disabled="true"
                       >
                         <option
@@ -1403,7 +1368,7 @@
                         <select
                           id="selectShiftStart"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[8].start_time"
+                          v-model="ratesArray[8].start_time"
                           @change="updateStartTime"
                           :disabled="true"
                         >
@@ -1423,7 +1388,7 @@
                         <select
                           id="selectShiftEnd"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[8].end_time"
+                          v-model="ratesArray[8].end_time"
                           @change="updateEndTime"
                           :disabled="true"
                         >
@@ -1442,7 +1407,7 @@
                         <label class="form-label">Rate Type</label>
 
                         <select
-                          v-model="fetchRateRulesData[8].rate_type"
+                          v-model="ratesArray[8].rate_type"
                           class="form-select w-25"
                         >
                           <option value="Hourly">Hourly</option>
@@ -1456,7 +1421,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[8].client_rate"
+                          v-model="ratesArray[8].client_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -1471,7 +1436,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[8].private_limited"
+                          v-model="ratesArray[8].private_limited"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -1486,7 +1451,7 @@
                         <label class="form-label">Self Employed</label>
 
                         <select
-                          v-model="fetchRateRulesData[8].self_employed"
+                          v-model="ratesArray[8].self_employed"
                           class="form-select w-25"
                         >
                           <option>1</option>
@@ -1499,10 +1464,7 @@
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select
-                          class="form-select w-25"
-                          v-model="fetchRateRulesData[8].umbrella"
-                        >
+                        <select class="form-select w-25" v-model="ratesArray[8].umbrella">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -1513,10 +1475,7 @@
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select
-                          class="form-select w-25"
-                          v-model="fetchRateRulesData[8].paye"
-                        >
+                        <select class="form-select w-25" v-model="ratesArray[8].paye">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -1532,7 +1491,7 @@
                         <label class="form-label">Shift</label>
                         <input
                           type="text"
-                          v-model="fetchRateRulesData[9].shift_type"
+                          v-model="ratesArray[9].shift_type"
                           :disabled="true"
                           style="
                             width: 100%;
@@ -1554,7 +1513,7 @@
                         <select
                           id="selectShiftStart"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[9].start_time"
+                          v-model="ratesArray[9].start_time"
                           :disabled="true"
                           @change="updateStartTime"
                         >
@@ -1574,7 +1533,7 @@
                         <select
                           id="selectShiftEnd"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[9].end_time"
+                          v-model="ratesArray[9].end_time"
                           :disabled="true"
                           @change="updateEndTime"
                         >
@@ -1592,7 +1551,7 @@
                       <div class="col-4">
                         <label class="form-label">Rate Type</label>
 
-                        <select v-model="fetchRateRulesData[9].rate_type">
+                        <select v-model="ratesArray[9].rate_type">
                           <option value="Hourly">Hourly</option>
                           <option value="Monthly">Monthly</option>
                           <option value="Yearly">Yearly</option>
@@ -1604,7 +1563,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[9].client_rate"
+                          v-model="ratesArray[9].client_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -1619,7 +1578,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[9].private_limited"
+                          v-model="ratesArray[9].private_limited"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -1634,7 +1593,7 @@
                         <label class="form-label">Self Employed</label>
 
                         <select
-                          v-model="fetchRateRulesData[9].self_employed"
+                          v-model="ratesArray[9].self_employed"
                           class="form-select w-25"
                         >
                           <option>1</option>
@@ -1647,10 +1606,7 @@
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select
-                          class="form-select w-25"
-                          v-model="fetchRateRulesData[9].umbrella"
-                        >
+                        <select class="form-select w-25" v-model="ratesArray[9].umbrella">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -1661,10 +1617,7 @@
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select
-                          class="form-select w-25"
-                          v-model="fetchRateRulesData[9].paye"
-                        >
+                        <select class="form-select w-25" v-model="ratesArray[9].paye">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -1684,7 +1637,7 @@
                   "
                 >
                   <h5 class="fw-bold text-capitalize">
-                    {{ fetchRateRulesData[10].day }}
+                    {{ ratesArray[10].day }}
                   </h5>
 
                   <div class="mb-3 d-flex justify-content-between gap-1 me-3">
@@ -1693,7 +1646,7 @@
                         <label class="form-label">Shift</label>
                         <input
                           type="text"
-                          v-model="fetchRateRulesData[10].shift_type"
+                          v-model="ratesArray[10].shift_type"
                           :disabled="true"
                           style="
                             width: 100%;
@@ -1715,7 +1668,7 @@
                         <select
                           id="selectShiftStart"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[10].start_time"
+                          v-model="ratesArray[10].start_time"
                           @change="updateStartTime"
                           :disabled="true"
                         >
@@ -1735,7 +1688,7 @@
                         <select
                           id="selectShiftEnd"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[10].end_time"
+                          v-model="ratesArray[10].end_time"
                           @change="updateEndTime"
                           :disabled="true"
                         >
@@ -1754,7 +1707,7 @@
                         <label class="form-label">Rate Type</label>
 
                         <select
-                          v-model="fetchRateRulesData[10].rate_type"
+                          v-model="ratesArray[10].rate_type"
                           class="form-select w-25"
                         >
                           <option value="Hourly">Hourly</option>
@@ -1768,7 +1721,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[10].client_rate"
+                          v-model="ratesArray[10].client_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -1783,7 +1736,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[10].private_limited"
+                          v-model="ratesArray[10].private_limited"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -1798,7 +1751,7 @@
                         <label class="form-label">Self Employed</label>
 
                         <select
-                          v-model="fetchRateRulesData[10].self_employed"
+                          v-model="ratesArray[10].self_employed"
                           class="form-select w-25"
                         >
                           <option>1</option>
@@ -1813,7 +1766,7 @@
                         <label class="form-label">Umbrella</label>
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[10].umbrella"
+                          v-model="ratesArray[10].umbrella"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -1825,10 +1778,7 @@
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select
-                          class="form-select w-25"
-                          v-model="fetchRateRulesData[10].paye"
-                        >
+                        <select class="form-select w-25" v-model="ratesArray[10].paye">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -1844,7 +1794,7 @@
                         <label class="form-label">Shift</label>
                         <input
                           type="text"
-                          v-model="fetchRateRulesData[11].shift_type"
+                          v-model="ratesArray[11].shift_type"
                           :disabled="true"
                           style="
                             width: 100%;
@@ -1866,7 +1816,7 @@
                         <select
                           id="selectShiftStart"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[11].start_time"
+                          v-model="ratesArray[11].start_time"
                           :disabled="true"
                           @change="updateStartTime"
                         >
@@ -1886,7 +1836,7 @@
                         <select
                           id="selectShiftEnd"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[11].end_time"
+                          v-model="ratesArray[11].end_time"
                           :disabled="true"
                           @change="updateEndTime"
                         >
@@ -1905,7 +1855,7 @@
                         <label class="form-label">Rate Type</label>
 
                         <select
-                          v-model="fetchRateRulesData[11].rate_type"
+                          v-model="ratesArray[11].rate_type"
                           class="form-select w-25"
                         >
                           <option value="Hourly">Hourly</option>
@@ -1919,7 +1869,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[11].client_rate"
+                          v-model="ratesArray[11].client_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -1934,7 +1884,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[11].private_limited"
+                          v-model="ratesArray[11].private_limited"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -1949,7 +1899,7 @@
                         <label class="form-label">Self Employed</label>
 
                         <select
-                          v-model="fetchRateRulesData[11].self_employed"
+                          v-model="ratesArray[11].self_employed"
                           class="form-select w-25"
                         >
                           <option>1</option>
@@ -1964,7 +1914,7 @@
                         <label class="form-label">Umbrella</label>
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[11].umbrella"
+                          v-model="ratesArray[11].umbrella"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -1976,10 +1926,7 @@
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select
-                          class="form-select w-25"
-                          v-model="fetchRateRulesData[11].paye"
-                        >
+                        <select class="form-select w-25" v-model="ratesArray[11].paye">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -1999,7 +1946,7 @@
                   "
                 >
                   <h5 class="fw-bold text-capitalize">
-                    {{ fetchRateRulesData[12].day }}
+                    {{ ratesArray[12].day }}
                   </h5>
 
                   <div class="mb-3 d-flex justify-content-between gap-1 me-3">
@@ -2008,7 +1955,7 @@
                         <label class="form-label">Shift</label>
                         <input
                           type="text"
-                          v-model="fetchRateRulesData[12].shift_type"
+                          v-model="ratesArray[12].shift_type"
                           :disabled="true"
                           style="
                             width: 100%;
@@ -2030,7 +1977,7 @@
                         <select
                           id="selectShiftStart"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[12].start_time"
+                          v-model="ratesArray[12].start_time"
                           @change="updateStartTime"
                           :disabled="true"
                         >
@@ -2050,7 +1997,7 @@
                         <select
                           id="selectShiftEnd"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[12].end_time"
+                          v-model="ratesArray[12].end_time"
                           @change="updateEndTime"
                           :disabled="true"
                         >
@@ -2069,7 +2016,7 @@
                         <label class="form-label">Rate Type</label>
 
                         <select
-                          v-model="fetchRateRulesData[12].rate_type"
+                          v-model="ratesArray[12].rate_type"
                           class="form-select w-25"
                         >
                           <option value="Hourly">Hourly</option>
@@ -2083,7 +2030,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[12].client_rate"
+                          v-model="ratesArray[12].client_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -2098,7 +2045,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[12].private_limited"
+                          v-model="ratesArray[12].private_limited"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -2113,7 +2060,7 @@
                         <label class="form-label">Self Employed</label>
 
                         <select
-                          v-model="fetchRateRulesData[12].self_employed"
+                          v-model="ratesArray[12].self_employed"
                           class="form-select w-25"
                         >
                           <option>1</option>
@@ -2128,7 +2075,7 @@
                         <label class="form-label">Umbrella</label>
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[12].umbrella"
+                          v-model="ratesArray[12].umbrella"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -2140,10 +2087,7 @@
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select
-                          class="form-select w-25"
-                          v-model="fetchRateRulesData[12].paye"
-                        >
+                        <select class="form-select w-25" v-model="ratesArray[12].paye">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -2159,7 +2103,7 @@
                         <label class="form-label">Shift</label>
                         <input
                           type="text"
-                          v-model="fetchRateRulesData[13].shift_type"
+                          v-model="ratesArray[13].shift_type"
                           :disabled="true"
                           style="
                             width: 100%;
@@ -2181,7 +2125,7 @@
                         <select
                           id="selectShiftStart"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[13].start_time"
+                          v-model="ratesArray[13].start_time"
                           :disabled="true"
                           @change="updateStartTime"
                         >
@@ -2189,9 +2133,7 @@
                             v-for="hour in 24"
                             :key="hour"
                             :value="formatTime(hour)"
-                          >
-                            {{ formatTime(hour) }}
-                          </option>
+                          ></option>
                         </select>
                       </div>
 
@@ -2201,7 +2143,7 @@
                         <select
                           id="selectShiftEnd"
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[13].end_time"
+                          v-model="ratesArray[13].end_time"
                           :disabled="true"
                           @change="updateEndTime"
                         >
@@ -2220,7 +2162,7 @@
                         <label class="form-label">Rate Type</label>
 
                         <select
-                          v-model="fetchRateRulesData[13].rate_type"
+                          v-model="ratesArray[13].rate_type"
                           class="form-select w-25"
                         >
                           <option value="Hourly">Hourly</option>
@@ -2234,7 +2176,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[13].client_rate"
+                          v-model="ratesArray[13].client_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -2249,7 +2191,7 @@
 
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[13].private_limited"
+                          v-model="ratesArray[13].private_limited"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -2264,7 +2206,7 @@
                         <label class="form-label">Self Employed</label>
 
                         <select
-                          v-model="fetchRateRulesData[13].self_employed"
+                          v-model="ratesArray[13].self_employed"
                           class="form-select w-25"
                         >
                           <option>1</option>
@@ -2279,7 +2221,7 @@
                         <label class="form-label">Umbrella</label>
                         <select
                           class="form-select w-25"
-                          v-model="fetchRateRulesData[13].umbrella"
+                          v-model="ratesArray[13].umbrella"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -2291,10 +2233,7 @@
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select
-                          class="form-select w-25"
-                          v-model="fetchRateRulesData[13].paye"
-                        >
+                        <select class="form-select w-25" v-model="ratesArray[13].paye">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -2404,8 +2343,10 @@ export default {
       return businessUnit ? businessUnit.site_name : "";
     },
     selectClients() {
-      const clientData = this.clientData.find((option) => option.id === this.ClientID);
-      return clientData ? clientData.client_name : "";
+      const clientData = this.clientData.find(
+        (option) => option.id === this.fetchRateRulesData.client_id
+      );
+      return clientData ? clientData.first_name : "";
     },
 
     selectJobTitle() {
@@ -2425,6 +2366,7 @@ export default {
       return `${String(formattedHour).padStart(2, "0")}:00 ${period}`;
     },
     formatFrom24HourTo12Hour(timeString) {
+      if (!timeString) return "";
       const [hours, minutes] = timeString.split(":");
       const hour = parseInt(hours);
       const period = hour >= 12 ? "PM" : "AM";
@@ -2484,11 +2426,12 @@ export default {
 
           this.ratesArray = rateAndRules.flatMap((item) => item.rates);
 
-          if (Array.isArray(this.ratesArray) && this.ratesArray.length > 0) {
-            this.fetchRateRulesData = this.ratesArray.map((item) => ({
+          this.ratesArray = this.ratesArray.map((item) => {
+            return {
               rate_and_rule_id: item.rate_and_rule_id,
               client_id: item.client_id,
-              site: item.site,
+              site_id: item.site_id,
+
               site_shift_id: item.site_shift_id,
               job_id: item.job_id,
               day: item.day,
@@ -2502,10 +2445,9 @@ export default {
               umbrella: item.umbrella,
               site_id: item.site_id,
               shift_type: item.shift_type,
-            }));
-
-            // await this.getTimeShift(this.fetchRateRulesData.site_id);
-          }
+            };
+          });
+          // console.log(this.ratesArray);
         } catch (error) {}
       } else {
         // console.error("Invalid jobID:", jobID);
@@ -2515,7 +2457,7 @@ export default {
     async updateSingleRate() {
       const token = localStorage.getItem("token");
 
-      const rateAndRules = this.fetchRateRulesData.map((rule) => ({
+      const rateAndRules = this.ratesArray.map((rule) => ({
         id: rule.rate_and_rule_id,
         site_id: rule.site_id,
         client_id: rule.client_id,
@@ -2558,8 +2500,8 @@ export default {
     handleClientRateChange(event, index) {
       const selectedClientRate = event.target.value;
 
-      this.id = this.fetchRateRulesData[index].rate_and_rule_id;
-      console.log(this.id);
+      this.id = this.ratesArray[index].rate_and_rule_id;
+      // console.log(this.id);
     },
     async getBusinessUnitMethod() {
       try {
@@ -2661,15 +2603,12 @@ export default {
   },
 
   mounted() {
-    // this.getBusinessUnitMethod();
-    // this.getSiteAccordingClientMethod();
-    this.fetchRateRulesDataMethod(this.SiteID, this.jobID);
+    this.fetchRateRulesDataMethod();
     this.getClientMethod();
-    this.getTimeShift(this.SiteID);
-    // this.getJobTitleMethod();
-    if (this.ClientID) {
-      this.getSiteAccordingClientMethod(this.ClientID);
-    }
+    this.getTimeShift();
+  },
+  created() {
+    this.fetchRateRulesDataMethod();
   },
   watch: {
     SiteID(newSiteID, oldSiteID) {
@@ -2698,10 +2637,6 @@ export default {
           this.fetchRateRulesDataMethod(newIds);
         }
       },
-    },
-    ClientID(newClientId) {
-      this.fetchRateRulesData.client_id = newClientId;
-      // this.getSiteAccordingClientMethod(newClientId);
     },
   },
 };

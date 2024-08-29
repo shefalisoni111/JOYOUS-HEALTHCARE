@@ -151,6 +151,7 @@
                             {{ formatTime(hour) }}
                           </option>
                         </select>
+                        {{ console.log(fetchRateRulesData.start_time) }}
                       </div>
 
                       <div class="col-4">
@@ -360,7 +361,7 @@ export default {
     },
     // selectClients() {
     //   const client_id = this.clientData.find((option) => option.id === this.client_id);
-    //   return this.client_id;
+    //  return clientData ? clientData.first_name : "";
     // },
     selectClients() {
       const clientData = this.clientData.find(
