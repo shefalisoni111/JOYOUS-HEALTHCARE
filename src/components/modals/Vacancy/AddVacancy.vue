@@ -91,10 +91,10 @@
                   <div class="col-2">
                     <label class="form-label">Dated</label>
                   </div>
-                  <div class="col-9">
+                  <div class="col-10">
                     <input
                       type="date"
-                      class="form-control"
+                      class="form-control w-100"
                       v-model="selectedDate"
                       @change="addDate"
                       style="padding-right: 1px"
@@ -323,7 +323,8 @@ export default {
       // validationStartTime: true,
       // validationBreak: true,
       // validationEndTime: true,
-
+      client_rate: [],
+      staff_rate: [],
       site_id: "",
       client_id: "",
       clientData: [],
@@ -350,8 +351,6 @@ export default {
         this.notes !== "" &&
         this.staff_required !== "" &&
         this.selectedDate !== null &&
-        // this.start_time !== null &&
-        // this.end_time !== null &&
         this.break !== null &&
         this.validationSelectedOptionText &&
         this.validationSelectedBusinessUnit &&
@@ -604,6 +603,8 @@ export default {
           start_time: this.start_time,
           end_time: this.end_time,
           break: this.break,
+          staff_rate: this.staff_rate,
+          client_rate: this.client_rate,
         };
 
         try {
@@ -627,14 +628,16 @@ export default {
             const message = "Successful Shift added";
             this.$refs.successAlert.showSuccess(message);
           } else {
-            alert("Error adding Shift");
+            if (this.client_rate.length === 0 && this.staff_rate.length === 0) {
+              alert("Please create rate for this client, job and site shift.");
+            }
+
             this.clearFields();
             setTimeout(() => {
               this.clearError();
             }, 100);
           }
         } catch (error) {
-          alert("Error adding Shift");
           this.clearFields();
           setTimeout(() => {
             this.clearError();
@@ -693,18 +696,7 @@ export default {
         }
       }
     },
-    // async getClientMethod() {
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/clients`);
-    //     this.clientData = response.data.data;
-    //   } catch (error) {
-    //     if (error.response) {
-    //       if (error.response.status == 404) {
-    //         // alert(error.response.data.message);
-    //       }
-    //     }
-    //   }
-    // },
+
     async getClientMethod() {
       const pagesToFetch = [1, 2, 3];
       let allClientData = [];

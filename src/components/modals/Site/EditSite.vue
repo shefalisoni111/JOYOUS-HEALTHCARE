@@ -36,6 +36,67 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
+                    <label class="form-label" for="selectJobTitle"
+                      >Contact Person Name</label
+                    >
+                  </div>
+                  <div class="col-10">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="fetchSite.contact_person_name"
+                      @input="clearError"
+                      @change="detectAutofill"
+                      style="padding-right: 1px"
+                    />
+                    <!-- <span v-if="!validateSiteNameFormate" class="text-danger"
+                      >Contact Person Name Required</span
+                    > -->
+                  </div>
+                </div>
+
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
+                    <label class="form-label">Contact Person Email</label>
+                  </div>
+                  <div class="col-10">
+                    <input
+                      type="email"
+                      class="form-control"
+                      v-model="fetchSite.contact_person_email"
+                      @input="validateEmailFormat"
+                      @change="detectAutofill"
+                      ref="email"
+                      autocomplete="new-email"
+                    />
+                    <span
+                      v-if="fetchSite.contact_person_email && !isEmailContactValid"
+                      class="text-danger"
+                    >
+                      Invalid Email format
+                    </span>
+                  </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
+                    <label class="form-label">Contact Person phone</label>
+                  </div>
+                  <div class="col-10">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="fetchSite.contact_person_number"
+                      @input="cleanPhoneNumber"
+                      inputmode="numeric"
+                      pattern="[0-9]*"
+                    />
+                    <span v-if="!contactPhoneNumberValid" class="text-danger">
+                      Invalid Phone Number
+                    </span>
+                  </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
                     <label class="form-label" for="selectBusinessUnit">Site Name</label>
                   </div>
 
@@ -82,7 +143,7 @@
                       ref="email"
                       autocomplete="new-email"
                     />
-                    <span v-if="fetchSite.email && !isEmailValid" class="text-danger">
+                    <span v-if="!emailValid" class="text-danger">
                       Invalid Email format
                     </span>
                     <!-- <span
@@ -102,16 +163,17 @@
                       class="form-control"
                       v-model="fetchSite.phone_number"
                       @input="cleanPhoneNumber"
-                      @change="detectAutofill"
+                      inputmode="numeric"
+                      pattern="[0-9]*"
                     />
-                    <!-- <span v-if="!validatePhoneNumber" class="text-danger"
-                          >Invalid Phone Number</span
-                        > -->
+                    <span v-if="!phoneNumberValid" class="text-danger">
+                      Invalid Phone Number
+                    </span>
                     <!-- <span
                           v-if="phone_number && !validatePhoneNumberFormat(phone_number)"
                           class="text-danger"
                           >Invalid Phone Number</span
-                        > -->
+                        >-->
                   </div>
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
@@ -197,12 +259,16 @@ export default {
         status: "",
         phone_number: "",
         email: "",
-        status: "",
+        contact_person_name: "",
+        contact_person_email: "",
+        contact_person_number: "",
       },
-
       clientData: [],
       originalData: null,
       emailValid: true,
+      emailContactValid: true,
+      phoneNumberValid: true,
+      contactPhoneNumberValid: true,
     };
   },
   props: {
@@ -238,17 +304,54 @@ export default {
     isEmailValid() {
       return this.emailValid;
     },
+    isEmailContactValid() {
+      return this.emailContactValid;
+    },
     isSaveDisabled() {
-      return !this.isPhoneNumberValid || !this.isEmailValid;
+      return (
+        !this.emailValid ||
+        !this.emailContactValid ||
+        !this.phoneNumberValid ||
+        !this.contactPhoneNumberValid
+      );
     },
   },
   methods: {
     validateEmailFormat() {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in)$/;
       this.emailValid = emailRegex.test(this.fetchSite.email);
+      this.emailContactValid = emailRegex.test(this.fetchSite.contact_person_email);
+    },
+
+    cleanPhoneNumber() {
+      const phoneRegex = /^[0-9]{10}$/;
+      const phoneRegexWithZero = /^0\d{10}$/;
+      const phoneRegexWithCountryCode = /^91\d{10}$/;
+      const numericRegex = /^[0-9]*$/;
+
+      const isNumericPhoneNumber = numericRegex.test(this.fetchSite.phone_number);
+      const isNumericContactPhoneNumber = numericRegex.test(
+        this.fetchSite.contact_person_number
+      );
+
+      this.phoneNumberValid =
+        isNumericPhoneNumber &&
+        (phoneRegex.test(this.fetchSite.phone_number) ||
+          phoneRegexWithZero.test(this.fetchSite.phone_number) ||
+          phoneRegexWithCountryCode.test(this.fetchSite.phone_number));
+
+      this.contactPhoneNumberValid =
+        isNumericContactPhoneNumber &&
+        (phoneRegex.test(this.fetchSite.contact_person_number) ||
+          phoneRegexWithZero.test(this.fetchSite.contact_person_number) ||
+          phoneRegexWithCountryCode.test(this.fetchSite.contact_person_number));
     },
     resetChanges() {
       this.fetchSite = { ...this.originalData };
+      this.emailValid = true;
+      this.emailContactValid = true;
+      this.phoneNumberValid = true;
+      this.contactPhoneNumberValid = true;
     },
     removeDate(index) {
       this.fetchSite.dates.splice(index, 1);
@@ -278,6 +381,9 @@ export default {
         this.fetchSite.split_rate = response.data.data.split_rate;
         this.fetchSite.status = response.data.data.status;
         this.fetchSite.portal_access = response.data.data.portal_access;
+        this.fetchSite.contact_person_name = response.data.data.contact_person_name;
+        this.fetchSite.contact_person_email = response.data.data.contact_person_email;
+        this.fetchSite.contact_person_number = response.data.data.contact_person_number;
 
         this.originalData = { ...this.fetchSite };
       } catch (error) {}
@@ -296,6 +402,9 @@ export default {
             email: this.fetchSite.email,
             split_rate: this.fetchSite.split_rate,
             portal_access: this.fetchSite.portal_access,
+            contact_person_name: this.fetchSite.contact_person_name,
+            contact_person_email: this.fetchSite.contact_person_email,
+            contact_person_number: this.fetchSite.contact_person_number,
           },
           {
             headers: {

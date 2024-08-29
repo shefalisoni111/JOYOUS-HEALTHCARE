@@ -6,7 +6,6 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="editAdmin">Edit Candidate</h5>
-           
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
@@ -91,7 +90,7 @@ export default {
   data() {
     return {
       fetchAdmin: {
-        id: 1,
+        id: 2,
         first_name: "",
         last_name: "",
 
@@ -103,7 +102,7 @@ export default {
     };
   },
   mounted() {
-    this.fetchAdminMethod(1);
+    this.fetchAdminMethod(2);
   },
   methods: {
     async fetchAdminMethod(id) {

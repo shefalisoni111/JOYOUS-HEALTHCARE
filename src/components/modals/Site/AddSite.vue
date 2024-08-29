@@ -37,6 +37,79 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
+                    <label class="form-label" for="selectJobTitle"
+                      >Contact Person Name</label
+                    >
+                  </div>
+                  <div class="col-10">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="contact_person_name"
+                      @input="clearError"
+                      @change="detectAutofill"
+                      style="padding-right: 1px"
+                    />
+                    <span v-if="!validateSiteNameFormate" class="text-danger"
+                      >Contact Person Name Required</span
+                    >
+                  </div>
+                </div>
+
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
+                    <label class="form-label">Contact Person Email</label>
+                  </div>
+                  <div class="col-10">
+                    <input
+                      type="email"
+                      class="form-control"
+                      v-model="contact_person_email"
+                      @input="validateEmailFormat"
+                      @change="detectAutofill"
+                      ref="email"
+                      autocomplete="new-email"
+                    />
+                    <span
+                      v-if="
+                        contact_person_email &&
+                        !validateEmailFormat(contact_person_email) &&
+                        !autofilled
+                      "
+                      class="text-danger"
+                      >Invalid Email</span
+                    >
+                    <span
+                      v-if="contact_person_email && !isEmailUnique && !autofilled"
+                      class="text-danger"
+                      >Email already in use</span
+                    >
+                  </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
+                    <label class="form-label">Contact Person phone</label>
+                  </div>
+                  <div class="col-10">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="contact_person_number"
+                      @input="cleanPhoneNumber"
+                      @change="detectAutofill"
+                    />
+                    <span
+                      v-if="
+                        contact_person_number &&
+                        !validatePhoneNumberFormat(contact_person_number)
+                      "
+                      class="text-danger"
+                      >Invalid Phone Number</span
+                    >
+                  </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
                     <label class="form-label" for="selectBusinessUnit">Site Name</label>
                   </div>
 
@@ -206,6 +279,10 @@ export default {
       selectedClientId: this.id,
       email: "",
       status: null,
+      contact_person_name: "",
+      contact_person_email: "",
+      contact_person_number: "",
+
       split_rate: null,
       portal_access: null,
       isValidForm: false,
@@ -230,11 +307,16 @@ export default {
         this.status !== null &&
         this.split_rate !== null &&
         this.portal_access !== null &&
+        this.contact_person_email !== "" &&
+        this.contact_person_number !== "" &&
+        this.contact_person_name !== "" &&
         this.validateEmailFormat(this.email) &&
         this.validatePhoneNumberFormat(this.phone_number) &&
         this.isEmailUnique &&
-        this.validateAddressFormat(this.address)
-        // this.validateSiteNameFormate(this.site_name)
+        this.validateAddressFormat(this.address) &&
+        this.validateEmailFormat(this.contact_person_email) !== "" &&
+        this.validatePhoneNumberFormat(this.contact_person_number) !== "" &&
+        this.validateSiteNameFormate(this.contact_person_name)
       );
     },
 
@@ -246,9 +328,11 @@ export default {
   watch: {
     client_id: "validationSelectedClient",
     email: "validateEmailFormat",
+    contact_person_email: "validateEmailFormat",
     site_name: "validateSiteNameFormate",
-
+    contact_person_name: "validateSiteNameFormate",
     phone_number: "validatePhoneNumberFormat",
+    contact_person_number: "validatePhoneNumberFormat",
     address: "validateAddressFormat",
     isFormValid: function (newVal) {
       this.isValidForm = newVal;
@@ -345,12 +429,24 @@ export default {
           status: this.status,
           split_rate: this.split_rate,
           portal_access: this.portal_access,
+          contact_person_name: this.contact_person_name,
+          contact_person_email: this.contact_person_email,
+          contact_person_number: this.contact_person_number,
         };
 
         try {
           const response = await axios.post(`${VITE_API_URL}/sites`, payload);
-          this.$refs.successAlert.show("Site added successfully!");
-          this.clearFields();
+          if (response.status === 200) {
+            this.$refs.successAlert.showSuccess("Site added successfully!");
+            this.$emit("addSite");
+            this.clearFields();
+          } else {
+            // alert("Error adding Shift");
+            this.clearFields();
+            setTimeout(() => {
+              this.clearError();
+            }, 100);
+          }
         } catch (error) {
           // console.error("Error adding site:", error);
         }
@@ -358,7 +454,7 @@ export default {
     },
 
     validateEmailFormat(email) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in)$/;
       return emailRegex.test(email);
     },
     ValidationClient(newValue) {
@@ -405,6 +501,9 @@ export default {
       this.status = "";
       this.portal_access = "";
       this.client_id = "";
+      this.contact_person_name = "";
+      this.contact_person_email = "";
+      this.contact_person_number = "";
     },
   },
   // async beforeRouteEnter(to, from, next) {

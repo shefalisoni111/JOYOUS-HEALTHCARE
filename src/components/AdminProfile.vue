@@ -202,7 +202,7 @@ export default {
           },
         });
 
-        this.getAdmin = response.data.merchant_data;
+        this.getAdmin = response.data;
       } catch (error) {
         // Handle error if needed
         // console.error("Error fetching admin data:", error);

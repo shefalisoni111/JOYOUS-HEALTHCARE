@@ -275,6 +275,8 @@ export default {
         start_time: "",
         end_time: "",
         break: "",
+        staff_rate: "",
+        client_rate: "",
       },
       businessUnit: [],
       shiftsTime: [],
@@ -468,6 +470,8 @@ export default {
         this.fetchVacancy.start_time = this.convertTimeFormat(response.data.start_time);
         this.fetchVacancy.end_time = this.convertTimeFormat(response.data.end_time);
         this.fetchVacancy.break = response.data.break;
+        this.fetchVacancy.staff_rate = response.data.staff_rate;
+        this.fetchVacancy.client_rate = response.data.client_rate;
       } catch (error) {}
     },
 
@@ -511,6 +515,8 @@ export default {
             start_time: this.fetchVacancy.start_time,
             end_time: this.fetchVacancy.end_time,
             break: this.fetchVacancy.break,
+            staff_rate: this.staff_rate,
+            client_rate: this.client_rate,
           },
           {
             headers: {
@@ -572,11 +578,7 @@ export default {
         }
       }
     },
-    // async getTimeShifts() {
-    //   await axios
-    //     .get(`${VITE_API_URL}/shifts`)
-    //     .then((response) => (this.shiftsTime = response.data));
-    // },
+
     async getTimeShift(siteId) {
       if (!siteId) {
         return;

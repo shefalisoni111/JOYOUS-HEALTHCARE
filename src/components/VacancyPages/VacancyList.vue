@@ -16,26 +16,6 @@
             </ol>
           </div>
         </div>
-        <!-- <div class="container-fluid p-0 bg-define">
-          <div
-            class="pagetitle d-flex justify-content-between align-items-center p-2"
-          >
-            <div class="d-flex justify-content-around gap-2">
-              <select class="form-select" aria-label="Default select example ">
-                <option selected>Custom</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            </div>
-
-            <div></div>
-
-            <div class="d-flex align-items-center justify-content-between">
-              <div class="d-flex align-items-center gap-2"></div>
-            </div>
-          </div>
-        </div> -->
 
         <div class="container-fluid mt-3">
           <div class="row">
@@ -294,7 +274,7 @@
     <AssignedVacancyList @updateAssignSearch="searchVacancyUpdated" />
     <RejectedVacancyList @rejectVacancySearch="searchVacancyUpdated" />
     <AllVacancyCandidateList @allVacancySearch="searchVacancyUpdated" />
-    <AddVacancy @addVacancy="createVacancy" ref="addShiftRef" />
+    <!-- <AddVacancy @addVacancy="createVacancy" ref="addShiftRef" /> -->
   </div>
 </template>
 <script>
@@ -364,9 +344,9 @@ export default {
   },
 
   methods: {
-    handleShiftAdd() {
-      this.$refs.addShiftRef.getClientMethod();
-    },
+    // handleShiftAdd() {
+    //   this.$refs.addShiftRef.getClientMethod();
+    // },
     editVacancyId(vacancyId) {
       this.selectedVacancyId = vacancyId;
     },
@@ -597,7 +577,8 @@ export default {
 
   beforeRouteUpdate(to, from, next) {
     this.setActiveTabFromRoute();
-    this.createVacancy();s
+    this.createVacancy();
+    s;
     this.setActiveTabNameOnLoad();
     next();
   },

@@ -378,7 +378,7 @@ export default {
       this.passwordsMatch = this.password === this.confirm_password;
     },
     validateEmailFormat(email) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in)$/;
       return emailRegex.test(email);
     },
 

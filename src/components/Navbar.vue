@@ -355,7 +355,7 @@
               <li class="cursor-pointer my-1">
                 <router-link
                   class="dropdown-item text-capitalize d-flex align-items-center"
-                  to="/admin"
+                :to="`/admin/${getAdminData.id}`"
                   ><i class="bi bi-gear-wide pe-2"></i><span>Personal Settings</span>
                 </router-link>
               </li>
@@ -622,7 +622,16 @@ export default {
         }
       }
     },
-  
+    async getAdminMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/merchants`);
+
+        this.getAdminData = response.data ;
+        // console.log(this.getAdminData)
+      } catch (error) {
+        // console.error("Error fetching admin data:", error);
+      }
+    },
     async getCandidateMethods() {
       try {
         const response = await axios.get(`${VITE_API_URL}/candidates`);
@@ -640,7 +649,7 @@ export default {
   },
 
  async mounted() {
-  // await   this.getAdminMethod();
+  await   this.getAdminMethod();
   await  this.getCandidateMethods();
   document.addEventListener('click', this.handleClickOutside);
   

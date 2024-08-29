@@ -176,7 +176,7 @@ export default {
       this.fetchSite = { ...this.originalData };
     },
     validateEmailFormat() {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in)$/;
       this.emailValid = emailRegex.test(this.fetchSite.email);
     },
     removeDate(index) {
