@@ -124,7 +124,7 @@ export default {
       this.isLoading = true;
       try {
         const params = {
-          status_value: "approved",
+          // status_value: "approved",
           activated_value: "false",
         };
         const response = await axios.get(`${VITE_API_URL}/candidates`, { params });

@@ -129,6 +129,7 @@ export default {
       try {
         const params = {
           status_value: "pending",
+          activated_value: "true",
           page: page,
           per_page: this.itemsPerPage,
         };
