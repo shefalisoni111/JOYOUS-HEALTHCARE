@@ -259,7 +259,7 @@
           <li class="nav-item dropdown mt-2">
             <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" @click="toggleDropdown">
               <i class="bi bi-bell"></i>
-              <span v-if="!dropdownOpen && showBadge" class="badge bg-primary badge-number">2</span>
+              <span v-if="!dropdownOpen && showBadge" class="badge bg-primary badge-number" >2</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" @click.self="dropdownOpen = false" style="height:390px;"  @scroll="onScroll"  ref="notificationDropdown">
               <li class="dropdown-header d-flex">

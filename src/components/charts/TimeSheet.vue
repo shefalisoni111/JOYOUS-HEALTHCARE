@@ -9,6 +9,13 @@ import axios from "axios";
 import Chart from "chart.js/auto";
 
 export default {
+  props: {
+    startDate: {
+      type: Date,
+      required: true,
+      default: () => new Date(),
+    },
+  },
   data() {
     return {
       chart: null,
@@ -48,8 +55,9 @@ export default {
   },
   async mounted() {
     await this.renderChart();
-    await this.fetchData();
+    this.fetchData();
   },
+
   methods: {
     renderChart() {
       const ctx = this.$refs.chartCanvas.getContext("2d");
@@ -62,6 +70,25 @@ export default {
           plugins: {
             legend: {
               display: false,
+            },
+            customPlugin: {
+              afterDatasetsDraw: (chart) => {
+                const { ctx } = chart;
+                chart.data.datasets.forEach((dataset, i) => {
+                  const meta = chart.getDatasetMeta(i);
+                  meta.data.forEach((bar, index) => {
+                    const data = dataset.data[index];
+                    if (data !== undefined) {
+                      const y = bar.y - 2;
+                      const leftSpace = 10;
+                      ctx.fillStyle = "black";
+                      ctx.textAlign = "center";
+                      const x = bar.x + leftSpace;
+                      ctx.fillText(data, x, y);
+                    }
+                  });
+                });
+              },
             },
           },
           scales: {
@@ -102,35 +129,50 @@ export default {
       });
     },
 
-    fetchData() {
-      axios
-        .get(`${VITE_API_URL}/home_timesheet_date_and_filter`, {
-          params: {
-            date: date,
-          },
-        })
-        .then((response) => {
-          const apiData = response.data;
+    async fetchData() {
+      if (
+        !this.startDate ||
+        !(this.startDate instanceof Date) ||
+        isNaN(this.startDate.getTime())
+      ) {
+        console.error("Invalid startDate");
+        return;
+      }
 
-          this.chartData.datasets[0].data[0] = apiData.total_records || 0;
-          this.chartData.datasets[0].data[1] = apiData.total_hours || 0;
-          this.chartData.datasets[0].data[2] = apiData.approved_timesheet_hours || 0;
-          this.chartData.datasets[0].data[3] = apiData.pending_timesheet_hours || 0;
-          this.chartData.datasets[0].data[4] = apiData.invoice_total_hours || 0;
-          this.chartData.datasets[0].data[5] = apiData.staff_invoice_rates || 0;
-          this.chartData.datasets[0].data[6] = apiData.client_invoice_rates || 0;
-
-          // Update the chart with the new data
-          if (this.$refs.myChart && this.$refs.myChart.chart) {
-            this.$refs.myChart.chart.update();
-          } else {
-            // console.error("Chart instance or reference not found:", this.$refs.myChart);
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/home_timesheet_date_and_filter`,
+          {
+            params: {
+              date: this.startDate.toISOString().split("T")[0],
+            },
           }
-        })
-        .catch((error) => {
-          // console.error("Error fetching data:", error);
-        });
+        );
+
+        const apiData = response.data;
+
+        this.dataObject.datasets[0].data = [
+          apiData.total_records || 0,
+          apiData.total_hours || 0,
+          apiData.approved_timesheet_hours || 0,
+          apiData.pending_timesheet_hours || 0,
+          apiData.invoice_total_hours || 0,
+          apiData.staff_invoice_rates || 0,
+          apiData.client_invoice_rates || 0,
+        ];
+
+        if (this.chart) {
+          this.chart.update();
+        } else {
+          // console.error("Chart instance not found");
+        }
+      } catch (error) {
+        // console.error("Error fetching data:", error);
+      }
     },
+  },
+  watch: {
+    startDate: "fetchData",
   },
 };
 </script>

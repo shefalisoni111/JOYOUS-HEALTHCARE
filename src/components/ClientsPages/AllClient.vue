@@ -381,17 +381,17 @@ export default {
           Promise.all(csvDataArray)
             .then((dataArray) => {
               const combinedCsvData = this.combineCsvData(dataArray);
-              const filename = "All_Clients.csv";
+              const filename = "ClientData.csv";
               this.downloadOneCSV(combinedCsvData, filename);
               const message = "Export file download Successfully";
               this.$refs.successAlert.showSuccess(message);
             })
             .catch((error) => {
-              console.error("Error reading CSV data:", error);
+              // console.error("Error reading CSV data:", error);
             });
         })
         .catch((error) => {
-          console.error("Error fetching CSV data:", error);
+          // console.error("Error fetching CSV data:", error);
         })
         .finally(() => {
           this.clientId = [];
@@ -505,7 +505,7 @@ export default {
           this.downloadCSV(response.data, filename);
         })
         .catch((error) => {
-          console.error("Error:", error);
+          // console.error("Error:", error);
         });
     },
     downloadCSV(csvData, filename) {

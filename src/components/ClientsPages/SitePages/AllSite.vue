@@ -367,7 +367,8 @@ export default {
         alert("Please select at least one Site.");
         return;
       }
-
+      // const filterName = this.getFilterName(this.selectedFilter);
+      // const filename = `${filterName}_Sites.csv`;
       const promises = this.siteIds.map((siteId) => {
         const queryParams = `site_ids=${siteId}`;
         return axios.get(`${VITE_API_URL}selected_export_site?${queryParams}`, {
@@ -386,17 +387,17 @@ export default {
           Promise.all(csvDataArray)
             .then((dataArray) => {
               const combinedCsvData = this.combineCsvData(dataArray);
-              const filename = "All_SiteData.csv";
+              const filename = "SiteData.csv";
               this.downloadOneCSV(combinedCsvData, filename);
               const message = "Export file download Successfully";
               this.$refs.successAlert.showSuccess(message);
             })
             .catch((error) => {
-              console.error("Error reading CSV data:", error);
+              // console.error("Error reading CSV data:", error);
             });
         })
         .catch((error) => {
-          console.error("Error fetching CSV data:", error);
+          // console.error("Error fetching CSV data:", error);
         })
         .finally(() => {
           this.siteIds = [];

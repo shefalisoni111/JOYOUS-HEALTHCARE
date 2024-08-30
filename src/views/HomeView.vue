@@ -552,7 +552,7 @@
                     </div>
                   </div>
                   <div class="col-lg-12 px-3">
-                    <TimeSheet />
+                    <TimeSheet :startDate="startDate" />
                   </div>
                 </div>
               </div>
@@ -582,6 +582,7 @@ export default {
       getRecords: [],
       startDate: new Date(),
       endDate: new Date(),
+
       getShiftCount: [],
     };
   },
