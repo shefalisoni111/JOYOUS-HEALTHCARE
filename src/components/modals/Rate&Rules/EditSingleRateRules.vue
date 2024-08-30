@@ -151,7 +151,7 @@
                             {{ formatTime(hour) }}
                           </option>
                         </select>
-                        {{ console.log(fetchRateRulesData.start_time) }}
+                        <!-- {{ console.log(fetchRateRulesData.start_time) }} -->
                       </div>
 
                       <div class="col-4">

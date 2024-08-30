@@ -285,41 +285,18 @@ export default {
         // console.error("Error generating PDF:", error);
       }
     },
-    // async createStaffInvoice(id) {
-    //   if (!this.$route.params.id) {
-    //     return;
-    //   }
-    //   try {
-    //     const response = await axios.get(
-    //       `${VITE_API_URL}/client_invoices/${this.$route.params.id}`
-    //     );
-    //     this.fetchCustomSheetData = {
-    //       id: response.data.client_invoice.id,
-    //       shift_date: response.data.client_invoice.start_date,
-    //       job: response.data.client_invoice.job,
-    //       start_date: response.data.client_invoice.start_date,
-    //       end_date: response.data.client_invoice.end_date,
-    //       unit: response.data.client_invoice.unit,
-    //       rate: response.data.client_invoice.rate,
-    //       total_amount: response.data.client_invoice.total_amount,
-    //       paid_amount: response.data.client_invoice.paid_amount,
-    //       balance_amount: response.data.client_invoice.balance_amount,
-    //     };
-    //   } catch (error) {
-    //     // console.error("Error fetching custom timesheet data:", error);
-    //   }
-    // },
+
     validatePayload(payload) {
       let isValid = true;
 
       // Example validation rules
       if (!payload.shift_date) {
-        console.error("Validation Error: shift_date is required");
+        // console.error("Validation Error: shift_date is required");
         isValid = false;
       }
 
       if (!payload.name) {
-        console.error("Validation Error: name is required");
+        // console.error("Validation Error: name is required");
         isValid = false;
       }
       // Add more validation rules as per your API requirements

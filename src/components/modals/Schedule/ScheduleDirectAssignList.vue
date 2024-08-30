@@ -434,7 +434,7 @@ export default {
   mounted() {
     // this.fetchVacancyListMethod(this.selectedWeekDate);
     if (this.job) {
-      console.log(this.job);
+      // console.log(this.job);
     } else {
       return;
     }

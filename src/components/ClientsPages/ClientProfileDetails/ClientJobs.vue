@@ -60,7 +60,7 @@ export default {
           this.getJobs = response.data.data;
         }
       } catch (error) {
-        console.error(error);
+        // console.error(error);
       } finally {
         this.isLoading = false;
       }

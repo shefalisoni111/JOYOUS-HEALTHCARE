@@ -414,7 +414,7 @@ export default {
         })
         .catch((error) => {
           // Handle error
-          console.log(error);
+          // console.log(error);
         });
     },
     ImportCSV(csvData, filename) {
@@ -430,16 +430,14 @@ export default {
     },
     handleCheckboxChange(dataId) {
       if (this.checkedSites[dataId]) {
-        // Checkbox is checked, add the site ID to the array
         this.siteIds.push(dataId);
       } else {
-        // Checkbox is unchecked, remove the site ID from the array
         const index = this.siteIds.indexOf(dataId);
         if (index !== -1) {
           this.siteIds.splice(index, 1);
         }
       }
-      console.log("Updated siteIds array:", this.siteIds);
+      // console.log("Updated siteIds array:", this.siteIds);
     },
     exportOneFile() {
       const queryParams = new URLSearchParams({

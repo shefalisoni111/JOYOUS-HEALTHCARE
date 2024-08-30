@@ -86,7 +86,7 @@ export default {
         this.isModalVisible = false;
         this.getNotesMethod();
       } catch (error) {
-        console.error("Error deleting note:", error);
+        // console.error("Error deleting note:", error);
       }
     },
     canceled() {
@@ -104,10 +104,10 @@ export default {
       } catch (error) {
         if (error.response) {
           if (error.response.status === 404) {
-            console.error("Error 404: Notes not found");
+            // console.error("Error 404: Notes not found");
           }
         } else {
-          console.error("Error fetching notes:", error);
+          // console.error("Error fetching notes:", error);
         }
       } finally {
         this.isLoading = false;

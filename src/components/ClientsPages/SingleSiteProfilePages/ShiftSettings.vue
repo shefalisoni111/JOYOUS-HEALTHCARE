@@ -191,7 +191,7 @@ export default {
 
           this.shiftIdToUpdate = null;
         } catch (error) {
-          console.error("Error updating shifts:", error);
+          // console.error("Error updating shifts:", error);
         }
       }
     },
