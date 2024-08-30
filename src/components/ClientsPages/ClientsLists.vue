@@ -76,8 +76,8 @@
                         >
                           + Add Client
                         </button>
-                        <button
-                          v-if="searchQuery"
+                        <!-- <button
+                          v-if="!searchQuery"
                           type="button"
                           class="btn btn-outline-success text-nowrap"
                           @click="toggleFilters"
@@ -86,7 +86,7 @@
                           Show Filters
                         </button>
                         <button
-                          v-if="searchQuery"
+                          v-if="!searchQuery"
                           class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
                           type="button"
                           id="navbarDropdown"
@@ -107,7 +107,7 @@
                               >
                             </li>
                           </ul>
-                        </button>
+                        </button> -->
                       </div>
                     </div>
                   </div>
@@ -118,10 +118,13 @@
                     <div class="d-flex gap-2 mt-3">
                       <div></div>
 
-                      <select @change="filterData($event.target.value)">
-                        <option selected>Client Status</option>
-                        <option value="true">Active</option>
-                        <option value="false">In-Active</option>
+                      <select
+                        v-model="selectedFilter"
+                        @change="filterData($event.target.value)"
+                      >
+                        <option value="all">All Client</option>
+                        <option value="active_client">Active</option>
+                        <option value="inactive_client">In-Active</option>
                       </select>
 
                       <!-- <select v-model="selectedCandidate" id="selectCandidateList">
@@ -298,6 +301,7 @@ export default {
       debounceTimeout: null,
       searchResults: [],
       showFilters: false,
+      selectedFilter: "true",
       errorMessage: "",
       tabs: [
         { name: "All ", component: "AllClient", routeName: "AllClient" },
@@ -346,18 +350,24 @@ export default {
     },
     filterData(value) {
       let client_type = "activated";
-      let client_value = value === "true" ? "true" : "false";
+      let client_value;
+
+      if (value === "all") {
+        client_value = null;
+      } else {
+        client_value = value === "true" ? "true" : "false";
+      }
 
       this.makeFilterAPICall(client_type, client_value);
     },
     async makeFilterAPICall(client_type, client_value) {
       try {
-        const response = await axios.get(`${VITE_API_URL}/client_filter`, {
-          params: {
-            client_type: client_type,
-            client_value: client_value,
-          },
-        });
+        const params = { client_type };
+        if (client_value !== null) {
+          params.client_value = client_value;
+        }
+
+        const response = await axios.get(`${VITE_API_URL}/client_filter`, { params });
 
         this.getClientDetail = response.data.data;
       } catch (error) {
@@ -369,6 +379,7 @@ export default {
             alert(errorMessages);
           }
         } else {
+          // Handle other errors
         }
       }
     },
@@ -384,8 +395,13 @@ export default {
       return this.colors[index % this.colors.length];
     },
     exportAll() {
+      const params = {};
+      if (this.selectedFilter !== "all") {
+        params.filter_type = this.selectedFilter;
+      }
+
       axios
-        .get(`${VITE_API_URL}/export_all_csv.csv`)
+        .get(`${VITE_API_URL}/export_all_csv.csv`, { params })
         .then((response) => {
           this.downloadCSV(response.data, "filename.csv");
         })

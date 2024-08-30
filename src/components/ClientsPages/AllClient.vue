@@ -53,22 +53,11 @@
       <div class="d-flex gap-2 mt-3">
         <div></div>
 
-        <select @change="filterData($event.target.value)">
-          <option selected>Client Status</option>
-          <option value="true">Active</option>
-          <option value="false">In-Active</option>
+        <select v-model="selectedFilter" @change="filterData($event.target.value)">
+          <option value="">All Client</option>
+          <option value="active_client">Active</option>
+          <option value="inactive_client">In-Active</option>
         </select>
-
-        <!-- <select v-model="selectedCandidate" id="selectCandidateList">
-                        <option value="">All Staff</option>
-                        <option
-                          v-for="option in candidateLists"
-                          :key="option.id"
-                          :value="`${option.first_name} ${option.last_name}`"
-                        >
-                          {{ option.first_name }} {{ option.last_name }}
-                        </option>
-                      </select> -->
       </div>
     </div>
     <div class="table-wrapper mt-3">
@@ -134,10 +123,6 @@
             <td v-text="client.email"></td>
 
             <td>
-              <!-- <label class="switch" v-if="client.activated == true">
-                <input type="checkbox" id="togBtn" checked />
-                <div class="slider round"></div>
-              </label> -->
               <label class="switch">
                 <input
                   type="checkbox"
@@ -173,12 +158,7 @@
                 <i class="bi bi-pencil-square"></i>
               </button>
               &nbsp;&nbsp;
-              <!-- <button class="btn btn-outline-success text-nowrap">
-                <i
-                  class="bi bi-trash"
-                  v-on:click="clientsDeleteMethod(client.id)"
-                ></i></button
-              >&nbsp;&nbsp; -->
+
               <router-link
                 :to="{
                   name: 'SingleClientProfile',
@@ -248,6 +228,7 @@ export default {
       showFilters: false,
       isLoading: false,
       checkedClient: reactive({}),
+      selectedFilter: " ",
       client: {
         job_name: ["Job1", "Job2", "Job3", "Job4", "Job5", "Job6"],
       },
@@ -265,19 +246,9 @@ export default {
   components: { EditClientModal, AddClients, SuccessAlert, Loader },
   computed: {
     paginateCandidates() {
-      // const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      // const endIndex = startIndex + this.itemsPerPage;
-      // return this.getClientDetail.slice(startIndex, endIndex);
       return this.getClientDetail;
     },
-    // paginateCandidates() {
-    //   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    //   const endIndex = startIndex + this.itemsPerPage;
-    //   return this.getClientDetail.slice(startIndex, endIndex);
-    // },
-    // totalRecordsOnPage() {
-    //   return this.paginateCandidates.length;
-    // },
+
     portalAccessText() {
       return this.client.activated ? "Active" : "No Account";
     },
@@ -303,9 +274,20 @@ export default {
     toggleFilters() {
       this.showFilters = !this.showFilters;
     },
+
     filterData(value) {
+      this.selectedFilter = value;
+
       let client_type = "activated";
-      let client_value = value === "true" ? "true" : "false";
+      let client_value;
+
+      if (value === "active_client") {
+        client_value = "true";
+      } else if (value === "inactive_client") {
+        client_value = "false";
+      } else {
+        client_value = "";
+      }
 
       this.makeFilterAPICall(client_type, client_value);
     },
@@ -500,22 +482,30 @@ export default {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     },
-    // async clientsDeleteMethod(id) {
-    //   if (!window.confirm("Are you Sure ?")) {
-    //     return;
-    //   }
-    //   await axios.delete(`${VITE_API_URL}/clients/` + id).then((response) => {
-    //     this.createdClient();
-    //   });
-    // },
+
     exportAll() {
+      let apiUrl = `${VITE_API_URL}/export_all_csv.csv`;
+      let params = {};
+      let filename = "All_Clients.csv";
+
+      if (this.selectedFilter === "active_client") {
+        params.filter_type = "active_client";
+        filename = "Active_Clients.csv";
+      } else if (this.selectedFilter === "inactive_client") {
+        params.filter_type = "inactive_client";
+        filename = "Inactive_Clients.csv";
+      }
+
       axios
-        .get(`${VITE_API_URL}/export_all_csv.csv`)
+        .get(apiUrl, {
+          params: params,
+          responseType: "blob",
+        })
         .then((response) => {
-          this.downloadCSV(response.data, "All_Clients.csv");
+          this.downloadCSV(response.data, filename);
         })
         .catch((error) => {
-          // console.error("Error:", error);
+          console.error("Error:", error);
         });
     },
     downloadCSV(csvData, filename) {

@@ -39,20 +39,6 @@
             >
               Import
             </label>
-            <!-- Trigger file input when label is clicked -->
-
-            <!-- <button class="import-button" >
-            Import
-          </button> -->
-            <!-- <label
-            for="fileAll"
-            class="dropdown-item"
-            style="border-radius: 0px"
-            >Import</label
-          > -->
-            <!-- <a class="" href="#" @click="triggerFileInput"
-            >Import</a
-          > -->
           </li>
           <li><hr class="dropdown-divider" /></li>
           <li>
@@ -70,22 +56,11 @@
       <div class="d-flex gap-2 mt-3">
         <div></div>
 
-        <select @change="filterData($event.target.value)">
-          <option selected>Site Status</option>
-          <option value="true">Active</option>
-          <option class="false">In-Active</option>
+        <select v-model="selectedFilter" @change="filterData($event.target.value)">
+          <option value="">All Site</option>
+          <option value="active_site">Active</option>
+          <option value="inactive_site">In-Active</option>
         </select>
-
-        <!-- <select v-model="selectedCandidate" id="selectCandidateList">
-                        <option value="">All Staff</option>
-                        <option
-                          v-for="option in candidateLists"
-                          :key="option.id"
-                          :value="`${option.first_name} ${option.last_name}`"
-                        >
-                          {{ option.first_name }} {{ option.last_name }}
-                        </option>
-                      </select> -->
       </div>
     </div>
     <div class="table-wrapper mt-3">
@@ -144,12 +119,7 @@
                 <i class="bi bi-pencil-square"></i>
               </button>
               &nbsp;&nbsp;
-              <!-- <button class="btn btn-outline-success text-nowrap">
-                <i
-                  class="bi bi-trash"
-                  v-on:click="clientsDeleteMethod(client.id)"
-                ></i></button
-              >&nbsp;&nbsp; -->
+
               <router-link
                 :to="{ name: 'SingleSiteprofile', params: { id: data.id } }"
                 class="btn btn-outline-success text-nowrap"
@@ -212,6 +182,7 @@ export default {
       siteIds: [],
       isLoading: false,
       checkedSites: reactive({}),
+      selectedFilter: " ",
     };
   },
   created() {
@@ -240,22 +211,39 @@ export default {
     toggleFilters() {
       this.showFilters = !this.showFilters;
     },
-    async filterData(value) {
-      let site_type = "status";
-      let site_value = value === "true";
+    filterData(value) {
+      this.selectedFilter = value;
 
-      await this.makeFilterAPICall(site_type, site_value);
+      let site_type = "status";
+      let site_value;
+
+      if (value === "active_site") {
+        site_value = "true";
+      } else if (value === "inactive_site") {
+        site_value = "false";
+      } else {
+        site_value = "";
+      }
+
+      this.makeFilterAPICall(site_type, site_value);
     },
     async makeFilterAPICall(site_type, site_value) {
       try {
-        const response = await axios.get(`${VITE_API_URL}/site_filter`, {
-          params: {
+        let params = {};
+
+        if (site_value) {
+          params = {
             site_type: site_type,
             site_value: site_value,
-          },
+          };
+        }
+
+        const response = await axios.get(`${VITE_API_URL}/site_filter`, {
+          params: params,
         });
+
         this.getSiteAllData = response.data.data;
-        this.currentPage = 1; // Reset to the first page after filtering
+        this.currentPage = 1;
       } catch (error) {
         if (error.response && error.response.status === 404) {
           const errorMessages = error.response.data.error;
@@ -305,15 +293,31 @@ export default {
         });
     },
     exportAll() {
+      let apiUrl = `${VITE_API_URL}/export_all_csv_site.csv`;
+      let params = {};
+      let filename = "All_SiteData.csv";
+
+      if (this.selectedFilter === "active_site") {
+        params.filter_type = "active_site";
+        filename = "Active_Sites.csv";
+      } else if (this.selectedFilter === "inactive_site") {
+        params.filter_type = "inactive_site";
+        filename = "Inactive_Sites.csv";
+      }
+
       axios
-        .get(`${VITE_API_URL}/export_all_csv_site.csv`)
+        .get(apiUrl, {
+          params: params,
+          responseType: "blob",
+        })
         .then((response) => {
-          this.downloadCSV(response.data, "All_SiteData.csv");
+          this.downloadCSV(response.data, filename);
         })
         .catch((error) => {
-          console.error("Error:", error);
+          // console.error("Error:", error);
         });
     },
+
     downloadCSV(csvData, filename) {
       const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
       const url = window.URL.createObjectURL(blob);
