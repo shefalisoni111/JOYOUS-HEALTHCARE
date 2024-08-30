@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import Chart from "chart.js/auto";
 
 export default {
@@ -47,6 +48,7 @@ export default {
   },
   async mounted() {
     await this.renderChart();
+    await this.fetchData();
   },
   methods: {
     renderChart() {
@@ -98,6 +100,36 @@ export default {
           },
         ],
       });
+    },
+
+    fetchData() {
+      axios
+        .get(`${VITE_API_URL}/home_timesheet_date_and_filter`, {
+          params: {
+            date: date,
+          },
+        })
+        .then((response) => {
+          const apiData = response.data;
+
+          this.chartData.datasets[0].data[0] = apiData.total_records || 0;
+          this.chartData.datasets[0].data[1] = apiData.total_hours || 0;
+          this.chartData.datasets[0].data[2] = apiData.approved_timesheet_hours || 0;
+          this.chartData.datasets[0].data[3] = apiData.pending_timesheet_hours || 0;
+          this.chartData.datasets[0].data[4] = apiData.invoice_total_hours || 0;
+          this.chartData.datasets[0].data[5] = apiData.staff_invoice_rates || 0;
+          this.chartData.datasets[0].data[6] = apiData.client_invoice_rates || 0;
+
+          // Update the chart with the new data
+          if (this.$refs.myChart && this.$refs.myChart.chart) {
+            this.$refs.myChart.chart.update();
+          } else {
+            // console.error("Chart instance or reference not found:", this.$refs.myChart);
+          }
+        })
+        .catch((error) => {
+          // console.error("Error fetching data:", error);
+        });
     },
   },
 };
