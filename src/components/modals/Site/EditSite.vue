@@ -318,7 +318,7 @@ export default {
   },
   methods: {
     validateEmailFormat() {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in)$/;
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk)$/;
       this.emailValid = emailRegex.test(this.fetchSite.email);
       this.emailContactValid = emailRegex.test(this.fetchSite.contact_person_email);
     },

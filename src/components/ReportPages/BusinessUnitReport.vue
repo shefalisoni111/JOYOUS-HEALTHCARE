@@ -36,23 +36,26 @@
                     <option
                       v-for="option in candidateLists"
                       :key="option.id"
-                      :value="option.first_name"
+                      :value="option.id"
                       placeholder="Select Staff"
                     >
-                      {{ option.first_name + option.last_name }}
+                      {{ option.first_name + " " + option.last_name }}
                     </option>
                   </select>
                 </div>
 
                 <div>
                   <form
+                    @submit.prevent="search"
                     class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
                   >
                     <input
                       class="form-control mr-sm-2"
                       type="search"
-                      placeholder="Search by Name"
+                      placeholder="Search.."
                       aria-label="Search"
+                      v-model="searchQuery"
+                      @input="debounceSearch"
                     />
                   </form>
                 </div>
@@ -129,7 +132,7 @@
                 <div class="d-flex gap-2">
                   <div></div>
                 </div>
-                <div class="tab-content mt-4" id="pills-tabContent">
+                <div class="tab-content mt-4" id="pills-tabContent" v-if="!searchQuery">
                   <div
                     class="tab-pane fade show active table-wrapper"
                     id="pills-home"
@@ -260,6 +263,132 @@
                     ...
                   </div>
                 </div>
+                <div class="tab-content mt-4" id="pills-tabContent" v-if="searchQuery">
+                  <div
+                    class="tab-pane fade show active table-wrapper"
+                    id="pills-home"
+                    role="tabpanel"
+                    aria-labelledby="pills-home-tab"
+                  >
+                    <!-- <table class="table reportTable">
+                      <thead>
+                        <tr>
+                          <th scope="col">Sender</th>
+
+                          <th scope="col">Recipient</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">Subject</th>
+                          <th scope="col">Recipient Domain</th>
+                          <th scope="col">Date Time</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td scope="col">Aniket</td>
+
+                          <td scope="col">Prabhu</td>
+                          <td scope="col">Active</td>
+                          <td scope="col">BusinessUnit Report</td>
+                          <td scope="col">Recipient Domain</td>
+                          <td scope="col">23/2/2024</td>
+                        </tr>
+                      </tbody>
+                    </table> -->
+                    <table class="table reportTable">
+                      <thead>
+                        <tr>
+                          <th>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" />
+                            </div>
+                          </th>
+                          <th scope="col">ID</th>
+                          <th scope="col">Code</th>
+                          <th scope="col" style="width: 153px">Name</th>
+                          <th scope="col">Site</th>
+                          <th scope="col">Job</th>
+                          <th scope="col">Shift Date</th>
+                          <th scope="col">Start Time</th>
+                          <th scope="col">End Time</th>
+                          <th scope="col">Total Hours</th>
+                          <th scope="col">Client Rate</th>
+                          <th scope="col">Total Cost</th>
+                          <th scope="col">Paper TimeSheet</th>
+                          <th scope="col">Approved</th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="paginateSearchResults?.length > 0">
+                        <tr v-for="data in paginateSearchResults" :key="data.id">
+                          <td>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" />
+                            </div>
+                          </td>
+                          <td scope="col">{{ data.id }}</td>
+                          <td scope="col">{{ data.code }}</td>
+                          <td scope="col">{{ data.name }}</td>
+                          <td scope="col">{{ data.site ? data.site : "null" }}</td>
+                          <td scope="col">{{ data.job ? data.job : "null" }}</td>
+                          <td scope="col">{{ data.shift_date }}</td>
+                          <td scope="col">
+                            {{ data.start_time ? data.start_time : "null" }}
+                          </td>
+                          <td scope="col">
+                            {{ data.end_time ? data.end_time : "null" }}
+                          </td>
+                          <td scope="col">
+                            {{ data.total_hours ? data.total_hours : "null" }}
+                          </td>
+                          <td scope="col">
+                            {{ data.client_rate ? data.client_rate : "null" }}
+                          </td>
+                          <td scope="col">
+                            {{ data.total_cost ? data.total_cost : "null" }}
+                          </td>
+                          <td scope="col">
+                            <div v-if="data.paper_timesheet">
+                              <img
+                                :src="fullPaperTimeSheetUrl(data.paper_timesheet)"
+                                alt="Current Paper TimeSheet"
+                                class="img-fluid"
+                                style="width: 60px"
+                              />
+                              &nbsp;
+                              <button
+                                type="button"
+                                class="btn border-primary-subtle"
+                                data-bs-toggle="modal"
+                                data-bs-target="#viewPaperTimeSheet"
+                                @click="viewPaperSheet(data.id)"
+                              >
+                                <i class="bi bi-eye"></i>
+                              </button>
+                            </div>
+                            <div v-else>Null</div>
+                          </td>
+                          <td scope="col">
+                            {{ data.approved_hour ? "Approved" : "Not Approved" }}
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr>
+                          <td colspan="15" class="text-danger text-center">
+                            {{ errorMessage }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div
+                    class="tab-pane fade"
+                    id="pills-profile"
+                    role="tabpanel"
+                    aria-labelledby="pills-profile-tab"
+                  >
+                    ...
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -269,7 +398,7 @@
     <div
       class="mx-3 mb-2"
       style="text-align: right"
-      v-if="getSiteReportData?.length >= 8"
+      v-if="getSiteReportData?.length >= 8 && !searchResults.length"
     >
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
@@ -291,6 +420,27 @@
         Next
       </button>
     </div>
+    <div class="mx-3 mb-2" style="text-align: right" v-if="searchResults.length >= 8">
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= searchResults.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
@@ -298,6 +448,11 @@
 import axios from "axios";
 import Navbar from "../Navbar.vue";
 import Loader from "../Loader/Loader.vue";
+const axiosInstance = axios.create({
+  headers: {
+    "Cache-Control": "no-cache",
+  },
+});
 export default {
   data() {
     return {
@@ -315,9 +470,15 @@ export default {
       endDate: new Date(),
       currentPage: 1,
       itemsPerPage: 10,
+      totalCount: 0,
+      totalPages: 1,
       errorMessageCustom: "",
+      errorMessage: "",
       client_id: "",
       clientData: [],
+      searchQuery: null,
+      debounceTimeout: null,
+      searchResults: [],
       site_id: "",
       businessUnit: [],
       job_id: "",
@@ -349,6 +510,11 @@ export default {
       return this.getSiteReportData.slice(startIndex, endIndex);
     },
 
+    paginateSearchResults() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.searchResults.slice(startIndex, endIndex);
+    },
     totalRecordsOnPage() {
       return this.paginateCandidates.length;
     },
@@ -484,7 +650,7 @@ export default {
         );
         this.getSiteReportData = response.data.custom_timesheets;
         if (this.getSiteReportData.length === 0) {
-          this.errorMessageCustom = "No Custom timesheets found for the specified month";
+          this.errorMessageCustom = "No Site Report found for the specified month";
         } else {
           this.errorMessageCustom = "";
         }
@@ -506,16 +672,50 @@ export default {
         }
       }
     },
+    debounceSearch() {
+      clearTimeout(this.debounceTimeout);
+
+      this.debounceTimeout = setTimeout(() => {
+        this.search();
+      }, 100);
+    },
+    //search api start
+
+    async search() {
+      try {
+        this.searchResults = [];
+        const modifiedSearchQuery = this.searchQuery.replace(/ /g, "_");
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/custom_timesheet_searching/${modifiedSearchQuery}`
+        );
+
+        this.searchResults = response.data.custom_sheets;
+      } catch (error) {
+        if (
+          (error.response && error.response.status === 404) ||
+          error.response.status === 400
+        ) {
+          this.errorMessage = "No Record found for the specified criteria";
+        }
+      }
+    },
     async getCandidateListMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/candidates`);
-        this.candidateLists = response.data.data;
-        this.candidateStatus = response.data.data.status;
+        const paginatedResponse = await axios.get(`${VITE_API_URL}/candidates`, {
+          params: { page: this.currentPage, per_page: this.itemsPerPage },
+        });
+        this.getCandidatesData = paginatedResponse.data.data;
+        this.totalCount = paginatedResponse.data.total_count;
+        this.totalPages = paginatedResponse.data.total_pages;
+        this.currentPage = paginatedResponse.data.current_page;
+
+        const allCandidatesResponse = await axios.get(`${VITE_API_URL}/candidates`);
+        this.candidateLists = allCandidatesResponse.data.data;
       } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
+        if (error.response && error.response.status === 404) {
+          console.error(error.response.data.message);
+        } else {
+          console.error(error);
         }
       }
     },

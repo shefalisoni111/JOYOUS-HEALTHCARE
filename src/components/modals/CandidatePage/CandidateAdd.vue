@@ -83,7 +83,6 @@
                       id="selectOptionEmployee"
                       @change="clearError"
                     >
-                      <option selected>Please Select Employee Type</option>
                       <option value="Self_employed">Self Employed</option>
                       <option value="Private_limited">Private limited</option>
                       <option value="umbrella">Umbrella</option>
@@ -123,8 +122,9 @@
                       type="email"
                       class="form-control"
                       v-model="email"
-                      @input="validateEmailFormat"
-                      @change="detectAutofill"
+                      @input="validateEmailFormat(email)"
+                      ref="email"
+                      @change="checkEmailUniqueness"
                       autocomplete="new-email"
                     />
                     <span
@@ -132,6 +132,9 @@
                       class="text-danger"
                       >Invalid Email</span
                     >
+                    <span v-if="emailInUse && emailError" class="text-danger">
+                      This email is already in use.
+                    </span>
                   </div>
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
@@ -207,7 +210,7 @@
               Cancel
             </button>
             <button
-              :disabled="!isValidForm || isFieldEmpty()"
+              :disabled="!isValidForm || isFieldEmpty() || emailInUse"
               :class="{
                 'btn btn-primary rounded-1 text-capitalize fw-medium': true,
                 disabled: !isValidForm || isFieldEmpty(),
@@ -262,6 +265,8 @@ export default {
       isValidForm: false,
       error: [],
       autofilled: false,
+      emailInUse: false,
+      emailError: "",
     };
   },
   components: { SuccessAlert },
@@ -345,6 +350,19 @@ export default {
         this.showPhoneNumberValidation = false;
       }
     },
+    async checkEmailUniqueness() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/candidates`, {
+          params: {
+            email: this.email,
+          },
+        });
+
+        this.emailInUse = response.data.data.some((staff) => staff.email === this.email);
+      } catch (error) {
+        console.error("Error checking email uniqueness:", error);
+      }
+    },
     async addCandidate() {
       this.validateSelectedOption();
       this.validateCandidateName = this.validateNameFormat(this.first_name);
@@ -386,8 +404,16 @@ export default {
             const message = "Successful Staff added";
             this.$refs.successAlert.showSuccess(message);
           } else {
-            alert("Error adding Staff");
-            this.resetForm();
+            const errorData = await response.json();
+            if (errorData.error && errorData.error.email) {
+              this.emailInUse = errorData.error.email.includes(
+                "Email has already been taken."
+              );
+              this.emailError = "This email is already in use.";
+            } else {
+              this.emailInUse = false;
+              this.emailError = "Error adding Staff";
+            }
           }
         } catch (error) {
           alert("Error adding Staff");
@@ -401,7 +427,7 @@ export default {
       this.passwordsMatch = this.password === this.confirm_password;
     },
     validateEmailFormat(email) {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in)$/;
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk)$/;
       return emailRegex.test(email);
     },
 

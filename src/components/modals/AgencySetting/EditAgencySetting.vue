@@ -154,7 +154,7 @@ export default {
     },
 
     isEmailValid() {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in)$/;
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk)$/;
       return emailRegex.test(this.fetchAgencySetting.email);
     },
     isSaveDisabled() {
