@@ -46,13 +46,16 @@
 
                 <div>
                   <form
+                    @submit.prevent="search"
                     class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
                   >
                     <input
                       class="form-control mr-sm-2"
                       type="search"
-                      placeholder="Search by Name"
+                      placeholder="Search.."
                       aria-label="Search"
+                      v-model="searchQuery"
+                      @input="debounceSearch"
                     />
                   </form>
                 </div>
@@ -129,7 +132,7 @@
                 <div class="d-flex gap-2">
                   <div></div>
                 </div>
-                <div class="tab-content mt-4" id="pills-tabContent">
+                <div class="tab-content mt-4" id="pills-tabContent" v-if="!searchQuery">
                   <div
                     class="tab-pane fade show active table-wrapper"
                     id="pills-home"
@@ -220,6 +223,92 @@
                     ...
                   </div>
                 </div>
+                <div class="tab-content mt-4" id="pills-tabContent" v-if="searchQuery">
+                  <div
+                    class="tab-pane fade show active table-wrapper"
+                    id="pills-home"
+                    role="tabpanel"
+                    aria-labelledby="pills-home-tab"
+                  >
+                    <!-- <table class="table reportTable">
+                      <thead>
+                        <tr>
+                          <th scope="col">Sender</th>
+
+                          <th scope="col">Recipient</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">Subject</th>
+                          <th scope="col">Recipient Domain</th>
+                          <th scope="col">Date Time</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td scope="col">Aniket</td>
+
+                          <td scope="col">Prabhu</td>
+                          <td scope="col">Active</td>
+                          <td scope="col">Site Report</td>
+                          <td scope="col">Recipient Domain</td>
+                          <td scope="col">23/2/2024</td>
+                        </tr>
+                      </tbody>
+                    </table> -->
+                    <table class="table reportTable">
+                      <thead>
+                        <tr>
+                          <th scope="col">Sl No</th>
+                          <th scope="col">Client</th>
+
+                          <th scope="col">Employee Name</th>
+                          <th scope="col">Job</th>
+                          <th scope="col">Shift Date</th>
+                          <th scope="col">Payment Ref</th>
+                          <th scope="col">Time From</th>
+                          <th scope="col">Time To</th>
+                          <th scope="col">Hours</th>
+                          <th scope="col">Charge Rate</th>
+                          <th scope="col">Total Charge</th>
+                          <th scope="col">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="paginateSearchResults?.length > 0">
+                        <tr v-for="(data, index) in paginateSearchResults" :key="index">
+                          <td scope="col">{{ index + 1 }}</td>
+                          <td scope="col">{{ data.client }}</td>
+                          <td scope="col">{{ data.candidate }}</td>
+                          <td scope="col">{{ data.job }}</td>
+                          <td scope="col">{{ data.start_date }}</td>
+                          <td scope="col">{{ data.end_date }}</td>
+                          <td scope="col">{{ data.end_date }}</td>
+                          <td scope="col" class="text-center">{{ data.paid_amount }}</td>
+                          <td scope="col" class="text-center">
+                            {{ data.balance_amount }}
+                          </td>
+                          <td scope="col">{{ data.status ? data.status : "Null" }}</td>
+                          <td scope="col">{{ data.invoice_creation_period }}</td>
+
+                          <td><button class="btn btn-success">Approved</button></td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr>
+                          <td colspan="12" class="text-danger text-center">
+                            {{ errorMessage }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div
+                    class="tab-pane fade"
+                    id="pills-profile"
+                    role="tabpanel"
+                    aria-labelledby="pills-profile-tab"
+                  >
+                    ...
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -229,7 +318,7 @@
     <div
       class="mx-3"
       style="text-align: right"
-      v-if="getClientInvoiceDetail?.length >= 8"
+      v-if="getClientInvoiceDetail?.length >= 8 && !searchResults.length"
     >
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
@@ -251,6 +340,27 @@
         Next
       </button>
     </div>
+    <div class="mx-3 mb-2" style="text-align: right" v-if="searchResults.length >= 8">
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= searchResults.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
@@ -258,6 +368,11 @@
 import axios from "axios";
 import Navbar from "../Navbar.vue";
 import Loader from "../Loader/Loader.vue";
+const axiosInstance = axios.create({
+  headers: {
+    "Cache-Control": "no-cache",
+  },
+});
 export default {
   data() {
     return {
@@ -277,6 +392,10 @@ export default {
       clientData: [],
       currentPage: 1,
       itemsPerPage: 9,
+      searchQuery: null,
+      debounceTimeout: null,
+      errorMessage: "",
+      searchResults: [],
       isLoading: false,
       site_id: "",
       businessUnit: [],
@@ -300,6 +419,11 @@ export default {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.getClientInvoiceDetail.slice(startIndex, endIndex);
+    },
+    paginateSearchResults() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.searchResults.slice(startIndex, endIndex);
     },
     totalRecordsOnPage() {
       return this.paginateClientReport.length;
@@ -412,6 +536,37 @@ export default {
           // console.error('Error fetching client data:', error.response.data.message);
         } else {
           // console.error('Error fetching client data:', error);
+        }
+      }
+    },
+    debounceSearch() {
+      clearTimeout(this.debounceTimeout);
+
+      this.debounceTimeout = setTimeout(() => {
+        this.search();
+      }, 100);
+    },
+    //search api start
+
+    async search() {
+      try {
+        this.searchResults = [];
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/client_invoice_serching`,
+          {
+            params: {
+              invoice_query: this.searchQuery,
+            },
+          }
+        );
+
+        this.searchResults = response.data.candidate;
+      } catch (error) {
+        if (
+          (error.response && error.response.status === 404) ||
+          error.response.status === 400
+        ) {
+          this.errorMessage = "No Record found for the specified criteria";
         }
       }
     },
