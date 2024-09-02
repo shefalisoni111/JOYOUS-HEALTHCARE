@@ -106,7 +106,11 @@
                     </div>
 
                     <div class="d-flex gap-3 align-items-center mt-lg-0 mt-3">
-                      <button type="button" class="btn btn-outline-success text-nowrap">
+                      <button
+                        type="button"
+                        class="btn btn-outline-success text-nowrap"
+                        @click="exportAll"
+                      >
                         <i class="bi bi-download"></i> Export CSV
                       </button>
 
@@ -470,8 +474,6 @@ export default {
       endDate: new Date(),
       currentPage: 1,
       itemsPerPage: 10,
-      totalCount: 0,
-      totalPages: 1,
       errorMessageCustom: "",
       errorMessage: "",
       client_id: "",
@@ -699,23 +701,59 @@ export default {
         }
       }
     },
-    async getCandidateListMethod() {
-      try {
-        const paginatedResponse = await axios.get(`${VITE_API_URL}/candidates`, {
-          params: { page: this.currentPage, per_page: this.itemsPerPage },
-        });
-        this.getCandidatesData = paginatedResponse.data.data;
-        this.totalCount = paginatedResponse.data.total_count;
-        this.totalPages = paginatedResponse.data.total_pages;
-        this.currentPage = paginatedResponse.data.current_page;
+    exportAll() {
+      const formattedDate = this.formatDate(this.startDate);
 
-        const allCandidatesResponse = await axios.get(`${VITE_API_URL}/candidates`);
-        this.candidateLists = allCandidatesResponse.data.data;
+      const params = {
+        date: formattedDate,
+      };
+
+      axios
+        .get(`${VITE_API_URL}/export_timesheet.csv`, { params })
+        .then((response) => {
+          this.downloadCSV(response.data, "Site_ReportData.csv");
+        })
+        .catch((error) => {
+          // console.error("Error:", error);
+        });
+    },
+    downloadCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    },
+    async getCandidateListMethod() {
+      const pagesToFetch = [1, 2, 3];
+      let allStaffData = [];
+
+      try {
+        const responses = await Promise.all(
+          pagesToFetch.map((page) =>
+            axios.get(`${VITE_API_URL}/candidates`, {
+              params: {
+                page: page,
+              },
+            })
+          )
+        );
+
+        responses.forEach((response) => {
+          allStaffData = allStaffData.concat(response.data.data);
+        });
+
+        this.candidateLists = allStaffData;
       } catch (error) {
         if (error.response && error.response.status === 404) {
-          console.error(error.response.data.message);
+          // Handle 404 error
+          // console.error('Error fetching client data:', error.response.data.message);
         } else {
-          console.error(error);
+          // console.error('Error fetching client data:', error);
         }
       }
     },

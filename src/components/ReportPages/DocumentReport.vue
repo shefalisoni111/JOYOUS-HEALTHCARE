@@ -25,9 +25,9 @@
                   <option
                     v-for="option in getCandidatesData"
                     :key="option.id"
-                    :value="option.first_name"
+                    :value="option.id"
                   >
-                    {{ option.first_name }}
+                    {{ option.first_name + " " + option.last_name }}
                   </option>
                 </select>
 
@@ -504,16 +504,32 @@ export default {
       }
     },
     async getCandidateMethods() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/candidates`);
+      const pagesToFetch = [1, 2, 3];
+      let allStaffData = [];
 
-        this.getCandidatesData = response.data.data;
+      try {
+        const responses = await Promise.all(
+          pagesToFetch.map((page) =>
+            axios.get(`${VITE_API_URL}/candidates`, {
+              params: {
+                page: page,
+              },
+            })
+          )
+        );
+
+        responses.forEach((response) => {
+          allStaffData = allStaffData.concat(response.data.data);
+        });
+
+        this.candidateLists = allStaffData;
+        this.candidateStatus = response.data.data.status;
       } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-          }
+        if (error.response && error.response.status === 404) {
+          // Handle 404 error
+          // console.error('Error fetching client data:', error.response.data.message);
         } else {
-          // console.error("Error fetching candidates:", error);
+          // console.error('Error fetching client data:', error);
         }
       }
     },

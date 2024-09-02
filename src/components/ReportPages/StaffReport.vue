@@ -36,10 +36,10 @@
                     <option
                       v-for="option in getCandidatesData"
                       :key="option.id"
-                      :value="option.first_name"
+                      :value="option.id"
                       placeholder="Select Staff"
                     >
-                      {{ option.first_name + option.last_name }}
+                      {{ option.first_name + " " + option.last_name }}
                     </option>
                   </select>
                 </div>
@@ -610,6 +610,33 @@ export default {
         }
       }
     },
+    exportAll() {
+      const formattedDate = this.formatDate(this.startDate);
+
+      const params = {
+        date: formattedDate,
+      };
+
+      axios
+        .get(`${VITE_API_URL}/export_timesheet.csv`, { params })
+        .then((response) => {
+          this.downloadCSV(response.data, "Staff_ReportData.csv");
+        })
+        .catch((error) => {
+          // console.error("Error:", error);
+        });
+    },
+    downloadCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    },
     async getClientMethod() {
       const pagesToFetch = [1, 2, 3];
       let allClientData = [];
@@ -639,6 +666,7 @@ export default {
         }
       }
     },
+
     async getSiteReportMethod() {
       this.isLoading = true;
       const token = localStorage.getItem("token");
@@ -724,15 +752,31 @@ export default {
       }
     },
     async getCandidateListMethod() {
+      const pagesToFetch = [1, 2, 3];
+      let allStaffData = [];
+
       try {
-        const response = await axios.get(`${VITE_API_URL}/candidates`);
-        this.getCandidatesData = response.data.data;
-        this.candidateStatus = response.data.data.status;
+        const responses = await Promise.all(
+          pagesToFetch.map((page) =>
+            axios.get(`${VITE_API_URL}/candidates`, {
+              params: {
+                page: page,
+              },
+            })
+          )
+        );
+
+        responses.forEach((response) => {
+          allStaffData = allStaffData.concat(response.data.data);
+        });
+
+        this.candidateLists = allStaffData;
       } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
+        if (error.response && error.response.status === 404) {
+          // Handle 404 error
+          // console.error('Error fetching client data:', error.response.data.message);
+        } else {
+          // console.error('Error fetching client data:', error);
         }
       }
     },

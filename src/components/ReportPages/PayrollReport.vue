@@ -43,7 +43,7 @@
                     :key="option.id"
                     :value="option.id"
                   >
-                    {{ option.first_name }}
+                    {{ option.first_name + " " + option.last_name }}
                   </option>
                 </select>
                 <select v-model="employment_type_id" id="selectEmployeeType">
@@ -372,15 +372,31 @@ export default {
       }
     },
     async getCandidateListMethod() {
+      const pagesToFetch = [1, 2, 3];
+      let allStaffData = [];
+
       try {
-        const response = await axios.get(`${VITE_API_URL}/candidates`);
-        this.candidateLists = response.data.data;
-        this.candidateStatus = response.data.data.status;
+        const responses = await Promise.all(
+          pagesToFetch.map((page) =>
+            axios.get(`${VITE_API_URL}/candidates`, {
+              params: {
+                page: page,
+              },
+            })
+          )
+        );
+
+        responses.forEach((response) => {
+          allStaffData = allStaffData.concat(response.data.data);
+        });
+
+        this.candidateLists = allStaffData;
       } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
+        if (error.response && error.response.status === 404) {
+          // Handle 404 error
+          // console.error('Error fetching client data:', error.response.data.message);
+        } else {
+          // console.error('Error fetching client data:', error);
         }
       }
     },

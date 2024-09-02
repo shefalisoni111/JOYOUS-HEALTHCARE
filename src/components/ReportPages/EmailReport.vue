@@ -58,8 +58,16 @@ export default {
                     </option>
                   </select>
 
-                  <select v-model="client_id">
+                  <select v-model="id" @change="filterData">
                     <option value="">All Staff</option>
+                    <option
+                      v-for="option in getCandidatesData"
+                      :key="option.id"
+                      :value="option.id"
+                      placeholder="Select Staff"
+                    >
+                      {{ option.first_name + " " + option.last_name }}
+                    </option>
                   </select>
                 </div>
 
@@ -221,6 +229,8 @@ export default {
       businessUnit: [],
       job_id: "",
       options: [],
+      id: "",
+      candidateLists: [],
       employeeData: [],
       employment_type_id: "",
     };
@@ -244,6 +254,10 @@ export default {
         (option) => option.id === this.employment_type_id
       );
       return employment_type_id ? employment_type_id.title : "";
+    },
+    selectStaff() {
+      const id = this.candidateLists.find((option) => option.id === this.id);
+      return id ? id.first_name : "";
     },
     getWeekDates() {
       const currentDate = new Date();
@@ -293,6 +307,34 @@ export default {
       } catch (error) {
         if (error.response && error.response.status === 404) {
           // Handle 404 error
+          // console.error('Error fetching client data:', error.response.data.message);
+        } else {
+          // console.error('Error fetching client data:', error);
+        }
+      }
+    },
+    async getCandidateListMethod() {
+      const pagesToFetch = [1, 2, 3];
+      let allStaffData = [];
+
+      try {
+        const responses = await Promise.all(
+          pagesToFetch.map((page) =>
+            axios.get(`${VITE_API_URL}/candidates`, {
+              params: {
+                page: page,
+              },
+            })
+          )
+        );
+
+        responses.forEach((response) => {
+          allStaffData = allStaffData.concat(response.data.data);
+        });
+
+        this.candidateLists = allStaffData;
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
           // console.error('Error fetching client data:', error.response.data.message);
         } else {
           // console.error('Error fetching client data:', error);
