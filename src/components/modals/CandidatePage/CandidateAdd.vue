@@ -132,9 +132,15 @@
                       class="text-danger"
                       >Invalid Email</span
                     >
-                    <span v-if="emailInUse && emailError" class="text-danger">
-                      This email is already in use.
+                    <span v-if="emailInUse" class="text-danger">
+                      Email is already in use.
                     </span>
+                    <span v-if="emailError && !emailInUse" class="text-danger">
+                      {{ emailError }}
+                    </span>
+                    <!-- <span v-if="emailInUse" class="text-danger">
+                      {{  "This email is already in use." }}
+                    </span> -->
                   </div>
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
@@ -350,6 +356,19 @@ export default {
         this.showPhoneNumberValidation = false;
       }
     },
+    // async checkEmailUniqueness() {
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/candidates`, {
+    //       params: {
+    //         email: this.email,
+    //       },
+    //     });
+
+    //     this.emailInUse = response.data.data.some((staff) => staff.email === this.email);
+    //   } catch (error) {
+    //     console.error("Error checking email uniqueness:", error);
+    //   }
+    // },
     async checkEmailUniqueness() {
       try {
         const response = await axios.get(`${VITE_API_URL}/candidates`, {
@@ -358,9 +377,23 @@ export default {
           },
         });
 
-        this.emailInUse = response.data.data.some((staff) => staff.email === this.email);
+        if (response.data.error && response.data.error.email) {
+          // Set emailError from the response data
+          this.emailError = response.data.error.email[0];
+        } else {
+          // If there's no error, check if email is in use
+          this.emailInUse = response.data.data.some(
+            (staff) => staff.email === this.email
+          );
+          // Reset the emailError if email is unique
+          if (!this.emailInUse) {
+            this.emailError = "";
+          }
+        }
       } catch (error) {
         console.error("Error checking email uniqueness:", error);
+        // Optionally set a general error message
+        this.emailError = "An error occurred while checking email uniqueness.";
       }
     },
     async addCandidate() {
@@ -397,23 +430,23 @@ export default {
             body: JSON.stringify(data),
           });
 
+          const responseData = await response.json();
+
           if (response.ok) {
-            this.$emit("addCandidate");
-            this.resetForm();
-            // alert("Successful Staff added");
-            const message = "Successful Staff added";
-            this.$refs.successAlert.showSuccess(message);
-          } else {
-            const errorData = await response.json();
-            if (errorData.error && errorData.error.email) {
-              this.emailInUse = errorData.error.email.includes(
-                "Email has already been taken."
-              );
-              this.emailError = "This email is already in use.";
+            if (responseData.error && responseData.error.email) {
+              this.emailError = responseData.error.email[0];
+              this.emailInUse = true;
             } else {
+              this.emailError = "";
               this.emailInUse = false;
-              this.emailError = "Error adding Staff";
+              this.$emit("addCandidate");
+              this.resetForm();
+              const message = "Successful Staff added";
+              this.$refs.successAlert.showSuccess(message);
             }
+          } else {
+            this.emailError = "Error adding Staff";
+            this.emailInUse = false;
           }
         } catch (error) {
           alert("Error adding Staff");

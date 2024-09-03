@@ -428,7 +428,7 @@
                         <label class="form-label">Shift</label>
                         <input
                           type="text"
-                          v-model="ratesArray[1].shift_type"
+                          v-model="ratesArray[2].shift_type"
                           :disabled="true"
                           style="
                             width: 100%;
@@ -573,7 +573,7 @@
                         <label class="form-label">Shift</label>
                         <input
                           type="text"
-                          v-model="ratesArray[1].shift_type"
+                          v-model="ratesArray[3].shift_type"
                           :disabled="true"
                           style="
                             width: 100%;
@@ -876,7 +876,7 @@
                         <label class="form-label">Shift</label>
                         <input
                           type="text"
-                          v-model="ratesArray[4].shift_type"
+                          v-model="ratesArray[5].shift_type"
                           :disabled="true"
                           style="
                             width: 100%;
@@ -2133,7 +2133,9 @@
                             v-for="hour in 24"
                             :key="hour"
                             :value="formatTime(hour)"
-                          ></option>
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
                         </select>
                       </div>
 
@@ -2472,6 +2474,7 @@ export default {
         private_limited: rule.private_limited,
         start_time: this.convertTo24Hour(rule.start_time),
         end_time: this.convertTo24Hour(rule.end_time),
+        shift_type: rule.shift_type,
       }));
 
       try {

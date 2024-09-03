@@ -23,7 +23,7 @@
                 <select v-model="selectedStaff" @change="filterData">
                   <option value="">All Staff</option>
                   <option
-                    v-for="option in getCandidatesData"
+                    v-for="option in candidateLists"
                     :key="option.id"
                     :value="option.id"
                   >
@@ -259,6 +259,7 @@ export default {
       startDate: new Date(),
       endDate: new Date(),
       getCandidatesData: [],
+      candidateLists: [],
       getDocumentReportData: [],
       documentNames: [],
       isLoading: false,
@@ -320,6 +321,7 @@ export default {
   methods: {
     async filterData() {
       let filters = {};
+
       if (this.selectedAllStatus) {
         filters.document_status = "Active";
       } else if (this.selectedStaffStatus) {
@@ -345,8 +347,8 @@ export default {
         filters.document_filter = "";
       }
 
-      this.errorMessageFilter = "";
-      this.errorMessageCustom = "";
+      // this.errorMessageFilter = "";
+      // this.errorMessageCustom = "";
 
       try {
         await this.makeFilterAPICall(
@@ -355,6 +357,7 @@ export default {
         );
       } catch (error) {
         this.errorMessageFilter = "An error occurred while fetching data.";
+        // console.error(error);
       }
     },
     async documentCategoryDocumentTypeMethod() {
@@ -564,6 +567,7 @@ export default {
   },
   created() {
     this.getDocumentReport();
+    this.getCandidateMethods();
     this.loadDateRangeFromLocalStorage();
   },
 };

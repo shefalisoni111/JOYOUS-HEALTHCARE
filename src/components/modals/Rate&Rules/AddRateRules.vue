@@ -1309,11 +1309,7 @@ export default {
             day: day,
             // client_rate: nightClientRate || "",
             client_rate: this.splitRate ? dayClientRate : nightClientRate || "",
-            // self_employed: this.selectedSelfEmployee[`${day}-night`] || "",
-            // private_limited: nightPrivateLimited || "",
-            // umbrella: this.selectedUmbrella[`${day}-night`] || "",
-            // rate_type: nightRateType || "",
-            // paye: this.selectedPaye[`${day}-night`] || "",
+
             self_employed: this.splitRate
               ? this.selectedSelfEmployee[`${day}-day`]
               : this.selectedSelfEmployee[`${day}-night`] || "",
