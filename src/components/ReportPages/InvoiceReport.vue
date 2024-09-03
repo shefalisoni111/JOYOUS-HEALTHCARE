@@ -34,7 +34,7 @@
                   <select v-model="id" @change="filterData">
                     <option value="">All Staff</option>
                     <option
-                      v-for="option in getCandidatesData"
+                      v-for="option in candidateLists"
                       :key="option.id"
                       :value="option.id"
                       placeholder="Select Staff"
@@ -428,7 +428,7 @@ export default {
       employeeData: [],
       employment_type_id: "",
       id: "",
-      getCandidatesData: [],
+      candidateLists: [],
     };
   },
   components: { Navbar, Loader },
