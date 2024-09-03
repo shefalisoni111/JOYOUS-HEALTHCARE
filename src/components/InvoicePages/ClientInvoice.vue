@@ -194,7 +194,7 @@
                           <th scope="col">View</th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody v-if="getClientInvoiceDetail?.length > 0">
                         <tr v-for="data in getClientInvoiceDetail" :key="data.id">
                           <td scope="col">{{ data.invoice_number }}</td>
                           <td scope="col">{{ data.client }}</td>
@@ -245,6 +245,18 @@
                               class="text-success"
                               ><i class="bi bi-eye"></i
                             ></router-link>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr v-if="errorMessageFilter">
+                          <td colspan="16" class="text-danger text-center">
+                            {{ errorMessageFilter }}
+                          </td>
+                        </tr>
+                        <tr v-else>
+                          <td colspan="16" class="text-danger text-center">
+                            {{ "Not Match Found !" }}
                           </td>
                         </tr>
                       </tbody>
@@ -303,12 +315,24 @@
                         </tr>
                       </tbody>
                       <tbody v-else>
-                        <tr>
+                        <tr v-if="errorMessageFilter">
+                          <td colspan="16" class="text-danger text-center">
+                            {{ errorMessageFilter }}
+                          </td>
+                        </tr>
+                        <tr v-else>
                           <td colspan="16" class="text-danger text-center">
                             {{ "Not Match Found !" }}
                           </td>
                         </tr>
                       </tbody>
+                      <!-- <tbody v-else>
+                        <tr>
+                          <td colspan="16" class="text-danger text-center">
+                            {{ "Not Match Found !" }}
+                          </td>
+                        </tr>
+                      </tbody> -->
                     </table>
                   </div>
                   <div
@@ -352,7 +376,7 @@ export default {
       endDate: new Date(),
       getClientInvoiceDetail: [],
       searchQuery: null,
-
+      errorMessageFilter: "",
       debounceTimeout: null,
       searchResults: [],
       showFilters: false,
@@ -461,27 +485,61 @@ export default {
       }
     },
     async getCandidateListMethod() {
+      const pagesToFetch = [1, 2, 3];
+      let allStaffData = [];
+
       try {
-        const response = await axios.get(`${VITE_API_URL}/candidates`);
-        this.candidateLists = response.data.data;
+        const responses = await Promise.all(
+          pagesToFetch.map((page) =>
+            axios.get(`${VITE_API_URL}/candidates`, {
+              params: {
+                page: page,
+              },
+            })
+          )
+        );
+
+        responses.forEach((response) => {
+          allStaffData = allStaffData.concat(response.data.data);
+        });
+
+        this.candidateLists = allStaffData;
         this.candidateStatus = response.data.data.status;
       } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
+        if (error.response && error.response.status === 404) {
+          // Handle 404 error
+          // console.error('Error fetching client data:', error.response.data.message);
+        } else {
+          // console.error('Error fetching client data:', error);
         }
       }
     },
     async getClientMethod() {
+      const pagesToFetch = [1, 2, 3];
+      let allClientData = [];
+
       try {
-        const response = await axios.get(`${VITE_API_URL}/clients`);
-        this.clientData = response.data.data;
+        const responses = await Promise.all(
+          pagesToFetch.map((page) =>
+            axios.get(`${VITE_API_URL}/clients`, {
+              params: {
+                page: page,
+              },
+            })
+          )
+        );
+
+        responses.forEach((response) => {
+          allClientData = allClientData.concat(response.data.data);
+        });
+
+        this.clientData = allClientData;
       } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
+        if (error.response && error.response.status === 404) {
+          // Handle 404 error
+          // console.error('Error fetching client data:', error.response.data.message);
+        } else {
+          // console.error('Error fetching client data:', error);
         }
       }
     },
@@ -530,12 +588,10 @@ export default {
         });
 
         // console.log("API response data:", response.data);
+        this.getClientInvoiceDetail = response.data.data || [];
 
-        if (response.data && response.data.data) {
-          this.getClientInvoiceDetail = response.data.data;
-        } else {
-          // console.error("Unexpected response structure:", response.data);
-        }
+        this.errorMessageFilter =
+          this.getClientInvoiceDetail.length === 0 ? "Report not Found!" : "";
       } catch (error) {
         if (error.response) {
           // console.error("API error response:", error.response);
