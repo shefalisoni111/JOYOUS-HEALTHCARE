@@ -72,7 +72,7 @@
                           v-model="currentView"
                           @change="updateDateRange"
                         >
-                          <option value="weekly">Weekly</option>
+                          <!-- <option value="weekly">Weekly</option> -->
                           <option value="monthly">Monthly</option>
                         </select>
                       </div>
@@ -106,13 +106,30 @@
                     </div>
 
                     <div class="d-flex gap-3 align-items-center mt-lg-0 mt-3">
-                      <button
-                        type="button"
-                        class="btn btn-outline-success text-nowrap"
-                        @click="exportAll"
+                      <div
+                        v-if="!paginateCandidates || paginateCandidates.length === 0"
+                        class="tooltip-wrapper"
+                        data-bs-toggle="tooltip"
+                        title="No data available to export"
                       >
-                        <i class="bi bi-download"></i> Export CSV
-                      </button>
+                        <button
+                          type="button"
+                          class="btn btn-outline-success text-nowrap"
+                          @click="exportAll"
+                          :disabled="true"
+                        >
+                          <i class="bi bi-download"></i> Export CSV
+                        </button>
+                      </div>
+                      <div v-else>
+                        <button
+                          type="button"
+                          class="btn btn-outline-success text-nowrap"
+                          @click="exportAll"
+                        >
+                          <i class="bi bi-download"></i> Export CSV
+                        </button>
+                      </div>
 
                       <button type="button" class="btn btn-outline-success text-nowrap">
                         <i class="bi bi-eye"></i> Customize View

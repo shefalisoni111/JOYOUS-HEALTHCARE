@@ -69,7 +69,7 @@
                           v-model="currentView"
                           @change="updateDateRange"
                         >
-                          <option value="weekly">Weekly</option>
+                          <!-- <option value="weekly">Weekly</option> -->
                           <option value="monthly">Monthly</option>
                         </select>
                       </div>
@@ -286,7 +286,7 @@ import Loader from "../Loader/Loader.vue";
 export default {
   data() {
     return {
-      currentView: "weekly",
+      currentView: "monthly",
       daysOfWeek: [
         "Sunday",
         "Monday",

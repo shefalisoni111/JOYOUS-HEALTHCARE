@@ -72,7 +72,7 @@
                           v-model="currentView"
                           @change="updateDateRange"
                         >
-                          <option value="weekly">Weekly</option>
+                          <!-- <option value="weekly">Weekly</option> -->
                           <option value="monthly">Monthly</option>
                         </select>
                       </div>
@@ -106,13 +106,30 @@
                     </div>
 
                     <div class="d-flex gap-3 align-items-center mt-lg-0 mt-3">
-                      <button
-                        type="button"
-                        class="btn btn-outline-success text-nowrap"
-                        @click="exportAll"
+                      <div
+                        v-if="!paginateClientReport || paginateClientReport.length === 0"
+                        class="tooltip-wrapper"
+                        data-bs-toggle="tooltip"
+                        title="No data available to export"
                       >
-                        <i class="bi bi-download"></i> Export CSV
-                      </button>
+                        <button
+                          type="button"
+                          class="btn btn-outline-success text-nowrap"
+                          @click="exportAll"
+                          :disabled="true"
+                        >
+                          <i class="bi bi-download"></i> Export CSV
+                        </button>
+                      </div>
+                      <div v-else>
+                        <button
+                          type="button"
+                          class="btn btn-outline-success text-nowrap"
+                          @click="exportAll"
+                        >
+                          <i class="bi bi-download"></i> Export CSV
+                        </button>
+                      </div>
 
                       <button type="button" class="btn btn-outline-success text-nowrap">
                         <i class="bi bi-eye"></i> Customize View
@@ -380,7 +397,7 @@ const axiosInstance = axios.create({
 export default {
   data() {
     return {
-      currentView: "weekly",
+      currentView: "monthly",
       daysOfWeek: [
         "Sunday",
         "Monday",
@@ -542,6 +559,33 @@ export default {
           // console.error('Error fetching client data:', error);
         }
       }
+    },
+    exportAll() {
+      const formattedDate = this.formatDate(this.startDate);
+
+      const params = {
+        date: formattedDate,
+      };
+
+      axios
+        .get(`${VITE_API_URL}/export_invoices.csv`, { params })
+        .then((response) => {
+          this.downloadCSV(response.data, "Client_ReportData.csv");
+        })
+        .catch((error) => {
+          // console.error("Error:", error);
+        });
+    },
+    downloadCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
     },
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
