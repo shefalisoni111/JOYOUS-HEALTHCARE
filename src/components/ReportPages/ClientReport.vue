@@ -106,7 +106,11 @@
                     </div>
 
                     <div class="d-flex gap-3 align-items-center mt-lg-0 mt-3">
-                      <button type="button" class="btn btn-outline-success text-nowrap">
+                      <button
+                        type="button"
+                        class="btn btn-outline-success text-nowrap"
+                        @click="exportAll"
+                      >
                         <i class="bi bi-download"></i> Export CSV
                       </button>
 
