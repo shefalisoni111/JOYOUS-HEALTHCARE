@@ -668,6 +668,52 @@ const router = createRouter({
           meta: {
              requiresAuth: true,
           },
+          children: [
+            {
+              path: "/report/DocumentReport/AllDoc",
+              name: "AllDoc",
+              component: () =>
+                import(
+                  "@/components/ReportPages/DocumentsPages/AllDoc.vue"
+                ),
+              meta: {
+                 requiresAuth: true,
+              },
+            },
+            {
+              path: "/report/DocumentReport/ActiveDocument",
+              name: "ActiveDocument",
+              component: () =>
+                import(
+                  "@/components/ReportPages/DocumentsPages/ActiveDocument.vue"
+                ),
+              meta: {
+                 requiresAuth: true,
+              },
+            },
+            {
+              path: "/report/DocumentReport/DueDoc",
+              name: "DueDoc",
+              component: () =>
+                import(
+                  "@/components/ReportPages/DocumentsPages/DueDoc.vue"
+                ),
+              meta: {
+                 requiresAuth: true,
+              },
+            },
+            {
+              path: "/report/DocumentReport/ExpiredDoc",
+              name: "ExpiredDoc",
+              component: () =>
+                import(
+                  "@/components/ReportPages/DocumentsPages/ExpiredDoc.vue"
+                ),
+              meta: {
+                 requiresAuth: true,
+              },
+            },
+          ]
         },
         {
           path: "/report/RateCards",

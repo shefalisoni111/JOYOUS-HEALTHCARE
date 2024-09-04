@@ -280,8 +280,8 @@
                         </tr>
                       </thead>
 
-                      <tbody v-if="paginateCandidates?.length > 0">
-                        <tr v-for="(rate, index) in paginateCandidates" :key="index">
+                      <tbody v-if="paginateSearchResults?.length > 0">
+                        <tr v-for="(rate, index) in paginateSearchResults" :key="index">
                           <td>
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
@@ -325,7 +325,7 @@
                       <tbody v-else>
                         <tr>
                           <td colspan="15" class="text-danger text-center">
-                            {{ errorMessage }}
+                            Not Match Found !!
                           </td>
                         </tr>
                       </tbody>
@@ -346,7 +346,11 @@
         </div>
       </div>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="getRateRulesData?.length >= 8">
+    <div
+      class="mx-3"
+      style="text-align: right"
+      v-if="getRateRulesData?.length >= 8 && !searchResults.length"
+    >
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -362,6 +366,27 @@
       <button
         class="btn btn-sm btn-primary ml-2"
         :disabled="currentPage * itemsPerPage >= getRateRulesData?.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
+    <div class="mx-3 mb-2" style="text-align: right" v-if="searchResults.length >= 10">
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPageSearch }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= searchResults.length"
         @click="currentPage++"
       >
         Next
@@ -464,9 +489,16 @@ export default {
       const endIndex = startIndex + this.itemsPerPage;
       return this.getRateRulesData.slice(startIndex, endIndex);
     },
-
+    paginateSearchResults() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.searchResults.slice(startIndex, endIndex);
+    },
     totalRecordsOnPage() {
       return this.paginateCandidates.length;
+    },
+    totalRecordsOnPageSearch() {
+      return this.paginateSearchResults.length;
     },
   },
   methods: {

@@ -62,7 +62,28 @@
                         id="pills-tab"
                         role="tablist"
                       >
-                        <li class="nav-item" role="presentation">
+                        <div class="d-flex">
+                          <li
+                            class="nav-item d-flex align-items-center gap-2"
+                            role="presentation"
+                          >
+                            <button
+                              a
+                              class="nav-link"
+                              :class="{ active: activeTab === index }"
+                              aria-selected="true"
+                              type="button"
+                              role="tab"
+                              data-bs-toggle="pill"
+                              v-for="(tab, index) in tabs"
+                              :key="index"
+                              @click="selectTab(index)"
+                            >
+                              {{ tab.name }}
+                            </button>
+                          </li>
+                        </div>
+                        <!-- <li class="nav-item" role="presentation">
                           <button
                             class="nav-link active"
                             id="pills-all-tab"
@@ -117,104 +138,75 @@
                           >
                             Expired
                           </button>
-                        </li>
+                        </li> -->
                       </ul>
                     </div>
 
                     <div class="d-flex align-items-center">
-                     <!-- <button type="button" class="btn btn-outline-success text-nowrap">
+                      <!-- <button type="button" class="btn btn-outline-success text-nowrap">
                         <i class="bi bi-eye"></i> Customize View
                       </button> -->
                     </div>
                   </div>
                 </div>
-
-                <div class="tab-content" id="pills-tabContent">
-                  <div
-                    class="tab-pane fade show active table-wrapper"
-                    id="pills-all"
-                    role="tabpanel"
-                    aria-labelledby="pills-all-tab"
-                  >
-                    <table class="table reportTable">
-                      <thead>
-                        <tr>
-                          <th scope="col">Sl No</th>
-                          <th scope="col">Staff</th>
-
-                          <th scope="col">Document Category</th>
-                          <th scope="col">Document Type</th>
-                          <th scope="col">Upload Date</th>
-                          <th scope="col">Issue Date</th>
-                          <th scope="col">Expiry Date</th>
-                          <th scope="col">Status</th>
-                        </tr>
-                      </thead>
-                      <tbody v-if="paginateDocumentReport?.length > 0">
-                        <tr v-for="data in paginateDocumentReport" :key="data.id">
-                          <td scope="col">{{ data.id }}</td>
-                          <td scope="col">{{ data.candidate_name }}</td>
-
-                          <td scope="col">
-                            {{ data.document_category.document_category }}
-                          </td>
-                          <td scope="col">{{ data.document_name }}</td>
-                          <td scope="col">{{ "null" }}</td>
-                          <td scope="col">
-                            {{ data.issue_date ? data.issue_date : "null" }}
-                          </td>
-                          <td scope="col">
-                            {{ data.expiry_date ? data.expiry_date : "null" }}
-                          </td>
-                          <td scope="col">{{ data.document_category.status }}</td>
-                        </tr>
-                      </tbody>
-                      <tbody v-else>
-                        <tr v-if="errorMessageFilter">
-                          <td colspan="8" class="text-danger text-center">
-                            {{ errorMessageFilter }}
-                          </td>
-                        </tr>
-                        <tr v-else>
-                          <td colspan="8" class="text-danger text-center">
-                            {{ errorMessageCustom }}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div
-                    class="tab-pane fade"
-                    id="pills-active"
-                    role="tabpanel"
-                    aria-labelledby="pills-active-tab"
-                  >
-                    ...
-                  </div>
-                  <div
-                    class="tab-pane fade"
-                    id="pills-dueDate"
-                    role="tabpanel"
-                    aria-labelledby="pills-dueDate-tab"
-                  >
-                    ...
-                  </div>
-                  <div
-                    class="tab-pane fade"
-                    id="pills-expired"
-                    role="tabpanel"
-                    aria-labelledby="pills-expired-tab"
-                  >
-                    ...
-                  </div>
+                <div>
+                  <component :is="activeComponent"></component>
                 </div>
+                <!-- <div v-if="searchQuery">
+                  <table class="table reportTable">
+                    <thead>
+                      <tr>
+                        <th scope="col">Sl No</th>
+                        <th scope="col">Staff</th>
+
+                        <th scope="col">Document Category</th>
+                        <th scope="col">Document Type</th>
+                        <th scope="col">Upload Date</th>
+                        <th scope="col">Issue Date</th>
+                        <th scope="col">Expiry Date</th>
+                        <th scope="col">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody v-if="paginateDocumentReport?.length > 0">
+                      <tr v-for="data in paginateDocumentReport" :key="data.id">
+                        <td scope="col">{{ data.id }}</td>
+                        <td scope="col">{{ data.candidate_name }}</td>
+
+                        <td scope="col">
+                          {{ data.document_category.document_category }}
+                        </td>
+                        <td scope="col">{{ data.document_name }}</td>
+                        <td scope="col">{{ "null" }}</td>
+                        <td scope="col">
+                          {{ data.issue_date ? data.issue_date : "null" }}
+                        </td>
+                        <td scope="col">
+                          {{ data.expiry_date ? data.expiry_date : "null" }}
+                        </td>
+                        <td scope="col">{{ data.document_category.status }}</td>
+                      </tr>
+                    </tbody>
+                    <tbody v-else>
+                      <tr v-if="errorMessageFilter">
+                        <td colspan="8" class="text-danger text-center">
+                          {{ errorMessageFilter }}
+                        </td>
+                      </tr>
+                      <tr v-else>
+                        <td colspan="8" class="text-danger text-center">
+                          {{ errorMessageCustom }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div> -->
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="getDocumentReportData?.length >= 8">
+    <!-- <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 10">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -229,19 +221,23 @@
       >&nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getDocumentReportData?.length"
+        :disabled="currentPage * itemsPerPage >= searchResults?.length"
         @click="currentPage++"
       >
         Next
       </button>
-    </div>
-    <loader :isLoading="isLoading"></loader>
+    </div> -->
+    <!-- <loader :isLoading="isLoading"></loader> -->
   </div>
 </template>
 <script>
 import axios from "axios";
 import Navbar from "../Navbar.vue";
-import Loader from "../Loader/Loader.vue";
+// import Loader from "../Loader/Loader.vue";
+import AllDoc from "./DocumentsPages/AllDoc.vue";
+import ActiveDocument from "./DocumentsPages/ActiveDocument.vue";
+import DueDoc from "./DocumentsPages/DueDoc.vue";
+import ExpiredDoc from "./DocumentsPages/ExpiredDoc.vue";
 
 export default {
   data() {
@@ -266,6 +262,19 @@ export default {
       currentPage: 1,
       itemsPerPage: 11,
       getCategoryData: [],
+      tabs: [
+        { name: "All ", component: "AllDoc", routeName: "AllDoc" },
+
+        {
+          name: "Active ",
+          component: "ActiveDocument",
+          routeName: "ActiveDocument",
+        },
+        { name: "Due30days ", component: "DueDoc", routeName: "DueDoc" },
+        { name: "Expired ", component: "ExpiredDoc", routeName: "ExpiredDoc" },
+      ],
+      activeTab: 0,
+      activeTabName: "",
       errorMessageCustom: "",
       errorMessageFilter: "",
       selectedStaffStatus: "",
@@ -278,8 +287,11 @@ export default {
       selectedDocumentFilter: "",
     };
   },
-  components: { Navbar, Loader },
+  components: { Navbar, AllDoc, ActiveDocument, DueDoc, ExpiredDoc },
   computed: {
+    activeComponent() {
+      return this.tabs[this.activeTab].component;
+    },
     selectedOptionText() {
       const id = this.options.find((option) => option.id === this.id);
       return id ? id.name : "";
@@ -294,31 +306,27 @@ export default {
     totalRecordsOnPage() {
       return this.paginateDocumentReport.length;
     },
-    getWeekDates() {
-      const currentDate = new Date();
-      const weekStart = new Date(currentDate);
-      weekStart.setDate(currentDate.getDate() - currentDate.getDay());
-      const weekDates = [];
-      for (let i = 0; i < 7; i++) {
-        const date = new Date(weekStart);
-        date.setDate(weekStart.getDate() + i);
-        weekDates.push(date.getDate());
-      }
-      return weekDates;
-    },
-
-    getMonthDates() {
-      const currentDate = new Date();
-      const daysInMonth = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth() + 1,
-        0
-      ).getDate();
-      const monthDates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-      return monthDates;
-    },
   },
   methods: {
+    setActiveTabFromRoute() {
+      const currentRouteName = this.$route.name;
+      const matchingTabIndex = this.tabs.findIndex(
+        (tab) => tab.routeName === currentRouteName
+      );
+
+      if (matchingTabIndex !== -1) {
+        this.selectTab(matchingTabIndex);
+      }
+    },
+
+    setActiveTabNameOnLoad() {
+      this.activeTabName = this.tabs[this.activeTab].name;
+    },
+    selectTab(index) {
+      this.activeTab = index;
+      this.activeTabName = this.tabs[index].name;
+      this.$router.push({ name: this.tabs[index].routeName });
+    },
     async filterData() {
       let filters = {};
 
@@ -412,84 +420,7 @@ export default {
         }
       }
     },
-    moveToPrevious() {
-      if (this.currentView === "weekly") {
-        this.startDate.setDate(this.startDate.getDate() - 7);
-        this.endDate.setDate(this.endDate.getDate() - 7);
-        this.updateDateRange();
-      } else if (this.currentView === "monthly") {
-        this.startDate.setMonth(this.startDate.getMonth() - 1);
-        this.endDate = new Date(
-          this.startDate.getFullYear(),
-          this.startDate.getMonth() + 1,
-          0
-        );
-      }
-    },
-    moveToNext() {
-      if (this.currentView === "weekly") {
-        this.startDate.setDate(this.startDate.getDate() + 7);
-        this.endDate.setDate(this.endDate.getDate() + 7);
-        this.updateDateRange();
-      } else if (this.currentView === "monthly") {
-        this.startDate.setMonth(this.startDate.getMonth() + 1);
-        this.endDate = new Date(
-          this.startDate.getFullYear(),
-          this.startDate.getMonth() + 1,
-          0
-        );
-      }
-    },
-    updateDateRange() {
-      if (this.currentView === "weekly") {
-        const currentDate = new Date();
-        const dayOfWeek = currentDate.getDay();
-        const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-        const startOfWeek = new Date(currentDate);
-        startOfWeek.setDate(currentDate.getDate() + diff);
-        this.startDate = startOfWeek;
 
-        const endOfWeek = new Date(startOfWeek);
-        endOfWeek.setDate(startOfWeek.getDate() + 6);
-        this.endDate = endOfWeek;
-      } else if (this.currentView === "monthly") {
-        const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-      }
-
-      localStorage.setItem("startDate", this.startDate.toISOString());
-      localStorage.setItem("endDate", this.endDate.toISOString());
-    },
-    loadDateRangeFromLocalStorage() {
-      const storedStartDate = localStorage.getItem("startDate");
-      const storedEndDate = localStorage.getItem("endDate");
-
-      if (storedStartDate && storedEndDate) {
-        this.startDate = new Date(storedStartDate);
-        this.endDate = new Date(storedEndDate);
-      }
-    },
-    formatDate(date) {
-      return date.toLocaleDateString();
-    },
-    // async vacancyDeleteMethod(id) {
-    //   if (!window.confirm("Are you Sure ?")) {
-    //     return;
-    //   }
-    //   const token = localStorage.getItem("token");
-    //   await axios
-    //     .delete(`${VITE_API_URL}/vacancies/` + id, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => {
-    //       this.createVacancy();
-    //     });
-    //   // alert("Record Deleted ");
-    // },
     async getDocumentReport() {
       this.isLoading = true;
       try {
@@ -537,38 +468,35 @@ export default {
       }
     },
   },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
 
+      if (matchingTabIndex !== -1) {
+        vm.activeTab = matchingTabIndex;
+        vm.activeTabName = vm.tabs[matchingTabIndex].name;
+      }
+    });
+  },
+  beforeRouteUpdate(to, from, next) {
+    const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
+
+    if (matchingTabIndex !== -1) {
+      this.activeTab = matchingTabIndex;
+      this.activeTabName = this.tabs[matchingTabIndex].name;
+    }
+
+    next();
+  },
   mounted() {
     // this.getDocumentReport();
-    this.updateDateRange();
+
     this.getCandidateMethods();
     this.documentCategoryDocumentTypeMethod();
-    // this.loadDateRangeFromLocalStorage();
-    // const currentDate = new Date();
-    // const startOfWeek = new Date(currentDate);
-    // startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
-    // this.startDate = startOfWeek;
-
-    // const endOfWeek = new Date(currentDate);
-    // endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
-    // this.endDate = endOfWeek;
-    // const currentDate = new Date();
-    // const dayOfWeek = currentDate.getDay();
-    // const startOfWeek = new Date(currentDate);
-
-    // const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-    // startOfWeek.setDate(startOfWeek.getDate() + diff);
-
-    // this.startDate = startOfWeek;
-
-    // const endOfWeek = new Date(startOfWeek);
-    // endOfWeek.setDate(endOfWeek.getDate() + 6);
-    // this.endDate = endOfWeek;
   },
   created() {
     this.getDocumentReport();
     this.getCandidateMethods();
-    this.loadDateRangeFromLocalStorage();
   },
 };
 </script>
