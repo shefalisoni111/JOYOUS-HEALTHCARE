@@ -322,6 +322,7 @@
                           v-model="ratesArray[1].rate_type"
                           class="form-select w-25"
                           @change="handleClientRateChange($event, 1)"
+                          :disabled="ratesArray[1].split_rate"
                         >
                           <option value="Hourly">Hourly</option>
                           <option value="Monthly">Monthly</option>
@@ -336,6 +337,7 @@
                           class="form-select w-25"
                           v-model="ratesArray[1].client_rate"
                           @change="handleClientRateChange($event, 1)"
+                          :disabled="ratesArray[1].split_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -352,6 +354,7 @@
                           class="form-select w-25"
                           v-model="ratesArray[1].private_limited"
                           @change="handleClientRateChange($event, 1)"
+                          :disabled="ratesArray[1].split_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -369,6 +372,7 @@
                           v-model="ratesArray[1].self_employed"
                           class="form-select w-25"
                           @change="handleClientRateChange($event, 1)"
+                          :disabled="ratesArray[1].split_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -384,6 +388,7 @@
                           class="form-select w-25"
                           v-model="ratesArray[1].umbrella"
                           @change="handleClientRateChange($event, 1)"
+                          :disabled="ratesArray[1].split_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -399,6 +404,7 @@
                           class="form-select w-25"
                           v-model="ratesArray[1].paye"
                           @change="handleClientRateChange($event, 1)"
+                          :disabled="ratesArray[1].split_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -636,6 +642,7 @@
                         <select
                           v-model="ratesArray[3].rate_type"
                           class="form-select w-25"
+                          :disabled="ratesArray[3].split_rate"
                         >
                           <option value="Hourly">Hourly</option>
                           <option value="Monthly">Monthly</option>
@@ -649,6 +656,7 @@
                         <select
                           class="form-select w-25"
                           v-model="ratesArray[3].client_rate"
+                          :disabled="ratesArray[3].split_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -664,6 +672,7 @@
                         <select
                           class="form-select w-25"
                           v-model="ratesArray[3].private_limited"
+                          :disabled="ratesArray[3].split_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -679,6 +688,7 @@
 
                         <select
                           v-model="ratesArray[3].self_employed"
+                          :disabled="ratesArray[3].split_rate"
                           class="form-select w-25"
                         >
                           <option>1</option>
@@ -691,7 +701,11 @@
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select class="form-select w-25" v-model="ratesArray[3].umbrella">
+                        <select
+                          class="form-select w-25"
+                          v-model="ratesArray[3].umbrella"
+                          :disabled="ratesArray[3].split_rate"
+                        >
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -702,7 +716,11 @@
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select class="form-select w-25" v-model="ratesArray[3].paye">
+                        <select
+                          class="form-select w-25"
+                          v-model="ratesArray[3].paye"
+                          :disabled="ratesArray[3].split_rate"
+                        >
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -938,6 +956,7 @@
 
                         <select
                           v-model="ratesArray[5].rate_type"
+                          :disabled="ratesArray[5].split_rate"
                           class="form-select w-25"
                         >
                           <option value="Hourly">Hourly</option>
@@ -952,6 +971,7 @@
                         <select
                           class="form-select w-25"
                           v-model="ratesArray[5].client_rate"
+                          :disabled="ratesArray[5].split_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -967,6 +987,7 @@
                         <select
                           class="form-select w-25"
                           v-model="ratesArray[5].private_limited"
+                          :disabled="ratesArray[5].split_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -982,6 +1003,7 @@
 
                         <select
                           v-model="ratesArray[5].self_employed"
+                          :disabled="ratesArray[5].split_rate"
                           class="form-select w-25"
                         >
                           <option>1</option>
@@ -994,7 +1016,11 @@
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select class="form-select w-25" v-model="ratesArray[5].umbrella">
+                        <select
+                          class="form-select w-25"
+                          v-model="ratesArray[5].umbrella"
+                          :disabled="ratesArray[5].split_rate"
+                        >
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -1005,7 +1031,11 @@
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select class="form-select w-25" v-model="ratesArray[5].paye">
+                        <select
+                          class="form-select w-25"
+                          v-model="ratesArray[5].paye"
+                          :disabled="ratesArray[5].split_rate"
+                        >
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -1241,6 +1271,7 @@
 
                         <select
                           v-model="ratesArray[7].rate_type"
+                          :disabled="ratesArray[7].split_rate"
                           class="form-select w-25"
                         >
                           <option value="Hourly">Hourly</option>
@@ -1255,6 +1286,7 @@
                         <select
                           class="form-select w-25"
                           v-model="ratesArray[7].client_rate"
+                          :disabled="ratesArray[7].split_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -1270,6 +1302,7 @@
                         <select
                           class="form-select w-25"
                           v-model="ratesArray[7].private_limited"
+                          :disabled="ratesArray[7].split_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -1283,7 +1316,10 @@
                       <div class="col-4">
                         <label class="form-label">Self Employed</label>
 
-                        <select v-model="ratesArray[7].self_employed">
+                        <select
+                          v-model="ratesArray[7].self_employed"
+                          :disabled="ratesArray[7].split_rate"
+                        >
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -1294,7 +1330,11 @@
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select class="form-select w-25" v-model="ratesArray[7].umbrella">
+                        <select
+                          class="form-select w-25"
+                          v-model="ratesArray[7].umbrella"
+                          :disabled="ratesArray[7].split_rate"
+                        >
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -1305,7 +1345,11 @@
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select class="form-select w-25" v-model="ratesArray[7].paye">
+                        <select
+                          class="form-select w-25"
+                          v-model="ratesArray[7].paye"
+                          :disabled="ratesArray[7].split_rate"
+                        >
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -1346,18 +1390,6 @@
                             color: black;
                           "
                         />
-                        <!-- <select
-                        v-model="ratesArray[8].site_shift_id"
-                        :disabled="true"
-                      >
-                        <option
-                          v-for="option in shiftsTime"
-                          :key="option.id"
-                          :value="option.id"
-                        >
-                          {{ option.shift_name }}
-                        </option>
-                      </select> -->
                       </div>
 
                       <div class="col-4">
@@ -1551,7 +1583,11 @@
                       <div class="col-4">
                         <label class="form-label">Rate Type</label>
 
-                        <select v-model="ratesArray[9].rate_type">
+                        <select
+                          class="form-select w-25"
+                          v-model="ratesArray[9].rate_type"
+                          :disabled="ratesArray[9].split_rate"
+                        >
                           <option value="Hourly">Hourly</option>
                           <option value="Monthly">Monthly</option>
                           <option value="Yearly">Yearly</option>
@@ -1564,6 +1600,7 @@
                         <select
                           class="form-select w-25"
                           v-model="ratesArray[9].client_rate"
+                          :disabled="ratesArray[9].split_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -1579,6 +1616,7 @@
                         <select
                           class="form-select w-25"
                           v-model="ratesArray[9].private_limited"
+                          :disabled="ratesArray[9].split_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -1594,6 +1632,7 @@
 
                         <select
                           v-model="ratesArray[9].self_employed"
+                          :disabled="ratesArray[9].split_rate"
                           class="form-select w-25"
                         >
                           <option>1</option>
@@ -1606,7 +1645,11 @@
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select class="form-select w-25" v-model="ratesArray[9].umbrella">
+                        <select
+                          class="form-select w-25"
+                          v-model="ratesArray[9].umbrella"
+                          :disabled="ratesArray[9].split_rate"
+                        >
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -1617,7 +1660,11 @@
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select class="form-select w-25" v-model="ratesArray[9].paye">
+                        <select
+                          class="form-select w-25"
+                          v-model="ratesArray[9].paye"
+                          :disabled="ratesArray[9].split_rate"
+                        >
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -1856,6 +1903,7 @@
 
                         <select
                           v-model="ratesArray[11].rate_type"
+                          :disabled="ratesArray[11].holiday_split_rate"
                           class="form-select w-25"
                         >
                           <option value="Hourly">Hourly</option>
@@ -1870,6 +1918,7 @@
                         <select
                           class="form-select w-25"
                           v-model="ratesArray[11].client_rate"
+                          :disabled="ratesArray[11].holiday_split_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -1885,6 +1934,7 @@
                         <select
                           class="form-select w-25"
                           v-model="ratesArray[11].private_limited"
+                          :disabled="ratesArray[11].holiday_split_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -1900,6 +1950,7 @@
 
                         <select
                           v-model="ratesArray[11].self_employed"
+                          :disabled="ratesArray[11].holiday_split_rate"
                           class="form-select w-25"
                         >
                           <option>1</option>
@@ -1915,6 +1966,7 @@
                         <select
                           class="form-select w-25"
                           v-model="ratesArray[11].umbrella"
+                          :disabled="ratesArray[11].holiday_split_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -1926,7 +1978,11 @@
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select class="form-select w-25" v-model="ratesArray[11].paye">
+                        <select
+                          class="form-select w-25"
+                          v-model="ratesArray[11].paye"
+                          :disabled="ratesArray[11].holiday_split_rate"
+                        >
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -2165,6 +2221,7 @@
 
                         <select
                           v-model="ratesArray[13].rate_type"
+                          :disabled="ratesArray[13].holiday_split_rate"
                           class="form-select w-25"
                         >
                           <option value="Hourly">Hourly</option>
@@ -2179,6 +2236,7 @@
                         <select
                           class="form-select w-25"
                           v-model="ratesArray[13].client_rate"
+                          :disabled="ratesArray[13].holiday_split_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -2194,6 +2252,7 @@
                         <select
                           class="form-select w-25"
                           v-model="ratesArray[13].private_limited"
+                          :disabled="ratesArray[13].holiday_split_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -2209,6 +2268,7 @@
 
                         <select
                           v-model="ratesArray[13].self_employed"
+                          :disabled="ratesArray[13].holiday_split_rate"
                           class="form-select w-25"
                         >
                           <option>1</option>
@@ -2224,6 +2284,7 @@
                         <select
                           class="form-select w-25"
                           v-model="ratesArray[13].umbrella"
+                          :disabled="ratesArray[13].holiday_split_rate"
                         >
                           <option>1</option>
                           <option>5</option>
@@ -2235,7 +2296,11 @@
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select class="form-select w-25" v-model="ratesArray[13].paye">
+                        <select
+                          class="form-select w-25"
+                          v-model="ratesArray[13].paye"
+                          :disabled="ratesArray[13].holiday_split_rate"
+                        >
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
@@ -2302,6 +2367,8 @@ export default {
         paye: "",
         dayShiftId: null,
         nightShiftId: null,
+        split_rate: false,
+        holiday_split_rate: false,
       },
 
       businessUnit: [],
@@ -2447,6 +2514,8 @@ export default {
               umbrella: item.umbrella,
               site_id: item.site_id,
               shift_type: item.shift_type,
+              split_rate: item.split_rate,
+              holiday_split_rate: item.holiday_split_rate,
             };
           });
           // console.log(this.ratesArray);

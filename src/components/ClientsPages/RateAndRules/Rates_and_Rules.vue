@@ -62,6 +62,15 @@
                         <i class="bi bi-funnel"></i>
                         Show Filters
                       </button>
+                      <input
+                        ref="fileInput"
+                        id="fileAll"
+                        type="file"
+                        accept=".csv"
+                        style="display: none"
+                        @change="handleFileUpload"
+                      />
+
                       <button
                         class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
                         type="button"
@@ -73,12 +82,22 @@
                         :
 
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                          <li><a class="dropdown-item" href="#">Import</a></li>
-                          <li><hr class="dropdown-divider" /></li>
-                          <li><a class="dropdown-item" href="#">Export</a></li>
+                          <li>
+                            <a class="dropdown-item" href="#" @click="triggerFileInput"
+                              >Import</a
+                            >
+                          </li>
                           <li><hr class="dropdown-divider" /></li>
                           <li>
-                            <a class="dropdown-item" href="#">Export All</a>
+                            <a class="dropdown-item" href="#" @click="exportOneFile"
+                              >Export</a
+                            >
+                          </li>
+                          <li><hr class="dropdown-divider" /></li>
+                          <li>
+                            <a class="dropdown-item" href="#" @click="exportAll"
+                              >Export All</a
+                            >
                           </li>
                         </ul>
                       </button>
@@ -92,7 +111,7 @@
                   <div class="d-flex gap-2 mt-3">
                     <div></div>
 
-                    <select v-model="client_id" id="selectClients">
+                    <select v-model="client_id" id="selectClients" @change="filterData">
                       <option value="">All Client</option>
                       <option
                         v-for="option in clientData"
@@ -103,7 +122,11 @@
                         {{ option.first_name }}
                       </option>
                     </select>
-                    <select v-model="site_id" id="selectBusinessUnit">
+                    <select
+                      v-model="site_id"
+                      id="selectBusinessUnit"
+                      @change="filterData"
+                    >
                       <option value="">All Site</option>
                       <option
                         v-for="option in businessUnit"
@@ -114,7 +137,7 @@
                         {{ option.site_name }}
                       </option>
                     </select>
-                    <select v-model="job_id" id="selectOption">
+                    <select v-model="job_id" id="selectOption" @change="filterData">
                       <option value="">All Position</option>
                       <option
                         v-for="option in options"
@@ -161,11 +184,18 @@
                         </tr>
                       </thead>
 
-                      <tbody v-for="(data, index) in groupedRateRulesData" :key="index">
-                        <tr>
+                      <tbody v-if="paginateCandidates?.length > 0">
+                        <tr v-for="(data, index) in paginateCandidates" :key="index">
                           <td>
                             <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" />
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                :value="data.id"
+                                :id="data.id"
+                                v-model="checkedClient[data.id]"
+                                @change="handleCheckboxChange(data.id)"
+                              />
                             </div>
                           </td>
                           <td>{{ data.client }}</td>
@@ -214,10 +244,7 @@
                             </button>
                           </td>
                         </tr>
-                        <tr
-                          v-for="rate in filteredRateRulesData"
-                          :key="rate.rate_and_rule_id"
-                        >
+                        <tr v-for="(rate, index) in filteredRateRulesData" :key="index">
                           <td v-if="activeSiteId === index">
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
@@ -266,6 +293,13 @@
                             >
                               <i class="bi bi-pencil"></i>
                             </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr v-if="errorMessageFilter">
+                          <td colspan="15" class="text-danger text-center">
+                            {{ errorMessageFilter }}
                           </td>
                         </tr>
                       </tbody>
@@ -425,6 +459,31 @@
         </div>
       </div>
     </div>
+    <div
+      class="mx-3 mb-2"
+      style="text-align: right"
+      v-if="groupedRateRulesData?.length >= 8 && !searchResults.length"
+    >
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= groupedRateRulesData?.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
     <AddRateRules
       @UpdatedRateRules="getRateRulesDataMethod"
       ref="add_rate_rules"
@@ -446,6 +505,7 @@
       ref="multipleEdit_rate_rules"
     />
     <loader :isLoading="isLoading"></loader>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 <script>
@@ -453,8 +513,10 @@ import axios from "axios";
 import Navbar from "../../Navbar.vue";
 import AddRateRules from "../../modals/Rate&Rules/AddRateRules.vue";
 import Loader from "../../Loader/Loader.vue";
+import { reactive } from "vue";
 import EditSingleRateRules from "../../modals/Rate&Rules/EditSingleRateRules.vue";
 import EditMultipleRateRules from "../../modals/Rate&Rules/EditMultipleRateRules.vue";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -464,19 +526,25 @@ const axiosInstance = axios.create({
 export default {
   data() {
     return {
+      id: "",
       getRateRulesData: [],
       selectedRatesRulesId: null,
       selectedSiteID: null,
       getRateRulesWeekData: [],
       selectedClientID: null,
       isLoading: false,
+      currentPage: 1,
+      itemsPerPage: 10,
       showFilters: false,
       activeSiteId: null,
       detailsShow: false,
       selectedJobID: null,
       rateRulesIds: [],
       filteredRateRulesData: [],
+      checkedClient: reactive({}),
+      // checkedClient: {},
       ids: [],
+      errorMessageFilter: "",
       searchQuery: null,
       debounceTimeout: null,
       searchResults: [],
@@ -494,12 +562,22 @@ export default {
     Loader,
     EditSingleRateRules,
     EditMultipleRateRules,
+    SuccessAlert,
   },
   computed: {
+    paginateCandidates() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.groupedRateRulesData.slice(startIndex, endIndex);
+    },
+
+    totalRecordsOnPage() {
+      return this.paginateCandidates.length;
+    },
     groupedRateRulesData() {
       const groupedData = {};
       this.getRateRulesData.forEach((data) => {
-        const groupKey = `${data.site_id}-${data.client}-${data.client_id}-${data.job}`;
+        const groupKey = `${data.site_id}-${data.client}-${data.client_id}-${data.job}-${data.id}`;
         if (!groupedData[groupKey]) {
           groupedData[groupKey] = {
             site_id: data.site_id,
@@ -508,7 +586,7 @@ export default {
             client_id: data.client_id,
             job: data.job,
             job_id: data.job_id,
-
+            id: data.id,
             data: [],
           };
         }
@@ -539,7 +617,209 @@ export default {
     toggleFilters() {
       this.showFilters = !this.showFilters;
     },
+    async filterData() {
+      let filters = {
+        RR_type: "",
+        RR_value: "",
+      };
 
+      if (this.client_id) {
+        const selectedClient = this.clientData.find(
+          (option) => option.id === this.client_id
+        );
+        filters = {
+          RR_type: "client",
+          RR_value: selectedClient ? selectedClient.first_name : "",
+        };
+      } else if (this.site_id) {
+        const selectedSite = this.businessUnit.find(
+          (option) => option.id === this.site_id
+        );
+        filters = {
+          RR_type: "site",
+          RR_value: selectedSite ? selectedSite.site_name : "",
+        };
+      } else if (this.job_id) {
+        const selectedJob = this.options.find((option) => option.id === this.job_id);
+        filters = {
+          RR_type: "job",
+          RR_value: selectedJob ? selectedJob.name : "",
+        };
+      }
+
+      this.makeFilterAPICall(filters.RR_type, filters.RR_value);
+    },
+    async makeFilterAPICall(RR_type, RR_value) {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/rate_and_rule_filter`, {
+          params: {
+            RR_type: RR_type,
+            RR_value: RR_value,
+          },
+        });
+
+        this.getRateRulesData = response.data.data || [];
+
+        if (this.getRateRulesData.length === 0) {
+          this.errorMessageFilter = "Report not Found!";
+        } else {
+          this.errorMessageFilter = "";
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          const errorMessages = error.response.data.error;
+          if (errorMessages === "No records found for the given filter") {
+            alert("No records found for the given filter");
+          } else {
+            alert(errorMessages);
+          }
+        } else {
+          // console.error(error);
+        }
+      }
+    },
+    triggerFileInput() {
+      this.$refs.fileInput.click();
+    },
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const isValidFileType = file.type === "text/csv";
+      if (!isValidFileType) {
+        alert("Please select a CSV file.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", file, "file.csv");
+
+      axios
+        .post(`${VITE_API_URL}/import_all_rate_and_rules_csv`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          this.ImportCSV(response.data, "file.csv");
+        })
+        .catch((error) => {
+          // console.error("Error uploading file:", error);
+        });
+    },
+
+    ImportCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    },
+    exportOneFile() {
+      if (!this.ids || this.ids.length === 0) {
+        alert("Please select at least one Client.");
+        return;
+      }
+
+      const idsQueryParam = this.ids.join(",");
+
+      axios
+        .get(`${VITE_API_URL}/export_rate_and_rules_csv`, {
+          params: {
+            rate_rules_ids: idsQueryParam,
+          },
+          headers: {
+            Accept: "text/csv",
+          },
+          responseType: "blob",
+        })
+        .then((response) => {
+          this.blobToText(response.data)
+            .then((csvData) => {
+              const filename = "Rate_Rules.csv";
+              this.downloadOneCSV(csvData, filename);
+              const message = "Export file downloaded successfully";
+              this.$refs.successAlert.showSuccess(message);
+            })
+            .catch((error) => {
+              // console.error("Error reading CSV data:", error);
+            });
+        })
+        .catch((error) => {
+          // console.error("Error fetching CSV data:", error);
+        })
+        .finally(() => {
+          this.ids = [];
+          this.checkedClient = {};
+        });
+    },
+    blobToText(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          resolve(reader.result);
+        };
+        reader.onerror = reject;
+        reader.readAsText(blob);
+      });
+    },
+
+    combineCsvData(csvDataArray) {
+      let combinedCsvData = "";
+      csvDataArray.forEach((csvData, index) => {
+        if (index > 0) {
+          const lines = csvData.split("\n");
+          lines.shift();
+          csvData = lines.join("\n");
+        }
+
+        combinedCsvData += csvData;
+        if (index < csvDataArray.length - 1) {
+          combinedCsvData += "\n";
+        }
+      });
+      return combinedCsvData;
+    },
+    downloadOneCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv" });
+
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+
+      document.body.appendChild(a);
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    },
+    exportAll() {
+      axios
+        .get(`${VITE_API_URL}/export_rate_and_rules_csv.csv`)
+        .then((response) => {
+          this.downloadCSV(response.data, "Rate_RulesData.csv");
+        })
+        .catch((error) => {
+          // console.error("Error:", error);
+        });
+    },
+    downloadCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    },
     editRateRulesId(RateRulesId) {
       this.selectedRatesRulesId = RateRulesId;
       this.$refs.singleEdit_rate_rules.getTimeShift();
@@ -562,6 +842,31 @@ export default {
     extractFilteredRateRulesIds() {
       this.ids = this.filteredRateRulesData.map((rate) => rate.id);
     },
+    async getBusinessUnitMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/activated_site`);
+        this.businessUnit = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    handleCheckboxChange(dataId) {
+      if (this.checkedClient[dataId]) {
+        if (!this.ids.includes(dataId)) {
+          this.ids.push(dataId);
+        }
+      } else {
+        const index = this.ids.indexOf(dataId);
+        if (index !== -1) {
+          this.ids.splice(index, 1);
+        }
+      }
+      console.log("Updated ids array:", this.ids);
+    },
     editRateRulesMultiId(RateRulesId, siteID, jobID, job, clientID) {
       this.selectedRatesRulesId = RateRulesId;
       this.selectedSiteID = siteID;
@@ -580,7 +885,47 @@ export default {
         this.$refs.multipleEdit_rate_rules.getJobTitleMethod();
       }, 300);
     },
+    async getJobTitleMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+        this.options = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    async getClientMethod() {
+      const pagesToFetch = [1, 2, 3];
+      let allClientData = [];
 
+      try {
+        const responses = await Promise.all(
+          pagesToFetch.map((page) =>
+            axios.get(`${VITE_API_URL}/clients`, {
+              params: {
+                page: page,
+              },
+            })
+          )
+        );
+
+        responses.forEach((response) => {
+          allClientData = allClientData.concat(response.data.data);
+        });
+
+        this.clientData = allClientData;
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          // Handle 404 error
+          // console.error('Error fetching client data:', error.response.data.message);
+        } else {
+          // console.error('Error fetching client data:', error);
+        }
+      }
+    },
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
 
@@ -624,7 +969,13 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/rate_and_rules`);
         this.getRateRulesData = response.data.rates;
+
         this.filteredRateRulesData = this.getRateRulesData;
+        if (this.getRateRulesData.length === 0) {
+          this.errorMessageFilter = "Report not Found!";
+        } else {
+          this.errorMessageFilter = "";
+        }
       } catch (error) {
         // console.error('Error fetching client data:', error);
       } finally {
@@ -664,6 +1015,16 @@ export default {
   },
   mounted() {
     this.getRateRulesDataMethod();
+    this.getBusinessUnitMethod();
+    this.getJobTitleMethod();
+    this.getClientMethod();
+  },
+  created() {
+    this.ids = this.groupedRateRulesData.map((data) => data.id);
+
+    this.groupedRateRulesData.forEach((data) => {
+      this.$set(this.checkedClient, data.id, false);
+    });
   },
 };
 </script>

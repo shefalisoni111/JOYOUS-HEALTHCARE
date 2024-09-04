@@ -31,7 +31,7 @@
                     </option>
                   </select>
 
-                  <select v-model="id" @change="filterData">
+                  <!-- <select v-model="id" @change="filterData">
                     <option value="">All Staff</option>
                     <option
                       v-for="option in candidateLists"
@@ -41,18 +41,21 @@
                     >
                       {{ option.first_name + " " + option.last_name }}
                     </option>
-                  </select>
+                  </select> -->
                 </div>
 
                 <div>
                   <form
                     class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
+                    @submit.prevent="search"
                   >
                     <input
                       class="form-control mr-sm-2"
                       type="search"
-                      placeholder="Search by Name"
+                      placeholder="Search..."
                       aria-label="Search"
+                      v-model="searchQuery"
+                      @input="debounceSearch"
                     />
                   </form>
                 </div>
@@ -103,13 +106,34 @@
                     </div>
 
                     <div class="d-flex gap-3 align-items-center mt-lg-0 mt-3">
-                      <button type="button" class="btn btn-outline-success text-nowrap">
-                        <i class="bi bi-download"></i> Export CSV
-                      </button>
+                      <div
+                        v-if="!paginateCandidates || paginateCandidates.length === 0"
+                        class="tooltip-wrapper"
+                        data-bs-toggle="tooltip"
+                        title="No data available to export"
+                      >
+                        <button
+                          type="button"
+                          class="btn btn-outline-success text-nowrap"
+                          @click="exportAll"
+                          :disabled="true"
+                        >
+                          <i class="bi bi-download"></i> Export CSV
+                        </button>
+                      </div>
+                      <div v-else>
+                        <button
+                          type="button"
+                          class="btn btn-outline-success text-nowrap"
+                          @click="exportAll"
+                        >
+                          <i class="bi bi-download"></i> Export CSV
+                        </button>
+                      </div>
 
-                      <button type="button" class="btn btn-outline-success text-nowrap">
+                      <!-- <button type="button" class="btn btn-outline-success text-nowrap">
                         <i class="bi bi-eye"></i> Customize View
-                      </button>
+                      </button> -->
                     </div>
                   </div>
                 </div>
@@ -129,37 +153,13 @@
                 <div class="d-flex gap-2">
                   <div></div>
                 </div>
-                <div class="tab-content mt-4" id="pills-tabContent">
+                <div class="tab-content mt-4" id="pills-tabContent" v-if="!searchQuery">
                   <div
                     class="tab-pane fade show active table-wrapper"
                     id="pills-home"
                     role="tabpanel"
                     aria-labelledby="pills-home-tab"
                   >
-                    <!-- <table class="table reportTable">
-                      <thead>
-                        <tr>
-                          <th scope="col">Sender</th>
-
-                          <th scope="col">Recipient</th>
-                          <th scope="col">Status</th>
-                          <th scope="col">Subject</th>
-                          <th scope="col">Recipient Domain</th>
-                          <th scope="col">Date Time</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td scope="col">Aniket</td>
-
-                          <td scope="col">Prabhu</td>
-                          <td scope="col">Active</td>
-                          <td scope="col">Site Report</td>
-                          <td scope="col">Recipient Domain</td>
-                          <td scope="col">23/2/2024</td>
-                        </tr>
-                      </tbody>
-                    </table> -->
                     <table class="table reportTable">
                       <thead>
                         <tr>
@@ -249,6 +249,97 @@
                     ...
                   </div>
                 </div>
+                <div class="tab-content mt-4" id="pills-tabContent" v-if="searchQuery">
+                  <div
+                    class="tab-pane fade show active table-wrapper"
+                    id="pills-home"
+                    role="tabpanel"
+                    aria-labelledby="pills-home-tab"
+                  >
+                    <table class="table reportTable">
+                      <thead>
+                        <tr>
+                          <th>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" />
+                            </div>
+                          </th>
+                          <th scope="col">Client</th>
+                          <th scope="col">Site</th>
+                          <th scope="col">Job</th>
+                          <th scope="col">Day</th>
+                          <th scope="col">Shift Type<br />Start-End Time</th>
+                          <th scope="col">Rate Type</th>
+                          <th scope="col">Client Rate</th>
+                          <th scope="col">Private Limited</th>
+                          <th scope="col">Self Employed</th>
+                          <th scope="col">Umbrella</th>
+                          <th scope="col">PAYE</th>
+                          <th scope="col" style="width: 10%">Created By and Time</th>
+                          <th scope="col">Last Update</th>
+                        </tr>
+                      </thead>
+
+                      <tbody v-if="paginateCandidates?.length > 0">
+                        <tr v-for="(rate, index) in paginateCandidates" :key="index">
+                          <td>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="" />
+                            </div>
+                          </td>
+                          <td>{{ rate.client }}</td>
+                          <td>{{ rate.site }}</td>
+                          <td>{{ rate.job }}</td>
+                          <td class="text-capitalize">
+                            <span
+                              style="background: orange; padding: 3px; border-radius: 4px"
+                              >{{ rate.day }}</span
+                            >
+                          </td>
+                          <td>
+                            {{ rate.shift_type }}<br />{{
+                              formatTime(rate.start_time)
+                            }}-{{ formatTime(rate.end_time) }}
+                          </td>
+                          <td>
+                            {{ rate.rate_type ? rate.rate_type : "Null" }}
+                          </td>
+                          <td>{{ rate.client_rate }}</td>
+                          <td>
+                            {{ rate.private_limited }}
+                          </td>
+                          <td>{{ rate.self_employed }}</td>
+                          <td>
+                            {{ rate.umbrella ? rate.umbrella : "Null" }}
+                          </td>
+                          <td>
+                            {{ rate.paye ? rate.paye : "Null" }}
+                          </td>
+                          <td>
+                            {{ rate.created_by_and_time }}
+                          </td>
+                          <td>{{ rate.last_update }}</td>
+                          <td></td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr>
+                          <td colspan="15" class="text-danger text-center">
+                            {{ errorMessage }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div
+                    class="tab-pane fade"
+                    id="pills-profile"
+                    role="tabpanel"
+                    aria-labelledby="pills-profile-tab"
+                  >
+                    ...
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -283,6 +374,11 @@
 import axios from "axios";
 import Navbar from "../Navbar.vue";
 import Loader from "../Loader/Loader.vue";
+const axiosInstance = axios.create({
+  headers: {
+    "Cache-Control": "no-cache",
+  },
+});
 export default {
   data() {
     return {
@@ -304,6 +400,9 @@ export default {
       clientData: [],
       site_id: "",
       businessUnit: [],
+      searchQuery: null,
+      debounceTimeout: null,
+      searchResults: [],
       isLoading: false,
       job_id: "",
       options: [],
@@ -311,9 +410,10 @@ export default {
       employment_type_id: "",
       getRateRulesData: [],
       id: "",
-      candidateLists: [],
+      // candidateLists: [],
       errorMessageFilter: "",
       errorMessageCustom: "",
+      errorMessage: "",
     };
   },
   components: { Navbar, Loader },
@@ -401,11 +501,6 @@ export default {
         } else {
           this.errorMessageFilter = "";
         }
-        // if (this.getRateRulesData.length === 0) {
-        //   this.errorMessageCustom = "No records found for the given filter";
-        // } else {
-        //   this.errorMessageCustom = "";
-        // }
       } catch (error) {
         if (error.response && error.response.status === 404) {
           const errorMessages = error.response.data.error;
@@ -451,35 +546,7 @@ export default {
         }
       }
     },
-    async getCandidateMethods() {
-      const pagesToFetch = [1, 2, 3];
-      let allStaffData = [];
 
-      try {
-        const responses = await Promise.all(
-          pagesToFetch.map((page) =>
-            axios.get(`${VITE_API_URL}/candidates`, {
-              params: {
-                page: page,
-              },
-            })
-          )
-        );
-
-        responses.forEach((response) => {
-          allStaffData = allStaffData.concat(response.data.data);
-        });
-
-        this.candidateLists = allStaffData;
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
-          // Handle 404 error
-          // console.error('Error fetching client data:', error.response.data.message);
-        } else {
-          // console.error('Error fetching client data:', error);
-        }
-      }
-    },
     async getPositionMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/active_job_list`);
@@ -532,6 +599,70 @@ export default {
         );
       }
     },
+    debounceSearch() {
+      clearTimeout(this.debounceTimeout);
+
+      this.debounceTimeout = setTimeout(() => {
+        this.search();
+      }, 100);
+    },
+    // search api start
+
+    async search() {
+      try {
+        this.searchResults = [];
+
+        const modifiedSearchQuery = this.searchQuery.replace(/ /g, "_");
+
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/rate_and_rules_search`,
+          {
+            params: {
+              search_rates: modifiedSearchQuery,
+            },
+            headers: {
+              "content-type": "application/json",
+            },
+          }
+        );
+
+        this.searchResults = response.data.rates;
+      } catch (error) {
+        if (
+          (error.response && error.response.status === 404) ||
+          error.response.status === 404
+        ) {
+          this.errorMessage = "No Record found for the specified criteria";
+        }
+      }
+    },
+    exportAll() {
+      const formattedDate = this.formatDate(this.startDate);
+
+      const params = {
+        date: formattedDate,
+      };
+
+      axios
+        .get(`${VITE_API_URL}/export_rate_and_rules_csv.csv`, { params })
+        .then((response) => {
+          this.downloadCSV(response.data, "RateCardData.csv");
+        })
+        .catch((error) => {
+          // console.error("Error:", error);
+        });
+    },
+    downloadCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    },
     updateDateRange() {
       if (this.currentView === "weekly") {
         const weekStart = new Date(this.startDate);
@@ -565,34 +696,6 @@ export default {
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
-    // async vacancyDeleteMethod(id) {
-    //   if (!window.confirm("Are you Sure ?")) {
-    //     return;
-    //   }
-    //   const token = localStorage.getItem("token");
-    //   await axios
-    //     .delete(`${VITE_API_URL}/vacancies/` + id, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => {
-    //       this.createVacancy();
-    //     });
-    //   // alert("Record Deleted ");
-    // },
-    // async createVacancy() {
-    //   const token = localStorage.getItem("token");
-    //   axios
-    //     .get(`${VITE_API_URL}/vacancies`, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => (this.getVacancyDetail = response.data));
-    // },
 
     async getRateRulesDataMethod() {
       this.isLoading = true;
@@ -614,16 +717,9 @@ export default {
     this.getBusinessUnitMethod();
     this.getPositionMethod();
     this.getClientMethod();
-    this.getCandidateMethods();
+    // this.getCandidateMethods();
     this.getRateRulesDataMethod();
-    // const currentDate = new Date();
-    // const startOfWeek = new Date(currentDate);
-    // startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
-    // this.startDate = startOfWeek;
 
-    // const endOfWeek = new Date(currentDate);
-    // endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
-    // this.endDate = endOfWeek;
     const currentDate = new Date();
     const dayOfWeek = currentDate.getDay();
     const startOfWeek = new Date(currentDate);
@@ -640,12 +736,12 @@ export default {
   async beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.getRateRulesDataMethod();
-      vm.getCandidateMethods();
+      // vm.getCandidateMethods();
     });
   },
   async beforeRouteUpdate(to, from, next) {
     this.getRateRulesDataMethod();
-    this.getCandidateMethods();
+    // this.getCandidateMethods();
     next();
   },
 };

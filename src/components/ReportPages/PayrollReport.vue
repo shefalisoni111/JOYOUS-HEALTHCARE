@@ -126,9 +126,9 @@
                       <button type="button" class="btn btn-outline-success text-nowrap">
                         <i class="bi bi-download"></i> Export CSV(All)
                       </button>
-                      <button type="button" class="btn btn-outline-success text-nowrap">
+                     <!-- <button type="button" class="btn btn-outline-success text-nowrap">
                         <i class="bi bi-eye"></i> Customize View
-                      </button>
+                      </button> -->
                     </div>
                   </div>
                 </div>
