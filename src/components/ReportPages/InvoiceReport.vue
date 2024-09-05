@@ -131,7 +131,7 @@
                         </button>
                       </div>
 
-                     <!-- <button type="button" class="btn btn-outline-success text-nowrap">
+                      <!-- <button type="button" class="btn btn-outline-success text-nowrap">
                         <i class="bi bi-eye"></i> Customize View
                       </button> -->
                     </div>
@@ -361,7 +361,7 @@
         Next
       </button>
     </div>
-    <div class="mx-3 mb-2" style="text-align: right" v-if="searchResults.length >= 8">
+    <div class="mx-3 mb-2" style="text-align: right" v-if="searchResults.length >= 10">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -412,7 +412,7 @@ export default {
       client_id: "",
       clientData: [],
       currentPage: 1,
-      itemsPerPage: 9,
+      itemsPerPage: 10,
       searchQuery: null,
       debounceTimeout: null,
       errorMessage: "",
@@ -672,6 +672,7 @@ export default {
           0
         );
       }
+      this.getClientInvoiceReport();
     },
     moveToNext() {
       if (this.currentView === "weekly") {
@@ -686,6 +687,7 @@ export default {
           0
         );
       }
+      this.getClientInvoiceReport();
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
@@ -723,14 +725,51 @@ export default {
 
     async getClientInvoiceReport() {
       const token = localStorage.getItem("token");
-      axios
-        .get(`${VITE_API_URL}/client_invoices`, {
+
+      const startOfMonth = new Date(
+        this.startDate.getFullYear(),
+        this.startDate.getMonth(),
+        1
+      );
+      const endOfMonth = new Date(
+        this.endDate.getFullYear(),
+        this.endDate.getMonth() + 1,
+        0
+      );
+
+      const formatDate = (date) => {
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+      };
+
+      const requestData = {
+        date: formatDate(startOfMonth),
+      };
+
+      try {
+        const response = await axios.get(`${VITE_API_URL}/client_invoices`, {
+          params: requestData,
           headers: {
-            "content-type": "application/json",
-            Authorization: "bearer " + token,
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
           },
-        })
-        .then((response) => (this.getClientInvoiceDetail = response.data.data));
+        });
+
+        // Set the invoice details
+        this.getClientInvoiceDetail = response.data.data || [];
+
+        // Check if the result is empty and set the error message
+        if (this.getClientInvoiceDetail.length === 0) {
+          this.errorMessageFilter = "Report record not found!";
+        } else {
+          this.errorMessageFilter = "";
+        }
+      } catch (error) {
+        // console.error("Error fetching client invoice report:", error);
+        this.errorMessageFilter = "An error occurred while fetching the report.";
+      }
     },
   },
 
@@ -742,14 +781,6 @@ export default {
     this.getCandidateMethods();
     this.getClientMethod();
 
-    // const currentDate = new Date();
-    // const startOfWeek = new Date(currentDate);
-    // startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
-    // this.startDate = startOfWeek;
-
-    // const endOfWeek = new Date(currentDate);
-    // endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
-    // this.endDate = endOfWeek;
     const currentDate = new Date();
     const dayOfWeek = currentDate.getDay();
     const startOfWeek = new Date(currentDate);

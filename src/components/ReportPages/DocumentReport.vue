@@ -10,12 +10,6 @@
                 class="gap-2 d-xs-grid d-sm-grid d-md-grid d-lg-flex ms-2"
                 v-if="activeTab === 0"
               >
-                <!-- <select v-model="selectedAllStatus" @change="navigateToTab">
-                  <option value="All">All Status</option>
-                  <option value="Active">Active</option>
-                  <option value="Expired">Expired</option>
-                  <option value="Due30days">Due30days</option>
-                </select> -->
                 <select v-model="selectedStaffStatus" @change="filterData">
                   <option value="">All Staff Status</option>
                   <option value="active">Active</option>

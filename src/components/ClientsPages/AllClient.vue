@@ -54,7 +54,7 @@
         <div></div>
 
         <select v-model="selectedFilter" @change="filterData($event.target.value)">
-          <option value="">All Client</option>
+          <!-- <option value="all">All Client</option> -->
           <option value="active_client">Active</option>
           <option value="inactive_client">In-Active</option>
         </select>
@@ -222,7 +222,7 @@ export default {
       searchQuery: "",
       currentPage: 1,
       totalPages: 1,
-      itemsPerPage: 20,
+      itemsPerPage: 10,
       totalCount: 0,
       activated: false,
       showFilters: false,
@@ -285,8 +285,10 @@ export default {
         client_value = "true";
       } else if (value === "inactive_client") {
         client_value = "false";
+      } else if (value === "all") {
+        client_value = "true";
       } else {
-        client_value = "";
+        client_value = "false";
       }
 
       this.makeFilterAPICall(client_type, client_value);
@@ -525,7 +527,6 @@ export default {
         const response = await axios.get(`${VITE_API_URL}/clients`, {
           params: {
             page: this.currentPage,
-            per_page: this.itemsPerPage,
           },
         });
         this.getClientDetail = response.data.data;

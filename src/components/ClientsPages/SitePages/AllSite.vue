@@ -57,7 +57,7 @@
         <div></div>
 
         <select v-model="selectedFilter" @change="filterData($event.target.value)">
-          <option value="">All Site</option>
+          <!-- <option value="all">All Site</option> -->
           <option value="active_site">Active</option>
           <option value="inactive_site">In-Active</option>
         </select>
@@ -182,7 +182,7 @@ export default {
       siteIds: [],
       isLoading: false,
       checkedSites: reactive({}),
-      selectedFilter: " ",
+      selectedFilter: "active_site ",
     };
   },
   created() {
@@ -221,8 +221,10 @@ export default {
         site_value = "true";
       } else if (value === "inactive_site") {
         site_value = "false";
+      } else if (value === "all") {
+        site_value = "true";
       } else {
-        site_value = "";
+        site_value = "false";
       }
 
       this.makeFilterAPICall(site_type, site_value);
