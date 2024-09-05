@@ -230,13 +230,16 @@
         </div>
       </div>
     </div>
-    <SuccessAlert ref="successAlert" />
+    <SuccessAlert ref="dangerAlert" />
+    <NotSuccessAlertVue ref="dangerAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+
+import NotSuccessAlertVue from "../../Alerts/NotSuccessAlert.vue";
 
 export default {
   name: "CandidateAdd",
@@ -275,7 +278,7 @@ export default {
       emailError: "",
     };
   },
-  components: { SuccessAlert },
+  components: { SuccessAlert, NotSuccessAlertVue },
   computed: {
     isFormValid() {
       return (
@@ -378,21 +381,19 @@ export default {
         });
 
         if (response.data.error && response.data.error.email) {
-          // Set emailError from the response data
           this.emailError = response.data.error.email[0];
         } else {
-          // If there's no error, check if email is in use
           this.emailInUse = response.data.data.some(
             (staff) => staff.email === this.email
           );
-          // Reset the emailError if email is unique
+
           if (!this.emailInUse) {
             this.emailError = "";
           }
         }
       } catch (error) {
-        console.error("Error checking email uniqueness:", error);
-        // Optionally set a general error message
+        // console.error("Error checking email uniqueness:", error);
+
         this.emailError = "An error occurred while checking email uniqueness.";
       }
     },
@@ -435,6 +436,8 @@ export default {
           if (response.ok) {
             if (responseData.error && responseData.error.email) {
               this.emailError = responseData.error.email[0];
+              // const message = "Unsuccessful Staff added";
+              this.$refs.dangerAlert.showSuccess(this.emailError);
               this.emailInUse = true;
             } else {
               this.emailError = "";

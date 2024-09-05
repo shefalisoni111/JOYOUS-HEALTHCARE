@@ -113,7 +113,7 @@ export default {
                 meta.data.forEach((bar, index) => {
                   const data = dataset.data[index];
 
-                  if (data !== 0) {
+                  if (data !== 0 || data === 0) {
                     const y = bar.y - 2;
                     const leftSpace = 10;
                     ctx.fillStyle = "black";

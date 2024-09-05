@@ -16,8 +16,8 @@ const router = createRouter({
       },
     },
     {
-      path: "/admin",
-      name: "AdminProfile/:id",
+      path: "/admin/:id",
+      name: "AdminProfile",
       component: () => import("@/components/AdminProfile.vue"),
       meta: {
          requiresAuth: true,
@@ -670,7 +670,7 @@ const router = createRouter({
           },
           children: [
             {
-              path: "/report/DocumentReport/AllDoc",
+              path: "AllDoc",
               name: "AllDoc",
               component: () =>
                 import(
@@ -681,7 +681,7 @@ const router = createRouter({
               },
             },
             {
-              path: "/report/DocumentReport/ActiveDocument",
+              path: "ActiveDocument",
               name: "ActiveDocument",
               component: () =>
                 import(
@@ -692,7 +692,7 @@ const router = createRouter({
               },
             },
             {
-              path: "/report/DocumentReport/DueDoc",
+              path: "DueDoc",
               name: "DueDoc",
               component: () =>
                 import(
@@ -703,7 +703,7 @@ const router = createRouter({
               },
             },
             {
-              path: "/report/DocumentReport/ExpiredDoc",
+              path: "ExpiredDoc",
               name: "ExpiredDoc",
               component: () =>
                 import(

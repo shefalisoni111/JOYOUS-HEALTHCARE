@@ -7,12 +7,12 @@
           <div class="col-12">
             <div class="">
               <div class="gap-2 d-xs-grid d-sm-grid d-md-grid d-lg-flex ms-2">
-                <select v-model="selectedAllStatus" @change="filterData">
-                  <option value="">All Status</option>
-                  <option value="active">Active</option>
-                  <option value="inactive">Expired</option>
-                  <option value="pending">Due30days</option>
-                </select>
+                <!-- <select v-model="selectedAllStatus" @change="navigateToTab">
+                  <option value="All">All Status</option>
+                  <option value="Active">Active</option>
+                  <option value="Expired">Expired</option>
+                  <option value="Due30days">Due30days</option>
+                </select> -->
                 <select v-model="selectedStaffStatus" @change="filterData">
                   <option value="">All Staff Status</option>
                   <option value="active">Active</option>
@@ -83,62 +83,6 @@
                             </button>
                           </li>
                         </div>
-                        <!-- <li class="nav-item" role="presentation">
-                          <button
-                            class="nav-link active"
-                            id="pills-all-tab"
-                            data-bs-toggle="pill"
-                            data-bs-target="#pills-all"
-                            type="button"
-                            role="tab"
-                            aria-controls="pills-all"
-                            aria-selected="true"
-                          >
-                            All
-                          </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                          <button
-                            class="nav-link"
-                            id="pills-active-tab"
-                            data-bs-toggle="pill"
-                            data-bs-target="#pills-active"
-                            type="button"
-                            role="tab"
-                            aria-controls="pills-active"
-                            aria-selected="false"
-                          >
-                            Active
-                          </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                          <button
-                            class="nav-link"
-                            id="pills-dueDate-tab"
-                            data-bs-toggle="pill"
-                            data-bs-target="#pills-dueDate"
-                            type="button"
-                            role="tab"
-                            aria-controls="pills-dueDate"
-                            aria-selected="false"
-                          >
-                            Due(30 days)
-                          </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                          <button
-                            class="nav-link"
-                            id="pills-expired-tab"
-                            data-bs-toggle="pill"
-                            data-bs-target="#pills-expired"
-                            type="button"
-                            role="tab"
-                            aria-controls="pills-expired"
-                            aria-selected="false"
-                          >
-                            Expired
-                          </button>
-                        </li> -->
                       </ul>
                     </div>
 
@@ -152,7 +96,7 @@
                 <div>
                   <component :is="activeComponent"></component>
                 </div>
-                <!-- <div v-if="searchQuery">
+                <!-- <div>
                   <table class="table reportTable">
                     <thead>
                       <tr>
@@ -275,6 +219,7 @@ export default {
       ],
       activeTab: 0,
       activeTabName: "",
+
       errorMessageCustom: "",
       errorMessageFilter: "",
       selectedStaffStatus: "",

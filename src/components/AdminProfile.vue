@@ -195,7 +195,7 @@ export default {
       const token = localStorage.getItem("token");
 
       try {
-        const response = await axios.get(`${VITE_API_URL}/merchant_dashboard`, {
+        const response = await axios.get(`${VITE_API_URL}/merchants/4`, {
           headers: {
             "content-type": "application/json",
             Authorization: "bearer " + token,
@@ -203,6 +203,7 @@ export default {
         });
 
         this.getAdmin = response.data;
+        console.log(this.getAdmin);
       } catch (error) {
         // Handle error if needed
         // console.error("Error fetching admin data:", error);

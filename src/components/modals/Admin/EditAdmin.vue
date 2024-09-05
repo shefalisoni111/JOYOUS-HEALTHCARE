@@ -30,7 +30,21 @@
                     <label class="form-label">Email</label>
                   </div>
                   <div class="col-12 mt-1">
-                    <input type="email" class="form-control" v-model="fetchAdmin.email" />
+                    <input
+                      type="email"
+                      class="form-control"
+                      v-model="fetchAdmin.email"
+                      @input="validateEmailFormat(fetchAdmin.email)"
+                      ref="email"
+                    />
+                    <span
+                      v-if="fetchAdmin.email && !validateEmailFormat(fetchAdmin.email)"
+                      class="text-danger"
+                      >Invalid Email</span
+                    >
+                    <span v-if="emailInUse" class="text-danger">
+                      Email is already in use.
+                    </span>
                   </div>
                 </div>
                 <div class="mb-3">
@@ -39,10 +53,18 @@
                   </div>
                   <div class="col-12 mt-1">
                     <input
-                      type="number"
+                      type="text"
                       class="form-control"
                       v-model="fetchAdmin.phone_number"
                     />
+                    <span
+                      v-if="
+                        fetchAdmin.phone_number &&
+                        !validatePhoneNumberFormat(fetchAdmin.phone_number)
+                      "
+                      class="text-danger"
+                      >Invalid Phone Number</span
+                    >
                   </div>
                 </div>
                 <div class="mb-3">
@@ -80,17 +102,20 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="dangerAlert" />
   </div>
 </template>
 <script>
 import axios from "axios";
+
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
   name: "editAdmin",
   data() {
     return {
       fetchAdmin: {
-        id: 2,
+        id: 4,
         first_name: "",
         last_name: "",
 
@@ -99,12 +124,29 @@ export default {
         phone_number: "",
         email: "",
       },
+      emailInUse: false,
     };
   },
+  components: { SuccessAlert },
   mounted() {
-    this.fetchAdminMethod(2);
+    this.fetchAdminMethod(4);
   },
   methods: {
+    validateEmailFormat(email) {
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk)$/;
+      return emailRegex.test(email);
+    },
+    validatePhoneNumberFormat(phone_number) {
+      const phoneRegexWithZero = /^0\d{10}$/;
+      const phoneRegexWithCountryCode = /^91\d{10}$/;
+      const phoneRegexWithoutPrefix = /^\d{10}$/;
+
+      return (
+        phoneRegexWithZero.test(phone_number) ||
+        phoneRegexWithCountryCode.test(phone_number) ||
+        phoneRegexWithoutPrefix.test(phone_number)
+      );
+    },
     async fetchAdminMethod(id) {
       try {
         const response = await axios.get(`${VITE_API_URL}/merchants/${id}`);

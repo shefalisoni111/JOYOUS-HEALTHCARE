@@ -311,11 +311,11 @@
 
             <ul
               class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
-              style="width: 220px"
+              style="width: 220px" 
             >
               <li>
                 <a class="dropdown-item text-capitalize">
-                  <h5 class="d-block mb-0">{{ getAdminData.first_name }}</h5>
+                  <h5 class="d-block mb-0 fw-bold">{{ getAdminData.first_name }}</h5>
                   <span class="d-block">Admin</span>
                 </a>
               </li>
@@ -355,10 +355,11 @@
               <li class="cursor-pointer my-1">
                 <router-link
                   class="dropdown-item text-capitalize d-flex align-items-center"
-                :to="`/admin/${getAdminData.id}`"
+                to="/admin/4"
                   ><i class="bi bi-gear-wide pe-2"></i><span>Personal Settings</span>
                 </router-link>
               </li>
+         
 
               <li class="cursor-pointer my-1">
                 <a class="dropdown-item d-flex align-items-center" href="https://recpal.co.uk/support/">
@@ -624,7 +625,7 @@ export default {
     },
     async getAdminMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/merchants`);
+        const response = await axios.get(`${VITE_API_URL}/merchants/4`);
 
         this.getAdminData = response.data ;
         // console.log(this.getAdminData)
