@@ -54,8 +54,7 @@ export default {
     };
   },
   async mounted() {
-    await this.renderChart();
-    this.fetchData();
+    await this.fetchData();
   },
 
   methods: {
@@ -135,7 +134,7 @@ export default {
         !(this.startDate instanceof Date) ||
         isNaN(this.startDate.getTime())
       ) {
-        console.error("Invalid startDate");
+        // console.error("Invalid startDate");
         return;
       }
 
@@ -164,7 +163,7 @@ export default {
         if (this.chart) {
           this.chart.update();
         } else {
-          // console.error("Chart instance not found");
+          this.renderChart();
         }
       } catch (error) {
         // console.error("Error fetching data:", error);
