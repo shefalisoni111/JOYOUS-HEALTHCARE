@@ -133,8 +133,8 @@ export default {
     paginateDocumentReport() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
-      return Array.isArray(this.getDocumentReportData)
-        ? this.getDocumentReportData.slice(startIndex, endIndex)
+      return Array.isArray(this.getCategoryData)
+        ? this.getCategoryData.slice(startIndex, endIndex)
         : [];
     },
     totalRecordsOnPage() {
@@ -189,52 +189,52 @@ export default {
       }
     },
 
-    async getDocumentReport() {
-      this.isLoading = true;
-      try {
-        const response = await axios.get(`${VITE_API_URL}/candidate_documents`);
-        this.getDocumentReportData = response.data;
-        if (this.getDocumentReportData.length === 0) {
-          this.errorMessageCustom = "No report found for the specified month";
-        } else {
-          this.errorMessageCustom = "";
-        }
-      } catch (error) {
-        // console.error("Error fetching document report data:", error);
-      } finally {
-        this.isLoading = false;
-      }
-    },
-    async getCandidateMethods() {
-      const pagesToFetch = [1, 2, 3];
-      let allStaffData = [];
+    // async getDocumentReport() {
+    //   this.isLoading = true;
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/candidate_documents`);
+    //     this.getDocumentReportData = response.data;
+    //     if (this.getDocumentReportData.length === 0) {
+    //       this.errorMessageCustom = "No report found for the specified month";
+    //     } else {
+    //       this.errorMessageCustom = "";
+    //     }
+    //   } catch (error) {
+    //     // console.error("Error fetching document report data:", error);
+    //   } finally {
+    //     this.isLoading = false;
+    //   }
+    // },
+    // async getCandidateMethods() {
+    //   const pagesToFetch = [1, 2, 3];
+    //   let allStaffData = [];
 
-      try {
-        const responses = await Promise.all(
-          pagesToFetch.map((page) =>
-            axios.get(`${VITE_API_URL}/candidates`, {
-              params: {
-                page: page,
-              },
-            })
-          )
-        );
+    //   try {
+    //     const responses = await Promise.all(
+    //       pagesToFetch.map((page) =>
+    //         axios.get(`${VITE_API_URL}/candidates`, {
+    //           params: {
+    //             page: page,
+    //           },
+    //         })
+    //       )
+    //     );
 
-        responses.forEach((response) => {
-          allStaffData = allStaffData.concat(response.data.data);
-        });
+    //     responses.forEach((response) => {
+    //       allStaffData = allStaffData.concat(response.data.data);
+    //     });
 
-        this.candidateLists = allStaffData;
-        this.candidateStatus = response.data.data.status;
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
-          // Handle 404 error
-          // console.error('Error fetching client data:', error.response.data.message);
-        } else {
-          // console.error('Error fetching client data:', error);
-        }
-      }
-    },
+    //     this.candidateLists = allStaffData;
+    //     this.candidateStatus = response.data.data.status;
+    //   } catch (error) {
+    //     if (error.response && error.response.status === 404) {
+    //       // Handle 404 error
+    //       // console.error('Error fetching client data:', error.response.data.message);
+    //     } else {
+    //       // console.error('Error fetching client data:', error);
+    //     }
+    //   }
+    // },
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -261,7 +261,7 @@ export default {
     this.documentCategoryDocumentTypeMethod();
   },
   created() {
-    this.getDocumentReport();
+    // this.getDocumentReport();
     // this.getCandidateMethods();
   },
 };

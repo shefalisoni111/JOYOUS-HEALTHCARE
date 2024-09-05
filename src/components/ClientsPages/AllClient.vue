@@ -222,7 +222,7 @@ export default {
       searchQuery: "",
       currentPage: 1,
       totalPages: 1,
-      itemsPerPage: 10,
+      itemsPerPage: 20,
       totalCount: 0,
       activated: false,
       showFilters: false,
@@ -525,6 +525,7 @@ export default {
         const response = await axios.get(`${VITE_API_URL}/clients`, {
           params: {
             page: this.currentPage,
+            per_page: this.itemsPerPage,
           },
         });
         this.getClientDetail = response.data.data;

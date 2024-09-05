@@ -2,7 +2,7 @@
   <div>
     <div id="main">
       <div class="container-fluid">
-        <table class="table reportTable">
+        <!-- <table class="table reportTable">
           <thead>
             <tr>
               <th scope="col">Sl No</th>
@@ -47,8 +47,8 @@
               </td>
             </tr>
           </tbody>
-        </table>
-        <div
+        </table> -->
+        <!-- <div
           class="mx-3"
           style="text-align: right"
           v-if="getDocumentReportData.length >= 10"
@@ -72,7 +72,7 @@
           >
             Next
           </button>
-        </div>
+        </div> -->
       </div>
     </div>
     <loader :isLoading="isLoading"></loader>
@@ -205,36 +205,36 @@ export default {
         this.isLoading = false;
       }
     },
-    async getCandidateMethods() {
-      const pagesToFetch = [1, 2, 3];
-      let allStaffData = [];
+    // async getCandidateMethods() {
+    //   const pagesToFetch = [1, 2, 3];
+    //   let allStaffData = [];
 
-      try {
-        const responses = await Promise.all(
-          pagesToFetch.map((page) =>
-            axios.get(`${VITE_API_URL}/candidates`, {
-              params: {
-                page: page,
-              },
-            })
-          )
-        );
+    //   try {
+    //     const responses = await Promise.all(
+    //       pagesToFetch.map((page) =>
+    //         axios.get(`${VITE_API_URL}/candidates`, {
+    //           params: {
+    //             page: page,
+    //           },
+    //         })
+    //       )
+    //     );
 
-        responses.forEach((response) => {
-          allStaffData = allStaffData.concat(response.data.data);
-        });
+    //     responses.forEach((response) => {
+    //       allStaffData = allStaffData.concat(response.data.data);
+    //     });
 
-        this.candidateLists = allStaffData;
-        this.candidateStatus = response.data.data.status;
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
-          // Handle 404 error
-          // console.error('Error fetching client data:', error.response.data.message);
-        } else {
-          // console.error('Error fetching client data:', error);
-        }
-      }
-    },
+    //     this.candidateLists = allStaffData;
+    //     this.candidateStatus = response.data.data.status;
+    //   } catch (error) {
+    //     if (error.response && error.response.status === 404) {
+    //       // Handle 404 error
+    //       // console.error('Error fetching client data:', error.response.data.message);
+    //     } else {
+    //       // console.error('Error fetching client data:', error);
+    //     }
+    //   }
+    // },
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {

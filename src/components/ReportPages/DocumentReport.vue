@@ -6,7 +6,10 @@
         <div class="row">
           <div class="col-12">
             <div class="">
-              <div class="gap-2 d-xs-grid d-sm-grid d-md-grid d-lg-flex ms-2">
+              <div
+                class="gap-2 d-xs-grid d-sm-grid d-md-grid d-lg-flex ms-2"
+                v-if="activeTab === 0"
+              >
                 <!-- <select v-model="selectedAllStatus" @change="navigateToTab">
                   <option value="All">All Status</option>
                   <option value="Active">Active</option>
@@ -96,7 +99,7 @@
                 <div>
                   <component :is="activeComponent"></component>
                 </div>
-                <!-- <div>
+                <div v-if="activeTab === 0">
                   <table class="table reportTable">
                     <thead>
                       <tr>
@@ -117,7 +120,11 @@
                         <td scope="col">{{ data.candidate_name }}</td>
 
                         <td scope="col">
-                          {{ data.document_category.document_category }}
+                          {{
+                            data.document_category
+                              ? data.document_category.document_category
+                              : "null"
+                          }}
                         </td>
                         <td scope="col">{{ data.document_name }}</td>
                         <td scope="col">{{ "null" }}</td>
@@ -127,30 +134,40 @@
                         <td scope="col">
                           {{ data.expiry_date ? data.expiry_date : "null" }}
                         </td>
-                        <td scope="col">{{ data.document_category.status }}</td>
+                        <td scope="col">
+                          {{
+                            data.document_category
+                              ? data.document_category.status
+                              : "null"
+                          }}
+                        </td>
                       </tr>
                     </tbody>
                     <tbody v-else>
-                      <tr v-if="errorMessageFilter">
-                        <td colspan="8" class="text-danger text-center">
-                          {{ errorMessageFilter }}
+                      <tr>
+                        <td colspan="8" class="text-danger text-center fw-bold">
+                          {{ "No records found for the given filter" }}
                         </td>
                       </tr>
-                      <tr v-else>
+                      <!-- <tr v-else>
                         <td colspan="8" class="text-danger text-center">
                           {{ errorMessageCustom }}
                         </td>
-                      </tr>
+                      </tr> -->
                     </tbody>
                   </table>
-                </div> -->
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 10">
+    <div
+      class="mx-3"
+      style="text-align: right"
+      v-if="getCategoryData.length >= 10 && activeTab === 0"
+    >
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -165,13 +182,13 @@
       >&nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= searchResults?.length"
+        :disabled="currentPage * itemsPerPage >= getCategoryData?.length"
         @click="currentPage++"
       >
         Next
       </button>
-    </div> -->
-    <!-- <loader :isLoading="isLoading"></loader> -->
+    </div>
+    <!-- <loader :isLoading="isLoading"></loader>-->
   </div>
 </template>
 <script>
@@ -273,35 +290,26 @@ export default {
       this.$router.push({ name: this.tabs[index].routeName });
     },
     async filterData() {
-      let filters = {};
-
-      if (this.selectedAllStatus) {
-        filters.document_status = "Active";
-      } else if (this.selectedStaffStatus) {
-        filters.document_filter_type = "staff_status";
-        filters.document_filter = this.selectedStaffStatus;
-      } else if (this.selectedStaff) {
-        filters.document_filter_type = "staff";
-        filters.document_filter = this.selectedStaff;
-      } else if (this.selectedDocumentCategory) {
-        filters.document_filter_type = "document_category";
-        filters.document_filter = this.selectedDocumentCategory;
-      } else if (this.selectedDocumentType) {
-        filters.document_filter_type = "document_type";
-        filters.document_filter = this.selectedDocumentType;
-      } else if (this.selectedDocumentStatus) {
-        filters.document_filter_type = "document_status";
-        filters.document_filter = this.selectedDocumentStatus;
-      } else if (this.selectedDocumentFilterType) {
-        filters.document_filter_type = this.selectedDocumentFilterType;
-        filters.document_filter = this.selectedDocumentFilter;
-      } else {
-        filters.document_filter_type = "";
-        filters.document_filter = "";
-      }
-
-      // this.errorMessageFilter = "";
-      // this.errorMessageCustom = "";
+      let filters = {
+        document_filter_type: this.selectedAllStatus
+          ? "document_status"
+          : this.selectedStaffStatus
+          ? "staff_status"
+          : this.selectedStaff
+          ? "staff"
+          : this.selectedDocumentCategory
+          ? "document_category"
+          : this.selectedDocumentType
+          ? "document_type"
+          : "",
+        document_filter:
+          this.selectedAllStatus ||
+          this.selectedStaffStatus ||
+          this.selectedStaff ||
+          this.selectedDocumentCategory ||
+          this.selectedDocumentType ||
+          "",
+      };
 
       try {
         await this.makeFilterAPICall(
@@ -317,7 +325,9 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/document_categories`);
         this.getCategoryData = response.data;
-        if (this.getCategoryData.length === 0) {
+        this.getDocumentReportData = response.data;
+
+        if (this.getDocumentReportData.length === 0) {
           this.errorMessageFilter = "Report not Found!";
         } else {
           this.errorMessageFilter = "";
@@ -372,10 +382,15 @@ export default {
         const response = await axios.get(`${VITE_API_URL}/candidate_documents`);
         this.getDocumentReportData = response.data;
         if (this.getDocumentReportData.length === 0) {
-          this.errorMessageCustom = "No report found for the specified month";
+          this.errorMessageFilter = "Report not Found!";
         } else {
-          this.errorMessageCustom = "";
+          this.errorMessageFilter = "";
         }
+        // if (this.getDocumentReportData.length === 0) {
+        //   this.errorMessageCustom = "No report found for the specified month";
+        // } else {
+        //   this.errorMessageCustom = "";
+        // }
       } catch (error) {
         // console.error("Error fetching document report data:", error);
       } finally {
