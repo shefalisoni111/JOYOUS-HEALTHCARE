@@ -61,6 +61,41 @@
           <option value="active_site">Active</option>
           <option value="inactive_site">In-Active</option>
         </select>
+        <select id="selectClients" @change="filterDataFilter">
+          <option value="">Client Name</option>
+          <option
+            v-for="option in clientData"
+            :key="option.id"
+            :value="option.first_name"
+            aria-placeholder="Select Client"
+          >
+            {{ option.first_name }}
+          </option>
+        </select>
+
+        <select id="selectSite" @change="filterDataFilter">
+          <option value="">Site Name</option>
+          <option
+            v-for="option in businessUnit"
+            :key="option.id"
+            :value="option.first_name"
+            aria-placeholder="Select Client"
+          >
+            {{ option.site_name }}
+          </option>
+        </select>
+
+        <select id="selectSitesAddress" @change="filterDataFilter">
+          <option value="">Site Address</option>
+          <option
+            v-for="option in businessUnit"
+            :key="option.id"
+            :value="option.address"
+            aria-placeholder="Select Address"
+          >
+            {{ option.address }}
+          </option>
+        </select>
       </div>
     </div>
     <div class="table-wrapper mt-3">
@@ -129,6 +164,18 @@
             </td>
           </tr>
         </tbody>
+        <tbody v-else>
+          <tr v-if="errorMessageFilter">
+            <td colspan="15" class="text-danger text-center">
+              {{ errorMessageFilter }}
+            </td>
+          </tr>
+          <tr v-else>
+            <td colspan="15" class="text-danger text-center">
+              <!-- {{ errorMessageCustom }} -->
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
     <AddSite @addSite="getSiteAllDataMethod" />
@@ -180,6 +227,10 @@ export default {
       currentPage: 1,
       itemsPerPage: 10,
       siteIds: [],
+      client_id: null,
+      errorMessageFilter: "",
+      clientData: [],
+      businessUnit: [],
       isLoading: false,
       checkedSites: reactive({}),
       selectedFilter: "active_site ",
@@ -206,10 +257,113 @@ export default {
     totalRecordsOnPage() {
       return this.paginateSiteData.length;
     },
+    selectClients() {
+      const client = this.clientData.find((option) => option.id === this.client_id);
+      return client ? client.first_name : "";
+    },
+    selectSite() {
+      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      return site_id ? site_id.site_name : "";
+    },
+    selectSitesAddress() {
+      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      return site_id ? site_id.address : "";
+    },
   },
   methods: {
+    async getClientMethod() {
+      const pagesToFetch = [1, 2, 3];
+      let allClientData = [];
+
+      try {
+        const responses = await Promise.all(
+          pagesToFetch.map((page) =>
+            axios.get(`${VITE_API_URL}/clients`, {
+              params: {
+                page: page,
+              },
+            })
+          )
+        );
+
+        responses.forEach((response) => {
+          allClientData = allClientData.concat(response.data.data);
+        });
+
+        this.clientData = allClientData;
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          // Handle 404 error
+          // console.error('Error fetching client data:', error.response.data.message);
+        } else {
+          // console.error('Error fetching client data:', error);
+        }
+      }
+    },
+    async getBusinessUnitMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/activated_site`);
+        this.businessUnit = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
     toggleFilters() {
       this.showFilters = !this.showFilters;
+    },
+    async filterDataFilter(event) {
+      const selectElement = event.target;
+      const selectedValue = selectElement.value;
+      const selectId = selectElement.id;
+
+      let fieldType = "";
+      if (selectId === "selectClients") {
+        fieldType = "client";
+      } else if (selectId === "selectSite") {
+        fieldType = "site_name";
+      } else if (selectId === "selectSitesAddress") {
+        fieldType = "address";
+      }
+
+      const filters = {
+        field_type: fieldType,
+        value: selectedValue,
+      };
+
+      await this.makeFilterAPICalls(filters.field_type, filters.value);
+    },
+    async makeFilterAPICalls(field_type, value) {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/sites_filters`, {
+          params: {
+            field_type: field_type,
+            value: value,
+          },
+        });
+
+        this.getSiteAllData = response.data.data || [];
+
+        if (this.getSiteAllData.length === 0) {
+          this.errorMessageFilter = "Report not Found!";
+        } else {
+          this.errorMessageFilter = "";
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          const errorMessages = error.response.data.error;
+          if (errorMessages === "No records found for the given filter") {
+            alert("No records found for the given filter");
+          } else {
+            alert(errorMessages);
+          }
+        } else {
+          // console.error("An error occurred:", error.message);
+        }
+      }
     },
     filterData(value) {
       this.selectedFilter = value;
@@ -451,6 +605,8 @@ export default {
   },
   async mounted() {
     await this.getSiteAllDataMethod();
+    this.getBusinessUnitMethod();
+    this.getClientMethod();
   },
 };
 </script>

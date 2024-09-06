@@ -929,12 +929,14 @@
       </div>
     </div>
     <SuccessAlert ref="successAlert" />
+    <NotSuccessAlertVue ref="dangerAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+import NotSuccessAlertVue from "../../Alerts/NotSuccessAlert.vue";
 
 export default {
   name: "AddRateRules",
@@ -1006,7 +1008,7 @@ export default {
     };
   },
 
-  components: { SuccessAlert },
+  components: { SuccessAlert, NotSuccessAlertVue },
   computed: {
     selectClients() {
       const client_id = this.clientData.find((option) => option.id === this.client_id);
@@ -1092,17 +1094,7 @@ export default {
 
       return allFieldsFilled;
     },
-    // areAllFieldsFilled(object) {
-    //   const keys = Object.keys(object);
-    //   const allFieldsFilled =
-    //     keys.length === 14 && keys.every((key) => object[key] !== "");
 
-    //   return allFieldsFilled;
-    // },
-    // areAllFieldsFilled(object) {
-    //   const keys = Object.keys(object);
-    //   return keys.length === 7 && keys.every((key) => object[key] !== "");
-    // },
     areAllFieldsFilled(object) {
       const keys = Object.keys(object);
       let requiredFieldCount;
@@ -1117,11 +1109,9 @@ export default {
         requiredFieldCount = 7;
       }
 
-      // console.log(this.splitRate, this.holidaySplitRate);
-
       const allFieldsFilled =
         keys.length === requiredFieldCount && keys.every((key) => object[key] !== "");
-      // console.log("All Fields Filled:", allFieldsFilled);
+
       return allFieldsFilled;
     },
     validateStartTime(newValue) {
@@ -1354,8 +1344,16 @@ export default {
           this.$emit("UpdatedRateRules");
           const message = "Rate and Rules Added Successfully";
           this.$refs.successAlert.showSuccess(message);
+        } else if (response.status === 422) {
+          const errorData = await response.json();
+          const errorMessage = errorData.errors.join(", ");
+
+          this.$refs.dangerAlert.showSuccess(errorMessage);
         } else {
-          // Handle response errors
+          const errorData = await response.json();
+          const errorMessage = errorData.message || "An unexpected error occurred";
+
+          this.$refs.dangerAlert.showSuccess(errorMessage);
         }
       } catch (error) {
         // Handle fetch errors

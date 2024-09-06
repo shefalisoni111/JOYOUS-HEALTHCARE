@@ -333,14 +333,14 @@ export default {
       return this.tabs[this.activeTab].component;
     },
     paginateSearchResults() {
-      // const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      // const endIndex = startIndex + this.itemsPerPage;
-      // return this.searchResults.slice(startIndex, endIndex);
-      return this.getClientDetail;
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.searchResults.slice(startIndex, endIndex);
+      // return this.getClientDetail;
     },
-    // totalRecordsOnPage() {
-    //   return this.paginateSearchResults.length;
-    // },
+    totalRecordsOnPage() {
+      return this.paginateSearchResults.length;
+    },
   },
   components: { AllClient, InActiveClient, ActiveClient, EditClientModal, AddClients },
 

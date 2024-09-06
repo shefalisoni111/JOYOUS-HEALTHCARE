@@ -60,6 +60,7 @@ export default {
   methods: {
     renderChart() {
       const ctx = this.$refs.chartCanvas.getContext("2d");
+
       this.chart = new Chart(ctx, {
         type: "bar",
         data: this.dataObject,
@@ -160,11 +161,7 @@ export default {
           apiData.client_invoice_rates || 0,
         ];
 
-        if (this.chart) {
-          this.chart.update();
-        } else {
-          this.renderChart();
-        }
+        this.renderChart();
       } catch (error) {
         // console.error("Error fetching data:", error);
       }
