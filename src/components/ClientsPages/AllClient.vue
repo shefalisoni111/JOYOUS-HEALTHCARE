@@ -26,7 +26,7 @@
         data-bs-toggle="dropdown"
         aria-expanded="false"
       >
-        :
+        Export
 
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
           <li>
