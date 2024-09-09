@@ -98,8 +98,9 @@
                       </div>
 
                       <div class="ps-2">
-                        Invoice created for £1116.00 by Claudiu Burtica<br />
-                        29-04-2024|
+                        Invoice created for £{{ getClientInvoiceDetail.rate }} by
+                        Recpal<br />
+                        {{ getClientInvoiceDetail.created_on }}|
                       </div>
                     </li>
                     <li class="d-flex mb-1">
@@ -108,7 +109,7 @@
                       </div>
                       <div class="ps-2">
                         Invoice has been opened<br />
-                        29-04-2024|
+                        {{ getClientInvoiceDetail.created_on }}|
                       </div>
                     </li>
                     <li class="d-flex mb-1">
@@ -117,7 +118,7 @@
                       </div>
                       <div class="ps-2">
                         Invoice has been delivered<br />
-                        29-04-2024|
+                        {{ getClientInvoiceDetail.created_on }}|
                       </div>
                     </li>
                     <li class="d-flex mb-1">
@@ -125,9 +126,9 @@
                         <i class="bi bi-asterisk"></i>
                       </div>
                       <div class="ps-2">
-                        Invoice has been sent to lakeview.admin@cinnamoncc.com by Claudiu
-                        Burtica<br />
-                        29-04-2024|
+                        Invoice has been sent to lakeview.admin@cinnamoncc.com by
+                        Recpal<br />
+                        {{ getClientInvoiceDetail.created_on }}|
                       </div>
                     </li>
                     <li class="d-flex mb-1">
@@ -135,8 +136,8 @@
                         <i class="bi bi-asterisk"></i>
                       </div>
                       <div class="ps-2">
-                        Edited invoice by Claudiu Burtica<br />
-                        29-04-2024|
+                        Edited invoice by Recpal<br />
+                        {{ getClientInvoiceDetail.created_on }}|
                       </div>
                     </li>
                   </ul>
