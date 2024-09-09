@@ -11,7 +11,7 @@
               <div class="col-12">
                 <div class="row">
                   <div class="col-4">
-                    <h5 class="fw-bold">Recpal Demo1</h5>
+                    <h5 class="fw-bold">{{ agencySetting.agency_name }}</h5>
                     <p class="mb-0">Mob No: {{ agencySetting.contact }}</p>
                     <p class="mb-0">Email: {{ agencySetting.email }}</p>
                   </div>
@@ -19,7 +19,7 @@
                   <div class="col-4">
                     <div class="float-end">
                       <h5 class="fw-bold">Demo</h5>
-                      <p class="mb-0">London, UK</p>
+                      <p class="mb-0">{{ agencySetting.address }}</p>
                       <p class="mb-0">Mob No: {{ agencySetting.contact }}</p>
                       <p class="mb-0">Email: {{ agencySetting.email }}</p>
                     </div>

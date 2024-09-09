@@ -12,7 +12,7 @@
                 <div class="row">
                   <div class="col-4">
                     <h6 class="text-muted">BILLED FROM</h6>
-                    <h5 class="fw-bold">Thema Healthcare</h5>
+                    <h5 class="fw-bold">{{ agencySetting.agency_name }}</h5>
                     <p class="mb-0">Mob No: {{ agencySetting.contact }}</p>
                     <p class="mb-0">Email: {{ agencySetting.email }}</p>
                     <p class="mb-0">Address: {{ agencySetting.address }}</p>
