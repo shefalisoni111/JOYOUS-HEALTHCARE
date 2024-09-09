@@ -15,12 +15,17 @@
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
               <form @submit.prevent="addCandidate">
+                <!-- Invoice Creation Period -->
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-4">
                     <label class="form-label">Invoice Creation Period</label>
                   </div>
                   <div class="col-8">
-                    <select v-model="invoice_creation_period" required>
+                    <select
+                      v-model="invoice_creation_period"
+                      @change="handlePeriodChange"
+                      required
+                    >
                       <option value="">Select Period</option>
                       <option value="Weekly">Weekly</option>
                       <option value="Daily">Daily</option>
@@ -29,6 +34,7 @@
                   </div>
                 </div>
 
+                <!-- Agency Setting -->
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-4">
                     <label class="form-label">Agency Setting</label>
@@ -46,6 +52,8 @@
                     </select>
                   </div>
                 </div>
+
+                <!-- Start Date -->
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-4">
                     <label class="form-label">Start Date</label>
@@ -55,16 +63,19 @@
                       type="date"
                       class="form-control"
                       v-model="start_date"
+                      @change="handleDateChange"
                       required
                     />
                   </div>
                 </div>
+
+                <!-- End Date (Auto-calculated) -->
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-4">
                     <label class="form-label">End Date</label>
                   </div>
                   <div class="col-8">
-                    <input type="date" class="form-control" v-model="end_date" required />
+                    <input type="date" class="form-control" v-model="end_date" readonly />
                   </div>
                 </div>
               </form>
@@ -73,8 +84,6 @@
           <div class="modal-footer">
             <button
               class="btn btn-secondary rounded-1"
-              data-bs-target="#generateInvoice"
-              data-bs-toggle="modal"
               data-bs-dismiss="modal"
               @click="clearFieldsData"
             >
@@ -84,7 +93,7 @@
               type="submit"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               :disabled="!isValidForm || isFieldEmpty"
-              v-on:click="addCandidate"
+              @click="addCandidate"
             >
               Add
             </button>
@@ -111,20 +120,10 @@ export default {
   },
   computed: {
     isFieldEmpty() {
-      return (
-        !this.invoice_creation_period ||
-        !this.agency_setting_id ||
-        !this.start_date ||
-        !this.end_date
-      );
+      return !this.invoice_creation_period || !this.agency_setting_id || !this.start_date;
     },
     isValidForm() {
-      return (
-        this.invoice_creation_period &&
-        this.agency_setting_id &&
-        this.start_date &&
-        this.end_date
-      );
+      return this.invoice_creation_period && this.agency_setting_id && this.start_date;
     },
   },
   methods: {
@@ -143,14 +142,14 @@ export default {
         end_date: this.end_date,
       };
       try {
-        const response = await axios.post(`${VITE_API_URL}/create_client_invoice`, data, {
+        await axios.post(`${VITE_API_URL}/create_client_invoice`, data, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         });
       } catch (error) {
-        // console.error("Error creating client invoice:", error);
+        console.error("Error creating client invoice:", error);
       }
     },
     async getPositionMethod() {
@@ -158,8 +157,41 @@ export default {
         const response = await axios.get(`${VITE_API_URL}/agency_settings`);
         this.options = response.data;
       } catch (error) {
-        // console.error("Error fetching agency settings:", error);
+        console.error("Error fetching agency settings:", error);
       }
+    },
+    handleDateChange() {
+      if (this.start_date) {
+        this.updateEndDate();
+      }
+    },
+    handlePeriodChange() {
+      if (this.start_date) {
+        this.updateEndDate();
+      }
+    },
+    updateEndDate() {
+      const startDate = new Date(this.start_date);
+      let endDate;
+
+      switch (this.invoice_creation_period) {
+        case "Weekly":
+          endDate = new Date(startDate);
+          endDate.setDate(startDate.getDate() + 6); // Add 6 days to start date
+          break;
+        case "Daily":
+          endDate = new Date(startDate); // End date is the same as start date
+          break;
+        case "Monthly":
+          endDate = new Date(startDate);
+          endDate.setMonth(startDate.getMonth() + 1); // Add 1 month
+          endDate.setDate(endDate.getDate() - 1); // Set to last day of the month
+          break;
+        default:
+          endDate = "";
+      }
+
+      this.end_date = endDate ? endDate.toISOString().slice(0, 10) : ""; // Format the date to YYYY-MM-DD
     },
     async addCandidate() {
       if (!this.isFieldEmpty) {
