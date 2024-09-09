@@ -252,9 +252,14 @@
       </div>
     </div>
     <div class="mx-3" style="text-align: right" v-if="totalCount > 0">
-      <button class="btn btn-outline-dark btn-sm">
+      <!-- <button class="btn btn-outline-dark btn-sm">
         {{ getClientDetail.length }} Records Per Page
       </button>
+      <div class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+        <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+        <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+        <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+      </div> -->
       &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary mr-2"

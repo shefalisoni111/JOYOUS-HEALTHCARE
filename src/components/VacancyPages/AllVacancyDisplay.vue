@@ -202,11 +202,31 @@
     <AssignedVacancyList @assignVacancy="createVacancy" />
     <RejectedVacancyList @rejectVacancy="createVacancy" />
     <AllVacancyCandidateList @allVacancy="createVacancy" />
-    <AddVacancy @addVacancy="createVacancy" />
+    <AddVacancy @addVacancies="createVacancy" />
     <div class="mt-3" style="text-align: right" v-if="getVacancyDetail?.length >= 10">
-      <button class="btn btn-outline-dark btn-sm">
+      <!-- <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
+      </button> -->
+      <button
+        class="btn btn-sm btn-primary dropdown-toggle"
+        type="button"
+        id="recordsPerPageDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {{ itemsPerPage }} Records
       </button>
+      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+        </li>
+      </ul>
       &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary mr-2"
@@ -276,6 +296,11 @@ export default {
   },
 
   methods: {
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.createVacancy();
+    },
     reActivatedMethod(id) {
       if (!window.confirm("Are you sure you want to re-activate?")) {
         return;
@@ -404,6 +429,10 @@ export default {
         this.isLoading = true;
         await axios
           .get(`${VITE_API_URL}/vacancies`, {
+            params: {
+              page: this.currentPage,
+              per_page: this.itemsPerPage,
+            },
             headers: {
               "content-type": "application/json",
               Authorization: "bearer " + token,

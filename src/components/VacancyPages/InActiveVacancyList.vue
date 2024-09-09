@@ -86,9 +86,29 @@
       </div>
     </div>
     <div class="mt-3" style="text-align: right" v-if="getInactiveData.length >= 10">
-      <button class="btn btn-outline-dark btn-sm">
+      <!-- <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
+      </button> -->
+      <button
+        class="btn btn-sm btn-primary dropdown-toggle"
+        type="button"
+        id="recordsPerPageDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {{ itemsPerPage }} Records
       </button>
+      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+        </li>
+      </ul>
       &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary mr-2"
@@ -160,6 +180,11 @@ export default {
   },
 
   methods: {
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.getInactiveVacancyMethod();
+    },
     isEditAllowed(dates) {
       const today = new Date();
 
@@ -242,7 +267,12 @@ export default {
     async getInactiveVacancyMethod() {
       this.isLoading = true;
       try {
-        const response = await axios.get(`${VITE_API_URL}/inactive_vacancy_list`);
+        const response = await axios.get(`${VITE_API_URL}/inactive_vacancy_list`, {
+          params: {
+            page: this.currentPage,
+            per_page: this.itemsPerPage,
+          },
+        });
 
         this.getInactiveData = response.data.vacancies;
       } catch (error) {

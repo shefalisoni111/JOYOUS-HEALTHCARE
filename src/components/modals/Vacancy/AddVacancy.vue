@@ -299,13 +299,14 @@
       </div>
     </div>
     <SuccessAlert ref="successAlert" />
+    <NotSuccessAlertVue ref="dangerAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
-
+import NotSuccessAlertVue from "../../Alerts/NotSuccessAlert.vue";
 export default {
   name: "AddVacancy",
   data() {
@@ -340,7 +341,7 @@ export default {
       selectedDate: null,
     };
   },
-  components: { SuccessAlert },
+  components: { SuccessAlert, NotSuccessAlertVue },
   computed: {
     isFormValid() {
       return (
@@ -623,13 +624,16 @@ export default {
             setTimeout(() => {
               this.clearError();
             }, 100);
-            this.$emit("addVacancy");
+            this.$emit("addVacancies");
             // alert("Successful Shift added");
             const message = "Successful Shift added";
             this.$refs.successAlert.showSuccess(message);
           } else {
             if (this.client_rate.length === 0 && this.staff_rate.length === 0) {
-              alert("Please create rate for this client, job and site shift.");
+              this.$refs.dangerAlert.showSuccess(
+                "Please create rate for this client, job and site shift."
+              );
+              // alert("Please create rate for this client, job and site shift.");
             }
 
             this.clearFields();
