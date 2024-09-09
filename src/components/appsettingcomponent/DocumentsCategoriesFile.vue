@@ -60,7 +60,7 @@
                 <li class="p-3">
                   <i
                     class="bi bi-trash btn btn-outline-success text-nowrap text-nowrap cursor-pointer"
-                    v-on:click="confirmed(getCate.id)"
+                    v-on:click="confirmedCat(getCate.id)"
                   ></i>
                 </li>
                 <li class="p-3">
@@ -239,6 +239,20 @@ export default {
       this.confirmCallback = async () => {
         try {
           await axios.delete(`${VITE_API_URL}/documents/` + id);
+          this.getDocCAtegories();
+        } catch (error) {
+          // console.error("Error deleting document:", error);
+        } finally {
+          this.isModalVisible = false;
+        }
+      };
+    },
+    confirmedCat(id) {
+      this.confirmMessage = "Are you sure want to delete?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        try {
+          await axios.delete(`${VITE_API_URL}/document_categories/` + id);
           this.getDocCAtegories();
         } catch (error) {
           // console.error("Error deleting document:", error);
