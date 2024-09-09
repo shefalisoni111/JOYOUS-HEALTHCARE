@@ -33,9 +33,15 @@
                   <div class="row">
                     <div class="col-4">
                       <p class="mb-1">BILLED FROM</p>
-                      <h5 class="fw-bold">Recpal Demo1</h5>
-                      <p class="mb-0">Mob No: +91 70206 07635</p>
-                      <p class="mb-0">Email: geethu@recpal.co.uk</p>
+                      <h5 class="fw-bold">
+                        <!-- {{ getClientInvoiceDetail.agency_setting.agency_name }} -->
+                      </h5>
+                      <p class="mb-0">
+                        <!-- Mob No: {{ getClientInvoiceDetail.agency_setting.contact }} -->
+                      </p>
+                      <p class="mb-0">
+                        <!-- Email: {{ getClientInvoiceDetail.agency_setting.email }} -->
+                      </p>
                     </div>
                     <div class="col-4"></div>
                     <div class="col-4">
@@ -52,15 +58,21 @@
                   <div class="row">
                     <div class="col-4">
                       <p class="mb-1">SUPPLIER</p>
-                      <h5 class="fw-bold">Zeba S</h5>
-                      <p class="mb-0">Mob No: +91 70206 07635</p>
+                      <h5 class="fw-bold">{{ getClientInvoiceDetail.staff }}</h5>
+                      <p class="mb-0">Mob No: {{ getClientInvoiceDetail.staff }}</p>
                       <p class="mb-0">Email: geethu@recpal.co.uk</p>
                     </div>
                     <div class="col-4">
                       <p class="mb-1">SHIP TO</p>
-                      <h5 class="fw-bold">Recpal Demo1</h5>
-                      <p class="mb-0">+91 70206 07635</p>
-                      <p class="mb-0">Email: geethu@recpal.co.uk</p>
+                      <h5 class="fw-bold">
+                        <!-- {{ getClientInvoiceDetail.agency_setting.agency_name }} -->
+                      </h5>
+                      <p class="mb-0">
+                        <!-- {{ getClientInvoiceDetail.agency_setting.email }} -->
+                      </p>
+                      <p class="mb-0">
+                        <!-- Email: {{ getClientInvoiceDetail.agency_setting.email }} -->
+                      </p>
                     </div>
                     <div class="col-4">
                       <div class="float-end">

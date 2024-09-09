@@ -420,18 +420,18 @@ export default {
       }
     },
   },
-  async beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      vm.createVacancy();
-    });
-  },
-  async beforeRouteUpdate(to, from, next) {
-    this.createVacancy();
+  // async beforeRouteEnter(to, from, next) {
+  //   next((vm) => {
+  //     vm.createVacancy();
+  //   });
+  // },
+  // async beforeRouteUpdate(to, from, next) {
+  //   this.createVacancy();
 
-    next();
-  },
-  async mounted() {
-    await this.createVacancy();
+  //   next();
+  // },
+  created() {
+    this.createVacancy();
   },
 };
 </script>

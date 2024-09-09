@@ -187,8 +187,8 @@
                 <tr>
                   <th rowspan="3">ID</th>
                   <th rowspan="3" style="width: 11%">Name</th>
-                  <th rowspan="3">Site</th>
-                  <th rowspan="3">Shift</th>
+                  <!-- <th rowspan="3">Site</th>
+                  <th rowspan="3">Shift</th> -->
                   <th>
                     <div class="calendar-grid">
                       <div v-for="day in daysOfWeek" :key="day" class="day-header">
@@ -262,10 +262,10 @@
                     >
                   </td>
 
-                  <td>
+                  <!-- <td>
                     {{ data.site ? data.site : "Null" }}
                   </td>
-                  <td>{{ data.shift_date }}</td>
+                  <td>{{ data.shift_date }}</td> -->
 
                   <td>
                     <div class="calendar-grid">
