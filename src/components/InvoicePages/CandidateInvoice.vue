@@ -137,19 +137,19 @@
                           <td scope="col">{{ data.end_date }}</td>
                           <td scope="col">{{ data.created_on }}</td>
                           <td scope="col">
-                            {{ data.due_date ? data.due_date : "Null" }}
+                            {{ data.due_date }}
                           </td>
                           <td scope="col" class="text-center">{{ data.total_amount }}</td>
                           <td scope="col" class="text-center">{{ data.paid_amount }}</td>
                           <td scope="col" class="text-center">
                             {{ data.balance_amount }}
                           </td>
-                          <td scope="col">{{ data.status ? data.status : "Null" }}</td>
+                          <td scope="col">{{ data.status }}</td>
 
                           <td scope="col">{{ data.invoice_lock }}</td>
                           <td scope="col">{{ data.generated_by }}</td>
                           <td scope="col">
-                            {{ data.email_status ? email_status : "Null" }}
+                            {{ data.email_status }}
                           </td>
                           <td>
                             <router-link
@@ -194,19 +194,19 @@
                           <td scope="col">{{ data.end_date }}</td>
                           <td scope="col">{{ data.created_on }}</td>
                           <td scope="col">
-                            {{ data.due_date ? data.due_date : "Null" }}
+                            {{ data.due_date }}
                           </td>
                           <td scope="col" class="text-center">{{ data.total_amount }}</td>
                           <td scope="col" class="text-center">{{ data.paid_amount }}</td>
                           <td scope="col" class="text-center">
                             {{ data.balance_amount }}
                           </td>
-                          <td scope="col">{{ data.status ? data.status : "Null" }}</td>
+                          <td scope="col">{{ data.status }}</td>
 
                           <td scope="col">{{ data.invoice_lock }}</td>
                           <td scope="col">{{ data.generated_by }}</td>
                           <td scope="col">
-                            {{ data.email_status ? data.email_status : "Null" }}
+                            {{ data.email_status }}
                           </td>
                           <td>
                             <router-link

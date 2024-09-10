@@ -215,7 +215,7 @@
                           <td scope="col" class="text-center">
                             {{ data.balance_amount }}
                           </td>
-                          <td scope="col">{{ data.status ? data.status : "Null" }}</td>
+                          <td scope="col">{{ data.status }}</td>
                           <td scope="col">{{ data.invoice_creation_period }}</td>
 
                           <td><button class="btn btn-success">Approved</button></td>
@@ -306,7 +306,7 @@
                           <td scope="col" class="text-center">
                             {{ data.balance_amount }}
                           </td>
-                          <td scope="col">{{ data.status ? data.status : "Null" }}</td>
+                          <td scope="col">{{ data.status }}</td>
                           <td scope="col">{{ data.invoice_creation_period }}</td>
 
                           <td><button class="btn btn-success">Approved</button></td>

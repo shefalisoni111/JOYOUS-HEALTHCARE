@@ -121,19 +121,15 @@
                           }}
                         </td>
                         <td scope="col">{{ data.document_name }}</td>
-                        <td scope="col">{{ "null" }}</td>
+                        <td scope="col"></td>
                         <td scope="col">
-                          {{ data.issue_date ? data.issue_date : "null" }}
+                          {{ data.issue_date }}
                         </td>
                         <td scope="col">
-                          {{ data.expiry_date ? data.expiry_date : "null" }}
+                          {{ data.expiry_date }}
                         </td>
                         <td scope="col">
-                          {{
-                            data.document_category
-                              ? data.document_category.status
-                              : "null"
-                          }}
+                          {{ data.document_category }}
                         </td>
                       </tr>
                     </tbody>

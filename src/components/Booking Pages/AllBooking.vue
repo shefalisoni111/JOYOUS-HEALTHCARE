@@ -38,10 +38,10 @@
             <td scope="col">{{ data.booking_date }}</td>
             <td scope="col">{{ data.start_time }}</td>
             <td scope="col">{{ data.end_time }}</td>
-            <td scope="col">{{ data.break ? data.break : "null" }}</td>
-            <td scope="col">{{ data.duration ? data.duration : "null" }}</td>
-            <td scope="col">{{ data.notes ? data.notes : "null" }}</td>
-            <td scope="col">{{ data.status ? data.status : "null" }}</td>
+            <td scope="col">{{ data.break }}</td>
+            <td scope="col">{{ data.duration }}</td>
+            <td scope="col">{{ data.notes }}</td>
+            <td scope="col">{{ data.status }}</td>
             <td scope="col">
               <button class="btn btn-danger">
                 <i

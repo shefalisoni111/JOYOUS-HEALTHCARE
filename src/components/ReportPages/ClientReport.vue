@@ -131,7 +131,7 @@
                         </button>
                       </div>
 
-                     <!-- <button type="button" class="btn btn-outline-success text-nowrap">
+                      <!-- <button type="button" class="btn btn-outline-success text-nowrap">
                         <i class="bi bi-eye"></i> Customize View
                       </button> -->
                     </div>
@@ -231,23 +231,23 @@
                           <td scope="col">{{ data.id }}</td>
                           <td scope="col">{{ data.code }}</td>
                           <td scope="col">{{ data.name }}</td>
-                          <td scope="col">{{ data.site ? data.site : "null" }}</td>
-                          <td scope="col">{{ data.job ? data.job : "null" }}</td>
+                          <td scope="col">{{ data.site }}</td>
+                          <td scope="col">{{ data.job }}</td>
                           <td scope="col">{{ data.shift_date }}</td>
                           <td scope="col">
-                            {{ data.start_time ? data.start_time : "null" }}
+                            {{ data.start_time }}
                           </td>
                           <td scope="col">
-                            {{ data.end_time ? data.end_time : "null" }}
+                            {{ data.end_time }}
                           </td>
                           <td scope="col">
-                            {{ data.total_hours ? data.total_hours : "null" }}
+                            {{ data.total_hours }}
                           </td>
                           <td scope="col">
-                            {{ data.client_rate ? data.client_rate : "null" }}
+                            {{ data.client_rate }}
                           </td>
                           <td scope="col">
-                            {{ data.total_cost ? data.total_cost : "null" }}
+                            {{ data.total_cost }}
                           </td>
                           <td scope="col">
                             <div v-if="data.paper_timesheet">
@@ -376,23 +376,23 @@
                           <td scope="col">{{ data.id }}</td>
                           <td scope="col">{{ data.code }}</td>
                           <td scope="col">{{ data.name }}</td>
-                          <td scope="col">{{ data.site ? data.site : "null" }}</td>
-                          <td scope="col">{{ data.job ? data.job : "null" }}</td>
+                          <td scope="col">{{ data.site }}</td>
+                          <td scope="col">{{ data.job }}</td>
                           <td scope="col">{{ data.shift_date }}</td>
                           <td scope="col">
-                            {{ data.start_time ? data.start_time : "null" }}
+                            {{ data.start_time }}
                           </td>
                           <td scope="col">
-                            {{ data.end_time ? data.end_time : "null" }}
+                            {{ data.end_time }}
                           </td>
                           <td scope="col">
-                            {{ data.total_hours ? data.total_hours : "null" }}
+                            {{ data.total_hours }}
                           </td>
                           <td scope="col">
-                            {{ data.client_rate ? data.client_rate : "null" }}
+                            {{ data.client_rate }}
                           </td>
                           <td scope="col">
-                            {{ data.total_cost ? data.total_cost : "null" }}
+                            {{ data.total_cost }}
                           </td>
                           <td scope="col">
                             <div v-if="data.paper_timesheet">
