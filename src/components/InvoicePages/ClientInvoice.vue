@@ -350,6 +350,53 @@
         </div>
       </div>
     </div>
+    <div
+      class="mx-3"
+      style="text-align: right"
+      v-if="getClientInvoiceDetail?.length >= 10"
+    >
+      <!-- <button class="btn btn-outline-dark btn-sm">
+        {{ getClientDetail.length }} Records Per Page
+      </button> -->
+      <button
+        class="btn btn-sm btn-primary dropdown-toggle"
+        type="button"
+        id="recordsPerPageDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {{ itemsPerPage }} Records
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+        </li>
+      </ul>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="changePage(currentPage - 1)"
+      >
+        Previous
+      </button>
+      &nbsp;&nbsp;
+      <span>{{ currentPage }} of {{ totalPages }}</span>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage === totalPages"
+        @click="changePage(currentPage + 1)"
+      >
+        Next
+      </button>
+    </div>
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
   </div>
@@ -380,6 +427,9 @@ export default {
       debounceTimeout: null,
       searchResults: [],
       showFilters: false,
+      totalPages: 1,
+      itemsPerPage: 10,
+      totalCount: 0,
       clientData: [],
       candidateLists: [],
       businessUnit: [],
@@ -690,11 +740,20 @@ export default {
     //     });
     //   // alert("Record Deleted ");
     // },
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.getClientInvoice();
+    },
     async getClientInvoice() {
       this.isLoading = true;
       const token = localStorage.getItem("token");
       try {
         const response = await axios.get(`${VITE_API_URL}/client_invoices`, {
+          params: {
+            per_page: this.itemsPerPage,
+          },
+
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token,

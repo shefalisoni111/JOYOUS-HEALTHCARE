@@ -505,7 +505,6 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-  height: 100vh;
 }
 .main-content {
   transition: all 0.3s;

@@ -31,7 +31,11 @@
     </div>
     <div class="col-12">
       <div class="">
-        <div class="accordion mt-3" v-for="(getCate, index) in getCategory" :key="index">
+        <div
+          class="accordion mt-3"
+          v-for="(getCate, index) in paginateSiteData"
+          :key="index"
+        >
           <div class="accordion-item">
             <h2
               class="accordion-header d-flex justify-content-between align-items-center"
@@ -138,6 +142,28 @@
         </div>
       </div>
     </div>
+    <div class="mx-3 mt-3" style="text-align: right" v-if="getCategory?.length">
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= getCategory?.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
     <ConfirmationAlert
       :show-modal="isModalVisible"
       :message="confirmMessage"
@@ -183,6 +209,8 @@ export default {
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,
+      currentPage: 1,
+      itemsPerPage: 6,
     };
   },
   components: {
@@ -192,7 +220,19 @@ export default {
     Loader,
     ConfirmationAlert,
   },
-
+  computed: {
+    paginateSiteData() {
+      if (this.getCategory && Array.isArray(this.getCategory)) {
+        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        const endIndex = startIndex + this.itemsPerPage;
+        return this.getCategory.slice(startIndex, endIndex);
+      }
+      return [];
+    },
+    totalRecordsOnPage() {
+      return this.paginateSiteData.length;
+    },
+  },
   methods: {
     isCheckboxDisabled(doc, field) {
       return doc[field] !== undefined;

@@ -79,7 +79,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="jobs in getJobs" :key="jobs.id">
+                <tr v-for="jobs in paginateSiteData" :key="jobs.id">
                   <td v-text="jobs.id"></td>
                   <td scope="row">
                     <i class="bi bi-square-fill" :style="{ color: jobs.color }"></i>
@@ -107,7 +107,7 @@
           id="pills-profile"
           role="tabpanel"
           aria-labelledby="inactive"
-          tabindex="0"
+          tabindex="1"
         >
           <table class="table table table-hover addjobtable">
             <thead>
@@ -164,6 +164,28 @@
         </div>
       </div>
     </div>
+    <div class="mx-3" style="text-align: right" v-if="shouldShowPagination">
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= getJobs?.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
     <ConfirmationAlert
       :show-modal="isModalVisible"
       :message="confirmMessage"
@@ -201,6 +223,8 @@ export default {
       confirmCallback: null,
       showModal: false,
       alertMessage: "",
+      currentPage: 1,
+      itemsPerPage: 10,
     };
   },
   components: {
@@ -211,7 +235,22 @@ export default {
     Loader,
     ShowDetailsMessage,
   },
-
+  computed: {
+    shouldShowPagination() {
+      return this.activeTab === "active" && this.getJobs.length >= 10;
+    },
+    paginateSiteData() {
+      if (this.getJobs && Array.isArray(this.getJobs)) {
+        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        const endIndex = startIndex + this.itemsPerPage;
+        return this.getJobs.slice(startIndex, endIndex);
+      }
+      return [];
+    },
+    totalRecordsOnPage() {
+      return this.paginateSiteData.length;
+    },
+  },
   methods: {
     confirmed(id) {
       this.isModalVisible = false;

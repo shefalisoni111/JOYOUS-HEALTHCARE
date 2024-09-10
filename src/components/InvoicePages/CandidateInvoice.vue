@@ -244,6 +244,53 @@
         </div>
       </div>
     </div>
+    <div
+      class="mx-3"
+      style="text-align: right"
+      v-if="getStaffInvoiceDetail?.length >= 10"
+    >
+      <!-- <button class="btn btn-outline-dark btn-sm">
+        {{ getClientDetail.length }} Records Per Page
+      </button> -->
+      <button
+        class="btn btn-sm btn-primary dropdown-toggle"
+        type="button"
+        id="recordsPerPageDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {{ itemsPerPage }} Records
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+        </li>
+      </ul>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="changePage(currentPage - 1)"
+      >
+        Previous
+      </button>
+      &nbsp;&nbsp;
+      <span>{{ currentPage }} of {{ totalPages }}</span>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage === totalPages"
+        @click="changePage(currentPage + 1)"
+      >
+        Next
+      </button>
+    </div>
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
@@ -271,6 +318,10 @@ export default {
       debounceTimeout: null,
       searchResults: [],
       isLoading: false,
+
+      totalPages: 1,
+      itemsPerPage: 10,
+      totalCount: 0,
     };
   },
   components: { Loader },
@@ -407,16 +458,24 @@ export default {
     //       },
     //     })
     //     .then((response) => {
-    //       this.createVacancy();
+    //       this.createStaffInvoiceMethod();
     //     });
     //   // alert("Record Deleted ");
     // },
-    async createVacancy() {
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.createStaffInvoiceMethod();
+    },
+    async createStaffInvoiceMethod() {
       this.isLoading = true;
       const token = localStorage.getItem("token");
 
       try {
         const response = await axios.get(`${VITE_API_URL}/staff_invoices`, {
+          params: {
+            per_page: this.itemsPerPage,
+          },
           headers: {
             "content-type": "application/json",
             Authorization: "bearer " + token,
@@ -436,7 +495,7 @@ export default {
   },
 
   mounted() {
-    this.createVacancy();
+    this.createStaffInvoiceMethod();
     this.loadDateRangeFromLocalStorage();
     this.updateDateRange();
     // const currentDate = new Date();

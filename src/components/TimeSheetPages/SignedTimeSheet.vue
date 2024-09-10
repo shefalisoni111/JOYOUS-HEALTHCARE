@@ -317,11 +317,39 @@
     <div
       class="mx-3 mb-2"
       style="text-align: right"
-      v-if="getSignedTimeSheetData.length >= 8 && !searchResults.length"
+      v-if="getSignedTimeSheetData.length >= 10 && !searchResults.length"
     >
-      <button class="btn btn-outline-dark btn-sm">
+      <!-- <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
-      </button>
+      </button> -->
+      <div class="dropdown d-inline-block">
+        <button
+          class="btn btn-sm btn-primary dropdown-toggle"
+          type="button"
+          id="recordsPerPageDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ itemsPerPage }} Records
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+          <li>
+            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(20)"
+              >20 Records</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(50)"
+              >50 Records</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(100)"
+              >100 Records</a
+            >
+          </li>
+        </ul>
+      </div>
       &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary mr-2"
@@ -401,7 +429,8 @@ export default {
       errorMessage: "",
       errorMessageSigned: "",
       currentPage: 1,
-      itemsPerPage: 5,
+      itemsPerPage: 10,
+      totalRecords: 0,
     };
   },
   components: { Navbar, SignedTimesheetViewVue, Loader },
@@ -643,6 +672,11 @@ export default {
         }
       }
     },
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.signedTimeSheetMethod();
+    },
     async signedTimeSheetMethod() {
       this.isLoading = true;
       const token = localStorage.getItem("token");
@@ -662,6 +696,7 @@ export default {
       const formattedEndDate = endOfMonth.toLocaleDateString("en-GB");
       const requestData = {
         date: formattedStartDate,
+        per_page: this.itemsPerPage,
         // end_date: endOfMonth.toLocaleDateString(),
       };
 

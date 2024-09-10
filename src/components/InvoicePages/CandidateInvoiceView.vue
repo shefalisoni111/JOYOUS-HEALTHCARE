@@ -34,13 +34,13 @@
                     <div class="col-4">
                       <p class="mb-1">BILLED FROM</p>
                       <h5 class="fw-bold">
-                        <!-- {{ getClientInvoiceDetail.agency_setting.agency_name }} -->
+                        {{ getClientInvoiceDetail.agency_setting?.agency_name }}
                       </h5>
                       <p class="mb-0">
-                        <!-- Mob No: {{ getClientInvoiceDetail.agency_setting.contact }} -->
+                        Mob No: {{ getClientInvoiceDetail.agency_setting?.contact }}
                       </p>
                       <p class="mb-0">
-                        <!-- Email: {{ getClientInvoiceDetail.agency_setting.email }} -->
+                        Email: {{ getClientInvoiceDetail.agency_setting?.email }}
                       </p>
                     </div>
                     <div class="col-4"></div>
@@ -65,13 +65,13 @@
                     <div class="col-4">
                       <p class="mb-1">SHIP TO</p>
                       <h5 class="fw-bold">
-                        <!-- {{ getClientInvoiceDetail.agency_setting.agency_name }} -->
+                        {{ getClientInvoiceDetail.agency_setting?.agency_name }}
                       </h5>
                       <p class="mb-0">
-                        <!-- {{ getClientInvoiceDetail.agency_setting.email }} -->
+                        {{ getClientInvoiceDetail.agency_setting?.email }}
                       </p>
                       <p class="mb-0">
-                        <!-- Email: {{ getClientInvoiceDetail.agency_setting.email }} -->
+                        Email: {{ getClientInvoiceDetail.agency_setting?.email }}
                       </p>
                     </div>
                     <div class="col-4">
@@ -196,6 +196,7 @@
                   <button
                     type="button"
                     class="btn btn-outline-success text-nowrap text-nowrap"
+                    @click="generatePDF"
                   >
                     <i class="bi bi-file-earmark-pdf"></i> PDF
                   </button>
@@ -232,6 +233,25 @@ export default {
   },
   computed: {},
   methods: {
+    async generatePDF() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/generate_staff_pdf/${this.$route.params.id}`,
+          {
+            responseType: "blob",
+          }
+        );
+
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `invoice_${this.$route.params.id}.pdf`);
+        document.body.appendChild(link);
+        link.click();
+      } catch (error) {
+        // console.error("Error generating PDF:", error);
+      }
+    },
     handleEditClick() {
       if (!this.getClientInvoiceDetail.invoice_lock) {
         this.toggleEditMode(this.getClientInvoiceDetail.id);
@@ -246,28 +266,7 @@ export default {
     updateTemplate() {
       this.$store.commit("setSelectedTemplate", this.selectedTemplate);
     },
-    async generatePDF() {
-      if (!this.$route.params.id) {
-        return;
-      }
-      try {
-        const response = await axios.get(
-          `${VITE_API_URL}/generate_pdf/${this.$route.params.id}`,
-          {
-            responseType: "blob",
-          }
-        );
 
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", `invoice_${this.id}.pdf`);
-        document.body.appendChild(link);
-        link.click();
-      } catch (error) {
-        // console.error("Error generating PDF:", error);
-      }
-    },
     async createStaffInvoice() {
       const id = this.$route.params.id;
       if (!id) {
@@ -281,7 +280,7 @@ export default {
         this.invoiceLogs = clientInvoice.logs.map((log) => ({
           ...log,
           isEditing: false,
-        })); // Initialize logs
+        }));
       } catch (error) {
         // console.error("Error fetching client invoice:", error);
       }

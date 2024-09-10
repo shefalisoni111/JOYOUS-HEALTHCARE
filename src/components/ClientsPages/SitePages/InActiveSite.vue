@@ -73,9 +73,37 @@
     <EditSite :siteId="selectedsiteId || 0" ref="refSite" />
     <loader :isLoading="isLoading"></loader>
     <div class="mx-3" style="text-align: right" v-if="getSiteInactiveData?.length >= 10">
-      <button class="btn btn-outline-dark btn-sm">
+      <!-- <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
-      </button>
+      </button> -->
+      <div class="dropdown d-inline-block">
+        <button
+          class="btn btn-sm btn-primary dropdown-toggle"
+          type="button"
+          id="recordsPerPageDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ itemsPerPage }} Records
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+          <li>
+            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(20)"
+              >20 Records</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(50)"
+              >50 Records</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(100)"
+              >100 Records</a
+            >
+          </li>
+        </ul>
+      </div>
       &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary mr-2"
@@ -107,6 +135,7 @@ export default {
       selectedsiteId: 0,
       isLoading: false,
       currentPage: 1,
+      totalRecords: 0,
       itemsPerPage: 10,
     };
   },
@@ -130,10 +159,20 @@ export default {
       this.selectedsiteId = siteId;
       this.$refs.refSite.getClientMethod();
     },
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.getSiteInactiveMethod();
+    },
     async getSiteInactiveMethod() {
       this.isLoading = true;
       try {
-        const response = await axios.get(`${VITE_API_URL}/inactivated_site`);
+        const response = await axios.get(`${VITE_API_URL}/inactivated_site`, {
+          params: {
+            page: this.currentPage,
+            per_page: this.itemsPerPage,
+          },
+        });
         this.getSiteInactiveData = response.data.data;
       } catch (error) {
       } finally {

@@ -187,9 +187,34 @@
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
     <div class="mx-3" style="text-align: right" v-if="getSiteAllData?.length >= 10">
-      <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
-      </button>
+      <div class="dropdown d-inline-block">
+        <button
+          class="btn btn-sm btn-primary dropdown-toggle"
+          type="button"
+          id="recordsPerPageDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ itemsPerPage }} Records
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+          <li>
+            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(20)"
+              >20 Records</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(50)"
+              >50 Records</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(100)"
+              >100 Records</a
+            >
+          </li>
+        </ul>
+      </div>
       &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary mr-2"
@@ -225,6 +250,7 @@ export default {
       showFilters: false,
       getSiteDetail: [],
       currentPage: 1,
+      totalRecords: 0,
       itemsPerPage: 10,
       siteIds: [],
       client_id: null,
@@ -496,11 +522,23 @@ export default {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     },
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.getSiteAllDataMethod();
+    },
+
     async getSiteAllDataMethod() {
       this.isLoading = true;
       try {
-        const response = await axios.get(`${VITE_API_URL}/sites`);
+        const response = await axios.get(`${VITE_API_URL}/sites`, {
+          params: {
+            page: this.currentPage,
+            per_page: this.itemsPerPage,
+          },
+        });
         this.getSiteAllData = response.data.data;
+        this.totalRecords = response.data.total;
       } catch (error) {
         // console.error("Error fetching data:", error);
       } finally {
@@ -614,7 +652,6 @@ export default {
 #main {
   padding: 20px 20px;
   transition: all 0.3s;
-  height: 100dvh;
 
   background-color: #fdce5e17;
 }

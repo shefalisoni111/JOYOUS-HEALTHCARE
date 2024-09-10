@@ -474,12 +474,40 @@
         id="get-pagination"
         style="text-align: right"
         v-if="
-          paginationBooking && currentTab === 'AllBooking' && getBookingData?.length >= 8
+          paginationBooking && currentTab === 'AllBooking' && getBookingData?.length >= 10
         "
       >
-        <button class="btn btn-outline-dark btn-sm">
+        <!-- <button class="btn btn-outline-dark btn-sm">
           {{ totalRecordsOnPage }} Records Per Page
-        </button>
+        </button> -->
+        <div class="dropdown d-inline-block">
+          <button
+            class="btn btn-sm btn-primary dropdown-toggle"
+            type="button"
+            id="recordsPerPageDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            {{ itemsPerPage }} Records
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+            <li>
+              <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(20)"
+                >20 Records</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(50)"
+                >50 Records</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(100)"
+                >100 Records</a
+              >
+            </li>
+          </ul>
+        </div>
         &nbsp;&nbsp;
         <button
           class="btn btn-sm btn-primary mr-2"
@@ -564,7 +592,8 @@ export default {
       endDate: new Date(),
       getBookingData: [],
       currentPage: 1,
-      itemsPerPage: 9,
+      itemsPerPage: 10,
+      totalRecords: 0,
       deleteBookingDataPage: 1,
       currentPageSearch: 1,
       showFilters: false,
@@ -835,43 +864,43 @@ export default {
     closeModal() {
       this.showModal = false;
     },
-    // async getCandidateListMethod() {
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/candidates`);
-    //     this.candidateLists = response.data.data;
-    //     this.candidateStatus = response.data.data.status;
-    //   } catch (error) {
-    //     if (error.response) {
-    //       if (error.response.status == 404) {
-    //         // alert(error.response.data.message);
-    //       }
-    //     }
-    //   }
-    // },
-    // async getPositionMethod() {
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/active_job_list`);
-    //     this.options = response.data.data;
-    //   } catch (error) {
-    //     if (error.response) {
-    //       if (error.response.status == 404) {
-    //         // alert(error.response.data.message);
-    //       }
-    //     }
-    //   }
-    // },
-    // async getBusinessUnitMethod() {
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/activated_site`);
-    //     this.businessUnit = response.data.data;
-    //   } catch (error) {
-    //     if (error.response) {
-    //       if (error.response.status == 404) {
-    //         // alert(error.response.data.message);
-    //       }
-    //     }
-    //   }
-    // },
+    async getCandidateListMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/candidates`);
+        this.candidateLists = response.data.data;
+        this.candidateStatus = response.data.data.status;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    async getPositionMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+        this.options = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
+    async getBusinessUnitMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/activated_site`);
+        this.businessUnit = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
     moveToPrevious() {
       if (this.currentView === "weekly") {
         this.startDate.setDate(this.startDate.getDate() - 7);
@@ -937,7 +966,11 @@ export default {
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
-
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.fetchBookingDataMethod();
+    },
     async fetchBookingDataMethod() {
       const token = localStorage.getItem("token");
       this.isLoading = true;
@@ -947,6 +980,7 @@ export default {
       if (this.currentView === "weekly") {
         requestData = {
           date: this.formatDate(this.startDate),
+          per_page: this.itemsPerPage,
         };
         url = `${VITE_API_URL}/find_booking_according_current_week`;
       } else if (this.currentView === "monthly") {
@@ -995,11 +1029,11 @@ export default {
   async mounted() {
     this.loadDateRangeFromLocalStorage();
 
-    // await this.getPositionMethod();
+    await this.getPositionMethod();
 
-    // await this.getBusinessUnitMethod();
+    await this.getBusinessUnitMethod();
 
-    // await this.getCandidateListMethod();
+    await this.getCandidateListMethod();
     const currentDate = new Date();
     const dayOfWeek = currentDate.getDay();
     const startOfWeek = new Date(currentDate);
