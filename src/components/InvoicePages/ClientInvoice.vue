@@ -428,6 +428,7 @@ export default {
       searchResults: [],
       showFilters: false,
       totalPages: 1,
+      currentPage: 1,
       itemsPerPage: 10,
       totalCount: 0,
       clientData: [],

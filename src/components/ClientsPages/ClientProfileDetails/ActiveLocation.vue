@@ -15,8 +15,8 @@
             + Add Site
           </button>
         </div>
-        <div v-if="getClientDatas?.length > 0">
-          <div class="card mt-2" v-for="data in getClientDatas" :key="data.id">
+        <div v-if="paginateCandidates?.length > 0">
+          <div class="card mt-2" v-for="data in paginateCandidates" :key="data.id">
             <div class="card-header">
               <!-- <router-link
               :to="{ name: 'SingleSiteprofile' }"
@@ -65,9 +65,31 @@
         </div>
       </div>
     </div>
+    <div class="mx-3 mt-3" style="text-align: right" v-if="getClientDatas?.length >= 3">
+      <button class="btn btn-outline-dark btn-sm">
+        {{ itemsPerPage }} Records Per Page
+      </button>
+
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= getClientDatas?.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
     <AddClientSite
       :id="$route.params.id"
-      @addSite="getSiteAllDataMethod"
+      @addSite="getClientMethod"
       ref="addClientSiteRef"
       @addClientSiteRefs="handleActiveClientSite"
     />
@@ -95,9 +117,9 @@ export default {
       isActive: true,
       searchQuery: "",
       isLoading: false,
-      // clientId: this.$route.params.id,
+
       currentPage: 1,
-      itemsPerPage: 8,
+      itemsPerPage: 3,
       selectedsiteId: 0,
     };
   },
@@ -106,7 +128,7 @@ export default {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
-      return this.getClientDetail.slice(startIndex, endIndex);
+      return this.getClientDatas.slice(startIndex, endIndex);
     },
     totalRecordsOnPage() {
       return this.paginateCandidates.length;
@@ -115,7 +137,14 @@ export default {
 
   methods: {
     handleActiveClientSite() {
-      this.$refs.addClientSiteRef.getClientMethod();
+      if (
+        this.$refs.addClientSiteRef &&
+        typeof this.$refs.addClientSiteRef.getClientMethod === "function"
+      ) {
+        this.$refs.addClientSiteRef.getClientMethod();
+      } else {
+        // console.error('getClientMethod is not defined on addClientSiteRef');
+      }
     },
     editsiteId(siteId) {
       this.selectedsiteId = siteId;
@@ -141,14 +170,7 @@ export default {
         // console.error("Error fetching data:", error);
       }
     },
-    // async clientsDeleteMethod(id) {
-    //   if (!window.confirm("Are you Sure ?")) {
-    //     return;
-    //   }
-    //   await axios.delete(`${VITE_API_URL}/clients/` + id).then((response) => {
-    //     this.createdClient();
-    //   });
-    // },
+
     async createdClient() {
       await axios
         .get(`${VITE_API_URL}/clients`)

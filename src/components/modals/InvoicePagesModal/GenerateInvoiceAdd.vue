@@ -41,7 +41,6 @@
                   </div>
                   <div class="col-8">
                     <select v-model="agency_setting_id" required>
-                      <option value="">Select Agency</option>
                       <option
                         v-for="option in options"
                         :key="option.id"
@@ -94,6 +93,7 @@
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               :disabled="!isValidForm || isFieldEmpty"
               @click="addCandidate"
+              :data-bs-dismiss="!isFieldEmpty && isValidForm ? 'modal' : null"
             >
               Add
             </button>
@@ -101,11 +101,15 @@
         </div>
       </div>
     </div>
+    <SuccessAlert ref="showSuccess" />
+    <NotSuccessAlertVue ref="dangerAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import NotSuccessAlertVue from "../../Alerts/NotSuccessAlert.vue";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
   name: "GenerateInvoiceAdd",
@@ -117,6 +121,10 @@ export default {
       end_date: "",
       options: [],
     };
+  },
+  components: {
+    NotSuccessAlertVue,
+    SuccessAlert,
   },
   computed: {
     isFieldEmpty() {
@@ -142,14 +150,27 @@ export default {
         end_date: this.end_date,
       };
       try {
-        await axios.post(`${VITE_API_URL}/create_client_invoice`, data, {
+        const response = await axios.post(`${VITE_API_URL}/create_client_invoice`, data, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         });
+        if (response.data.error) {
+          this.emailError = response.data.error;
+
+          this.$refs.dangerAlert(this.emailError);
+        } else {
+          this.$emit("addSite");
+          const message = "Invoice successfully created";
+
+          this.$refs.showSuccess(message);
+        }
       } catch (error) {
-        console.error("Error creating client invoice:", error);
+        // const errorMessage = "Error creating invoice. Please try again.";
+        // if (this.$refs.notSuccessAlert) {
+        //   this.$refs.notSuccessAlert.dangerAlert(errorMessage);
+        // }
       }
     },
     async getPositionMethod() {
@@ -177,21 +198,21 @@ export default {
       switch (this.invoice_creation_period) {
         case "Weekly":
           endDate = new Date(startDate);
-          endDate.setDate(startDate.getDate() + 6); // Add 6 days to start date
+          endDate.setDate(startDate.getDate() + 6);
           break;
         case "Daily":
-          endDate = new Date(startDate); // End date is the same as start date
+          endDate = new Date(startDate);
           break;
         case "Monthly":
           endDate = new Date(startDate);
-          endDate.setMonth(startDate.getMonth() + 1); // Add 1 month
-          endDate.setDate(endDate.getDate() - 1); // Set to last day of the month
+          endDate.setMonth(startDate.getMonth() + 1);
+          endDate.setDate(endDate.getDate() - 1);
           break;
         default:
           endDate = "";
       }
 
-      this.end_date = endDate ? endDate.toISOString().slice(0, 10) : ""; // Format the date to YYYY-MM-DD
+      this.end_date = endDate ? endDate.toISOString().slice(0, 10) : "";
     },
     async addCandidate() {
       if (!this.isFieldEmpty) {

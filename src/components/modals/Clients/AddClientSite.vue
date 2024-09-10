@@ -10,17 +10,25 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addClientSite">Add Site</h5>
+            <h5 class="modal-title" id="addClientSite">Add Client Site</h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
               <form>
-                <!-- <div class="mb-3 d-flex justify-content-between">
+                <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label for="selectClients" class="form-label">Client Name</label>
                   </div>
                   <div class="col-10">
-                    <select v-model="client_id" id="selectClients" @change="filterData">
+                    <input
+                      type="text"
+                      class="form-control"
+                      :value="clientFirstName || 'Click to get client name'"
+                      style="padding-right: 1px"
+                      @input="clearError"
+                      disabled
+                    />
+                    <!-- <select v-model="client_id" id="selectClients">
                       <option value="">All Client</option>
                       <option
                         v-for="option in clientData"
@@ -33,9 +41,82 @@
                     </select>
                     <span v-if="!validationSelectedClient" class="text-danger"
                       >Client Required</span
+                    > -->
+                  </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
+                    <label class="form-label" for="selectJobTitle"
+                      >Contact Person Name</label
                     >
                   </div>
-                </div> -->
+                  <div class="col-10">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="contact_person_name"
+                      @input="clearError"
+                      @change="detectAutofill"
+                      style="padding-right: 1px"
+                    />
+                    <!-- <span v-if="!validateSiteNameFormate" class="text-danger"
+                      >Contact Person Name Required</span
+                    > -->
+                  </div>
+                </div>
+
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
+                    <label class="form-label">Contact Person Email</label>
+                  </div>
+                  <div class="col-10">
+                    <input
+                      type="email"
+                      class="form-control"
+                      v-model="contact_person_email"
+                      @input="validateEmailFormat"
+                      @change="detectAutofill"
+                      ref="email"
+                      autocomplete="new-email"
+                    />
+                    <span
+                      v-if="
+                        contact_person_email &&
+                        !validateEmailFormat(contact_person_email) &&
+                        !autofilled
+                      "
+                      class="text-danger"
+                      >Invalid Email</span
+                    >
+                    <!-- <span
+                      v-if="contact_person_email && !isEmailUnique && !autofilled"
+                      class="text-danger"
+                      >Email already in use</span
+                    > -->
+                  </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
+                    <label class="form-label">Contact Person phone</label>
+                  </div>
+                  <div class="col-10">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="contact_person_number"
+                      @input="cleanPhoneNumber"
+                      @change="detectAutofill"
+                    />
+                    <!-- <span
+                      v-if="
+                        contact_person_number &&
+                        !validatePhoneNumberFormat(contact_person_number)
+                      "
+                      class="text-danger"
+                      >Invalid Phone Number</span
+                    > -->
+                  </div>
+                </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label class="form-label" for="selectBusinessUnit">Site Name</label>
@@ -193,7 +274,11 @@ export default {
       validationNotesText: true,
       validateAddress: true,
       validateCandidateLName: true,
-      client_id: "",
+      contact_person_name: "",
+      contact_person_email: "",
+      contact_person_number: "",
+      clientFirstName: "",
+      client_id: this.$route.params.id,
       clientData: [],
       site_name: "",
       address: "",
@@ -221,6 +306,9 @@ export default {
         this.status !== null &&
         this.split_rate !== null &&
         this.portal_access !== null &&
+        this.contact_person_email !== "" &&
+        this.contact_person_number !== "" &&
+        this.contact_person_name !== "" &&
         this.validateStatus() &&
         this.validateSplitRate() &&
         this.validatePortalAccess()
@@ -320,6 +408,9 @@ export default {
           status: this.status,
           portal_access: this.portal_access,
           client_id: this.client_id,
+          contact_person_name: this.contact_person_name,
+          contact_person_email: this.contact_person_email,
+          contact_person_number: this.contact_person_number,
         };
         try {
           const response = await fetch(`${VITE_API_URL}/sites`, {
@@ -339,7 +430,7 @@ export default {
             }, 100);
 
             // alert("Successful Shift added");
-            const message = "Site added Successfully";
+            const message = "Client Site added Successfully";
             this.$refs.successAlert.showSuccess(message);
           } else {
             alert("Error adding Shift");
@@ -390,13 +481,16 @@ export default {
       this.split_rate = "";
       this.status = "";
       this.portal_access = "";
+      this.contact_person_name = "";
+      this.contact_person_email = "";
+      this.contact_person_number = "";
     },
     async getClientMethod() {
       try {
         const response = await axios.get(
           `${VITE_API_URL}/clients/${this.$route.params.id}`
         );
-
+        this.clientFirstName = response.data.first_name;
         if (response.data && response.data.data) {
           const client = response.data.data;
           this.clientData = [{ id: client.id, first_name: client.first_name }];

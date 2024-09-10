@@ -230,7 +230,7 @@
         </div>
       </div>
     </div>
-    <SuccessAlert ref="dangerAlert" />
+    <SuccessAlert ref="showSuccess" />
     <NotSuccessAlertVue ref="dangerAlert" />
   </div>
 </template>
@@ -437,7 +437,7 @@ export default {
             if (responseData.error && responseData.error.email) {
               this.emailError = responseData.error.email[0];
               // const message = "Unsuccessful Staff added";
-              this.$refs.dangerAlert.showSuccess(this.emailError);
+              this.$refs.dangerAlert(this.emailError);
               this.emailInUse = true;
             } else {
               this.emailError = "";
