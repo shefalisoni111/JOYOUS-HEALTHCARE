@@ -430,7 +430,7 @@ export default {
         await axios
           .get(`${VITE_API_URL}/vacancies`, {
             params: {
-              page: this.currentPage,
+              // page: this.currentPage,
               per_page: this.itemsPerPage,
             },
             headers: {

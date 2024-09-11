@@ -94,36 +94,26 @@
                     <thead>
                       <tr>
                         <th scope="col">Date</th>
-                        <th scope="col">Start</th>
-                        <th scope="col">End</th>
-                        <!-- <th scope="col">Name</th>
-                        <th scope="col">Job</th> -->
+                        <th scope="col">Description</th>
+
                         <th scope="col">Unit</th>
                         <th scope="col">Rate</th>
-                        <th scope="col">Total</th>
+                        <th scope="col">Amount</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
                         <td scope="col">{{ getClientInvoiceDetail.start_date }}</td>
-                        <td scope="col">07:40</td>
-                        <td scope="col">08:00</td>
-                        <!-- <td scope="col" class="text-capitalize">
-                          {{ getClientInvoiceDetail.candidate }}
-                        </td>
-                        <td scope="col">{{ getClientInvoiceDetail.job }}</td> -->
+                        <td scope="col">{{ getClientInvoiceDetail.notes }}</td>
+
                         <td scope="col">{{ getClientInvoiceDetail.unit }}</td>
                         <td scope="col">{{ getClientInvoiceDetail.rate }}</td>
                         <td scope="col">{{ getClientInvoiceDetail.total_amount }}</td>
                       </tr>
                       <tr>
-                        <td scope="col">07-07-2023</td>
-                        <td scope="col">07:40</td>
-                        <td scope="col">08:00</td>
-                        <!-- <td scope="col" class="text-capitalize">
-                          {{ getClientInvoiceDetail.candidate }}
-                        </td>
-                        <td scope="col">{{ getClientInvoiceDetail.job }}</td> -->
+                        <td scope="col">{{ getClientInvoiceDetail.end_date }}</td>
+                        <td scope="col">{{ getClientInvoiceDetail.notes }}</td>
+
                         <td scope="col">{{ getClientInvoiceDetail.unit }}</td>
                         <td scope="col">{{ getClientInvoiceDetail.rate }}</td>
                         <td scope="col">{{ getClientInvoiceDetail.total_amount }}</td>

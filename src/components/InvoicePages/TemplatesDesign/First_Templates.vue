@@ -67,8 +67,8 @@
                   <tbody>
                     <tr>
                       <td scope="col">{{ getClientInvoiceDetail.start_date }}</td>
-                      <td scope="col">07:40</td>
-                      <td scope="col">08:00</td>
+                      <td scope="col"></td>
+                      <td scope="col"></td>
                       <td scope="col" class="text-capitalize">
                         {{ getClientInvoiceDetail.candidate }}
                       </td>
@@ -79,8 +79,8 @@
                     </tr>
                     <tr>
                       <td scope="col">{{ getClientInvoiceDetail.end_date }}</td>
-                      <td scope="col">07:40</td>
-                      <td scope="col">08:00</td>
+                      <td scope="col"></td>
+                      <td scope="col"></td>
                       <td scope="col" class="text-capitalize">
                         {{ getClientInvoiceDetail.candidate }}
                       </td>
