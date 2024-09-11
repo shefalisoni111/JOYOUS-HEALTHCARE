@@ -74,95 +74,35 @@
                     <thead>
                       <tr>
                         <th scope="col">Date</th>
-                        <th scope="col">Start</th>
-                        <th scope="col">End</th>
-                        <!-- <th scope="col">Name</th>
-                        <th scope="col">Job</th> -->
+                        <th scope="col">Description</th>
+
                         <th scope="col">Unit</th>
                         <th scope="col">Rate</th>
-                        <th scope="col">Total</th>
+                        <th scope="col">Amount</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
+                        <td scope="col">{{ getClientInvoiceDetail.start_date }}</td>
+                        <!-- <td scope="col">{{ getClientInvoiceDetail.notes }}</td> -->
                         <td scope="col">
-                          {{ getClientInvoiceDetail.start_date }}
+                          <input type="text" v-model="fetchCustomSheetData.notes" />
                         </td>
-                        <!-- <td scope="col">
-                          {{ getClientInvoiceDetail.start_time }}
-                        </td>
-                        <td scope="col">
-                          {{ getClientInvoiceDetail.end_time }}
-                        </td> -->
-                        <td scope="col">07:40</td>
-                        <td scope="col">08:00</td>
-                        <!-- <td scope="col">
-                          <input type="time" v-model="fetchCustomSheetData.start_time" />
-                        </td>
-                        <td scope="col">
-                          <input type="time" v-model="fetchCustomSheetData.end_time" />
-                        </td> -->
-                        <!-- <td scope="col" class="text-capitalize">
-                          {{ getClientInvoiceDetail.candidate }}
-                        </td>
-                        <td scope="col">
-                          {{ getClientInvoiceDetail.job }}
-                        </td> -->
-                        <td scope="col">
-                          <input type="number" v-model="fetchCustomSheetData.unit" />
-                        </td>
-                        <td scope="col">
-                          <input
-                            type="number"
-                            v-model="fetchCustomSheetData.staff_rate"
-                          />
-                        </td>
-                        <td scope="col">
-                          <input
-                            type="text"
-                            v-model="getClientInvoiceDetail.total_amount"
-                          />
-                        </td>
+
+                        <td scope="col">{{ getClientInvoiceDetail.unit }}</td>
+                        <td scope="col">{{ getClientInvoiceDetail.rate }}</td>
+                        <td scope="col">{{ getClientInvoiceDetail.total_amount }}</td>
                       </tr>
                       <tr>
+                        <td scope="col">{{ getClientInvoiceDetail.end_date }}</td>
                         <td scope="col">
-                          {{ getClientInvoiceDetail.end_date }}
+                          <input type="text" v-model="fetchCustomSheetData.notes" />
                         </td>
-                        <!-- <td scope="col">
-                          {{ getClientInvoiceDetail.start_time }}
-                        </td>
-                        <td scope="col">
-                          {{ getClientInvoiceDetail.end_time }}
-                        </td> -->
-                        <td scope="col">07:40</td>
-                        <td scope="col">08:00</td>
-                        <!-- <td scope="col">
-                          <input type="time" v-model="fetchCustomSheetData.start_time" />
-                        </td>
-                        <td scope="col">
-                          <input type="time" v-model="fetchCustomSheetData.end_time" />
-                        </td> -->
-                        <!-- <td scope="col" class="text-capitalize">
-                          {{ getClientInvoiceDetail.candidate }}
-                        </td>
-                        <td scope="col">
-                          {{ getClientInvoiceDetail.job }}
-                        </td> -->
-                        <td scope="col">
-                          <input type="number" v-model="fetchCustomSheetData.unit" />
-                        </td>
-                        <td scope="col">
-                          <input
-                            type="number"
-                            v-model="fetchCustomSheetData.staff_rate"
-                          />
-                        </td>
-                        <td scope="col">
-                          <input
-                            type="text"
-                            v-model="getClientInvoiceDetail.total_amount"
-                          />
-                        </td>
+                        <!-- <td scope="col">{{ getClientInvoiceDetail.notes }}</td> -->
+
+                        <td scope="col">{{ getClientInvoiceDetail.unit }}</td>
+                        <td scope="col">{{ getClientInvoiceDetail.rate }}</td>
+                        <td scope="col">{{ getClientInvoiceDetail.total_amount }}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -235,6 +175,7 @@ export default {
         business_unit: "",
         job: "",
         unit: "",
+        notes: "",
         approved_hour: "",
         start_time: "",
         end_time: "",
@@ -329,7 +270,7 @@ export default {
 
           name: staffInvoice.candidate,
           business_unit: staffInvoice.business_unit,
-
+          notes: staffInvoice.notes,
           unit: staffInvoice.unit,
           approved_hour: staffInvoice.approved_hour,
           start_time: staffInvoice.start_time,
@@ -364,26 +305,7 @@ export default {
 
         const message = "Staff Invoice updated successfully";
         this.$refs.successAlert.showSuccess(message);
-      } catch (error) {
-        // if (error.response) {
-        //   // Server responded with a status other than 2xx
-        //   console.error("Error response data:", error.response.data);
-        //   console.error("Error response status:", error.response.status);
-        //   console.error("Error response headers:", error.response.headers);
-        //   // Display validation errors to the user
-        //   if (error.response.data.errors) {
-        //     // Handle and display validation errors
-        //     console.error("Validation errors:", error.response.data.errors);
-        //     // Optionally, you can display these errors to the user
-        //   }
-        // } else if (error.request) {
-        //   // Request was made but no response received
-        //   console.error("Error request:", error.request);
-        // } else {
-        //   // Something else happened in setting up the request
-        //   console.error("Error message:", error.message);
-        // }
-      }
+      } catch (error) {}
     },
   },
 

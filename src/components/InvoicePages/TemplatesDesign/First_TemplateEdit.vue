@@ -94,8 +94,8 @@
                         <td scope="col">
                           {{ getClientInvoiceDetail.end_time }}
                         </td> -->
-                        <td scope="col">07:40</td>
-                        <td scope="col">08:00</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
                         <!-- <td scope="col">
                           <input type="time" v-model="fetchCustomSheetData.start_time" />
                         </td>
@@ -112,7 +112,8 @@
                           <input type="number" v-model="fetchCustomSheetData.unit" />
                         </td>
                         <td scope="col">
-                          <input type="number" v-model="fetchCustomSheetData.rate" />
+                          <!-- <input type="number" v-model="fetchCustomSheetData.rate" /> -->
+                          {{ getClientInvoiceDetail.rate }}
                         </td>
                         <td scope="col">
                           <input
@@ -131,8 +132,8 @@
                         <td scope="col">
                           {{ getClientInvoiceDetail.end_time }}
                         </td> -->
-                        <td scope="col">07:40</td>
-                        <td scope="col">08:00</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
                         <!-- <td scope="col">
                           <input type="time" v-model="fetchCustomSheetData.start_time" />
                         </td>
@@ -149,7 +150,8 @@
                           <input type="number" v-model="fetchCustomSheetData.unit" />
                         </td>
                         <td scope="col">
-                          <input type="number" v-model="fetchCustomSheetData.rate" />
+                          <!-- <input type="number" v-model="fetchCustomSheetData.rate" /> -->
+                          {{ getClientInvoiceDetail.rate }}
                         </td>
                         <td scope="col">
                           <input

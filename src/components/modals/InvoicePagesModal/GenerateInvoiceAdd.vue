@@ -101,7 +101,7 @@
         </div>
       </div>
     </div>
-    <SuccessAlert ref="showSuccess" />
+    <SuccessAlert ref="successAlert" />
     <NotSuccessAlertVue ref="dangerAlert" />
   </div>
 </template>
@@ -157,14 +157,12 @@ export default {
           },
         });
         if (response.data.error) {
-          this.emailError = response.data.error;
-
-          this.$refs.dangerAlert(this.emailError);
+          this.$refs.dangerAlert.showSuccess(response.data.error);
         } else {
           this.$emit("addSite");
           const message = "Invoice successfully created";
 
-          this.$refs.showSuccess(message);
+          this.$refs.successAlert.showSuccess(message);
         }
       } catch (error) {
         // const errorMessage = "Error creating invoice. Please try again.";

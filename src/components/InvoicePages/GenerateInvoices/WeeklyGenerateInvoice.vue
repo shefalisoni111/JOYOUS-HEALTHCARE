@@ -44,7 +44,7 @@
               </div>
             </div>
 
-            <div class="d-flex gap-3 align-items-center">
+            <!-- <div class="d-flex gap-3 align-items-center">
               <select v-model="site_id" id="selectBusinessUnit">
                 <option value="">All Site</option>
                 <option
@@ -56,7 +56,7 @@
                   {{ option.site_name }}
                 </option>
               </select>
-            </div>
+            </div> -->
           </div>
         </div>
         <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -91,11 +91,6 @@
 
               <th rowspan="3">Approved Status</th>
               <th rowspan="3">Action</th>
-              <!-- <th rowspan="3">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" checked />
-                  </div>
-                </th> -->
             </tr>
           </thead>
           <tbody v-if="candidateList?.length > 0">
@@ -113,13 +108,13 @@
                 {{ data.end_time ? data.end_time : "null" }}
               </td>
               <td scope="col">
-                {{ data.total_hours ? data.total_hours : "null" }}
+                {{ data.total_hours }}
               </td>
               <td scope="col">
                 {{ data.client_rate ? data.client_rate : "null" }}
               </td>
               <td scope="col">
-                {{ data.total_cost ? data.total_cost : "null" }}
+                {{ data.total_cost }}
               </td>
 
               <td>{{ data.approved_hour }}</td>
@@ -272,18 +267,18 @@ export default {
       this.selectedCustomTimesheetId = customDataId;
       this.$refs.customEdit.fetchCustomTimeSheetData(customDataId);
     },
-    async getBusinessUnitMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/activated_site`);
-        this.businessUnit = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
+    // async getBusinessUnitMethod() {
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/activated_site`);
+    //     this.businessUnit = response.data.data;
+    //   } catch (error) {
+    //     if (error.response) {
+    //       if (error.response.status == 404) {
+    //         // alert(error.response.data.message);
+    //       }
+    //     }
+    //   }
+    // },
     moveToPrevious() {
       if (this.currentView === "weekly") {
         this.startDate.setDate(this.startDate.getDate() - 7);
@@ -382,7 +377,7 @@ export default {
   async mounted() {
     // this.createVacancy();
     await this.loadDateRangeFromLocalStorage();
-    await this.getBusinessUnitMethod();
+    // await this.getBusinessUnitMethod();
     // this.updateDateRange();
     // window.addEventListener("beforeunload", this.saveToLocalStorage);
     // const currentDate = new Date();

@@ -242,14 +242,15 @@
                   <th rowspan="3">Total Hours</th>
                   <th rowspan="3">Total Cost</th>
                   <th rowspan="3">Approved By</th>
-                  <!-- <th rowspan="3">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" checked />
-                    </div>
-                  </th> -->
                 </tr>
               </thead>
               <tbody v-if="paginateCandidates?.length > 0">
+                <tr v-if="errorMessageFilter">
+                  <td colspan="9" class="text-danger text-center">
+                    {{ errorMessageFilter }}
+                  </td>
+                </tr>
+                <div v-else></div>
                 <tr v-for="data in paginateCandidates" :key="data.id">
                   <td>{{ data.id }}</td>
                   <td class="text-capitalize fw-bold">
@@ -413,6 +414,7 @@ export default {
       errorMessage: "",
       dataCustomTimeSheet: [],
       selectedCandidate: "",
+      errorMessageFilter: "",
     };
   },
 
@@ -425,28 +427,7 @@ export default {
     totalRecordsOnPage() {
       return this.paginateCandidates.length;
     },
-    // getWeekDates() {
-    //   const currentDate = new Date();
-    //   const weekStart = new Date(currentDate);
-    //   weekStart.setDate(currentDate.getDate() - currentDate.getDay());
-    //   const weekDates = [];
-    //   for (let i = 0; i < 7; i++) {
-    //     const date = new Date(weekStart);
-    //     date.setDate(weekStart.getDate() + i);
-    //     weekDates.push(date.getDate());
-    //   }
-    //   return weekDates;
-    // },
-    // getMonthDates() {
-    //   const currentDate = new Date();
-    //   const daysInMonth = new Date(
-    //     currentDate.getFullYear(),
-    //     currentDate.getMonth() + 1,
-    //     0
-    //   ).getDate();
-    //   const monthDates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-    //   return monthDates;
-    // },
+
     daysOfWeek() {
       return [
         "Monday",
@@ -666,48 +647,6 @@ export default {
       return this.selectedCandidate ? this.selectedCandidate.first_name : "Default Name";
     },
 
-    // saveToLocalStorage() {
-    //   localStorage.setItem(
-    //     "calendarData",
-    //     JSON.stringify({
-    //       startDate: this.startDate,
-    //       endDate: this.endDate.value,
-    //     })
-    //   );
-    // },
-    // loadStoredData() {
-    //   const storedData = localStorage.getItem("calendarData");
-
-    //   if (storedData) {
-    //     const parsedData = JSON.parse(storedData);
-    //     this.startDate = parsedData.startDate;
-    //     this.endDate.value = parsedData.endDate;
-    //   }
-    // },
-    // updateSelectedDateRow(startDate, endDate) {
-    //   const selectedDateRow = [];
-    //   const startDay = startDate.getDay();
-
-    //   for (let i = 0; i < 7; i++) {
-    //     const currentDate = new Date(startDate);
-    //     currentDate.setDate(startDate.getDate() + i - startDay);
-
-    //     if (currentDate.getMonth() === startDate.getMonth()) {
-    //       selectedDateRow.push(`${currentDate.getDate()}`);
-    //     } else {
-    //       selectedDateRow.push("");
-    //     }
-    //   }
-
-    //   Vue.set(this, "selectedDateRow", selectedDateRow);
-    //   // console.log(selectedDateRow);
-    // },
-    // formatDate(day) {
-    //   const selectedDate = new Date(this.startDate);
-    //   selectedDate.setDate(day);
-    //   return selectedDate.toLocaleDateString();
-    // },
-
     openModal(candidateId, day) {
       this.vacancyId = candidateId.id.toString() || "";
 
@@ -779,16 +718,10 @@ export default {
         ];
         this.candidateList = mergedTimeSheets;
       } catch (error) {
-        if (error.response && error.response.status === 404) {
-          const errorMessages = error.response.data.error;
-          if (errorMessages === "No records found for the given filter") {
-            alert("No records found for the given filter");
-          } else {
-            alert(errorMessages);
-          }
+        if (error.response.data.error) {
+          this.errorMessageFilter = error.response.data.error;
         } else {
-          // Handle other errors
-          // console.error("Error filtering custom timesheets:", error);
+          this.errorMessageFilter = "An unknown error occurred";
         }
       }
     },
