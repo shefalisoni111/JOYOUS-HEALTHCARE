@@ -351,10 +351,30 @@
         </div>
       </div>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="candidateList.length >= 8">
-      <button class="btn btn-outline-dark btn-sm">
+    <div class="mx-3" style="text-align: right" v-if="candidateList.length >= 10">
+      <!-- <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
+      </button> -->
+      <button
+        class="btn btn-sm btn-primary dropdown-toggle"
+        type="button"
+        id="recordsPerPageDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {{ itemsPerPage }} Records
       </button>
+      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+        </li>
+      </ul>
       &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary mr-2"
@@ -409,7 +429,7 @@ export default {
       statusForSelectedDate: null,
       vacancyList: [],
       currentPage: 1,
-      itemsPerPage: 5,
+      itemsPerPage: 10,
       showFilters: false,
       errorMessage: "",
       dataCustomTimeSheet: [],
@@ -725,6 +745,11 @@ export default {
         }
       }
     },
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.fetWeekTimeSheetData();
+    },
     async fetWeekTimeSheetData() {
       this.isLoading = true;
       try {
@@ -736,6 +761,7 @@ export default {
           `${VITE_API_URL}/find_timesheets_according_week`,
           {
             params: requestData,
+            per_page: this.itemsPerPage,
           }
         );
         this.dataCustomTimeSheet = response.data.custom_timesheets;

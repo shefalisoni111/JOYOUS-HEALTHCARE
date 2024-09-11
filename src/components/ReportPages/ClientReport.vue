@@ -449,9 +449,26 @@
       style="text-align: right"
       v-if="getSiteReportData?.length >= 8 && !searchResults.length"
     >
-      <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
+      <button
+        class="btn btn-sm btn-primary dropdown-toggle"
+        type="button"
+        id="recordsPerPageDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {{ itemsPerPage }} Records
       </button>
+      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+        </li>
+      </ul>
       &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary mr-2"
@@ -470,9 +487,29 @@
       </button>
     </div>
     <div class="mx-3 mb-2" style="text-align: right" v-if="searchResults.length >= 8">
-      <button class="btn btn-outline-dark btn-sm">
+      <!-- <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
+      </button> -->
+      <button
+        class="btn btn-sm btn-primary dropdown-toggle"
+        type="button"
+        id="recordsPerPageDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {{ itemsPerPage }} Records
       </button>
+      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+        </li>
+      </ul>
       &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary mr-2"
@@ -693,6 +730,11 @@ export default {
         }
       }
     },
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.getSiteReportMethod();
+    },
     async getSiteReportMethod() {
       this.isLoading = true;
       const token = localStorage.getItem("token");
@@ -721,6 +763,7 @@ export default {
           `${VITE_API_URL}/find_custom_timesheet_according_mounth`,
           {
             params: requestData,
+            per_page: this.itemsPerPage,
             headers: {
               Authorization: "bearer " + token,
             },

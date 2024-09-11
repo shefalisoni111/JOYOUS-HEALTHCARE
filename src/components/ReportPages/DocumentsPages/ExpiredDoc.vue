@@ -49,9 +49,32 @@
           </tbody>
         </table>
         <div class="mx-3" style="text-align: right" v-if="getCategoryData.length >= 10">
-          <button class="btn btn-outline-dark btn-sm">
-            {{ totalRecordsOnPage }} Records Per Page
+          <button
+            class="btn btn-sm btn-primary dropdown-toggle"
+            type="button"
+            id="recordsPerPageDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            {{ itemsPerPage }} Records
           </button>
+          <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+            <li>
+              <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+                >20 Records</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+                >50 Records</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+                >100 Records</a
+              >
+            </li>
+          </ul>
           &nbsp;&nbsp;
           <button
             class="btn btn-sm btn-primary mr-2"
@@ -102,7 +125,7 @@ export default {
       documentNames: [],
       isLoading: false,
       currentPage: 1,
-      itemsPerPage: 11,
+      itemsPerPage: 10,
       getCategoryData: [],
 
       errorMessageCustom: "",
@@ -157,11 +180,15 @@ export default {
       this.activeTabName = this.tabs[index].name;
       this.$router.push({ name: this.tabs[index].routeName });
     },
-
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.documentCategoryDocumentTypeMethod();
+    },
     async documentCategoryDocumentTypeMethod() {
       this.isLoading = true;
       try {
-        const params = { document_status: "Expired" };
+        const params = { document_status: "Expired", per_page: this.itemsPerPage };
         const response = await axios.get(`${VITE_API_URL}/candidate_documents`, {
           params,
         });
@@ -189,53 +216,6 @@ export default {
         this.isLoading = false;
       }
     },
-
-    // async getDocumentReport() {
-    //   this.isLoading = true;
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/candidate_documents`);
-    //     this.getDocumentReportData = response.data;
-    //     if (this.getDocumentReportData.length === 0) {
-    //       this.errorMessageCustom = "No report found for the specified month";
-    //     } else {
-    //       this.errorMessageCustom = "";
-    //     }
-    //   } catch (error) {
-    //     // console.error("Error fetching document report data:", error);
-    //   } finally {
-    //     this.isLoading = false;
-    //   }
-    // },
-    // async getCandidateMethods() {
-    //   const pagesToFetch = [1, 2, 3];
-    //   let allStaffData = [];
-
-    //   try {
-    //     const responses = await Promise.all(
-    //       pagesToFetch.map((page) =>
-    //         axios.get(`${VITE_API_URL}/candidates`, {
-    //           params: {
-    //             page: page,
-    //           },
-    //         })
-    //       )
-    //     );
-
-    //     responses.forEach((response) => {
-    //       allStaffData = allStaffData.concat(response.data.data);
-    //     });
-
-    //     this.candidateLists = allStaffData;
-    //     this.candidateStatus = response.data.data.status;
-    //   } catch (error) {
-    //     if (error.response && error.response.status === 404) {
-    //       // Handle 404 error
-    //       // console.error('Error fetching client data:', error.response.data.message);
-    //     } else {
-    //       // console.error('Error fetching client data:', error);
-    //     }
-    //   }
-    // },
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {

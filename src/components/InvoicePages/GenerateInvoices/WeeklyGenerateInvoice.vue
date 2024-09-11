@@ -93,8 +93,8 @@
               <th rowspan="3">Action</th>
             </tr>
           </thead>
-          <tbody v-if="candidateList?.length > 0">
-            <tr v-for="data in candidateList" :key="data.id">
+          <tbody v-if="paginateCandidates?.length > 0">
+            <tr v-for="data in paginateCandidates" :key="data.id">
               <td>{{ data.id }}</td>
 
               <td scope="col" class="text-capitalize">{{ data.name }}</td>
@@ -158,6 +158,46 @@
         </table>
       </div>
     </div>
+    <div class="mx-3" style="text-align: right" v-if="candidateList?.length >= 10">
+      <button
+        class="btn btn-sm btn-primary dropdown-toggle"
+        type="button"
+        id="recordsPerPageDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {{ itemsPerPage }} Records
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+        </li>
+      </ul>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="changePage(currentPage - 1)"
+      >
+        Previous
+      </button>
+      &nbsp;&nbsp;
+      <span>{{ currentPage }} of {{ totalPages }}</span>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage === totalPages"
+        @click="changePage(currentPage + 1)"
+      >
+        Next
+      </button>
+    </div>
     <GenerateInvoiceAdd />
     <GenerateInvoiceEdit
       :customDataId="selectedCustomTimesheetId"
@@ -188,6 +228,7 @@ export default {
       startDate: new Date(),
       endDate: new Date(),
       site_id: "",
+      itemsPerPage: 10,
       businessUnit: [],
       candidateList: [],
       errorMessage: "",
@@ -196,6 +237,13 @@ export default {
   },
   components: { GenerateInvoiceAdd, GenerateInvoiceEdit },
   computed: {
+    paginateCandidates() {
+      // if (!this.getClientDetail) return [];
+      // const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      // const endIndex = startIndex + this.itemsPerPage;
+      // return this.getClientDetail.slice(startIndex, endIndex);
+      return this.candidateList;
+    },
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return site_id ? site_id.site_name : "";
@@ -343,6 +391,11 @@ export default {
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.fetWeekTimeSheetData();
+    },
     async fetWeekTimeSheetData() {
       this.isLoading = true;
       try {
@@ -354,6 +407,7 @@ export default {
           `${VITE_API_URL}/find_timesheets_according_week`,
           {
             params: requestData,
+            per_page: this.itemsPerPage,
           }
         );
         this.dataCustomTimeSheet = response.data.custom_timesheets;

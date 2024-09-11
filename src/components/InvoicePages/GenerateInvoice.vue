@@ -285,67 +285,6 @@ export default {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return site_id ? site_id.site_name : "";
     },
-    // getWeekDates() {
-    //   const currentDate = new Date();
-    //   const weekStart = new Date(currentDate);
-    //   weekStart.setDate(currentDate.getDate() - currentDate.getDay());
-    //   const weekDates = [];
-    //   for (let i = 0; i < 7; i++) {
-    //     const date = new Date(weekStart);
-    //     date.setDate(weekStart.getDate() + i);
-    //     weekDates.push(date.getDate());
-    //   }
-    //   return weekDates;
-    // },
-    // getMonthDates() {
-    //   const currentDate = new Date();
-    //   const daysInMonth = new Date(
-    //     currentDate.getFullYear(),
-    //     currentDate.getMonth() + 1,
-    //     0
-    //   ).getDate();
-    //   const monthDates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-    //   return monthDates;
-    // },
-
-    // formattedDates() {
-    //   return this.selectedDateRow.map((day) => this.formatDate(day));
-    // },
-
-    // formattedStartDate() {
-    //   return this.formatDate(this.selectedDateRow[0]);
-    // },
-    // formattedEndDate() {
-    //   return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
-    // },
-    // selectedDateRow() {
-    //   const selectedDate = new Date(this.startDate);
-    //   const selectedDateRow = [];
-    //   const dayOfWeek = selectedDate.getDay();
-    //   const startDay = (dayOfWeek - 1 + 7) % 7;
-
-    //   for (let i = 0; i < 7; i++) {
-    //     const currentDate = new Date(selectedDate);
-    //     currentDate.setDate(selectedDate.getDate() + i - startDay);
-
-    //     const lastDayOfMonth = new Date(
-    //       currentDate.getFullYear(),
-    //       currentDate.getMonth() + 1,
-    //       0
-    //     ).getDate();
-    //     if (currentDate.getDate() > lastDayOfMonth) {
-    //       currentDate.setMonth(currentDate.getMonth() + 1);
-
-    //       currentDate.setDate(1);
-
-    //       currentDate.setDate(i + 1 - startDay);
-    //     }
-
-    //     selectedDateRow.push(currentDate);
-    //   }
-
-    //   return selectedDateRow;
-    // },
   },
   methods: {
     setActiveTabFromRoute() {
@@ -459,26 +398,6 @@ export default {
     this.getBusinessUnitMethod();
     this.updateDateRange();
     window.addEventListener("beforeunload", this.saveToLocalStorage);
-    // const currentDate = new Date();
-    // const startOfWeek = new Date(currentDate);
-    // startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
-    // this.startDate = startOfWeek;
-
-    // const endOfWeek = new Date(currentDate);
-    // endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
-    // this.endDate = endOfWeek;
-    // const currentDate = new Date();
-    // const dayOfWeek = currentDate.getDay();
-    // const startOfWeek = new Date(currentDate);
-
-    // const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-    // startOfWeek.setDate(startOfWeek.getDate() + diff);
-
-    // this.startDate = startOfWeek;
-
-    // const endOfWeek = new Date(startOfWeek);
-    // endOfWeek.setDate(endOfWeek.getDate() + 6);
-    // this.endDate = endOfWeek;
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {

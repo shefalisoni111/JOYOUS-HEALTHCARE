@@ -154,13 +154,30 @@
       </div>
     </div>
     <div
-      class="mx-3"
+      class="mx-3 mb-3"
       style="text-align: right"
-      v-if="getCategoryData.length >= 10 && activeTab === 0"
+      v-if="getDocumentReportData.length >= 10 && activeTab === 0"
     >
-      <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
+      <button
+        class="btn btn-sm btn-primary dropdown-toggle"
+        type="button"
+        id="recordsPerPageDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {{ itemsPerPage }} Records
       </button>
+      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+        </li>
+      </ul>
       &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary mr-2"
@@ -172,7 +189,7 @@
       >&nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getCategoryData?.length"
+        :disabled="currentPage * itemsPerPage >= getDocumentReportData?.length"
         @click="currentPage++"
       >
         Next
@@ -211,7 +228,7 @@ export default {
       documentNames: [],
       isLoading: false,
       currentPage: 1,
-      itemsPerPage: 11,
+      itemsPerPage: 10,
       getCategoryData: [],
       tabs: [
         { name: "All ", component: "AllDoc", routeName: "AllDoc" },
@@ -365,11 +382,17 @@ export default {
         }
       }
     },
-
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.getDocumentReport();
+    },
     async getDocumentReport() {
       this.isLoading = true;
       try {
-        const response = await axios.get(`${VITE_API_URL}/candidate_documents`);
+        const response = await axios.get(`${VITE_API_URL}/candidate_documents`, {
+          per_page: this.itemsPerPage,
+        });
         this.getDocumentReportData = response.data;
         if (this.getDocumentReportData.length === 0) {
           this.errorMessageFilter = "Report not Found!";

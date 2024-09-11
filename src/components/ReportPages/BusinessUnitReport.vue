@@ -160,30 +160,6 @@
                     role="tabpanel"
                     aria-labelledby="pills-home-tab"
                   >
-                    <!-- <table class="table reportTable">
-                      <thead>
-                        <tr>
-                          <th scope="col">Sender</th>
-
-                          <th scope="col">Recipient</th>
-                          <th scope="col">Status</th>
-                          <th scope="col">Subject</th>
-                          <th scope="col">Recipient Domain</th>
-                          <th scope="col">Date Time</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td scope="col">Aniket</td>
-
-                          <td scope="col">Prabhu</td>
-                          <td scope="col">Active</td>
-                          <td scope="col">BusinessUnit Report</td>
-                          <td scope="col">Recipient Domain</td>
-                          <td scope="col">23/2/2024</td>
-                        </tr>
-                      </tbody>
-                    </table> -->
                     <table class="table reportTable">
                       <thead>
                         <tr>
@@ -291,30 +267,6 @@
                     role="tabpanel"
                     aria-labelledby="pills-home-tab"
                   >
-                    <!-- <table class="table reportTable">
-                      <thead>
-                        <tr>
-                          <th scope="col">Sender</th>
-
-                          <th scope="col">Recipient</th>
-                          <th scope="col">Status</th>
-                          <th scope="col">Subject</th>
-                          <th scope="col">Recipient Domain</th>
-                          <th scope="col">Date Time</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td scope="col">Aniket</td>
-
-                          <td scope="col">Prabhu</td>
-                          <td scope="col">Active</td>
-                          <td scope="col">BusinessUnit Report</td>
-                          <td scope="col">Recipient Domain</td>
-                          <td scope="col">23/2/2024</td>
-                        </tr>
-                      </tbody>
-                    </table> -->
                     <table class="table reportTable">
                       <thead>
                         <tr>
@@ -421,9 +373,29 @@
       style="text-align: right"
       v-if="getSiteReportData?.length >= 8 && !searchResults.length"
     >
-      <button class="btn btn-outline-dark btn-sm">
+      <!-- <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
+      </button> -->
+      <button
+        class="btn btn-sm btn-primary dropdown-toggle"
+        type="button"
+        id="recordsPerPageDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {{ itemsPerPage }} Records
       </button>
+      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+        </li>
+      </ul>
       &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary mr-2"
@@ -634,6 +606,11 @@ export default {
         }
       }
     },
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.getSiteReportMethod();
+    },
     async getSiteReportMethod() {
       this.isLoading = true;
       const token = localStorage.getItem("token");
@@ -662,6 +639,7 @@ export default {
           `${VITE_API_URL}/find_custom_timesheet_according_mounth`,
           {
             params: requestData,
+            per_page: this.itemsPerPage,
             headers: {
               Authorization: "bearer " + token,
             },
