@@ -165,10 +165,29 @@
       </div>
     </div>
     <div class="mx-3" style="text-align: right" v-if="shouldShowPagination">
-      <button class="btn btn-outline-dark btn-sm">
+      <!-- <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
+      </button> -->
+      <button
+        class="btn btn-sm btn-primary dropdown-toggle"
+        type="button"
+        id="recordsPerPageDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {{ itemsPerPage }} Records
       </button>
-
+      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+        </li>
+      </ul>
       &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary mr-2"
@@ -329,10 +348,17 @@ export default {
     //     }
     //   });
     // },
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.getJobData();
+    },
     async getJobData() {
       this.isLoading = true;
       try {
-        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`, {
+          per_page: this.itemsPerPage,
+        });
         this.getJobs = response.data.data;
       } catch (error) {
       } finally {

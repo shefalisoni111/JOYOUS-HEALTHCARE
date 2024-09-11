@@ -142,10 +142,27 @@
         </div>
       </div>
     </div>
-    <div class="mx-3 mt-3" style="text-align: right" v-if="getCategory?.length">
-      <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
+    <div class="mx-3 mt-3" style="text-align: right" v-if="getCategory?.length >= 10">
+      <button
+        class="btn btn-sm btn-primary dropdown-toggle"
+        type="button"
+        id="recordsPerPageDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {{ itemsPerPage }} Records
       </button>
+      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+        </li>
+      </ul>
 
       &nbsp;&nbsp;
       <button
@@ -210,7 +227,7 @@ export default {
       confirmMessage: "",
       confirmCallback: null,
       currentPage: 1,
-      itemsPerPage: 6,
+      itemsPerPage: 10,
     };
   },
   components: {
@@ -316,10 +333,17 @@ export default {
         .get(`${VITE_API_URL}/documents`)
         .then((response) => (this.getDocument = response.data));
     },
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.getDocCAtegories();
+    },
     async getDocCAtegories() {
       this.isLoading = true;
       try {
-        const response = await axios.get(`${VITE_API_URL}/document_categories`);
+        const response = await axios.get(`${VITE_API_URL}/document_categories`, {
+          per_page: this.itemsPerPage,
+        });
 
         this.getCategory = response.data;
       } catch (error) {
