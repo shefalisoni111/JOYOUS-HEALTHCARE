@@ -624,7 +624,8 @@ export default {
             setTimeout(() => {
               this.clearError();
             }, 100);
-            this.$emit("addVacancies");
+            this.$emit("addVacancy");
+            console.log("Vacancy added and event emitted.");
             // alert("Successful Shift added");
             const message = "Successful Shift added";
             this.$refs.successAlert.showSuccess(message);
@@ -654,6 +655,7 @@ export default {
         }, 100);
       }
     },
+
     async getJobTitleMethod() {
       if (!this.client_id) {
         return;

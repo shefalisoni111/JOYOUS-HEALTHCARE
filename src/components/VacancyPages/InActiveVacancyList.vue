@@ -19,7 +19,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="data in displayedVacancies" :key="data.id">
+            <tr v-for="data in getInactiveData" :key="data.id">
               <td v-text="data.id"></td>
               <td v-text="data.ref_code"></td>
               <td>
@@ -85,7 +85,7 @@
         </table>
       </div>
     </div>
-    <div class="mt-3" style="text-align: right" v-if="getInactiveData.length >= 10">
+    <div class="mt-3 mb-3" style="text-align: right" v-if="totalCount > 0">
       <!-- <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button> -->
@@ -113,15 +113,19 @@
       <button
         class="btn btn-sm btn-primary mr-2"
         :disabled="currentPage === 1"
-        @click="currentPage--"
+        @click="previousPage"
       >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
+        Previous
+      </button>
+      &nbsp;&nbsp;
+
+      <span>{{ currentPage }}</span>
+      &nbsp;&nbsp;
+
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getInactiveData.length"
-        @click="currentPage++"
+        :disabled="currentPage >= totalPages"
+        @click="nextPage"
       >
         Next
       </button>
@@ -157,6 +161,8 @@ export default {
       createVacancy: null,
       currentPage: 1,
       itemsPerPage: 10,
+      totalCount: 0,
+      totalPages: 1,
       isLoading: false,
       today: new Date(),
       isModalVisible: false,
@@ -180,14 +186,29 @@ export default {
   },
 
   methods: {
-    setItemsPerPage(value) {
-      this.itemsPerPage = value;
+    previousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.getInactiveVacancyMethod();
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+        this.getInactiveVacancyMethod();
+      }
+    },
+    setItemsPerPage(number) {
+      this.itemsPerPage = number;
       this.currentPage = 1;
       this.getInactiveVacancyMethod();
     },
     isEditAllowed(dates) {
-      const today = new Date();
+      if (!dates) {
+        return false;
+      }
 
+      const today = new Date();
       return dates.some((date) => {
         const [weekday, dateString] = date.split(", ");
 
@@ -275,6 +296,9 @@ export default {
         });
 
         this.getInactiveData = response.data.vacancies;
+        this.totalCount = response.data.total_vacancy;
+        this.totalPages = response.data.total_pages;
+        this.currentPage = response.data.current_page;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {

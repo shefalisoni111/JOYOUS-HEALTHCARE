@@ -353,7 +353,6 @@ export default {
     selectTab(index) {
       this.activeTab = index;
       this.activeTabName = this.tabs[index].name;
-      // this.$router.push({ name: this.tabs[index].routeName });
     },
     setActiveTabNameOnLoad() {
       this.activeTabName = this.tabs[this.activeTab].name;
@@ -517,6 +516,18 @@ export default {
         });
       alert("Active Vacancy");
     },
+    // setActiveTabFromRoute() {
+    //   if (this.$route.params.tab) {
+    //     const index = this.tabs.findIndex(
+    //       (tab) => tab.name.toLowerCase() === this.$route.params.tab.toLowerCase()
+    //     );
+    //     if (index !== -1) {
+    //       this.activeTab = index;
+    //     }
+    //   } else {
+    //     this.activeTab = 0;
+    //   }
+    // },
     reActivatedMethod(id) {
       if (!window.confirm("Are you sure you want to re-activate?")) {
         return;
@@ -576,9 +587,9 @@ export default {
   // },
 
   beforeRouteUpdate(to, from, next) {
-    this.setActiveTabFromRoute();
+    // this.setActiveTabFromRoute();
     this.createVacancy();
-    s;
+
     this.setActiveTabNameOnLoad();
     next();
   },

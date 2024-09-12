@@ -202,7 +202,7 @@
     <AssignedVacancyList @assignVacancy="createVacancy" />
     <RejectedVacancyList @rejectVacancy="createVacancy" />
     <AllVacancyCandidateList @allVacancy="createVacancy" />
-    <AddVacancy @addVacancies="createVacancy" />
+    <AddVacancy @addVacancy="createVacancy" />
     <div class="mt-3" style="text-align: right" v-if="getVacancyDetail?.length >= 10">
       <!-- <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
@@ -231,15 +231,17 @@
       <button
         class="btn btn-sm btn-primary mr-2"
         :disabled="currentPage === 1"
-        @click="currentPage--"
+        @click="previousPage"
       >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
+        Previous
+      </button>
+      &nbsp;&nbsp;
+      <span>{{ currentPage }}</span>
+      &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getVacancyDetail.length"
-        @click="currentPage++"
+        :disabled="currentPage === totalPages"
+        @click="nextPage"
       >
         Next
       </button>
