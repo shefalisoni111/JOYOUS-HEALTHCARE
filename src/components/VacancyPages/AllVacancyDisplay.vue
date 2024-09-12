@@ -192,6 +192,7 @@
         </table>
       </div>
     </div>
+    <AddVacancy @addVacancy="createVacancy" />
     <EditVacancy
       :vacancyId="selectedVacancyId || 0"
       @updateVacancy="createVacancy"
@@ -202,8 +203,8 @@
     <AssignedVacancyList @assignVacancy="createVacancy" />
     <RejectedVacancyList @rejectVacancy="createVacancy" />
     <AllVacancyCandidateList @allVacancy="createVacancy" />
-    <AddVacancy @addVacancy="createVacancy" />
-    <div class="mt-3" style="text-align: right" v-if="getVacancyDetail?.length >= 10">
+
+    <div class="mt-3" style="text-align: right" v-if="totalCount > 0">
       <!-- <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button> -->
@@ -260,7 +261,7 @@ import RejectedVacancyList from "../modals/Vacancy/RejectedVacancyList.vue";
 import AllVacancyCandidateList from "../modals/Vacancy/AllVacancyCandidateList.vue";
 import EditVacancy from "../modals/Vacancy/EditVacancy.vue";
 import AddVacancy from "../modals/Vacancy/AddVacancy.vue";
-import { mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -268,6 +269,8 @@ export default {
       selectedVacancyId: 0,
       currentPage: 1,
       itemsPerPage: 10,
+      totalCount: 0,
+      totalPages: 1,
       isLoading: false,
       dataFetched: false,
     };
@@ -429,25 +432,29 @@ export default {
       if (this.getVacancyDetail.length === 0) {
         const token = localStorage.getItem("token");
         this.isLoading = true;
-        await axios
-          .get(`${VITE_API_URL}/vacancies`, {
+
+        try {
+          const response = await axios.get(`${VITE_API_URL}/vacancies`, {
             params: {
-              // page: this.currentPage,
+              page: this.currentPage,
               per_page: this.itemsPerPage,
             },
             headers: {
               "content-type": "application/json",
               Authorization: "bearer " + token,
             },
-          })
-          .then((response) => {
-            this.getVacancyDetail = response.data.data;
-
-            localStorage.setItem("vacancies", JSON.stringify(this.getVacancyDetail));
-          })
-          .finally(() => {
-            this.isLoading = false;
           });
+
+          this.getVacancyDetail = response.data.data;
+          this.totalCount = response.data.total_vacancy;
+          this.totalPages = response.data.total_pages;
+          this.currentPage = response.data.current_page;
+          localStorage.setItem("vacancies", JSON.stringify(this.getVacancyDetail));
+        } catch (error) {
+          console.error("Error fetching vacancies:", error);
+        } finally {
+          this.isLoading = false;
+        }
       }
     },
   },

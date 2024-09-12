@@ -168,7 +168,13 @@ export default {
     },
   },
   watch: {
-    startDate: "fetchData",
+    // startDate: "fetchData",
+    startDate: {
+      immediate: true,
+      handler() {
+        this.fetchData();
+      },
+    },
   },
 };
 </script>

@@ -65,7 +65,6 @@
                           data-bs-toggle="modal"
                           data-bs-target="#addVacancies"
                           data-bs-whatever="@mdo"
-                          @click="handleShiftAdd"
                         >
                           + Add Shift
                         </button>
@@ -274,7 +273,7 @@
     <AssignedVacancyList @updateAssignSearch="searchVacancyUpdated" />
     <RejectedVacancyList @rejectVacancySearch="searchVacancyUpdated" />
     <AllVacancyCandidateList @allVacancySearch="searchVacancyUpdated" />
-    <!-- <AddVacancy @addVacancy="createVacancy" ref="addShiftRef" /> -->
+    <!-- <AddVacancy @addVacancy="createVacancy" /> -->
   </div>
 </template>
 <script>
@@ -559,7 +558,6 @@ export default {
         let rejectedCount = 0;
         let allCandidatesCount = 0;
 
-        // Calculate counts
         searchResults.forEach((vacancy) => {
           appliedCount += vacancy.applied;
           assignedCount += vacancy.assigned;
@@ -567,7 +565,6 @@ export default {
           allCandidatesCount += vacancy.all_candidate;
         });
 
-        // Update counts
         this.appliedCount = appliedCount;
         this.assignedCount = assignedCount;
         this.rejectedCount = rejectedCount;

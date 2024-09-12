@@ -321,9 +321,7 @@ export default {
       start_time: null,
       end_time: null,
       break: null,
-      // validationStartTime: true,
-      // validationBreak: true,
-      // validationEndTime: true,
+
       client_rate: [],
       staff_rate: [],
       site_id: "",
@@ -360,9 +358,6 @@ export default {
         this.validationShift &&
         this.validationDateType &&
         this.validationStaffRequired
-        // this.validationStartTime &&
-        // this.validationEndTime &&
-        // this.validationBreak
       );
     },
     updateStartTime() {
@@ -620,13 +615,8 @@ export default {
           });
 
           if (response.status === 201) {
-            this.clearFields();
-            setTimeout(() => {
-              this.clearError();
-            }, 100);
             this.$emit("addVacancy");
-            console.log("Vacancy added and event emitted.");
-            // alert("Successful Shift added");
+            this.clearFields();
             const message = "Successful Shift added";
             this.$refs.successAlert.showSuccess(message);
           } else {
@@ -634,13 +624,7 @@ export default {
               this.$refs.dangerAlert.showSuccess(
                 "Please create rate for this client, job and site shift."
               );
-              // alert("Please create rate for this client, job and site shift.");
             }
-
-            this.clearFields();
-            setTimeout(() => {
-              this.clearError();
-            }, 100);
           }
         } catch (error) {
           this.clearFields();

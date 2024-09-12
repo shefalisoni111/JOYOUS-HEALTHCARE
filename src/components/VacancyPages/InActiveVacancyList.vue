@@ -250,9 +250,6 @@ export default {
         });
     },
     reActivatedMethod(id) {
-      // if (!window.confirm("Are you sure you want to re-activate?")) {
-      //   return;
-      // }
       axios
         .put(`${VITE_API_URL}/active_vacancy/${id}`)
         .then((response) => {
