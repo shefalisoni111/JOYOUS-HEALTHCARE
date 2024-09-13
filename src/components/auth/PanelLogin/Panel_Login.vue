@@ -27,7 +27,7 @@
               aria-label="profile detail"
             >
               <img
-                v-if="profilePhotoUrl !== './profile.png'"
+                v-if="profilePhotoUrl !== '../profile.png'"
                 :src="profilePhotoUrl"
                 alt="USer"
                 class="rounded-circle profileAdminImg"
@@ -37,7 +37,7 @@
               />
               <img
                 v-else
-                src="./profile.png"
+                src="../profile.png"
                 alt="USer"
                 class="rounded-circle profileAdminImg"
                 width="40"
