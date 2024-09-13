@@ -151,12 +151,12 @@
                     <li class="nav-item" role="presentation">
                       <button
                         class="nav-link"
-                        id="changepass"
+                        id="customUrl"
                         data-bs-toggle="tab"
-                        data-bs-target="#contact"
+                        data-bs-target="#contacts"
                         type="button"
                         role="tab"
-                        aria-controls="contact"
+                        aria-controls="contacts"
                         aria-selected="false"
                       >
                         Custom Url
@@ -235,7 +235,7 @@
                       class="tab-pane fade p-3"
                       id="contact"
                       role="tabpanel"
-                      aria-labelledby="logoimg"
+                      aria-labelledby="RecPal"
                     >
                       <div class="col-12 d-flex gap-2">
                         <div>
@@ -371,9 +371,9 @@
                     </div>
                     <div
                       class="tab-pane fade"
-                      id="contact"
+                      id="contacts"
                       role="tabpanel"
-                      aria-labelledby=" changepass"
+                      aria-labelledby="customUrl"
                     >
                       <p class="p-4">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
