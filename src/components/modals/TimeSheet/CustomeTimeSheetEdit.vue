@@ -131,17 +131,6 @@
                   </span>
                 </div>
               </div>
-              <!-- <div class="mb-3">
-                <div class="col-12">
-                  <label class="form-label">Approved</label>
-                </div>
-                <div class="col-12">
-                  <select id="selectOption" v-model="fetchCustomSheetData.approved_hour">
-                    <option value="true">True</option>
-                    <option value="false">False</option>
-                  </select>
-                </div>
-              </div> -->
             </form>
           </div>
           <div class="modal-footer">
@@ -161,6 +150,7 @@
               Save
             </button>
             <button
+              v-if="fetchCustomSheetData.approved_hour === false"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               v-on:click="approved_hourMethod()"
             >
@@ -211,13 +201,13 @@ export default {
   },
   components: { SuccessAlert },
   computed: {
-    isSaveDisabled() {
-      return (
-        this.fetchCustomSheetData.client_rate === null ||
-        this.fetchCustomSheetData.client_rate <= 0 ||
-        !this.fetchCustomSheetData.paper_timesheet
-      );
-    },
+    // isSaveDisabled() {
+    //   return (
+    //     this.fetchCustomSheetData.client_rate === null ||
+    //     this.fetchCustomSheetData.client_rate <= 0 ||
+    //     !this.fetchCustomSheetData.paper_timesheet
+    //   );
+    // },
     fullCustomImageUrl() {
       return `${VITE_API_URL}${this.fetchCustomSheetData.custom_image}`;
     },
@@ -268,36 +258,22 @@ export default {
     },
     async updateCustomTimeSheetMethod() {
       try {
-        const formData = new FormData();
-
-        for (const key in this.fetchCustomSheetData) {
-          if (this.fetchCustomSheetData.hasOwnProperty(key)) {
-            if (key === "paper_timesheet" && this.fetchCustomSheetData[key]) {
-              formData.append(
-                "custom_timesheet[paper_timesheet]",
-                this.fetchCustomSheetData[key]
-              );
-            } else {
-              const value =
-                this.fetchCustomSheetData[key] === null
-                  ? ""
-                  : this.fetchCustomSheetData[key];
-              formData.append(`custom_timesheet[${key}]`, value);
-            }
-          }
-        }
-
-        // Log FormData for debugging
-        // for (let pair of formData.entries()) {
-        //   console.log(`${pair[0]}: ${pair[1]}`);
-        // }
+        const requestBody = {
+          custom_timesheet: {
+            shift_date: this.fetchCustomSheetData.shift_date,
+            start_time: this.fetchCustomSheetData.start_time,
+            end_time: this.fetchCustomSheetData.end_time,
+            client_rate: this.fetchCustomSheetData.client_rate,
+            approved_hour: this.fetchCustomSheetData.approved_hour,
+          },
+        };
 
         const response = await axios.put(
           `${VITE_API_URL}/custom_timesheets/${this.fetchCustomSheetData.id}`,
-          formData,
+          requestBody,
           {
             headers: {
-              "Content-Type": "multipart/form-data",
+              "Content-Type": "application/json",
             },
           }
         );
@@ -306,8 +282,8 @@ export default {
           id: this.fetchCustomSheetData.id,
           newData: response.data.custom_sheets,
         });
-        this.$emit("CustomTimeSheetData-updated");
 
+        this.$emit("CustomTimeSheetData-updated");
         const message = "Custom TimeSheet Staff updated successfully";
         this.$refs.successAlert.showSuccess(message);
       } catch (error) {

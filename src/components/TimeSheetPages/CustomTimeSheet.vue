@@ -184,19 +184,19 @@
                             <td scope="col">{{ data.job }}</td>
                             <td scope="col">{{ data.shift_date }}</td>
                             <td scope="col">
-                              {{ data.start_time ? data.start_time : "null" }}
+                              {{ data.start_time }}
                             </td>
                             <td scope="col">
-                              {{ data.end_time ? data.end_time : "null" }}
+                              {{ data.end_time }}
                             </td>
                             <td scope="col">
-                              {{ data.total_hours ? data.total_hours : "null" }}
+                              {{ data.total_hours }}
                             </td>
                             <td scope="col">
-                              {{ data.client_rate ? data.client_rate : "null" }}
+                              {{ data.client_rate }}
                             </td>
                             <td scope="col">
-                              {{ data.total_cost ? data.total_cost : "null" }}
+                              {{ data.total_cost }}
                             </td>
                             <td scope="col">
                               <div v-if="data.paper_timesheet">
@@ -309,19 +309,19 @@
                             <td scope="col">{{ data.job }}</td>
                             <td scope="col">{{ data.shift_date }}</td>
                             <td scope="col">
-                              {{ data.start_time ? data.start_time : "null" }}
+                              {{ data.start_time }}
                             </td>
                             <td scope="col">
-                              {{ data.end_time ? data.end_time : "null" }}
+                              {{ data.end_time }}
                             </td>
                             <td scope="col">
-                              {{ data.total_hours ? data.total_hours : "null" }}
+                              {{ data.total_hours }}
                             </td>
                             <td scope="col">
-                              {{ data.client_rate ? data.client_rate : "null" }}
+                              {{ data.client_rate }}
                             </td>
                             <td scope="col">
-                              {{ data.total_cost ? data.total_cost : "null" }}
+                              {{ data.total_cost }}
                             </td>
                             <td scope="col">
                               <div v-if="data.paper_timesheet">
@@ -389,9 +389,6 @@
         style="text-align: right"
         v-if="getCustomTimeSheet.length >= 10 && !searchResults.length"
       >
-        <!-- <button class="btn btn-outline-dark btn-sm">
-          {{ totalRecordsOnPage }} Records Per Page
-        </button> -->
         <div class="dropdown d-inline-block">
           <button
             class="btn btn-sm btn-primary dropdown-toggle"
@@ -676,34 +673,7 @@ export default {
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
-    // async vacancyDeleteMethod(id) {
-    //   if (!window.confirm("Are you Sure ?")) {
-    //     return;
-    //   }
-    //   const token = localStorage.getItem("token");
-    //   await axios
-    //     .delete(`${VITE_API_URL}/vacancies/` + id, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => {
-    //       this.createVacancy();
-    //     });
-    //   // alert("Record Deleted ");
-    // },
-    // async getCustomSheetMethod() {
-    //   const token = localStorage.getItem("token");
-    //   axios
-    //     .get(`${VITE_API_URL}/custom_timesheets`, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => (this.getCustomTimeSheet = response.data.custom_sheets));
-    // },
+
     filterData() {
       let filterType = "";
       let filterValue = "";

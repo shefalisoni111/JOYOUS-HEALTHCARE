@@ -15,6 +15,9 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
+      <router-link class="nav-link" aria-current="page" to="/LoginType">
+        <button class="border-0 bg-transparent fw-bolder fs-3"><i class="bi bi-arrow-clockwise"></i></button>
+      </router-link>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav m-auto mt-0 mb-lg-0 fw-bold">
