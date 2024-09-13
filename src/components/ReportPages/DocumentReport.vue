@@ -129,12 +129,12 @@
                           {{ data.expiry_date }}
                         </td>
                         <td scope="col">
-                          {{ data.document_category }}
+                          {{ data.document_category.status }}
                         </td>
                       </tr>
                     </tbody>
                     <tbody v-else>
-                      <tr>
+                      <tr v-if="!isLoading">
                         <td colspan="8" class="text-danger text-center fw-bold">
                           {{ "No records found for the given filter" }}
                         </td>
@@ -195,13 +195,13 @@
         Next
       </button>
     </div>
-    <!-- <loader :isLoading="isLoading"></loader>-->
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 <script>
 import axios from "axios";
 import Navbar from "../Navbar.vue";
-// import Loader from "../Loader/Loader.vue";
+import Loader from "../Loader/Loader.vue";
 import AllDoc from "./DocumentsPages/AllDoc.vue";
 import ActiveDocument from "./DocumentsPages/ActiveDocument.vue";
 import DueDoc from "./DocumentsPages/DueDoc.vue";
@@ -256,7 +256,7 @@ export default {
       selectedDocumentFilter: "",
     };
   },
-  components: { Navbar, AllDoc, ActiveDocument, DueDoc, ExpiredDoc },
+  components: { Loader, Navbar, AllDoc, ActiveDocument, DueDoc, ExpiredDoc },
   computed: {
     activeComponent() {
       return this.tabs[this.activeTab].component;

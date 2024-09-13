@@ -258,10 +258,10 @@ export default {
   },
   mounted() {
     // this.getCandidateMethods();
-    this.documentCategoryDocumentTypeMethod();
+    //  this.documentCategoryDocumentTypeMethod();
   },
   created() {
-    this.getDocumentReport();
+    // this.getDocumentReport();
     // this.getCandidateMethods();
   },
 };
