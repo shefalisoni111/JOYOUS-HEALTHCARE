@@ -67,6 +67,7 @@
 
                     <div class="d-flex gap-3 align-items-center">
                       <form
+                        v-if="getClientInvoiceDetail?.length != 0"
                         @submit.prevent="search"
                         class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
                       >
@@ -397,6 +398,7 @@ export default {
           0
         );
       }
+      this.createStaffInvoiceMethod();
     },
     moveToNext() {
       if (this.currentView === "weekly") {
@@ -411,6 +413,7 @@ export default {
           0
         );
       }
+      this.createStaffInvoiceMethod();
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
@@ -470,12 +473,26 @@ export default {
     async createStaffInvoiceMethod() {
       this.isLoading = true;
       const token = localStorage.getItem("token");
+      let requestData = {};
+
+      if (this.currentView === "weekly") {
+        requestData = {
+          date: this.formatDate(this.startDate),
+          per_page: this.itemsPerPage,
+        };
+      } else if (this.currentView === "monthly") {
+        const formattedStartDate = this.formatDate(this.startDate);
+        const formattedEndDate = this.formatDate(this.endDate);
+        requestData = {
+          start_date: formattedStartDate,
+          end_date: formattedEndDate,
+          per_page: this.itemsPerPage,
+        };
+      }
 
       try {
         const response = await axios.get(`${VITE_API_URL}/staff_invoices`, {
-          params: {
-            per_page: this.itemsPerPage,
-          },
+          params: requestData,
           headers: {
             "content-type": "application/json",
             Authorization: "bearer " + token,
@@ -483,11 +500,14 @@ export default {
         });
 
         this.getStaffInvoiceDetail = response.data.data;
+
+        if (this.getStaffInvoiceDetail.length === 0) {
+          this.errorMessage = "No staff invoices found for the specified criteria.";
+        } else {
+          this.errorMessage = "";
+        }
       } catch (error) {
-        // console.error(
-        //   "Error fetching staff invoices:",
-        //   error.response ? error.response.data : error.message
-        // );
+        // Handle the error
       } finally {
         this.isLoading = false;
       }
@@ -506,18 +526,18 @@ export default {
     // const endOfWeek = new Date(currentDate);
     // endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
     // this.endDate = endOfWeek;
-    // const currentDate = new Date();
-    // const dayOfWeek = currentDate.getDay();
-    // const startOfWeek = new Date(currentDate);
+    const currentDate = new Date();
+    const dayOfWeek = currentDate.getDay();
+    const startOfWeek = new Date(currentDate);
 
-    // const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-    // startOfWeek.setDate(startOfWeek.getDate() + diff);
+    const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    startOfWeek.setDate(startOfWeek.getDate() + diff);
 
-    // this.startDate = startOfWeek;
+    this.startDate = startOfWeek;
 
-    // const endOfWeek = new Date(startOfWeek);
-    // endOfWeek.setDate(endOfWeek.getDate() + 6);
-    // this.endDate = endOfWeek;
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(endOfWeek.getDate() + 6);
+    this.endDate = endOfWeek;
   },
 };
 </script>

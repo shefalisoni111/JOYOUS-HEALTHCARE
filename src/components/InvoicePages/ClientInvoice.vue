@@ -67,6 +67,7 @@
 
                     <div class="d-flex gap-3 align-items-center">
                       <form
+                        v-if="getClientInvoiceDetail?.length != 0"
                         @submit.prevent="search"
                         class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
                       >
@@ -88,6 +89,7 @@
                         generate invoice
                       </router-link>
                       <button
+                        v-if="getClientInvoiceDetail?.length != 0"
                         type="button"
                         class="btn btn-outline-success text-nowrap"
                         @click="toggleFilters"
@@ -607,6 +609,7 @@ export default {
           0
         );
       }
+      this.getClientInvoice();
     },
     moveToNext() {
       if (this.currentView === "weekly") {
@@ -621,6 +624,7 @@ export default {
           0
         );
       }
+      this.getClientInvoice();
     },
     toggleFilters() {
       this.showFilters = !this.showFilters;
@@ -638,14 +642,12 @@ export default {
           },
         });
 
-        // console.log("API response data:", response.data);
         this.getClientInvoiceDetail = response.data.data || [];
 
         this.errorMessageFilter =
           this.getClientInvoiceDetail.length === 0 ? "Report not Found!" : "";
       } catch (error) {
         if (error.response) {
-          // console.error("API error response:", error.response);
           if (error.response.status === 404) {
             const errorMessages = error.response.data.error;
             if (errorMessages === "No records found for the given filter") {
@@ -749,20 +751,41 @@ export default {
     async getClientInvoice() {
       this.isLoading = true;
       const token = localStorage.getItem("token");
+      let requestData = {};
+
+      if (this.currentView === "weekly") {
+        requestData = {
+          date: this.formatDate(this.startDate),
+          per_page: this.itemsPerPage,
+        };
+      } else if (this.currentView === "monthly") {
+        const formattedStartDate = this.formatDate(this.startDate);
+        const formattedEndDate = this.formatDate(this.endDate);
+        requestData = {
+          start_date: formattedStartDate,
+          end_date: formattedEndDate,
+          per_page: this.itemsPerPage,
+        };
+      }
+
       try {
         const response = await axios.get(`${VITE_API_URL}/client_invoices`, {
-          params: {
-            per_page: this.itemsPerPage,
-          },
-
+          params: requestData,
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token,
           },
         });
+
         this.getClientInvoiceDetail = response.data.data;
+
+        if (this.getClientInvoiceDetail.length === 0) {
+          this.errorMessage = "No client invoices found for the specified criteria.";
+        } else {
+          this.errorMessage = "";
+        }
       } catch (error) {
-        // console.error("Error fetching client invoice details:", error);
+        // Handle error
       } finally {
         this.isLoading = false;
       }
