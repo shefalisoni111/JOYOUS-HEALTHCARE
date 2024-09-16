@@ -67,7 +67,7 @@
 
                     <div class="d-flex gap-3 align-items-center">
                       <form
-                        v-if="getClientInvoiceDetail?.length != 0"
+                        v-if="getStaffInvoiceDetail?.length != 0"
                         @submit.prevent="search"
                         class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
                       >
@@ -129,7 +129,7 @@
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody v-if="getStaffInvoiceDetail?.length > 0">
                         <tr v-for="data in getStaffInvoiceDetail" :key="data.id">
                           <td scope="col">#1</td>
                           <td scope="col">{{ data.staff }}</td>
@@ -161,6 +161,13 @@
                               class="text-success"
                               ><i class="bi bi-eye"></i
                             ></router-link>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr v-if="!isLoading">
+                          <td colspan="14" class="text-danger text-center">
+                            {{ "Not Data Found !" }}
                           </td>
                         </tr>
                       </tbody>
@@ -222,9 +229,9 @@
                         </tr>
                       </tbody>
                       <tbody v-else>
-                        <tr>
+                        <tr v-if="!isLoading">
                           <td colspan="14" class="text-danger text-center">
-                            {{ "Not Match Found !" }}
+                            {{ "Not Data Found !" }}
                           </td>
                         </tr>
                       </tbody>

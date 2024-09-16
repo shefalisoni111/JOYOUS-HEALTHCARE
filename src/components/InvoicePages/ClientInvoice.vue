@@ -252,13 +252,21 @@
                       </tbody>
                       <tbody v-else>
                         <tr v-if="errorMessageFilter">
-                          <td colspan="16" class="text-danger text-center">
+                          <td
+                            colspan="16"
+                            class="text-danger text-center"
+                            v-if="!isLoading"
+                          >
                             {{ errorMessageFilter }}
                           </td>
                         </tr>
                         <tr v-else>
-                          <td colspan="16" class="text-danger text-center">
-                            {{ "Not Match Found !" }}
+                          <td
+                            colspan="16"
+                            class="text-danger text-center"
+                            v-if="!isLoading"
+                          >
+                            {{ "Not Data Found !" }}
                           </td>
                         </tr>
                       </tbody>
@@ -318,13 +326,21 @@
                       </tbody>
                       <tbody v-else>
                         <tr v-if="errorMessageFilter">
-                          <td colspan="16" class="text-danger text-center">
+                          <td
+                            colspan="16"
+                            class="text-danger text-center"
+                            v-if="!isLoading"
+                          >
                             {{ errorMessageFilter }}
                           </td>
                         </tr>
                         <tr v-else>
-                          <td colspan="16" class="text-danger text-center">
-                            {{ "Not Match Found !" }}
+                          <td
+                            colspan="16"
+                            class="text-danger text-center"
+                            v-if="!isLoading"
+                          >
+                            {{ "Not Data Found !" }}
                           </td>
                         </tr>
                       </tbody>
