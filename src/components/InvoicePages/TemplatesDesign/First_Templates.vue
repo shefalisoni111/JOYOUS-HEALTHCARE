@@ -31,7 +31,9 @@
               <div class="col-12">
                 <div class="row">
                   <div class="col-4">
-                    <h5>DATE: {{ getClientInvoiceDetail.start_date }}</h5>
+                    <h5>
+                      DATE: {{ this.formatDate(getClientInvoiceDetail.start_date) }}
+                    </h5>
                     <h5>DUE DATE: {{ getClientInvoiceDetail.due_date }}</h5>
                   </div>
                   <div class="col-4 text-center">
@@ -66,7 +68,9 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td scope="col">{{ getClientInvoiceDetail.start_date }}</td>
+                      <td scope="col">
+                        {{ this.formatDate(getClientInvoiceDetail.start_date) }}
+                      </td>
                       <td scope="col"></td>
                       <td scope="col"></td>
                       <td scope="col" class="text-capitalize">
@@ -78,7 +82,9 @@
                       <td scope="col">{{ getClientInvoiceDetail.total_amount }}</td>
                     </tr>
                     <tr>
-                      <td scope="col">{{ getClientInvoiceDetail.end_date }}</td>
+                      <td scope="col">
+                        {{ this.formatDate(getClientInvoiceDetail.end_date) }}
+                      </td>
                       <td scope="col"></td>
                       <td scope="col"></td>
                       <td scope="col" class="text-capitalize">
@@ -132,6 +138,17 @@ export default {
     First_TemplateEdit,
   },
   methods: {
+    formatDate(date) {
+      const d = new Date(date);
+      let day = d.getDate();
+      let month = d.getMonth() + 1;
+      let year = d.getFullYear();
+
+      if (day < 10) day = "0" + day;
+      if (month < 10) month = "0" + month;
+
+      return `${day}-${month}-${year}`;
+    },
     async createClientInvoice() {
       try {
         const response = await axios.get(

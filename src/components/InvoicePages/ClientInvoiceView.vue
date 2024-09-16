@@ -97,45 +97,9 @@
 
                       <div class="ps-2">
                         Invoice created for £{{ getClientInvoiceDetail.rate }} by
-                        Recpal<br />
-                        {{ getClientInvoiceDetail.created_on }}|
-                      </div>
-                    </li>
-                    <li class="d-flex mb-1">
-                      <div>
-                        <i class="bi bi-asterisk"></i>
-                      </div>
-                      <div class="ps-2">
-                        Invoice has been opened<br />
-                        {{ getClientInvoiceDetail.created_on }}|
-                      </div>
-                    </li>
-                    <li class="d-flex mb-1">
-                      <div>
-                        <i class="bi bi-asterisk"></i>
-                      </div>
-                      <div class="ps-2">
-                        Invoice has been delivered<br />
-                        {{ getClientInvoiceDetail.created_on }}|
-                      </div>
-                    </li>
-                    <li class="d-flex mb-1">
-                      <div>
-                        <i class="bi bi-asterisk"></i>
-                      </div>
-                      <div class="ps-2">
-                        Invoice has been sent to lakeview.admin@cinnamoncc.com by
-                        Recpal<br />
-                        {{ getClientInvoiceDetail.created_on }}|
-                      </div>
-                    </li>
-                    <li class="d-flex mb-1">
-                      <div>
-                        <i class="bi bi-asterisk"></i>
-                      </div>
-                      <div class="ps-2">
-                        Edited invoice by Recpal<br />
-                        {{ getClientInvoiceDetail.created_on }}|
+                        <b>{{ agencySetting?.agency_name }}</b
+                        ><br />
+                        {{ this.formatDate(getClientInvoiceDetail.created_on) }}
                       </div>
                     </li>
                   </ul>
@@ -177,6 +141,7 @@ export default {
       selectedTemplate: this.$store.state.selectedTemplate,
       getClientInvoiceDetail: [],
       selectedID: null,
+      agencySetting: [],
       selectedInvoiceId: null,
       showEditComponent: false,
       showEditComponentTwo: false,
@@ -199,16 +164,17 @@ export default {
   },
 
   methods: {
-    // handleEditClick() {
-    //   if (!this.getClientInvoiceDetail.invoice_lock) {
-    //     this.toggleEditMode(this.getClientInvoiceDetail.id);
-    //     this.showEditComponent = true;
-    //     this.showEditComponentTwo = false;
-    //   } else {
-    //     this.showEditComponent = false;
-    //     this.showEditComponentTwo = true;
-    //   }
-    // },
+    formatDate(date) {
+      const d = new Date(date);
+      let day = d.getDate();
+      let month = d.getMonth() + 1;
+      let year = d.getFullYear();
+
+      if (day < 10) day = "0" + day;
+      if (month < 10) month = "0" + month;
+
+      return `${day}-${month}-${year}`;
+    },
     handleEditClick(isLocked) {
       if (isLocked) {
         alert("Cannot edit. Invoice is locked.");
@@ -266,6 +232,7 @@ export default {
         const clientInvoice = response.data.client_invoice;
 
         this.getClientInvoiceDetail = clientInvoice;
+        this.agencySetting = clientInvoice.agency_setting;
       } catch (error) {
         // console.error("Error fetching client invoice:", error);
       }

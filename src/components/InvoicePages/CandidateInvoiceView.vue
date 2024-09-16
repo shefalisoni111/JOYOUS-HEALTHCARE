@@ -192,6 +192,24 @@
                   </button>
                 </div>
               </div>
+              <div class="row mt-2 p-4">
+                <div>
+                  <ul class="list-unstyled">
+                    <li class="d-flex mb-1">
+                      <div>
+                        <i class="bi bi-asterisk"></i>
+                      </div>
+
+                      <div class="ps-2">
+                        Invoice created for £{{ getClientInvoiceDetail.rate }} by
+                        <b>{{ agencySetting?.agency_name }}</b
+                        ><br />
+                        {{ this.formatDate(getClientInvoiceDetail.created_on) }}
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -213,7 +231,12 @@ import StaffInvoiceViewEdit from "../InvoicePages/TemplatesDesign/StaffInvoiceVi
 
 export default {
   data() {
-    return { selectedInvoiceId: null, getClientInvoiceDetail: [], isEditMode: false };
+    return {
+      selectedInvoiceId: null,
+      getClientInvoiceDetail: [],
+      isEditMode: false,
+      agencySetting: [],
+    };
   },
   components: {
     ClientMailInvoice,
@@ -223,6 +246,17 @@ export default {
   },
   computed: {},
   methods: {
+    formatDate(date) {
+      const d = new Date(date);
+      let day = d.getDate();
+      let month = d.getMonth() + 1;
+      let year = d.getFullYear();
+
+      if (day < 10) day = "0" + day;
+      if (month < 10) month = "0" + month;
+
+      return `${day}-${month}-${year}`;
+    },
     async generatePDF() {
       try {
         const response = await axios.get(
@@ -267,6 +301,7 @@ export default {
         const clientInvoice = response.data.staff_invoice;
 
         this.getClientInvoiceDetail = clientInvoice;
+        this.agencySetting = clientInvoice.agency_setting;
         this.invoiceLogs = clientInvoice.logs.map((log) => ({
           ...log,
           isEditing: false,

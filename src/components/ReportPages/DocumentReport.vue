@@ -129,7 +129,7 @@
                           {{ data.expiry_date }}
                         </td>
                         <td scope="col">
-                          {{ data.document_category.status }}
+                          {{ data.document_category?.status }}
                         </td>
                       </tr>
                     </tbody>
@@ -189,7 +189,7 @@
       >&nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getDocumentReportData?.length"
+        :disabled="currentPage * itemsPerPage >= getDocumentReportData.length"
         @click="currentPage++"
       >
         Next
