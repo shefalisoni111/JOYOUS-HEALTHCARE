@@ -108,7 +108,7 @@
                               :key="option.id"
                               :value="option.id"
                             >
-                              {{ option.shift_name }}
+                              {{ option.shift_name.replace(/_/g, " ") }}
                             </option>
                           </select>
                         </div>
@@ -263,7 +263,7 @@
                               :value="option.id"
                               aria-placeholder="Select Job"
                             >
-                              {{ option.shift_name }}
+                              {{ option.shift_name.replace(/_/g, " ") }}
                             </option>
                           </select>
                         </div>
@@ -515,7 +515,7 @@
                               :key="option.id"
                               :value="option.id"
                             >
-                              {{ option.shift_name }}
+                              {{ option.shift_name.replace(/_/g, " ") }}
                             </option>
                           </select>
                         </div>
@@ -666,7 +666,7 @@
                               :value="option.id"
                               aria-placeholder="Select Job"
                             >
-                              {{ option.shift_name }}
+                              {{ option.shift_name.replace(/_/g, " ") }}
                             </option>
                           </select>
                         </div>

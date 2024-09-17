@@ -941,6 +941,40 @@ const router = createRouter({
           },
         ]
     },
+    {
+      path: "/recruitment",
+      name: "Recruitment",
+      component: () =>
+        import("@/views/Recruitment.vue"),
+        meta: {
+           requiresAuth: true,
+        },
+        children: [
+          {
+            path: "", 
+            name: "RecruitmentStaffsRedirect",
+           redirect: { name: "Staffs" } 
+          },
+          {
+            path: "/staffs",
+            name: "Staffs",
+            component: () =>
+              import("@/components/Recruitment/Staffs.vue"),
+          },
+          {
+            path: "/jobs",
+            name: "Jobs",
+            component: () =>
+              import("@/components/Recruitment/Jobs.vue"),
+          },
+          {
+            path: "/settings",
+            name: "Settings",
+            component: () =>
+              import("@/components/Recruitment/Settings.vue"),
+          },
+        ]
+    },
 
     {
       path: "/",

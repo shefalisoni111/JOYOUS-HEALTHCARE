@@ -759,17 +759,14 @@ export default {
         // end_date: endOfMonth.toLocaleDateString(),
       };
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/find_custom_timesheet_according_mounth`,
-          {
-            params: requestData,
-            per_page: this.itemsPerPage,
-            headers: {
-              Authorization: "bearer " + token,
-            },
-          }
-        );
-        this.getSiteReportData = response.data.custom_timesheets;
+        const response = await axios.get(`${VITE_API_URL}/client_invoices`, {
+          params: requestData,
+          per_page: this.itemsPerPage,
+          headers: {
+            Authorization: "bearer " + token,
+          },
+        });
+        this.getSiteReportData = response.data.data;
         if (this.getSiteReportData.length === 0) {
           this.errorMessageCustom = "No Client Report found for the specified month";
         } else {

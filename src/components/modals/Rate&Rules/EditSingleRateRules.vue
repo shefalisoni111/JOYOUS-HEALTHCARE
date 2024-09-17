@@ -111,7 +111,7 @@
                               :key="option.id"
                               :value="option.id"
                             >
-                              {{ option.shift_name }}
+                              {{ option.shift_name.replace(/_/g, " ") }}
                             </option>
                           </select>
                         </template>
@@ -125,7 +125,7 @@
                               :key="option.id"
                               :value="option.id"
                             >
-                              {{ option.shift_name }}
+                              {{ option.shift_name.replace(/_/g, " ") }}
                             </option>
                           </select>
                         </template>
@@ -304,15 +304,7 @@ export default {
         id: "",
         start_time: null,
         end_time: null,
-        // day_start_time: null,
-        // day_end_time: null,
-        // night_start_time: null,
-        // night_end_time: null,
-        // holiday_start_time: null,
-        // holiday_end_time: null,
-        // holiday_night_start_time: null,
-        // holiday_night_end_time: null,
-        // day_shift_id: null,
+
         site_shift_id: "",
         night_shift_id: null,
         client_rate: "",
@@ -521,7 +513,7 @@ export default {
             paye: rateAndRules.paye,
             umbrella: rateAndRules.umbrella,
             site_id: rateAndRules.site_id,
-            shift_type: rateAndRules.shift_type,
+            shift_type: rateAndRules.shift_type.replace(/_/g, " "),
             // Add other necessary fields here
           };
           this.getTimeShift(rateAndRules.site_id);

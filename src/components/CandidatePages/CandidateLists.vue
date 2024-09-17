@@ -440,13 +440,23 @@ export default {
           },
         });
 
-        this.searchResults = response.data.candidate;
-      } catch (error) {
         if (
-          (error.response && error.response.status === 404) ||
-          error.response.status === 400
+          response.status === 200 &&
+          response.data.candidate.length === 0 &&
+          error.response &&
+          error.response.data &&
+          error.response.data.message
         ) {
-          this.errorMessage = "No candidates found for the specified criteria";
+          this.errorMessage = "No Staff found for the specified criteria";
+        } else {
+          this.searchResults = response.data.candidate;
+          this.errorMessage = "";
+        }
+      } catch (error) {
+        if (error.response && error.response.data && error.response.data.message) {
+          this.errorMessage = error.response.data.message;
+        } else {
+          this.errorMessage = "No Staff found for the specified criteria";
         }
       }
     },
@@ -473,15 +483,23 @@ export default {
           }
         );
 
-        this.searchResults = response.data;
-
-        this.errorMessage = response.message;
-      } catch (error) {
         if (
-          (error.response && error.response.status === 404) ||
-          error.response.status === 400
+          response.status === 200 &&
+          response.data.length === 0 &&
+          error.response &&
+          error.response.data &&
+          error.response.data.message
         ) {
-          this.errorMessage = "No candidates found for the specified criteria";
+          this.errorMessage = "No Staff found for the specified criteria";
+        } else {
+          this.searchResults = response.data;
+          this.errorMessage = "";
+        }
+      } catch (error) {
+        if (error.response && error.response.data && error.response.data.message) {
+          this.errorMessage = error.response.data.message;
+        } else {
+          this.errorMessage = "No Staff found for the specified criteria";
         }
       }
     },

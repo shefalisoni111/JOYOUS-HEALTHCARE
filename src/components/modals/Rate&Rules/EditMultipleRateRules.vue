@@ -2513,7 +2513,7 @@ export default {
               paye: item.paye,
               umbrella: item.umbrella,
               site_id: item.site_id,
-              shift_type: item.shift_type,
+              shift_type: item.shift_type.replace(/_/g, " "),
               split_rate: item.split_rate,
               holiday_split_rate: item.holiday_split_rate,
             };
@@ -2543,7 +2543,7 @@ export default {
         private_limited: rule.private_limited,
         start_time: this.convertTo24Hour(rule.start_time),
         end_time: this.convertTo24Hour(rule.end_time),
-        shift_type: rule.shift_type,
+        shift_type: rule.shift_type.replace(/_/g, " "),
       }));
 
       try {

@@ -130,8 +130,8 @@
                         </tr>
                       </thead>
                       <tbody v-if="getStaffInvoiceDetail?.length > 0">
-                        <tr v-for="data in getStaffInvoiceDetail" :key="data.id">
-                          <td scope="col">#1</td>
+                        <tr v-for="(data, index) in getStaffInvoiceDetail" :key="index">
+                          <td scope="col">#{{ index + 1 }}</td>
                           <td scope="col">{{ data.staff }}</td>
 
                           <td scope="col">{{ data.start_date }}</td>

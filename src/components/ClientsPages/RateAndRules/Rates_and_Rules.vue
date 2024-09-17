@@ -167,6 +167,7 @@
                               <input class="form-check-input" type="checkbox" value="" />
                             </div>
                           </th>
+                          <!-- <th scope="col">ID</th> -->
                           <th scope="col">Client</th>
                           <th scope="col">Site</th>
                           <th scope="col">Job</th>
@@ -183,9 +184,11 @@
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
-
-                      <tbody v-if="paginateCandidates?.length > 0">
-                        <tr v-for="(data, index) in paginateCandidates" :key="index">
+                      <!-- {{
+                        console.log(groupedRateRulesData)
+                      }} -->
+                      <tbody v-if="groupedRateRulesData?.length > 0">
+                        <tr v-for="(data, index) in groupedRateRulesData" :key="index">
                           <td>
                             <div class="form-check">
                               <input
@@ -198,6 +201,7 @@
                               />
                             </div>
                           </td>
+                          <!-- <td>{{ data.id }}</td> -->
                           <td>{{ data.client }}</td>
                           <td
                             @click="
@@ -242,6 +246,13 @@
                             >
                               <i class="bi bi-pencil"></i>
                             </button>
+                            <!-- <button
+                              type="button"
+                              class="btn btn-outline-danger text-nowrap"
+                              @click="deleteSelectedStaffs(data.id)"
+                            >
+                              Delete Staff
+                            </button> -->
                           </td>
                         </tr>
                         <tr v-for="(rate, index) in filteredRateRulesData" :key="index">
@@ -260,7 +271,7 @@
                             >
                           </td>
                           <td v-if="activeSiteId === index">
-                            {{ rate.shift_type }}<br />{{
+                            {{ rate.shift_type.replace(/_/g, " ") }}<br />{{
                               formatTime(rate.start_time)
                             }}-{{ formatTime(rate.end_time) }}
                           </td>
@@ -399,7 +410,7 @@
                             >
                           </td>
                           <td>
-                            {{ rate.shift_type }}<br />{{
+                            {{ rate.shift_type.replace(/_/g, " ") }}<br />{{
                               formatTime(rate.start_time)
                             }}-{{ formatTime(rate.end_time) }}
                           </td>
@@ -459,14 +470,12 @@
         </div>
       </div>
     </div>
-    <div
+    <!-- <div
       class="mx-3 mb-2"
       style="text-align: right"
-      v-if="groupedRateRulesData?.length >= 8 && !searchResults.length"
+      v-if="filteredRateRulesData?.length >= 8 && !searchResults.length"
     >
-      <!-- <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
-      </button> -->
+      
       <div class="dropdown d-inline-block">
         <button
           class="btn btn-sm btn-primary dropdown-toggle"
@@ -506,12 +515,12 @@
       >&nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= groupedRateRulesData?.length"
+        :disabled="currentPage * itemsPerPage >= filteredRateRulesData?.length"
         @click="currentPage++"
       >
         Next
       </button>
-    </div>
+    </div> -->
     <AddRateRules
       @UpdatedRateRules="getRateRulesDataMethod"
       ref="add_rate_rules"
@@ -597,7 +606,7 @@ export default {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
-      return this.groupedRateRulesData.slice(startIndex, endIndex);
+      return this.getRateRulesData.slice(startIndex, endIndex);
     },
 
     totalRecordsOnPage() {
@@ -606,13 +615,13 @@ export default {
     groupedRateRulesData() {
       const groupedData = {};
       this.getRateRulesData.forEach((data) => {
-        const groupKey = `${data.site_id}-${data.client}-${data.client_id}-${data.job}-${data.id}`;
+        const groupKey = `${data.site_id}-${data.client}-${data.job}-${data.id}`;
         if (!groupedData[groupKey]) {
           groupedData[groupKey] = {
             site_id: data.site_id,
             site: data.site,
             client: data.client,
-            client_id: data.client_id,
+
             job: data.job,
             job_id: data.job_id,
             id: data.id,
@@ -690,7 +699,7 @@ export default {
         this.getRateRulesData = response.data.data || [];
 
         if (this.getRateRulesData.length === 0) {
-          this.errorMessageFilter = "Report not Found!";
+          this.errorMessageFilter = "Rates not Found!";
         } else {
           this.errorMessageFilter = "";
         }
@@ -894,7 +903,7 @@ export default {
           this.ids.splice(index, 1);
         }
       }
-      console.log("Updated ids array:", this.ids);
+      // console.log("Updated ids array:", this.ids);
     },
     editRateRulesMultiId(RateRulesId, siteID, jobID, job, clientID) {
       this.selectedRatesRulesId = RateRulesId;
@@ -924,6 +933,24 @@ export default {
             // alert(error.response.data.message);
           }
         }
+      }
+    },
+    async deleteSelectedStaffs(id) {
+      const token = localStorage.getItem("token");
+
+      try {
+        const response = await axios.delete(`${VITE_API_URL}/rate_and_rules/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // Handle the success response if needed
+        console.log("Delete successful:", response.data);
+      } catch (error) {
+        console.error("Error during deletion:", error);
+      } finally {
+        // Any final actions can be placed here, e.g., hiding a loading spinner
       }
     },
     async getClientMethod() {
