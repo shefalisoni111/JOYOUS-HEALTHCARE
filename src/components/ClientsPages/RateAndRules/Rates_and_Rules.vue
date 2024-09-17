@@ -184,12 +184,10 @@
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
-                      <!-- {{
-                        console.log(groupedRateRulesData)
-                      }} -->
+
                       <tbody v-if="groupedRateRulesData?.length > 0">
                         <tr v-for="(data, index) in groupedRateRulesData" :key="index">
-                          <td>
+                          <td v-if="index === 0">
                             <div class="form-check">
                               <input
                                 class="form-check-input"
@@ -201,9 +199,10 @@
                               />
                             </div>
                           </td>
-                          <!-- <td>{{ data.id }}</td> -->
-                          <td>{{ data.client }}</td>
+
+                          <td v-if="index === 0">{{ data.client }}</td>
                           <td
+                            v-if="index === 0"
                             @click="
                               toggleDetails(
                                 index,
@@ -216,18 +215,18 @@
                           >
                             {{ data.site }}
                           </td>
-                          <td>{{ data.job }}</td>
-                          <td>&nbsp;</td>
-                          <td>&nbsp;</td>
-                          <td>&nbsp;</td>
-                          <td>&nbsp;</td>
-                          <td>&nbsp;</td>
-                          <td>&nbsp;</td>
-                          <td>&nbsp;</td>
-                          <td>&nbsp;</td>
-                          <td>&nbsp;</td>
-                          <td>&nbsp;</td>
-                          <td>
+                          <td v-if="index === 0">{{ data.job }}</td>
+                          <td v-if="index === 0">&nbsp;</td>
+                          <td v-if="index === 0">&nbsp;</td>
+                          <td v-if="index === 0">&nbsp;</td>
+                          <td v-if="index === 0">&nbsp;</td>
+                          <td v-if="index === 0">&nbsp;</td>
+                          <td v-if="index === 0">&nbsp;</td>
+                          <td v-if="index === 0">&nbsp;</td>
+                          <td v-if="index === 0">&nbsp;</td>
+                          <td v-if="index === 0">&nbsp;</td>
+                          <td v-if="index === 0">&nbsp;</td>
+                          <td v-if="index === 0">
                             <button
                               type="button"
                               class="btn btn-outline-success text-nowrap"
@@ -255,45 +254,48 @@
                             </button> -->
                           </td>
                         </tr>
+                        {{
+                          console.log(filteredRateRulesData)
+                        }}
                         <tr v-for="(rate, index) in filteredRateRulesData" :key="index">
-                          <td v-if="activeSiteId === index">
+                          <td v-if="activeSiteId !== null">
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
                             </div>
                           </td>
-                          <td v-if="activeSiteId === index">{{ rate.client }}</td>
-                          <td v-if="activeSiteId === index">{{ rate.site }}</td>
-                          <td v-if="activeSiteId === index">{{ rate.job }}</td>
-                          <td v-if="activeSiteId === index" class="text-capitalize">
+                          <td v-if="activeSiteId !== null">{{ rate.client }}</td>
+                          <td v-if="activeSiteId !== null">{{ rate.site }}</td>
+                          <td v-if="activeSiteId !== null">{{ rate.job }}</td>
+                          <td v-if="activeSiteId !== null" class="text-capitalize">
                             <span
                               style="background: orange; padding: 3px; border-radius: 4px"
                               >{{ rate.day }}</span
                             >
                           </td>
-                          <td v-if="activeSiteId === index">
+                          <td v-if="activeSiteId !== null">
                             {{ rate.shift_type.replace(/_/g, " ") }}<br />{{
                               formatTime(rate.start_time)
                             }}-{{ formatTime(rate.end_time) }}
                           </td>
-                          <td v-if="activeSiteId === index">
+                          <td v-if="activeSiteId !== null">
                             {{ rate.rate_type ? rate.rate_type : "Null" }}
                           </td>
-                          <td v-if="activeSiteId === index">{{ rate.client_rate }}</td>
-                          <td v-if="activeSiteId === index">
+                          <td v-if="activeSiteId !== null">{{ rate.client_rate }}</td>
+                          <td v-if="activeSiteId !== null">
                             {{ rate.private_limited }}
                           </td>
-                          <td v-if="activeSiteId === index">{{ rate.self_employed }}</td>
-                          <td v-if="activeSiteId === index">
+                          <td v-if="activeSiteId !== null">{{ rate.self_employed }}</td>
+                          <td v-if="activeSiteId !== null">
                             {{ rate.umbrella ? rate.umbrella : "Null" }}
                           </td>
-                          <td v-if="activeSiteId === index">
+                          <td v-if="activeSiteId !== null">
                             {{ rate.paye ? rate.paye : "Null" }}
                           </td>
-                          <td v-if="activeSiteId === index">
+                          <td v-if="activeSiteId !== null">
                             {{ rate.created_by_and_time }}
                           </td>
-                          <td v-if="activeSiteId === index">{{ rate.last_update }}</td>
-                          <td v-if="activeSiteId === index">
+                          <td v-if="activeSiteId !== null">{{ rate.last_update }}</td>
+                          <td v-if="activeSiteId !== null">
                             <button
                               type="button"
                               class="btn btn-outline-success text-nowrap"
@@ -1059,6 +1061,7 @@ export default {
     },
     async toggleDetails(index, siteId, client, job) {
       this.activeSiteId = this.activeSiteId === index ? null : index;
+
       // this.getRateRulesWeekDataMethod(siteId);
       this.filteredRateRulesData = this.getRateRulesData.filter(
         (rate) => rate.site_id === siteId && rate.client === client && rate.job === job

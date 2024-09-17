@@ -241,7 +241,7 @@
             <div class="row">
               <div class="col-md-12 d-flex justify-content-between">
                 <div class="d-flex gap-3">
-                  <div class="d-flex justify-content-around gap-2">
+                  <!-- <div class="d-flex justify-content-around gap-2">
                     <div class="btn btn-success text-nowrap">
                       <input
                         class="form-check-input"
@@ -262,7 +262,7 @@
                       />
                       Text Notification
                     </div>
-                  </div>
+                  </div> -->
                   <div class="d-flex justify-content-around gap-2">
                     <div class="btn btn-success text-nowrap">
                       <input
@@ -282,13 +282,14 @@
                     data-bs-target="#publishVacancy"
                     data-bs-toggle="modal"
                     data-bs-dismiss="modal"
+                    v-on:click="clearFieldsData"
                   >
                     Cancel
                   </button>
                   <button
                     class="btn btn-success rounded-1 text-capitalize fw-medium"
-                    data-bs-dismiss="modal"
                     v-on:click="publicCandidateMail()"
+                    :disabled="!canPublish"
                   >
                     Publish
                   </button>
@@ -342,6 +343,13 @@ export default {
     });
   },
   computed: {
+    canPublish() {
+      const hasCheckedCandidates = Object.keys(this.checkedCandidates).some(
+        (key) => this.checkedCandidates[key]
+      );
+
+      return hasCheckedCandidates && this.enableMailNotification;
+    },
     selectedPublishItemId() {
       this.getAllCandidateListMethod(this.$store.state.selectedPublishItemId);
 
@@ -354,6 +362,16 @@ export default {
     },
   },
   methods: {
+    clearFieldsData() {
+      setTimeout(() => {
+        this.checkedCandidates = Object.fromEntries(
+          Object.keys(this.checkedCandidates).map((key) => [key, false])
+        );
+
+        this.enableMailNotification = false;
+        this.selectAll = false;
+      }, 10);
+    },
     selectAllCandidates() {
       if (this.selectAll) {
         this.getCandidatesData.forEach((data) => {
@@ -395,11 +413,6 @@ export default {
           .filter((candidate_ids) => this.checkedCandidates[candidate_ids])
           .map((candidate_ids) => parseInt(candidate_ids));
 
-        // if (checkedCandidateIds.length === 0) {
-        //   alert("Please select at least one candidate before proceeding.");
-        //   return;
-        // }
-
         try {
           const notificationType = this.enableMailNotification
             ? "email_notification"
@@ -416,28 +429,31 @@ export default {
             }
           );
 
-          // this.getPublicVacancyMAil = response.data.data;
-          alert(response.data.message);
-          // const message = response.data.message;
-          // this.$refs.successAlert.showSuccess(message);
           if (response.status === 200) {
+            const message = response.data.message;
+
+            if (
+              this.$refs.successAlert &&
+              typeof this.$refs.successAlert.showSuccess === "function"
+            ) {
+              this.$refs.successAlert.showSuccess(message);
+            } else {
+              console.error("SuccessAlert component or method not found");
+            }
+
+            // Reset fields after successful notification
             this.checkedCandidates = Object.fromEntries(
               Object.keys(this.checkedCandidates).map((key) => [key, false])
             );
-
             this.enableMailNotification = false;
-
-            this.showMessage = false;
             this.selectAll = false;
+
             this.$emit("publishVacancy");
             this.$emit("publishVacancySearch");
-            const message = "Shift Published successfully";
-            this.$refs.successAlert.showSuccess(message);
           } else {
-            // Handle error case if needed
+            // Handle unexpected response status
           }
         } catch (error) {
-          // console.error("Error sending notification:", error);
           // Handle error
         }
       } else {
