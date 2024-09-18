@@ -195,24 +195,22 @@
                     <table class="table reportTable">
                       <thead>
                         <tr>
-                          <th>
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" />
-                            </div>
-                          </th>
+                          <th scope="col">SI No</th>
                           <th scope="col">ID</th>
-                          <th scope="col">Code</th>
-                          <th scope="col" style="width: 153px">Name</th>
+
+                          <th scope="col" style="width: 153px">Employee Name</th>
+                          <th scope="col">Position</th>
                           <th scope="col">Site</th>
-                          <th scope="col">Job</th>
+
                           <th scope="col">Shift Date</th>
-                          <th scope="col">Start Time</th>
-                          <th scope="col">End Time</th>
-                          <th scope="col">Total Hours</th>
-                          <th scope="col">Client Rate</th>
-                          <th scope="col">Total Cost</th>
-                          <!-- <th scope="col">Paper TimeSheet</th> -->
-                          <th scope="col">Approved</th>
+                          <th scope="col">Payment Ref</th>
+                          <th scope="col">Time From</th>
+                          <th scope="col">Time To</th>
+                          <th scope="col">Hours</th>
+
+                          <th scope="col">Pay Rate</th>
+                          <th scope="col">Total Charge</th>
+                          <th scope="col">Status</th>
                         </tr>
                       </thead>
                       <tbody v-if="paginateCandidates?.length > 0">
@@ -223,11 +221,13 @@
                             </div>
                           </td>
                           <td scope="col">{{ data.id }}</td>
-                          <td scope="col">{{ data.code }}</td>
+
                           <td scope="col">{{ data.name }}</td>
-                          <td scope="col">{{ data.site }}</td>
                           <td scope="col">{{ data.job }}</td>
+                          <td scope="col">{{ data.site }}</td>
+
                           <td scope="col">{{ data.shift_date }}</td>
+                          <td scope="col"></td>
                           <td scope="col">
                             {{ data.start_time }}
                           </td>
