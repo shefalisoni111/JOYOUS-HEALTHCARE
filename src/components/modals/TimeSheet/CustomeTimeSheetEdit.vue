@@ -130,6 +130,23 @@
                     Paper TimeSheet is required
                   </span>
                 </div>
+                <!-- <div class="col-12 mt-1">
+                  <img
+                    :src="fullCustomImageUrl"
+                    alt="Current Paper TimeSheet"
+                    class="img-fluid"
+                    width="20%"
+                  />
+                  <input
+                    type="file"
+                    class="form-control"
+                    accept="image/*"
+                    @change="handleFileUpload"
+                  />
+                  <span v-if="!validationPaperTimeSheet" class="text-danger">
+                    Paper TimeSheet is required
+                  </span>
+                </div> -->
               </div>
             </form>
           </div>
@@ -258,22 +275,39 @@ export default {
     },
     async updateCustomTimeSheetMethod() {
       try {
-        const requestBody = {
-          custom_timesheet: {
-            shift_date: this.fetchCustomSheetData.shift_date,
-            start_time: this.fetchCustomSheetData.start_time,
-            end_time: this.fetchCustomSheetData.end_time,
-            client_rate: this.fetchCustomSheetData.client_rate,
-            approved_hour: this.fetchCustomSheetData.approved_hour,
-          },
-        };
+        const formData = new FormData();
+
+        formData.append(
+          "custom_timesheet[shift_date]",
+          this.fetchCustomSheetData.shift_date
+        );
+        formData.append(
+          "custom_timesheet[start_time]",
+          this.fetchCustomSheetData.start_time
+        );
+        formData.append("custom_timesheet[end_time]", this.fetchCustomSheetData.end_time);
+        formData.append(
+          "custom_timesheet[client_rate]",
+          this.fetchCustomSheetData.client_rate
+        );
+        formData.append(
+          "custom_timesheet[approved_hour]",
+          this.fetchCustomSheetData.approved_hour
+        );
+
+        if (this.fetchCustomSheetData.paper_timesheet instanceof File) {
+          formData.append(
+            "custom_timesheet[custom_image]",
+            this.fetchCustomSheetData.paper_timesheet
+          );
+        }
 
         const response = await axios.put(
           `${VITE_API_URL}/custom_timesheets/${this.fetchCustomSheetData.id}`,
-          requestBody,
+          formData,
           {
             headers: {
-              "Content-Type": "application/json",
+              "Content-Type": "multipart/form-data",
             },
           }
         );

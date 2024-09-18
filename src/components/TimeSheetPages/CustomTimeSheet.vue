@@ -212,7 +212,7 @@
                                   class="btn border-primary-subtle"
                                   data-bs-toggle="modal"
                                   data-bs-target="#viewPaperTimeSheet"
-                                  @click="viewPaperSheet(data.id)"
+                                  @click="viewPaperSheet(data.id, $event)"
                                 >
                                   <i class="bi bi-eye"></i>
                                 </button>
