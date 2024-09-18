@@ -179,7 +179,7 @@
                           <th scope="col">Total Hours</th>
                           <th scope="col">Client Rate</th>
                           <th scope="col">Total Cost</th>
-                          <th scope="col">Paper TimeSheet</th>
+                          <!-- <th scope="col">Paper TimeSheet</th> -->
                           <th scope="col">Approved</th>
                         </tr>
                       </thead>
@@ -211,7 +211,7 @@
                           <td scope="col">
                             {{ data.total_cost }}
                           </td>
-                          <td scope="col">
+                          <!-- <td scope="col">
                             <div v-if="data.paper_timesheet">
                               <img
                                 :src="fullPaperTimeSheetUrl(data.paper_timesheet)"
@@ -231,7 +231,7 @@
                               </button>
                             </div>
                             <div v-else>Null</div>
-                          </td>
+                          </td> -->
                           <td scope="col">
                             {{ data.approved_hour ? "Approved" : "Not Approved" }}
                           </td>
@@ -286,7 +286,7 @@
                           <th scope="col">Total Hours</th>
                           <th scope="col">Client Rate</th>
                           <th scope="col">Total Cost</th>
-                          <th scope="col">Paper TimeSheet</th>
+                          <!-- <th scope="col">Paper TimeSheet</th> -->
                           <th scope="col">Approved</th>
                         </tr>
                       </thead>
@@ -318,7 +318,7 @@
                           <td scope="col">
                             {{ data.total_cost }}
                           </td>
-                          <td scope="col">
+                          <!-- <td scope="col">
                             <div v-if="data.paper_timesheet">
                               <img
                                 :src="fullPaperTimeSheetUrl(data.paper_timesheet)"
@@ -338,7 +338,7 @@
                               </button>
                             </div>
                             <div v-else>Null</div>
-                          </td>
+                          </td> -->
                           <td scope="col">
                             {{ data.approved_hour ? "Approved" : "Not Approved" }}
                           </td>

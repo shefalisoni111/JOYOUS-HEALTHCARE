@@ -839,10 +839,7 @@ export default {
         this.candidateLists = allStaffData;
       } catch (error) {
         if (error.response && error.response.status === 404) {
-          // Handle 404 error
-          // console.error('Error fetching client data:', error.response.data.message);
         } else {
-          // console.error('Error fetching client data:', error);
         }
       }
     },
