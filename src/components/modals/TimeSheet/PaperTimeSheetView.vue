@@ -10,9 +10,7 @@
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="viewPaperTimeSheet">
-              PaperTimeSheet {{ customDataId }}
-            </h5>
+            <h5 class="modal-title" id="viewPaperTimeSheet">PaperTimeSheet</h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
