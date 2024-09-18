@@ -187,7 +187,7 @@
 
                       <tbody v-if="groupedRateRulesData?.length > 0">
                         <tr v-for="(data, index) in groupedRateRulesData" :key="index">
-                          <td v-if="index === 0">
+                          <td>
                             <div class="form-check">
                               <input
                                 class="form-check-input"
@@ -200,9 +200,8 @@
                             </div>
                           </td>
 
-                          <td v-if="index === 0">{{ data.client }}</td>
+                          <td>{{ data.client }}</td>
                           <td
-                            v-if="index === 0"
                             @click="
                               toggleDetails(
                                 index,
@@ -215,18 +214,18 @@
                           >
                             {{ data.site }}
                           </td>
-                          <td v-if="index === 0">{{ data.job }}</td>
-                          <td v-if="index === 0">&nbsp;</td>
-                          <td v-if="index === 0">&nbsp;</td>
-                          <td v-if="index === 0">&nbsp;</td>
-                          <td v-if="index === 0">&nbsp;</td>
-                          <td v-if="index === 0">&nbsp;</td>
-                          <td v-if="index === 0">&nbsp;</td>
-                          <td v-if="index === 0">&nbsp;</td>
-                          <td v-if="index === 0">&nbsp;</td>
-                          <td v-if="index === 0">&nbsp;</td>
-                          <td v-if="index === 0">&nbsp;</td>
-                          <td v-if="index === 0">
+                          <td>{{ data.job }}</td>
+                          <td>&nbsp;</td>
+                          <td>&nbsp;</td>
+                          <td>&nbsp;</td>
+                          <td>&nbsp;</td>
+                          <td>&nbsp;</td>
+                          <td>&nbsp;</td>
+                          <td>&nbsp;</td>
+                          <td>&nbsp;</td>
+                          <td>&nbsp;</td>
+                          <td>&nbsp;</td>
+                          <td>
                             <button
                               type="button"
                               class="btn btn-outline-success text-nowrap"
@@ -254,9 +253,7 @@
                             </button> -->
                           </td>
                         </tr>
-                        {{
-                          console.log(filteredRateRulesData)
-                        }}
+
                         <tr v-for="(rate, index) in filteredRateRulesData" :key="index">
                           <td v-if="activeSiteId !== null">
                             <div class="form-check">
@@ -616,22 +613,25 @@ export default {
     },
     groupedRateRulesData() {
       const groupedData = {};
+
       this.getRateRulesData.forEach((data) => {
-        const groupKey = `${data.site_id}-${data.client}-${data.job}-${data.id}`;
+        const groupKey = `${data.site_id}-${data.client}-${data.job}`;
+
         if (!groupedData[groupKey]) {
           groupedData[groupKey] = {
             site_id: data.site_id,
             site: data.site,
             client: data.client,
-
             job: data.job,
+
             job_id: data.job_id,
-            id: data.id,
             data: [],
           };
         }
+
         groupedData[groupKey].data.push(data);
       });
+
       return Object.values(groupedData);
     },
     selectBusinessUnit() {
@@ -948,9 +948,9 @@ export default {
         });
 
         // Handle the success response if needed
-        console.log("Delete successful:", response.data);
+        // console.log("Delete successful:", response.data);
       } catch (error) {
-        console.error("Error during deletion:", error);
+        // console.error("Error during deletion:", error);
       } finally {
         // Any final actions can be placed here, e.g., hiding a loading spinner
       }
@@ -1062,7 +1062,6 @@ export default {
     async toggleDetails(index, siteId, client, job) {
       this.activeSiteId = this.activeSiteId === index ? null : index;
 
-      // this.getRateRulesWeekDataMethod(siteId);
       this.filteredRateRulesData = this.getRateRulesData.filter(
         (rate) => rate.site_id === siteId && rate.client === client && rate.job === job
       );
