@@ -126,6 +126,9 @@ export default {
   components: { AddClientSite, EditClientSite, Loader },
   computed: {
     paginateCandidates() {
+      if (!Array.isArray(this.getClientDatas)) {
+        return [];
+      }
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.getClientDatas.slice(startIndex, endIndex);
@@ -184,15 +187,9 @@ export default {
           `${VITE_API_URL}client_all_site/${this.$route.params.id}`
         );
 
-        this.getClientDatas = response.data.client_sites;
+        this.getClientDatas = response.data.client_sites || [];
       } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        } else {
-          // console.error("Error fetching candidates:", error);
-        }
+        this.getClientDatas = [];
       } finally {
         this.isLoading = false;
       }

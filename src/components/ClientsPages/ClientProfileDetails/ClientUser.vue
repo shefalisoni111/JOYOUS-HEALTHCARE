@@ -1,10 +1,11 @@
 <template>
   <div>
+    <span>work in progress..</span>
     <div class="table-wrapper mt-3">
-      <table class="table clientTable">
+      <!-- <table class="table clientTable">
         <thead>
           <tr>
-            <!-- <th scope="col">ID</th> -->
+            
             <th scope="col">#RefCode</th>
             <th scope="col">ClientName</th>
             <th scope="col" style="width: 10%">Jobs</th>
@@ -18,7 +19,7 @@
         </thead>
         <tbody v-if="getClientDetail?.length > 0">
           <tr v-for="client in getClientDetail" :key="client.id">
-            <!-- <td v-text="client.id"></td> -->
+           
             <td v-text="client.ref_code"></td>
             <td>
               <router-link
@@ -30,7 +31,7 @@
               >
                 {{ client.first_name }}
               </router-link>
-              <!-- {{ client.first_name }} -->
+              
             </td>
             <td>
               <span
@@ -52,10 +53,7 @@
             <td v-text="client.email"></td>
 
             <td>
-              <!-- <label class="switch" v-if="client.activated == true">
-                <input type="checkbox" id="togBtn" checked />
-                <div class="slider round"></div>
-              </label> -->
+             
               <label class="switch">
                 <input
                   type="checkbox"
@@ -67,7 +65,7 @@
                 <div class="slider round"></div>
               </label>
             </td>
-            <!-- <td v-text="client.portal_access"></td> -->
+           
             <td>
               <span
                 class="text-white p-1 rounded-1"
@@ -91,12 +89,7 @@
                 <i class="bi bi-pencil-square"></i>
               </button>
               &nbsp;&nbsp;
-              <!-- <button class="btn btn-outline-success text-nowrap">
-                <i
-                  class="bi bi-trash"
-                  v-on:click="clientsDeleteMethod(client.id)"
-                ></i></button
-              >&nbsp;&nbsp; -->
+            
               <router-link
                 :to="{
                   name: 'SingleClientProfile',
@@ -109,14 +102,8 @@
             </td>
           </tr>
         </tbody>
-        <tbody v-else>
-          <tr>
-            <td colspan="9" class="text-danger text-center" v-if="!isLoading">
-              {{ "Not Data Found!" }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        
+      </table> -->
     </div>
     <!-- <div class="mx-3" style="text-align: right" v-if="getClientDetail.length >= 11">
       <button class="btn btn-outline-dark btn-sm">
@@ -158,7 +145,8 @@ export default {
       isActive: true,
       searchQuery: "",
       currentPage: 1,
-      itemsPerPage: 11,
+      itemsPerPage: 10,
+      isLoading: false,
     };
   },
 
@@ -282,76 +270,6 @@ button.nav-link > li.nav-item {
   width: 100%;
 }
 
-.switch {
-  width: 50px;
-  height: 17px;
-  position: relative;
-  display: inline-block;
-}
-a {
-  color: black;
-  text-decoration: none;
-}
-
-.switch input {
-  display: none;
-}
-
-.switch .slider {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  cursor: pointer;
-  background-color: #e7ecf1;
-  border-radius: 30px !important;
-  border: 0;
-  padding: 0;
-  display: block;
-  margin: 12px 10px;
-  min-height: 11px;
-}
-
-.switch .slider:before {
-  position: absolute;
-  background-color: #aaa;
-  height: 15px;
-  width: 15px;
-  content: "";
-  left: 0px;
-  bottom: -2px;
-  border-radius: 50%;
-  transition: ease-in-out 0.5s;
-}
-
-.switch .slider:after {
-  content: "";
-  color: white;
-  display: block;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 70%;
-  transition: all 0.5s;
-  font-size: 10px;
-  font-family: Verdana, sans-serif;
-}
-
-.switch input:checked + .slider:after {
-  transition: all 0.5s;
-  left: 30%;
-  content: "";
-}
-
-.switch input:checked + .slider {
-  background-color: #d3d6d9;
-}
-
-.switch input:checked + .slider:before {
-  transform: translateX(15px);
-  background-color: #ff9800;
-}
 @media (max-width: 1120px) {
   .clientTable {
     width: 1090px;

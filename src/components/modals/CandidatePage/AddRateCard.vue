@@ -98,7 +98,7 @@
                     <label class="form-label" for="selectShifts">Shift Time</label>
                   </div>
                   <div class="col-10">
-                    <select v-model="shift_id" id="selectShifts">
+                    <select v-model="site_shift" id="selectShifts">
                       <option
                         v-for="option in shiftsTime"
                         :key="option.id"
@@ -169,7 +169,7 @@ export default {
   data() {
     return {
       weekname: "",
-      shift_id: "",
+      site_shift: "",
       site_id: "",
       job_id: "",
       employment_type_id: "",
@@ -189,10 +189,10 @@ export default {
     };
   },
   watch: {
-    site_id: function (newValue) {
-      this.validateBusinessUnit(newValue);
+    site_id(newValue) {
+      this.getTimeShift();
     },
-    shift_id: function (newValue) {
+    site_shift: function (newValue) {
       this.validateStaffRate(newValue);
     },
     job_id: function (newValue) {
@@ -201,7 +201,7 @@ export default {
     employment_type_id: function (newValue) {
       this.validateEmployeeType(newValue);
     },
-    shift_id: function (newValue) {
+    site_shift: function (newValue) {
       this.validateShiftId(newValue);
     },
     weekname: function (newValue) {
@@ -231,8 +231,8 @@ export default {
     },
 
     selectShifts() {
-      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
-      return shifts_id ? shifts_id.shift_name : "";
+      const site_id = this.shiftsTime.find((option) => option.id === this.site_id);
+      return site_id ? site_id.shift_name : "";
     },
 
     selectEmployee() {
@@ -266,15 +266,15 @@ export default {
         !this.site_id.trim() ||
         !this.$route.params.id.trim() ||
         !this.employment_type_id.trim() ||
-        !this.shift_id.trim() ||
+        !this.site_shift.trim() ||
         !this.job_id
       );
     },
     async addRateCardMethod() {
       this.validateBusinessUnit(this.site_id);
-      this.validateStaffRate(this.shift_id);
+      this.validateStaffRate(this.site_shift);
       this.validateJobID(this.job_id);
-      this.validateShiftId(this.shift_id);
+      this.validateShiftId(this.site_shift);
       this.validateEmployeeType(this.employment_type_id);
       this.validateDay(this.weekname);
 
@@ -291,7 +291,7 @@ export default {
         job_id: this.job_id,
         candidate_id: this.$route.params.id,
         employment_type_id: this.employment_type_id,
-        shift_id: this.shift_id,
+        site_shift: this.site_shift,
       };
       try {
         const response = await fetch(`${VITE_API_URL}/rate_cards`, {
@@ -355,9 +355,19 @@ export default {
     },
 
     async getTimeShift() {
-      await axios
-        .get(`${VITE_API_URL}/shifts`)
-        .then((response) => (this.shiftsTime = response.data));
+      // if (!this.site_id) {
+      //   return;
+      // }
+      try {
+        const response = await axios.get(`${VITE_API_URL}/site_shift/38`);
+        this.shiftsTime = response.data.site_shift_data.map((shift) => ({
+          ...shift,
+          start_time: this.convertTimeFormat(shift.start_time),
+          end_time: this.convertTimeFormat(shift.end_time),
+        }));
+      } catch (error) {
+        // console.error("Error fetching shifts:", error);
+      }
     },
     validateBusinessUnit(newValue) {
       this.validationBusinessUnit = newValue !== "";
@@ -384,7 +394,7 @@ export default {
       this.job_id = "";
       this.$route.params.id = "";
       this.employment_type_id = "";
-      this.shift_id = "";
+      this.site_shift = "";
     },
     clearError() {
       this.validationBusinessUnit = true;
