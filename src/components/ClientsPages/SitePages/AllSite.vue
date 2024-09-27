@@ -161,6 +161,13 @@
               >
                 <i class="bi bi-eye"></i>
               </router-link>
+              &nbsp;&nbsp;
+              <button
+                class="btn btn-outline-danger text-nowrap"
+                v-on:click="deleteSiteMethod(data.id)"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
             </td>
           </tr>
         </tbody>
@@ -183,6 +190,12 @@
       :siteId="selectedsiteId || 0"
       @editSite="getSiteAllDataMethod"
       ref="refSite"
+    />
+    <ConfirmationAlert
+      :show-modal="isModalVisible"
+      :message="confirmMessage"
+      @confirm="confirmCallback"
+      @cancel="canceled"
     />
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
@@ -240,6 +253,7 @@ import EditSite from "../../modals/Site/EditSite.vue";
 import AddSite from "../../modals/Site/AddSite.vue";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 import Loader from "../../Loader/Loader.vue";
+import ConfirmationAlert from "../../Alerts/ConfirmationAlert.vue";
 
 import { reactive } from "vue";
 export default {
@@ -258,6 +272,9 @@ export default {
       clientData: [],
       businessUnit: [],
       isLoading: false,
+      isModalVisible: false,
+      confirmMessage: "",
+      confirmCallback: null,
       checkedSites: reactive({}),
       selectedFilter: "active_site ",
     };
@@ -270,7 +287,7 @@ export default {
     });
   },
 
-  components: { EditSite, AddSite, SuccessAlert, Loader },
+  components: { EditSite, AddSite, SuccessAlert, Loader, ConfirmationAlert },
   computed: {
     paginateSiteData() {
       if (this.getSiteAllData && Array.isArray(this.getSiteAllData)) {
@@ -297,6 +314,28 @@ export default {
     },
   },
   methods: {
+    confirmed(id) {
+      this.isModalVisible = false;
+
+      this.jobsInActive(id);
+    },
+    canceled() {
+      this.isModalVisible = false;
+    },
+    deleteSiteMethod(id) {
+      this.confirmMessage = "Are you sure you want to completely delete this site?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        axios.delete(`${VITE_API_URL}/sites/` + id).then((response) => {
+          this.getSiteAllDataMethod();
+          // this.getInactiveJobData();
+        });
+        const message = "Record deleted successfully";
+        this.$refs.successAlert.showSuccess(message);
+
+        this.isModalVisible = false;
+      };
+    },
     async getClientMethod() {
       const pagesToFetch = [1, 2, 3];
       let allClientData = [];

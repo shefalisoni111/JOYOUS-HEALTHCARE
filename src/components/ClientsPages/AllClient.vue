@@ -198,6 +198,13 @@
               >
                 <i class="bi bi-eye"></i>
               </router-link>
+              &nbsp;&nbsp;
+              <button
+                class="btn btn-outline-danger text-nowrap"
+                v-on:click="deleteClientDataMethod(client.id)"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
             </td>
           </tr>
         </tbody>
@@ -260,6 +267,12 @@
       @client-updated="createdClient"
       ref="editClientModalAll"
     />
+    <ConfirmationAlert
+      :show-modal="isModalVisible"
+      :message="confirmMessage"
+      @confirm="confirmCallback"
+      @cancel="canceled"
+    />
     <AddClients @client-updated="createdClient" />
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
@@ -270,6 +283,7 @@ import axios from "axios";
 import EditClientModal from "../modals/Clients/EditClientModal.vue";
 import Loader from "../Loader/Loader.vue";
 import AddClients from "@/components/modals/Clients/AddClients.vue";
+import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
 import { reactive } from "vue";
 export default {
@@ -290,6 +304,9 @@ export default {
       errorMessageFilter: "",
       selectedFilter: " ",
       clientData: [],
+      isModalVisible: false,
+      confirmMessage: "",
+      confirmCallback: null,
       client: {
         job_name: ["Job1", "Job2", "Job3", "Job4", "Job5", "Job6"],
       },
@@ -304,7 +321,7 @@ export default {
     };
   },
 
-  components: { EditClientModal, AddClients, SuccessAlert, Loader },
+  components: { EditClientModal, AddClients, SuccessAlert, Loader, ConfirmationAlert },
   computed: {
     paginateCandidates() {
       return this.getClientDetail;
@@ -334,6 +351,28 @@ export default {
     });
   },
   methods: {
+    confirmed(id) {
+      this.isModalVisible = false;
+
+      this.jobsInActive(id);
+    },
+    canceled() {
+      this.isModalVisible = false;
+    },
+    deleteClientDataMethod(id) {
+      this.confirmMessage = "Are you sure you want to completely delete this client?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        axios.delete(`${VITE_API_URL}/clients/` + id).then((response) => {
+          this.createdClient();
+          // this.getInactiveJobData();
+        });
+        const message = "Record deleted successfully";
+        this.$refs.successAlert.showSuccess(message);
+
+        this.isModalVisible = false;
+      };
+    },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;

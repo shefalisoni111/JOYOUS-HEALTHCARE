@@ -10,7 +10,9 @@
         <form class="" v-for="shift in shifts" :key="shift.id">
           <div class="row mb-3 border-bottom pb-4 mx-1">
             <div class="col-2 p-0">
-              <label for="" class="form-label fw-medium">{{ shift.shift_name }}</label>
+              <label for="" class="form-label fw-medium">{{
+                shift.shift_name.replace(/_/g, " ")
+              }}</label>
             </div>
             <div class="col-10">
               <div class="d-flex justify-content-around">

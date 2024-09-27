@@ -212,7 +212,7 @@
                           :value="option.shift_name"
                           id="selectShifts"
                         >
-                          {{ option.shift_name }}
+                          {{ option.shift_name.replace(/_/g, " ") }}
                         </option>
                       </select>
                     </div>
@@ -323,7 +323,9 @@
                                     <!-- <span class="">{{
                                     extractTimeRange(vacancy.site_shift)
                                   }}</span> -->
-                                    <span class="">{{ vacancy.site_shift }}</span>
+                                    <span class="">{{
+                                      vacancy.site_shift.replace(/_/g, " ")
+                                    }}</span>
                                   </span>
                                   <span class="staff-count-round text-white">{{
                                     vacancy.staff_required
@@ -424,7 +426,7 @@
                                               <!-- {{ extractTimeRange(data.site_shift)
                                               }} -->
                                               <br />
-                                              {{ data.site_shift }}
+                                              {{ data.site_shift.replace(/_/g, " ") }}
                                               {{ data.job_title }} &nbsp;
 
                                               <br />
@@ -525,7 +527,9 @@
                                     <!-- <span class="">{{
                                   extractTimeRange(vacancy.site_shift)
                                 }}</span> -->
-                                    <span class="">{{ vacancy.site_shift }}</span>
+                                    <span class="">{{
+                                      vacancy.site_shift.replace(/_/g, " ")
+                                    }}</span>
                                   </span>
                                   <span class="staff-count-round text-white">{{
                                     vacancy.staff_required
@@ -621,7 +625,7 @@
                                               {{ data.site }},
                                               <!-- {{ extractTimeRange(data.site_shift)
                                               }}-->
-                                              {{ data.site_shift }}
+                                              {{ data.site_shift.replace(/_/g, " ") }}
                                               <br />
                                               {{ data.job_title }} &nbsp;
 

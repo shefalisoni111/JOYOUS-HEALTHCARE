@@ -201,7 +201,7 @@
                             >
                           </td>
                           <td>
-                            {{ rate.shift_type }}<br />{{
+                            {{ rate.shift_type.replace(/_/g, " ") }}<br />{{
                               formatTime(rate.start_time)
                             }}-{{ formatTime(rate.end_time) }}
                           </td>
@@ -297,7 +297,7 @@
                             >
                           </td>
                           <td>
-                            {{ rate.shift_type }}<br />{{
+                            {{ rate.shift_type.replace(/_/g, " ") }}<br />{{
                               formatTime(rate.start_time)
                             }}-{{ formatTime(rate.end_time) }}
                           </td>

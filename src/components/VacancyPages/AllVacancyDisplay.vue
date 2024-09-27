@@ -49,7 +49,7 @@
                 </span>
               </td>
 
-              <td v-text="getdata.shift" class="widthDefine"></td>
+              <td v-text="getdata.shift.replace(/_/g, ' ')" class="widthDefine"></td>
               <td class="withShow text-center">
                 {{ getdata.staff_required === null ? 0 : getdata.staff_required }}
               </td>
