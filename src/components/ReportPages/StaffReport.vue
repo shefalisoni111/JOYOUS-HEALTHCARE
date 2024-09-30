@@ -31,7 +31,7 @@
                     </option>
                   </select>
 
-                  <select v-model="id" @change="filterData">
+                  <select v-model="id" @change="filterData" id="selectStaff">
                     <option value="">All Staff</option>
                     <option
                       v-for="option in candidateLists"
@@ -203,7 +203,7 @@
                           <th scope="col">Site</th>
 
                           <th scope="col">Shift Date</th>
-                          <th scope="col">Payment Ref</th>
+
                           <th scope="col">Time From</th>
                           <th scope="col">Time To</th>
                           <th scope="col">Hours</th>
@@ -213,7 +213,7 @@
                           <th scope="col">Status</th>
                         </tr>
                       </thead>
-                      <tbody v-if="paginateCandidates?.length > 0">
+                      <tbody v-if="paginateCandidates && paginateCandidates?.length > 0">
                         <tr v-for="data in paginateCandidates" :key="data.id">
                           <td>
                             <div class="form-check">
@@ -227,7 +227,7 @@
                           <td scope="col">{{ data.site }}</td>
 
                           <td scope="col">{{ data.shift_date }}</td>
-                          <td scope="col"></td>
+
                           <td scope="col">
                             {{ data.start_time }}
                           </td>
@@ -270,14 +270,9 @@
                         </tr>
                       </tbody>
                       <tbody v-else>
-                        <tr v-if="errorMessageFilter">
+                        <tr>
                           <td colspan="15" class="text-danger text-center">
-                            {{ errorMessageFilter }}
-                          </td>
-                        </tr>
-                        <tr v-else>
-                          <td colspan="15" class="text-danger text-center">
-                            {{ errorMessageCustom }}
+                            {{ errorMessageFilter || errorMessageCustom }}
                           </td>
                         </tr>
                       </tbody>
@@ -343,12 +338,12 @@
                           <th scope="col">Total Hours</th>
                           <th scope="col">Client Rate</th>
                           <th scope="col">Total Cost</th>
-                          <th scope="col">Paper TimeSheet</th>
+
                           <th scope="col">Approved</th>
                         </tr>
                       </thead>
-                      <tbody v-if="paginateSearchResults?.length > 0">
-                        <tr v-for="data in paginateSearchResults" :key="data.id">
+                      <tbody v-if="searchResults && searchResults?.length > 0">
+                        <tr v-for="data in searchResults" :key="data.id">
                           <td>
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
@@ -428,11 +423,28 @@
     <div
       class="mx-3 mb-2"
       style="text-align: right"
-      v-if="getSiteReportData?.length >= 8 && !searchResults.length"
+      v-if="getSiteReportData?.length >= 10 && !searchResults.length"
     >
-      <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
+      <button
+        class="btn btn-sm btn-primary dropdown-toggle"
+        type="button"
+        id="recordsPerPageDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {{ itemsPerPage }} Records
       </button>
+      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+        </li>
+      </ul>
       &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary mr-2"
@@ -450,7 +462,7 @@
         Next
       </button>
     </div>
-    <div class="mx-3 mb-2" style="text-align: right" v-if="searchResults.length >= 8">
+    <!-- <div class="mx-3 mb-2" style="text-align: right" v-if="searchResults.length >= 8">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -470,7 +482,7 @@
       >
         Next
       </button>
-    </div>
+    </div> -->
     <!-- <div
       class="mx-3 mb-2"
       style="text-align: right"
@@ -555,20 +567,25 @@ export default {
       return job_id ? job_id.name : "";
     },
     selectStaff() {
-      const id = this.getCandidatesData.find((option) => option.id === this.id);
+      const id = this.candidateLists.find((option) => option.id === this.id);
       return id ? id.first_name : "";
     },
 
     paginateCandidates() {
+      if (!Array.isArray(this.getSiteReportData) || this.getSiteReportData.length === 0) {
+        return [];
+      }
+
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
+
       return this.getSiteReportData.slice(startIndex, endIndex);
     },
-    paginateSearchResults() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.searchResults.slice(startIndex, endIndex);
-    },
+    // paginateSearchResults() {
+    //   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    //   const endIndex = startIndex + this.itemsPerPage;
+    //   return this.searchResults.slice(startIndex, endIndex);
+    // },
     totalRecordsOnPage() {
       return this.paginateCandidates.length;
     },
@@ -604,38 +621,38 @@ export default {
           : this.site_id
           ? "site"
           : this.id
-          ? "staff"
+          ? "candidate"
           : "",
-        filter_value: this.client_id || this.site_id || this.id || "",
+        filter_value:
+          this.client_id || this.site_id || this.getCandidateName(this.id) || "",
       };
 
       this.makeFilterAPICall(filters.filter_type, filters.filter_value);
     },
+    getCandidateName(id) {
+      const candidate = this.candidateLists.find((candidate) => candidate.id === id);
+      return candidate ? candidate.first_name : "";
+    },
     async makeFilterAPICall(filter_type, filter_value) {
       try {
-        const response = await axios.get(`${VITE_API_URL}/client_report`, {
-          params: {
-            filter_type: filter_type,
-            filter_value: filter_value,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/report_section_timesheet_filter`,
+          {
+            params: {
+              filter_type: filter_type,
+              filter_value: filter_value,
+            },
+          }
+        );
 
-        this.getSiteReportData = response.data.data || [];
-        if (this.getSiteReportData.length === 0) {
-          this.errorMessageFilter = "Report not Found!";
-        } else {
-          this.errorMessageFilter = "";
-        }
+        this.getSiteReportData = response.data.timesheets || [];
+        this.errorMessageFilter = "";
       } catch (error) {
         if (error.response && error.response.status === 404) {
-          const errorMessages = error.response.data.error;
-          if (errorMessages === "No records found for the given filter") {
-            alert("No records found for the given filter");
-          } else {
-            alert(errorMessages);
-          }
+          this.getSiteReportData = [];
+          this.errorMessageFilter = error.response.data.error || "Report not found!";
         } else {
-          // console.error(error);
+          this.errorMessageFilter = "An unexpected error occurred.";
         }
       }
     },
@@ -695,7 +712,11 @@ export default {
         }
       }
     },
-
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.getSiteReportMethod();
+    },
     async getSiteReportMethod() {
       this.isLoading = true;
       const token = localStorage.getItem("token");
@@ -721,7 +742,7 @@ export default {
       };
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/find_custom_timesheet_according_mounth`,
+          `${VITE_API_URL}/report_section_timesheet_data`,
           {
             params: requestData,
             headers: {
@@ -729,14 +750,14 @@ export default {
             },
           }
         );
-        this.getSiteReportData = response.data.custom_timesheets;
-        if (this.getSiteReportData.length === 0) {
-          this.errorMessageCustom = "No Staff Report found for the specified month";
+        this.getSiteReportData = response.data.timesheets || [];
+        if (response.status === 200 && this.getSiteReportData.length === 0) {
+          this.errorMessageCustom = `Timesheet not available for this month`;
         } else {
           this.errorMessageCustom = "";
         }
       } catch (error) {
-        // console.error("Error fetching custom timesheets:", error);
+        this.errorMessageCustom = "Error fetching timesheet data.";
       } finally {
         this.isLoading = false;
       }
@@ -744,29 +765,37 @@ export default {
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
 
-      this.debounceTimeout = setTimeout(() => {
-        this.search();
-      }, 100);
+      if (this.searchQuery.trim()) {
+        this.debounceTimeout = setTimeout(() => {
+          this.search();
+        }, 100);
+      }
     },
     //search api start
 
     async search() {
       try {
         this.searchResults = [];
-        const modifiedSearchQuery = this.searchQuery.replace(/ /g, "_");
+        const modifiedSearchQuery = encodeURIComponent(this.searchQuery);
         const response = await axiosInstance.get(
-          `${VITE_API_URL}/custom_timesheet_searching/${modifiedSearchQuery}`
+          `${VITE_API_URL}/timesheet_searching_report_section`,
+          {
+            params: { query: modifiedSearchQuery },
+          }
         );
 
-        this.searchResults = response.data.custom_sheets;
-      } catch (error) {
-        if (
-          (error.response && error.response.status === 404) ||
-          error.response.status === 400
-        ) {
-          this.errorMessage = "No Record found for the specified criteria";
+        if (response.data.timesheets && typeof response.data.timesheets === "string") {
+          this.errorMessage = response.data.timesheets;
+          this.searchResults = [];
+        } else {
+          this.searchResults = response.data.timesheets || [];
+          if (this.searchResults.length === 0) {
+            this.errorMessage = "No Record found for the specified criteria.";
+          } else {
+            this.errorMessage = "";
+          }
         }
-      }
+      } catch (error) {}
     },
     async getBusinessUnitMethod() {
       try {
@@ -821,8 +850,8 @@ export default {
           this.startDate.getMonth() + 1,
           0
         );
+        this.getSiteReportMethod();
       }
-      this.getSiteReportMethod();
     },
     moveToNext() {
       if (this.currentView === "weekly") {
@@ -836,8 +865,8 @@ export default {
           this.startDate.getMonth() + 1,
           0
         );
+        this.getSiteReportMethod();
       }
-      this.getSiteReportMethod();
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
@@ -875,34 +904,6 @@ export default {
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
-    // async vacancyDeleteMethod(id) {
-    //   if (!window.confirm("Are you Sure ?")) {
-    //     return;
-    //   }
-    //   const token = localStorage.getItem("token");
-    //   await axios
-    //     .delete(`${VITE_API_URL}/vacancies/` + id, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => {
-    //       this.createVacancy();
-    //     });
-    //   // alert("Record Deleted ");
-    // },
-    // async createVacancy() {
-    //   const token = localStorage.getItem("token");
-    //   axios
-    //     .get(`${VITE_API_URL}/vacancies`, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => (this.getVacancyDetail = response.data));
-    // },
   },
   async beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -931,26 +932,6 @@ export default {
     this.getClientMethod();
     this.getSiteReportMethod();
     this.updateDateRange();
-    // const currentDate = new Date();
-    // const startOfWeek = new Date(currentDate);
-    // startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
-    // this.startDate = startOfWeek;
-
-    // const endOfWeek = new Date(currentDate);
-    // endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
-    // this.endDate = endOfWeek;
-    // const currentDate = new Date();
-    // const dayOfWeek = currentDate.getDay();
-    // const startOfWeek = new Date(currentDate);
-
-    // const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-    // startOfWeek.setDate(startOfWeek.getDate() + diff);
-
-    // this.startDate = startOfWeek;
-
-    // const endOfWeek = new Date(startOfWeek);
-    // endOfWeek.setDate(endOfWeek.getDate() + 6);
-    // this.endDate = endOfWeek;
   },
 };
 </script>
@@ -958,7 +939,6 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-  height: 100vh;
 
   background-color: #fdce5e17;
 }

@@ -360,7 +360,7 @@ export default {
       } else {
         this.selectedStaffIds.splice(index, 1);
       }
-      console.log("Selected IDs:", JSON.stringify(this.selectedStaffIds));
+      // console.log("Selected IDs:", JSON.stringify(this.selectedStaffIds));
     },
     async deleteSelectedStaffs() {
       if (this.selectedStaffIds.length === 0) return;

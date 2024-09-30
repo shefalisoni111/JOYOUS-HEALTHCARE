@@ -218,7 +218,7 @@
     <ClientMailInvoice />
     <CandidateMail />
     <!-- <EditStaffInvoiceTemplate :InvoiceId="selectedInvoiceId" /> -->
-    <StaffInvoiceViewEdit @StaffInvoice-updated="createStaffInvoice" />
+    <!-- <StaffInvoiceViewEdit @StaffInvoice-updated="createStaffInvoice" /> -->
   </div>
 </template>
 <script>

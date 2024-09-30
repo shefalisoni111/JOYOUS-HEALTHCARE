@@ -84,14 +84,19 @@
                   <div class="d-flex justify-content-end align-items-center">
                     <div class="d-flex align-items-center gap-2 justify-content-between">
                       <div class="searchbox position-relative">
-                        <input
-                          class="form-control mr-sm-2"
-                          type="search"
-                          placeholder="Search.."
-                          aria-label="Search"
-                          v-model="searchQuery"
-                          @input="debounceSearch"
-                        />
+                        <form
+                          @submit.prevent="search"
+                          class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
+                        >
+                          <input
+                            class="form-control mr-sm-2"
+                            type="search"
+                            placeholder="Search.."
+                            aria-label="Search"
+                            v-model="searchQuery"
+                            @input="debounceSearch"
+                          />
+                        </form>
                       </div>
 
                       <button
@@ -129,7 +134,7 @@
               <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
                 <div class="d-flex gap-2">
                   <div></div>
-                  <select v-model="job_id_value" id="selectedOptionText">
+                  <select v-model="job_id" id="selectedOptionText" @change="filterData">
                     <option value="">Job Title</option>
                     <option
                       v-for="option in options"
@@ -140,26 +145,27 @@
                     </option>
                   </select>
 
-                  <select v-model="business_unit_value" id="selectBusinessUnit">
+                  <select v-model="site_id" id="selectBusinessUnit" @change="filterData">
                     <option value="">All Site</option>
                     <option
                       v-for="option in businessUnit"
                       :key="option.id"
-                      :value="option.name"
+                      :value="option.site_name"
                       placeholder="Select BusinessUnit"
                     >
                       {{ option.site_name }}
                     </option>
                   </select>
 
-                  <select v-model="selectedCandidate" id="selectCandidateList">
+                  <select v-model="id" @change="filterData" id="selectCandidateList">
                     <option value="">All Staff</option>
                     <option
                       v-for="option in candidateLists"
                       :key="option.id"
-                      :value="`${option.first_name} ${option.last_name}`"
+                      :value="option.first_name"
+                      placeholder="Select Staff"
                     >
-                      {{ option.first_name }} {{ option.last_name }}
+                      {{ option.first_name + " " + option.last_name }}
                     </option>
                   </select>
                 </div>
@@ -223,8 +229,8 @@
                         <th scope="col">Action</th>
                       </tr>
                     </thead>
-                    <tbody v-if="paginationBooking?.length > 0">
-                      <tr v-for="data in paginationBooking" :key="data.id">
+                    <tbody v-if="getBookingData?.length > 0 && getBookingData">
+                      <tr v-for="data in getBookingData" :key="data.id">
                         <td scope="col">{{ data.id }}</td>
                         <td scope="col">{{ data.booking_code }}</td>
                         <td scope="col">{{ data.candidate }}</td>
@@ -262,12 +268,12 @@
                     </tbody>
                     <tbody v-else>
                       <tr>
-                        <td
-                          colspan="15"
-                          class="text-danger text-center"
-                          v-if="!isLoading"
-                        >
-                          Not Data Found !
+                        <td colspan="15" class="text-danger text-center">
+                          {{
+                            errorMessageBooking ||
+                            errorMessageFilter ||
+                            "No bookings found."
+                          }}
                         </td>
                       </tr>
                     </tbody>
@@ -300,8 +306,8 @@
                         <!-- <th scope="col">Action</th> -->
                       </tr>
                     </thead>
-                    <tbody v-if="paginateDeleteResults?.length > 0 && deleteBookingData">
-                      <tr v-for="data in paginateDeleteResults" :key="data.id">
+                    <tbody v-if="deleteBookingData?.length > 0 && deleteBookingData">
+                      <tr v-for="data in deleteBookingData" :key="data.id">
                         <td scope="col">{{ data.id }}</td>
                         <td scope="col">{{ data.booking_code }}</td>
                         <td scope="col">{{ data.candidate }}</td>
@@ -423,7 +429,7 @@
                           class="text-danger text-center"
                           v-if="!isLoading"
                         >
-                          <!-- {{ errorMessage }} -->
+                          {{ errorMessage }}
                         </td>
                       </tr>
                     </tbody>
@@ -435,7 +441,7 @@
         </div>
       </div>
       <!-- Pagination for deleteBookingData -->
-      <div
+      <!-- <div
         class="mx-3"
         id="delete-pagination"
         style="text-align: right"
@@ -468,7 +474,7 @@
         </button>
       </div>
 
-      <!-- Pagination for getBookingData -->
+   
       <div
         class="mx-3"
         id="get-pagination"
@@ -477,9 +483,7 @@
           paginationBooking && currentTab === 'AllBooking' && getBookingData?.length >= 10
         "
       >
-        <!-- <button class="btn btn-outline-dark btn-sm">
-          {{ totalRecordsOnPage }} Records Per Page
-        </button> -->
+        
         <div class="dropdown d-inline-block">
           <button
             class="btn btn-sm btn-primary dropdown-toggle"
@@ -528,6 +532,7 @@
           Next
         </button>
       </div>
+      -->
 
       <!-- Pagination for searchResults -->
       <!-- <div
@@ -606,6 +611,7 @@ export default {
       searchQuery: null,
       debounceTimeout: null,
       searchResults: [],
+      errorMessageFilter: "",
       errorMessage: "",
       job_id_value: "",
       job_id: "",
@@ -645,41 +651,41 @@ export default {
       const monthDates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
       return monthDates;
     },
-    paginationBooking() {
-      if (!this.getBookingData) return [];
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.getBookingData.slice(startIndex, endIndex);
-    },
+    // paginationBooking() {
+    //   if (!this.getBookingData) return [];
+    //   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    //   const endIndex = startIndex + this.itemsPerPage;
+    //   return this.getBookingData.slice(startIndex, endIndex);
+    // },
     // paginateSearchResults() {
     //   if (!this.searchResults) return [];
     //   const startIndex = (this.currentPageSearch - 1) * this.itemsPerPage;
     //   const endIndex = startIndex + this.itemsPerPage;
     //   return this.searchResults.slice(startIndex, endIndex);
     // },
-    paginateDeleteResults() {
-      if (!this.deleteBookingData) return [];
-      const startIndex = (this.deleteBookingDataPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.deleteBookingData.slice(startIndex, endIndex);
-    },
-    totalRecordsOnPage() {
-      return this.paginationBooking.length;
-    },
-    totalRecordsOnPageSearch() {
-      return this.paginateSearchResults.length;
-    },
-    totalRecordsOnPageDelete() {
-      return this.paginateDeleteResults.length;
-    },
+    // paginateDeleteResults() {
+    //   if (!this.deleteBookingData) return [];
+    //   const startIndex = (this.deleteBookingDataPage - 1) * this.itemsPerPage;
+    //   const endIndex = startIndex + this.itemsPerPage;
+    //   return this.deleteBookingData.slice(startIndex, endIndex);
+    // },
+    // totalRecordsOnPage() {
+    //   return this.paginationBooking.length;
+    // },
+    // totalRecordsOnPageSearch() {
+    //   return this.paginateSearchResults.length;
+    // },
+    // totalRecordsOnPageDelete() {
+    //   return this.paginateDeleteResults.length;
+    // },
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return site_id ? site_id.site_name : "";
     },
 
     selectCandidateList() {
-      const candidate = this.candidateLists.find((option) => option.id === this.id);
-      return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
+      const id = this.candidateLists.find((option) => option.id === this.id);
+      return id ? `${id.first_name} ${id.last_name}` : "";
     },
     selectedOptionText() {
       const job_id = this.options.find((option) => option.id === this.job_id);
@@ -687,24 +693,19 @@ export default {
     },
   },
   watch: {
-    selectedCandidate(newValue) {
-      if (newValue !== "") {
-        this.makeFilterAPICall("candidate", newValue);
-      } else {
+    job_id(newValue) {
+      if (newValue) {
+        this.filterData();
       }
     },
-
-    business_unit_value(newValue) {
-      if (newValue !== "") {
-        this.makeFilterAPICall("business_unit", newValue);
-      } else {
+    site_id(newValue) {
+      if (newValue) {
+        this.filterData();
       }
     },
-
-    job_id_value(newValue) {
-      if (newValue !== "") {
-        this.makeFilterAPICall("job_title", newValue);
-      } else {
+    id(newValue) {
+      if (newValue) {
+        this.filterData();
       }
     },
   },
@@ -737,7 +738,21 @@ export default {
           `${VITE_API_URL}/booking_searching/${modifiedSearchQuery}`
         );
 
-        this.searchResults = response.data.booking_data;
+        // this.searchResults = response.data.booking_data;
+        if (
+          response.data.booking_data &&
+          typeof response.data.booking_data === "string"
+        ) {
+          this.errorMessage = response.data.booking_data;
+          this.searchResults = [];
+        } else {
+          this.searchResults = response.data.booking_data || [];
+          if (this.searchResults.length === 0) {
+            this.errorMessage = "No Record found for the specified criteria.";
+          } else {
+            this.errorMessage = "";
+          }
+        }
       } catch (error) {
         if (
           (error.response && error.response.status === 404) ||
@@ -751,25 +766,26 @@ export default {
       this.showFilters = !this.showFilters;
     },
     filterData() {
-      let filterType = "";
-      let filterValue = "";
+      const filters = {
+        filterType: this.job_id
+          ? "job_title"
+          : this.site_id
+          ? "site"
+          : this.id
+          ? "candidate"
+          : "",
+        filterValue: this.job_id || this.site_id || this.getCandidateName(this.id) || "",
+      };
 
-      if (this.job_id_value !== "") {
-        filterType = "job_title";
-        filterValue = this.job_id_value;
-      } else if (this.business_unit_value !== "") {
-        filterType = "business_unit";
-        filterValue = this.business_unit_value;
-      } else if (this.selectedCandidate !== "") {
-        filterType = "candidate";
-        filterValue = this.selectedCandidate;
-      }
-
-      this.makeFilterAPICall(filterType, filterValue);
+      this.makeFilterAPICall(filters.filterType, filters.filterValue);
+    },
+    getCandidateName(id) {
+      const candidate = this.candidateLists.find((candidate) => candidate.id === id);
+      return candidate ? candidate.first_name : "";
     },
     async makeFilterAPICall(filterType, filterValue) {
       const token = localStorage.getItem("token");
-      this.isLoading = true;
+
       try {
         const response = await axios.get(`${VITE_API_URL}/booking_filter`, {
           params: {
@@ -781,21 +797,16 @@ export default {
             Authorization: "bearer " + token,
           },
         });
-        this.getBookingData = response.data.booking_data;
+
+        this.getBookingData = response.data.booking_data || [];
+        this.errorMessageFilter = "";
       } catch (error) {
         if (error.response && error.response.status === 404) {
-          const errorMessages = error.response.data.error;
-          if (errorMessages === "No records found for the given filter") {
-            alert("No records found for the given filter");
-          } else {
-            alert(errorMessages);
-          }
+          this.getBookingData = [];
+          this.errorMessageFilter = error.response.data.error || "Report not found!";
         } else {
-          // Handle other errors
-          // console.error("Error filtering custom timesheets:", error);
+          this.errorMessageFilter = "An unexpected error occurred. Please try again.";
         }
-      } finally {
-        this.isLoading = false;
       }
     },
     async getDeleteBookingData() {
@@ -865,15 +876,31 @@ export default {
       this.showModal = false;
     },
     async getCandidateListMethod() {
+      const pagesToFetch = [1, 2, 3];
+      let allStaffData = [];
+
       try {
-        const response = await axios.get(`${VITE_API_URL}/candidates`);
-        this.candidateLists = response.data.data;
-        this.candidateStatus = response.data.data.status;
+        const responses = await Promise.all(
+          pagesToFetch.map((page) =>
+            axios.get(`${VITE_API_URL}/candidates`, {
+              params: {
+                page: page,
+              },
+            })
+          )
+        );
+
+        responses.forEach((response) => {
+          allStaffData = allStaffData.concat(response.data.data);
+        });
+
+        this.candidateLists = allStaffData;
       } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
+        if (error.response && error.response.status === 404) {
+          // Handle 404 error
+          // console.error('Error fetching client data:', error.response.data.message);
+        } else {
+          // console.error('Error fetching client data:', error);
         }
       }
     },

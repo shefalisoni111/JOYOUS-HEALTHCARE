@@ -184,7 +184,10 @@
                         </tr>
                       </thead>
                       <tbody v-if="paginateCandidates?.length > 0">
-                        <tr v-for="data in paginateCandidates" :key="data.id">
+                        <tr
+                          v-for="(data, index) in paginateCandidates"
+                          :key="data.id || index"
+                        >
                           <td>
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
@@ -291,7 +294,10 @@
                         </tr>
                       </thead>
                       <tbody v-if="paginateSearchResults?.length > 0">
-                        <tr v-for="data in paginateSearchResults" :key="data.id">
+                        <tr
+                          v-for="(data, index) in paginateSearchResults"
+                          :key="data.id || index"
+                        >
                           <td>
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
@@ -371,7 +377,7 @@
     <div
       class="mx-3 mb-2"
       style="text-align: right"
-      v-if="getSiteReportData?.length >= 8 && !searchResults.length"
+      v-if="getSiteReportData?.length >= 10 && !searchResults.length"
     >
       <!-- <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
@@ -413,7 +419,7 @@
         Next
       </button>
     </div>
-    <div class="mx-3 mb-2" style="text-align: right" v-if="searchResults.length >= 8">
+    <!-- <div class="mx-3 mb-2" style="text-align: right" v-if="searchResults.length >= 8">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -433,7 +439,7 @@
       >
         Next
       </button>
-    </div>
+    </div> -->
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
@@ -541,7 +547,7 @@ export default {
           : this.site_id
           ? "site"
           : this.id
-          ? "staff"
+          ? "candidate"
           : "",
         filter_value: this.client_id || this.site_id || this.id || "",
       };
@@ -550,30 +556,25 @@ export default {
     },
     async makeFilterAPICall(filter_type, filter_value) {
       try {
-        const response = await axios.get(`${VITE_API_URL}/client_report`, {
-          params: {
-            filter_type: filter_type,
-            filter_value: filter_value,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/report_section_timesheet_filter`,
+          {
+            params: {
+              filter_type: filter_type,
+              filter_value: filter_value,
+            },
+          }
+        );
 
-        this.getSiteReportData = response.data.data || [];
+        this.getSiteReportData = response.data.timesheets || [];
 
-        if (this.getSiteReportData.length === 0) {
-          this.errorMessageFilter = "Report not Found!";
-        } else {
-          this.errorMessageFilter = "";
-        }
+        this.errorMessageFilter = "";
       } catch (error) {
         if (error.response && error.response.status === 404) {
-          const errorMessages = error.response.data.error;
-          if (errorMessages === "No records found for the given filter") {
-            alert("No records found for the given filter");
-          } else {
-            alert(errorMessages);
-          }
+          this.getSiteReportData = [];
+          this.errorMessageFilter = error.response.data.error || "Report not found!";
         } else {
-          // console.error(error);
+          this.errorMessageFilter = "An unexpected error occurred.";
         }
       }
     },
@@ -636,7 +637,7 @@ export default {
       };
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/find_custom_timesheet_according_mounth`,
+          `${VITE_API_URL}/report_section_timesheet_data`,
           {
             params: requestData,
             per_page: this.itemsPerPage,
@@ -645,9 +646,9 @@ export default {
             },
           }
         );
-        this.getSiteReportData = response.data.custom_timesheets;
-        if (this.getSiteReportData.length === 0) {
-          this.errorMessageCustom = "No Site Report found for the specified month";
+        this.getSiteReportData = response.data.timesheets || [];
+        if (response.status === 200 && this.getSiteReportData.length === 0) {
+          this.errorMessageCustom = `Timesheet not available for this month`;
         } else {
           this.errorMessageCustom = "";
         }
@@ -681,20 +682,26 @@ export default {
     async search() {
       try {
         this.searchResults = [];
-        const modifiedSearchQuery = this.searchQuery.replace(/ /g, "_");
+        const modifiedSearchQuery = encodeURIComponent(this.searchQuery);
         const response = await axiosInstance.get(
-          `${VITE_API_URL}/custom_timesheet_searching/${modifiedSearchQuery}`
+          `${VITE_API_URL}/timesheet_searching_report_section`,
+          {
+            params: { query: modifiedSearchQuery },
+          }
         );
 
-        this.searchResults = response.data.custom_sheets;
-      } catch (error) {
-        if (
-          (error.response && error.response.status === 404) ||
-          error.response.status === 400
-        ) {
-          this.errorMessage = "No Record found for the specified criteria";
+        if (response.data.timesheets && typeof response.data.timesheets === "string") {
+          this.errorMessage = response.data.timesheets;
+          this.searchResults = [];
+        } else {
+          this.searchResults = response.data.timesheets || [];
+          if (this.searchResults.length === 0) {
+            this.errorMessage = "No Record found for the specified criteria.";
+          } else {
+            this.errorMessage = "";
+          }
         }
-      }
+      } catch (error) {}
     },
     exportAll() {
       const formattedDate = this.formatDate(this.startDate);
@@ -818,34 +825,6 @@ export default {
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
-    // async vacancyDeleteMethod(id) {
-    //   if (!window.confirm("Are you Sure ?")) {
-    //     return;
-    //   }
-    //   const token = localStorage.getItem("token");
-    //   await axios
-    //     .delete(`${VITE_API_URL}/vacancies/` + id, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => {
-    //       this.createVacancy();
-    //     });
-    //   // alert("Record Deleted ");
-    // },
-    // async createVacancy() {
-    //   const token = localStorage.getItem("token");
-    //   axios
-    //     .get(`${VITE_API_URL}/vacancies`, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => (this.getVacancyDetail = response.data));
-    // },
   },
   async beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -901,7 +880,6 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-  height: 100vh;
 
   background-color: #fdce5e17;
 }
