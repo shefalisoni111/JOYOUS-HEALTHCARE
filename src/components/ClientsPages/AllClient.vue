@@ -135,14 +135,14 @@
             </td>
             <td>
               <span
-                v-for="(job, index) in client.jobs"
-                :key="job.job_id"
+                v-for="(job, index) in client.job_ids"
+                :key="job"
                 :style="{ backgroundColor: getColor(index) }"
                 class="p-1 me-2 pb-1 mt-5 rounded-1"
               >
-                {{ job.job_name }}
+                {{ getJobName(job) }}
 
-                <template v-if="index !== client.jobs.length - 1"> </template>
+                <template v-if="index !== client.job_id.length - 1"> </template>
               </span>
             </td>
 
@@ -304,6 +304,7 @@ export default {
       errorMessageFilter: "",
       selectedFilter: " ",
       clientData: [],
+      options: [],
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,
@@ -351,6 +352,10 @@ export default {
     });
   },
   methods: {
+    getJobName(jobId) {
+      const job = this.options.find((job) => job.id === jobId);
+      return job ? job.name : "";
+    },
     confirmed(id) {
       this.isModalVisible = false;
 

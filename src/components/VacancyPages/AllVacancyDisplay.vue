@@ -451,7 +451,7 @@ export default {
           this.currentPage = response.data.current_page;
           localStorage.setItem("vacancies", JSON.stringify(this.getVacancyDetail));
         } catch (error) {
-          console.error("Error fetching vacancies:", error);
+          // console.error("Error fetching vacancies:", error);
         } finally {
           this.isLoading = false;
         }

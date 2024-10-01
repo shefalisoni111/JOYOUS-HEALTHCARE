@@ -49,7 +49,7 @@
               <div class="d-flex gap-2">
                 <div></div>
 
-                <select v-model="business_unit_value" id="selectBusinessUnit">
+                <select v-model="site_id" id="selectBusinessUnit">
                   <option value="">All Site</option>
                   <option
                     v-for="option in businessUnit"
@@ -61,7 +61,7 @@
                   </option>
                 </select>
 
-                <select v-model="selectedCandidate" id="selectCandidateList">
+                <select v-model="id" id="selectCandidateList">
                   <option value="">All Staff</option>
                   <option
                     v-for="option in candidateLists"
@@ -186,9 +186,9 @@
               <thead>
                 <tr>
                   <th rowspan="3">ID</th>
-                  <th rowspan="3" style="width: 11%">Name</th>
-                  <!-- <th rowspan="3">Site</th>
-                  <th rowspan="3">Shift</th> -->
+                  <th rowspan="3" style="width: 7%">Name</th>
+                  <th rowspan="3">Site</th>
+                  <th rowspan="3">Shift</th>
                   <th>
                     <div class="calendar-grid">
                       <div v-for="day in daysOfWeek" :key="day" class="day-header">
@@ -244,7 +244,7 @@
                   <th rowspan="3">Approved By</th>
                 </tr>
               </thead>
-              <tbody v-if="paginateCandidates?.length > 0">
+              <!-- <tbody v-if="paginateCandidates?.length > 0">
                 <tr v-if="errorMessageFilter">
                   <td colspan="9" class="text-danger text-center">
                     {{ errorMessageFilter }}
@@ -263,10 +263,10 @@
                     >
                   </td>
 
-                  <!-- <td>
+                   <td>
                     {{ data.site ? data.site : "Null" }}
                   </td>
-                  <td>{{ data.shift_date }}</td> -->
+                  <td>{{ data.shift_date }}</td> 
 
                   <td>
                     <div class="calendar-grid">
@@ -297,6 +297,7 @@
                               </div>
                             </div>
                           </td>
+                          {{ data.start_time }}
 
                           <td>
                             <div class="column">
@@ -332,15 +333,151 @@
                   <td>{{ data.total_hours ? data.total_hours : "Null" }}</td>
                   <td>{{ data.total_cost ? data.total_cost : "Null" }}</td>
                   <td>{{ data.approved_by ? data.approved_by : "Null" }}</td>
-                  <!-- <th>
+                   <th>
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" value="" />
                     </div>
-                  </th> -->
+                  </th> 
+                </tr>
+              </tbody> -->
+              <tbody v-if="paginateCandidates && paginateCandidates?.length > 0">
+                <tr v-if="errorMessageFilter">
+                  <td colspan="9" class="text-danger text-center">
+                    {{ errorMessageFilter }}
+                  </td>
+                </tr>
+
+                <tr v-for="data in mergedTimesheetsArray" :key="data.id">
+                  <td>{{ data.id }}</td>
+                  <td class="text-capitalize fw-bold">
+                    {{ data.author_name ? data.author_name + " " : data.name + " " }}
+                    <span class="fs-6 text-muted fw-100">
+                      <br />
+                      <span style="background: rgb(209, 207, 207); padding: 3px">
+                        {{ data.job ? data.job : "Null" }}
+                      </span>
+                    </span>
+                  </td>
+                  <td>
+                    {{ data.site ? data.site : "Null" }}
+                  </td>
+                  <td>{{ data.shift_name }}</td>
+                  <td>
+                    <div class="calendar-grid">
+                      <div
+                        v-for="day in selectedDateRow"
+                        :key="day"
+                        :data-bs-toggle="
+                          mergedTimesheetsArray &&
+                          (data.date
+                            ? formatDate(day) === formatDateFormate(data.date)
+                            : formatDate(day) === formatDateFormate(data.shift_date))
+                            ? 'modal'
+                            : ''
+                        "
+                        :data-bs-target="
+                          mergedTimesheetsArray &&
+                          (data.date
+                            ? formatDate(day) === formatDateFormate(data.date)
+                            : formatDate(day) === formatDateFormate(data.shift_date))
+                            ? '#editWeeklyTs'
+                            : ''
+                        "
+                        :data-bs-whatever="mergedTimesheetsArray ? '@mdo' : ''"
+                        @click="
+                          mergedTimesheetsArray &&
+                          (data.date
+                            ? formatDate(day) === formatDateFormate(data.date)
+                            : formatDate(day) === formatDateFormate(data.shift_date))
+                            ? openModal(data, formatDate(day))
+                            : null
+                        "
+                        :class="{
+                          'calendar-day': true,
+                          clickable: day !== '' && mergedTimesheetsArray !== null,
+                          'disabled-edit': mergedTimesheetsArray === null,
+                        }"
+                        class="d-flex justify-content-between gap-2"
+                      >
+                        <div
+                          v-if="
+                            data.date
+                              ? formatDate(day) === formatDateFormate(data.date)
+                              : formatDate(day) === formatDateFormate(data.shift_date)
+                          "
+                          class="d-flex gap-2"
+                        >
+                          <td>
+                            <div class="column">
+                              <div class="column-cell">
+                                {{
+                                  typeof data.start_time === "number"
+                                    ? data.start_time.toFixed(2)
+                                    : data.start_time === null
+                                    ? "null"
+                                    : data.start_time
+                                }}
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="column">
+                              <div class="column-cell">
+                                {{
+                                  typeof data.end_time === "number"
+                                    ? data.end_time.toFixed(2)
+                                    : data.end_time === null
+                                    ? "null"
+                                    : data.end_time
+                                }}
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="column">
+                              <div class="column-cell">
+                                {{
+                                  typeof data.total_hours === "number"
+                                    ? data.total_hours.toFixed(2)
+                                    : data.total_hours === null
+                                    ? "null"
+                                    : data.total_hours
+                                }}
+                              </div>
+                            </div>
+                          </td>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <!-- <td>{{ data.total_hours ? data.total_hours : "Null" }}</td> -->
+                  <td>
+                    {{
+                      data.candidate_id === null
+                        ? "0.0"
+                        : this.candidateHoursMap[data.candidate_id] !== undefined
+                        ? this.candidateHoursMap[data.candidate_id].toFixed(2)
+                        : "Null"
+                    }}
+                  </td>
+                  <td>{{ data.total_cost ? data.total_cost : "Null" }}</td>
+                  <td>{{ data.approved_by ? data.approved_by : "Null" }}</td>
                 </tr>
               </tbody>
-              <tbody v-else>
+              <!-- <tbody v-else>
                 <tr>
+                  <td colspan="9" class="text-danger text-center">
+                    {{ errorMessage }}
+                  </td>
+                </tr>
+              </tbody> -->
+              <tbody v-else>
+                <tr v-if="errorMessageFilter">
+                  <td colspan="9" class="text-danger text-center">
+                    {{ errorMessageFilter }}
+                  </td>
+                </tr>
+                <tr v-else>
                   <td colspan="9" class="text-danger text-center">
                     {{ errorMessage }}
                   </td>
@@ -395,6 +532,7 @@
     <!-- <AppointmentAdd /> -->
     <WeekTimeSheetEdit
       ref="editWeekly"
+      @CustomTimeSheetData-updated="fetWeekTimeSheetData"
       :initialDate="selectedDate"
       :vacancyId="vacancyId"
       @closeModal="closeModal"
@@ -427,6 +565,10 @@ export default {
       id: "",
       isLoading: false,
       statusForSelectedDate: null,
+      paginatedTimesheets: [],
+      mergedTimesheetsArray: [],
+      total_hourMain: [],
+      candidateHoursMap: {},
       vacancyList: [],
       currentPage: 1,
       itemsPerPage: 10,
@@ -442,7 +584,7 @@ export default {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
-      return this.candidateList.slice(startIndex, endIndex);
+      return this.mergedTimesheetsArray.slice(startIndex, endIndex);
     },
     totalRecordsOnPage() {
       return this.paginateCandidates.length;
@@ -512,10 +654,10 @@ export default {
       return site_id ? site_id.site_name : "";
     },
 
-    selectCandidateList() {
-      const id = this.candidateLists.find((option) => option.id === this.id);
-      return id ? id.first_name : "";
-    },
+    // selectCandidateList() {
+    //   const id = this.candidateLists.find((option) => option.id === this.id);
+    //   return id ? id.first_name : "";
+    // },
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return site_id ? site_id.name : "";
@@ -549,15 +691,28 @@ export default {
       this.showFilters = !this.showFilters;
     },
     async getCandidateListMethod() {
+      const pagesToFetch = [1, 2, 3];
+      let allStaffData = [];
+
       try {
-        const response = await axios.get(`${VITE_API_URL}/candidates`);
-        this.candidateLists = response.data.data;
-        this.candidateStatus = response.data.data.status;
+        const responses = await Promise.all(
+          pagesToFetch.map((page) =>
+            axios.get(`${VITE_API_URL}/candidates`, {
+              params: {
+                page: page,
+              },
+            })
+          )
+        );
+
+        responses.forEach((response) => {
+          allStaffData = allStaffData.concat(response.data.data);
+        });
+
+        this.candidateLists = allStaffData;
       } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
+        if (error.response && error.response.status === 404) {
+        } else {
         }
       }
     },
@@ -578,6 +733,7 @@ export default {
         this.startDate.setDate(this.startDate.getDate() - 7);
         this.endDate.setDate(this.endDate.getDate() - 7);
         this.updateDateRange();
+        this.fetWeekTimeSheetData();
       } else if (this.currentView === "monthly") {
         this.startDate.setMonth(this.startDate.getMonth() - 1);
         this.endDate = new Date(
@@ -586,13 +742,14 @@ export default {
           0
         );
       }
-      this.fetWeekTimeSheetData();
+      // this.fetWeekTimeSheetData();
     },
     moveToNext() {
       if (this.currentView === "weekly") {
         this.startDate.setDate(this.startDate.getDate() + 7);
         this.endDate.setDate(this.endDate.getDate() + 7);
         this.updateDateRange();
+        this.fetWeekTimeSheetData();
       } else if (this.currentView === "monthly") {
         this.startDate.setMonth(this.startDate.getMonth() + 1);
         this.endDate = new Date(
@@ -601,7 +758,6 @@ export default {
           0
         );
       }
-      this.fetWeekTimeSheetData();
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
@@ -634,6 +790,38 @@ export default {
       const day = date.getDate();
       const month = date.getMonth() + 1;
       const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    },
+    formatDateFormate(dateStr) {
+      if (!dateStr || typeof dateStr !== "string") {
+        return "";
+      }
+
+      let year, month, day;
+
+      if (dateStr.includes("/")) {
+        const parts = dateStr.split("/");
+        if (parts.length === 3) {
+          [day, month, year] = parts.map(Number);
+        } else {
+          // console.error("Invalid date format:", dateStr);
+          return "";
+        }
+      } else {
+        const parts = dateStr.split("-");
+        if (parts.length === 3) {
+          [year, month, day] = parts.map(Number);
+        } else {
+          // console.error("Invalid date format:", dateStr);
+          return "";
+        }
+      }
+
+      if (isNaN(year) || isNaN(month) || isNaN(day)) {
+        // console.error("Parsed date components are not numbers:", [year, month, day]);
+        return "";
+      }
+
       return `${day}/${month}/${year}`;
     },
 
@@ -670,7 +858,7 @@ export default {
     openModal(candidateId, day) {
       this.vacancyId = candidateId.id.toString() || "";
 
-      this.$refs.editWeekly.fetchCustomTimeSheetData(this.vacancyId);
+      // this.$refs.editWeekly.fetchCustomTimeSheetData(this.vacancyId);
       try {
         if (this.dataCustomTimeSheet && this.dataCustomTimeSheet.length > 0) {
           const actualCandidateId = candidateId.id;
@@ -684,7 +872,10 @@ export default {
             (candidate) => candidate.id === actualCandidateId
           );
 
-          if (selectedCandidate) {
+          if (
+            selectedCandidate &&
+            selectedCandidate.shift_date === formattedSelectedDate
+          ) {
             this.$nextTick(() => {
               this.selectedCandidate = selectedCandidate;
             });
@@ -706,18 +897,12 @@ export default {
       this.statusForSelectedDate = null;
     },
     filterData() {
-      let filterType = "";
-      let filterValue = "";
+      const filters = {
+        filter_type: this.site_id ? "site" : this.id ? "candidate" : "",
+        filter_value: this.site_id || this.getCandidateName(this.id) || "",
+      };
 
-      if (this.business_unit_value !== "") {
-        filterType = "business_unit";
-        filterValue = this.business_unit_value;
-      } else if (this.selectedCandidate !== "") {
-        filterType = "candidate";
-        filterValue = this.selectedCandidate;
-      }
-
-      this.makeFilterAPICall(filterType, filterValue);
+      this.makeFilterAPICall(filters.filter_type, filters.filter_value);
     },
     async makeFilterAPICall(filterType, filterValue) {
       const token = localStorage.getItem("token");
@@ -750,11 +935,24 @@ export default {
       this.currentPage = 1;
       this.fetWeekTimeSheetData();
     },
+    getWeekRange(date) {
+      const start = new Date(date);
+      const end = new Date(date);
+      start.setDate(start.getDate() - start.getDay() + 1);
+      end.setDate(end.getDate() + 6);
+      return { start, end };
+    },
+    isDateInRange(dateStr, startDate, endDate) {
+      const date = new Date(dateStr);
+      return date >= startDate && date <= endDate;
+    },
     async fetWeekTimeSheetData() {
       this.isLoading = true;
       try {
+        const { start, end } = this.getWeekRange(this.startDate);
         const requestData = {
-          date: this.formattedStartDate,
+          start_date: this.formatDate(start),
+          end_date: this.formatDate(end),
         };
 
         const response = await axios.get(
@@ -764,18 +962,41 @@ export default {
             per_page: this.itemsPerPage,
           }
         );
-        this.dataCustomTimeSheet = response.data.custom_timesheets;
-        const mergedTimeSheets = [
-          ...response.data.custom_timesheets,
-          ...response.data.sign_timesheets,
-        ];
-        this.candidateList = mergedTimeSheets;
-        if (this.candidateList.length === 0) {
-          this.errorMessage = "No Weekly timesheets found for the specified Week";
-        } else {
-          this.errorMessage = "";
+
+        this.dataCustomTimeSheet = response.data;
+        this.paginatedTimesheets = this.dataCustomTimeSheet.data.paginated_timesheets;
+        this.total_hourMain = this.dataCustomTimeSheet.data.candidate_hours;
+
+        const mergedTimesheetsArray = [];
+
+        this.paginatedTimesheets.forEach((day) => {
+          const customTimesheets = Array.isArray(day.custom_timesheets)
+            ? day.custom_timesheets
+            : [];
+          const signTimesheets = Array.isArray(day.sign_timesheets)
+            ? day.sign_timesheets
+            : [];
+
+          const mergedTimesheets = customTimesheets.concat(signTimesheets);
+
+          if (mergedTimesheets.length) {
+            mergedTimesheets.forEach((timesheet) => {
+              mergedTimesheetsArray.push({ ...timesheet });
+            });
+          }
+        });
+        this.mergedTimesheetsArray = mergedTimesheetsArray;
+        this.candidateHoursMap = {};
+        if (this.total_hourMain) {
+          this.total_hourMain.forEach((candidate) => {
+            if (candidate.candidate_id !== null) {
+              this.candidateHoursMap[candidate.candidate_id] = candidate.total_hours;
+            }
+          });
         }
+        console.log(this.mergedTimesheetsArray);
       } catch (error) {
+        // console.error("Error fetching week timesheets:", error);
       } finally {
         this.isLoading = false;
       }
@@ -875,11 +1096,14 @@ td {
   border-radius: 4px;
   background: #ff551f;
 }
-
+.disabled-edit {
+  cursor: not-allowd;
+  opacity: 0.6;
+}
 .calendar-day {
   background-color: #eaeaea;
   transition: background-color 0.3s ease;
-  padding: 20px 20px;
+  padding: 15px 7px;
 }
 
 .calendar-day.clickable {

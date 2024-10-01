@@ -549,10 +549,15 @@ export default {
           : this.id
           ? "candidate"
           : "",
-        filter_value: this.client_id || this.site_id || this.id || "",
+        filter_value:
+          this.client_id || this.site_id || this.getCandidateName(this.id) || "",
       };
 
       this.makeFilterAPICall(filters.filter_type, filters.filter_value);
+    },
+    getCandidateName(id) {
+      const candidate = this.candidateLists.find((candidate) => candidate.id === id);
+      return candidate ? candidate.first_name : "";
     },
     async makeFilterAPICall(filter_type, filter_value) {
       try {

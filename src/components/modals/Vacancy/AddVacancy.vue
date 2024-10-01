@@ -87,6 +87,37 @@
                   </div>
                 </div>
 
+                <!-- <div class="mb-3 d-flex">
+                  <div class="col-2">
+                    <label class="form-label">Dated</label>
+                  </div>
+                  <div class="col-10">
+                    <input
+                      type="date"
+                      class="form-control w-100"
+                      v-model="selectedDate"
+                      @change="addDate"
+                      style="padding-right: 1px"
+                    />
+                    <span v-if="!validationDateType" class="text-danger"
+                      >Please choose a date from today onwards!</span
+                    >
+                    <div v-if="dates.length > 0" class="mt-2">
+                      <span
+                        v-for="(date, index) in dates"
+                        :key="index"
+                        class="badge bg-secondary me-1"
+                      >
+                        {{ date }}
+                        <button
+                          class="btn-close btn-sm"
+                          @click="removeDate(index)"
+                        ></button>
+                      </span>
+                    </div>
+                  </div>
+                </div> -->
+
                 <div class="mb-3 d-flex">
                   <div class="col-2">
                     <label class="form-label">Dated</label>
@@ -541,6 +572,24 @@ export default {
       }, 10);
     },
 
+    // addDate() {
+    //   if (this.selectedDate) {
+    //     const currentDate = new Date();
+    //     const selectedDate = new Date(this.selectedDate);
+
+    //     if (selectedDate > currentDate || this.isToday(selectedDate, currentDate)) {
+    //       const formattedDate = selectedDate.toLocaleDateString("en-GB");
+    //       if (!this.dates.includes(formattedDate)) {
+    //         this.dates.push(formattedDate);
+    //       }
+    //       this.selectedDate = "";
+    //       this.clearError();
+    //       this.validationDateType = true;
+    //     } else {
+    //       this.validationDateType = false;
+    //     }
+    //   }
+    // },
     addDate() {
       if (this.selectedDate) {
         const currentDate = new Date();
@@ -548,9 +597,9 @@ export default {
 
         if (selectedDate > currentDate || this.isToday(selectedDate, currentDate)) {
           const formattedDate = selectedDate.toLocaleDateString("en-GB");
-          if (!this.dates.includes(formattedDate)) {
-            this.dates.push(formattedDate);
-          }
+
+          this.dates = [formattedDate];
+
           this.selectedDate = "";
           this.clearError();
           this.validationDateType = true;

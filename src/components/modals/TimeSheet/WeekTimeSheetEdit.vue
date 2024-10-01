@@ -215,7 +215,13 @@
                           <label class="form-label">Client Rate</label>
                         </div>
                         <div class="col-12 mt-1">
-                          <input type="text" class="form-control" value="null" />
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="fetchCustomTimeShetData.client_rate"
+                            @input="validateNumber('client_rate')"
+                            placeholder="Enter Client Rate"
+                          />
                         </div>
                       </div>
                       <div class="mb-3">
@@ -223,7 +229,13 @@
                           <label class="form-label">Client Pay Amount</label>
                         </div>
                         <div class="col-12 mt-1">
-                          <input type="text" class="form-control" value="null" />
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="fetchCustomTimeShetData.total_cost"
+                            @input="validateNumber('total_cost')"
+                            placeholder="Enter Client Pay Amount"
+                          />
                         </div>
                       </div>
                       <div class="mb-3">
@@ -231,7 +243,13 @@
                           <label class="form-label">Staff Rate</label>
                         </div>
                         <div class="col-12 mt-1">
-                          <input type="text" class="form-control" value="null" />
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="fetchCustomTimeShetData.staff_rate"
+                            @input="validateNumber('staff_rate')"
+                            placeholder="Enter Staff Rate"
+                          />
                         </div>
                       </div>
                       <div class="mb-3">
@@ -239,7 +257,12 @@
                           <label class="form-label">Staff Rate Amount</label>
                         </div>
                         <div class="col-12 mt-1">
-                          <input type="text" class="form-control" value="null" />
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="fetchCustomTimeShetData.staff_rate_amount"
+                            @input="validateNumber('staff_rate_amount')"
+                          />
                         </div>
                       </div>
                     </div>
@@ -265,8 +288,8 @@
             <button
               class="btn btn-secondary rounded-1"
               data-bs-target="#editWeeklyTs"
-              data-bs-toggle="modal"
               data-bs-dismiss="modal"
+              @click="resetChanges"
             >
               Cancel
             </button>
@@ -306,6 +329,7 @@ export default {
         notes: "",
       },
       isPublished: false,
+      originalData: null,
     };
   },
   props: {
@@ -321,6 +345,9 @@ export default {
     },
   },
   methods: {
+    resetChanges() {
+      this.fetchCustomTimeShetData = { ...this.originalData };
+    },
     convertTimeFormat(dateTimeString) {
       const date = new Date(dateTimeString);
       const hours = date.getUTCHours();
@@ -368,7 +395,32 @@ export default {
           ...this.fetchCustomTimeShetData,
           ...response.data.custom_sheets,
         };
-      } catch (error) {}
+        this.originalData = { ...this.fetchCustomTimeShetData };
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          try {
+            const fallbackResponse = await axios.get(
+              `{{local-server}}/sign_timesheets/${this.vacancyId}`
+            );
+            this.fetchCustomTimeShetData = {
+              ...this.fetchCustomTimeShetData,
+              ...fallbackResponse.data.sign_timesheets,
+            };
+            this.originalData = { ...this.fetchCustomTimeShetData };
+          } catch (fallbackError) {
+            // console.error("Error with fallback API:", fallbackError);
+          }
+        } else {
+          // console.error("Error fetching custom timesheets:", error);
+        }
+      }
+    },
+    validateNumber(field) {
+      const value = this.fetchCustomTimeShetData[field];
+
+      if (!/^\d*\.?\d*$/.test(value)) {
+        this.fetchCustomTimeShetData[field] = value.replace(/[^0-9.]/g, "");
+      }
     },
     async updateCandidateMethod() {
       try {
@@ -382,11 +434,31 @@ export default {
           newData: response.data.custom_sheets,
         });
         this.$emit("CustomTimeSheetData-updated");
-        // alert("Candidate updated successfully");
+
         const message = "TimeSheet updated successfully";
         this.$refs.successAlert.showSuccess(message);
       } catch (error) {
-        // console.error("Error updating candidate:", error);
+        if (error.response && error.response.status === 404) {
+          try {
+            const fallbackResponse = await axios.put(
+              `${DEV}/update_sign_timesheet/${this.fetchCustomTimeShetData.id}`,
+              this.fetchCustomTimeShetData
+            );
+
+            this.$store.commit("updateCandidate", {
+              id: this.fetchCustomTimeShetData.id,
+              newData: fallbackResponse.data.custom_sheets,
+            });
+            this.$emit("CustomTimeSheetData-updated");
+
+            const message = "TimeSheet updated successfully via fallback";
+            this.$refs.successAlert.showSuccess(message);
+          } catch (fallbackError) {
+            // console.error("Error updating candidate via fallback API:", fallbackError);
+          }
+        } else {
+          // console.error("Error updating candidate:", error);
+        }
       }
     },
   },
@@ -394,7 +466,7 @@ export default {
     vacancyId: {
       immediate: true,
       handler(newvacancyId) {
-        this.fetchCustomTimeSheetData(newvacancyId);
+        this.fetchCustomTimeSheetData();
       },
     },
   },

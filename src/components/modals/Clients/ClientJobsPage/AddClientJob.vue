@@ -15,7 +15,7 @@
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
               <form>
-                <div class="mb-3 d-flex justify-content-between">
+                <!-- <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label class="form-label">Client ID</label>
                   </div>
@@ -30,12 +30,23 @@
                       {{ getError("client_id") }}
                     </div>
                   </div>
-                </div>
+                </div> -->
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label">NAME</label>
+                    <label class="form-label">Jobs</label>
                   </div>
                   <div class="col-10 mt-1">
+                    <select v-model="job_id" class="form-control">
+                      <option
+                        v-for="option in options"
+                        :key="option.id"
+                        :value="option.id"
+                      >
+                        {{ option.name }}
+                      </option>
+                    </select>
+                  </div>
+                  <!-- <div class="col-10 mt-1">
                     <input
                       type="text"
                       class="form-control"
@@ -45,7 +56,7 @@
                     <div v-if="getError('name')" class="text-danger">
                       {{ getError("name") }}
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </form>
             </div>
@@ -86,6 +97,8 @@ export default {
       client_id: this.$route.params.id,
       color: "#050505",
       errors: {},
+      job_id: "",
+      options: [],
     };
   },
   components: { SuccessAlert },
@@ -94,6 +107,10 @@ export default {
       return (
         Object.values(this.errors).some((error) => error !== null) || !this.name.trim()
       );
+    },
+    selectedOptionText() {
+      const job_id = this.options.find((option) => option.id === this.job_id);
+      return job_id ? job_id.name : "";
     },
   },
   methods: {
@@ -123,20 +140,8 @@ export default {
       }
     },
     async addJob() {
-      const data = {
-        name: this.name,
-        color: this.color,
-        client_id: this.$route.params.id,
-      };
       try {
-        const response = await fetch(`${VITE_API_URL}/jobs`, {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
+        await axios.put(`${VITE_API_URL}/clients/${this.$route.params.id}`);
         if (response.ok) {
           this.$emit("jobClientAdded");
           // alert("Add Jobs successfully");
@@ -145,10 +150,49 @@ export default {
           this.name = "";
         } else {
         }
-      } catch (error) {}
+      } catch (error) {
+        // console.error("Error updating candidate:", error);
+      }
+      // const data = {
+      //   name: this.name,
+      //   color: this.color,
+      //   client_id: this.$route.params.id,
+      // };
+      // try {
+      //   const response = await fetch(`${VITE_API_URL}/jobs`, {
+      //     method: "POST",
+      //     headers: {
+      //       Accept: "application/json",
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify(data),
+      //   });
+      //   if (response.ok) {
+      //     this.$emit("jobClientAdded");
+      //     // alert("Add Jobs successfully");
+      //     const message = "Add Client Jobs successfully";
+      //     this.$refs.successAlert.showSuccess(message);
+      //     this.name = "";
+      //   } else {
+      //   }
+      // } catch (error) {}
+    },
+    async getPositionMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+        this.options = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
     },
   },
-  mounted() {},
+  mounted() {
+    this.getPositionMethod();
+  },
 };
 </script>
 

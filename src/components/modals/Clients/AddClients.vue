@@ -273,7 +273,7 @@ export default {
           (client) => client.email === this.email
         );
       } catch (error) {
-        console.error("Error checking email uniqueness:", error);
+        // console.error("Error checking email uniqueness:", error);
       }
     },
     clearFieldsData() {

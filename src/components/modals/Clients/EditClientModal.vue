@@ -150,7 +150,7 @@ export default {
       fetchClients: {
         id: "",
         first_name: "",
-        job_id: [],
+        job_ids: [],
         address: "",
         phone_number: "",
         email: "",
@@ -172,7 +172,7 @@ export default {
   computed: {
     selectJobTitle() {
       const job_title = this.options.find(
-        (option) => option.id === this.fetchClients.job_id
+        (option) => option.id === this.fetchClients.job_ids
       );
       return job_title ? job_title.name : "";
     },
@@ -189,7 +189,7 @@ export default {
         !this.isPhoneNumberValid ||
         !this.isEmailValid ||
         !this.isPasswordMatch ||
-        this.fetchClients.job_id.length === 0
+        this.fetchClients.job_ids.length === 0
       );
     },
     isPhoneNumberValid() {
@@ -199,14 +199,14 @@ export default {
   components: { SuccessAlert },
   methods: {
     toggleJobsSelection() {
-      this.fetchClients.job_id = this.options
+      this.fetchClients.job_ids = this.options
         .filter((option) => option.checked)
         .map((option) => option.id);
     },
     resetChanges() {
       this.fetchClients = { ...this.originalData };
       this.options.forEach((option) => {
-        option.checked = this.fetchClients.job_id.includes(option.id);
+        option.checked = this.fetchClients.job_ids.includes(option.id);
       });
     },
     cleanPhoneNumber() {
@@ -223,7 +223,7 @@ export default {
         this.fetchClients = { ...this.fetchClients, ...response.data };
         this.originalData = { ...this.fetchClients };
         this.options.forEach((option) => {
-          option.checked = this.fetchClients.job_id.includes(option.id);
+          option.checked = this.fetchClients.job_ids.includes(option.id);
         });
       } catch (error) {
         // console.error("Error fetching todo:", error);

@@ -176,7 +176,7 @@ export default {
         const response = await axios.get(`${VITE_API_URL}/agency_settings`);
         this.options = response.data;
       } catch (error) {
-        console.error("Error fetching agency settings:", error);
+        // console.error("Error fetching agency settings:", error);
       }
     },
     handleDateChange() {

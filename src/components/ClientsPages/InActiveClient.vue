@@ -34,14 +34,14 @@
             </td>
             <td>
               <span
-                v-for="(job, index) in client.jobs"
-                :key="job.job_id"
+                v-for="(job, index) in client.job_ids"
+                :key="job"
                 :style="{ backgroundColor: getColor(index) }"
                 class="p-1 me-2 pb-1 mt-5 rounded-1"
               >
-                {{ job.job_name }}
+                {{ getJobName(job) }}
 
-                <template v-if="index !== client.jobs.length - 1"> </template>
+                <template v-if="index !== client.job_id.length - 1"> </template>
               </span>
             </td>
             <td v-text="client.address"></td>
@@ -186,6 +186,7 @@ export default {
       totalCount: 0,
       isLoading: false,
       itemsPerPage: 8,
+      options: [],
       client: {
         job_name: ["Job1", "Job2", "Job3", "Job4", "Job5", "Job6"],
       },
@@ -217,10 +218,26 @@ export default {
     },
   },
   methods: {
+    getJobName(jobId) {
+      const job = this.options.find((job) => job.id === jobId);
+      return job ? job.name : "";
+    },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
       this.createdClient();
+    },
+    async getPositionMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+        this.options = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
     },
     getColor(index) {
       return this.colors[index % this.colors.length];
@@ -273,6 +290,7 @@ export default {
   },
   async mounted() {
     await this.createdClient();
+    this.getPositionMethod();
   },
 };
 </script>
