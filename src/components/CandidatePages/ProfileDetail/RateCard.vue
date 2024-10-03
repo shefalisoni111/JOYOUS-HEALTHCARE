@@ -59,20 +59,20 @@
                       />
                     </div>
                   </td>
-                  <td>{{ getrate.site ? getrate.site.name : "Null" }}</td>
-                  <td v-text="getrate.position.name"></td>
-                  <td v-text="getrate.weekname" class="text-capitalize"></td>
-                  <td v-text="getrate.employment_type.title"></td>
-                  <td v-text="getrate.shift.shift"></td>
-                  <td v-text="getrate.staff_rate"></td>
-                  <td v-text="getrate.last_updated"></td>
+
+                  <td>{{ getrate.site?.name || "Null" }}</td>
+                  <td>{{ getrate.position?.name || "Null" }}</td>
+                  <td class="text-capitalize">{{ getrate.weekname || "Null" }}</td>
+                  <td>{{ getrate.employment_type?.title || "Null" }}</td>
+                  <td>{{ getrate.site_shift?.shift || "Null" }}</td>
+                  <td>{{ getrate.staff_rate || "Null" }}</td>
+                  <td>{{ getrate.last_updated || "Null" }}</td>
                   <td class="cursor-pointer d-flex">
                     <i
                       class="bi bi-trash3 cursor-pointer btn btn-outline-success text-nowrap"
                       v-on:click="rateCardDelete(getrate.id)"
                     ></i>
                     &nbsp;&nbsp;
-
                     <i
                       class="bi bi-pencil-square cursor-pointer btn btn-outline-success text-nowrap"
                       type="button"
@@ -107,6 +107,13 @@
       ref="editRateCard"
     />
     <loader :isLoading="isLoading"></loader>
+    <ConfirmationAlert
+      :show-modal="isModalVisible"
+      :message="confirmMessage"
+      @confirm="confirmCallback"
+      @cancel="canceled"
+    />
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
@@ -114,7 +121,9 @@
 import axios from "axios";
 import AddRateCard from "../../../components/modals/CandidatePage/AddRateCard.vue";
 import EditRateCard from "../../modals/CandidatePage/EditRateCard.vue";
+import ConfirmationAlert from "../../Alerts/ConfirmationAlert.vue";
 import Loader from "../../Loader/Loader.vue";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
   name: "RateCard",
@@ -123,9 +132,12 @@ export default {
       getRateCard: [],
       selectedRateCardId: 0,
       isLoading: false,
+      isModalVisible: false,
+      confirmMessage: "",
+      confirmCallback: null,
     };
   },
-  components: { AddRateCard, EditRateCard, Loader },
+  components: { AddRateCard, EditRateCard, Loader, ConfirmationAlert, SuccessAlert },
   watch: {
     selectedRateCardId(newValue, oldValue) {
       if (newValue !== oldValue) {
@@ -163,14 +175,26 @@ export default {
         this.$refs.editRateCard.getTimeShift();
       }, 300);
     },
-    //  rateCard apis start
+    confirmed(id) {
+      this.isModalVisible = false;
+
+      // this.rateCardDelete(id);
+    },
+    canceled() {
+      this.isModalVisible = false;
+    },
     async rateCardDelete(id) {
-      if (!window.confirm("Are you Sure ?")) {
-        return;
-      }
-      await axios.delete(`${VITE_API_URL}/rate_cards/` + id).then((response) => {
-        this.showRateCardMethod();
-      });
+      this.confirmMessage = "Are you sure you want delete?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        axios.delete(`${VITE_API_URL}/rate_cards/` + id).then((response) => {
+          this.showRateCardMethod();
+        });
+        const message = "Record deleted successfully";
+        this.$refs.successAlert.showSuccess(message);
+
+        this.isModalVisible = false;
+      };
     },
 
     async showRateCardMethod() {

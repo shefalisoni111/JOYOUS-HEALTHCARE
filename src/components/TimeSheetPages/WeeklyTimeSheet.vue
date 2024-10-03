@@ -994,7 +994,7 @@ export default {
             }
           });
         }
-        console.log(this.mergedTimesheetsArray);
+        // console.log(this.mergedTimesheetsArray);
       } catch (error) {
         // console.error("Error fetching week timesheets:", error);
       } finally {

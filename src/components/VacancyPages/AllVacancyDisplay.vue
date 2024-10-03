@@ -23,8 +23,9 @@
               <th scope="col">Action</th>
             </tr>
           </thead>
-          <tbody>
-            <tr v-for="getdata in paginatedVacancies" :key="getdata.id">
+
+          <tbody v-if="getVacancyDetail?.length > 0">
+            <tr v-for="getdata in getVacancyDetail" :key="getdata.id">
               <td v-text="getdata.id"></td>
               <td v-text="getdata.ref_code"></td>
               <td>
@@ -189,6 +190,13 @@
               </td>
             </tr>
           </tbody>
+          <tbody v-else>
+            <tr>
+              <td colspan="16" class="text-center text-danger" v-if="!isLoading">
+                {{ "Data Not Found!" }}
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
@@ -204,7 +212,7 @@
     <RejectedVacancyList @rejectVacancy="createVacancy" />
     <AllVacancyCandidateList @allVacancy="createVacancy" />
 
-    <div class="mt-3" style="text-align: right" v-if="totalCount > 0">
+    <div class="mt-3" style="text-align: right" v-if="getVacancyDetail?.length >= 0">
       <!-- <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button> -->
@@ -237,11 +245,13 @@
         Previous
       </button>
       &nbsp;&nbsp;
+
       <span>{{ currentPage }}</span>
       &nbsp;&nbsp;
+
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage === totalPages"
+        :disabled="currentPage >= totalPages"
         @click="nextPage"
       >
         Next
@@ -267,12 +277,11 @@ export default {
     return {
       getVacancyDetail: [],
       selectedVacancyId: 0,
+      totalCount: 0,
+      totalPages: 0,
       currentPage: 1,
       itemsPerPage: 10,
-      totalCount: 0,
-      totalPages: 1,
       isLoading: false,
-      dataFetched: false,
     };
   },
 
@@ -290,7 +299,9 @@ export default {
     getIconClass() {
       return this.publish ? "bi bi-bell" : "bi bi-check-circle-fill";
     },
+
     paginatedVacancies() {
+      if (!this.getVacancyDetail) return [];
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.getVacancyDetail.slice(startIndex, endIndex);
@@ -301,6 +312,18 @@ export default {
   },
 
   methods: {
+    previousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.createVacancy();
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+        this.createVacancy();
+      }
+    },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
@@ -429,35 +452,36 @@ export default {
     },
 
     async createVacancy() {
-      if (this.getVacancyDetail.length === 0) {
-        const token = localStorage.getItem("token");
-        this.isLoading = true;
+      const token = localStorage.getItem("token");
+      this.isLoading = true;
 
-        try {
-          const response = await axios.get(`${VITE_API_URL}/vacancies`, {
-            params: {
-              page: this.currentPage,
-              per_page: this.itemsPerPage,
-            },
-            headers: {
-              "content-type": "application/json",
-              Authorization: "bearer " + token,
-            },
-          });
-
+      try {
+        const response = await axios.get(`${VITE_API_URL}vacancies`, {
+          params: {
+            page: this.currentPage,
+            per_page: this.itemsPerPage,
+          },
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+        });
+        if (this.currentPage === 1) {
           this.getVacancyDetail = response.data.data;
-          this.totalCount = response.data.total_vacancy;
-          this.totalPages = response.data.total_pages;
-          this.currentPage = response.data.current_page;
-          localStorage.setItem("vacancies", JSON.stringify(this.getVacancyDetail));
-        } catch (error) {
-          // console.error("Error fetching vacancies:", error);
-        } finally {
-          this.isLoading = false;
+        } else {
+          this.getVacancyDetail = [...this.getVacancyDetail, ...response.data.data];
         }
+        this.totalCount = response.data.total_count;
+        this.totalPages = response.data.total_pages;
+        this.currentPage = response.data.current_page;
+      } catch (error) {
+        // console.error("Error fetching vacancies:", error);
+      } finally {
+        this.isLoading = false;
       }
     },
   },
+
   // async beforeRouteEnter(to, from, next) {
   //   next((vm) => {
   //     vm.createVacancy();

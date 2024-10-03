@@ -15,7 +15,11 @@
                     <label class="form-label" for="selectBusinessUnit">Site</label>
                   </div>
                   <div class="col-10">
-                    <select v-model="site_id" id="selectBusinessUnit">
+                    <select
+                      v-model="site_id"
+                      id="selectBusinessUnit"
+                      @change="onSiteSelect"
+                    >
                       <option
                         v-for="option in businessUnit"
                         :key="option.id"
@@ -97,8 +101,13 @@
                   <div class="col-2">
                     <label class="form-label" for="selectShifts">Shift Time</label>
                   </div>
+
                   <div class="col-10">
-                    <select v-model="site_shift" id="selectShifts">
+                    <select
+                      v-model="site_shift_id"
+                      id="selectShifts"
+                      @change="onSiteShiftSelect"
+                    >
                       <option
                         v-for="option in shiftsTime"
                         :key="option.id"
@@ -175,7 +184,7 @@ export default {
       employment_type_id: "",
       staff_rate: "",
       candidate_id: "",
-      site_id: "",
+      site_shift_id: "",
       employeeData: [],
       options: [],
       shiftsTime: [],
@@ -190,7 +199,7 @@ export default {
   },
   watch: {
     site_id(newValue) {
-      this.getTimeShift();
+      this.getTimeShift(newValue);
     },
     site_shift: function (newValue) {
       this.validateStaffRate(newValue);
@@ -227,12 +236,14 @@ export default {
 
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
-      return site_id ? site_id.name : "";
+      return this.site_id;
     },
 
     selectShifts() {
-      const site_id = this.shiftsTime.find((option) => option.id === this.site_id);
-      return site_id ? site_id.shift_name : "";
+      const site_shift_id = this.shiftsTime.find(
+        (option) => option.id === this.site_shift_id
+      );
+      return site_shift_id ? site_shift_id.shift_name : "";
     },
 
     selectEmployee() {
@@ -243,6 +254,14 @@ export default {
     },
   },
   methods: {
+    onSiteSelect() {
+      const selectedSiteId = this.site_id;
+
+      this.getTimeShift(selectedSiteId);
+    },
+    onSiteShiftSelect() {
+      // console.log("Selected shift ID:", this.site_shift_id);
+    },
     validateStaffRate() {
       this.staff_rate = this.staff_rate.replace(/[^0-9-]/g, "");
 
@@ -291,7 +310,7 @@ export default {
         job_id: this.job_id,
         candidate_id: this.$route.params.id,
         employment_type_id: this.employment_type_id,
-        site_shift: this.site_shift,
+        site_shift_id: this.site_shift_id,
       };
       try {
         const response = await fetch(`${VITE_API_URL}/rate_cards`, {
@@ -354,20 +373,31 @@ export default {
       }
     },
 
-    async getTimeShift() {
-      // if (!this.site_id) {
-      //   return;
-      // }
+    async getTimeShift(site_id) {
+      if (!site_id) {
+        return;
+      }
       try {
-        const response = await axios.get(`${VITE_API_URL}/site_shift/38`);
-        this.shiftsTime = response.data.site_shift_data.map((shift) => ({
-          ...shift,
-          start_time: this.convertTimeFormat(shift.start_time),
-          end_time: this.convertTimeFormat(shift.end_time),
-        }));
+        const response = await axios.get(`${VITE_API_URL}/site_shift/${site_id}`);
+        this.shiftsTime =
+          response.data.site_shift_data.map((shift) => ({
+            ...shift,
+            start_time: this.convertTimeFormat(shift.start_time),
+            end_time: this.convertTimeFormat(shift.end_time),
+          })) || [];
+        // console.log("Fetched Shifts:", this.shiftsTime);
       } catch (error) {
         // console.error("Error fetching shifts:", error);
       }
+    },
+    convertTimeFormat(dateTimeString) {
+      const date = new Date(dateTimeString);
+      const hours = date.getUTCHours();
+      const minutes = date.getUTCMinutes();
+      const amPm = hours >= 12 ? "PM" : "AM";
+      const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+      const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+      return `${formattedHours}:${formattedMinutes} ${amPm}`;
     },
     validateBusinessUnit(newValue) {
       this.validationBusinessUnit = newValue !== "";

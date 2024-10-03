@@ -17,6 +17,22 @@
               <form>
                 <div class="mb-3">
                   <div class="col-12">
+                    <label class="form-label" for="selectBusinessUnitIds">Site</label>
+                  </div>
+                  <div class="col-12 mt-1">
+                    <select v-model="fetchRateCard.site_id" id="selectBusinessUnitIds">
+                      <option
+                        v-for="option in businessUnit"
+                        :key="option.id"
+                        :value="option.id"
+                      >
+                        {{ option.site_name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="col-12">
                     <label class="form-label" for="selectRatCardJob">Position</label>
                   </div>
                   <div class="col-12 mt-1">
@@ -27,6 +43,27 @@
                         :value="option.id"
                       >
                         {{ option.name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="col-12">
+                    <label class="form-label">Day</label>
+                  </div>
+                  <div class="col-12 mt-1">
+                    <select
+                      class="form-select"
+                      aria-label="Default select example"
+                      v-model="fetchRateCard.weekname"
+                    >
+                      <option
+                        v-for="day in daysOfWeek"
+                        :key="day"
+                        :value="day"
+                        :selected="fetchRateCard.weekname == day"
+                      >
+                        {{ day }}
                       </option>
                     </select>
                   </div>
@@ -57,8 +94,9 @@
                   <div class="col-12">
                     <label class="form-label" for="selectShiftsIds">Shift Type</label>
                   </div>
+
                   <div class="col-12 mt-1">
-                    <select v-model="fetchRateCard.shift_id" id="selectShiftsIds">
+                    <select v-model="fetchRateCard.site_shift_id" id="selectShiftsIds">
                       <option
                         v-for="option in shiftsTime"
                         :key="option.id"
@@ -70,43 +108,7 @@
                     </select>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label" for="selectBusinessUnitIds">Site</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <select v-model="fetchRateCard.site_id" id="selectBusinessUnitIds">
-                      <option
-                        v-for="option in businessUnit"
-                        :key="option.id"
-                        :value="option.id"
-                      >
-                        {{ option.site_name }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Day</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <select
-                      class="form-select"
-                      aria-label="Default select example"
-                      v-model="fetchRateCard.weekname"
-                    >
-                      <option
-                        v-for="day in daysOfWeek"
-                        :key="day"
-                        :value="day"
-                        :selected="fetchRateCard.weekname == day"
-                      >
-                        {{ day }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
+
                 <div class="mb-3">
                   <div class="col-12">
                     <label class="form-label">Staff Rate</label>
@@ -128,6 +130,7 @@
               data-bs-target="#editRateCard"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
+              @click="resetChanges"
             >
               Cancel
             </button>
@@ -160,7 +163,7 @@ export default {
         job_id: "",
         weekname: "",
         site_id: "",
-        shift_id: "",
+        site_shift_id: "",
         staff_rate: "",
         site_id: "",
         candidate_id: this.$route.params.id,
@@ -170,6 +173,7 @@ export default {
       businessUnit: [],
       shiftsTime: [],
       daysOfWeek: ["monday", "tuesday", "wednesday", "thursday", "friday"],
+      originalData: null,
     };
   },
   props: {
@@ -179,6 +183,20 @@ export default {
     },
   },
   components: { SuccessAlert },
+  watch: {
+    fetchRateCard: {
+      handler(newValue) {
+        this.getTimeShift(newValue.site_id);
+      },
+      deep: true,
+    },
+    rateCardId: {
+      immediate: true,
+      handler(newrateCardId) {
+        this.fetchRateCardMethod(newrateCardId);
+      },
+    },
+  },
   computed: {
     selectEmployeeType() {
       const employment_type = this.employeeData.find(
@@ -199,13 +217,16 @@ export default {
       return job_id ? job_id.name : "";
     },
     selectShiftsIds() {
-      const shifts_id = this.shiftsTime.find(
-        (option) => option.id === this.fetchRateCard.shift_id
+      const site_shift_id = this.shiftsTime.find(
+        (option) => option.id === this.fetchRateCard.site_shift_id
       );
-      return shifts_id ? shifts_id.shift_name : "";
+      return site_shift_id ? site_shift_id.shift_name : "";
     },
   },
   methods: {
+    resetChanges() {
+      this.fetchRateCard = { ...this.originalData };
+    },
     async getEmployeeTypeData() {
       try {
         const response = await axios.get(`${VITE_API_URL}/employment_types`);
@@ -230,25 +251,50 @@ export default {
         }
       }
     },
-    async getTimeShift() {
-      await axios
-        .get(`${VITE_API_URL}/shifts`)
-        .then((response) => (this.shiftsTime = response.data));
-    },
-    async fetchRateCardMethod() {
+    async getTimeShift(site_id) {
+      if (!site_id) {
+        this.shiftsTime = [];
+        return;
+      }
       try {
-        const response = await axios.get(`${VITE_API_URL}/rate_cards/${this.rateCardId}`);
+        const response = await axios.get(`${VITE_API_URL}/site_shift/${site_id}`);
 
-        this.fetchRateCard = response.data.data;
+        this.shiftsTime =
+          response.data.site_shift_data.map((shift) => ({
+            ...shift,
+            start_time: this.convertTimeFormat(shift.start_time),
+            end_time: this.convertTimeFormat(shift.end_time),
+          })) || [];
       } catch (error) {
-        // console.error("Error fetching todo:", error);
+        // console.error("Error fetching shifts:", error);
+        this.shiftsTime = []; // Reset on error
       }
     },
+    convertTimeFormat(dateTimeString) {
+      const date = new Date(dateTimeString);
+      const hours = date.getUTCHours();
+      const minutes = date.getUTCMinutes();
+      const amPm = hours >= 12 ? "PM" : "AM";
+      const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+      const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+      return `${formattedHours}:${formattedMinutes} ${amPm}`;
+    },
+    // async fetchRateCardMethod() {
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/rate_cards/${this.rateCardId}`);
+
+    //     this.fetchRateCard = response.data.data;
+    //   } catch (error) {
+    //     // console.error("Error fetching todo:", error);
+    //   }
+    // },
     async fetchRateCardMethod(id) {
       if (!id) return;
       try {
         const response = await axios.get(`${VITE_API_URL}/rate_cards/${id}`);
         this.fetchRateCard = { ...this.fetchRateCard, ...response.data.data };
+        this.getTimeShift(this.fetchRateCard.site_id);
+        this.originalData = { ...this.fetchRateCard };
       } catch (error) {}
     },
     async updateRateCardMethod() {
@@ -280,11 +326,11 @@ export default {
     },
     async fetchData(rateCardId) {
       try {
-        await this.fetchRateCardMethod(rateCardId);
+        // await this.fetchRateCardMethod(rateCardId);
         await this.getEmployeeTypeData();
         await this.getPositionMethod();
         await this.getBusinessUnitMethod();
-        await this.getTimeShift();
+        this.getTimeShift(this.fetchRateCard.site_id);
       } catch (error) {
         // console.error("Error fetching data:", error);
       }
@@ -295,6 +341,7 @@ export default {
       immediate: true,
       handler(newrateCardId) {
         this.fetchRateCardMethod(newrateCardId);
+        // this.getTimeShift(newrateCardId);
       },
     },
   },

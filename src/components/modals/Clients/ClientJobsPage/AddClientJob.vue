@@ -38,13 +38,16 @@
                   <div class="col-10 mt-1">
                     <select v-model="job_id" class="form-control">
                       <option
-                        v-for="option in options"
+                        v-for="option in filteredJobs"
                         :key="option.id"
                         :value="option.id"
                       >
                         {{ option.name }}
                       </option>
                     </select>
+                    <div v-if="jobAlreadyAdded" class="text-danger">
+                      This job is already added to the client.
+                    </div>
                   </div>
                   <!-- <div class="col-10 mt-1">
                     <input
@@ -73,8 +76,8 @@
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              :disabled="isButtonDisabled"
               @click="addJob"
+              :disabled="!job_id || jobAlreadyAdded"
             >
               Add Job
             </button>
@@ -88,109 +91,71 @@
 
 <script>
 import SuccessAlert from "../../../Alerts/SuccessAlert.vue";
+import axios from "axios";
 
 export default {
   name: "AddClientJobs",
   data() {
     return {
-      name: "",
-      client_id: this.$route.params.id,
-      color: "#050505",
-      errors: {},
       job_id: "",
       options: [],
+      existingJobs: [],
     };
   },
   components: { SuccessAlert },
   computed: {
-    isButtonDisabled() {
-      return (
-        Object.values(this.errors).some((error) => error !== null) || !this.name.trim()
-      );
+    filteredJobs() {
+      return this.options.filter((job) => !this.existingJobs.includes(job.id));
     },
-    selectedOptionText() {
-      const job_id = this.options.find((option) => option.id === this.job_id);
-      return job_id ? job_id.name : "";
+    jobAlreadyAdded() {
+      return this.existingJobs.includes(this.job_id);
     },
   },
   methods: {
-    clearError(fieldName) {
-      this.errors[fieldName] = null;
-    },
-
-    getError(fieldName) {
-      return this.errors[fieldName];
-    },
-    isEmptyField() {
-      return !this.name || !this.isValidColor(this.color) || !this.client_id;
-    },
-
-    validateAndAddJob() {
-      this.errors = {};
-
-      if (!this.name.trim()) {
-        this.$set(this.errors, "name", "Name is required.");
-      }
-
-      if (
-        Object.values(this.errors).every((error) => error === null) &&
-        !this.isEmptyField()
-      ) {
-        this.addJob();
-      }
-    },
     async addJob() {
+      if (!this.job_id || this.jobAlreadyAdded) {
+        return;
+      }
       try {
-        await axios.put(`${VITE_API_URL}/clients/${this.$route.params.id}`);
-        if (response.ok) {
+        const response = await axios.put(
+          `${VITE_API_URL}/clients/${this.$route.params.id}`,
+          { job_id: this.job_id }
+        );
+        if (response.status === 200) {
+          this.existingJobs.push(this.job_id);
+
           this.$emit("jobClientAdded");
-          // alert("Add Jobs successfully");
           const message = "Add Client Jobs successfully";
           this.$refs.successAlert.showSuccess(message);
-          this.name = "";
-        } else {
+
+          this.job_id = "";
         }
       } catch (error) {
-        // console.error("Error updating candidate:", error);
+        // console.error("Error adding job:", error);
       }
-      // const data = {
-      //   name: this.name,
-      //   color: this.color,
-      //   client_id: this.$route.params.id,
-      // };
-      // try {
-      //   const response = await fetch(`${VITE_API_URL}/jobs`, {
-      //     method: "POST",
-      //     headers: {
-      //       Accept: "application/json",
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(data),
-      //   });
-      //   if (response.ok) {
-      //     this.$emit("jobClientAdded");
-      //     // alert("Add Jobs successfully");
-      //     const message = "Add Client Jobs successfully";
-      //     this.$refs.successAlert.showSuccess(message);
-      //     this.name = "";
-      //   } else {
-      //   }
-      // } catch (error) {}
+    },
+    async getExistingJobs() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/clients/${this.$route.params.id}/jobs`
+        );
+        this.existingJobs = response.data.jobs.map((job) => job.id) || [];
+        if (this.existingJobs) {
+          this.existingJobs;
+        }
+      } catch (error) {}
     },
     async getPositionMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/active_job_list`);
-        this.options = response.data.data;
+        this.options = response.data.data || [];
       } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
+        // console.error(error);
       }
     },
   },
   mounted() {
+    this.getExistingJobs();
     this.getPositionMethod();
   },
 };
