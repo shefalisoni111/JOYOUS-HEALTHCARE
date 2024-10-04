@@ -146,13 +146,13 @@
 
                   <div class="col-9">
                     <select class="form-control" v-model="selectedDay">
-                      <option v-for="day in weekDays" :key="day" :value="day">
+                      <option v-for="day in creation" :key="day" :value="day">
                         {{ day }}
                       </option>
                     </select>
                   </div>
                 </div>
-                <div class="d-flex justify-content-between my-3">
+                <!-- <div class="d-flex justify-content-between my-3">
                   <div class="col-3">
                     <div>Invoice Due Period (Days):</div>
                   </div>
@@ -162,7 +162,7 @@
                       <option value="week">Week</option>
                     </select>
                   </div>
-                </div>
+                </div> -->
               </div>
               <div class="col-9">
                 <div class="d-flex my-3" style="">
@@ -464,6 +464,7 @@ export default {
         "Saturday",
         "Sunday",
       ],
+      creation: ["Weekly", "Monthly"],
       selectedDay: "Monday",
     };
   },
