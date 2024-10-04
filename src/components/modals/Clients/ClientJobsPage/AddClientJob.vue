@@ -33,10 +33,10 @@
                 </div> -->
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label">Jobs</label>
+                    <label class="form-label" for="selectJobTitle">Jobs</label>
                   </div>
                   <div class="col-10 mt-1">
-                    <select v-model="job_id" class="form-control">
+                    <!-- <select v-model="job_id" class="form-control">
                       <option
                         v-for="option in filteredJobs"
                         :key="option.id"
@@ -44,7 +44,19 @@
                       >
                         {{ option.name }}
                       </option>
-                    </select>
+                    </select> -->
+                    <div v-for="option in options" :key="option.id">
+                      <input
+                        type="checkbox"
+                        :id="option.id"
+                        :value="option.id"
+                        v-model="option.checked"
+                        @change="toggleJobsSelection"
+                      />
+                      <label :for="option.id" class="text-capitalize"
+                        >&nbsp;{{ option.name }}</label
+                      >
+                    </div>
                     <div v-if="jobAlreadyAdded" class="text-danger">
                       This job is already added to the client.
                     </div>
@@ -77,7 +89,7 @@
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click="addJob"
-              :disabled="!job_id || jobAlreadyAdded"
+              :disabled="jobAlreadyAdded"
             >
               Add Job
             </button>
@@ -97,7 +109,10 @@ export default {
   name: "AddClientJobs",
   data() {
     return {
-      job_id: "",
+      fetchClients: {
+        job_ids: [],
+      },
+
       options: [],
       existingJobs: [],
     };
@@ -108,27 +123,54 @@ export default {
       return this.options.filter((job) => !this.existingJobs.includes(job.id));
     },
     jobAlreadyAdded() {
-      return this.existingJobs.includes(this.job_id);
+      return this.existingJobs.some((existingJobId) =>
+        this.job_ids.includes(existingJobId)
+      );
+    },
+    selectJobTitle() {
+      const job_title = this.options.find(
+        (option) => option.id === this.fetchClients.job_ids
+      );
+      return job_title ? job_title.name : "";
     },
   },
   methods: {
+    toggleJobsSelection() {
+      this.job_ids = this.options
+        .filter((option) => option.checked)
+        .map((option) => option.id);
+    },
+    async fetchClientsMethod(id) {
+      if (!id) return;
+      try {
+        const response = await axios.get(`${VITE_API_URL}/clients/${id}`);
+
+        this.fetchClients = { ...this.fetchClients, ...response.data };
+
+        this.options.forEach((option) => {
+          option.checked = this.fetchClients.job_ids.includes(option.id);
+        });
+      } catch (error) {
+        // console.error("Error fetching todo:", error);
+      }
+    },
     async addJob() {
-      if (!this.job_id || this.jobAlreadyAdded) {
+      if (!this.job_ids.length || this.jobAlreadyAdded) {
         return;
       }
       try {
         const response = await axios.put(
           `${VITE_API_URL}/clients/${this.$route.params.id}`,
-          { job_id: this.job_id }
+          { job_ids: this.job_ids }
         );
         if (response.status === 200) {
-          this.existingJobs.push(this.job_id);
-
+          this.existingJobs.push(...this.job_ids);
           this.$emit("jobClientAdded");
-          const message = "Add Client Jobs successfully";
+          const message = "Jobs added to the client successfully";
           this.$refs.successAlert.showSuccess(message);
 
-          this.job_id = "";
+          this.job_ids = [];
+          this.options.forEach((option) => (option.checked = false));
         }
       } catch (error) {
         // console.error("Error adding job:", error);
@@ -140,15 +182,18 @@ export default {
           `${VITE_API_URL}/clients/${this.$route.params.id}/jobs`
         );
         this.existingJobs = response.data.jobs.map((job) => job.id) || [];
-        if (this.existingJobs) {
-          this.existingJobs;
-        }
+        this.options.forEach((option) => {
+          option.checked = this.existingJobs.includes(option.id);
+        });
       } catch (error) {}
     },
     async getPositionMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/active_job_list`);
         this.options = response.data.data || [];
+        this.options.forEach((option) => {
+          option.checked = this.existingJobs.includes(option.id);
+        });
       } catch (error) {
         // console.error(error);
       }
@@ -157,6 +202,7 @@ export default {
   mounted() {
     this.getExistingJobs();
     this.getPositionMethod();
+    this.fetchClientsMethod(this.$route.params.id);
   },
 };
 </script>

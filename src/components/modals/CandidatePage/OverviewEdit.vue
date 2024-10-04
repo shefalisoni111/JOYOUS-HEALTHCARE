@@ -181,18 +181,16 @@ export default {
   data() {
     return {
       fetchCandidate: {
-        id: this.$route.params.id,
-        employment_type: "",
-        employment_type_id: "",
-        DBS_PVG_no: null,
-        DBS_PVG_issue_date: null,
-        DBS_PVG_expiry_date: null,
-        next_check_date: null,
-        NMC_NISCC_SSSC_pin: null,
-        nationality: null,
-        date_of_birth: null,
-        place_of_birth: null,
-        gender: null,
+        employment_type_id: null,
+        DBS_PVG_no: "",
+        DBS_PVG_issue_date: "",
+        DBS_PVG_expiry_date: "",
+        next_check_date: "",
+        NMC_NISCC_SSSC_pin: "",
+        nationality: "",
+        date_of_birth: "",
+        place_of_birth: "",
+        gender: "",
       },
       employeeData: [],
     };
@@ -209,7 +207,7 @@ export default {
   computed: {
     selectEmployeeType() {
       const employment_type = this.employeeData.find(
-        (option) => option.id === this.employment_type
+        (option) => option.id === this.fetchCandidate.employment_type_id
       );
       return employment_type ? employment_type.title : "";
     },
@@ -252,7 +250,7 @@ export default {
     async updateCandidateMethod() {
       try {
         await axios.put(
-          `${VITE_API_URL}/candidates/${this.fetchCandidate.id}`,
+          `${VITE_API_URL}/candidates/${this.$route.params.id}`,
           this.fetchCandidate
         );
         this.$emit("overviewAdded");
