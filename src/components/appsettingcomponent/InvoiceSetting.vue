@@ -36,7 +36,7 @@
               <div class="d-flex align-items-center">
                 <ol class="breadcrumb mb-1 p-3">
                   <li class="breadcrumb-item active text-uppercase fw-bold">
-                    invoice setting / <span class="clr">rate and invoice setting</span>
+                    invoice setting / <span class="clr">rate And invoice setting</span>
                   </li>
                 </ol>
               </div>
