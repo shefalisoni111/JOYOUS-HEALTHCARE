@@ -3,14 +3,14 @@
     <!-- Modal -->
     <div
       class="modal fade"
-      id="AddClientJobs"
-      aria-labelledby="AddClientJobs"
+      id="addStaffJobs"
+      aria-labelledby="addStaffJobs"
       tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="AddClientJobs">Add Client Jobs</h5>
+            <h5 class="modal-title" id="addStaffJobs">Add Jobs</h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -32,6 +32,9 @@
                         >&nbsp;{{ option.name }}</label
                       >
                     </div>
+                    <div v-if="jobAlreadyAdded" class="text-danger">
+                      This job is already added to the client.
+                    </div>
                   </div>
                 </div>
               </form>
@@ -40,10 +43,9 @@
           <div class="modal-footer">
             <button
               class="btn btn-secondary rounded-1"
-              data-bs-target="#AddClientJobs"
+              data-bs-target="#addStaffJobs"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
-              @click="resetChanges"
             >
               Cancel
             </button>
@@ -51,6 +53,7 @@
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click="addJob"
+              :disabled="jobAlreadyAdded"
             >
               Add Job
             </button>
@@ -67,10 +70,10 @@ import SuccessAlert from "../../../Alerts/SuccessAlert.vue";
 import axios from "axios";
 
 export default {
-  name: "AddClientJobs",
+  name: "addStaffJobs",
   data() {
     return {
-      fetchClients: {
+      fetchStaff: {
         job_ids: [],
       },
       job_ids: [],
@@ -79,58 +82,41 @@ export default {
     };
   },
   components: { SuccessAlert },
-  computed: {},
-  methods: {
-    resetChanges() {
-      this.options.forEach((option) => {
-        option.checked = this.fetchClients.job_ids.includes(option.id);
-      });
+  computed: {
+    filteredJobs() {
+      return this.options.filter((job) => !this.existingJobs.includes(job.id));
     },
+    jobAlreadyAdded() {
+      return this.existingJobs.some((existingJobId) =>
+        this.job_ids.includes(existingJobId)
+      );
+    },
+  },
+  methods: {
     toggleJobsSelection() {
       this.job_ids = this.options
         .filter((option) => option.checked)
         .map((option) => option.id);
     },
-    async fetchClientsMethod(id) {
+    async fetchStaffMethod(id) {
       if (!id) return;
       try {
-        const response = await axios.get(`${VITE_API_URL}/clients/${id}`);
+        const response = await axios.get(`${VITE_API_URL}/candidates/${id}`);
 
         const jobIds = response.data.job_ids || [];
-
-        this.fetchClients = { ...this.fetchClients, ...response.data };
+        this.fetchStaff = { ...this.fetchStaff, ...response.data.data };
 
         this.options.forEach((option) => {
           option.checked = jobIds.includes(option.id);
         });
 
-        this.job_ids = [...jobIds];
+        this.job_ids = jobIds;
       } catch (error) {
-        // Handle error
-      }
-    },
-    async getExistingJobs() {
-      try {
-        const response = await axios.get(
-          `${VITE_API_URL}/clients/${this.$route.params.id}/jobs`
-        );
-        this.existingJobs = response.data.jobs.map((job) => job.id) || [];
-        this.resetChanges();
-      } catch (error) {
-        // Handle error
-      }
-    },
-    async getPositionMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
-        this.options = response.data.data || [];
-        this.resetChanges();
-      } catch (error) {
-        // Handle error
+        // console.error("Error fetching todo:", error);
       }
     },
     async addJob() {
-      if (!this.job_ids.length) {
+      if (!this.job_ids.length || this.jobAlreadyAdded) {
         return;
       }
 
@@ -138,28 +124,50 @@ export default {
         const updatedJobIds = [...new Set([...this.existingJobs, ...this.job_ids])];
 
         const response = await axios.put(
-          `${VITE_API_URL}/clients/${this.$route.params.id}`,
+          `${VITE_API_URL}/candidates/${this.$route.params.id}`,
           { job_ids: updatedJobIds }
         );
 
         if (response.status === 200) {
           this.existingJobs = updatedJobIds;
-          this.$emit("jobClientAdded");
-          const message = "Jobs added to the client successfully";
+          this.$emit("jobStaffAdded");
+          const message = "Jobs added to the Staff successfully";
           this.$refs.successAlert.showSuccess(message);
 
           this.job_ids = [];
-          this.resetChanges();
-          this.fetchClientsMethod(this.$route.params.id);
+          this.options.forEach((option) => (option.checked = false));
         }
       } catch (error) {
-        // Handle error
+        // console.error("Error adding job:", error);
+      }
+    },
+    async getExistingJobs() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/jobs`
+        );
+        this.existingJobs = response.data.jobs.map((job) => job.id) || [];
+        this.options.forEach((option) => {
+          option.checked = this.existingJobs.includes(option.id);
+        });
+      } catch (error) {}
+    },
+    async getPositionMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+        this.options = response.data.data || [];
+        this.options.forEach((option) => {
+          option.checked = this.existingJobs.includes(option.id);
+        });
+      } catch (error) {
+        // console.error(error);
       }
     },
   },
   mounted() {
+    // this.getExistingJobs();
     this.getPositionMethod();
-    this.fetchClientsMethod(this.$route.params.id);
+    this.fetchStaffMethod(this.$route.params.id);
   },
 };
 </script>

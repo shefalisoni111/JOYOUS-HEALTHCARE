@@ -167,7 +167,7 @@
               <div class="col-9">
                 <div class="d-flex my-3" style="">
                   <div>Invoice Table Head (Staff/Description):</div>
-                  <div class="w-100">
+                  <div class="w-75">
                     <input class="form-control w-100" />
                   </div>
                 </div>
@@ -214,11 +214,17 @@
                   </div>
 
                   <div class="col-9">
-                    <select class="form-control" v-model="selectedDay">
+                    <input
+                      type="text"
+                      class="form-control ps-2"
+                      aria-label="Specify invoice number formal"
+                      aria-describedby="basic-addon2"
+                    />
+                    <!-- <select class="form-control" v-model="selectedDay">
                       <option v-for="day in weekDays" :key="day" :value="day">
                         {{ day }}
                       </option>
-                    </select>
+                    </select> -->
                   </div>
                 </div>
                 <div class="d-flex my-3" style="gap: 8%">
@@ -277,7 +283,12 @@
                   <div>Reference Code:</div>
                   <div>
                     <label class="switch">
-                      <input type="checkbox" id="togBtn" />
+                      <input
+                        type="checkbox"
+                        id="togBtn"
+                        v-model="reference_code"
+                        @change="reference_codeToggle"
+                      />
                       <div class="slider round"></div>
                     </label>
                   </div>
@@ -327,7 +338,12 @@
                   <div>Enable Vat Number:</div>
                   <div>
                     <label class="switch">
-                      <input type="checkbox" id="togBtn" />
+                      <input
+                        type="checkbox"
+                        id="togBtn"
+                        v-model="vat"
+                        @change="vatToggle"
+                      />
                       <div class="slider round"></div>
                     </label>
                   </div>
@@ -396,7 +412,12 @@
                   <div>Enable Break Time:</div>
                   <div>
                     <label class="switch">
-                      <input type="checkbox" id="togBtn" />
+                      <input
+                        type="checkbox"
+                        id="togBtn"
+                        v-model="break_time"
+                        @change="breakToggle"
+                      />
                       <div class="slider round"></div>
                     </label>
                   </div>
@@ -452,6 +473,9 @@ export default {
       split_rate: localStorage.getItem("split_rate") === "true",
       isHashEnabled: localStorage.getItem("isHashEnabled") === "true",
       booking: localStorage.getItem("booking") === "true",
+      break_time: localStorage.getItem("break_time") === "true",
+      reference_code: localStorage.getItem("reference_code") === "true",
+      vat: localStorage.getItem("vat") === "true",
       isBUNumber: localStorage.getItem("isBUNumber") === "true",
       isRatePerMileClient: localStorage.getItem("isRatePerMileClient") === "true",
       isRatePerMileStaff: localStorage.getItem("isRatePerMileStaff") === "true",
@@ -518,22 +542,21 @@ export default {
     },
     async handleBusinessUnitName() {
       try {
-        const response = await axios.put(
-          `${VITE_API_URL}/add_hash_and_site_to_invoice_number`,
-          {
-            booking: this.isBUNumber ? "true" : "false",
-          }
-        );
-
-        localStorage.setItem("booking", this.isBUNumber.toString());
-
+        if (this.isBUNumber) {
+          await axios.put(`${VITE_API_URL}/add_site_to_invoice_number`, { enable: true });
+        } else {
+          await axios.put(`${VITE_API_URL}/remove_site_name_to_invoice_number`, {
+            enable: false,
+          });
+        }
+        localStorage.setItem("isBUNumber", this.isBUNumber.toString());
         this.$refs.successAlert.showSuccess(
-          this.booking
-            ? "Booking code enabled successfully!"
-            : "Booking code disabled successfully!"
+          this.isBUNumber
+            ? "Site Name Add successfully!"
+            : "Site Name Remove successfully!"
         );
       } catch (error) {
-        // console.error('Error toggling booking code:', error);
+        // console.error('Error toggling hash:', error);
       }
     },
     async bookingToggle() {
@@ -554,6 +577,61 @@ export default {
         );
       } catch (error) {
         // console.error('Error toggling booking code:', error);
+      }
+    },
+    async breakToggle() {
+      try {
+        const response = await axios.put(
+          `${VITE_API_URL}/enable_and_disable_break_time`,
+          {
+            break_time: this.break_time ? "true" : "false",
+          }
+        );
+
+        localStorage.setItem("break_time", this.break_time.toString());
+
+        this.$refs.successAlert.showSuccess(
+          this.break_time
+            ? "Break Time code enabled successfully!"
+            : "Break Time code disabled successfully!"
+        );
+      } catch (error) {
+        // console.error('Error toggling booking code:', error);
+      }
+    },
+    async reference_codeToggle() {
+      try {
+        const response = await axios.put(
+          `${VITE_API_URL}/enable_and_disable_reference_code`,
+          {
+            reference_code: this.reference_code ? "true" : "false",
+          }
+        );
+
+        localStorage.setItem("reference_code", this.reference_code.toString());
+
+        this.$refs.successAlert.showSuccess(
+          this.reference_code
+            ? "Reference code enabled successfully!"
+            : "Reference code disabled successfully!"
+        );
+      } catch (error) {
+        // console.error('Error toggling vat code:', error);
+      }
+    },
+    async vatToggle() {
+      try {
+        const response = await axios.put(`${VITE_API_URL}/enable_and_disable_vat`, {
+          vat: this.vat ? "true" : "false",
+        });
+
+        localStorage.setItem("vat", this.vat.toString());
+
+        this.$refs.successAlert.showSuccess(
+          this.vat ? "Vat code enabled successfully!" : "Vat code disabled successfully!"
+        );
+      } catch (error) {
+        // console.error('Error toggling vat code:', error);
       }
     },
     async updateSplitRate() {

@@ -33,7 +33,7 @@
                 </button>
               </div>
             </div>
-            {{ console.log(getCandidatesDataInOverview) }}
+
             <div class="card-body">
               <table class="table table-borderless">
                 <thead>
@@ -182,11 +182,23 @@
             </div>
             <div class="card-body">
               <div class="d-flex gap-2">
-                <button type="button" class="btn btn-primary btn-sm">
+                <!-- <button type="button" class="btn btn-primary btn-sm">
                   Assistance Number
                 </button>
-                <button type="button" class="btn btn-primary btn-sm">HCA</button>
-                <button type="button" class="btn btn-primary btn-sm">+ Add</button>
+                <button type="button" class="btn btn-primary btn-sm">HCA</button> -->
+                <div class="gap-2 d-flex" v-for="jobId in getJobs" :key="jobId">
+                  <span class="btn btn-primary">{{ getJobName(jobId) }}</span>
+                  <!-- <span class="btn btn-primary">{{ jobId }}</span> -->
+                </div>
+                <button
+                  type="button"
+                  class="btn btn-outline-success text-nowrap"
+                  data-bs-toggle="modal"
+                  data-bs-target="#addStaffJobs"
+                  data-bs-whatever="@mdo"
+                >
+                  + Add
+                </button>
               </div>
             </div>
           </div>
@@ -444,6 +456,7 @@
       @nextToKinAdded="getCandidateNextToKineMethod"
       :nextKinID="selectedNextKinId"
     />
+    <AddStaffJobs @jobStaffAdded="getCandidateMethod" />
     <!-- <EditBankDetails @bankDetailAdded="getCandidateMethod" /> -->
     <OverviewEdit @overviewAdded="getCandidateMethod" ref="overviewEdit" />
     <!-- <ProfileTabs @getBankDetail="getCandidateMethod" /> -->
@@ -459,6 +472,7 @@ import AddNextKin from "../../modals/CandidatePage/OverView/AddNextKin.vue";
 import OverviewEdit from "../../modals/CandidatePage/OverviewEdit.vue";
 import NextToKinEdit from "../../modals/CandidatePage/OverView/NextToKinEdit.vue";
 import EditBankDetails from "../../modals/CandidatePage/OverView/EditBankDetails.vue";
+import AddStaffJobs from "../../modals/CandidatePage/OverView/AddStaffJobs.vue";
 
 export default {
   name: "Overview",
@@ -482,8 +496,10 @@ export default {
         activated: "",
         employment_type_id: "",
       },
+      getJobs: [],
       bankDetailChecked: false,
       selectedNextKinId: null,
+      options: [],
     };
   },
   components: {
@@ -494,8 +510,19 @@ export default {
     NextToKinEdit,
     EditBankDetails,
     ProfileTabs,
+    AddStaffJobs,
   },
   methods: {
+    getJobName(jobId) {
+      const job = this.options.find((job) => job.id === jobId);
+      return job ? job.name : "";
+    },
+    async getJobData() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+        this.options = response.data.data || [];
+      } catch (error) {}
+    },
     handleOverViewEdit() {
       this.$refs.overviewEdit.getEmployeeTypeData();
     },
@@ -529,6 +556,7 @@ export default {
         );
 
         this.getCandidatesDataInOverview = response.data.candidate;
+        this.getJobs = response.data.candidate.job_ids || [];
         this.bankDetailChecked = this.getCandidatesDataInOverview.bank_detail;
         if (this.getCandidatesDataInOverview && this.getCandidatesDataInOverview.id) {
           const candidateId = this.getCandidatesDataInOverview?.id;
@@ -629,6 +657,7 @@ export default {
     this.getCandidateWorkExperienceMethod();
     this.getCandidateEducationMethod();
     this.getCandidateNextToKineMethod();
+    this.getJobData();
   },
   // async mounted() {
   //   // try {

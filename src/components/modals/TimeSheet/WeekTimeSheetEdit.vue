@@ -21,11 +21,29 @@
                   <div class="col-6">
                     <div class="mb-3">
                       <label class="form-label">Assign To</label>
-                      <input
+                      <!-- <input
                         type="text"
                         class="form-control text-capitalize"
-                        v-model="fetchCustomTimeShetData.name"
+                        v-model="
+                          fetchCustomTimeShetData.name
+                            ? fetchCustomTimeShetData.candidate_name
+                            : ''
+                        "
                         aria-describedby="name"
+                        readonly
+                      /> -->
+                      <input
+                        v-if="fetchCustomTimeShetData.candidate_name"
+                        class="form-control text-capitalize"
+                        v-model="fetchCustomTimeShetData.candidate_name"
+                        type="text"
+                        readonly
+                      />
+                      <input
+                        v-else
+                        class="form-control text-capitalize"
+                        v-model="fetchCustomTimeShetData.name"
+                        type="text"
                         readonly
                       />
                     </div>
@@ -54,12 +72,26 @@
                     <div class="mb-3">
                       <label class="form-label">Date</label>
                       <input
+                        v-if="fetchCustomTimeShetData.shift_date"
+                        class="form-control text-capitalize"
+                        v-model="fetchCustomTimeShetData.shift_date"
+                        type="text"
+                        readonly
+                      />
+                      <input
+                        v-else
+                        class="form-control text-capitalize"
+                        v-model="fetchCustomTimeShetData.date"
+                        type="text"
+                        readonly
+                      />
+                      <!-- <input
                         type="text"
                         class="form-control"
                         v-model="fetchCustomTimeShetData.shift_date"
                         aria-describedby="date"
                         readonly
-                      />
+                      /> -->
                     </div>
                   </div>
                   <div class="col-12">
@@ -318,6 +350,8 @@ export default {
       fetchCustomTimeShetData: {
         id: "",
         name: "",
+        candidate_name: "",
+        date: "",
         shift_date: "",
         candidate_name: "",
         total_hours: "",
@@ -400,7 +434,7 @@ export default {
         if (error.response && error.response.status === 404) {
           try {
             const fallbackResponse = await axios.get(
-              `{{local-server}}/sign_timesheets/${this.vacancyId}`
+              `${VITE_API_URL}/sign_timesheets/${this.vacancyId}`
             );
             this.fetchCustomTimeShetData = {
               ...this.fetchCustomTimeShetData,
@@ -438,27 +472,25 @@ export default {
         const message = "TimeSheet updated successfully";
         this.$refs.successAlert.showSuccess(message);
       } catch (error) {
-        if (error.response && error.response.status === 404) {
-          try {
-            const fallbackResponse = await axios.put(
-              `${DEV}/update_sign_timesheet/${this.fetchCustomTimeShetData.id}`,
-              this.fetchCustomTimeShetData
-            );
-
-            this.$store.commit("updateCandidate", {
-              id: this.fetchCustomTimeShetData.id,
-              newData: fallbackResponse.data.custom_sheets,
-            });
-            this.$emit("CustomTimeSheetData-updated");
-
-            const message = "TimeSheet updated successfully via fallback";
-            this.$refs.successAlert.showSuccess(message);
-          } catch (fallbackError) {
-            // console.error("Error updating candidate via fallback API:", fallbackError);
-          }
-        } else {
-          // console.error("Error updating candidate:", error);
-        }
+        // if (error.response && error.response.status === 404) {
+        //   try {
+        //     const fallbackResponse = await axios.put(
+        //       `${DEV}/update_sign_timesheet/${this.fetchCustomTimeShetData.id}`,
+        //       this.fetchCustomTimeShetData
+        //     );
+        //     this.$store.commit("updateCandidate", {
+        //       id: this.fetchCustomTimeShetData.id,
+        //       newData: fallbackResponse.data.custom_sheets,
+        //     });
+        //     this.$emit("CustomTimeSheetData-updated");
+        //     const message = "TimeSheet updated successfully via fallback";
+        //     this.$refs.successAlert.showSuccess(message);
+        //   } catch (fallbackError) {
+        //     // console.error("Error updating candidate via fallback API:", fallbackError);
+        //   }
+        // } else {
+        //   // console.error("Error updating candidate:", error);
+        // }
       }
     },
   },
