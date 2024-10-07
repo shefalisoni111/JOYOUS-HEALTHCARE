@@ -33,6 +33,7 @@
                 </button>
               </div>
             </div>
+            {{ console.log(getCandidatesDataInOverview) }}
             <div class="card-body">
               <table class="table table-borderless">
                 <thead>
@@ -47,7 +48,7 @@
                   <tr>
                     <td>Employment Type</td>
                     <td>:</td>
-                    <td>{{ getCandidatesDataInOverview.employment_type }}</td>
+                    <td>{{ getCandidatesDataInOverview.employ_type }}</td>
                   </tr>
 
                   <tr>

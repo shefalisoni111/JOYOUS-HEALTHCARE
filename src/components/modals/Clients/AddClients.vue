@@ -38,7 +38,7 @@
                         type="checkbox"
                         :id="`option_${option.id}_${index}`"
                         :value="option.id"
-                        v-model="job_id"
+                        v-model="job_ids"
                         @change="toggleJobsSelection"
                       />
                       <label :for="`option_${option.id}_${index}`" class="text-capitalize"
@@ -208,7 +208,7 @@ export default {
       confirm_password: "",
       isValidForm: false,
       error: [],
-      job_id: [],
+      job_ids: [],
       options: [],
       errors: {},
       autofilled: false,
@@ -231,7 +231,7 @@ export default {
         this.first_name &&
         this.address &&
         this.email &&
-        this.job_id &&
+        this.job_ids &&
         this.password &&
         this.confirm_password &&
         this.phone_number &&
@@ -291,7 +291,7 @@ export default {
     clearFields() {
       this.first_name = "";
       this.address = "";
-      this.job_id = [];
+      this.job_ids = [];
       this.phone_number = "";
       this.email = "";
       this.password = "";
@@ -331,7 +331,7 @@ export default {
       this.clearError();
     },
     toggleJobsSelection() {
-      this.isJobsSelected = this.job_id.length > 0;
+      this.isJobsSelected = this.job_ids.length > 0;
       this.clearError();
     },
     async addClients() {
@@ -353,7 +353,7 @@ export default {
       ) {
         const data = {
           first_name: this.first_name,
-          job_id: this.job_id,
+          job_ids: this.job_ids,
           address: this.address,
           phone_number: this.phone_number,
           email: this.email,
@@ -373,7 +373,7 @@ export default {
             // location.reload();
             this.$emit("client-updated");
             this.first_name = "";
-            this.job_id = [];
+            this.job_ids = [];
             this.address = "";
             this.phone_number = "";
             this.email = "";

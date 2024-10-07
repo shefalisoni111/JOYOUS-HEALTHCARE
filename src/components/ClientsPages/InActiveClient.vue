@@ -41,7 +41,7 @@
               >
                 {{ getJobName(job) }}
 
-                <template v-if="index !== client.job_id.length - 1"> </template>
+                <template v-if="index !== client.job_ids.length - 1"> </template>
               </span>
             </td>
             <td v-text="client.address"></td>

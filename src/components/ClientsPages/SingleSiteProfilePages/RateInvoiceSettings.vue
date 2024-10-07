@@ -72,13 +72,13 @@
             <div>Invoice creation period:</div>
             <div style="width: 50%">
               <select class="form-control" v-model="selectedDay">
-                <option v-for="day in weekDays" :key="day" :value="day">
+                <option v-for="day in creation" :key="day" :value="day">
                   {{ day }}
                 </option>
               </select>
             </div>
           </div>
-          <div class="d-flex my-3" style="gap: 22%">
+          <!-- <div class="d-flex my-3" style="gap: 22%">
             <div>Invoice Due Period:</div>
             <div style="width: 50%">
               <select
@@ -88,7 +88,7 @@
                 @change="updateDuePeriod"
               ></select>
             </div>
-          </div>
+          </div> -->
           <div class="d-flex my-3" style="gap: 20%">
             <div>Invoice Number format:</div>
             <div class="input-group mb-3" style="width: 50%">
@@ -249,6 +249,7 @@ export default {
         "Sunday",
       ],
       selectedDay: "Monday",
+      creation: ["Weekly", "Monthly"],
       duePeriod: Number(localStorage.getItem("duePeriod")) || 0,
       duePeriodDays: Array.from({ length: 30 }, (_, i) => i + 1),
     };
@@ -262,7 +263,7 @@ export default {
     this.loadInitialSplitRate();
   },
   mounted() {
-    this.populateInvoiceDuePeriod();
+    // this.populateInvoiceDuePeriod();
   },
   methods: {
     async ratePerMileClientInvoice() {

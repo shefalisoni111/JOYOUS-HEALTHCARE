@@ -67,9 +67,9 @@
       >
         <div class="row">
           <div class="text-danger d-flex justify-content-end">
-            <a href="#" class="text-danger">
-              <i class="bi bi-file-earmark-pdf fs-2 fw-bold"></i
-            ></a>
+            <a href="#" class="text-danger" @click.prevent="downloadPDF">
+              <i class="bi bi-file-earmark-pdf fs-2 fw-bold"></i>
+            </a>
           </div>
         </div>
         <div class="row">
@@ -128,49 +128,49 @@
                   <tr>
                     <td>DOB</td>
                     <td>:</td>
-                    <td>...</td>
+                    <td>{{ getCandidatesDataInProfileTab.date_of_birth }}</td>
                   </tr>
                   <tr>
                     <td>Enhanced DBS Number</td>
                     <td>:</td>
-                    <td>...</td>
+                    <td>{{ getCandidatesDataInProfileTab.date_of_birth }}</td>
                   </tr>
                   <tr>
                     <td>Enhanced DBS Issues</td>
                     <td>:</td>
-                    <td>...</td>
+                    <td>{{ getCandidatesDataInProfileTab.DBS_PVG_issue_date }}</td>
                   </tr>
                   <tr>
                     <td>Deby</td>
                     <td>:</td>
-                    <td>...</td>
+                    <td>{{ getCandidatesDataInProfileTab.date_of_birth }}</td>
                   </tr>
                   <tr>
                     <td>ID</td>
                     <td>:</td>
-                    <td>...</td>
+                    <td>{{ getCandidatesDataInProfileTab.id }}</td>
                   </tr>
                   <tr>
                     <td>Address Prof</td>
                     <td>:</td>
-                    <td>...</td>
+                    <td>{{ getCandidatesDataInProfileTab.address_prof }}</td>
                   </tr>
 
                   <tr>
                     <td>Photo ID</td>
                     <td>:</td>
-                    <td>...</td>
+                    <td>{{ getCandidatesDataInProfileTab.date_of_birth }}</td>
                   </tr>
-                  <tr>
+                  <!-- <tr>
                     <td>Nurse</td>
                     <td>:</td>
-                    <td>...</td>
-                  </tr>
+                    <td>{{ getCandidatesDataInProfileTab.date_of_birth }}</td>
+                  </tr> -->
 
                   <tr>
                     <td>refer</td>
                     <td>:</td>
-                    <td>...</td>
+                    <td>{{ getCandidatesDataInProfileTab.refer }}</td>
                   </tr>
                 </tbody>
                 <tbody
@@ -430,6 +430,7 @@
 
 <script>
 import axios from "axios";
+import html2pdf from "html2pdf.js";
 
 export default {
   name: "ProfileTabs",
@@ -448,6 +449,18 @@ export default {
     },
   },
   methods: {
+    downloadPDF() {
+      const element = this.$refs.pdfContent; // Get the content to be converted to PDF
+      const options = {
+        margin: 1,
+        filename: "candidate-profile.pdf",
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+      };
+
+      html2pdf().from(element).set(options).save(); // Initiates the download
+    },
     async getCandidateProfileTabMethod() {
       try {
         const response = await axios.get(

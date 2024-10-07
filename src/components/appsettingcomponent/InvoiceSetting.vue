@@ -36,7 +36,7 @@
               <div class="d-flex align-items-center">
                 <ol class="breadcrumb mb-1 p-3">
                   <li class="breadcrumb-item active text-uppercase fw-bold">
-                    invoice setting / <span class="clr">rate / invoice setting</span>
+                    invoice setting / <span class="clr">rate And invoice setting</span>
                   </li>
                 </ol>
               </div>
@@ -146,13 +146,13 @@
 
                   <div class="col-9">
                     <select class="form-control" v-model="selectedDay">
-                      <option v-for="day in weekDays" :key="day" :value="day">
+                      <option v-for="day in creation" :key="day" :value="day">
                         {{ day }}
                       </option>
                     </select>
                   </div>
                 </div>
-                <div class="d-flex justify-content-between my-3">
+                <!-- <div class="d-flex justify-content-between my-3">
                   <div class="col-3">
                     <div>Invoice Due Period (Days):</div>
                   </div>
@@ -162,7 +162,7 @@
                       <option value="week">Week</option>
                     </select>
                   </div>
-                </div>
+                </div> -->
               </div>
               <div class="col-9">
                 <div class="d-flex my-3" style="">
@@ -464,6 +464,7 @@ export default {
         "Saturday",
         "Sunday",
       ],
+      creation: ["Weekly", "Monthly"],
       selectedDay: "Monday",
     };
   },
