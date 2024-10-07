@@ -53,7 +53,7 @@
             </div>
           </div>
           <div class="d-flex justify-content-between my-3">
-            <div>Rate per mile in Staff invoice:</div>
+            <div>Rate per mile in staff invoice:</div>
             <div>
               <label class="switch">
                 <input

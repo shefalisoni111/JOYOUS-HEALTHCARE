@@ -66,7 +66,7 @@
                   <div class="d-flex my-3">
                     <div class="card p-2 alert alert-warning">
                       <b>Warning!</b> Changes you made on split rate, will affect the
-                      entire business unit accordingly.
+                      entire site accordingly.
                     </div>
                   </div>
                 </div>
@@ -166,7 +166,7 @@
               </div>
               <div class="col-9">
                 <div class="d-flex my-3" style="">
-                  <div>Invoice Table Head (Candidate/Description):</div>
+                  <div>Invoice Table Head (Staff/Description):</div>
                   <div class="w-100">
                     <input class="form-control w-100" />
                   </div>
@@ -186,7 +186,7 @@
                   </div>
                 </div>
                 <div class="d-flex my-3" style="gap: 25.8%">
-                  <div>Enable Business unit name in the invoice number:</div>
+                  <div>Enable Site name in the invoice number:</div>
                   <div>
                     <label class="switch">
                       <input
@@ -199,15 +199,15 @@
                     </label>
                   </div>
                 </div>
-                <div class="d-flex my-3" style="gap: 26%">
-                  <div>Enable Business unit name in the invoice number:</div>
+                <!-- <div class="d-flex my-3" style="gap: 26%">
+                  <div>Enable Site name in the invoice number:</div>
                   <div>
                     <label class="switch">
                       <input type="checkbox" id="togBtn" />
                       <div class="slider round"></div>
                     </label>
                   </div>
-                </div>
+                </div> -->
                 <div class="d-flex my-3" style="gap: 0.3%">
                   <div class="col-3">
                     <div>PDF Name Format (which should be shown first?):</div>
@@ -302,12 +302,12 @@
                   <div class="d-flex my-3">
                     <div class="card p-2 alert alert-warning">
                       <b>Warning!</b> Changes you made on Client Invoice NI Number, will
-                      affect the entire business unit accordingly.
+                      affect the entire site accordingly.
                     </div>
                   </div>
                 </div>
                 <div class="d-flex my-3" style="gap: 38.4%">
-                  <div>Enable NI Number in Candidate Invoice:</div>
+                  <div>Enable NI Number in Staff Invoice:</div>
                   <div>
                     <label class="switch">
                       <input type="checkbox" id="togBtn" />
@@ -318,8 +318,8 @@
                 <div class="col-12">
                   <div class="d-flex my-3">
                     <div class="card p-2 alert alert-warning">
-                      <b>Warning!</b> Changes you made on Candidate Invoice NI Number,
-                      will affect the entire candidate invoice accordingly.
+                      <b>Warning!</b> Changes you made on staff Invoice NI Number, will
+                      affect the entire staff invoice accordingly.
                     </div>
                   </div>
                 </div>
@@ -336,7 +336,7 @@
                   <div class="d-flex my-3">
                     <div class="card p-2 alert alert-warning">
                       <b>Warning:</b> Changes you made on enable vat number, will affect
-                      the eptire business unit accordingly.
+                      the entire site accordingly.
                     </div>
                   </div>
                 </div>
@@ -366,7 +366,7 @@
                   <div class="d-flex my-3">
                     <div class="card p-2 alert alert-warning">
                       <b>Warning!</b> Changes you made on enable Exclude VAT on mileage or
-                      new row, will affect the entire business unit accordingly.
+                      new row, will affect the entire site accordingly.
                     </div>
                   </div>
                 </div>
@@ -405,7 +405,7 @@
                   <div class="d-flex my-3">
                     <div class="card p-2 alert alert-warning">
                       <b>Warning!</b> Changes you made on enable Exclude VAT on mileage or
-                      new row, will affect the entire business unit accordingly.
+                      new row, will affect the entire site accordingly.
                     </div>
                   </div>
                 </div>
