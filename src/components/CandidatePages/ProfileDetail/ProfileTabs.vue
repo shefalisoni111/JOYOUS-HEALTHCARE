@@ -430,7 +430,6 @@
 
 <script>
 import axios from "axios";
-import html2pdf from "html2pdf.js";
 
 export default {
   name: "ProfileTabs",
@@ -449,18 +448,6 @@ export default {
     },
   },
   methods: {
-    downloadPDF() {
-      const element = this.$refs.pdfContent; // Get the content to be converted to PDF
-      const options = {
-        margin: 1,
-        filename: "candidate-profile.pdf",
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
-      };
-
-      html2pdf().from(element).set(options).save(); // Initiates the download
-    },
     async getCandidateProfileTabMethod() {
       try {
         const response = await axios.get(
