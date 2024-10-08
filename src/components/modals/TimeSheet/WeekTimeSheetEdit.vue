@@ -332,6 +332,12 @@
             >
               Save
             </button>
+            <button
+              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              data-bs-dismiss="modal"
+            >
+              Approve & Save
+            </button>
           </div>
         </div>
       </div>
