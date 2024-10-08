@@ -55,8 +55,7 @@
                       <input
                         type="checkbox"
                         id="togBtn"
-                        v-model="split_rate"
-                        @change="updateSplitRate"
+                        v-model="fetchInvoiceSetting.split_rate"
                       />
                       <div class="slider round"></div>
                     </label>
@@ -72,7 +71,16 @@
                 </div>
               </div>
               <div class="col-12">
-                <h6 class="fw-bold">INVOICE SETTINGS DETAILS</h6>
+                <div class="d-flex justify-content-between align-content-center">
+                  <h6 class="fw-bold">INVOICE SETTINGS DETAILS</h6>
+                  <button
+                    class="btn btn-primary me-3"
+                    @click.prevent="updateInvoiceMethod()"
+                  >
+                    <i class="bi bi-save2-fill"></i> Save
+                  </button>
+                </div>
+
                 <div class="col-6">
                   <div class="d-flex justify-content-between my-3">
                     <div>Rate per mile in client invoice:</div>
@@ -81,8 +89,7 @@
                         <input
                           type="checkbox"
                           id="togBtn"
-                          @change="ratePerMileClientInvoice"
-                          v-model="isRatePerMileClient"
+                          v-model="fetchInvoiceSetting.rate_per_mile_in_client"
                         />
                         <div class="slider round"></div>
                       </label>
@@ -97,8 +104,7 @@
                     <input
                       type="checkbox"
                       id="togBtn"
-                      @change="ratePerMileStaffInvoice"
-                      v-model="isRatePerMileStaff"
+                      v-model="fetchInvoiceSetting.rate_per_mile_in_staff"
                     />
                     <div class="slider round"></div>
                   </label>
@@ -119,16 +125,6 @@
               </div>
               <div class="col-9">
                 <div class="d-flex my-3">
-                  <svg
-                    class="bi flex-shrink-0 me-2"
-                    width="24"
-                    height="24"
-                    role="img"
-                    aria-label="Info:"
-                  >
-                    <use xlink:href="#info-fill" />
-                  </svg>
-
                   <div class="card p-2 alert alert-primary">
                     If the cutoff day is chosen, each invoice created prior to the cutoff
                     day will be placed in the previous/corresponding week, depending on
@@ -145,30 +141,29 @@
                   </div>
 
                   <div class="col-9">
-                    <select class="form-control" v-model="selectedDay">
+                    <select
+                      class="form-control"
+                      v-model="fetchInvoiceSetting.invoice_creation_period"
+                    >
                       <option v-for="day in creation" :key="day" :value="day">
                         {{ day }}
                       </option>
                     </select>
                   </div>
                 </div>
-                <!-- <div class="d-flex justify-content-between my-3">
-                  <div class="col-3">
-                    <div>Invoice Due Period (Days):</div>
-                  </div>
-
-                  <div class="col-9">
-                    <select class="form-control">
-                      <option value="week">Week</option>
-                    </select>
-                  </div>
-                </div> -->
               </div>
               <div class="col-9">
                 <div class="d-flex my-3" style="">
                   <div>Invoice Table Head (Staff/Description):</div>
                   <div class="w-75">
-                    <input class="form-control w-100" />
+                    <input
+                      class="form-control w-100"
+                      v-model="fetchInvoiceSetting.staff_invoice_table_head"
+                      @input="validateInvoiceTableHead"
+                    />
+                    <div v-if="invoiceTableHeadError" class="text-danger">
+                      {{ invoiceTableHeadError }}
+                    </div>
                   </div>
                 </div>
                 <div class="d-flex my-3" style="gap: 56.3%">
@@ -178,8 +173,7 @@
                       <input
                         type="checkbox"
                         id="togBtn"
-                        @change="handleToggle"
-                        v-model="isHashEnabled"
+                        v-model="fetchInvoiceSetting.invoice_hash"
                       />
                       <div class="slider round"></div>
                     </label>
@@ -192,22 +186,13 @@
                       <input
                         type="checkbox"
                         id="togBtn"
-                        @change="handleBusinessUnitName"
-                        v-model="isBUNumber"
+                        v-model="fetchInvoiceSetting.enable_site_name_in_invoice"
                       />
                       <div class="slider round"></div>
                     </label>
                   </div>
                 </div>
-                <!-- <div class="d-flex my-3" style="gap: 26%">
-                  <div>Enable Site name in the invoice number:</div>
-                  <div>
-                    <label class="switch">
-                      <input type="checkbox" id="togBtn" />
-                      <div class="slider round"></div>
-                    </label>
-                  </div>
-                </div> -->
+
                 <div class="d-flex my-3" style="gap: 0.3%">
                   <div class="col-3">
                     <div>PDF Name Format (which should be shown first?):</div>
@@ -219,12 +204,12 @@
                       class="form-control ps-2"
                       aria-label="Specify invoice number formal"
                       aria-describedby="basic-addon2"
+                      v-model="fetchInvoiceSetting.pdf_name_format"
+                      @input="validatePDFNameFormat"
                     />
-                    <!-- <select class="form-control" v-model="selectedDay">
-                      <option v-for="day in weekDays" :key="day" :value="day">
-                        {{ day }}
-                      </option>
-                    </select> -->
+                    <div v-if="pdfNameFormatError" class="text-danger">
+                      {{ pdfNameFormatError }}
+                    </div>
                   </div>
                 </div>
                 <div class="d-flex my-3" style="gap: 8%">
@@ -236,6 +221,8 @@
                       placeholder="INV-"
                       aria-label="Specify invoice number formal"
                       aria-describedby="basic-addon2"
+                      v-model="fetchInvoiceSetting.invoice_number_format"
+                      @input="updateInvoiceNumberFormat"
                     />
                     <span class="input-group-text" id="basic-addon2">1234</span>
                   </div>
@@ -243,7 +230,11 @@
                 <div class="d-flex my-3" style="gap: 13.55%">
                   <div>Invoice Start number:</div>
                   <div class="w-100">
-                    <input class="form-control" />
+                    <input
+                      class="form-control"
+                      v-model="fetchInvoiceSetting.invoice_start_number"
+                      @input="updateInvoiceStartNumber"
+                    />
                   </div>
                 </div>
               </div>
@@ -286,8 +277,7 @@
                       <input
                         type="checkbox"
                         id="togBtn"
-                        v-model="reference_code"
-                        @change="reference_codeToggle"
+                        v-model="fetchInvoiceSetting.reference_code"
                       />
                       <div class="slider round"></div>
                     </label>
@@ -304,7 +294,11 @@
                   <div>Enable NI Number in Client Invoice:</div>
                   <div>
                     <label class="switch">
-                      <input type="checkbox" id="togBtn" />
+                      <input
+                        type="checkbox"
+                        id="togBtn"
+                        v-model="fetchInvoiceSetting.NI_number_for_client"
+                      />
                       <div class="slider round"></div>
                     </label>
                   </div>
@@ -321,7 +315,11 @@
                   <div>Enable NI Number in Staff Invoice:</div>
                   <div>
                     <label class="switch">
-                      <input type="checkbox" id="togBtn" />
+                      <input
+                        type="checkbox"
+                        id="togBtn"
+                        v-model="fetchInvoiceSetting.NI_number_for_staff"
+                      />
                       <div class="slider round"></div>
                     </label>
                   </div>
@@ -341,8 +339,7 @@
                       <input
                         type="checkbox"
                         id="togBtn"
-                        v-model="vat"
-                        @change="vatToggle"
+                        v-model="fetchInvoiceSetting.vat_number"
                       />
                       <div class="slider round"></div>
                     </label>
@@ -393,8 +390,7 @@
                       <input
                         type="checkbox"
                         id="togBtn"
-                        v-model="booking"
-                        @change="bookingToggle"
+                        v-model="fetchInvoiceSetting.enable_booking_code"
                       />
                       <div class="slider round"></div>
                     </label>
@@ -415,8 +411,7 @@
                       <input
                         type="checkbox"
                         id="togBtn"
-                        v-model="break_time"
-                        @change="breakToggle"
+                        v-model="fetchInvoiceSetting.break_time"
                       />
                       <div class="slider round"></div>
                     </label>
@@ -435,7 +430,9 @@
                 <div class="d-flex my-3" style="gap: 10%">
                   <div>Client Invoice Footer Note:</div>
                   <div>
-                    <TextFormator />
+                    <TextFormator
+                      v-model="fetchInvoiceSetting.client_invoice_footer_note"
+                    />
                   </div>
                 </div>
               </div>
@@ -443,7 +440,9 @@
                 <div class="d-flex my-3" style="gap: 10%">
                   <div>Staff Invoice Footer Note:</div>
                   <div>
-                    <TextFormator />
+                    <TextFormator
+                      v-model="fetchInvoiceSetting.staff_invoice_footer_note"
+                    />
                   </div>
                 </div>
               </div>
@@ -470,15 +469,6 @@ import StaffInvoiceTemplates from "../modals/appsetting/InvoiceSetting/StaffInvo
 export default {
   data() {
     return {
-      split_rate: localStorage.getItem("split_rate") === "true",
-      isHashEnabled: localStorage.getItem("isHashEnabled") === "true",
-      booking: localStorage.getItem("booking") === "true",
-      break_time: localStorage.getItem("break_time") === "true",
-      reference_code: localStorage.getItem("reference_code") === "true",
-      vat: localStorage.getItem("vat") === "true",
-      isBUNumber: localStorage.getItem("isBUNumber") === "true",
-      isRatePerMileClient: localStorage.getItem("isRatePerMileClient") === "true",
-      isRatePerMileStaff: localStorage.getItem("isRatePerMileStaff") === "true",
       weekDays: [
         "Monday",
         "Tuesday",
@@ -490,6 +480,31 @@ export default {
       ],
       creation: ["Weekly", "Monthly"],
       selectedDay: "Monday",
+      fetchInvoiceSetting: {
+        invoice_creation_period: "",
+        invoice_cut_off_day: "",
+        staff_invoice_table_head: "",
+        pdf_name_format: "",
+        invoice_start_number: "",
+        invoice_number_format: "",
+        client_invoice_template: "",
+        staff_invoice_template: "",
+        client_invoice_footer_note: "",
+        staff_invoice_footer_note: "",
+        reference_code: false,
+        NI_number_for_staff: false,
+        NI_number_for_client: false,
+        vat_number: false,
+        enable_booking_code: false,
+        break_time: false,
+        split_rate: false,
+        rate_per_mile_in_client: false,
+        rate_per_mile_in_staff: false,
+        invoice_hash: false,
+        enable_site_name_in_invoice: false,
+      },
+      pdfNameFormatError: "",
+      invoiceTableHeadError: "",
     };
   },
   components: {
@@ -501,175 +516,101 @@ export default {
     ClientInvoiceTemplatesVue,
   },
   methods: {
-    async ratePerMileClientInvoice() {
-      try {
-        let response;
+    validationNumber(value, maxLength) {
+      let validatedValue = value.replace(/\D/g, "");
 
-        if (this.isRatePerMileClient) {
-          response = await axios.put(`${VITE_API_URL}/add_hash_to_invoice_number`);
-        } else {
-          response = await axios.put(
-            `${VITE_API_URL}/remove_site_name_to_invoice_number`
-          );
-        }
+      if (validatedValue.length > maxLength) {
+        validatedValue = validatedValue.slice(0, maxLength);
+      }
 
-        localStorage.setItem("isRatePerMileClient", this.isRatePerMileClient.toString());
+      return validatedValue;
+    },
+    updateInvoiceNumberFormat() {
+      this.fetchInvoiceSetting.invoice_number_format = this.validationNumber(
+        this.fetchInvoiceSetting.invoice_number_format,
+        10
+      );
+    },
 
-        this.$refs.successAlert.showSuccess(
-          this.isRatePerMileClient
-            ? "Rate Per Mile enabled successfully!"
-            : "Rate Per Mile disabled successfully!"
+    updateInvoiceStartNumber() {
+      this.fetchInvoiceSetting.invoice_start_number = this.validationNumber(
+        this.fetchInvoiceSetting.invoice_start_number,
+        5
+      );
+    },
+    validatePDFNameFormat() {
+      this.pdfNameFormatError = "";
+
+      const regex = /^[A-Za-z\s]*$/;
+
+      if (this.fetchInvoiceSetting.pdf_name_format.length > 10) {
+        this.pdfNameFormatError = "PDF Name Format must not exceed 10 characters.";
+        this.fetchInvoiceSetting.pdf_name_format = this.fetchInvoiceSetting.pdf_name_format.slice(
+          0,
+          10
         );
-      } catch (error) {
-        // console.error('Error toggling booking code:', error);
-        // Handle error, e.g., show error message
+      } else if (!regex.test(this.fetchInvoiceSetting.pdf_name_format)) {
+        this.pdfNameFormatError = "PDF Name Format can only contain letters.";
+        this.fetchInvoiceSetting.pdf_name_format = this.fetchInvoiceSetting.pdf_name_format.replace(
+          /[^A-Za-z\s]/g,
+          ""
+        );
       }
     },
-    async ratePerMileStaffInvoice() {
-      try {
-        const response = await axios.put(`${VITE_API_URL}/staff_rate_enable_and_disable`);
 
-        localStorage.setItem("isRatePerMileStaff", this.isRatePerMileStaff.toString());
+    validateInvoiceTableHead() {
+      this.invoiceTableHeadError = "";
 
-        this.$refs.successAlert.showSuccess(
-          this.isRatePerMileStaff
-            ? "Rate Per Mile enabled successfully!"
-            : "Rate Per Mile disabled successfully!"
+      const regex = /^[A-Za-z\s]*$/;
+
+      if (this.fetchInvoiceSetting.staff_invoice_table_head.length > 10) {
+        this.invoiceTableHeadError = "Invoice Table Head must not exceed 10 characters.";
+        this.fetchInvoiceSetting.staff_invoice_table_head = this.fetchInvoiceSetting.staff_invoice_table_head.slice(
+          0,
+          10
         );
-      } catch (error) {
-        // console.error('Error toggling booking code:', error);
+      } else if (!regex.test(this.fetchInvoiceSetting.staff_invoice_table_head)) {
+        this.invoiceTableHeadError = "Invoice Table Head can only contain letters.";
+        this.fetchInvoiceSetting.staff_invoice_table_head = this.fetchInvoiceSetting.staff_invoice_table_head.replace(
+          /[^A-Za-z\s]/g,
+          ""
+        );
       }
     },
-    async handleBusinessUnitName() {
+    async fetchInvoiceSettingMethod() {
       try {
-        if (this.isBUNumber) {
-          await axios.put(`${VITE_API_URL}/add_site_to_invoice_number`, { enable: true });
-        } else {
-          await axios.put(`${VITE_API_URL}/remove_site_name_to_invoice_number`, {
-            enable: false,
-          });
-        }
-        localStorage.setItem("isBUNumber", this.isBUNumber.toString());
-        this.$refs.successAlert.showSuccess(
-          this.isBUNumber
-            ? "Site Name Add successfully!"
-            : "Site Name Remove successfully!"
-        );
-      } catch (error) {
-        // console.error('Error toggling hash:', error);
-      }
+        const response = await axios.get(`${VITE_API_URL}/invoice_setting`);
+
+        this.fetchInvoiceSetting = {
+          ...this.fetchInvoiceSetting,
+          ...response.data.invoice_setting,
+        };
+      } catch (error) {}
     },
-    async bookingToggle() {
+    async updateInvoiceMethod() {
+      const token = localStorage.getItem("token");
       try {
         const response = await axios.put(
-          `${VITE_API_URL}/enable_and_disable_booking_code`,
+          `${VITE_API_URL}set_invoice_setting`,
+          this.fetchInvoiceSetting,
           {
-            booking: this.booking ? "true" : "false",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
 
-        localStorage.setItem("booking", this.booking.toString());
+        const message = "Invoice updated successfully";
+        this.$refs.successAlert.showSuccess(message);
 
-        this.$refs.successAlert.showSuccess(
-          this.booking
-            ? "Booking code enabled successfully!"
-            : "Booking code disabled successfully!"
-        );
+        this.fetchInvoiceSettingMethod();
       } catch (error) {
-        // console.error('Error toggling booking code:', error);
+        // console.error("Error updating candidate:", error);
       }
     },
-    async breakToggle() {
-      try {
-        const response = await axios.put(
-          `${VITE_API_URL}/enable_and_disable_break_time`,
-          {
-            break_time: this.break_time ? "true" : "false",
-          }
-        );
-
-        localStorage.setItem("break_time", this.break_time.toString());
-
-        this.$refs.successAlert.showSuccess(
-          this.break_time
-            ? "Break Time code enabled successfully!"
-            : "Break Time code disabled successfully!"
-        );
-      } catch (error) {
-        // console.error('Error toggling booking code:', error);
-      }
-    },
-    async reference_codeToggle() {
-      try {
-        const response = await axios.put(
-          `${VITE_API_URL}/enable_and_disable_reference_code`,
-          {
-            reference_code: this.reference_code ? "true" : "false",
-          }
-        );
-
-        localStorage.setItem("reference_code", this.reference_code.toString());
-
-        this.$refs.successAlert.showSuccess(
-          this.reference_code
-            ? "Reference code enabled successfully!"
-            : "Reference code disabled successfully!"
-        );
-      } catch (error) {
-        // console.error('Error toggling vat code:', error);
-      }
-    },
-    async vatToggle() {
-      try {
-        const response = await axios.put(`${VITE_API_URL}/enable_and_disable_vat`, {
-          vat: this.vat ? "true" : "false",
-        });
-
-        localStorage.setItem("vat", this.vat.toString());
-
-        this.$refs.successAlert.showSuccess(
-          this.vat ? "Vat code enabled successfully!" : "Vat code disabled successfully!"
-        );
-      } catch (error) {
-        // console.error('Error toggling vat code:', error);
-      }
-    },
-    async updateSplitRate() {
-      try {
-        const response = await axios.put(`${VITE_API_URL}/rate_enable_and_disable`, {
-          rate_value: this.split_rate ? "true" : "false",
-        });
-        this.$refs.successAlert.showSuccess(
-          this.split_rate
-            ? "Split rate enabled successfully!"
-            : "Split rate disabled successfully!"
-        );
-        localStorage.setItem("split_rate", this.split_rate.toString());
-      } catch (error) {
-        // console.error('Error updating split rate:', error);
-      }
-    },
-
-    async handleToggle() {
-      try {
-        if (this.isHashEnabled) {
-          await axios.put(`${VITE_API_URL}/add_hash_to_invoice_number`, { enable: true });
-        } else {
-          await axios.put(`${VITE_API_URL}/remove_hash_from_invoice_number`, {
-            enable: false,
-          });
-        }
-        localStorage.setItem("isHashEnabled", this.isHashEnabled.toString());
-        this.$refs.successAlert.showSuccess(
-          this.isHashEnabled ? "Hash Add successfully!" : "Hash Remove successfully!"
-        );
-      } catch (error) {
-        // console.error('Error toggling hash:', error);
-      }
-    },
-    handleSubmit() {
-      // Handle form submission logic here
-    },
+  },
+  mounted() {
+    this.fetchInvoiceSettingMethod();
   },
 };
 </script>

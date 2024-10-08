@@ -85,6 +85,7 @@ export default {
       this.options.forEach((option) => {
         option.checked = this.fetchClients.job_ids.includes(option.id);
       });
+      this.job_ids = [...this.fetchClients.job_ids];
     },
     toggleJobsSelection() {
       this.job_ids = this.options
@@ -130,12 +131,8 @@ export default {
       }
     },
     async addJob() {
-      if (!this.job_ids.length) {
-        return;
-      }
-
       try {
-        const updatedJobIds = [...new Set([...this.existingJobs, ...this.job_ids])];
+        const updatedJobIds = this.job_ids;
 
         const response = await axios.put(
           `${VITE_API_URL}/clients/${this.$route.params.id}`,
@@ -143,13 +140,11 @@ export default {
         );
 
         if (response.status === 200) {
-          this.existingJobs = updatedJobIds;
+          this.existingJobs = [...updatedJobIds];
           this.$emit("jobClientAdded");
           const message = "Jobs added to the client successfully";
           this.$refs.successAlert.showSuccess(message);
 
-          this.job_ids = [];
-          this.resetChanges();
           this.fetchClientsMethod(this.$route.params.id);
         }
       } catch (error) {

@@ -12,7 +12,7 @@
           </div>
           <!-- End Page Title -->
           <div class="d-flex align-items-center">
-            <button
+            <!-- <button
               type="button"
               class="btn btn-primary text-nowrap fs-5 text-capitalize"
               data-bs-toggle="modal"
@@ -21,7 +21,16 @@
             >
               <i class="bi bi-file-earmark"></i>
               generate report
-            </button>
+            </button> -->
+
+            <router-link
+              type="button"
+              class="btn btn-primary text-nowrap fs-5 text-capitalize"
+              to="/report"
+            >
+              <i class="bi bi-file-earmark"></i>
+              generate report
+            </router-link>
           </div>
         </div>
       </div>

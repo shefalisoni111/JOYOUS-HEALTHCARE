@@ -32,9 +32,6 @@
                         >&nbsp;{{ option.name }}</label
                       >
                     </div>
-                    <div v-if="jobAlreadyAdded" class="text-danger">
-                      This job is already added to the client.
-                    </div>
                   </div>
                 </div>
               </form>
@@ -46,6 +43,7 @@
               data-bs-target="#addStaffJobs"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
+              @click="resetChanges"
             >
               Cancel
             </button>
@@ -53,7 +51,6 @@
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click="addJob"
-              :disabled="jobAlreadyAdded"
             >
               Add Job
             </button>
@@ -70,10 +67,10 @@ import SuccessAlert from "../../../Alerts/SuccessAlert.vue";
 import axios from "axios";
 
 export default {
-  name: "addStaffJobs",
+  name: "AddStaffJobs",
   data() {
     return {
-      fetchStaff: {
+      fetchStaffJobs: {
         job_ids: [],
       },
       job_ids: [],
@@ -82,63 +79,35 @@ export default {
     };
   },
   components: { SuccessAlert },
-  computed: {
-    filteredJobs() {
-      return this.options.filter((job) => !this.existingJobs.includes(job.id));
-    },
-    jobAlreadyAdded() {
-      return this.existingJobs.some((existingJobId) =>
-        this.job_ids.includes(existingJobId)
-      );
-    },
-  },
+  computed: {},
   methods: {
+    resetChanges() {
+      this.options.forEach((option) => {
+        option.checked = this.fetchStaffJobs.job_ids.includes(option.id);
+      });
+      this.job_ids = [...this.fetchStaffJobs.job_ids];
+    },
     toggleJobsSelection() {
       this.job_ids = this.options
         .filter((option) => option.checked)
         .map((option) => option.id);
     },
-    async fetchStaffMethod(id) {
+    async fetchStaffJobsMethod(id) {
       if (!id) return;
       try {
         const response = await axios.get(`${VITE_API_URL}/candidates/${id}`);
 
-        const jobIds = response.data.job_ids || [];
-        this.fetchStaff = { ...this.fetchStaff, ...response.data.data };
+        const jobIds = response.data.candidate.job_ids || [];
+
+        this.fetchStaffJobs = { ...this.fetchStaffJobs, ...response.data.candidate };
 
         this.options.forEach((option) => {
           option.checked = jobIds.includes(option.id);
         });
 
-        this.job_ids = jobIds;
+        this.job_ids = [...jobIds];
       } catch (error) {
-        // console.error("Error fetching todo:", error);
-      }
-    },
-    async addJob() {
-      if (!this.job_ids.length || this.jobAlreadyAdded) {
-        return;
-      }
-
-      try {
-        const updatedJobIds = [...new Set([...this.existingJobs, ...this.job_ids])];
-
-        const response = await axios.put(
-          `${VITE_API_URL}/candidates/${this.$route.params.id}`,
-          { job_ids: updatedJobIds }
-        );
-
-        if (response.status === 200) {
-          this.existingJobs = updatedJobIds;
-          this.$emit("jobStaffAdded");
-          const message = "Jobs added to the Staff successfully";
-          this.$refs.successAlert.showSuccess(message);
-
-          this.job_ids = [];
-          this.options.forEach((option) => (option.checked = false));
-        }
-      } catch (error) {
-        // console.error("Error adding job:", error);
+        // Handle error
       }
     },
     async getExistingJobs() {
@@ -146,28 +115,46 @@ export default {
         const response = await axios.get(
           `${VITE_API_URL}/candidates/${this.$route.params.id}/jobs`
         );
-        this.existingJobs = response.data.jobs.map((job) => job.id) || [];
-        this.options.forEach((option) => {
-          option.checked = this.existingJobs.includes(option.id);
-        });
-      } catch (error) {}
+        this.existingJobs = response.data.candidate.jobs.map((job) => job.id) || [];
+        this.resetChanges();
+      } catch (error) {
+        // Handle error
+      }
     },
     async getPositionMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/active_job_list`);
         this.options = response.data.data || [];
-        this.options.forEach((option) => {
-          option.checked = this.existingJobs.includes(option.id);
-        });
+        this.resetChanges();
       } catch (error) {
-        // console.error(error);
+        // Handle error
+      }
+    },
+    async addJob() {
+      try {
+        const updatedJobIds = this.job_ids;
+
+        const response = await axios.put(
+          `${VITE_API_URL}/candidates/${this.$route.params.id}`,
+          { job_ids: updatedJobIds }
+        );
+
+        if (response.status === 200) {
+          this.existingJobs = [...updatedJobIds];
+          this.$emit("jobStaffAdded");
+          const message = "Jobs added to the staff successfully";
+          this.$refs.successAlert.showSuccess(message);
+
+          this.fetchStaffJobsMethod(this.$route.params.id);
+        }
+      } catch (error) {
+        // Handle error
       }
     },
   },
   mounted() {
-    // this.getExistingJobs();
     this.getPositionMethod();
-    this.fetchStaffMethod(this.$route.params.id);
+    this.fetchStaffJobsMethod(this.$route.params.id);
   },
 };
 </script>
