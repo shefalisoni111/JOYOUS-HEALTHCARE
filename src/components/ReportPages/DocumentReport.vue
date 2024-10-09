@@ -12,8 +12,8 @@
               >
                 <select v-model="selectedStaffStatus" @change="filterData">
                   <option value="">All Staff Status</option>
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
+                  <option value="approved">Active</option>
+                  <option value="rejected">Inactive</option>
                   <option value="pending">Pending</option>
                 </select>
 
@@ -105,7 +105,7 @@
                         <th scope="col">Upload Date</th>
                         <th scope="col">Issue Date</th>
                         <th scope="col">Expiry Date</th>
-                        <th scope="col">Status</th>
+                        <!-- <th scope="col">Status</th> -->
                       </tr>
                     </thead>
                     <tbody v-if="paginateDocumentReport?.length > 0">
@@ -121,21 +121,23 @@
                           }}
                         </td>
                         <td scope="col">{{ data.document_name }}</td>
-                        <td scope="col"></td>
+                        <td scope="col">
+                          {{ new Date(data.updated_at).toLocaleString() }}
+                        </td>
                         <td scope="col">
                           {{ data.issue_date }}
                         </td>
                         <td scope="col">
                           {{ data.expiry_date }}
                         </td>
-                        <td scope="col">
+                        <!-- <td scope="col">
                           {{ data.document_category?.status }}
-                        </td>
+                        </td> -->
                       </tr>
                     </tbody>
                     <tbody v-else>
                       <tr v-if="!isLoading">
-                        <td colspan="8" class="text-danger text-center fw-bold">
+                        <td colspan="7" class="text-danger text-center fw-bold">
                           {{ "No records found for the given filter" }}
                         </td>
                       </tr>

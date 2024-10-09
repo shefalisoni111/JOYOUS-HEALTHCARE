@@ -21,6 +21,12 @@ export default createStore({
      selectedTemplate: localStorage.getItem('selectedTemplate') || 'TemplateOne',
   },
   mutations: {
+    setSelectedTemplateClient(state, template) {
+      state.selectedTemplateClient = template;
+    },
+    setSelectedTemplateStaff(state, template) {
+      state.selectedTemplateStaff = template;
+    },
     setSelectedTemplate(state, template) {
       state.selectedTemplate = template;
       localStorage.setItem('selectedTemplate', template);

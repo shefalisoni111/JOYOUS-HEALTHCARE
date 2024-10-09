@@ -237,18 +237,14 @@
           <div class="d-flex my-3" style="gap: 26.2%">
             <div>Invoice Template:</div>
             <div style="width: 50%">
-              <button
-                type="button"
-                class="btn btn-light"
-                data-bs-toggle="modal"
-                data-bs-target="#SiteInvoiceTemplate"
-                data-bs-whatever="@mdo"
+              <select
+                v-model="fetchInvoiceSetting.invoice_template"
+                @change="updateTemplate"
+                class="form-control"
               >
-                Select Invoice Template
-              </button>
-              <!-- <p v-if="fetchInvoiceSetting.invoice_template">
-                Selected Template: {{ selectedTemplate.name }}
-              </p> -->
+                <option value="TemplateOne">Template One</option>
+                <option value="TemplateTwo">Template Two</option>
+              </select>
             </div>
           </div>
           <div class="d-flex my-3" style="gap: 24.6%">
@@ -297,7 +293,7 @@ import axios from "axios";
 import TextFormator from "../../textformator/TextFormator.vue";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 import InvoiceTemplate from "../../modals/Site/InvoiceTemplate.vue";
-
+import { mapState } from "vuex";
 export default {
   name: "RateInvoiceSettings",
   data() {
@@ -311,7 +307,7 @@ export default {
         site_name: "",
         site_address_line_one: null,
         site_address_line_two: null,
-        invoice_template: "",
+        invoice_template: this.$store.state.selectedTemplate,
         invoice_footer_note: null,
         site_post_code: null,
         vat: null,
@@ -350,8 +346,13 @@ export default {
     SuccessAlert,
     InvoiceTemplate,
   },
-
+  computed: {
+    ...mapState(["selectedTemplates"]),
+  },
   methods: {
+    updateTemplate() {
+      this.$store.commit("setSelectedTemplate", this.selectedTemplate);
+    },
     validateNumberInput(field, maxLength) {
       const regex = /^\d*$/;
       this[`error${field}`] = "";

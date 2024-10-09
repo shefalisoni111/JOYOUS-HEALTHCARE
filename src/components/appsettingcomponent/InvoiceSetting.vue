@@ -242,29 +242,27 @@
                 <div class="d-flex my-3 justify-content-between" style="gap: 12.55%">
                   <div>Client Invoice Template:</div>
                   <div class="w-100">
-                    <button
-                      type="button"
-                      class="btn btn-light"
-                      data-bs-toggle="modal"
-                      data-bs-target="#ClientInvoiceTemplateView"
-                      data-bs-whatever="@mdo"
+                    <select
+                      v-model="fetchInvoiceSetting.client_invoice_template"
+                      @change="updateTemplateClient"
+                      class="form-control"
                     >
-                      Select Invoice Template
-                    </button>
+                      <option value="TemplateOneClient">Template One</option>
+                      <option value="TemplateTwoClient">Template Two</option>
+                    </select>
                   </div>
                 </div>
                 <div class="d-flex my-3 justify-content-between" style="gap: 13%">
                   <div>Staff Invoice Template:</div>
                   <div class="w-100">
-                    <button
-                      type="button"
-                      class="btn btn-light"
-                      data-bs-toggle="modal"
-                      data-bs-target="#StaffInvoiceTemplateView"
-                      data-bs-whatever="@mdo"
+                    <select
+                      v-model="fetchInvoiceSetting.staff_invoice_template"
+                      @change="updateTemplateStaff"
+                      class="form-control"
                     >
-                      Select Invoice Template
-                    </button>
+                      <option value="TemplateOneStaff">Template One</option>
+                      <option value="TemplateTwoStaff">Template Two</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -465,7 +463,7 @@ import Sidebar from "../Sidebar.vue";
 import TextFormator from "../textformator/TextFormator.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
 import StaffInvoiceTemplates from "../modals/appsetting/InvoiceSetting/StaffInvoiceTemplates.vue";
-
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -487,8 +485,8 @@ export default {
         pdf_name_format: "",
         invoice_start_number: "",
         invoice_number_format: "",
-        client_invoice_template: "",
-        staff_invoice_template: "",
+        client_invoice_template: this.$store.state.selectedTemplateClient,
+        staff_invoice_template: this.$store.state.selectedTemplateStaff,
         client_invoice_footer_note: "",
         staff_invoice_footer_note: "",
         reference_code: false,
@@ -515,7 +513,22 @@ export default {
     StaffInvoiceTemplates,
     ClientInvoiceTemplatesVue,
   },
+  computed: {
+    ...mapState(["selectedTemplateClient", "selectedTemplateStaff"]),
+  },
   methods: {
+    updateTemplateStaff() {
+      this.$store.commit(
+        "setSelectedTemplateStaff",
+        this.fetchInvoiceSetting.staff_invoice_template
+      ); // Updating staff template
+    },
+    updateTemplateClient() {
+      this.$store.commit(
+        "setSelectedTemplateClient",
+        this.fetchInvoiceSetting.client_invoice_template
+      ); // Updating client template
+    },
     validationNumber(value, maxLength) {
       let validatedValue = value.replace(/\D/g, "");
 
@@ -612,6 +625,9 @@ export default {
   mounted() {
     this.fetchInvoiceSettingMethod();
   },
+  // created() {
+  //   this.selectedTemplate = this.$store.state.selectedTemplate;
+  // },
 };
 </script>
 

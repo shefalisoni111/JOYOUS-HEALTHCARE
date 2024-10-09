@@ -13,7 +13,7 @@
               <th scope="col">Upload Date</th>
               <th scope="col">Issue Date</th>
               <th scope="col">Expiry Date</th>
-              <th scope="col">Status</th>
+              <!-- <th scope="col">Status</th> -->
             </tr>
           </thead>
           <tbody v-if="paginateDocumentReport?.length > 0">
@@ -25,24 +25,24 @@
                 {{ data.document_category.document_category }}
               </td>
               <td scope="col">{{ data.document_name }}</td>
-              <td scope="col">{{ "null" }}</td>
+              <td scope="col">{{ new Date(data.updated_at).toLocaleString() }}</td>
               <td scope="col">
                 {{ data.issue_date ? data.issue_date : "null" }}
               </td>
               <td scope="col">
                 {{ data.expiry_date ? data.expiry_date : "null" }}
               </td>
-              <td scope="col">{{ data.document_category.status }}</td>
+              <!-- <td scope="col">{{ data.document_category.status }}</td> -->
             </tr>
           </tbody>
           <tbody v-else>
             <tr v-if="errorMessageFilter">
-              <td colspan="8" class="text-danger text-center">
+              <td colspan="7" class="text-danger text-center">
                 {{ errorMessageFilter }}
               </td>
             </tr>
             <tr v-else>
-              <td colspan="8" class="text-danger text-center">
+              <td colspan="7" class="text-danger text-center">
                 {{ errorMessageCustom }}
               </td>
             </tr>
