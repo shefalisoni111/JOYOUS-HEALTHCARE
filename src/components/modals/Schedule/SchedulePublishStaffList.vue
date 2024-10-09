@@ -121,7 +121,7 @@
                     <!-- <template v-else>
                       <tr>
                         <td colspan="7" class="text-danger text-center">
-                          Not Match Found !!
+                          No Match Found !!
                         </td>
                       </tr>
                     </template> -->
@@ -129,7 +129,7 @@
                   <tbody v-else>
                     <tr>
                       <td colspan="7" class="text-danger text-center mt-2">
-                        Not List Found !!
+                        No List Found !!
                       </td>
                     </tr>
                   </tbody>
@@ -182,7 +182,7 @@
                   <tbody v-else>
                     <tr>
                       <td colspan="7" class="text-danger text-center">
-                        Not Match Found !!
+                        No Match Found !!
                       </td>
                     </tr>
                   </tbody>
@@ -306,7 +306,7 @@ export default {
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {
-          const errorMessage = error.response.data.error || "Resource not found";
+          const errorMessage = error.response.data.error || "Resource No found";
           // Display alert error message
           alert(errorMessage);
         } else {

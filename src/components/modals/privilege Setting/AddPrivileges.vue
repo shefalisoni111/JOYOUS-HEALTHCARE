@@ -133,7 +133,7 @@
                       @change="detectAutofill"
                     />
                     <span v-if="!passwordsMatch" class="text-danger"
-                      >Passwords do not Match</span
+                      >Passwords do No Match</span
                     >
                   </div>
                 </div>

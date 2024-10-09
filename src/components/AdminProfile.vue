@@ -180,7 +180,7 @@ export default {
             this.profileImage = `${VITE_API_URL}${response.data.data.profile_photo}`;
             this.errorMessage = null;
           } else {
-            // console.error("Profile photo not found in response:", response.data);
+            // console.error("Profile photo No found in response:", response.data);
           }
         }
       } catch (error) {

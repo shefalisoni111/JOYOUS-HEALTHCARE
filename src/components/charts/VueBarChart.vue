@@ -112,7 +112,7 @@ export default {
             this.$refs.myChart.chart.update();
             // console.log("Chart updated successfully");
           } else {
-            // console.error("Chart instance or reference not found:", this.$refs.myChart);
+            // console.error("Chart instance or reference No found:", this.$refs.myChart);
           }
         })
         .catch((error) => {

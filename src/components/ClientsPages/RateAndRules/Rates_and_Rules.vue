@@ -448,7 +448,7 @@
                       <tbody v-else>
                         <tr>
                           <td colspan="14" class="text-danger text-center">
-                            Not Match Found !!
+                            No Match Found !!
                           </td>
                         </tr>
                       </tbody>
@@ -701,7 +701,7 @@ export default {
         this.getRateRulesData = response.data.data || [];
 
         if (this.getRateRulesData.length === 0) {
-          this.errorMessageFilter = "Rates not Found!";
+          this.errorMessageFilter = "Rates No Found!";
         } else {
           this.errorMessageFilter = "";
         }
@@ -1039,7 +1039,7 @@ export default {
 
         this.filteredRateRulesData = this.getRateRulesData;
         if (this.getRateRulesData.length === 0) {
-          this.errorMessageFilter = "Report not Found!";
+          this.errorMessageFilter = "Report No Found!";
         } else {
           this.errorMessageFilter = "";
         }

@@ -79,7 +79,7 @@
               <tbody v-else>
                 <tr>
                   <td colspan="14" class="text-center text-danger" v-if="!isLoading">
-                    {{ "Data Not Found!" }}
+                    {{ "Data No Found!" }}
                   </td>
                 </tr>
               </tbody>

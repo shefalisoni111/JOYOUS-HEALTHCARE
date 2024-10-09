@@ -211,7 +211,7 @@
                           <tbody v-else>
                             <tr>
                               <td colspan="6" class="text-center text-danger">
-                                {{ "Data Not Found!" }}
+                                {{ "Data No Found!" }}
                               </td>
                             </tr>
                           </tbody>

@@ -266,7 +266,7 @@
                             class="text-danger text-center"
                             v-if="!isLoading"
                           >
-                            {{ "Not Data Found !" }}
+                            {{ "No Data Found !" }}
                           </td>
                         </tr>
                       </tbody>
@@ -340,14 +340,14 @@
                             class="text-danger text-center"
                             v-if="!isLoading"
                           >
-                            {{ "Not Data Found !" }}
+                            {{ "No Data Found !" }}
                           </td>
                         </tr>
                       </tbody>
                       <!-- <tbody v-else>
                         <tr>
                           <td colspan="16" class="text-danger text-center">
-                            {{ "Not Match Found !" }}
+                            {{ "No Match Found !" }}
                           </td>
                         </tr>
                       </tbody> -->
@@ -661,7 +661,7 @@ export default {
         this.getClientInvoiceDetail = response.data.data || [];
 
         this.errorMessageFilter =
-          this.getClientInvoiceDetail.length === 0 ? "Report not Found!" : "";
+          this.getClientInvoiceDetail.length === 0 ? "Report No Found!" : "";
       } catch (error) {
         if (error.response) {
           if (error.response.status === 404) {

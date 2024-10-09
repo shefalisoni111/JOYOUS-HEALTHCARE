@@ -47,7 +47,15 @@
                       <label for="body" class="col-form-label"></label>
                     </div>
                     <div class="col-11 ms-5 p-0" style="margin-left: 90px">
-                      <TextFormator v-model="body" />
+                      <!-- <TextFormator v-model="body" /> -->
+                      <div style="width: 50%">
+                        <textarea
+                          class="form-control"
+                          v-model="body"
+                          @input="handleInputChange"
+                          rows="3"
+                        ></textarea>
+                      </div>
                     </div>
                   </div>
                   <div class="row align-items-center mt-3">

@@ -176,7 +176,7 @@
                       @change="detectAutofill"
                     />
                     <span v-if="confirm_password && !passwordsMatch" class="text-danger">
-                      Passwords do not match.
+                      Passwords do No match.
                     </span>
                   </div>
                 </div>

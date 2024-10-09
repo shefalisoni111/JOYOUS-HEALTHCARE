@@ -591,7 +591,7 @@ export default {
       const regex = /^[A-Za-z\s]*$/;
 
       if (this.fetchInvoiceSetting.pdf_name_format.length > 10) {
-        this.pdfNameFormatError = "PDF Name Format must not exceed 10 characters.";
+        this.pdfNameFormatError = "PDF Name Format must No exceed 10 characters.";
         this.fetchInvoiceSetting.pdf_name_format = this.fetchInvoiceSetting.pdf_name_format.slice(
           0,
           10
@@ -612,7 +612,7 @@ export default {
       const regex = /^[A-Za-z\s]*$/;
 
       if (this.fetchInvoiceSetting.staff_invoice_table_head.length > 10) {
-        this.invoiceTableHeadError = "Invoice Table Head must not exceed 10 characters.";
+        this.invoiceTableHeadError = "Invoice Table Head must No exceed 10 characters.";
         this.fetchInvoiceSetting.staff_invoice_table_head = this.fetchInvoiceSetting.staff_invoice_table_head.slice(
           0,
           10

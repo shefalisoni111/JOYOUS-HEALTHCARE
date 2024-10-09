@@ -60,7 +60,7 @@
         </div>
         <div v-else>
           <div class="text-danger text-center mt-2" v-if="!isLoading">
-            {{ "Data Not Found!" }}
+            {{ "Data No Found!" }}
           </div>
         </div>
       </div>
@@ -146,7 +146,7 @@ export default {
       ) {
         this.$refs.addClientSiteRef.getClientMethod();
       } else {
-        // console.error('getClientMethod is not defined on addClientSiteRef');
+        // console.error('getClientMethod is No defined on addClientSiteRef');
       }
     },
     editsiteId(siteId) {

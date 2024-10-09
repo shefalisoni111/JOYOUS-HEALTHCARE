@@ -299,7 +299,7 @@
             <tbody v-else>
               <tr>
                 <td colspan="5" class="text-center text-danger" v-if="!isLoading">
-                  {{ "Not Data Found!" }}
+                  {{ "No Data Found!" }}
                 </td>
               </tr>
             </tbody>
@@ -510,8 +510,8 @@ export default {
           }
         } catch (error) {
           if (error.response && error.response.status === 404) {
-            // alert("Candidate document not found");
-            this.alertMessage = "Staff document not found";
+            // alert("Candidate document No found");
+            this.alertMessage = "Staff document No found";
             // this.showModal = true;
           }
           // console.error("Error fetching document:", error);

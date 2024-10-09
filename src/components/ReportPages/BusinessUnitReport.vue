@@ -236,7 +236,7 @@
                             <div v-else>Null</div>
                           </td> -->
                           <td scope="col">
-                            {{ data.approved_hour ? "Approved" : "Not Approved" }}
+                            {{ data.approved_hour ? "Approved" : "No Approved" }}
                           </td>
                         </tr>
                       </tbody>
@@ -346,7 +346,7 @@
                             <div v-else>Null</div>
                           </td> -->
                           <td scope="col">
-                            {{ data.approved_hour ? "Approved" : "Not Approved" }}
+                            {{ data.approved_hour ? "Approved" : "No Approved" }}
                           </td>
                         </tr>
                       </tbody>
@@ -577,7 +577,7 @@ export default {
       } catch (error) {
         if (error.response && error.response.status === 404) {
           this.getSiteReportData = [];
-          this.errorMessageFilter = error.response.data.error || "Report not found!";
+          this.errorMessageFilter = error.response.data.error || "Report No found!";
         } else {
           this.errorMessageFilter = "An unexpected error occurred.";
         }
@@ -653,7 +653,7 @@ export default {
         );
         this.getSiteReportData = response.data.timesheets || [];
         if (response.status === 200 && this.getSiteReportData.length === 0) {
-          this.errorMessageCustom = `Timesheet not available for this month`;
+          this.errorMessageCustom = `Timesheet No available for this month`;
         } else {
           this.errorMessageCustom = "";
         }

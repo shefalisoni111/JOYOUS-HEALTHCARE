@@ -177,7 +177,7 @@ export default {
     },
     handleEditClick(isLocked) {
       if (isLocked) {
-        alert("Cannot edit. Invoice is locked.");
+        alert("CanNo edit. Invoice is locked.");
       } else {
         if (this.selectedTemplate === "TemplateOne") {
           this.showEditComponent = true;

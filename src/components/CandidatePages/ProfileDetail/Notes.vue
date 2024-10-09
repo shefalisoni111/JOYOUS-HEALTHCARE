@@ -39,7 +39,7 @@
       </div>
     </div>
     <div class="row m-4" v-else>
-      <div class="text-center text-danger" v-if="!isLoading">{{ "Data Not Found!" }}</div>
+      <div class="text-center text-danger" v-if="!isLoading">{{ "Data No Found!" }}</div>
     </div>
     <ConfirmationAlert
       :show-modal="isModalVisible"
@@ -104,7 +104,7 @@ export default {
       } catch (error) {
         if (error.response) {
           if (error.response.status === 404) {
-            // console.error("Error 404: Notes not found");
+            // console.error("Error 404: Notes No found");
           }
         } else {
           // console.error("Error fetching notes:", error);

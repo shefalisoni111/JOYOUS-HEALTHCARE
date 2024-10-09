@@ -818,7 +818,7 @@ export default {
       }
 
       if (isNaN(year) || isNaN(month) || isNaN(day)) {
-        // console.error("Parsed date components are not numbers:", [year, month, day]);
+        // console.error("Parsed date components are No numbers:", [year, month, day]);
         return "";
       }
 

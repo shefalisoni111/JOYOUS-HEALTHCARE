@@ -167,7 +167,7 @@ export default {
         const response = await axios.get(`${VITE_API_URL}/candidate_documents`);
         this.getCategoryData = response.data;
         if (this.getCategoryData.length === 0) {
-          this.errorMessageFilter = "Report not Found!";
+          this.errorMessageFilter = "Report No Found!";
         } else {
           this.errorMessageFilter = "";
         }

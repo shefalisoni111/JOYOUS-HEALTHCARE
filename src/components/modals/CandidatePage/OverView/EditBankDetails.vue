@@ -29,7 +29,7 @@
                       @input="cleanAndValidateBankName"
                     />
                     <span v-if="!isBankNameValid" class="text-danger">
-                      Bank Name must not exceed 50 characters.
+                      Bank Name must No exceed 50 characters.
                     </span>
                   </div>
                 </div>

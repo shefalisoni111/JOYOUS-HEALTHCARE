@@ -366,7 +366,7 @@ export default {
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {
-          const errorMessage = error.response.data.error || "Resource not found";
+          const errorMessage = error.response.data.error || "Resource No found";
           // Display alert error message
           alert(errorMessage);
         } else {

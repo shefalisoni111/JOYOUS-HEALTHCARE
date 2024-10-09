@@ -387,7 +387,7 @@ export default {
         this[`error${field}`] = `${field.replace(
           /_/g,
           " "
-        )} must not exceed ${maxLength} characters.`;
+        )} must No exceed ${maxLength} characters.`;
         this.fetchInvoiceSetting[field] = this.fetchInvoiceSetting[field].slice(
           0,
           maxLength
@@ -415,7 +415,7 @@ export default {
       const regex = /^[A-Za-z\s]*$/;
 
       if (this.fetchInvoiceSetting.site_name.length > 10) {
-        this.errorSiteUnitName = "Invoice site name must not exceed 10 characters.";
+        this.errorSiteUnitName = "Invoice site name must No exceed 10 characters.";
         this.fetchInvoiceSetting.site_name = this.fetchInvoiceSetting.site_name.slice(
           0,
           10

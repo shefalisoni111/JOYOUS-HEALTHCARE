@@ -97,7 +97,7 @@
           </div>
           <div class="card-body" v-else>
             <div class="text-danger text-center" v-if="!isLoading">
-              {{ "Data Not Found!" }}
+              {{ "Data No Found!" }}
             </div>
           </div>
         </div>
