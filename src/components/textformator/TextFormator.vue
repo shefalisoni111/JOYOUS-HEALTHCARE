@@ -78,37 +78,62 @@
 </template>
 
 <script>
-jQuery(document).ready(function ($) {
-  $("#editControls a").click(function (e) {
-    e.preventDefault();
-    switch ($(this).data("role")) {
-      case "h1":
-      case "h2":
-      case "h3":
-      case "p":
-        document.execCommand("formatBlock", false, $(this).data("role"));
-        break;
-      default:
-        document.execCommand($(this).data("role"), false, null);
-        break;
-    }
+export default {
+  name: "TextFormator",
+  props: {
+    modelValue: {
+      type: String,
+      default: "",
+    },
+  },
+  data() {
+    return {
+      fetchInvoiceSetting: {
+        client_invoice_footer_note: "",
+        staff_invoice_footer_note: "",
+      },
+      content: this.modelValue,
+    };
+  },
+  watch: {
+    modelValue(newValue) {
+      this.content = newValue;
+      this.updateEditorContent();
+    },
+  },
+  methods: {
+    updateEditorContent() {
+      document.getElementById("editor").innerHTML = this.content;
+    },
+    onEditorInput(event) {
+      this.content = event.target.innerHTML;
+      this.$emit("update:modelValue", this.content);
+      this.$emit("update", this.content);
+    },
+    formatText(role) {
+      document.execCommand(role, false, null);
+      this.updateEditorContent();
+    },
+  },
+  mounted() {
+    this.updateEditorContent();
 
-    var textval = $("#editor").html();
-    $("#editorCopy").val(textval);
-  });
+    const vm = this;
+    $("#editControls a").click(function (e) {
+      e.preventDefault();
+      const role = $(this).data("role");
+      vm.formatText(role);
+    });
 
-  $("#editor")
-    .keyup(function () {
-      var value = $(this).html();
-      $("#editorCopy").val(value);
-    })
-    .keyup();
-
-  $("#checkIt").click(function (e) {
-    e.preventDefault();
-    alert($("#editorCopy").val());
-  });
-});
+    $("#editor")
+      .keyup(function () {
+        const value = $(this).html();
+        $("#editorCopy").val(value);
+        vm.onEditorInput({ target: { innerHTML: value } });
+      })
+      .keyup();
+  },
+};
 </script>
 
 <style scoped>

@@ -47,7 +47,7 @@
                       <label for="body" class="col-form-label"></label>
                     </div>
                     <div class="col-11 ms-5 p-0" style="margin-left: 90px">
-                      <TextFormator v-model="body" />
+                      <TextFormator :key="body" v-model="body" />
                     </div>
                   </div>
                   <div class="row align-items-center mt-3">
@@ -59,6 +59,7 @@
                         class="form-control"
                         type="file"
                         id="attachments"
+                        ref="fileInput"
                         multiple
                         @change="handleFileUpload"
                       />
@@ -93,6 +94,8 @@
                   <button
                     type="submit"
                     class="btn btn-primary rounded-1 text-capitalize fw-medium"
+                    data-bs-dismiss="modal"
+                    v-on:click="sendInvoice()"
                   >
                     <i class="bi bi-send"></i>
                     Send
@@ -141,7 +144,7 @@ export default {
       formData.append("client_invoice[subject]", this.subject);
       formData.append("client_invoice[body]", this.body);
 
-      this.attachments.forEach((file, index) => {
+      this.attachments.forEach((file) => {
         formData.append(`client_invoice[attachments][]`, file);
       });
 
@@ -159,14 +162,14 @@ export default {
             },
           }
         );
+
         if (response.status === 200) {
           this.resetForm();
-          const message = "Successfully Mail Send";
+          const message = "Successfully Mail Sent";
           this.$refs.successAlert.showSuccess(message);
         }
-        // console.log("Invoice sent:", response.data);
       } catch (error) {
-        // console.error("Error sending invoice:", error);
+        console.error("Error sending invoice:", error);
       }
     },
     resetForm() {
@@ -176,8 +179,9 @@ export default {
       this.attachments = [];
       this.signAttachments = null;
 
-      document.getElementById("attachments").value = null;
-      document.getElementById("signAttachments").value = null;
+      if (this.$refs.fileInput) {
+        this.$refs.fileInput.value = null;
+      }
     },
   },
 };

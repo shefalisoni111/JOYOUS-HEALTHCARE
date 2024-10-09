@@ -33,7 +33,11 @@
         </div>
         <div class="d-flex justify-content-between align-content-center my-3">
           <h6 class="fw-bold d-flex align-content-center">Invoice settings</h6>
-          <button class="btn btn-primary" @click.prevent="updateInvoiceMethod()">
+          <button
+            class="btn btn-primary"
+            @click.prevent="updateInvoiceMethod()"
+            :disabled="!isModified"
+          >
             <i class="bi bi-save2-fill"></i> Save
           </button>
         </div>
@@ -46,6 +50,7 @@
                   type="checkbox"
                   id="togBtn"
                   v-model="fetchInvoiceSetting.rate_per_mile_client_invoice"
+                  @input="handleInputChange"
                 />
                 <div class="slider round"></div>
               </label>
@@ -59,6 +64,7 @@
                   type="checkbox"
                   id="togBtn"
                   v-model="fetchInvoiceSetting.rate_per_mile_staff_invoice"
+                  @input="handleInputChange"
                 />
                 <div class="slider round"></div>
               </label>
@@ -72,6 +78,7 @@
               <select
                 class="form-control"
                 v-model="fetchInvoiceSetting.invoice_creation_period"
+                @input="handleInputChange"
               >
                 <option v-for="day in creation" :key="day" :value="day">
                   {{ day }}
@@ -150,7 +157,11 @@
           <div class="d-flex my-3" style="gap: 25%">
             <div>Invoice Email:</div>
             <div style="width: 50%">
-              <input class="form-control" v-model="fetchInvoiceSetting.invoice_email" />
+              <input
+                class="form-control"
+                v-model="fetchInvoiceSetting.invoice_email"
+                @input="handleInputChange"
+              />
             </div>
           </div>
         </div>
@@ -163,6 +174,7 @@
                   type="checkbox"
                   id="togBtn"
                   v-model="fetchInvoiceSetting.hide_email"
+                  @input="handleInputChange"
                 />
                 <div class="slider round"></div>
               </label>
@@ -176,6 +188,7 @@
                   type="checkbox"
                   id="togBtn"
                   v-model="fetchInvoiceSetting.hide_mobile"
+                  @input="handleInputChange"
                 />
                 <div class="slider round"></div>
               </label>
@@ -209,6 +222,7 @@
               <input
                 class="form-control"
                 v-model="fetchInvoiceSetting.site_address_line_one"
+                @input="handleInputChange"
               />
             </div>
           </div>
@@ -218,6 +232,7 @@
               <input
                 class="form-control"
                 v-model="fetchInvoiceSetting.site_address_line_two"
+                @input="handleInputChange"
               />
             </div>
           </div>
@@ -255,6 +270,7 @@
                   type="checkbox"
                   id="togBtn"
                   v-model="fetchInvoiceSetting.vat_number"
+                  @input="handleInputChange"
                 />
                 <div class="slider round"></div>
               </label>
@@ -268,6 +284,7 @@
                   type="checkbox"
                   id="togBtn"
                   v-model="fetchInvoiceSetting.enable_invoice_footer_note"
+                  @input="handleInputChange"
                 />
                 <div class="slider round"></div>
               </label>
@@ -277,8 +294,14 @@
         <div class="col-10">
           <div class="d-flex my-3" style="gap: 24.5%">
             <div>Invoice Footer Note:</div>
-            <div style="width: 60%">
-              <TextFormator v-model="fetchInvoiceSetting.invoice_footer_note" />
+            <div style="width: 50%">
+              <!-- <TextFormator v-model="fetchInvoiceSetting.invoice_footer_note" /> -->
+              <textarea
+                class="form-control"
+                v-model="fetchInvoiceSetting.invoice_footer_note"
+                @input="handleInputChange"
+                rows="3"
+              ></textarea>
             </div>
           </div>
         </div>
@@ -350,6 +373,9 @@ export default {
     ...mapState(["selectedTemplates"]),
   },
   methods: {
+    handleInputChange() {
+      this.isModified = true;
+    },
     updateTemplate() {
       this.$store.commit("setSelectedTemplate", this.selectedTemplate);
     },
@@ -373,6 +399,7 @@ export default {
           ""
         );
       }
+      this.handleInputChange();
     },
 
     validateInvoiceNumberTypes() {
@@ -400,6 +427,7 @@ export default {
           ""
         );
       }
+      this.handleInputChange();
     },
     async fetchInvoiceSettingMethod() {
       try {

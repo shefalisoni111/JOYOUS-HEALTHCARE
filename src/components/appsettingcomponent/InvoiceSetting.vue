@@ -56,6 +56,7 @@
                         type="checkbox"
                         id="togBtn"
                         v-model="fetchInvoiceSetting.split_rate"
+                        @input="handleInputChange"
                       />
                       <div class="slider round"></div>
                     </label>
@@ -76,6 +77,7 @@
                   <button
                     class="btn btn-primary me-3"
                     @click.prevent="updateInvoiceMethod()"
+                    :disabled="!isModified"
                   >
                     <i class="bi bi-save2-fill"></i> Save
                   </button>
@@ -90,6 +92,7 @@
                           type="checkbox"
                           id="togBtn"
                           v-model="fetchInvoiceSetting.rate_per_mile_in_client"
+                          @input="handleInputChange"
                         />
                         <div class="slider round"></div>
                       </label>
@@ -105,6 +108,7 @@
                       type="checkbox"
                       id="togBtn"
                       v-model="fetchInvoiceSetting.rate_per_mile_in_staff"
+                      @input="handleInputChange"
                     />
                     <div class="slider round"></div>
                   </label>
@@ -116,7 +120,11 @@
                 </div>
 
                 <div style="width: 56%">
-                  <select class="form-control" v-model="selectedDay">
+                  <select
+                    class="form-control"
+                    v-model="selectedDay"
+                    @input="handleInputChange"
+                  >
                     <option v-for="day in weekDays" :key="day" :value="day">
                       {{ day }}
                     </option>
@@ -144,6 +152,7 @@
                     <select
                       class="form-control"
                       v-model="fetchInvoiceSetting.invoice_creation_period"
+                      @input="handleInputChange"
                     >
                       <option v-for="day in creation" :key="day" :value="day">
                         {{ day }}
@@ -174,6 +183,7 @@
                         type="checkbox"
                         id="togBtn"
                         v-model="fetchInvoiceSetting.invoice_hash"
+                        @input="handleInputChange"
                       />
                       <div class="slider round"></div>
                     </label>
@@ -187,6 +197,7 @@
                         type="checkbox"
                         id="togBtn"
                         v-model="fetchInvoiceSetting.enable_site_name_in_invoice"
+                        @input="handleInputChange"
                       />
                       <div class="slider round"></div>
                     </label>
@@ -276,6 +287,7 @@
                         type="checkbox"
                         id="togBtn"
                         v-model="fetchInvoiceSetting.reference_code"
+                        @input="handleInputChange"
                       />
                       <div class="slider round"></div>
                     </label>
@@ -296,6 +308,7 @@
                         type="checkbox"
                         id="togBtn"
                         v-model="fetchInvoiceSetting.NI_number_for_client"
+                        @input="handleInputChange"
                       />
                       <div class="slider round"></div>
                     </label>
@@ -317,6 +330,7 @@
                         type="checkbox"
                         id="togBtn"
                         v-model="fetchInvoiceSetting.NI_number_for_staff"
+                        @input="handleInputChange"
                       />
                       <div class="slider round"></div>
                     </label>
@@ -338,6 +352,7 @@
                         type="checkbox"
                         id="togBtn"
                         v-model="fetchInvoiceSetting.vat_number"
+                        @input="handleInputChange"
                       />
                       <div class="slider round"></div>
                     </label>
@@ -389,6 +404,7 @@
                         type="checkbox"
                         id="togBtn"
                         v-model="fetchInvoiceSetting.enable_booking_code"
+                        @input="handleInputChange"
                       />
                       <div class="slider round"></div>
                     </label>
@@ -410,6 +426,7 @@
                         type="checkbox"
                         id="togBtn"
                         v-model="fetchInvoiceSetting.break_time"
+                        @input="handleInputChange"
                       />
                       <div class="slider round"></div>
                     </label>
@@ -427,20 +444,33 @@
               <div class="col-12">
                 <div class="d-flex my-3" style="gap: 10%">
                   <div>Client Invoice Footer Note:</div>
-                  <div>
-                    <TextFormator
+                  <div style="width: 50%">
+                    <!-- <TextFormator
                       v-model="fetchInvoiceSetting.client_invoice_footer_note"
-                    />
+                    /> -->
+
+                    <textarea
+                      class="form-control"
+                      v-model="fetchInvoiceSetting.client_invoice_footer_note"
+                      @input="handleInputChange"
+                      rows="3"
+                    ></textarea>
                   </div>
                 </div>
               </div>
-              <div class="col-12">
+              <div class="col-12 mb-3">
                 <div class="d-flex my-3" style="gap: 10%">
                   <div>Staff Invoice Footer Note:</div>
-                  <div>
-                    <TextFormator
+                  <div style="width: 50%">
+                    <!-- <TextFormator
                       v-model="fetchInvoiceSetting.staff_invoice_footer_note"
-                    />
+                    /> -->
+                    <textarea
+                      class="form-control"
+                      v-model="fetchInvoiceSetting.staff_invoice_footer_note"
+                      @input="handleInputChange"
+                      rows="3"
+                    ></textarea>
                   </div>
                 </div>
               </div>
@@ -476,6 +506,7 @@ export default {
         "Saturday",
         "Sunday",
       ],
+      isModified: false,
       creation: ["Weekly", "Monthly"],
       selectedDay: "Monday",
       fetchInvoiceSetting: {
@@ -517,17 +548,20 @@ export default {
     ...mapState(["selectedTemplateClient", "selectedTemplateStaff"]),
   },
   methods: {
+    handleInputChange() {
+      this.isModified = true;
+    },
     updateTemplateStaff() {
       this.$store.commit(
         "setSelectedTemplateStaff",
         this.fetchInvoiceSetting.staff_invoice_template
-      ); // Updating staff template
+      );
     },
     updateTemplateClient() {
       this.$store.commit(
         "setSelectedTemplateClient",
         this.fetchInvoiceSetting.client_invoice_template
-      ); // Updating client template
+      );
     },
     validationNumber(value, maxLength) {
       let validatedValue = value.replace(/\D/g, "");
@@ -569,6 +603,7 @@ export default {
           ""
         );
       }
+      this.handleInputChange();
     },
 
     validateInvoiceTableHead() {
@@ -589,6 +624,7 @@ export default {
           ""
         );
       }
+      this.handleInputChange();
     },
     async fetchInvoiceSettingMethod() {
       try {
