@@ -177,7 +177,7 @@
                           id="selectBusinessUnit"
                           v-for="option in businessUnit"
                           :key="option.site_name"
-                          :value="option.id"
+                          :value="option.site_name"
                         >
                           {{ option.site_name }}
                         </option>
@@ -924,6 +924,7 @@ export default {
 
       this.makeFilterAPICall(filterType, value);
     },
+
     async makeFilterAPICall(filter_type, filter_value) {
       const requestData = {
         date: this.formattedStartDate,
@@ -944,7 +945,7 @@ export default {
         this.searchResults = response.data.data;
         this.vacancyList = response.data.vacancies;
 
-        this.fetchVacancyListMethod();
+        // this.fetchVacancyListMethod();
       } catch (error) {
         if (error.response && error.response.status === 404) {
           const errorMessages = error.response.data.error;

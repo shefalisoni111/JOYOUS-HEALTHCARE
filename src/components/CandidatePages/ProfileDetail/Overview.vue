@@ -48,7 +48,7 @@
                   <tr>
                     <td>Employment Type</td>
                     <td>:</td>
-                    <td>{{ getCandidatesDataInOverview.employ_type }}</td>
+                    <td>{{ getCandidatesDataInOverview.employment_type }}</td>
                   </tr>
 
                   <tr>
