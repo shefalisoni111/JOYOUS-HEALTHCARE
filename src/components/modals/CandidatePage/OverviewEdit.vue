@@ -140,8 +140,8 @@
 
                   <div class="col-12 mt-1">
                     <select id="selectOption" v-model="fetchCandidate.gender">
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
                     </select>
                   </div>
                 </div>
@@ -268,21 +268,21 @@ export default {
       this.getEmployeeTypeData();
     },
   },
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      vm.fetchCandidateOverviewMethod();
-      vm.getEmployeeTypeData();
-    });
-  },
-  beforeRouteUpdate(to, from, next) {
-    this.fetchCandidateOverviewMethod();
-    this.getEmployeeTypeData();
-    next();
-  },
-  // mounted() {
+  // beforeRouteEnter(to, from, next) {
+  //   next((vm) => {
+  //     vm.fetchCandidateOverviewMethod();
+  //     vm.getEmployeeTypeData();
+  //   });
+  // },
+  // beforeRouteUpdate(to, from, next) {
   //   this.fetchCandidateOverviewMethod();
   //   this.getEmployeeTypeData();
+  //   next();
   // },
+  mounted() {
+    this.fetchCandidateOverviewMethod();
+    this.getEmployeeTypeData();
+  },
 };
 </script>
 

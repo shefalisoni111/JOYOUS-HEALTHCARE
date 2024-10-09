@@ -330,37 +330,37 @@
                   <tr>
                     <td>ID</td>
 
-                    <td>...</td>
+                    <td>{{ getCandidatesDataInProfileTab.id }}</td>
                   </tr>
                   <tr>
                     <td>Address Prof</td>
 
-                    <td>...</td>
+                    <td>{{ getCandidatesDataInProfileTab.address_prof }}</td>
                   </tr>
                   <tr>
                     <td>NMC/NISCC/SSSC Pin</td>
 
-                    <td>...</td>
+                    <td>{{ getCandidatesDataInProfileTab.NMC_NISCC_SSSC_pin }}</td>
                   </tr>
                   <tr>
                     <td>Nationality</td>
 
-                    <td>...</td>
+                    <td>{{ getCandidatesDataInProfileTab.nationality }}</td>
                   </tr>
                   <tr>
                     <td>Date of Birth</td>
 
-                    <td>...</td>
+                    <td>{{ getCandidatesDataInProfileTab.date_of_birth }}</td>
                   </tr>
                   <tr>
                     <td>Place of Birth</td>
 
-                    <td>...</td>
+                    <td>{{ getCandidatesDataInProfileTab.place_of_birth }}</td>
                   </tr>
                   <tr>
                     <td>Gender</td>
 
-                    <td>...</td>
+                    <td>{{ getCandidatesDataInProfileTab.gender }}</td>
                   </tr>
                 </tbody>
                 <tbody
