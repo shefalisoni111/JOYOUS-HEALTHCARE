@@ -12,27 +12,18 @@
           <div class="modal-header">
             <h5 class="modal-title" id="SiteInvoiceTemplate">Select a Template</h5>
           </div>
-          <div class="modal-body mx-3">
-            <div class="row">
-              <div class="d-flex">
-                <div class="d-flex flex-column">
-                  <span>1</span>
-                  <img src="./signupimg.jpg" class="img-fluid w-75" />
-                </div>
-                <div class="d-flex flex-column">
-                  <span>2</span>
-                  <img src="./signupimg.jpg" class="img-fluid w-75" />
-                </div>
-                <div class="d-flex flex-column">
-                  <span>3</span>
-                  <img src="./signupimg.jpg" class="img-fluid w-75" />
-                </div>
-                <div class="d-flex flex-column">
-                  <span>4</span>
-                  <img src="./signupimg.jpg" class="img-fluid w-75" />
-                </div>
-              </div>
-            </div>
+          <div class="modal-body">
+            <ul class="list-group">
+              <li
+                v-for="template in invoiceTemplates"
+                :key="template.id"
+                class="list-group-item"
+              >
+                <button class="btn btn-link" @click="selectTemplate(template)">
+                  {{ template.name }}
+                </button>
+              </li>
+            </ul>
           </div>
           <div class="modal-footer">
             <button
@@ -57,12 +48,21 @@ import axios from "axios";
 export default {
   name: "InvoiceTemplate",
   data() {
-    return {};
+    return {
+      invoiceTemplates: [
+        { id: 1, name: "Invoice Template 1" },
+        { id: 2, name: "Invoice Template 2" },
+        { id: 3, name: "Invoice Template 3" },
+      ],
+      selectedTemplate: null,
+    };
   },
-  components: {},
-  computed: {},
-  watch: {},
-  methods: {},
+  methods: {
+    selectTemplate(template) {
+      this.selectedTemplate = template;
+      console.log("Selected template:", template);
+    },
+  },
 };
 </script>
 
