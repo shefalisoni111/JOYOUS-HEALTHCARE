@@ -43,12 +43,12 @@
                     </div>
                   </div>
                   <div class="row align-items-center mt-3 ms-3">
-                    <div class="col-1">
+                    <div class="col-2">
                       <label for="body" class="col-form-label"></label>
                     </div>
-                    <div class="col-11 ms-5 p-0" style="margin-left: 90px">
+                    <div class="col-10 ms-5 p-0" style="margin-left: 90px">
                       <!-- <TextFormator v-model="body" /> -->
-                      <div style="width: 50%">
+                      <div style="width: 100%; margin-left: 13.3%">
                         <textarea
                           class="form-control"
                           v-model="body"

@@ -48,12 +48,14 @@
                     </div>
                     <div class="col-11 ms-5 p-0" style="margin-left: 90px">
                       <!-- <TextFormator :key="body" v-model="body" /> -->
-                      <textarea
-                        class="form-control"
-                        v-model="body"
-                        @input="handleInputChange"
-                        rows="3"
-                      ></textarea>
+                      <div style="width: 100%; margin-left: 13.3%">
+                        <textarea
+                          class="form-control"
+                          v-model="body"
+                          @input="handleInputChange"
+                          rows="3"
+                        ></textarea>
+                      </div>
                     </div>
                   </div>
                   <div class="row align-items-center mt-3">
