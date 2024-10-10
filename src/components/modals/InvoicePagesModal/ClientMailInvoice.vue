@@ -26,7 +26,11 @@
                         id="mailto"
                         class="form-control"
                         v-model="email"
+                        :class="{ 'is-invalid': email && !isValidEmail(email) }"
                       />
+                      <div v-if="email && !isValidEmail(email)" class="text-danger">
+                        Please enter a valid email address.
+                      </div>
                     </div>
                   </div>
                   <div class="row align-items-center mt-3">
@@ -104,6 +108,7 @@
                     class="btn btn-primary rounded-1 text-capitalize fw-medium"
                     data-bs-dismiss="modal"
                     v-on:click="sendInvoice()"
+                    :disabled="!isFormValid"
                   >
                     <i class="bi bi-send"></i>
                     Send
@@ -139,7 +144,21 @@ export default {
       signAttachments: null,
     };
   },
+  computed: {
+    isFormValid() {
+      return (
+        this.isValidEmail(this.email) &&
+        this.subject &&
+        this.body &&
+        this.attachments.length > 0
+      );
+    },
+  },
   methods: {
+    isValidEmail(email) {
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk)$/;
+      return emailPattern.test(email);
+    },
     handleFileUpload(event) {
       this.attachments = Array.from(event.target.files);
     },
