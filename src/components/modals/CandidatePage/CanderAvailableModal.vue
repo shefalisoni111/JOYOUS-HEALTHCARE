@@ -2,17 +2,7 @@
   <div class="nested-calendar" id="nested-calendar">
     <div class="nested-calendar-content">
       <div class="calendar-header d-flex justify-content-between my-3">
-        <div class="d-flex">
-          <!-- <button class="btn btn-primary" @click="goToPreviousMonth">
-            <i class="bi bi-caret-left-fill"></i>
-          </button> -->
-          <!-- <div class="current-month d-flex align-items-center">
-            {{ selectedMonth }}
-          </div> -->
-          <!-- <button class="btn btn-primary" @click="goToNextMonth">
-            <i class="bi bi-caret-right-fill"></i>
-          </button> -->
-        </div>
+        <div class="d-flex"></div>
         <div>
           <ul class="list-inline">
             <li class="list-inline-item">E- Early</li>
@@ -97,12 +87,15 @@
       <button class="btn btn-primary" @click="handleButtonClick">Add Availability</button>
     </div>
     <SuccessAlert ref="successAlert" />
+    <NotSuccessAlertVue ref="dangerAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+import NotSuccessAlertVue from "../../Alerts/NotSuccessAlert.vue";
+
 import { ref } from "vue";
 export default {
   props: {
@@ -144,6 +137,7 @@ export default {
   },
   components: {
     SuccessAlert,
+    NotSuccessAlertVue,
   },
   created() {
     this.candidate_id = this.candidateId;
@@ -275,22 +269,6 @@ export default {
       this.closeNestedCalendar();
     },
 
-    // goToPreviousMonth() {
-    //   this.currentDate = new Date(
-    //     this.currentDate.getFullYear(),
-    //     this.currentDate.getMonth() - 1,
-    //     1
-    //   );
-    //   this.updateCurrentMonth(this.currentDate);
-    // },
-    // goToNextMonth() {
-    //   this.currentDate = new Date(
-    //     this.currentDate.getFullYear(),
-    //     this.currentDate.getMonth() + 1,
-    //     1
-    //   );
-    //   this.updateCurrentMonth(this.currentDate);
-    // },
     closeNestedCalendar() {
       this.$emit("closeModal");
     },
@@ -336,7 +314,6 @@ export default {
         this.availability_id = null;
       }
 
-      // console.log(this.availability_id);
       const dayData = this.calendarData.find((data) => data.date === selectedDate);
       if (dayData) {
         dayData.shifts = dayData.shifts || {};
@@ -364,11 +341,7 @@ export default {
         if (isNaN(parsedDate)) {
           return;
         }
-        // const currentDate = new Date();
-        // if (parsedDate < currentDate) {
-        //   alert("Error: Date must be greater than or equal to today's date.");
-        //   return;
-        // }
+
         const formattedDate = parsedDate.toLocaleDateString("en-CA", {
           year: "numeric",
           month: "2-digit",
@@ -423,8 +396,9 @@ export default {
             // this.$emit("availability-updated");
             const message = "Availability updated successfully";
             this.$refs.successAlert.showSuccess(message);
-            await this.fetchCandidateList(this.startDate);
+
             this.errorMessage = "";
+            await this.fetchCandidateList(this.startDate);
             return;
           } else {
             return;
@@ -472,8 +446,10 @@ export default {
             const message = "Availability added successfully";
             // console.log("Showing success message:", message);
             this.$refs.successAlert.showSuccess(message);
-            await this.fetchCandidateList(this.startDate);
+
             this.errorMessage = "";
+            await this.fetchCandidateList(this.startDate);
+
             return;
           } else {
             return;
@@ -492,9 +468,12 @@ export default {
               "Failed to create availability: ",
               ""
             );
+            // this.$refs.dangerAlert(` ${errorMessage}`);
+
             alert(`Error: ${errorMessage}`);
           } else if (errorData && errorData.date) {
             alert(`Error: ${errorData.date[0]}`);
+            // this.$refs.dangerAlert.showSuccess(` ${errorMessage}`);
           } else {
             // alert("An error occurred while updating/adding availability.");
           }

@@ -339,7 +339,7 @@
                       </td>
                     </tr>
 
-                    <tr v-for="data in paginateCandidates" :key="data.id">
+                    <tr v-for="data in candidateList" :key="data.id">
                       <div
                         class="text-capitalize fw-bold"
                         style="border-right: 1px solid rgb(209, 208, 208)"
@@ -725,7 +725,7 @@
       >&nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= candidateList.length"
+        :disabled="currentPage * itemsPerPage >= candidateList?.length"
         @click="currentPage++"
       >
         Next
@@ -776,9 +776,7 @@ export default {
       dropDay: null,
       droppedContent: null,
       currentPage: 1,
-      totalPages: 1,
       itemsPerPage: 10,
-      totalCount: 0,
       options: [],
       job_id: "",
       site_id: "",
@@ -934,6 +932,7 @@ export default {
           `${VITE_API_URL}/candidates_availability_vacancies`,
           {
             params: {
+              currentPage: this.currentPage,
               filter_type: filter_type,
               filter_value: filter_value,
               date: this.formattedStartDate,
@@ -1378,13 +1377,14 @@ export default {
       try {
         const requestData = {
           date: this.formattedStartDate,
+          currentPage: this.currentPage,
+          per_page: this.itemsPerPage,
         };
 
         const response = await axios.get(
           `${VITE_API_URL}/candidates_availability_vacancies`,
           {
             params: requestData,
-            per_page: this.itemsPerPage,
           }
         );
         this.candidateList = response.data.data;

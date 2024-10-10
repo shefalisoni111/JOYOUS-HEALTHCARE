@@ -26,6 +26,7 @@
           <div class="col-sm-12 col-md-7">
             <div
               class="text-muted bg-white p-3"
+              ref="invoiceContent"
               style="border: 1px solid #f8f8f8; box-shadow: 2px 2px 7px 2px #e7d7d7"
             >
               <div class="">
@@ -186,7 +187,7 @@
                   <button
                     type="button"
                     class="btn btn-outline-success text-nowrap text-nowrap"
-                    @click="generatePDF"
+                    @mousedown="downloadFile"
                   >
                     <i class="bi bi-file-earmark-pdf"></i> PDF
                   </button>
@@ -228,6 +229,9 @@ import ClientMailInvoice from "../modals/InvoicePagesModal/ClientMailInvoice.vue
 import CandidateMail from "../modals/InvoicePagesModal/CandidateMail.vue";
 import EditStaffInvoiceTemplate from "../InvoicePages/TemplatesDesign/EditStaffInvoiceTemplate.vue";
 import StaffInvoiceViewEdit from "../InvoicePages/TemplatesDesign/StaffInvoiceViewEdit.vue";
+import DOMPurify from "dompurify";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 
 export default {
   data() {
@@ -236,6 +240,7 @@ export default {
       getClientInvoiceDetail: [],
       isEditMode: false,
       agencySetting: [],
+      rawContent: "",
     };
   },
   components: {
@@ -243,9 +248,65 @@ export default {
     CandidateMail,
     EditStaffInvoiceTemplate,
     StaffInvoiceViewEdit,
+    DOMPurify,
+    html2canvas,
+    jsPDF,
   },
   computed: {},
   methods: {
+    async downloadFile() {
+      await this.$nextTick();
+
+      const element = this.$refs.invoiceContent;
+
+      if (!element) {
+        console.error("Element not found");
+        return;
+      }
+
+      const sanitizedHTML = DOMPurify.sanitize(element.innerHTML || "");
+
+      let trustedHTML = sanitizedHTML;
+
+      if (
+        typeof window.trustedTypes !== "undefined" &&
+        typeof window.trustedTypes.getPolicy === "function"
+      ) {
+        let policy = window.trustedTypes.getPolicy("default");
+
+        if (!policy && typeof window.trustedTypes.createPolicy === "function") {
+          policy = window.trustedTypes.createPolicy("default", {
+            createHTML: (input) => DOMPurify.sanitize(input),
+          });
+        }
+
+        if (policy) {
+          trustedHTML = policy.createHTML(sanitizedHTML);
+        }
+      }
+
+      try {
+        const canvas = await html2canvas(element, {
+          useCORS: true,
+          allowTaint: false,
+          logging: true,
+          backgroundColor: null,
+        });
+
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF();
+
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const imgWidth = pageWidth;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+        pdf.save("Staff_invoice.pdf");
+      } catch (error) {
+        // console.error("Error downloading the file:", error);
+      }
+    },
     formatDate(date) {
       const d = new Date(date);
       let day = d.getDate();
@@ -257,25 +318,25 @@ export default {
 
       return `${day}-${month}-${year}`;
     },
-    async generatePDF() {
-      try {
-        const response = await axios.get(
-          `${VITE_API_URL}/generate_staff_pdf/${this.$route.params.id}`,
-          {
-            responseType: "blob",
-          }
-        );
+    // async generatePDF() {
+    //   try {
+    //     const response = await axios.get(
+    //       `${VITE_API_URL}/generate_staff_pdf/${this.$route.params.id}`,
+    //       {
+    //         responseType: "blob",
+    //       }
+    //     );
 
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", `invoice_${this.$route.params.id}.pdf`);
-        document.body.appendChild(link);
-        link.click();
-      } catch (error) {
-        // console.error("Error generating PDF:", error);
-      }
-    },
+    //     const url = window.URL.createObjectURL(new Blob([response.data]));
+    //     const link = document.createElement("a");
+    //     link.href = url;
+    //     link.setAttribute("download", `invoice_${this.$route.params.id}.pdf`);
+    //     document.body.appendChild(link);
+    //     link.click();
+    //   } catch (error) {
+    //     // console.error("Error generating PDF:", error);
+    //   }
+    // },
     handleEditClick() {
       if (!this.getClientInvoiceDetail.invoice_lock) {
         this.toggleEditMode(this.getClientInvoiceDetail.id);
