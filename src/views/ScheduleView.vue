@@ -107,6 +107,7 @@
                         v-model="availability_id"
                         for="SelectAvailability"
                         class="form-select"
+                        @change="filterData($event.target.value, 'availablity')"
                       >
                         <option value="" selected for="SelectAvailability">
                           All Availability
@@ -137,7 +138,7 @@
                         v-model="job_id"
                         for="selectJobTitle"
                         class="form-select"
-                        @change="filterData($event.target.value, 'job_title')"
+                        @change="filterData($event.target.value, 'job')"
                       >
                         <option value="" selected>Select Jobs</option>
                         <option
@@ -203,7 +204,7 @@
                         v-model="site_id"
                         for="selectShifts"
                         class="form-select"
-                        @change="filterData($event.target.value, 'site')"
+                        @change="filterData($event.target.value, 'shift')"
                       >
                         <option value="" selected>All Shift</option>
                         <option
@@ -233,7 +234,7 @@
                   <div>
                     <div class="filters" v-show="isOpen">
                       <select
-                        @change="filterData($event.target.value, 'publish')"
+                        @change="filterData($event.target.value, 'status')"
                         v-model="publish"
                         for="selectPublishStatus"
                         class="form-select"
@@ -282,7 +283,7 @@
                     </tr>
                   </thead>
 
-                  <tbody>
+                  <tbody v-if="paginateCandidates?.length > 0">
                     <tr>
                       <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
                       <td>
@@ -450,6 +451,18 @@
                         </div>
                       </td>
                     </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr v-if="!isLoading">
+                      <td colspan="7" class="text-danger text-center fw-bold">
+                        {{ "No records found." }}
+                      </td>
+                    </tr>
+                    <!-- <tr v-else>
+                      <td colspan="8" class="text-danger text-center">
+                        {{ errorMessageCustom }}
+                      </td>
+                    </tr> -->
                   </tbody>
                 </table>
                 <loader :isLoading="isLoading"></loader>
@@ -725,7 +738,7 @@
       >&nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= candidateList.length"
+        :disabled="currentPage * itemsPerPage >= candidateList?.length"
         @click="currentPage++"
       >
         Next
@@ -776,9 +789,7 @@ export default {
       dropDay: null,
       droppedContent: null,
       currentPage: 1,
-      totalPages: 1,
       itemsPerPage: 10,
-      totalCount: 0,
       options: [],
       job_id: "",
       site_id: "",
@@ -898,25 +909,29 @@ export default {
     },
     filterData(value, filterType) {
       switch (filterType) {
-        case "job_title":
-          this.site_id = "";
-          this.site_shift = "";
-          this.publish = "";
+        case "job":
+          // this.site_id = "";
+          // this.site_shift = "";
+          // this.publish = "";
           break;
         case "site":
-          this.job_id = "";
-          this.site_shift = "";
-          this.publish = "";
+          // this.job_id = "";
+          // this.site_shift = "";
+          // this.publish = "";
           break;
-        case "site_shift":
-          this.job_id = "";
-          this.site_id = "";
-          this.publish = "";
+        case "shift":
+          // this.job_id = "";
+          // this.site_id = "";
+          // this.publish = "";
           break;
-        case "publish":
-          this.job_id = "";
-          this.site_id = "";
-          this.site_shift = "";
+        case "status":
+        // this.job_id = "";
+        // this.site_id = "";
+        // this.site_shift = "";
+        case "availablity":
+          // this.job_id = "";
+          // this.site_id = "";
+          // this.site_shift = "";
           break;
         default:
           break;
@@ -934,6 +949,7 @@ export default {
           `${VITE_API_URL}/candidates_availability_vacancies`,
           {
             params: {
+              currentPage: this.currentPage,
               filter_type: filter_type,
               filter_value: filter_value,
               date: this.formattedStartDate,
@@ -1378,13 +1394,14 @@ export default {
       try {
         const requestData = {
           date: this.formattedStartDate,
+          currentPage: this.currentPage,
+          per_page: this.itemsPerPage,
         };
 
         const response = await axios.get(
           `${VITE_API_URL}/candidates_availability_vacancies`,
           {
             params: requestData,
-            per_page: this.itemsPerPage,
           }
         );
         this.candidateList = response.data.data;

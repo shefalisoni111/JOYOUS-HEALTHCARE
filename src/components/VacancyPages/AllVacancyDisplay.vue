@@ -50,7 +50,10 @@
                 </span>
               </td>
 
-              <td v-text="getdata.shift.replace(/_/g, ' ')" class="widthDefine"></td>
+              <td
+                v-text="getdata.shift ? getdata.shift.replace(/_/g, ' ') : ' '"
+                class="widthDefine"
+              ></td>
               <td class="withShow text-center">
                 {{ getdata.staff_required === null ? 0 : getdata.staff_required }}
               </td>
@@ -329,21 +332,7 @@ export default {
       this.currentPage = 1;
       this.createVacancy();
     },
-    reActivatedMethod(id) {
-      if (!window.confirm("Are you sure you want to re-activate?")) {
-        return;
-      }
-      axios
-        .put(`${VITE_API_URL}/active_vacancy/${id}`)
-        .then((response) => {
-          this.inactiveCandidateData = response.data;
-          this.getInactiveVacancyMethod();
-          alert("Successful Reactivate");
-        })
-        .catch((error) => {
-          // console.error("Error reactivating vacancy:", error);
-        });
-    },
+
     getPadding(value) {
       if (value == null) {
         return "8px 8px";
@@ -398,32 +387,7 @@ export default {
     openPublished(id) {
       this.$store.commit("setSelectedPublishedItemId", id);
     },
-    async vacancyInactiveMethod(id) {
-      if (!window.confirm("Are you Sure ?")) {
-        return;
-      }
-      const token = localStorage.getItem("token");
 
-      const isInactive = this.getVacancyDetail.find(
-        (vacancy) => vacancy.id === id && vacancy.activated === false
-      );
-
-      if (isInactive) {
-        alert("Vacancy already Inactive");
-        return;
-      }
-      await axios
-        .put(`${VITE_API_URL}/inactive_vacancy/` + id, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: "bearer " + token,
-          },
-        })
-        .then((response) => {
-          this.createVacancy();
-        });
-      alert("InActive Vacancy");
-    },
     async vacancyActiveMethod(id) {
       if (!window.confirm("Are you Sure ?")) {
         return;
@@ -492,8 +456,8 @@ export default {
 
   //   next();
   // },
-  created() {
-    this.createVacancy();
+  async created() {
+    await this.createVacancy();
   },
 };
 </script>

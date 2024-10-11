@@ -752,12 +752,12 @@ export default {
         );
         this.getSiteReportData = response.data.timesheets || [];
         if (response.status === 200 && this.getSiteReportData.length === 0) {
-          this.errorMessageCustom = `Timesheet No available for this month`;
+          this.errorMessageCustom = `Data No available for this month`;
         } else {
           this.errorMessageCustom = "";
         }
       } catch (error) {
-        this.errorMessageCustom = "Error fetching timesheet data.";
+        this.errorMessageCustom = "Error fetching data.";
       } finally {
         this.isLoading = false;
       }

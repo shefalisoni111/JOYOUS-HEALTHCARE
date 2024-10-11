@@ -62,7 +62,7 @@
                   <i class="bi bi-person-circle"></i>
                 </button>
               </td>
-              <td>{{ formatDate(candidate.last_login) }}</td>
+              <td>{{ formatDate(candidate.last_login ? candidate.last_login : " ") }}</td>
               <td class="cursor-pointer">
                 <router-link
                   class="btn btn-outline-success text-nowrap"
@@ -212,9 +212,7 @@ export default {
       this.getCandidateMethods();
     },
     formatDate(dateString) {
-      if (!dateString) {
-        return "null";
-      }
+      if (dateString === " ") return " ";
 
       const date = new Date(dateString);
       const day = date.getDate();
