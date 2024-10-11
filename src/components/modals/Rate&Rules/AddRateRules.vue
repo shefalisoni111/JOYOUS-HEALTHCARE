@@ -167,7 +167,6 @@
                           >
                             <option value="Hourly">Hourly</option>
                             <option value="Monthly">Monthly</option>
-                            <option value="Yearly">Yearly</option>
                           </select>
                         </div>
 
@@ -324,7 +323,6 @@
                           >
                             <option value="Hourly">Hourly</option>
                             <option value="Monthly">Monthly</option>
-                            <option value="Yearly">Yearly</option>
                           </select>
                         </div>
 
@@ -369,7 +367,6 @@
                           >
                             <option value="Hourly">Hourly</option>
                             <option value="Monthly">Monthly</option>
-                            <option value="Yearly">Yearly</option>
                           </select>
                         </div>
 
@@ -570,7 +567,6 @@
                           >
                             <option value="Hourly">Hourly</option>
                             <option value="Monthly">Monthly</option>
-                            <option value="Yearly">Yearly</option>
                           </select>
                         </div>
 
@@ -721,7 +717,6 @@
                           >
                             <option value="Hourly">Hourly</option>
                             <option value="Monthly">Monthly</option>
-                            <option value="Yearly">Yearly</option>
                           </select>
                         </div>
 
@@ -766,7 +761,6 @@
                           >
                             <option value="Hourly">Hourly</option>
                             <option value="Monthly">Monthly</option>
-                            <option value="Yearly">Yearly</option>
                           </select>
                         </div>
 
