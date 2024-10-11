@@ -645,11 +645,11 @@ export default {
             start_time: this.fetchVacancy.start_time,
             end_time: this.fetchVacancy.end_time,
             break: this.fetchVacancy.break,
-            staff_rate: this.staff_rate,
-            client_rate: this.client_rate,
-            paye: this.paye,
-            umbrella: this.umbrella,
-            private_limited: this.private_limited,
+            staff_rate: this.fetchVacancy.staff_rate,
+            client_rate: this.fetchVacancy.client_rate,
+            paye: this.fetchVacancy.paye,
+            umbrella: this.fetchVacancy.umbrella,
+            private_limited: this.fetchVacancy.private_limited,
           },
           {
             headers: {
