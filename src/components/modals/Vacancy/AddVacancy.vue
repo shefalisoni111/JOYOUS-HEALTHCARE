@@ -674,8 +674,10 @@ export default {
                 "Please create rate for this client, job and site shift."
               );
             }
+            this.clearFieldsData();
           }
         } catch (error) {
+          this.clearFieldsData();
           this.clearFields();
           setTimeout(() => {
             this.clearError();
