@@ -71,7 +71,7 @@
                     <label class="form-label" for="selectJobTitle">Job Title</label>
                   </div>
                   <div class="col-10">
-                    <select v-model="job_id" id="selectJobTitle">
+                    <select v-model="job_id" id="selectJobTitle" @change="onJobSelect">
                       <option
                         v-for="option in options"
                         :key="option.id"
@@ -259,30 +259,106 @@
                     </span> -->
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label" for="selectShiftStart">Client Rate</label>
-                  </div>
-                  <div class="col-10">
-                    <select
-                      id="selectShiftStart"
-                      class="form-select w-25"
-                      v-model="client_rate"
-                    >
-                      <option value="" disabled>Select Client Rate</option>
-                      <option
-                        v-for="(rate, index) in formattedClientRates"
-                        :key="index"
-                        :value="rate"
+                <div class="mb-3 d-flex justify-content-between gap-1">
+                  <div class="">
+                    <div class="">
+                      <label class="form-label" for="clientRate">Client Rate</label>
+                    </div>
+                    <div class="">
+                      <input
+                        type="number"
+                        class="form-control w-100"
+                        v-model="client_rate"
+                        @input="validateRate('client_rate', client_rate)"
+                        @keydown.prevent
+                      />
+                      <span
+                        v-if="!validationClientRate && client_rate"
+                        class="text-danger"
                       >
-                        {{ formatRate(rate) }}
-                      </option>
-                    </select>
-                    <!-- <span v-if="!validationStartTime && !start_time" class="text-danger"
-                      >Start Time is required</span
-                    > -->
+                        Client Rate must be greater than 0
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="">
+                    <div class="">
+                      <label class="form-label" for="staffRate">Staff Rate</label>
+                    </div>
+                    <div class="">
+                      <input
+                        type="number"
+                        class="form-control w-100"
+                        v-model="staff_rate"
+                        @input="validateRate('staff_rate', staff_rate)"
+                        @keydown.prevent
+                      />
+                      <span v-if="!validationStaffRate && staff_rate" class="text-danger">
+                        Staff Rate must be greater than 0
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="">
+                    <div class="">
+                      <label class="form-label" for="umbrella">Umbrella</label>
+                    </div>
+                    <div class="">
+                      <input
+                        type="number"
+                        class="form-control w-100"
+                        v-model="umbrella"
+                        @input="validateRate('umbrella', umbrella)"
+                        @keydown.prevent
+                      />
+                      <span v-if="!validationUmbrella && umbrella" class="text-danger">
+                        Umbrella must be greater than 0
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="">
+                    <div class="">
+                      <label class="form-label" for="paye">Paye</label>
+                    </div>
+                    <div class="">
+                      <input
+                        type="number"
+                        class="form-control w-100"
+                        v-model="paye"
+                        @input="validateRate('paye', paye)"
+                        @keydown.prevent
+                      />
+                      <span v-if="!validationPaye && paye" class="text-danger">
+                        Paye must be greater than 0
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="">
+                    <div class="">
+                      <label class="form-label" for="privateLimited"
+                        >Private Limited</label
+                      >
+                    </div>
+                    <div class="">
+                      <input
+                        type="number"
+                        class="form-control w-100"
+                        v-model="private_limited"
+                        @input="validateRate('private_limited', private_limited)"
+                        @keydown.prevent
+                      />
+                      <span
+                        v-if="!validationPrivateLimited && private_limited"
+                        class="text-danger"
+                      >
+                        Private Limited must be greater than 0
+                      </span>
+                    </div>
                   </div>
                 </div>
+
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label class="form-label" for="selectShifts">Staff Required</label>
@@ -372,13 +448,23 @@ export default {
       validationShift: true,
       validationStaffRequired: true,
       validationDateType: true,
+      validationStaffRate: true,
+      private_limited: null,
+      validationClientRate: true,
+      validationStaffRate: true,
+      validationUmbrella: true,
+      validationPaye: true,
+      validationPrivateLimited: true,
       start_time: null,
       end_time: null,
       break: null,
 
-      client_rate: "",
-      clientRates: ["self_employed", "umbrella", "paye", "private_limited"],
-      staff_rate: [],
+      client_rate: null,
+
+      staff_rate: null,
+      umbrella: null,
+      paye: null,
+      private_limited: null,
       site_id: "",
       client_id: "",
       clientData: [],
@@ -386,6 +472,7 @@ export default {
       options: [],
       businessUnit: [],
       dates: [],
+      fetchRatesData: [],
       site_shift_id: "",
       shiftsTime: [],
       notes: "",
@@ -476,7 +563,21 @@ export default {
     notes: function (newValue) {
       this.validationNotesText = this.ValidationNotes(newValue);
     },
-
+    client_rate(newValue) {
+      this.validateRate("client_rate", newValue);
+    },
+    staff_rate(newValue) {
+      this.validateRate("staff_rate", newValue);
+    },
+    umbrella(newValue) {
+      this.validateRate("umbrella", newValue);
+    },
+    paye(newValue) {
+      this.validateRate("paye", newValue);
+    },
+    private_limited(newValue) {
+      this.validateRate("private_limited", newValue);
+    },
     isFormValid: function (newVal) {
       this.isValidForm = newVal;
     },
@@ -484,6 +585,21 @@ export default {
   methods: {
     formatRate(rate) {
       return rate.replace(/_/g, " ");
+    },
+    validateAllRates() {
+      this.validateRate("client_rate", this.client_rate);
+      this.validateRate("staff_rate", this.staff_rate);
+      this.validateRate("umbrella", this.umbrella);
+      this.validateRate("paye", this.paye);
+      this.validateRate("private_limited", this.private_limited);
+    },
+    validateRate(field, value) {
+      if (value <= 0) {
+        this[field] = null;
+        this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = false;
+      } else {
+        this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = true;
+      }
     },
     handleShiftChange() {
       const selectedShift = this.shiftsTime.find(
@@ -583,10 +699,24 @@ export default {
 
       this.getJobTitleMethod(selectedClientId);
       this.getSiteAccordingClientMethod(selectedClientId);
+      this.getClientAccordingRatePayFetchMethod(
+        this.client_id,
+        this.site_id,
+        this.job_id
+      );
     },
-    onSiteSelect() {
+    async onSiteSelect() {
       const selectedSiteId = this.site_id;
+      // const siteShiftId = await this.getTimeShift(selectedSiteId);
       this.getTimeShift(selectedSiteId);
+      this.getClientAccordingRatePayFetchMethod(this.client_id, siteShiftId, this.job_id);
+    },
+    onJobSelect() {
+      this.getClientAccordingRatePayFetchMethod(
+        this.client_id,
+        this.site_id,
+        this.job_id
+      );
     },
     validateStaffRequired() {
       if (this.staff_required <= 0) {
@@ -681,6 +811,9 @@ export default {
           break: this.break,
           staff_rate: this.staff_rate,
           client_rate: this.client_rate,
+          paye: this.paye,
+          umbrella: this.umbrella,
+          private_limited: this.private_limited,
         };
 
         try {
@@ -756,6 +889,43 @@ export default {
         }
       }
     },
+    async getClientAccordingRatePayFetchMethod(client_id, site_shift_id, job_id) {
+      const params = {
+        job_id: job_id,
+        client_id: client_id,
+        site_shift_id: site_shift_id,
+      };
+
+      try {
+        const response = await axios.get(`${VITE_API_URL}/find_rates`, { params });
+        this.fetchRatesData = response.data.rates;
+        console.log(this.fetchRatesData);
+
+        // Assuming the response returns rates as an array, update the rate fields accordingly
+        if (this.fetchRatesData.length > 0) {
+          const rates = this.fetchRatesData[0]; // Get the first rate entry
+          this.client_rate = rates.client_rate;
+          this.staff_rate = rates.staff_rate;
+          this.umbrella = rates.umbrella_rate;
+          this.paye = rates.paye_rate;
+          this.private_limited = rates.private_limited_rate;
+        } else {
+          // Handle case where no rates are returned
+          this.client_rate = "";
+          this.staff_rate = "";
+          this.umbrella = "";
+          this.paye = "";
+          this.private_limited = "";
+        }
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status === 404) {
+            // Handle the 404 error here (e.g., display an alert)
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
     async getBusinessUnitMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/activated_site`);
@@ -811,6 +981,7 @@ export default {
             start_time: this.convertTimeFormat(shift.start_time),
             end_time: this.convertTimeFormat(shift.end_time),
           })) || [];
+        // return this.shiftsTime.length > 0 ? this.shiftsTime[0].id : null;
       } catch (error) {
         // console.error("Error fetching shifts:", error);
       }

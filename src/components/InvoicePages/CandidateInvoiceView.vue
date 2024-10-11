@@ -240,7 +240,6 @@ export default {
       getClientInvoiceDetail: [],
       isEditMode: false,
       agencySetting: [],
-      rawContent: "",
     };
   },
   components: {
@@ -260,30 +259,13 @@ export default {
       const element = this.$refs.invoiceContent;
 
       if (!element) {
-        console.error("Element not found");
+        // console.error("Element not found");
         return;
       }
 
       const sanitizedHTML = DOMPurify.sanitize(element.innerHTML || "");
 
       let trustedHTML = sanitizedHTML;
-
-      if (
-        typeof window.trustedTypes !== "undefined" &&
-        typeof window.trustedTypes.getPolicy === "function"
-      ) {
-        let policy = window.trustedTypes.getPolicy("default");
-
-        if (!policy && typeof window.trustedTypes.createPolicy === "function") {
-          policy = window.trustedTypes.createPolicy("default", {
-            createHTML: (input) => DOMPurify.sanitize(input),
-          });
-        }
-
-        if (policy) {
-          trustedHTML = policy.createHTML(sanitizedHTML);
-        }
-      }
 
       try {
         const canvas = await html2canvas(element, {

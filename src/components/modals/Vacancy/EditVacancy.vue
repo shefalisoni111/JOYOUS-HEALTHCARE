@@ -88,7 +88,7 @@
                       <div class="col-10 position-relative">
                         <input
                           type="date"
-                          class="form-control"
+                          class="form-select"
                           :value="formatDate(date)"
                           @input="updateDate($event.target.value, index)"
                         />
@@ -197,6 +197,97 @@
                       </select>
                     </div>
                   </div>
+                  <div class="mb-3 d-flex justify-content-between gap-1">
+                    <div>
+                      <label class="form-label" for="clientRate">Client Rate</label>
+                      <input
+                        type="number"
+                        class="form-control w-100"
+                        v-model="fetchVacancy.client_rate"
+                        @input="validateRate('client_rate', fetchVacancy.client_rate)"
+                        @keydown.prevent
+                      />
+                      <span
+                        v-if="!validationClientRate && fetchVacancy.client_rate"
+                        class="text-danger"
+                      >
+                        Client Rate must be greater than 0
+                      </span>
+                    </div>
+
+                    <div>
+                      <label class="form-label" for="staffRate">Staff Rate</label>
+                      <input
+                        type="number"
+                        class="form-control w-100"
+                        v-model="fetchVacancy.staff_rate"
+                        @input="validateRate('staff_rate', fetchVacancy.staff_rate)"
+                        @keydown.prevent
+                      />
+                      <span
+                        v-if="!validationStaffRate && fetchVacancy.staff_rate"
+                        class="text-danger"
+                      >
+                        Staff Rate must be greater than 0
+                      </span>
+                    </div>
+
+                    <div>
+                      <label class="form-label" for="umbrella">Umbrella</label>
+                      <input
+                        type="number"
+                        class="form-control w-100"
+                        v-model="fetchVacancy.umbrella"
+                        @input="validateRate('umbrella', fetchVacancy.umbrella)"
+                        @keydown.prevent
+                      />
+                      <span
+                        v-if="!validationUmbrella && fetchVacancy.umbrella"
+                        class="text-danger"
+                      >
+                        Umbrella must be greater than 0
+                      </span>
+                    </div>
+
+                    <div>
+                      <label class="form-label" for="paye">Paye</label>
+                      <input
+                        type="number"
+                        class="form-control w-100"
+                        v-model="fetchVacancy.paye"
+                        @input="validateRate('paye', fetchVacancy.paye)"
+                        @keydown.prevent
+                      />
+                      <span
+                        v-if="!validationPaye && fetchVacancy.paye"
+                        class="text-danger"
+                      >
+                        Paye must be greater than 0
+                      </span>
+                    </div>
+
+                    <div>
+                      <label class="form-label" for="privateLimited"
+                        >Private Limited</label
+                      >
+                      <input
+                        type="number"
+                        class="form-control w-100"
+                        v-model="fetchVacancy.private_limited"
+                        @input="
+                          validateRate('private_limited', fetchVacancy.private_limited)
+                        "
+                        @keydown.prevent
+                      />
+                      <span
+                        v-if="!validationPrivateLimited && fetchVacancy.private_limited"
+                        class="text-danger"
+                      >
+                        Private Limited must be greater than 0
+                      </span>
+                    </div>
+                  </div>
+
                   <div class="mb-3 d-flex justify-content-between">
                     <div class="col-2">
                       <label class="form-label">Staff Required</label>
@@ -204,38 +295,34 @@
                     <div class="col-10">
                       <input
                         type="number"
-                        class="form-control w-25"
+                        class="form-select w-25"
                         v-model="fetchVacancy.staff_required"
                         @input="validateStaffRequired"
                         @keydown.prevent
                       />
                     </div>
                   </div>
-                  <div class="mb-3 d-flex justify-content-between">
+                  <!-- <div class="mb-3 d-flex justify-content-between">
                     <div class="col-2">
                       <label class="form-label">Client Rate</label>
                     </div>
                     <div class="col-10">
                       <input
                         type="number"
-                        class="form-control w-25"
+                        class="form-select w-25"
                         v-model="fetchVacancy.client_rate"
                         @input="validateStaffRequired"
                         @keydown.prevent
                       />
                     </div>
-                  </div>
+                  </div> -->
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label class="form-label">Notes</label>
                   </div>
                   <div class="col-10">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchVacancy.notes"
-                    />
+                    <input type="text" class="form-select" v-model="fetchVacancy.notes" />
                   </div>
                 </div>
               </form>
@@ -282,7 +369,12 @@ export default {
         site_id: "",
         client_id: "",
         staff_required: "",
-        client_rate: "",
+        client_rate: null,
+
+        staff_rate: null,
+        umbrella: null,
+        paye: null,
+        private_limited: null,
         job_id: "",
         dates: [],
         site_shift: "",
@@ -290,9 +382,12 @@ export default {
         start_time: "",
         end_time: "",
         break: "",
-        staff_rate: "",
-        client_rate: "",
       },
+      validationClientRate: true,
+      validationStaffRate: true,
+      validationUmbrella: true,
+      validationPaye: true,
+      validationPrivateLimited: true,
       businessUnit: [],
       shiftsTime: [],
       clientData: [],
@@ -361,6 +456,27 @@ export default {
     },
   },
   methods: {
+    validateRate(type, value) {
+      switch (type) {
+        case "client_rate":
+          this.validationClientRate = value > 0;
+          break;
+        case "staff_rate":
+          this.validationStaffRate = value > 0;
+          break;
+        case "umbrella":
+          this.validationUmbrella = value > 0;
+          break;
+        case "paye":
+          this.validationPaye = value > 0;
+          break;
+        case "private_limited":
+          this.validationPrivateLimited = value > 0;
+          break;
+        default:
+          break;
+      }
+    },
     validateDates() {
       const today = new Date().toISOString().slice(0, 10);
       this.invalidDate = this.fetchVacancy.dates.some((date) => {
@@ -422,12 +538,7 @@ export default {
     onSiteSelect() {
       this.getTimeShift();
     },
-    // onClientSelect() {
-    //   const selectedClientId = fetchVacancy.client_id;
 
-    //   this.getJobTitleMethod(selectedClientId);
-    //   this.getSiteAccordingClientMethod(selectedClientId);
-    // },
     isDateValid(date) {
       const today = new Date();
       const selectedDate = new Date(this.formatDate(date));
@@ -488,6 +599,9 @@ export default {
         this.fetchVacancy.break = response.data.break;
         this.fetchVacancy.staff_rate = response.data.staff_rate;
         this.fetchVacancy.client_rate = response.data.client_rate;
+        this.fetchVacancy.paye = response.data.paye;
+        this.fetchVacancy.umbrella = response.data.umbrella;
+        this.fetchVacancy.private_limited = response.data.private_limited;
       } catch (error) {}
     },
 
@@ -533,6 +647,9 @@ export default {
             break: this.fetchVacancy.break,
             staff_rate: this.staff_rate,
             client_rate: this.client_rate,
+            paye: this.paye,
+            umbrella: this.umbrella,
+            private_limited: this.private_limited,
           },
           {
             headers: {
@@ -583,14 +700,31 @@ export default {
       }
     },
     async getClientMethod() {
+      const pagesToFetch = [1, 2, 3];
+      let allClientData = [];
+
       try {
-        const response = await axios.get(`${VITE_API_URL}/clients`);
-        this.clientData = response.data.data;
+        const responses = await Promise.all(
+          pagesToFetch.map((page) =>
+            axios.get(`${VITE_API_URL}/clients`, {
+              params: {
+                page: page,
+              },
+            })
+          )
+        );
+
+        responses.forEach((response) => {
+          allClientData = allClientData.concat(response.data.data);
+        });
+
+        this.clientData = allClientData;
       } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
+        if (error.response && error.response.status === 404) {
+          // Handle 404 error
+          // console.error('Error fetching client data:', error.response.data.message);
+        } else {
+          // console.error('Error fetching client data:', error);
         }
       }
     },

@@ -67,12 +67,12 @@
       >
         <div class="row">
           <div class="text-danger d-flex justify-content-end">
-            <a href="#" class="text-danger" @click.prevent="downloadPDF">
+            <a href="#" class="text-danger" @mousedown="downloadFile">
               <i class="bi bi-file-earmark-pdf fs-2 fw-bold"></i>
             </a>
           </div>
         </div>
-        <div class="row">
+        <div class="row" ref="invoiceContent">
           <div class="col-md-12 d-flex align-items-center">
             <div class="col-md-5 d-flex align-items-end">
               <img
@@ -110,9 +110,7 @@
               <img src="./logo.png" class="img-fluid" loading="eager" />
             </div>
           </div>
-        </div>
 
-        <div class="row mt-3">
           <div class="col-md-7 d-flex">
             <div class="card-body">
               <table class="table table-borderless">
@@ -225,7 +223,7 @@
         role="tabpanel"
         aria-labelledby="pills-profileTwo-tab"
       >
-        <div class="row">
+        <div class="row" ref="invoiceContent">
           <div class="card-body border-0 px-3">
             <h5 class="text-center bg-colors">RECPAL DEMO 1 EMPLOYEE PROFILE</h5>
             <table class="table table-bordered">
@@ -287,7 +285,7 @@
                     </div>
                   </td>
                   <div class="text-danger">
-                    <a href="#" class="text-danger">
+                    <a href="#" class="text-danger" @mousedown="downloadFile">
                       <i
                         class="bi bi-file-earmark-pdf fs-2 fw-bold d-block text-center cursor-pointer"
                       ></i
@@ -297,8 +295,7 @@
               </tbody>
             </table>
           </div>
-        </div>
-        <div class="row mt-3">
+
           <div class="col-md-7 d-flex">
             <div class="card-body">
               <table class="table table-bordered">
@@ -430,11 +427,19 @@
 
 <script>
 import axios from "axios";
+import DOMPurify from "dompurify";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 
 export default {
   name: "ProfileTabs",
   data() {
     return { getCandidatesDataInProfileTab: [] };
+  },
+  components: {
+    DOMPurify,
+    html2canvas,
+    jsPDF,
   },
   computed: {
     completeImageUrl() {
@@ -448,6 +453,42 @@ export default {
     },
   },
   methods: {
+    async downloadFile() {
+      await this.$nextTick();
+
+      const element = this.$refs.invoiceContent;
+
+      if (!element) {
+        // console.error("Element not found");
+        return;
+      }
+
+      const sanitizedHTML = DOMPurify.sanitize(element.innerHTML || "");
+
+      let trustedHTML = sanitizedHTML;
+
+      try {
+        const canvas = await html2canvas(element, {
+          useCORS: true,
+          allowTaint: false,
+          logging: true,
+          backgroundColor: null,
+        });
+
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF();
+
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const imgWidth = pageWidth;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+        pdf.save("Staff_Profile.pdf");
+      } catch (error) {
+        // console.error("Error downloading the file:", error);
+      }
+    },
     async getCandidateProfileTabMethod() {
       try {
         const response = await axios.get(

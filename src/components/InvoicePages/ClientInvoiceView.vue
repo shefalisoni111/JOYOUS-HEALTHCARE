@@ -22,7 +22,7 @@
 
       <div class="container-fluid pt-3">
         <div class="row">
-          <div class="col-sm-12 col-md-7">
+          <div class="col-sm-12 col-md-7" ref="invoiceContent">
             <component :is="selectedTemplate"></component>
           </div>
 
@@ -75,7 +75,7 @@
                   <button
                     type="button"
                     class="btn btn-outline-success text-nowrap text-nowrap"
-                    @click="generatePDF"
+                    @mousedown="downloadFile"
                   >
                     <i class="bi bi-file-earmark-pdf"></i> PDF
                   </button>
@@ -132,6 +132,9 @@ import MailInvoice from "../modals/InvoicePagesModal/ClientMailInvoice.vue";
 
 import First_TemplateEdit from "../InvoicePages/TemplatesDesign/First_TemplateEdit.vue";
 import ClientSecontTemplateEdit from "../InvoicePages/TemplatesDesign/ClientSecontTemplateEdit.vue";
+import DOMPurify from "dompurify";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 
 import { defineAsyncComponent } from "vue";
 import { mapState } from "vuex";
@@ -161,6 +164,9 @@ export default {
     ),
     First_TemplateEdit,
     ClientSecontTemplateEdit,
+    DOMPurify,
+    html2canvas,
+    jsPDF,
   },
 
   methods: {
@@ -205,23 +211,37 @@ export default {
     updateTemplate() {
       this.$store.commit("setSelectedTemplate", this.selectedTemplate);
     },
-    async generatePDF() {
-      try {
-        const response = await axios.get(
-          `${VITE_API_URL}/generate_pdf/${this.$route.params.id}`,
-          {
-            responseType: "blob",
-          }
-        );
+    async downloadFile() {
+      await this.$nextTick();
 
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", `invoice_${this.$route.params.id}.pdf`);
-        document.body.appendChild(link);
-        link.click();
+      const element = this.$refs.invoiceContent;
+
+      if (!element || !document.body.contains(element)) {
+        return;
+      }
+
+      const sanitizedHTML = DOMPurify.sanitize(element.innerHTML || "");
+
+      try {
+        const canvas = await html2canvas(element, {
+          useCORS: true,
+          allowTaint: false,
+          logging: true,
+          backgroundColor: null,
+        });
+
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF();
+
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const imgWidth = pageWidth;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+        const fileName = `Client_invoice.pdf`;
+        pdf.save(fileName);
       } catch (error) {
-        // console.error("Error generating PDF:", error);
+        // console.error("Error downloading the file:", error);
       }
     },
     async createClientInvoice() {

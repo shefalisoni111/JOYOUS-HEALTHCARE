@@ -13,7 +13,7 @@
               <th scope="col">Date</th>
               <th scope="col">Shift</th>
               <th scope="col" class="withShow">Staff required</th>
-              <th scope="col">Client Rate</th>
+              <!-- <th scope="col">Client Rate</th> -->
               <th scope="col" class="widthDefineNotes">Notes</th>
               <th scope="col">Status</th>
               <th scope="col">Action</th>
@@ -49,9 +49,9 @@
               <td class="withShow text-center">
                 {{ data.staff_required === null ? 0 : data.staff_required }}
               </td>
-              <td class="text-center">
+              <!-- <td class="text-center">
                 {{ data.client_rate }}
-              </td>
+              </td> -->
               <td class="widthDefineNotes" v-text="data.notes"></td>
               <td v-text="data.status"></td>
               <td>
