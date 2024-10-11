@@ -731,15 +731,17 @@
       <button
         class="btn btn-sm btn-primary mr-2"
         :disabled="currentPage === 1"
-        @click="currentPage--"
+        @click="previousPage"
       >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
+        Previous
+      </button>
+      &nbsp;&nbsp;
+      <span>{{ currentPage }}</span>
+      &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= candidateList?.length"
-        @click="currentPage++"
+        :disabled="currentPage >= totalCandidateCount"
+        @click="nextPage"
       >
         Next
       </button>
@@ -790,6 +792,7 @@ export default {
       droppedContent: null,
       currentPage: 1,
       itemsPerPage: 10,
+      totalCandidateCount: 0,
       options: [],
       job_id: "",
       site_id: "",
@@ -808,6 +811,9 @@ export default {
   },
 
   computed: {
+    totalPages() {
+      return Math.ceil(this.candidateList.length / this.itemsPerPage);
+    },
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return site_id ? site_id.site_name : "";
@@ -817,9 +823,7 @@ export default {
       return job_id ? job_id.name : "";
     },
     paginateCandidates() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.candidateList.slice(startIndex, endIndex);
+      return this.candidateList;
     },
     paginateSearch() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -1389,12 +1393,23 @@ export default {
       this.currentPage = 1;
       this.fetchCandidateList();
     },
+    nextPage() {
+      this.currentPage++;
+      this.fetchCandidateList();
+    },
+
+    previousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.fetchCandidateList();
+      }
+    },
     async fetchCandidateList() {
       this.isLoading = true;
       try {
         const requestData = {
           date: this.formattedStartDate,
-          currentPage: this.currentPage,
+          page: this.currentPage,
           per_page: this.itemsPerPage,
         };
 
@@ -1408,6 +1423,7 @@ export default {
 
         this.searchResults = response.data.data;
         this.vacancyList = response.data.vacancies;
+        this.totalCandidateCount = response.data.total_count;
         this.ColumnDateMatchDates = this.candidateList.map((candidate) =>
           candidate.availability.map((avail) => avail.date)
         );
