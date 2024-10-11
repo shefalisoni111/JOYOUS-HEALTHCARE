@@ -13,6 +13,7 @@
               <th scope="col">Date</th>
               <th scope="col">Shift</th>
               <th scope="col" class="withShow">Staff required</th>
+              <th scope="col">Client Rate</th>
               <th scope="col" class="widthDefineNotes">Notes</th>
               <th scope="col">Status</th>
               <th scope="col">Action</th>
@@ -47,6 +48,9 @@
               <td v-text="data.shift ? data.shift.replace(/_/g, ' ') : ' '"></td>
               <td class="withShow text-center">
                 {{ data.staff_required === null ? 0 : data.staff_required }}
+              </td>
+              <td class="text-center">
+                {{ data.client_rate }}
               </td>
               <td class="widthDefineNotes" v-text="data.notes"></td>
               <td v-text="data.status"></td>
@@ -85,7 +89,7 @@
         </table>
       </div>
     </div>
-    <div class="mt-3 mb-3" style="text-align: right" v-if="totalCount > 0">
+    <div class="mt-3 mb-3" style="text-align: right" v-if="totalCount > 10">
       <!-- <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button> -->

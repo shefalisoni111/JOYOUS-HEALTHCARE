@@ -259,7 +259,30 @@
                     </span> -->
                   </div>
                 </div>
-
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
+                    <label class="form-label" for="selectShiftStart">Client Rate</label>
+                  </div>
+                  <div class="col-10">
+                    <select
+                      id="selectShiftStart"
+                      class="form-select w-25"
+                      v-model="client_rate"
+                    >
+                      <option value="" disabled>Select Client Rate</option>
+                      <option
+                        v-for="(rate, index) in formattedClientRates"
+                        :key="index"
+                        :value="rate"
+                      >
+                        {{ formatRate(rate) }}
+                      </option>
+                    </select>
+                    <!-- <span v-if="!validationStartTime && !start_time" class="text-danger"
+                      >Start Time is required</span
+                    > -->
+                  </div>
+                </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label class="form-label" for="selectShifts">Staff Required</label>
@@ -353,7 +376,8 @@ export default {
       end_time: null,
       break: null,
 
-      client_rate: [],
+      client_rate: "",
+      clientRates: ["self_employed", "umbrella", "paye", "private_limited"],
       staff_rate: [],
       site_id: "",
       client_id: "",
@@ -372,6 +396,9 @@ export default {
   },
   components: { SuccessAlert, NotSuccessAlertVue },
   computed: {
+    formattedClientRates() {
+      return this.clientRates;
+    },
     isFormValid() {
       return (
         this.site_id !== "" &&
@@ -382,6 +409,7 @@ export default {
         this.staff_required !== "" &&
         this.selectedDate !== null &&
         this.break !== null &&
+        this.client_rate !== "" &&
         this.validationSelectedOptionText &&
         this.validationSelectedBusinessUnit &&
         this.validationSelectedClient &&
@@ -454,6 +482,9 @@ export default {
     },
   },
   methods: {
+    formatRate(rate) {
+      return rate.replace(/_/g, " ");
+    },
     handleShiftChange() {
       const selectedShift = this.shiftsTime.find(
         (shift) => shift.id === this.site_shift_id

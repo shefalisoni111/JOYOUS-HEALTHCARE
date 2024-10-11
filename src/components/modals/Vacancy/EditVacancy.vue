@@ -211,6 +211,20 @@
                       />
                     </div>
                   </div>
+                  <div class="mb-3 d-flex justify-content-between">
+                    <div class="col-2">
+                      <label class="form-label">Client Rate</label>
+                    </div>
+                    <div class="col-10">
+                      <input
+                        type="number"
+                        class="form-control w-25"
+                        v-model="fetchVacancy.client_rate"
+                        @input="validateStaffRequired"
+                        @keydown.prevent
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
@@ -268,6 +282,7 @@ export default {
         site_id: "",
         client_id: "",
         staff_required: "",
+        client_rate: "",
         job_id: "",
         dates: [],
         site_shift: "",
@@ -457,6 +472,7 @@ export default {
         this.fetchVacancy.client_id = response.data.client_id;
         this.fetchVacancy.job_id = response.data.job_id;
         this.fetchVacancy.staff_required = response.data.staff_required;
+
         this.fetchVacancy.dates = response.data.dates.map((date) => {
           const dateParts = date.split(",")[1].trim().split("-");
           const day = dateParts[0].trim();
