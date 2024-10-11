@@ -241,14 +241,9 @@
                         </tr>
                       </tbody>
                       <tbody v-else>
-                        <tr v-if="errorMessageFilter">
-                          <td colspan="14" class="text-danger text-center">
-                            {{ errorMessageFilter }}
-                          </td>
-                        </tr>
-                        <tr v-else>
-                          <td colspan="14" class="text-danger text-center">
-                            {{ errorMessageCustom }}
+                        <tr>
+                          <td colspan="15" class="text-danger text-center">
+                            {{ errorMessageFilter || errorMessageCustom }}
                           </td>
                         </tr>
                       </tbody>
@@ -653,12 +648,12 @@ export default {
         );
         this.getSiteReportData = response.data.timesheets || [];
         if (response.status === 200 && this.getSiteReportData.length === 0) {
-          this.errorMessageCustom = `Timesheet No available for this month`;
+          this.errorMessageCustom = `Data No available for this month`;
         } else {
           this.errorMessageCustom = "";
         }
       } catch (error) {
-        // console.error("Error fetching custom timesheets:", error);
+        this.errorMessageCustom = "Error fetching data.";
       } finally {
         this.isLoading = false;
       }
