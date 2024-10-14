@@ -200,7 +200,16 @@
                             </div>
                           </td>
 
-                          <td>{{ data.client }}</td>
+                          <td>
+                            <router-link
+                              class="text-capitalize text-decoration-underline text-black fw-bold"
+                              :to="{
+                                name: 'SingleClientProfile',
+                                params: { id: data.client_id },
+                              }"
+                              >{{ data.client }}</router-link
+                            >
+                          </td>
                           <td
                             @click="
                               toggleDetails(
@@ -615,7 +624,7 @@ export default {
       const groupedData = {};
 
       this.getRateRulesData.forEach((data) => {
-        const groupKey = `${data.site_id}-${data.client}-${data.job}`;
+        const groupKey = `${data.site_id}-${data.client}-${data.job}-${data.client_id}`;
 
         if (!groupedData[groupKey]) {
           groupedData[groupKey] = {
@@ -623,7 +632,7 @@ export default {
             site: data.site,
             client: data.client,
             job: data.job,
-
+            client_id: data.client_id,
             job_id: data.job_id,
             data: [],
           };
@@ -701,7 +710,7 @@ export default {
         this.getRateRulesData = response.data.data || [];
 
         if (this.getRateRulesData.length === 0) {
-          this.errorMessageFilter = "Rates No Found!";
+          this.errorMessageFilter = "Rates Not Found!";
         } else {
           this.errorMessageFilter = "";
         }
@@ -1039,7 +1048,7 @@ export default {
 
         this.filteredRateRulesData = this.getRateRulesData;
         if (this.getRateRulesData.length === 0) {
-          this.errorMessageFilter = "Report No Found!";
+          this.errorMessageFilter = "Report Not Found!";
         } else {
           this.errorMessageFilter = "";
         }

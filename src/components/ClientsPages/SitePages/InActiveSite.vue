@@ -24,7 +24,7 @@
             <td v-text="data.site_name"></td>
             <td>
               <router-link
-                class="text-capitalize text-decoration-underline text-black"
+                class="text-capitalize text-decoration-underline text-black fw-bold"
                 :to="{ name: 'SingleClientProfile', params: { id: data.client_id } }"
                 >{{ data.client_name }}</router-link
               >

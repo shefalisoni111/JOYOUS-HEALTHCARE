@@ -39,7 +39,7 @@
       </div>
     </div>
     <div class="row m-4" v-else>
-      <div class="text-center text-danger" v-if="!isLoading">{{ "Data No Found!" }}</div>
+      <div class="text-center text-danger" v-if="!isLoading">{{ "Data Not Found!" }}</div>
     </div>
     <ConfirmationAlert
       :show-modal="isModalVisible"

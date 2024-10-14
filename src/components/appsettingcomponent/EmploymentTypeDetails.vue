@@ -149,7 +149,7 @@ export default {
       this.isModalVisible = true;
       this.confirmCallback = async () => {
         axios.delete(`${VITE_API_URL}/employment_types/` + id).then((response) => {
-          if (response.data.error === "record could No deleted !") {
+          if (response.data.error === "record could Not deleted !") {
             alert(
               "CanNot Delete Employee Type: This record associated with candidate employee type records."
             );

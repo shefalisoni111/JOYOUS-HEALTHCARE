@@ -16,7 +16,7 @@
                   </div>
                   <div class="col-8">
                     <input type="text" class="form-control" v-model="notes" />
-                    <span v-if="!isValidForm" class="text-danger">Notes Required</span>
+                    <!-- <span v-if="!isValidForm" class="text-danger">Notes Required</span> -->
                   </div>
                 </div>
               </form>
@@ -28,6 +28,7 @@
               data-bs-target="#addSiteNote"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
+              v-on:click="clearFieldsData"
             >
               Cancel
             </button>
@@ -66,6 +67,11 @@ export default {
   },
   components: { SuccessAlert },
   methods: {
+    clearFieldsData() {
+      setTimeout(() => {
+        this.notes = "";
+      }, 10);
+    },
     submitForm() {
       if (this.isValidForm) {
         this.addSiteNote();

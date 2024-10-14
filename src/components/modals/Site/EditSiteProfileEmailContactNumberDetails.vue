@@ -75,6 +75,64 @@
                           > -->
                   </div>
                 </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
+                    <label class="form-label"> Contact person's name:</label>
+                  </div>
+                  <div class="col-10">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="fetchSite.contact_person_name"
+                      @change="detectAutofill"
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
+                    <label class="form-label"> Contact person's email:</label>
+                  </div>
+                  <div class="col-10">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="fetchSite.contact_person_email"
+                      @input="cleanPhoneNumber"
+                      @change="detectAutofill"
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
+                    <label class="form-label"> Contact person's number:</label>
+                  </div>
+                  <div class="col-10">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="fetchSite.contact_person_number"
+                      @input="cleanPhoneNumber"
+                      @change="detectAutofill"
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
+                    <label class="form-label"> Bookings email:</label>
+                  </div>
+                  <div class="col-10">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="fetchSite.booking_email"
+                      @change="detectAutofill"
+                      disabled
+                    />
+                  </div>
+                </div>
               </form>
             </div>
           </div>
@@ -114,7 +172,10 @@ export default {
     return {
       fetchSite: {
         id: "",
-
+        contact_person_name: "",
+        contact_person_email: "",
+        contact_person_number: "",
+        booking_email: "",
         client_id: "",
 
         address: "",
@@ -189,6 +250,10 @@ export default {
         this.fetchSite.address = response.data.data.address;
         this.fetchSite.phone_number = response.data.data.phone_number;
         this.fetchSite.email = response.data.data.email;
+        this.fetchSite.contact_person_name = response.data.data.contact_person_name;
+        this.fetchSite.contact_person_email = response.data.data.contact_person_email;
+        this.fetchSite.contact_person_number = response.data.data.contact_person_number;
+        this.fetchSite.booking_email = response.data.data.booking_email;
       } catch (error) {}
     },
 

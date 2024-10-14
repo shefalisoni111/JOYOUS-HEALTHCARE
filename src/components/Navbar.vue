@@ -578,7 +578,7 @@ export default {
           (error.response && error.response.status === 404) ||
           error.response.status === 400
         ) {
-          this.errorMessage = "No Staff found for the specified criteria";
+          this.errorMessage = "Not Staff found for the specified criteria";
         }
       }
     },

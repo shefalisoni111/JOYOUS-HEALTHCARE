@@ -309,7 +309,7 @@ export default {
         this.deleteBookingData = response.data.booking_data;
         if (response.status === 200) {
           if (!this.deleteBookingData || this.deleteBookingData.length === 0) {
-            this.errorDelete = "Record No found!";
+            this.errorDelete = "Record Not found!";
           } else {
             this.errorDelete = "";
             const deletedBookingIDs = response.data.booking_data.map(

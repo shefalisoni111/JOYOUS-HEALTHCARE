@@ -60,7 +60,7 @@
         </div>
         <div v-else>
           <div class="text-danger text-center mt-2" v-if="!isLoading">
-            {{ "Data No Found!" }}
+            {{ "Data Not Found!" }}
           </div>
         </div>
       </div>

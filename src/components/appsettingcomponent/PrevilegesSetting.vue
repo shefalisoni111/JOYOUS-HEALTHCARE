@@ -217,7 +217,7 @@
                           <tbody v-else>
                             <tr>
                               <td colspan="6" class="text-danger fw-bold">
-                                {{ "Inactive users No found!" }}
+                                {{ "Inactive users Not found!" }}
                               </td>
                             </tr>
                           </tbody>

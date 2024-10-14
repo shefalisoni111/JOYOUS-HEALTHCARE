@@ -67,14 +67,14 @@
                   >
                     <div class="d-flex">
                       <div class="d-flex align-items-center gap-2">
-                        <!-- <select
+                        <select
                           class="form-control"
                           v-model="currentView"
                           @change="updateDateRange"
                         >
                           <option value="weekly">Weekly</option>
                           <option value="monthly">Monthly</option>
-                        </select> -->
+                        </select>
                       </div>
 
                       &nbsp;&nbsp;
@@ -572,7 +572,7 @@ export default {
       } catch (error) {
         if (error.response && error.response.status === 404) {
           this.getSiteReportData = [];
-          this.errorMessageFilter = error.response.data.error || "Report No found!";
+          this.errorMessageFilter = error.response.data.error || "Report Not Found!";
         } else {
           this.errorMessageFilter = "An unexpected error occurred.";
         }
@@ -633,6 +633,7 @@ export default {
       };
       const requestData = {
         date: formatDate(startOfMonth),
+        filter_type: this.currentView === "weekly" ? "week" : "month",
         // end_date: endOfMonth.toLocaleDateString(),
       };
       try {
@@ -801,10 +802,12 @@ export default {
         const endOfWeek = new Date(startOfWeek);
         endOfWeek.setDate(startOfWeek.getDate() + 6);
         this.endDate = endOfWeek;
+        this.getSiteReportMethod();
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
         this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
         this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        this.getSiteReportMethod();
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());

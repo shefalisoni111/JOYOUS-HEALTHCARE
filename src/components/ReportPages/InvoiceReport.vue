@@ -517,7 +517,7 @@ export default {
 
         this.getClientInvoiceDetail = response.data.data || [];
         if (this.getClientInvoiceDetail.length === 0) {
-          this.errorMessageFilter = "Report No Found!";
+          this.errorMessageFilter = "Report Not Found!";
         } else {
           this.errorMessageFilter = "";
         }
@@ -762,7 +762,7 @@ export default {
 
         // Check if the result is empty and set the error message
         if (this.getClientInvoiceDetail.length === 0) {
-          this.errorMessageFilter = "Report record No found!";
+          this.errorMessageFilter = "Report record Not found!";
         } else {
           this.errorMessageFilter = "";
         }

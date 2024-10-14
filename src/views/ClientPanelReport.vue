@@ -547,7 +547,7 @@ export default {
       } catch (error) {
         if (error.response && error.response.status === 404) {
           this.getSiteReportData = [];
-          this.errorMessageFilter = error.response.data.error || "Report No found!";
+          this.errorMessageFilter = error.response.data.error || "Report Not Found!";
         } else {
           this.errorMessageFilter = "An unexpected error occurred.";
         }

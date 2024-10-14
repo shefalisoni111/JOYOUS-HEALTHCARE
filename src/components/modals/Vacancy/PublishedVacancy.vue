@@ -450,6 +450,7 @@ export default {
 
             this.$emit("publishVacancy");
             this.$emit("publishVacancySearch");
+            this.publishListShowMethod();
           } else {
             // Handle unexpected response status
           }
@@ -525,6 +526,18 @@ export default {
       this.debounceTimeout = setTimeout(() => {
         this.search();
       }, 100);
+    },
+    async publishListShowMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}candidate_list_of_vacancy`, {
+          params: {
+            vacancy_id: id,
+          },
+        });
+        console.log(response.data.candidates_data);
+      } catch (error) {
+        // console.error("Error fetching vacancies:", error);
+      }
     },
   },
 

@@ -200,7 +200,7 @@
           <tbody v-else>
             <tr>
               <td colspan="16" class="text-center text-danger" v-if="!isLoading">
-                {{ "Data No Found!" }}
+                {{ "Data Not Found!" }}
               </td>
             </tr>
           </tbody>
@@ -213,7 +213,7 @@
       @updateVacancy="createVacancy"
       ref="editShift"
     />
-    <PublishedVacancy @publishVacancy="createVacancy" />
+    <PublishedVacancy @publishVacancy="publishListShowMethod" />
     <AppliedVacancyList @appliedVacancy="createVacancy" />
     <AssignedVacancyList @assignVacancy="createVacancy" />
     <RejectedVacancyList @rejectVacancy="createVacancy" />
@@ -442,10 +442,23 @@ export default {
         this.totalCount = response.data.total_count;
         this.totalPages = response.data.total_pages;
         this.currentPage = response.data.current_page;
+        this.publishListShowMethod();
       } catch (error) {
         // console.error("Error fetching vacancies:", error);
       } finally {
         this.isLoading = false;
+      }
+    },
+    async publishListShowMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}candidate_list_of_vacancy`, {
+          params: {
+            vacancy_id: id,
+          },
+        });
+        console.log(response.data.candidates_data);
+      } catch (error) {
+        // console.error("Error fetching vacancies:", error);
       }
     },
   },

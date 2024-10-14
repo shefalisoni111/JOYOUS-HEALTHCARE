@@ -150,7 +150,7 @@ export default {
 
           this.errorMessage =
             this.candidateList.length === 0
-              ? "No data found for the specified month"
+              ? "Data Not Found for the specified month"
               : "";
         }
       } catch (error) {

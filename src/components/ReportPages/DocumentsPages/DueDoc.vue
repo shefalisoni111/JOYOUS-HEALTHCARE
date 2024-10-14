@@ -197,7 +197,7 @@ export default {
 
         this.getCategoryData = response.data;
         if (this.getCategoryData.length === 0) {
-          this.errorMessageFilter = "Report No Found!";
+          this.errorMessageFilter = "Report Not Found!";
         } else {
           this.errorMessageFilter = "";
         }

@@ -40,7 +40,7 @@
     </div>
     <div class="row" v-else>
       <div class="text-danger text-center" v-if="!isLoading">
-        {{ "Data No Found!" }}
+        {{ "Data Not Found!" }}
       </div>
     </div>
     <AddSiteNotes @addSiteNote="getNotesMethod" />

@@ -546,7 +546,7 @@ export default {
 
         this.getRateRulesData = response.data.rate_card || [];
         if (this.getRateRulesData.length === 0) {
-          this.errorMessageFilter = "Report No Found!";
+          this.errorMessageFilter = "Report Not Found!";
         } else {
           this.errorMessageFilter = "";
         }

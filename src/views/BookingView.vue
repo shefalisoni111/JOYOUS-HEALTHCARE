@@ -350,7 +350,7 @@
                           class="text-danger text-center"
                           v-if="!isLoading"
                         >
-                          No Data Found !
+                          Data Not Found !
                         </td>
                       </tr>
                     </tbody>
@@ -803,7 +803,7 @@ export default {
       } catch (error) {
         if (error.response && error.response.status === 404) {
           this.getBookingData = [];
-          this.errorMessageFilter = error.response.data.error || "Report No found!";
+          this.errorMessageFilter = error.response.data.error || "Report Not Found!";
         } else {
           this.errorMessageFilter = "An unexpected error occurred. Please try again.";
         }
@@ -824,7 +824,7 @@ export default {
         this.deleteBookingData = response.data.booking_data;
         if (response.status === 200) {
           if (!this.deleteBookingData || this.deleteBookingData.length === 0) {
-            this.errorDelete = "Record No found!";
+            this.errorDelete = "Record Not found!";
           } else {
             this.errorDelete = "";
             const deletedBookingIDs = response.data.booking_data.map(

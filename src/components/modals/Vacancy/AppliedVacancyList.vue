@@ -232,6 +232,7 @@
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
               v-on:click="updateVacancyMethod($event)"
+              :disabled="!isSubmitEnabled"
             >
               Submit
             </button>
@@ -280,6 +281,13 @@ export default {
   },
 
   computed: {
+    isSubmitEnabled() {
+      if (this.selectAll) {
+        return true;
+      }
+
+      return Object.values(this.checkedCandidates).some((checked) => checked);
+    },
     selectedAppliedItemId() {
       this.getAppliedVacancyMethod(this.$store.state.selectedAppliedItemId);
       this.assignedCandidate(this.$store.state.selectedAssignedItemId);

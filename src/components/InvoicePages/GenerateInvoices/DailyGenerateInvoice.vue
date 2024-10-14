@@ -151,7 +151,7 @@ export default {
 
           this.errorMessage =
             this.candidateList.length === 0
-              ? "No data found for the specified daily"
+              ? "Data Not Found for the specified daily"
               : "";
         }
       } catch (error) {

@@ -358,6 +358,7 @@ export default {
         "Saturday",
         "Sunday",
       ],
+      isModified: false,
       selectedDay: "Monday",
       creation: ["Weekly", "Monthly"],
       duePeriod: Number(localStorage.getItem("duePeriod")) || 0,

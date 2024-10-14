@@ -11,6 +11,7 @@
                   alt="USer"
                   class="rounded-circle"
                   width="150"
+                  height="400"
                   loading="eager"
                 />
                 <div class="mt-3 text-capitalize">

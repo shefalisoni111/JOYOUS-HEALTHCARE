@@ -57,7 +57,7 @@
         <div></div>
 
         <select v-model="selectedFilter" @change="filterData($event.target.value)">
-          <!-- <option value="all">All Site</option> -->
+          <option value="">Status</option>
           <option value="active_site">Active</option>
           <option value="inactive_site">In-Active</option>
         </select>
@@ -132,7 +132,7 @@
             <td v-text="data.site_name"></td>
             <td>
               <router-link
-                class="text-capitalize text-decoration-underline text-black"
+                class="text-capitalize text-decoration-underline text-black fw-bold"
                 :to="{ name: 'SingleClientProfile', params: { id: data.client_id } }"
                 >{{ data.client_name }}</router-link
               >
@@ -276,7 +276,7 @@ export default {
       confirmMessage: "",
       confirmCallback: null,
       checkedSites: reactive({}),
-      selectedFilter: "active_site ",
+      selectedFilter: "",
     };
   },
   created() {
@@ -413,7 +413,7 @@ export default {
         this.getSiteAllData = response.data.data || [];
 
         if (this.getSiteAllData.length === 0) {
-          this.errorMessageFilter = "Report No Found!";
+          this.errorMessageFilter = "Report Not Found!";
         } else {
           this.errorMessageFilter = "";
         }

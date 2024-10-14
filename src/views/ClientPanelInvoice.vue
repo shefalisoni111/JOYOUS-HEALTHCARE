@@ -266,7 +266,7 @@
                             class="text-danger text-center"
                             v-if="!isLoading"
                           >
-                            {{ "No Data Found !" }}
+                            {{ "Data Not Found !" }}
                           </td>
                         </tr>
                       </tbody>
@@ -340,7 +340,7 @@
                             class="text-danger text-center"
                             v-if="!isLoading"
                           >
-                            {{ "No Data Found !" }}
+                            {{ "Data Not Found !" }}
                           </td>
                         </tr>
                       </tbody>
@@ -661,7 +661,7 @@ export default {
         this.getClientInvoiceDetail = response.data.data || [];
 
         this.errorMessageFilter =
-          this.getClientInvoiceDetail.length === 0 ? "Report No Found!" : "";
+          this.getClientInvoiceDetail.length === 0 ? "Report Not Found!" : "";
       } catch (error) {
         if (error.response) {
           if (error.response.status === 404) {

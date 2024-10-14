@@ -251,130 +251,358 @@
               </div>
 
               <div class="sidebar-content" :class="{ 'slide-left': isOpen }">
-                <table class="table" v-if="!searchQuery">
-                  <thead>
-                    <tr>
-                      <th style="width: 15%">
-                        <div class="d-flex justify-content-between">
-                          <div class="d-flex align-items-center">Shifts</div>
-                          &nbsp; &nbsp; &nbsp;&nbsp;
-                          <div class="d-flex align-items-center fs-4">
-                            <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
-                            <i class="bi bi-calendar2-check-fill"></i>
-                            <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
-                          </div>
-                        </div>
-                      </th>
-
-                      <th>
-                        <div class="calendar-grid" v-if="!searchQuery">
-                          <div v-for="day in daysOfWeek" :key="day" class="day-header">
-                            {{ day }}
-                          </div>
-                          <div
-                            v-for="date in selectedDateRow"
-                            :key="date"
-                            class="day-header"
-                          >
-                            {{ formatDate(date) }}
-                          </div>
-                        </div>
-                      </th>
-                    </tr>
-                  </thead>
-
-                  <tbody v-if="paginateCandidates?.length > 0">
-                    <tr>
-                      <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
-                      <td>
-                        <div
-                          class="calendar-grid"
-                          style="max-height: 90px; overflow-y: auto; overflow-x: hidden"
-                        >
-                          <div v-for="(data, index) in vacancyList" :key="index">
-                            <div
-                              v-for="day in selectedDateRow"
-                              :key="day"
-                              class="text-center"
-                            >
-                              <ul
-                                class="list-unstyled mb-0"
-                                v-if="data.day === formattedDate(day)"
-                              >
-                                <li
-                                  class="position-relative"
-                                  v-for="(vacancy, liIndex) in data.vacancies"
-                                  :key="vacancy.id"
-                                  :draggable="true"
-                                  @dragstart="handleDragStart(vacancy)"
-                                  @drop="handleRevertDrop(vacancy.id, $event)"
-                                  @dragover.prevent="handleDragOver"
-                                  :class="{
-                                    'bg-info': liIndex === 0,
-                                    'bg-warning': liIndex === 1,
-                                    'bg-success': liIndex === 2,
-                                    'bg-primary': liIndex >= 3,
-                                  }"
-                                >
-                                  <span class="d-flex flex-column align-items-baseline">
-                                    <span class="text-capitalize"
-                                      >{{ vacancy.site }},{{ vacancy.job_title }}</span
-                                    >
-
-                                    <!-- <span class="">{{
-                                    extractTimeRange(vacancy.site_shift)
-                                  }}</span> -->
-                                    <span class="">{{
-                                      vacancy.site_shift.replace(/_/g, " ")
-                                    }}</span>
-                                  </span>
-                                  <span class="staff-count-round text-white">{{
-                                    vacancy.staff_required
-                                  }}</span>
-                                </li>
-                                <!-- <li>business_unit</li> -->
-                              </ul>
+                <div class="table-container">
+                  <table class="table" v-if="!searchQuery">
+                    <thead>
+                      <tr>
+                        <th style="width: 15%">
+                          <div class="d-flex justify-content-between">
+                            <div class="d-flex align-items-center">Shifts</div>
+                            &nbsp; &nbsp; &nbsp;&nbsp;
+                            <div class="d-flex align-items-center fs-4">
+                              <i
+                                class="bi bi-caret-left-fill"
+                                @click="moveToPrevious"
+                              ></i>
+                              <i class="bi bi-calendar2-check-fill"></i>
+                              <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
                             </div>
                           </div>
-                        </div>
-                      </td>
-                    </tr>
+                        </th>
 
-                    <tr v-for="data in paginateCandidates" :key="data.id">
-                      <div
-                        class="text-capitalize fw-bold"
-                        style="border-right: 1px solid rgb(209, 208, 208)"
-                      >
-                        {{ data.candidate_name }}
-
-                        <span class="fs-6 text-muted fw-100"
-                          ><br /><span
-                            style="background: rgb(209, 207, 207); padding: 3px"
-                            >{{ data.job }}</span
-                          ></span
-                        >
-                      </div>
-
-                      <td>
-                        <div>
-                          <div class="calendar-grid" @dragover.prevent="handleDragOver">
+                        <th>
+                          <div class="calendar-grid" v-if="!searchQuery">
+                            <div v-for="day in daysOfWeek" :key="day" class="day-header">
+                              {{ day }}
+                            </div>
                             <div
-                              v-for="day in selectedDateRow"
-                              :key="day"
-                              class="pt-2"
-                              data-bs-toggle="modal"
-                              data-bs-target="#scheduleDirectAssignList"
-                              data-bs-whatever="@mdo"
-                              @click="openModal(data, formattedDate(day))"
-                              :class="{
-                                'calendar-day': true,
-                                clickable: day !== '',
-                              }"
-                              @drop="handleDrop(data, formattedDate(day))"
+                              v-for="date in selectedDateRow"
+                              :key="date"
+                              class="day-header"
                             >
-                              <span v-for="avail in data.availability" :key="avail.id">
-                                <span v-if="avail.date === formattedDate(day)">
-                                  <span>
+                              {{ formatDate(date) }}
+                            </div>
+                          </div>
+                        </th>
+                      </tr>
+                    </thead>
+
+                    <tbody v-if="paginateCandidates?.length > 0">
+                      <tr>
+                        <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
+                        <td>
+                          <div
+                            class="calendar-grid"
+                            style="max-height: 90px; overflow-y: auto; overflow-x: hidden"
+                          >
+                            <div v-for="(data, index) in vacancyList" :key="index">
+                              <div
+                                v-for="day in selectedDateRow"
+                                :key="day"
+                                class="text-center"
+                              >
+                                <ul
+                                  class="list-unstyled mb-0"
+                                  v-if="data.day === formattedDate(day)"
+                                >
+                                  <li
+                                    class="position-relative"
+                                    v-for="(vacancy, liIndex) in data.vacancies"
+                                    :key="vacancy.id"
+                                    :draggable="true"
+                                    @dragstart="handleDragStart(vacancy)"
+                                    @drop="handleRevertDrop(vacancy.id, $event)"
+                                    @dragover.prevent="handleDragOver"
+                                    :class="{
+                                      'bg-info': liIndex === 0,
+                                      'bg-warning': liIndex === 1,
+                                      'bg-success': liIndex === 2,
+                                      'bg-primary': liIndex >= 3,
+                                    }"
+                                  >
+                                    <span class="d-flex flex-column align-items-baseline">
+                                      <span class="text-capitalize"
+                                        >{{ vacancy.site }},{{ vacancy.job_title }}</span
+                                      >
+
+                                      <!-- <span class="">{{
+                                    extractTimeRange(vacancy.site_shift)
+                                  }}</span> -->
+                                      <span class="">{{
+                                        vacancy.site_shift.replace(/_/g, " ")
+                                      }}</span>
+                                    </span>
+                                    <span class="staff-count-round text-white">{{
+                                      vacancy.staff_required
+                                    }}</span>
+                                  </li>
+                                  <!-- <li>business_unit</li> -->
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr v-for="data in paginateCandidates" :key="data.id">
+                        <div
+                          class="text-capitalize fw-bold"
+                          style="border-right: 1px solid rgb(209, 208, 208)"
+                        >
+                          {{ data.candidate_name }}
+
+                          <span class="fs-6 text-muted fw-100"
+                            ><br /><span
+                              style="background: rgb(209, 207, 207); padding: 3px"
+                              >{{ data.job }}</span
+                            ></span
+                          >
+                        </div>
+
+                        <td>
+                          <div>
+                            <div class="calendar-grid" @dragover.prevent="handleDragOver">
+                              <div
+                                v-for="day in selectedDateRow"
+                                :key="day"
+                                class="pt-2"
+                                data-bs-toggle="modal"
+                                data-bs-target="#scheduleDirectAssignList"
+                                data-bs-whatever="@mdo"
+                                @click="openModal(data, formattedDate(day))"
+                                :class="{
+                                  'calendar-day': true,
+                                  clickable: day !== '',
+                                }"
+                                @drop="handleDrop(data, formattedDate(day))"
+                              >
+                                <span v-for="avail in data.availability" :key="avail.id">
+                                  <span v-if="avail.date === formattedDate(day)">
+                                    <span>
+                                      <span
+                                        v-if="avail.status"
+                                        style="font-size: small; padding: 0px 5px"
+                                        v-bind:class="{
+                                          'btn btn-warning ': avail.status === 'Late',
+                                          'btn btn-primary ':
+                                            avail.status === 'Unavailable',
+                                          'btn btn-secondary ': avail.status === 'Night',
+                                          'btn btn-light ': avail.status === 'Early',
+                                        }"
+                                      >
+                                        {{
+                                          avail.status
+                                            ? avail.status[0].toUpperCase()
+                                            : ""
+                                        }}
+                                      </span>
+                                    </span>
+                                  </span>
+                                </span>
+                                &nbsp;&nbsp;
+
+                                <span
+                                  v-for="assign in assignStaffDisplay"
+                                  :key="assign.id"
+                                >
+                                  <span v-if="data.candidate_id === assign.candidate_id">
+                                    <span v-for="data in assign.vacancies" :key="data.id">
+                                      <span v-for="date in data.dates" :key="date">
+                                        <span
+                                          v-if="formatDates(date) === formattedDate(day)"
+                                        >
+                                          <span
+                                            :draggable="true"
+                                            @dragstart="
+                                              handleDragRevert(data, assign.candidate_id)
+                                            "
+                                          >
+                                            <div
+                                              data-bs-toggle="modal"
+                                              data-bs-target=" #editAssignScheduleVacancy"
+                                              data-bs-whatever="@mdo"
+                                              @click="
+                                                openModalEdit(data, formattedDate(day))
+                                              "
+                                              :class="{
+                                                'calendar-day': true,
+                                                clickable: day !== '',
+                                              }"
+                                            >
+                                              <span
+                                                class="assignVacancyDesign mt-1 text-capitalize d-flex justify-content-center"
+                                              >
+                                                {{ data.site }},
+                                                <!-- {{ extractTimeRange(data.site_shift)
+                                              }} -->
+                                                <br />
+                                                {{ data.site_shift.replace(/_/g, " ") }}
+                                                {{ data.job_title }} &nbsp;
+
+                                                <br />
+                                              </span>
+                                            </div>
+                                          </span>
+                                        </span>
+                                      </span>
+                                    </span>
+                                  </span>
+                                </span>
+
+                                <div
+                                  v-if="dropCandidateId === data.id && dropDay === day"
+                                  class="drop-zone"
+                                >
+                                  {{ droppedContent }}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tbody v-else>
+                      <tr v-if="!isLoading">
+                        <td colspan="7" class="text-danger text-center fw-bold">
+                          {{ "No records found." }}
+                        </td>
+                      </tr>
+                      <!-- <tr v-else>
+                      <td colspan="8" class="text-danger text-center">
+                        {{ errorMessageCustom }}
+                      </td>
+                    </tr> -->
+                    </tbody>
+                  </table>
+                </div>
+                <loader :isLoading="isLoading"></loader>
+                <div class="table-container">
+                  <table class="table" v-if="searchQuery">
+                    <thead>
+                      <tr>
+                        <th style="width: 15%">
+                          <div class="d-flex justify-content-between">
+                            <div class="d-flex align-items-center">Shifts</div>
+                            &nbsp; &nbsp; &nbsp;&nbsp;
+                            <div class="d-flex align-items-center fs-4">
+                              <i
+                                class="bi bi-caret-left-fill"
+                                @click="moveToPrevious"
+                              ></i>
+                              <i class="bi bi-calendar2-check-fill"></i>
+                              <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                            </div>
+                          </div>
+                        </th>
+
+                        <th>
+                          <div class="calendar-grid">
+                            <div v-for="day in daysOfWeek" :key="day" class="day-header">
+                              {{ day }}
+                            </div>
+                            <div
+                              v-for="date in selectedDateRow"
+                              :key="date"
+                              class="day-header"
+                            >
+                              {{ formatDate(date) }}
+                            </div>
+                          </div>
+                        </th>
+                      </tr>
+                    </thead>
+
+                    <tbody v-if="searchResults?.length > 0">
+                      <tr v-for="data in searchResults" :key="data.id">
+                        <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
+                        <td>
+                          <div
+                            v-if="searchQuery"
+                            class="calendar-grid"
+                            style="max-height: 90px; overflow-y: auto; overflow-x: hidden"
+                          >
+                            <div v-for="(data, index) in vacancyList" :key="index">
+                              <div
+                                v-for="day in selectedDateRow"
+                                :key="day"
+                                class="text-center"
+                              >
+                                <ul
+                                  class="list-unstyled mb-0"
+                                  v-if="data.day === formattedDate(day)"
+                                >
+                                  <li
+                                    class="position-relative"
+                                    v-for="(vacancy, liIndex) in data.vacancies"
+                                    :key="vacancy.id"
+                                    :draggable="true"
+                                    @dragstart="handleDragStart(vacancy)"
+                                    @drop="handleRevertDrop(vacancy.id, $event)"
+                                    @dragover.prevent="handleDragOver"
+                                    :class="{
+                                      'bg-info': liIndex === 0,
+                                      'bg-warning': liIndex === 1,
+                                      'bg-success': liIndex === 2,
+                                      'bg-primary': liIndex >= 3,
+                                    }"
+                                  >
+                                    <span class="d-flex flex-column align-items-baseline">
+                                      <span class="text-capitalize"
+                                        >{{ vacancy.site }},{{ vacancy.job_title }}</span
+                                      >
+
+                                      <!-- <span class="">{{
+                                  extractTimeRange(vacancy.site_shift)
+                                }}</span> -->
+                                      <span class="">{{
+                                        vacancy.site_shift.replace(/_/g, " ")
+                                      }}</span>
+                                    </span>
+                                    <span class="staff-count-round text-white">{{
+                                      vacancy.staff_required
+                                    }}</span>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr v-for="data in paginateSearch" :key="data.id">
+                        <div
+                          class="text-capitalize fw-bold"
+                          style="border-right: 1px solid rgb(209, 208, 208)"
+                        >
+                          {{ data.candidate_name }}
+
+                          <span class="fs-6 text-muted fw-100"
+                            ><br /><span
+                              style="background: rgb(209, 207, 207); padding: 3px"
+                              >{{ data.job }}</span
+                            ></span
+                          >
+                        </div>
+
+                        <td>
+                          <div>
+                            <div class="calendar-grid" @dragover.prevent="handleDragOver">
+                              <div
+                                v-for="day in selectedDateRow"
+                                :key="day"
+                                class="pt-2"
+                                data-bs-toggle="modal"
+                                data-bs-target="#scheduleDirectAssignList"
+                                data-bs-whatever="@mdo"
+                                @click="openModal(data, formattedDate(day))"
+                                :class="{
+                                  'calendar-day': true,
+                                  clickable: day !== '',
+                                }"
+                                @drop="handleDrop(data, formattedDate(day))"
+                              >
+                                <span v-for="avail in data.availability" :key="avail.id">
+                                  <span v-if="avail.date === formattedDate(day)">
                                     <span
                                       v-if="avail.status"
                                       style="font-size: small; padding: 0px 5px"
@@ -392,286 +620,77 @@
                                     </span>
                                   </span>
                                 </span>
-                              </span>
-                              &nbsp;&nbsp;
+                                &nbsp;&nbsp;
 
-                              <span v-for="assign in assignStaffDisplay" :key="assign.id">
-                                <span v-if="data.candidate_id === assign.candidate_id">
-                                  <span v-for="data in assign.vacancies" :key="data.id">
-                                    <span v-for="date in data.dates" :key="date">
-                                      <span
-                                        v-if="formatDates(date) === formattedDate(day)"
-                                      >
-                                        <span
-                                          :draggable="true"
-                                          @dragstart="
-                                            handleDragRevert(data, assign.candidate_id)
-                                          "
-                                        >
-                                          <div
-                                            data-bs-toggle="modal"
-                                            data-bs-target=" #editAssignScheduleVacancy"
-                                            data-bs-whatever="@mdo"
-                                            @click="
-                                              openModalEdit(data, formattedDate(day))
-                                            "
-                                            :class="{
-                                              'calendar-day': true,
-                                              clickable: day !== '',
-                                            }"
-                                          >
-                                            <span
-                                              class="assignVacancyDesign mt-1 text-capitalize d-flex justify-content-center"
-                                            >
-                                              {{ data.site }},
-                                              <!-- {{ extractTimeRange(data.site_shift)
-                                              }} -->
-                                              <br />
-                                              {{ data.site_shift.replace(/_/g, " ") }}
-                                              {{ data.job_title }} &nbsp;
-
-                                              <br />
-                                            </span>
-                                          </div>
-                                        </span>
-                                      </span>
-                                    </span>
-                                  </span>
-                                </span>
-                              </span>
-
-                              <div
-                                v-if="dropCandidateId === data.id && dropDay === day"
-                                class="drop-zone"
-                              >
-                                {{ droppedContent }}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                  <tbody v-else>
-                    <tr v-if="!isLoading">
-                      <td colspan="7" class="text-danger text-center fw-bold">
-                        {{ "No records found." }}
-                      </td>
-                    </tr>
-                    <!-- <tr v-else>
-                      <td colspan="8" class="text-danger text-center">
-                        {{ errorMessageCustom }}
-                      </td>
-                    </tr> -->
-                  </tbody>
-                </table>
-                <loader :isLoading="isLoading"></loader>
-                <table class="table" v-if="searchQuery">
-                  <thead>
-                    <tr>
-                      <th style="width: 15%">
-                        <div class="d-flex justify-content-between">
-                          <div class="d-flex align-items-center">Shifts</div>
-                          &nbsp; &nbsp; &nbsp;&nbsp;
-                          <div class="d-flex align-items-center fs-4">
-                            <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
-                            <i class="bi bi-calendar2-check-fill"></i>
-                            <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
-                          </div>
-                        </div>
-                      </th>
-
-                      <th>
-                        <div class="calendar-grid">
-                          <div v-for="day in daysOfWeek" :key="day" class="day-header">
-                            {{ day }}
-                          </div>
-                          <div
-                            v-for="date in selectedDateRow"
-                            :key="date"
-                            class="day-header"
-                          >
-                            {{ formatDate(date) }}
-                          </div>
-                        </div>
-                      </th>
-                    </tr>
-                  </thead>
-
-                  <tbody v-if="searchResults?.length > 0">
-                    <tr v-for="data in searchResults" :key="data.id">
-                      <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
-                      <td>
-                        <div
-                          v-if="searchQuery"
-                          class="calendar-grid"
-                          style="max-height: 90px; overflow-y: auto; overflow-x: hidden"
-                        >
-                          <div v-for="(data, index) in vacancyList" :key="index">
-                            <div
-                              v-for="day in selectedDateRow"
-                              :key="day"
-                              class="text-center"
-                            >
-                              <ul
-                                class="list-unstyled mb-0"
-                                v-if="data.day === formattedDate(day)"
-                              >
-                                <li
-                                  class="position-relative"
-                                  v-for="(vacancy, liIndex) in data.vacancies"
-                                  :key="vacancy.id"
-                                  :draggable="true"
-                                  @dragstart="handleDragStart(vacancy)"
-                                  @drop="handleRevertDrop(vacancy.id, $event)"
-                                  @dragover.prevent="handleDragOver"
-                                  :class="{
-                                    'bg-info': liIndex === 0,
-                                    'bg-warning': liIndex === 1,
-                                    'bg-success': liIndex === 2,
-                                    'bg-primary': liIndex >= 3,
-                                  }"
+                                <span
+                                  v-for="assign in assignStaffDisplay"
+                                  :key="assign.id"
                                 >
-                                  <span class="d-flex flex-column align-items-baseline">
-                                    <span class="text-capitalize"
-                                      >{{ vacancy.site }},{{ vacancy.job_title }}</span
-                                    >
-
-                                    <!-- <span class="">{{
-                                  extractTimeRange(vacancy.site_shift)
-                                }}</span> -->
-                                    <span class="">{{
-                                      vacancy.site_shift.replace(/_/g, " ")
-                                    }}</span>
-                                  </span>
-                                  <span class="staff-count-round text-white">{{
-                                    vacancy.staff_required
-                                  }}</span>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr v-for="data in paginateSearch" :key="data.id">
-                      <div
-                        class="text-capitalize fw-bold"
-                        style="border-right: 1px solid rgb(209, 208, 208)"
-                      >
-                        {{ data.candidate_name }}
-
-                        <span class="fs-6 text-muted fw-100"
-                          ><br /><span
-                            style="background: rgb(209, 207, 207); padding: 3px"
-                            >{{ data.job }}</span
-                          ></span
-                        >
-                      </div>
-
-                      <td>
-                        <div>
-                          <div class="calendar-grid" @dragover.prevent="handleDragOver">
-                            <div
-                              v-for="day in selectedDateRow"
-                              :key="day"
-                              class="pt-2"
-                              data-bs-toggle="modal"
-                              data-bs-target="#scheduleDirectAssignList"
-                              data-bs-whatever="@mdo"
-                              @click="openModal(data, formattedDate(day))"
-                              :class="{
-                                'calendar-day': true,
-                                clickable: day !== '',
-                              }"
-                              @drop="handleDrop(data, formattedDate(day))"
-                            >
-                              <span v-for="avail in data.availability" :key="avail.id">
-                                <span v-if="avail.date === formattedDate(day)">
-                                  <span
-                                    v-if="avail.status"
-                                    style="font-size: small; padding: 0px 5px"
-                                    v-bind:class="{
-                                      'btn btn-warning ': avail.status === 'Late',
-                                      'btn btn-primary ': avail.status === 'Unavailable',
-                                      'btn btn-secondary ': avail.status === 'Night',
-                                      'btn btn-light ': avail.status === 'Early',
-                                    }"
-                                  >
-                                    {{
-                                      avail.status ? avail.status[0].toUpperCase() : ""
-                                    }}
-                                  </span>
-                                </span>
-                              </span>
-                              &nbsp;&nbsp;
-
-                              <span v-for="assign in assignStaffDisplay" :key="assign.id">
-                                <span v-if="data.candidate_id === assign.candidate_id">
-                                  <span v-for="data in assign.vacancies" :key="data.id">
-                                    <span v-for="date in data.dates" :key="date">
-                                      <span
-                                        v-if="formatDates(date) === formattedDate(day)"
-                                      >
+                                  <span v-if="data.candidate_id === assign.candidate_id">
+                                    <span v-for="data in assign.vacancies" :key="data.id">
+                                      <span v-for="date in data.dates" :key="date">
                                         <span
-                                          :draggable="true"
-                                          @dragstart="
-                                            handleDragRevert(data, assign.candidate_id)
-                                          "
+                                          v-if="formatDates(date) === formattedDate(day)"
                                         >
-                                          <div
-                                            data-bs-toggle="modal"
-                                            data-bs-target=" #editAssignScheduleVacancy"
-                                            data-bs-whatever="@mdo"
-                                            @click="
-                                              openModalEdit(data, formattedDate(day))
+                                          <span
+                                            :draggable="true"
+                                            @dragstart="
+                                              handleDragRevert(data, assign.candidate_id)
                                             "
-                                            :class="{
-                                              'calendar-day': true,
-                                              clickable: day !== '',
-                                            }"
                                           >
-                                            <span
-                                              class="assignVacancyDesign mt-1 text-capitalize d-flex justify-content-center"
+                                            <div
+                                              data-bs-toggle="modal"
+                                              data-bs-target=" #editAssignScheduleVacancy"
+                                              data-bs-whatever="@mdo"
+                                              @click="
+                                                openModalEdit(data, formattedDate(day))
+                                              "
+                                              :class="{
+                                                'calendar-day': true,
+                                                clickable: day !== '',
+                                              }"
                                             >
-                                              {{ data.site }},
-                                              <!-- {{ extractTimeRange(data.site_shift)
+                                              <span
+                                                class="assignVacancyDesign mt-1 text-capitalize d-flex justify-content-center"
+                                              >
+                                                {{ data.site }},
+                                                <!-- {{ extractTimeRange(data.site_shift)
                                               }}-->
-                                              {{ data.site_shift.replace(/_/g, " ") }}
-                                              <br />
-                                              {{ data.job_title }} &nbsp;
+                                                {{ data.site_shift.replace(/_/g, " ") }}
+                                                <br />
+                                                {{ data.job_title }} &nbsp;
 
-                                              <br />
-                                            </span>
-                                          </div>
+                                                <br />
+                                              </span>
+                                            </div>
+                                          </span>
                                         </span>
                                       </span>
                                     </span>
                                   </span>
                                 </span>
-                              </span>
 
-                              <div
-                                v-if="dropCandidateId === data.id && dropDay === day"
-                                class="drop-zone"
-                              >
-                                {{ droppedContent }}
+                                <div
+                                  v-if="dropCandidateId === data.id && dropDay === day"
+                                  class="drop-zone"
+                                >
+                                  {{ droppedContent }}
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                  <tbody v-else>
-                    <tr>
-                      <td colspan="2" class="text-danger text-center">
-                        {{ errorMessage }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tbody v-else>
+                      <tr>
+                        <td colspan="2" class="text-danger text-center">
+                          {{ errorMessage }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
@@ -1662,7 +1681,29 @@ input.dateInput {
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.4);
 }
+.table-container {
+  max-height: 730px;
+  overflow-y: auto;
+}
 
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  background-color: white; /* Ensure the header has a visible background */
+  z-index: 100; /* Make sure it stays above the content */
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+}
 .modal-content {
   background-color: #fefefe;
   margin: 15% auto;

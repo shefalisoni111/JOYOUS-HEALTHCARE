@@ -206,6 +206,7 @@
               data-bs-dismiss="modal"
               v-on:click="updateAssignVacancyMethod($event)"
               @click.stop="closePopup"
+              :disabled="!isSubmitEnabled"
             >
               Assign
             </button>
@@ -252,6 +253,13 @@ export default {
   },
   components: { SuccessAlert },
   computed: {
+    isSubmitEnabled() {
+      if (this.selectAll) {
+        return true;
+      }
+
+      return Object.values(this.checkedCandidates).some((checked) => checked);
+    },
     selectedAllItemId() {
       // this.getallCandidateVacancyListMethod(this.$store.state.selectedAllItemId);
       this.getAllCandidateListMethod(this.$store.state.selectedAllItemId);

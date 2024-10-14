@@ -45,30 +45,23 @@
                   <!-- <th scope="col">Action</th> -->
                 </tr>
               </thead>
-              <tbody v-if="getReferData.length > 0">
+
+              <tbody v-if="Array.isArray(getReferData) && getReferData.length > 0">
                 <tr v-for="(getrate, index) in getReferData" :key="index">
                   <td scope="row" v-text="getrate.id"></td>
                   <td v-text="getrate.name"></td>
                   <td v-text="getrate.job_position"></td>
-
                   <td v-text="getrate.email"></td>
                   <td v-text="getrate.phone_number"></td>
                   <td v-text="getrate.created_at"></td>
                   <td v-text="getrate.updated_at"></td>
-                  <!-- <td v-text="getrate.last_updated"></td> -->
-                  <!-- <td class="cursor-pointer d-flex">
-                    <i
-                      class="bi bi-trash3 cursor-pointer btn btn-outline-success text-nowrap"
-                      v-on:click="rateCardDelete(getrate.id)"
-                    ></i>
-                  
-                  </td> -->
                 </tr>
               </tbody>
-              <tbody v-else>
+
+              <tbody v-else-if="!isLoading && getReferData.length === 0">
                 <tr>
-                  <td colspan="9" class="text-center text-danger" v-if="!isLoading">
-                    {{ "Data No Found!" }}
+                  <td colspan="9" class="text-center text-danger">
+                    {{ "Data Not Found!" }}
                   </td>
                 </tr>
               </tbody>
@@ -111,29 +104,29 @@ export default {
     async staffReferDataMethod() {
       this.isLoading = true;
       const candidateId = this.$route.params.id;
-      await axios
-        .get(`${VITE_API_URL}/refer_friends`, {
-          params: {
-            candidate_id: candidateId,
-          },
-        })
-        .then((response) => {
-          if (response.data.refer_friend) {
-            this.getReferData = response.data.refer_friend;
-          } else {
-            this.noReferData = response.data.message;
-          }
-        })
-        .catch((error) => {
-          if (error.response) {
-            if (error.response.status == 404) {
-              // alert(error.response.data.message);
-            }
-          }
-        })
-        .finally(() => {
-          this.isLoading = false;
+      try {
+        const response = await axios.get(`${VITE_API_URL}/refer_friends`, {
+          params: { candidate_id: candidateId },
         });
+
+        const data = response.data.refer_friend;
+
+        if (Array.isArray(data) && data.length > 0) {
+          this.getReferData = data;
+        } else if (data && typeof data === "object") {
+          this.getReferData = [data];
+        } else {
+          this.getReferData = [];
+          this.noReferData = "No referral data found.";
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          this.noReferData = error.response.data.message || "No data available.";
+          this.getReferData = [];
+        }
+      } finally {
+        this.isLoading = false;
+      }
     },
   },
   async beforeRouteEnter(to, from, next) {

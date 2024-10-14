@@ -123,7 +123,7 @@
             <td v-text="client.ref_code"></td>
             <td>
               <router-link
-                class="text-capitalize"
+                class="text-capitalize fw-bold"
                 :to="{
                   name: 'SingleClientProfile',
                   params: { id: client.id },
@@ -472,7 +472,7 @@ export default {
         this.getClientDetail = response.data.data || [];
 
         if (this.getClientDetail.length === 0) {
-          this.errorMessageFilter = "Report No Found!";
+          this.errorMessageFilter = "Report Not Found!";
         } else {
           this.errorMessageFilter = "";
         }
