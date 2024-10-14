@@ -72,7 +72,7 @@
             </a>
           </div>
         </div>
-        <div class="row" ref="invoiceContent">
+        <div class="row" ref="invoiceContentOne">
           <div class="col-md-12 d-flex align-items-center">
             <div class="col-md-5 d-flex align-items-end">
               <img
@@ -457,36 +457,56 @@ export default {
       await this.$nextTick();
 
       const element = this.$refs.invoiceContent;
+      const elementOne = this.$refs.invoiceContentOne;
 
-      if (!element) {
-        // console.error("Element not found");
-        return;
+      if (element) {
+        try {
+          const sanitizedHTML = DOMPurify.sanitize(element.innerHTML || "");
+          const canvas = await html2canvas(element, {
+            useCORS: true,
+            allowTaint: false,
+            logging: true,
+            backgroundColor: null,
+          });
+
+          const imgData = canvas.toDataURL("image/png");
+          const pdf = new jsPDF();
+
+          const pageWidth = pdf.internal.pageSize.getWidth();
+          const pageHeight = pdf.internal.pageSize.getHeight();
+          const imgWidth = pageWidth;
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+          pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+          pdf.save("Staff_Profile.pdf");
+        } catch (error) {
+          // console.error("Error downloading the file for invoiceContent:", error);
+        }
       }
 
-      const sanitizedHTML = DOMPurify.sanitize(element.innerHTML || "");
+      if (elementOne) {
+        try {
+          const sanitizedHTMLOne = DOMPurify.sanitize(elementOne.innerHTML || "");
+          const canvasOne = await html2canvas(elementOne, {
+            useCORS: true,
+            allowTaint: false,
+            logging: true,
+            backgroundColor: null,
+          });
 
-      let trustedHTML = sanitizedHTML;
+          const imgDataOne = canvasOne.toDataURL("image/png");
+          const pdfOne = new jsPDF();
 
-      try {
-        const canvas = await html2canvas(element, {
-          useCORS: true,
-          allowTaint: false,
-          logging: true,
-          backgroundColor: null,
-        });
+          const pageWidthOne = pdfOne.internal.pageSize.getWidth();
+          const pageHeightOne = pdfOne.internal.pageSize.getHeight();
+          const imgWidthOne = pageWidthOne;
+          const imgHeightOne = (canvasOne.height * imgWidthOne) / canvasOne.width;
 
-        const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF();
-
-        const pageWidth = pdf.internal.pageSize.getWidth();
-        const pageHeight = pdf.internal.pageSize.getHeight();
-        const imgWidth = pageWidth;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-        pdf.save("Staff_Profile.pdf");
-      } catch (error) {
-        // console.error("Error downloading the file:", error);
+          pdfOne.addImage(imgDataOne, "PNG", 0, 0, imgWidthOne, imgHeightOne);
+          pdfOne.save("Staff_Profile.pdf");
+        } catch (error) {
+          // console.error("Error downloading the file for invoiceContentOne:", error);
+        }
       }
     },
     async getCandidateProfileTabMethod() {
@@ -499,15 +519,7 @@ export default {
           // this.getCandidateProfileTabMethod();
           this.$emit("getBankDetail");
         }
-      } catch (error) {
-        // if (error.response) {
-        //   if (error.response.status == 404) {
-        //     // alert(error.response.data.message);
-        //   }
-        // } else {
-        //   // console.error("Error fetching candidates:", error);
-        // }
-      }
+      } catch (error) {}
     },
   },
   async beforeRouteEnter(to, from, next) {

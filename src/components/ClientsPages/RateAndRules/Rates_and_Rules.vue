@@ -23,9 +23,9 @@
                 <div class="p-2">
                   <div class="d-flex justify-content-between">
                     <div class="d-flex">
-                      <div class="d-flex align-items-center">
+                      <!-- <div class="d-flex align-items-center">
                         <div class="card p-2">Rate and Rules</div>
-                      </div>
+                      </div> -->
 
                       &nbsp;&nbsp;
                       <div class="d-flex align-items-center"></div>

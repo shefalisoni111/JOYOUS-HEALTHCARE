@@ -112,10 +112,12 @@
                         <option value="" selected for="SelectAvailability">
                           All Availability
                         </option>
-                        <option id="SelectAvailability">Late</option>
-                        <option id="SelectAvailability">Night</option>
-                        <option id="SelectAvailability">Unavailable</option>
-                        <option id="SelectAvailability">Early</option>
+                        <option id="SelectAvailability" value="Late">Late</option>
+                        <option id="SelectAvailability" value="Night">Night</option>
+                        <option id="SelectAvailability" value="Unavailable">
+                          Unavailable
+                        </option>
+                        <option id="SelectAvailability" value="Early">Early</option>
                       </select>
                     </div>
                   </div>
@@ -785,6 +787,13 @@ const axiosInstance = axios.create({
 export default {
   data() {
     return {
+      filters: {
+        availablity: "",
+        job: "",
+        site: "",
+        shift: "",
+        status: "",
+      },
       isOpen: false,
       currentView: "weekly",
       startDate: new Date(),
@@ -931,69 +940,45 @@ export default {
       this.$refs.shiftPublishStaff.getPublishStaffListMethod();
     },
     filterData(value, filterType) {
-      switch (filterType) {
-        case "job":
-          // this.site_id = "";
-          // this.site_shift = "";
-          // this.publish = "";
-          break;
-        case "site":
-          // this.job_id = "";
-          // this.site_shift = "";
-          // this.publish = "";
-          break;
-        case "shift":
-          // this.job_id = "";
-          // this.site_id = "";
-          // this.publish = "";
-          break;
-        case "status":
-        // this.job_id = "";
-        // this.site_id = "";
-        // this.site_shift = "";
-        case "availablity":
-          // this.job_id = "";
-          // this.site_id = "";
-          // this.site_shift = "";
-          break;
-        default:
-          break;
-      }
+      this.filters[filterType] = value;
 
-      this.makeFilterAPICall(filterType, value);
+      this.makeFilterAPICall();
     },
 
-    async makeFilterAPICall(filter_type, filter_value) {
+    async makeFilterAPICall() {
       const requestData = {
+        availablity: this.filters.availablity,
+        job: this.filters.job,
+        site: this.filters.site,
+        shift: this.filters.shift,
+        status: this.filters.status,
         date: this.formattedStartDate,
       };
+
       try {
         const response = await axios.get(
           `${VITE_API_URL}/candidates_availability_vacancies`,
           {
             params: {
               currentPage: this.currentPage,
-              filter_type: filter_type,
-              filter_value: filter_value,
-              date: this.formattedStartDate,
+              ...requestData,
             },
           }
         );
-        this.candidateList = response.data.data;
 
+        this.candidateList = response.data.data;
         this.searchResults = response.data.data;
         this.vacancyList = response.data.vacancies;
-
-        // this.fetchVacancyListMethod();
       } catch (error) {
         if (error.response && error.response.status === 404) {
           const errorMessages = error.response.data.error;
           if (errorMessages === "No records found for the given filter") {
-            alert("No records found for the given filter");
+            errorMessages === "No records found for the given filter";
           } else {
-            alert(errorMessages);
+            errorMessages === "No records found for the given filter";
           }
         } else {
+          // console.error("An error occurred:", error);
         }
       }
     },
