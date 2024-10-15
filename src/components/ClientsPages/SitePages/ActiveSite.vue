@@ -17,7 +17,7 @@
             <th scope="col">Action</th>
           </tr>
         </thead>
-        <tbody v-if="paginateCandidates?.length > 0">
+        <tbody v-if="paginateSiteData?.length > 0">
           <tr v-for="data in paginateSiteData" :key="data.id">
             <!-- <td>{{ data.id }}</td> -->
             <td v-text="data.refer_code"></td>
