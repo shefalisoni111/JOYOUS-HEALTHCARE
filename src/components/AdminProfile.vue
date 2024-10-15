@@ -195,7 +195,7 @@ export default {
       const token = localStorage.getItem("token");
 
       try {
-        const response = await axios.get(`${VITE_API_URL}/merchants/4`, {
+        const response = await axios.get(`${VITE_API_URL}/merchants/1`, {
           headers: {
             "content-type": "application/json",
             Authorization: "bearer " + token,

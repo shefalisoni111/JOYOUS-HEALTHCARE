@@ -19,7 +19,7 @@
               <th scope="col">Action</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="getInactiveData?.length > 0">
             <tr v-for="data in getInactiveData" :key="data.id">
               <td v-text="data.id"></td>
               <td v-text="data.ref_code"></td>
@@ -83,6 +83,13 @@
                 <button class="btn btn-outline-danger text-nowrap">
                   <i class="bi bi-trash" v-on:click="confirmed(data.id)"></i>
                 </button>
+              </td>
+            </tr>
+          </tbody>
+          <tbody v-else>
+            <tr>
+              <td colspan="16" class="text-center text-danger" v-if="!isLoading">
+                {{ "Data Not Found!" }}
               </td>
             </tr>
           </tbody>
