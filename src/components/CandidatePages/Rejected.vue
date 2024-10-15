@@ -223,7 +223,7 @@ export default {
           // console.log("Response after approval:", response);
 
           this.fetchPendingCandidates();
-          alert("reject staff successful");
+          // alert("reject staff successful");
         } catch (error) {
           // console.error("Error approving candidate:", error);
         }
