@@ -71,7 +71,7 @@
                   <th scope="col" class="col-2 text-white jusfycenter">Action</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody v-if="getEmployeeStatus?.length > 0">
                 <tr v-for="getEmployee in getEmployeeStatus" :key="getEmployee.id">
                   <td :v-text="getEmployee.id">{{ getEmployee.id }}</td>
                   <td :v-text="getEmployee.title">{{ getEmployee.title }}</td>
@@ -83,6 +83,13 @@
                       class="bi bi-trash cursor-pointer"
                       v-on:click="confirmed(getEmployee.id)"
                     ></i>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody v-else>
+                <tr>
+                  <td colspan="4" class="text-center text-danger" v-if="!isLoading">
+                    {{ "Data Not Found!" }}
                   </td>
                 </tr>
               </tbody>

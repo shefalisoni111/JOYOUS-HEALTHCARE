@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="col-12">
-      <div class="">
+      <div class="" v-if="paginateSiteData?.length > 0">
         <div
           class="accordion mt-3"
           v-for="(getCate, index) in paginateSiteData"
@@ -139,6 +139,11 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div v-else>
+        <div class="text-center text-danger" v-if="!isLoading">
+          {{ "Data Not Found!" }}
         </div>
       </div>
     </div>

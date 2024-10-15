@@ -130,7 +130,7 @@
                               <th scope="col" class="bg-primary text-white">Action</th>
                             </tr>
                           </thead>
-                          <tbody>
+                          <tbody v-if="rolesActive?.length > 0">
                             <tr v-for="data in rolesActive" :key="data.id">
                               <td>{{ data.id }}</td>
                               <td scope="row">{{ data.user_role }}</td>
@@ -145,6 +145,13 @@
                                   v-on:click="confirmed(data.id)"
                                 >
                                 </i>
+                              </td>
+                            </tr>
+                          </tbody>
+                          <tbody v-else>
+                            <tr>
+                              <td colspan="6" class="text-danger">
+                                {{ "Inactive users Not found!" }}
                               </td>
                             </tr>
                           </tbody>
@@ -173,7 +180,7 @@
                               <th scope="col" class="bg-primary text-white">Action</th>
                             </tr>
                           </thead>
-                          <tbody v-if="rolesInActive">
+                          <tbody v-if="rolesInActive?.length > 0">
                             <tr v-for="data in rolesInActive" :key="data.id">
                               <td>{{ data.id }}</td>
                               <td scope="row">{{ data.user_role }}</td>
@@ -216,7 +223,7 @@
                           </tbody>
                           <tbody v-else>
                             <tr>
-                              <td colspan="6" class="text-danger fw-bold">
+                              <td colspan="6" class="text-danger">
                                 {{ "Inactive users Not found!" }}
                               </td>
                             </tr>

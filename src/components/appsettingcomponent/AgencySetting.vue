@@ -48,7 +48,7 @@
           <div class="col-12 bg-white"></div>
           <div class="row">
             <div class="col-12">
-              <div class="bg-white" v-for="data in getAgencyData" :key="data.id">
+              <div class="bg-white">
                 <div class="p-5 float-end">
                   <button
                     type="button"
@@ -61,7 +61,7 @@
                     <i class="bi bi-pencil"></i> Edit
                   </button>
                 </div>
-                <div class="col-5">
+                <!-- <div class="col-5">
                   <div class="d-flex justify-content-between align-items-center px-4">
                     <img
                       v-if="data.agency_logo"
@@ -103,7 +103,7 @@
                       <span>Description</span>
                     </div>
                   </div>
-                </div>
+                </div> -->
                 <div class="showdata p-4">
                   <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">

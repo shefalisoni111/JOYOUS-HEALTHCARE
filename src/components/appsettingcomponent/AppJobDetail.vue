@@ -78,7 +78,7 @@
                   <th scope="col" class="bg-primary text-white">Action</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody v-if="paginateSiteData?.length > 0">
                 <tr v-for="jobs in paginateSiteData" :key="jobs.id">
                   <td v-text="jobs.id"></td>
                   <td scope="row">
@@ -96,6 +96,13 @@
                     >
                       In-Active
                     </button>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody v-else>
+                <tr>
+                  <td colspan="8" class="text-center text-danger" v-if="!isLoading">
+                    {{ "Data Not Found!" }}
                   </td>
                 </tr>
               </tbody>
