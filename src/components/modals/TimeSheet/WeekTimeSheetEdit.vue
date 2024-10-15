@@ -130,7 +130,7 @@
                         <div class="col-12">
                           <select
                             id="selectCustomStartTime"
-                            class="form-select"
+                            class="form-control"
                             v-model="fetchCustomTimeShetData.start_time"
                             @change="validateStartTime"
                             style="width: 240px"
@@ -166,7 +166,7 @@
                         <div class="col-12">
                           <select
                             id="selectCustomEndTime"
-                            class="form-select"
+                            class="form-control"
                             v-model="fetchCustomTimeShetData.end_time"
                             @change="validateEndTime"
                             style="width: 240px"
@@ -202,7 +202,7 @@
                         <div class="col-12">
                           <select
                             id="selectShiftsBreak"
-                            class="form-select"
+                            class="form-control"
                             v-model="fetchCustomTimeShetData.break"
                             @change="validateBreak"
                             style="width: 240px"
@@ -229,7 +229,7 @@
                           /> -->
                           <select
                             id="selectCustomStartTime"
-                            class="form-select"
+                            class="form-control"
                             v-model="fetchCustomTimeShetData.total_hours"
                             @change="validateStartTime"
                             style="width: 240px"
@@ -252,7 +252,6 @@
                             class="form-control"
                             v-model="fetchCustomTimeShetData.client_rate"
                             @input="validateNumber('client_rate')"
-                            placeholder="Enter Client Rate"
                           />
                         </div>
                       </div>
@@ -266,7 +265,6 @@
                             class="form-control"
                             v-model="fetchCustomTimeShetData.total_cost"
                             @input="validateNumber('total_cost')"
-                            placeholder="Enter Client Pay Amount"
                           />
                         </div>
                       </div>
@@ -280,7 +278,6 @@
                             class="form-control"
                             v-model="fetchCustomTimeShetData.staff_rate"
                             @input="validateNumber('staff_rate')"
-                            placeholder="Enter Staff Rate"
                           />
                         </div>
                       </div>
