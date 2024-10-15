@@ -17,7 +17,7 @@
               <th scope="col">Action</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="paginateCandidates?.length > 0">
             <tr v-for="candidate in paginateCandidates" :key="candidate.id">
               <td v-text="candidate.id"></td>
               <td>
@@ -110,6 +110,13 @@
                 >
                   <i class="bi bi-eye"></i
                 ></router-link> -->
+              </td>
+            </tr>
+          </tbody>
+          <tbody v-else>
+            <tr v-if="!isLoading">
+              <td colspan="9" class="text-danger text-center">
+                {{ "Data Not Found!" }}
               </td>
             </tr>
           </tbody>

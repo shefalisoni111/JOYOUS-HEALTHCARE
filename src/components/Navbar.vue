@@ -626,16 +626,16 @@ export default {
         }
       }
     },
-    async getAdminMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/merchants/4`);
+    // async getAdminMethod() {
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/merchants/4`);
 
-        this.getAdminData = response.data ;
-        // console.log(this.getAdminData)
-      } catch (error) {
-        // console.error("Error fetching admin data:", error);
-      }
-    },
+    //     this.getAdminData = response.data ;
+    //     // console.log(this.getAdminData)
+    //   } catch (error) {
+    //     // console.error("Error fetching admin data:", error);
+    //   }
+    // },
     async getCandidateMethods() {
       try {
         const response = await axios.get(`${VITE_API_URL}/candidates`);
@@ -653,7 +653,7 @@ export default {
   },
 
  async mounted() {
-  await   this.getAdminMethod();
+  // await   this.getAdminMethod();
   await  this.getCandidateMethods();
   document.addEventListener('click', this.handleClickOutside);
   

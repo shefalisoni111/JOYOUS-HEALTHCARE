@@ -340,10 +340,10 @@
                   </th> 
                 </tr>
               </tbody> -->
-              <tbody v-if="paginateCandidates && paginateCandidates?.length > 0">
+              <tbody v-if="mergedTimesheetsArray && mergedTimesheetsArray?.length > 0">
                 <tr v-if="errorMessageFilter">
                   <td colspan="9" class="text-danger text-center">
-                    {{ errorMessageFilter }}
+                    {{ errorMessageFilter || "Data not Found!" }}
                   </td>
                 </tr>
 
@@ -464,14 +464,14 @@
                   <td>{{ data.approved_by ? data.approved_by : "Null" }}</td>
                 </tr>
               </tbody>
-              <!-- <tbody v-else>
+              <tbody v-else>
                 <tr>
                   <td colspan="9" class="text-danger text-center">
                     {{ errorMessage }}
                   </td>
                 </tr>
-              </tbody> -->
-              <tbody v-else>
+              </tbody>
+              <!-- <tbody v-else>
                 <tr v-if="errorMessageFilter">
                   <td colspan="9" class="text-danger text-center">
                     {{ errorMessageFilter }}
@@ -482,7 +482,7 @@
                     {{ errorMessage }}
                   </td>
                 </tr>
-              </tbody>
+              </tbody> -->
             </table>
           </div>
         </div>

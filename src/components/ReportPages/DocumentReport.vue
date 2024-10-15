@@ -137,15 +137,15 @@
                     </tbody>
                     <tbody v-else>
                       <tr v-if="!isLoading">
-                        <td colspan="7" class="text-danger text-center fw-bold">
-                          {{ "No records found for the given filter" }}
+                        <td colspan="7" class="text-danger text-center">
+                          {{ "Data Not available for this month" }}
                         </td>
                       </tr>
-                      <!-- <tr v-else>
+                      <tr v-else>
                         <td colspan="8" class="text-danger text-center">
                           {{ errorMessageCustom }}
                         </td>
-                      </tr> -->
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -374,10 +374,10 @@ export default {
       } catch (error) {
         if (error.response && error.response.status === 404) {
           const errorMessages = error.response.data.error;
-          if (errorMessages === "No records found for the given filter") {
-            alert("No records found for the given filter");
+          if (errorMessages === "Data Not available for this month") {
+            // alert("Data Not available for this month");
           } else {
-            alert(errorMessages);
+            // alert(errorMessages);
           }
         } else {
           // console.error(error);
@@ -401,11 +401,11 @@ export default {
         } else {
           this.errorMessageFilter = "";
         }
-        // if (this.getDocumentReportData.length === 0) {
-        //   this.errorMessageCustom = "No report found for the specified month";
-        // } else {
-        //   this.errorMessageCustom = "";
-        // }
+        if (this.getDocumentReportData.length === 0) {
+          this.errorMessageCustom = "Data No available for this month";
+        } else {
+          this.errorMessageCustom = "";
+        }
       } catch (error) {
         // console.error("Error fetching document report data:", error);
       } finally {

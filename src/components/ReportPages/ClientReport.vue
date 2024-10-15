@@ -657,7 +657,7 @@ export default {
         );
         this.getSiteReportData = response.data.timesheets || [];
         if (response.status === 200 && this.getSiteReportData.length === 0) {
-          this.errorMessageCustom = `Data No available for this month`;
+          this.errorMessageCustom = `Data Not available for this month`;
         } else {
           this.errorMessageCustom = "";
         }

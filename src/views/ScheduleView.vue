@@ -465,8 +465,8 @@
                     </tbody>
                     <tbody v-else>
                       <tr v-if="!isLoading">
-                        <td colspan="7" class="text-danger text-center fw-bold">
-                          {{ "No records found." }}
+                        <td colspan="7" class="text-danger text-center">
+                          {{ "Data Not found!" }}
                         </td>
                       </tr>
                       <!-- <tr v-else>

@@ -17,7 +17,7 @@
             <th scope="col">Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-if="paginateCandidates?.length > 0">
           <tr v-for="data in paginateSiteData" :key="data.id">
             <!-- <td>{{ data.id }}</td> -->
             <td v-text="data.refer_code"></td>
@@ -58,6 +58,18 @@
               >
                 <i class="bi bi-eye"></i>
               </router-link>
+            </td>
+          </tr>
+        </tbody>
+        <tbody v-else>
+          <tr v-if="errorMessageFilter">
+            <td colspan="15" class="text-danger text-center">
+              {{ errorMessageFilter }}
+            </td>
+          </tr>
+          <tr v-else>
+            <td colspan="15" class="text-danger text-center">
+              {{ "Data Not Found!" }}
             </td>
           </tr>
         </tbody>

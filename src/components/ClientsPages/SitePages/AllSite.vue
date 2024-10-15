@@ -178,8 +178,8 @@
             </td>
           </tr>
           <tr v-else>
-            <td colspan="15" class="text-danger text-center">
-              <!-- {{ errorMessageCustom }} -->
+            <td v-if="!isLoading" colspan="15" class="text-danger text-center">
+              {{ "Data Not Found!" }}
             </td>
           </tr>
         </tbody>

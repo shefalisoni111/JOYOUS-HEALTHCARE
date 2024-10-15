@@ -81,7 +81,7 @@
                   </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody v-if="paginateCandidates?.length > 0">
                 <tr v-for="data in paginateCandidates" :key="data.id">
                   <td class="text-capitalize fw-bold" style="width: 21%">
                     {{ data.candidate_name + " " }}
@@ -122,6 +122,13 @@
                         </span>
                       </div>
                     </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody v-else>
+                <tr>
+                  <td colspan="15" class="text-danger text-center">
+                    {{ "Data Not Found!" }}
                   </td>
                 </tr>
               </tbody>

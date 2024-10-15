@@ -43,7 +43,7 @@
             </tr>
             <tr v-else>
               <td colspan="7" class="text-danger text-center">
-                {{ errorMessageCustom }}
+                {{ "Data Not available for this month" }}
               </td>
             </tr>
           </tbody>

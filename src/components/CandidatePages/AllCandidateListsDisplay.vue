@@ -16,7 +16,7 @@
               <th scope="col">Action</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="getCandidatesData?.length > 0">
             <tr v-for="candidate in getCandidatesData" :key="candidate.id">
               <td v-text="candidate.id"></td>
               <td>
@@ -77,6 +77,13 @@
                 >
                   <i class="bi bi-trash"></i>
                 </button>
+              </td>
+            </tr>
+          </tbody>
+          <tbody v-else>
+            <tr v-if="!isLoading">
+              <td colspan="9" class="text-danger text-center">
+                {{ "Data Not Found!" }}
               </td>
             </tr>
           </tbody>

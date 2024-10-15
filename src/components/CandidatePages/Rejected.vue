@@ -56,7 +56,7 @@
         </tr>
       </tbody>
       <tbody v-else>
-        <tr>
+        <tr v-if="!isLoading">
           <td colspan="7" v-if="!isLoading" class="text-center text-danger">
             {{ "Data Not Found!" }}
           </td>

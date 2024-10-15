@@ -12,7 +12,7 @@
           <th scope="col">Action</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="getCandidatesData?.length > 0">
         <tr v-for="datas in paginateCandidates" :key="datas">
           <td v-text="datas.id"></td>
           <td class="text-capitalize">
@@ -41,6 +41,13 @@
             >
               Re-Activate
             </button>
+          </td>
+        </tr>
+      </tbody>
+      <tbody v-else>
+        <tr v-if="!isLoading">
+          <td colspan="7" class="text-danger text-center">
+            {{ "Data Not Found!" }}
           </td>
         </tr>
       </tbody>

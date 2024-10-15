@@ -105,9 +105,9 @@
           </tr>
         </tbody>
         <tbody v-else>
-          <tr>
+          <tr v-if="!isLoading">
             <td colspan="9" class="text-center text-danger">
-              {{ "No Client Data Found!" }}
+              {{ "Data Not Found!" }}
             </td>
           </tr>
         </tbody>

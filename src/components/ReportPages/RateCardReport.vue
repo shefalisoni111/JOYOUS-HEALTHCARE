@@ -681,7 +681,7 @@ export default {
           (error.response && error.response.status === 404) ||
           error.response.status === 404
         ) {
-          this.errorMessage = "No Record found for the specified criteria";
+          this.errorMessage = "Data Not available for this month";
         }
       }
     },
@@ -756,7 +756,12 @@ export default {
         const response = await axios.get(`${VITE_API_URL}/rate_and_rules`, {
           per_page: this.itemsPerPage,
         });
-        this.getRateRulesData = response.data.rates;
+        this.getRateRulesData = response.data.rates || [];
+        if (response.status === 200 && this.getRateRulesData.length === 0) {
+          this.errorMessageCustom = `Data Not available for this month`;
+        } else {
+          this.errorMessageCustom = "";
+        }
         // this.filteredRateRulesData = this.getRateRulesData;
       } catch (error) {
         // console.error('Error fetching client data:', error);

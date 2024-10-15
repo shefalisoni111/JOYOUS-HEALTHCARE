@@ -767,7 +767,7 @@ export default {
 
         // Check if the result is empty and set the error message
         if (this.getClientInvoiceDetail.length === 0) {
-          this.errorMessageFilter = "Report record Not found!";
+          this.errorMessageFilter = "Data Not available for this month.";
         } else {
           this.errorMessageFilter = "";
         }
