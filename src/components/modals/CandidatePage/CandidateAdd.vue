@@ -452,7 +452,7 @@ export default {
             this.emailInUse = false;
           }
         } catch (error) {
-          alert("Error adding Staff");
+          // alert("Error adding Staff");
           this.resetForm();
         }
       } else {

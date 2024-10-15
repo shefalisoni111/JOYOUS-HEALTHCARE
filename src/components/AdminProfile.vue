@@ -191,24 +191,24 @@ export default {
     handleAdminUpdated() {
       this.fetchAdminData();
     },
-    // async fetchAdminData() {
-    //   const token = localStorage.getItem("token");
+    async fetchAdminData() {
+      const token = localStorage.getItem("token");
 
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/merchants/4`, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     });
+      try {
+        const response = await axios.get(`${VITE_API_URL}/merchants/4`, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+        });
 
-    //     this.getAdmin = response.data;
-    //     console.log(this.getAdmin);
-    //   } catch (error) {
-    //     // Handle error if needed
-    //     // console.error("Error fetching admin data:", error);
-    //   }
-    // },
+        this.getAdmin = response.data;
+        console.log(this.getAdmin);
+      } catch (error) {
+        // Handle error if needed
+        // console.error("Error fetching admin data:", error);
+      }
+    },
   },
   async mounted() {
     const storedProfileImage = localStorage.getItem("profileImage");
