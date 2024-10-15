@@ -965,7 +965,7 @@ export default {
 
         this.dataCustomTimeSheet = response.data;
         if (this.paginatedTimesheets.length === 0) {
-          this.errorMessage = "No Custom timesheets found for the specified month";
+          this.errorMessage = "No Weekly timesheets found for the specified month";
         } else {
           this.errorMessage = "";
         }

@@ -54,7 +54,7 @@
         <div></div>
 
         <select v-model="selectedFilter" @change="filterData($event.target.value)">
-          <!-- <option value="all">All Client</option> -->
+          <option value="">Status</option>
           <option value="active_client">Active</option>
           <option value="inactive_client">In-Active</option>
         </select>
@@ -302,7 +302,7 @@ export default {
       isLoading: false,
       checkedClient: reactive({}),
       errorMessageFilter: "",
-      selectedFilter: " ",
+      selectedFilter: "",
       clientData: [],
       options: [],
       isModalVisible: false,
