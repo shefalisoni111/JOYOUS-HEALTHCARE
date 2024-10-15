@@ -139,6 +139,7 @@ export default {
 
           localStorage.setItem("token", jsonData.token);
           localStorage.setItem("tokenExpiration", expirationTime);
+          localStorage.setItem("merchant_id", jsonData.merchant_id);
           this.$router.push({ name: "Home" });
 
           this.setupAutoLogout(tokenExpiration - new Date().getTime());

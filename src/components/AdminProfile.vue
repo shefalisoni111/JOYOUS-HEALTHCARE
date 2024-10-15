@@ -20,7 +20,6 @@
                       <img
                         v-if="!profileImage"
                         src="./profile.png"
-                        alt="Admin"
                         width="150"
                         height="150"
                         @click.prevent
@@ -30,7 +29,6 @@
                       <img
                         v-else
                         :src="profileImage"
-                        alt="Admin"
                         width="150"
                         height="150"
                         @click.prevent
@@ -193,9 +191,10 @@ export default {
     },
     async fetchAdminData() {
       const token = localStorage.getItem("token");
+      const merchantId = localStorage.getItem("merchant_id");
 
       try {
-        const response = await axios.get(`${VITE_API_URL}/merchants/1`, {
+        const response = await axios.get(`${VITE_API_URL}/merchants/${merchantId}`, {
           headers: {
             "content-type": "application/json",
             Authorization: "bearer " + token,
@@ -203,7 +202,6 @@ export default {
         });
 
         this.getAdmin = response.data;
-        console.log(this.getAdmin);
       } catch (error) {
         // Handle error if needed
         // console.error("Error fetching admin data:", error);
@@ -215,7 +213,7 @@ export default {
     if (storedProfileImage) {
       this.profileImage = storedProfileImage;
     }
-    // await this.fetchAdminData();
+    await this.fetchAdminData();
   },
 };
 </script>
@@ -232,7 +230,8 @@ export default {
   font-weight: 400;
   right: 10%;
 }
-.img-div img {
+.img-div img,
+.img-div {
   border-radius: 50%;
   border: 1px solid grey;
   box-shadow: 5px 6px 25px -10px;

@@ -129,7 +129,7 @@ export default {
   },
   components: { SuccessAlert },
   mounted() {
-    this.fetchAdminMethod(4);
+    this.fetchAdminMethod();
   },
   methods: {
     validateEmailFormat(email) {
@@ -147,9 +147,14 @@ export default {
         phoneRegexWithoutPrefix.test(phone_number)
       );
     },
-    async fetchAdminMethod(id) {
+    async fetchAdminMethod() {
+      const merchantId = localStorage.getItem("merchant_id");
+      if (!merchantId) {
+        return;
+      }
+
       try {
-        const response = await axios.get(`${VITE_API_URL}/merchants/${id}`);
+        const response = await axios.get(`${VITE_API_URL}/merchants/${merchantId}`);
 
         this.fetchAdmin = { ...this.fetchAdmin, ...response.data };
       } catch (error) {
