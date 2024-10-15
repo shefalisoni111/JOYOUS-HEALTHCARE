@@ -358,7 +358,7 @@
               <li class="cursor-pointer my-1">
                 <router-link
                   class="dropdown-item text-capitalize d-flex align-items-center"
-                to="/admin/4"
+            :to="adminLink"
                   ><i class="bi bi-gear-wide pe-2"></i><span>Personal Settings</span>
                 </router-link>
               </li>
@@ -470,6 +470,7 @@ export default {
 
   data() {
     return {
+      adminLink: '/admin/',
       getAdminData: [],
       showChatBox: false,
       getAdminProfile: [],
@@ -626,16 +627,7 @@ export default {
         }
       }
     },
-    // async getAdminMethod() {
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/merchants/4`);
-
-    //     this.getAdminData = response.data ;
-    //     // console.log(this.getAdminData)
-    //   } catch (error) {
-    //     // console.error("Error fetching admin data:", error);
-    //   }
-    // },
+  
     async getCandidateMethods() {
       try {
         const response = await axios.get(`${VITE_API_URL}/candidates`);
@@ -653,9 +645,13 @@ export default {
   },
 
  async mounted() {
-  // await   this.getAdminMethod();
+  
   await  this.getCandidateMethods();
   document.addEventListener('click', this.handleClickOutside);
+  const merchantId = localStorage.getItem('merchant_id');
+    if (merchantId) {
+      this.adminLink = `/admin/${merchantId}`;
+    }
   
   },
   beforeDestroy() {

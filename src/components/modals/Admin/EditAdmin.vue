@@ -156,7 +156,7 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/merchants/${merchantId}`);
 
-        this.fetchAdmin = { ...this.fetchAdmin, ...response.data };
+        this.fetchAdmin = { ...this.fetchAdmin, ...response.data.data };
       } catch (error) {
         // console.error("Error fetching admin data:", error);
       }

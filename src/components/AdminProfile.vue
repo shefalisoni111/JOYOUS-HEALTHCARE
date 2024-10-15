@@ -201,7 +201,7 @@ export default {
           },
         });
 
-        this.getAdmin = response.data;
+        this.getAdmin = response.data.data;
       } catch (error) {
         // Handle error if needed
         // console.error("Error fetching admin data:", error);
