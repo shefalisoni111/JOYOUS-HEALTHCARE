@@ -215,7 +215,9 @@
                           :value="option.shift_name"
                           id="selectShifts"
                         >
-                          {{ option.shift_name.replace(/_/g, " ") }}
+                          {{
+                            option.shift_name ? option.shift_name.replace(/_/g, " ") : ""
+                          }}
                         </option>
                       </select>
                     </div>
@@ -438,7 +440,7 @@
                                                 <!-- {{ extractTimeRange(data.site_shift)
                                               }} -->
                                                 <br />
-                                                {{ data.site_shift.replace(/_/g, " ") }}
+                                                {{ data.site_shift?.replace(/_/g, " ") }}
                                                 {{ data.job_title }} &nbsp;
 
                                                 <br />
@@ -1375,8 +1377,15 @@ export default {
     async fetchAssignList() {
       try {
         const response = await axios.get(
-          `${VITE_API_URL}find_assign_vacancies_and_candidates`
+          `${VITE_API_URL}/find_assign_vacancies_and_candidates`
         );
+        if (response.data.error) {
+          console.error(response.data.error);
+
+          this.assignStaffDisplay = [];
+          this.flattenedAssignVacancies = [];
+          return;
+        }
         this.assignStaffDisplay = response.data.vacancies;
 
         const vacanciesInsideVacancies = response.data.vacancies.map((item) => {
