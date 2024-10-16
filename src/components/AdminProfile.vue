@@ -5,8 +5,7 @@
       <div class="main-body" id="main">
         <h3
           class="text-center fw-bold p-2 m-auto rounded-3 mainheading"
-          style="width
-          50%"
+          style="width: 100%"
         >
           Admin Profile
         </h3>
@@ -191,7 +190,7 @@ export default {
     },
     async fetchAdminData() {
       const token = localStorage.getItem("token");
-      const merchantId = localStorage.getItem("merchant_id");
+      const merchantId = localStorage.getItem("m_unique");
 
       try {
         const response = await axios.get(`${VITE_API_URL}/merchants/${merchantId}`, {

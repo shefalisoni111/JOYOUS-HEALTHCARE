@@ -5,7 +5,7 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="editAdmin">Edit Candidate</h5>
+            <h5 class="modal-title" id="editAdmin">Edit Admin Profile</h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
@@ -102,7 +102,7 @@
         </div>
       </div>
     </div>
-    <SuccessAlert ref="dangerAlert" />
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 <script>
@@ -148,7 +148,7 @@ export default {
       );
     },
     async fetchAdminMethod() {
-      const merchantId = localStorage.getItem("merchant_id");
+      const merchantId = localStorage.getItem("m_unique");
       if (!merchantId) {
         return;
       }
@@ -168,8 +168,9 @@ export default {
           this.fetchAdmin
         );
         this.$emit("admin-updated");
-
-        alert("Admin updated successfully");
+        const message = "Admin updated successfully";
+        this.$refs.successAlert.showSuccess(message);
+        // alert("Admin updated successfully");
       } catch (error) {
         // console.error("Error updating candidate:", error);
       }
