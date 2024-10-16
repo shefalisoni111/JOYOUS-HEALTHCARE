@@ -244,7 +244,7 @@ export default {
           routeName: "CandidateHistory",
         },
         {
-          name: "Staff Reference",
+          name: "Referrals",
           component: "CandidateReference",
           routeName: "CandidateReference",
         },
