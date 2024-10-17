@@ -480,7 +480,8 @@ export default {
         if (error.response && error.response.status === 404) {
           const errorMessages = error.response.data.error;
           if (errorMessages === "No records found for the given filter") {
-            alert("No records found for the given filter");
+            // alert("No records found for the given filter");
+            errorMessages === "No records found for the given filter";
           } else {
             alert(errorMessages);
           }
@@ -524,7 +525,8 @@ export default {
         if (error.response && error.response.status === 404) {
           const errorMessages = error.response.data.error;
           if (errorMessages === "No records found for the given filter") {
-            alert("No records found for the given filter");
+            // alert("No records found for the given filter");
+            errorMessages === "No records found for the given filter";
           } else {
             alert(errorMessages);
           }

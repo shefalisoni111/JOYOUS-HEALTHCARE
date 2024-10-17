@@ -712,13 +712,14 @@ export default {
         if (this.getRateRulesData.length === 0) {
           this.errorMessageFilter = "Rates Not Found!";
         } else {
-          this.errorMessageFilter = "";
+          this.errorMessageFilter = "Rates Not Found!";
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {
           const errorMessages = error.response.data.error;
           if (errorMessages === "No records found for the given filter") {
-            alert("No records found for the given filter");
+            // alert("No records found for the given filter");
+            errorMessages === "No records found for the given filter";
           } else {
             alert(errorMessages);
           }

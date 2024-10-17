@@ -524,7 +524,7 @@ export default {
         if (this.getClientInvoiceDetail.length === 0) {
           this.errorMessageFilter = "Report Not Found!";
         } else {
-          this.errorMessageFilter = "";
+          this.errorMessageFilter = "Report Not Found!";
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {

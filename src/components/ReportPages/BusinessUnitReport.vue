@@ -574,7 +574,7 @@ export default {
           this.getSiteReportData = [];
           this.errorMessageFilter = error.response.data.error || "Report Not Found!";
         } else {
-          this.errorMessageFilter = "An unexpected error occurred.";
+          this.errorMessageFilter = "Report Not Found!";
         }
       }
     },

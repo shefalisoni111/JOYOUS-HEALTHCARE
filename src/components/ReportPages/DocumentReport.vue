@@ -339,7 +339,7 @@ export default {
         if (this.getDocumentReportData.length === 0) {
           this.errorMessageFilter = "Report Not Found!";
         } else {
-          this.errorMessageFilter = "";
+          this.errorMessageFilter = "Report Not Found!";
         }
 
         this.documentNames = response.data.reduce((acc, category) => {
@@ -369,7 +369,7 @@ export default {
         if (this.getDocumentReportData.length === 0) {
           this.errorMessageFilter = "Report Not Found!";
         } else {
-          this.errorMessageFilter = "";
+          this.errorMessageFilter = "Report Not Found!";
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {

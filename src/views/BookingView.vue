@@ -158,11 +158,11 @@
                   </select>
 
                   <select v-model="id" @change="filterData" id="selectCandidateList">
-                    <option value="">All Staff</option>
+                    <option value="" disabled selected>All Staff</option>
                     <option
                       v-for="option in candidateLists"
                       :key="option.id"
-                      :value="option.first_name"
+                      :value="option.id"
                       placeholder="Select Staff"
                     >
                       {{ option.first_name + " " + option.last_name }}
@@ -693,21 +693,21 @@ export default {
     },
   },
   watch: {
-    job_id(newValue) {
-      if (newValue) {
-        this.filterData();
-      }
-    },
-    site_id(newValue) {
-      if (newValue) {
-        this.filterData();
-      }
-    },
-    id(newValue) {
-      if (newValue) {
-        this.filterData();
-      }
-    },
+    // job_id(newValue) {
+    //   if (newValue) {
+    //     this.filterData();
+    //   }
+    // },
+    // site_id(newValue) {
+    //   if (newValue) {
+    //     this.filterData();
+    //   }
+    // },
+    // id(newValue) {
+    //   if (newValue) {
+    //     this.filterData();
+    //   }
+    // },
   },
   methods: {
     // handleDeleteBooking() {
@@ -781,7 +781,7 @@ export default {
     },
     getCandidateName(id) {
       const candidate = this.candidateLists.find((candidate) => candidate.id === id);
-      return candidate ? candidate.first_name : "";
+      return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
     },
     async makeFilterAPICall(filterType, filterValue) {
       const token = localStorage.getItem("token");
@@ -805,7 +805,7 @@ export default {
           this.getBookingData = [];
           this.errorMessageFilter = error.response.data.error || "Report Not Found!";
         } else {
-          this.errorMessageFilter = "An unexpected error occurred. Please try again.";
+          this.errorMessageFilter = "Report Not Found!";
         }
       }
     },
@@ -843,7 +843,7 @@ export default {
             // alert(error.response.data.message);
           }
         }
-        this.errorDelete = "An error occurred while fetching data.";
+        this.errorDelete = "Report Not Found!";
       } finally {
         this.isLoading = false;
       }

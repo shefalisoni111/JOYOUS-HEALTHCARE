@@ -926,7 +926,7 @@ export default {
         if (error.response.data.error) {
           this.errorMessageFilter = error.response.data.error;
         } else {
-          this.errorMessageFilter = "An unknown error occurred";
+          this.errorMessageFilter = "Data Not Found!";
         }
       }
     },
