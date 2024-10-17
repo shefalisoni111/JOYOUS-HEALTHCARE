@@ -86,17 +86,18 @@
       <button class="btn btn-primary" @click="closeNestedCalendar">Cancel</button>&nbsp;
       <button class="btn btn-primary" @click="handleButtonClick">Add Availability</button>
     </div>
-    <SuccessAlert ref="successAlert" />
+
     <NotSuccessAlertVue ref="dangerAlert" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+
 import NotSuccessAlertVue from "../../Alerts/NotSuccessAlert.vue";
 
-import { ref } from "vue";
+import Swal from "sweetalert2";
+
 export default {
   props: {
     initialDate: {
@@ -132,11 +133,10 @@ export default {
       selectedMonth: "",
       updatedStatusData: [],
       availabilityByDate: [],
-      // successAlert: ref(null),
+      successAlert: null,
     };
   },
   components: {
-    SuccessAlert,
     NotSuccessAlertVue,
   },
   created() {
@@ -335,7 +335,8 @@ export default {
         this.$set(this.selectedShifts, selectedDate, shift);
       }
     },
-    addCandidateStatus: async function () {
+
+    async addCandidateStatus() {
       try {
         const parsedDate = new Date(this.date);
         if (isNaN(parsedDate)) {
@@ -351,10 +352,19 @@ export default {
         let availabilities = [];
 
         if (this.availability_id !== null) {
-          if (!window.confirm("Are you sure?")) {
+          const result = await Swal.fire({
+            title: "Are you sure?",
+            text: "Do you really want to proceed?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "rgb(255 112 8)",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, proceed",
+            cancelButtonText: "Cancel",
+          });
+          if (!result.isConfirmed) {
             return;
           }
-
           for (const [date, status] of Object.entries(this.selectedShifts)) {
             const availability = this.availabilityIds.find(
               (item) => item.date === this.formatDate(date)
@@ -383,22 +393,24 @@ export default {
           );
 
           if (putResponse.status === 200) {
-            this.updatedStatusData.forEach((candidate) => {
-              if (candidate.candidate_id === this.candidate_id) {
-                candidate.availability = {
-                  date: formattedDate,
-                  status: this.status,
-                };
-              }
-            });
-            // alert("Availability updated successfully");
-
-            // this.$emit("availability-updated");
-            const message = "Availability updated successfully";
-            this.$refs.successAlert.showSuccess(message);
+            // this.updatedStatusData.forEach((candidate) => {
+            //   if (candidate.candidate_id === this.candidate_id) {
+            //     candidate.availability = {
+            //       date: formattedDate,
+            //       status: this.status,
+            //     };
+            //   }
+            // });
 
             this.errorMessage = "";
             await this.fetchCandidateList(this.startDate);
+            Swal.fire({
+              icon: "success",
+              title: "Success!",
+              text: "Availability updated successfully.",
+              timer: 3000,
+              showConfirmButton: false,
+            });
             return;
           } else {
             return;
@@ -440,16 +452,15 @@ export default {
               }
             });
 
-            // alert("Availabilities added successfully");
-
-            // this.$emit("availability-updated");
-            const message = "Availability added successfully";
-            // console.log("Showing success message:", message);
-            this.$refs.successAlert.showSuccess(message);
-
             this.errorMessage = "";
             await this.fetchCandidateList(this.startDate);
-
+            Swal.fire({
+              icon: "success",
+              title: "Success!",
+              text: "Availability added successfully.",
+              timer: 3000,
+              showConfirmButton: false,
+            });
             return;
           } else {
             return;
@@ -468,17 +479,30 @@ export default {
               "Failed to create availability: ",
               ""
             );
-            // this.$refs.dangerAlert(` ${errorMessage}`);
-
-            alert(`Error: ${errorMessage}`);
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: errorMessage,
+              confirmButtonColor: "rgb(255 112 8)",
+              confirmButtonText: "OK",
+            });
           } else if (errorData && errorData.date) {
-            alert(`Error: ${errorData.date[0]}`);
-            // this.$refs.dangerAlert.showSuccess(` ${errorMessage}`);
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: errorData.date[0],
+              confirmButtonColor: "rgb(255 112 8)",
+              confirmButtonText: "OK",
+            });
           } else {
             // alert("An error occurred while updating/adding availability.");
           }
         } else {
-          // alert("An unexpected error occurred.");
+          Swal.fire({
+            icon: "error",
+            title: "An unexpected error occurred",
+            confirmButtonText: "OK",
+          });
         }
       }
     },
@@ -507,6 +531,10 @@ export default {
       } catch (error) {}
     },
     async fetchAvailabilityStatusMethod() {
+      if (!this.candidateId || !this.startDate) {
+        // console.error("Candidate ID or start date is undefined.");
+        return;
+      }
       try {
         const response = await axios.get(
           `${VITE_API_URL}/weekly_availability_for_candidate?candidate_id=${this.candidateId}&date=${this.startDate}`

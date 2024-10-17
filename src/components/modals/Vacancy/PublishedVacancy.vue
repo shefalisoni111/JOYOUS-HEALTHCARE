@@ -289,6 +289,7 @@
                   <button
                     class="btn btn-success rounded-1 text-capitalize fw-medium"
                     v-on:click="publicCandidateMail()"
+                    data-bs-dismiss="modal"
                     :disabled="!canPublish"
                   >
                     Publish
@@ -299,15 +300,15 @@
           </div>
         </div>
       </div>
-      <SuccessAlert ref="successAlert" />
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+
 import { reactive } from "vue";
+import Swal from "sweetalert2";
 
 const axiosInstance = axios.create({
   headers: {
@@ -333,9 +334,7 @@ export default {
       searchResults: [],
     };
   },
-  components: {
-    SuccessAlert,
-  },
+  components: {},
 
   created() {
     this.getCandidatesData.forEach((data) => {
@@ -432,14 +431,13 @@ export default {
           if (response.status === 200) {
             const message = response.data.message;
 
-            if (
-              this.$refs.successAlert &&
-              typeof this.$refs.successAlert.showSuccess === "function"
-            ) {
-              this.$refs.successAlert.showSuccess(message);
-            } else {
-              // console.error("SuccessAlert component or method No found");
-            }
+            Swal.fire({
+              title: "Success!",
+              text: message || "Notification sent successfully.",
+              icon: "success",
+              confirmButtonText: "OK",
+              confirmButtonColor: "rgb(255 112 8)",
+            });
 
             // Reset fields after successful notification
             this.checkedCandidates = Object.fromEntries(

@@ -530,6 +530,11 @@ svg.select.js@^3.0.1:
   dependencies:
     svg.js "^2.6.5"
 
+sweetalert2@^11.6.13:
+  version "11.14.3"
+  resolved "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.14.3.tgz"
+  integrity sha512-6NuBHWJCv2gtw4y8PUXLB41hty+V6U2mKZMAvydL1IRPcORR0yuyq3cjFD/+ByrCk3muEFggbZX/x6HwmbVfbA==
+
 text-segmentation@^1.0.3:
   version "1.0.3"
   resolved "https://registry.npmjs.org/text-segmentation/-/text-segmentation-1.0.3.tgz"
