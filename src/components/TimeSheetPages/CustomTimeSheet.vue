@@ -220,7 +220,7 @@
                               <div v-else>Null</div>
                             </td>
                             <td scope="col">
-                              {{ data.approved_hour ? "Approved" : "No Approved" }}
+                              {{ data.status }}
                             </td>
                             <td scope="col">
                               <button
@@ -344,7 +344,7 @@
                               <div v-else>Null</div>
                             </td>
                             <td scope="col">
-                              {{ data.approved_hour ? "Approved" : "No Approved" }}
+                              {{ data.status }}
                             </td>
                             <td scope="col">
                               <button

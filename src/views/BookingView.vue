@@ -195,7 +195,7 @@
                     role="tab"
                     aria-controls="pills-deleteBooking"
                     aria-selected="false"
-                    @click="handleDeleteBooking"
+                    @click="getDeleteBookingData"
                   >
                     Delete Booking
                   </button>
@@ -710,9 +710,9 @@ export default {
     },
   },
   methods: {
-    handleDeleteBooking() {
-      this.$refs.getDeleteBookingData();
-    },
+    // handleDeleteBooking() {
+    //   getDeleteBookingData();
+    // },
     confirmed(id) {
       this.isModalVisible = false;
 
@@ -1045,12 +1045,12 @@ export default {
   async beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.fetchBookingDataMethod();
-      // vm.getDeleteBookingData();
+      vm.getDeleteBookingData();
     });
   },
   async beforeRouteUpdate(to, from, next) {
     this.fetchBookingDataMethod();
-    // this.getDeleteBookingData();
+    this.getDeleteBookingData();
     next();
   },
   async mounted() {
@@ -1074,7 +1074,7 @@ export default {
     endOfWeek.setDate(endOfWeek.getDate() + 6);
     this.endDate = endOfWeek;
     // await this.fetchBookingDataMethod();
-    // await this.getDeleteBookingData();
+    await this.getDeleteBookingData();
   },
 };
 </script>
