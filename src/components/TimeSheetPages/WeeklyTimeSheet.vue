@@ -54,14 +54,14 @@
                   <option
                     v-for="option in businessUnit"
                     :key="option.id"
-                    :value="option.name"
+                    :value="option.site_name"
                     placeholder="Select BusinessUnit"
                   >
                     {{ option.site_name }}
                   </option>
                 </select>
 
-                <select v-model="id" id="selectCandidateList">
+                <select v-model="selectedCandidate" id="selectCandidateList">
                   <option value="">All Staff</option>
                   <option
                     v-for="option in candidateLists"
@@ -341,11 +341,11 @@
                 </tr>
               </tbody> -->
               <tbody v-if="mergedTimesheetsArray && mergedTimesheetsArray?.length > 0">
-                <tr v-if="errorMessageFilter">
+                <!-- <tr v-if="errorMessageFilter">
                   <td colspan="9" class="text-danger text-center">
                     {{ errorMessageFilter || "Data not Found!" }}
                   </td>
-                </tr>
+                </tr> -->
 
                 <tr v-for="data in mergedTimesheetsArray" :key="data.id">
                   <td>{{ data.id }}</td>
@@ -464,14 +464,14 @@
                   <td>{{ data.approved_by ? data.approved_by : "Null" }}</td>
                 </tr>
               </tbody>
-              <tbody v-else>
+              <!-- <tbody v-else>
                 <tr>
                   <td colspan="9" class="text-danger text-center">
                     {{ errorMessage }}
                   </td>
                 </tr>
-              </tbody>
-              <!-- <tbody v-else>
+              </tbody> -->
+              <tbody v-else>
                 <tr v-if="errorMessageFilter">
                   <td colspan="9" class="text-danger text-center">
                     {{ errorMessageFilter }}
@@ -482,7 +482,7 @@
                     {{ errorMessage }}
                   </td>
                 </tr>
-              </tbody> -->
+              </tbody>
             </table>
           </div>
         </div>
@@ -677,10 +677,9 @@ export default {
       } else {
       }
     },
-
-    business_unit_value(newValue) {
+    site_id(newValue) {
       if (newValue !== "") {
-        this.makeFilterAPICall("business_unit", newValue);
+        this.makeFilterAPICall("site", newValue);
       } else {
       }
     },
@@ -897,12 +896,23 @@ export default {
       this.statusForSelectedDate = null;
     },
     filterData() {
-      const filters = {
-        filter_type: this.site_id ? "site" : this.id ? "candidate" : "",
-        filter_value: this.site_id || this.getCandidateName(this.id) || "",
-      };
+      let filterType = "";
+      let filterValue = "";
 
-      this.makeFilterAPICall(filters.filter_type, filters.filter_value);
+      if (this.site_id) {
+        filterType = "site";
+
+        filterValue = this.site_id;
+      } else if (this.selectedCandidate) {
+        filterType = "candidate";
+        filterValue = this.selectedCandidate;
+      }
+
+      this.makeFilterAPICall(filterType, filterValue);
+    },
+    getSiteName(site_id) {
+      const site = this.businessUnit.find((option) => option.id === site_id);
+      return site ? site.site_name : "";
     },
     async makeFilterAPICall(filterType, filterValue) {
       const token = localStorage.getItem("token");
@@ -922,12 +932,15 @@ export default {
           ...response.data.sign_timesheets,
         ];
         this.candidateList = mergedTimeSheets;
+        this.mergedTimesheetsArray = this.candidateList || [];
+        this.errorMessageFilter = "";
       } catch (error) {
-        if (error.response.data.error) {
-          this.errorMessageFilter = error.response.data.error;
+        if (error.response) {
+          this.errorMessageFilter = "Data Not Found!" || "Data Not Found!";
         } else {
           this.errorMessageFilter = "Data Not Found!";
         }
+        this.mergedTimesheetsArray = [];
       }
     },
     setItemsPerPage(value) {
