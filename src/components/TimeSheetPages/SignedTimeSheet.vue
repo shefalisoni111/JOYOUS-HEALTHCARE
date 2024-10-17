@@ -105,7 +105,7 @@
                       <option
                         v-for="option in businessUnit"
                         :key="option.id"
-                        :value="option.id"
+                        :value="option.site_name"
                         placeholder="Select BusinessUnit"
                       >
                         {{ option.site_name }}
@@ -214,7 +214,11 @@
                         <tbody v-else>
                           <tr>
                             <td colspan="12" class="text-danger text-center">
-                              {{ errorMessageSigned }}
+                              {{
+                                errorMessageSigned ||
+                                errorMessageFilter ||
+                                "No bookings found."
+                              }}
                             </td>
                           </tr>
                         </tbody>
@@ -431,6 +435,7 @@ export default {
       currentPage: 1,
       itemsPerPage: 10,
       totalRecords: 0,
+      errorMessageFilter: "",
     };
   },
   components: { Navbar, SignedTimesheetViewVue, Loader },
@@ -501,9 +506,9 @@ export default {
       } else {
       }
     },
-    business_unit_value(newValue) {
+    site_id(newValue) {
       if (newValue !== "") {
-        this.makeFilterAPICall("business_unit", newValue);
+        this.makeFilterAPICall("site", newValue);
       } else {
       }
     },
@@ -631,13 +636,14 @@ export default {
       let filterType = "";
       let filterValue = "";
 
-      if (this.client_id !== "") {
+      if (this.client_id) {
         filterType = "client";
         filterValue = this.client_id;
-      } else if (this.business_unit_value !== "") {
-        filterType = "business_unit";
-        filterValue = this.business_unit_value;
-      } else if (this.selectedCandidate !== "") {
+      } else if (this.site_id) {
+        filterType = "site";
+
+        filterValue = this.site_id;
+      } else if (this.selectedCandidate) {
         filterType = "candidate";
         filterValue = this.selectedCandidate;
       }
@@ -657,20 +663,15 @@ export default {
             Authorization: "bearer " + token,
           },
         });
-        this.getSignedTimeSheetData = response.data.sign_timesheets;
+        this.getSignedTimeSheetData = response.data.sign_timesheets || [];
+        this.errorMessageFilter = "";
       } catch (error) {
-        if (error.response && error.response.status === 404) {
-          const errorMessages = error.response.data.error;
-          if (errorMessages === "No records found for the given filter") {
-            errorMessages === "No records found for the given filter";
-            // alert("No records found for the given filter");
-          } else {
-            alert(errorMessages);
-          }
+        if (error.response) {
+          this.errorMessageFilter = error.response.data.error || "Data Not Found!";
         } else {
-          // Handle other errors
-          // console.error("Error filtering custom timesheets:", error);
+          this.errorMessageFilter = "Data Not Found!";
         }
+        this.getSignedTimeSheetData = [];
       }
     },
     setItemsPerPage(value) {

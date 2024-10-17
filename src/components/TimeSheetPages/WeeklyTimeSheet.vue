@@ -146,10 +146,10 @@
                       <div class="">
                         <div class="card-body">
                           <h5 class="card-title fw-bold">#All Timesheets</h5>
-                          <p class="card-text fw-bold">
+                          <!-- <p class="card-text fw-bold">
                             <span class="text-success">Hours</span> 35.50
                             <span class="text-info">Amount</span> £450.50
-                          </p>
+                          </p> -->
                         </div>
                       </div>
                     </div>
