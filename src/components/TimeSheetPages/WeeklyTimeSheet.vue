@@ -84,10 +84,10 @@
                       <div class="">
                         <div class="card-body">
                           <h5 class="card-title fw-bold">#Approved Timesheets</h5>
-                          <p class="card-text fw-bold">
+                          <!-- <p class="card-text fw-bold">
                             <span class="text-success">Hours</span> 24.00
                             <span class="text-info">Amount</span> £324.00
-                          </p>
+                          </p> -->
                         </div>
                       </div>
                     </div>
@@ -104,10 +104,10 @@
                       <div class="">
                         <div class="card-body">
                           <h5 class="card-title fw-bold">#Invoiced Timesheets</h5>
-                          <p class="card-text fw-bold">
+                          <!-- <p class="card-text fw-bold">
                             <span class="text-success">Hours</span> 0.00
                             <span class="text-info">Amount</span> £0.00
-                          </p>
+                          </p> -->
                         </div>
                       </div>
                     </div>
@@ -124,10 +124,10 @@
                       <div class="">
                         <div class="card-body">
                           <h5 class="card-title fw-bold">#Pending Timesheets</h5>
-                          <p class="card-text fw-bold">
+                          <!-- <p class="card-text fw-bold">
                             <span class="text-success">Hours</span> 11.50
                             <span class="text-info">Amount</span> £126.50
-                          </p>
+                          </p> -->
                         </div>
                       </div>
                     </div>
