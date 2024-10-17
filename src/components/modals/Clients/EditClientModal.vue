@@ -112,6 +112,17 @@
                     />
                   </div>
                 </div>
+                <div class="mb-3">
+                  <div class="col-12">
+                    <label class="form-label">Status</label>
+                  </div>
+                  <div class="col-12 mt-1">
+                    <select id="selectOption" v-model="fetchClients.activated">
+                      <option value="true">Active</option>
+                      <option value="false">In-active</option>
+                    </select>
+                  </div>
+                </div>
               </form>
             </div>
           </div>
@@ -156,6 +167,7 @@ export default {
         email: "",
         password: "",
         confirm_password: "",
+        activated: "",
         error: [],
       },
       options: [],
