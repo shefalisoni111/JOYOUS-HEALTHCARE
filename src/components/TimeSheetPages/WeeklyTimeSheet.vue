@@ -410,6 +410,7 @@
                           <td>
                             <div class="column">
                               <div class="column-cell">
+                                {{ data.status }}
                                 {{
                                   typeof data.start_time === "number"
                                     ? data.start_time.toFixed(2)

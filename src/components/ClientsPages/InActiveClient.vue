@@ -28,9 +28,9 @@
                   params: { id: client.id },
                 }"
               >
-                {{ client.first_name }}
+                {{ client.client_name }}
               </router-link>
-              <!-- {{ client.first_name }} -->
+              <!-- {{ client.client_name }} -->
             </td>
             <td>
               <span

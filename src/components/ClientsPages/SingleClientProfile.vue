@@ -19,7 +19,7 @@
                   >CLIENT</router-link
                 >
                 /
-                <span class="color-fonts">{{ getClientDatas.first_name }}</span>
+                <span class="color-fonts">{{ getClientDatas.client_name }}</span>
               </li>
             </ol>
           </div>
@@ -75,7 +75,7 @@
                 <div class="mt-3 d-flex justify-content-between align-items-center">
                   <div>
                     <h6 class="card-title text-nowrap fw-bold text-capitalize">
-                      {{ getClientDatas?.first_name }}
+                      {{ getClientDatas?.client_name }}
                     </h6>
                     <span class="text-lowercase"> {{ getClientDatas?.email }}</span>
                   </div>

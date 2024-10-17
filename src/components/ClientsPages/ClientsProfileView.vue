@@ -16,7 +16,7 @@
                 />
                 <div class="mt-3 text-capitalize">
                   <h4>
-                    {{ getClients.first_name }}
+                    {{ getClients.client_name }}
                   </h4>
                   <p class="text-secondary mb-1">
                     {{ getClients.position }}
@@ -36,7 +36,7 @@
                   <h6 class="mb-0">Full Name</h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
-                  {{ getClients.first_name }}
+                  {{ getClients.client_name }}
                 </div>
               </div>
               <hr />

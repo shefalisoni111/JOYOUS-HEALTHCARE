@@ -323,12 +323,20 @@
               Cancel
             </button>
             <button
+              v-show="showSaveButton"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="updateCandidateMethod()"
             >
               Save
             </button>
+            <!-- <button
+              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              data-bs-dismiss="modal"
+              @click.prevent="approved_TimesheetRevertMethod()"
+            >
+              Approve & Save
+            </button> -->
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
@@ -364,7 +372,9 @@ export default {
         client_rate: "",
         total_cost: "",
         notes: "",
+        status: "",
       },
+      showSaveButton: true,
       isPublished: false,
       originalData: null,
     };
@@ -382,6 +392,24 @@ export default {
     },
   },
   methods: {
+    async approved_TimesheetRevertMethod() {
+      try {
+        const response = await axios.put(
+          `${VITE_API_URL}/approved_and_unapproved_timesheet_to_web/${this.fetchCustomTimeShetData.id}`,
+
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        this.$emit("CustomTimeSheetData-updated");
+        const message = "Custom TimeSheet Approved successfully";
+        this.$refs.successAlert.showSuccess(message);
+      } catch (error) {
+        // console.error("Error updating candidate:", error);
+      }
+    },
     resetChanges() {
       this.fetchCustomTimeShetData = { ...this.originalData };
     },
@@ -433,6 +461,7 @@ export default {
           ...response.data.custom_sheets,
         };
         this.originalData = { ...this.fetchCustomTimeShetData };
+        this.showSaveButton = true;
       } catch (error) {
         if (error.response && error.response.status === 404) {
           try {
@@ -444,6 +473,7 @@ export default {
               ...fallbackResponse.data.sign_timesheets,
             };
             this.originalData = { ...this.fetchCustomTimeShetData };
+            this.showSaveButton = false;
           } catch (fallbackError) {
             // console.error("Error with fallback API:", fallbackError);
           }

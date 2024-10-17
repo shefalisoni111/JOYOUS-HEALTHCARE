@@ -18,7 +18,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      v-model="first_name"
+                      v-model="client_name"
                       @input="clearError"
                       @change="detectAutofill"
                     />
@@ -199,7 +199,7 @@ export default {
       showPasswordRequiredMessage: false,
       passwordsMatch: true,
       isJobsSelected: false,
-      first_name: "",
+      client_name: "",
       ref_code: "",
       address: "",
       phone_number: "",
@@ -228,7 +228,7 @@ export default {
     },
     isFormFilledAndValid() {
       return (
-        this.first_name &&
+        this.client_name &&
         this.address &&
         this.email &&
         this.job_ids &&
@@ -246,7 +246,7 @@ export default {
   },
   watch: {
     address: "validateAddressFormat",
-    first_name: "validateNameFormat",
+    client_name: "validateNameFormat",
     email: "validateEmailFormat",
     password: "validatePasswordMatch",
     confirm_password: "validatePasswordMatch",
@@ -289,7 +289,7 @@ export default {
       return this.errors[fieldName];
     },
     clearFields() {
-      this.first_name = "";
+      this.client_name = "";
       this.address = "";
       this.job_ids = [];
       this.phone_number = "";
@@ -336,7 +336,7 @@ export default {
     },
     async addClients() {
       this.validateAddress = this.validateAddressFormat(this.address);
-      this.validateClientName = this.validateNameFormat(this.first_name);
+      this.validateClientName = this.validateNameFormat(this.client_name);
 
       this.validateEmail = this.validateEmailFormat(this.email);
 
@@ -352,7 +352,7 @@ export default {
         this.validateAddress
       ) {
         const data = {
-          first_name: this.first_name,
+          client_name: this.client_name,
           job_ids: this.job_ids,
           address: this.address,
           phone_number: this.phone_number,
@@ -372,7 +372,7 @@ export default {
           if (response.ok) {
             // location.reload();
             this.$emit("client-updated");
-            this.first_name = "";
+            this.client_name = "";
             this.job_ids = [];
             this.address = "";
             this.phone_number = "";
@@ -397,9 +397,9 @@ export default {
       const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk)$/;
       return emailRegex.test(email);
     },
-    validateNameFormat(first_name) {
+    validateNameFormat(client_name) {
       const nameRegex = /[A-Za-z]/;
-      return nameRegex.test(first_name);
+      return nameRegex.test(client_name);
     },
     validateAddressFormat(address) {
       const addressRegex = /^[#.0-9a-zA-Z\s,-]+$/;

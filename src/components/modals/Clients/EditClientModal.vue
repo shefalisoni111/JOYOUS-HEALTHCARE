@@ -19,7 +19,7 @@
                       <input
                         type="text"
                         class="form-control"
-                        v-model="fetchClients.first_name"
+                        v-model="fetchClients.client_name"
                       />
                     </div>
                   </div>
@@ -160,7 +160,7 @@ export default {
     return {
       fetchClients: {
         id: "",
-        first_name: "",
+        client_name: "",
         job_ids: [],
         address: "",
         phone_number: "",

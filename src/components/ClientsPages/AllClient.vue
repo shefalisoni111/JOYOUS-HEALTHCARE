@@ -63,10 +63,10 @@
           <option
             v-for="option in clientData"
             :key="option.id"
-            :value="option.first_name"
+            :value="option.client_name"
             aria-placeholder="Select Client"
           >
-            {{ option.first_name }}
+            {{ option.client_name }}
           </option>
         </select>
 
@@ -129,9 +129,9 @@
                   params: { id: client.id },
                 }"
               >
-                {{ client.first_name }}
+                {{ client.client_name }}
               </router-link>
-              <!-- {{ client.first_name }} -->
+              <!-- {{ client.client_name }} -->
             </td>
             <td>
               <span
@@ -333,7 +333,7 @@ export default {
     },
     selectClients() {
       const client = this.clientData.find((option) => option.id === this.client_id);
-      return client ? client.first_name : "";
+      return client ? client.client_name : "";
     },
     selectJobTitle() {
       const job = this.options.find((option) => option.id === this.job_id);
