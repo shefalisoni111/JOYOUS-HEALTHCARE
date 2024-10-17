@@ -379,6 +379,12 @@
                   <span>Sign Out</span>
                 </a>
               </li>
+              <!-- <li class="cursor-pointer">
+                <a class="dropdown-item d-flex align-items-center" >
+                  <i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp;
+                  <span>Sign Out</span>
+                </a>
+              </li> -->
             </ul>
             <!-- End Profile Dropdown Items -->
           </li>
@@ -446,18 +452,19 @@
         </div>
       </div>
     </div>
-    <ConfirmationAlert
+    <!-- <ConfirmationAlert
     :show-modal="isModalVisible"
     :message="confirmMessage"
     @confirm="confirmCallback"
     @cancel="canceled"
-  />
+  /> -->
   </nav>
 </template>
 
 <script>
 import axios from "axios";
-import ConfirmationAlert from "./Alerts/ConfirmationAlert.vue";
+// import ConfirmationAlert from "./Alerts/ConfirmationAlert.vue";
+import Swal from "sweetalert2";
 
 const axiosInstance = axios.create({
   headers: {
@@ -498,7 +505,7 @@ export default {
     };
   },
   components:{
-    ConfirmationAlert
+    // ConfirmationAlert
   },
   computed: {
     visibleNotifications() {
@@ -533,14 +540,14 @@ export default {
       event.preventDefault();
       this.showAll = true; 
     },
-    confirmed() {
-      this.isModalVisible = false;
+    // confirmed() {
+    //   this.isModalVisible = false;
 
-      this.confirmed();
-    },
-    canceled() {
-      this.isModalVisible = false;
-    },
+    //   this.confirmed();
+    // },
+    // canceled() {
+    //   this.isModalVisible = false;
+    // },
     handleClickOutside(event) {
       if (!this.$el.contains(event.target)) {
         this.dropdownOpen = false; 
@@ -615,17 +622,36 @@ export default {
       }
     },
     confirmed() {
-      this.confirmMessage = "Are you sure want to sign out?";
       if (localStorage.getItem("token")) {
-        if (this.confirmMessage) {
-          this.isModalVisible = true;
-      this.confirmCallback = async () => {
-          localStorage.removeItem("token");
-          localStorage.removeItem("tokenExpiration");
-          this.$router.replace({ name: "Login" });
+        // Use SweetAlert2 to show the confirmation dialog
+        Swal.fire({
+          title: 'Are you sure?',
+          text: 'Are you sure you want to sign out?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, sign me out!',
+          cancelButtonText: 'Cancel'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // If confirmed, proceed with sign-out logic
+            localStorage.removeItem("token");
+            localStorage.removeItem("tokenExpiration");
+
+            // Redirect the user to the login page
+            this.$router.replace({ name: "Login" });
+
+            // Optionally show a success message
+            Swal.fire(
+              'Signed Out!',
+              'You have been signed out successfully.',
+              'success'
+            );
+          }
+        });
       }
-        }
-      }
+    
     },
   
     async getCandidateMethods() {

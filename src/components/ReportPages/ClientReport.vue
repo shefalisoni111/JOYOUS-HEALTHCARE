@@ -13,7 +13,7 @@
                     <option
                       v-for="option in clientData"
                       :key="option.id"
-                      :value="option.first_name"
+                      :value="option.client_name"
                       aria-placeholder="Select Job"
                     >
                       {{ option.client_name }}
