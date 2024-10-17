@@ -131,7 +131,7 @@
                         :value="option.id"
                         aria-placeholder="Select Job"
                       >
-                        {{ option.first_name }}
+                        {{ option.client_name }}
                       </option>
                     </select>
                     <select
@@ -466,7 +466,7 @@ export default {
     },
     selectClients() {
       const client_id = this.clientData.find((option) => option.id === this.client_id);
-      return client_id ? client_id.first_name : "";
+      return client_id ? client_id.client_name : "";
     },
     selectCandidateList() {
       const id = this.candidateLists.find((option) => option.id === this.id);

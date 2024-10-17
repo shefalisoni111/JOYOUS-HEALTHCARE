@@ -132,9 +132,9 @@
                                       <option
                                         v-for="option in candidateLists"
                                         :key="option.id"
-                                        :value="`${option.first_name} ${option.last_name}`"
+                                        :value="`${option.client_name} ${option.last_name}`"
                                       >
-                                        {{ option.first_name }} {{ option.last_name }}
+                                        {{ option.client_name }} {{ option.last_name }}
                                       </option>
                                     </select> -->
                     </div>
@@ -171,9 +171,9 @@
                                 params: { id: client.id },
                               }"
                             >
-                              {{ client.first_name }}
+                              {{ client.client_name }}
                             </router-link>
-                            <!-- {{ client.first_name }} -->
+                            <!-- {{ client.client_name }} -->
                           </td>
                           <td>
                             <span

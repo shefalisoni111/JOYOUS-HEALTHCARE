@@ -154,7 +154,7 @@ export default {
       const client = this.clientData.find(
         (option) => option.id === this.fetchSite.client_id
       );
-      return client ? client.first_name : "";
+      return client ? client.client_name : "";
     },
 
     getVacancyDetail() {

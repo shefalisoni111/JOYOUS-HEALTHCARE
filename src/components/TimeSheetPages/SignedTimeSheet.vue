@@ -94,10 +94,10 @@
                       <option
                         v-for="option in clientData"
                         :key="option.id"
-                        :value="option.first_name"
+                        :value="option.client_name"
                         aria-placeholder="Select Client"
                       >
-                        {{ option.first_name }}
+                        {{ option.client_name }}
                       </option>
                     </select>
                     <select v-model="site_id" id="selectBusinessUnit">
@@ -208,6 +208,12 @@
                               >
                                 <i class="bi bi-eye"></i>
                               </button>
+                              <button
+                                type="button"
+                                class="btn btn-outline-success text-nowrap text-nowrap"
+                              >
+                                <i class="bi bi-asterisk"></i>
+                              </button>
                             </td>
                           </tr>
                         </tbody>
@@ -259,7 +265,7 @@
                             <th scope="col">Break</th>
                             <th scope="col">Total Hours</th>
                             <th scope="col">Approve</th>
-                            <th scope="col">View</th>
+                            <th scope="col">Action</th>
                           </tr>
                         </thead>
                         <tbody v-if="paginateSearchResults?.length > 0">
@@ -297,6 +303,12 @@
                                 @click="openSignedView(data.id)"
                               >
                                 <i class="bi bi-eye"></i>
+                              </button>
+                              <button
+                                type="button"
+                                class="btn btn-outline-success text-nowrap text-nowrap"
+                              >
+                                <i class="bi bi-asterisk"></i>
                               </button>
                             </td>
                           </tr>
@@ -393,6 +405,7 @@
       </button>
     </div>
     <SignedTimesheetViewVue :id="selectedSignedTimesheetId" />
+
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
@@ -483,7 +496,7 @@ export default {
 
     selectClients() {
       const client_id = this.clientData.find((option) => option.id === this.client_id);
-      return client_id ? client_id.first_name : "";
+      return client_id ? client_id.client_name : "";
     },
 
     selectCandidateList() {

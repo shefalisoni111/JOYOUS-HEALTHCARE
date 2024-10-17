@@ -16,7 +16,7 @@
                       :value="option.id"
                       aria-placeholder="Select Job"
                     >
-                      {{ option.first_name }}
+                      {{ option.client_name }}
                     </option>
                   </select>
                   <select v-model="site_id" id="selectBusinessUnit">
@@ -220,7 +220,7 @@ export default {
     },
     selectClients() {
       const client_id = this.clientData.find((option) => option.id === this.client_id);
-      return client_id ? client_id.first_name : "";
+      return client_id ? client_id.client_name : "";
     },
     selectEmployeeType() {
       const employment_type_id = this.employeeData.find(

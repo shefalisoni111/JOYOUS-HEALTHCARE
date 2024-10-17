@@ -34,7 +34,7 @@
                         :id="option.id"
                         aria-placeholder="Select Job"
                       >
-                        {{ option.first_name }}
+                        {{ option.client_name }}
                       </option>
                     </select>
                   </div>
@@ -359,7 +359,7 @@ export default {
       const clientData = this.clientData.find(
         (option) => option.id === this.fetchRateRulesData.ClientID
       );
-      return clientData ? clientData.first_name : "";
+      return clientData ? clientData.client_name : "";
     },
     selectShifts() {
       this.shiftsTime();

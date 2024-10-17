@@ -317,7 +317,7 @@ export default {
 
     selectClients() {
       const client_id = this.clientData.find((option) => option.id === this.client_id);
-      return client_id ? client_id.first_name : "";
+      return client_id ? client_id.client_name : "";
     },
   },
   watch: {
@@ -490,10 +490,10 @@ export default {
         const response = await axios.get(
           `${VITE_API_URL}/clients/${this.$route.params.id}`
         );
-        this.clientFirstName = response.data.first_name;
+        this.clientFirstName = response.data.client_name;
         if (response.data && response.data.data) {
           const client = response.data.data;
-          this.clientData = [{ id: client.id, first_name: client.first_name }];
+          this.clientData = [{ id: client.id, first_name: client.client_name }];
           this.client_id = client.id;
         }
       } catch (error) {

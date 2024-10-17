@@ -66,10 +66,10 @@
           <option
             v-for="option in clientData"
             :key="option.id"
-            :value="option.first_name"
+            :value="option.client_name"
             aria-placeholder="Select Client"
           >
-            {{ option.first_name }}
+            {{ option.client_name }}
           </option>
         </select>
 

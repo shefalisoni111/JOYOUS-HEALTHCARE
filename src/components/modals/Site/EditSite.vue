@@ -26,7 +26,7 @@
                         :value="option.id"
                         aria-placeholder="Select Job"
                       >
-                        {{ option.first_name }}
+                        {{ option.client_name }}
                       </option>
                     </select>
                     <!-- <span v-if="!validationSelectedClient" class="text-danger"

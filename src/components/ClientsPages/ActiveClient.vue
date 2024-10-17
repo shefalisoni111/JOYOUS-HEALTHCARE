@@ -287,7 +287,7 @@ export default {
       this.isLoading = true;
       try {
         const params = {
-          filter_value: "all",
+          filter_value: "true",
           page: this.currentPage,
           per_page: this.itemsPerPage,
         };

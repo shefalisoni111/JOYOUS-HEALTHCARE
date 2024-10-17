@@ -27,7 +27,7 @@
                         aria-placeholder="Select Job"
                         style="display: none"
                       >
-                        {{ option.first_name }}
+                        {{ option.client_name }}
                       </option>
                     </select>
                   </div>
@@ -416,7 +416,7 @@ export default {
       const client = this.clientData.find(
         (option) => option.id === this.fetchVacancy.client_id
       );
-      return client ? client.first_name : "";
+      return client ? client.client_name : "";
     },
     selectShifts() {
       const shift = this.shiftsTime.find(

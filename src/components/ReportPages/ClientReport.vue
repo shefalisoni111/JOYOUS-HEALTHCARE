@@ -16,7 +16,7 @@
                       :value="option.first_name"
                       aria-placeholder="Select Job"
                     >
-                      {{ option.first_name }}
+                      {{ option.client_name }}
                     </option>
                   </select>
                   <select v-model="site_id" id="selectBusinessUnit" @change="filterData">

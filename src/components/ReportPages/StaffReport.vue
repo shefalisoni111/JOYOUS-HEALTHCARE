@@ -8,17 +8,17 @@
             <div class="">
               <div class="d-flex ms-2 justify-content-between">
                 <div class="d-flex gap-2">
-                  <select v-model="client_id" id="selectClients" @change="filterData">
+                  <!-- <select v-model="client_id" id="selectClients" @change="filterData">
                     <option value="">All Client</option>
                     <option
                       v-for="option in clientData"
                       :key="option.id"
-                      :value="option.first_name"
+                      :value="option.client_name"
                       aria-placeholder="Select Job"
                     >
-                      {{ option.first_name }}
+                      {{ option.client_name }}
                     </option>
-                  </select>
+                  </select> -->
                   <select v-model="site_id" id="selectBusinessUnit" @change="filterData">
                     <option value="">All Site</option>
                     <option
@@ -616,15 +616,8 @@ export default {
   methods: {
     async filterData() {
       const filters = {
-        filter_type: this.client_id
-          ? "client"
-          : this.site_id
-          ? "site"
-          : this.id
-          ? "candidate"
-          : "",
-        filter_value:
-          this.client_id || this.site_id || this.getCandidateName(this.id) || "",
+        filter_type: this.site_id ? "site" : this.id ? "candidate" : "",
+        filter_value: this.site_id || this.getCandidateName(this.id) || "",
       };
 
       this.makeFilterAPICall(filters.filter_type, filters.filter_value);
