@@ -649,12 +649,7 @@ export default {
            
             this.$router.replace({ name: "Login" });
 
-          
-            Swal.fire(
-              'Signed Out!',
-              'You have been signed out successfully.',
-              'success'
-            );
+        
           }
         });
       }

@@ -624,7 +624,7 @@ export default {
     },
     getCandidateName(id) {
       const candidate = this.candidateLists.find((candidate) => candidate.id === id);
-      return candidate ? candidate.first_name : "";
+      return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
     },
     async makeFilterAPICall(filter_type, filter_value) {
       try {

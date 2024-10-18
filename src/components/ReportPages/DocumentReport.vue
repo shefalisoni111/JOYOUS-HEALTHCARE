@@ -311,13 +311,17 @@ export default {
           : this.selectedDocumentType
           ? "document_type"
           : "",
-        document_filter:
-          this.selectedAllStatus ||
-          this.selectedStaffStatus ||
-          this.selectedStaff ||
-          this.selectedDocumentCategory ||
-          this.selectedDocumentType ||
-          "",
+        document_filter: this.selectedAllStatus
+          ? ""
+          : this.selectedStaffStatus
+          ? ""
+          : this.selectedStaff
+          ? this.getStaffFullName(this.selectedStaff)
+          : this.selectedDocumentCategory
+          ? this.selectedDocumentCategory
+          : this.selectedDocumentType
+          ? this.selectedDocumentType
+          : "",
       };
 
       try {
@@ -326,9 +330,13 @@ export default {
           filters.document_filter
         );
       } catch (error) {
-        this.errorMessageFilter = "An error occurred while fetching data.";
+        // this.errorMessageFilter = "An error occurred while fetching data.";
         // console.error(error);
       }
+    },
+    getStaffFullName(staffId) {
+      const staff = this.candidateLists.find((candidate) => candidate.id === staffId);
+      return staff ? `${staff.first_name} ${staff.last_name}` : "";
     },
     async documentCategoryDocumentTypeMethod() {
       try {
