@@ -540,7 +540,7 @@ export default {
       itemsPerPage: 10,
       errorMessageFilter: "",
       errorMessageCustom: "",
-      searchQuery: null,
+      searchQuery: "",
       debounceTimeout: null,
       errorMessage: "",
       searchResults: [],
@@ -759,11 +759,13 @@ export default {
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
 
-      if (this.searchQuery.trim()) {
-        this.debounceTimeout = setTimeout(() => {
+      this.debounceTimeout = setTimeout(() => {
+        if (this.searchQuery.trim()) {
           this.search();
-        }, 100);
-      }
+        } else {
+          this.searchResults = [];
+        }
+      }, 300);
     },
     //search api start
 

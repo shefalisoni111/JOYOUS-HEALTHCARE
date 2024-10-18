@@ -486,7 +486,7 @@ export default {
       newMessage: "",
       selectedCandidate: null,
       messages: [],
-      searchQuery: null,
+      searchQuery: "",
       debounceTimeout: null,
       searchResults: [],
       errorMessage: "",
@@ -566,8 +566,13 @@ export default {
       clearTimeout(this.debounceTimeout);
 
       this.debounceTimeout = setTimeout(() => {
-        this.search();
-      }, 100);
+      
+        if (this.searchQuery.trim()) {
+          this.search();
+        } else {
+          this.searchResults = []; 
+        }
+      }, 300); 
     },
     //search api start
 
@@ -577,11 +582,11 @@ export default {
 
         const response = await axiosInstance.get(`${VITE_API_URL}/search_candidate`, {
       params: {
-        candidate_query: this.searchQuery
+        candidate_query: this.searchQuery.trim()
       }
     });
 
-        this.searchResults = response.data.candidate;
+        this.searchResults = response.data.candidate|| [];
       } catch (error) {
         if (
           (error.response && error.response.status === 404) ||

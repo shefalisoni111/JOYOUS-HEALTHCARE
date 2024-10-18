@@ -676,26 +676,19 @@ export default {
         const selectedClient = this.clientData.find(
           (option) => option.id === this.client_id
         );
-        filters = {
-          RR_type: "client",
-          RR_value: selectedClient ? selectedClient.first_name : "",
-        };
+        filters.RR_type = "client";
+        filters.RR_value = selectedClient ? selectedClient.client_name : "";
       } else if (this.site_id) {
         const selectedSite = this.businessUnit.find(
           (option) => option.id === this.site_id
         );
-        filters = {
-          RR_type: "site",
-          RR_value: selectedSite ? selectedSite.site_name : "",
-        };
+        filters.RR_type = "site";
+        filters.RR_value = selectedSite ? selectedSite.site_name : "";
       } else if (this.job_id) {
         const selectedJob = this.options.find((option) => option.id === this.job_id);
-        filters = {
-          RR_type: "job",
-          RR_value: selectedJob ? selectedJob.name : "",
-        };
+        filters.RR_type = "job";
+        filters.RR_value = selectedJob ? selectedJob.name : "";
       }
-
       this.makeFilterAPICall(filters.RR_type, filters.RR_value);
     },
     async makeFilterAPICall(RR_type, RR_value) {
@@ -712,7 +705,7 @@ export default {
         if (this.getRateRulesData.length === 0) {
           this.errorMessageFilter = "Rates Not Found!";
         } else {
-          this.errorMessageFilter = "Rates Not Found!";
+          this.errorMessageFilter = "";
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {

@@ -108,7 +108,7 @@
                               :key="option.id"
                               :value="option.id"
                             >
-                              {{ option.shift_name.replace(/_/g, " ") }}
+                              {{ option.shift_name }}
                             </option>
                           </select>
                         </div>
@@ -262,7 +262,7 @@
                               :value="option.id"
                               aria-placeholder="Select Job"
                             >
-                              {{ option.shift_name.replace(/_/g, " ") }}
+                              {{ option.shift_name }}
                             </option>
                           </select>
                         </div>
@@ -512,7 +512,7 @@
                               :key="option.id"
                               :value="option.id"
                             >
-                              {{ option.shift_name.replace(/_/g, " ") }}
+                              {{ option.shift_name }}
                             </option>
                           </select>
                         </div>
@@ -662,7 +662,7 @@
                               :value="option.id"
                               aria-placeholder="Select Job"
                             >
-                              {{ option.shift_name.replace(/_/g, " ") }}
+                              {{ option.shift_name }}
                             </option>
                           </select>
                         </div>
@@ -1167,7 +1167,10 @@ export default {
         await this.getTimeShift(this.site_id);
 
         const dayShift = this.filteredShiftsTime.find(
-          (shift) => shift.shift_name.toLowerCase() === "day_shift"
+          (shift) =>
+            shift.shift_name.charAt(0).toUpperCase() +
+              shift.shift_name.slice(1).toLowerCase() ===
+            "Day shift"
         );
         if (dayShift) {
           this.day_shift_id = dayShift.id;
@@ -1176,7 +1179,10 @@ export default {
         }
 
         const nightShift = this.filteredShiftsTimeNight.find(
-          (shift) => shift.shift_name.toLowerCase() === "night_shift"
+          (shift) =>
+            shift.shift_name.charAt(0).toUpperCase() +
+              shift.shift_name.slice(1).toLowerCase() ===
+            "Night shift"
         );
         if (nightShift) {
           this.night_shift_id = nightShift.id;
@@ -1185,7 +1191,10 @@ export default {
         }
 
         const holidayDayShift = this.filteredShiftsTimeHoliday.find(
-          (shift) => shift.shift_name.toLowerCase() === "holiday_day_shift"
+          (shift) =>
+            shift.shift_name.charAt(0).toUpperCase() +
+              shift.shift_name.slice(1).toLowerCase() ===
+            "Holiday day shift"
         );
         if (holidayDayShift) {
           this.dayShiftId = holidayDayShift.id;
@@ -1194,7 +1203,10 @@ export default {
         }
 
         const holidayNightShift = this.filteredShiftsTimeHolidayNight.find(
-          (shift) => shift.shift_name.toLowerCase() === "holiday_night_shift"
+          (shift) =>
+            shift.shift_name.charAt(0).toUpperCase() +
+              shift.shift_name.slice(1).toLowerCase() ===
+            "Holiday night shift"
         );
         if (holidayNightShift) {
           this.nightShiftId = holidayNightShift.id;
@@ -1345,7 +1357,7 @@ export default {
           this.$refs.dangerAlert.showSuccess(errorMessage);
         } else {
           const errorData = await response.json();
-          const errorMessage = errorData.message || "An unexpected error occurred";
+          const errorMessage = errorData.message || "Data not Found!";
 
           this.$refs.dangerAlert.showSuccess(errorMessage);
         }
@@ -1371,7 +1383,7 @@ export default {
           this.start_time = selectedShift.start_time;
           this.end_time = selectedShift.end_time;
         }
-      } else if (shiftType === "holiday_day_shift") {
+      } else if (shiftType === "Holiday day shift") {
         const selectedShift = this.filteredShiftsTimeHoliday.find(
           (shift) => shift.id === this.dayShiftId
         );
@@ -1379,7 +1391,7 @@ export default {
           this.start_time = selectedShift.start_time;
           this.end_time = selectedShift.end_time;
         }
-      } else if (shiftType === "holiday_night_shift") {
+      } else if (shiftType === "Holiday night shift") {
         const selectedShift = this.filteredShiftsTimeHolidayNight.find(
           (shift) => shift.id === this.nightShiftId
         );
@@ -1453,18 +1465,30 @@ export default {
             end_time: this.convertTimeFormat(shift.end_time),
           })) || [];
         this.filteredShiftsTime = this.shiftsTime.filter(
-          (shift) => shift.shift_name.toLowerCase() === "day_shift"
+          (shift) =>
+            shift.shift_name.charAt(0).toUpperCase() +
+              shift.shift_name.slice(1).toLowerCase() ===
+            "Day shift"
         );
 
         this.filteredShiftsTimeNight = this.shiftsTime.filter(
-          (shift) => shift.shift_name.toLowerCase() === "night_shift"
+          (shift) =>
+            shift.shift_name.charAt(0).toUpperCase() +
+              shift.shift_name.slice(1).toLowerCase() ===
+            "Night shift"
         );
 
         this.filteredShiftsTimeHoliday = this.shiftsTime.filter(
-          (shift) => shift.shift_name.toLowerCase() === "holiday_day_shift"
+          (shift) =>
+            shift.shift_name.charAt(0).toUpperCase() +
+              shift.shift_name.slice(1).toLowerCase() ===
+            "Holiday day shift"
         );
         this.filteredShiftsTimeHolidayNight = this.shiftsTime.filter(
-          (shift) => shift.shift_name.toLowerCase() === "holiday_night_shift"
+          (shift) =>
+            shift.shift_name.charAt(0).toUpperCase() +
+              shift.shift_name.slice(1).toLowerCase() ===
+            "Holiday night shift"
         );
 
         if (this.filteredShiftsTime.length === 0) {

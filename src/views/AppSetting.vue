@@ -56,7 +56,7 @@
                   <i class="bi bi-calendar2-range-fill rounded-circle"></i>
                   <router-link to="/holidaycalender" class="text-decoration-none">
                     <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize">Holiday Calender</h6>
+                      <h6 class="mb-0 text-capitalize">Holiday Calendar</h6>
                       <p class="text-capitalize mb-0">Add & Modify holidays</p>
                     </div>
                   </router-link>
