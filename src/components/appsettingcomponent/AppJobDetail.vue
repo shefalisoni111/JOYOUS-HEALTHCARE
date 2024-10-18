@@ -218,7 +218,11 @@
       @confirm="confirmCallback"
       @cancel="canceled"
     />
-    <ShowDetailsMessage v-if="showModal" :message="alertMessage" @close="closeModal" />
+    <ShowDetailsMessage
+      :show-modal="showModal"
+      :message="alertMessage"
+      @close="closeModal"
+    />
     <AddJobbs @jobAdded="getJobData" />
     <EditJob :jobID="selectedjobID" @jobUpdate="getInactiveJobData" />
     <SuccessAlert ref="successAlert" />
@@ -234,6 +238,7 @@ import ConfirmationAlert from "../../components/Alerts/ConfirmationAlert.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
 import Loader from "../Loader/Loader.vue";
 import ShowDetailsMessage from "../Alerts/ShowDetailsMessage.vue";
+import Swal from "sweetalert2";
 
 export default {
   name: "AppJobDetail",
@@ -319,13 +324,20 @@ export default {
           this.getInactiveJobData();
 
           if (response.data.message) {
-            //alert(response.data.message);
-
-            this.alertMessage = response.data.message;
-            this.showModal = true;
+            await Swal.fire({
+              icon: "warning",
+              title: "Warning!",
+              text: response.data.message,
+              confirmButtonText: "OK",
+            });
           } else {
-            const message = "Record Inactivated  successfully";
-            this.$refs.successAlert.showSuccess(message);
+            const message = "Record Inactivated successfully";
+            await Swal.fire({
+              icon: "success",
+              title: "Success!",
+              text: message,
+              confirmButtonText: "OK",
+            });
           }
         } catch (error) {
           // Handle error
