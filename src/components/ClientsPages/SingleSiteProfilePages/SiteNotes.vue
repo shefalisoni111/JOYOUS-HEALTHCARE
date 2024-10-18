@@ -26,15 +26,15 @@
               </div>
             </div>
           </div>
-          <!-- <div class="d-fle align-items-center gap-2">
-            <button
+          <div class="d-fle align-items-center gap-2">
+            <!-- <button
               type="button"
               class="btn btn-outline-success text-nowrap"
               v-on:click="notesDeleteMethod(data.id)"
             >
               Delete
-            </button>
-          </div> -->
+            </button> -->
+          </div>
         </div>
       </div>
     </div>
@@ -43,6 +43,12 @@
         {{ "Data Not Found!" }}
       </div>
     </div>
+    <ConfirmationAlert
+      :show-modal="isModalVisible"
+      :message="confirmMessage"
+      @confirm="confirmCallback"
+      @cancel="canceled"
+    />
     <AddSiteNotes @addSiteNote="getNotesMethod" />
     <loader :isLoading="isLoading"></loader>
   </div>
@@ -51,6 +57,7 @@
 <script>
 import axios from "axios";
 import AddSiteNotes from "../../modals/Site/AddSiteNotes.vue";
+import ConfirmationAlert from "../../Alerts/ConfirmationAlert.vue";
 import Loader from "../../Loader/Loader.vue";
 
 export default {
@@ -62,8 +69,27 @@ export default {
     };
   },
 
-  components: { AddSiteNotes, Loader },
+  components: { AddSiteNotes, Loader, ConfirmationAlert },
   methods: {
+    // showConfirmationModal(id) {
+    //   this.confirmMessage = "Are you sure you want to delete this note?";
+    //   this.isModalVisible = true;
+    //   this.confirmCallback = () => this.notesDeleteMethod(id);
+    // },
+    // async notesDeleteMethod(id) {
+    //   try {
+    //     await axios.delete(
+    //       `${VITE_API_URL}/candidates/${this.$route.params.id}/candidate_notes/` + id
+    //     );
+    //     this.isModalVisible = false;
+    //     this.getNotesMethod();
+    //   } catch (error) {
+    //     // console.error("Error deleting note:", error);
+    //   }
+    // },
+    // canceled() {
+    //   this.isModalVisible = false;
+    // },
     async getNotesMethod() {
       this.isLoading = true;
       try {

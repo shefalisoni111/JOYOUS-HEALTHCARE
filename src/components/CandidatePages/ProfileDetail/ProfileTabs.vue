@@ -131,17 +131,17 @@
                   <tr>
                     <td>Enhanced DBS Number</td>
                     <td>:</td>
-                    <td>{{ getCandidatesDataInProfileTab.date_of_birth }}</td>
+                    <td></td>
                   </tr>
                   <tr>
                     <td>Enhanced DBS Issues</td>
                     <td>:</td>
-                    <td>{{ getCandidatesDataInProfileTab.DBS_PVG_issue_date }}</td>
+                    <td></td>
                   </tr>
                   <tr>
                     <td>Deby</td>
                     <td>:</td>
-                    <td>{{ getCandidatesDataInProfileTab.date_of_birth }}</td>
+                    <td></td>
                   </tr>
                   <tr>
                     <td>ID</td>
@@ -305,7 +305,7 @@
                 <tbody class="text-capitalize">
                   <tr>
                     <td>RecPal Demo 1 ID Number</td>
-
+                    <td>...</td>
                     <td></td>
                   </tr>
 
@@ -313,50 +313,53 @@
                     <td>Enhanced DBS Number</td>
 
                     <td>...</td>
+                    <td></td>
                   </tr>
                   <tr>
                     <td>Enhanced DBS Issues</td>
 
                     <td>...</td>
+                    <td></td>
                   </tr>
                   <tr>
                     <td>Deby</td>
 
                     <td>...</td>
+                    <td></td>
                   </tr>
                   <tr>
                     <td>ID</td>
-
+                    <td>...</td>
                     <td>{{ getCandidatesDataInProfileTab.id }}</td>
                   </tr>
                   <tr>
                     <td>Address Prof</td>
-
+                    <td>...</td>
                     <td>{{ getCandidatesDataInProfileTab.address_prof }}</td>
                   </tr>
                   <tr>
                     <td>NMC/NISCC/SSSC Pin</td>
-
+                    <td>...</td>
                     <td>{{ getCandidatesDataInProfileTab.NMC_NISCC_SSSC_pin }}</td>
                   </tr>
                   <tr>
                     <td>Nationality</td>
-
+                    <td>...</td>
                     <td>{{ getCandidatesDataInProfileTab.nationality }}</td>
                   </tr>
                   <tr>
                     <td>Date of Birth</td>
-
+                    <td>...</td>
                     <td>{{ getCandidatesDataInProfileTab.date_of_birth }}</td>
                   </tr>
                   <tr>
                     <td>Place of Birth</td>
-
+                    <td>...</td>
                     <td>{{ getCandidatesDataInProfileTab.place_of_birth }}</td>
                   </tr>
                   <tr>
                     <td>Gender</td>
-
+                    <td>...</td>
                     <td>{{ getCandidatesDataInProfileTab.gender }}</td>
                   </tr>
                 </tbody>

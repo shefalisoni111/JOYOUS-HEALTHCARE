@@ -317,6 +317,7 @@
     <!-- <ShowDetailsMessage v-if="showModal" :message="alertMessage" @close="closeModal" /> -->
     <ViewDocuments :documentId="selectedDocumentId" ref="viewDocuments" />
     <loader :isLoading="isLoading"></loader>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
@@ -327,7 +328,8 @@ import ViewDocuments from "../../modals/CandidatePage/Documents/ViewDocuments.vu
 import { saveAs } from "file-saver";
 import ConfirmationAlert from "../../Alerts/ConfirmationAlert.vue";
 import Loader from "../../Loader/Loader.vue";
-
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+import Swal from "sweetalert2";
 export default {
   name: "Document",
   data() {
@@ -351,7 +353,7 @@ export default {
       // alertMessage: "",
     };
   },
-  components: { ViewDocuments, ConfirmationAlert, Loader },
+  components: { ViewDocuments, ConfirmationAlert, Loader, SuccessAlert },
   computed: {
     isFormValid() {
       return this.issue_date && this.expiry_date && this.description && this.url;
@@ -404,11 +406,13 @@ export default {
 
           if (response.ok) {
             this.getDocCAtegories();
-            alert("Successful Submit Data");
+            // alert("Successful Submit Data");
             this.issue_date = null;
             this.expiry_date = null;
             this.description = null;
             this.url = null;
+            const message = "Successful Submit Data";
+            this.$refs.successAlert.showSuccess(message);
           } else {
             // Handle error appropriately
             // console.error("Error submitting data:", responseData);
@@ -510,9 +514,12 @@ export default {
           }
         } catch (error) {
           if (error.response && error.response.status === 404) {
-            // alert("Candidate document No found");
-            this.alertMessage = "Staff document Not found";
-            // this.showModal = true;
+            await Swal.fire({
+              icon: "warning",
+
+              text: "Staff document Not found!",
+              confirmButtonText: "OK",
+            });
           }
           // console.error("Error fetching document:", error);
         }
