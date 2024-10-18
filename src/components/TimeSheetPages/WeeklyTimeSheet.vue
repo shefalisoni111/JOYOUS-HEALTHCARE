@@ -410,12 +410,12 @@
                           <td>
                             <div class="column">
                               <div class="column-cell">
-                                {{ data.status }}
+                                <!-- {{ data.status }} -->
                                 {{
                                   typeof data.start_time === "number"
                                     ? data.start_time.toFixed(2)
                                     : data.start_time === null
-                                    ? "null"
+                                    ? "0.00"
                                     : data.start_time
                                 }}
                               </div>
@@ -428,7 +428,7 @@
                                   typeof data.end_time === "number"
                                     ? data.end_time.toFixed(2)
                                     : data.end_time === null
-                                    ? "null"
+                                    ? "0.00"
                                     : data.end_time
                                 }}
                               </div>
@@ -441,7 +441,7 @@
                                   typeof data.total_hours === "number"
                                     ? data.total_hours.toFixed(2)
                                     : data.total_hours === null
-                                    ? "null"
+                                    ? "0.00"
                                     : data.total_hours
                                 }}
                               </div>
@@ -461,7 +461,7 @@
                         : "Null"
                     }}
                   </td>
-                  <td>{{ data.total_cost ? data.total_cost : "Null" }}</td>
+                  <td>{{ data.total_cost ? data.total_cost : "0.00" }}</td>
                   <td>{{ data.approved_by ? data.approved_by : "Null" }}</td>
                 </tr>
               </tbody>

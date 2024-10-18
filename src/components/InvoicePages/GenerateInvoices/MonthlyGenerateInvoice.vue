@@ -7,7 +7,7 @@
             <tr>
               <th scope="col">ID</th>
               <th scope="col">Code</th>
-              <th scope="col" style="width: 153px">Name</th>
+              <th scope="col" style="width: 153px">Client</th>
               <th scope="col">Site</th>
               <th scope="col">Job</th>
               <th scope="col">Shift Date</th>
@@ -22,7 +22,7 @@
             <tr v-for="(data, index) in candidateList" :key="data.id || index">
               <td scope="col">{{ data.id }}</td>
               <td scope="col">{{ data.code }}</td>
-              <td scope="col">{{ data.name }}</td>
+              <td scope="col">{{ data.client }}</td>
               <td scope="col">{{ data.site }}</td>
               <td scope="col">{{ data.job }}</td>
               <td scope="col">{{ data.shift_date }}</td>

@@ -65,14 +65,14 @@
                   <div
                     class="d-md-flex d-lg-flex justify-content-md-between justify-content-lg-between"
                   >
-                    <div class="d-flex">
+                    <!-- <div class="d-flex">
                       <div class="d-flex align-items-center gap-2">
                         <select
                           class="form-control"
                           v-model="currentView"
                           @change="updateDateRange"
                         >
-                          <!-- <option value="weekly">Weekly</option> -->
+                          <option value="weekly">Weekly</option>
                           <option value="monthly">Monthly</option>
                         </select>
                       </div>
@@ -103,7 +103,7 @@
                         <i class="bi bi-calendar2-check-fill"></i>
                         <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
                       </div>
-                    </div>
+                    </div> -->
 
                     <div class="d-flex gap-3 align-items-center mt-lg-0 mt-3">
                       <div
@@ -424,7 +424,7 @@ const axiosInstance = axios.create({
 export default {
   data() {
     return {
-      currentView: "monthly",
+      // currentView: "weekly",
       daysOfWeek: [
         "Sunday",
         "Monday",
