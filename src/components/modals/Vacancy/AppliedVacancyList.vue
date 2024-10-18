@@ -208,7 +208,7 @@
                     @change="handleSelectChange"
                   >
                     <option :value="null" disabled>Select an Action</option>
-                    <option value="1">Assigned Staff</option>
+                    <option value="1">Assign Staff</option>
                     <option value="2">Reject Staff</option>
                   </select>
                 </div>

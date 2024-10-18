@@ -25,7 +25,7 @@
             </ul> -->
           </div>
           <div class="modal-body mx-3 overflow-x-auto">
-            <div class="row g-3 align-items-center">
+            <!-- <div class="row g-3 align-items-center">
               <ul class="list-unstyled d-flex justify-content-end gap-3">
                 <li>
                   <input
@@ -68,14 +68,14 @@
                     id="flexCheckDefault"
                   />&nbsp;OTHER (1)
                 </li>
-                <!-- <li>
+                 <li>
                   <input
                     class="form-check-input"
                     type="checkbox"
                     value=""
                     id="flexCheckDefault"
                   />&nbsp;O ASSIGNED (0)
-                </li> -->
+                </li> 
                 <li>
                   <input
                     class="form-check-input"
@@ -93,7 +93,7 @@
                   />&nbsp;@ REJECTED BY STAFF
                 </li>
               </ul>
-            </div>
+            </div> -->
             <div class="row">
               <div class="col-md-12">
                 <div
