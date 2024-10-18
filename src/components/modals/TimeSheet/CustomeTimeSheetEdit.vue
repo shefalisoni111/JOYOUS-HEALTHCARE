@@ -171,7 +171,7 @@
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               v-on:click="approved_hourMethod()"
             >
-              Approved
+              Approve
             </button>
           </div>
         </div>

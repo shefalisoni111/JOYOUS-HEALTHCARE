@@ -259,24 +259,25 @@
                     </span> -->
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between gap-1">
+                <div class="d-flex justify-content-between gap-1">
                   <div class="">
                     <div class="">
                       <label class="form-label" for="clientRate">Client Rate</label>
                     </div>
                     <div class="">
                       <input
-                        type="number"
+                        type="text"
                         class="form-control w-100"
                         v-model="client_rate"
-                        @input="validateRate('client_rate', client_rate)"
-                        @keydown.prevent
+                        @input="handleInput('client_rate', client_rate)"
+                        maxlength="3"
                       />
+
                       <span
                         v-if="!validationClientRate && client_rate"
                         class="text-danger"
                       >
-                        Client Rate must be greater than 0
+                        Client Rate must be must be Number.
                       </span>
                     </div>
                   </div>
@@ -287,14 +288,14 @@
                     </div>
                     <div class="">
                       <input
-                        type="number"
+                        type="text"
                         class="form-control w-100"
                         v-model="staff_rate"
-                        @input="validateRate('staff_rate', staff_rate)"
-                        @keydown.prevent
+                        @input="handleInput('staff_rate', staff_rate)"
+                        maxlength="3"
                       />
                       <span v-if="!validationStaffRate && staff_rate" class="text-danger">
-                        Staff Rate must be greater than 0
+                        Staff Rate must be must be Number.
                       </span>
                     </div>
                   </div>
@@ -305,14 +306,14 @@
                     </div>
                     <div class="">
                       <input
-                        type="number"
+                        type="text"
                         class="form-control w-100"
                         v-model="umbrella"
-                        @input="validateRate('umbrella', umbrella)"
-                        @keydown.prevent
+                        @input="handleInput('umbrella', umbrella)"
+                        maxlength="3"
                       />
                       <span v-if="!validationUmbrella && umbrella" class="text-danger">
-                        Umbrella must be greater than 0
+                        Umbrella must be must be Number.
                       </span>
                     </div>
                   </div>
@@ -323,14 +324,14 @@
                     </div>
                     <div class="">
                       <input
-                        type="number"
+                        type="text"
                         class="form-control w-100"
                         v-model="paye"
-                        @input="validateRate('paye', paye)"
-                        @keydown.prevent
+                        @input="handleInput('paye', paye)"
+                        maxlength="3"
                       />
                       <span v-if="!validationPaye && paye" class="text-danger">
-                        Paye must be greater than 0
+                        Paye must be must be Number.
                       </span>
                     </div>
                   </div>
@@ -343,20 +344,27 @@
                     </div>
                     <div class="">
                       <input
-                        type="number"
+                        type="text"
                         class="form-control w-100"
                         v-model="private_limited"
-                        @input="validateRate('private_limited', private_limited)"
-                        @keydown.prevent
+                        @input="handleInput('private_limited', private_limited)"
+                        maxlength="3"
                       />
                       <span
                         v-if="!validationPrivateLimited && private_limited"
                         class="text-danger"
                       >
-                        Private Limited must be greater than 0
+                        Private Limited must be Number.
                       </span>
                     </div>
                   </div>
+                  <br />
+                </div>
+                <div class="text-danger mb-3">
+                  <span v-if="hasInteracted && !site_id">
+                    Please select a site before entering the client, Staff , Umbrella,
+                    Paye, Private limited.
+                  </span>
                 </div>
 
                 <div class="mb-3 d-flex justify-content-between">
@@ -458,7 +466,7 @@ export default {
       start_time: null,
       end_time: null,
       break: null,
-
+      hasInteracted: false,
       client_rate: null,
 
       staff_rate: null,
@@ -497,6 +505,10 @@ export default {
         this.selectedDate !== null &&
         this.break !== null &&
         this.client_rate !== "" &&
+        this.staff_rate !== "" &&
+        this.umbrella !== "" &&
+        this.paye !== "" &&
+        this.private_limited !== "" &&
         this.validationSelectedOptionText &&
         this.validationSelectedBusinessUnit &&
         this.validationSelectedClient &&
@@ -593,13 +605,41 @@ export default {
       this.validateRate("paye", this.paye);
       this.validateRate("private_limited", this.private_limited);
     },
-    validateRate(field, value) {
-      if (value <= 0) {
-        this[field] = null;
-        this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = false;
+    handleInput(field, value) {
+      this.hasInteracted = true;
+
+      const filteredValue = value.replace(/[^0-9]/g, "");
+      this[field] = filteredValue;
+      this.validationClientRate =
+        filteredValue.length > 0 && /^[0-9]+$/.test(filteredValue);
+      this.validationPaye = filteredValue.length > 0 && /^[0-9]+$/.test(filteredValue);
+      this.validationPrivateLimited =
+        filteredValue.length > 0 && /^[0-9]+$/.test(filteredValue);
+      this.validationStaffRate =
+        filteredValue.length > 0 && /^[0-9]+$/.test(filteredValue);
+      this.validationUmbrella =
+        filteredValue.length > 0 && /^[0-9]+$/.test(filteredValue);
+      if (this.site_id) {
+        this.validateRate(field, filteredValue);
       } else {
         this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = true;
       }
+    },
+
+    validateRate(field, value) {
+      if (value === null || value === undefined) {
+        this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = false;
+        return;
+      }
+
+      const stringValue = value.toString();
+
+      if (stringValue.length > 3) {
+        this[field] = stringValue.slice(0, 3);
+      }
+
+      this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] =
+        stringValue > 0 && stringValue.length <= 3;
     },
     handleShiftChange() {
       const selectedShift = this.shiftsTime.find(
@@ -709,7 +749,11 @@ export default {
       const selectedSiteId = this.site_id;
       // const siteShiftId = await this.getTimeShift(selectedSiteId);
       this.getTimeShift(selectedSiteId);
-      this.getClientAccordingRatePayFetchMethod(this.client_id, siteShiftId, this.job_id);
+      this.getClientAccordingRatePayFetchMethod(
+        this.client_id,
+        selectedSiteId,
+        this.job_id
+      );
     },
     onJobSelect() {
       this.getClientAccordingRatePayFetchMethod(
@@ -1038,6 +1082,7 @@ export default {
         (this.validationStaffRequired = true),
         (this.validationDateType = true),
         (this.validationBreak = true);
+      this.hasInteracted = false;
     },
     clearFields() {
       this.site_id = "";
@@ -1054,6 +1099,12 @@ export default {
         (this.staff_required = ""),
         (this.notes = "");
       this.selectedDate = null;
+      this.client_rate = "";
+      this.staff_rate = "";
+      this.umbrella = "";
+      this.paye = "";
+      this.private_limited = "";
+      this.hasInteracted = false;
     },
   },
   async beforeRouteEnter(to, from, next) {
@@ -1098,7 +1149,7 @@ label.form-label {
   border-top: 0px;
 }
 .form-control {
-  background-color: #f7f5f4;
+  background-color: #fff;
   padding: 0.4rem 0.75rem;
 }
 .btn-primary {

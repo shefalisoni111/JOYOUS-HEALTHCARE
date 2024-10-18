@@ -465,6 +465,7 @@
 import axios from "axios";
 // import ConfirmationAlert from "./Alerts/ConfirmationAlert.vue";
 import Swal from "sweetalert2";
+import logo from '../assets/logo.png';
 
 const axiosInstance = axios.create({
   headers: {
@@ -623,26 +624,32 @@ export default {
     },
     confirmed() {
       if (localStorage.getItem("token")) {
-        // Use SweetAlert2 to show the confirmation dialog
+        
         Swal.fire({
-          title: 'Are you sure?',
-          text: 'Are you sure you want to sign out?',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, sign me out!',
-          cancelButtonText: 'Cancel'
+          html: '<p style="font-size: 25px;">Are you sure want to sign out?</p>',
+      imageUrl: logo,
+      imageWidth: 200,
+      imageAlt: 'RecPal',
+      showCancelButton: true,
+      confirmButtonColor: '#ff5f30',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, sign me out!',
+      cancelButtonText: 'Cancel',
+      didOpen: () => {
+        
+        const popup = document.querySelector('.swal2-popup');
+        popup.style.border = '4px solid #fc7d4f'; 
+      }
         }).then((result) => {
           if (result.isConfirmed) {
-            // If confirmed, proceed with sign-out logic
+           
             localStorage.removeItem("token");
             localStorage.removeItem("tokenExpiration");
 
-            // Redirect the user to the login page
+           
             this.$router.replace({ name: "Login" });
 
-            // Optionally show a success message
+          
             Swal.fire(
               'Signed Out!',
               'You have been signed out successfully.',
@@ -788,6 +795,20 @@ ul.navbar-nav li a span.badge {
 }
 .logo {
   line-height: 1;
+}
+.custom-popup {
+  border: 10px solid #3085d6; 
+  border-radius: 10px; 
+}
+
+.custom-title {
+  font-size: 30px; 
+  font-weight: bold; 
+}
+
+.custom-content {
+  font-size:30px; 
+  color: #333; 
 }
 
 .dropdown-item.active,

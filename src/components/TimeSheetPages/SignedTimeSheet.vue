@@ -212,7 +212,7 @@
                                 type="button"
                                 class="btn btn-outline-success text-nowrap text-nowrap"
                               >
-                                <i class="bi bi-asterisk"></i>
+                                Approve
                               </button>
                             </td>
                           </tr>
@@ -308,7 +308,7 @@
                                 type="button"
                                 class="btn btn-outline-success text-nowrap text-nowrap"
                               >
-                                <i class="bi bi-asterisk"></i>
+                                Approve
                               </button>
                             </td>
                           </tr>
