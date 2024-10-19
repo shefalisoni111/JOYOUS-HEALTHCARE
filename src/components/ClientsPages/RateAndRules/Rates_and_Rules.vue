@@ -1092,9 +1092,9 @@ export default {
       }
       // this.activeSiteId = this.activeSiteId === index ? null : index;
 
-      // this.filteredRateRulesData = this.getRateRulesData.filter(
-      //   (rate) => rate.site_id === siteId && rate.client === client && rate.job === job
-      // );
+      this.filteredRateRulesData = this.getRateRulesData.filter(
+        (rate) => rate.site_id === siteId && rate.client === client && rate.job === job
+      );
     },
     formatTime(time) {
       return time.slice(0, 5);
