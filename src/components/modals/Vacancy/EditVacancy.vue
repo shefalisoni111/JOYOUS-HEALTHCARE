@@ -596,8 +596,8 @@ export default {
         // this.fetchVacancy.dates = response.data.dates;
         this.fetchVacancy.notes = response.data.notes;
         this.fetchVacancy.site_shift_id = response.data.site_shift_id;
-        this.fetchVacancy.start_time = this.convertTimeFormat(response.data.start_time);
-        this.fetchVacancy.end_time = this.convertTimeFormat(response.data.end_time);
+        this.fetchVacancy.start_time = response.data.start_time;
+        this.fetchVacancy.end_time = response.data.end_time;
         this.fetchVacancy.break = response.data.break;
         this.fetchVacancy.staff_rate = response.data.staff_rate;
         this.fetchVacancy.client_rate = response.data.client_rate;
@@ -751,11 +751,19 @@ export default {
 
     convertTimeFormat(dateTimeString) {
       const date = new Date(dateTimeString);
+
+      if (isNaN(date.getTime())) {
+        return "Invalid date";
+      }
+
       const hours = date.getUTCHours();
       const minutes = date.getUTCMinutes();
+
       const amPm = hours >= 12 ? "PM" : "AM";
-      const formattedHours = String(hours).padStart(2, "0");
+
+      const formattedHours = hours % 12 || 12;
       const formattedMinutes = String(minutes).padStart(2, "0");
+
       return `${formattedHours}:${formattedMinutes} ${amPm}`;
     },
     async getJobTitleMethod() {
