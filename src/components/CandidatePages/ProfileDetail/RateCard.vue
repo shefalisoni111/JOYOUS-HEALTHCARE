@@ -135,6 +135,7 @@ export default {
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,
+      getCandidates: [],
     };
   },
   components: { AddRateCard, EditRateCard, Loader, ConfirmationAlert, SuccessAlert },
@@ -146,6 +147,24 @@ export default {
     },
   },
   methods: {
+    async getCandidate() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/candidates/${this.$route.params.id}`
+        );
+
+        this.getCandidates = response.data.candidate;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        } else {
+          // console.error("Error fetching candidates:", error);
+        }
+      }
+    },
+
     handleRateCardAdded() {
       this.$refs.addRateCard.getEmployeeTypeData();
       setTimeout(() => {
@@ -153,7 +172,7 @@ export default {
       }, 100);
 
       setTimeout(() => {
-        this.$refs.addRateCard.getBusinessUnitMethod();
+        this.$refs.addRateCard.getClientMethod();
       }, 200);
 
       setTimeout(() => {

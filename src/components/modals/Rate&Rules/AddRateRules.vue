@@ -173,7 +173,7 @@
                         <div class="col-4">
                           <label class="form-label">Client Rate</label>
 
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedClientRate[`${day}-day`]"
                           >
@@ -182,13 +182,25 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedClientRate[`${day}-day`]"
+                            @input="
+                              handleInput(
+                                `clientRate-${day}-day`,
+                                selectedClientRate[`${day}-day`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">Private Limited</label>
 
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedPrivateLimited[`${day}-day`]"
                           >
@@ -197,14 +209,26 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedPrivateLimited[`${day}-day`]"
+                            @input="
+                              handleInput(
+                                `privateLimited-${day}-day`,
+                                selectedPrivateLimited[`${day}-day`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
                       </div>
                       <div class="col-4 d-flex gap-2">
                         <div class="col-4">
                           <label class="form-label">Self Employed</label>
 
-                          <select
+                          <!-- <select
                             v-model="selectedSelfEmployee[`${day}-day`]"
                             class="form-select w-25"
                           >
@@ -213,12 +237,24 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedSelfEmployee[`${day}-day`]"
+                            @input="
+                              handleInput(
+                                `selfEmployee-${day}-day`,
+                                selectedSelfEmployee[`${day}-day`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">Umbrella</label>
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedUmbrella[`${day}-day`]"
                           >
@@ -227,12 +263,24 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedUmbrella[`${day}-day`]"
+                            @input="
+                              handleInput(
+                                `umbrella-${day}-day`,
+                                selectedUmbrella[`${day}-day`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">PAYE</label>
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedPaye[`${day}-day`]"
                           >
@@ -241,7 +289,16 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedPaye[`${day}-day`]"
+                            @input="
+                              handleInput(`paye-${day}-day`, selectedPaye[`${day}-day`])
+                            "
+                            maxlength="3"
+                          />
                         </div>
                       </div>
                     </div>
@@ -329,7 +386,7 @@
                         <div class="col-4">
                           <label class="form-label">Client Rate</label>
 
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedClientRate[`${day}-day`]"
                             disabled
@@ -339,13 +396,26 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            disabled
+                            v-model="selectedClientRate[`${day}-day`]"
+                            @input="
+                              handleInput(
+                                `clientRate-${day}-day`,
+                                selectedClientRate[`${day}-day`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">Private Limited</label>
 
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedPrivateLimited[`${day}-day`]"
                             disabled
@@ -355,7 +425,20 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedPrivateLimited[`${day}-day`]"
+                            disabled
+                            @input="
+                              handleInput(
+                                `privateLimited-${day}-day`,
+                                selectedPrivateLimited[`${day}-day`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
                       </div>
                       <div class="col-4 d-flex gap-2" v-else>
@@ -373,7 +456,7 @@
                         <div class="col-4">
                           <label class="form-label">Client Rate</label>
 
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedClientRate[`${day}-night`]"
                           >
@@ -382,13 +465,25 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedClientRate[`${day}-night`]"
+                            @input="
+                              handleInput(
+                                `clientRate-${day}-night`,
+                                selectedClientRate[`${day}-night`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">Private Limited</label>
 
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedPrivateLimited[`${day}-night`]"
                           >
@@ -397,14 +492,26 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedPrivateLimited[`${day}-night`]"
+                            @input="
+                              handleInput(
+                                `privateLimited-${day}-night`,
+                                selectedPrivateLimited[`${day}-night`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
                       </div>
                       <div class="col-4 d-flex gap-2" v-if="splitRate">
                         <div class="col-4">
                           <label class="form-label">Self Employed</label>
 
-                          <select
+                          <!-- <select
                             v-model="selectedSelfEmployee[`${day}-day`]"
                             class="form-select w-25"
                             disabled
@@ -414,13 +521,26 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            disabled
+                            v-model="selectedSelfEmployee[`${day}-day`]"
+                            @input="
+                              handleInput(
+                                `selfEmployee-${day}-day`,
+                                selectedSelfEmployee[`${day}-day`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">Umbrella</label>
 
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedUmbrella[`${day}-day`]"
                             disabled
@@ -430,12 +550,25 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedUmbrella[`${day}-day`]"
+                            disabled
+                            @input="
+                              handleInput(
+                                `umbrella-${day}-day`,
+                                selectedUmbrella[`${day}-day`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">PAYE</label>
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedPaye[`${day}-day`]"
                             disabled
@@ -445,14 +578,24 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            disabled
+                            v-model="selectedPaye[`${day}-day`]"
+                            @input="
+                              handleInput(`paye-${day}-day`, selectedPaye[`${day}-day`])
+                            "
+                            maxlength="3"
+                          />
                         </div>
                       </div>
                       <div class="col-4 d-flex gap-2" v-else>
                         <div class="col-4">
                           <label class="form-label">Self Employed</label>
 
-                          <select
+                          <!-- <select
                             v-model="selectedSelfEmployee[`${day}-night`]"
                             class="form-select w-25"
                           >
@@ -461,12 +604,24 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedSelfEmployee[`${day}-night`]"
+                            @input="
+                              handleInput(
+                                `selfEmployee-${day}-night`,
+                                selectedSelfEmployee[`${day}-night`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">Umbrella</label>
-
+                          <!-- 
                           <select
                             class="form-select w-25"
                             v-model="selectedUmbrella[`${day}-night`]"
@@ -476,12 +631,24 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedUmbrella[`${day}-night`]"
+                            @input="
+                              handleInput(
+                                `umbrella-${day}-night`,
+                                selectedUmbrella[`${day}-night`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">PAYE</label>
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedPaye[`${day}-night`]"
                           >
@@ -490,7 +657,19 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedPaye[`${day}-night`]"
+                            @input="
+                              handleInput(
+                                `paye-${day}-night`,
+                                selectedPaye[`${day}-night`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
                       </div>
                     </div>
@@ -573,7 +752,7 @@
                         <div class="col-4">
                           <label class="form-label">Client Rate</label>
 
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedClientRate[`${day}-holiday`]"
                           >
@@ -582,13 +761,25 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedClientRate[`${day}-holiday`]"
+                            @input="
+                              handleInput(
+                                `clientRate-${day}-holiday`,
+                                selectedClientRate[`${day}-holiday`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">Private Limited</label>
 
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedPrivateLimited[`${day}-holiday`]"
                           >
@@ -597,14 +788,26 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedPrivateLimited[`${day}-holiday`]"
+                            @input="
+                              handleInput(
+                                `privateLimited-${day}-holiday`,
+                                selectedPrivateLimited[`${day}-holiday`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
                       </div>
                       <div class="col-4 d-flex gap-2">
                         <div class="col-4">
                           <label class="form-label">Self Employed</label>
 
-                          <select
+                          <!-- <select
                             v-model="selectedSelfEmployee[`${day}-holiday`]"
                             class="form-select w-25"
                           >
@@ -613,12 +816,24 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedSelfEmployee[`${day}-holiday`]"
+                            @input="
+                              handleInput(
+                                `selfEmployee-${day}-holiday`,
+                                selectedSelfEmployee[`${day}-holiday`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">Umbrella</label>
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedUmbrella[`${day}-holiday`]"
                           >
@@ -627,12 +842,24 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedUmbrella[`${day}-holiday`]"
+                            @input="
+                              handleInput(
+                                `umbrella-${day}-holiday`,
+                                selectedUmbrella[`${day}-holiday`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">PAYE</label>
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedPaye[`${day}-holiday`]"
                           >
@@ -641,7 +868,19 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedPaye[`${day}-holiday`]"
+                            @input="
+                              handleInput(
+                                `paye-${day}-holiday`,
+                                selectedPaye[`${day}-holiday`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
                       </div>
                     </div>
@@ -723,7 +962,7 @@
                         <div class="col-4">
                           <label class="form-label">Client Rate</label>
 
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedClientRate[`${day}-holiday`]"
                             disabled
@@ -733,13 +972,26 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            disabled
+                            class="form-control w-100"
+                            v-model="selectedClientRate[`${day}-holiday`]"
+                            @input="
+                              handleInput(
+                                `clientRate-${day}-holiday`,
+                                selectedClientRate[`${day}-holiday`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">Private Limited</label>
 
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedPrivateLimited[`${day}-holiday`]"
                             disabled
@@ -749,7 +1001,20 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            disabled
+                            v-model="selectedPrivateLimited[`${day}-holiday`]"
+                            @input="
+                              handleInput(
+                                `privateLimited-${day}-holiday`,
+                                selectedPrivateLimited[`${day}-holiday`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
                       </div>
                       <div class="col-4 d-flex gap-2" v-else>
@@ -766,8 +1031,19 @@
 
                         <div class="col-4">
                           <label class="form-label">Client Rate</label>
-
-                          <select
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedClientRate[`${day}-holiday_night`]"
+                            @input="
+                              handleInput(
+                                `clientRate-${day}-holiday_night`,
+                                selectedClientRate[`${day}-holiday_night`]
+                              )
+                            "
+                            maxlength="3"
+                          />
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedClientRate[`${day}-holiday_night`]"
                           >
@@ -776,13 +1052,13 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">Private Limited</label>
 
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedPrivateLimited[`${day}-holiday_night`]"
                           >
@@ -791,14 +1067,26 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedPrivateLimited[`${day}-holiday_night`]"
+                            @input="
+                              handleInput(
+                                `privateLimited-${day}-holiday_night`,
+                                selectedPrivateLimited[`${day}-holiday_night`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
                       </div>
                       <div class="col-4 d-flex gap-2" v-if="holidaySplitRate">
                         <div class="col-4">
                           <label class="form-label">Self Employed</label>
 
-                          <select
+                          <!-- <select
                             v-model="selectedSelfEmployee[`${day}-holiday`]"
                             class="form-select w-25"
                             disabled
@@ -808,13 +1096,26 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            disabled
+                            v-model="selectedSelfEmployee[`${day}-holiday`]"
+                            @input="
+                              handleInput(
+                                `selfEmployee-${day}-holiday`,
+                                selectedSelfEmployee[`${day}-holiday`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">Umbrella</label>
 
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedUmbrella[`${day}-holiday`]"
                             disabled
@@ -824,12 +1125,25 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            disabled
+                            class="form-control w-100"
+                            v-model="selectedUmbrella[`${day}-holiday`]"
+                            @input="
+                              handleInput(
+                                `umbrella-${day}-holiday`,
+                                selectedUmbrella[`${day}-holiday`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">PAYE</label>
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedPaye[`${day}-holiday`]"
                             disabled
@@ -839,14 +1153,27 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            disabled
+                            class="form-control w-100"
+                            v-model="selectedPaye[`${day}-holiday`]"
+                            @input="
+                              handleInput(
+                                `paye-${day}-holiday`,
+                                selectedPaye[`${day}-holiday`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
                       </div>
                       <div class="col-4 d-flex gap-2" v-else>
                         <div class="col-4">
                           <label class="form-label">Self Employed</label>
 
-                          <select
+                          <!-- <select
                             v-model="selectedSelfEmployee[`${day}-holiday_night`]"
                             class="form-select w-25"
                           >
@@ -855,13 +1182,25 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedSelfEmployee[`${day}-holiday_night`]"
+                            @input="
+                              handleInput(
+                                `selfEmployee-${day}-holiday_night`,
+                                selectedSelfEmployee[`${day}-holiday_night`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">Umbrella</label>
 
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedUmbrella[`${day}-holiday_night`]"
                           >
@@ -870,12 +1209,24 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedUmbrella[`${day}-holiday_night`]"
+                            @input="
+                              handleInput(
+                                `umbrella-${day}-holiday_night`,
+                                selectedUmbrella[`${day}-holiday_night`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">PAYE</label>
-                          <select
+                          <!-- <select
                             class="form-select w-25"
                             v-model="selectedPaye[`${day}-holiday_night`]"
                           >
@@ -884,7 +1235,19 @@
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
-                          </select>
+                          </select> -->
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="selectedPaye[`${day}-holiday_night`]"
+                            @input="
+                              handleInput(
+                                `paye-${day}-holiday_night`,
+                                selectedPaye[`${day}-holiday_night`]
+                              )
+                            "
+                            maxlength="3"
+                          />
                         </div>
                       </div>
                     </div>
@@ -1036,6 +1399,41 @@ export default {
   },
   watch: {},
   methods: {
+    handleInput(field, value) {
+      this.hasInteracted = true;
+
+      const filteredValue = value.replace(/[^0-9]/g, "");
+
+      // Destructure the field to get type, day, and period (e.g., "clientRate-1-day")
+      const [type, day, period] = field.split("-");
+
+      // Update the respective field based on type and period (day/night)
+      if (type === "clientRate") {
+        this.selectedClientRate[`${day}-${period}`] = filteredValue;
+      } else if (type === "privateLimited") {
+        this.selectedPrivateLimited[`${day}-${period}`] = filteredValue;
+      } else if (type === "paye") {
+        this.selectedPaye[`${day}-${period}`] = filteredValue;
+      } else if (type === "selfEmployee") {
+        this.selectedSelfEmployee[`${day}-${period}`] = filteredValue;
+      } else if (type === "umbrella") {
+        this.selectedUmbrella[`${day}-${period}`] = filteredValue;
+      }
+
+      // Validate that the number is between 1 and 999
+      if (filteredValue.length > 0) {
+        const numericValue = parseInt(filteredValue, 10);
+
+        if (numericValue >= 1 && numericValue <= 999) {
+          this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = true;
+        } else {
+          this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = false;
+        }
+      } else {
+        this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = false;
+      }
+    },
+
     isFormValid() {
       const site_id_valid = this.selectedSiteId !== null;
       const job_id_valid = this.selectedJobId !== null;
@@ -1575,13 +1973,17 @@ select {
 label.form-label {
   text-transform: capitalize;
 }
+.form-control {
+  background-color: #fff;
+  padding: 0.6rem 0.75rem;
+}
+.form-control:disabled {
+  background-color: #e9ecef;
+}
 .modal-footer {
   border-top: 0px;
 }
-.form-control {
-  background-color: #f7f5f4;
-  padding: 0.4rem 0.75rem;
-}
+
 .btn-primary {
   border: none;
 }

@@ -168,14 +168,13 @@
                         >
                           <option value="Hourly">Hourly</option>
                           <option value="Monthly">Monthly</option>
-                          <option value="Yearly">Yearly</option>
                         </select>
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Client Rate</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[0].client_rate"
                           @change="handleClientRateChange($event, 0)"
@@ -185,13 +184,21 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[0].client_rate"
+                          @change="handleClientRateChange($event, 0)"
+                          @input="handleInput(`clientRate`, 0, ratesArray[0].client_rate)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Private Limited</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[0].private_limited"
                           @change="handleClientRateChange($event, 0)"
@@ -201,14 +208,28 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[0].private_limited"
+                          @change="handleClientRateChange($event, 0)"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              0,
+                              ratesArray[0].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                     <div class="col-4 d-flex gap-2">
                       <div class="col-4">
                         <label class="form-label">Self Employed</label>
 
-                        <select
+                        <!-- <select
                           v-model="ratesArray[0].self_employed"
                           class="form-select w-25"
                           @change="handleClientRateChange($event, 0)"
@@ -218,12 +239,22 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[0].self_employed"
+                          @change="handleClientRateChange($event, 0)"
+                          @input="
+                            handleInput(`selfEmployee`, 0, ratesArray[0].self_employed)
+                          "
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[0].umbrella"
                           @change="handleClientRateChange($event, 0)"
@@ -233,12 +264,20 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[0].umbrella"
+                          @change="handleClientRateChange($event, 0)"
+                          @input="handleInput(`umbrella`, 0, ratesArray[0].umbrella)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[0].paye"
                           @change="handleClientRateChange($event, 0)"
@@ -248,7 +287,15 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[0].paye"
+                          @change="handleClientRateChange($event, 0)"
+                          @input="handleInput(`paye`, 0, ratesArray[0].paye)"
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                   </div>
@@ -326,14 +373,13 @@
                         >
                           <option value="Hourly">Hourly</option>
                           <option value="Monthly">Monthly</option>
-                          <option value="Yearly">Yearly</option>
                         </select>
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Client Rate</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[1].client_rate"
                           @change="handleClientRateChange($event, 1)"
@@ -344,13 +390,22 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[1].client_rate"
+                          :disabled="ratesArray[1].split_rate"
+                          @change="handleClientRateChange($event, 0)"
+                          @input="handleInput(`clientRate`, 1, ratesArray[1].client_rate)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Private Limited</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[1].private_limited"
                           @change="handleClientRateChange($event, 1)"
@@ -361,14 +416,29 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[1].private_limited"
+                          :disabled="ratesArray[1].split_rate"
+                          @change="handleClientRateChange($event, 0)"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              1,
+                              ratesArray[1].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                     <div class="col-4 d-flex gap-2">
                       <div class="col-4">
                         <label class="form-label">Self Employed</label>
 
-                        <select
+                        <!-- <select
                           v-model="ratesArray[1].self_employed"
                           class="form-select w-25"
                           @change="handleClientRateChange($event, 1)"
@@ -379,12 +449,23 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[1].self_employed"
+                          :disabled="ratesArray[1].split_rate"
+                          @change="handleClientRateChange($event, 0)"
+                          @input="
+                            handleInput(`selfEmployee`, 1, ratesArray[1].self_employed)
+                          "
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[1].umbrella"
                           @change="handleClientRateChange($event, 1)"
@@ -395,12 +476,21 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[1].umbrella"
+                          :disabled="ratesArray[1].split_rate"
+                          @change="handleClientRateChange($event, 0)"
+                          @input="handleInput(`umbrella`, 1, ratesArray[1].umbrella)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[1].paye"
                           @change="handleClientRateChange($event, 1)"
@@ -411,7 +501,16 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[1].paye"
+                          :disabled="ratesArray[1].split_rate"
+                          @change="handleClientRateChange($event, 0)"
+                          @input="handleInput(`paye`, 1, ratesArray[1].paye)"
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                   </div>
@@ -500,14 +599,13 @@
                         >
                           <option value="Hourly">Hourly</option>
                           <option value="Monthly">Monthly</option>
-                          <option value="Yearly">Yearly</option>
                         </select>
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Client Rate</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[2].client_rate"
                         >
@@ -516,13 +614,20 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[2].client_rate"
+                          @input="handleInput(`clientRate`, 2, ratesArray[2].client_rate)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Private Limited</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[2].private_limited"
                         >
@@ -531,14 +636,27 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[2].private_limited"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              2,
+                              ratesArray[2].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                     <div class="col-4 d-flex gap-2">
                       <div class="col-4">
                         <label class="form-label">Self Employed</label>
 
-                        <select
+                        <!-- <select
                           v-model="ratesArray[2].self_employed"
                           class="form-select w-25"
                         >
@@ -547,29 +665,52 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[2].self_employed"
+                          @input="
+                            handleInput(`selfEmployee`, 2, ratesArray[2].self_employed)
+                          "
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select class="form-select w-25" v-model="ratesArray[2].umbrella">
+                        <!-- <select class="form-select w-25" v-model="ratesArray[2].umbrella">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[2].umbrella"
+                          @input="handleInput(`umbrella`, 2, ratesArray[2].umbrella)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select class="form-select w-25" v-model="ratesArray[2].paye">
+                        <!-- <select class="form-select w-25" v-model="ratesArray[2].paye">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[2].paye"
+                          @input="handleInput(`paye`, 2, ratesArray[2].paye)"
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                   </div>
@@ -646,14 +787,13 @@
                         >
                           <option value="Hourly">Hourly</option>
                           <option value="Monthly">Monthly</option>
-                          <option value="Yearly">Yearly</option>
                         </select>
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Client Rate</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[3].client_rate"
                           :disabled="ratesArray[3].split_rate"
@@ -663,13 +803,21 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[3].client_rate"
+                          :disabled="ratesArray[3].split_rate"
+                          @input="handleInput(`clientRate`, 3, ratesArray[3].client_rate)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Private Limited</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[3].private_limited"
                           :disabled="ratesArray[3].split_rate"
@@ -679,14 +827,28 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[3].private_limited"
+                          :disabled="ratesArray[3].split_rate"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              3,
+                              ratesArray[3].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                     <div class="col-4 d-flex gap-2">
                       <div class="col-4">
                         <label class="form-label">Self Employed</label>
 
-                        <select
+                        <!-- <select
                           v-model="ratesArray[3].self_employed"
                           :disabled="ratesArray[3].split_rate"
                           class="form-select w-25"
@@ -696,12 +858,22 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[3].self_employed"
+                          :disabled="ratesArray[3].split_rate"
+                          @input="
+                            handleInput(`selfEmployee`, 3, ratesArray[3].self_employed)
+                          "
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[3].umbrella"
                           :disabled="ratesArray[3].split_rate"
@@ -711,12 +883,20 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[3].umbrella"
+                          :disabled="ratesArray[3].split_rate"
+                          @input="handleInput(`umbrella`, 3, ratesArray[3].umbrella)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[3].paye"
                           :disabled="ratesArray[3].split_rate"
@@ -726,7 +906,15 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[3].paye"
+                          :disabled="ratesArray[3].split_rate"
+                          @input="handleInput(`paye`, 3, ratesArray[3].paye)"
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                   </div>
@@ -815,14 +1003,13 @@
                         >
                           <option value="Hourly">Hourly</option>
                           <option value="Monthly">Monthly</option>
-                          <option value="Yearly">Yearly</option>
                         </select>
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Client Rate</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[4].client_rate"
                         >
@@ -831,13 +1018,20 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[4].client_rate"
+                          @input="handleInput(`clientRate`, 4, ratesArray[4].client_rate)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Private Limited</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[4].private_limited"
                         >
@@ -846,14 +1040,27 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[4].private_limited"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              4,
+                              ratesArray[4].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                     <div class="col-4 d-flex gap-2">
                       <div class="col-4">
                         <label class="form-label">Self Employed</label>
 
-                        <select
+                        <!-- <select
                           v-model="ratesArray[4].self_employed"
                           class="form-select w-25"
                         >
@@ -862,29 +1069,52 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[4].self_employed"
+                          @input="
+                            handleInput(`selfEmployee`, 4, ratesArray[4].self_employed)
+                          "
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select class="form-select w-25" v-model="ratesArray[4].umbrella">
+                        <!-- <select class="form-select w-25" v-model="ratesArray[4].umbrella">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[4].umbrella"
+                          @input="handleInput(`umbrella`, 4, ratesArray[4].umbrella)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select class="form-select w-25" v-model="ratesArray[4].paye">
+                        <!-- <select class="form-select w-25" v-model="ratesArray[4].paye">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[4].paye"
+                          @input="handleInput(`paye`, 4, ratesArray[4].paye)"
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                   </div>
@@ -961,14 +1191,13 @@
                         >
                           <option value="Hourly">Hourly</option>
                           <option value="Monthly">Monthly</option>
-                          <option value="Yearly">Yearly</option>
                         </select>
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Client Rate</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[5].client_rate"
                           :disabled="ratesArray[5].split_rate"
@@ -978,13 +1207,21 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[5].client_rate"
+                          :disabled="ratesArray[5].split_rate"
+                          @input="handleInput(`clientRate`, 5, ratesArray[5].client_rate)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Private Limited</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[5].private_limited"
                           :disabled="ratesArray[5].split_rate"
@@ -994,14 +1231,28 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[5].private_limited"
+                          :disabled="ratesArray[5].split_rate"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              5,
+                              ratesArray[5].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                     <div class="col-4 d-flex gap-2">
                       <div class="col-4">
                         <label class="form-label">Self Employed</label>
 
-                        <select
+                        <!-- <select
                           v-model="ratesArray[5].self_employed"
                           :disabled="ratesArray[5].split_rate"
                           class="form-select w-25"
@@ -1011,12 +1262,22 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[5].self_employed"
+                          :disabled="ratesArray[5].split_rate"
+                          @input="
+                            handleInput(`selfEmployee`, 5, ratesArray[5].self_employed)
+                          "
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[5].umbrella"
                           :disabled="ratesArray[5].split_rate"
@@ -1026,12 +1287,20 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[5].umbrella"
+                          :disabled="ratesArray[5].split_rate"
+                          @input="handleInput(`umbrella`, 5, ratesArray[5].umbrella)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[5].paye"
                           :disabled="ratesArray[5].split_rate"
@@ -1041,7 +1310,15 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[5].paye"
+                          :disabled="ratesArray[5].split_rate"
+                          @input="handleInput(`paye`, 5, ratesArray[5].paye)"
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                   </div>
@@ -1130,14 +1407,13 @@
                         >
                           <option value="Hourly">Hourly</option>
                           <option value="Monthly">Monthly</option>
-                          <option value="Yearly">Yearly</option>
                         </select>
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Client Rate</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[6].client_rate"
                         >
@@ -1146,13 +1422,20 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[6].client_rate"
+                          @input="handleInput(`clientRate`, 6, ratesArray[6].client_rate)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Private Limited</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[6].private_limited"
                         >
@@ -1161,14 +1444,27 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[6].private_limited"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              6,
+                              ratesArray[6].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                     <div class="col-4 d-flex gap-2">
                       <div class="col-4">
                         <label class="form-label">Self Employed</label>
 
-                        <select
+                        <!-- <select
                           v-model="ratesArray[6].self_employed"
                           class="form-select w-25"
                         >
@@ -1177,29 +1473,52 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[6].self_employed"
+                          @input="
+                            handleInput(`selfEmployee`, 6, ratesArray[6].self_employed)
+                          "
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select class="form-select w-25" v-model="ratesArray[6].umbrella">
+                        <!-- <select class="form-select w-25" v-model="ratesArray[6].umbrella">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[6].umbrella"
+                          @input="handleInput(`umbrella`, 6, ratesArray[6].umbrella)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select class="form-select w-25" v-model="ratesArray[6].paye">
+                        <!-- <select class="form-select w-25" v-model="ratesArray[6].paye">
                           <option>1</option>
                           <option>5</option>
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[6].paye"
+                          @input="handleInput(`paye`, 6, ratesArray[6].paye)"
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                   </div>
@@ -1276,14 +1595,13 @@
                         >
                           <option value="Hourly">Hourly</option>
                           <option value="Monthly">Monthly</option>
-                          <option value="Yearly">Yearly</option>
                         </select>
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Client Rate</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[7].client_rate"
                           :disabled="ratesArray[7].split_rate"
@@ -1293,13 +1611,21 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[7].client_rate"
+                          :disabled="ratesArray[7].split_rate"
+                          @input="handleInput(`clientRate`, 7, ratesArray[7].client_rate)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Private Limited</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[7].private_limited"
                           :disabled="ratesArray[7].split_rate"
@@ -1309,14 +1635,28 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[7].private_limited"
+                          :disabled="ratesArray[7].split_rate"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              7,
+                              ratesArray[7].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                     <div class="col-4 d-flex gap-2">
                       <div class="col-4">
                         <label class="form-label">Self Employed</label>
 
-                        <select
+                        <!-- <select
                           v-model="ratesArray[7].self_employed"
                           :disabled="ratesArray[7].split_rate"
                         >
@@ -1325,12 +1665,22 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[7].self_employed"
+                          :disabled="ratesArray[7].split_rate"
+                          @input="
+                            handleInput(`selfEmployee`, 7, ratesArray[7].self_employed)
+                          "
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[7].umbrella"
                           :disabled="ratesArray[7].split_rate"
@@ -1340,12 +1690,20 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[7].umbrella"
+                          :disabled="ratesArray[7].split_rate"
+                          @input="handleInput(`umbrella`, 7, ratesArray[7].umbrella)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[7].paye"
                           :disabled="ratesArray[7].split_rate"
@@ -1355,7 +1713,15 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[7].paye"
+                          :disabled="ratesArray[7].split_rate"
+                          @input="handleInput(`paye`, 7, ratesArray[7].paye)"
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                   </div>
@@ -1444,76 +1810,74 @@
                         >
                           <option value="Hourly">Hourly</option>
                           <option value="Monthly">Monthly</option>
-                          <option value="Yearly">Yearly</option>
                         </select>
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Client Rate</label>
 
-                        <select
-                          class="form-select w-25"
+                        <input
+                          type="text"
+                          class="form-control w-100"
                           v-model="ratesArray[8].client_rate"
-                        >
-                          <option>1</option>
-                          <option>5</option>
-                          <option>10</option>
-                          <option>15</option>
-                          <option>20</option>
-                        </select>
+                          @input="handleInput(`clientRate`, 8, ratesArray[8].client_rate)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Private Limited</label>
 
-                        <select
-                          class="form-select w-25"
+                        <input
+                          type="text"
+                          class="form-control w-100"
                           v-model="ratesArray[8].private_limited"
-                        >
-                          <option>1</option>
-                          <option>5</option>
-                          <option>10</option>
-                          <option>15</option>
-                          <option>20</option>
-                        </select>
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              8,
+                              ratesArray[8].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                     <div class="col-4 d-flex gap-2">
                       <div class="col-4">
                         <label class="form-label">Self Employed</label>
 
-                        <select
+                        <input
+                          type="text"
+                          class="form-control w-100"
                           v-model="ratesArray[8].self_employed"
-                          class="form-select w-25"
-                        >
-                          <option>1</option>
-                          <option>5</option>
-                          <option>10</option>
-                          <option>15</option>
-                          <option>20</option>
-                        </select>
+                          @input="
+                            handleInput(`selfEmployee`, 8, ratesArray[8].self_employed)
+                          "
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select class="form-select w-25" v-model="ratesArray[8].umbrella">
-                          <option>1</option>
-                          <option>5</option>
-                          <option>10</option>
-                          <option>15</option>
-                          <option>20</option>
-                        </select>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[8].umbrella"
+                          @input="handleInput(`umbrella`, 8, ratesArray[8].umbrella)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select class="form-select w-25" v-model="ratesArray[8].paye">
-                          <option>1</option>
-                          <option>5</option>
-                          <option>10</option>
-                          <option>15</option>
-                          <option>20</option>
-                        </select>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[8].paye"
+                          @input="handleInput(`paye`, 8, ratesArray[8].paye)"
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                   </div>
@@ -1590,47 +1954,46 @@
                         >
                           <option value="Hourly">Hourly</option>
                           <option value="Monthly">Monthly</option>
-                          <option value="Yearly">Yearly</option>
                         </select>
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Client Rate</label>
 
-                        <select
-                          class="form-select w-25"
+                        <input
+                          type="text"
+                          class="form-control w-100"
                           v-model="ratesArray[9].client_rate"
                           :disabled="ratesArray[9].split_rate"
-                        >
-                          <option>1</option>
-                          <option>5</option>
-                          <option>10</option>
-                          <option>15</option>
-                          <option>20</option>
-                        </select>
+                          @input="handleInput(`clientRate`, 9, ratesArray[9].client_rate)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Private Limited</label>
 
-                        <select
-                          class="form-select w-25"
+                        <input
+                          type="text"
+                          class="form-control w-100"
                           v-model="ratesArray[9].private_limited"
                           :disabled="ratesArray[9].split_rate"
-                        >
-                          <option>1</option>
-                          <option>5</option>
-                          <option>10</option>
-                          <option>15</option>
-                          <option>20</option>
-                        </select>
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              9,
+                              ratesArray[9].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                     <div class="col-4 d-flex gap-2">
                       <div class="col-4">
                         <label class="form-label">Self Employed</label>
 
-                        <select
+                        <!-- <select
                           v-model="ratesArray[9].self_employed"
                           :disabled="ratesArray[9].split_rate"
                           class="form-select w-25"
@@ -1640,12 +2003,22 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[9].self_employed"
+                          :disabled="ratesArray[9].split_rate"
+                          @input="
+                            handleInput(`selfEmployee`, 9, ratesArray[9].self_employed)
+                          "
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[9].umbrella"
                           :disabled="ratesArray[9].split_rate"
@@ -1655,12 +2028,20 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[9].umbrella"
+                          :disabled="ratesArray[9].split_rate"
+                          @input="handleInput(`umbrella`, 9, ratesArray[9].umbrella)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[9].paye"
                           :disabled="ratesArray[9].split_rate"
@@ -1670,7 +2051,15 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[9].paye"
+                          :disabled="ratesArray[9].split_rate"
+                          @input="handleInput(`paye`, 9, ratesArray[9].paye)"
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                   </div>
@@ -1759,79 +2148,76 @@
                         >
                           <option value="Hourly">Hourly</option>
                           <option value="Monthly">Monthly</option>
-                          <option value="Yearly">Yearly</option>
                         </select>
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Client Rate</label>
 
-                        <select
-                          class="form-select w-25"
+                        <input
+                          type="text"
+                          class="form-control w-100"
                           v-model="ratesArray[10].client_rate"
-                        >
-                          <option>1</option>
-                          <option>5</option>
-                          <option>10</option>
-                          <option>15</option>
-                          <option>20</option>
-                        </select>
+                          @input="
+                            handleInput(`clientRate`, 10, ratesArray[10].client_rate)
+                          "
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Private Limited</label>
 
-                        <select
-                          class="form-select w-25"
+                        <input
+                          type="text"
+                          class="form-control w-100"
                           v-model="ratesArray[10].private_limited"
-                        >
-                          <option>1</option>
-                          <option>5</option>
-                          <option>10</option>
-                          <option>15</option>
-                          <option>20</option>
-                        </select>
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              10,
+                              ratesArray[10].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                     <div class="col-4 d-flex gap-2">
                       <div class="col-4">
                         <label class="form-label">Self Employed</label>
 
-                        <select
+                        <input
+                          type="text"
+                          class="form-control w-100"
                           v-model="ratesArray[10].self_employed"
-                          class="form-select w-25"
-                        >
-                          <option>1</option>
-                          <option>5</option>
-                          <option>10</option>
-                          <option>15</option>
-                          <option>20</option>
-                        </select>
+                          @input="
+                            handleInput(`selfEmployee`, 10, ratesArray[10].self_employed)
+                          "
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select
-                          class="form-select w-25"
+                        <input
+                          type="text"
+                          class="form-control w-100"
                           v-model="ratesArray[10].umbrella"
-                        >
-                          <option>1</option>
-                          <option>5</option>
-                          <option>10</option>
-                          <option>15</option>
-                          <option>20</option>
-                        </select>
+                          @input="handleInput(`umbrella`, 10, ratesArray[10].umbrella)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select class="form-select w-25" v-model="ratesArray[10].paye">
-                          <option>1</option>
-                          <option>5</option>
-                          <option>10</option>
-                          <option>15</option>
-                          <option>20</option>
-                        </select>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[10].paye"
+                          @input="handleInput(`paye`, 10, ratesArray[10].paye)"
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                   </div>
@@ -1908,14 +2294,13 @@
                         >
                           <option value="Hourly">Hourly</option>
                           <option value="Monthly">Monthly</option>
-                          <option value="Yearly">Yearly</option>
                         </select>
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Client Rate</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[11].client_rate"
                           :disabled="ratesArray[11].holiday_split_rate"
@@ -1925,13 +2310,23 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[11].client_rate"
+                          :disabled="ratesArray[11].holiday_split_rate"
+                          @input="
+                            handleInput(`clientRate`, 11, ratesArray[11].client_rate)
+                          "
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Private Limited</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[11].private_limited"
                           :disabled="ratesArray[11].holiday_split_rate"
@@ -1941,13 +2336,27 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[11].private_limited"
+                          :disabled="ratesArray[11].holiday_split_rate"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              11,
+                              ratesArray[11].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                     <div class="col-4 d-flex gap-2">
                       <div class="col-4">
                         <label class="form-label">Self Employed</label>
-
+                        <!-- 
                         <select
                           v-model="ratesArray[11].self_employed"
                           :disabled="ratesArray[11].holiday_split_rate"
@@ -1958,12 +2367,22 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[11].self_employed"
+                          :disabled="ratesArray[11].holiday_split_rate"
+                          @input="
+                            handleInput(`selfEmployee`, 11, ratesArray[11].self_employed)
+                          "
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[11].umbrella"
                           :disabled="ratesArray[11].holiday_split_rate"
@@ -1973,12 +2392,20 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[11].umbrella"
+                          :disabled="ratesArray[11].holiday_split_rate"
+                          @input="handleInput(`umbrella`, 11, ratesArray[11].umbrella)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[11].paye"
                           :disabled="ratesArray[11].holiday_split_rate"
@@ -1988,7 +2415,15 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[11].paye"
+                          :disabled="ratesArray[11].holiday_split_rate"
+                          @input="handleInput(`paye`, 11, ratesArray[11].paye)"
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                   </div>
@@ -2077,79 +2512,76 @@
                         >
                           <option value="Hourly">Hourly</option>
                           <option value="Monthly">Monthly</option>
-                          <option value="Yearly">Yearly</option>
                         </select>
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Client Rate</label>
 
-                        <select
-                          class="form-select w-25"
+                        <input
+                          type="text"
+                          class="form-control w-100"
                           v-model="ratesArray[12].client_rate"
-                        >
-                          <option>1</option>
-                          <option>5</option>
-                          <option>10</option>
-                          <option>15</option>
-                          <option>20</option>
-                        </select>
+                          @input="
+                            handleInput(`clientRate`, 12, ratesArray[12].client_rate)
+                          "
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Private Limited</label>
 
-                        <select
-                          class="form-select w-25"
+                        <input
+                          type="text"
+                          class="form-control w-100"
                           v-model="ratesArray[12].private_limited"
-                        >
-                          <option>1</option>
-                          <option>5</option>
-                          <option>10</option>
-                          <option>15</option>
-                          <option>20</option>
-                        </select>
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              12,
+                              ratesArray[12].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                     <div class="col-4 d-flex gap-2">
                       <div class="col-4">
                         <label class="form-label">Self Employed</label>
 
-                        <select
+                        <input
+                          type="text"
+                          class="form-control w-100"
                           v-model="ratesArray[12].self_employed"
-                          class="form-select w-25"
-                        >
-                          <option>1</option>
-                          <option>5</option>
-                          <option>10</option>
-                          <option>15</option>
-                          <option>20</option>
-                        </select>
+                          @input="
+                            handleInput(`selfEmployee`, 12, ratesArray[12].self_employed)
+                          "
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select
-                          class="form-select w-25"
+                        <input
+                          type="text"
+                          class="form-control w-100"
                           v-model="ratesArray[12].umbrella"
-                        >
-                          <option>1</option>
-                          <option>5</option>
-                          <option>10</option>
-                          <option>15</option>
-                          <option>20</option>
-                        </select>
+                          @input="handleInput(`umbrella`, 12, ratesArray[12].umbrella)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select class="form-select w-25" v-model="ratesArray[12].paye">
-                          <option>1</option>
-                          <option>5</option>
-                          <option>10</option>
-                          <option>15</option>
-                          <option>20</option>
-                        </select>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[12].paye"
+                          @input="handleInput(`paye`, 12, ratesArray[12].paye)"
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                   </div>
@@ -2226,14 +2658,13 @@
                         >
                           <option value="Hourly">Hourly</option>
                           <option value="Monthly">Monthly</option>
-                          <option value="Yearly">Yearly</option>
                         </select>
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Client Rate</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[13].client_rate"
                           :disabled="ratesArray[13].holiday_split_rate"
@@ -2243,13 +2674,23 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[13].client_rate"
+                          :disabled="ratesArray[13].holiday_split_rate"
+                          @input="
+                            handleInput(`clientRate`, 13, ratesArray[13].client_rate)
+                          "
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Private Limited</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[13].private_limited"
                           :disabled="ratesArray[13].holiday_split_rate"
@@ -2259,14 +2700,28 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[13].private_limited"
+                          :disabled="ratesArray[13].holiday_split_rate"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              13,
+                              ratesArray[13].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                     <div class="col-4 d-flex gap-2">
                       <div class="col-4">
                         <label class="form-label">Self Employed</label>
 
-                        <select
+                        <!-- <select
                           v-model="ratesArray[13].self_employed"
                           :disabled="ratesArray[13].holiday_split_rate"
                           class="form-select w-25"
@@ -2276,12 +2731,22 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[13].self_employed"
+                          :disabled="ratesArray[13].holiday_split_rate"
+                          @input="
+                            handleInput(`selfEmployee`, 13, ratesArray[13].self_employed)
+                          "
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[13].umbrella"
                           :disabled="ratesArray[13].holiday_split_rate"
@@ -2291,12 +2756,20 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[13].umbrella"
+                          :disabled="ratesArray[13].holiday_split_rate"
+                          @input="handleInput(`umbrella`, 13, ratesArray[13].umbrella)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="ratesArray[13].paye"
                           :disabled="ratesArray[13].holiday_split_rate"
@@ -2306,7 +2779,15 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[13].paye"
+                          :disabled="ratesArray[13].holiday_split_rate"
+                          @input="handleInput(`paye`, 13, ratesArray[13].paye)"
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                   </div>
@@ -2426,6 +2907,21 @@ export default {
     },
   },
   methods: {
+    handleInput(field, index, value) {
+      const filteredValue = value.replace(/[^0-9]/g, "");
+
+      if (field === "clientRate") {
+        this.ratesArray[index].client_rate = filteredValue;
+      } else if (field === "privateLimited") {
+        this.ratesArray[index].private_limited = filteredValue;
+      } else if (field === "selfEmployee") {
+        this.ratesArray[index].self_employed = filteredValue;
+      } else if (field === "umbrella") {
+        this.ratesArray[index].umbrella = filteredValue;
+      } else if (field === "paye") {
+        this.ratesArray[index].paye = filteredValue;
+      }
+    },
     formatTime(hour) {
       if (typeof hour !== "number" || hour < 0 || hour >= 24) {
         return "Invalid Time";
@@ -2723,6 +3219,9 @@ select {
   padding: 10px !important;
   border-radius: 4px;
   border: 0px;
+}
+.form-control {
+  padding: 0.6rem 0.75rem;
 }
 .modal-body {
   border-radius: 5px;

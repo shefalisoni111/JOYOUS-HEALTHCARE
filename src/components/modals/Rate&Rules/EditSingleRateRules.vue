@@ -184,14 +184,13 @@
                         >
                           <option value="Hourly">Hourly</option>
                           <option value="Monthly">Monthly</option>
-                          <option value="Yearly">Yearly</option>
                         </select>
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Client Rate</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="fetchRateRulesData.client_rate"
                         >
@@ -200,13 +199,22 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="fetchRateRulesData.client_rate"
+                          @input="
+                            handleInput(`clientRate`, fetchRateRulesData.client_rate)
+                          "
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Private Limited</label>
 
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="fetchRateRulesData.private_limited"
                         >
@@ -215,14 +223,26 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="fetchRateRulesData.private_limited"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              fetchRateRulesData.private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                     <div class="col-4 d-flex gap-2">
                       <div class="col-4">
                         <label class="form-label">Self Employed</label>
 
-                        <select
+                        <!-- <select
                           v-model="fetchRateRulesData.self_employed"
                           class="form-select w-25"
                         >
@@ -231,12 +251,21 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="fetchRateRulesData.self_employed"
+                          @input="
+                            handleInput(`selfEmployee`, fetchRateRulesData.self_employed)
+                          "
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">Umbrella</label>
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="fetchRateRulesData.umbrella"
                         >
@@ -245,12 +274,19 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="fetchRateRulesData.umbrella"
+                          @input="handleInput(`umbrella`, fetchRateRulesData.umbrella)"
+                          maxlength="3"
+                        />
                       </div>
 
                       <div class="col-4">
                         <label class="form-label">PAYE</label>
-                        <select
+                        <!-- <select
                           class="form-select w-25"
                           v-model="fetchRateRulesData.paye"
                         >
@@ -259,7 +295,14 @@
                           <option>10</option>
                           <option>15</option>
                           <option>20</option>
-                        </select>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="fetchRateRulesData.paye"
+                          @input="handleInput(`paye`, fetchRateRulesData.paye)"
+                          maxlength="3"
+                        />
                       </div>
                     </div>
                   </div>
@@ -404,6 +447,21 @@ export default {
     },
   },
   methods: {
+    handleInput(field, value) {
+      const filteredValue = value.replace(/[^0-9]/g, "");
+
+      if (field === "clientRate") {
+        this.fetchRateRulesData.client_rate = filteredValue;
+      } else if (field === "privateLimited") {
+        this.fetchRateRulesData.private_limited = filteredValue;
+      } else if (field === "selfEmployee") {
+        this.fetchRateRulesData.self_employed = filteredValue;
+      } else if (field === "umbrella") {
+        this.fetchRateRulesData.umbrella = filteredValue;
+      } else if (field === "paye") {
+        this.fetchRateRulesData.paye = filteredValue;
+      }
+    },
     async onSiteSelect() {
       const selectedSiteId = this.site_id;
       await this.getTimeShift(selectedSiteId);
@@ -739,6 +797,10 @@ select {
   padding: 10px !important;
   border-radius: 4px;
   border: 0px;
+}
+.form-control {
+  background-color: #fff;
+  padding: 0.6rem 0.75rem;
 }
 .modal-body {
   border-radius: 5px;
