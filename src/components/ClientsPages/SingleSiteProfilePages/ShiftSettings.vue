@@ -149,17 +149,19 @@ export default {
 
     convertTimeFormat(dateTimeString) {
       const date = new Date(dateTimeString);
-      let hours = date.getUTCHours();
+
+      if (isNaN(date.getTime())) {
+        return "Invalid date";
+      }
+
+      const hours = date.getUTCHours();
       const minutes = date.getUTCMinutes();
+
       const amPm = hours >= 12 ? "PM" : "AM";
 
-      if (hours > 12 && hours < 24) {
-        return `${String(hours).padStart(2, "0")}:00 PM`;
-      } else {
-        hours = hours === 0 ? 12 : hours;
-      }
-      const formattedHours = String(hours).padStart(2, "0");
-      const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+      const formattedHours = hours % 12 || 12;
+      const formattedMinutes = String(minutes).padStart(2, "0");
+
       return `${formattedHours}:${formattedMinutes} ${amPm}`;
     },
     setShiftIdToUpdate(shiftId) {

@@ -20,7 +20,7 @@
                 </div>
                 <div class="col-12 mt-1">
                   <input
-                    type="date"
+                    type="text"
                     class="form-control"
                     v-model="fetchCustomSheetData.shift_date"
                   />
@@ -177,16 +177,16 @@
             >
               Cancel
             </button>
-            <button
+            <!-- <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               v-on:click="updateCustomTimeSheetMethod()"
               data-bs-dismiss="modal"
             >
               Save
-            </button>
+            </button> -->
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
-              v-on:click="approved_hourMethod()"
+              v-on:click="saveAndApprove()"
               :disabled="isSaveDisabled"
               data-bs-dismiss="modal"
             >
@@ -250,6 +250,13 @@ export default {
     },
   },
   methods: {
+    async saveAndApprove() {
+      // Call the update method and wait for it to complete
+      await this.updateCustomTimeSheetMethod();
+
+      // After updating, call the approve method
+      await this.approved_hourMethod();
+    },
     handleInput(field, value) {
       const filteredValue = value.replace(/[^0-9]/g, "");
       this.validationClientRate =
@@ -294,13 +301,38 @@ export default {
       }
       try {
         const response = await axios.get(`${VITE_API_URL}/custom_timesheets/${id}`);
+        const customSheets = response.data.custom_sheets;
+
+        // Update fields individually
         this.fetchCustomSheetData = {
           ...this.fetchCustomSheetData,
-          ...response.data.custom_sheets,
-          custom_image: response.data.custom_sheets.paper_timesheet,
+          id: customSheets.id,
+          code: customSheets.code,
+          name: customSheets.name,
+          site: customSheets.site,
+          job: customSheets.job,
+          client: customSheets.client,
+          shift_date: customSheets.shift_date,
+          start_time: customSheets.start_time, // Set a default time
+          end_time: customSheets.end_time, // Set a default time
+          break: customSheets.break,
+          total_hours: customSheets.total_hours,
+          client_rate: customSheets.client_rate,
+          total_cost: customSheets.total_cost,
+          candidate_id: customSheets.candidate_id,
+          status: customSheets.status,
+          booking_id: customSheets.booking_id,
+          shift_name: customSheets.shift_name,
+          client_pay_amount: customSheets.client_pay_amount,
+          staff_rate: customSheets.staff_rate,
+          staff_pay_amount: customSheets.staff_pay_amount,
+          notes: customSheets.notes,
+          approved_hour: customSheets.approved_hour,
+          custom_image: customSheets.paper_timesheet,
         };
       } catch (error) {}
     },
+
     async updateCustomTimeSheetMethod() {
       try {
         const formData = new FormData();
@@ -317,6 +349,10 @@ export default {
         formData.append(
           "custom_timesheet[client_rate]",
           this.fetchCustomSheetData.client_rate
+        );
+        formData.append(
+          "custom_timesheet[client_rate]",
+          this.fetchCustomSheetData.staff_rate
         );
         formData.append(
           "custom_timesheet[approved_hour]",
@@ -355,13 +391,7 @@ export default {
     async approved_hourMethod() {
       try {
         const response = await axios.put(
-          `${VITE_API_URL}/approved_and_unapproved_timesheet_to_web/${this.fetchCustomSheetData.id}`,
-
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
+          `${VITE_API_URL}/approved_and_unapproved_timesheet_to_web/${this.fetchCustomSheetData.id}`
         );
         this.$emit("CustomTimeSheetData-updated");
         const message = "Custom TimeSheet Approved successfully";
