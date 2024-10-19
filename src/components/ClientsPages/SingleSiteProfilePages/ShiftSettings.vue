@@ -106,14 +106,12 @@ export default {
   components: { SuccessAlert },
   methods: {
     formatTime(hour) {
-      if (hour < 12) {
+      if (hour === 0) {
+        return "12:00 AM";
+      } else if (hour < 12) {
         return `${String(hour).padStart(2, "0")}:00 AM`;
       } else if (hour === 12) {
-        return `${String(hour).padStart(2, "0")}:00 PM`;
-      } else if (hour === 24) {
-        return `00:00`;
-      } else if (hour > 12 && hour < 24) {
-        return `${String(hour).padStart(2, "0")}:00 PM`;
+        return "12:00 PM";
       } else {
         return `${String(hour - 12).padStart(2, "0")}:00 PM`;
       }

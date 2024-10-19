@@ -886,6 +886,7 @@ export default {
         this.validationStaffRequired &&
         this.validationDateType
       ) {
+        console.log(this.end_date);
         const data = {
           site_id: this.site_id,
           job_id: this.job_id,
