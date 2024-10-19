@@ -206,11 +206,12 @@
                                 data-bs-whatever="@mdo"
                                 @click="openSignedView(data.id)"
                               >
-                                <i class="bi bi-eye"></i>
-                              </button>
+                                <i class="bi bi-eye"></i></button
+                              >&nbsp;
                               <button
                                 type="button"
                                 class="btn btn-outline-success text-nowrap text-nowrap"
+                                @click="ApproveMethod(data.id)"
                               >
                                 Approve
                               </button>
@@ -302,11 +303,12 @@
                                 data-bs-whatever="@mdo"
                                 @click="openSignedView(data.id)"
                               >
-                                <i class="bi bi-eye"></i>
-                              </button>
+                                <i class="bi bi-eye"></i></button
+                              >&nbsp;
                               <button
                                 type="button"
                                 class="btn btn-outline-success text-nowrap text-nowrap"
+                                @click="ApproveMethod(data.id)"
                               >
                                 Approve
                               </button>
@@ -407,12 +409,13 @@
     <SignedTimesheetViewVue :id="selectedSignedTimesheetId" />
 
     <loader :isLoading="isLoading"></loader>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 <script>
 import axios from "axios";
 import Navbar from "../Navbar.vue";
-
+import SuccessAlert from "../Alerts/SuccessAlert.vue";
 import SignedTimesheetViewVue from "../modals/TimeSheet/SignedTimesheetView.vue";
 import Loader from "../Loader/Loader.vue";
 
@@ -451,7 +454,7 @@ export default {
       errorMessageFilter: "",
     };
   },
-  components: { Navbar, SignedTimesheetViewVue, Loader },
+  components: { Navbar, SignedTimesheetViewVue, Loader, SuccessAlert },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -527,6 +530,21 @@ export default {
     },
   },
   methods: {
+    async ApproveMethod(id) {
+      try {
+        const response = await axios.put(
+          `${VITE_API_URL}/approved_and_unapproved_timesheet_to_web/${id}`
+        );
+
+        if (response.status === 200 && response.data.message) {
+          const message = response.data.message;
+          this.$refs.successAlert.showSuccess(message);
+        }
+      } catch (error) {
+        // Handle the error if needed
+        // console.error("Error approving timesheet:", error);
+      }
+    },
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
 

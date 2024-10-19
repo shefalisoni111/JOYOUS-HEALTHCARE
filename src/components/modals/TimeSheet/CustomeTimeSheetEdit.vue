@@ -96,11 +96,29 @@
                     type="number"
                     class="form-control w-25"
                     v-model="fetchCustomSheetData.client_rate"
-                    @input="validateClientRate"
-                    @keydown.prevent
+                    @input="handleInput('client_rate', client_rate)"
                   />
                   <span
                     v-if="!validationClientRate && fetchCustomSheetData.client_rate <= 0"
+                    class="text-danger"
+                  >
+                    Client Rate must be a positive number
+                  </span>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="col-12">
+                  <label class="form-label">Staff Rate</label>
+                </div>
+                <div class="col-12 mt-1">
+                  <input
+                    type="number"
+                    class="form-control w-25"
+                    v-model="fetchCustomSheetData.staff_rate"
+                    @input="handleInput('staff_rate', staff_rate)"
+                  />
+                  <span
+                    v-if="!validationClientRate && fetchCustomSheetData.staff_rate <= 0"
                     class="text-danger"
                   >
                     Client Rate must be a positive number
@@ -167,9 +185,10 @@
               Save
             </button>
             <button
-              v-if="fetchCustomSheetData.approved_hour === false"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               v-on:click="approved_hourMethod()"
+              :disabled="isSaveDisabled"
+              data-bs-dismiss="modal"
             >
               Approve
             </button>
@@ -196,6 +215,7 @@ export default {
         name: "",
         business_unit: "",
         job: "",
+        staff_rate: "",
         paper_timesheet: "",
         approved_hour: "",
         start_time: "",
@@ -218,18 +238,26 @@ export default {
   },
   components: { SuccessAlert },
   computed: {
-    // isSaveDisabled() {
-    //   return (
-    //     this.fetchCustomSheetData.client_rate === null ||
-    //     this.fetchCustomSheetData.client_rate <= 0 ||
-    //     !this.fetchCustomSheetData.paper_timesheet
-    //   );
-    // },
+    isSaveDisabled() {
+      return (
+        this.fetchCustomSheetData.client_rate === null ||
+        this.fetchCustomSheetData.client_rate <= 0 ||
+        !this.fetchCustomSheetData.paper_timesheet
+      );
+    },
     fullCustomImageUrl() {
       return `${VITE_API_URL}${this.fetchCustomSheetData.custom_image}`;
     },
   },
   methods: {
+    handleInput(field, value) {
+      const filteredValue = value.replace(/[^0-9]/g, "");
+      this.validationClientRate =
+        filteredValue.length > 0 && /^[0-9]+$/.test(filteredValue);
+
+      this.validationStaffRate =
+        filteredValue.length > 0 && /^[0-9]+$/.test(filteredValue);
+    },
     handleFileUpload(event) {
       const file = event.target.files[0];
       if (file) {
@@ -327,7 +355,7 @@ export default {
     async approved_hourMethod() {
       try {
         const response = await axios.put(
-          `${VITE_API_URL}/approved_timesheet_hours/${this.fetchCustomSheetData.id}`,
+          `${VITE_API_URL}/approved_and_unapproved_timesheet_to_web/${this.fetchCustomSheetData.id}`,
 
           {
             headers: {

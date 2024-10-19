@@ -623,8 +623,7 @@ export default {
         filteredValue.length > 0 && /^[0-9]+$/.test(filteredValue);
       this.validationStaffRate =
         filteredValue.length > 0 && /^[0-9]+$/.test(filteredValue);
-      this.validationUmbrella =
-        filteredValue.length > 0 && /^[0-9]+$/.test(filteredValue);
+
       if (this.site_id) {
         this.validateRate(field, filteredValue);
       } else {
@@ -704,7 +703,7 @@ export default {
       } else if (hour < 12) {
         return `${String(hour).padStart(2, "0")}:00 AM`;
       } else if (hour === 12) {
-        return "12:00 PM";
+        return "12:00 AM";
       } else {
         return `${String(hour - 12).padStart(2, "0")}:00 PM`;
       }
@@ -992,16 +991,14 @@ export default {
         this.fetchRatesData = response.data.rates;
         console.log(this.fetchRatesData);
 
-        // Assuming the response returns rates as an array, update the rate fields accordingly
         if (this.fetchRatesData.length > 0) {
-          const rates = this.fetchRatesData[0]; // Get the first rate entry
+          const rates = this.fetchRatesData[0];
           this.client_rate = rates.client_rate;
           this.staff_rate = rates.staff_rate;
           this.umbrella = rates.umbrella_rate;
           this.paye = rates.paye_rate;
           this.private_limited = rates.private_limited_rate;
         } else {
-          // Handle case where no rates are returned
           this.client_rate = "";
           this.staff_rate = "";
           this.umbrella = "";
