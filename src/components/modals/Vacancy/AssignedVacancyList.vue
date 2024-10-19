@@ -15,13 +15,13 @@
           <div class="modal-body mx-3 overflow-x-auto">
             <div class="row g-3 align-items-center">
               <ul class="list-unstyled d-lg-flex gap-3 mb-0 publish-ul d-sm-grid">
-                <li>Code:{{ vacancyDetails.ref_code }}</li>
-                <li>Site:{{ vacancyDetails.business_unit }}</li>
-                <li>Job: {{ vacancyDetails.job_title }}</li>
-                <li v-for="(date, index) in vacancyDetails.dates" :key="index">
+                <li>Code:{{ vacancyDetails?.ref_code }}</li>
+                <li>Site:{{ vacancyDetails?.business_unit }}</li>
+                <li>Job: {{ vacancyDetails?.job_title }}</li>
+                <li v-for="(date, index) in vacancyDetails?.dates" :key="index">
                   Date: {{ date }}
                 </li>
-                <li>Time: {{ vacancyDetails.shift }}</li>
+                <li>Time: {{ vacancyDetails?.shift }}</li>
                 <li>Space left: 1</li>
               </ul>
             </div>
