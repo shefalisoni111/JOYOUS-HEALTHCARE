@@ -35,9 +35,9 @@
                         {{ option.client_name }}
                       </option>
                     </select>
-                    <span v-if="!validationSelectedClient" class="text-danger"
+                    <!-- <span v-if="!validationSelectedClient" class="text-danger"
                       >Client Required</span
-                    >
+                    > -->
                   </div>
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
@@ -60,9 +60,9 @@
                         {{ option.site_name }}
                       </option>
                     </select>
-                    <span v-if="!validationSelectedBusinessUnit" class="text-danger"
+                    <!-- <span v-if="!validationSelectedBusinessUnit" class="text-danger"
                       >Site Required</span
-                    >
+                    > -->
                   </div>
                 </div>
 
@@ -81,9 +81,9 @@
                         {{ option.name }}
                       </option>
                     </select>
-                    <span v-if="!validationSelectedOptionText" class="text-danger"
+                    <!-- <span v-if="!validationSelectedOptionText" class="text-danger"
                       >Position Required</span
-                    >
+                    > -->
                   </div>
                 </div>
 
@@ -130,9 +130,9 @@
                       @change="addDate"
                       style="padding-right: 1px"
                     />
-                    <span v-if="!validationDateType" class="text-danger"
+                    <!-- <span v-if="!validationDateType" class="text-danger"
                       >Please choose a date from today onwards!</span
-                    >
+                    > -->
                     <div v-if="dates.length > 0" class="mt-2">
                       <span
                         v-for="(date, index) in dates"
@@ -169,9 +169,9 @@
                           {{ option.shift_name.replace(/_/g, " ") }}
                         </option>
                       </select>
-                      <span v-if="!validationShift" class="text-danger"
+                      <!-- <span v-if="!validationShift" class="text-danger"
                         >Shift Required</span
-                      >
+                      > -->
                     </div>
                   </div>
                 </div>
@@ -221,6 +221,7 @@
                           :value="shift.end_time"
                           :disabled="shift.id !== site_shift_id"
                           style="display: none"
+                          @change="updateEndDate"
                         >
                           {{ shift.end_time }}
                         </option>
@@ -405,9 +406,9 @@
                       v-model="notes"
                       @input="clearError"
                     />
-                    <span v-if="!validationNotesText" class="text-danger"
+                    <!-- <span v-if="!validationNotesText" class="text-danger"
                       >Notes Required</span
-                    >
+                    > -->
                   </div>
                 </div>
               </form>
@@ -468,7 +469,7 @@ export default {
       break: null,
       hasInteracted: false,
       client_rate: null,
-
+      end_date: "",
       staff_rate: null,
       umbrella: null,
       paye: null,
@@ -485,8 +486,10 @@ export default {
       shiftsTime: [],
       notes: "",
       staff_required: "",
+      selectedClientId: null,
       isValidForm: false,
       selectedDate: null,
+      selectedSiteId: null,
     };
   },
   components: { SuccessAlert, NotSuccessAlertVue },
@@ -593,6 +596,9 @@ export default {
     isFormValid: function (newVal) {
       this.isValidForm = newVal;
     },
+    end_time(newValue) {
+      this.updateEndDate();
+    },
   },
   methods: {
     formatRate(rate) {
@@ -693,14 +699,12 @@ export default {
       }
     },
     formatTime(hour) {
-      if (hour < 12) {
+      if (hour === 0) {
+        return "12:00 AM";
+      } else if (hour < 12) {
         return `${String(hour).padStart(2, "0")}:00 AM`;
       } else if (hour === 12) {
-        return `${String(hour).padStart(2, "0")}:00 PM`;
-      } else if (hour === 24) {
-        return `00:00`;
-      } else if (hour > 12 && hour < 24) {
-        return `${String(hour).padStart(2, "0")}:00 PM`;
+        return "12:00 PM";
       } else {
         return `${String(hour - 12).padStart(2, "0")}:00 PM`;
       }
@@ -734,33 +738,41 @@ export default {
       return formattedTime.trim();
     },
 
-    onClientSelect() {
-      const selectedClientId = this.client_id;
-
-      this.getJobTitleMethod(selectedClientId);
-      this.getSiteAccordingClientMethod(selectedClientId);
-      this.getClientAccordingRatePayFetchMethod(
-        this.client_id,
-        this.site_id,
-        this.job_id
-      );
+    async onClientSelect() {
+      this.selectedClientId = this.client_id;
+      await this.getSiteAccordingClientMethod();
+      await this.getJobTitleMethod();
+      // this.getSiteAccordingClientMethod(selectedClientId);
+      // this.getClientAccordingRatePayFetchMethod(
+      //   this.client_id,
+      //   this.site_id,
+      //   this.job_id
+      // );
     },
     async onSiteSelect() {
-      const selectedSiteId = this.site_id;
+      this.selectedSiteId = this.site_id;
+      await this.getTimeShift(this.selectedSiteId);
       // const siteShiftId = await this.getTimeShift(selectedSiteId);
-      this.getTimeShift(selectedSiteId);
-      this.getClientAccordingRatePayFetchMethod(
-        this.client_id,
-        selectedSiteId,
-        this.job_id
-      );
+      // this.getTimeShift(this.selectedSiteId);
+      // this.getClientAccordingRatePayFetchMethod(
+      //   this.client_id,
+      //   selectedSiteId,
+      //   this.job_id
+      // );
     },
-    onJobSelect() {
-      this.getClientAccordingRatePayFetchMethod(
-        this.client_id,
-        this.site_id,
-        this.job_id
-      );
+    async onJobSelect() {
+      // this.getClientAccordingRatePayFetchMethod(
+      //   this.client_id,
+      //   this.site_id,
+      //   this.job_id
+      // );
+      if (this.site_id) {
+        await this.getClientAccordingRatePayFetchMethod(
+          this.client_id,
+          this.site_id,
+          this.job_id
+        );
+      }
     },
     validateStaffRequired() {
       if (this.staff_required <= 0) {
@@ -824,6 +836,38 @@ export default {
       this.dates.splice(index, 1);
       this.clearError();
     },
+    updateEndDate() {
+      const endHour = this.parseTimeToHour(this.end_time);
+
+      if (endHour >= 12) {
+        const currentDate = new Date(this.dates[0].split("/").reverse().join("-"));
+        currentDate.setDate(currentDate.getDate() + 1);
+        this.end_date = this.formatDate(currentDate);
+      } else {
+        this.end_date = this.dates[0];
+      }
+    },
+
+    parseTimeToHour(time) {
+      const [hour, period] = time.split(" ");
+      let hourNumber = parseInt(hour.split(":")[0]);
+
+      if (period === "PM" && hourNumber !== 12) {
+        hourNumber += 12;
+      } else if (period === "AM" && hourNumber === 12) {
+        hourNumber = 0;
+      }
+
+      return hourNumber;
+    },
+
+    formatDate(date) {
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    },
+
     async addVacancyMethod() {
       this.validationSelectedOptionText = this.validationSelectedFormate(this.job_id);
       this.validationSelectedBusinessUnit = this.ValidationBusinessUnit(this.site_id);
@@ -846,6 +890,7 @@ export default {
           site_id: this.site_id,
           job_id: this.job_id,
           dates: this.dates,
+          end_date: this.end_date,
           site_shift_id: this.site_shift_id,
           staff_required: this.staff_required,
           notes: this.notes,
@@ -874,6 +919,7 @@ export default {
           if (response.status === 201) {
             this.$emit("addVacancy");
             this.clearFields();
+            this.removeDate();
             const message = "Successful Shift added";
             this.$refs.successAlert.showSuccess(message);
           } else {
@@ -900,12 +946,12 @@ export default {
     },
 
     async getJobTitleMethod() {
-      if (!this.client_id) {
+      if (!this.selectedClientId) {
         return;
       }
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/job_title_for_client/${this.client_id}`
+          `${VITE_API_URL}/job_title_for_client/${this.selectedClientId}`
         );
         this.options = response.data.data;
       } catch (error) {
@@ -1014,11 +1060,13 @@ export default {
     },
 
     async getTimeShift() {
-      if (!this.site_id) {
+      if (!this.selectedSiteId) {
         return;
       }
       try {
-        const response = await axios.get(`${VITE_API_URL}site_shift/${this.site_id}`);
+        const response = await axios.get(
+          `${VITE_API_URL}site_shift/${this.selectedSiteId}`
+        );
         this.shiftsTime =
           response.data.site_shift_data.map((shift) => ({
             ...shift,
@@ -1105,6 +1153,7 @@ export default {
       this.paye = "";
       this.private_limited = "";
       this.hasInteracted = false;
+      this.clearError();
     },
   },
   async beforeRouteEnter(to, from, next) {

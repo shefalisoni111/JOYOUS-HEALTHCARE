@@ -435,7 +435,7 @@ export default {
     },
     isFormValid() {
       const today = new Date();
-      return this.fetchVacancy.dates.every((date) => new Date(date) >= today);
+      return this.fetchVacancy.dates.every((date) => new Date(date) > today);
     },
     isValidDate() {
       if (this.fetchVacancy.dates.length === 0) {
@@ -451,7 +451,7 @@ export default {
     isFormValid() {
       const today = new Date();
       return this.fetchVacancy.dates.every(
-        (date) => new Date(this.formatDate(date)) >= today
+        (date) => new Date(this.formatDate(date)) > today
       );
     },
   },
@@ -500,14 +500,12 @@ export default {
       }
     },
     formatTime(hour) {
-      if (hour < 12) {
+      if (hour === 0) {
+        return "12:00 AM";
+      } else if (hour < 12) {
         return `${String(hour).padStart(2, "0")}:00 AM`;
       } else if (hour === 12) {
-        return `${String(hour).padStart(2, "0")}:00 PM`;
-      } else if (hour === 24) {
-        return `00:00`;
-      } else if (hour > 12 && hour < 24) {
-        return `${String(hour).padStart(2, "0")}:00 PM`;
+        return "12:00 PM";
       } else {
         return `${String(hour - 12).padStart(2, "0")}:00 PM`;
       }
@@ -541,8 +539,12 @@ export default {
 
     isDateValid(date) {
       const today = new Date();
-      const selectedDate = new Date(this.formatDate(date));
-      return selectedDate >= today;
+      today.setHours(0, 0, 0, 0);
+
+      const [day, month, year] = date.split("-");
+      const formattedDate = new Date(`${year}-${month}-${day}`);
+
+      return formattedDate >= today;
     },
     removeDate(index) {
       // this.fetchVacancy.dates.splice(index, 1);
