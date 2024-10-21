@@ -58,13 +58,13 @@
         <div></div>
 
         <select v-model="selectedFilter" @change="filterData">
-          <option value="">Status</option>
+          <option value="" disabled>Status</option>
           <option value="active_client">Active</option>
           <option value="inactive_client">In-Active</option>
         </select>
 
         <select v-model="selectedClient" @change="filterData">
-          <option value="">Client</option>
+          <option value="" disabled>Select Client</option>
           <option
             v-for="option in clientData"
             :key="option.id"
@@ -75,7 +75,7 @@
         </select>
 
         <select v-model="selectedJobTitle" @change="filterData">
-          <option value="">Jobs</option>
+          <option value="" disabled>Select Job</option>
           <option v-for="option in options" :key="option.id" :value="option.id">
             {{ option.name }}
           </option>
@@ -450,12 +450,24 @@ export default {
     },
     async filterData() {
       const params = {
-        "client[activated]": this.selectedFilter === "active_client" ? true : false,
-        "client[client_name]": this.selectedClient,
-        "client[job_ids]": this.selectedJobTitle,
-        search: this.localSearchQuery,
         page: 1,
       };
+
+      if (this.selectedFilter) {
+        params["client[activated]"] = this.selectedFilter === "" ? true : false;
+      }
+
+      if (this.selectedClient) {
+        params["client[client_name]"] = this.selectedClient;
+      }
+
+      if (this.selectedJobTitle) {
+        params["client[job_ids]"] = this.selectedJobTitle;
+      }
+
+      if (this.localSearchQuery) {
+        params.search = this.localSearchQuery;
+      }
 
       try {
         const response = await axios.get(`${VITE_API_URL}/client_filter`, {
@@ -463,7 +475,7 @@ export default {
         });
         this.getClientDetail = response.data.data;
       } catch (error) {
-        console.error("Error fetching filtered data:", error);
+        // console.error("Error fetching filtered data:", error);
       }
     },
 
