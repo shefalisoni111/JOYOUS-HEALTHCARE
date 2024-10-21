@@ -210,10 +210,16 @@
                               >&nbsp;
                               <button
                                 type="button"
-                                class="btn btn-outline-success text-nowrap text-nowrap"
+                                :class="[
+                                  'btn',
+                                  data.status === 'Approved'
+                                    ? 'btn-danger'
+                                    : 'btn-outline-success',
+                                  'text-nowrap',
+                                ]"
                                 @click="ApproveMethod(data.id)"
                               >
-                                Approve
+                                {{ data.status === "Approved" ? "Unapprove" : "Approve" }}
                               </button>
                             </td>
                           </tr>
@@ -307,10 +313,16 @@
                               >&nbsp;
                               <button
                                 type="button"
-                                class="btn btn-outline-success text-nowrap text-nowrap"
+                                :class="[
+                                  'btn',
+                                  data.status === 'Approved'
+                                    ? 'btn-danger'
+                                    : 'btn-outline-success',
+                                  'text-nowrap',
+                                ]"
                                 @click="ApproveMethod(data.id)"
                               >
-                                Approve
+                                {{ data.status === "Approved" ? "Unapprove" : "Approve" }}
                               </button>
                             </td>
                           </tr>

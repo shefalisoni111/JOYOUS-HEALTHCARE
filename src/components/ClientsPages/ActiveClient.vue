@@ -287,15 +287,15 @@ export default {
       this.isLoading = true;
       try {
         const params = {
-          filter_value: "true",
           page: this.currentPage,
           per_page: this.itemsPerPage,
+          "client[activated]": true,
         };
-        const response = await axios.get(`${VITE_API_URL}/clients`, { params });
+        const response = await axios.get(`${VITE_API_URL}/client_filter`, { params });
         this.getClientDetail = response.data.data;
-        this.currentPage = response.data.current_page;
-        this.totalPages = response.data.total_pages;
-        this.totalCount = response.data.clients_count;
+        // this.currentPage = response.data.current_page;
+        // this.totalPages = response.data.total_pages;
+        // this.totalCount = response.data.clients_count;
       } catch (error) {
         // console.error("Error fetching client data:", error);
       } finally {

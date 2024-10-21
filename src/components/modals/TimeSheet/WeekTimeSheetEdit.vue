@@ -128,12 +128,21 @@
                           </label>
                         </div>
                         <div class="col-12">
+                          <input
+                            v-if="apiResponse"
+                            type="text"
+                            class="form-control"
+                            v-model="fetchCustomTimeShetData.start_time"
+                          />
+
                           <select
+                            v-else
                             id="selectCustomStartTime"
                             class="form-control"
                             v-model="fetchCustomTimeShetData.start_time"
                             @change="validateStartTime"
                             style="width: 240px"
+                            disabled
                           >
                             <option
                               v-for="hour in 24"
@@ -170,6 +179,7 @@
                             v-model="fetchCustomTimeShetData.end_time"
                             @change="validateEndTime"
                             style="width: 240px"
+                            disabled
                           >
                             <option
                               v-for="hour in 24"
@@ -206,6 +216,7 @@
                             v-model="fetchCustomTimeShetData.break"
                             @change="validateBreak"
                             style="width: 240px"
+                            disabled
                           >
                             <option
                               v-for="minute in [15, 30, 45, 60, 75, 90]"
@@ -233,6 +244,7 @@
                             v-model="fetchCustomTimeShetData.total_hours"
                             @change="validateStartTime"
                             style="width: 240px"
+                            disabled
                           >
                             <option v-for="hour in 24" :key="hour" :value="hour">
                               {{ hour }} hour{{ hour > 1 ? "s" : "" }}
@@ -322,24 +334,26 @@
             >
               Cancel
             </button>
-            <button
-              v-show="showSaveButton"
+            <!-- <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="updateCandidateMethod()"
             >
               Save
-            </button>
-            <!-- <button
+            </button> -->
+            <button
+              v-show="!showSaveButton"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="approved_TimesheetRevertMethod()"
             >
-              Approve & Save
-            </button> -->
+              Approve
+            </button>
             <button
+              v-show="showSaveButton"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
+              @click.prevent="handleApproveAndSave"
             >
               Approve & Save
             </button>
@@ -374,6 +388,7 @@ export default {
         notes: "",
         status: "",
       },
+      apiResponse: "",
       showSaveButton: true,
       isPublished: false,
       originalData: null,
@@ -392,6 +407,22 @@ export default {
     },
   },
   methods: {
+    validateStartTime() {
+      const hour = this.fetchCustomTimeShetData.start_hour;
+      const minute = this.fetchCustomTimeShetData.start_minute;
+      this.fetchCustomTimeShetData.start_time = `${String(hour).padStart(
+        2,
+        "0"
+      )}:${String(minute).padStart(2, "0")}`;
+    },
+    async handleApproveAndSave() {
+      try {
+        await this.updateCandidateMethod();
+        await this.approved_TimesheetRevertMethod();
+      } catch (error) {
+        // console.error("Error during approval process:", error);
+      }
+    },
     async approved_TimesheetRevertMethod() {
       try {
         const response = await axios.put(
@@ -456,6 +487,12 @@ export default {
         const response = await axios.get(
           `${VITE_API_URL}/custom_timesheets/${this.vacancyId}`
         );
+        if (response.data.custom_sheets && response.data.custom_sheets.start_time) {
+          this.apiResponse = response.data.custom_sheets.start_time;
+          this.fetchCustomTimeShetData.start_time = this.apiResponse;
+        } else {
+          this.apiResponse = "";
+        }
         this.fetchCustomTimeShetData = {
           ...this.fetchCustomTimeShetData,
           ...response.data.custom_sheets,
@@ -468,6 +505,7 @@ export default {
             const fallbackResponse = await axios.get(
               `${VITE_API_URL}/sign_timesheets/${this.vacancyId}`
             );
+            this.apiResponse = "";
             this.fetchCustomTimeShetData = {
               ...this.fetchCustomTimeShetData,
               ...fallbackResponse.data.sign_timesheets,

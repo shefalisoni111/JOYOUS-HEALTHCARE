@@ -185,7 +185,7 @@ export default {
       itemsPerPage: 10,
       totalCount: 0,
       isLoading: false,
-      itemsPerPage: 8,
+
       options: [],
       client: {
         job_name: ["Job1", "Job2", "Job3", "Job4", "Job5", "Job6"],
@@ -204,15 +204,13 @@ export default {
   components: { EditClientModal, AddClients, SuccessAlert, Loader },
   computed: {
     paginateCandidates() {
-      // if (!this.getClientDetail) return [];
-      // const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      // const endIndex = startIndex + this.itemsPerPage;
-      // return this.getClientDetail.slice(startIndex, endIndex);
-      return this.getClientDetail;
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.getClientDetail.slice(startIndex, endIndex);
     },
-    // totalRecordsOnPage() {
-    //   return this.paginateCandidates.length;
-    // },
+    totalRecordsOnPage() {
+      return this.paginateCandidates.length;
+    },
     portalAccessText() {
       return this.client.activated ? "Active" : "No Account";
     },
@@ -275,14 +273,14 @@ export default {
     async createdClient() {
       try {
         const params = {
-          filter_value: "false",
+          "client[activated]": false,
           per_page: this.itemsPerPage,
         };
-        const response = await axios.get(`${VITE_API_URL}/clients`, { params });
+        const response = await axios.get(`${VITE_API_URL}/client_filter`, { params });
         this.getClientDetail = response.data.data;
-        this.currentPage = response.data.current_page;
-        this.totalPages = response.data.total_pages;
-        this.totalCount = response.data.clients_count;
+        // this.currentPage = response.data.current_page;
+        // this.totalPages = response.data.total_pages;
+        // this.totalCount = response.data.clients_count;
       } catch (error) {
         // console.error("Error fetching client data:", error);
       }

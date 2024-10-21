@@ -40,10 +40,14 @@
             </label>
           </li>
           <li><hr class="dropdown-divider" /></li>
-          <li><a class="dropdown-item" href="#" @click="exportOneFile">Export</a></li>
+          <li>
+            <a class="dropdown-item" href="#" @click="exportOneFile('selected')"
+              >Export</a
+            >
+          </li>
           <li><hr class="dropdown-divider" /></li>
           <li>
-            <a class="dropdown-item" href="#" @click="exportAll">Export All</a>
+            <a class="dropdown-item" href="#" @click="exportOneFile('all')">Export All</a>
           </li>
         </ul>
       </button>
@@ -53,31 +57,40 @@
       <div class="d-flex gap-2 mt-3">
         <div></div>
 
-        <select v-model="selectedFilter" @change="filterData($event.target.value)">
+        <select v-model="selectedFilter" @change="filterData">
           <option value="">Status</option>
           <option value="active_client">Active</option>
           <option value="inactive_client">In-Active</option>
         </select>
-        <select id="selectClients" @change="filterDataFilter">
+
+        <select v-model="selectedClient" @change="filterData">
           <option value="">Client</option>
           <option
             v-for="option in clientData"
             :key="option.id"
             :value="option.client_name"
-            aria-placeholder="Select Client"
           >
             {{ option.client_name }}
           </option>
         </select>
 
-        <select id="selectJobTitle" @change="filterDataFilter">
+        <select v-model="selectedJobTitle" @change="filterData">
           <option value="">Jobs</option>
-          <option v-for="option in options" :key="option.id" :value="option.name">
+          <option v-for="option in options" :key="option.id" :value="option.id">
             {{ option.name }}
           </option>
         </select>
-
-        <select id="selectClientsAddress" @change="filterDataFilter">
+        <div class="searchbox position-relative">
+          <input
+            class="form-control"
+            type="search"
+            placeholder="Search clients..."
+            aria-label="Search"
+            v-model="localSearchQuery"
+            @input="filterData"
+          />
+        </div>
+        <!-- <select id="selectClientsAddress" @change="filterData">
           <option value="">Address</option>
           <option
             v-for="option in clientData"
@@ -87,7 +100,7 @@
           >
             {{ option.address }}
           </option>
-        </select>
+        </select> -->
       </div>
     </div>
     <div class="table-wrapper mt-3">
@@ -291,6 +304,7 @@ export default {
     return {
       getClientDetail: [],
       selectedClientID: null,
+
       isActive: true,
       searchQuery: "",
       currentPage: 1,
@@ -303,14 +317,18 @@ export default {
       checkedClient: reactive({}),
       errorMessageFilter: "",
       selectedFilter: "",
+      selectedClient: "",
+      selectedJobTitle: "",
       clientData: [],
       options: [],
+      clientId: [],
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,
       client: {
         job_name: ["Job1", "Job2", "Job3", "Job4", "Job5", "Job6"],
       },
+      localSearchQuery: this.searchQuery,
       colors: [
         "lightblue",
         "lightgreen",
@@ -322,6 +340,12 @@ export default {
     };
   },
 
+  // props: {
+  //   showFiltersValue: {
+  //     type: String,
+  //     required: false,
+  //   },
+  // },
   components: { EditClientModal, AddClients, SuccessAlert, Loader, ConfirmationAlert },
   computed: {
     paginateCandidates() {
@@ -410,130 +434,39 @@ export default {
       this.showFilters = !this.showFilters;
     },
     async getClientMethod() {
-      const pagesToFetch = [1, 2, 3];
-      let allClientData = [];
-
       try {
-        const responses = await Promise.all(
-          pagesToFetch.map((page) =>
-            axios.get(`${VITE_API_URL}/clients`, {
-              params: {
-                page: page,
-              },
-            })
-          )
-        );
-
-        responses.forEach((response) => {
-          allClientData = allClientData.concat(response.data.data);
-        });
-
-        this.clientData = allClientData;
+        const response = await axios.get(`${VITE_API_URL}/get_client_id_name`);
+        this.clientData = response.data.data;
       } catch (error) {
-        if (error.response && error.response.status === 404) {
-          // Handle 404 error
-          // console.error('Error fetching client data:', error.response.data.message);
+        if (error.response) {
+          if (error.response.status === 404) {
+          } else {
+            // console.error("Error fetching client data:", error.response.data.message);
+          }
         } else {
-          // console.error('Error fetching client data:', error);
+          // console.error("Error fetching client data:", error);
         }
       }
     },
-    async filterDataFilter(event) {
-      const selectElement = event.target;
-      const selectedValue = selectElement.value;
-      const selectId = selectElement.id;
-
-      // Determine the field type based on the select element's id
-      let fieldType = "";
-      if (selectId === "selectClients") {
-        fieldType = "client_name";
-      } else if (selectId === "selectJobTitle") {
-        fieldType = "job";
-      } else if (selectId === "selectClientsAddress") {
-        fieldType = "address";
-      }
-
-      const filters = {
-        field_type: fieldType,
-        value: selectedValue,
+    async filterData() {
+      const params = {
+        "client[activated]": this.selectedFilter === "active_client" ? true : false,
+        "client[client_name]": this.selectedClient,
+        "client[job_ids]": this.selectedJobTitle,
+        search: this.localSearchQuery,
+        page: 1,
       };
 
-      await this.makeFilterAPICalls(filters.field_type, filters.value);
-    },
-    async makeFilterAPICalls(field_type, value) {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/clients_filter`, {
-          params: {
-            field_type: field_type,
-            value: value,
-          },
-        });
-
-        this.getClientDetail = response.data.data || [];
-
-        if (this.getClientDetail.length === 0) {
-          this.errorMessageFilter = "Report Not Found!";
-        } else {
-          this.errorMessageFilter = "";
-        }
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
-          const errorMessages = error.response.data.error;
-          if (errorMessages === "No records found for the given filter") {
-            // alert("No records found for the given filter");
-            errorMessages === "No records found for the given filter";
-          } else {
-            alert(errorMessages);
-          }
-        } else {
-          console.error("An error occurred:", error.message);
-        }
-      }
-    },
-    filterData(value) {
-      this.selectedFilter = value;
-
-      let client_type = "activated";
-      let client_value;
-
-      if (value === "active_client") {
-        client_value = "true";
-      } else if (value === "inactive_client") {
-        client_value = "false";
-      } else if (value === "all") {
-        client_value = "true";
-      } else {
-        client_value = "false";
-      }
-
-      this.makeFilterAPICall(client_type, client_value);
-    },
-    async makeFilterAPICall(client_type, client_value) {
       try {
         const response = await axios.get(`${VITE_API_URL}/client_filter`, {
-          params: {
-            client_type: client_type,
-            client_value: client_value,
-          },
+          params,
         });
-
         this.getClientDetail = response.data.data;
-        this.totalPages = response.data.total_pages;
-        this.currentPage = response.data.current_page;
-        this.totalCount = response.data.clients_count;
       } catch (error) {
-        if (error.response && error.response.status === 404) {
-          const errorMessages = error.response.data.error;
-          if (errorMessages === "No records found for the given filter") {
-            // alert("No records found for the given filter");
-            errorMessages === "No records found for the given filter";
-          } else {
-            alert(errorMessages);
-          }
-        } else {
-        }
+        console.error("Error fetching filtered data:", error);
       }
     },
+
     getColor(index) {
       return this.colors[index % this.colors.length];
     },
@@ -575,33 +508,40 @@ export default {
       }
       // console.log("Updated clientId array:", this.clientId);
     },
-    exportOneFile() {
-      if (!this.clientId || this.clientId.length === 0) {
-        alert("Please select at least one Client.");
-        return;
+    exportOneFile(exportType) {
+      let queryParams;
+
+      if (exportType === "all") {
+        queryParams = {
+          client_ids: [],
+          format: "csv",
+        };
+      } else {
+        if (!this.clientId || this.clientId.length === 0) {
+          alert("Please select at least one Client.");
+          return;
+        }
+
+        queryParams = {
+          client_ids: `[${this.clientId.join(",")}]`,
+          format: "csv",
+        };
       }
 
-      const promises = this.clientId.map((clientId) => {
-        const queryParams = `client_ids=${clientId}`;
-        return axios.get(`${VITE_API_URL}/selected_export?${queryParams}`, {
+      return axios
+        .get(`${VITE_API_URL}/client_filter`, {
+          params: queryParams,
           headers: {
             Accept: "text/csv",
           },
           responseType: "blob",
-        });
-      });
-
-      Promise.all(promises)
-        .then((responses) => {
-          const csvDataArray = responses.map((response) =>
-            this.blobToText(response.data)
-          );
-          Promise.all(csvDataArray)
-            .then((dataArray) => {
-              const combinedCsvData = this.combineCsvData(dataArray);
+        })
+        .then((response) => {
+          this.blobToText(response.data)
+            .then((csvData) => {
               const filename = "ClientData.csv";
-              this.downloadOneCSV(combinedCsvData, filename);
-              const message = "Export file download Successfully";
+              this.downloadOneCSV(csvData, filename);
+              const message = "Export file downloaded successfully";
               this.$refs.successAlert.showSuccess(message);
             })
             .catch((error) => {
@@ -615,9 +555,7 @@ export default {
           this.clientId = [];
           this.checkedClient = {};
         });
-      this.clientId = [];
     },
-
     blobToText(blob) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -740,22 +678,26 @@ export default {
     async createdClient() {
       this.isLoading = true;
       try {
-        const response = await axios.get(`${VITE_API_URL}/clients`, {
+        const response = await axios.get(`${VITE_API_URL}/client_filter`, {
           params: {
             page: this.currentPage,
             per_page: this.itemsPerPage,
           },
         });
         this.getClientDetail = response.data.data;
-        this.currentPage = response.data.current_page;
-        this.totalPages = response.data.total_pages;
-        this.totalCount = response.data.clients_count;
+        // this.currentPage = response.data.current_page;
+        // this.totalPages = response.data.total_pages;
+        // this.totalCount = response.data.clients_count;
       } catch (error) {
         // console.error('Error fetching client data:', error);
       } finally {
         this.isLoading = false;
       }
     },
+  },
+  created() {
+    // Initialize filter data on component creation
+    // this.filterData();
   },
   async mounted() {
     await this.createdClient();

@@ -54,14 +54,17 @@
                         class="d-flex align-items-center gap-2 justify-content-between"
                       >
                         <div class="searchbox position-relative">
-                          <form @submit.prevent="search">
+                          <form
+                            @submit.prevent="search"
+                            v-if="activeTab === 1 || activeTab === 2"
+                          >
                             <input
                               class="form-control mr-sm-2"
                               type="search"
                               placeholder="Search..."
                               aria-label="Search"
                               v-model="searchQuery"
-                              @input="debounceSearch"
+                              @input="filterData"
                             />
                           </form>
                         </div>
@@ -111,7 +114,7 @@
                       </div>
                     </div>
                   </div>
-                  <div
+                  <!-- <div
                     class="d-flex gap-2 mb-3 justify-content-between"
                     v-if="showFilters"
                   >
@@ -127,20 +130,14 @@
                         <option value="inactive_client">In-Active</option>
                       </select>
 
-                      <!-- <select v-model="selectedCandidate" id="selectCandidateList">
-                                      <option value="">All Staff</option>
-                                      <option
-                                        v-for="option in candidateLists"
-                                        :key="option.id"
-                                        :value="`${option.client_name} ${option.last_name}`"
-                                      >
-                                        {{ option.client_name }} {{ option.last_name }}
-                                      </option>
-                                    </select> -->
+                   
                     </div>
-                  </div>
+                  </div> -->
                   <div v-if="!searchQuery">
-                    <component :is="activeComponent"></component>
+                    <component
+                      :is="activeComponent"
+                      :showFiltersValue="showFiltersValue"
+                    ></component>
                   </div>
 
                   <div v-if="searchQuery">
@@ -302,7 +299,8 @@ export default {
       getClientDetail: [],
       selectedClientID: null,
       isActive: true,
-      searchQuery: null,
+      searchQuery: "",
+
       debounceTimeout: null,
       searchResults: [],
       showFilters: false,
@@ -320,7 +318,7 @@ export default {
       totalPages: 1,
       itemsPerPage: 10,
       totalCount: 0,
-      // showFilters: false,
+      showFiltersValue: false,
       selectedClientStatus: "",
       colors: [
         "lightblue",
@@ -353,42 +351,42 @@ export default {
     toggleFilters() {
       this.showFilters = !this.showFilters;
     },
-    filterData(value) {
-      let client_type = "activated";
-      let client_value;
+    // filterData(value) {
+    //   let client_type = "activated";
+    //   let client_value;
 
-      if (value === "all") {
-        client_value = null;
-      } else {
-        client_value = value === "true" ? "true" : "false";
-      }
+    //   if (value === "all") {
+    //     client_value = null;
+    //   } else {
+    //     client_value = value === "true" ? "true" : "false";
+    //   }
 
-      this.makeFilterAPICall(client_type, client_value);
-    },
-    async makeFilterAPICall(client_type, client_value) {
-      try {
-        const params = { client_type };
-        if (client_value !== null) {
-          params.client_value = client_value;
-        }
+    //   this.makeFilterAPICall(client_type, client_value);
+    // },
+    // async makeFilterAPICall(client_type, client_value) {
+    //   try {
+    //     const params = { client_type };
+    //     if (client_value !== null) {
+    //       params.client_value = client_value;
+    //     }
 
-        const response = await axios.get(`${VITE_API_URL}/client_filter`, { params });
+    //     const response = await axios.get(`${VITE_API_URL}/client_filter`, { params });
 
-        this.getClientDetail = response.data.data;
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
-          const errorMessages = error.response.data.error;
-          if (errorMessages === "No records found for the given filter") {
-            // alert("No records found for the given filter");
-            errorMessages === "No records found for the given filter";
-          } else {
-            alert(errorMessages);
-          }
-        } else {
-          // Handle other errors
-        }
-      }
-    },
+    //     this.getClientDetail = response.data.data;
+    //   } catch (error) {
+    //     if (error.response && error.response.status === 404) {
+    //       const errorMessages = error.response.data.error;
+    //       if (errorMessages === "No records found for the given filter") {
+    //         // alert("No records found for the given filter");
+    //         errorMessages === "No records found for the given filter";
+    //       } else {
+    //         alert(errorMessages);
+    //       }
+    //     } else {
+    //       // Handle other errors
+    //     }
+    //   }
+    // },
     handleAddClient() {
       // this.$refs.addClient.getPositionMethod();
       // this.$refs.addClient.createdClient();
@@ -431,44 +429,72 @@ export default {
 
       this.debounceTimeout = setTimeout(() => {
         this.search();
-      }, 100);
+      }, 300);
     },
     //search api start
     async search() {
+      await this.filterData();
+    },
+    async filterData() {
+      this.searchResults = [];
+      this.errorMessage = "";
+      const modifiedSearchQuery = this.searchQuery.replace(/ /g, "_");
+      const params = {
+        search: modifiedSearchQuery,
+      };
+
       try {
-        this.searchResults = [];
-        const modifiedSearchQuery = this.searchQuery.replace(/ /g, "_");
-        let apiUrl = "";
-
-        if (this.activeTab === 0) {
-          apiUrl = `${VITE_API_URL}/search_api`;
-        } else if (this.activeTab === 1) {
-          apiUrl = `${VITE_API_URL}/active_search_api`;
-        } else if (this.activeTab === 2) {
-          apiUrl = `${VITE_API_URL}/inactive_search_api`;
-        } else {
-          return;
-        }
-
-        const response = await axiosInstance.get(apiUrl, {
-          params: {
-            query: modifiedSearchQuery,
-          },
+        const response = await axiosInstance.get(`${VITE_API_URL}/client_filter`, {
+          params,
         });
-
+        this.getClientDetail = response.data.data;
         this.searchResults = response.data.data;
-        // if (this.searchResults.length > 0) {
-        //   this.errorMessage = "No candidates found for the specified criteria";
-        // }
-      } catch (error) {
-        if (
-          (error.response && error.response.status === 404) ||
-          error.response.status === 400
-        ) {
+        if (this.searchResults.length > 0) {
           this.errorMessage = "No candidates found for the specified criteria";
         }
+      } catch (error) {
+        // console.error("Error fetching filtered data:", error);
       }
     },
+    changePage(page) {
+      this.currentPage = page;
+      this.filterData();
+    },
+    // async search() {
+    //   try {
+    //     this.searchResults = [];
+    //     const modifiedSearchQuery = this.searchQuery.replace(/ /g, "_");
+    //     let apiUrl = "";
+
+    //     if (this.activeTab === 0) {
+    //       apiUrl = `${VITE_API_URL}/search_api`;
+    //     } else if (this.activeTab === 1) {
+    //       apiUrl = `${VITE_API_URL}/active_search_api`;
+    //     } else if (this.activeTab === 2) {
+    //       apiUrl = `${VITE_API_URL}/inactive_search_api`;
+    //     } else {
+    //       return;
+    //     }
+
+    //     const response = await axiosInstance.get(apiUrl, {
+    //       params: {
+    //         query: modifiedSearchQuery,
+    //       },
+    //     });
+
+    //     this.searchResults = response.data.data;
+    //     // if (this.searchResults.length > 0) {
+    //     //   this.errorMessage = "No candidates found for the specified criteria";
+    //     // }
+    //   } catch (error) {
+    //     if (
+    //       (error.response && error.response.status === 404) ||
+    //       error.response.status === 400
+    //     ) {
+    //       this.errorMessage = "No candidates found for the specified criteria";
+    //     }
+    //   }
+    // },
 
     setActiveTabFromRoute() {
       const currentRouteName = this.$route.name;
