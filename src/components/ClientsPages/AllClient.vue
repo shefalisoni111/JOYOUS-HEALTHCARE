@@ -57,10 +57,10 @@
       <div class="d-flex gap-2 mt-3">
         <div></div>
 
-        <select v-model="selectedFilter" @change="filterData">
+        <select v-model="selectedClientExport" @change="filterData">
           <option value="" disabled>Status</option>
-          <option value="active_client">Active</option>
-          <option value="inactive_client">In-Active</option>
+          <option value="true">Active</option>
+          <option value="false">In-Active</option>
         </select>
 
         <select v-model="selectedClient" @change="filterData">
@@ -317,6 +317,7 @@ export default {
       checkedClient: reactive({}),
       errorMessageFilter: "",
       selectedFilter: "",
+      selectedClientExport: "",
       selectedClient: "",
       selectedJobTitle: "",
       clientData: [],
@@ -453,8 +454,8 @@ export default {
         page: 1,
       };
 
-      if (this.selectedFilter) {
-        params["client[activated]"] = this.selectedFilter === "" ? true : false;
+      if (this.selectedClientExport) {
+        params["client[activated]"] = this.selectedClientExport;
       }
 
       if (this.selectedClient) {
@@ -521,23 +522,31 @@ export default {
       // console.log("Updated clientId array:", this.clientId);
     },
     exportOneFile(exportType) {
-      let queryParams;
+      let queryParams = {
+        format: "csv", // Always set format to csv
+      };
 
       if (exportType === "all") {
-        queryParams = {
-          client_ids: [],
-          format: "csv",
-        };
+        alert("Please select Client type");
+        // For exporting all clients
+        queryParams["client[activated]"] = this.selectedClientExport;
+        queryParams.client_ids = []; // No specific client IDs for "all"
       } else {
+        // For exporting specific clients
         if (!this.clientId || this.clientId.length === 0) {
           alert("Please select at least one Client.");
           return;
         }
 
-        queryParams = {
-          client_ids: `[${this.clientId.join(",")}]`,
-          format: "csv",
-        };
+        // Set selectedClientExport in params
+        queryParams["client[activated]"] = this.selectedClientExport;
+
+        // Handle single ID or multiple IDs for client_ids
+        if (this.clientId.length === 1) {
+          queryParams.client_ids = this.clientId[0]; // Single ID
+        } else {
+          queryParams.client_ids = [this.clientId.join(",")]; // Multiple IDs as a comma-separated string
+        }
       }
 
       return axios
