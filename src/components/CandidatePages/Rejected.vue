@@ -50,8 +50,14 @@
               title="Tooltip on top"
               v-on:click="confirmedReject(pending.id)"
             >
-              Reject
-            </button>
+              Reject</button
+            >&nbsp;&nbsp;
+            <router-link
+              class="btn btn-outline-success text-nowrap"
+              :to="{ name: 'Profile', params: { id: pending.id } }"
+            >
+              <i class="bi bi-eye"></i>
+            </router-link>
           </td>
         </tr>
       </tbody>
@@ -118,6 +124,7 @@
 import axios from "axios";
 import Loader from "../Loader/Loader.vue";
 import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
+import Swal from "sweetalert2";
 
 export default {
   name: "Rejected",
@@ -203,7 +210,26 @@ export default {
           const response = await axios.put(
             `${VITE_API_URL}/candidate/approve_candidate/${id}`
           );
+          if (response.data.error) {
+            Swal.fire({
+              title: "Error!",
+              text:
+                response.data.error === "Candidate not found!"
+                  ? "Staff has not uploaded the documents yet, Please upload it in the documents section."
+                  : response.data.error,
+              icon: "error",
+              confirmButtonColor: "rgb(255 112 8)",
+            });
+          } else {
+            await this.fetchPendingCandidates();
 
+            Swal.fire({
+              title: "Approved!",
+              text: "The candidate has been approved.",
+              icon: "success",
+              confirmButtonColor: "rgb(255 112 8)",
+            });
+          }
           this.fetchPendingCandidates();
         } catch (error) {
           // console.error("Error approving candidate:", error);
