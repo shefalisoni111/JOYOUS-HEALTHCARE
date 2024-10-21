@@ -523,29 +523,27 @@ export default {
     },
     exportOneFile(exportType) {
       let queryParams = {
-        format: "csv", // Always set format to csv
+        format: "csv",
       };
 
       if (exportType === "all") {
-        alert("Please select Client type");
-        // For exporting all clients
-        queryParams["client[activated]"] = this.selectedClientExport;
-        queryParams.client_ids = []; // No specific client IDs for "all"
+        if (this.selectedClientExport) {
+          queryParams["client[activated]"] = this.selectedClientExport;
+        }
+
+        queryParams.client_ids = [];
       } else {
-        // For exporting specific clients
         if (!this.clientId || this.clientId.length === 0) {
           alert("Please select at least one Client.");
           return;
         }
-
-        // Set selectedClientExport in params
-        queryParams["client[activated]"] = this.selectedClientExport;
-
-        // Handle single ID or multiple IDs for client_ids
-        if (this.clientId.length === 1) {
-          queryParams.client_ids = this.clientId[0]; // Single ID
+        if (this.selectedClientExport) {
+          queryParams["client[activated]"] = this.selectedClientExport;
+        }
+        if (this.clientId.length > 0) {
+          queryParams.client_ids = this.clientId;
         } else {
-          queryParams.client_ids = [this.clientId.join(",")]; // Multiple IDs as a comma-separated string
+          queryParams.client_ids = [];
         }
       }
 
