@@ -519,26 +519,34 @@ export default {
           this.clientId.splice(index, 1);
         }
       }
-      // console.log("Updated clientId array:", this.clientId);
     },
     exportOneFile(exportType) {
       let queryParams = {
         format: "csv",
       };
 
-      if (exportType === "all") {
-        if (this.selectedClientExport) {
-          queryParams["client[activated]"] = this.selectedClientExport;
-        }
+      if (this.selectedClientExport) {
+        queryParams["client[activated]"] = this.selectedClientExport;
+      }
 
+      if (this.selectedClient) {
+        queryParams["client[client_name]"] = this.selectedClient;
+      }
+
+      if (this.selectedJobTitle) {
+        queryParams["client[job_ids]"] = this.selectedJobTitle;
+      }
+
+      if (this.localSearchQuery) {
+        queryParams.search = this.localSearchQuery;
+      }
+
+      if (exportType === "all") {
         queryParams.client_ids = [];
       } else {
         if (!this.clientId || this.clientId.length === 0) {
           alert("Please select at least one Client.");
           return;
-        }
-        if (this.selectedClientExport) {
-          queryParams["client[activated]"] = this.selectedClientExport;
         }
         if (this.clientId.length > 0) {
           queryParams.client_ids = this.clientId;
@@ -563,18 +571,14 @@ export default {
               const message = "Export file downloaded successfully";
               this.$refs.successAlert.showSuccess(message);
             })
-            .catch((error) => {
-              // console.error("Error reading CSV data:", error);
-            });
+            .catch((error) => {});
         })
-        .catch((error) => {
-          // console.error("Error fetching CSV data:", error);
-        })
+        .catch((error) => {})
         .finally(() => {
           this.clientId = [];
-          this.checkedClient = {};
         });
     },
+
     blobToText(blob) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
