@@ -27,7 +27,7 @@
                       />
                       <img
                         v-else
-                        :src="profileImage"
+                        :src="displayedProfileImage"
                         width="150"
                         height="150"
                         @click.prevent
@@ -121,6 +121,7 @@
       </div>
     </div>
     <EditAdmin @admin-updated="handleAdminUpdated" />
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
@@ -128,6 +129,7 @@
 import axios from "axios";
 import Navbar from "../components/Navbar.vue";
 import EditAdmin from "../components/modals/Admin/EditAdmin.vue";
+import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
   name: "AdminProfile",
@@ -138,8 +140,12 @@ export default {
       profileImage: null,
     };
   },
-  components: { Navbar, EditAdmin },
-
+  components: { Navbar, EditAdmin, SuccessAlert },
+  computed: {
+    displayedProfileImage() {
+      return this.profileImage ? this.profileImage : "./profile.png";
+    },
+  },
   methods: {
     openFileInput() {
       this.$refs.profilePicInput.click();
@@ -147,44 +153,86 @@ export default {
     async handleFileChange(event) {
       const token = localStorage.getItem("token");
       const file = event.target.files[0];
+
       if (!file) {
-        // console.error("No file selected");
+        console.error("No file selected");
         return;
       }
+
       try {
         const formData = new FormData();
         formData.append("profile_photo", file);
+
         const response = await axios.put(
           `${VITE_API_URL}/merchant_upload_profile`,
           formData,
           {
             headers: {
-              Authorization: "bearer " + token,
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
             },
           }
         );
 
-        const imageUrl = `${VITE_API_URL}${response.data.data.profile_photo}`;
-        localStorage.setItem("profileImage", imageUrl);
-        this.profileImage = imageUrl;
-        // console.log(this.profileImage);
-        if (response.data.error) {
-          this.errorMessage = response.data.error;
-
-          this.profileImage = null;
+        if (response.data && response.data.data.profile_photo) {
+          const imageUrl = `${VITE_API_URL}${response.data.data.profile_photo}`;
+          localStorage.setItem("profileImage", imageUrl);
+          this.profileImage = imageUrl;
+          const message = "successfully Updated Profile.";
+          this.$refs.successAlert.showSuccess(message);
         } else {
-          if (response.data && response.data.data && response.data.data.profile_photo) {
-            this.profileImage = `${VITE_API_URL}${response.data.data.profile_photo}`;
-            this.errorMessage = null;
-          } else {
-            // console.error("Profile photo No found in response:", response.data);
-          }
+          // console.error(
+          //   "Upload succeeded but no profile photo found in the response:",
+          //   response.data
+          // );
         }
       } catch (error) {
         // console.error("Error uploading profile picture:", error);
-        // Handle error
+        // this.errorMessage = "Failed to upload profile image. Please try again.";
       }
     },
+
+    // async handleFileChange(event) {
+    //   const token = localStorage.getItem("token");
+    //   const file = event.target.files[0];
+    //   if (!file) {
+    //     // console.error("No file selected");
+    //     return;
+    //   }
+    //   try {
+    //     const formData = new FormData();
+    //     formData.append("profile_photo", file);
+    //     const response = await axios.put(
+    //       `${VITE_API_URL}/merchant_upload_profile`,
+    //       formData,
+    //       {
+    //         headers: {
+    //           Authorization: "bearer " + token,
+    //         },
+    //       }
+    //     );
+
+    //     const imageUrl = `${VITE_API_URL}${response.data.data.profile_photo}`;
+    //     localStorage.setItem("profileImage", imageUrl);
+    //     this.profileImage = imageUrl;
+    //     console.log(this.profileImage);
+    //     if (response.data.error) {
+    //       this.errorMessage = response.data.error;
+
+    //       this.profileImage = null;
+    //     } else {
+    //       if (response.data && response.data.data && response.data.data.profile_photo) {
+    //         this.profileImage = `${VITE_API_URL}${response.data.data.profile_photo}`;
+    //         this.errorMessage = null;
+    //       } else {
+    //         console.error("Profile photo No found in response:", response.data);
+    //       }
+    //     }
+    //   } catch (error) {
+    //     // console.error("Error uploading profile picture:", error);
+    //     // Handle error
+    //   }
+    // },
     handleAdminUpdated() {
       this.fetchAdminData();
     },

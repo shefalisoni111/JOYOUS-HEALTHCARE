@@ -50,7 +50,7 @@
             <div class="col-12">
               <div class="bg-white">
                 <div class="p-5 float-end">
-                  <button
+                  <!-- <button
                     type="button"
                     class="btn btn-outline-success text-nowrap text-nowrap"
                     data-bs-toggle="modal"
@@ -59,7 +59,7 @@
                     @click="editagencyId(data.id)"
                   >
                     <i class="bi bi-pencil"></i> Edit
-                  </button>
+                  </button> -->
                 </div>
                 <!-- <div class="col-5">
                   <div class="d-flex justify-content-between align-items-center px-4">
@@ -414,6 +414,7 @@
       :agencyId="selectedAgencyId || 0"
       @editAgency="getAgencyDataMethod"
     />
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 <script>
@@ -422,6 +423,7 @@ import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
 import EditAgencySetting from "../modals/AgencySetting/EditAgencySetting.vue";
 import Loader from "../Loader/Loader.vue";
+import SuccessAlert from "../Alerts/SuccessAlert.vue";
 
 export default {
   name: "AgencySetting",
@@ -440,6 +442,7 @@ export default {
     Sidebar,
     EditAgencySetting,
     Loader,
+    SuccessAlert,
   },
   computed: {
     completeImageUrl() {
@@ -481,6 +484,8 @@ export default {
           body: formData,
         })
           .then((response) => {
+            const message = "successfully Updated.";
+            this.$refs.successAlert.showSuccess(message);
             if (!response.ok) {
             }
             return response.json();
@@ -529,8 +534,9 @@ export default {
           body: formData,
         })
           .then((response) => {
-            if (!response.ok) {
-            }
+            const message = "successfully Updated.";
+            this.$refs.successAlert.showSuccess(message);
+
             return response.json();
           })
           .then((data) => {
@@ -577,6 +583,8 @@ export default {
           body: formData,
         })
           .then((response) => {
+            const message = "successfully Updated.";
+            this.$refs.successAlert.showSuccess(message);
             if (!response.ok) {
             }
             return response.json();

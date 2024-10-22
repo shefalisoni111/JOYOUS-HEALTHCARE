@@ -148,7 +148,7 @@ export default {
       );
     },
     async fetchAdminMethod() {
-      const merchantId = localStorage.getItem("m_unique");
+      const merchantId = localStorage.getItem("merchant_id");
       if (!merchantId) {
         return;
       }
