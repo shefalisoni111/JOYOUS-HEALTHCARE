@@ -366,7 +366,7 @@
                     {{ data.site ? data.site : "Null" }}
                   </td>
                   <td>{{ data.shift_name }}</td>
-                  <td class="position-relative">
+                  <td>
                     <div class="calendar-grid">
                       <div
                         v-for="day in selectedDateRow"
@@ -401,7 +401,7 @@
                           clickable: day !== '' && mergedTimesheetsArray !== null,
                           'disabled-edit': mergedTimesheetsArray === null,
                         }"
-                        class="d-flex justify-content-between gap-2"
+                        class="d-flex justify-content-between gap-2 position-relative"
                       >
                         <div
                           v-if="
@@ -453,16 +453,22 @@
                             </div>
                           </td>
                         </div>
+                        <span
+                          v-if="
+                            data.date
+                              ? formatDate(day) === formatDateFormate(data.date)
+                              : formatDate(day) === formatDateFormate(data.shift_date)
+                          "
+                          class="text-center btn btn-sm position-absolute status-btn"
+                          :class="
+                            data.status === 'Pending' ? 'btn-success' : 'btn-danger'
+                          "
+                          @click.prevent="ApproveMethod(data, $event)"
+                        >
+                          {{ data.status === "Pending" ? "Approve" : "Unapproved" }}
+                        </span>
                       </div>
                     </div>
-                    <span
-                      style="z-index: 1; left: 39px; top: 45px; font-size: 12px"
-                      class="text-center btn btn-sm position-absolute"
-                      :class="data.status === 'Pending' ? 'btn-success' : 'btn-danger'"
-                      @click.prevent="ApproveMethod(data, $event)"
-                    >
-                      {{ data.status === "Pending" ? "Approve" : "Unapproved" }}
-                    </span>
                   </td>
                   <!-- <td>{{ data.total_hours ? data.total_hours : "Null" }}</td> -->
                   <td>
@@ -1146,6 +1152,45 @@ td {
   cursor: pointer;
 }
 
+.status-btn {
+  z-index: 1;
+  left: 39px;
+  transform: translateY(19px);
+  font-size: 12px;
+  padding: 0px 7px;
+}
+@media (max-width: 1700px) {
+  .status-btn {
+    left: 35px;
+    transform: translateY(39px);
+  }
+}
+
+@media (max-width: 992px) {
+  .status-btn {
+    left: 30px;
+    transform: translateY(17px);
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 768px) {
+  .status-btn {
+    left: 25px;
+    transform: translateY(15px);
+    font-size: 10px;
+    padding: 0px 5px;
+  }
+}
+
+@media (max-width: 576px) {
+  .status-btn {
+    left: 20px;
+    transform: translateY(13px);
+    font-size: 9px;
+    padding: 0px 3px;
+  }
+}
 .day-header {
   font-weight: bold;
 }
@@ -1169,7 +1214,7 @@ td {
 .calendar-day {
   background-color: #eaeaea;
   transition: background-color 0.3s ease;
-  padding: 15px 7px;
+  padding: 14px 4px;
 }
 
 .calendar-day.clickable {
@@ -1218,9 +1263,9 @@ td {
   background: #fdce5e17 !important;
 }
 
-@media (max-width: 1120px) {
+@media (max-width: 1520px) {
   .candidateTable {
-    width: 1090px;
+    width: 1990px;
   }
   .wrapper-timeSheet {
     overflow-x: scroll;
