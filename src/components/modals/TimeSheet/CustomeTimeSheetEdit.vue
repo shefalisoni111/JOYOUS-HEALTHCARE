@@ -350,7 +350,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex gap-5 ms-2">
                       <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label">Client Rate</label>
@@ -423,7 +423,12 @@
                     <div class="col-12">
                       <label class="form-label">Paper TimeSheet</label>
                     </div>
-                    <div class="col-12 mt-1" v-if="fetchCustomSheetData.custom_image">
+                    <div
+                      class="col-12 mt-1"
+                      v-if="
+                        fetchCustomSheetData.status === 'Approved' && fullCustomImageUrl
+                      "
+                    >
                       <img
                         :src="fullCustomImageUrl"
                         alt="Current Paper TimeSheet"
@@ -509,6 +514,7 @@ export default {
         staff_rate: "",
         shift_name: "",
         paper_timesheet: "",
+        status: "",
         notes: "",
         start_time: "",
         end_time: "",
@@ -524,6 +530,7 @@ export default {
       validationPaperTimeSheet: true,
       businessUnit: [],
       originalData: null,
+      uploadedFile: null,
     };
   },
   props: {
@@ -570,7 +577,10 @@ export default {
       );
     },
     fullCustomImageUrl() {
-      return `${VITE_API_URL}${this.fetchCustomSheetData.custom_image}`;
+      // return this.fetchCustomSheetData.paper_timesheet
+      //   ? `${VITE_API_URL}${this.fetchCustomSheetData.paper_timesheet}`
+      //   : "";
+      console.log(`${VITE_API_URL}${this.fetchCustomSheetData.paper_timesheet}`);
     },
   },
   methods: {
@@ -610,12 +620,24 @@ export default {
     handleFileUpload(event) {
       const file = event.target.files[0];
       if (file) {
-        this.fetchCustomSheetData.paper_timesheet = file;
-        this.validatePaperTimeSheet();
+        // Check if the file is an image
+        if (file.type.startsWith("image/")) {
+          this.fetchCustomSheetData.paper_timesheet = file; // Store the file
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            this.fullCustomImageUrl = e.target.result; // For immediate preview
+          };
+          reader.readAsDataURL(file); // This allows for a preview if necessary
+        } else {
+          this.$refs.successAlert.showError("Please upload a valid image file."); // Handle invalid file types
+        }
+        this.validatePaperTimeSheet(); // Update your validation status if needed
+      } else {
+        this.fetchCustomSheetData.paper_timesheet = null; // Reset if no file is selected
       }
     },
     validatePaperTimeSheet() {
-      this.validationPaperTimeSheet = !!this.fetchCustomSheetData.paper_timesheet;
+      this.validationPaperTimeSheet = !this.fetchCustomSheetData.paper_timesheet;
     },
     formatTime(hour) {
       if (hour === 0 || hour === 24) {
@@ -675,6 +697,7 @@ export default {
             client_rate: customSheet.client_rate || "",
             staff_rate: customSheet.staff_rate || "",
             notes: customSheet.notes || "",
+            paper_timesheet: customSheet.paper_timesheet || "",
           };
 
           this.originalData = { ...this.fetchCustomSheetData };
@@ -711,20 +734,8 @@ export default {
           this.fetchCustomSheetData.staff_rate
         );
         formData.append("custom_timesheet[notes]", this.fetchCustomSheetData.notes);
-        formData.append(
-          "custom_timesheet[paper_timesheet]",
-          this.fetchCustomSheetData.paper_timesheet
-        );
-        // formData.append(
-        //   "custom_timesheet[approved_hour]",
-        //   this.fetchCustomSheetData.approved_hour
-        // );
-
-        if (this.fetchCustomSheetData.paper_timesheet instanceof File) {
-          formData.append(
-            "custom_timesheet[custom_image]",
-            this.fetchCustomSheetData.paper_timesheet
-          );
+        if (this.uploadedFile) {
+          formData.append("custom_timesheet[paper_timesheet]", this.uploadedFile);
         }
         const token = localStorage.getItem("token");
         const response = await axios.put(
@@ -803,6 +814,9 @@ label.form-label {
 }
 .modal-footer {
   border-top: 0px;
+}
+.form-control {
+  border: 1px solid #ced4da;
 }
 .btn-primary {
   border: none;
