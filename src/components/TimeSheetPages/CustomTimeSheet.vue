@@ -165,7 +165,7 @@
                             <!-- <th scope="col">Client Rate</th>
                             <th scope="col">Total Cost</th>
                             <th scope="col">Paper TimeSheet</th> -->
-                            <th scope="col">Approved - Status</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Action</th>
                           </tr>
                         </thead>
@@ -290,7 +290,7 @@
                             <!-- <th scope="col">Client Rate</th>
                             <th scope="col">Total Cost</th>
                             <th scope="col">Paper TimeSheet</th> -->
-                            <th scope="col">Approved - Status</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Action</th>
                           </tr>
                         </thead>

@@ -34,14 +34,14 @@
                       /> -->
                       <input
                         v-if="fetchCustomTimeShetData.candidate_name"
-                        class="form-control text-capitalize"
+                        class="form-control text-capitalize custom-disabled"
                         v-model="fetchCustomTimeShetData.candidate_name"
                         type="text"
                         readonly
                       />
                       <input
                         v-else
-                        class="form-control text-capitalize"
+                        class="form-control text-capitalize custom-disabled"
                         v-model="fetchCustomTimeShetData.name"
                         type="text"
                         readonly
@@ -51,7 +51,7 @@
                       <label class="form-label">Site</label>
                       <input
                         type="text"
-                        class="form-control"
+                        class="form-control custom-disabled"
                         v-model="fetchCustomTimeShetData.site"
                         aria-describedby="site"
                         readonly
@@ -63,7 +63,7 @@
                       <label class="form-label">Position</label>
                       <input
                         type="text"
-                        class="form-control"
+                        class="form-control custom-disabled"
                         v-model="fetchCustomTimeShetData.job"
                         aria-describedby="time"
                         readonly
@@ -73,14 +73,14 @@
                       <label class="form-label">Date</label>
                       <input
                         v-if="fetchCustomTimeShetData.shift_date"
-                        class="form-control text-capitalize"
+                        class="form-control text-capitalize custom-disabled"
                         v-model="fetchCustomTimeShetData.shift_date"
                         type="text"
                         readonly
                       />
                       <input
                         v-else
-                        class="form-control text-capitalize"
+                        class="form-control text-capitalize custom-disabled"
                         v-model="fetchCustomTimeShetData.date"
                         type="text"
                         readonly
@@ -99,7 +99,7 @@
                       <label class="form-label">Shift</label>
                       <input
                         type="text"
-                        class="form-control"
+                        class="form-control custom-disabled"
                         v-model="fetchCustomTimeShetData.shift_name"
                         aria-describedby="position"
                         readonly
@@ -131,7 +131,7 @@
                           <input
                             v-if="apiResponse"
                             type="text"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.start_time"
                             disabled
                           />
@@ -157,7 +157,7 @@
                           <input
                             v-if="apiResponse"
                             type="text"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.start_time"
                             disabled
                           />
@@ -165,7 +165,7 @@
                           <select
                             v-else
                             id="selectCustomStartTime"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.start_time"
                             @change="validateStartTime"
                             style="width: 240px"
@@ -203,7 +203,7 @@
                           <input
                             v-if="apiResponse_EndTime"
                             type="text"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.end_time"
                             disabled
                           />
@@ -245,7 +245,7 @@
                           <input
                             v-if="apiResponse_EndTime"
                             type="text"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.end_time"
                             disabled
                           />
@@ -253,7 +253,7 @@
                           <select
                             v-else
                             id="selectCustomStartTime"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.end_time"
                             @change="validateStartTime"
                             style="width: 240px"
@@ -323,7 +323,7 @@
                         <div class="col-12" v-else>
                           <select
                             id="selectShiftsBreak"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.break"
                             @change="validateBreak"
                             style="width: 240px"
@@ -351,7 +351,7 @@
                           /> -->
                           <select
                             id="selectCustomStartTime"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.total_hours"
                             @change="validateStartTime"
                             style="width: 240px"
@@ -372,15 +372,16 @@
                         <div class="col-12 mt-1" v-if="showSaveButton">
                           <input
                             type="text"
-                            class="form-control"
+                            class="form-control disabled"
                             v-model="fetchCustomTimeShetData.client_rate"
                             @input="validateNumber('client_rate')"
+                            disabled
                           />
                         </div>
                         <div class="col-12 mt-1" v-else>
                           <input
                             type="text"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.client_rate"
                             @input="validateNumber('client_rate')"
                             disabled
@@ -416,15 +417,16 @@
                         <div class="col-12 mt-1" v-if="showSaveButton">
                           <input
                             type="text"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.staff_rate"
                             @input="validateNumber('staff_rate')"
+                            disabled
                           />
                         </div>
                         <div class="col-12 mt-1" v-else>
                           <input
                             type="text"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.staff_rate"
                             @input="validateNumber('staff_rate')"
                             disabled
@@ -469,7 +471,7 @@
                     </div>
                     <div class="col-12 mt-1" v-else>
                       <textarea
-                        class="form-control"
+                        class="form-control custom-disabled"
                         v-model="fetchCustomTimeShetData.notes"
                         rows="3"
                         disabled
@@ -528,7 +530,6 @@
             </button> -->
             <button
               v-show="!showSaveButton"
-              :disabled="isSaveDisabled"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="approved_TimesheetRevertMethod()"
@@ -602,30 +603,13 @@ export default {
     },
     isSaveDisabled() {
       const {
-        shift_date,
-        name,
-        job,
-        staff_rate,
-        shift_name,
         notes,
         start_time,
         end_time,
-        client_rate,
+
         paper_timesheet,
       } = this.fetchCustomTimeShetData;
-      return (
-        !shift_date ||
-        !name ||
-        !job ||
-        !staff_rate ||
-        !shift_name ||
-        !notes ||
-        !start_time ||
-        !paper_timesheet ||
-        !end_time ||
-        !client_rate ||
-        client_rate <= 0
-      );
+      return !notes || !start_time || !paper_timesheet || !end_time;
     },
     fullCustomImageUrl() {
       return this.fetchCustomTimeShetData.paper_timesheet
@@ -910,5 +894,12 @@ select {
 }
 .form-control {
   background-color: #fff;
+}
+.custom-disabled {
+  cursor: not-allowed;
+}
+
+.custom-disabled:hover {
+  cursor: not-allowed;
 }
 </style>

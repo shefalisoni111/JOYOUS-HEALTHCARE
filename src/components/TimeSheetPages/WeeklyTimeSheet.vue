@@ -375,7 +375,8 @@
                           mergedTimesheetsArray &&
                           (data.date
                             ? formatDate(day) === formatDateFormate(data.date)
-                            : formatDate(day) === formatDateFormate(data.shift_date))
+                            : formatDate(day) === formatDateFormate(data.shift_date)) &&
+                          data.status !== 'Approved'
                             ? 'modal'
                             : ''
                         "
@@ -383,7 +384,8 @@
                           mergedTimesheetsArray &&
                           (data.date
                             ? formatDate(day) === formatDateFormate(data.date)
-                            : formatDate(day) === formatDateFormate(data.shift_date))
+                            : formatDate(day) === formatDateFormate(data.shift_date)) &&
+                          data.status !== 'Approved'
                             ? '#editWeeklyTs'
                             : ''
                         "
@@ -392,7 +394,8 @@
                           mergedTimesheetsArray &&
                           (data.date
                             ? formatDate(day) === formatDateFormate(data.date)
-                            : formatDate(day) === formatDateFormate(data.shift_date))
+                            : formatDate(day) === formatDateFormate(data.shift_date)) &&
+                          data.status !== 'Approved'
                             ? openModal(data, formatDate(day))
                             : null
                         "
@@ -401,72 +404,92 @@
                           clickable: day !== '' && mergedTimesheetsArray !== null,
                           'disabled-edit': mergedTimesheetsArray === null,
                         }"
-                        class="d-flex justify-content-between gap-2 position-relative"
+                        class="d-flex justify-content-between gap-2"
                       >
                         <div
                           v-if="
                             data.date
                               ? formatDate(day) === formatDateFormate(data.date)
-                              : formatDate(day) === formatDateFormate(data.shift_date)
+                              : formatDate(day) === formatDateFormate(data.shift_date) &&
+                                data.status !== 'Approved'
                           "
                           class="d-flex gap-2"
                         >
-                          <td>
-                            <div class="column">
-                              <div class="column-cell">
-                                {{
-                                  typeof data.start_time === "number"
-                                    ? data.start_time.toFixed(2)
-                                    : data.start_time === null
-                                    ? "0.00"
-                                    : data.start_time
-                                }}
+                          <div v-if="data.status !== 'Approved'">
+                            <td>
+                              <div class="column pe-2">
+                                <div class="column-cell">
+                                  {{
+                                    typeof data.start_time === "number"
+                                      ? data.start_time.toFixed(2)
+                                      : data.start_time === null
+                                      ? "0.00"
+                                      : data.start_time
+                                  }}
+                                </div>
                               </div>
-                            </div>
-                          </td>
+                            </td>
 
-                          <td>
-                            <div class="column">
-                              <div class="column-cell">
-                                {{
-                                  typeof data.end_time === "number"
-                                    ? data.end_time.toFixed(2)
-                                    : data.end_time === null
-                                    ? "0.00"
-                                    : data.end_time
-                                }}
+                            <td>
+                              <div class="column px-2">
+                                <div class="column-cell">
+                                  {{
+                                    typeof data.end_time === "number"
+                                      ? data.end_time.toFixed(2)
+                                      : data.end_time === null
+                                      ? "0.00"
+                                      : data.end_time
+                                  }}
+                                </div>
                               </div>
-                            </div>
-                          </td>
+                            </td>
 
-                          <td>
-                            <div class="column">
-                              <div class="column-cell">
-                                {{
-                                  typeof data.total_hours === "number"
-                                    ? data.total_hours.toFixed(2)
-                                    : data.total_hours === null
-                                    ? "0.00"
-                                    : data.total_hours
-                                }}
+                            <td>
+                              <div class="column">
+                                <div class="column-cell">
+                                  {{
+                                    typeof data.total_hours === "number"
+                                      ? data.total_hours.toFixed(2)
+                                      : data.total_hours === null
+                                      ? "0.00"
+                                      : data.total_hours
+                                  }}
+                                </div>
                               </div>
-                            </div>
-                          </td>
+                            </td>
+                          </div>
+                          <div v-else>
+                            <span
+                              v-if="
+                                data.date
+                                  ? formatDate(day) === formatDateFormate(data.date)
+                                  : formatDate(day) === formatDateFormate(data.shift_date)
+                              "
+                              class="text-center btn-success bg-success text-white p-2 position-relative"
+                              style="left: 34px"
+                            >
+                              {{ data.status }}
+
+                              <span
+                                class="btn btn-danger btn-sm position-absolute p-0"
+                                style="left: 17px; top: 28px"
+                                @click.prevent="ApproveMethod(data, $event)"
+                              >
+                                Revert
+                              </span>
+                            </span>
+                            <!-- <span
+                              
+                              class="text-center"
+                              :class="
+                                data.status === 'Approved' ? 'btn-danger' : 'btn-danger'
+                              "
+                              @click.prevent="ApproveMethod(data, $event)"
+                            >
+                              Revert
+                            </span> -->
+                          </div>
                         </div>
-                        <span
-                          v-if="
-                            data.date
-                              ? formatDate(day) === formatDateFormate(data.date)
-                              : formatDate(day) === formatDateFormate(data.shift_date)
-                          "
-                          class="text-center btn btn-sm position-absolute status-btn"
-                          :class="
-                            data.status === 'Pending' ? 'btn-success' : 'btn-danger'
-                          "
-                          @click.prevent="ApproveMethod(data, $event)"
-                        >
-                          {{ data.status === "Pending" ? "Approve" : "Pending" }}
-                        </span>
                       </div>
                     </div>
                   </td>
@@ -1123,6 +1146,11 @@ export default {
 #main {
   background-color: #fdce5e17;
   padding-top: 65px;
+}
+.disabled-edit {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: pointer;
 }
 .calendar-header {
   display: flex;

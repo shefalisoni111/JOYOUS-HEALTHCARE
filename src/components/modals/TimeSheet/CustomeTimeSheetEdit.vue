@@ -34,7 +34,7 @@
                       /> -->
 
                       <input
-                        class="form-control text-capitalize"
+                        class="form-control text-capitalize custom-disabled"
                         v-model="fetchCustomSheetData.name"
                         type="text"
                         readonly
@@ -44,7 +44,7 @@
                       <label class="form-label">Site</label>
                       <input
                         type="text"
-                        class="form-control"
+                        class="form-control custom-disabled"
                         v-model="fetchCustomSheetData.site"
                         aria-describedby="site"
                         readonly
@@ -56,7 +56,7 @@
                       <label class="form-label">Position</label>
                       <input
                         type="text"
-                        class="form-control"
+                        class="form-control custom-disabled"
                         v-model="fetchCustomSheetData.job"
                         aria-describedby="time"
                         readonly
@@ -66,7 +66,7 @@
                       <label class="form-label">Date</label>
 
                       <input
-                        class="form-control text-capitalize"
+                        class="form-control text-capitalize custom-disabled"
                         v-model="fetchCustomSheetData.shift_date"
                         type="text"
                         readonly
@@ -85,7 +85,7 @@
                       <label class="form-label">Shift</label>
                       <input
                         type="text"
-                        class="form-control"
+                        class="form-control custom-disabled"
                         v-model="fetchCustomSheetData.shift_name"
                         aria-describedby="position"
                         readonly
@@ -117,7 +117,7 @@
                           <input
                             v-if="apiResponse"
                             type="text"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomSheetData.start_time"
                             disabled
                           />
@@ -125,7 +125,7 @@
                           <select
                             v-else
                             id="selectCustomStartTime"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomSheetData.start_time"
                             @change="validateStartTime"
                             style="width: 240px"
@@ -143,7 +143,7 @@
                           <input
                             v-if="apiResponse"
                             type="text"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomSheetData.start_time"
                             disabled
                           />
@@ -151,7 +151,7 @@
                           <select
                             v-else
                             id="selectCustomStartTime"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomSheetData.start_time"
                             @change="validateStartTime"
                             style="width: 240px"
@@ -189,7 +189,7 @@
                           <input
                             v-if="apiResponse_EndTime"
                             type="text"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomSheetData.end_time"
                             disabled
                           />
@@ -197,7 +197,7 @@
                           <select
                             v-else
                             id="selectCustomStartTime"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomSheetData.end_time"
                             @change="validateStartTime"
                             style="width: 240px"
@@ -231,7 +231,7 @@
                           <input
                             v-if="apiResponse_EndTime"
                             type="text"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomSheetData.end_time"
                             disabled
                           />
@@ -239,7 +239,7 @@
                           <select
                             v-else
                             id="selectCustomStartTime"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomSheetData.end_time"
                             @change="validateStartTime"
                             style="width: 240px"
@@ -337,7 +337,7 @@
                           /> -->
                           <select
                             id="selectCustomStartTime"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomSheetData.total_hours"
                             @change="validateStartTime"
                             style="width: 240px"
@@ -358,15 +358,16 @@
                         <div class="col-12 mt-1" v-if="showSaveButton">
                           <input
                             type="text"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomSheetData.client_rate"
                             @input="validateNumber('client_rate')"
+                            disabled
                           />
                         </div>
                         <div class="col-12 mt-1" v-else>
                           <input
                             type="text"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomSheetData.client_rate"
                             @input="validateNumber('client_rate')"
                             disabled
@@ -381,15 +382,16 @@
                         <div class="col-12 mt-1" v-if="showSaveButton">
                           <input
                             type="text"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomSheetData.staff_rate"
                             @input="validateNumber('staff_rate')"
+                            disabled
                           />
                         </div>
                         <div class="col-12 mt-1" v-else>
                           <input
                             type="text"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomSheetData.staff_rate"
                             @input="validateNumber('staff_rate')"
                             disabled
@@ -550,30 +552,13 @@ export default {
     // },
     isSaveDisabled() {
       const {
-        shift_date,
-        name,
-        job,
-        staff_rate,
-        shift_name,
         notes,
         start_time,
         end_time,
-        client_rate,
+
         paper_timesheet,
       } = this.fetchCustomSheetData;
-      return (
-        !shift_date ||
-        !name ||
-        !job ||
-        !staff_rate ||
-        !shift_name ||
-        !notes ||
-        !paper_timesheet ||
-        !start_time ||
-        !end_time ||
-        !client_rate ||
-        client_rate <= 0
-      );
+      return !notes || !paper_timesheet || !start_time || !end_time;
     },
     fullCustomImageUrl() {
       return this.fetchCustomSheetData.paper_timesheet
@@ -799,7 +784,15 @@ export default {
 .modal-header {
   border-bottom: 0px;
 }
-
+.custom-disabled {
+  cursor: not-allowed;
+}
+.form-control:disabled {
+  background-color: #fff;
+}
+.custom-disabled:hover {
+  cursor: not-allowed;
+}
 select {
   width: 100%;
   padding: 10px;
