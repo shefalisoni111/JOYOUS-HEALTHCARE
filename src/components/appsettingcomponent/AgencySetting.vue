@@ -237,26 +237,32 @@
                       role="tabpanel"
                       aria-labelledby="RecPal"
                     >
-                      <div class="col-12 d-flex gap-2">
+                      <div class="col-12 d-flex gap-2 justify-content-between">
                         <div>
                           <h6>
                             <span class="ps-1 fs-6 fw-bold">Favicon</span>&nbsp;
-                            <span class="text-muted">(dimension 32px * 32px)</span>
+                            <!-- <span class="text-muted">(dimension 32px * 32px)</span> -->
                           </h6>
-                          <div class="col-4">
-                            <div class="card" style="width: 400px; height: 345px">
+                          <div class="col-4 w-100">
+                            <div class="card">
                               <div class="card-body position-relative">
                                 <img
                                   v-if="!logoPreview"
                                   src="./pic-image.jpg"
                                   class="img-fluid"
                                   loading="eager"
+                                  width="300"
+                                  style="height: 300px"
+                                  height="300"
                                 />
                                 <img
                                   v-else
                                   :src="logoPreview"
                                   class="img-fluid m-auto d-block"
                                   loading="eager"
+                                  width="300"
+                                  style="height: 300px"
+                                  height="300"
                                 />
                                 <input
                                   type="file"
@@ -284,22 +290,28 @@
                         <div>
                           <h6>
                             <span class="ps-1 fs-6 fw-bold">Agency logo</span> &nbsp;
-                            <span class="text-muted">(dimension 220px * 50px)</span>
+                            <!-- <span class="text-muted">(dimension 220px * 50px)</span> -->
                           </h6>
-                          <div class="col-4">
-                            <div class="card" style="width: 400px; height: 345px">
+                          <div class="col-4 w-100">
+                            <div class="card">
                               <div class="card-body position-relative">
                                 <img
                                   v-if="!logoAgencyPreview"
                                   src="./pic-image.jpg"
                                   class="img-fluid"
                                   loading="eager"
+                                  width="300"
+                                  height="300"
+                                  style="height: 300px"
                                 />
                                 <img
                                   v-else
                                   :src="logoAgencyPreview"
                                   class="img-fluid m-auto d-block"
                                   loading="eager"
+                                  width="300"
+                                  style="height: 300px"
+                                  height="300"
                                 />
                                 <input
                                   type="file"
@@ -327,22 +339,28 @@
                         <div>
                           <h6>
                             <span class="ps-1 fs-6 fw-bold">Invoice Logo</span>&nbsp;
-                            <span class="text-muted">(dimension 150px * 75px)</span>
+                            <!-- <span class="text-muted">(dimension 150px * 75px)</span> -->
                           </h6>
-                          <div class="col-4">
-                            <div class="card" style="width: 400px; height: 345px">
+                          <div class="col-4 w-100">
+                            <div class="card">
                               <div class="card-body position-relative">
                                 <img
                                   v-if="!logoInvoicePreview"
                                   src="./pic-image.jpg"
                                   class="img-fluid"
                                   loading="eager"
+                                  width="300"
+                                  style="height: 300px; width: 300px"
+                                  height="300"
                                 />
                                 <img
                                   v-else
                                   :src="logoInvoicePreview"
                                   class="img-fluid m-auto d-block"
                                   loading="eager"
+                                  width="300"
+                                  style="height: 300px"
+                                  height="300"
                                 />
                                 <input
                                   type="file"
@@ -447,10 +465,10 @@ export default {
       const image = new Image();
       image.src = URL.createObjectURL(file);
       image.onload = () => {
-        if (image.width !== 32 || image.height !== 32) {
-          alert("Please choose an image with dimensions of 32pxX32px.");
-          return;
-        }
+        // if (image.width !== 32 || image.height !== 32) {
+        //   alert("Please choose an image with dimensions of 32pxX32px.");
+        //   return;
+        // }
 
         formData.append("agency_setting[agency_logo]", file);
         const token = localStorage.getItem("token");
@@ -495,10 +513,10 @@ export default {
       const image = new Image();
       image.src = URL.createObjectURL(file);
       image.onload = () => {
-        if (image.width !== 220 || image.height !== 50) {
-          alert("Please choose an image with dimensions of 220pxX50px.");
-          return;
-        }
+        // if (image.width !== 220 || image.height !== 50) {
+        //   alert("Please choose an image with dimensions of 220pxX50px.");
+        //   return;
+        // }
 
         formData.append("agency_setting[agency_logo]", file);
         const token = localStorage.getItem("token");
@@ -543,10 +561,10 @@ export default {
       const image = new Image();
       image.src = URL.createObjectURL(file);
       image.onload = () => {
-        if (image.width !== 150 || image.height !== 75) {
-          alert("Please choose an image with dimensions of 150pxX75px.");
-          return;
-        }
+        // if (image.width !== 150 || image.height !== 75) {
+        //   alert("Please choose an image with dimensions of 150pxX75px.");
+        //   return;
+        // }
 
         formData.append("agency_setting[invoice_logo]", file);
         const token = localStorage.getItem("token");
