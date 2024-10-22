@@ -190,7 +190,7 @@ export default {
     },
     async fetchAdminData() {
       const token = localStorage.getItem("token");
-      const merchantId = localStorage.getItem("m_unique");
+      const merchantId = localStorage.getItem("merchant_id");
 
       try {
         const response = await axios.get(`${VITE_API_URL}/merchants/${merchantId}`, {
