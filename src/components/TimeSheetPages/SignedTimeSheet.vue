@@ -547,10 +547,11 @@ export default {
       try {
         const response = await axios.put(
           `${VITE_API_URL}/approved_and_unapproved_timesheet_to_web/${id}`,
+          {},
           {
             headers: {
               "content-type": "application/json",
-              Authorization: "bearer " + token,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -558,6 +559,7 @@ export default {
         if (response.status === 200 && response.data.message) {
           const message = response.data.message;
           this.$refs.successAlert.showSuccess(message);
+          this.signedTimeSheetMethod();
         }
       } catch (error) {
         // Handle the error if needed

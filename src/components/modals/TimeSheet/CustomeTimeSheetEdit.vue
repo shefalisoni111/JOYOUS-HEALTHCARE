@@ -756,6 +756,7 @@ export default {
       try {
         const response = await axios.put(
           `${VITE_API_URL}/approved_and_unapproved_timesheet_to_web/${this.customDataId}`,
+          {},
           {
             headers: {
               "Content-Type": "multipart/form-data",

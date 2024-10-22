@@ -698,7 +698,7 @@ export default {
           },
           headers: {
             "content-type": "application/json",
-            Authorization: "bearer " + token,
+            Authorization: `Bearer ${token}`,
           },
         });
         this.getCustomTimeSheet = response.data.custom_timesheets;
@@ -752,7 +752,7 @@ export default {
           {
             params: requestData,
             headers: {
-              Authorization: "bearer " + token,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
