@@ -605,6 +605,7 @@ export default {
         reader.readAsDataURL(file);
       };
     },
+    //  method
     async getAgencyDataMethod() {
       this.isLoading = true;
       await axios

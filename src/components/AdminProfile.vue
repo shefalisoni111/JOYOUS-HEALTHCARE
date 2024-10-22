@@ -122,6 +122,7 @@
     </div>
     <EditAdmin @admin-updated="handleAdminUpdated" />
     <SuccessAlert ref="successAlert" />
+    <!-- msg -->
   </div>
 </template>
 
