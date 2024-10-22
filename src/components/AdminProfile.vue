@@ -130,7 +130,7 @@
 import axios from "axios";
 import Navbar from "../components/Navbar.vue";
 import EditAdmin from "../components/modals/Admin/EditAdmin.vue";
-import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+import SuccessAlert from "../components/Alerts/SuccessAlert.vue";
 
 export default {
   name: "AdminProfile",
