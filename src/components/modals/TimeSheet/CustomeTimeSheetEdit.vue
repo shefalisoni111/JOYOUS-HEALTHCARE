@@ -443,9 +443,9 @@
                         accept="image/*"
                         @change="handleFileUpload"
                       />
-                      <span v-if="!validationPaperTimeSheet" class="text-danger">
+                      <!-- <span v-if="!validationPaperTimeSheet" class="text-danger">
                         Paper TimeSheet is required
-                      </span>
+                      </span> -->
                     </div>
                     <!-- <div class="col-12 mt-1">
                       <img
@@ -572,8 +572,7 @@ export default {
         !start_time ||
         !end_time ||
         !client_rate ||
-        client_rate <= 0 ||
-        !this.validationPaperTimeSheet
+        client_rate <= 0
       );
     },
     fullCustomImageUrl() {
@@ -620,16 +619,15 @@ export default {
     handleFileUpload(event) {
       const file = event.target.files[0];
       if (file) {
-        // Check if the file is an image
         if (file.type.startsWith("image/")) {
-          this.fetchCustomSheetData.paper_timesheet = file; // Store the file
+          this.fetchCustomSheetData.paper_timesheet = file;
           const reader = new FileReader();
           reader.onload = (e) => {
-            this.fullCustomImageUrl = e.target.result; // For immediate preview
+            this.fullCustomImageUrl = e.target.result;
           };
-          reader.readAsDataURL(file); // This allows for a preview if necessary
+          reader.readAsDataURL(file);
         } else {
-          this.$refs.successAlert.showError("Please upload a valid image file.");
+          // this.$refs.successAlert.showError("Please upload a valid image file.");
         }
         this.validatePaperTimeSheet();
       } else {
@@ -697,7 +695,6 @@ export default {
             client_rate: customSheet.client_rate || "",
             staff_rate: customSheet.staff_rate || "",
             notes: customSheet.notes || "",
-            paper_timesheet: customSheet.paper_timesheet || "",
           };
 
           this.originalData = { ...this.fetchCustomSheetData };
