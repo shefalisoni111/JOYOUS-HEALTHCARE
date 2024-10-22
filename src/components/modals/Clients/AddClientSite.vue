@@ -451,7 +451,7 @@ export default {
       return clientRegex.test(newValue);
     },
     validatePhoneNumberFormat(phoneNumber) {
-      const phoneRegex = /^\d{10}$/;
+      const phoneRegex = /^\d{11}$/;
       return phoneRegex.test(phoneNumber);
     },
     validateAddressFormat(address) {

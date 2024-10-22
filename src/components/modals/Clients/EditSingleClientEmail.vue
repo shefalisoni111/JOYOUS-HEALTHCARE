@@ -96,7 +96,9 @@ export default {
       setTimeout(() => {
         const isAutofilled = this.fetchClients.email !== "";
         this.emailValid = isAutofilled
-          ? /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk)$/.test(this.fetchClients.email)
+          ? /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk)$/.test(
+              this.fetchClients.email
+            )
           : false;
       }, 100);
     },
@@ -133,7 +135,7 @@ export default {
       }
     },
     validatePhoneNumberFormat(phone_number) {
-      return /^\d{10}$/.test(phone_number);
+      return /^\d{11}$/.test(phone_number);
     },
   },
   watch: {

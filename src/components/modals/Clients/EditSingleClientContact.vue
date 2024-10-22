@@ -125,7 +125,7 @@ export default {
       }
     },
     validatePhoneNumberFormat(phone_number) {
-      return /^\d{10}$/.test(phone_number);
+      return /^\d{11}$/.test(phone_number);
     },
   },
   watch: {

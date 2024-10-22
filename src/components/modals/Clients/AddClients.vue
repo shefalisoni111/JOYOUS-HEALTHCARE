@@ -408,7 +408,7 @@ export default {
     validatePhoneNumberFormat(phone_number) {
       const phoneRegexWithZero = /^0\d{10}$/;
       const phoneRegexWithCountryCode = /^91\d{10}$/;
-      const phoneRegexWithoutPrefix = /^\d{10}$/;
+      const phoneRegexWithoutPrefix = /^\d{11}$/;
 
       return (
         phoneRegexWithZero.test(phone_number) ||
