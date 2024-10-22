@@ -156,19 +156,20 @@
                                 />
                               </div>
                             </th>
-                            <th scope="col">ID</th>
-
+                            <!-- <th scope="col">ID</th> -->
+                            <th scope="col">Ref Code</th>
                             <th scope="col" style="width: 11%">Staff</th>
                             <th scope="col">Client</th>
                             <th scope="col">Site</th>
-
+                            <th scope="col">Job Position</th>
+                            <th scope="col">Shift</th>
                             <th scope="col">Date</th>
 
                             <th scope="col">Start Time</th>
                             <th scope="col">End Time</th>
                             <th scope="col">Break</th>
                             <th scope="col">Total Hours</th>
-                            <th scope="col">Approve</th>
+                            <th scope="col">Approve - Status</th>
                             <th scope="col">View</th>
                           </tr>
                         </thead>
@@ -188,7 +189,8 @@
                             <td scope="col">{{ data.candidate_name }}</td>
                             <td scope="col">{{ data.client }}</td>
                             <td scope="col">{{ data.site }}</td>
-
+                            <td scope="col">{{ data.job }}</td>
+                            <td scope="col">{{ data.shift }}</td>
                             <td scope="col">{{ data.date }}</td>
                             <td scope="col">{{ data.start_time }}</td>
 
@@ -259,19 +261,21 @@
                                 />
                               </div>
                             </th>
-                            <th scope="col">ID</th>
+                            <!-- <th scope="col">ID</th> -->
 
+                            <th scope="col">Ref Code</th>
                             <th scope="col" style="width: 11%">Staff</th>
                             <th scope="col">Client</th>
                             <th scope="col">Site</th>
-
+                            <th scope="col">Job Position</th>
+                            <th scope="col">Shift</th>
                             <th scope="col">Date</th>
 
                             <th scope="col">Start Time</th>
                             <th scope="col">End Time</th>
                             <th scope="col">Break</th>
                             <th scope="col">Total Hours</th>
-                            <th scope="col">Approve</th>
+                            <th scope="col">Approve - Status</th>
                             <th scope="col">Action</th>
                           </tr>
                         </thead>
@@ -286,12 +290,13 @@
                                 />
                               </div>
                             </td>
-                            <td scope="col">{{ data.id }}</td>
-
+                            <!-- <td scope="col">{{ data.id }}</td> -->
+                            <td scope="col">{{ data.code }}</td>
                             <td scope="col">{{ data.candidate_name }}</td>
                             <td scope="col">{{ data.client }}</td>
                             <td scope="col">{{ data.site }}</td>
-
+                            <td scope="col">{{ data.job }}</td>
+                            <td scope="col">{{ data.shift }}</td>
                             <td scope="col">{{ data.date }}</td>
                             <td scope="col">{{ data.start_time }}</td>
 
@@ -299,7 +304,7 @@
                             <td scope="col">{{ data.break }}</td>
                             <td scope="col">{{ data.total_hours }}</td>
 
-                            <td scope="col"></td>
+                            <!-- <td scope="col"></td> -->
                             <td scope="col">
                               <button
                                 type="button"

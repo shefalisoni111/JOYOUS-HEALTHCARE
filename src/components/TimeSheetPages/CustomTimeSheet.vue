@@ -150,19 +150,22 @@
                                 />
                               </div>
                             </th>
-                            <th scope="col">ID</th>
-                            <th scope="col">Code</th>
-                            <th scope="col" style="width: 153px">Name</th>
+                            <!-- <th scope="col">ID</th> -->
+                            <th scope="col">Ref Code</th>
+                            <th scope="col" style="width: 153px">Staff</th>
+                            <th scope="col">Client</th>
                             <th scope="col">Site</th>
-                            <th scope="col">Job</th>
-                            <th scope="col">Shift Date</th>
+                            <th scope="col">Job Position</th>
+                            <th scope="col">Shift</th>
+                            <th scope="col">Date</th>
                             <th scope="col">Start Time</th>
                             <th scope="col">End Time</th>
+                            <th scope="col">Break</th>
                             <th scope="col">Total Hours</th>
-                            <th scope="col">Client Rate</th>
+                            <!-- <th scope="col">Client Rate</th>
                             <th scope="col">Total Cost</th>
-                            <th scope="col">Paper TimeSheet</th>
-                            <th scope="col">Approved</th>
+                            <th scope="col">Paper TimeSheet</th> -->
+                            <th scope="col">Approved - Status</th>
                             <th scope="col">Action</th>
                           </tr>
                         </thead>
@@ -177,11 +180,13 @@
                                 />
                               </div>
                             </td>
-                            <td scope="col">{{ data.id }}</td>
+                            <!-- <td scope="col">{{ data.id }}</td> -->
                             <td scope="col">{{ data.code }}</td>
                             <td scope="col">{{ data.name }}</td>
+                            <td scope="col">{{ data.client }}</td>
                             <td scope="col">{{ data.site }}</td>
                             <td scope="col">{{ data.job }}</td>
+                            <td scope="col">{{ data.shift_name }}</td>
                             <td scope="col">{{ data.shift_date }}</td>
                             <td scope="col">
                               {{ data.start_time }}
@@ -190,9 +195,12 @@
                               {{ data.end_time }}
                             </td>
                             <td scope="col">
-                              {{ data.total_hours }}
+                              {{ data.break }}
                             </td>
                             <td scope="col">
+                              {{ data.total_hours }}
+                            </td>
+                            <!-- <td scope="col">
                               {{ data.client_rate }}
                             </td>
                             <td scope="col">
@@ -207,18 +215,10 @@
                                   style="width: 60px"
                                 />
                                 &nbsp;
-                                <!-- <button
-                                  type="button"
-                                  class="btn border-primary-subtle"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#viewPaperTimeSheet"
-                                  @click="viewPaperSheet(data.id, $event)"
-                                >
-                                  <i class="bi bi-eye"></i>
-                                </button> -->
+                                
                               </div>
                               <div v-else>Null</div>
-                            </td>
+                            </td> -->
                             <td scope="col">
                               {{ data.status }}
                             </td>
@@ -275,19 +275,22 @@
                                 />
                               </div>
                             </th>
-                            <th scope="col">ID</th>
-                            <th scope="col">Code</th>
-                            <th scope="col" style="width: 153px">Name</th>
+                            <!-- <th scope="col">ID</th> -->
+                            <th scope="col">Ref Code</th>
+                            <th scope="col" style="width: 153px">Staff</th>
+                            <th scope="col">Client</th>
                             <th scope="col">Site</th>
-                            <th scope="col">Job</th>
-                            <th scope="col">Shift Date</th>
+                            <th scope="col">Job Position</th>
+                            <th scope="col">Shift</th>
+                            <th scope="col">Date</th>
                             <th scope="col">Start Time</th>
                             <th scope="col">End Time</th>
+                            <th scope="col">Break</th>
                             <th scope="col">Total Hours</th>
-                            <th scope="col">Client Rate</th>
+                            <!-- <th scope="col">Client Rate</th>
                             <th scope="col">Total Cost</th>
-                            <th scope="col">Paper TimeSheet</th>
-                            <th scope="col">Approved</th>
+                            <th scope="col">Paper TimeSheet</th> -->
+                            <th scope="col">Approved - Status</th>
                             <th scope="col">Action</th>
                           </tr>
                         </thead>
@@ -302,11 +305,13 @@
                                 />
                               </div>
                             </td>
-                            <td scope="col">{{ data.id }}</td>
+                            <!-- <td scope="col">{{ data.id }}</td> -->
                             <td scope="col">{{ data.code }}</td>
                             <td scope="col">{{ data.name }}</td>
+                            <td scope="col">{{ data.client }}</td>
                             <td scope="col">{{ data.site }}</td>
                             <td scope="col">{{ data.job }}</td>
+                            <td scope="col">{{ data.shift_name }}</td>
                             <td scope="col">{{ data.shift_date }}</td>
                             <td scope="col">
                               {{ data.start_time }}
@@ -315,9 +320,12 @@
                               {{ data.end_time }}
                             </td>
                             <td scope="col">
-                              {{ data.total_hours }}
+                              {{ data.break }}
                             </td>
                             <td scope="col">
+                              {{ data.total_hours }}
+                            </td>
+                            <!-- <td scope="col">
                               {{ data.client_rate }}
                             </td>
                             <td scope="col">
@@ -331,18 +339,10 @@
                                   class="img-fluid"
                                   style="width: 60px"
                                 />&nbsp;
-                                <!-- <button
-                                  type="button"
-                                  class="btn border-primary-subtle"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#viewPaperTimeSheet"
-                                  @click="viewPaperSheet(data.id)"
-                                >
-                                  <i class="bi bi-eye"></i>
-                                </button> -->
+                               
                               </div>
                               <div v-else>Null</div>
-                            </td>
+                            </td> -->
                             <td scope="col">
                               {{ data.status }}
                             </td>
