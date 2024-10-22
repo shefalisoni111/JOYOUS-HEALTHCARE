@@ -498,6 +498,7 @@
             </button> -->
             <button
               v-show="!showSaveButton"
+              :disabled="isSaveDisabled"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="approved_TimesheetRevertMethod()"
@@ -505,6 +506,7 @@
               Approve
             </button>
             <button
+              :disabled="isSaveDisabled"
               v-show="showSaveButton"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
@@ -566,6 +568,31 @@ export default {
   computed: {
     getCandidatesData() {
       return this.$store.state.candidates;
+    },
+    isSaveDisabled() {
+      const {
+        shift_date,
+        name,
+        job,
+        staff_rate,
+        shift_name,
+        notes,
+        start_time,
+        end_time,
+        client_rate,
+      } = this.fetchCustomTimeShetData;
+      return (
+        !shift_date ||
+        !name ||
+        !job ||
+        !staff_rate ||
+        !shift_name ||
+        !notes ||
+        !start_time ||
+        !end_time ||
+        !client_rate ||
+        client_rate <= 0
+      );
     },
   },
   methods: {

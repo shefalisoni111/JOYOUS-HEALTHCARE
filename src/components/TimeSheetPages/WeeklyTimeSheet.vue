@@ -465,7 +465,7 @@
                           "
                           @click.prevent="ApproveMethod(data, $event)"
                         >
-                          {{ data.status === "Pending" ? "Approve" : "Unapproved" }}
+                          {{ data.status === "Pending" ? "Approve" : "Pending" }}
                         </span>
                       </div>
                     </div>
@@ -477,7 +477,7 @@
                         ? "0.0"
                         : this.candidateHoursMap[data.candidate_id] !== undefined
                         ? this.candidateHoursMap[data.candidate_id].toFixed(2)
-                        : "Null"
+                        : "0.00"
                     }}
                   </td>
                   <td>{{ data.total_cost ? data.total_cost : "0.00" }}</td>
@@ -580,6 +580,9 @@ export default {
       selectedDate: null,
       candidateList: [],
       selectedCandidateId: null,
+      start_time: "",
+
+      end_time: "",
       vacancyId: "",
       site_id: "",
       businessUnit: [],
@@ -604,6 +607,19 @@ export default {
   },
 
   computed: {
+    // isSaveDisabled() {
+    //   const currentData = this.mergedTimesheetsArray[0];
+
+    //   if (!currentData) {
+    //     return true;
+    //   }
+
+    //   const { start_time, end_time } = currentData;
+
+    //   return (
+    //     !start_time || !end_time || this.total_hours === null || this.total_hours <= 0
+    //   );
+    // },
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
@@ -1061,11 +1077,11 @@ export default {
         if (this.total_hourMain) {
           this.total_hourMain.forEach((candidate) => {
             if (candidate.candidate_id !== null) {
-              this.candidateHoursMap[candidate.candidate_id] = candidate.total_hours;
+              this.total_hourMain[candidate.candidate_id] = candidate.total_hours;
             }
           });
         }
-        // console.log(this.mergedTimesheetsArray);
+        // console.log(this.total_hourMain, this.candidateHoursMap);
       } catch (error) {
         // console.error("Error fetching week timesheets:", error);
       } finally {
@@ -1151,7 +1167,10 @@ td {
   text-align: center;
   cursor: pointer;
 }
-
+.status-btn:disabled {
+  opacity: 0.1;
+  cursor: not-allowed;
+}
 .status-btn {
   z-index: 1;
   left: 39px;
@@ -1159,10 +1178,10 @@ td {
   font-size: 12px;
   padding: 0px 7px;
 }
-@media (max-width: 1700px) {
+@media (max-width: 1859px) {
   .status-btn {
     left: 35px;
-    transform: translateY(39px);
+    transform: translateY(23px);
   }
 }
 
