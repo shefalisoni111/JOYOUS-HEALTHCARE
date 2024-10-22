@@ -173,11 +173,13 @@
                 <p>You clicked on {{ selectedDate }}</p>
                 <p>CandidateId: {{ selectedCandidateId }}</p>
                 <!-- Pass initialDate to the Calendar component -->
-                <WeekTimeSheetEdit
+                <!-- <WeekTimeSheetEdit
                   :initialDate="selectedDate"
                   :candidateId="selectedCandidateId"
                   @closeModal="closeModal"
-                />
+                  :vacancyId="vacancyId"
+                  :paginatedTimesheets="paginatedTimesheets"
+                /> -->
               </div>
             </div>
           </div>
@@ -186,7 +188,7 @@
               <thead>
                 <tr>
                   <th rowspan="3">ID</th>
-                  <th rowspan="3" style="width: 7%">Name</th>
+                  <th rowspan="3" style="width: 10%">Name</th>
                   <th rowspan="3">Site</th>
                   <th rowspan="3">Shift</th>
                   <th>
@@ -350,7 +352,9 @@
                 <tr v-for="data in mergedTimesheetsArray" :key="data.id">
                   <td>{{ data.id }}</td>
                   <td class="text-capitalize fw-bold">
-                    {{ data.author_name ? data.author_name + " " : data.name + " " }}
+                    {{
+                      data.candidate_name ? data.candidate_name + " " : data.name + " "
+                    }}
                     <span class="fs-6 text-muted fw-100">
                       <br />
                       <span style="background: rgb(209, 207, 207); padding: 3px">
@@ -362,7 +366,7 @@
                     {{ data.site ? data.site : "Null" }}
                   </td>
                   <td>{{ data.shift_name }}</td>
-                  <td>
+                  <td class="position-relative">
                     <div class="calendar-grid">
                       <div
                         v-for="day in selectedDateRow"
@@ -410,7 +414,6 @@
                           <td>
                             <div class="column">
                               <div class="column-cell">
-                                <!-- {{ data.status }} -->
                                 {{
                                   typeof data.start_time === "number"
                                     ? data.start_time.toFixed(2)
@@ -421,6 +424,7 @@
                               </div>
                             </div>
                           </td>
+
                           <td>
                             <div class="column">
                               <div class="column-cell">
@@ -434,6 +438,7 @@
                               </div>
                             </div>
                           </td>
+
                           <td>
                             <div class="column">
                               <div class="column-cell">
@@ -450,6 +455,14 @@
                         </div>
                       </div>
                     </div>
+                    <span
+                      style="z-index: 1; left: 39px; top: 45px; font-size: 12px"
+                      class="text-center btn btn-sm position-absolute"
+                      :class="data.status === 'Pending' ? 'btn-success' : 'btn-danger'"
+                      @click.prevent="ApproveMethod(data, $event)"
+                    >
+                      {{ data.status === "Pending" ? "Approve" : "Unapproved" }}
+                    </span>
                   </td>
                   <!-- <td>{{ data.total_hours ? data.total_hours : "Null" }}</td> -->
                   <td>
@@ -537,8 +550,10 @@
       :initialDate="selectedDate"
       :vacancyId="vacancyId"
       @closeModal="closeModal"
+      :paginatedTimesheets="paginatedTimesheets"
     />
     <loader :isLoading="isLoading"></loader>
+    <SuccessAlert ref="successAlert" />
   </div>
 </template>
 
@@ -546,6 +561,7 @@
 import axios from "axios";
 // import AppointmentAdd from "../modals/Schedule/EditAssignedShift.vue";
 import Navbar from "../Navbar.vue";
+import SuccessAlert from "../Alerts/SuccessAlert.vue";
 import WeekTimeSheetEdit from "../modals/TimeSheet/WeekTimeSheetEdit.vue";
 import Loader from "../Loader/Loader.vue";
 
@@ -687,6 +703,36 @@ export default {
   },
 
   methods: {
+    async ApproveMethod(data, event) {
+      const token = localStorage.getItem("token");
+      event.preventDefault();
+      event.stopPropagation();
+      const isPending = data.status === "Pending";
+      data.status = isPending ? "Unapproved" : "Pending";
+      try {
+        const response = await axios.put(
+          `${VITE_API_URL}/approved_and_unapproved_timesheet_to_web/${data.id}`,
+          null,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.status === 200 && response.data.message) {
+          const message = response.data.message;
+          this.$refs.successAlert.showSuccess(message);
+        } else {
+          data.status = isPending ? "Pending" : "Unapproved";
+        }
+      } catch (error) {
+        // Handle the error if needed
+        // console.error("Error approving timesheet:", error);
+        data.status = isPending ? "Pending" : "Unapproved";
+      }
+    },
     toggleFilters() {
       this.showFilters = !this.showFilters;
     },
@@ -1025,6 +1071,7 @@ export default {
     WeekTimeSheetEdit,
     Navbar,
     Loader,
+    SuccessAlert,
   },
 
   async mounted() {

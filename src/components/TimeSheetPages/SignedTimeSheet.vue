@@ -543,9 +543,16 @@ export default {
   },
   methods: {
     async ApproveMethod(id) {
+      const token = localStorage.getItem("token");
       try {
         const response = await axios.put(
-          `${VITE_API_URL}/approved_and_unapproved_timesheet_to_web/${id}`
+          `${VITE_API_URL}/approved_and_unapproved_timesheet_to_web/${id}`,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: "bearer " + token,
+            },
+          }
         );
 
         if (response.status === 200 && response.data.message) {
