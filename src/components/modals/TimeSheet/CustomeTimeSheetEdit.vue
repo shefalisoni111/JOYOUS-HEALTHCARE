@@ -576,10 +576,10 @@ export default {
       );
     },
     fullCustomImageUrl() {
-      // return this.fetchCustomSheetData.paper_timesheet
-      //   ? `${VITE_API_URL}${this.fetchCustomSheetData.paper_timesheet}`
-      //   : "";
-      console.log(`${VITE_API_URL}${this.fetchCustomSheetData.paper_timesheet}`);
+      return this.fetchCustomSheetData.paper_timesheet
+        ? `${VITE_API_URL}${this.fetchCustomSheetData.paper_timesheet}`
+        : "";
+      // console.log(`${VITE_API_URL}${this.fetchCustomSheetData.paper_timesheet}`);
     },
   },
   methods: {

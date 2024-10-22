@@ -96,7 +96,7 @@ export default {
       setTimeout(() => {
         const isAutofilled = this.fetchClients.email !== "";
         this.emailValid = isAutofilled
-          ? /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk)$/.test(
+          ? /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/.test(
               this.fetchClients.email
             )
           : false;
@@ -106,7 +106,7 @@ export default {
       this.fetchClients = { ...this.originalData };
     },
     validateEmailFormat() {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk)$/;
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
       this.emailValid = emailRegex.test(this.fetchClients.email);
     },
     async fetchClientsMethod(id) {

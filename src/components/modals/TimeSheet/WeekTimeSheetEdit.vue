@@ -387,7 +387,7 @@
                           />
                         </div>
                       </div>
-                      <div class="mb-3">
+                      <!-- <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label">Client Pay Amount</label>
                         </div>
@@ -408,7 +408,7 @@
                             disabled
                           />
                         </div>
-                      </div>
+                      </div> -->
                       <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label">Staff Rate</label>
@@ -431,7 +431,7 @@
                           />
                         </div>
                       </div>
-                      <div class="mb-3">
+                      <!-- <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label">Staff Rate Amount</label>
                         </div>
@@ -452,7 +452,7 @@
                             disabled
                           />
                         </div>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
 
@@ -474,6 +474,36 @@
                         rows="3"
                         disabled
                       ></textarea>
+                    </div>
+                  </div>
+                  <div class="mb-3" v-if="showSaveButton">
+                    <div class="col-12">
+                      <label class="form-label">Paper TimeSheet</label>
+                    </div>
+                    <div
+                      class="col-12 mt-1"
+                      v-if="
+                        fetchCustomTimeShetData.status === 'Approved' &&
+                        fullCustomImageUrl
+                      "
+                    >
+                      <img
+                        :src="fullCustomImageUrl"
+                        alt="Current Paper TimeSheet"
+                        class="img-fluid"
+                        width="20%"
+                      />
+                    </div>
+                    <div class="col-12 mt-1" v-else>
+                      <input
+                        type="file"
+                        class="form-control"
+                        accept="image/*"
+                        @change="handleFileUpload"
+                      />
+                      <!-- <span v-if="!validationPaperTimeSheet" class="text-danger">
+                        Paper TimeSheet is required
+                      </span> -->
                     </div>
                   </div>
                 </div>
@@ -541,6 +571,7 @@ export default {
         end_time: "",
         break: "",
         client_rate: "",
+        paper_timesheet: "",
         total_cost: "",
         notes: "",
         status: "",
@@ -580,6 +611,7 @@ export default {
         start_time,
         end_time,
         client_rate,
+        paper_timesheet,
       } = this.fetchCustomTimeShetData;
       return (
         !shift_date ||
@@ -589,10 +621,17 @@ export default {
         !shift_name ||
         !notes ||
         !start_time ||
+        !paper_timesheet ||
         !end_time ||
         !client_rate ||
         client_rate <= 0
       );
+    },
+    fullCustomImageUrl() {
+      return this.fetchCustomTimeShetData.paper_timesheet
+        ? `${VITE_API_URL}${this.fetchCustomTimeShetData.paper_timesheet}`
+        : "";
+      // console.log(`${VITE_API_URL}${this.fetchCustomTimeShetData.paper_timesheet}`);
     },
   },
   methods: {
