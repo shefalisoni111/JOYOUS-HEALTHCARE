@@ -202,9 +202,9 @@ export default {
       selectedClientID: null,
       tabs: [
         { name: "Active Location ", component: "ActiveLocation" },
-        { name: "Passive Location ", component: "PassiveLocation" },
+        // { name: "Passive Location ", component: "PassiveLocation" },
         { name: "Jobs ", component: "ClientJobs" },
-        { name: "WTR", component: "ClientWTR" },
+        // { name: "WTR", component: "ClientWTR" },
         { name: "Notes", component: "ClientNotes" },
         { name: "Setting", component: "ClientSetting" },
         { name: "User", component: "ClientUser" },

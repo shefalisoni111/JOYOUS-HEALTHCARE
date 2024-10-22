@@ -193,7 +193,7 @@
                             <td scope="col">{{ data.start_time }}</td>
 
                             <td scope="col">{{ data.end_time }}</td>
-                            <td scope="col">{{ data.break }}&nbsp; minute</td>
+                            <td scope="col">{{ data.break }}</td>
                             <td scope="col">{{ data.total_hours }}</td>
 
                             <td scope="col">{{ data.status }}</td>
@@ -296,7 +296,7 @@
                             <td scope="col">{{ data.start_time }}</td>
 
                             <td scope="col">{{ data.end_time }}</td>
-                            <td scope="col">{{ data.break }}&nbsp; minute</td>
+                            <td scope="col">{{ data.break }}</td>
                             <td scope="col">{{ data.total_hours }}</td>
 
                             <td scope="col"></td>

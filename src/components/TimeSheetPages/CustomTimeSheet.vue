@@ -207,7 +207,7 @@
                                   style="width: 60px"
                                 />
                                 &nbsp;
-                                <button
+                                <!-- <button
                                   type="button"
                                   class="btn border-primary-subtle"
                                   data-bs-toggle="modal"
@@ -215,7 +215,7 @@
                                   @click="viewPaperSheet(data.id, $event)"
                                 >
                                   <i class="bi bi-eye"></i>
-                                </button>
+                                </button> -->
                               </div>
                               <div v-else>Null</div>
                             </td>
@@ -331,7 +331,7 @@
                                   class="img-fluid"
                                   style="width: 60px"
                                 />&nbsp;
-                                <button
+                                <!-- <button
                                   type="button"
                                   class="btn border-primary-subtle"
                                   data-bs-toggle="modal"
@@ -339,7 +339,7 @@
                                   @click="viewPaperSheet(data.id)"
                                 >
                                   <i class="bi bi-eye"></i>
-                                </button>
+                                </button> -->
                               </div>
                               <div v-else>Null</div>
                             </td>

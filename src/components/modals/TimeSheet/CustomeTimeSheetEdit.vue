@@ -629,11 +629,11 @@ export default {
           };
           reader.readAsDataURL(file); // This allows for a preview if necessary
         } else {
-          this.$refs.successAlert.showError("Please upload a valid image file."); // Handle invalid file types
+          this.$refs.successAlert.showError("Please upload a valid image file.");
         }
-        this.validatePaperTimeSheet(); // Update your validation status if needed
+        this.validatePaperTimeSheet();
       } else {
-        this.fetchCustomSheetData.paper_timesheet = null; // Reset if no file is selected
+        this.fetchCustomSheetData.paper_timesheet = null;
       }
     },
     validatePaperTimeSheet() {

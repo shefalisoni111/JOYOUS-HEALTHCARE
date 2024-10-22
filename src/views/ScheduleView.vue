@@ -780,6 +780,7 @@ import Navbar from "../components/Navbar.vue";
 import SchedulePublishStaffList from "../components/modals/Schedule/SchedulePublishStaffList.vue";
 import SuccessAlert from "../components/Alerts/SuccessAlert.vue";
 import Loader from "../components/Loader/Loader.vue";
+import Swal from "sweetalert2";
 
 const axiosInstance = axios.create({
   headers: {
@@ -1143,7 +1144,12 @@ export default {
       } catch (error) {
         if (error.response && error.response.status === 422) {
           const errorMessage = error.response.data.error;
-          alert(errorMessage);
+          // alert(errorMessage);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: errorMessage,
+          });
         } else {
           // Handle other errors if needed
         }
@@ -1195,7 +1201,12 @@ export default {
         } else {
           errorMessage = error.response.data.error;
         }
-        alert(errorMessage);
+        // alert(errorMessage);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: errorMessage,
+        });
       } finally {
         this.vacancyBeingDragged = null;
         this.dropCandidateId = null;
