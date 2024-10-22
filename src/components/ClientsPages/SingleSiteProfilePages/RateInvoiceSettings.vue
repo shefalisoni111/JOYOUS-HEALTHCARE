@@ -322,6 +322,7 @@ export default {
   data() {
     return {
       fetchInvoiceSetting: {
+        site_id: this.$route.params.id,
         invoice_creation_period: null,
         invoice_number_format: null,
         invoice_start_number: null,
