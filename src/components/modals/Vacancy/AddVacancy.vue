@@ -596,8 +596,10 @@ export default {
     isFormValid: function (newVal) {
       this.isValidForm = newVal;
     },
-    end_time(newValue) {
-      this.updateEndDate();
+    end_time(newVal) {
+      if (newVal) {
+        this.updateEndDate();
+      }
     },
   },
   methods: {
@@ -837,6 +839,10 @@ export default {
     },
     updateEndDate() {
       const endHour = this.parseTimeToHour(this.end_time);
+
+      if (!this.dates || this.dates.length === 0) {
+        return;
+      }
 
       if (endHour >= 12) {
         const currentDate = new Date(this.dates[0].split("/").reverse().join("-"));
