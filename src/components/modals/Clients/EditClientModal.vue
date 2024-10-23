@@ -28,18 +28,16 @@
                   <div class="col-12">
                     <label class="form-label" for="selectJobTitle">Jobs</label>
                   </div>
+
                   <div class="col-12">
                     <div v-for="option in options" :key="option.id">
                       <input
                         type="checkbox"
-                        :id="option.id"
                         :value="option.id"
                         v-model="option.checked"
                         @change="toggleJobsSelection"
                       />
-                      <label :for="option.id" class="text-capitalize"
-                        >&nbsp;{{ option.name }}</label
-                      >
+                      <label class="text-capitalize">&nbsp;{{ option.name }}</label>
                     </div>
                   </div>
                 </div>
@@ -117,7 +115,7 @@
                     <label class="form-label">Status</label>
                   </div>
                   <div class="col-12 mt-1">
-                    <select id="selectOption" v-model="fetchClients.activated">
+                    <select v-model="fetchClients.activated">
                       <option value="true">Active</option>
                       <option value="false">In-active</option>
                     </select>
@@ -170,7 +168,7 @@ export default {
         activated: "",
         error: [],
       },
-      options: [],
+      // options: [],
       originalData: null,
       // selectedJobNames: [],
     };
@@ -179,6 +177,10 @@ export default {
     clientID: {
       type: Number,
       default: 0,
+    },
+    options: {
+      type: Array,
+      required: true,
     },
   },
   computed: {
@@ -279,18 +281,18 @@ export default {
       },
     },
   },
-  // async beforeRouteEnter(to, from, next) {
-  //   next((vm) => {
-  //     vm.getJobTitleMethod();
-  //   });
-  // },
-  // async beforeRouteUpdate(to, from, next) {
-  //   this.getJobTitleMethod();
-  //   next();
-  // },
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.getJobTitleMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.getJobTitleMethod();
+    next();
+  },
   mounted() {
     this.fetchClientsMethod(this.$route.params.id);
-    this.getJobTitleMethod();
+    // this.getJobTitleMethod();
   },
 };
 </script>

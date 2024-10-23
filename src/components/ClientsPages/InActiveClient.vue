@@ -160,8 +160,9 @@
       :clientID="selectedClientID || 0"
       @client-updated="createdClient"
       ref="editClientModalInactive"
+      :options="options"
     />
-    <AddClients @client-updated="createdClient" />
+    <!-- <AddClients @client-updated="createdClient" /> -->
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
   </div>
@@ -186,7 +187,7 @@ export default {
       totalCount: 0,
       isLoading: false,
 
-      options: [],
+      // options: [],
       client: {
         job_name: ["Job1", "Job2", "Job3", "Job4", "Job5", "Job6"],
       },
@@ -200,7 +201,12 @@ export default {
       ],
     };
   },
-
+  props: {
+    options: {
+      type: Array,
+      required: true,
+    },
+  },
   components: { EditClientModal, AddClients, SuccessAlert, Loader },
   computed: {
     paginateCandidates() {
@@ -286,9 +292,18 @@ export default {
       }
     },
   },
+  // async beforeRouteEnter(to, from, next) {
+  //   next((vm) => {
+  //     vm.getJobTitleMethod();
+  //   });
+  // },
+  // async beforeRouteUpdate(to, from, next) {
+  //   this.getJobTitleMethod();
+  //   next();
+  // },
   async mounted() {
     await this.createdClient();
-    this.getPositionMethod();
+    // this.getPositionMethod();
   },
 };
 </script>

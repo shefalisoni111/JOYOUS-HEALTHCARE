@@ -74,9 +74,15 @@ export default {
         job_ids: [],
       },
       job_ids: [],
-      options: [],
+      // options: [],
       existingJobs: [],
     };
+  },
+  props: {
+    options: {
+      type: Array,
+      required: true,
+    },
   },
   components: { SuccessAlert },
   computed: {},
@@ -153,7 +159,7 @@ export default {
     },
   },
   mounted() {
-    this.getPositionMethod();
+    // this.getPositionMethod();
     this.fetchClientsMethod(this.$route.params.id);
   },
 };

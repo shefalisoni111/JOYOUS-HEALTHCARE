@@ -162,7 +162,7 @@
               </li>
             </ul>
             <div class="tab-content">
-              <component :is="activeComponent"></component>
+              <component :is="activeComponent" :options="options"></component>
             </div>
           </div>
         </div>
@@ -210,6 +210,7 @@ export default {
         { name: "User", component: "ClientUser" },
       ],
       activeTab: 0,
+      options: [],
     };
   },
   components: {
@@ -226,6 +227,10 @@ export default {
 
   props: ["id"],
   computed: {
+    selectJobTitle() {
+      const job = this.options.find((option) => option.id === this.job_id);
+      return job ? job.name : "";
+    },
     userId() {
       return this.id;
     },
@@ -241,6 +246,18 @@ export default {
   },
 
   methods: {
+    async getPositionMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+        this.options = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
     editClient(clientID) {
       this.selectedClientID = clientID;
 
@@ -291,6 +308,7 @@ export default {
 
   async mounted() {
     await this.getClientMethod();
+    this.getPositionMethod();
   },
 };
 </script>

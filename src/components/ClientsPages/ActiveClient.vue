@@ -168,8 +168,9 @@
       :clientID="selectedClientID || 0"
       @client-updated="createdClient"
       ref="editClientModalActive"
+      :options="options"
     />
-    <AddClients @client-updated="createdClient" />
+    <!-- <AddClients @client-updated="createdClient" /> -->
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
   </div>
@@ -193,7 +194,7 @@ export default {
       totalPages: 1,
       itemsPerPage: 10,
       totalCount: 0,
-      options: [],
+      // options: [],
       isLoading: false,
       client: {
         job_name: ["Job1", "Job2", "Job3", "Job4", "Job5", "Job6"],
@@ -208,7 +209,12 @@ export default {
       ],
     };
   },
-
+  props: {
+    options: {
+      type: Array,
+      required: true,
+    },
+  },
   components: { EditClientModal, AddClients, SuccessAlert, Loader },
   computed: {
     paginateCandidates() {
@@ -244,7 +250,7 @@ export default {
     },
     editClient(clientID) {
       this.selectedClientID = clientID;
-      // this.$refs.editClientModalActive.getJobTitleMethod();
+      this.$refs.editClientModalActive.getJobTitleMethod();
     },
     clientStatusChangeMethod(id, activated) {
       axios
@@ -306,7 +312,7 @@ export default {
   },
   async mounted() {
     await this.createdClient();
-    this.getPositionMethod();
+    // this.getPositionMethod();
   },
 };
 </script>

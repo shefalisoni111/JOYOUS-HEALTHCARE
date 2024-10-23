@@ -122,7 +122,7 @@
                       <div></div>
 
                       <select
-                        v-model="selectedFilter"
+                    
                         @change="filterData($event.target.value)"
                       >
                         <option value="all">All Client</option>
@@ -137,6 +137,8 @@
                     <component
                       :is="activeComponent"
                       :showFiltersValue="showFiltersValue"
+                      :clientData="clientData"
+                      :options="options"
                     ></component>
                   </div>
 
@@ -277,7 +279,11 @@
       </button>
     </div>
     <!-- <AddClients ref="addClient" @client-updated="createdClient" /> -->
-    <EditClientModal :clientID="selectedClientID || 0" @client-updated="createdClient" />
+    <EditClientModal
+      :clientID="selectedClientID || 0"
+      @client-updated="createdClient"
+      :options="options"
+    />
   </div>
 </template>
 <script>
@@ -300,7 +306,8 @@ export default {
       selectedClientID: null,
       isActive: true,
       searchQuery: "",
-
+      clientData: [],
+      options: [],
       debounceTimeout: null,
       searchResults: [],
       showFilters: false,
@@ -341,6 +348,10 @@ export default {
       return this.searchResults.slice(startIndex, endIndex);
       // return this.getClientDetail;
     },
+    selectJobTitle() {
+      const job = this.options.find((option) => option.id === this.job_id);
+      return job ? job.name : "";
+    },
     totalRecordsOnPage() {
       return this.paginateSearchResults.length;
     },
@@ -348,6 +359,21 @@ export default {
   components: { AllClient, InActiveClient, ActiveClient, EditClientModal, AddClients },
 
   methods: {
+    async getClientMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/get_client_id_name`);
+        this.clientData = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status === 404) {
+          } else {
+            // console.error("Error fetching client data:", error.response.data.message);
+          }
+        } else {
+          // console.error("Error fetching client data:", error);
+        }
+      }
+    },
     toggleFilters() {
       this.showFilters = !this.showFilters;
     },
@@ -397,6 +423,18 @@ export default {
     },
     getColor(index) {
       return this.colors[index % this.colors.length];
+    },
+    async getPositionMethod() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+        this.options = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
     },
     exportAll() {
       const params = {};
@@ -535,6 +573,8 @@ export default {
     this.setActiveTabFromRoute();
     this.setActiveTabNameOnLoad();
     this.createdClient();
+    this.getClientMethod();
+    this.getPositionMethod();
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {

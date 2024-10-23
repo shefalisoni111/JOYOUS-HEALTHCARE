@@ -103,6 +103,7 @@
         </select> -->
       </div>
     </div>
+
     <div class="table-wrapper mt-3">
       <table class="table clientTable">
         <thead>
@@ -279,6 +280,7 @@
       :clientID="selectedClientID || 0"
       @client-updated="createdClient"
       ref="editClientModalAll"
+      :options="options"
     />
     <ConfirmationAlert
       :show-modal="isModalVisible"
@@ -286,7 +288,7 @@
       @confirm="confirmCallback"
       @cancel="canceled"
     />
-    <AddClients @client-updated="createdClient" />
+    <AddClients @client-updated="createdClient" :options="options" />
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
   </div>
@@ -321,8 +323,8 @@ export default {
       selectedClientExport: "",
       selectedClient: "",
       selectedJobTitle: "",
-      clientData: [],
-      options: [],
+      // clientData: [],
+      // options: [],
       clientId: [],
       isModalVisible: false,
       confirmMessage: "",
@@ -348,6 +350,16 @@ export default {
   //     required: false,
   //   },
   // },
+  props: {
+    clientData: {
+      type: Array,
+      required: true,
+    },
+    options: {
+      type: Array,
+      required: true,
+    },
+  },
   components: { EditClientModal, AddClients, SuccessAlert, Loader, ConfirmationAlert },
   computed: {
     paginateCandidates() {
@@ -361,10 +373,10 @@ export default {
       const client = this.clientData.find((option) => option.id === this.client_id);
       return client ? client.client_name : "";
     },
-    selectJobTitle() {
-      const job = this.options.find((option) => option.id === this.job_id);
-      return job ? job.name : "";
-    },
+    // selectJobTitle() {
+    //   const job = this.options.find((option) => option.id === this.job_id);
+    //   return job ? job.name : "";
+    // },
     selectClientsAddress() {
       const client = this.clientData.find((option) => option.id === this.client_id);
       return client ? client.address : "";
@@ -410,18 +422,18 @@ export default {
       this.createdClient();
     },
 
-    async getPositionMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
-        this.options = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
+    // async getPositionMethod() {
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+    //     this.options = response.data.data;
+    //   } catch (error) {
+    //     if (error.response) {
+    //       if (error.response.status == 404) {
+    //         // alert(error.response.data.message);
+    //       }
+    //     }
+    //   }
+    // },
     async changePage(newPage) {
       if (newPage < 1 || newPage > this.totalPages) return;
       this.currentPage = newPage;
@@ -435,21 +447,21 @@ export default {
     toggleFilters() {
       this.showFilters = !this.showFilters;
     },
-    async getClientMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/get_client_id_name`);
-        this.clientData = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status === 404) {
-          } else {
-            // console.error("Error fetching client data:", error.response.data.message);
-          }
-        } else {
-          // console.error("Error fetching client data:", error);
-        }
-      }
-    },
+    // async getClientMethod() {
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/get_client_id_name`);
+    //     this.clientData = response.data.data;
+    //   } catch (error) {
+    //     if (error.response) {
+    //       if (error.response.status === 404) {
+    //       } else {
+    //         // console.error("Error fetching client data:", error.response.data.message);
+    //       }
+    //     } else {
+    //       // console.error("Error fetching client data:", error);
+    //     }
+    //   }
+    // },
     async filterData() {
       const params = {
         page: 1,
@@ -735,8 +747,8 @@ export default {
   },
   async mounted() {
     await this.createdClient();
-    this.getClientMethod();
-    this.getPositionMethod();
+
+    // this.getPositionMethod();
   },
 };
 </script>

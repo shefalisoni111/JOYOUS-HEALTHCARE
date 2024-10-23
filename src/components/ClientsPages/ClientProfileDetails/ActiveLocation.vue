@@ -123,6 +123,7 @@ export default {
       selectedsiteId: 0,
     };
   },
+
   components: { AddClientSite, EditClientSite, Loader },
   computed: {
     paginateCandidates() {

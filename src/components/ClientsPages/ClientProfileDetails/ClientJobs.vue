@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    <AddClientJob @jobClientAdded="getClientJobData" />
+    <AddClientJob @jobClientAdded="getClientJobData" :options="options" />
     <SuccessAlert ref="successAlert" />
   </div>
 </template>
@@ -40,11 +40,16 @@ export default {
     return {
       getJobs: [],
       isLoading: false,
-      options: [],
+      // options: [],
     };
   },
   components: { SuccessAlert, AddClientJob },
-
+  props: {
+    options: {
+      type: Array,
+      required: true,
+    },
+  },
   methods: {
     async getClientJobData() {
       this.isLoading = true;
@@ -74,13 +79,13 @@ export default {
   },
   beforeRouteUpdate(to, from, next) {
     this.getClientJobData();
-    this.getJobData();
+    // this.getJobData();
 
     next();
   },
   async mounted() {
     await this.getClientJobData();
-    await this.getJobData();
+    // await this.getJobData();
   },
 };
 </script>

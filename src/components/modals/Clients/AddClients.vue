@@ -33,17 +33,14 @@
                   </div>
 
                   <div class="col-12">
-                    <div v-for="(option, index) in options" :key="option.id">
+                    <div v-for="option in options" :key="option.id">
                       <input
                         type="checkbox"
-                        :id="`option_${option.id}_${index}`"
                         :value="option.id"
                         v-model="job_ids"
                         @change="toggleJobsSelection"
                       />
-                      <label :for="`option_${option.id}_${index}`" class="text-capitalize"
-                        >&nbsp;{{ option.name }}</label
-                      >
+                      <label class="text-capitalize">&nbsp;{{ option.name }}</label>
                     </div>
                     <div v-if="getError('job_id')" class="text-danger">
                       {{ getError("job_id") }}
@@ -209,11 +206,17 @@ export default {
       isValidForm: false,
       error: [],
       job_ids: [],
-      options: [],
+      // jobOptions: [],
       errors: {},
       autofilled: false,
       emailInUse: false,
     };
+  },
+  props: {
+    options: {
+      type: Array,
+      required: true,
+    },
   },
   computed: {
     isFormValid() {
@@ -432,7 +435,7 @@ export default {
     async getPositionMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/active_job_list`);
-        this.options = response.data.data.map((job) => {
+        this.jobOptions = response.data.data.map((job) => {
           return { id: job.id, name: job.name };
         });
       } catch (error) {
@@ -450,13 +453,13 @@ export default {
     });
   },
   async beforeRouteUpdate(to, from, next) {
-    this.$options.methods.getPositionMethod.call(this);
+    this.$jobOptions.methods.getPositionMethod.call(this);
     next();
   },
   mounted() {
     // this.validatePassword = this.validatePassword.bind(this);
     this.isValidForm = this.isFormValid;
-    this.getPositionMethod();
+    // this.getPositionMethod();
   },
 };
 </script>
