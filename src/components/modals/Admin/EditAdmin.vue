@@ -94,7 +94,7 @@
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              @click.prevent="updateAdminMethod()"
+              @click.prevent="updateAdminMethod"
             >
               Save
             </button>
@@ -109,19 +109,20 @@
 import axios from "axios";
 
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
-
+import Swal from "sweetalert2";
 export default {
   name: "editAdmin",
   data() {
     return {
       fetchAdmin: {
-        id: 4,
+        id: "",
         first_name: "",
         last_name: "",
 
         address: "",
 
-        phone_number: "",
+        // phone_number: "",
+        // confirm_password: "",
         email: "",
       },
       emailInUse: false,
@@ -168,11 +169,28 @@ export default {
           this.fetchAdmin
         );
         this.$emit("admin-updated");
-        const message = "Admin updated successfully";
-        this.$refs.successAlert.showSuccess(message);
+        if (response.status === 200 && response.data && response.data.error) {
+          const errorMessage = response.data.error || "An error occurred";
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Error updating admin",
+          });
+        } else {
+          const message = "Admin updated successfully";
+          this.$refs.successAlert.showSuccess(message);
+          this.$emit("admin-updated");
+        }
+        // const message = "Admin updated successfully";
+        // this.$refs.successAlert.showSuccess(message);
         // alert("Admin updated successfully");
       } catch (error) {
-        // console.error("Error updating candidate:", error);
+        const errorMessage = error.response?.data?.message || "Error updating admin";
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: errorMessage,
+        });
       }
     },
   },

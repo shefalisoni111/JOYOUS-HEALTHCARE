@@ -172,7 +172,7 @@ import EditClientModal from "../modals/Clients/EditClientModal.vue";
 import AddClients from "@/components/modals/Clients/AddClients.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
 import Loader from "../Loader/Loader.vue";
-
+import Swal from "sweetalert2";
 export default {
   data() {
     return {

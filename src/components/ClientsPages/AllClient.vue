@@ -299,6 +299,7 @@ import AddClients from "@/components/modals/Clients/AddClients.vue";
 import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
 import { reactive } from "vue";
+import Swal from "sweetalert2";
 export default {
   data() {
     return {
@@ -545,7 +546,12 @@ export default {
         queryParams.client_ids = [];
       } else {
         if (!this.clientId || this.clientId.length === 0) {
-          alert("Please select at least one Client.");
+          Swal.fire({
+            icon: "info",
+            title: "No Client Selected",
+            text: "Please select at least one Client.",
+            confirmButtonText: "OK",
+          });
           return;
         }
         if (this.clientId.length > 0) {
@@ -630,7 +636,12 @@ export default {
 
       const isValidFileType = file.type === "text/csv";
       if (!isValidFileType) {
-        alert("Please select a CSV file.");
+        Swal.fire({
+          icon: "info",
+          title: "Invalid File Type",
+          text: "Please select a CSV file.",
+          confirmButtonText: "OK",
+        });
         return;
       }
 

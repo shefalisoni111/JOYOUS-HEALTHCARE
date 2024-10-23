@@ -185,7 +185,7 @@
 <script>
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
-
+import Swal from "sweetalert2";
 export default {
   name: "AddClients",
   data() {
@@ -383,7 +383,12 @@ export default {
             const message = "Successful Client added";
             this.$refs.successAlert.showSuccess(message);
           } else {
-            alert("Error adding Client");
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Error adding Client. Please try again.",
+              confirmButtonText: "OK",
+            });
             this.resetForm();
             this.clearError();
           }

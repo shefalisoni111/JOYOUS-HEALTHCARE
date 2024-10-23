@@ -82,7 +82,7 @@
                   </div>
                   <div class="col-12 mt-1">
                     <input
-                      type="text"
+                      type="password"
                       class="form-control"
                       v-model="fetchClients.password"
                     />
@@ -94,7 +94,7 @@
                   </div>
                   <div class="col-12 mt-1">
                     <input
-                      type="text"
+                      type="password"
                       class="form-control"
                       v-model="fetchClients.confirm_password"
                     />
