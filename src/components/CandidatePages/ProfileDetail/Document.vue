@@ -193,6 +193,20 @@
                                           >ISSUE DATE</label
                                         >
                                         <input
+                                          v-if="
+                                            getDocs.candidate_document !== null &&
+                                            getDocs.candidate_document.document_name ===
+                                              getDocs.document.document_name
+                                          "
+                                          type="date"
+                                          class="form-control"
+                                          id="issue"
+                                          placeholder="issue date"
+                                          v-model="getDocs.candidate_document.issue_date"
+                                          title="issue date"
+                                        />
+                                        <input
+                                          v-else
                                           type="date"
                                           class="form-control"
                                           id="issue"
@@ -208,6 +222,16 @@
                                           >EXPIRY DATE</label
                                         >
                                         <input
+                                          v-if="getDocs.candidate_document !== null"
+                                          type="date"
+                                          class="form-control"
+                                          id="expiry"
+                                          placeholder="expiry date"
+                                          v-model="getDocs.candidate_document.expiry_date"
+                                          title="expiry date"
+                                        />
+                                        <input
+                                          v-else
                                           type="date"
                                           class="form-control"
                                           id="expiry"
@@ -223,6 +247,13 @@
                                     <div class="mb-3">
                                       <label class="form-label">Description</label>
                                       <textarea
+                                        v-if="getDocs.candidate_document !== null"
+                                        class="form-control"
+                                        rows="3"
+                                        v-model="getDocs.candidate_document.description"
+                                      ></textarea>
+                                      <textarea
+                                        v-else
                                         class="form-control"
                                         rows="3"
                                         v-model="description"
@@ -233,6 +264,16 @@
                                         >UPLOAD DOCUMENT</label
                                       >
                                       <input
+                                        v-if="getDocs.candidate_document !== null"
+                                        class="form-control"
+                                        type="file"
+                                        id="formFile"
+                                        ref="fileInput"
+                                        accept="image/*"
+                                        v-on:change="handleFileChange"
+                                      />
+                                      <input
+                                        v-else
                                         class="form-control"
                                         type="file"
                                         id="formFile"
@@ -349,6 +390,9 @@ export default {
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,
+      StaffDocumentDetails: [],
+
+      selectedDocumentId: null,
       // showModal: false,
       // alertMessage: "",
     };
@@ -359,6 +403,7 @@ export default {
       return this.issue_date && this.expiry_date && this.description && this.url;
     },
   },
+
   methods: {
     isDownloadDisabled() {
       return !this.getCate.documents;
@@ -372,7 +417,8 @@ export default {
       const files = event.target.files;
 
       if (files.length > 0) {
-        this.url = files[0];
+        // this.url = files[0];
+        this.filePreview = URL.createObjectURL(this.url);
       }
     },
     async addCandidateDocument(id) {
@@ -549,6 +595,34 @@ export default {
         );
 
         this.getCategory = response.data;
+        this.StaffDocumentDetails = response.data.candidate_document;
+
+        this.getCategory.forEach((category) => {
+          category.documents.forEach((doc) => {
+            if (doc.candidate_document !== null) {
+              if (doc.candidate_document.document_name === doc.document.document_name) {
+                if (doc.candidate_document !== null) {
+                  if (
+                    doc.candidate_document.document_name === doc.document.document_name
+                  ) {
+                  }
+                  console.log(
+                    doc.candidate_document,
+                    doc.candidate_document.document_name === doc.document.document_name
+                  );
+                } else {
+                  this.issue_date = "";
+                  this.expiry_date = "";
+                  this.description = "";
+                }
+              }
+            } else {
+              this.issue_date = "";
+              this.expiry_date = "";
+              this.description = "";
+            }
+          });
+        });
       } catch (error) {
         // console.error("Error fetching document categories:", error);
       }
