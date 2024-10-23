@@ -1069,11 +1069,7 @@ export default {
         );
 
         this.dataCustomTimeSheet = response.data;
-        if (this.paginatedTimesheets.length === 0) {
-          this.errorMessage = "No Weekly timesheets found for the specified month";
-        } else {
-          this.errorMessage = "";
-        }
+
         this.paginatedTimesheets = this.dataCustomTimeSheet.data.paginated_timesheets;
         this.total_hourMain = this.dataCustomTimeSheet.data.candidate_hours;
 
@@ -1096,6 +1092,11 @@ export default {
           }
         });
         this.mergedTimesheetsArray = mergedTimesheetsArray;
+        if (this.mergedTimesheetsArray.length === 0) {
+          this.errorMessage = "No Weekly timesheets found for the specified month";
+        } else {
+          this.errorMessage = "";
+        }
         this.candidateHoursMap = {};
         if (this.total_hourMain) {
           this.total_hourMain.forEach((candidate) => {
