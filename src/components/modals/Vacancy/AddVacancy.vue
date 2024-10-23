@@ -1074,8 +1074,8 @@ export default {
         this.shiftsTime =
           response.data.site_shift_data.map((shift) => ({
             ...shift,
-            start_time: this.convertTimeFormat(shift.start_time),
-            end_time: this.convertTimeFormat(shift.end_time),
+            start_time: shift.start_time,
+            end_time: shift.end_time,
           })) || [];
         // return this.shiftsTime.length > 0 ? this.shiftsTime[0].id : null;
       } catch (error) {
