@@ -16,7 +16,7 @@
               <!-- <th scope="col">Client Rate</th> -->
               <th scope="col" class="widthDefineNotes">Notes</th>
               <th scope="col">Publish</th>
-              <th scope="col" class="text-center">All</th>
+              <th scope="col" class="text-center withShow">All Staff</th>
               <th scope="col">Applied</th>
               <th scope="col">Assigned</th>
               <th scope="col">Rejected</th>
