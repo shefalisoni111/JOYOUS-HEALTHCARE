@@ -169,7 +169,7 @@
                             <th scope="col">End Time</th>
                             <th scope="col">Break</th>
                             <th scope="col">Total Hours</th>
-                            <th scope="col">Approve - Status</th>
+                            <th scope="col">Status</th>
                             <th scope="col">View</th>
                           </tr>
                         </thead>
@@ -275,7 +275,7 @@
                             <th scope="col">End Time</th>
                             <th scope="col">Break</th>
                             <th scope="col">Total Hours</th>
-                            <th scope="col">Approve - Status</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Action</th>
                           </tr>
                         </thead>
