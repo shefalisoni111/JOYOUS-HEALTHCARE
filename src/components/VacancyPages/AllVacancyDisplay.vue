@@ -213,7 +213,7 @@
       @updateVacancy="createVacancy"
       ref="editShift"
     />
-    <PublishedVacancy @publishVacancy="publishListShowMethod" />
+    <PublishedVacancy @ListPublishUpdated="createVacancy" />
     <AppliedVacancyList @appliedVacancy="createVacancy" />
     <AssignedVacancyList @assignVacancy="createVacancy" />
     <RejectedVacancyList @rejectVacancy="createVacancy" />
@@ -303,8 +303,13 @@ export default {
     Loader,
   },
   computed: {
+    getdata() {
+      return (
+        this.vacancies.find((v) => v.id === this.$store.state.selectedPublishItemId) || {}
+      );
+    },
     getIconClass() {
-      return this.publish ? "bi bi-bell" : "bi bi-check-circle-fill";
+      return this.getdata.publish === "true" ? "bi bi-check-circle-fill" : "bi bi-bell";
     },
 
     paginatedVacancies() {

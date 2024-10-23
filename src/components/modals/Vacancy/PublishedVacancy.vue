@@ -446,9 +446,11 @@ export default {
             this.enableMailNotification = false;
             this.selectAll = false;
 
-            this.$emit("publishVacancy");
+            // this.$emit("publishVacancy");
+            this.$emit("ListPublishUpdated");
             this.$emit("publishVacancySearch");
-            this.publishListShowMethod();
+            // this.publishListShowMethod();
+            // this.getVacancyDataMethod();
           } else {
             // Handle unexpected response status
           }
@@ -532,7 +534,7 @@ export default {
             vacancy_id: id,
           },
         });
-        console.log(response.data.candidates_data);
+        // console.log(response.data.candidates_data);
       } catch (error) {
         // console.error("Error fetching vacancies:", error);
       }
