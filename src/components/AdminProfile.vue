@@ -122,7 +122,6 @@
     </div>
     <EditAdmin @admin-updated="handleAdminUpdated" />
     <SuccessAlert ref="successAlert" />
-    <!-- msg -->
   </div>
 </template>
 
@@ -175,8 +174,8 @@ export default {
           }
         );
 
-        if (response.data && response.data.data.profile_photo) {
-          const imageUrl = `${VITE_API_URL}${response.data.data.profile_photo}`;
+        if (response.data && response.data.image) {
+          const imageUrl = `${VITE_API_URL}${response.data.image}`;
           localStorage.setItem("profileImage", imageUrl);
           this.profileImage = imageUrl;
           const message = "successfully Updated Profile.";

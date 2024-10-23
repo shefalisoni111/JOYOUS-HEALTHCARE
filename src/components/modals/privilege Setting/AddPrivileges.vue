@@ -378,7 +378,7 @@ export default {
       this.passwordsMatch = this.password === this.confirm_password;
     },
     validateEmailFormat(email) {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk)$/;
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
       return emailRegex.test(email);
     },
 
@@ -394,7 +394,7 @@ export default {
       this.validationForSelectedRoles = !!this.user_role_id;
     },
     validatePhoneNumberFormat(phoneNumber) {
-      const phoneRegex = /^\d{10}$/;
+      const phoneRegex = /^\d{11}$/;
       return phoneRegex.test(phoneNumber);
     },
     clearError() {
