@@ -232,7 +232,7 @@ import Rejected from "../CandidatePages/Rejected.vue";
 import AssignDirectVacancy from "../modals/CandidatePage/AssignDirectVacancy.vue";
 // import RejectCandidate from "../CandidatePages/RejectCandidate.vue";
 import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
-
+import Swal from "sweetalert2";
 const axiosInstance = axios.create({
   headers: {
     "Cache-Control": "no-cache",
@@ -318,7 +318,12 @@ export default {
           const response = await axios.put(
             `${VITE_API_URL}/candidate/approve_candidate/${id}`
           );
-          alert("Staff reactivated successfully!");
+          // alert("Staff reactivated successfully!");
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Staff reactivated successfully!",
+          });
           this.pendingCandidateMethod();
         } catch (error) {
           // console.error("Error approving candidate:", error);
@@ -356,7 +361,12 @@ export default {
         const response = await axios
           .put(`${VITE_API_URL}/re_activate_candidate/${id}`)
           .then((response) => {
-            alert("Staff reactivated successfully!");
+            // alert("Staff reactivated successfully!");
+            Swal.fire({
+              icon: "success",
+              title: "Success",
+              text: "Staff reactivated successfully!",
+            });
             this.getCandidate();
           })
 
@@ -418,7 +428,12 @@ export default {
         axios
           .put(`${VITE_API_URL}/inactivate_candidate/${id}`)
           .then((response) => {
-            alert("Staff In-activated successfully!");
+            // alert("Staff In-activated successfully!");
+            Swal.fire({
+              icon: "success",
+              title: "Success",
+              text: "Staff reactivated successfully!",
+            });
 
             this.getCandidateMethods();
           })

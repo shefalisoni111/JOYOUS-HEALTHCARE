@@ -119,7 +119,7 @@ a {
 import axios from "axios";
 import Loader from "../Loader/Loader.vue";
 import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
-
+import Swal from "sweetalert2";
 export default {
   name: "InActiveCandidate",
   data() {
@@ -190,7 +190,12 @@ export default {
         const response = await axios
           .put(`${VITE_API_URL}/re_activate_candidate/${id}`)
           .then((response) => {
-            alert("Staff reactivated successfully!");
+            // alert("Staff reactivated successfully!");
+            Swal.fire({
+              icon: "success",
+              title: "Success",
+              text: "Staff reactivated successfully!",
+            });
             this.getCandidate();
           })
 

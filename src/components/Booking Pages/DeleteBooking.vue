@@ -110,6 +110,7 @@ import Loader from "../Loader/Loader.vue";
 import ShowDetailsMessage from "../Alerts/ShowDetailsMessage.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
 import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
+import Swal from "sweetalert2";
 const axiosInstance = axios.create({
   headers: {
     "Cache-Control": "no-cache",
@@ -285,7 +286,12 @@ export default {
             // alert("No records found for the given filter");
             errorMessages === "No records found for the given filter";
           } else {
-            alert(errorMessages);
+            // alert(errorMessages);
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: errorMessages,
+            });
           }
         } else {
           // Handle other errors

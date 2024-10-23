@@ -259,7 +259,7 @@ import AddPrivileges from "../modals/privilege Setting/AddPrivileges.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
 import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
 import Loader from "../Loader/Loader.vue";
-
+import Swal from "sweetalert2";
 export default {
   data() {
     return {
@@ -367,8 +367,18 @@ export default {
         } catch (error) {
           if (error.response) {
             if (error.response.status === 404) {
+              // Swal.fire({
+              //   icon: "error",
+              //   title: "Not Found",
+              //   text: "The requested resource was not found.",
+              // });
             } else if (error.response.status === 422) {
-              alert(error.response.data.message);
+              // alert(error.response.data.message);
+              Swal.fire({
+                icon: "warning",
+                title: "Validation Error",
+                text: error.response.data.message,
+              });
             }
           }
         }

@@ -190,7 +190,7 @@ import Loader from "../Loader/Loader.vue";
 // import EditCandidate from "../modals/CandidatePage/EditCandidate.vue";
 import AssignDirectVacancy from "../modals/CandidatePage/AssignDirectVacancy.vue";
 import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
-
+import Swal from "sweetalert2";
 export default {
   name: "ActiveCandidate",
   data() {
@@ -261,7 +261,12 @@ export default {
         axios
           .put(`${VITE_API_URL}/inactivate_candidate/${id}`)
           .then((response) => {
-            alert("Staff In-activated successfully!");
+            // alert("Staff In-activated successfully!");
+            Swal.fire({
+              icon: "success",
+              title: "Success",
+              text: "Staff inactivated successfully!",
+            });
             this.inactiveCandidateData = response.data;
             this.getCandidateMethods();
           })

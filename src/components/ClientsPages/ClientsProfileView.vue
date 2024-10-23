@@ -77,6 +77,7 @@
 
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
 export default {
   name: "ProfileView",
   data() {
@@ -91,7 +92,7 @@ export default {
       }
       try {
         const response = await axios.get(
-          `${VITE_API_URL.replace(/\/$/, "")}/clients/${this.$route.params.id}`
+          `${VITE_API_URL}/clients/${this.$route.params.id}`
         );
 
         this.getClients = response.data.data;
@@ -99,6 +100,11 @@ export default {
         if (error.response) {
           if (error.response.status == 404) {
             // alert(error.response.data.message);
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: error.response.data.message || "No records found.",
+            });
           }
         } else {
           // console.error("Error fetching candidates:", error);

@@ -80,7 +80,7 @@
 
 <script>
 import axios from "axios";
-
+import Swal from "sweetalert2";
 export default {
   name: "CandidateAdd",
   data() {
@@ -116,7 +116,12 @@ export default {
           this.fetchClients
         );
 
-        alert("Candidate updated successfully");
+        // alert("Candidate updated successfully");
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Candidate updated successfully!",
+        });
       } catch (error) {
         // console.error("Error updating candidate:", error);
       }

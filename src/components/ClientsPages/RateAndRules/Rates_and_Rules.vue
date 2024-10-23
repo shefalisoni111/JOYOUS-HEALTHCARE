@@ -736,7 +736,12 @@ export default {
             // alert("No records found for the given filter");
             errorMessages === "No records found for the given filter";
           } else {
-            alert(errorMessages);
+            // alert(errorMessages);
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: errorMessages || errorMessages,
+            });
           }
         } else {
           // console.error(error);
@@ -752,7 +757,12 @@ export default {
 
       const isValidFileType = file.type === "text/csv";
       if (!isValidFileType) {
-        alert("Please select a CSV file.");
+        // alert("Please select a CSV file.");
+        Swal.fire({
+          icon: "warning",
+          title: "Invalid File Type",
+          text: "Please select a CSV file.",
+        });
         return;
       }
 
@@ -786,7 +796,12 @@ export default {
     },
     exportOneFile() {
       if (!this.ids || this.ids.length === 0) {
-        alert("Please select at least one Client.");
+        // alert("Please select at least one Client.");
+        Swal.fire({
+          icon: "warning",
+          title: "Selection Required",
+          text: "Please select at least one Client.",
+        });
         return;
       }
 

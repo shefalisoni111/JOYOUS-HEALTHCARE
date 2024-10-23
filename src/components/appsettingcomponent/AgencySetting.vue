@@ -424,7 +424,7 @@ import Sidebar from "../Sidebar.vue";
 import EditAgencySetting from "../modals/AgencySetting/EditAgencySetting.vue";
 import Loader from "../Loader/Loader.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
-
+import Swal from "sweetalert2";
 export default {
   name: "AgencySetting",
   data() {
@@ -461,7 +461,12 @@ export default {
       const formData = new FormData();
 
       if (!file) {
-        alert("Please choose an image file.");
+        Swal.fire({
+          icon: "warning",
+          title: "No File Selected",
+          text: "Please choose an image file.",
+          confirmButtonText: "OK",
+        });
         return;
       }
 
@@ -511,7 +516,12 @@ export default {
       const formData = new FormData();
 
       if (!file) {
-        alert("Please choose an image file.");
+        Swal.fire({
+          icon: "warning",
+          title: "No File Selected",
+          text: "Please choose an image file.",
+          confirmButtonText: "OK",
+        });
         return;
       }
 
@@ -560,7 +570,12 @@ export default {
       const formData = new FormData();
 
       if (!file) {
-        alert("Please choose an image file.");
+        Swal.fire({
+          icon: "warning",
+          title: "No File Selected",
+          text: "Please choose an image file.",
+          confirmButtonText: "OK",
+        });
         return;
       }
 
