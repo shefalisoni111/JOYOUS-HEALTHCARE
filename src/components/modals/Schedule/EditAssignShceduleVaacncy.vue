@@ -204,33 +204,41 @@
                           <label class="form-label">Client Rate</label>
                         </div>
                         <div class="col-12 mt-1">
-                          <input type="text" class="form-control" value="null" />
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="fetchAssignVacancy.client_rate"
+                          />
                         </div>
                       </div>
-                      <div class="mb-3">
+                      <!-- <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label">Client Pay Amount</label>
                         </div>
                         <div class="col-12 mt-1">
-                          <input type="text" class="form-control" value="null" />
+                          <input type="text" class="form-control" />
                         </div>
-                      </div>
+                      </div> -->
                       <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label">Staff Rate</label>
                         </div>
                         <div class="col-12 mt-1">
-                          <input type="text" class="form-control" value="null" />
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="fetchAssignVacancy.staff_rate"
+                          />
                         </div>
                       </div>
-                      <div class="mb-3">
+                      <!-- <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label">Staff Rate Amount</label>
                         </div>
                         <div class="col-12 mt-1">
-                          <input type="text" class="form-control" value="null" />
+                          <input type="text" class="form-control" />
                         </div>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
 
@@ -297,6 +305,7 @@ export default {
         end_time: "",
         site: "",
         client_rate: "",
+        staff_rate: "",
         dates: [],
         total_shift_hours: "",
         job_id: 1,
@@ -385,14 +394,12 @@ export default {
       return `${formattedHours}:${formattedMinutes} ${amPm}`;
     },
     formatTime(hour) {
-      if (hour < 12) {
+      if (hour === 0) {
+        return "12:00 AM";
+      } else if (hour < 12) {
         return `${String(hour).padStart(2, "0")}:00 AM`;
       } else if (hour === 12) {
-        return `${String(hour).padStart(2, "0")}:00 PM`;
-      } else if (hour === 24) {
-        return `00:00`;
-      } else if (hour > 12 && hour < 24) {
-        return `${String(hour).padStart(2, "0")}:00 PM`;
+        return "12:00 AM";
       } else {
         return `${String(hour - 12).padStart(2, "0")}:00 PM`;
       }
@@ -456,10 +463,8 @@ export default {
         ...this.fetchAssignVacancy,
         ...vacancy_data,
       };
-      this.fetchAssignVacancy.start_time = this.convertTimeFormat(
-        vacancy_data.start_time
-      );
-      this.fetchAssignVacancy.end_time = this.convertTimeFormat(vacancy_data.end_time);
+      this.fetchAssignVacancy.start_time = vacancy_data.start_time;
+      this.fetchAssignVacancy.end_time = vacancy_data.end_time;
       this.fetchAssignVacancy.assign_to = assign_to;
     },
     async updateCandidateMethod() {
