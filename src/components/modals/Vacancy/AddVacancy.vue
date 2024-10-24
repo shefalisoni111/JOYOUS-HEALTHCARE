@@ -130,9 +130,9 @@
                       @change="addDate"
                       style="padding-right: 1px"
                     />
-                    <!-- <span v-if="!validationDateType" class="text-danger"
+                    <span v-if="!validationDateType" class="text-danger"
                       >Please choose a date from today onwards!</span
-                    > -->
+                    >
                     <div v-if="dates.length > 0" class="mt-2">
                       <span
                         v-for="(date, index) in dates"
@@ -274,10 +274,7 @@
                         maxlength="3"
                       />
 
-                      <span
-                        v-if="!validationClientRate && client_rate"
-                        class="text-danger"
-                      >
+                      <span v-if="!validationClientRate" class="text-danger">
                         Client Rate must be must be Number.
                       </span>
                     </div>
@@ -295,7 +292,7 @@
                         @input="handleInput('staff_rate', staff_rate)"
                         maxlength="3"
                       />
-                      <span v-if="!validationStaffRate && staff_rate" class="text-danger">
+                      <span v-if="!validationStaffRate" class="text-danger">
                         Staff Rate must be must be Number.
                       </span>
                     </div>
@@ -313,7 +310,7 @@
                         @input="handleInput('umbrella', umbrella)"
                         maxlength="3"
                       />
-                      <span v-if="!validationUmbrella && umbrella" class="text-danger">
+                      <span v-if="!validationUmbrella" class="text-danger">
                         Umbrella must be must be Number.
                       </span>
                     </div>
@@ -331,7 +328,7 @@
                         @input="handleInput('paye', paye)"
                         maxlength="3"
                       />
-                      <span v-if="!validationPaye && paye" class="text-danger">
+                      <span v-if="!validationPaye" class="text-danger">
                         Paye must be must be Number.
                       </span>
                     </div>
@@ -351,10 +348,7 @@
                         @input="handleInput('private_limited', private_limited)"
                         maxlength="3"
                       />
-                      <span
-                        v-if="!validationPrivateLimited && private_limited"
-                        class="text-danger"
-                      >
+                      <span v-if="!validationPrivateLimited" class="text-danger">
                         Private Limited must be Number.
                       </span>
                     </div>
@@ -616,20 +610,34 @@ export default {
     handleInput(field, value) {
       this.hasInteracted = true;
 
+      // Filter out non-numeric characters
       const filteredValue = value.replace(/[^0-9]/g, "");
       this[field] = filteredValue;
-      this.validationClientRate =
-        filteredValue.length > 0 && /^[0-9]+$/.test(filteredValue);
-      this.validationPaye = filteredValue.length > 0 && /^[0-9]+$/.test(filteredValue);
-      this.validationPrivateLimited =
-        filteredValue.length > 0 && /^[0-9]+$/.test(filteredValue);
-      this.validationStaffRate =
-        filteredValue.length > 0 && /^[0-9]+$/.test(filteredValue);
 
+      // Determine if the input is valid based on its length and numeric status
+      const isValidNumber = filteredValue.length > 0 && /^[0-9]+$/.test(filteredValue);
+
+      // Update validation states based on the filtered value and current site_id
       if (this.site_id) {
+        // Validate rates if a site is selected
         this.validateRate(field, filteredValue);
+
+        // Update validations for specific fields
+        if (field === "client_rate") {
+          this.validationClientRate = isValidNumber;
+        } else if (field === "paye") {
+          this.validationPaye = isValidNumber;
+        } else if (field === "private_limited") {
+          this.validationPrivateLimited = isValidNumber;
+        } else if (field === "staff_rate") {
+          this.validationStaffRate = isValidNumber;
+        }
       } else {
-        this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = true;
+        // If no site is selected, disable validation for all rates
+        this.validationClientRate = true;
+        this.validationPaye = true;
+        this.validationPrivateLimited = true;
+        this.validationStaffRate = true;
       }
     },
 
@@ -824,6 +832,8 @@ export default {
         } else {
           this.validationDateType = false;
         }
+      } else {
+        // this.selectedDate = "";
       }
     },
     isToday(selectedDate, currentDate) {
@@ -1135,6 +1145,9 @@ export default {
         (this.validationDateType = true),
         (this.validationBreak = true);
       this.hasInteracted = false;
+      this.validationPaye = true;
+      this.validationUmbrella = true;
+      this.selectedDate = null;
     },
     clearFields() {
       this.site_id = "";
