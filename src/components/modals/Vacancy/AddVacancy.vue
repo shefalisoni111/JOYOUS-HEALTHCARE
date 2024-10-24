@@ -935,6 +935,7 @@ export default {
           if (response.status === 201) {
             this.$emit("addVacancy");
             this.clearFields();
+            this.clearError();
             this.removeDate();
             const message = "Successful Shift added";
             this.$refs.successAlert.showSuccess(message);
@@ -1147,7 +1148,7 @@ export default {
       this.hasInteracted = false;
       this.validationPaye = true;
       this.validationUmbrella = true;
-      this.selectedDate = null;
+      // this.selectedDate = null;
     },
     clearFields() {
       this.site_id = "";
