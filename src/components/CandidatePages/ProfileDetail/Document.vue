@@ -193,17 +193,14 @@
                                           >ISSUE DATE</label
                                         >
                                         <input
-                                          v-if="
-                                            getDocs.candidate_document !== null &&
-                                            getDocs.candidate_document.document_name ===
-                                              getDocs.document.document_name
-                                          "
+                                          v-if="getDocs.candidate_document !== null"
                                           type="date"
                                           class="form-control"
                                           id="issue"
                                           placeholder="issue date"
                                           v-model="getDocs.candidate_document.issue_date"
                                           title="issue date"
+                                          readonly
                                         />
                                         <input
                                           v-else
@@ -229,6 +226,7 @@
                                           placeholder="expiry date"
                                           v-model="getDocs.candidate_document.expiry_date"
                                           title="expiry date"
+                                          readonly
                                         />
                                         <input
                                           v-else
@@ -249,6 +247,7 @@
                                       <textarea
                                         v-if="getDocs.candidate_document !== null"
                                         class="form-control"
+                                        readonly
                                         rows="3"
                                         v-model="getDocs.candidate_document.description"
                                       ></textarea>
@@ -271,6 +270,7 @@
                                         ref="fileInput"
                                         accept="image/*"
                                         v-on:change="handleFileChange"
+                                        disabled
                                       />
                                       <input
                                         v-else
@@ -282,6 +282,7 @@
                                         v-on:change="handleFileChange"
                                       />
                                     </div>
+
                                     <button
                                       type="button"
                                       class="btn btn-primary"
@@ -391,7 +392,7 @@ export default {
       confirmMessage: "",
       confirmCallback: null,
       StaffDocumentDetails: [],
-
+      getStaffDoc: [],
       selectedDocumentId: null,
       // showModal: false,
       // alertMessage: "",
@@ -417,8 +418,8 @@ export default {
       const files = event.target.files;
 
       if (files.length > 0) {
-        // this.url = files[0];
-        this.filePreview = URL.createObjectURL(this.url);
+        this.url = files[0];
+        // this.filePreview = URL.createObjectURL(this.url);
       }
     },
     async addCandidateDocument(id) {
@@ -427,28 +428,33 @@ export default {
       if (this.getDocument.length > 0) {
         const selectedDocument = this.getDocument[0];
 
-        const formData = new FormData();
-        formData.append("candidate_document[candidate_id]", this.$route.params.id);
-        formData.append("candidate_document[document_id]", id);
-        formData.append("candidate_document[issue_date]", this.issue_date);
-        formData.append("candidate_document[expiry_date]", this.expiry_date);
-        formData.append("candidate_document[description]", this.description);
-        formData.append("candidate_document[document_image]", this.url);
+        // const formData = new FormData();
+        // formData.append("candidate_document[candidate_id]", this.$route.params.id);
+        // formData.append("candidate_document[document_id]", id);
+        // formData.append("candidate_document[issue_date]", this.issue_date);
+        // formData.append("candidate_document[expiry_date]", this.expiry_date);
+        // formData.append("candidate_document[description]", this.description);
+        // formData.append("candidate_document[document_image]", this.url);
+        const payload = {
+          candidate_id: this.$route.params.id,
+          document_id: id,
+          issue_date: this.issue_date || null,
+          expiry_date: this.expiry_date || null,
+          description: this.description || "",
+          document_image: this.url || null,
+        };
 
         try {
-          const response = await fetch(
+          const response = await axios.post(
             `${VITE_API_URL}/admin_upload_candidate_document`,
+            payload,
             {
-              method: "POST",
               headers: {
                 Accept: "application/json",
-                Authorization: "bearer " + token,
+                Authorization: "Bearer " + token,
               },
-              body: formData,
             }
           );
-
-          const responseData = await response.json();
 
           if (response.ok) {
             this.getDocCAtegories();
@@ -599,6 +605,12 @@ export default {
 
         this.getCategory.forEach((category) => {
           category.documents.forEach((doc) => {
+            this.getStaffDoc = {
+              ...doc.candidate_document,
+              issue_date: doc.candidate_document.issue_date || "",
+              expiry_date: doc.candidate_document.expiry_date || "",
+              description: doc.candidate_document.description || "",
+            };
             if (doc.candidate_document !== null) {
               if (doc.candidate_document.document_name === doc.document.document_name) {
                 if (doc.candidate_document !== null) {
@@ -606,10 +618,6 @@ export default {
                     doc.candidate_document.document_name === doc.document.document_name
                   ) {
                   }
-                  console.log(
-                    doc.candidate_document,
-                    doc.candidate_document.document_name === doc.document.document_name
-                  );
                 } else {
                   this.issue_date = "";
                   this.expiry_date = "";

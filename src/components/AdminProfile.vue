@@ -155,7 +155,7 @@ export default {
       const file = event.target.files[0];
 
       if (!file) {
-        console.error("No file selected");
+        // console.error("No file selected");
         return;
       }
 
@@ -256,11 +256,15 @@ export default {
     },
   },
   async mounted() {
-    const storedProfileImage = localStorage.getItem("profileImage");
-    if (storedProfileImage) {
-      this.profileImage = storedProfileImage;
+    const storedImageUrl = localStorage.getItem("profileImage");
+    if (storedImageUrl) {
+      this.profileImage = storedImageUrl;
     }
     await this.fetchAdminData();
+    document.addEventListener("click", this.handleClickOutside);
+  },
+  beforeDestroy() {
+    document.removeEventListener("click", this.handleClickOutside);
   },
 };
 </script>
