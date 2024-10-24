@@ -509,7 +509,7 @@ export default {
     },
     getCandidateName(id) {
       const candidate = this.candidateLists.find((candidate) => candidate.id === id);
-       return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
+      return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
     },
     async makeFilterAPICall(filter_type, filter_value) {
       try {
@@ -537,25 +537,9 @@ export default {
       }
     },
     async getClientMethod() {
-      const pagesToFetch = [1, 2, 3];
-      let allClientData = [];
-
       try {
-        const responses = await Promise.all(
-          pagesToFetch.map((page) =>
-            axios.get(`${VITE_API_URL}/clients`, {
-              params: {
-                page: page,
-              },
-            })
-          )
-        );
-
-        responses.forEach((response) => {
-          allClientData = allClientData.concat(response.data.data);
-        });
-
-        this.clientData = allClientData;
+        const response = await axios.get(`${VITE_API_URL}/get_client_id_name`);
+        this.clientData = response.data.data;
       } catch (error) {
         if (error.response && error.response.status === 404) {
           // Handle 404 error

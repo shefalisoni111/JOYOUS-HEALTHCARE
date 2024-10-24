@@ -228,7 +228,7 @@
                         </tbody>
                         <tbody v-else>
                           <tr>
-                            <td colspan="12" class="text-danger text-center">
+                            <td colspan="14" class="text-danger text-center">
                               {{
                                 errorMessageSigned ||
                                 errorMessageFilter ||
@@ -334,7 +334,7 @@
                         </tbody>
                         <tbody v-else>
                           <tr>
-                            <td colspan="12" class="text-danger text-center">
+                            <td colspan="14" class="text-danger text-center">
                               {{ errorMessage }}
                             </td>
                           </tr>

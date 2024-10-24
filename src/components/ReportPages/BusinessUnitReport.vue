@@ -8,17 +8,6 @@
             <div class="">
               <div class="d-flex ms-2 justify-content-between">
                 <div class="d-flex gap-2">
-                  <!-- <select v-model="client_id" id="selectClients" @change="filterData">
-                    <option value="">All Client</option>
-                    <option
-                      v-for="option in clientData"
-                      :key="option.id"
-                      :value="option.id"
-                      aria-placeholder="Select Job"
-                    >
-                      {{ option.first_name }}
-                    </option>
-                  </select> -->
                   <select v-model="site_id" id="selectBusinessUnit" @change="filterData">
                     <option value="">All Site</option>
                     <option
@@ -319,27 +308,7 @@
                           <td scope="col">
                             {{ data.total_cost }}
                           </td>
-                          <!-- <td scope="col">
-                            <div v-if="data.paper_timesheet">
-                              <img
-                                :src="fullPaperTimeSheetUrl(data.paper_timesheet)"
-                                alt="Current Paper TimeSheet"
-                                class="img-fluid"
-                                style="width: 60px"
-                              />
-                              &nbsp;
-                              <button
-                                type="button"
-                                class="btn border-primary-subtle"
-                                data-bs-toggle="modal"
-                                data-bs-target="#viewPaperTimeSheet"
-                                @click="viewPaperSheet(data.id)"
-                              >
-                                <i class="bi bi-eye"></i>
-                              </button>
-                            </div>
-                            <div v-else>Null</div>
-                          </td> -->
+
                           <td scope="col">
                             {{ data.approved_hour ? "Approved" : "No Approved" }}
                           </td>
@@ -450,7 +419,7 @@ const axiosInstance = axios.create({
 export default {
   data() {
     return {
-      currentView: "monthly",
+      currentView: "weekly",
       daysOfWeek: [
         "Sunday",
         "Monday",
@@ -552,7 +521,7 @@ export default {
     },
     getCandidateName(id) {
       const candidate = this.candidateLists.find((candidate) => candidate.id === id);
-       return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
+      return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
     },
     async makeFilterAPICall(filter_type, filter_value) {
       try {
@@ -579,25 +548,9 @@ export default {
       }
     },
     async getClientMethod() {
-      const pagesToFetch = [1, 2, 3];
-      let allClientData = [];
-
       try {
-        const responses = await Promise.all(
-          pagesToFetch.map((page) =>
-            axios.get(`${VITE_API_URL}/clients`, {
-              params: {
-                page: page,
-              },
-            })
-          )
-        );
-
-        responses.forEach((response) => {
-          allClientData = allClientData.concat(response.data.data);
-        });
-
-        this.clientData = allClientData;
+        const response = await axios.get(`${VITE_API_URL}/get_client_id_name`);
+        this.clientData = response.data.data;
       } catch (error) {
         if (error.response && error.response.status === 404) {
           // Handle 404 error
@@ -615,26 +568,46 @@ export default {
     async getSiteReportMethod() {
       this.isLoading = true;
       const token = localStorage.getItem("token");
-      const startOfMonth = new Date(
-        this.startDate.getFullYear(),
-        this.startDate.getMonth(),
-        1
-      );
-      const endOfMonth = new Date(
-        this.endDate.getFullYear(),
-        this.endDate.getMonth() + 1,
-        0
-      );
       const formatDate = (date) => {
         const month = (date.getMonth() + 1).toString().padStart(2, "0");
         const day = date.getDate().toString().padStart(2, "0");
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
       };
+
+      let startOfRange, endOfRange;
+
+      if (this.currentView === "weekly") {
+        const startOfWeek = new Date(this.startDate);
+        const dayOfWeek = this.startDate.getDay();
+
+        const diff = (dayOfWeek === 0 ? -6 : 1) - dayOfWeek;
+        startOfWeek.setDate(this.startDate.getDate() + diff);
+
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+        startOfRange = startOfWeek;
+        endOfRange = endOfWeek;
+      } else {
+        const startOfMonth = new Date(
+          this.startDate.getFullYear(),
+          this.startDate.getMonth(),
+          1
+        );
+        const endOfMonth = new Date(
+          this.startDate.getFullYear(),
+          this.startDate.getMonth() + 1,
+          0
+        );
+
+        startOfRange = startOfMonth;
+        endOfRange = endOfMonth;
+      }
+
       const requestData = {
-        date: formatDate(startOfMonth),
+        date: formatDate(startOfRange),
         filter_type: this.currentView === "weekly" ? "week" : "month",
-        // end_date: endOfMonth.toLocaleDateString(),
       };
       try {
         const response = await axios.get(
@@ -792,22 +765,17 @@ export default {
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
-        const currentDate = new Date();
-        const dayOfWeek = currentDate.getDay();
-        const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-        const startOfWeek = new Date(currentDate);
-        startOfWeek.setDate(currentDate.getDate() + diff);
-        this.startDate = startOfWeek;
+        const weekStart = new Date(this.startDate);
+        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
+        this.startDate = weekStart;
 
-        const endOfWeek = new Date(startOfWeek);
-        endOfWeek.setDate(startOfWeek.getDate() + 6);
-        this.endDate = endOfWeek;
-        this.getSiteReportMethod();
+        const weekEnd = new Date(this.startDate);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+        this.endDate = weekEnd;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
         this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
         this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-        this.getSiteReportMethod();
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());
@@ -833,7 +801,7 @@ export default {
     next((vm) => {
       vm.getClientMethod();
       vm.getBusinessUnitMethod();
-      vm.updateDateRange();
+      // vm.updateDateRange();
       vm.getCandidateListMethod();
       vm.getSiteReportMethod();
     });
@@ -843,39 +811,31 @@ export default {
 
     this.getClientMethod();
     this.getCandidateListMethod();
-    this.updateDateRange();
+    // this.updateDateRange();
     this.getSiteReportMethod();
     next();
   },
   mounted() {
     // this.createVacancy();
-    this.currentView = "monthly";
+    // this.currentView = "monthly";
     this.loadDateRangeFromLocalStorage();
     this.getBusinessUnitMethod();
     this.getCandidateListMethod();
     this.getClientMethod();
     this.getSiteReportMethod();
-    this.updateDateRange();
-    // const currentDate = new Date();
-    // const startOfWeek = new Date(currentDate);
-    // startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
-    // this.startDate = startOfWeek;
+    // this.updateDateRange();
+    const currentDate = new Date();
+    const dayOfWeek = currentDate.getDay();
+    const startOfWeek = new Date(currentDate);
 
-    // const endOfWeek = new Date(currentDate);
-    // endOfWeek.setDate(endOfWeek.getDate() + (7 - endOfWeek.getDay()));
-    // this.endDate = endOfWeek;
-    // const currentDate = new Date();
-    // const dayOfWeek = currentDate.getDay();
-    // const startOfWeek = new Date(currentDate);
+    const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    startOfWeek.setDate(startOfWeek.getDate() + diff);
 
-    // const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-    // startOfWeek.setDate(startOfWeek.getDate() + diff);
+    this.startDate = startOfWeek;
 
-    // this.startDate = startOfWeek;
-
-    // const endOfWeek = new Date(startOfWeek);
-    // endOfWeek.setDate(endOfWeek.getDate() + 6);
-    // this.endDate = endOfWeek;
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(endOfWeek.getDate() + 6);
+    this.endDate = endOfWeek;
   },
 };
 </script>

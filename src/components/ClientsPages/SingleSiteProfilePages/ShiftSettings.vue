@@ -53,15 +53,15 @@
               </div>
             </div>
             <div class="row mt-4">
-              <div class="mb-3 d-flex justify-content-between">
-                <div class="col-3">
+              <div class="mb-3 d-flex justify-content-between p-0">
+                <div class="col-2">
                   <label class="form-label" for="break_duration">Break Time</label>
                 </div>
-                <div class="col-9">
+                <div class="col-10 ms-3">
                   <select
                     :id="'break_duration-' + shift.id"
                     :name="'break_duration-' + shift.id"
-                    class="form-select w-25"
+                    class="form-select w-25 ms-5"
                     v-model.number="shift.break_duration"
                     @change="setShiftIdToUpdate(shift.id)"
                   >
