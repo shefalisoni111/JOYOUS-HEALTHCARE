@@ -52,7 +52,7 @@
             </td>
           </tr>
         </tbody>
-        <tbody>
+        <tbody v-else>
           <tr>
             <td colspan="5" class="text-danger text-center">{{ "Data Not Found!" }}</td>
           </tr>
