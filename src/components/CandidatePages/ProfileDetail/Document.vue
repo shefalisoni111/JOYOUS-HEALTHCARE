@@ -135,6 +135,12 @@
                                 :class="{ collapsed: !getDocs.isOpen }"
                               >
                                 {{ getDocs.document.document_name }}
+                                <span
+                                  v-if="getDocs.document.mandatory"
+                                  class="ps-1"
+                                  style="color: red"
+                                  >*</span
+                                >
                               </button>
                               <div class="d-flex align-items-center">
                                 <!-- <h6 class="mb-0">Compliant</h6>
