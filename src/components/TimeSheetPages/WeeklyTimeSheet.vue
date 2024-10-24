@@ -448,11 +448,11 @@
                               <div class="column">
                                 <div class="column-cell">
                                   {{
-                                    typeof data.total_hours === "number"
-                                      ? data.total_hours.toFixed(2)
-                                      : data.total_hours === null
+                                    typeof data.hours === "number"
+                                      ? data.hours.toFixed(2)
+                                      : data.hours === null
                                       ? "0.00"
-                                      : data.total_hours
+                                      : data.hours
                                   }}
                                 </div>
                               </div>
@@ -494,12 +494,21 @@
                     </div>
                   </td>
                   <!-- <td>{{ data.total_hours ? data.total_hours : "Null" }}</td> -->
+                  <!-- <td>
+                    {{
+                      data.candidate_id === null
+                        ? "0.0"
+                        : this.candidateHoursMap[data.candidate_id] === data.candidate_id
+                        ? this.candidateHoursMap[data.candidate_id].toFixed(2)
+                        : "0.00"
+                    }}
+                  </td> -->
                   <td>
                     {{
                       data.candidate_id === null
                         ? "0.0"
-                        : this.candidateHoursMap[data.candidate_id] !== undefined
-                        ? this.candidateHoursMap[data.candidate_id].toFixed(2)
+                        : data.total_hours !== undefined
+                        ? data.total_hours.toFixed(2)
                         : "0.00"
                     }}
                   </td>
@@ -1102,6 +1111,24 @@ export default {
           this.total_hourMain.forEach((candidate) => {
             if (candidate.candidate_id !== null) {
               this.total_hourMain[candidate.candidate_id] = candidate.total_hours;
+            }
+          });
+        }
+        if (this.mergedTimesheetsArray) {
+          this.mergedTimesheetsArray.forEach((timesheet) => {
+            // Check if candidate_id exists in timesheet
+            if (timesheet.candidate_id !== null) {
+              // Find the candidate in total_hourMain using candidate_id
+              const matchingCandidate = this.total_hourMain.find(
+                (candidate) => candidate.candidate_id === timesheet.candidate_id
+              );
+
+              // If a matching candidate is found, assign their total_hours to the timesheet
+              if (matchingCandidate) {
+                timesheet.total_hours = matchingCandidate.total_hours; // Set the total_hours directly from matchingCandidate
+              } else {
+                timesheet.total_hours = 0; // Default to 0 if no match found
+              }
             }
           });
         }
