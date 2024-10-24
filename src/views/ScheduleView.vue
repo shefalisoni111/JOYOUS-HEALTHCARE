@@ -533,6 +533,7 @@
                               overflow-x: hidden;
                             "
                           >
+                            <!-- gg -->
                             <div v-for="(data, index) in vacancyList" :key="index">
                               <div
                                 v-for="day in selectedDateRow"

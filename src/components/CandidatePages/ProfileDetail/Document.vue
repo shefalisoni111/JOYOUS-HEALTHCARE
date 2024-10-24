@@ -428,33 +428,28 @@ export default {
       if (this.getDocument.length > 0) {
         const selectedDocument = this.getDocument[0];
 
-        // const formData = new FormData();
-        // formData.append("candidate_document[candidate_id]", this.$route.params.id);
-        // formData.append("candidate_document[document_id]", id);
-        // formData.append("candidate_document[issue_date]", this.issue_date);
-        // formData.append("candidate_document[expiry_date]", this.expiry_date);
-        // formData.append("candidate_document[description]", this.description);
-        // formData.append("candidate_document[document_image]", this.url);
-        const payload = {
-          candidate_id: this.$route.params.id,
-          document_id: id,
-          issue_date: this.issue_date || null,
-          expiry_date: this.expiry_date || null,
-          description: this.description || "",
-          document_image: this.url || null,
-        };
+        const formData = new FormData();
+        formData.append("candidate_document[candidate_id]", this.$route.params.id);
+        formData.append("candidate_document[document_id]", id);
+        formData.append("candidate_document[issue_date]", this.issue_date);
+        formData.append("candidate_document[expiry_date]", this.expiry_date);
+        formData.append("candidate_document[description]", this.description);
+        formData.append("candidate_document[document_image]", this.url);
 
         try {
-          const response = await axios.post(
+          const response = await fetch(
             `${VITE_API_URL}/admin_upload_candidate_document`,
-            payload,
             {
+              method: "POST",
               headers: {
                 Accept: "application/json",
-                Authorization: "Bearer " + token,
+                Authorization: "bearer " + token,
               },
+              body: formData,
             }
           );
+
+          const responseData = await response.json();
 
           if (response.ok) {
             this.getDocCAtegories();
@@ -486,10 +481,9 @@ export default {
       this.getCategory[index].isOpen = !this.getCategory[index].isOpen;
     },
     toggleAccordionDocument(documentId, categoryIndex, documentIndex) {
-      this.getDocument.forEach((document) => {
-        if (document.id === documentId) {
-        }
-      });
+      //     this.getCategory[categoryIndex].documents.forEach((doc, i) => {
+      //     doc.isOpen = i === documentIndex ? !doc.isOpen : false;
+      //  });
       this.getCategory[categoryIndex].documents.forEach((getDocs, i) => {
         if (i !== documentIndex) {
           getDocs.isOpen = false;
@@ -522,6 +516,8 @@ export default {
           this.getDeletedDocumentListMethod();
         });
         this.isModalVisible = false;
+        const message = "Successful Deleted Data";
+        this.$refs.successAlert.showSuccess(message);
       };
     },
 
