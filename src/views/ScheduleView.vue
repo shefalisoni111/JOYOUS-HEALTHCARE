@@ -297,7 +297,11 @@
                         <td>
                           <div
                             class="calendar-grid"
-                            style="max-height: 90px; overflow-y: auto; overflow-x: hidden"
+                            style="
+                              max-height: 240px;
+                              overflow-y: auto;
+                              overflow-x: hidden;
+                            "
                           >
                             <div v-for="(data, index) in vacancyList" :key="index">
                               <div
@@ -523,7 +527,11 @@
                           <div
                             v-if="searchQuery"
                             class="calendar-grid"
-                            style="max-height: 90px; overflow-y: auto; overflow-x: hidden"
+                            style="
+                              max-height: 210px;
+                              overflow-y: auto;
+                              overflow-x: hidden;
+                            "
                           >
                             <div v-for="(data, index) in vacancyList" :key="index">
                               <div
@@ -726,7 +734,11 @@
         Next
       </button>
     </div> -->
-    <div class="mx-3 mb-3" style="text-align: right" v-if="candidateList?.length >= 10">
+    <div
+      class="mx-3 mb-3 mt-3"
+      style="text-align: right"
+      v-if="candidateList?.length >= 10"
+    >
       <!-- <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button> -->

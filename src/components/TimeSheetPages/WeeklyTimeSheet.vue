@@ -417,7 +417,9 @@
                         >
                           <div
                             v-if="data.status !== 'Approved'"
-                            style="border: 1px dashed red"
+                            :style="
+                              data.status !== 'Approved' ? 'border: 1px dashed red' : ''
+                            "
                           >
                             <td>
                               <div class="column pe-2">
@@ -461,7 +463,12 @@
                               </div>
                             </td>
                           </div>
-                          <div v-else style="border: 1px dashed green">
+                          <div
+                            v-else
+                            :style="{
+                              border: data.status !== 'Approved' ? '1px dashed red' : '',
+                            }"
+                          >
                             <span
                               v-if="
                                 data.date
