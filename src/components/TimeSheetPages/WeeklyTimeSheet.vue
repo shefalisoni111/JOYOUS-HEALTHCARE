@@ -415,7 +415,10 @@
                           "
                           class="d-flex gap-2"
                         >
-                          <div v-if="data.status !== 'Approved'">
+                          <div
+                            v-if="data.status !== 'Approved'"
+                            style="border: 1px dashed red"
+                          >
                             <td>
                               <div class="column pe-2">
                                 <div class="column-cell">
@@ -458,7 +461,7 @@
                               </div>
                             </td>
                           </div>
-                          <div v-else>
+                          <div v-else style="border: 1px dashed green">
                             <span
                               v-if="
                                 data.date
