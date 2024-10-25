@@ -7,6 +7,8 @@ import store from './store';
 import "bootstrap/dist/css/bootstrap.css";
 import 'bootstrap/dist/js/bootstrap.bundle';
 import "./assets/main.css";
+import Datepicker from 'vue3-datepicker';
+
 
 
 
@@ -18,3 +20,4 @@ const app = createApp(App);
 app.use(store);
 app.use(router);
 app.mount("#app");
+app.component('Datepicker', Datepicker);
