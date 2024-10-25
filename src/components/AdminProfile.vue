@@ -21,7 +21,7 @@
                         src="./profile.png"
                         width="150"
                         height="150"
-                        @click.prevent
+                        @click="openFileInput"
                         style=""
                         loading="eager"
                       />
@@ -30,7 +30,7 @@
                         :src="displayedProfileImage"
                         width="150"
                         height="150"
-                        @click.prevent
+                        @click="openFileInput"
                         style=""
                         loading="eager"
                       />
@@ -261,10 +261,6 @@ export default {
       this.profileImage = storedImageUrl;
     }
     await this.fetchAdminData();
-    document.addEventListener("click", this.handleClickOutside);
-  },
-  beforeDestroy() {
-    document.removeEventListener("click", this.handleClickOutside);
   },
 };
 </script>
