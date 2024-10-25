@@ -123,7 +123,7 @@
                     <label class="form-label">Dated</label>
                   </div>
                   <div class="col-10">
-                    <datepicker
+                    <input
                       type="date"
                       class="form-control w-100"
                       v-model="selectedDate"
@@ -440,7 +440,7 @@
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 import NotSuccessAlertVue from "../../Alerts/NotSuccessAlert.vue";
-
+import Datepicker from "vue3-datepicker";
 export default {
   name: "AddVacancy",
   data() {
@@ -485,6 +485,8 @@ export default {
       isValidForm: false,
       selectedDate: null,
       selectedSiteId: null,
+      // minDate: this.getTodayDate(),
+      // maxDate: this.getLastDayOfMonth(),
     };
   },
   components: { SuccessAlert, NotSuccessAlertVue },
@@ -598,6 +600,13 @@ export default {
     },
   },
   methods: {
+    // getTodayDate() {
+    //   const today = new Date();
+    //   const year = today.getFullYear();
+    //   const month = String(today.getMonth() + 1).padStart(2, "0");
+    //   const day = String(today.getDate()).padStart(2, "0");
+    //   return `${year}-${month}-${day}`;
+    // },
     formatRate(rate) {
       return rate.replace(/_/g, " ");
     },
