@@ -275,8 +275,12 @@ export default {
   methods: {
     async getClientMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/get_client_id_name`);
-        this.clientData = response.data.data;
+        const response = await axios.get(`${VITE_API_URL}/clients`);
+        const allClients = response.data.data;
+
+        this.clientData = allClients.filter((client) =>
+          client.job_ids.some((jobId) => this.job_ids.includes(jobId))
+        );
       } catch (error) {
         if (error.response && error.response.status === 404) {
           // Handle 404 error
@@ -317,6 +321,7 @@ export default {
         this.getCandidates = response.data.candidate;
         if (this.getCandidates.job_ids && this.getCandidates.job_ids.length) {
           this.job_ids = this.getCandidates.job_ids;
+          await this.fetchClientsByJobIds();
         }
         this.employment_type_id = this.getCandidates.employment_type_id;
         await this.getJobOptions();
