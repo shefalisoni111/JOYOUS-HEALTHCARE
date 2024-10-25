@@ -123,7 +123,7 @@
                     <label class="form-label">Dated</label>
                   </div>
                   <div class="col-10">
-                    <input
+                    <datepicker
                       type="date"
                       class="form-control w-100"
                       v-model="selectedDate"
@@ -440,6 +440,7 @@
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 import NotSuccessAlertVue from "../../Alerts/NotSuccessAlert.vue";
+
 export default {
   name: "AddVacancy",
   data() {
@@ -610,19 +611,14 @@ export default {
     handleInput(field, value) {
       this.hasInteracted = true;
 
-      // Filter out non-numeric characters
       const filteredValue = value.replace(/[^0-9]/g, "");
       this[field] = filteredValue;
 
-      // Determine if the input is valid based on its length and numeric status
       const isValidNumber = filteredValue.length > 0 && /^[0-9]+$/.test(filteredValue);
 
-      // Update validation states based on the filtered value and current site_id
       if (this.site_id) {
-        // Validate rates if a site is selected
         this.validateRate(field, filteredValue);
 
-        // Update validations for specific fields
         if (field === "client_rate") {
           this.validationClientRate = isValidNumber;
         } else if (field === "paye") {
@@ -633,7 +629,6 @@ export default {
           this.validationStaffRate = isValidNumber;
         }
       } else {
-        // If no site is selected, disable validation for all rates
         this.validationClientRate = true;
         this.validationPaye = true;
         this.validationPrivateLimited = true;
