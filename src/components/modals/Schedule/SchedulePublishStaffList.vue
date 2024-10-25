@@ -224,7 +224,7 @@
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 import { reactive } from "vue";
-
+import Swal from "sweetalert2";
 const axiosInstance = axios.create({
   headers: {
     "Cache-Control": "no-cache",
@@ -271,7 +271,12 @@ export default {
       this.vacancyId = vacancyId;
     },
     showSuccess(message) {
-      alert(message);
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: message,
+        confirmButtonText: "OK",
+      });
     },
     async assignVacancyToCandidateDirectMethod() {
       if (!this.candidateId && !this.vacancyId) {
@@ -308,7 +313,13 @@ export default {
         if (error.response && error.response.status === 404) {
           const errorMessage = error.response.data.error || "Resource No found";
           // Display alert error message
-          alert(errorMessage);
+          // alert(errorMessage);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: errorMessage,
+            confirmButtonText: "OK",
+          });
         } else {
           // Handle other errors
           // console.error("Error:", error);

@@ -172,9 +172,7 @@
                 </tbody>
                 <tbody v-else>
                   <tr>
-                    <td colspan="8" class="text-danger text-center">
-                      No Match Found !!
-                    </td>
+                    <td colspan="8" class="text-danger text-center">No Match Found !!</td>
                   </tr>
                 </tbody>
               </table>
@@ -212,7 +210,7 @@
 import axios from "axios";
 import { reactive } from "vue";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
-
+import Swal from "sweetalert2";
 // const axiosInstance = axios.create({
 //   headers: {
 //     "Cache-Control": "no-cache",
@@ -355,7 +353,13 @@ export default {
         .map((vacancy_id) => parseInt(vacancy_id));
 
       if (checkedVacancyIds.length === 0) {
-        alert("Please select staff !");
+        // alert("Please select staff !");
+        Swal.fire({
+          icon: "warning",
+          title: "Warning",
+          text: "Please select staff!",
+          confirmButtonText: "OK",
+        });
         return;
       }
       // console.log(this.candidateId, checkedVacancyIds);

@@ -217,7 +217,7 @@ import ActiveSite from "../SitePages/ActiveSite.vue";
 import AddSite from "../../modals/Site/AddSite.vue";
 import EditSite from "../../modals/Site/EditSite.vue";
 import AddSiteNotes from "../../modals/Site/AddSiteNotes.vue";
-
+import Swal from "sweetalert2";
 const axiosInstance = axios.create({
   headers: {
     "Cache-Control": "no-cache",
@@ -397,7 +397,12 @@ export default {
 
       const isValidFileType = file.type === "text/csv";
       if (!isValidFileType) {
-        alert("Please select a CSV file.");
+        Swal.fire({
+          icon: "warning",
+          title: "No File Selected",
+          text: "Please select a CSV file.",
+          confirmButtonText: "OK",
+        });
         return;
       }
 

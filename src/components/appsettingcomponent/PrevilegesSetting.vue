@@ -408,7 +408,13 @@ export default {
           if (error.response) {
             if (error.response.status === 404) {
             } else if (error.response.status === 422) {
-              alert(error.response.data.message);
+              // alert(error.response.data.message);
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: error.response.data.message,
+                confirmButtonText: "OK",
+              });
             }
           }
         }

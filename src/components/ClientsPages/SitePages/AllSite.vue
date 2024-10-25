@@ -254,7 +254,7 @@ import AddSite from "../../modals/Site/AddSite.vue";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 import Loader from "../../Loader/Loader.vue";
 import ConfirmationAlert from "../../Alerts/ConfirmationAlert.vue";
-
+import Swal from "sweetalert2";
 import { reactive } from "vue";
 export default {
   data() {
@@ -477,7 +477,12 @@ export default {
 
       const isValidFileType = file.type === "text/csv";
       if (!isValidFileType) {
-        alert("Please select a CSV file.");
+        Swal.fire({
+          icon: "warning",
+          title: "No File Selected",
+          text: "Please select a CSV file.",
+          confirmButtonText: "OK",
+        });
         return;
       }
 
@@ -583,7 +588,13 @@ export default {
     },
     exportOneFile() {
       if (!this.siteIds || this.siteIds.length === 0) {
-        alert("Please select at least one Site.");
+        // alert("Please select at least one Site.");
+        Swal.fire({
+          icon: "warning",
+          title: "No File Selected",
+          text: "Please select at least one Site.",
+          confirmButtonText: "OK",
+        });
         return;
       }
       // const filterName = this.getFilterName(this.selectedFilter);

@@ -265,7 +265,7 @@ import AllVacancyCandidateList from "../modals/Vacancy/AllVacancyCandidateList.v
 import EditVacancy from "../modals/Vacancy/EditVacancy.vue";
 import AddVacancy from "../modals/Vacancy/AddVacancy.vue";
 import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
-
+import Swal from "sweetalert2";
 export default {
   data() {
     return {
@@ -412,7 +412,13 @@ export default {
           .then((response) => {
             this.createVacancy();
           });
-        alert("InActive Shift");
+        // alert("InActive Shift");
+        Swal.fire({
+          icon: "warning",
+          title: "Shift Status",
+          text: "Inactive Shift",
+          confirmButtonText: "OK",
+        });
         this.isModalVisible = false;
       };
     },

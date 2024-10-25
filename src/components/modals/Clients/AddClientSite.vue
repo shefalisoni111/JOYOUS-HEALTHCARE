@@ -265,7 +265,7 @@
 <script>
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
-
+import Swal from "sweetalert2";
 export default {
   name: "AddClientSite",
   data() {
@@ -433,10 +433,22 @@ export default {
             const message = "Client Site added Successfully";
             this.$refs.successAlert.showSuccess(message);
           } else {
-            alert("Error adding Shift");
+            // alert("Error adding Shift");
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Error adding Shift",
+              confirmButtonText: "OK",
+            });
           }
         } catch (error) {
-          alert("Error adding Shift");
+          // alert("Error adding Shift");
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Error adding Shift",
+            confirmButtonText: "OK",
+          });
         }
       } else {
       }

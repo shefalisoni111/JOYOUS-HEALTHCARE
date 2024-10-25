@@ -211,7 +211,7 @@
 <script>
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
-
+import Swal from "sweetalert2";
 export default {
   name: "CandidateAdd",
   data() {
@@ -363,11 +363,23 @@ export default {
             const message = "Successful added";
             this.$refs.successAlert.showSuccess(message);
           } else {
-            alert("Error adding Staff");
+            // alert("Error adding Staff");
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Error adding Staff",
+              confirmButtonText: "OK",
+            });
             this.resetForm();
           }
         } catch (error) {
-          alert("Error adding Staff");
+          // alert("Error adding Staff");
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Error adding Staff",
+            confirmButtonText: "OK",
+          });
           this.resetForm();
         }
       } else {

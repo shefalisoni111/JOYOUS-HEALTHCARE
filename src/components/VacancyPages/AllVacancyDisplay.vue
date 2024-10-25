@@ -278,7 +278,7 @@ import RejectedVacancyList from "../modals/Vacancy/RejectedVacancyList.vue";
 import AllVacancyCandidateList from "../modals/Vacancy/AllVacancyCandidateList.vue";
 import EditVacancy from "../modals/Vacancy/EditVacancy.vue";
 import AddVacancy from "../modals/Vacancy/AddVacancy.vue";
-
+import Swal from "sweetalert2";
 export default {
   data() {
     return {
@@ -407,7 +407,13 @@ export default {
       );
 
       if (isActive) {
-        alert("Vacancy already active");
+        // alert("Vacancy already active");
+        Swal.fire({
+          icon: "info",
+          title: "Vacancy Status",
+          text: "Vacancy already active.",
+          confirmButtonText: "OK",
+        });
         return;
       }
 
@@ -421,7 +427,13 @@ export default {
         .then((response) => {
           this.createVacancy();
         });
-      alert("Active Vacancy");
+      // alert("Active Vacancy");
+      Swal.fire({
+        icon: "info",
+        title: "Vacancy Status",
+        text: "Active Vacancy",
+        confirmButtonText: "OK",
+      });
     },
 
     async createVacancy() {

@@ -124,7 +124,7 @@
 <script>
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
-
+import Swal from "sweetalert2";
 export default {
   name: "AddSitRestrictedStaff",
   data() {
@@ -273,7 +273,13 @@ export default {
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            alert(error.response.data.message);
+            // alert(error.response.data.message);
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: error.response.data.message || "Not Found data.",
+              confirmButtonText: "OK",
+            });
           }
         }
       }

@@ -356,7 +356,7 @@
 <script>
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
-
+import Swal from "sweetalert2";
 import store from "@/store";
 export default {
   name: "VacancyEdit",
@@ -624,7 +624,13 @@ export default {
         });
 
         if (invalidDate && invalidDate < today) {
-          alert("Please choose a date from today onwards.");
+          // alert("Please choose a date from today onwards.");
+          Swal.fire({
+            icon: "warning",
+            title: "Selection Required",
+            text: "Please choose a date from today onwards.",
+            confirmButtonText: "OK",
+          });
           return;
         } else if (invalidDate && invalidDate >= today) {
           // alert("Edit successful!");

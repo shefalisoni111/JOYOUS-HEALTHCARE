@@ -291,7 +291,7 @@
 <script>
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
-
+import Swal from "sweetalert2";
 export default {
   name: "editAssignScheduleVacancy",
   data() {
@@ -360,7 +360,13 @@ export default {
           data
         );
         if (response.status === 200) {
-          alert("Staff Shift Publish Successfully");
+          // alert("Staff Shift Publish Successfully");
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Staff Shift Published Successfully",
+            confirmButtonText: "OK",
+          });
           this.$emit("updated-assignPublish");
           const message = "Staff Shift Publish Successfully";
           this.$refs.successAlert.showSuccess(message);
@@ -377,7 +383,13 @@ export default {
         if (error.response && error.response.status === 404) {
           const errorMessage = error.response.data.error || "Resource No found";
           // Display alert error message
-          alert(errorMessage);
+          // alert(errorMessage);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: errorMessage,
+            confirmButtonText: "OK",
+          });
         } else {
           // Handle other errors
           // console.error("Error:", error);

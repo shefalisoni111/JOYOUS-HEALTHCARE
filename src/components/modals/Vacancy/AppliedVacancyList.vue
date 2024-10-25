@@ -247,7 +247,7 @@
 <script>
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
-
+import Swal from "sweetalert2";
 import { reactive } from "vue";
 const axiosInstance = axios.create({
   headers: {
@@ -436,11 +436,23 @@ export default {
         .filter((candidate_id) => this.checkedCandidates[candidate_id])
         .map((candidate_id) => parseInt(candidate_id));
       if (checkedCandidateIds.length === 0) {
-        alert("Please select at least one candidate before proceeding.");
+        // alert("Please select at least one candidate before proceeding.");
+        Swal.fire({
+          icon: "warning",
+          title: "Selection Required",
+          text: "Please select at least one candidate before proceeding.",
+          confirmButtonText: "OK",
+        });
         return;
       }
       if (!this.selectedAction) {
-        alert("Please select an action (Assign or Reject) before proceeding.");
+        // alert("Please select an action (Assign or Reject) before proceeding.");
+        Swal.fire({
+          icon: "warning",
+          title: "Selection Required",
+          text: "Please select an action (Assign or Reject) before proceeding.",
+          confirmButtonText: "OK",
+        });
         return;
       }
 

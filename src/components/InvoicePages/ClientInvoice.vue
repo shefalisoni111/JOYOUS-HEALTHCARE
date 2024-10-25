@@ -425,7 +425,7 @@ import axios from "axios";
 
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
 import Loader from "../Loader/Loader.vue";
-
+import Swal from "sweetalert2";
 const axiosInstance = axios.create({
   headers: {
     "Cache-Control": "no-cache",
@@ -654,7 +654,13 @@ export default {
               errorMessages === "No records found for the given filter";
               // alert("No records found for the given filter");
             } else {
-              alert(errorMessages);
+              // alert(errorMessages);
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: errorMessages,
+                confirmButtonText: "OK",
+              });
             }
           }
         } else {

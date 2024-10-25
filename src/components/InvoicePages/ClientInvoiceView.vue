@@ -135,7 +135,7 @@ import ClientSecontTemplateEdit from "../InvoicePages/TemplatesDesign/ClientSeco
 import DOMPurify from "dompurify";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
-
+import Swal from "sweetalert2";
 import { defineAsyncComponent } from "vue";
 import { mapState } from "vuex";
 export default {
@@ -183,7 +183,13 @@ export default {
     },
     handleEditClick(isLocked) {
       if (isLocked) {
-        alert("CanNo edit. Invoice is locked.");
+        // alert("Can't edit. Invoice is locked.");
+        Swal.fire({
+          icon: "warning",
+          title: "Edit Locked",
+          text: "Can't edit. Invoice is locked.",
+          confirmButtonText: "OK",
+        });
       } else {
         if (this.selectedTemplate === "TemplateOne") {
           this.showEditComponent = true;
