@@ -293,8 +293,8 @@
               aria-label="profile detail"
             >
               <img
-                v-if="profilePhotoUrl !== './profile.png'"
-                :src="profilePhotoUrl"
+                v-if="computedProfileImage !== './profile.png'"
+                :src="computedProfileImage"
                 alt="USer"
                 class="rounded-circle profileAdminImg"
                 width="40"
@@ -496,6 +496,8 @@ export default {
       showBadge: true,
       dropdownOpen: false,
       showAll: false,
+      storedImageUrl: "",
+      localProfileImage: this.profileImage,
       notifications: [
         { title: "Lorem Ipsum", message: "Quae dolorem earum veritatis oditseno", time: "30 min. ago" },
         { title: "Lorem Ipsum", message: "Quae dolorem earum veritatis oditseno", time: "30 min. ago" },
@@ -512,16 +514,15 @@ export default {
     visibleNotifications() {
      
      return this.showAll ? this.notifications : this.notifications.slice(0, 2);
-    //  return this.notifications.slice(0, 5);
+    
     },
     isScrollable() {
       return this.notifications.length > this.visibleNotifications.length;
     },
-    profilePhotoUrl() {
-      const storedImageUrl = localStorage.getItem("profileImage");
-
-      return storedImageUrl ? storedImageUrl : "./profile.png";
-    },
+    // profilePhotoUrl() {
+    //   // const storedImageUrl = localStorage.getItem("profileImage");
+    //   return this.storedImageUrl || "./profile.png";
+    // },
     selectedCandidateMessages() {
       if (this.selectedCandidate) {
         return this.messages.filter(
@@ -531,8 +532,35 @@ export default {
         return [];
       }
     },
+    computedProfileImage() {
+      return this.localProfileImage; 
+    },
+  },
+  
+  props: {
+    profileImage: {
+      type: String,
+      default: "./profile.png",
+    },
   },
   methods: {
+    async fetchProfileImage() {
+      const token = localStorage.getItem("token");
+      const merchantId = localStorage.getItem("merchant_id");
+      try {
+        const response = await axios.get(`${VITE_API_URL}/merchants/${merchantId}`, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const imagePath = response.data.data.profile_photo;
+        this.localProfileImage = `${VITE_API_URL}${imagePath}`;
+        // console.log(this.localProfileImage)
+      } catch (error) {
+        // console.error("Error fetching profile image:", error);
+      }
+    },
     toggleDropdown() {
       this.dropdownOpen = !this.dropdownOpen;
      
@@ -562,6 +590,7 @@ export default {
         }
       });
     },
+    
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
 
@@ -678,18 +707,16 @@ export default {
   },
 
  async mounted() {
-  
+  this.fetchProfileImage()
   await  this.getCandidateMethods();
   document.addEventListener('click', this.handleClickOutside);
   const merchantId = localStorage.getItem('merchant_id');
     if (merchantId) {
       this.adminLink = `/admin/${merchantId}`;
     }
-  
+ 
   },
-  beforeDestroy() {
-    document.removeEventListener('click', this.handleClickOutside);
-  }
+  
 };
 </script>
 

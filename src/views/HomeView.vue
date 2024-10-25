@@ -601,6 +601,7 @@ export default {
     Navbar,
     InProgress,
   },
+
   computed: {
     getMonthDates() {
       const currentDate = new Date();
