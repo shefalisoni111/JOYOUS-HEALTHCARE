@@ -260,7 +260,7 @@
           </li>
 
           <li class="nav-item dropdown mt-2">
-            <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" @click="toggleDropdown">
+            <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" >
               <i class="bi bi-bell"></i>
               <span v-if="!dropdownOpen && showBadge" class="badge bg-primary badge-number" >2</span>
             </a>
