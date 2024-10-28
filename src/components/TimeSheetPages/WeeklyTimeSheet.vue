@@ -541,7 +541,7 @@
                   </td>
                 </tr>
                 <tr v-else>
-                  <td colspan="9" class="text-danger text-center">
+                  <td colspan="9" v-if="!isLoading" class="text-danger text-center">
                     {{ errorMessage }}
                   </td>
                 </tr>
@@ -898,9 +898,9 @@ export default {
       }
     },
     formatDate(date) {
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
       const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
       return `${day}/${month}/${year}`;
     },
     formatDateFormate(dateStr) {
@@ -1062,12 +1062,9 @@ export default {
     },
     getWeekRange(date) {
       const start = new Date(date);
-      const dayOfWeek = start.getDay();
-      const diffToMonday = (dayOfWeek + 6) % 7;
-      start.setDate(start.getDate() - diffToMonday);
-
-      const end = new Date(start);
-      end.setDate(start.getDate() + 6);
+      const end = new Date(date);
+      start.setDate(start.getDate() - start.getDay() + 1);
+      end.setDate(end.getDate() + 6);
       return { start, end };
     },
     isDateInRange(dateStr, startDate, endDate) {
