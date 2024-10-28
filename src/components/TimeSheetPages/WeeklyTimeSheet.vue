@@ -898,9 +898,9 @@ export default {
       }
     },
     formatDate(date) {
-      const day = date.getDate();
-      const month = date.getMonth() + 1;
       const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
       return `${day}/${month}/${year}`;
     },
     formatDateFormate(dateStr) {
@@ -1062,9 +1062,12 @@ export default {
     },
     getWeekRange(date) {
       const start = new Date(date);
-      const end = new Date(date);
-      start.setDate(start.getDate() - start.getDay() + 1);
-      end.setDate(end.getDate() + 6);
+      const dayOfWeek = start.getDay();
+      const diffToMonday = (dayOfWeek + 6) % 7;
+      start.setDate(start.getDate() - diffToMonday);
+
+      const end = new Date(start);
+      end.setDate(start.getDate() + 6);
       return { start, end };
     },
     isDateInRange(dateStr, startDate, endDate) {
@@ -1076,8 +1079,8 @@ export default {
       try {
         const { start, end } = this.getWeekRange(this.startDate);
         const requestData = {
-          start_date: this.formatDate(start),
-          end_date: this.formatDate(end),
+          date: this.formatDate(start),
+          //  end_date: this.formatDate(end),
         };
 
         const response = await axios.get(
