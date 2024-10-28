@@ -1,42 +1,6 @@
 <template>
-  <div class="modal fade" id="addRateRules" aria-labelledby="addRateRules" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addRateRules">Add Rate</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body mx-3" style="height: 600px; overflow: auto">
-          <div>
-            <h3 class="text-danger">need clarification</h3>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            class="btn btn-secondary rounded-1"
-            data-bs-target="#addRateRules"
-            data-bs-toggle="modal"
-            data-bs-dismiss="modal"
-          >
-            Cancel
-          </button>
-          <button class="btn btn-primary rounded-1 text-capitalize fw-medium">
-            Add Rate
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
-<!-- <template>
   <div>
-    
+    <!-- Modal -->
     <div
       class="modal fade"
       id="addRateRules"
@@ -209,7 +173,16 @@
                         <div class="col-4">
                           <label class="form-label">Client Rate</label>
 
-                      
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedClientRate[`${day}-day`]"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -227,7 +200,16 @@
                         <div class="col-4">
                           <label class="form-label">Private Limited</label>
 
-                      
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedPrivateLimited[`${day}-day`]"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -246,7 +228,16 @@
                         <div class="col-4">
                           <label class="form-label">Self Employed</label>
 
-                        
+                          <!-- <select
+                            v-model="selectedSelfEmployee[`${day}-day`]"
+                            class="form-select w-25"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -263,7 +254,16 @@
 
                         <div class="col-4">
                           <label class="form-label">Umbrella</label>
-                       
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedUmbrella[`${day}-day`]"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -280,7 +280,16 @@
 
                         <div class="col-4">
                           <label class="form-label">PAYE</label>
-                         
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedPaye[`${day}-day`]"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -377,6 +386,17 @@
                         <div class="col-4">
                           <label class="form-label">Client Rate</label>
 
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedClientRate[`${day}-day`]"
+                            disabled
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -395,7 +415,17 @@
                         <div class="col-4">
                           <label class="form-label">Private Limited</label>
 
-                         
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedPrivateLimited[`${day}-day`]"
+                            disabled
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -426,7 +456,16 @@
                         <div class="col-4">
                           <label class="form-label">Client Rate</label>
 
-                       
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedClientRate[`${day}-night`]"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -444,7 +483,16 @@
                         <div class="col-4">
                           <label class="form-label">Private Limited</label>
 
-                      
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedPrivateLimited[`${day}-night`]"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -463,7 +511,17 @@
                         <div class="col-4">
                           <label class="form-label">Self Employed</label>
 
-                         
+                          <!-- <select
+                            v-model="selectedSelfEmployee[`${day}-day`]"
+                            class="form-select w-25"
+                            disabled
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -482,7 +540,17 @@
                         <div class="col-4">
                           <label class="form-label">Umbrella</label>
 
-                       
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedUmbrella[`${day}-day`]"
+                            disabled
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -500,7 +568,17 @@
 
                         <div class="col-4">
                           <label class="form-label">PAYE</label>
-                        
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedPaye[`${day}-day`]"
+                            disabled
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -517,6 +595,16 @@
                         <div class="col-4">
                           <label class="form-label">Self Employed</label>
 
+                          <!-- <select
+                            v-model="selectedSelfEmployee[`${day}-night`]"
+                            class="form-select w-25"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -533,7 +621,17 @@
 
                         <div class="col-4">
                           <label class="form-label">Umbrella</label>
-                          
+                          <!-- 
+                          <select
+                            class="form-select w-25"
+                            v-model="selectedUmbrella[`${day}-night`]"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -550,7 +648,16 @@
 
                         <div class="col-4">
                           <label class="form-label">PAYE</label>
-                        
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedPaye[`${day}-night`]"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -645,7 +752,16 @@
                         <div class="col-4">
                           <label class="form-label">Client Rate</label>
 
-                        
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedClientRate[`${day}-holiday`]"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -663,7 +779,16 @@
                         <div class="col-4">
                           <label class="form-label">Private Limited</label>
 
-                         
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedPrivateLimited[`${day}-holiday`]"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -682,6 +807,16 @@
                         <div class="col-4">
                           <label class="form-label">Self Employed</label>
 
+                          <!-- <select
+                            v-model="selectedSelfEmployee[`${day}-holiday`]"
+                            class="form-select w-25"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -698,7 +833,16 @@
 
                         <div class="col-4">
                           <label class="form-label">Umbrella</label>
-                       
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedUmbrella[`${day}-holiday`]"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -715,7 +859,16 @@
 
                         <div class="col-4">
                           <label class="form-label">PAYE</label>
-                          
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedPaye[`${day}-holiday`]"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -809,7 +962,17 @@
                         <div class="col-4">
                           <label class="form-label">Client Rate</label>
 
-                         
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedClientRate[`${day}-holiday`]"
+                            disabled
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             disabled
@@ -828,7 +991,17 @@
                         <div class="col-4">
                           <label class="form-label">Private Limited</label>
 
-                       
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedPrivateLimited[`${day}-holiday`]"
+                            disabled
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -870,13 +1043,31 @@
                             "
                             maxlength="3"
                           />
-                         
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedClientRate[`${day}-holiday_night`]"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                         </div>
 
                         <div class="col-4">
                           <label class="form-label">Private Limited</label>
 
-                        
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedPrivateLimited[`${day}-holiday_night`]"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -895,7 +1086,17 @@
                         <div class="col-4">
                           <label class="form-label">Self Employed</label>
 
-                        
+                          <!-- <select
+                            v-model="selectedSelfEmployee[`${day}-holiday`]"
+                            class="form-select w-25"
+                            disabled
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -914,7 +1115,17 @@
                         <div class="col-4">
                           <label class="form-label">Umbrella</label>
 
-                     
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedUmbrella[`${day}-holiday`]"
+                            disabled
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             disabled
@@ -932,7 +1143,17 @@
 
                         <div class="col-4">
                           <label class="form-label">PAYE</label>
-                        
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedPaye[`${day}-holiday`]"
+                            disabled
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             disabled
@@ -952,7 +1173,16 @@
                         <div class="col-4">
                           <label class="form-label">Self Employed</label>
 
-                       
+                          <!-- <select
+                            v-model="selectedSelfEmployee[`${day}-holiday_night`]"
+                            class="form-select w-25"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -970,6 +1200,16 @@
                         <div class="col-4">
                           <label class="form-label">Umbrella</label>
 
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedUmbrella[`${day}-holiday_night`]"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -986,7 +1226,16 @@
 
                         <div class="col-4">
                           <label class="form-label">PAYE</label>
-                         
+                          <!-- <select
+                            class="form-select w-25"
+                            v-model="selectedPaye[`${day}-holiday_night`]"
+                          >
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                          </select> -->
                           <input
                             type="text"
                             class="form-control w-100"
@@ -1025,7 +1274,13 @@
             >
               Add Rate
             </button>
-           
+            <!-- <button
+              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              v-bind:data-bs-dismiss="isFormValid ? 'modal' : null"
+              v-on:click="addVacancyMethod()"
+            >
+              Add Rate
+            </button> -->
           </div>
         </div>
       </div>
@@ -1033,9 +1288,9 @@
     <SuccessAlert ref="successAlert" />
     <NotSuccessAlertVue ref="dangerAlert" />
   </div>
-</template> -->
+</template>
 
-<!-- <script>
+<script>
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 import NotSuccessAlertVue from "../../Alerts/NotSuccessAlert.vue";
@@ -1680,9 +1935,9 @@ export default {
     // this.getTimeShift();
   },
 };
-</script> -->
+</script>
 
-<!-- <style scoped>
+<style scoped>
 .modal-body {
   border-radius: 5px;
   background: #dbdbdb;
@@ -1724,4 +1979,4 @@ label.form-label {
 .modal {
   --bs-modal-width: 881px;
 }
-</style> -->
+</style>
