@@ -22,39 +22,16 @@
               <div>
                 <div class="p-2">
                   <div class="d-flex justify-content-between">
-                    <div class="d-flex gap-3 align-items-center">
-                      <!-- <button type="button" class="btn btn-outline-success text-nowrap">
-                        <i class="bi bi-funnel"></i>
-                        Show Filters
-                      </button> -->
-                    </div>
-                  </div>
-                </div>
-                <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                   
-                  </ul> -->
-                <!-- <div v-if="currentView === 'weekly'">
-                  <div>
-                    <div v-for="(day, index) in daysOfWeek" :key="index"></div>
-                    <div v-for="(day, index) in getWeekDates" :key="index"></div>
-                  </div>
-                </div> -->
-
-                <div
-                  class="d-xs-grid d-sm-grid d-md-grid d-lg-flex mb-3 justify-content-lg-between"
-                >
-                  <div class="d-flex gap-2">
-                    <div></div>
                     <div class="d-flex">
                       <div class="d-flex align-items-center gap-2">
                         <!-- <select
-                        class="form-control"
-                        v-model="currentView"
-                        @change="updateDateRange"
-                      >
-                        <option value="weekly">Weekly</option>
-                        <option value="monthly">Monthly</option>
-                      </select> -->
+                          class="form-control"
+                          v-model="currentView"
+                          @change="updateDateRange"
+                        >
+                          <option value="weekly">Weekly</option>
+                          <option value="monthly">Monthly</option>
+                        </select> -->
                       </div>
 
                       &nbsp;&nbsp;
@@ -84,58 +61,40 @@
                         <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
                       </div>
                     </div>
-                    <div>
-                      <div>
-                        <div v-for="(day, index) in getMonthDates" :key="index"></div>
-                      </div>
-                    </div>
-                    <select v-model="client_id" id="selectClients">
-                      <option value="">All Client</option>
-                      <option
-                        v-for="option in clientData"
-                        :key="option.id"
-                        :value="option.client_name"
-                        aria-placeholder="Select Client"
-                      >
-                        {{ option.client_name }}
-                      </option>
-                    </select>
-                    <select v-model="site_id" id="selectBusinessUnit">
-                      <option value="">All Site</option>
-                      <option
-                        v-for="option in businessUnit"
-                        :key="option.id"
-                        :value="option.site_name"
-                        placeholder="Select BusinessUnit"
-                      >
-                        {{ option.site_name }}
-                      </option>
-                    </select>
 
-                    <select v-model="selectedCandidate" id="selectCandidateList">
-                      <option value="">All Staff</option>
-                      <option
-                        v-for="option in candidateLists"
-                        :key="option.id"
-                        :value="`${option.first_name} ${option.last_name}`"
-                      >
-                        {{ option.first_name }} {{ option.last_name }}
-                      </option>
-                    </select>
-                  </div>
-                  <div>
-                    <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
-                      <input
-                        class="form-control mr-sm-2"
-                        type="search"
-                        placeholder="Search.."
-                        aria-label="Search"
-                        v-model="searchQuery"
-                        @input="debounceSearch"
-                      />
-                    </form>
+                    <div class="d-flex gap-3 align-items-center">
+                      <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
+                        <input
+                          class="form-control mr-sm-2"
+                          type="search"
+                          placeholder="Search.."
+                          aria-label="Search"
+                          v-model="searchQuery"
+                          @input="debounceSearch"
+                        />
+                      </form>
+                    </div>
                   </div>
                 </div>
+                <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                   
+                  </ul> -->
+                <div v-if="currentView === 'weekly'">
+                  <div>
+                    <div v-for="(day, index) in daysOfWeek" :key="index"></div>
+                    <div v-for="(day, index) in getWeekDates" :key="index"></div>
+                  </div>
+                </div>
+
+                <div v-else-if="currentView === 'monthly'">
+                  <div>
+                    <div v-for="(day, index) in getMonthDates" :key="index"></div>
+                  </div>
+                </div>
+                <div class="d-flex gap-2">
+                  <div></div>
+                </div>
+
                 <div class="tab-content mt-3" id="pills-tabContent" v-if="!searchQuery">
                   <div
                     class="tab-pane fade show active"
@@ -229,11 +188,7 @@
                         <tbody v-else>
                           <tr>
                             <td colspan="14" class="text-danger text-center">
-                              {{
-                                errorMessageSigned ||
-                                errorMessageFilter ||
-                                "No bookings found."
-                              }}
+                              {{ errorMessageSigned || errorMessageFilter }}
                             </td>
                           </tr>
                         </tbody>
@@ -348,83 +303,79 @@
           </div>
         </div>
       </div>
-    </div>
-    <div
-      class="mx-3 mb-2"
-      style="text-align: right"
-      v-if="getSignedTimeSheetData.length >= 10 && !searchResults.length"
-    >
-      <!-- <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
-      </button> -->
-      <div class="dropdown d-inline-block">
+      <div
+        class="mx-3 mb-2"
+        style="text-align: right"
+        v-if="getSignedTimeSheetData.length >= 10 && !searchResults.length"
+      >
+        <div class="dropdown d-inline-block">
+          <button
+            class="btn btn-sm btn-primary dropdown-toggle"
+            type="button"
+            id="recordsPerPageDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            {{ itemsPerPage }} Records
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+            <li>
+              <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(20)"
+                >20 Records</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(50)"
+                >50 Records</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(100)"
+                >100 Records</a
+              >
+            </li>
+          </ul>
+        </div>
+        &nbsp;&nbsp;
         <button
-          class="btn btn-sm btn-primary dropdown-toggle"
-          type="button"
-          id="recordsPerPageDropdown"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
+          class="btn btn-sm btn-primary mr-2"
+          :disabled="currentPage === 1"
+          @click="currentPage--"
         >
-          {{ itemsPerPage }} Records
+          Previous</button
+        >&nbsp;&nbsp; <span>{{ currentPage }}</span
+        >&nbsp;&nbsp;
+        <button
+          class="btn btn-sm btn-primary ml-2"
+          :disabled="currentPage * itemsPerPage >= getSignedTimeSheetData.length"
+          @click="currentPage++"
+        >
+          Next
         </button>
-        <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-          <li>
-            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(20)"
-              >20 Records</a
-            >
-          </li>
-          <li>
-            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(50)"
-              >50 Records</a
-            >
-          </li>
-          <li>
-            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(100)"
-              >100 Records</a
-            >
-          </li>
-        </ul>
       </div>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="currentPage--"
-      >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getSignedTimeSheetData.length"
-        @click="currentPage++"
-      >
-        Next
-      </button>
-    </div>
-    <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 8">
-      <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
-      </button>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="currentPage--"
-      >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= searchResults.length"
-        @click="currentPage++"
-      >
-        Next
-      </button>
+      <div class="mx-3 mb-2" style="text-align: right" v-if="searchResults.length >= 10">
+        <button class="btn btn-outline-dark btn-sm">
+          {{ totalRecordsOnPage }} Records Per Page
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm btn-primary mr-2"
+          :disabled="currentPage === 1"
+          @click="currentPage--"
+        >
+          Previous</button
+        >&nbsp;&nbsp; <span>{{ currentPage }}</span
+        >&nbsp;&nbsp;
+        <button
+          class="btn btn-sm btn-primary ml-2"
+          :disabled="currentPage * itemsPerPage >= searchResults.length"
+          @click="currentPage++"
+        >
+          Next
+        </button>
+      </div>
     </div>
     <SignedTimesheetViewVue :id="selectedSignedTimesheetId" />
-
     <loader :isLoading="isLoading"></loader>
     <SuccessAlert ref="successAlert" />
   </div>
@@ -546,6 +497,7 @@ export default {
       }
     },
   },
+
   methods: {
     async ApproveMethod(id) {
       const token = localStorage.getItem("token");
@@ -575,6 +527,7 @@ export default {
       clearTimeout(this.debounceTimeout);
 
       this.debounceTimeout = setTimeout(() => {
+        this.searchQuery = this.searchQuery.trim();
         this.search();
       }, 100);
     },
@@ -653,7 +606,7 @@ export default {
         this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
         this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
       }
-      // Save the values to localStorage
+
       localStorage.setItem("startDate", this.startDate.toISOString());
       localStorage.setItem("endDate", this.endDate.toISOString());
     },
@@ -734,7 +687,7 @@ export default {
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
-      this.signedTimeSheetMethod();
+      // this.signedTimeSheetMethod();
     },
     async signedTimeSheetMethod() {
       this.isLoading = true;
@@ -793,8 +746,8 @@ export default {
           this.startDate.getMonth() + 1,
           0
         );
-        this.signedTimeSheetMethod();
       }
+      this.signedTimeSheetMethod();
     },
     moveToNext() {
       if (this.currentView === "weekly") {
@@ -805,14 +758,22 @@ export default {
           this.startDate.getMonth() + 1,
           0
         );
-        this.signedTimeSheetMethod();
       }
+      this.signedTimeSheetMethod();
     },
   },
-
+  async beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.signedTimeSheetMethod();
+    });
+  },
+  async beforeRouteUpdate(to, from, next) {
+    this.signedTimeSheetMethod();
+    next();
+  },
   async mounted() {
     this.currentView = "monthly";
-    await this.updateDateRange();
+    this.updateDateRange();
     await this.getBusinessUnitMethod();
 
     await this.getClientMethod();
@@ -835,7 +796,7 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-  height: 100vh;
+
   padding-top: 65px;
   background-color: #fdce5e17;
 }
@@ -852,11 +813,6 @@ export default {
 .btn-primary {
   border: none;
 }
-.nav-pills .nav-link {
-  border: 1px solid #ff5f30 !important;
-  color: #ff5f30;
-}
-
 .form-check-input {
   border: 2px solid grey;
 }
@@ -888,7 +844,7 @@ a[data-v-507f63b7] {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   background-color: transparent;
-  border: 1px solid green !important;
+  border: 1px solid green;
   border-radius: 22px;
   color: green;
 }
