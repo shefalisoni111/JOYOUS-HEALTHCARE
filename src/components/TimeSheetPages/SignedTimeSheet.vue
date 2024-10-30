@@ -145,9 +145,36 @@
                             </td>
                             <!-- <td scope="col">{{ data.id }}</td> -->
                             <td scope="col">{{ data.code }}</td>
-                            <td scope="col">{{ data.candidate_name }}</td>
-                            <td scope="col">{{ data.client }}</td>
-                            <td scope="col">{{ data.site }}</td>
+                            <td scope="col">
+                              <router-link
+                                class="text-black text-decoration-none fw-bold"
+                                :to="{
+                                  name: 'Profile',
+                                  params: { id: data?.candidate_id },
+                                }"
+                                >{{ data.candidate_name }}</router-link
+                              >
+                            </td>
+                            <td scope="col">
+                              <router-link
+                                class="text-black text-decoration-none fw-bold"
+                                :to="{
+                                  name: 'SingleClientProfile',
+                                  params: { id: data?.site_id_and_client_id?.client_id },
+                                }"
+                                >{{ data.client }}</router-link
+                              >
+                            </td>
+                            <td scope="col">
+                              <router-link
+                                class="text-black text-decoration-none fw-bold"
+                                :to="{
+                                  name: 'SingleSiteprofile',
+                                  params: { id: data?.site_id_and_client_id?.site_id },
+                                }"
+                                >{{ data.site }}</router-link
+                              >
+                            </td>
                             <td scope="col">{{ data.job }}</td>
                             <td scope="col">{{ data.shift }}</td>
                             <td scope="col">{{ data.date }}</td>
@@ -247,9 +274,36 @@
                             </td>
                             <!-- <td scope="col">{{ data.id }}</td> -->
                             <td scope="col">{{ data.code }}</td>
-                            <td scope="col">{{ data.candidate_name }}</td>
-                            <td scope="col">{{ data.client }}</td>
-                            <td scope="col">{{ data.site }}</td>
+                            <td scope="col">
+                              <router-link
+                                class="text-black text-decoration-none fw-bold"
+                                :to="{
+                                  name: 'Profile',
+                                  params: { id: data?.candidate_id },
+                                }"
+                                >{{ data.candidate_name }}</router-link
+                              >
+                            </td>
+                            <td scope="col">
+                              <router-link
+                                class="text-black text-decoration-none fw-bold"
+                                :to="{
+                                  name: 'SingleClientProfile',
+                                  params: { id: data?.site_id_and_client_id?.client_id },
+                                }"
+                                >{{ data.client }}</router-link
+                              >
+                            </td>
+                            <td scope="col">
+                              <router-link
+                                class="text-black text-decoration-none fw-bold"
+                                :to="{
+                                  name: 'SingleSiteprofile',
+                                  params: { id: data?.site_id_and_client_id?.site_id },
+                                }"
+                                >{{ data.site }}</router-link
+                              >
+                            </td>
                             <td scope="col">{{ data.job }}</td>
                             <td scope="col">{{ data.shift }}</td>
                             <td scope="col">{{ data.date }}</td>
