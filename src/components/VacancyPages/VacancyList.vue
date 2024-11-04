@@ -288,6 +288,7 @@ import AssignedVacancyList from "../modals/Vacancy/AssignedVacancyList.vue";
 import RejectedVacancyList from "../modals/Vacancy/RejectedVacancyList.vue";
 import AllVacancyCandidateList from "../modals/Vacancy/AllVacancyCandidateList.vue";
 import AddVacancy from "../modals/Vacancy/AddVacancy.vue";
+import Swal from "sweetalert2";
 const axiosInstance = axios.create({
   headers: {
     "Cache-Control": "no-cache",
@@ -464,7 +465,19 @@ export default {
       this.$store.commit("setSelectedPublishedItemId", id);
     },
     async vacancyInactiveMethod(id) {
-      if (!window.confirm("Are you Sure ?")) {
+      // if (!window.confirm("Are you Sure ?")) {
+      //   return;
+      // }
+      const confirmation = await Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to deactivate this vacancy?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, deactivate!",
+        cancelButtonText: "No, cancel",
+      });
+
+      if (!confirmation.isConfirmed) {
         return;
       }
       const token = localStorage.getItem("token");
@@ -474,7 +487,13 @@ export default {
       );
 
       if (isInactive) {
-        alert("Vacancy already Inactive");
+        // alert("Vacancy already Inactive");
+        Swal.fire({
+          icon: "warning",
+          title: "Vacancy Status",
+          text: "Vacancy already Inactive",
+          confirmButtonText: "OK",
+        });
         return;
       }
       await axios
@@ -487,10 +506,24 @@ export default {
         .then((response) => {
           this.searchVacancyUpdated();
         });
-      alert("InActive Vacancy");
+      // alert("InActive Vacancy");
+      Swal.fire({
+        icon: "success",
+        title: "Vacancy Status",
+        text: "Vacancy set to Inactive",
+        confirmButtonText: "OK",
+      });
     },
     async vacancyActiveMethod(id) {
-      if (!window.confirm("Are you Sure ?")) {
+      const confirmation = await Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to activate this vacancy?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, activate!",
+        cancelButtonText: "No, cancel",
+      });
+      if (!confirmation.isConfirmed) {
         return;
       }
       const token = localStorage.getItem("token");
@@ -499,7 +532,13 @@ export default {
       );
 
       if (isActive) {
-        alert("Vacancy already active");
+        // alert("Vacancy already active");
+        Swal.fire({
+          icon: "warning",
+          title: "Vacancy Status",
+          text: "Vacancy already active",
+          confirmButtonText: "OK",
+        });
         return;
       }
 
@@ -513,7 +552,13 @@ export default {
         .then((response) => {
           this.searchVacancyUpdated();
         });
-      alert("Active Vacancy");
+      // alert("Active Vacancy");
+      Swal.fire({
+        icon: "success",
+        title: "Vacancy Status",
+        text: "Vacancy set to Active",
+        confirmButtonText: "OK",
+      });
     },
     // setActiveTabFromRoute() {
     //   if (this.$route.params.tab) {
@@ -528,19 +573,37 @@ export default {
     //   }
     // },
     reActivatedMethod(id) {
-      if (!window.confirm("Are you sure you want to re-activate?")) {
-        return;
-      }
-      axios
-        .put(`${VITE_API_URL}/active_vacancy/${id}`)
-        .then((response) => {
-          this.inactiveCandidateData = response.data;
-          this.getInactiveVacancyMethod();
-          alert("Successful Reactivate");
-        })
-        .catch((error) => {
-          // console.error("Error reactivating vacancy:", error);
-        });
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to re-activate this vacancy?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, re-activate!",
+        cancelButtonText: "No, cancel",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const response = await axios.put(`${VITE_API_URL}/active_vacancy/${id}`);
+
+            this.inactiveCandidateData = response.data;
+            this.getInactiveVacancyMethod();
+
+            Swal.fire({
+              icon: "success",
+              title: "Vacancy Status",
+              text: "Vacancy set to Active",
+              confirmButtonText: "OK",
+            });
+          } catch (error) {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: error.response?.data?.message || "Failed to re-activate the vacancy.",
+              confirmButtonText: "OK",
+            });
+          }
+        }
+      });
     },
     async searchVacancyUpdated() {
       const token = localStorage.getItem("token");

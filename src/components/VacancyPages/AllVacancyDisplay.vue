@@ -25,8 +25,8 @@
             </tr>
           </thead>
 
-          <tbody v-if="getVacancyDetail?.length > 0">
-            <tr v-for="getdata in getVacancyDetail" :key="getdata.id">
+          <tbody v-if="paginatedVacancies?.length > 0">
+            <tr v-for="getdata in paginatedVacancies" :key="getdata.id">
               <td v-text="getdata.id"></td>
               <td v-text="getdata.ref_code"></td>
               <td>

@@ -176,9 +176,18 @@
                                 <li class="">
                                   <button
                                     class="d-none"
-                                    v-if="getDocs.candidate_document === null"
+                                    v-if="
+                                      getDocs.candidate_document === null &&
+                                      !getDocs.document.mandatory
+                                    "
                                   ></button>
-                                  <button class="btn border-primary-subtle" v-else>
+                                  <button
+                                    class="btn border-primary-subtle"
+                                    v-if="
+                                      getDocs.candidate_document !== null &&
+                                      !getDocs.document.mandatory
+                                    "
+                                  >
                                     <i
                                       class="bi bi-trash"
                                       v-on:click="
