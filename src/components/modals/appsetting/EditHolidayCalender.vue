@@ -3,14 +3,14 @@
     <!-- Modal -->
     <div
       class="modal fade"
-      id="addHolidayCalender"
-      aria-labelledby="addHolidayCalender"
+      id="editHolidayCalender"
+      aria-labelledby="editHolidayCalender"
       tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addHolidayCalender">Add Holidays</h5>
+            <h5 class="modal-title" id="editHolidayCalender">Edit Holidays</h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -23,7 +23,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      v-model="title"
+                      v-model="fetchHolidayCalender.title"
                       @input="clearError('title')"
                     />
                     <div v-if="getError('title')" class="text-danger">
@@ -40,7 +40,7 @@
                     <input
                       type="date"
                       class="form-control"
-                      v-model="holiday_date"
+                      v-model="fetchHolidayCalender.holiday_date"
                       rows="3"
                       @input="clearError('holiday_date')"
                       :min="today"
@@ -56,10 +56,9 @@
           <div class="modal-footer">
             <button
               class="btn btn-secondary rounded-1"
-              data-bs-target="#addHolidayCalender"
+              data-bs-target="#editHolidayCalender"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
-              v-on:click="clearFieldsData"
             >
               Cancel
             </button>
@@ -67,7 +66,7 @@
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               :disabled="isButtonDisabled"
-              v-on:click="addHolidayCalender()"
+              v-on:click="editHolidayCalender()"
             >
               Save
             </button>
@@ -87,12 +86,30 @@ export default {
   name: "AddHolidayCalender",
   data() {
     return {
-      title: "",
-
-      holiday_date: "",
-
+      fetchHolidayCalender: {
+        id: "",
+        title: "",
+        holiday_date: "",
+      },
       errors: {},
     };
+  },
+  props: {
+    holidayCalenderID: {
+      type: Number,
+      required: true,
+    },
+  },
+  watch: {
+    holidayCalenderID: {
+      immediate: true,
+      handler(newVacancyID) {
+        if (newVacancyID !== 0) {
+          this.fetchHolidayDetails(newVacancyID);
+        } else {
+        }
+      },
+    },
   },
   components: { SuccessAlert },
   computed: {
@@ -110,59 +127,52 @@ export default {
     },
   },
   methods: {
-    clearFieldsData() {
-      this.clearFields();
-      setTimeout(() => {
-        this.clearError();
-      }, 10);
-    },
     clearFields() {
-      this.title = "";
-      this.holiday_date = "";
+      this.fetchHolidayCalender = { id: "", title: "", holiday_date: "" };
     },
     clearError(fieldName) {
-      this.errors[fieldName] = null;
+      this.$set(this.errors, fieldName, null);
     },
     getError(fieldName) {
       return this.errors[fieldName];
     },
     isEmptyField() {
-      return !this.title.trim() || !this.holiday_date.trim();
+      return (
+        !this.fetchHolidayCalender.title.trim() ||
+        !this.fetchHolidayCalender.holiday_date.trim()
+      );
     },
-    validateAndAddJob() {
-      this.errors = {};
 
-      if (!this.title.trim()) {
-        this.$set(this.errors, "title", "Title is required.");
-      }
-
-      if (!this.holiday_date.trim()) {
-        this.$set(this.errors, "holiday_date", "Holiday Date is required.");
-      }
-
-      if (
-        Object.values(this.errors).every((error) => error === null) &&
-        !this.isEmptyField()
-      ) {
-        this.addHolidayCalender();
-      }
-    },
-    async addHolidayCalender() {
+    async editHolidayCalender() {
       const data = {
-        title: this.title,
-        holiday_date: this.holiday_date,
+        title: this.fetchHolidayCalender.title,
+        holiday_date: this.fetchHolidayCalender.holiday_date,
       };
       try {
-        const response = await axios.post(`${VITE_API_URL}/holiday_calenders`, data);
-        if (response.data) {
-          this.$emit("updateListHoliday");
-          const message = "Holiday Add Successful";
+        const response = await axios.put(
+          `${VITE_API_URL}/holiday_calenders/${this.fetchHolidayCalender.id}`,
+          data
+        );
+        if (response.status === 200) {
+          this.$emit("updateHoliday");
+          const message = "Holiday Update Successful";
           this.$refs.successAlert.showSuccess(message);
-          this.title = "";
-          this.holiday_date = "";
+          this.clearFields();
         }
       } catch (error) {
-        // console.error("Error adding employee:", error);
+        // console.error("Error updating holiday:", error);
+      }
+    },
+    async fetchHolidayDetails(id) {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/holiday_calenders/${id}`);
+        this.fetchHolidayCalender = {
+          id: response.data.data.id,
+          title: response.data.data.title,
+          holiday_date: response.data.data.holiday_date,
+        };
+      } catch (error) {
+        // console.error("Error fetching holiday details:", error);
       }
     },
   },

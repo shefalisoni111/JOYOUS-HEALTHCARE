@@ -52,6 +52,22 @@
                   <span class="fw-bold text-white text-capitalize mt-2">{{
                     date.title
                   }}</span>
+                  <span class="icon-actions">
+                    <i
+                      class="bi bi-pencil-square text-white mx-2 cursor-pointer"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editHolidayCalender"
+                      data-bs-whatever="@mdo"
+                      type="button"
+                      @click="editHoliday(date.id)"
+                      title="Edit Holiday"
+                    ></i>
+                    <i
+                      class="bi bi-trash text-white mx-2 cursor-pointer"
+                      @click="deleteHoliday(date.id)"
+                      title="Delete Holiday"
+                    ></i>
+                  </span>
                 </span>
               </div>
             </div>
@@ -60,13 +76,18 @@
       </div>
     </div>
     <AddHolidayCalender @updateListHoliday="getHolidayDateMethod" />
+    <EditHolidayCalender
+      @updateHoliday="getHolidayDateMethod"
+      :holidayCalenderID="selectedVacancyId || 0"
+    />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import AddHolidayCalender from "../modals/appsetting/AddHolidayCalender.vue";
-
+import EditHolidayCalender from "../modals/appsetting/EditHolidayCalender.vue";
+import Swal from "sweetalert2";
 export default {
   data() {
     return {
@@ -82,11 +103,15 @@ export default {
         "Sunday",
       ],
       getHolidayData: [],
+      getHolidayDataShow: [],
+      selectedVacancyId: 0,
     };
   },
   components: {
     AddHolidayCalender,
+    EditHolidayCalender,
   },
+
   computed: {
     currentMonth() {
       return this.currentDate.toLocaleString("default", {
@@ -105,7 +130,7 @@ export default {
     formatDate(day) {
       const year = this.currentDate.getFullYear();
       const month = this.currentDate.getMonth() + 1;
-      const formattedDay = day < 10 ? "0" + day : day; // Add leading zero if day is single digit
+      const formattedDay = day < 10 ? "0" + day : day;
       return `${year}-${month < 10 ? "0" + month : month}-${formattedDay}`;
     },
     nextMonth() {
@@ -128,15 +153,31 @@ export default {
         const response = await axios.get(`${VITE_API_URL}/holiday_calenders`);
 
         this.getHolidayData = response.data;
-      } catch (error) {
-        // if (error.response) {
-        //   if (error.response.status == 404) {
-        //     // alert(error.response.data.message);
-        //   }
-        // } else {
-        //   // console.error("Error fetching candidates:", error);
-        // }
-      }
+      } catch (error) {}
+    },
+    async editHoliday(id) {
+      this.selectedVacancyId = id;
+    },
+    async deleteHoliday(id) {
+      try {
+        const result = await Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+        });
+
+        if (result.isConfirmed) {
+          await axios.delete(`${VITE_API_URL}/holiday_calenders/${id}`);
+
+          await this.getHolidayDateMethod();
+
+          Swal.fire("Deleted!", "The holiday has been deleted.", "success");
+        }
+      } catch (error) {}
     },
   },
   mounted() {
@@ -168,7 +209,7 @@ export default {
 .event-data {
   background: #198754;
 
-  padding: 5px;
+  padding: 2px;
   margin-top: 8px;
 }
 .days {
