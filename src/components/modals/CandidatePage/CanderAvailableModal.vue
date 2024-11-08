@@ -24,7 +24,7 @@
           :key="date"
           class="day-header candidateTable"
         >
-          {{ formatDate(date) }}
+          {{ formatDate(date) }}{{ console.log(formatDate(date)) }}
 
           <div class="shift-checkboxes d-flex flex-column">
             <div>
@@ -251,7 +251,14 @@ export default {
       }
     },
     formatDate(date) {
-      return new Date(date).toLocaleDateString();
+      // return new Date(date).toLocaleDateString();
+      const options = {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      };
+
+      return new Date(date).toLocaleDateString("en-GB", options);
     },
 
     isShiftDisabled(selectedDate) {
