@@ -319,12 +319,14 @@ export default {
         );
 
         this.getCandidates = response.data.candidate;
-        if (this.getCandidates.job_ids && this.getCandidates.job_ids.length) {
-          this.job_ids = this.getCandidates.job_ids;
-          await this.fetchClientsByJobIds();
-        }
+        // if (this.getCandidates.job_ids && this.getCandidates.job_ids.length) {
+        //   this.job_ids = this.getCandidates.job_ids;
+        //   await this.fetchClientsByJobIds();
+        // }
+        // this.employment_type_id = this.getCandidates.employment_type_id;
+        // await this.getJobOptions();
         this.employment_type_id = this.getCandidates.employment_type_id;
-        await this.getJobOptions();
+        await this.fetchEmploymentTypes();
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
@@ -499,7 +501,7 @@ export default {
       this.job_ids = [];
       this.staff_rate = "";
       this.client_id = "";
-      this.employment_type_id = "";
+      // this.employment_type_id = "";
       this.site_shift_id = "";
       this.clearError();
     },
