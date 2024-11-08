@@ -221,7 +221,7 @@ export default {
               confirmButtonColor: "rgb(255 112 8)",
             });
           } else {
-            await this.fetchPendingCandidates();
+            // await this.fetchPendingCandidates();
 
             Swal.fire({
               title: "Approved!",
@@ -230,7 +230,7 @@ export default {
               confirmButtonColor: "rgb(255 112 8)",
             });
           }
-          this.fetchPendingCandidates();
+          await this.fetchPendingCandidates();
         } catch (error) {
           // console.error("Error approving candidate:", error);
         }
