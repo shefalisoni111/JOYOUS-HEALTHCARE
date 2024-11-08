@@ -750,6 +750,7 @@ export default {
       this.intervalId = null;
     }
     // window.removeEventListener("beforeunload", this.saveToLocalStorage);
+    // this.loadDateRangeFromLocalStorage();
   },
   beforeDestroy() {
     if (this.intervalId) {
@@ -757,6 +758,7 @@ export default {
       this.intervalId = null;
     }
     // window.removeEventListener("beforeunload", this.saveToLocalStorage);
+    // this.loadDateRangeFromLocalStorage();
   },
 };
 </script>
