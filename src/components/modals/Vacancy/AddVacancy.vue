@@ -260,99 +260,105 @@
                     </span> -->
                   </div>
                 </div>
-                <div class="d-flex justify-content-between gap-1">
+                <div class="d-flex justify-content-between gap-2">
                   <div class="">
+                    <label class="form-label" for="clientRate">Staff Rate</label>
+                  </div>
+                  <div class="d-flex justify-content-between">
                     <div class="">
-                      <label class="form-label" for="clientRate">Client Rate</label>
-                    </div>
-                    <div class="">
-                      <input
-                        type="text"
-                        class="form-control w-100"
-                        v-model="client_rate"
-                        @input="handleInput('client_rate', client_rate)"
-                        maxlength="3"
-                      />
+                      <div class="">
+                        <label class="form-label" for="clientRate">Client Rate</label>
+                      </div>
+                      <div class="">
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="client_rate"
+                          @input="handleInput('client_rate', client_rate)"
+                          maxlength="3"
+                        />
 
-                      <span v-if="!validationClientRate" class="text-danger">
-                        Client Rate must be must be Number.
-                      </span>
+                        <span v-if="!validationClientRate" class="text-danger">
+                          Client Rate must be must be Number.
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="">
+                      <div class="">
+                        <label class="form-label" for="staffRate">Self Employee</label>
+                      </div>
+                      <div class="">
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="staff_rate"
+                          @input="handleInput('staff_rate', staff_rate)"
+                          maxlength="3"
+                        />
+                        <span v-if="!validationStaffRate" class="text-danger">
+                          Staff Rate must be must be Number.
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="">
+                      <div class="">
+                        <label class="form-label" for="umbrella">Umbrella</label>
+                      </div>
+                      <div class="">
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="umbrella"
+                          @input="handleInput('umbrella', umbrella)"
+                          maxlength="3"
+                        />
+                        <span v-if="!validationUmbrella" class="text-danger">
+                          Umbrella must be must be Number.
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="">
+                      <div class="">
+                        <label class="form-label" for="paye">Paye</label>
+                      </div>
+                      <div class="">
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="paye"
+                          @input="handleInput('paye', paye)"
+                          maxlength="3"
+                        />
+                        <span v-if="!validationPaye" class="text-danger">
+                          Paye must be must be Number.
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="">
+                      <div class="">
+                        <label class="form-label" for="privateLimited"
+                          >Private Limited</label
+                        >
+                      </div>
+                      <div class="">
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="private_limited"
+                          @input="handleInput('private_limited', private_limited)"
+                          maxlength="3"
+                        />
+                        <span v-if="!validationPrivateLimited" class="text-danger">
+                          Private Limited must be Number.
+                        </span>
+                      </div>
                     </div>
                   </div>
 
-                  <div class="">
-                    <div class="">
-                      <label class="form-label" for="staffRate">Staff Rate</label>
-                    </div>
-                    <div class="">
-                      <input
-                        type="text"
-                        class="form-control w-100"
-                        v-model="staff_rate"
-                        @input="handleInput('staff_rate', staff_rate)"
-                        maxlength="3"
-                      />
-                      <span v-if="!validationStaffRate" class="text-danger">
-                        Staff Rate must be must be Number.
-                      </span>
-                    </div>
-                  </div>
-
-                  <div class="">
-                    <div class="">
-                      <label class="form-label" for="umbrella">Umbrella</label>
-                    </div>
-                    <div class="">
-                      <input
-                        type="text"
-                        class="form-control w-100"
-                        v-model="umbrella"
-                        @input="handleInput('umbrella', umbrella)"
-                        maxlength="3"
-                      />
-                      <span v-if="!validationUmbrella" class="text-danger">
-                        Umbrella must be must be Number.
-                      </span>
-                    </div>
-                  </div>
-
-                  <div class="">
-                    <div class="">
-                      <label class="form-label" for="paye">Paye</label>
-                    </div>
-                    <div class="">
-                      <input
-                        type="text"
-                        class="form-control w-100"
-                        v-model="paye"
-                        @input="handleInput('paye', paye)"
-                        maxlength="3"
-                      />
-                      <span v-if="!validationPaye" class="text-danger">
-                        Paye must be must be Number.
-                      </span>
-                    </div>
-                  </div>
-
-                  <div class="">
-                    <div class="">
-                      <label class="form-label" for="privateLimited"
-                        >Private Limited</label
-                      >
-                    </div>
-                    <div class="">
-                      <input
-                        type="text"
-                        class="form-control w-100"
-                        v-model="private_limited"
-                        @input="handleInput('private_limited', private_limited)"
-                        maxlength="3"
-                      />
-                      <span v-if="!validationPrivateLimited" class="text-danger">
-                        Private Limited must be Number.
-                      </span>
-                    </div>
-                  </div>
                   <br />
                 </div>
                 <div class="text-danger mb-3">

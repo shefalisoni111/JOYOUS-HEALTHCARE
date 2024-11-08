@@ -403,7 +403,7 @@ export default {
           const putResponse = await axios.put(
             `${VITE_API_URL}/update_availabilitys`,
             {
-              availabilities: availabilities,
+              availabilities,
             },
             {
               headers: {
