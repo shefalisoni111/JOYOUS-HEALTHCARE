@@ -18,7 +18,7 @@
           <div class="full-page-calendar">
             <div class="d-flex justify-content-between align-items-center">
               <div class="calendar-header w-100">
-                <span v-if="formattedStartDate && formattedEndDate" class="fw-bold">
+                <!-- <span v-if="formattedStartDate && formattedEndDate" class="fw-bold">
                   {{
                     "Monday " + formattedStartDate + " to Sunday " + formattedEndDate
                   }} </span
@@ -29,7 +29,46 @@
                   @change="updateDateRange"
                   class="dateInput"
                   value=""
-                />
+                /> -->
+                <div class="d-flex">
+                  <!-- <div class="d-flex align-items-center gap-2">
+                    <select
+                      class="form-control"
+                      v-model="currentView"
+                      @change="updateDateRange"
+                    >
+                      <option value="weekly">Weekly</option>
+                      <option value="monthly">Monthly</option>
+                    </select>
+                  </div> -->
+
+                  &nbsp;&nbsp;
+                  <div class="d-flex align-items-center">
+                    <span
+                      v-if="currentView === 'weekly' && startDate && endDate"
+                      class="fw-bold"
+                    >
+                      {{
+                        "Monday " +
+                        formatDate(startDate) +
+                        " to Sunday " +
+                        formatDate(endDate)
+                      }}
+                    </span>
+                    <span
+                      v-else-if="currentView === 'monthly' && startDate && endDate"
+                      class="fw-bold"
+                    >
+                      {{ formatDate(startDate) + " to " + formatDate(endDate) }}
+                    </span>
+                  </div>
+                  &nbsp;&nbsp;
+                  <div class="d-flex align-items-center fs-4">
+                    <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
+                    <i class="bi bi-calendar2-check-fill"></i>
+                    <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                  </div>
+                </div>
               </div>
               <div>
                 <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
@@ -107,16 +146,25 @@
                         <span v-for="avail in data.availability" :key="avail.id">
                           <span v-if="avail.date === formattedDate(day)">
                             <span
-                              v-if="avail.status"
-                              style="font-size: small; padding: 0px 5px"
-                              v-bind:class="{
-                                'btn btn-warning ': avail.status === 'Late',
-                                'btn btn-primary ': avail.status === 'Unavailable',
-                                'btn btn-secondary ': avail.status === 'Night',
-                                'btn btn-light ': avail.status === 'Early',
-                              }"
+                              v-if="
+                                avail.candidate_status &&
+                                avail.candidate_status.length > 0
+                              "
                             >
-                              {{ avail.status ? avail.status[0].toUpperCase() : "" }}
+                              <span
+                                v-for="status in avail.candidate_status"
+                                :key="status"
+                                style="font-size: small; padding: 0px 5px"
+                                class="me-2"
+                                v-bind:class="{
+                                  'btn btn-warning': status === 'Late',
+                                  'btn btn-primary': status === 'U/A',
+                                  'btn btn-secondary': status === 'Night',
+                                  'btn btn-light': status === 'Early',
+                                }"
+                              >
+                                {{ status[0].toUpperCase() }}
+                              </span>
                             </span>
                           </span>
                         </span>
@@ -172,16 +220,18 @@
                         <span v-for="avail in data.availability" :key="avail.id">
                           <span v-if="avail.date === formattedDate(day)">
                             <span
-                              v-if="avail.status"
+                              v-for="status in avail.candidate_status"
+                              :key="status"
                               style="font-size: small; padding: 0px 5px"
+                              class="me-2"
                               v-bind:class="{
-                                'btn btn-warning ': avail.status === 'Late',
-                                'btn btn-primary ': avail.status === 'Unavailable',
-                                'btn btn-secondary ': avail.status === 'Night',
-                                'btn btn-light ': avail.status === 'Early',
+                                'btn btn-warning': status === 'Late',
+                                'btn btn-primary': status === 'U/A',
+                                'btn btn-secondary': status === 'Night',
+                                'btn btn-light': status === 'Early',
                               }"
                             >
-                              {{ avail.status ? avail.status[0].toUpperCase() : "" }}
+                              {{ status[0].toUpperCase() }}
                             </span>
                           </span>
                         </span>
@@ -263,11 +313,13 @@ const axiosInstance = axios.create({
 export default {
   data() {
     return {
+      currentView: "weekly",
       searchQuery: null,
       debounceTimeout: null,
       searchResults: [],
       errorMessage: "",
       date: new Date(),
+      intervalId: null,
       startDate: "",
       endDate: { value: "", display: "" },
       currentDate: new Date(),
@@ -393,35 +445,33 @@ export default {
 
       return dateString;
     },
-    async fetchAvailabilityStatusMethod() {
-      this.isLoading = true;
-      try {
-        const response = await axios.get(
-          `${VITE_API_URL}/weekly_availability_for_candidate?candidate_id=${
-            this.candidateId
-          }&date=${this.formattedDate(this.startDate)}`
-        );
-        this.updatedStatusData = response.data.data;
+    // async fetchAvailabilityStatusMethod() {
+    //   this.isLoading = true;
+    //   try {
+    //     const response = await axios.get(
+    //       `${VITE_API_URL}/weekly_availability_for_candidate?candidate_id=${this.candidateId}&date=${this.startDate}`
+    //     );
+    //     this.updatedStatusData = response.data.data;
 
-        this.availabilityByDate = this.updatedStatusData.reduce(
-          (formattedData, candidate) => {
-            if (candidate.availability) {
-              const formattedDate = this.formatDate(candidate.availability.date);
-              formattedData.push({
-                date: formattedDate,
-                status: candidate.availability.status,
-              });
-            }
-            return formattedData;
-          },
-          []
-        );
-      } catch (error) {
-        // console.error("Error fetching availability:", error);
-      } finally {
-        this.isLoading = false;
-      }
-    },
+    //     this.availabilityByDate = this.updatedStatusData.reduce(
+    //       (formattedData, candidate) => {
+    //         if (candidate.availability) {
+    //           const formattedDate = this.formatDate(candidate.availability.date);
+    //           formattedData.push({
+    //             date: formattedDate,
+    //             candidate_status: candidate.availability.candidate_status || [],
+    //           });
+    //         }
+    //         return formattedData;
+    //       },
+    //       []
+    //     );
+    //   } catch (error) {
+    //     // console.error("Error fetching availability:", error);
+    //   } finally {
+    //     this.isLoading = false;
+    //   }
+    // },
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
 
@@ -451,8 +501,31 @@ export default {
     },
 
     updateDateRange() {
-      this.fetchCandidateList(this.startDate);
-      this.saveToLocalStorage();
+      if (this.currentView === "weekly") {
+        const weekStart = new Date(this.startDate);
+        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
+        this.startDate = weekStart;
+
+        const weekEnd = new Date(this.startDate);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+        this.endDate = weekEnd;
+      } else if (this.currentView === "monthly") {
+        const currentDate = new Date();
+        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+      }
+
+      localStorage.setItem("startDate", this.startDate.toISOString());
+      localStorage.setItem("endDate", this.endDate.toISOString());
+    },
+    loadDateRangeFromLocalStorage() {
+      const storedStartDate = localStorage.getItem("startDate");
+      const storedEndDate = localStorage.getItem("endDate");
+
+      if (storedStartDate && storedEndDate) {
+        this.startDate = new Date(storedStartDate);
+        this.endDate = new Date(storedEndDate);
+      }
     },
     formattedDate(date) {
       if (date instanceof Date && !isNaN(date)) {
@@ -530,7 +603,36 @@ export default {
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
-
+    moveToPrevious() {
+      if (this.currentView === "weekly") {
+        this.startDate.setDate(this.startDate.getDate() - 7);
+        this.endDate.setDate(this.endDate.getDate() - 7);
+        this.updateDateRange();
+      } else if (this.currentView === "monthly") {
+        this.startDate.setMonth(this.startDate.getMonth() - 1);
+        this.endDate = new Date(
+          this.startDate.getFullYear(),
+          this.startDate.getMonth() + 1,
+          0
+        );
+      }
+      this.fetchCandidateList();
+    },
+    moveToNext() {
+      if (this.currentView === "weekly") {
+        this.startDate.setDate(this.startDate.getDate() + 7);
+        this.endDate.setDate(this.endDate.getDate() + 7);
+        this.updateDateRange();
+      } else if (this.currentView === "monthly") {
+        this.startDate.setMonth(this.startDate.getMonth() + 1);
+        this.endDate = new Date(
+          this.startDate.getFullYear(),
+          this.startDate.getMonth() + 1,
+          0
+        );
+      }
+      this.fetchCandidateList();
+    },
     openModal(candidateId, day) {
       try {
         const actualCandidateId = candidateId.candidate_id;
@@ -622,23 +724,39 @@ export default {
   },
 
   async mounted() {
-    try {
-      const currentDate = new Date();
-      const mondayIndex = 1;
-      const dayOfWeek = currentDate.getDay();
-      const daysToAdd =
-        dayOfWeek < mondayIndex ? mondayIndex - dayOfWeek - 7 : mondayIndex - dayOfWeek;
-      currentDate.setDate(currentDate.getDate() + daysToAdd);
-      this.startDate = currentDate.toISOString().split("T")[0];
-      await this.fetchCandidateList(this.formattedStartDate);
-      await this.fetchAvailabilityStatusMethod();
-    } catch (error) {
-      // Handle error
-    }
-    setInterval(() => {
+    this.loadDateRangeFromLocalStorage();
+
+    const currentDate = new Date();
+    const dayOfWeek = currentDate.getDay();
+    const startOfWeek = new Date(currentDate);
+
+    const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    startOfWeek.setDate(startOfWeek.getDate() + diff);
+
+    this.startDate = startOfWeek;
+
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(endOfWeek.getDate() + 6);
+    this.endDate = endOfWeek;
+    this.intervalId = setInterval(() => {
       this.fetchCandidateList(this.formattedStartDate);
     }, 5000);
-    window.addEventListener("beforeunload", this.saveToLocalStorage);
+    this.fetchCandidateList(this.formattedStartDate);
+    // window.addEventListener("beforeunload", this.saveToLocalStorage);
+  },
+  beforeUnmount() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
+    // window.removeEventListener("beforeunload", this.saveToLocalStorage);
+  },
+  beforeDestroy() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
+    // window.removeEventListener("beforeunload", this.saveToLocalStorage);
   },
 };
 </script>

@@ -29,7 +29,7 @@
           <div class="shift-checkboxes d-flex flex-column">
             <div>
               <input
-                type="radio"
+                type="checkbox"
                 :id="'early-' + date"
                 :name="'shiftsGroup-' + date"
                 v-model="selectedShifts[date]"
@@ -41,7 +41,7 @@
               <label :for="'early-' + date" class="ps-1">E</label>
               &nbsp;
               <input
-                type="radio"
+                type="checkbox"
                 :id="'late-' + date"
                 :name="'shiftsGroup-' + date"
                 v-model="selectedShifts[date]"
@@ -54,7 +54,7 @@
             </div>
             <div>
               <input
-                type="radio"
+                type="checkbox"
                 :id="'night-' + date"
                 :name="'shiftsGroup-' + date"
                 v-model="selectedShifts[date]"
@@ -66,13 +66,13 @@
               <label :for="'night-' + date" class="ps-1">N</label>
               &nbsp;
               <input
-                type="radio"
+                type="checkbox"
                 :id="'unavailable-' + date"
                 :name="'shiftsGroup-' + date"
                 v-model="selectedShifts[date]"
-                :value="'Unavailable'"
-                @click="updateDate(date, 'Unavailable')"
-                :checked="getCheckedStatus(date, 'Unavailable')"
+                :value="'U/A'"
+                @click="updateDate(date, 'U/A')"
+                :checked="getCheckedStatus(date, 'U/A')"
                 :disabled="isShiftDisabled(date)"
               />
               <label :for="'unavailable-' + date" class="ps-1">U</label>
@@ -113,7 +113,7 @@ export default {
     //   default: null,
     // },
     startDate: {
-      type: String,
+      type: Date,
       required: false,
     },
     availabilityStatus: String,
@@ -236,11 +236,11 @@ export default {
     getCheckedStatus(date, shift) {
       const formattedDate = this.formatDate(date);
 
-      const availability = this.availabilityByDate.find((item) => {
-        return item.date === formattedDate;
-      });
+      const availability = this.availabilityIds.find(
+        (item) => item.date === formattedDate
+      );
 
-      return availability && availability.status === shift;
+      return availability && availability.candidate_status.includes(shift);
     },
     updateCurrentMonth(date) {
       if (date instanceof Date && !isNaN(date)) {
@@ -253,6 +253,7 @@ export default {
     formatDate(date) {
       return new Date(date).toLocaleDateString();
     },
+
     isShiftDisabled(selectedDate) {
       const dayData = this.calendarData.find((data) => data.date === selectedDate);
       return (
@@ -303,7 +304,6 @@ export default {
     updateDate(selectedDate, shift) {
       this.date = selectedDate;
       this.status = shift;
-
       const availability = this.availabilityIds.find(
         (item) => item.date === this.formatDate(selectedDate)
       );
@@ -313,26 +313,30 @@ export default {
       } else {
         this.availability_id = null;
       }
+      this.selectedShifts[selectedDate] = this.selectedShifts[selectedDate] || [];
 
-      const dayData = this.calendarData.find((data) => data.date === selectedDate);
-      if (dayData) {
-        dayData.shifts = dayData.shifts || {};
-        dayData.shifts[shift] = !dayData.shifts[shift];
-
-        if (
-          dayData.shifts.early &&
-          dayData.shifts.late &&
-          dayData.shifts.night &&
-          dayData.shifts.unavailable
-        ) {
-          return;
+      if (shift === "U/A") {
+        if (!this.selectedShifts[selectedDate].includes("U/A")) {
+          this.selectedShifts[selectedDate] = ["U/A"];
+        } else {
+          this.selectedShifts[selectedDate] = [];
+        }
+      } else {
+        const unavailableIndex = this.selectedShifts[selectedDate].indexOf("U/A");
+        if (unavailableIndex !== -1) {
+          this.selectedShifts[selectedDate].splice(unavailableIndex, 1);
         }
 
-        const selectedShifts = Object.keys(dayData.shifts)
-          .filter((key) => dayData.shifts[key])
-          .join(", ");
-        this.status = selectedShifts || "";
-        this.$set(this.selectedShifts, selectedDate, shift);
+        const shiftIndex = this.selectedShifts[selectedDate].indexOf(shift);
+        if (shiftIndex === -1) {
+          this.selectedShifts[selectedDate].push(shift);
+        } else {
+          this.selectedShifts[selectedDate].splice(shiftIndex, 1);
+        }
+
+        if (this.selectedShifts[selectedDate].length === 0) {
+          this.selectedShifts[selectedDate].push("U/A");
+        }
       }
     },
 
@@ -351,6 +355,16 @@ export default {
 
         let availabilities = [];
 
+        function formatDateToDDMMYYYY(dateString) {
+          const parsedDate = new Date(dateString);
+          const day = String(parsedDate.getDate()).padStart(2, "0");
+          const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
+          const year = parsedDate.getFullYear();
+
+          return `${day}/${month}/${year}`;
+        }
+        // console.log(this.availabilityIds);
+
         if (this.availability_id !== null) {
           const result = await Swal.fire({
             title: "Are you sure?",
@@ -365,7 +379,7 @@ export default {
           if (!result.isConfirmed) {
             return;
           }
-          for (const [date, status] of Object.entries(this.selectedShifts)) {
+          for (const [date, candidate_status] of Object.entries(this.selectedShifts)) {
             const availability = this.availabilityIds.find(
               (item) => item.date === this.formatDate(date)
             );
@@ -373,7 +387,7 @@ export default {
               availabilities.push({
                 id: availability.id,
                 date,
-                status,
+                candidate_status,
               });
             } else {
             }
@@ -382,7 +396,7 @@ export default {
           const putResponse = await axios.put(
             `${VITE_API_URL}/update_availabilitys`,
             {
-              availability_ids_and_statuses: availabilities,
+              availabilities: availabilities,
             },
             {
               headers: {
@@ -419,12 +433,19 @@ export default {
           if (Object.keys(this.selectedShifts).length === 0) {
             availabilities = [];
           } else {
-            for (const [date, status] of Object.entries(this.selectedShifts)) {
-              availabilities.push({
-                candidate_id: this.candidate_id,
-                date,
-                status,
-              });
+            for (const [date, candidate_status] of Object.entries(this.selectedShifts)) {
+              // availabilities.push({
+              //   candidate_id: this.candidate_id,
+              //   date,
+              //   candidate_status,
+              // });
+              if (candidate_status.length > 0) {
+                availabilities.push({
+                  candidate_id: this.candidate_id,
+                  date: formatDateToDDMMYYYY(date),
+                  candidate_status,
+                });
+              }
             }
           }
 
@@ -447,7 +468,9 @@ export default {
               if (candidate) {
                 candidate.availability = {
                   date: availability.date,
-                  status: availability.status,
+                  // status: availability.status,
+
+                  candidate_status: availability.candidate_status,
                 };
               }
             });
@@ -515,6 +538,12 @@ export default {
           }
         );
         this.candidateList = response.data.data;
+        this.availabilityIds = this.candidateList.flatMap((candidate) =>
+          candidate.availability.map((availabilityItem) => ({
+            date: availabilityItem.date,
+            availability_id: availabilityItem.availability_id,
+          }))
+        );
 
         // this.candidateList.forEach((candidate) => {
         //   candidate.availabilityByDate = {};
@@ -528,6 +557,8 @@ export default {
             (availabilityItem) => availabilityItem.availability_id
           );
         });
+
+        this.availability_id = this.availabilityIds[0].availability_id;
       } catch (error) {}
     },
     async fetchAvailabilityStatusMethod() {
@@ -547,27 +578,36 @@ export default {
               const formattedDate = this.formatDate(candidate.availability.date);
               formattedData.push({
                 date: formattedDate,
+                candidate_status: candidate.availability.candidate_status || [],
                 id: candidate.availability.availability_id,
               });
+              this.selectedShifts[formattedDate] =
+                candidate.availability.candidate_status || [];
             }
             return formattedData;
           },
           []
         );
 
-        this.availabilityByDate = this.updatedStatusData.reduce(
-          (formattedData, candidate) => {
-            if (candidate.availability) {
-              const formattedDate = this.formatDate(candidate.availability.date);
-              formattedData.push({
-                date: formattedDate,
-                status: candidate.availability.status,
-              });
-            }
-            return formattedData;
-          },
-          []
-        );
+        // this.availabilityIds.forEach((availability) => {
+        //   const { date, candidate_status } = availability;
+        //   this.selectedShifts[date] = candidate_status;
+        // });
+
+        // this.availabilityByDate = this.updatedStatusData.reduce(
+        //   (formattedData, candidate) => {
+        //     if (candidate.availability) {
+        //       const formattedDate = this.formatDate(candidate.availability.date);
+        //       formattedData.push({
+        //         date: formattedDate,
+        //         candidate_status: candidate.availability.candidate_status,
+        //         id: candidate.availability.availability_id,
+        //       });
+        //     }
+        //     return formattedData;
+        //   },
+        //   []
+        // );
       } catch (error) {
         // console.error("Error fetching availability:", error);
       }
