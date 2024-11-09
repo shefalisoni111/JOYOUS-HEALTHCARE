@@ -740,7 +740,7 @@ export default {
     this.endDate = endOfWeek;
     this.intervalId = setInterval(() => {
       this.fetchCandidateList(this.formattedStartDate);
-    }, 5000);
+    }, 2000);
     this.fetchCandidateList(this.formattedStartDate);
     // window.addEventListener("beforeunload", this.saveToLocalStorage);
   },
@@ -749,6 +749,7 @@ export default {
       clearInterval(this.intervalId);
       this.intervalId = null;
     }
+    this.fetchCandidateList(this.formattedStartDate);
     // window.removeEventListener("beforeunload", this.saveToLocalStorage);
     // this.loadDateRangeFromLocalStorage();
   },
@@ -757,6 +758,7 @@ export default {
       clearInterval(this.intervalId);
       this.intervalId = null;
     }
+    this.fetchCandidateList(this.formattedStartDate);
     // window.removeEventListener("beforeunload", this.saveToLocalStorage);
     // this.loadDateRangeFromLocalStorage();
   },

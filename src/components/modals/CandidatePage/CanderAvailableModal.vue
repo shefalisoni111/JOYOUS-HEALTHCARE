@@ -24,7 +24,7 @@
           :key="date"
           class="day-header candidateTable"
         >
-          {{ formatDate(date) }}{{ console.log(formatDate(date)) }}
+          {{ formatDate(date) }}
 
           <div class="shift-checkboxes d-flex flex-column">
             <div>
@@ -252,13 +252,22 @@ export default {
     },
     formatDate(date) {
       // return new Date(date).toLocaleDateString();
-      const options = {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      };
+      //const options = {
+      //   day: "2-digit",
+      //   month: "2-digit",
+      //   year: "numeric",
+      // };
+      const parsedDate = new Date(date);
 
-      return new Date(date).toLocaleDateString("en-GB", options);
+      if (isNaN(parsedDate)) return ""; // Handle invalid date
+
+      const day = String(parsedDate.getDate()).padStart(2, "0");
+      const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
+      const year = parsedDate.getFullYear();
+
+      return `${day}/${month}/${year}`;
+
+      // return new Date(date).toLocaleDateString("en-GB", parsedDate);
     },
 
     isShiftDisabled(selectedDate) {
@@ -354,11 +363,11 @@ export default {
           return;
         }
 
-        const formattedDate = parsedDate.toLocaleDateString("en-CA", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-        });
+        // const formattedDate = parsedDate.toLocaleDateString("en-CA", {
+        //   year: "numeric",
+        //   month: "2-digit",
+        //   day: "2-digit",
+        // });
 
         let availabilities = [];
 
@@ -387,113 +396,103 @@ export default {
             return;
           }
           for (const [date, candidate_status] of Object.entries(this.selectedShifts)) {
+            const formattedDate = this.formatDate(date);
             const availability = this.availabilityIds.find(
-              (item) => item.date === this.formatDate(date)
+              (item) => item.date === formattedDate
             );
-            if (availability) {
+            if (availability && availability.id !== null) {
               availabilities.push({
                 id: availability.id,
-                date,
+                date: formattedDate,
                 candidate_status,
               });
-            } else {
             }
           }
-
-          const putResponse = await axios.put(
-            `${VITE_API_URL}/update_availabilitys`,
-            {
-              availabilities,
-            },
-            {
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
+          if (availabilities.length > 0) {
+            const putResponse = await axios.put(
+              `${VITE_API_URL}/update_availabilitys`,
+              {
+                availabilities,
               },
+              {
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+
+            if (putResponse.status === 200) {
+              this.errorMessage = "";
+              await this.fetchCandidateList(this.startDate);
+              Swal.fire({
+                icon: "success",
+                title: "Success!",
+                text: "Availability updated successfully.",
+                timer: 3000,
+                showConfirmButton: false,
+              });
+              return;
+            } else {
+              return;
             }
-          );
-
-          if (putResponse.status === 200) {
-            // this.updatedStatusData.forEach((candidate) => {
-            //   if (candidate.candidate_id === this.candidate_id) {
-            //     candidate.availability = {
-            //       date: formattedDate,
-            //       status: this.status,
-            //     };
-            //   }
-            // });
-
-            this.errorMessage = "";
-            await this.fetchCandidateList(this.startDate);
-            Swal.fire({
-              icon: "success",
-              title: "Success!",
-              text: "Availability updated successfully.",
-              timer: 3000,
-              showConfirmButton: false,
-            });
-            return;
-          } else {
-            return;
           }
         } else {
           if (Object.keys(this.selectedShifts).length === 0) {
             availabilities = [];
           } else {
             for (const [date, candidate_status] of Object.entries(this.selectedShifts)) {
-              // availabilities.push({
-              //   candidate_id: this.candidate_id,
-              //   date,
-              //   candidate_status,
-              // });
-              if (candidate_status.length > 0) {
+              if (candidate_status && candidate_status.length > 0) {
+                availabilities = [];
                 availabilities.push({
                   candidate_id: this.candidate_id,
-                  date: formatDateToDDMMYYYY(date),
+                  date,
                   candidate_status,
                 });
               }
             }
           }
 
-          const postResponse = await axios.post(
-            `${VITE_API_URL}/availabilitys`,
-            { availabilities },
-            {
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-              },
-            }
-          );
-
-          if (postResponse.status === 201) {
-            availabilities.forEach((availability) => {
-              const candidate = this.updatedStatusData.find(
-                (candidate) => candidate.candidate_id === availability.candidate_id
-              );
-              if (candidate) {
-                candidate.availability = {
-                  date: availability.date,
-                  // status: availability.status,
-
-                  candidate_status: availability.candidate_status,
-                };
+          if (availabilities.length > 0) {
+            const postResponse = await axios.post(
+              `${VITE_API_URL}/availabilitys`,
+              { availabilities },
+              {
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                },
               }
-            });
+            );
 
-            this.errorMessage = "";
-            await this.fetchCandidateList(this.startDate);
-            Swal.fire({
-              icon: "success",
-              title: "Success!",
-              text: "Availability added successfully.",
-              timer: 3000,
-              showConfirmButton: false,
-            });
-            return;
-          } else {
-            return;
+            if (postResponse.status === 201) {
+              availabilities.forEach((availability) => {
+                const candidate = this.updatedStatusData.find(
+                  (candidate) => candidate.candidate_id === availability.candidate_id
+                );
+                if (candidate) {
+                  candidate.availability = {
+                    date: availability.date,
+                    // status: availability.status,
+
+                    candidate_status: availability.candidate_status,
+                  };
+                }
+              });
+
+              this.errorMessage = "";
+              // await this.fetchCandidateList(this.startDate);
+              Swal.fire({
+                icon: "success",
+                title: "Success!",
+                text: "Availability added successfully.",
+                timer: 3000,
+                showConfirmButton: false,
+              });
+              return;
+            } else {
+              return;
+            }
           }
         }
       } catch (error) {
@@ -547,7 +546,7 @@ export default {
         this.candidateList = response.data.data;
         this.availabilityIds = this.candidateList.flatMap((candidate) =>
           candidate.availability.map((availabilityItem) => ({
-            date: availabilityItem.date,
+            date: this.formatDate(availabilityItem.date),
             availability_id: availabilityItem.availability_id,
           }))
         );
@@ -559,13 +558,13 @@ export default {
         //   });
         // });
 
-        this.availabilityIds = this.candidateList.map((candidate) => {
-          return candidate.availability.map(
-            (availabilityItem) => availabilityItem.availability_id
-          );
-        });
+        // this.availabilityIds = this.candidateList.map((candidate) => {
+        //   return candidate.availability.map(
+        //     (availabilityItem) => availabilityItem.availability_id
+        //   );
+        // });
 
-        this.availability_id = this.availabilityIds[0].availability_id;
+        // this.availability_id = this.availabilityIds[0].availability_id;
       } catch (error) {}
     },
     async fetchAvailabilityStatusMethod() {
