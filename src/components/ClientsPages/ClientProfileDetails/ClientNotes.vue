@@ -46,7 +46,7 @@
               <div class="mt-2">
                 <h6
                   class="mb-0 text-capitalize"
-                  style="width: 900px; word-wrap: break-word"
+                  style="width: 600px; word-wrap: break-word"
                 >
                   {{ data.notes }}
                 </h6>
