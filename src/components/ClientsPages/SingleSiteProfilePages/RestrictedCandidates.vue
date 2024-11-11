@@ -72,10 +72,10 @@
       @siteAdded="handleAddRestrictedStaff"
       ref="addSite"
     />
-    <EditRestrictedSiteStaff
+    <!-- <EditRestrictedSiteStaff
       :restrictedID="selectedRestrictedId || 0"
       @EditRestricted="getRestrictedLocationMethod"
-    />
+    /> -->
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
   </div>
@@ -85,7 +85,7 @@
 import axios from "axios";
 import AddSiteRestrictedStaff from "../../modals/Site/AddSiteRestrictedStaff.vue";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
-import EditRestrictedSiteStaff from "../../modals/Site/EditRestrictedSiteStaff.vue";
+// import EditRestrictedSiteStaff from "../../modals/Site/EditRestrictedSiteStaff.vue";
 import Loader from "../../Loader/Loader.vue";
 import Swal from "sweetalert2";
 
@@ -105,7 +105,7 @@ export default {
     AddSiteRestrictedStaff,
     SuccessAlert,
     Loader,
-    EditRestrictedSiteStaff,
+    // EditRestrictedSiteStaff,
   },
   methods: {
     editRestricted(restrictedID) {
