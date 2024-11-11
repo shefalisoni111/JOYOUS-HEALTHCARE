@@ -12,6 +12,7 @@
                   type="checkbox"
                   id="togBtn"
                   v-model="fetchInvoiceSetting.split_rate"
+                  @input="handleInputChange"
                 />
                 <div class="slider round"></div>
               </label>
@@ -25,6 +26,7 @@
                   type="checkbox"
                   id="togBtn"
                   v-model="fetchInvoiceSetting.holiday_split_rate"
+                  @input="handleInputChange"
                 />
                 <div class="slider round"></div>
               </label>

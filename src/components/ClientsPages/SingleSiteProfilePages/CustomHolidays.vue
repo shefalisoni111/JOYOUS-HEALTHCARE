@@ -32,7 +32,7 @@
                 <!-- <th scope="col">Portal Access</th> -->
               </tr>
             </thead>
-            <tbody>
+            <tbody v-if="getCustomHolidayData?.length > 0">
               <tr v-for="data in getCustomHolidayData" :key="data.id">
                 <td>{{ data.id }}</td>
                 <td class="text-capitalize">{{ data.title }}</td>
@@ -57,6 +57,13 @@
                       v-on:click="customHolidayDeleteMethod(data.id)"
                     ></i></button
                   >&nbsp;&nbsp;
+                </td>
+              </tr>
+            </tbody>
+            <tbody v-else>
+              <tr>
+                <td colspan="5" class="text-danger text-center">
+                  {{ "Not Found Custom Holiday." }}
                 </td>
               </tr>
             </tbody>
