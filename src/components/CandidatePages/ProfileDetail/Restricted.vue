@@ -72,24 +72,42 @@
               :key="data.id"
             >
               <li>
-                <div class="d-flex justify-content-start border-box m-2 rounded-2">
-                  <div>
-                    <div class="hround">
-                      {{
-                        data.client_name
-                          .split(" ")
-                          .map((word) => word.charAt(0))
-                          .join("")
-                      }}
+                <div class="d-flex gap-5 border-box m-2 rounded-2">
+                  <div class="d-flex">
+                    <div>
+                      <div class="hround">
+                        {{
+                          data.client_name
+                            .split(" ")
+                            .map((word) => word.charAt(0))
+                            .join("")
+                        }}
+                      </div>
+                    </div>
+                    &nbsp;
+                    <div class="d-flex align-items-center flex-column">
+                      <h5 class="fw-bold mb-0">{{ data.client_name }}</h5>
+
+                      <span class="fw-bold mb-0">{{ data.site_name }}</span>
+
+                      <!-- <span>Hospital {{ data.id }}</span> -->
                     </div>
                   </div>
-                  &nbsp;
-                  <div class="d-flex align-items-center flex-column">
-                    <h5 class="fw-bold mb-0">{{ data.client_name }}</h5>
 
-                    <span class="fw-bold mb-0">{{ data.site_name }}</span>
-
-                    <!-- <span>Hospital {{ data.id }}</span> -->
+                  <div>
+                    <i
+                      class="bi bi-pencil-square cursor-pointer btn btn-outline-success text-nowrap"
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editRestrictedLocation"
+                      data-bs-whatever="@mdo"
+                      @click="editRestricted(data.restricted_location_id)"
+                    ></i>
+                    &nbsp;&nbsp;
+                    <i
+                      class="bi bi-trash cursor-pointer btn btn-outline-danger text-nowrap"
+                      @click="deleteRestricted(data.restricted_location_id)"
+                    ></i>
                   </div>
                 </div>
               </li>
@@ -109,15 +127,20 @@
     />
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
+    <EditStaffRestrictedLocation
+      :restrictedID="selectedRestrictedId || 0"
+      @EditRestricted="getRestrictedLocationMethod"
+    />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import AddRestrictedLocation from "../../modals/CandidatePage/AddRestrictedLocation.vue";
+import EditStaffRestrictedLocation from "../../modals/CandidatePage/EditStaffRestrictedLocation.vue";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 import Loader from "../../Loader/Loader.vue";
-
+import Swal from "sweetalert2";
 export default {
   name: "Restricted",
   data() {
@@ -127,14 +150,42 @@ export default {
       getRestrictedShiftData: [],
       getLocationData: [],
       isLoading: false,
+      selectedRestrictedId: 0,
     };
   },
   components: {
     AddRestrictedLocation,
     SuccessAlert,
     Loader,
+    EditStaffRestrictedLocation,
   },
   methods: {
+    editRestricted(restrictedID) {
+      this.selectedRestrictedId = restrictedID;
+    },
+    async deleteRestricted(id) {
+      try {
+        const result = await Swal.fire({
+          title: "Are you sure?",
+          text: "This action cannot be undone!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "Cancel",
+        });
+
+        if (result.isConfirmed) {
+          await axios.delete(`${VITE_API_URL}/restricted_business_units/${id}`);
+          Swal.fire("Deleted!", "The record has been deleted.", "success");
+          this.getRestrictedLocationMethod();
+        }
+      } catch (error) {
+        // console.error("Error deleting restricted location:", error);
+        Swal.fire("Error!", "There was an issue deleting the record.", "error");
+      }
+    },
     handleAddRestrictedLocation() {
       this.$refs.addRestrictedLocation.getBusinessUnitMethod();
       setTimeout(() => {
@@ -199,7 +250,7 @@ export default {
         const response = await axios.get(
           `${VITE_API_URL}/candidate_restricted_location?candidate_id=${this.$route.params.id}`
         );
-        this.getLocationData = response.data;
+        this.getLocationData = response.data.site_date;
       } catch (error) {
         // console.error("Error fetching restricted shifts:", error);
       } finally {

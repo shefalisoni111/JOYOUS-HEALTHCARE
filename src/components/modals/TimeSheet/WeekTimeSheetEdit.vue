@@ -131,7 +131,7 @@
                           <input
                             v-if="apiResponse"
                             type="text"
-                            class="form-control custom-disabled"
+                            class="form-control"
                             v-model="fetchCustomTimeShetData.start_time"
                             disabled
                           />
@@ -203,7 +203,7 @@
                           <input
                             v-if="apiResponse_EndTime"
                             type="text"
-                            class="form-control custom-disabled"
+                            class="form-control"
                             v-model="fetchCustomTimeShetData.end_time"
                             disabled
                           />
@@ -304,7 +304,15 @@
                           >
                         </div>
                         <div class="col-12" v-if="showSaveButton">
+                          <input
+                            v-if="fetchCustomTimeShetData.break"
+                            type="text"
+                            class="form-control"
+                            v-model="fetchCustomTimeShetData.break"
+                            disabled
+                          />
                           <select
+                            v-else
                             id="selectShiftsBreak"
                             class="form-control"
                             v-model="fetchCustomTimeShetData.break"
@@ -364,7 +372,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex">
                       <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label">Client Rate</label>
@@ -372,7 +380,7 @@
                         <div class="col-12 mt-1" v-if="showSaveButton">
                           <input
                             type="text"
-                            class="form-control disabled"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.client_rate"
                             @input="validateNumber('client_rate')"
                             disabled
@@ -410,7 +418,7 @@
                           />
                         </div>
                       </div> -->
-                      <div class="mb-3">
+                      <div class="mb-3 ms-5">
                         <div class="col-12">
                           <label class="form-label">Staff Rate</label>
                         </div>

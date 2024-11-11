@@ -33,13 +33,28 @@
                       .join("")
                   }}</span>
                 </div>
-                <div class="">
+                <div class="ps-3">
                   <div class="card-body">
                     <h5 class="card-title text-capitalize">
                       <span> {{ data.candidate_name }} </span>
                     </h5>
                     <span> {{ data.position }} </span>
                   </div>
+                </div>
+                <div class="d-flex align-items-center">
+                  <i
+                    class="bi bi-pencil-square cursor-pointer btn btn-outline-success text-nowrap"
+                    type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editRestrictedSiteLocation"
+                    data-bs-whatever="@mdo"
+                    @click="editRestricted(data.id)"
+                  ></i>
+                  &nbsp;&nbsp;
+                  <i
+                    class="bi bi-trash cursor-pointer btn btn-outline-danger text-nowrap"
+                    @click="deleteRestricted(data.id)"
+                  ></i>
                 </div>
               </div>
             </div>
@@ -57,6 +72,10 @@
       @siteAdded="handleAddRestrictedStaff"
       ref="addSite"
     />
+    <EditRestrictedSiteStaff
+      :restrictedID="selectedRestrictedId || 0"
+      @EditRestricted="getRestrictedLocationMethod"
+    />
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
   </div>
@@ -66,14 +85,16 @@
 import axios from "axios";
 import AddSiteRestrictedStaff from "../../modals/Site/AddSiteRestrictedStaff.vue";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+import EditRestrictedSiteStaff from "../../modals/Site/EditRestrictedSiteStaff.vue";
 import Loader from "../../Loader/Loader.vue";
+import Swal from "sweetalert2";
 
 export default {
   name: "RestrictedCandidates",
   data() {
     return {
       shifts: [],
-
+      selectedRestrictedId: "",
       getRestrictedStaffData: [],
       client_id: "",
       isLoading: false,
@@ -84,8 +105,35 @@ export default {
     AddSiteRestrictedStaff,
     SuccessAlert,
     Loader,
+    EditRestrictedSiteStaff,
   },
   methods: {
+    editRestricted(restrictedID) {
+      this.selectedRestrictedId = restrictedID;
+    },
+    async deleteRestricted(id) {
+      try {
+        const result = await Swal.fire({
+          title: "Are you sure?",
+          text: "This action cannot be undone!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "Cancel",
+        });
+
+        if (result.isConfirmed) {
+          await axios.delete(`${VITE_API_URL}/restricted_business_units/${id}`);
+          Swal.fire("Deleted!", "The record has been deleted.", "success");
+          this.getRestrictedLocationMethod();
+        }
+      } catch (error) {
+        // console.error("Error deleting restricted location:", error);
+        Swal.fire("Error!", "There was an issue deleting the record.", "error");
+      }
+    },
     handleAddRestrictedStaff() {
       this.$refs.addSite.getBusinessUnitMethod();
       setTimeout(() => {

@@ -65,7 +65,7 @@
                     >
                   </div>
                 </div> -->
-                <div class="mb-3 d-flex justify-content-between">
+                <!-- <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label class="form-label" for="selectBusinessUnit">Site</label>
                   </div>
@@ -86,11 +86,9 @@
                         {{ option.site_name }}
                       </option>
                     </select>
-                    <!-- <span v-if="!validationBusinessUnit && !site_id" class="text-danger"
-                        >Site Required</span
-                      > -->
+                    
                   </div>
-                </div>
+                </div> -->
               </form>
             </div>
             <div class="modal-footer">

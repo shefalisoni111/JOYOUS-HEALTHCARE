@@ -255,6 +255,22 @@
                             <td scope="col">
                               <button
                                 type="button"
+                                :class="[
+                                  'btn',
+                                  data.status === 'Approved'
+                                    ? 'btn-danger'
+                                    : 'btn-outline-success',
+                                  'text-nowrap',
+                                ]"
+                                :disabled="isSaveDisabled || data.status !== 'Approved'"
+                                @click="ApproveMethod(data.id)"
+                              >
+                                {{
+                                  data.status === "Approved" ? "Unapprove" : "Approve"
+                                }}</button
+                              >&nbsp;
+                              <button
+                                type="button"
                                 class="btn btn-outline-success text-nowrap text-nowrap"
                                 data-bs-toggle="modal"
                                 data-bs-target="#editCustomTimeSheet"
@@ -409,6 +425,21 @@
                             <td scope="col">
                               <button
                                 type="button"
+                                :class="[
+                                  'btn',
+                                  data.status === 'Approved'
+                                    ? 'btn-danger'
+                                    : 'btn-outline-success',
+                                  'text-nowrap',
+                                ]"
+                                @click="ApproveMethod(data.id)"
+                              >
+                                {{
+                                  data.status === "Approved" ? "Unapprove" : "Approve"
+                                }}</button
+                              >&nbsp;
+                              <button
+                                type="button"
                                 class="btn btn-outline-success text-nowrap text-nowrap"
                                 data-bs-toggle="modal"
                                 data-bs-target="#editCustomTimeSheet"
@@ -548,6 +579,10 @@ export default {
       endDate: new Date(),
       getCustomTimeSheet: [],
       currentPage: 1,
+      notes: "",
+      start_time: "",
+      end_time: "",
+      paper_timesheet: "",
       itemsPerPage: 10,
       totalRecords: 0,
       selectedCustomTimesheetId: null,
@@ -568,6 +603,9 @@ export default {
   },
   components: { Navbar, CustomeTimeSheetEdit, Loader, PaperTimeSheetViewVue },
   computed: {
+    isSaveDisabled() {
+      return !this.notes || !this.paper_timesheet || !this.start_time || !this.end_time;
+    },
     fullPaperTimeSheetUrl() {
       return (paper_timesheet) => {
         return paper_timesheet ? `${VITE_API_URL}${paper_timesheet}` : "";
@@ -636,6 +674,30 @@ export default {
   },
 
   methods: {
+    async ApproveMethod(id) {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.put(
+          `${VITE_API_URL}/approved_and_unapproved_timesheet_to_web/${id}`,
+          {},
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.status === 200 && response.data.message) {
+          const message = response.data.message;
+          this.$refs.successAlert.showSuccess(message);
+          this.getCustomSheetMethod();
+        }
+      } catch (error) {
+        // Handle the error if needed
+        // console.error("Error approving timesheet:", error);
+      }
+    },
     viewPaperSheet(customDataId, event) {
       event.stopPropagation();
       this.selectedCustomTimesheetId = customDataId;

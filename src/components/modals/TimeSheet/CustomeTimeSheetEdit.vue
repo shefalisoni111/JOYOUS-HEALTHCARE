@@ -588,7 +588,7 @@ export default {
           formattedTime += `${hours} hour `;
         }
         if (mins > 0) {
-          formattedTime += `${mins} minute`;
+          formattedTime += `${mins} minutes`;
         }
         return formattedTime.trim();
       }

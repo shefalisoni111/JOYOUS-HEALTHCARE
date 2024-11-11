@@ -1351,7 +1351,7 @@ td {
 
 @media (max-width: 1520px) {
   .candidateTable {
-    width: 1990px;
+    width: 1890px;
   }
   .wrapper-timeSheet {
     overflow-x: scroll;
