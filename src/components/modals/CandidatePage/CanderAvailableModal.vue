@@ -442,11 +442,20 @@ export default {
             availabilities = [];
           } else {
             for (const [date, candidate_status] of Object.entries(this.selectedShifts)) {
-              if (candidate_status && candidate_status.length > 0) {
-                availabilities = [];
+              const formattedDate = this.formatDate(date);
+              const availability = this.availabilityIds.find(
+                (item) => item.date === formattedDate
+              );
+              if (
+                availability &&
+                availability.id === null &&
+                candidate_status &&
+                candidate_status.length > 0
+              ) {
+                // availabilities = [];
                 availabilities.push({
                   candidate_id: this.candidate_id,
-                  date,
+                  date: formattedDate,
                   candidate_status,
                 });
               }
