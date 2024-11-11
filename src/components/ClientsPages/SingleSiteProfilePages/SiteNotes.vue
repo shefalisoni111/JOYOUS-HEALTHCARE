@@ -27,6 +27,19 @@
             </div>
           </div>
           <div class="d-fle align-items-center gap-2">
+            <i
+              class="bi bi-pencil-square cursor-pointer btn btn-outline-success text-nowrap"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#editClientNotes"
+              data-bs-whatever="@mdo"
+              @click="editSiteNote(data.id)"
+            ></i>
+            &nbsp;&nbsp;
+            <i
+              class="bi bi-trash cursor-pointer btn btn-outline-danger text-nowrap"
+              @click="deleteSiteNote(data.id)"
+            ></i>
             <!-- <button
               type="button"
               class="btn btn-outline-success text-nowrap"
@@ -43,13 +56,12 @@
         {{ "Data Not Found!" }}
       </div>
     </div>
-    <ConfirmationAlert
-      :show-modal="isModalVisible"
-      :message="confirmMessage"
-      @confirm="confirmCallback"
-      @cancel="canceled"
-    />
+
     <AddSiteNotes @addSiteNote="getNotesMethod" />
+    <EditSiteNotes
+      :SiteNotesID="selectedSiteNotesID || 0"
+      @EditClientNote="getNotesMethod"
+    />
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
@@ -59,6 +71,8 @@ import axios from "axios";
 import AddSiteNotes from "../../modals/Site/AddSiteNotes.vue";
 import ConfirmationAlert from "../../Alerts/ConfirmationAlert.vue";
 import Loader from "../../Loader/Loader.vue";
+import Swal from "sweetalert2";
+import EditSiteNotes from "../../modals/Site/EditSiteNotes.vue";
 
 export default {
   name: "Notes",
@@ -66,10 +80,11 @@ export default {
     return {
       getNotes: [],
       isLoading: false,
+      selectedSiteNotesID: "",
     };
   },
 
-  components: { AddSiteNotes, Loader, ConfirmationAlert },
+  components: { AddSiteNotes, Loader, ConfirmationAlert, EditSiteNotes },
   methods: {
     // showConfirmationModal(id) {
     //   this.confirmMessage = "Are you sure you want to delete this note?";
@@ -90,15 +105,40 @@ export default {
     // canceled() {
     //   this.isModalVisible = false;
     // },
+    editSiteNote(SiteNotesID) {
+      this.selectedSiteNotesID = SiteNotesID;
+    },
+    async deleteSiteNote(id) {
+      try {
+        const result = await Swal.fire({
+          title: "Are you sure?",
+          text: "This action cannot be undone!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "Cancel",
+        });
+
+        if (result.isConfirmed) {
+          await axios.delete(`${VITE_API_URL}/site_notes/${id}`);
+          Swal.fire("Deleted!", "The record has been deleted.", "success");
+          this.getNotesMethod();
+        }
+      } catch (error) {
+        // console.error("Error deleting restricted location:", error);
+        Swal.fire("Error!", "There was an issue deleting the record.", "error");
+      }
+    },
+
     async getNotesMethod() {
       this.isLoading = true;
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/show_site_notes/${this.$route.params.id}`
-        );
+        const response = await axios.get(`${VITE_API_URL}/site_notes`);
 
         if (response.status === 200) {
-          this.getNotes = response.data.notes;
+          this.getNotes = response.data.data;
           // this.getNotesMethod();
         }
       } catch (error) {

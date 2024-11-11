@@ -3,14 +3,16 @@
     <!-- Modal -->
     <div
       class="modal fade"
-      id="editRateCard"
-      aria-labelledby="editRateCard"
+      id="editRestrictedStaff"
+      aria-labelledby="editRestrictedStaff"
       tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title text-center" id="editRateCard">Edit Rate Card</h5>
+            <h5 class="modal-title text-center" id="editRestrictedStaff">
+              Edit Rate Card
+            </h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
@@ -127,10 +129,9 @@
           <div class="modal-footer">
             <button
               class="btn btn-secondary rounded-1"
-              data-bs-target="#editRateCard"
+              data-bs-target="#editRestrictedStaff"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
-              @click="resetChanges"
             >
               Cancel
             </button>
@@ -224,9 +225,9 @@ export default {
     },
   },
   methods: {
-    resetChanges() {
-      this.fetchRateCard = { ...this.originalData };
-    },
+    // resetChanges() {
+    //   this.fetchRateCard = { ...this.originalData };
+    // },
     async getEmployeeTypeData() {
       try {
         const response = await axios.get(`${VITE_API_URL}/employment_types`);
@@ -300,7 +301,7 @@ export default {
     async updateRateCardMethod() {
       try {
         await axios.put(
-          `${VITE_API_URL}rate_cards/` + this.fetchRateCard.id,
+          `${VITE_API_URL}restricted_business_units/` + this.fetchRateCard.id,
           this.fetchRateCard
         );
 

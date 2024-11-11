@@ -214,7 +214,7 @@ export default {
 
         // alert("Candidate updated successfully");
         this.$emit("EditRestricted");
-        const message = " Rate Card updated successfully";
+        const message = " Restricted updated successfully";
         this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         // console.error("Error updating candidate:", error);

@@ -8,7 +8,7 @@
             <h5 class="mb-2 d-flex align-items-center">Notes</h5>
           </div>
           <div>
-            <button
+            <!-- <button
               type="button"
               class="btn btn-outline-success text-nowrap"
               data-bs-toggle="modal"
@@ -16,7 +16,7 @@
               data-bs-whatever="@mdo"
             >
               View More
-            </button>
+            </button> -->
           </div>
         </div>
         <hr />
@@ -52,6 +52,21 @@
                 </h6>
                 <p>{{ data.created_at }}</p>
               </div>
+              <div>
+                <i
+                  class="bi bi-pencil-square cursor-pointer btn btn-outline-success text-nowrap"
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editClientNotes"
+                  data-bs-whatever="@mdo"
+                  @click="editRestricted(data.id)"
+                ></i>
+                &nbsp;&nbsp;
+                <i
+                  class="bi bi-trash cursor-pointer btn btn-outline-danger text-nowrap"
+                  @click="deleteClientNote(data.id)"
+                ></i>
+              </div>
             </div>
           </div>
         </div>
@@ -62,6 +77,10 @@
         </div>
       </div>
     </div>
+    <EditClientNotes
+      :ClientNotesID="selectedClientNotesID || 0"
+      @EditClientNote="getNotesMethod"
+    />
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
   </div>
@@ -72,6 +91,8 @@ import axios from "axios";
 
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 import Loader from "../../Loader/Loader.vue";
+import EditClientNotes from "../../modals/Clients/EditClientNotes.vue";
+import Swal from "sweetalert2";
 
 export default {
   name: "Notes",
@@ -80,6 +101,7 @@ export default {
       getNotes: [],
       notes: "",
       isLoading: false,
+      selectedClientNotesID: "",
     };
   },
   computed: {
@@ -87,8 +109,34 @@ export default {
       return this.notes.trim() !== "";
     },
   },
-  components: { SuccessAlert, Loader },
+  components: { SuccessAlert, Loader, EditClientNotes },
   methods: {
+    editRestricted(ClientNotesID) {
+      this.selectedClientNotesID = ClientNotesID;
+    },
+    async deleteClientNote(id) {
+      try {
+        const result = await Swal.fire({
+          title: "Are you sure?",
+          text: "This action cannot be undone!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "Cancel",
+        });
+
+        if (result.isConfirmed) {
+          await axios.delete(`${VITE_API_URL}/client_notes/${id}`);
+          Swal.fire("Deleted!", "The record has been deleted.", "success");
+          this.getNotesMethod();
+        }
+      } catch (error) {
+        // console.error("Error deleting restricted location:", error);
+        Swal.fire("Error!", "There was an issue deleting the record.", "error");
+      }
+    },
     // async notesDeleteMethod(id) {
     //   if (!window.confirm("Are you Sure ?")) {
     //     return;
