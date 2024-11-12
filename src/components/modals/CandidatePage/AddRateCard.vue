@@ -65,7 +65,7 @@
                     <label class="form-label">Position</label>
                   </div>
                   <div class="col-10">
-                    <select v-model="job_ids">
+                    <select v-model="job_id">
                       <option
                         v-for="option in selectedJobNames"
                         :key="option.id"
@@ -95,6 +95,8 @@
                       <option value="wednesday">Wednesday</option>
                       <option value="thursday">Thursday</option>
                       <option value="friday">Friday</option>
+                      <option value="saturday">Saturday</option>
+                      <option value="sunday">Sunday</option>
                     </select>
                     <span v-if="!validationDay" class="text-danger">Day Required</span>
                   </div>
@@ -393,7 +395,7 @@ export default {
         weekname: this.weekname,
         staff_rate: this.staff_rate,
         site_id: this.site_id,
-        job_ids: [this.job_ids],
+        job_id: this.job_id,
         client_id: this.client_id,
         candidate_id: this.$route.params.id,
         employment_type_id: this.employment_type_id,

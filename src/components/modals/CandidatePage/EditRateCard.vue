@@ -3,16 +3,14 @@
     <!-- Modal -->
     <div
       class="modal fade"
-      id="editRestrictedStaff"
-      aria-labelledby="editRestrictedStaff"
+      id="editRateCard"
+      aria-labelledby="editRateCard"
       tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title text-center" id="editRestrictedStaff">
-              Edit Rate Card
-            </h5>
+            <h5 class="modal-title text-center" id="editRateCard">Edit Rate Card</h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
@@ -105,7 +103,7 @@
                         :value="option.id"
                         aria-placeholder="Select Job"
                       >
-                        {{ option.shift_name.replace(/_/g, " ") }}
+                        {{ option.shift_name }}
                       </option>
                     </select>
                   </div>
@@ -129,7 +127,7 @@
           <div class="modal-footer">
             <button
               class="btn btn-secondary rounded-1"
-              data-bs-target="#editRestrictedStaff"
+              data-bs-target="#editRateCard"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
             >
@@ -185,11 +183,8 @@ export default {
   },
   components: { SuccessAlert },
   watch: {
-    fetchRateCard: {
-      handler(newValue) {
-        this.getTimeShift(newValue.site_id);
-      },
-      deep: true,
+    "fetchRateCard.site_id": function (newSiteId) {
+      this.getTimeShift(newSiteId);
     },
     rateCardId: {
       immediate: true,
@@ -218,10 +213,10 @@ export default {
       return job_id ? job_id.name : "";
     },
     selectShiftsIds() {
-      const site_shift_id = this.shiftsTime.find(
+      const site_shiftId = this.shiftsTime.find(
         (option) => option.id === this.fetchRateCard.site_shift_id
       );
-      return site_shift_id ? site_shift_id.shift_name : "";
+      return site_shiftId ? site_shiftId.shift_name : "";
     },
   },
   methods: {
@@ -268,7 +263,7 @@ export default {
           })) || [];
       } catch (error) {
         // console.error("Error fetching shifts:", error);
-        this.shiftsTime = []; // Reset on error
+        // this.shiftsTime = []; // Reset on error
       }
     },
     convertTimeFormat(dateTimeString) {
@@ -301,7 +296,7 @@ export default {
     async updateRateCardMethod() {
       try {
         await axios.put(
-          `${VITE_API_URL}restricted_business_units/` + this.fetchRateCard.id,
+          `${VITE_API_URL}/rate_cards/` + this.fetchRateCard.id,
           this.fetchRateCard
         );
 
@@ -328,31 +323,31 @@ export default {
     async fetchData(rateCardId) {
       try {
         // await this.fetchRateCardMethod(rateCardId);
-        await this.getEmployeeTypeData();
-        await this.getPositionMethod();
-        await this.getBusinessUnitMethod();
-        this.getTimeShift(this.fetchRateCard.site_id);
+        // await this.getEmployeeTypeData();
+        // await this.getPositionMethod();
+        // await this.getBusinessUnitMethod();
+        // await this.getTimeShift(this.fetchRateCard.site_id);
       } catch (error) {
         // console.error("Error fetching data:", error);
       }
     },
   },
-  watch: {
-    rateCardId: {
-      immediate: true,
-      handler(newrateCardId) {
-        this.fetchRateCardMethod(newrateCardId);
-        // this.getTimeShift(newrateCardId);
-      },
-    },
-  },
+  // watch: {
+  //   rateCardId: {
+  //     immediate: true,
+  //     handler(newrateCardId) {
+  //       this.fetchRateCardMethod(newrateCardId);
+  //       this.getTimeShift(newrateCardId);
+  //     },
+  //   },
+  // },
   async beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.fetchData(vm.rateCardId);
+      // vm.fetchData(vm.rateCardId);
     });
   },
   async beforeRouteUpdate(to, from, next) {
-    await this.fetchData(this.rateCardId);
+    // await this.fetchData(this.rateCardId);
     next();
   },
   // mounted() {

@@ -61,7 +61,7 @@
                   </td>
 
                   <td>{{ getrate.site?.name || "Null" }}</td>
-                  <td>{{ getrate.position?.name || "Null" }}</td>
+                  <td>{{ getrate.position?.name }}</td>
                   <td class="text-capitalize">{{ getrate.weekname || "Null" }}</td>
                   <td>{{ getrate.employment_type?.title || "Null" }}</td>
                   <td>{{ getrate.site_shift?.shift || "Null" }}</td>
@@ -175,9 +175,9 @@ export default {
         this.$refs.addRateCard.getClientMethod();
       }, 200);
 
-      setTimeout(() => {
-        this.$refs.addRateCard.getTimeShift();
-      }, 300);
+      // setTimeout(() => {
+      //   this.$refs.addRateCard.getTimeShift();
+      // }, 300);
     },
     editRateCard(rateCardId) {
       this.selectedRateCardId = rateCardId;
@@ -190,9 +190,9 @@ export default {
         this.$refs.editRateCard.getBusinessUnitMethod();
       }, 200);
 
-      setTimeout(() => {
-        this.$refs.editRateCard.getTimeShift();
-      }, 300);
+      // setTimeout(() => {
+      //   this.$refs.editRateCard.getTimeShift();
+      // }, 300);
     },
     confirmed(id) {
       this.isModalVisible = false;

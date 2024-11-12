@@ -98,9 +98,18 @@
                     <div class="mb-3">
                       <label class="form-label">Shift</label>
                       <input
+                        v-if="showSaveButton"
                         type="text"
                         class="form-control custom-disabled"
                         v-model="fetchCustomTimeShetData.shift_name"
+                        aria-describedby="position"
+                        readonly
+                      />
+                      <input
+                        v-else
+                        type="text"
+                        class="form-control custom-disabled"
+                        v-model="fetchCustomTimeShetData.shift"
                         aria-describedby="position"
                         readonly
                       />
@@ -329,22 +338,13 @@
                           </select>
                         </div>
                         <div class="col-12" v-else>
-                          <select
-                            id="selectShiftsBreak"
-                            class="form-control custom-disabled"
+                          <input
+                            v-if="fetchCustomTimeShetData.break"
+                            type="text"
+                            class="form-control"
                             v-model="fetchCustomTimeShetData.break"
-                            @change="validateBreak"
-                            style="width: 240px"
                             disabled
-                          >
-                            <option
-                              v-for="minute in [15, 30, 45, 60, 75, 90]"
-                              :key="minute"
-                              :value="minute"
-                            >
-                              {{ formatBreakTime(minute) }}
-                            </option>
-                          </select>
+                          />
                         </div>
                       </div>
                       <div class="mb-3">
@@ -352,12 +352,19 @@
                           <label class="form-label">Total Hours</label>
                         </div>
                         <div class="col-12 mt-1">
-                          <!-- <input
+                          <input
+                            v-if="showSaveButton"
                             type="email"
                             class="form-control"
-                            v-model="fetchCustomTimeShetData.total_shift_hours"
-                          /> -->
-                          <select
+                            v-model="fetchCustomTimeShetData.total_hours"
+                          />
+                          <input
+                            v-else
+                            type="email"
+                            class="form-control"
+                            v-model="fetchCustomTimeShetData.total_hours"
+                          />
+                          <!-- <select
                             id="selectCustomStartTime"
                             class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.total_hours"
@@ -368,7 +375,7 @@
                             <option v-for="hour in 24" :key="hour" :value="hour">
                               {{ hour }} hour{{ hour > 1 ? "s" : "" }}
                             </option>
-                          </select>
+                          </select> -->
                         </div>
                       </div>
                     </div>
@@ -574,6 +581,7 @@ export default {
 
         date: "",
         shift_date: "",
+        shift_name: "",
         candidate_name: "",
         total_hours: "",
         start_time: "",

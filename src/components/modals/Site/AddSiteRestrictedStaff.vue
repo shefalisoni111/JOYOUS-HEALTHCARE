@@ -10,7 +10,7 @@
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="AddSitRestrictedStaff">Add Staff</h5>
+            <h5 class="modal-title" id="AddSitRestrictedStaff">Add Staff Location</h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -254,7 +254,9 @@ export default {
           body: JSON.stringify(data),
         });
         if (response.ok) {
-          this.$emit("getRestrictedStaffAdded");
+          const responseData = await response.json();
+          const newCandidateId = responseData.candidate_id;
+          this.$emit("getRestrictedStaffAdded", newCandidateId);
           this.site_id = "";
           this.client_id = "";
           this.Staff_id = "";

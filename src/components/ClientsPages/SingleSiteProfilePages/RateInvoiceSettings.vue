@@ -467,7 +467,8 @@ export default {
       }
     },
   },
-  mounted() {
+
+  created() {
     this.fetchInvoiceSettingMethod();
   },
 };

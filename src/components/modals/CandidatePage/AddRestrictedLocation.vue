@@ -35,9 +35,9 @@
                         {{ option.client_name }}
                       </option>
                     </select>
-                    <span v-if="!validationSelectedClient" class="text-danger"
+                    <!-- <span v-if="!validationSelectedClient" class="text-danger"
                       >Client Required</span
-                    >
+                    > -->
                   </div>
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
