@@ -435,7 +435,7 @@
                                 @click="ApproveMethod(data.id)"
                               >
                                 {{
-                                  data.status === "Approved" ? "Unapprove" : "Approve"
+                                  data.status === "Approved" ? "Unapproved" : "Approve"
                                 }}</button
                               >&nbsp;
                               <button

@@ -424,7 +424,7 @@ const axiosInstance = axios.create({
 export default {
   data() {
     return {
-      // currentView: "weekly",
+      currentView: "weekly",
       daysOfWeek: [
         "Sunday",
         "Monday",
