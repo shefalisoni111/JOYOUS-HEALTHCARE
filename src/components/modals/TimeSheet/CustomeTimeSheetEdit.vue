@@ -113,114 +113,58 @@
                             >Start Time
                           </label>
                         </div>
-                        <!-- <div class="col-12" v-if="showSaveButton">
-                          <input
-                            v-if="apiResponse"
-                            type="text"
-                            class="form-control custom-disabled"
-                            v-model="fetchCustomSheetData.start_time"
-                            disabled
-                          />
-
-                          <select
-                            v-else
-                            id="selectCustomStartTime"
-                            class="form-control"
-                            v-model="fetchCustomSheetData.start_time"
-                            @change="validateStartTime"
-                            style="width: 240px"
-                          >
-                            <option
-                              v-for="hour in 24"
-                              :key="hour"
-                              :value="formatTime(hour)"
-                            >
-                              {{ formatTime(hour) }}
-                            </option>
-                          </select>
-                        </div> -->
-                        <!-- <div class="col-12" v-else>
-                          <input
-                            v-if="apiResponse"
-                            type="text"
-                            class="form-control"
-                            v-model="fetchCustomSheetData.start_time"
-                            disabled
-                          />
-
-                          <select
-                            v-else
-                            id="selectCustomStartTime"
-                            class="form-control"
-                            v-model="fetchCustomSheetData.start_time"
-                            @change="validateStartTime"
-                            style="width: 240px"
-                            disabled
-                          >
-                            <option
-                              v-for="hour in 24"
-                              :key="hour"
-                              :value="formatTime(hour)"
-                            >
-                              {{ formatTime(hour) }}
-                            </option>
-                          </select>
-                        </div> -->
                         <div class="col-12" v-if="showSaveButton">
                           <input
                             v-if="apiResponse"
                             type="text"
                             class="form-control custom-disabled"
-                            v-model="formattedStartTime"
+                            v-model="fetchCustomSheetData.start_time"
                             disabled
                           />
 
-                          <div v-else class="d-flex" style="width: 240px">
-                            <!-- Hour Selection -->
-                            <select
-                              class="form-control"
-                              v-model="selectedHour"
-                              @change="updateStartTime"
+                          <select
+                            v-else
+                            id="selectCustomStartTime"
+                            class="form-control custom-disabled"
+                            v-model="fetchCustomSheetData.start_time"
+                            @change="validateStartTime"
+                            style="width: 240px"
+                          >
+                            <option
+                              v-for="hour in 24"
+                              :key="hour"
+                              :value="formatTime(hour)"
                             >
-                              <option v-for="hour in 12" :key="hour" :value="hour">
-                                {{ formatHour(hour) }}
-                              </option>
-                            </select>
-
-                            <!-- Minute Selection -->
-                            <select
-                              class="form-control"
-                              v-model="selectedMinute"
-                              @change="updateStartTime"
-                            >
-                              <option
-                                v-for="minute in minutes"
-                                :key="minute"
-                                :value="minute"
-                              >
-                                {{ formatMinute(minute) }}
-                              </option>
-                            </select>
-
-                            <!-- AM/PM Selection -->
-                            <select
-                              class="form-control"
-                              v-model="selectedPeriod"
-                              @change="updateStartTime"
-                            >
-                              <option value="AM">AM</option>
-                              <option value="PM">PM</option>
-                            </select>
-                          </div>
+                              {{ formatTime(hour) }}
+                            </option>
+                          </select>
                         </div>
                         <div class="col-12" v-else>
                           <input
                             v-if="apiResponse"
                             type="text"
-                            class="form-control"
-                            v-model="formattedStartTime"
+                            class="form-control custom-disabled"
+                            v-model="fetchCustomSheetData.start_time"
                             disabled
                           />
+
+                          <select
+                            v-else
+                            id="selectCustomStartTime"
+                            class="form-control custom-disabled"
+                            v-model="fetchCustomSheetData.start_time"
+                            @change="validateStartTime"
+                            style="width: 240px"
+                            disabled
+                          >
+                            <option
+                              v-for="hour in 24"
+                              :key="hour"
+                              :value="formatTime(hour)"
+                            >
+                              {{ formatTime(hour) }}
+                            </option>
+                          </select>
                         </div>
                       </div>
                       <!-- <div class="mb-3">
@@ -246,56 +190,85 @@
                             v-if="apiResponse_EndTime"
                             type="text"
                             class="form-control custom-disabled"
-                            v-model="formattedEndTime"
+                            v-model="fetchCustomSheetData.end_time"
                             disabled
                           />
 
-                          <div v-else class="d-flex" style="width: 240px">
-                            <!-- Hour Selection -->
-                            <select
-                              class="form-control"
-                              v-model="selectedEndHour"
-                              @change="updateEndTime"
+                          <select
+                            v-else
+                            id="selectCustomStartTime"
+                            class="form-control custom-disabled"
+                            v-model="fetchCustomSheetData.end_time"
+                            @change="validateStartTime"
+                            style="width: 240px"
+                          >
+                            <option
+                              v-for="hour in 24"
+                              :key="hour"
+                              :value="formatTime(hour)"
                             >
-                              <option v-for="hour in 12" :key="hour" :value="hour">
-                                {{ formatHour(hour) }}
-                              </option>
-                            </select>
-
-                            <!-- Minute Selection -->
-                            <select
-                              class="form-control"
-                              v-model="selectedEndMinute"
-                              @change="updateEndTime"
+                              {{ formatTime(hour) }}
+                            </option>
+                          </select>
+                          <!-- <select
+                            id="selectCustomEndTime"
+                            class="form-control"
+                            v-model="fetchCustomSheetData.end_time"
+                            @change="validateEndTime"
+                            style="width: 240px"
+                            disabled
+                          >
+                            <option
+                              v-for="hour in 24"
+                              :key="hour"
+                              :value="formatTime(hour)"
                             >
-                              <option
-                                v-for="minute in minutes"
-                                :key="minute"
-                                :value="minute"
-                              >
-                                {{ formatMinute(minute) }}
-                              </option>
-                            </select>
-
-                            <!-- AM/PM Selection -->
-                            <select
-                              class="form-control"
-                              v-model="selectedEndPeriod"
-                              @change="updateEndTime"
-                            >
-                              <option value="AM">AM</option>
-                              <option value="PM">PM</option>
-                            </select>
-                          </div>
+                              {{ formatTime(hour) }}
+                            </option>
+                          </select> -->
                         </div>
                         <div class="col-12" v-else>
                           <input
                             v-if="apiResponse_EndTime"
                             type="text"
-                            class="form-control"
-                            v-model="formattedEndTime"
+                            class="form-control custom-disabled"
+                            v-model="fetchCustomSheetData.end_time"
                             disabled
                           />
+
+                          <select
+                            v-else
+                            id="selectCustomStartTime"
+                            class="form-control custom-disabled"
+                            v-model="fetchCustomSheetData.end_time"
+                            @change="validateStartTime"
+                            style="width: 240px"
+                            disabled
+                          >
+                            <option
+                              v-for="hour in 24"
+                              :key="hour"
+                              :value="formatTime(hour)"
+                            >
+                              {{ formatTime(hour) }}
+                            </option>
+                          </select>
+                          <!-- <select
+                            id="selectCustomEndTime"
+                            class="form-control"
+                            v-model="fetchCustomSheetData.end_time"
+                            @change="validateEndTime"
+                            style="width: 240px"
+                            disabled
+                          >
+                            <option
+                              v-for="hour in 24"
+                              :key="hour"
+                              :value="formatTime(hour)"
+                            >
+                              {{ formatTime(hour) }}
+                            </option>
+                          </select> -->
                         </div>
                       </div>
                       <!-- <div class="mb-3">
@@ -317,13 +290,21 @@
                           >
                         </div>
                         <div class="col-12" v-if="showSaveButton">
-                          <input
-                            v-if="fetchCustomSheetData.break"
-                            type="text"
+                          <select
+                            id="selectShiftsBreak"
                             class="form-control"
                             v-model="fetchCustomSheetData.break"
-                            disabled
-                          />
+                            @change="validateBreak"
+                            style="width: 240px"
+                          >
+                            <option
+                              v-for="minute in [15, 30, 45, 60, 75, 90]"
+                              :key="minute"
+                              :value="minute"
+                            >
+                              {{ formatBreakTime(minute) }}
+                            </option>
+                          </select>
                         </div>
                         <div class="col-12" v-else>
                           <select
@@ -354,12 +335,18 @@
                             class="form-control"
                             v-model="fetchCustomSheetData.total_shift_hours"
                           /> -->
-                          <input
-                            type="text"
+                          <select
+                            id="selectCustomStartTime"
                             class="form-control custom-disabled"
                             v-model="fetchCustomSheetData.total_hours"
+                            @change="validateStartTime"
+                            style="width: 240px"
                             disabled
-                          />
+                          >
+                            <option v-for="hour in 24" :key="hour" :value="hour">
+                              {{ hour }} hour{{ hour > 1 ? "s" : "" }}
+                            </option>
+                          </select>
                         </div>
                       </div>
                     </div>
@@ -489,9 +476,11 @@
               class="btn btn-secondary rounded-1"
               data-bs-target="#editCustomTimeSheet"
               data-bs-dismiss="modal"
+              @click="resetChanges"
             >
               Cancel
             </button>
+
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
@@ -499,15 +488,6 @@
             >
               Approve & Save
             </button>
-            <!-- <button
-              v-show="showSaveButton"
-              :disabled="isSaveDisabled"
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
-              data-bs-dismiss="modal"
-              @click.prevent="updateCustomTimeSheetMethod"
-            >
-              Approve & Save
-            </button> -->
           </div>
         </div>
       </div>
@@ -542,15 +522,7 @@ export default {
         total_cost: "",
         custom_image: "",
       },
-      // fullCustomImageUrl: "",
       options: [],
-      selectedHour: 1,
-      selectedEndHour: 1,
-      selectedEndMinute: "00",
-      selectedEndPeriod: "AM",
-      selectedMinute: "00",
-      selectedPeriod: "AM",
-      minutes: Array.from({ length: 60 }, (_, i) => (i < 10 ? `0${i}` : `${i}`)),
       apiResponse: "",
       apiResponse_EndTime: "",
       showSaveButton: true,
@@ -576,61 +548,24 @@ export default {
     //     !this.fetchCustomSheetData.paper_timesheet
     //   );
     // },
-    formattedStartTime() {
-      return `${this.formatHour(this.selectedHour)}:${this.formatMinute(
-        this.selectedMinute
-      )} ${this.selectedPeriod}`;
-    },
-    formattedEndTime() {
-      return `${this.formatHour(this.selectedEndHour)}:${this.formatMinute(
-        this.selectedEndMinute
-      )} ${this.selectedEndPeriod}`;
-    },
-    // isSaveDisabled() {
-    //   const {
-    //     notes,
-    //     start_time,
-    //     end_time,
+    isSaveDisabled() {
+      const {
+        notes,
+        start_time,
+        end_time,
 
-    //     paper_timesheet,
-    //   } = this.fetchCustomSheetData;
-    //   return !notes || !paper_timesheet || !start_time || !end_time;
-    // },
+        paper_timesheet,
+      } = this.fetchCustomSheetData;
+      return !notes || !paper_timesheet || !start_time || !end_time;
+    },
     fullCustomImageUrl() {
       return this.fetchCustomSheetData.paper_timesheet
         ? `${VITE_API_URL}${this.fetchCustomSheetData.paper_timesheet}`
         : "";
+      // console.log(`${VITE_API_URL}${this.fetchCustomSheetData.paper_timesheet}`);
     },
   },
   methods: {
-    formatHour(hour) {
-      return hour < 10 ? `0${hour}` : hour;
-    },
-    formatMinute(minute) {
-      return minute;
-    },
-    updateStartTime() {
-      this.fetchCustomSheetData.start_time = this.formattedStartTime;
-    },
-    updateEndTime() {
-      this.fetchCustomSheetData.end_time = this.formattedEndTime;
-    },
-    parseEndTime(endTime) {
-      const [time, period] = endTime.split(" ");
-      const [hour, minute] = time.split(":");
-
-      this.selectedEndHour = parseInt(hour, 10) || "";
-      this.selectedEndMinute = minute || "00";
-      this.selectedEndPeriod = period || "AM";
-    },
-    parseStartTime(startTime) {
-      const [time, period] = startTime.split(" ");
-      const [hour, minute] = time.split(":");
-
-      this.selectedHour = parseInt(hour, 10) || "";
-      this.selectedMinute = minute || "00";
-      this.selectedPeriod = period || "AM";
-    },
     resetChanges() {
       this.fetchCustomSheetData = { ...this.originalData };
     },
@@ -651,7 +586,7 @@ export default {
           formattedTime += `${hours} hour `;
         }
         if (mins > 0) {
-          formattedTime += `${mins} minutes`;
+          formattedTime += `${mins} minute`;
         }
         return formattedTime.trim();
       }
@@ -743,7 +678,6 @@ export default {
             client_rate: customSheet.client_rate || "",
             staff_rate: customSheet.staff_rate || "",
             notes: customSheet.notes || "",
-            paper_timesheet: customSheet.paper_timesheet || "",
           };
 
           this.originalData = { ...this.fetchCustomSheetData };
@@ -752,7 +686,6 @@ export default {
           this.showValueCustom = true;
         } else {
           this.apiResponse = "";
-          this.apiResponse_EndTime = "";
         }
       } catch (error) {
         // console.error("Error fetching custom timesheets:", error);
@@ -762,28 +695,45 @@ export default {
     async updateCustomTimeSheetMethod() {
       try {
         const formData = new FormData();
+        if (
+          this.fetchCustomSheetData.start_time !== null ||
+          this.fetchCustomSheetData.start_time !== ""
+        ) {
+          formData.append(
+            "custom_timesheet[start_time]",
+            this.fetchCustomSheetData.start_time
+          );
+        }
+
+        if (
+          this.fetchCustomSheetData.end_time !== null ||
+          this.fetchCustomSheetData.end_time !== ""
+        ) {
+          formData.append(
+            "custom_timesheet[end_time]",
+            this.fetchCustomSheetData.end_time
+          );
+        }
 
         formData.append(
           "custom_timesheet[shift_date]",
           this.fetchCustomSheetData.shift_date
         );
-        formData.append(
-          "custom_timesheet[start_time]",
-          this.fetchCustomSheetData.start_time
-        );
-        formData.append("custom_timesheet[end_time]", this.fetchCustomSheetData.end_time);
+
         formData.append(
           "custom_timesheet[client_rate]",
           this.fetchCustomSheetData.client_rate
         );
         formData.append(
-          "custom_timesheet[client_rate]",
+          "custom_timesheet[staff_rate]",
           this.fetchCustomSheetData.staff_rate
         );
         formData.append("custom_timesheet[notes]", this.fetchCustomSheetData.notes);
         if (this.uploadedFile) {
           formData.append("custom_timesheet[paper_timesheet]", this.uploadedFile);
         }
+
+        console.log(formData);
         const token = localStorage.getItem("token");
         const response = await axios.put(
           `${VITE_API_URL}/custom_timesheets/${this.customDataId}`,
@@ -837,42 +787,8 @@ export default {
         this.fetchCustomTimeSheetData(newcustomDataId);
       },
     },
-    "fetchCustomSheetData.start_time": {
-      immediate: true,
-      handler(newTime) {
-        if (newTime) {
-          this.parseStartTime(newTime);
-        } else {
-          this.selectedHour = "";
-          this.selectedMinute = "00";
-          this.selectedPeriod = "AM";
-        }
-      },
-    },
-    "fetchCustomSheetData.end_time": {
-      immediate: true,
-      handler(newTime) {
-        if (newTime) {
-          this.parseEndTime(newTime);
-        } else {
-          this.selectedEndHour = "";
-          this.selectedEndMinute = "00";
-          this.selectedEndPeriod = "AM";
-        }
-      },
-    },
   },
-  created() {
-    if (this.fetchCustomSheetData.start_time) {
-      this.parseStartTime(this.fetchCustomSheetData.start_time);
-    }
-    if (this.fetchCustomSheetData.end_time) {
-      this.parseEndTime(this.fetchCustomSheetData.end_time);
-    }
-  },
-  mounted() {
-    this.fetchCustomTimeSheetData();
-  },
+  mounted() {},
 };
 </script>
 
