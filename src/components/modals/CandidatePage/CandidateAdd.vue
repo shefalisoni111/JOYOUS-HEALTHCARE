@@ -74,7 +74,7 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-4">
-                    <label class="form-label" for="selectOptionEmployee">Employee</label>
+                    <label class="form-label" for="selectOptionEmployee">Job Type</label>
                   </div>
 
                   <div class="col-8">

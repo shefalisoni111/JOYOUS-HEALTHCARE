@@ -29,7 +29,7 @@
           Profile 2
         </button>
       </li>
-      <li class="nav-item" role="presentation">
+      <!-- <li class="nav-item" role="presentation">
         <button
           class="nav-link"
           id="pills-rudimentary-tab"
@@ -56,7 +56,7 @@
         >
           NHS
         </button>
-      </li>
+      </li> -->
     </ul>
     <div class="tab-content" id="pills-tabContent">
       <div

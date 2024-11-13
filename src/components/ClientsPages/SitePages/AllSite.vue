@@ -42,11 +42,13 @@
           </li>
           <li><hr class="dropdown-divider" /></li>
           <li>
-            <a class="dropdown-item" href="#" @click="exportOneFile">Export</a>
+            <a class="dropdown-item" href="#" @click="exportOneFile('selected')"
+              >Export</a
+            >
           </li>
           <li><hr class="dropdown-divider" /></li>
           <li>
-            <a class="dropdown-item" href="#" @click="exportAll">Export All</a>
+            <a class="dropdown-item" href="#" @click="exportOneFile('all')">Export All</a>
           </li>
         </div>
       </button>
@@ -56,37 +58,42 @@
       <div class="d-flex gap-2 mt-3">
         <div></div>
 
-        <select v-model="selectedFilter" @change="filterData($event.target.value)">
-          <option value="">Status</option>
-          <option value="active_site">Active</option>
-          <option value="inactive_site">In-Active</option>
+        <select v-model="selectedFilter" @change="filterData">
+          <option value="" disabled>Status</option>
+          <option value="true">Active</option>
+          <option value="false">In-Active</option>
         </select>
-        <select id="selectClients" @change="filterDataFilter">
-          <option value="">Client Name</option>
+
+        <select id="selectClients" v-model="selectedClientName" @change="filterData">
+          <option value="" disabled>Client Name</option>
           <option
             v-for="option in clientData"
             :key="option.id"
-            :value="option.client_name"
+            :value="option.id"
             aria-placeholder="Select Client"
           >
             {{ option.client_name }}
           </option>
         </select>
 
-        <select id="selectSite" @change="filterDataFilter">
-          <option value="">Site Name</option>
+        <select id="selectSite" v-model="selectedSiteName" @change="filterData">
+          <option value="" disabled>Site Name</option>
           <option
             v-for="option in businessUnit"
             :key="option.id"
-            :value="option.first_name"
-            aria-placeholder="Select Client"
+            :value="option.site_name"
+            aria-placeholder="Select Site"
           >
             {{ option.site_name }}
           </option>
         </select>
 
-        <select id="selectSitesAddress" @change="filterDataFilter">
-          <option value="">Site Address</option>
+        <select
+          id="selectSitesAddress"
+          v-model="selectedSiteAddress"
+          @change="filterData"
+        >
+          <option value="" disabled>Site Address</option>
           <option
             v-for="option in businessUnit"
             :key="option.id"
@@ -96,6 +103,16 @@
             {{ option.address }}
           </option>
         </select>
+        <div class="searchbox position-relative">
+          <input
+            class="form-control"
+            type="search"
+            placeholder="Search Site..."
+            aria-label="Search"
+            v-model="localSearchQuery"
+            @input="filterData"
+          />
+        </div>
       </div>
     </div>
     <div class="table-wrapper mt-3">
@@ -268,6 +285,7 @@ export default {
       itemsPerPage: 10,
       siteIds: [],
       client_id: null,
+      localSearchQuery: this.searchQuery,
       errorMessageFilter: "",
       clientData: [],
       businessUnit: [],
@@ -277,6 +295,10 @@ export default {
       confirmCallback: null,
       checkedSites: reactive({}),
       selectedFilter: "",
+      selectedFilter: "",
+      selectedClientName: "",
+      selectedSiteName: "",
+      selectedSiteAddress: "",
     };
   },
   created() {
@@ -364,106 +386,41 @@ export default {
     toggleFilters() {
       this.showFilters = !this.showFilters;
     },
-    async filterDataFilter(event) {
-      const selectElement = event.target;
-      const selectedValue = selectElement.value;
-      const selectId = selectElement.id;
-
-      let fieldType = "";
-      if (selectId === "selectClients") {
-        fieldType = "client";
-      } else if (selectId === "selectSite") {
-        fieldType = "site_name";
-      } else if (selectId === "selectSitesAddress") {
-        fieldType = "address";
-      }
-
-      const filters = {
-        field_type: fieldType,
-        value: selectedValue,
+    async filterData() {
+      const params = {
+        page: 1,
       };
 
-      await this.makeFilterAPICalls(filters.field_type, filters.value);
-    },
-    async makeFilterAPICalls(field_type, value) {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/sites_filters`, {
-          params: {
-            field_type: field_type,
-            value: value,
-          },
-        });
-
-        this.getSiteAllData = response.data.data || [];
-
-        if (this.getSiteAllData.length === 0) {
-          this.errorMessageFilter = "Report Not Found!";
-        } else {
-          this.errorMessageFilter = "";
-        }
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
-          const errorMessages = error.response.data.error;
-          if (errorMessages === "No records found for the given filter") {
-            // alert("No records found for the given filter");
-            errorMessages === "No records found for the given filter";
-          } else {
-            // alert(errorMessages);
-          }
-        } else {
-          // console.error("An error occurred:", error.message);
-        }
-      }
-    },
-    filterData(value) {
-      this.selectedFilter = value;
-
-      let site_type = "status";
-      let site_value;
-
-      if (value === "active_site") {
-        site_value = "true";
-      } else if (value === "inactive_site") {
-        site_value = "false";
-      } else if (value === "all") {
-        site_value = "true";
-      } else {
-        site_value = "false";
+      if (this.selectedFilter) {
+        params["site[status]"] = this.selectedFilter;
       }
 
-      this.makeFilterAPICall(site_type, site_value);
-    },
-    async makeFilterAPICall(site_type, site_value) {
+      if (this.selectedClientName) {
+        params["site[client_id]"] = this.selectedClientName;
+      }
+
+      if (this.selectedSiteName) {
+        params["site[site_name]"] = this.selectedSiteName;
+      }
+
+      if (this.selectedSiteAddress) {
+        params["site[address]"] = this.selectedSiteAddress;
+      }
+
+      if (this.localSearchQuery) {
+        params.search = this.localSearchQuery;
+      }
+
       try {
-        let params = {};
-
-        if (site_value) {
-          params = {
-            site_type: site_type,
-            site_value: site_value,
-          };
-        }
-
         const response = await axios.get(`${VITE_API_URL}/site_filter`, {
-          params: params,
+          params,
         });
-
-        this.getSiteAllData = response.data.data;
-        this.currentPage = 1;
+        this.getSiteAllData = response.data.data || [];
       } catch (error) {
-        if (error.response && error.response.status === 404) {
-          const errorMessages = error.response.data.error;
-          if (errorMessages === "No records found for the given filter") {
-            errorMessages === "No records found for the given filter";
-            // alert("No records found for the given filter");
-          } else {
-            // alert(errorMessages);
-          }
-        } else {
-          // console.error("Error fetching filtered data:", error);
-        }
+        // console.error("Error fetching filtered data:", error);
       }
     },
+
     editsiteId(siteId) {
       this.selectedsiteId = siteId;
       this.$refs.refSite.getClientMethod();
@@ -502,31 +459,6 @@ export default {
         .catch((error) => {
           // Handle error
           // console.log(error);
-        });
-    },
-    exportAll() {
-      let apiUrl = `${VITE_API_URL}/export_all_csv_site.csv`;
-      let params = {};
-      let filename = "All_SiteData.csv";
-
-      if (this.selectedFilter === "active_site") {
-        params.filter_type = "active_site";
-        filename = "Active_Sites.csv";
-      } else if (this.selectedFilter === "inactive_site") {
-        params.filter_type = "inactive_site";
-        filename = "Inactive_Sites.csv";
-      }
-
-      axios
-        .get(apiUrl, {
-          params: params,
-          responseType: "blob",
-        })
-        .then((response) => {
-          this.downloadCSV(response.data, filename);
-        })
-        .catch((error) => {
-          // console.error("Error:", error);
         });
     },
 
@@ -586,52 +518,72 @@ export default {
       }
       // console.log("Updated siteIds array:", this.siteIds);
     },
-    exportOneFile() {
-      if (!this.siteIds || this.siteIds.length === 0) {
-        // alert("Please select at least one Site.");
-        Swal.fire({
-          icon: "warning",
-          title: "No File Selected",
-          text: "Please select at least one Site.",
-          confirmButtonText: "OK",
-        });
-        return;
+    exportOneFile(exportType) {
+      let queryParams = {
+        format: "csv",
+      };
+
+      if (this.selectedFilter) {
+        queryParams["site[status]"] = this.selectedFilter;
+      }
+
+      if (this.selectedClientName) {
+        queryParams["site[client_id]"] = this.selectedClientName;
+      }
+
+      if (this.selectedSiteName) {
+        queryParams["site[site_name]"] = this.selectedSiteName;
+      }
+
+      if (this.selectedSiteAddress) {
+        queryParams["site[address]"] = this.selectedSiteAddress;
+      }
+
+      if (this.localSearchQuery) {
+        queryParams.search = this.localSearchQuery;
+      }
+      if (exportType === "all") {
+        queryParams.siteIds = [];
+      } else {
+        if (!this.siteIds || this.siteIds.length === 0) {
+          // alert("Please select at least one Site.");
+          Swal.fire({
+            icon: "warning",
+            title: "No File Selected",
+            text: "Please select at least one Site.",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+        if (this.siteIds.length > 0) {
+          queryParams.siteIds = this.siteIds;
+        } else {
+          queryParams.siteIds = [];
+        }
       }
       // const filterName = this.getFilterName(this.selectedFilter);
       // const filename = `${filterName}_Sites.csv`;
-      const promises = this.siteIds.map((siteId) => {
-        const queryParams = `site_ids=${siteId}`;
-        return axios.get(`${VITE_API_URL}selected_export_site?${queryParams}`, {
+      return axios
+        .get(`${VITE_API_URL}/site_filter`, {
+          params: queryParams,
           headers: {
             Accept: "text/csv",
           },
           responseType: "blob",
-        });
-      });
-
-      Promise.all(promises)
-        .then((responses) => {
-          const csvDataArray = responses.map((response) =>
-            this.blobToText(response.data)
-          );
-          Promise.all(csvDataArray)
-            .then((dataArray) => {
-              const combinedCsvData = this.combineCsvData(dataArray);
+        })
+        .then((response) => {
+          this.blobToText(response.data)
+            .then((csvData) => {
               const filename = "SiteData.csv";
-              this.downloadOneCSV(combinedCsvData, filename);
-              const message = "Export file download Successfully";
+              this.downloadOneCSV(csvData, filename);
+              const message = "Export file downloaded successfully";
               this.$refs.successAlert.showSuccess(message);
             })
-            .catch((error) => {
-              // console.error("Error reading CSV data:", error);
-            });
+            .catch((error) => {});
         })
-        .catch((error) => {
-          // console.error("Error fetching CSV data:", error);
-        })
+        .catch((error) => {})
         .finally(() => {
           this.siteIds = [];
-          this.checkedSites = {};
         });
     },
     blobToText(blob) {
