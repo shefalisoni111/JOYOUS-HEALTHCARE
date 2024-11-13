@@ -578,6 +578,10 @@ export default {
               this.downloadOneCSV(csvData, filename);
               const message = "Export file downloaded successfully";
               this.$refs.successAlert.showSuccess(message);
+              this.siteIds = [];
+              for (let key in this.checkedSites) {
+                this.checkedSites[key] = false;
+              }
             })
             .catch((error) => {});
         })

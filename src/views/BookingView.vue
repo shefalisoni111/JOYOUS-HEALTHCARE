@@ -107,6 +107,15 @@
                         <i class="bi bi-funnel"></i>
                         Show Filters
                       </button>
+                      <input
+                        ref="fileInput"
+                        id="fileAll"
+                        type="file"
+                        accept=".csv"
+                        style="display: none"
+                        @change="handleFileUpload"
+                      />
+                      &nbsp;
                       <button
                         class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
                         type="button"
@@ -118,12 +127,33 @@
                         :
 
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                          <li><a class="dropdown-item" href="#">Import</a></li>
-                          <li><hr class="dropdown-divider" /></li>
-                          <li><a class="dropdown-item" href="#">Export</a></li>
+                          <li>
+                            <label
+                              for="fileAll"
+                              class="custom-file-label dropdown-item"
+                              style="border-radius: 0px; cursor: pointer"
+                              @click="triggerFileInput"
+                            >
+                              Import
+                            </label>
+                          </li>
                           <li><hr class="dropdown-divider" /></li>
                           <li>
-                            <a class="dropdown-item" href="#">Export All</a>
+                            <a
+                              class="dropdown-item"
+                              href="#"
+                              @click="exportOneFile('selected')"
+                              >Export</a
+                            >
+                          </li>
+                          <li><hr class="dropdown-divider" /></li>
+                          <li>
+                            <a
+                              class="dropdown-item"
+                              href="#"
+                              @click="exportOneFile('all')"
+                              >Export All</a
+                            >
                           </li>
                         </ul>
                       </button>
@@ -162,12 +192,23 @@
                     <option
                       v-for="option in candidateLists"
                       :key="option.id"
-                      :value="option.id"
+                      :value="option.first_name + ' ' + option.last_name"
                       placeholder="Select Staff"
                     >
                       {{ option.first_name + " " + option.last_name }}
                     </option>
                   </select>
+                  &nbsp;
+                  <div class="searchbox position-relative">
+                    <input
+                      class="form-control"
+                      type="search"
+                      placeholder="Search booking..."
+                      aria-label="Search"
+                      v-model="localSearchQuery"
+                      @input="filterData"
+                    />
+                  </div>
                 </div>
               </div>
               <ul class="nav nav-pills my-2 gap-2" id="pills-tab" role="tablist">
@@ -212,6 +253,7 @@
                     <thead>
                       <tr>
                         <th>ID</th>
+                        <th scope="col"></th>
                         <th scope="col">#Booking Code</th>
                         <th scope="col">Staff</th>
                         <th scope="col">Site</th>
@@ -232,6 +274,16 @@
                     <tbody v-if="getBookingData?.length > 0 && getBookingData">
                       <tr v-for="data in getBookingData" :key="data.id">
                         <td scope="col">{{ data.id }}</td>
+                        <td>
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            :value="data.id"
+                            :id="data.id"
+                            v-model="checkedBooking[data.id]"
+                            @change="handleCheckboxChange(data.id)"
+                          />
+                        </td>
                         <td scope="col">{{ data.booking_code }}</td>
                         <td scope="col">{{ data.candidate }}</td>
                         <td scope="col">{{ data.site }}</td>
@@ -268,7 +320,7 @@
                     </tbody>
                     <tbody v-else>
                       <tr>
-                        <td colspan="15" class="text-danger text-center">
+                        <td colspan="16" class="text-danger text-center">
                           {{
                             errorMessageBooking ||
                             errorMessageFilter ||
@@ -289,6 +341,8 @@
                     <thead>
                       <tr>
                         <th>ID</th>
+
+                        <th scope="col"></th>
                         <th scope="col">#Booking Code</th>
                         <th scope="col">Staff</th>
                         <th scope="col">Site</th>
@@ -309,6 +363,16 @@
                     <tbody v-if="deleteBookingData?.length > 0 && deleteBookingData">
                       <tr v-for="data in deleteBookingData" :key="data.id">
                         <td scope="col">{{ data.id }}</td>
+                        <td>
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            :value="data.id"
+                            :id="data.id"
+                            v-model="checkedBooking[data.id]"
+                            @change="handleCheckboxChange(data.id)"
+                          />
+                        </td>
                         <td scope="col">{{ data.booking_code }}</td>
                         <td scope="col">{{ data.candidate }}</td>
                         <td scope="col">{{ data.site }}</td>
@@ -346,7 +410,7 @@
                     <tbody v-else>
                       <tr>
                         <td
-                          colspan="15"
+                          colspan="16"
                           class="text-danger text-center"
                           v-if="!isLoading"
                         >
@@ -581,6 +645,8 @@ import Loader from "../components/Loader/Loader.vue";
 import SuccessAlert from "../components/Alerts/SuccessAlert.vue";
 import ConfirmationAlert from "../components/Alerts/ConfirmationAlert.vue";
 import ShowDetailsMessage from "../components/Alerts/ShowDetailsMessage.vue";
+import { reactive } from "vue";
+import Swal from "sweetalert2";
 
 const axiosInstance = axios.create({
   headers: {
@@ -599,6 +665,7 @@ export default {
       currentPage: 1,
       itemsPerPage: 10,
       totalRecords: 0,
+      localSearchQuery: this.searchQuery,
       deleteBookingDataPage: 1,
       currentPageSearch: 1,
       showFilters: false,
@@ -615,9 +682,11 @@ export default {
       errorMessage: "",
       job_id_value: "",
       job_id: "",
+      bookingIds: [],
       options: [],
       deleteBookingData: [],
       errorMessageBooking: [],
+      checkedBooking: reactive({}),
       isLoading: false,
       errorDelete: [],
       isModalVisible: false,
@@ -625,6 +694,13 @@ export default {
       confirmCallback: null,
       showModal: false,
     };
+  },
+  created() {
+    this.bookingIds = this.getBookingData.map((data) => data.id);
+
+    this.getBookingData.forEach((data) => {
+      this.$set(this.checkedSites, data.id, false);
+    });
   },
   components: { Navbar, Loader, SuccessAlert, ConfirmationAlert, ShowDetailsMessage },
   computed: {
@@ -713,6 +789,17 @@ export default {
     // handleDeleteBooking() {
     //   getDeleteBookingData();
     // },
+    handleCheckboxChange(dataId) {
+      if (this.checkedBooking[dataId]) {
+        this.bookingIds.push(dataId);
+      } else {
+        const index = this.bookingIds.indexOf(dataId);
+        if (index !== -1) {
+          this.bookingIds.splice(index, 1);
+        }
+      }
+      // console.log("Updated siteIds array:", this.siteIds);
+    },
     confirmed(id) {
       this.isModalVisible = false;
 
@@ -765,50 +852,81 @@ export default {
     toggleFilters() {
       this.showFilters = !this.showFilters;
     },
-    filterData() {
-      const filters = {
-        filterType: this.job_id
-          ? "job_title"
-          : this.site_id
-          ? "site"
-          : this.id
-          ? "candidate"
-          : "",
-        filterValue: this.job_id || this.site_id || this.getCandidateName(this.id) || "",
+    async filterData() {
+      const params = {
+        page: 1,
       };
 
-      this.makeFilterAPICall(filters.filterType, filters.filterValue);
-    },
-    getCandidateName(id) {
-      const candidate = this.candidateLists.find((candidate) => candidate.id === id);
-      return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
-    },
-    async makeFilterAPICall(filterType, filterValue) {
-      const token = localStorage.getItem("token");
+      if (this.job_id) {
+        params["booking[job_title]"] = this.job_id;
+      }
+
+      if (this.site_id) {
+        params["booking[site]"] = this.site_id;
+      }
+
+      if (this.id) {
+        params["booking[candidate]"] = this.id;
+      }
+      if (this.localSearchQuery) {
+        params.search = this.localSearchQuery;
+      }
 
       try {
         const response = await axios.get(`${VITE_API_URL}/booking_filter`, {
-          params: {
-            filter_type: filterType,
-            filter_value: filterValue,
-          },
-          headers: {
-            "content-type": "application/json",
-            Authorization: "bearer " + token,
-          },
+          params,
         });
-
         this.getBookingData = response.data.booking_data || [];
         this.errorMessageFilter = "";
       } catch (error) {
-        if (error.response && error.response.status === 404) {
-          this.getBookingData = [];
-          this.errorMessageFilter = error.response.data.error || "Report Not Found!";
-        } else {
-          this.errorMessageFilter = "Report Not Found!";
-        }
+        // Handle error if needed
+        // console.error("Error fetching filtered data:", error);
       }
     },
+    // filterData() {
+    //   const filters = {
+    //     filterType: this.job_id
+    //       ? "job_title"
+    //       : this.site_id
+    //       ? "site"
+    //       : this.id
+    //       ? "candidate"
+    //       : "",
+    //     filterValue: this.job_id || this.site_id || this.getCandidateName(this.id) || "",
+    //   };
+
+    //   this.makeFilterAPICall(filters.filterType, filters.filterValue);
+    // },
+    // getCandidateName(id) {
+    //   const candidate = this.candidateLists.find((candidate) => candidate.id === id);
+    //   return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
+    // },
+    // async makeFilterAPICall(filterType, filterValue) {
+    //   const token = localStorage.getItem("token");
+
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/booking_filter`, {
+    //       params: {
+    //         filter_type: filterType,
+    //         filter_value: filterValue,
+    //       },
+    //       headers: {
+    //         "content-type": "application/json",
+    //         Authorization: "bearer " + token,
+    //       },
+    //     });
+
+    //     this.getBookingData = response.data.booking_data || [];
+    //     this.errorMessageFilter = "";
+    //   } catch (error) {
+    //     if (error.response && error.response.status === 404) {
+    //       this.getBookingData = [];
+    //       this.errorMessageFilter = error.response.data.error || "Report Not Found!";
+    //     } else {
+    //       this.errorMessageFilter = "Report Not Found!";
+    //     }
+    //   }
+    // },
     async getDeleteBookingData() {
       this.isLoading = true;
       const formattedStartDate = this.formatDate(this.startDate);
@@ -848,7 +966,140 @@ export default {
         this.isLoading = false;
       }
     },
+    triggerFileInput() {
+      this.$refs.fileInput.click();
+    },
+    exportOneFile(exportType) {
+      let queryParams = {
+        format: "csv",
+      };
+      if (this.job_id) {
+        queryParams["booking[job_title]"] = this.job_id;
+      }
 
+      if (this.site_id) {
+        queryParams["booking[site]"] = this.site_id;
+      }
+
+      if (this.id) {
+        queryParams["booking[candidate]"] = this.id;
+      }
+      if (this.localSearchQuery) {
+        queryParams.search = this.localSearchQuery;
+      }
+
+      if (exportType === "all") {
+        queryParams.bookingIds = [];
+      } else {
+        if (!this.bookingIds || this.bookingIds.length === 0) {
+          Swal.fire({
+            icon: "info",
+            title: "No Booking Selected",
+            text: "Please select at least one Client.",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+        if (this.bookingIds.length > 0) {
+          queryParams.bookingIds = this.bookingIds;
+        } else {
+          queryParams.bookingIds = [];
+        }
+      }
+
+      return axios
+        .get(`${VITE_API_URL}/booking_filter`, {
+          params: queryParams,
+          headers: {
+            Accept: "text/csv",
+          },
+          responseType: "blob",
+        })
+        .then((response) => {
+          this.blobToText(response.data)
+            .then((csvData) => {
+              const filename = "BookingData.csv";
+              this.downloadOneCSV(csvData, filename);
+              const message = "Export file downloaded successfully";
+              this.$refs.successAlert.showSuccess(message);
+              this.bookingIds = [];
+              for (let key in this.checkedBooking) {
+                this.checkedBooking[key] = false;
+              }
+            })
+            .catch((error) => {});
+        })
+        .catch((error) => {})
+        .finally(() => {
+          this.bookingIds = [];
+        });
+    },
+    blobToText(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          resolve(reader.result);
+        };
+        reader.onerror = reject;
+        reader.readAsText(blob);
+      });
+    },
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const isValidFileType = file.type === "text/csv";
+      if (!isValidFileType) {
+        Swal.fire({
+          icon: "warning",
+          title: "No File Selected",
+          text: "Please select a CSV file.",
+          confirmButtonText: "OK",
+        });
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", file);
+      axios
+        .post(`${VITE_API_URL}/booking_filter`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          const message = "Import Successfully";
+          this.$refs.successAlert.showSuccess(message);
+          this.ImportCSV(response.data, file.name);
+        })
+        .catch((error) => {
+          // Handle error
+          // console.log(error);
+        });
+    },
+
+    downloadOneCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    },
+    ImportCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    },
     async bookingDeleteMethod(id) {
       this.confirmMessage = "Are you sure you want to delete this booking?";
       this.isModalVisible = true;

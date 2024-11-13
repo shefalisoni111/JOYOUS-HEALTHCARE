@@ -588,6 +588,10 @@ export default {
               this.downloadOneCSV(csvData, filename);
               const message = "Export file downloaded successfully";
               this.$refs.successAlert.showSuccess(message);
+              this.clientId = [];
+              for (let key in this.checkedClient) {
+                this.checkedClient[key] = false;
+              }
             })
             .catch((error) => {});
         })
