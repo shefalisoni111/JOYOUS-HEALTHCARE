@@ -69,7 +69,7 @@
                         Profile 1
                       </button>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    <!-- <li class="nav-item" role="presentation">
                       <button
                         class="nav-link"
                         id="profile-tab"
@@ -96,7 +96,7 @@
                       >
                         NHS
                       </button>
-                    </li>
+                    </li> -->
                   </ul>
                   <div class="tab-content tabconttwo" id="myTabContent">
                     <div
@@ -134,7 +134,7 @@
                         </div>
                       </div>
                     </div>
-                    <div
+                    <!-- <div
                       class="tab-pane fade"
                       id="profile"
                       role="tabpanel"
@@ -159,7 +159,7 @@
                         modi sequi, maxime, nemo possimus consequuntur, totam fugit
                         reiciendis vitae nulla. Quibusdam, quas sed.
                       </p>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
                 <div
