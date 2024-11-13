@@ -342,11 +342,11 @@
                 >
               </li>
 
-              <li class="cursor-pointer my-1">
+              <!-- <li class="cursor-pointer my-1">
                 <router-link class="dropdown-item d-flex align-items-center" to="/recruitment"
                   ><i class="bi bi-ban-fill pe-2"></i><span>Recruitment</span></router-link
                 >
-              </li>
+              </li> -->
 
               <li class="cursor-pointer my-1">
                 <a class="dropdown-item d-flex align-items-center"
