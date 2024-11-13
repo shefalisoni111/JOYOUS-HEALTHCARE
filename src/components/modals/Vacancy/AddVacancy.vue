@@ -278,7 +278,7 @@
                     </span>
                   </div>
                 </div>
-                <div class="d-flex justify-content-between gap-2">
+                <div class="d-flex justify-content-between">
                   <div class="col-2">
                     <label class="form-label" for="clientRate">Staff Rate</label>
                   </div>
