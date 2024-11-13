@@ -260,30 +260,29 @@
                     </span> -->
                   </div>
                 </div>
+                <div class="mb-3 d-flex">
+                  <div class="col-2">
+                    <label class="form-label" for="clientRate">Client Rate</label>
+                  </div>
+                  <div class="col-10">
+                    <input
+                      type="text"
+                      class="form-control w-25"
+                      v-model="client_rate"
+                      @input="handleInput('client_rate', client_rate)"
+                      maxlength="3"
+                    />
+
+                    <span v-if="!validationClientRate" class="text-danger">
+                      Client Rate must be must be Number.
+                    </span>
+                  </div>
+                </div>
                 <div class="d-flex justify-content-between gap-2">
-                  <div class="">
+                  <div class="col-2">
                     <label class="form-label" for="clientRate">Staff Rate</label>
                   </div>
-                  <div class="d-flex justify-content-between">
-                    <div class="">
-                      <div class="">
-                        <label class="form-label" for="clientRate">Client Rate</label>
-                      </div>
-                      <div class="">
-                        <input
-                          type="text"
-                          class="form-control w-100"
-                          v-model="client_rate"
-                          @input="handleInput('client_rate', client_rate)"
-                          maxlength="3"
-                        />
-
-                        <span v-if="!validationClientRate" class="text-danger">
-                          Client Rate must be must be Number.
-                        </span>
-                      </div>
-                    </div>
-
+                  <div class="col-10 d-flex gap-2">
                     <div class="">
                       <div class="">
                         <label class="form-label" for="staffRate">Self Employee</label>

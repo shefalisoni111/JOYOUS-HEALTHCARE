@@ -201,7 +201,9 @@
                                   name: 'SingleClientProfile',
                                   params: { id: data.site_id_and_client_id.client_id },
                                 }"
-                                >{{ data.client }}</router-link
+                                >{{
+                                  data.site_id_and_client_id?.client_name
+                                }}</router-link
                               >
                             </td>
                             <td scope="col">
@@ -372,7 +374,9 @@
                                   name: 'SingleClientProfile',
                                   params: { id: data.site_id_and_client_id.client_id },
                                 }"
-                                >{{ data.client }}</router-link
+                                >{{
+                                  data.site_id_and_client_id?.client_name
+                                }}</router-link
                               >
                             </td>
                             <td scope="col">
