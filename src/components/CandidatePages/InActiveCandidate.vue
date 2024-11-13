@@ -190,13 +190,21 @@ export default {
         const response = await axios
           .put(`${VITE_API_URL}/re_activate_candidate/${id}`)
           .then((response) => {
-            // alert("Staff reactivated successfully!");
-            Swal.fire({
-              icon: "success",
-              title: "Success",
-              text: "Staff reactivated successfully!",
-            });
-            this.getCandidate();
+            if (response.data.status === "Success") {
+              Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: response.data.message,
+              });
+              // this.inactiveCandidateData = response.data;
+              this.getCandidate();
+            } else if (response.data.status === "Failed") {
+              Swal.fire({
+                icon: "error",
+                title: "Failed",
+                text: response.data.message,
+              });
+            }
           })
 
           .catch((error) => {

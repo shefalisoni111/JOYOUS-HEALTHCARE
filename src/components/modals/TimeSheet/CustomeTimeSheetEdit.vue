@@ -733,7 +733,7 @@ export default {
           formData.append("custom_timesheet[paper_timesheet]", this.uploadedFile);
         }
 
-        console.log(formData);
+        // console.log(formData);
         const token = localStorage.getItem("token");
         const response = await axios.put(
           `${VITE_API_URL}/custom_timesheets/${this.customDataId}`,

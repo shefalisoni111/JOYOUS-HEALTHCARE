@@ -283,7 +283,7 @@ export default {
       currentPage: 1,
       totalRecords: 0,
       itemsPerPage: 10,
-      siteIds: [],
+      site_ids: [],
       client_id: null,
       localSearchQuery: this.searchQuery,
       errorMessageFilter: "",
@@ -302,7 +302,7 @@ export default {
     };
   },
   created() {
-    this.siteIds = this.getSiteAllData.map((data) => data.id);
+    this.site_ids = this.getSiteAllData.map((data) => data.id);
 
     this.getSiteAllData.forEach((data) => {
       this.$set(this.checkedSites, data.id, false);
@@ -509,14 +509,14 @@ export default {
     },
     handleCheckboxChange(dataId) {
       if (this.checkedSites[dataId]) {
-        this.siteIds.push(dataId);
+        this.site_ids.push(dataId);
       } else {
-        const index = this.siteIds.indexOf(dataId);
+        const index = this.site_ids.indexOf(dataId);
         if (index !== -1) {
-          this.siteIds.splice(index, 1);
+          this.site_ids.splice(index, 1);
         }
       }
-      // console.log("Updated siteIds array:", this.siteIds);
+      // console.log("Updated site_ids array:", this.site_ids);
     },
     exportOneFile(exportType) {
       let queryParams = {
@@ -543,9 +543,9 @@ export default {
         queryParams.search = this.localSearchQuery;
       }
       if (exportType === "all") {
-        queryParams.siteIds = [];
+        queryParams.site_ids = [];
       } else {
-        if (!this.siteIds || this.siteIds.length === 0) {
+        if (!this.site_ids || this.site_ids.length === 0) {
           // alert("Please select at least one Site.");
           Swal.fire({
             icon: "warning",
@@ -555,10 +555,10 @@ export default {
           });
           return;
         }
-        if (this.siteIds.length > 0) {
-          queryParams.siteIds = this.siteIds;
+        if (this.site_ids.length > 0) {
+          queryParams.site_ids = this.site_ids;
         } else {
-          queryParams.siteIds = [];
+          queryParams.site_ids = [];
         }
       }
       // const filterName = this.getFilterName(this.selectedFilter);
@@ -578,7 +578,7 @@ export default {
               this.downloadOneCSV(csvData, filename);
               const message = "Export file downloaded successfully";
               this.$refs.successAlert.showSuccess(message);
-              this.siteIds = [];
+              this.site_ids = [];
               for (let key in this.checkedSites) {
                 this.checkedSites[key] = false;
               }
@@ -587,7 +587,7 @@ export default {
         })
         .catch((error) => {})
         .finally(() => {
-          this.siteIds = [];
+          this.site_ids = [];
         });
     },
     blobToText(blob) {

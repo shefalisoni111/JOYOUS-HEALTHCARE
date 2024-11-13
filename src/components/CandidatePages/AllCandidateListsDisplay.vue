@@ -200,7 +200,8 @@ export default {
       this.isModalVisible = false;
     },
     deleteStaffMethod(id) {
-      this.confirmMessage = "Are you sure you want to completely delete this staff?";
+      this.confirmMessage =
+        "Are you sure you want to completely delete this staff?  Please ensure all the dues are cleared.";
       this.isModalVisible = true;
       this.confirmCallback = async () => {
         axios.delete(`${VITE_API_URL}/candidates/` + id).then((response) => {

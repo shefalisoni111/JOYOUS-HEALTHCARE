@@ -172,7 +172,7 @@
                   type="checkbox"
                   id="togBtn"
                   v-model="client.activated"
-                  @change="clientStatusChangeMethod(client.id, client.activated)"
+                  v-on:click="clientStatusChangeMethod(client.id, client.activated)"
                   :checked="client.activated"
                 />
                 <div class="slider round"></div>
@@ -403,7 +403,8 @@ export default {
       this.isModalVisible = false;
     },
     deleteClientDataMethod(id) {
-      this.confirmMessage = "Are you sure you want to completely delete this client?";
+      this.confirmMessage =
+        "Are you sure you want to completely delete this client? Please ensure all the shifts, bookings and payments are cleared.";
       this.isModalVisible = true;
       this.confirmCallback = async () => {
         axios.delete(`${VITE_API_URL}/clients/` + id).then((response) => {
@@ -496,28 +497,63 @@ export default {
     getColor(index) {
       return this.colors[index % this.colors.length];
     },
+    confirmeds(id) {
+      this.isModalVisible = false;
+    },
+    canceleds() {
+      this.isModalVisible = false;
+    },
     clientStatusChangeMethod(id, activated) {
-      axios
-        .put(`${VITE_API_URL}/update_status/${id}?activated=${activated}`)
-        .then((response) => {
-          if (activated) {
-            // alert("Staff activated successfully!");
-            const message = "Client activated successfully!";
-            this.$refs.successAlert.showSuccess(message);
-          } else {
-            // alert("Staff inactivated successfully!");
-            const message = "Client inactivated successfully!";
-            this.$refs.successAlert.showSuccess(message);
-          }
-          const updatedClient = this.getClientDetail.find((client) => client.id === id);
-          if (updatedClient) {
-            updatedClient.activated = activated;
-          }
-          this.createdClient();
-        })
-        .catch((error) => {
-          // console.error("Error updating staff status:", error);
-        });
+      const action = activated ? "activate" : "inactivate";
+      const confirmMessage = `Are you sure you want to ${action} this client?<br>Please ensure all the shifts, bookings, and payments are cleared.`;
+
+      Swal.fire({
+        icon: "warning",
+        title: `Confirm ${action}`,
+        html: confirmMessage,
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+      }).then((result) => {
+        if (!result.isConfirmed) {
+          axios
+            .put(`${VITE_API_URL}/update_status/${id}?activated=${activated}`)
+            .then((response) => {
+              const message = activated
+                ? "Client activated successfully!"
+                : "Client inactivated successfully!";
+              Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: message,
+              });
+
+              const updatedClient = this.getClientDetail.find(
+                (client) => client.id === id
+              );
+              if (updatedClient) {
+                updatedClient.activated = activated;
+              }
+
+              this.createdClient();
+            })
+            .catch((error) => {
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Failed to update client status. Please try again later.",
+              });
+
+              const updatedClient = this.getClientDetail.find(
+                (client) => client.id === id
+              );
+              if (updatedClient) {
+                updatedClient.activated = !activated;
+              }
+            });
+        } else {
+        }
+      });
     },
     editClient(clientID) {
       this.selectedClientID = clientID;

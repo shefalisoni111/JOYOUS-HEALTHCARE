@@ -255,20 +255,27 @@ export default {
       this.isModalVisible = false;
     },
     deleteCandidate(id) {
-      this.confirmMessage = "Are you sure want to In-activate this Staff?";
+      this.confirmMessage = `Are you sure you want to inactivate this staff? Please ensure all the dues are cleared.`;
       this.isModalVisible = true;
       this.confirmCallback = async () => {
         axios
           .put(`${VITE_API_URL}/inactivate_candidate/${id}`)
           .then((response) => {
-            // alert("Staff In-activated successfully!");
-            Swal.fire({
-              icon: "success",
-              title: "Success",
-              text: "Staff inactivated successfully!",
-            });
-            this.inactiveCandidateData = response.data;
-            this.getCandidateMethods();
+            if (response.data.status === "Success") {
+              Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: response.data.message,
+              });
+              this.inactiveCandidateData = response.data;
+              this.getCandidateMethods();
+            } else if (response.data.status === "Failed") {
+              Swal.fire({
+                icon: "error",
+                title: "Failed",
+                text: response.data.message,
+              });
+            }
           })
           .catch((error) => {
             // console.error("Error deleting candidate:", error);
