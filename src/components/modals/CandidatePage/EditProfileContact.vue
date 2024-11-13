@@ -26,11 +26,11 @@
                       v-model="fetchCandidate.phone_number"
                       @input="cleanPhoneNumber"
                     />
-                    <span
+                    <!-- <span
                       v-if="!isPhoneNumberValid && fetchCandidate.phone_number.length > 0"
                       class="text-danger"
                       >Invalid Phone Number</span
-                    >
+                    > -->
                   </div>
                 </div>
               </form>

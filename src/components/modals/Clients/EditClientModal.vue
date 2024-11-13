@@ -66,12 +66,9 @@
                       inputmode="numeric"
                       pattern="[0-9]*"
                     />
-                    <div
-                      v-if="!isPhoneNumberValid && fetchClients.phone_number.length > 0"
-                      class="text-danger"
-                    >
-                      Phone number must be exactly 10 digits.
-                    </div>
+                    <!-- <div v-if="!isPhoneNumberValid" class="text-danger">
+                      Phone number must be exactly 11 digits.
+                    </div> -->
                   </div>
                 </div>
                 <div class="mb-3">
