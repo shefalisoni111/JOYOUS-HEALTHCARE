@@ -682,7 +682,7 @@ export default {
       errorMessage: "",
       job_id_value: "",
       job_id: "",
-      bookingIds: [],
+      booking_ids: [],
       options: [],
       deleteBookingData: [],
       errorMessageBooking: [],
@@ -696,7 +696,7 @@ export default {
     };
   },
   created() {
-    this.bookingIds = this.getBookingData.map((data) => data.id);
+    this.booking_ids = this.getBookingData.map((data) => data.id);
 
     this.getBookingData.forEach((data) => {
       this.$set(this.checkedSites, data.id, false);
@@ -791,11 +791,11 @@ export default {
     // },
     handleCheckboxChange(dataId) {
       if (this.checkedBooking[dataId]) {
-        this.bookingIds.push(dataId);
+        this.booking_ids.push(dataId);
       } else {
-        const index = this.bookingIds.indexOf(dataId);
+        const index = this.booking_ids.indexOf(dataId);
         if (index !== -1) {
-          this.bookingIds.splice(index, 1);
+          this.booking_ids.splice(index, 1);
         }
       }
       // console.log("Updated siteIds array:", this.siteIds);
@@ -877,7 +877,13 @@ export default {
           params,
         });
         this.getBookingData = response.data.booking_data || [];
-        this.errorMessageFilter = "";
+        // this.errorMessageFilter = "";
+        // this.searchResults = response.data.booking_data || [];
+        if (this.searchResults.length === 0) {
+          this.errorMessage = "No Record found for the specified criteria.";
+        } else {
+          this.errorMessage = "";
+        }
       } catch (error) {
         // Handle error if needed
         // console.error("Error fetching filtered data:", error);
@@ -989,9 +995,9 @@ export default {
       }
 
       if (exportType === "all") {
-        queryParams.bookingIds = [];
+        queryParams.booking_ids = [];
       } else {
-        if (!this.bookingIds || this.bookingIds.length === 0) {
+        if (!this.booking_ids || this.booking_ids.length === 0) {
           Swal.fire({
             icon: "info",
             title: "No Booking Selected",
@@ -1000,10 +1006,10 @@ export default {
           });
           return;
         }
-        if (this.bookingIds.length > 0) {
-          queryParams.bookingIds = this.bookingIds;
+        if (this.booking_ids.length > 0) {
+          queryParams.booking_ids = this.booking_ids;
         } else {
-          queryParams.bookingIds = [];
+          queryParams.booking_ids = [];
         }
       }
 
@@ -1022,7 +1028,7 @@ export default {
               this.downloadOneCSV(csvData, filename);
               const message = "Export file downloaded successfully";
               this.$refs.successAlert.showSuccess(message);
-              this.bookingIds = [];
+              this.booking_ids = [];
               for (let key in this.checkedBooking) {
                 this.checkedBooking[key] = false;
               }
@@ -1031,7 +1037,7 @@ export default {
         })
         .catch((error) => {})
         .finally(() => {
-          this.bookingIds = [];
+          this.booking_ids = [];
         });
     },
     blobToText(blob) {
