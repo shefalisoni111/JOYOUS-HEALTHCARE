@@ -238,7 +238,7 @@
                     aria-selected="false"
                     @click="getDeleteBookingData"
                   >
-                    Delete Booking
+                    Deleted Booking
                   </button>
                 </li>
               </ul>
@@ -1331,7 +1331,7 @@ export default {
     endOfWeek.setDate(endOfWeek.getDate() + 6);
     this.endDate = endOfWeek;
     // await this.fetchBookingDataMethod();
-    // kl
+
     await this.getDeleteBookingData();
   },
 };
