@@ -73,7 +73,7 @@
                     <div class="bg-white py-4">
                       <div>
                         <h6>
-                          <b>Vendor:</b> Pages displayed in the Clientdashboard can be
+                          <b>Client:</b> Pages displayed in the Clientdashboard can be
                           enabled or disabled from here.
                         </h6>
                         <ul class="list-unstyled list-inline">
