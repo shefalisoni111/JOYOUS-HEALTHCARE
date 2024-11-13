@@ -355,7 +355,6 @@
                             v-model="fetchCustomSheetData.total_shift_hours"
                           /> -->
                           <input
-                            v-if="fetchCustomSheetData.total_hours"
                             type="text"
                             class="form-control custom-disabled"
                             v-model="fetchCustomSheetData.total_hours"
@@ -543,8 +542,12 @@ export default {
         total_cost: "",
         custom_image: "",
       },
+      // fullCustomImageUrl: "",
       options: [],
       selectedHour: 1,
+      selectedEndHour: 1,
+      selectedEndMinute: "00",
+      selectedEndPeriod: "AM",
       selectedMinute: "00",
       selectedPeriod: "AM",
       minutes: Array.from({ length: 60 }, (_, i) => (i < 10 ? `0${i}` : `${i}`)),
@@ -577,6 +580,11 @@ export default {
       return `${this.formatHour(this.selectedHour)}:${this.formatMinute(
         this.selectedMinute
       )} ${this.selectedPeriod}`;
+    },
+    formattedEndTime() {
+      return `${this.formatHour(this.selectedEndHour)}:${this.formatMinute(
+        this.selectedEndMinute
+      )} ${this.selectedEndPeriod}`;
     },
     // isSaveDisabled() {
     //   const {
@@ -735,6 +743,7 @@ export default {
             client_rate: customSheet.client_rate || "",
             staff_rate: customSheet.staff_rate || "",
             notes: customSheet.notes || "",
+            paper_timesheet: customSheet.paper_timesheet || "",
           };
 
           this.originalData = { ...this.fetchCustomSheetData };
@@ -743,6 +752,7 @@ export default {
           this.showValueCustom = true;
         } else {
           this.apiResponse = "";
+          this.apiResponse_EndTime = "";
         }
       } catch (error) {
         // console.error("Error fetching custom timesheets:", error);
