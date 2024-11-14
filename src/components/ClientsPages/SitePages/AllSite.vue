@@ -373,7 +373,12 @@ export default {
     },
     async getBusinessUnitMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/activated_site`);
+        const response = await axios.get(`${VITE_API_URL}/sites`, {
+          params: {
+            page: this.currentPage,
+            per_page: this.itemsPerPage,
+          },
+        });
         this.businessUnit = response.data.data;
       } catch (error) {
         if (error.response) {

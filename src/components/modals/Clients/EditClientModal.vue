@@ -204,7 +204,7 @@ export default {
       );
     },
     isPhoneNumberValid() {
-      return /^[0-9]{10}$/.test(this.fetchClients.phone_number);
+      return /^[0-9]{11}$/.test(this.fetchClients.phone_number);
     },
   },
   components: { SuccessAlert },
