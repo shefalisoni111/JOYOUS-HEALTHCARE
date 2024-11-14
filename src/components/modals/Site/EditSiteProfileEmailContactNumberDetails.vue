@@ -214,7 +214,7 @@ export default {
       return this.$store.state.vacancies;
     },
     isPhoneNumberValid() {
-      return /^[0-9]{10}$/.test(this.fetchSite.phone_number);
+      return /^[0-9]{11}$/.test(this.fetchSite.phone_number);
     },
 
     isEmailValid() {

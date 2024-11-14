@@ -48,7 +48,7 @@
                   </div>
                 </div>
                 <div class="d-flex align-items-center">
-                  <i
+                  <!-- <i
                     class="bi bi-pencil-square cursor-pointer btn btn-outline-success text-nowrap"
                     type="button"
                     data-bs-toggle="modal"
@@ -56,7 +56,7 @@
                     data-bs-whatever="@mdo"
                     @click="editRestricted(data.id)"
                   ></i>
-                  &nbsp;&nbsp;
+                  &nbsp;&nbsp; -->
                   <i
                     class="bi bi-trash cursor-pointer btn btn-outline-danger text-nowrap"
                     @click="deleteRestricted(data.id)"

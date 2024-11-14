@@ -201,8 +201,8 @@
                 </h5>
               </div>
             </div>
-            <div class="card-body">
-              <div class="d-flex gap-2">
+            <div class="card-body d-flex justify-content-between">
+              <div class="d-flex gap-2 flex-wrap">
                 <!-- <button type="button" class="btn btn-primary btn-sm">
                   Assistance Number
                 </button>
@@ -211,6 +211,8 @@
                   <span class="btn btn-primary">{{ getJobName(jobId) }}</span>
                   <!-- <span class="btn btn-primary">{{ jobId }}</span> -->
                 </div>
+              </div>
+              <div>
                 <button
                   type="button"
                   class="btn btn-outline-success text-nowrap"

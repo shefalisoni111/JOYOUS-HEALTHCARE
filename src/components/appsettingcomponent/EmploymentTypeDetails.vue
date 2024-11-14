@@ -39,7 +39,7 @@
               Employment Types
             </button>
           </li>
-          <li class="nav-item" role="presentation">
+          <!-- <li class="nav-item" role="presentation">
             <button
               class="nav-link text-capitalize"
               id="companyDetail"
@@ -52,7 +52,7 @@
             >
               Company Details
             </button>
-          </li>
+          </li> -->
         </ul>
         <div class="tab-content" id="pills-tabContent">
           <div
@@ -95,7 +95,7 @@
               </tbody>
             </table>
           </div>
-          <div
+          <!-- <div
             class="tab-pane fade"
             id="pills-companyDetails"
             role="tabpanel"
@@ -103,7 +103,7 @@
             tabindex="0"
           >
             Work in Progress...
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
