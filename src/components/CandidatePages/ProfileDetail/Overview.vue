@@ -64,6 +64,27 @@
                     </td>
                   </tr>
                   <tr>
+                    <td>Enhanced DBS Issues</td>
+                    <td>:</td>
+                    <td>
+                      {{ getCandidatesDataInOverview.enhanced_dbs_issues }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Enhanced DBS Number</td>
+                    <td>:</td>
+                    <td>
+                      {{ getCandidatesDataInOverview.enhanced_dbs_number }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Deby</td>
+                    <td>:</td>
+                    <td>
+                      {{ getCandidatesDataInOverview.deby }}
+                    </td>
+                  </tr>
+                  <tr>
                     <td>DBS/PVG Expiry Date</td>
                     <td>:</td>
                     <td>

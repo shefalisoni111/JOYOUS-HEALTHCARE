@@ -130,18 +130,21 @@
                   </tr>
                   <tr>
                     <td>Enhanced DBS Number</td>
-                    <td>:</td>
-                    <td></td>
+
+                    <td>...</td>
+                    <td>{{ getCandidatesDataInProfileTab.enhanced_dbs_number }}</td>
                   </tr>
                   <tr>
                     <td>Enhanced DBS Issues</td>
-                    <td>:</td>
-                    <td></td>
+
+                    <td>...</td>
+                    <td>{{ getCandidatesDataInProfileTab.enhanced_dbs_issues }}</td>
                   </tr>
                   <tr>
                     <td>Deby</td>
-                    <td>:</td>
-                    <td></td>
+
+                    <td>...</td>
+                    <td>{{ getCandidatesDataInProfileTab.deby }}</td>
                   </tr>
                   <tr>
                     <td>ID</td>
@@ -313,19 +316,19 @@
                     <td>Enhanced DBS Number</td>
 
                     <td>...</td>
-                    <td></td>
+                    <td>{{ getCandidatesDataInProfileTab.enhanced_dbs_number }}</td>
                   </tr>
                   <tr>
                     <td>Enhanced DBS Issues</td>
 
                     <td>...</td>
-                    <td></td>
+                    <td>{{ getCandidatesDataInProfileTab.enhanced_dbs_issues }}</td>
                   </tr>
                   <tr>
                     <td>Deby</td>
 
                     <td>...</td>
-                    <td></td>
+                    <td>{{ getCandidatesDataInProfileTab.deby }}</td>
                   </tr>
                   <tr>
                     <td>ID</td>

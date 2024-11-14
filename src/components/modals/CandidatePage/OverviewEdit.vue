@@ -62,6 +62,45 @@
                 </div>
                 <div class="mb-3">
                   <div class="col-12">
+                    <label class="form-label">Enhanced DBS Issues</label>
+                  </div>
+                  <div class="col-12 mt-1">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="fetchCandidate.enhanced_dbs_issues"
+                      @input="cleanAndValidatePin('enhanced_dbs_issues')"
+                    />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="col-12">
+                    <label class="form-label">Enhanced DBS Number</label>
+                  </div>
+                  <div class="col-12 mt-1">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="fetchCandidate.enhanced_dbs_number"
+                      @input="cleanAndValidatePin('enhanced_dbs_number')"
+                    />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="col-12">
+                    <label class="form-label">Deby</label>
+                  </div>
+                  <div class="col-12 mt-1">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="fetchCandidate.deby"
+                      @input="cleanAndValidatePin('deby')"
+                    />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="col-12">
                     <label class="form-label">DBS/PVG Expiry Date</label>
                   </div>
                   <div class="col-12 mt-1">
@@ -191,6 +230,9 @@ export default {
         date_of_birth: "",
         place_of_birth: "",
         gender: "",
+        deby: null,
+        enhanced_dbs_issues: null,
+        enhanced_dbs_number: null,
       },
       employeeData: [],
     };
@@ -222,6 +264,11 @@ export default {
         /\D/g,
         ""
       );
+    },
+    cleanAndValidatePin(field) {
+      if (this.fetchCandidate[field]) {
+        this.fetchCandidate[field] = this.fetchCandidate[field].replace(/\D/g, "");
+      }
     },
 
     async getEmployeeTypeData() {
