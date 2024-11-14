@@ -81,6 +81,57 @@
                         <i class="bi bi-funnel"></i>
                         Show Filters
                       </button>
+                      <input
+                        ref="fileInput"
+                        id="fileAll"
+                        type="file"
+                        accept=".csv"
+                        style="display: none"
+                        @change="handleFileUpload"
+                      />
+
+                      <button
+                        class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
+                        type="button"
+                        id="navbarDropdown"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        Export
+
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <li>
+                            <!-- Hide the default file input -->
+                            <label
+                              for="fileAll"
+                              class="custom-file-label dropdown-item"
+                              style="border-radius: 0px; cursor: pointer"
+                              @click="triggerFileInput"
+                            >
+                              Import
+                            </label>
+                          </li>
+                          <li><hr class="dropdown-divider" /></li>
+                          <li>
+                            <a
+                              class="dropdown-item"
+                              href="#"
+                              @click="exportOneFile('selected')"
+                              >Export</a
+                            >
+                          </li>
+                          <li><hr class="dropdown-divider" /></li>
+                          <li>
+                            <a
+                              class="dropdown-item"
+                              href="#"
+                              @click="exportOneFile('all')"
+                              >Export All</a
+                            >
+                          </li>
+                        </div>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -106,19 +157,27 @@
                   <div class="d-flex gap-2">
                     <div></div>
 
-                    <select v-model="business_unit_value" id="selectBusinessUnit">
+                    <select
+                      v-model="selectedSiteName"
+                      id="selectBusinessUnit"
+                      @change="filterData"
+                    >
                       <option value="">All Site</option>
                       <option
                         v-for="option in businessUnit"
                         :key="option.id"
-                        :value="option.name"
+                        :value="option.site_name"
                         placeholder="Select BusinessUnit"
                       >
                         {{ option.site_name }}
                       </option>
                     </select>
 
-                    <select v-model="selectedCandidate" id="selectCandidateList">
+                    <select
+                      v-model="selectedCandidate"
+                      id="selectCandidateList"
+                      @change="filterData"
+                    >
                       <option value="">All Staff</option>
                       <option
                         v-for="option in candidateLists"
@@ -128,6 +187,14 @@
                         {{ option.first_name }} {{ option.last_name }}
                       </option>
                     </select>
+                    <input
+                      class="form-control"
+                      type="search"
+                      placeholder="Search CustomTimesheet..."
+                      aria-label="Search"
+                      v-model="localSearchQuery"
+                      @input="filterData"
+                    />
                   </div>
                 </div>
                 <div class="tab-content mt-4" id="pills-tabContent" v-if="!searchQuery">
@@ -172,13 +239,14 @@
                         <tbody v-if="paginateCandidates?.length > 0">
                           <tr v-for="data in paginateCandidates" :key="data.id">
                             <td>
-                              <div class="form-check">
-                                <input
-                                  class="form-check-input"
-                                  type="checkbox"
-                                  value=""
-                                />
-                              </div>
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                :value="data.id"
+                                :id="data.id"
+                                v-model="checkedSites[data.id]"
+                                @change="handleCheckboxChange(data.id)"
+                              />
                             </td>
                             <!-- <td scope="col">{{ data.id }}</td> -->
                             <td scope="col">{{ data.code }}</td>
@@ -314,7 +382,7 @@
                       <table class="table candidateTable">
                         <thead>
                           <tr>
-                            <th>
+                            <!-- <th>
                               <div class="form-check">
                                 <input
                                   class="form-check-input"
@@ -322,7 +390,7 @@
                                   value=""
                                 />
                               </div>
-                            </th>
+                            </th> -->
                             <!-- <th scope="col">ID</th> -->
                             <th scope="col">Ref Code</th>
                             <th scope="col" style="width: 153px">Staff</th>
@@ -344,15 +412,16 @@
                         </thead>
                         <tbody v-if="paginateSearchResults?.length > 0">
                           <tr v-for="data in paginateSearchResults" :key="data.id">
-                            <td>
-                              <div class="form-check">
-                                <input
-                                  class="form-check-input"
-                                  type="checkbox"
-                                  value=""
-                                />
-                              </div>
-                            </td>
+                            <!-- <td>
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                :value="data.id"
+                                :id="data.id"
+                                v-model="checkedSites[data.id]"
+                                @change="handleCheckboxChange(data.id)"
+                              />
+                            </td> -->
                             <!-- <td scope="col">{{ data.id }}</td> -->
                             <td scope="col">{{ data.code }}</td>
                             <td scope="col">
@@ -565,9 +634,9 @@ import axios from "axios";
 import Navbar from "../Navbar.vue";
 import CustomeTimeSheetEdit from "../modals/TimeSheet/CustomeTimeSheetEdit.vue";
 import Loader from "../Loader/Loader.vue";
-
+import { reactive } from "vue";
 import PaperTimeSheetViewVue from "../modals/TimeSheet/PaperTimeSheetView.vue";
-
+import Swal from "sweetalert2";
 const axiosInstance = axios.create({
   headers: {
     "Cache-Control": "no-cache",
@@ -599,11 +668,21 @@ export default {
       site_id: "",
       businessUnit: [],
       candidateLists: [],
+      checkedSites: reactive({}),
+      custom_sheet_ids: [],
       id: "",
       selectedCandidate: "",
-      business_unit_value: "",
+      selectedSiteName: "",
+      localSearchQuery: this.searchQuery,
       isLoading: false,
     };
+  },
+  created() {
+    this.custom_sheet_ids = this.getCustomTimeSheet.map((data) => data.id);
+
+    this.getCustomTimeSheet.forEach((data) => {
+      this.$set(this.checkedSites, data.id, false);
+    });
   },
   components: { Navbar, CustomeTimeSheetEdit, Loader, PaperTimeSheetViewVue },
   computed: {
@@ -661,21 +740,21 @@ export default {
       return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
     },
   },
-  watch: {
-    selectedCandidate(newValue) {
-      if (newValue !== "") {
-        this.makeFilterAPICall("candidate", newValue);
-      } else {
-      }
-    },
+  // watch: {
+  //   selectedCandidate(newValue) {
+  //     if (newValue !== "") {
+  //       this.makeFilterAPICall("candidate", newValue);
+  //     } else {
+  //     }
+  //   },
 
-    business_unit_value(newValue) {
-      if (newValue !== "") {
-        this.makeFilterAPICall("business_unit", newValue);
-      } else {
-      }
-    },
-  },
+  //   selectedSiteName(newValue) {
+  //     if (newValue !== "") {
+  //       this.makeFilterAPICall("business_unit", newValue);
+  //     } else {
+  //     }
+  //   },
+  // },
 
   methods: {
     async ApproveMethod(id) {
@@ -737,15 +816,31 @@ export default {
       }
     },
     async getCandidateListMethod() {
+      const pagesToFetch = [1, 2, 3];
+      let allStaffData = [];
+
       try {
-        const response = await axios.get(`${VITE_API_URL}/candidates`);
-        this.candidateLists = response.data.data;
-        this.candidateStatus = response.data.data.status;
+        const responses = await Promise.all(
+          pagesToFetch.map((page) =>
+            axios.get(`${VITE_API_URL}/candidates`, {
+              params: {
+                page: page,
+              },
+            })
+          )
+        );
+
+        responses.forEach((response) => {
+          allStaffData = allStaffData.concat(response.data.data);
+        });
+
+        this.candidateLists = allStaffData;
       } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
+        if (error.response && error.response.status === 404) {
+          // Handle 404 error
+          // console.error('Error fetching client data:', error.response.data.message);
+        } else {
+          // console.error('Error fetching client data:', error);
         }
       }
     },
@@ -799,49 +894,194 @@ export default {
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
-
-    filterData() {
-      let filterType = "";
-      let filterValue = "";
-
-      if (this.business_unit_value !== "") {
-        filterType = "business_unit";
-        filterValue = this.business_unit_value;
-      } else if (this.selectedCandidate !== "") {
-        filterType = "candidate";
-        filterValue = this.selectedCandidate;
-      }
-
-      this.makeFilterAPICall(filterType, filterValue);
-    },
-    async makeFilterAPICall(filterType, filterValue) {
-      const token = localStorage.getItem("token");
-      try {
-        const response = await axios.get(`${VITE_API_URL}/filter_custom_timesheet`, {
-          params: {
-            filter_type: filterType,
-            filter_value: filterValue,
-          },
-          headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        this.getCustomTimeSheet = response.data.custom_timesheets;
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
-          const errorMessages = error.response.data.error;
-          if (errorMessages === "No records found for the given filter") {
-            errorMessages === "No records found for the given filter";
-            // alert("No records found for the given filter");
-          } else {
-            alert(errorMessages);
-          }
-        } else {
-          // Handle other errors
-          // console.error("Error filtering custom timesheets:", error);
+    handleCheckboxChange(dataId) {
+      if (this.checkedSites[dataId]) {
+        this.custom_sheet_ids.push(dataId);
+      } else {
+        const index = this.custom_sheet_ids.indexOf(dataId);
+        if (index !== -1) {
+          this.custom_sheet_ids.splice(index, 1);
         }
       }
+    },
+    async filterData() {
+      const params = {
+        page: 1,
+      };
+
+      if (this.selectedSiteName) {
+        params["custom_timesheet[site]"] = this.selectedSiteName;
+      }
+
+      if (this.selectedCandidate) {
+        params["custom_timesheet[name]"] = this.selectedCandidate;
+      }
+      if (this.localSearchQuery) {
+        params.search = this.localSearchQuery;
+      }
+
+      try {
+        const response = await axios.get(`${VITE_API_URL}/filter_custom_timesheet`, {
+          params,
+        });
+        this.getCustomTimeSheet = response.data.custom_timesheets || [];
+      } catch (error) {
+        // console.error("Error fetching filtered data:", error);
+      }
+    },
+    triggerFileInput() {
+      this.$refs.fileInput.click();
+    },
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const isValidFileType = file.type === "text/csv";
+      if (!isValidFileType) {
+        Swal.fire({
+          icon: "warning",
+          title: "No File Selected",
+          text: "Please select a CSV file.",
+          confirmButtonText: "OK",
+        });
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", file);
+      axios
+        .post(`${VITE_API_URL}/filter_custom_timesheet`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          const message = "Import Successfully";
+          this.$refs.successAlert.showSuccess(message);
+          this.ImportCSV(response.data, file.name);
+        })
+        .catch((error) => {
+          // Handle error
+          // console.log(error);
+        });
+    },
+    exportOneFile(exportType) {
+      let queryParams = {
+        format: "csv",
+      };
+
+      if (this.selectedSiteName) {
+        queryParams["custom_timesheet[site]"] = this.selectedSiteName;
+      }
+
+      if (this.selectedCandidate) {
+        queryParams["custom_timesheet[name]"] = this.selectedCandidate;
+      }
+      if (this.localSearchQuery) {
+        queryParams.search = this.localSearchQuery;
+      }
+
+      if (exportType === "all") {
+        queryParams.custom_sheet_ids = [];
+      } else {
+        if (!this.custom_sheet_ids || this.custom_sheet_ids.length === 0) {
+          // alert("Please select at least one Site.");
+          Swal.fire({
+            icon: "warning",
+            title: "No File Selected",
+            text: "Please select at least one Site.",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+        if (this.custom_sheet_ids.length > 0) {
+          queryParams.custom_sheet_ids = this.custom_sheet_ids;
+        } else {
+          queryParams.custom_sheet_ids = [];
+        }
+      }
+      // const filterName = this.getFilterName(this.selectedFilter);
+      // const filename = `${filterName}_Sites.csv`;
+      return axios
+        .get(`${VITE_API_URL}/filter_custom_timesheet`, {
+          params: queryParams,
+          headers: {
+            Accept: "text/csv",
+          },
+          responseType: "blob",
+        })
+        .then((response) => {
+          this.blobToText(response.data)
+            .then((csvData) => {
+              const filename = "CustomTimesheetData.csv";
+              this.downloadOneCSV(csvData, filename);
+              const message = "Export file downloaded successfully";
+              this.$refs.successAlert.showSuccess(message);
+              this.custom_sheet_ids = [];
+              for (let key in this.checkedSites) {
+                this.checkedSites[key] = false;
+              }
+            })
+            .catch((error) => {});
+        })
+        .catch((error) => {})
+        .finally(() => {
+          this.custom_sheet_ids = [];
+        });
+    },
+    blobToText(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          resolve(reader.result);
+        };
+        reader.onerror = reject;
+        reader.readAsText(blob);
+      });
+    },
+
+    combineCsvData(csvDataArray) {
+      let combinedCsvData = "";
+      csvDataArray.forEach((csvData, index) => {
+        if (index > 0) {
+          const lines = csvData.split("\n");
+          lines.shift();
+          csvData = lines.join("\n");
+        }
+
+        combinedCsvData += csvData;
+        if (index < csvDataArray.length - 1) {
+          combinedCsvData += "\n";
+        }
+      });
+      return combinedCsvData;
+    },
+    downloadOneCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv" });
+
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+
+      document.body.appendChild(a);
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    },
+
+    ImportCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
     },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
