@@ -17,7 +17,7 @@
 
           <div class="d-flex align-items-center gap-2">
             <div>
-              <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
+              <!-- <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
                 <input
                   class="form-control mr-sm-2"
                   type="search"
@@ -26,7 +26,7 @@
                   v-model="searchQuery"
                   @input="debounceSearch"
                 />
-              </form>
+              </form> -->
             </div>
             <button
               type="button"
@@ -303,50 +303,49 @@
                               overflow-x: hidden;
                             "
                           >
-                            <div v-for="(data, index) in vacancyList" :key="index">
-                              <div
-                                v-for="day in selectedDateRow"
-                                :key="day"
-                                class="text-center"
+                            <div
+                              v-for="day in selectedDateRow"
+                              :key="day"
+                              class="text-center"
+                            >
+                              <ul
+                                class="list-unstyled mb-0"
+                                v-if="
+                                  vacancyList.some(
+                                    (data) => data.day === formattedDate(day)
+                                  )
+                                "
                               >
-                                <ul
-                                  class="list-unstyled mb-0"
-                                  v-if="data.day === formattedDate(day)"
+                                <li
+                                  class="position-relative"
+                                  v-for="(vacancy, liIndex) in vacancyList.find(
+                                    (data) => data.day === formattedDate(day)
+                                  )?.vacancies || []"
+                                  :key="vacancy.id"
+                                  :draggable="true"
+                                  @dragstart="handleDragStart(vacancy)"
+                                  @drop="handleRevertDrop(vacancy.id, $event)"
+                                  @dragover.prevent="handleDragOver"
+                                  :class="{
+                                    'bg-info': liIndex === 0,
+                                    'bg-warning': liIndex === 1,
+                                    'bg-success': liIndex === 2,
+                                    'bg-primary': liIndex >= 3,
+                                  }"
                                 >
-                                  <li
-                                    class="position-relative"
-                                    v-for="(vacancy, liIndex) in data.vacancies"
-                                    :key="vacancy.id"
-                                    :draggable="true"
-                                    @dragstart="handleDragStart(vacancy)"
-                                    @drop="handleRevertDrop(vacancy.id, $event)"
-                                    @dragover.prevent="handleDragOver"
-                                    :class="{
-                                      'bg-info': liIndex === 0,
-                                      'bg-warning': liIndex === 1,
-                                      'bg-success': liIndex === 2,
-                                      'bg-primary': liIndex >= 3,
-                                    }"
-                                  >
-                                    <span class="d-flex flex-column align-items-baseline">
-                                      <span class="text-capitalize"
-                                        >{{ vacancy.site }},{{ vacancy.job_title }}</span
-                                      >
-
-                                      <!-- <span class="">{{
-                                    extractTimeRange(vacancy.site_shift)
-                                  }}</span> -->
-                                      <span class="">{{
-                                        vacancy.site_shift.replace(/_/g, " ")
-                                      }}</span>
-                                    </span>
-                                    <span class="staff-count-round text-white">{{
-                                      vacancy.staff_required
+                                  <span class="d-flex flex-column align-items-baseline">
+                                    <span class="text-capitalize"
+                                      >{{ vacancy.site }}, {{ vacancy.job_title }}</span
+                                    >
+                                    <span>{{
+                                      vacancy.site_shift.replace(/_/g, " ")
                                     }}</span>
-                                  </li>
-                                  <!-- <li>business_unit</li> -->
-                                </ul>
-                              </div>
+                                  </span>
+                                  <span class="staff-count-round text-white">{{
+                                    vacancy.staff_required
+                                  }}</span>
+                                </li>
+                              </ul>
                             </div>
                           </div>
                         </td>
@@ -542,7 +541,10 @@
                               >
                                 <ul
                                   class="list-unstyled mb-0"
-                                  v-if="data.day === formattedDate(day)"
+                                  v-if="
+                                    isTodayOrGreaterThanToday(day) &&
+                                    isVacancyForToday(data.day, day)
+                                  "
                                 >
                                   <li
                                     class="position-relative"
@@ -952,6 +954,17 @@ export default {
     },
   },
   methods: {
+    isTodayOrGreaterThanToday(day) {
+      const today = new Date(); // Get today's date
+      const formattedToday = this.formattedDate(today);
+      const formattedDay = this.formattedDate(day);
+      return formattedDay >= formattedToday; // Compare the formatted day to today
+    },
+
+    // Method to check if a vacancy day is today or greater
+    isVacancyForToday(dataDay, selectedDay) {
+      return this.formattedDate(dataDay) === this.formattedDate(selectedDay);
+    },
     handleShiftPublishStaffList() {
       this.$refs.shiftPublishStaff.getPublishStaffListMethod();
     },
