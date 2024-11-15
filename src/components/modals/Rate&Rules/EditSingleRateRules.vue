@@ -151,7 +151,6 @@
                             {{ formatTime(hour) }}
                           </option>
                         </select>
-                        <!-- {{ console.log(fetchRateRulesData.start_time) }} -->
                       </div>
 
                       <div class="col-4">
@@ -465,41 +464,6 @@ export default {
     async onSiteSelect() {
       const selectedSiteId = this.site_id;
       await this.getTimeShift(selectedSiteId);
-      const dayShift = this.getTimeShift.find(
-        (shift) => shift.shift_name.toLowerCase() === "day_shift"
-      );
-      if (dayShift) {
-        this.fetchRateRulesData.site_shift_id = dayShift.id;
-        this.fetchRateRulesData.start_time = dayShift.start_time;
-        this.fetchRateRulesData.end_time = dayShift.end_time;
-      }
-
-      const nightShift = this.getTimeShift.find(
-        (shift) => shift.shift_name.toLowerCase() === "night_shift"
-      );
-      if (nightShift) {
-        this.fetchRateRulesData.site_shift_id = nightShift.id;
-        this.fetchRateRulesData.start_time = nightShift.start_time;
-        this.fetchRateRulesData.end_time = nightShift.end_time;
-      }
-
-      const holidayDayShift = this.getTimeShift.find(
-        (shift) => shift.shift_name.toLowerCase() === "holiday_day_shift"
-      );
-      if (holidayDayShift) {
-        this.fetchRateRulesData.site_shift_id = holidayDayShift.id;
-        this.fetchRateRulesData.start_time = holidayDayShift.start_time;
-        this.fetchRateRulesData.end_time = holidayDayShift.end_time;
-      }
-
-      const holidayNightShift = this.getTimeShift.find(
-        (shift) => shift.shift_name.toLowerCase() === "holiday_night_shift"
-      );
-      if (holidayNightShift) {
-        this.fetchRateRulesData.site_shift_id = holidayNightShift.id;
-        this.fetchRateRulesData.start_time = holidayNightShift.start_time;
-        this.fetchRateRulesData.end_time = holidayNightShift.end_time;
-      }
     },
     onShiftSelect() {
       const selectedShift = this.filteredShiftsTime.find(
@@ -566,8 +530,8 @@ export default {
             client_rate: rateAndRules.client_rate,
             self_employed: rateAndRules.self_employed,
             private_limited: rateAndRules.private_limited,
-            start_time: this.formatFrom24HourTo12Hour(rateAndRules.start_time),
-            end_time: this.formatFrom24HourTo12Hour(rateAndRules.end_time),
+            start_time: rateAndRules.start_time,
+            end_time: rateAndRules.end_time,
             paye: rateAndRules.paye,
             umbrella: rateAndRules.umbrella,
             site_id: rateAndRules.site_id,
@@ -606,8 +570,8 @@ export default {
             night_shift_id: this.fetchRateRulesData.night_shift_id,
             site_shift_id: this.fetchRateRulesData.site_shift_id,
             rate_type: this.fetchRateRulesData.rate_type,
-            start_time: this.convertTo24Hour(this.fetchRateRulesData.start_time),
-            end_time: this.convertTo24Hour(this.fetchRateRulesData.end_time),
+            start_time: this.fetchRateRulesData.start_time,
+            end_time: this.fetchRateRulesData.end_time,
             client_rate: this.fetchRateRulesData.client_rate,
             self_employed: this.fetchRateRulesData.self_employed,
             private_limited: this.fetchRateRulesData.private_limited,

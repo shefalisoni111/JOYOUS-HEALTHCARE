@@ -514,19 +514,6 @@
                       </div>
                     </div>
                   </div>
-                </div>
-                <div
-                  class="mt-2"
-                  style="
-                    background-color: rgb(203 203 203);
-                    padding: 10px;
-                    border-radius: 3px;
-                  "
-                >
-                  <h5 class="fw-bold text-capitalize">
-                    {{ ratesArray[2].day }}
-                  </h5>
-
                   <div class="mb-3 d-flex justify-content-between gap-1 me-3">
                     <div class="col-3 d-flex gap-2">
                       <div class="col-4">
@@ -919,6 +906,7 @@
                     </div>
                   </div>
                 </div>
+
                 <div
                   class="mt-2"
                   style="
@@ -1322,19 +1310,6 @@
                       </div>
                     </div>
                   </div>
-                </div>
-                <div
-                  class="mt-2"
-                  style="
-                    background-color: rgb(203 203 203);
-                    padding: 10px;
-                    border-radius: 3px;
-                  "
-                >
-                  <h5 class="fw-bold text-capitalize">
-                    {{ ratesArray[6].day }}
-                  </h5>
-
                   <div class="mb-3 d-flex justify-content-between gap-1 me-3">
                     <div class="col-3 d-flex gap-2">
                       <div class="col-4">
@@ -1726,6 +1701,7 @@
                     </div>
                   </div>
                 </div>
+
                 <div
                   class="mt-2"
                   style="
@@ -2063,19 +2039,6 @@
                       </div>
                     </div>
                   </div>
-                </div>
-                <div
-                  class="mt-2"
-                  style="
-                    background-color: rgb(203 203 203);
-                    padding: 10px;
-                    border-radius: 3px;
-                  "
-                >
-                  <h5 class="fw-bold text-capitalize">
-                    {{ ratesArray[10].day }}
-                  </h5>
-
                   <div class="mb-3 d-flex justify-content-between gap-1 me-3">
                     <div class="col-3 d-flex gap-2">
                       <div class="col-4">
@@ -2428,6 +2391,7 @@
                     </div>
                   </div>
                 </div>
+
                 <div
                   class="mt-2"
                   style="
@@ -2786,6 +2750,2197 @@
                           v-model="ratesArray[13].paye"
                           :disabled="ratesArray[13].holiday_split_rate"
                           @input="handleInput(`paye`, 13, ratesArray[13].paye)"
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                    <div class="col-3 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Shift</label>
+                        <input
+                          type="text"
+                          v-model="ratesArray[14].shift_type"
+                          :disabled="true"
+                          style="
+                            width: 100%;
+                            padding: 10px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: none;
+                            background: #e9ecef;
+                            color: black;
+                          "
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftStart"
+                          >Start Time</label
+                        >
+
+                        <select
+                          id="selectShiftStart"
+                          class="form-select w-25"
+                          v-model="ratesArray[14].start_time"
+                          :disabled="true"
+                          @change="updateStartTime"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftEnd">End Time</label>
+
+                        <select
+                          id="selectShiftEnd"
+                          class="form-select w-25"
+                          v-model="ratesArray[14].end_time"
+                          :disabled="true"
+                          @change="updateEndTime"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Rate Type</label>
+
+                        <select
+                          v-model="ratesArray[14].rate_type"
+                          :disabled="ratesArray[14].holiday_split_rate"
+                          class="form-select w-25"
+                        >
+                          <option value="Hourly">Hourly</option>
+                          <option value="Monthly">Monthly</option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Client Rate</label>
+
+                        <!-- <select
+                          class="form-select w-25"
+                          v-model="ratesArray[14].client_rate"
+                          :disabled="ratesArray[14].holiday_split_rate"
+                        >
+                          <option>1</option>
+                          <option>5</option>
+                          <option>10</option>
+                          <option>15</option>
+                          <option>20</option>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[14].client_rate"
+                          :disabled="ratesArray[14].holiday_split_rate"
+                          @input="
+                            handleInput(`clientRate`, 14, ratesArray[14].client_rate)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Private Limited</label>
+
+                        <!-- <select
+                          class="form-select w-25"
+                          v-model="ratesArray[14].private_limited"
+                          :disabled="ratesArray[14].holiday_split_rate"
+                        >
+                          <option>1</option>
+                          <option>5</option>
+                          <option>10</option>
+                          <option>15</option>
+                          <option>20</option>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[14].private_limited"
+                          :disabled="ratesArray[14].holiday_split_rate"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              14,
+                              ratesArray[14].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Self Employed</label>
+
+                        <!-- <select
+                          v-model="ratesArray[14].self_employed"
+                          :disabled="ratesArray[14].holiday_split_rate"
+                          class="form-select w-25"
+                        >
+                          <option>1</option>
+                          <option>5</option>
+                          <option>10</option>
+                          <option>15</option>
+                          <option>20</option>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[14].self_employed"
+                          :disabled="ratesArray[14].holiday_split_rate"
+                          @input="
+                            handleInput(`selfEmployee`, 14, ratesArray[14].self_employed)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Umbrella</label>
+                        <!-- <select
+                          class="form-select w-25"
+                          v-model="ratesArray[14].umbrella"
+                          :disabled="ratesArray[14].holiday_split_rate"
+                        >
+                          <option>1</option>
+                          <option>5</option>
+                          <option>10</option>
+                          <option>15</option>
+                          <option>20</option>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[14].umbrella"
+                          :disabled="ratesArray[14].holiday_split_rate"
+                          @input="handleInput(`umbrella`, 14, ratesArray[14].umbrella)"
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">PAYE</label>
+                        <!-- <select
+                          class="form-select w-25"
+                          v-model="ratesArray[14].paye"
+                          :disabled="ratesArray[14].holiday_split_rate"
+                        >
+                          <option>1</option>
+                          <option>5</option>
+                          <option>10</option>
+                          <option>15</option>
+                          <option>20</option>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[14].paye"
+                          :disabled="ratesArray[14].holiday_split_rate"
+                          @input="handleInput(`paye`, 14, ratesArray[14].paye)"
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                    <div class="col-3 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Shift</label>
+                        <input
+                          type="text"
+                          v-model="ratesArray[15].shift_type"
+                          :disabled="true"
+                          style="
+                            width: 100%;
+                            padding: 10px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: none;
+                            background: #e9ecef;
+                            color: black;
+                          "
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftStart"
+                          >Start Time</label
+                        >
+
+                        <select
+                          id="selectShiftStart"
+                          class="form-select w-25"
+                          v-model="ratesArray[15].start_time"
+                          :disabled="true"
+                          @change="updateStartTime"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftEnd">End Time</label>
+
+                        <select
+                          id="selectShiftEnd"
+                          class="form-select w-25"
+                          v-model="ratesArray[15].end_time"
+                          :disabled="true"
+                          @change="updateEndTime"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Rate Type</label>
+
+                        <select
+                          v-model="ratesArray[15].rate_type"
+                          :disabled="ratesArray[15].holiday_split_rate"
+                          class="form-select w-25"
+                        >
+                          <option value="Hourly">Hourly</option>
+                          <option value="Monthly">Monthly</option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Client Rate</label>
+
+                        <!-- <select
+                          class="form-select w-25"
+                          v-model="ratesArray[15].client_rate"
+                          :disabled="ratesArray[15].holiday_split_rate"
+                        >
+                          <option>1</option>
+                          <option>5</option>
+                          <option>10</option>
+                          <option>15</option>
+                          <option>20</option>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[15].client_rate"
+                          :disabled="ratesArray[15].holiday_split_rate"
+                          @input="
+                            handleInput(`clientRate`, 15, ratesArray[15].client_rate)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Private Limited</label>
+
+                        <!-- <select
+                          class="form-select w-25"
+                          v-model="ratesArray[15].private_limited"
+                          :disabled="ratesArray[15].holiday_split_rate"
+                        >
+                          <option>1</option>
+                          <option>5</option>
+                          <option>10</option>
+                          <option>15</option>
+                          <option>20</option>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[15].private_limited"
+                          :disabled="ratesArray[15].holiday_split_rate"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              15,
+                              ratesArray[15].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Self Employed</label>
+
+                        <!-- <select
+                          v-model="ratesArray[15].self_employed"
+                          :disabled="ratesArray[15].holiday_split_rate"
+                          class="form-select w-25"
+                        >
+                          <option>1</option>
+                          <option>5</option>
+                          <option>10</option>
+                          <option>15</option>
+                          <option>20</option>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[15].self_employed"
+                          :disabled="ratesArray[15].holiday_split_rate"
+                          @input="
+                            handleInput(`selfEmployee`, 15, ratesArray[15].self_employed)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Umbrella</label>
+                        <!-- <select
+                          class="form-select w-25"
+                          v-model="ratesArray[15].umbrella"
+                          :disabled="ratesArray[15].holiday_split_rate"
+                        >
+                          <option>1</option>
+                          <option>5</option>
+                          <option>10</option>
+                          <option>15</option>
+                          <option>20</option>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[15].umbrella"
+                          :disabled="ratesArray[15].holiday_split_rate"
+                          @input="handleInput(`umbrella`, 15, ratesArray[15].umbrella)"
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">PAYE</label>
+                        <!-- <select
+                          class="form-select w-25"
+                          v-model="ratesArray[15].paye"
+                          :disabled="ratesArray[15].holiday_split_rate"
+                        >
+                          <option>1</option>
+                          <option>5</option>
+                          <option>10</option>
+                          <option>15</option>
+                          <option>20</option>
+                        </select> -->
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[15].paye"
+                          :disabled="ratesArray[15].holiday_split_rate"
+                          @input="handleInput(`paye`, 15, ratesArray[15].paye)"
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="mt-2"
+                  style="
+                    background-color: rgb(203 203 203);
+                    padding: 10px;
+                    border-radius: 3px;
+                  "
+                >
+                  <h5 class="fw-bold text-capitalize">
+                    {{ ratesArray[16].day }}
+                  </h5>
+
+                  <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                    <div class="col-3 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Shift</label>
+                        <input
+                          type="text"
+                          v-model="ratesArray[16].shift_type"
+                          :disabled="true"
+                          style="
+                            width: 100%;
+                            padding: 10px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: none;
+                            background: #e9ecef;
+                            color: black;
+                          "
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftStart"
+                          >Start Time</label
+                        >
+
+                        <select
+                          id="selectShiftStart"
+                          class="form-select w-25"
+                          v-model="ratesArray[16].start_time"
+                          @change="updateStartTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftEnd">End Time</label>
+
+                        <select
+                          id="selectShiftEnd"
+                          class="form-select w-25"
+                          v-model="ratesArray[16].end_time"
+                          @change="updateEndTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Rate Type</label>
+
+                        <select
+                          v-model="ratesArray[16].rate_type"
+                          class="form-select w-25"
+                        >
+                          <option value="Hourly">Hourly</option>
+                          <option value="Monthly">Monthly</option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Client Rate</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[16].client_rate"
+                          @input="
+                            handleInput(`clientRate`, 12, ratesArray[16].client_rate)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Private Limited</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[16].private_limited"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              12,
+                              ratesArray[16].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Self Employed</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[16].self_employed"
+                          @input="
+                            handleInput(`selfEmployee`, 16, ratesArray[16].self_employed)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Umbrella</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[16].umbrella"
+                          @input="handleInput(`umbrella`, 16, ratesArray[16].umbrella)"
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">PAYE</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[16].paye"
+                          @input="handleInput(`paye`, 16, ratesArray[16].paye)"
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                    <div class="col-3 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Shift</label>
+                        <input
+                          type="text"
+                          v-model="ratesArray[17].shift_type"
+                          :disabled="true"
+                          style="
+                            width: 100%;
+                            padding: 10px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: none;
+                            background: #e9ecef;
+                            color: black;
+                          "
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftStart"
+                          >Start Time</label
+                        >
+
+                        <select
+                          id="selectShiftStart"
+                          class="form-select w-25"
+                          v-model="ratesArray[17].start_time"
+                          @change="updateStartTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftEnd">End Time</label>
+
+                        <select
+                          id="selectShiftEnd"
+                          class="form-select w-25"
+                          v-model="ratesArray[17].end_time"
+                          @change="updateEndTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Rate Type</label>
+
+                        <select
+                          v-model="ratesArray[17].rate_type"
+                          class="form-select w-25"
+                        >
+                          <option value="Hourly">Hourly</option>
+                          <option value="Monthly">Monthly</option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Client Rate</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[17].client_rate"
+                          @input="
+                            handleInput(`clientRate`, 17, ratesArray[17].client_rate)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Private Limited</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[17].private_limited"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              12,
+                              ratesArray[17].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Self Employed</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[17].self_employed"
+                          @input="
+                            handleInput(`selfEmployee`, 17, ratesArray[17].self_employed)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Umbrella</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[17].umbrella"
+                          @input="handleInput(`umbrella`, 17, ratesArray[17].umbrella)"
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">PAYE</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[17].paye"
+                          @input="handleInput(`paye`, 17, ratesArray[17].paye)"
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                    <div class="col-3 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Shift</label>
+                        <input
+                          type="text"
+                          v-model="ratesArray[18].shift_type"
+                          :disabled="true"
+                          style="
+                            width: 100%;
+                            padding: 10px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: none;
+                            background: #e9ecef;
+                            color: black;
+                          "
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftStart"
+                          >Start Time</label
+                        >
+
+                        <select
+                          id="selectShiftStart"
+                          class="form-select w-25"
+                          v-model="ratesArray[18].start_time"
+                          @change="updateStartTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftEnd">End Time</label>
+
+                        <select
+                          id="selectShiftEnd"
+                          class="form-select w-25"
+                          v-model="ratesArray[18].end_time"
+                          @change="updateEndTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Rate Type</label>
+
+                        <select
+                          v-model="ratesArray[18].rate_type"
+                          class="form-select w-25"
+                        >
+                          <option value="Hourly">Hourly</option>
+                          <option value="Monthly">Monthly</option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Client Rate</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[18].client_rate"
+                          @input="
+                            handleInput(`clientRate`, 18, ratesArray[18].client_rate)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Private Limited</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[18].private_limited"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              12,
+                              ratesArray[18].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Self Employed</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[18].self_employed"
+                          @input="
+                            handleInput(`selfEmployee`, 18, ratesArray[18].self_employed)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Umbrella</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[18].umbrella"
+                          @input="handleInput(`umbrella`, 18, ratesArray[18].umbrella)"
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">PAYE</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[18].paye"
+                          @input="handleInput(`paye`, 18, ratesArray[18].paye)"
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                    <div class="col-3 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Shift</label>
+                        <input
+                          type="text"
+                          v-model="ratesArray[19].shift_type"
+                          :disabled="true"
+                          style="
+                            width: 100%;
+                            padding: 10px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: none;
+                            background: #e9ecef;
+                            color: black;
+                          "
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftStart"
+                          >Start Time</label
+                        >
+
+                        <select
+                          id="selectShiftStart"
+                          class="form-select w-25"
+                          v-model="ratesArray[19].start_time"
+                          @change="updateStartTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftEnd">End Time</label>
+
+                        <select
+                          id="selectShiftEnd"
+                          class="form-select w-25"
+                          v-model="ratesArray[19].end_time"
+                          @change="updateEndTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Rate Type</label>
+
+                        <select
+                          v-model="ratesArray[19].rate_type"
+                          class="form-select w-25"
+                        >
+                          <option value="Hourly">Hourly</option>
+                          <option value="Monthly">Monthly</option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Client Rate</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[19].client_rate"
+                          @input="
+                            handleInput(`clientRate`, 19, ratesArray[19].client_rate)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Private Limited</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[19].private_limited"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              12,
+                              ratesArray[19].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Self Employed</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[19].self_employed"
+                          @input="
+                            handleInput(`selfEmployee`, 19, ratesArray[19].self_employed)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Umbrella</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[19].umbrella"
+                          @input="handleInput(`umbrella`, 19, ratesArray[19].umbrella)"
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">PAYE</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[19].paye"
+                          @input="handleInput(`paye`, 19, ratesArray[19].paye)"
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="mt-2"
+                  style="
+                    background-color: rgb(203 203 203);
+                    padding: 10px;
+                    border-radius: 3px;
+                  "
+                >
+                  <h5 class="fw-bold text-capitalize">
+                    {{ ratesArray[20].day }}
+                  </h5>
+
+                  <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                    <div class="col-3 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Shift</label>
+                        <input
+                          type="text"
+                          v-model="ratesArray[20].shift_type"
+                          :disabled="true"
+                          style="
+                            width: 100%;
+                            padding: 10px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: none;
+                            background: #e9ecef;
+                            color: black;
+                          "
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftStart"
+                          >Start Time</label
+                        >
+
+                        <select
+                          id="selectShiftStart"
+                          class="form-select w-25"
+                          v-model="ratesArray[20].start_time"
+                          @change="updateStartTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftEnd">End Time</label>
+
+                        <select
+                          id="selectShiftEnd"
+                          class="form-select w-25"
+                          v-model="ratesArray[20].end_time"
+                          @change="updateEndTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Rate Type</label>
+
+                        <select
+                          v-model="ratesArray[20].rate_type"
+                          class="form-select w-25"
+                        >
+                          <option value="Hourly">Hourly</option>
+                          <option value="Monthly">Monthly</option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Client Rate</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[20].client_rate"
+                          @input="
+                            handleInput(`clientRate`, 20, ratesArray[20].client_rate)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Private Limited</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[20].private_limited"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              12,
+                              ratesArray[20].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Self Employed</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[20].self_employed"
+                          @input="
+                            handleInput(`selfEmployee`, 20, ratesArray[20].self_employed)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Umbrella</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[20].umbrella"
+                          @input="handleInput(`umbrella`, 20, ratesArray[20].umbrella)"
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">PAYE</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[20].paye"
+                          @input="handleInput(`paye`, 20, ratesArray[20].paye)"
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                    <div class="col-3 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Shift</label>
+                        <input
+                          type="text"
+                          v-model="ratesArray[21].shift_type"
+                          :disabled="true"
+                          style="
+                            width: 100%;
+                            padding: 10px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: none;
+                            background: #e9ecef;
+                            color: black;
+                          "
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftStart"
+                          >Start Time</label
+                        >
+
+                        <select
+                          id="selectShiftStart"
+                          class="form-select w-25"
+                          v-model="ratesArray[21].start_time"
+                          @change="updateStartTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftEnd">End Time</label>
+
+                        <select
+                          id="selectShiftEnd"
+                          class="form-select w-25"
+                          v-model="ratesArray[21].end_time"
+                          @change="updateEndTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Rate Type</label>
+
+                        <select
+                          v-model="ratesArray[21].rate_type"
+                          class="form-select w-25"
+                        >
+                          <option value="Hourly">Hourly</option>
+                          <option value="Monthly">Monthly</option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Client Rate</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[21].client_rate"
+                          @input="
+                            handleInput(`clientRate`, 21, ratesArray[21].client_rate)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Private Limited</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[21].private_limited"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              12,
+                              ratesArray[21].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Self Employed</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[21].self_employed"
+                          @input="
+                            handleInput(`selfEmployee`, 21, ratesArray[21].self_employed)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Umbrella</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[21].umbrella"
+                          @input="handleInput(`umbrella`, 21, ratesArray[21].umbrella)"
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">PAYE</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[21].paye"
+                          @input="handleInput(`paye`, 21, ratesArray[21].paye)"
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                    <div class="col-3 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Shift</label>
+                        <input
+                          type="text"
+                          v-model="ratesArray[22].shift_type"
+                          :disabled="true"
+                          style="
+                            width: 100%;
+                            padding: 10px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: none;
+                            background: #e9ecef;
+                            color: black;
+                          "
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftStart"
+                          >Start Time</label
+                        >
+
+                        <select
+                          id="selectShiftStart"
+                          class="form-select w-25"
+                          v-model="ratesArray[22].start_time"
+                          @change="updateStartTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftEnd">End Time</label>
+
+                        <select
+                          id="selectShiftEnd"
+                          class="form-select w-25"
+                          v-model="ratesArray[22].end_time"
+                          @change="updateEndTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Rate Type</label>
+
+                        <select
+                          v-model="ratesArray[22].rate_type"
+                          class="form-select w-25"
+                        >
+                          <option value="Hourly">Hourly</option>
+                          <option value="Monthly">Monthly</option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Client Rate</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[22].client_rate"
+                          @input="
+                            handleInput(`clientRate`, 22, ratesArray[22].client_rate)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Private Limited</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[22].private_limited"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              12,
+                              ratesArray[22].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Self Employed</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[22].self_employed"
+                          @input="
+                            handleInput(`selfEmployee`, 22, ratesArray[22].self_employed)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Umbrella</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[22].umbrella"
+                          @input="handleInput(`umbrella`, 22, ratesArray[22].umbrella)"
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">PAYE</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[22].paye"
+                          @input="handleInput(`paye`, 22, ratesArray[22].paye)"
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                    <div class="col-3 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Shift</label>
+                        <input
+                          type="text"
+                          v-model="ratesArray[23].shift_type"
+                          :disabled="true"
+                          style="
+                            width: 100%;
+                            padding: 10px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: none;
+                            background: #e9ecef;
+                            color: black;
+                          "
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftStart"
+                          >Start Time</label
+                        >
+
+                        <select
+                          id="selectShiftStart"
+                          class="form-select w-25"
+                          v-model="ratesArray[23].start_time"
+                          @change="updateStartTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftEnd">End Time</label>
+
+                        <select
+                          id="selectShiftEnd"
+                          class="form-select w-25"
+                          v-model="ratesArray[23].end_time"
+                          @change="updateEndTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Rate Type</label>
+
+                        <select
+                          v-model="ratesArray[23].rate_type"
+                          class="form-select w-25"
+                        >
+                          <option value="Hourly">Hourly</option>
+                          <option value="Monthly">Monthly</option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Client Rate</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[23].client_rate"
+                          @input="
+                            handleInput(`clientRate`, 23, ratesArray[23].client_rate)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Private Limited</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[23].private_limited"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              12,
+                              ratesArray[23].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Self Employed</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[23].self_employed"
+                          @input="
+                            handleInput(`selfEmployee`, 23, ratesArray[23].self_employed)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Umbrella</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[23].umbrella"
+                          @input="handleInput(`umbrella`, 23, ratesArray[23].umbrella)"
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">PAYE</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[23].paye"
+                          @input="handleInput(`paye`, 23, ratesArray[23].paye)"
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="mt-2"
+                  style="
+                    background-color: rgb(203 203 203);
+                    padding: 10px;
+                    border-radius: 3px;
+                  "
+                >
+                  <h5 class="fw-bold text-capitalize">
+                    {{ ratesArray[24].day }}
+                  </h5>
+
+                  <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                    <div class="col-3 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Shift</label>
+                        <input
+                          type="text"
+                          v-model="ratesArray[24].shift_type"
+                          :disabled="true"
+                          style="
+                            width: 100%;
+                            padding: 10px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: none;
+                            background: #e9ecef;
+                            color: black;
+                          "
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftStart"
+                          >Start Time</label
+                        >
+
+                        <select
+                          id="selectShiftStart"
+                          class="form-select w-25"
+                          v-model="ratesArray[24].start_time"
+                          @change="updateStartTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftEnd">End Time</label>
+
+                        <select
+                          id="selectShiftEnd"
+                          class="form-select w-25"
+                          v-model="ratesArray[24].end_time"
+                          @change="updateEndTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Rate Type</label>
+
+                        <select
+                          v-model="ratesArray[24].rate_type"
+                          class="form-select w-25"
+                        >
+                          <option value="Hourly">Hourly</option>
+                          <option value="Monthly">Monthly</option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Client Rate</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[24].client_rate"
+                          @input="
+                            handleInput(`clientRate`, 24, ratesArray[24].client_rate)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Private Limited</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[24].private_limited"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              12,
+                              ratesArray[24].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Self Employed</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[24].self_employed"
+                          @input="
+                            handleInput(`selfEmployee`, 24, ratesArray[24].self_employed)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Umbrella</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[24].umbrella"
+                          @input="handleInput(`umbrella`, 24, ratesArray[24].umbrella)"
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">PAYE</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[24].paye"
+                          @input="handleInput(`paye`, 24, ratesArray[24].paye)"
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                    <div class="col-3 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Shift</label>
+                        <input
+                          type="text"
+                          v-model="ratesArray[25].shift_type"
+                          :disabled="true"
+                          style="
+                            width: 100%;
+                            padding: 10px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: none;
+                            background: #e9ecef;
+                            color: black;
+                          "
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftStart"
+                          >Start Time</label
+                        >
+
+                        <select
+                          id="selectShiftStart"
+                          class="form-select w-25"
+                          v-model="ratesArray[25].start_time"
+                          @change="updateStartTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftEnd">End Time</label>
+
+                        <select
+                          id="selectShiftEnd"
+                          class="form-select w-25"
+                          v-model="ratesArray[25].end_time"
+                          @change="updateEndTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Rate Type</label>
+
+                        <select
+                          v-model="ratesArray[25].rate_type"
+                          class="form-select w-25"
+                        >
+                          <option value="Hourly">Hourly</option>
+                          <option value="Monthly">Monthly</option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Client Rate</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[25].client_rate"
+                          @input="
+                            handleInput(`clientRate`, 25, ratesArray[25].client_rate)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Private Limited</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[25].private_limited"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              12,
+                              ratesArray[25].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Self Employed</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[25].self_employed"
+                          @input="
+                            handleInput(`selfEmployee`, 25, ratesArray[25].self_employed)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Umbrella</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[25].umbrella"
+                          @input="handleInput(`umbrella`, 25, ratesArray[25].umbrella)"
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">PAYE</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[25].paye"
+                          @input="handleInput(`paye`, 25, ratesArray[25].paye)"
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                    <div class="col-3 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Shift</label>
+                        <input
+                          type="text"
+                          v-model="ratesArray[26].shift_type"
+                          :disabled="true"
+                          style="
+                            width: 100%;
+                            padding: 10px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: none;
+                            background: #e9ecef;
+                            color: black;
+                          "
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftStart"
+                          >Start Time</label
+                        >
+
+                        <select
+                          id="selectShiftStart"
+                          class="form-select w-26"
+                          v-model="ratesArray[26].start_time"
+                          @change="updateStartTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftEnd">End Time</label>
+
+                        <select
+                          id="selectShiftEnd"
+                          class="form-select w-26"
+                          v-model="ratesArray[26].end_time"
+                          @change="updateEndTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Rate Type</label>
+
+                        <select
+                          v-model="ratesArray[26].rate_type"
+                          class="form-select w-26"
+                        >
+                          <option value="Hourly">Hourly</option>
+                          <option value="Monthly">Monthly</option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Client Rate</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[26].client_rate"
+                          @input="
+                            handleInput(`clientRate`, 26, ratesArray[26].client_rate)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Private Limited</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[26].private_limited"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              12,
+                              ratesArray[26].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Self Employed</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[26].self_employed"
+                          @input="
+                            handleInput(`selfEmployee`, 26, ratesArray[26].self_employed)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Umbrella</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[26].umbrella"
+                          @input="handleInput(`umbrella`, 26, ratesArray[26].umbrella)"
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">PAYE</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[26].paye"
+                          @input="handleInput(`paye`, 26, ratesArray[26].paye)"
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                    <div class="col-3 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Shift</label>
+                        <input
+                          type="text"
+                          v-model="ratesArray[27].shift_type"
+                          :disabled="true"
+                          style="
+                            width: 100%;
+                            padding: 10px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: none;
+                            background: #e9ecef;
+                            color: black;
+                          "
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftStart"
+                          >Start Time</label
+                        >
+
+                        <select
+                          id="selectShiftStart"
+                          class="form-select w-27"
+                          v-model="ratesArray[27].start_time"
+                          @change="updateStartTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label" for="selectShiftEnd">End Time</label>
+
+                        <select
+                          id="selectShiftEnd"
+                          class="form-select w-27"
+                          v-model="ratesArray[27].end_time"
+                          @change="updateEndTime"
+                          :disabled="true"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Rate Type</label>
+
+                        <select
+                          v-model="ratesArray[27].rate_type"
+                          class="form-select w-27"
+                        >
+                          <option value="Hourly">Hourly</option>
+                          <option value="Monthly">Monthly</option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Client Rate</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[27].client_rate"
+                          @input="
+                            handleInput(`clientRate`, 27, ratesArray[27].client_rate)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Private Limited</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[27].private_limited"
+                          @input="
+                            handleInput(
+                              `privateLimited`,
+                              12,
+                              ratesArray[27].private_limited
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Self Employed</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[27].self_employed"
+                          @input="
+                            handleInput(`selfEmployee`, 27, ratesArray[27].self_employed)
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Umbrella</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[27].umbrella"
+                          @input="handleInput(`umbrella`, 27, ratesArray[27].umbrella)"
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">PAYE</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="ratesArray[27].paye"
+                          @input="handleInput(`paye`, 27, ratesArray[27].paye)"
                           maxlength="3"
                         />
                       </div>

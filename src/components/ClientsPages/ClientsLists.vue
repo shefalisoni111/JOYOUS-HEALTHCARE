@@ -436,32 +436,32 @@ export default {
         }
       }
     },
-    exportAll() {
-      const params = {};
-      if (this.selectedFilter !== "all") {
-        params.filter_type = this.selectedFilter;
-      }
+    // exportAll() {
+    //   const params = {};
+    //   if (this.selectedFilter !== "all") {
+    //     params.filter_type = this.selectedFilter;
+    //   }
 
-      axios
-        .get(`${VITE_API_URL}/export_all_csv.csv`, { params })
-        .then((response) => {
-          this.downloadCSV(response.data, "filename.csv");
-        })
-        .catch((error) => {
-          // console.error("Error:", error);
-        });
-    },
-    downloadCSV(csvData, filename) {
-      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    },
+    //   axios
+    //     .get(`${VITE_API_URL}/export_all_csv.csv`, { params })
+    //     .then((response) => {
+    //       this.downloadCSV(response.data, "filename.csv");
+    //     })
+    //     .catch((error) => {
+    //       // console.error("Error:", error);
+    //     });
+    // },
+    // downloadCSV(csvData, filename) {
+    //   const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+    //   const url = window.URL.createObjectURL(blob);
+    //   const a = document.createElement("a");
+    //   a.href = url;
+    //   a.download = filename;
+    //   document.body.appendChild(a);
+    //   a.click();
+    //   window.URL.revokeObjectURL(url);
+    //   document.body.removeChild(a);
+    // },
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
 

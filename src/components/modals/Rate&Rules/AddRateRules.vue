@@ -18,7 +18,7 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body mx-3" style="height: 600px; overflow: auto">
+          <div class="modal-body mx-3" style="overflow: auto">
             <div class="row g-3 align-items-center">
               <form>
                 <div class="mb-3 d-flex justify-content-between gap-2 me-3">
@@ -45,11 +45,7 @@
                   <div class="col-4">
                     <label class="form-label" for="selectBusinessUnit">Site</label>
 
-                    <select
-                      id="siteSelect"
-                      v-model="selectedSiteId"
-                      @change="onSiteSelect"
-                    >
+                    <select id="siteSelect" v-model="site_id" @change="onSiteSelect">
                       <option
                         v-for="site in businessUnit"
                         :key="site.site_id"
@@ -79,1179 +75,1167 @@
                   </div>
                 </div>
 
-                <div
-                  v-for="(day, index) in days"
-                  :key="index"
-                  :value="day"
-                  class="mt-2"
-                  style="
-                    background-color: rgb(203 203 203);
-                    padding: 10px;
-                    border-radius: 3px;
-                  "
-                >
-                  <h5 class="fw-bold text-capitalize">{{ day }}</h5>
-                  <template v-if="day !== 'Saturday' && day !== 'Sunday'">
-                    <div class="mb-3 d-flex justify-content-between gap-1 me-3">
-                      <div class="col-3 d-flex gap-2">
-                        <div class="col-4">
-                          <label class="form-label">Shift</label>
-
-                          <select
-                            class="form-select w-25"
-                            v-model="day_shift_id"
-                            @change="handleShiftChange('day')"
-                            disabled
+                <div v-if="this.splitRate" class="mt-4" style="">
+                  <div class="accordion accordion-flush" id="accordionFlushExample">
+                    <div
+                      v-for="(day, index) in days"
+                      :key="index"
+                      class="accordion-item mt-4"
+                    >
+                      <div class="accordion-item">
+                        <h2 class="accordion-header" :id="`accordion-header-${index}`">
+                          <button
+                            class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            :data-bs-target="`#flush-collapse-${index}`"
+                            aria-expanded="false"
+                            :aria-controls="`flush-collapse-${index}`"
                           >
-                            <option
-                              v-for="option in filteredShiftsTime"
-                              :key="option.id"
-                              :value="option.id"
-                            >
-                              {{ option.shift_name }}
-                            </option>
-                          </select>
-                        </div>
+                            {{ day }}
+                          </button>
+                        </h2>
+                        <div
+                          :id="`flush-collapse-${index}`"
+                          class="accordion-collapse collapse p-4"
+                          :aria-labelledby="`accordion-header-${index}`"
+                          data-bs-parent="#accordionFlushExample"
+                        >
+                          <div class="accordion-body p-4">
+                            <template v-if="day">
+                              <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                                <div class="col-3 d-flex gap-2">
+                                  <div class="col-4">
+                                    <label class="form-label">Shift Name</label>
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      :value="
+                                        shiftsTime.length > 0
+                                          ? shiftsTime[0].shift_name
+                                          : ''
+                                      "
+                                      disabled
+                                    />
+                                  </div>
 
-                        <div class="col-4">
-                          <label class="form-label" for="selectShiftStart"
-                            >Start Time</label
-                          >
+                                  <div class="col-4">
+                                    <label class="form-label">Start Time</label>
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      :value="
+                                        shiftsTime.length > 0
+                                          ? shiftsTime[0].start_time
+                                          : ''
+                                      "
+                                      disabled
+                                    />
+                                  </div>
 
-                          <select
-                            id="selectShiftStart"
-                            class="form-select w-25"
-                            v-model="day_start_time"
-                            @change="updateStartTime"
-                            disabled
-                          >
-                            <option
-                              v-for="shift in filteredShiftsTime"
-                              :key="shift.id"
-                              :value="shift.start_time"
-                              :disabled="shift.id !== day_shift_id"
-                            >
-                              {{ shift.start_time }}
-                            </option>
-                          </select>
-                        </div>
+                                  <div class="col-4">
+                                    <label class="form-label">Start Time</label>
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      :value="
+                                        shiftsTime.length > 0
+                                          ? shiftsTime[0].end_time
+                                          : ''
+                                      "
+                                      disabled
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-4 d-flex gap-2">
+                                  <div class="col-4">
+                                    <label class="form-label">Rate Type</label>
 
-                        <div class="col-4">
-                          <label class="form-label" for="selectShiftEnd">End Time</label>
+                                    <select
+                                      v-model="this.selectedRateType[`${day}-early`]"
+                                      class="form-select w-25"
+                                    >
+                                      <option value="Hourly">Hourly</option>
+                                      <option value="Monthly">Monthly</option>
+                                    </select>
+                                  </div>
 
-                          <select
-                            id="selectShiftEnd"
-                            class="form-select w-25"
-                            v-model="day_end_time"
-                            @change="updateEndTime"
-                            disabled
-                          >
-                            <option
-                              v-for="shift in filteredShiftsTime"
-                              :key="shift.id"
-                              :value="shift.end_time"
-                              :disabled="shift.id !== day_shift_id"
-                            >
-                              {{ shift.end_time }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-4 d-flex gap-2">
-                        <div class="col-4">
-                          <label class="form-label">Rate Type</label>
+                                  <div class="col-4">
+                                    <label class="form-label">Client Rate</label>
 
-                          <select
-                            class="form-select w-25"
-                            v-model="this.selectedRateType[`${day}-day`]"
-                          >
-                            <option value="Hourly">Hourly</option>
-                            <option value="Monthly">Monthly</option>
-                          </select>
-                        </div>
+                                    <input
+                                      type="text"
+                                      class="form-control w-100"
+                                      v-model="selectedClientRate[`${day}-early`]"
+                                      @input="
+                                        handleInput(
+                                          `clientRate-${day}-early`,
+                                          selectedClientRate[`${day}-early`]
+                                        )
+                                      "
+                                      maxlength="3"
+                                    />
+                                  </div>
 
-                        <div class="col-4">
-                          <label class="form-label">Client Rate</label>
+                                  <div class="col-4">
+                                    <label class="form-label">Private Limited</label>
 
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedClientRate[`${day}-day`]"
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedClientRate[`${day}-day`]"
-                            @input="
-                              handleInput(
-                                `clientRate-${day}-day`,
-                                selectedClientRate[`${day}-day`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
+                                    <input
+                                      type="text"
+                                      class="form-control w-100"
+                                      v-model="selectedPrivateLimited[`${day}-early`]"
+                                      @input="
+                                        handleInput(
+                                          `privateLimited-${day}-early`,
+                                          selectedPrivateLimited[`${day}-early`]
+                                        )
+                                      "
+                                      maxlength="3"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-4 d-flex gap-2">
+                                  <div class="col-4">
+                                    <label class="form-label">Self Employed</label>
 
-                        <div class="col-4">
-                          <label class="form-label">Private Limited</label>
+                                    <input
+                                      type="text"
+                                      class="form-control w-100"
+                                      v-model="selectedSelfEmployee[`${day}-early`]"
+                                      @input="
+                                        handleInput(
+                                          `selfEmployee-${day}-early`,
+                                          selectedSelfEmployee[`${day}-early`]
+                                        )
+                                      "
+                                      maxlength="3"
+                                    />
+                                  </div>
 
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedPrivateLimited[`${day}-day`]"
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedPrivateLimited[`${day}-day`]"
-                            @input="
-                              handleInput(
-                                `privateLimited-${day}-day`,
-                                selectedPrivateLimited[`${day}-day`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-4 d-flex gap-2">
-                        <div class="col-4">
-                          <label class="form-label">Self Employed</label>
+                                  <div class="col-4">
+                                    <label class="form-label">Umbrella</label>
 
-                          <!-- <select
-                            v-model="selectedSelfEmployee[`${day}-day`]"
-                            class="form-select w-25"
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedSelfEmployee[`${day}-day`]"
-                            @input="
-                              handleInput(
-                                `selfEmployee-${day}-day`,
-                                selectedSelfEmployee[`${day}-day`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
+                                    <input
+                                      type="text"
+                                      class="form-control w-100"
+                                      v-model="selectedUmbrella[`${day}-early`]"
+                                      @input="
+                                        handleInput(
+                                          `umbrella-${day}-early`,
+                                          selectedUmbrella[`${day}-early`]
+                                        )
+                                      "
+                                      maxlength="3"
+                                    />
+                                  </div>
 
-                        <div class="col-4">
-                          <label class="form-label">Umbrella</label>
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedUmbrella[`${day}-day`]"
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedUmbrella[`${day}-day`]"
-                            @input="
-                              handleInput(
-                                `umbrella-${day}-day`,
-                                selectedUmbrella[`${day}-day`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
+                                  <div class="col-4">
+                                    <label class="form-label">PAYE</label>
 
-                        <div class="col-4">
-                          <label class="form-label">PAYE</label>
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedPaye[`${day}-day`]"
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedPaye[`${day}-day`]"
-                            @input="
-                              handleInput(`paye-${day}-day`, selectedPaye[`${day}-day`])
-                            "
-                            maxlength="3"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div class="mb-3 d-flex justify-content-between gap-1 me-3">
-                      <div class="col-3 d-flex gap-2">
-                        <div class="col-4">
-                          <label class="form-label">Shift</label>
+                                    <input
+                                      type="text"
+                                      class="form-control w-100"
+                                      v-model="selectedPaye[`${day}-early`]"
+                                      @input="
+                                        handleInput(
+                                          `paye-${day}-early`,
+                                          selectedPaye[`${day}-early`]
+                                        )
+                                      "
+                                      maxlength="3"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                                <div class="col-3 d-flex gap-2">
+                                  <div class="col-4">
+                                    <label class="form-label">Shift Name</label>
+                                    <input
+                                      type="text"
+                                      :v-model="
+                                        shiftsTime.length > 0 ? shiftsTime[1].id : ''
+                                      "
+                                      class="form-control"
+                                      :value="
+                                        shiftsTime.length > 0
+                                          ? shiftsTime[1].shift_name
+                                          : ''
+                                      "
+                                      disabled
+                                    />
+                                  </div>
 
-                          <select
-                            class="form-select w-25"
-                            v-model="night_shift_id"
-                            @change="handleShiftChange('night')"
-                            disabled
-                          >
-                            <option
-                              v-for="option in filteredShiftsTimeNight"
-                              :key="option.id"
-                              :value="option.id"
-                              aria-placeholder="Select Job"
-                            >
-                              {{ option.shift_name }}
-                            </option>
-                          </select>
-                        </div>
+                                  <div class="col-4">
+                                    <label class="form-label">Start Time</label>
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      :value="
+                                        shiftsTime.length > 0
+                                          ? shiftsTime[1].start_time
+                                          : ''
+                                      "
+                                      disabled
+                                    />
+                                  </div>
 
-                        <div class="col-4">
-                          <label class="form-label" for="selectShiftStartNight"
-                            >Start Time</label
-                          >
+                                  <div class="col-4">
+                                    <label class="form-label">Start Time</label>
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      :value="
+                                        shiftsTime.length > 0
+                                          ? shiftsTime[1].end_time
+                                          : ''
+                                      "
+                                      disabled
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-4 d-flex gap-2">
+                                  <div class="col-4">
+                                    <label class="form-label">Rate Type</label>
 
-                          <select
-                            id="selectShiftStartNight"
-                            class="form-select w-25"
-                            v-model="night_start_time"
-                            @change="updateStartTime"
-                            disabled
-                          >
-                            <option
-                              v-for="shift in filteredShiftsTimeNight"
-                              :key="shift.id"
-                              :value="shift.start_time"
-                              :disabled="shift.id !== night_shift_id"
-                            >
-                              {{ shift.start_time }}
-                            </option>
-                          </select>
-                        </div>
+                                    <select
+                                      v-model="selectedRateType[`${day}-late`]"
+                                      class="form-select w-25"
+                                    >
+                                      <option value="Hourly">Hourly</option>
+                                      <option value="Monthly">Monthly</option>
+                                    </select>
+                                  </div>
 
-                        <div class="col-4">
-                          <label class="form-label" for="selectShiftEndNight"
-                            >End Time</label
-                          >
+                                  <div class="col-4">
+                                    <label class="form-label">Client Rate</label>
 
-                          <select
-                            id="selectShiftEndNight"
-                            class="form-select w-25"
-                            v-model="night_end_time"
-                            @change="updateEndTime"
-                            disabled
-                          >
-                            <option
-                              v-for="shift in filteredShiftsTimeNight"
-                              :key="shift.id"
-                              :value="shift.end_time"
-                              :disabled="shift.id !== night_shift_id"
-                            >
-                              {{ shift.end_time }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-4 d-flex gap-2" v-if="splitRate">
-                        <div class="col-4">
-                          <label class="form-label">Rate Type</label>
-                          <select
-                            v-model="selectedRateType[`${day}-day`]"
-                            class="form-select w-25"
-                            disabled
-                          >
-                            <option value="Hourly">Hourly</option>
-                            <option value="Monthly">Monthly</option>
-                          </select>
-                        </div>
+                                    <input
+                                      type="text"
+                                      class="form-control w-100"
+                                      v-model="selectedClientRate[`${day}-late`]"
+                                      @input="
+                                        handleInput(
+                                          `clientRate-${day}-late`,
+                                          selectedClientRate[`${day}-late`]
+                                        )
+                                      "
+                                      maxlength="3"
+                                    />
+                                  </div>
 
-                        <div class="col-4">
-                          <label class="form-label">Client Rate</label>
+                                  <div class="col-4">
+                                    <label class="form-label">Private Limited</label>
 
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedClientRate[`${day}-day`]"
-                            disabled
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            disabled
-                            v-model="selectedClientRate[`${day}-day`]"
-                            @input="
-                              handleInput(
-                                `clientRate-${day}-day`,
-                                selectedClientRate[`${day}-day`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
+                                    <input
+                                      type="text"
+                                      class="form-control w-100"
+                                      v-model="selectedPrivateLimited[`${day}-late`]"
+                                      @input="
+                                        handleInput(
+                                          `privateLimited-${day}-late`,
+                                          selectedPrivateLimited[`${day}-late`]
+                                        )
+                                      "
+                                      maxlength="3"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-4 d-flex gap-2">
+                                  <div class="col-4">
+                                    <label class="form-label">Self Employed</label>
 
-                        <div class="col-4">
-                          <label class="form-label">Private Limited</label>
+                                    <input
+                                      type="text"
+                                      class="form-control w-100"
+                                      v-model="selectedSelfEmployee[`${day}-late`]"
+                                      @input="
+                                        handleInput(
+                                          `selfEmployee-${day}-late`,
+                                          selectedSelfEmployee[`${day}-late`]
+                                        )
+                                      "
+                                      maxlength="3"
+                                    />
+                                  </div>
 
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedPrivateLimited[`${day}-day`]"
-                            disabled
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedPrivateLimited[`${day}-day`]"
-                            disabled
-                            @input="
-                              handleInput(
-                                `privateLimited-${day}-day`,
-                                selectedPrivateLimited[`${day}-day`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-4 d-flex gap-2" v-else>
-                        <div class="col-4">
-                          <label class="form-label">Rate Type</label>
-                          <select
-                            v-model="this.selectedRateType[`${day}-night`]"
-                            class="form-select w-25"
-                          >
-                            <option value="Hourly">Hourly</option>
-                            <option value="Monthly">Monthly</option>
-                          </select>
-                        </div>
+                                  <div class="col-4">
+                                    <label class="form-label">Umbrella</label>
 
-                        <div class="col-4">
-                          <label class="form-label">Client Rate</label>
+                                    <input
+                                      type="text"
+                                      class="form-control w-100"
+                                      v-model="selectedUmbrella[`${day}-late`]"
+                                      @input="
+                                        handleInput(
+                                          `umbrella-${day}-late`,
+                                          selectedUmbrella[`${day}-late`]
+                                        )
+                                      "
+                                      maxlength="3"
+                                    />
+                                  </div>
 
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedClientRate[`${day}-night`]"
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedClientRate[`${day}-night`]"
-                            @input="
-                              handleInput(
-                                `clientRate-${day}-night`,
-                                selectedClientRate[`${day}-night`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
+                                  <div class="col-4">
+                                    <label class="form-label">PAYE</label>
 
-                        <div class="col-4">
-                          <label class="form-label">Private Limited</label>
+                                    <input
+                                      type="text"
+                                      class="form-control w-100"
+                                      v-model="selectedPaye[`${day}-late`]"
+                                      @input="
+                                        handleInput(
+                                          `paye-${day}-late`,
+                                          selectedPaye[`${day}-late`]
+                                        )
+                                      "
+                                      maxlength="3"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                                <div class="col-3 d-flex gap-2">
+                                  <div class="col-4">
+                                    <label class="form-label">Shift Name</label>
+                                    <input
+                                      type="text"
+                                      :v-model="
+                                        shiftsTime.length > 0 ? shiftsTime[2].id : ''
+                                      "
+                                      class="form-control"
+                                      :value="
+                                        shiftsTime.length > 0
+                                          ? shiftsTime[2].shift_name
+                                          : ''
+                                      "
+                                      disabled
+                                    />
+                                  </div>
 
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedPrivateLimited[`${day}-night`]"
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedPrivateLimited[`${day}-night`]"
-                            @input="
-                              handleInput(
-                                `privateLimited-${day}-night`,
-                                selectedPrivateLimited[`${day}-night`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-4 d-flex gap-2" v-if="splitRate">
-                        <div class="col-4">
-                          <label class="form-label">Self Employed</label>
+                                  <div class="col-4">
+                                    <label class="form-label">Start Time</label>
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      :value="
+                                        shiftsTime.length > 0
+                                          ? shiftsTime[2].start_time
+                                          : ''
+                                      "
+                                      disabled
+                                    />
+                                  </div>
 
-                          <!-- <select
-                            v-model="selectedSelfEmployee[`${day}-day`]"
-                            class="form-select w-25"
-                            disabled
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            disabled
-                            v-model="selectedSelfEmployee[`${day}-day`]"
-                            @input="
-                              handleInput(
-                                `selfEmployee-${day}-day`,
-                                selectedSelfEmployee[`${day}-day`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
+                                  <div class="col-4">
+                                    <label class="form-label">Start Time</label>
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      :value="
+                                        shiftsTime.length > 0
+                                          ? shiftsTime[2].end_time
+                                          : ''
+                                      "
+                                      disabled
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-4 d-flex gap-2">
+                                  <div class="col-4">
+                                    <label class="form-label">Rate Type</label>
 
-                        <div class="col-4">
-                          <label class="form-label">Umbrella</label>
+                                    <select
+                                      v-model="selectedRateType[`${day}-night`]"
+                                      class="form-select w-25"
+                                    >
+                                      <option value="Hourly">Hourly</option>
+                                      <option value="Monthly">Monthly</option>
+                                    </select>
+                                  </div>
 
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedUmbrella[`${day}-day`]"
-                            disabled
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedUmbrella[`${day}-day`]"
-                            disabled
-                            @input="
-                              handleInput(
-                                `umbrella-${day}-day`,
-                                selectedUmbrella[`${day}-day`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
+                                  <div class="col-4">
+                                    <label class="form-label">Client Rate</label>
 
-                        <div class="col-4">
-                          <label class="form-label">PAYE</label>
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedPaye[`${day}-day`]"
-                            disabled
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            disabled
-                            v-model="selectedPaye[`${day}-day`]"
-                            @input="
-                              handleInput(`paye-${day}-day`, selectedPaye[`${day}-day`])
-                            "
-                            maxlength="3"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-4 d-flex gap-2" v-else>
-                        <div class="col-4">
-                          <label class="form-label">Self Employed</label>
+                                    <input
+                                      type="text"
+                                      class="form-control w-100"
+                                      v-model="selectedClientRate[`${day}-night`]"
+                                      @input="
+                                        handleInput(
+                                          `clientRate-${day}-night`,
+                                          selectedClientRate[`${day}-night`]
+                                        )
+                                      "
+                                      maxlength="3"
+                                    />
+                                  </div>
 
-                          <!-- <select
-                            v-model="selectedSelfEmployee[`${day}-night`]"
-                            class="form-select w-25"
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedSelfEmployee[`${day}-night`]"
-                            @input="
-                              handleInput(
-                                `selfEmployee-${day}-night`,
-                                selectedSelfEmployee[`${day}-night`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
+                                  <div class="col-4">
+                                    <label class="form-label">Private Limited</label>
 
-                        <div class="col-4">
-                          <label class="form-label">Umbrella</label>
-                          <!-- 
-                          <select
-                            class="form-select w-25"
-                            v-model="selectedUmbrella[`${day}-night`]"
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedUmbrella[`${day}-night`]"
-                            @input="
-                              handleInput(
-                                `umbrella-${day}-night`,
-                                selectedUmbrella[`${day}-night`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
+                                    <input
+                                      type="text"
+                                      class="form-control w-100"
+                                      v-model="selectedPrivateLimited[`${day}-night`]"
+                                      @input="
+                                        handleInput(
+                                          `privateLimited-${day}-night`,
+                                          selectedPrivateLimited[`${day}-night`]
+                                        )
+                                      "
+                                      maxlength="3"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-4 d-flex gap-2">
+                                  <div class="col-4">
+                                    <label class="form-label">Self Employed</label>
 
-                        <div class="col-4">
-                          <label class="form-label">PAYE</label>
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedPaye[`${day}-night`]"
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedPaye[`${day}-night`]"
-                            @input="
-                              handleInput(
-                                `paye-${day}-night`,
-                                selectedPaye[`${day}-night`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </template>
-                  <template v-else>
-                    <div class="mb-3 d-flex justify-content-between gap-1 me-3">
-                      <div class="col-3 d-flex gap-2">
-                        <div class="col-4">
-                          <label class="form-label">Shift</label>
+                                    <input
+                                      type="text"
+                                      class="form-control w-100"
+                                      v-model="selectedSelfEmployee[`${day}-night`]"
+                                      @input="
+                                        handleInput(
+                                          `selfEmployee-${day}-night`,
+                                          selectedSelfEmployee[`${day}-night`]
+                                        )
+                                      "
+                                      maxlength="3"
+                                    />
+                                  </div>
 
-                          <select
-                            v-model="dayShiftId"
-                            class="form-select w-25"
-                            @change="handleShiftChange('holiday_day_shift')"
-                            disabled
-                          >
-                            <option
-                              v-for="option in filteredShiftsTimeHoliday"
-                              :key="option.id"
-                              :value="option.id"
-                            >
-                              {{ option.shift_name }}
-                            </option>
-                          </select>
-                        </div>
+                                  <div class="col-4">
+                                    <label class="form-label">Umbrella</label>
 
-                        <div class="col-4">
-                          <label class="form-label">Start Time</label>
+                                    <input
+                                      type="text"
+                                      class="form-control w-100"
+                                      v-model="selectedUmbrella[`${day}-night`]"
+                                      @input="
+                                        handleInput(
+                                          `umbrella-${day}-night`,
+                                          selectedUmbrella[`${day}-night`]
+                                        )
+                                      "
+                                      maxlength="3"
+                                    />
+                                  </div>
 
-                          <select
-                            class="form-select w-25"
-                            v-model="holiday_start_time"
-                            @change="updateStartTime"
-                            disabled
-                          >
-                            <option
-                              v-for="shift in filteredShiftsTimeHoliday"
-                              :key="shift.id"
-                              :value="shift.start_time"
-                              :disabled="shift.id !== dayShiftId"
-                            >
-                              {{ shift.start_time }}
-                            </option>
-                          </select>
-                        </div>
+                                  <div class="col-4">
+                                    <label class="form-label">PAYE</label>
 
-                        <div class="col-4">
-                          <label class="form-label">End Time</label>
+                                    <input
+                                      type="text"
+                                      class="form-control w-100"
+                                      v-model="selectedPaye[`${day}-night`]"
+                                      @input="
+                                        handleInput(
+                                          `paye-${day}-night`,
+                                          selectedPaye[`${day}-night`]
+                                        )
+                                      "
+                                      maxlength="3"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                                <div class="col-3 d-flex gap-2">
+                                  <div class="col-4">
+                                    <label class="form-label">Shift Name</label>
+                                    <input
+                                      type="text"
+                                      :v-model="
+                                        shiftsTime.length > 0 ? shiftsTime[3].id : ''
+                                      "
+                                      class="form-control"
+                                      :value="
+                                        shiftsTime.length > 0
+                                          ? shiftsTime[3].shift_name
+                                          : ''
+                                      "
+                                      disabled
+                                    />
+                                  </div>
 
-                          <select
-                            class="form-select w-25"
-                            v-model="holiday_end_time"
-                            @change="updateEndTime"
-                            disabled
-                          >
-                            <option
-                              v-for="shift in filteredShiftsTimeHoliday"
-                              :key="shift.id"
-                              :value="shift.end_time"
-                              :disabled="shift.id !== dayShiftId"
-                            >
-                              {{ shift.end_time }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-4 d-flex gap-2">
-                        <div class="col-4">
-                          <label class="form-label">Rate Type</label>
+                                  <div class="col-4">
+                                    <label class="form-label">Start Time</label>
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      :value="
+                                        shiftsTime.length > 0
+                                          ? shiftsTime[3].start_time
+                                          : ''
+                                      "
+                                      disabled
+                                    />
+                                  </div>
 
-                          <select
-                            v-model="selectedRateType[`${day}-holiday`]"
-                            class="form-select w-25"
-                          >
-                            <option value="Hourly">Hourly</option>
-                            <option value="Monthly">Monthly</option>
-                          </select>
-                        </div>
+                                  <div class="col-4">
+                                    <label class="form-label">Start Time</label>
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      :value="
+                                        shiftsTime.length > 0
+                                          ? shiftsTime[3].end_time
+                                          : ''
+                                      "
+                                      disabled
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-4 d-flex gap-2">
+                                  <div class="col-4">
+                                    <label class="form-label">Rate Type</label>
 
-                        <div class="col-4">
-                          <label class="form-label">Client Rate</label>
+                                    <select
+                                      v-model="selectedRateType[`${day}-long day`]"
+                                      class="form-select w-25"
+                                    >
+                                      <option value="Hourly">Hourly</option>
+                                      <option value="Monthly">Monthly</option>
+                                    </select>
+                                  </div>
 
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedClientRate[`${day}-holiday`]"
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedClientRate[`${day}-holiday`]"
-                            @input="
-                              handleInput(
-                                `clientRate-${day}-holiday`,
-                                selectedClientRate[`${day}-holiday`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
+                                  <div class="col-4">
+                                    <label class="form-label">Client Rate</label>
 
-                        <div class="col-4">
-                          <label class="form-label">Private Limited</label>
+                                    <input
+                                      type="text"
+                                      class="form-control w-100"
+                                      v-model="selectedClientRate[`${day}-long day`]"
+                                      @input="
+                                        handleInput(
+                                          `clientRate-${day}-long day`,
+                                          selectedClientRate[`${day}-long day`]
+                                        )
+                                      "
+                                      maxlength="3"
+                                    />
+                                  </div>
 
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedPrivateLimited[`${day}-holiday`]"
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedPrivateLimited[`${day}-holiday`]"
-                            @input="
-                              handleInput(
-                                `privateLimited-${day}-holiday`,
-                                selectedPrivateLimited[`${day}-holiday`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-4 d-flex gap-2">
-                        <div class="col-4">
-                          <label class="form-label">Self Employed</label>
+                                  <div class="col-4">
+                                    <label class="form-label">Private Limited</label>
 
-                          <!-- <select
-                            v-model="selectedSelfEmployee[`${day}-holiday`]"
-                            class="form-select w-25"
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedSelfEmployee[`${day}-holiday`]"
-                            @input="
-                              handleInput(
-                                `selfEmployee-${day}-holiday`,
-                                selectedSelfEmployee[`${day}-holiday`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
+                                    <input
+                                      type="text"
+                                      class="form-control w-100"
+                                      v-model="selectedPrivateLimited[`${day}-long day`]"
+                                      @input="
+                                        handleInput(
+                                          `privateLimited-${day}-long day`,
+                                          selectedPrivateLimited[`${day}-long day`]
+                                        )
+                                      "
+                                      maxlength="3"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-4 d-flex gap-2">
+                                  <div class="col-4">
+                                    <label class="form-label">Self Employed</label>
 
-                        <div class="col-4">
-                          <label class="form-label">Umbrella</label>
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedUmbrella[`${day}-holiday`]"
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedUmbrella[`${day}-holiday`]"
-                            @input="
-                              handleInput(
-                                `umbrella-${day}-holiday`,
-                                selectedUmbrella[`${day}-holiday`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
+                                    <input
+                                      type="text"
+                                      class="form-control w-100"
+                                      v-model="selectedSelfEmployee[`${day}-long day`]"
+                                      @input="
+                                        handleInput(
+                                          `selfEmployee-${day}-long day`,
+                                          selectedSelfEmployee[`${day}-long day`]
+                                        )
+                                      "
+                                      maxlength="3"
+                                    />
+                                  </div>
 
-                        <div class="col-4">
-                          <label class="form-label">PAYE</label>
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedPaye[`${day}-holiday`]"
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedPaye[`${day}-holiday`]"
-                            @input="
-                              handleInput(
-                                `paye-${day}-holiday`,
-                                selectedPaye[`${day}-holiday`]
-                              )
-                            "
-                            maxlength="3"
-                          />
+                                  <div class="col-4">
+                                    <label class="form-label">Umbrella</label>
+
+                                    <input
+                                      type="text"
+                                      class="form-control w-100"
+                                      v-model="selectedUmbrella[`${day}-long day`]"
+                                      @input="
+                                        handleInput(
+                                          `umbrella-${day}-long day`,
+                                          selectedUmbrella[`${day}-long day`]
+                                        )
+                                      "
+                                      maxlength="3"
+                                    />
+                                  </div>
+
+                                  <div class="col-4">
+                                    <label class="form-label">PAYE</label>
+
+                                    <input
+                                      type="text"
+                                      class="form-control w-100"
+                                      v-model="selectedPaye[`${day}-long day`]"
+                                      @input="
+                                        handleInput(
+                                          `paye-${day}-long day`,
+                                          selectedPaye[`${day}-long day`]
+                                        )
+                                      "
+                                      maxlength="3"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </template>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div class="mb-3 d-flex justify-content-between gap-1 me-3">
-                      <div class="col-3 d-flex gap-2">
-                        <div class="col-4">
-                          <label class="form-label">Shift</label>
-
-                          <select
-                            v-model="nightShiftId"
-                            class="form-select w-25"
-                            @change="handleShiftChange('holiday_night_shift')"
-                            disabled
-                          >
-                            <option
-                              v-for="option in filteredShiftsTimeHolidayNight"
-                              :key="option.id"
-                              :value="option.id"
-                              aria-placeholder="Select Job"
-                            >
-                              {{ option.shift_name }}
-                            </option>
-                          </select>
-                        </div>
-
-                        <div class="col-4">
-                          <label class="form-label">Start Time</label>
-
-                          <select
-                            class="form-select w-25"
-                            v-model="holiday_night_start_time"
-                            @change="updateStartTime"
-                            disabled
-                          >
-                            <option
-                              v-for="shift in filteredShiftsTimeHolidayNight"
-                              :key="shift.id"
-                              :value="shift.start_time"
-                              :disabled="shift.id !== nightShiftId"
-                            >
-                              {{ shift.start_time }}
-                            </option>
-                          </select>
-                        </div>
-
-                        <div class="col-4">
-                          <label class="form-label">End Time</label>
-
-                          <select
-                            class="form-select w-25"
-                            v-model="holiday_night_end_time"
-                            @change="updateEndTime"
-                            disabled
-                          >
-                            <option
-                              v-for="shift in filteredShiftsTimeHolidayNight"
-                              :key="shift.id"
-                              :value="shift.end_time"
-                              :disabled="shift.id !== nightShiftId"
-                            >
-                              {{ shift.end_time }}
-                            </option>
-                          </select>
-                        </div>
+                  </div>
+                  <!-- <h5 class="fw-bold text-capitalize">{{ day }}</h5> -->
+                </div>
+                <div v-else class="mt-5">
+                  <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                    <div class="col-3 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Shift Name</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          :value="shiftsTime.length > 0 ? shiftsTime[0].shift_name : ''"
+                          disabled
+                        />
                       </div>
-                      <div class="col-4 d-flex gap-2" v-if="holidaySplitRate">
-                        <div class="col-4">
-                          <label class="form-label">Rate Type</label>
-                          <select
-                            v-model="selectedRateType[`${day}-holiday`]"
-                            class="form-select w-25"
-                            disabled
-                          >
-                            <option value="Hourly">Hourly</option>
-                            <option value="Monthly">Monthly</option>
-                          </select>
-                        </div>
 
-                        <div class="col-4">
-                          <label class="form-label">Client Rate</label>
-
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedClientRate[`${day}-holiday`]"
-                            disabled
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            disabled
-                            class="form-control w-100"
-                            v-model="selectedClientRate[`${day}-holiday`]"
-                            @input="
-                              handleInput(
-                                `clientRate-${day}-holiday`,
-                                selectedClientRate[`${day}-holiday`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
-
-                        <div class="col-4">
-                          <label class="form-label">Private Limited</label>
-
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedPrivateLimited[`${day}-holiday`]"
-                            disabled
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            disabled
-                            v-model="selectedPrivateLimited[`${day}-holiday`]"
-                            @input="
-                              handleInput(
-                                `privateLimited-${day}-holiday`,
-                                selectedPrivateLimited[`${day}-holiday`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
+                      <div class="col-4">
+                        <label class="form-label">Start Time</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          :value="shiftsTime.length > 0 ? shiftsTime[0].start_time : ''"
+                          disabled
+                        />
                       </div>
-                      <div class="col-4 d-flex gap-2" v-else>
-                        <div class="col-4">
-                          <label class="form-label">Rate Type</label>
-                          <select
-                            v-model="selectedRateType[`${day}-holiday_night`]"
-                            class="form-select w-25"
-                          >
-                            <option value="Hourly">Hourly</option>
-                            <option value="Monthly">Monthly</option>
-                          </select>
-                        </div>
 
-                        <div class="col-4">
-                          <label class="form-label">Client Rate</label>
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedClientRate[`${day}-holiday_night`]"
-                            @input="
-                              handleInput(
-                                `clientRate-${day}-holiday_night`,
-                                selectedClientRate[`${day}-holiday_night`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedClientRate[`${day}-holiday_night`]"
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                        </div>
-
-                        <div class="col-4">
-                          <label class="form-label">Private Limited</label>
-
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedPrivateLimited[`${day}-holiday_night`]"
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedPrivateLimited[`${day}-holiday_night`]"
-                            @input="
-                              handleInput(
-                                `privateLimited-${day}-holiday_night`,
-                                selectedPrivateLimited[`${day}-holiday_night`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-4 d-flex gap-2" v-if="holidaySplitRate">
-                        <div class="col-4">
-                          <label class="form-label">Self Employed</label>
-
-                          <!-- <select
-                            v-model="selectedSelfEmployee[`${day}-holiday`]"
-                            class="form-select w-25"
-                            disabled
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            disabled
-                            v-model="selectedSelfEmployee[`${day}-holiday`]"
-                            @input="
-                              handleInput(
-                                `selfEmployee-${day}-holiday`,
-                                selectedSelfEmployee[`${day}-holiday`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
-
-                        <div class="col-4">
-                          <label class="form-label">Umbrella</label>
-
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedUmbrella[`${day}-holiday`]"
-                            disabled
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            disabled
-                            class="form-control w-100"
-                            v-model="selectedUmbrella[`${day}-holiday`]"
-                            @input="
-                              handleInput(
-                                `umbrella-${day}-holiday`,
-                                selectedUmbrella[`${day}-holiday`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
-
-                        <div class="col-4">
-                          <label class="form-label">PAYE</label>
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedPaye[`${day}-holiday`]"
-                            disabled
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            disabled
-                            class="form-control w-100"
-                            v-model="selectedPaye[`${day}-holiday`]"
-                            @input="
-                              handleInput(
-                                `paye-${day}-holiday`,
-                                selectedPaye[`${day}-holiday`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-4 d-flex gap-2" v-else>
-                        <div class="col-4">
-                          <label class="form-label">Self Employed</label>
-
-                          <!-- <select
-                            v-model="selectedSelfEmployee[`${day}-holiday_night`]"
-                            class="form-select w-25"
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedSelfEmployee[`${day}-holiday_night`]"
-                            @input="
-                              handleInput(
-                                `selfEmployee-${day}-holiday_night`,
-                                selectedSelfEmployee[`${day}-holiday_night`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
-
-                        <div class="col-4">
-                          <label class="form-label">Umbrella</label>
-
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedUmbrella[`${day}-holiday_night`]"
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedUmbrella[`${day}-holiday_night`]"
-                            @input="
-                              handleInput(
-                                `umbrella-${day}-holiday_night`,
-                                selectedUmbrella[`${day}-holiday_night`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
-
-                        <div class="col-4">
-                          <label class="form-label">PAYE</label>
-                          <!-- <select
-                            class="form-select w-25"
-                            v-model="selectedPaye[`${day}-holiday_night`]"
-                          >
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                          </select> -->
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="selectedPaye[`${day}-holiday_night`]"
-                            @input="
-                              handleInput(
-                                `paye-${day}-holiday_night`,
-                                selectedPaye[`${day}-holiday_night`]
-                              )
-                            "
-                            maxlength="3"
-                          />
-                        </div>
+                      <div class="col-4">
+                        <label class="form-label">Start Time</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          :value="shiftsTime.length > 0 ? shiftsTime[0].end_time : ''"
+                          disabled
+                        />
                       </div>
                     </div>
-                  </template>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Rate Type</label>
+
+                        <select
+                          v-model="this.selectedRateType[`${day ? day + '-' : ''}-early`]"
+                          class="form-select w-25"
+                        >
+                          <option value="Hourly">Hourly</option>
+                          <option value="Monthly">Monthly</option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Client Rate</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="selectedClientRate[`${day ? day + '-' : ''}-early`]"
+                          @input="
+                            handleInput(
+                              `clientRate-${day ? day + '-' : ''}-early`,
+                              selectedClientRate[`${day ? day + '-' : ''}-early`]
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Private Limited</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="
+                            selectedPrivateLimited[`${day ? day + '-' : ''}-early`]
+                          "
+                          @input="
+                            handleInput(
+                              `privateLimited-${day ? day + '-' : ''}-early`,
+                              selectedPrivateLimited[`${day ? day + '-' : ''}-early`]
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Self Employed</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="selectedSelfEmployee[`${day ? day + '-' : ''}-early`]"
+                          @input="
+                            handleInput(
+                              `selfEmployee-${day ? day + '-' : ''}-early`,
+                              selectedSelfEmployee[`${day ? day + '-' : ''}-early`]
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Umbrella</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="selectedUmbrella[`${day ? day + '-' : ''}-early`]"
+                          @input="
+                            handleInput(
+                              `umbrella-${day ? day + '-' : ''}-early`,
+                              selectedUmbrella[`${day ? day + '-' : ''}-early`]
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">PAYE</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="selectedPaye[`${day ? day + '-' : ''}-early`]"
+                          @input="
+                            handleInput(
+                              `paye-${day ? day + '-' : ''}-early`,
+                              selectedPaye[`${day ? day + '-' : ''}-early`]
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                    <div class="col-3 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Shift Name</label>
+                        <input
+                          type="text"
+                          :v-model="shiftsTime.length > 0 ? shiftsTime[1].id : ''"
+                          class="form-control"
+                          :value="shiftsTime.length > 0 ? shiftsTime[1].shift_name : ''"
+                          disabled
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Start Time</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          :value="shiftsTime.length > 0 ? shiftsTime[1].start_time : ''"
+                          disabled
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Start Time</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          :value="shiftsTime.length > 0 ? shiftsTime[1].end_time : ''"
+                          disabled
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Rate Type</label>
+
+                        <select
+                          v-model="selectedRateType[`${day ? day + '-' : ''}-late`]"
+                          class="form-select w-25"
+                        >
+                          <option value="Hourly">Hourly</option>
+                          <option value="Monthly">Monthly</option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Client Rate</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="selectedClientRate[`${day ? day + '-' : ''}-late`]"
+                          @input="
+                            handleInput(
+                              `clientRate-${day ? day + '-' : ''}-late`,
+                              selectedClientRate[`${day ? day + '-' : ''}-late`]
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Private Limited</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="selectedPrivateLimited[`${day ? day + '-' : ''}-late`]"
+                          @input="
+                            handleInput(
+                              `privateLimited-${day ? day + '-' : ''}-late`,
+                              selectedPrivateLimited[`${day ? day + '-' : ''}-late`]
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Self Employed</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="selectedSelfEmployee[`${day ? day + '-' : ''}-late`]"
+                          @input="
+                            handleInput(
+                              `selfEmployee-${day ? day + '-' : ''}-late`,
+                              selectedSelfEmployee[`${day ? day + '-' : ''}-late`]
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Umbrella</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="selectedUmbrella[`${day ? day + '-' : ''}-late`]"
+                          @input="
+                            handleInput(
+                              `umbrella-${day ? day + '-' : ''}-late`,
+                              selectedUmbrella[`${day ? day + '-' : ''}-late`]
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">PAYE</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="selectedPaye[`${day ? day + '-' : ''}-late`]"
+                          @input="
+                            handleInput(
+                              `paye-${day ? day + '-' : ''}-late`,
+                              selectedPaye[`${day ? day + '-' : ''}-late`]
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                    <div class="col-3 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Shift Name</label>
+                        <input
+                          type="text"
+                          :v-model="shiftsTime.length > 0 ? shiftsTime[2].id : ''"
+                          class="form-control"
+                          :value="shiftsTime.length > 0 ? shiftsTime[2].shift_name : ''"
+                          disabled
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Start Time</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          :value="shiftsTime.length > 0 ? shiftsTime[2].start_time : ''"
+                          disabled
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Start Time</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          :value="shiftsTime.length > 0 ? shiftsTime[2].end_time : ''"
+                          disabled
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Rate Type</label>
+
+                        <select
+                          v-model="selectedRateType[`${day ? day + '-' : ''}-night`]"
+                          class="form-select w-25"
+                        >
+                          <option value="Hourly">Hourly</option>
+                          <option value="Monthly">Monthly</option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Client Rate</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="selectedClientRate[`${day ? day + '-' : ''}-night`]"
+                          @input="
+                            handleInput(
+                              `clientRate-${day ? day + '-' : ''}-night`,
+                              selectedClientRate[`${day ? day + '-' : ''}-night`]
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Private Limited</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="
+                            selectedPrivateLimited[`${day ? day + '-' : ''}-night`]
+                          "
+                          @input="
+                            handleInput(
+                              `privateLimited-${day ? day + '-' : ''}-night`,
+                              selectedPrivateLimited[`${day ? day + '-' : ''}-night`]
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Self Employed</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="selectedSelfEmployee[`${day ? day + '-' : ''}-night`]"
+                          @input="
+                            handleInput(
+                              `selfEmployee-${day ? day + '-' : ''}-night`,
+                              selectedSelfEmployee[`${day ? day + '-' : ''}-night`]
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Umbrella</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="selectedUmbrella[`${day ? day + '-' : ''}-night`]"
+                          @input="
+                            handleInput(
+                              `umbrella-${day ? day + '-' : ''}-night`,
+                              selectedUmbrella[`${day ? day + '-' : ''}-night`]
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">PAYE</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="selectedPaye[`${day ? day + '-' : ''}-night`]"
+                          @input="
+                            handleInput(
+                              `paye-${day ? day + '-' : ''}-night`,
+                              selectedPaye[`${day ? day + '-' : ''}-night`]
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                    <div class="col-3 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Shift Name</label>
+                        <input
+                          type="text"
+                          :v-model="shiftsTime.length > 0 ? shiftsTime[3].id : ''"
+                          class="form-control"
+                          :value="shiftsTime.length > 0 ? shiftsTime[3].shift_name : ''"
+                          disabled
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Start Time</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          :value="shiftsTime.length > 0 ? shiftsTime[3].start_time : ''"
+                          disabled
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Start Time</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          :value="shiftsTime.length > 0 ? shiftsTime[3].end_time : ''"
+                          disabled
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Rate Type</label>
+
+                        <select
+                          v-model="selectedRateType[`${day ? day + '-' : ''}long day`]"
+                          class="form-select w-25"
+                        >
+                          <option value="Hourly">Hourly</option>
+                          <option value="Monthly">Monthly</option>
+                        </select>
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Client Rate</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="selectedClientRate[`${day ? day + '-' : ''}long day`]"
+                          @input="
+                            handleInput(
+                              `clientRate-${day ? day + '-' : ''}long day`,
+                              selectedClientRate[`${day ? day + '-' : ''}long day`]
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Private Limited</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="
+                            selectedPrivateLimited[`${day ? day + '-' : ''}long day`]
+                          "
+                          @input="
+                            handleInput(
+                              `privateLimited-${day ? day + '-' : ''}long day`,
+                              selectedPrivateLimited[`${day ? day + '-' : ''}long day`]
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex gap-2">
+                      <div class="col-4">
+                        <label class="form-label">Self Employed</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="
+                            selectedSelfEmployee[`${day ? day + '-' : ''}-long day`]
+                          "
+                          @input="
+                            handleInput(
+                              `selfEmployee-${day ? day + '-' : ''}-long day`,
+                              selectedSelfEmployee[`${day ? day + '-' : ''}-long day`]
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">Umbrella</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="selectedUmbrella[`${day ? day + '-' : ''}-long day`]"
+                          @input="
+                            handleInput(
+                              `umbrella-${day ? day + '-' : ''}-long day`,
+                              selectedUmbrella[`${day ? day + '-' : ''}-long day`]
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+
+                      <div class="col-4">
+                        <label class="form-label">PAYE</label>
+
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="selectedPaye[`${day ? day + '-' : ''}-long day`]"
+                          @input="
+                            handleInput(
+                              `paye-${day ? day + '-' : ''}-long day`,
+                              selectedPaye[`${day ? day + '-' : ''}-long day`]
+                            )
+                          "
+                          maxlength="3"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </form>
             </div>
@@ -1267,6 +1251,7 @@
               Cancel
             </button>
             <button
+              v-if="this.splitRate"
               :disabled="!isFormValid()"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               v-bind:data-bs-dismiss="isFormValid() ? 'modal' : null"
@@ -1274,13 +1259,15 @@
             >
               Add Rate
             </button>
-            <!-- <button
+            <button
+              v-else
+              :disabled="!isFormValidTrue()"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
-              v-bind:data-bs-dismiss="isFormValid ? 'modal' : null"
+              v-bind:data-bs-dismiss="isFormValidTrue() ? 'modal' : null"
               v-on:click="addVacancyMethod()"
             >
               Add Rate
-            </button> -->
+            </button>
           </div>
         </div>
       </div>
@@ -1299,8 +1286,9 @@ export default {
   name: "AddRateRules",
   data() {
     return {
-      start_time: null,
-      end_time: null,
+      shiftName: {},
+      startTime: {},
+      endTime: {},
       day_start_time: null,
       day_end_time: null,
       night_start_time: null,
@@ -1329,7 +1317,7 @@ export default {
       filteredShiftsTimeHoliday: [],
       filteredShiftsTimeHolidayNight: [],
       validationEndTime: true,
-
+      site_shift_id: "",
       days: [
         "Monday",
         "Tuesday",
@@ -1355,7 +1343,7 @@ export default {
       businessUnit: [],
       selectedSiteId: null,
       selectedJobId: null,
-      site_shift_id: "",
+
       shiftsTime: [],
       selectedJob: null,
       isValidForm: false,
@@ -1372,55 +1360,38 @@ export default {
       return this.client_id;
     },
 
-    selectShiftStart() {
-      const shift = this.filteredShiftsTime.find(
-        (shift) => shift.id === this.day_shift_id
-      );
-      return shift ? shift.start_time : "";
-    },
-    selectShiftEnd() {
-      const shift = this.filteredShiftsTime.find(
-        (shift) => shift.id === this.day_shift_id
-      );
-      return shift ? shift.end_time : "";
-    },
-    selectShiftStartNight() {
-      const shift = this.filteredShiftsTimeNight.find(
-        (shift) => shift.id === this.night_shift_id
-      );
-      return shift ? shift.start_time : "";
-    },
-    selectShiftEndNight() {
-      const shift = this.filteredShiftsTimeNight.find(
-        (shift) => shift.id === this.night_shift_id
-      );
-      return shift ? shift.end_time : "";
+    selectShifts() {
+      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
+      return shifts_id ? shifts_id.shift_name : "";
     },
   },
-  watch: {},
+  watch: {
+    selectedSiteId(newSiteId) {
+      this.getTimeShift(newSiteId);
+    },
+  },
   methods: {
     handleInput(field, value) {
       this.hasInteracted = true;
 
       const filteredValue = value.replace(/[^0-9]/g, "");
 
-      // Destructure the field to get type, day, and period (e.g., "clientRate-1-day")
       const [type, day, period] = field.split("-");
 
-      // Update the respective field based on type and period (day/night)
+      const key = day ? `${day}-${period}` : period;
+
       if (type === "clientRate") {
-        this.selectedClientRate[`${day}-${period}`] = filteredValue;
+        this.selectedClientRate[key] = filteredValue;
       } else if (type === "privateLimited") {
-        this.selectedPrivateLimited[`${day}-${period}`] = filteredValue;
+        this.selectedPrivateLimited[key] = filteredValue;
       } else if (type === "paye") {
-        this.selectedPaye[`${day}-${period}`] = filteredValue;
+        this.selectedPaye[key] = filteredValue;
       } else if (type === "selfEmployee") {
-        this.selectedSelfEmployee[`${day}-${period}`] = filteredValue;
+        this.selectedSelfEmployee[key] = filteredValue;
       } else if (type === "umbrella") {
-        this.selectedUmbrella[`${day}-${period}`] = filteredValue;
+        this.selectedUmbrella[key] = filteredValue;
       }
 
-      // Validate that the number is between 1 and 999
       if (filteredValue.length > 0) {
         const numericValue = parseInt(filteredValue, 10);
 
@@ -1433,79 +1404,51 @@ export default {
         this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = false;
       }
     },
-
+    isFormValidTrue() {
+      return (
+        Object.keys(this.selectedRateType).length > 3 &&
+        Object.keys(this.selectedClientRate).length > 3 &&
+        Object.keys(this.selectedPrivateLimited).length > 3 &&
+        Object.keys(this.selectedSelfEmployee).length > 3 &&
+        Object.keys(this.selectedUmbrella).length > 3 &&
+        Object.keys(this.selectedPaye).length > 3 &&
+        this.startTime &&
+        this.endTime &&
+        this.shiftName
+      );
+    },
     isFormValid() {
-      const site_id_valid = this.selectedSiteId !== null;
-      const job_id_valid = this.selectedJobId !== null;
-      const night_shift_id_valid = this.night_shift_id !== null;
+      const site_id_valid = this.site_id !== null;
+      const job_id_valid = this.job_id !== null;
       const client_id_valid = this.client_id !== null;
-      const night_start_time_valid = this.night_start_time !== "";
-      const night_end_time_valid = this.night_end_time !== "";
-      const selectedClientRate_valid = this.areAllFieldsFilled(this.selectedClientRate);
-      const selectedRateType_valid = this.areAllFieldsFilled(this.selectedRateType);
-      const selectedPrivateLimited_valid = this.areAllFieldsFilled(
-        this.selectedPrivateLimited
-      );
-      const selectedSelfEmployee_valid = this.areAllFieldsFilled(
-        this.selectedSelfEmployee
-      );
-      const selectedUmbrella_valid = this.areAllFieldsFilled(this.selectedUmbrella);
-      const selectedPaye_valid = this.areAllFieldsFilled(this.selectedPaye);
-      const holiday_start_time_valid = this.holiday_start_time !== "";
-      const holiday_end_time_valid = this.holiday_end_time !== "";
-      const holiday_night_start_time_valid = this.holiday_night_start_time !== "";
-      const holiday_night_end_time_valid = this.holiday_night_end_time !== "";
-      const day_start_time_valid = this.day_start_time !== "";
-      const day_end_time_valid = this.day_end_time !== "";
-      const dayShiftId_valid = this.dayShiftId !== null;
-      const nightShiftId_valid = this.nightShiftId !== null;
-      const day_shift_id_valid = this.day_shift_id !== null;
 
-      const allFieldsFilled =
-        site_id_valid &&
-        job_id_valid &&
-        night_shift_id_valid &&
-        client_id_valid &&
-        night_start_time_valid &&
-        night_end_time_valid &&
-        selectedClientRate_valid &&
-        selectedRateType_valid &&
-        selectedPrivateLimited_valid &&
-        selectedSelfEmployee_valid &&
-        selectedUmbrella_valid &&
-        selectedPaye_valid &&
-        holiday_start_time_valid &&
-        holiday_end_time_valid &&
-        holiday_night_start_time_valid &&
-        holiday_night_end_time_valid &&
-        day_start_time_valid &&
-        day_end_time_valid &&
-        dayShiftId_valid &&
-        nightShiftId_valid &&
-        day_shift_id_valid;
+      const shifts = ["early", "late", "night", "long day"];
+      const days = this.days;
 
-      return allFieldsFilled;
+      const allShiftDataValid = days.every((day) =>
+        shifts.every((shift) => {
+          const shiftData = this.shiftsTime.find(
+            (s) => s.shift_name.toLowerCase() === shift
+          );
+
+          return (
+            this.selectedRateType[`${day}-${shift}`] &&
+            this.selectedClientRate[`${day}-${shift}`] &&
+            this.selectedPrivateLimited[`${day}-${shift}`] &&
+            this.selectedSelfEmployee[`${day}-${shift}`] &&
+            this.selectedUmbrella[`${day}-${shift}`] &&
+            this.selectedPaye[`${day}-${shift}`] &&
+            shiftData &&
+            shiftData.site_shift_id &&
+            shiftData.start_time &&
+            shiftData.end_time
+          );
+        })
+      );
+
+      return site_id_valid && job_id_valid && client_id_valid && allShiftDataValid;
     },
 
-    areAllFieldsFilled(object) {
-      const keys = Object.keys(object);
-      let requiredFieldCount;
-
-      if (this.splitRate === false && this.holidaySplitRate === false) {
-        requiredFieldCount = 14;
-      } else if (this.splitRate === false && this.holidaySplitRate === true) {
-        requiredFieldCount = 12;
-      } else if (this.splitRate === true && this.holidaySplitRate === false) {
-        requiredFieldCount = 9;
-      } else if (this.splitRate === true && this.holidaySplitRate === true) {
-        requiredFieldCount = 7;
-      }
-
-      const allFieldsFilled =
-        keys.length === requiredFieldCount && keys.every((key) => object[key] !== "");
-
-      return allFieldsFilled;
-    },
     validateStartTime(newValue) {
       if (!newValue) {
         this.validationStartTime = false;
@@ -1541,6 +1484,7 @@ export default {
     },
     async onClientSelect() {
       await this.getClientFetchSiteMethod();
+      this.site_id = null;
     },
 
     async onJobTitleChange() {
@@ -1559,58 +1503,8 @@ export default {
 
       if (selectedSite) {
         this.site_id = selectedSite.site_id;
-        this.splitRate = selectedSite.split_rate;
-        this.holidaySplitRate = selectedSite.holiday_split_rate;
 
         await this.getTimeShift(this.site_id);
-
-        const dayShift = this.filteredShiftsTime.find(
-          (shift) =>
-            shift.shift_name.charAt(0).toUpperCase() +
-              shift.shift_name.slice(1).toLowerCase() ===
-            "Day shift"
-        );
-        if (dayShift) {
-          this.day_shift_id = dayShift.id;
-          this.day_start_time = dayShift.start_time;
-          this.day_end_time = dayShift.end_time;
-        }
-
-        const nightShift = this.filteredShiftsTimeNight.find(
-          (shift) =>
-            shift.shift_name.charAt(0).toUpperCase() +
-              shift.shift_name.slice(1).toLowerCase() ===
-            "Night shift"
-        );
-        if (nightShift) {
-          this.night_shift_id = nightShift.id;
-          this.night_start_time = nightShift.start_time;
-          this.night_end_time = nightShift.end_time;
-        }
-
-        const holidayDayShift = this.filteredShiftsTimeHoliday.find(
-          (shift) =>
-            shift.shift_name.charAt(0).toUpperCase() +
-              shift.shift_name.slice(1).toLowerCase() ===
-            "Holiday day shift"
-        );
-        if (holidayDayShift) {
-          this.dayShiftId = holidayDayShift.id;
-          this.holiday_start_time = holidayDayShift.start_time;
-          this.holiday_end_time = holidayDayShift.end_time;
-        }
-
-        const holidayNightShift = this.filteredShiftsTimeHolidayNight.find(
-          (shift) =>
-            shift.shift_name.charAt(0).toUpperCase() +
-              shift.shift_name.slice(1).toLowerCase() ===
-            "Holiday night shift"
-        );
-        if (holidayNightShift) {
-          this.nightShiftId = holidayNightShift.id;
-          this.holiday_night_start_time = holidayNightShift.start_time;
-          this.holiday_night_end_time = holidayNightShift.end_time;
-        }
       }
     },
 
@@ -1618,185 +1512,112 @@ export default {
       this.clearFields();
       setTimeout(() => {
         // this.clearError();
+        this.clearFields();
       }, 10);
     },
 
     async addVacancyMethod() {
       const rateAndRules = [];
+      const commonData = {
+        site_id: this.site_id,
+        job_id: this.job_id,
+        client_id: this.client_id,
+      };
+      const shiftNames = ["early", "late", "night", "long day"];
 
-      for (let i = 0; i < this.days.length; i++) {
-        const day = this.days[i];
-        const dayClientRate = this.selectedClientRate[`${day}-day`] || "";
-        const nightClientRate = this.selectedClientRate[`${day}-night`] || "";
-        const dayRateType = this.selectedRateType[`${day}-day`] || "";
-        const nightRateType = this.selectedRateType[`${day}-night`] || "";
-        const dayPrivateLimited = this.selectedPrivateLimited[`${day}-day`] || "";
-        const nightPrivateLimited = this.selectedPrivateLimited[`${day}-night`] || "";
-
-        let dayShiftEntry = {};
-        let nightShiftEntry = {};
-
-        if (day === "Saturday" || day === "Sunday") {
-          dayShiftEntry = {
-            site_id: this.site_id,
-            job_id: this.job_id,
-            day: day,
-            client_rate: this.selectedClientRate[`${day}-holiday`] || "",
-            self_employed: this.selectedSelfEmployee[`${day}-holiday`] || "",
-            private_limited: this.selectedPrivateLimited[`${day}-holiday`] || "",
-            umbrella: this.selectedUmbrella[`${day}-holiday`] || "",
-            rate_type: this.selectedRateType[`${day}-holiday`] || "",
-            paye: this.selectedPaye[`${day}-holiday`] || "",
-            site_shift_id: this.dayShiftId,
-            client_id: this.client_id,
-            start_time: this.holiday_start_time,
-            end_time: this.holiday_end_time,
-          };
-
-          nightShiftEntry = {
-            site_id: this.site_id,
-            job_id: this.job_id,
-            day: day,
-            client_rate: this.holidaySplitRate
-              ? this.selectedClientRate[`${day}-holiday`]
-              : this.selectedClientRate[`${day}-holiday_night`] || "",
-            self_employed: this.holidaySplitRate
-              ? this.selectedSelfEmployee[`${day}-holiday`]
-              : this.selectedSelfEmployee[`${day}-holiday_night`] || "",
-            private_limited: this.holidaySplitRate
-              ? this.selectedPrivateLimited[`${day}-holiday`]
-              : this.selectedPrivateLimited[`${day}-holiday_night`] || "",
-            umbrella: this.holidaySplitRate
-              ? this.selectedUmbrella[`${day}-holiday`]
-              : this.selectedUmbrella[`${day}-holiday_night`] || "",
-            rate_type: this.holidaySplitRate
-              ? this.selectedRateType[`${day}-holiday`]
-              : this.selectedRateType[`${day}-holiday_night`] || "",
-            paye: this.holidaySplitRate
-              ? this.selectedPaye[`${day}-holiday`]
-              : this.selectedPaye[`${day}-holiday_night`] || "",
-            site_shift_id: this.nightShiftId,
-            client_id: this.client_id,
-            start_time: this.holiday_night_start_time,
-            end_time: this.holiday_night_end_time,
-          };
-        } else {
-          dayShiftEntry = {
-            site_id: this.site_id,
-            job_id: this.job_id,
-            day: day,
-            client_rate: dayClientRate || "",
-            self_employed: this.selectedSelfEmployee[`${day}-day`] || "",
-            private_limited: dayPrivateLimited || "",
-            umbrella: this.selectedUmbrella[`${day}-day`] || "",
-            rate_type: dayRateType || "",
-            paye: this.selectedPaye[`${day}-day`] || "",
-            site_shift_id: this.day_shift_id,
-            client_id: this.client_id,
-            start_time: this.day_start_time,
-            end_time: this.day_end_time,
-          };
-
-          nightShiftEntry = {
-            site_id: this.site_id,
-            job_id: this.job_id,
-            day: day,
-            // client_rate: nightClientRate || "",
-            client_rate: this.splitRate ? dayClientRate : nightClientRate || "",
-
-            self_employed: this.splitRate
-              ? this.selectedSelfEmployee[`${day}-day`]
-              : this.selectedSelfEmployee[`${day}-night`] || "",
-            private_limited: this.splitRate
-              ? dayPrivateLimited
-              : nightPrivateLimited || "",
-            umbrella: this.splitRate
-              ? this.selectedUmbrella[`${day}-day`]
-              : this.selectedUmbrella[`${day}-night`] || "",
-            rate_type: this.splitRate ? dayRateType : nightRateType || "",
-            paye: this.splitRate
-              ? this.selectedPaye[`${day}-day`]
-              : this.selectedPaye[`${day}-night`] || "",
-            site_shift_id: this.night_shift_id,
-            client_id: this.client_id,
-            start_time: this.night_start_time,
-            end_time: this.night_end_time,
-          };
-        }
-
-        rateAndRules.push(dayShiftEntry, nightShiftEntry);
-      }
-
-      const data = { rate_and_rules: rateAndRules };
-
-      try {
-        const token = localStorage.getItem("token");
-        const response = await fetch(`${VITE_API_URL}/create_multiple_rates_and_rules`, {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-            Authorization: "bearer " + token,
-          },
-          body: JSON.stringify(data),
+      if (this.splitRate) {
+        this.days.forEach((day) => {
+          rateAndRules[day.toLowerCase()] = [];
         });
+        for (let i = 0; i < this.days.length; i++) {
+          const day = this.days[i];
+          shiftNames.forEach((shiftName) => {
+            const shiftData = this.shiftsTime.find(
+              (s) => s.shift_name.toLowerCase() === shiftName
+            );
+            const shiftKey = day ? `${day}-${shiftName}` : shiftName;
 
-        if (response.status === 201) {
-          this.clearFields();
-          setTimeout(() => {
-            // this.clearError();
-          }, 100);
-          this.$emit("UpdatedRateRules");
-          const message = "Rate and Rules Added Successfully";
-          this.$refs.successAlert.showSuccess(message);
-        } else if (response.status === 422) {
-          const errorData = await response.json();
-          const errorMessage = errorData.errors.join(", ");
+            const shiftEntry = {
+              day: day,
+              ...commonData,
+              shift: shiftName,
+              site_shift_id: shiftData ? shiftData.site_shift_id : null,
+              start_time: shiftData ? shiftData.start_time : null,
+              end_time: shiftData ? shiftData.end_time : null,
+              rate_type: this.selectedRateType[shiftKey] || "",
+              client_rate: this.selectedClientRate[shiftKey] || "",
+              private_limited: this.selectedPrivateLimited[shiftKey] || "",
+              self_employed: this.selectedSelfEmployee[shiftKey] || "",
+              umbrella: this.selectedUmbrella[shiftKey] || "",
+              paye: this.selectedPaye[shiftKey] || "",
+            };
 
-          this.$refs.dangerAlert.showSuccess(errorMessage);
-        } else {
-          const errorData = await response.json();
-          const errorMessage = errorData.message || "Data not Found!";
-
-          this.$refs.dangerAlert.showSuccess(errorMessage);
+            rateAndRules.push(shiftEntry);
+          });
         }
-      } catch (error) {
-        // Handle fetch errors
+      } else {
+        shiftNames.forEach((shiftName) => {
+          const shiftData = this.shiftsTime.find(
+            (s) => s.shift_name.toLowerCase() === shiftName
+          );
+          const shiftKey = shiftName;
+
+          const shiftEntrys = {
+            ...commonData,
+            shift: shiftName,
+            site_shift_id: shiftData ? shiftData.site_shift_id : null,
+            start_time: shiftData ? shiftData.start_time : null,
+            end_time: shiftData ? shiftData.end_time : null,
+            rate_type: this.selectedRateType[shiftKey] || "",
+            client_rate: this.selectedClientRate[shiftKey] || "",
+            private_limited: this.selectedPrivateLimited[shiftKey] || "",
+            self_employed: this.selectedSelfEmployee[shiftKey] || "",
+            umbrella: this.selectedUmbrella[shiftKey] || "",
+            paye: this.selectedPaye[shiftKey] || "",
+          };
+
+          rateAndRules.push(shiftEntrys);
+        });
       }
-    },
+      if (rateAndRules.length > 0) {
+        const data = { rate_and_rules: rateAndRules };
 
-    handleShiftChange(shiftType) {
-      if (shiftType === "day") {
-        const selectedShift = this.filteredShiftsTime.find(
-          (shift) => shift.id === this.day_shift_id
-        );
-        if (selectedShift) {
-          this.start_time = selectedShift.start_time;
-          this.end_time = selectedShift.end_time;
+        try {
+          const token = localStorage.getItem("token");
+          const endpoint = this.splitRate
+            ? `${VITE_API_URL}/create_multiple_rates_and_rules`
+            : `${VITE_API_URL}/create_multiple_rates_and_rules`;
+
+          const response = await fetch(endpoint, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(data),
+          });
+
+          if (response.status === 201) {
+            this.clearFields();
+            setTimeout(() => {
+              // this.clearError();
+            }, 100);
+            this.$emit("UpdatedRateRules");
+            const message = "Rate and Rules Added Successfully";
+            this.$refs.successAlert.showSuccess(message);
+          } else if (response.status === 422) {
+            const errorData = await response.json();
+            const errorMessage = errorData.errors.join(", ");
+            this.$refs.dangerAlert.showSuccess(errorMessage);
+          } else {
+            const errorData = await response.json();
+            const errorMessage = errorData.message || "Data not Found!";
+            this.$refs.dangerAlert.showSuccess(errorMessage);
+          }
+        } catch (error) {
+          // Handle fetch errors
         }
-      } else if (shiftType === "night") {
-        const selectedShift = this.filteredShiftsTimeNight.find(
-          (shift) => shift.id === this.night_shift_id
-        );
-        if (selectedShift) {
-          this.start_time = selectedShift.start_time;
-          this.end_time = selectedShift.end_time;
-        }
-      } else if (shiftType === "Holiday day shift") {
-        const selectedShift = this.filteredShiftsTimeHoliday.find(
-          (shift) => shift.id === this.dayShiftId
-        );
-        if (selectedShift) {
-          this.start_time = selectedShift.start_time;
-          this.end_time = selectedShift.end_time;
-        }
-      } else if (shiftType === "Holiday night shift") {
-        const selectedShift = this.filteredShiftsTimeHolidayNight.find(
-          (shift) => shift.id === this.nightShiftId
-        );
-        if (selectedShift) {
-          this.start_time = selectedShift.start_time;
-          this.end_time = selectedShift.end_time;
-        }
+      } else {
       }
     },
 
@@ -1820,9 +1641,8 @@ export default {
         );
         this.businessUnit = response.data.sites;
 
-        // this.selectedSiteId = this.businessUnit[0].site_id;
-        // this.splitRate = this.businessUnit[0].split_rate;
-        // this.holidaySplitRate = this.businessUnit[0].holiday_split_rate;
+        this.selectedSiteId = this.businessUnit[0].site_id;
+        this.splitRate = this.businessUnit[0].split_rate;
 
         this.options = response.data.jobs;
       } catch (error) {
@@ -1839,47 +1659,21 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(`${VITE_API_URL}site_shift/${selectedSiteId}`);
+        const response = await axios.get(`${VITE_API_URL}/site_shift/${selectedSiteId}`);
+        this.splitRate = response.data.split_rate || false;
         this.shiftsTime =
           response.data.site_shift_data.map((shift) => ({
             ...shift,
-            start_time: this.convertTimeFormat(shift.start_time),
-            end_time: this.convertTimeFormat(shift.end_time),
+            start_time: shift.start_time,
+            end_time: shift.end_time,
+            site_shift_id: shift.id,
           })) || [];
-        this.filteredShiftsTime = this.shiftsTime.filter(
-          (shift) =>
-            shift.shift_name.charAt(0).toUpperCase() +
-              shift.shift_name.slice(1).toLowerCase() ===
-            "Day shift"
-        );
-
-        this.filteredShiftsTimeNight = this.shiftsTime.filter(
-          (shift) =>
-            shift.shift_name.charAt(0).toUpperCase() +
-              shift.shift_name.slice(1).toLowerCase() ===
-            "Night shift"
-        );
-
-        this.filteredShiftsTimeHoliday = this.shiftsTime.filter(
-          (shift) =>
-            shift.shift_name.charAt(0).toUpperCase() +
-              shift.shift_name.slice(1).toLowerCase() ===
-            "Holiday day shift"
-        );
-        this.filteredShiftsTimeHolidayNight = this.shiftsTime.filter(
-          (shift) =>
-            shift.shift_name.charAt(0).toUpperCase() +
-              shift.shift_name.slice(1).toLowerCase() ===
-            "Holiday night shift"
-        );
-
-        if (this.filteredShiftsTime.length === 0) {
-          this.filteredShiftsTime = this.shiftsTime;
-        }
+        // console.log(this.shiftsTime);
       } catch (error) {
         // console.error("Error fetching shifts:", error);
       }
     },
+
     convertTimeFormat(dateTimeString) {
       const date = new Date(dateTimeString);
       const hours = date.getUTCHours();
@@ -1891,41 +1685,53 @@ export default {
     },
 
     clearFields() {
-      (this.selectedSiteId = ""),
-        (this.selectedJobId = ""),
-        (this.night_shift_id = ""),
-        (this.client_id = ""),
-        (this.night_start_time = ""),
-        (this.night_end_time = ""),
-        (this.selectedClientRate = {});
-      this.selectedRateType = {};
-      this.selectedPrivateLimited = {};
-      this.selectedSelfEmployee = {};
-      this.selectedUmbrella = {};
-      this.selectedPaye = {};
-      (this.holiday_start_time = ""),
-        (this.holiday_end_time = ""),
-        (this.holiday_night_start_time = ""),
-        (this.holiday_night_end_time = ""),
-        (this.day_start_time = ""),
-        (this.day_end_time = ""),
-        (this.dayShiftId = ""),
-        (this.nightShiftId = ""),
-        (this.day_shift_id = "");
+      this.selectedSiteId = "";
+      this.selectedJobId = "";
+      this.site_id = "";
+      this.client_id = "";
+      this.splitRate = false;
+      this.shiftsTime = [];
+
+      const shiftNames = ["early", "late", "night", "long day"];
+
+      if (this.splitRate) {
+        this.days.forEach((day) => {
+          shiftNames.forEach((shiftName) => {
+            const shiftKey = `${day}-${shiftName}`;
+            this.selectedRateType[shiftKey] = "";
+            this.selectedClientRate[shiftKey] = "";
+            this.selectedPrivateLimited[shiftKey] = "";
+            this.selectedSelfEmployee[shiftKey] = "";
+            this.selectedUmbrella[shiftKey] = "";
+            this.selectedPaye[shiftKey] = "";
+            this.startTime[shiftKey] = "";
+            this.endTime[shiftKey] = "";
+            this.shiftName[shiftKey] = "";
+          });
+        });
+      } else {
+        this.selectedRateType = {};
+        this.selectedClientRate = {};
+        this.selectedPrivateLimited = {};
+        this.selectedSelfEmployee = {};
+        this.selectedUmbrella = {};
+        this.selectedPaye = {};
+        this.startTime = {};
+        this.endTime = {};
+        this.shiftName = {};
+      }
     },
   },
-  // created() {
-  //   this.getTimeShift();
-  // },
+
   async beforeRouteEnter(to, from, next) {
     next((vm) => {
       // vm.getTimeShift();
-      vm.getClientMethod();
+      // vm.getClientMethod();
     });
   },
   async beforeRouteUpdate(to, from, next) {
     // this.getTimeShift();
-    this.getClientMethod();
+    // this.getClientMethod();
     next();
   },
   mounted() {
@@ -1948,11 +1754,11 @@ export default {
 .modal-dialog {
   max-width: 1460px;
 }
+
 select {
   width: 100% !important;
   padding: 10px !important;
   border-radius: 4px;
-  border: 0px;
 }
 label.form-label {
   text-transform: capitalize;

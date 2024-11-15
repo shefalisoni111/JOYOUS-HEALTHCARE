@@ -700,7 +700,7 @@ export default {
       const formData = new FormData();
       formData.append("file", file);
       axios
-        .post(`${VITE_API_URL}/import_all_csv`, formData, {
+        .post(`${VITE_API_URL}/client_filter`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -726,7 +726,7 @@ export default {
     },
 
     exportAll() {
-      let apiUrl = `${VITE_API_URL}/export_all_csv.csv`;
+      let apiUrl = `${VITE_API_URL}/client_filter`;
       let params = {};
       let filename = "All_Clients.csv";
 
