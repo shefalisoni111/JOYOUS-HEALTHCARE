@@ -32,15 +32,14 @@
                         aria-describedby="name"
                         readonly
                       /> -->
-                      <input
-                        v-if="fetchCustomTimeShetData.candidate_name"
+                      <!--         <input
+                    
                         class="form-control text-capitalize custom-disabled"
                         v-model="fetchCustomTimeShetData.candidate_name"
                         type="text"
                         readonly
-                      />
+                      /> -->
                       <input
-                        v-else
                         class="form-control text-capitalize custom-disabled"
                         v-model="fetchCustomTimeShetData.name"
                         type="text"
@@ -98,18 +97,9 @@
                     <div class="mb-3">
                       <label class="form-label">Shift</label>
                       <input
-                        v-if="showSaveButton"
                         type="text"
                         class="form-control custom-disabled"
                         v-model="fetchCustomTimeShetData.shift_name"
-                        aria-describedby="position"
-                        readonly
-                      />
-                      <input
-                        v-else
-                        type="text"
-                        class="form-control custom-disabled"
-                        v-model="fetchCustomTimeShetData.shift"
                         aria-describedby="position"
                         readonly
                       />
@@ -136,49 +126,13 @@
                             >Start Time
                           </label>
                         </div>
-                        <div class="col-12" v-if="showSaveButton">
-                          <input
-                            v-if="apiResponse"
-                            type="text"
-                            class="form-control"
-                            v-model="fetchCustomTimeShetData.start_time"
-                            disabled
-                          />
-
+                        <div class="col-12">
                           <select
-                            v-else
                             id="selectCustomStartTime"
                             class="form-control"
                             v-model="fetchCustomTimeShetData.start_time"
                             @change="validateStartTime"
                             style="width: 240px"
-                          >
-                            <option
-                              v-for="hour in 24"
-                              :key="hour"
-                              :value="formatTime(hour)"
-                            >
-                              {{ formatTime(hour) }}
-                            </option>
-                          </select>
-                        </div>
-                        <div class="col-12" v-else>
-                          <input
-                            v-if="apiResponse"
-                            type="text"
-                            class="form-control custom-disabled"
-                            v-model="fetchCustomTimeShetData.start_time"
-                            disabled
-                          />
-
-                          <select
-                            v-else
-                            id="selectCustomStartTime"
-                            class="form-control custom-disabled"
-                            v-model="fetchCustomTimeShetData.start_time"
-                            @change="validateStartTime"
-                            style="width: 240px"
-                            disabled
                           >
                             <option
                               v-for="hour in 24"
@@ -212,7 +166,7 @@
                           <input
                             v-if="apiResponse_EndTime"
                             type="text"
-                            class="form-control"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.end_time"
                             disabled
                           />
@@ -313,15 +267,7 @@
                           >
                         </div>
                         <div class="col-12" v-if="showSaveButton">
-                          <input
-                            v-if="fetchCustomTimeShetData.break"
-                            type="text"
-                            class="form-control"
-                            v-model="fetchCustomTimeShetData.break"
-                            disabled
-                          />
                           <select
-                            v-else
                             id="selectShiftsBreak"
                             class="form-control"
                             v-model="fetchCustomTimeShetData.break"
@@ -338,13 +284,22 @@
                           </select>
                         </div>
                         <div class="col-12" v-else>
-                          <input
-                            v-if="fetchCustomTimeShetData.break"
-                            type="text"
-                            class="form-control"
+                          <select
+                            id="selectShiftsBreak"
+                            class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.break"
+                            @change="validateBreak"
+                            style="width: 240px"
                             disabled
-                          />
+                          >
+                            <option
+                              v-for="minute in [15, 30, 45, 60, 75, 90]"
+                              :key="minute"
+                              :value="minute"
+                            >
+                              {{ formatBreakTime(minute) }}
+                            </option>
+                          </select>
                         </div>
                       </div>
                       <div class="mb-3">
@@ -352,19 +307,12 @@
                           <label class="form-label">Total Hours</label>
                         </div>
                         <div class="col-12 mt-1">
-                          <input
-                            v-if="showSaveButton"
+                          <!-- <input
                             type="email"
                             class="form-control"
-                            v-model="fetchCustomTimeShetData.total_hours"
-                          />
-                          <input
-                            v-else
-                            type="email"
-                            class="form-control"
-                            v-model="fetchCustomTimeShetData.total_hours"
-                          />
-                          <!-- <select
+                            v-model="fetchCustomTimeShetData.total_shift_hours"
+                          /> -->
+                          <select
                             id="selectCustomStartTime"
                             class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.total_hours"
@@ -375,11 +323,11 @@
                             <option v-for="hour in 24" :key="hour" :value="hour">
                               {{ hour }} hour{{ hour > 1 ? "s" : "" }}
                             </option>
-                          </select> -->
+                          </select>
                         </div>
                       </div>
                     </div>
-                    <div class="d-flex">
+                    <div class="d-flex justify-content-between">
                       <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label">Client Rate</label>
@@ -387,7 +335,7 @@
                         <div class="col-12 mt-1" v-if="showSaveButton">
                           <input
                             type="text"
-                            class="form-control custom-disabled"
+                            class="form-control disabled"
                             v-model="fetchCustomTimeShetData.client_rate"
                             @input="validateNumber('client_rate')"
                             disabled
@@ -425,7 +373,7 @@
                           />
                         </div>
                       </div> -->
-                      <div class="mb-3 ms-5">
+                      <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label">Staff Rate</label>
                         </div>
@@ -552,7 +500,6 @@
               Approve
             </button>
             <button
-              :disabled="isSaveDisabled"
               v-show="showSaveButton"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
@@ -581,7 +528,6 @@ export default {
 
         date: "",
         shift_date: "",
-        shift_name: "",
         candidate_name: "",
         total_hours: "",
         start_time: "",
@@ -786,15 +732,14 @@ export default {
       return `${formattedHours}:${formattedMinutes} ${amPm}`;
     },
     formatTime(hour) {
-      if (hour < 12) {
+      if (hour === 0) {
+        return "12:00 AM";
+      } else if (hour < 12) {
         return `${String(hour).padStart(2, "0")}:00 AM`;
       } else if (hour === 12) {
-        return `${String(hour).padStart(2, "0")}:00 PM`;
-      } else if (hour === 24) {
-        return `00:00`;
+        return "12:00 AM";
       } else {
-        const adjustedHour = hour % 12;
-        return `${String(adjustedHour).padStart(2, "0")}:00 PM`;
+        return `${String(hour - 12).padStart(2, "0")}:00 PM`;
       }
     },
     formatBreakTime(minute) {
@@ -824,10 +769,21 @@ export default {
     },
     async updateCandidateMethod() {
       const token = localStorage.getItem("token");
+
       try {
+        const payload = { ...this.fetchCustomTimeShetData };
+
+        if (payload.start_time !== null || payload.start_time !== "") {
+          delete payload.start_time;
+        }
+
+        if (payload.end_time !== null || payload.end_time !== "") {
+          delete payload.end_time;
+        }
+
         const response = await axios.put(
           `${VITE_API_URL}/custom_timesheets/${this.fetchCustomTimeShetData.id}`,
-          this.fetchCustomTimeShetData,
+          payload,
           {
             headers: {
               "Content-Type": "multipart/form-data",

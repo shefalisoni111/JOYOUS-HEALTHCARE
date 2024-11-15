@@ -910,7 +910,7 @@ export default {
         this.validationStaffRequired &&
         this.validationDateType
       ) {
-        console.log(this.end_date);
+        // console.log(this.end_date);
         const data = {
           site_id: this.site_id,
           job_id: this.job_id,
@@ -929,6 +929,12 @@ export default {
           umbrella: this.umbrella,
           private_limited: this.private_limited,
         };
+        if (this.end_time !== null && this.end_time !== "") {
+          data.end_time = this.end_time;
+        }
+        if (this.start_time !== null && this.start_time !== "") {
+          data.start_time = this.start_time;
+        }
 
         try {
           const token = localStorage.getItem("token");
