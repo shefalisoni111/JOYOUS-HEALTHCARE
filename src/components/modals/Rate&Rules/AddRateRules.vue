@@ -1259,6 +1259,7 @@
             >
               Add Rate
             </button>
+
             <button
               v-else
               :disabled="!isFormValidTrue()"
@@ -1367,7 +1368,9 @@ export default {
   },
   watch: {
     selectedSiteId(newSiteId) {
-      this.getTimeShift(newSiteId);
+      if (newSiteId) {
+        this.onSiteSelect();
+      }
     },
   },
   methods: {
@@ -1484,7 +1487,13 @@ export default {
     },
     async onClientSelect() {
       await this.getClientFetchSiteMethod();
-      this.site_id = null;
+
+      // Set default site_id based on the first site in the list
+      if (this.businessUnit.length > 0) {
+        this.selectedSiteId = this.businessUnit[0].site_id;
+      } else {
+        this.selectedSiteId = null;
+      }
     },
 
     async onJobTitleChange() {
@@ -1503,8 +1512,9 @@ export default {
 
       if (selectedSite) {
         this.site_id = selectedSite.site_id;
-
         await this.getTimeShift(this.site_id);
+      } else {
+        this.site_id = null;
       }
     },
 
@@ -1517,7 +1527,7 @@ export default {
     },
 
     async addVacancyMethod() {
-      const rateAndRules = [];
+      const rateAndRules = this.splitRate ? {} : [];
       const commonData = {
         site_id: this.site_id,
         job_id: this.job_id,
@@ -1528,17 +1538,14 @@ export default {
       if (this.splitRate) {
         this.days.forEach((day) => {
           rateAndRules[day.toLowerCase()] = [];
-        });
-        for (let i = 0; i < this.days.length; i++) {
-          const day = this.days[i];
           shiftNames.forEach((shiftName) => {
             const shiftData = this.shiftsTime.find(
               (s) => s.shift_name.toLowerCase() === shiftName
             );
-            const shiftKey = day ? `${day}-${shiftName}` : shiftName;
+            const shiftKey = `${day}-${shiftName}`;
 
             const shiftEntry = {
-              day: day,
+              day,
               ...commonData,
               shift: shiftName,
               site_shift_id: shiftData ? shiftData.site_shift_id : null,
@@ -1552,17 +1559,18 @@ export default {
               paye: this.selectedPaye[shiftKey] || "",
             };
 
-            rateAndRules.push(shiftEntry);
+            rateAndRules[day.toLowerCase()].push(shiftEntry);
           });
-        }
+        });
       } else {
         shiftNames.forEach((shiftName) => {
           const shiftData = this.shiftsTime.find(
             (s) => s.shift_name.toLowerCase() === shiftName
           );
+
           const shiftKey = shiftName;
 
-          const shiftEntrys = {
+          const shiftEntry = {
             ...commonData,
             shift: shiftName,
             site_shift_id: shiftData ? shiftData.site_shift_id : null,
@@ -1576,48 +1584,44 @@ export default {
             paye: this.selectedPaye[shiftKey] || "",
           };
 
-          rateAndRules.push(shiftEntrys);
+          rateAndRules.push(shiftEntry);
         });
       }
-      if (rateAndRules.length > 0) {
-        const data = { rate_and_rules: rateAndRules };
 
-        try {
-          const token = localStorage.getItem("token");
-          const endpoint = this.splitRate
-            ? `${VITE_API_URL}/create_multiple_rates_and_rules`
-            : `${VITE_API_URL}/create_multiple_rates_and_rules`;
+      const payload = this.splitRate
+        ? { rate_and_rules: rateAndRules }
+        : { rate_and_rules: { all_day: rateAndRules } };
 
-          const response = await fetch(endpoint, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(data),
-          });
+      try {
+        const token = localStorage.getItem("token");
+        const endpoint = `${VITE_API_URL}/create_multiple_rates_and_rules`;
 
-          if (response.status === 201) {
-            this.clearFields();
-            setTimeout(() => {
-              // this.clearError();
-            }, 100);
-            this.$emit("UpdatedRateRules");
-            const message = "Rate and Rules Added Successfully";
-            this.$refs.successAlert.showSuccess(message);
-          } else if (response.status === 422) {
-            const errorData = await response.json();
-            const errorMessage = errorData.errors.join(", ");
-            this.$refs.dangerAlert.showSuccess(errorMessage);
-          } else {
-            const errorData = await response.json();
-            const errorMessage = errorData.message || "Data not Found!";
-            this.$refs.dangerAlert.showSuccess(errorMessage);
-          }
-        } catch (error) {
-          // Handle fetch errors
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (response.status === 201) {
+          this.clearFields();
+          this.$emit("UpdatedRateRules");
+          const message = "Rate and Rules Added Successfully";
+          this.$refs.successAlert.showSuccess(message);
+        } else if (response.status === 422) {
+          const errorData = await response.json();
+          const errorMessage = errorData.errors.join(", ");
+          this.$refs.dangerAlert.showSuccess(errorMessage);
+        } else {
+          const errorData = await response.json();
+          const errorMessage = errorData.message || "Data not Found!";
+          // this.$refs.dangerAlert.showSuccess(errorMessage);
         }
-      } else {
+      } catch (error) {
+        // console.error("An error occurred:", error);
+        // this.$refs.dangerAlert.showSuccess("An unexpected error occurred.");
       }
     },
 
@@ -1639,6 +1643,7 @@ export default {
         const response = await axios.get(
           `${VITE_API_URL}/fetch_site_by_client_id/${this.client_id}`
         );
+
         this.businessUnit = response.data.sites;
 
         this.selectedSiteId = this.businessUnit[0].site_id;

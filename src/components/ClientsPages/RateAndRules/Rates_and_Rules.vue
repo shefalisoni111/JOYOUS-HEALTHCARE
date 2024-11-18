@@ -255,7 +255,7 @@
                           <td>&nbsp;</td>
                           <td>&nbsp;</td>
                           <td>&nbsp;</td>
-                          <td>
+                          <td v-if="this.splitRate">
                             <button
                               type="button"
                               class="btn btn-outline-success text-nowrap"
@@ -274,14 +274,8 @@
                             >
                               <i class="bi bi-pencil"></i>
                             </button>
-                            <!-- <button
-                              type="button"
-                              class="btn btn-outline-danger text-nowrap"
-                              @click="deleteSelectedStaffs(data.id)"
-                            >
-                              Delete Staff
-                            </button> -->
                           </td>
+                          <td v-else></td>
                         </tr>
 
                         <tr
@@ -411,7 +405,7 @@
                           <td>&nbsp;</td>
                           <td>&nbsp;</td>
                           <td>&nbsp;</td>
-                          <td>
+                          <td v-if="this.splitRate">
                             <button
                               type="button"
                               class="btn btn-outline-success text-nowrap"
@@ -431,6 +425,7 @@
                               <i class="bi bi-pencil"></i>
                             </button>
                           </td>
+                          <td v-else></td>
                         </tr>
                         <tr
                           v-if="activeSiteId === index"
@@ -636,6 +631,7 @@ export default {
       businessUnit: [],
       job_id: "",
       options: [],
+      splitRate: false,
     };
   },
   components: {
@@ -939,6 +935,25 @@ export default {
     extractFilteredRateRulesIds() {
       this.ids = this.filteredRateRulesData.map((rate) => rate.id);
     },
+    async getClientFetchSiteMethod() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/fetch_site_by_client_id/${this.client_id}`
+        );
+        this.businessUnit = response.data.sites;
+
+        this.selectedSiteId = this.businessUnit[0].site_id;
+        this.splitRate = this.businessUnit[0].split_rate;
+
+        this.options = response.data.jobs;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status == 404) {
+            // alert(error.response.data.message);
+          }
+        }
+      }
+    },
     async getBusinessUnitMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/activated_site`);
@@ -1091,6 +1106,7 @@ export default {
         this.isLoading = false;
       }
     },
+
     async getRateRulesWeekDataMethod(siteId) {
       try {
         const response = await axios.get(
@@ -1103,9 +1119,9 @@ export default {
     },
     async toggleDetails(index, siteId, client, job) {
       if (this.activeSiteId === index) {
-        this.activeSiteId = null; // Collapse if the same row is clicked
+        this.activeSiteId = null;
       } else {
-        this.activeSiteId = index; // Expand the clicked row
+        this.activeSiteId = index;
       }
       // this.activeSiteId = this.activeSiteId === index ? null : index;
 
@@ -1132,6 +1148,7 @@ export default {
     this.getBusinessUnitMethod();
     this.getJobTitleMethod();
     this.getClientMethod();
+    this.getClientFetchSiteMethod();
   },
   created() {
     this.ids = this.groupedRateRulesData.map((data) => data.id);
