@@ -8,7 +8,11 @@
             <div class="">
               <div class="d-flex ms-2 justify-content-between">
                 <div class="d-flex gap-2">
-                  <select v-model="site_id" id="selectBusinessUnit" @change="filterData">
+                  <select
+                    id="selectBusinessUnit"
+                    @change="filterData"
+                    v-model="selectedSiteName"
+                  >
                     <option value="">All Site</option>
                     <option
                       v-for="option in businessUnit"
@@ -20,12 +24,16 @@
                     </option>
                   </select>
 
-                  <select v-model="id" @change="filterData" id="selectStaff">
+                  <select
+                    v-model="selectedCandidate"
+                    @change="filterData"
+                    id="selectStaff"
+                  >
                     <option value="">All Staff</option>
                     <option
                       v-for="option in candidateLists"
                       :key="option.id"
-                      :value="option.id"
+                      :value="`${option.first_name} ${option.last_name}`"
                       placeholder="Select Staff"
                     >
                       {{ option.first_name + " " + option.last_name }}
@@ -103,6 +111,7 @@
                       >
                         <i class="bi bi-download"></i> Export CSV
                       </button> -->
+
                       <div
                         v-if="!paginateCandidates || paginateCandidates.length === 0"
                         class="tooltip-wrapper"
@@ -112,7 +121,7 @@
                         <button
                           type="button"
                           class="btn btn-outline-success text-nowrap"
-                          @click="exportAll"
+                          @click="exportOneFile('all')"
                           :disabled="true"
                         >
                           <i class="bi bi-download"></i> Export CSV
@@ -122,7 +131,7 @@
                         <button
                           type="button"
                           class="btn btn-outline-success text-nowrap"
-                          @click="exportAll"
+                          @click="exportOneFile('all')"
                         >
                           <i class="bi bi-download"></i> Export CSV
                         </button>
@@ -416,7 +425,7 @@
 import axios from "axios";
 import Navbar from "../Navbar.vue";
 import Loader from "../Loader/Loader.vue";
-
+import Swal from "sweetalert2";
 const axiosInstance = axios.create({
   headers: {
     "Cache-Control": "no-cache",
@@ -455,6 +464,9 @@ export default {
       id: "",
       candidateLists: [],
       getSiteReportData: [],
+      selectedSiteName: "",
+      selectedCandidate: "",
+      queryParams: {},
     };
   },
   components: { Navbar, Loader },
@@ -516,29 +528,26 @@ export default {
   },
   methods: {
     async filterData() {
-      const filters = {
-        filter_type: this.site_id ? "site" : this.id ? "candidate" : "",
-        filter_value: this.site_id || this.getCandidateName(this.id) || "",
+      const params = {
+        page: 1,
       };
 
-      this.makeFilterAPICall(filters.filter_type, filters.filter_value);
-    },
-    getCandidateName(id) {
-      const candidate = this.candidateLists.find((candidate) => candidate.id === id);
-      return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
-    },
-    async makeFilterAPICall(filter_type, filter_value) {
+      if (this.selectedSiteName) {
+        params["report[site]"] = this.selectedSiteName;
+      }
+
+      if (this.selectedCandidate) {
+        params["report[name]"] = this.selectedCandidate;
+      }
+      params.range = this.currentView === "weekly" ? "week" : "month";
+
       try {
         const response = await axios.get(
           `${VITE_API_URL}/report_section_timesheet_filter`,
           {
-            params: {
-              filter_type: filter_type,
-              filter_value: filter_value,
-            },
+            params,
           }
         );
-
         this.getSiteReportData = response.data.timesheets || [];
         this.errorMessageFilter = "";
       } catch (error) {
@@ -550,33 +559,121 @@ export default {
         }
       }
     },
-    exportAll() {
-      const formattedDate = this.formatDate(this.startDate);
-
-      const params = {
-        date: formattedDate,
+    getCandidateName(id) {
+      const candidate = this.candidateLists.find((candidate) => candidate.id === id);
+      return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
+    },
+    exportOneFile(exportType) {
+      let queryParams = {
+        format: "csv",
       };
 
-      axios
-        .get(`${VITE_API_URL}/export_timesheet.csv`, { params })
-        .then((response) => {
-          this.downloadCSV(response.data, "Staff_ReportData.csv");
+      if (this.selectedSiteName) {
+        queryParams["report[site]"] = this.selectedSiteName;
+      }
+
+      if (this.selectedCandidate) {
+        queryParams["report[name]"] = this.selectedCandidate;
+      }
+
+      queryParams.range = this.currentView === "weekly" ? "week" : "month";
+
+      return axios
+        .get(`${VITE_API_URL}/report_section_timesheet_filter`, {
+          params: queryParams,
+          headers: {
+            Accept: "text/csv",
+          },
+          responseType: "blob",
         })
-        .catch((error) => {
-          // console.error("Error:", error);
+        .then((response) => {
+          this.blobToText(response.data)
+            .then((csvData) => {
+              const filename = "StaffReportData.csv";
+              this.downloadOneCSV(csvData, filename);
+              const message = "Export file downloaded successfully";
+              this.$refs.successAlert.showSuccess(message);
+              this.site_ids = [];
+              for (let key in this.checkedSites) {
+                this.checkedSites[key] = false;
+              }
+            })
+            .catch((error) => {});
+        })
+        .catch((error) => {})
+        .finally(() => {
+          this.site_ids = [];
         });
     },
-    downloadCSV(csvData, filename) {
-      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+    blobToText(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          resolve(reader.result);
+        };
+        reader.onerror = reject;
+        reader.readAsText(blob);
+      });
+    },
+
+    combineCsvData(csvDataArray) {
+      let combinedCsvData = "";
+      csvDataArray.forEach((csvData, index) => {
+        if (index > 0) {
+          const lines = csvData.split("\n");
+          lines.shift();
+          csvData = lines.join("\n");
+        }
+
+        combinedCsvData += csvData;
+        if (index < csvDataArray.length - 1) {
+          combinedCsvData += "\n";
+        }
+      });
+      return combinedCsvData;
+    },
+    downloadOneCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv" });
+
       const url = window.URL.createObjectURL(blob);
+
       const a = document.createElement("a");
       a.href = url;
       a.download = filename;
+
       document.body.appendChild(a);
       a.click();
+
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     },
+    // exportAll() {
+    //   const formattedDate = this.formatDate(this.startDate);
+
+    //   const params = {
+    //     date: formattedDate,
+    //   };
+
+    //   axios
+    //     .get(`${VITE_API_URL}/export_timesheet.csv`, { params })
+    //     .then((response) => {
+    //       this.downloadCSV(response.data, "Staff_ReportData.csv");
+    //     })
+    //     .catch((error) => {
+    //       // console.error("Error:", error);
+    //     });
+    // },
+    // downloadCSV(csvData, filename) {
+    //   const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+    //   const url = window.URL.createObjectURL(blob);
+    //   const a = document.createElement("a");
+    //   a.href = url;
+    //   a.download = filename;
+    //   document.body.appendChild(a);
+    //   a.click();
+    //   window.URL.revokeObjectURL(url);
+    //   document.body.removeChild(a);
+    // },
     async getClientMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/get_client_id_name`);
@@ -780,10 +877,12 @@ export default {
         const weekEnd = new Date(this.startDate);
         weekEnd.setDate(weekEnd.getDate() + 6);
         this.endDate = weekEnd;
+        this.queryParams.range = "week";
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
         this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
         this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        this.queryParams.range = "month";
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());

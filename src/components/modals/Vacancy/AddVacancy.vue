@@ -670,6 +670,7 @@ export default {
         (shift) => shift.id === this.site_shift_id
       );
       if (selectedShift) {
+        this.site_shift_id = selectedShift.id;
         this.start_time = selectedShift.start_time;
         this.end_time = selectedShift.end_time;
         this.break = selectedShift.break_duration;
@@ -784,10 +785,10 @@ export default {
       //   this.site_id,
       //   this.job_id
       // );
-      if (this.site_id) {
+      if (this.site_id && this.site_shift_id) {
         await this.getClientAccordingRatePayFetchMethod(
           this.client_id,
-          this.site_id,
+          this.site_shift_id,
           this.job_id
         );
       }
@@ -1021,7 +1022,7 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/find_rates`, { params });
         this.fetchRatesData = response.data.rates;
-        console.log(this.fetchRatesData);
+        // console.log(this.fetchRatesData);
 
         if (this.fetchRatesData.length > 0) {
           const rates = this.fetchRatesData[0];
@@ -1084,9 +1085,14 @@ export default {
         this.shiftsTime =
           response.data.site_shift_data.map((shift) => ({
             ...shift,
+
             start_time: shift.start_time,
             end_time: shift.end_time,
           })) || [];
+        if (this.shiftsTime.length > 0) {
+          this.site_shift_id = this.shiftsTime[0].id;
+          this.handleShiftChange();
+        }
         // return this.shiftsTime.length > 0 ? this.shiftsTime[0].id : null;
       } catch (error) {
         // console.error("Error fetching shifts:", error);

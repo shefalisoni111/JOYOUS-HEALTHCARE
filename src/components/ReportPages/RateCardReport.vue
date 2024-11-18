@@ -13,7 +13,7 @@
                     <option
                       v-for="option in clientData"
                       :key="option.id"
-                      :value="option.client_name"
+                      :value="option.id"
                       aria-placeholder="Select Job"
                     >
                       {{ option.client_name }}
@@ -24,7 +24,7 @@
                     <option
                       v-for="option in businessUnit"
                       :key="option.id"
-                      :value="option.site_name"
+                      :value="option.id"
                       placeholder="Select BusinessUnit"
                     >
                       {{ option.site_name }}
@@ -115,7 +115,7 @@
                         <button
                           type="button"
                           class="btn btn-outline-success text-nowrap"
-                          @click="exportAll"
+                          @click="exportOneFile('all')"
                           :disabled="true"
                         >
                           <i class="bi bi-download"></i> Export CSV
@@ -125,7 +125,7 @@
                         <button
                           type="button"
                           class="btn btn-outline-success text-nowrap"
-                          @click="exportAll"
+                          @click="exportOneFile('all')"
                         >
                           <i class="bi bi-download"></i> Export CSV
                         </button>
@@ -520,49 +520,59 @@ export default {
   },
   methods: {
     async filterData() {
-      let filter_type = "";
-      let filter_value = "";
+      const params = {
+        page: 1,
+      };
 
       if (this.client_id) {
-        filter_type = "client";
-        filter_value = this.client_id;
-      } else if (this.site_id) {
-        filter_type = "site";
-        filter_value = this.site_id;
-      } else if (this.id) {
-        filter_type = "staff";
-        filter_value = this.id;
+        params["rule_rates[client_id]"] = this.client_id;
       }
 
-      await this.makeFilterAPICall(filter_type, filter_value);
-    },
-    async makeFilterAPICall(filter_type, filter_value) {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/rate_and_rules`, {
-          params: {
-            report_query: filter_value,
-          },
-        });
+      if (this.site_id) {
+        params["rule_rates[site_id]"] = this.site_id;
+      }
 
-        this.getRateRulesData = response.data.rate_card || [];
+      try {
+        const response = await axios.get(`${VITE_API_URL}/rate_and_rule_filter`, {
+          params,
+        });
+        this.getRateRulesData = response.data.data || [];
         if (this.getRateRulesData.length === 0) {
           this.errorMessageFilter = "Report Not Found!";
         } else {
           this.errorMessageFilter = "Report Not Found!";
         }
       } catch (error) {
-        if (error.response && error.response.status === 404) {
-          const errorMessages = error.response.data.error;
-          if (errorMessages === "No records found for the given filter") {
-            // alert("No records found for the given filter");
-          } else {
-            // alert(errorMessages);
-          }
-        } else {
-          // console.error(error);
-        }
+        // console.error("Error fetching filtered data:", error);
       }
     },
+    // async makeFilterAPICall(filter_type, filter_value) {
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/rate_and_rules`, {
+    //       params: {
+    //         report_query: filter_value,
+    //       },
+    //     });
+
+    //     this.getRateRulesData = response.data.rate_card || [];
+    //     if (this.getRateRulesData.length === 0) {
+    //       this.errorMessageFilter = "Report Not Found!";
+    //     } else {
+    //       this.errorMessageFilter = "Report Not Found!";
+    //     }
+    //   } catch (error) {
+    //     if (error.response && error.response.status === 404) {
+    //       const errorMessages = error.response.data.error;
+    //       if (errorMessages === "No records found for the given filter") {
+    //         // alert("No records found for the given filter");
+    //       } else {
+    //         // alert(errorMessages);
+    //       }
+    //     } else {
+    //       // console.error(error);
+    //     }
+    //   }
+    // },
     formatTime(time) {
       return time.slice(0, 5);
     },
@@ -668,6 +678,88 @@ export default {
           this.errorMessage = "Data Not available for this month";
         }
       }
+    },
+    exportOneFile(exportType) {
+      let queryParams = {
+        format: "csv",
+      };
+
+      if (this.client_id) {
+        queryParams["rule_rates[client_id]"] = this.client_id;
+      }
+
+      if (this.site_id) {
+        queryParams["rule_rates[site_id]"] = this.site_id;
+      }
+
+      return axios
+        .get(`${VITE_API_URL}/rate_and_rule_filter`, {
+          params: queryParams,
+          headers: {
+            Accept: "text/csv",
+          },
+          responseType: "blob",
+        })
+        .then((response) => {
+          this.blobToText(response.data)
+            .then((csvData) => {
+              const filename = "Rate_RulesData.csv";
+              this.downloadOneCSV(csvData, filename);
+              const message = "Export file downloaded successfully";
+              this.$refs.successAlert.showSuccess(message);
+              this.ids = [];
+              for (let key in this.checkedClient) {
+                this.checkedClient[key] = false;
+              }
+            })
+            .catch((error) => {});
+        })
+        .catch((error) => {})
+        .finally(() => {
+          this.ids = [];
+        });
+    },
+    blobToText(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          resolve(reader.result);
+        };
+        reader.onerror = reject;
+        reader.readAsText(blob);
+      });
+    },
+
+    combineCsvData(csvDataArray) {
+      let combinedCsvData = "";
+      csvDataArray.forEach((csvData, index) => {
+        if (index > 0) {
+          const lines = csvData.split("\n");
+          lines.shift();
+          csvData = lines.join("\n");
+        }
+
+        combinedCsvData += csvData;
+        if (index < csvDataArray.length - 1) {
+          combinedCsvData += "\n";
+        }
+      });
+      return combinedCsvData;
+    },
+    downloadOneCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv" });
+
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+
+      document.body.appendChild(a);
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
     },
     exportAll() {
       const formattedDate = this.formatDate(this.startDate);
