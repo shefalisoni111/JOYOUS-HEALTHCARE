@@ -43,10 +43,10 @@
 
         <div class="row">
           <div class="full-page-calendar">
-            <SchedulePublishStaffList
+            <!-- <SchedulePublishStaffList
               @updated-assignPublish="fetchAssignList"
               ref="shiftPublishStaff"
-            />
+            /> -->
 
             <SuccessAlert ref="successAlert" />
             <div>
