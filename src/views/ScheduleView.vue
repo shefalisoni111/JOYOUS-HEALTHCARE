@@ -28,7 +28,7 @@
                 />
               </form> -->
             </div>
-            <button
+            <!-- <button
               type="button"
               class="btn btn-primary text-nowrap border-0"
               data-bs-toggle="modal"
@@ -37,7 +37,7 @@
               @click="handleShiftPublishStaffList"
             >
               Publish
-            </button>
+            </button> -->
           </div>
         </div>
 
@@ -792,7 +792,7 @@ import axios from "axios";
 import EditAssignShceduleVaacncy from "../components/modals/Schedule/EditAssignShceduleVaacncy.vue";
 import ScheduleDirectAssignList from "../components/modals/Schedule/ScheduleDirectAssignList.vue";
 import Navbar from "../components/Navbar.vue";
-import SchedulePublishStaffList from "../components/modals/Schedule/SchedulePublishStaffList.vue";
+// import SchedulePublishStaffList from "../components/modals/Schedule/SchedulePublishStaffList.vue";
 import SuccessAlert from "../components/Alerts/SuccessAlert.vue";
 import Loader from "../components/Loader/Loader.vue";
 import Swal from "sweetalert2";
@@ -1544,7 +1544,7 @@ export default {
     EditAssignShceduleVaacncy,
     Navbar,
     ScheduleDirectAssignList,
-    SchedulePublishStaffList,
+    // SchedulePublishStaffList,
     SuccessAlert,
     Loader,
   },
