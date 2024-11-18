@@ -77,20 +77,23 @@
                       <th scope="col" class="text-center">Job Title</th>
                     </tr>
                   </thead>
-                  <tbody v-if="fetchStaffAndVacancy.length > 0">
+                  <tbody v-if="fetchStaffAndVacancy && fetchStaffAndVacancy?.length > 0">
                     <template
                       v-for="candidate in fetchStaffAndVacancy"
                       :key="candidate.id"
                     >
-                      <tr v-for="(vacancy, index) in candidate.vacancies" :key="index">
+                      <tr v-if="candidate.vacancies">
                         <td class="text-center">
                           <input
                             class="form-check-input"
                             type="checkbox"
-                            :value="vacancy.id"
-                            :id="`checkbox-${candidate.candidate_id}-${vacancy.id}`"
+                            :value="candidate.vacancies.id"
+                            :id="`checkbox-${candidate?.candidate_id}-${candidate.vacancies.id}`"
                             @change="
-                              handleCheckboxChange(candidate.candidate_id, vacancy.id)
+                              handleCheckboxChange(
+                                candidate?.candidate_id,
+                                candidate.vacancies.id
+                              )
                             "
                           />
                         </td>
@@ -103,19 +106,23 @@
 
                         <td class="text-center">{{ candidate.candidate_name }}</td>
 
-                        <td class="text-center">{{ vacancy.client }}</td>
-                        <td class="text-center">{{ vacancy.site }}</td>
+                        <td class="text-center">{{ candidate.vacancies.client }}</td>
+                        <td class="text-center">{{ candidate.vacancies.site }}</td>
                         <td class="text-center">
-                          <span v-for="(date, index) in vacancy.dates" :key="index">
+                          <span
+                            v-for="(date, index) in candidate.vacancies.dates"
+                            :key="index"
+                          >
                             {{ date }}
 
-                            <template v-if="index !== vacancy.dates.length - 1"
+                            <template
+                              v-if="index !== candidate.vacancies.dates.length - 1"
                               >,
                             </template>
                           </span>
                         </td>
-                        <td class="text-center">{{ vacancy.site_shift }}</td>
-                        <td class="text-center">{{ vacancy.job_title }}</td>
+                        <td class="text-center">{{ candidate.vacancies.site_shift }}</td>
+                        <td class="text-center">{{ candidate.vacancies.job_title }}</td>
                       </tr>
                     </template>
                     <!-- <template v-else>
