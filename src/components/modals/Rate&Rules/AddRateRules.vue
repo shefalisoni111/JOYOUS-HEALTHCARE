@@ -746,7 +746,7 @@
                         <label class="form-label">Client Rate</label>
 
                         <input
-                          type="text"
+                          type="number"
                           class="form-control w-100"
                           v-model="selectedClientRate[`${day ? day + '-' : ''}-early`]"
                           @input="
@@ -763,7 +763,7 @@
                         <label class="form-label">Private Limited</label>
 
                         <input
-                          type="text"
+                          type="number"
                           class="form-control w-100"
                           v-model="
                             selectedPrivateLimited[`${day ? day + '-' : ''}-early`]
@@ -783,7 +783,7 @@
                         <label class="form-label">Self Employed</label>
 
                         <input
-                          type="text"
+                          type="number"
                           class="form-control w-100"
                           v-model="selectedSelfEmployee[`${day ? day + '-' : ''}-early`]"
                           @input="
@@ -800,7 +800,7 @@
                         <label class="form-label">Umbrella</label>
 
                         <input
-                          type="text"
+                          type="number"
                           class="form-control w-100"
                           v-model="selectedUmbrella[`${day ? day + '-' : ''}-early`]"
                           @input="
@@ -817,7 +817,7 @@
                         <label class="form-label">PAYE</label>
 
                         <input
-                          type="text"
+                          type="number"
                           class="form-control w-100"
                           v-model="selectedPaye[`${day ? day + '-' : ''}-early`]"
                           @input="
@@ -827,6 +827,8 @@
                             )
                           "
                           maxlength="3"
+                          :max="999"
+                          :min="0"
                         />
                       </div>
                     </div>
@@ -881,7 +883,7 @@
                         <label class="form-label">Client Rate</label>
 
                         <input
-                          type="text"
+                          type="number"
                           class="form-control w-100"
                           v-model="selectedClientRate[`${day ? day + '-' : ''}-late`]"
                           @input="
@@ -898,7 +900,7 @@
                         <label class="form-label">Private Limited</label>
 
                         <input
-                          type="text"
+                          type="number"
                           class="form-control w-100"
                           v-model="selectedPrivateLimited[`${day ? day + '-' : ''}-late`]"
                           @input="
@@ -916,7 +918,7 @@
                         <label class="form-label">Self Employed</label>
 
                         <input
-                          type="text"
+                          type="number"
                           class="form-control w-100"
                           v-model="selectedSelfEmployee[`${day ? day + '-' : ''}-late`]"
                           @input="
@@ -933,7 +935,7 @@
                         <label class="form-label">Umbrella</label>
 
                         <input
-                          type="text"
+                          type="number"
                           class="form-control w-100"
                           v-model="selectedUmbrella[`${day ? day + '-' : ''}-late`]"
                           @input="
@@ -950,7 +952,7 @@
                         <label class="form-label">PAYE</label>
 
                         <input
-                          type="text"
+                          type="number"
                           class="form-control w-100"
                           v-model="selectedPaye[`${day ? day + '-' : ''}-late`]"
                           @input="
@@ -960,6 +962,8 @@
                             )
                           "
                           maxlength="3"
+                          :max="999"
+                          :min="0"
                         />
                       </div>
                     </div>
@@ -1014,7 +1018,7 @@
                         <label class="form-label">Client Rate</label>
 
                         <input
-                          type="text"
+                          type="number"
                           class="form-control w-100"
                           v-model="selectedClientRate[`${day ? day + '-' : ''}-night`]"
                           @input="
@@ -1031,7 +1035,7 @@
                         <label class="form-label">Private Limited</label>
 
                         <input
-                          type="text"
+                          type="number"
                           class="form-control w-100"
                           v-model="
                             selectedPrivateLimited[`${day ? day + '-' : ''}-night`]
@@ -1051,7 +1055,7 @@
                         <label class="form-label">Self Employed</label>
 
                         <input
-                          type="text"
+                          type="number"
                           class="form-control w-100"
                           v-model="selectedSelfEmployee[`${day ? day + '-' : ''}-night`]"
                           @input="
@@ -1068,7 +1072,7 @@
                         <label class="form-label">Umbrella</label>
 
                         <input
-                          type="text"
+                          type="number"
                           class="form-control w-100"
                           v-model="selectedUmbrella[`${day ? day + '-' : ''}-night`]"
                           @input="
@@ -1085,7 +1089,7 @@
                         <label class="form-label">PAYE</label>
 
                         <input
-                          type="text"
+                          type="number"
                           class="form-control w-100"
                           v-model="selectedPaye[`${day ? day + '-' : ''}-night`]"
                           @input="
@@ -1095,6 +1099,8 @@
                             )
                           "
                           maxlength="3"
+                          :max="999"
+                          :min="0"
                         />
                       </div>
                     </div>
@@ -1149,7 +1155,7 @@
                         <label class="form-label">Client Rate</label>
 
                         <input
-                          type="text"
+                          type="number"
                           class="form-control w-100"
                           v-model="selectedClientRate[`${day ? day + '-' : ''}long day`]"
                           @input="
@@ -1159,6 +1165,8 @@
                             )
                           "
                           maxlength="3"
+                          :max="999"
+                          :min="0"
                         />
                       </div>
 
@@ -1166,7 +1174,7 @@
                         <label class="form-label">Private Limited</label>
 
                         <input
-                          type="text"
+                          type="number"
                           class="form-control w-100"
                           v-model="
                             selectedPrivateLimited[`${day ? day + '-' : ''}long day`]
@@ -1178,6 +1186,8 @@
                             )
                           "
                           maxlength="3"
+                          :max="999"
+                          :min="0"
                         />
                       </div>
                     </div>
@@ -1186,7 +1196,7 @@
                         <label class="form-label">Self Employed</label>
 
                         <input
-                          type="text"
+                          type="number"
                           class="form-control w-100"
                           v-model="
                             selectedSelfEmployee[`${day ? day + '-' : ''}-long day`]
@@ -1198,6 +1208,8 @@
                             )
                           "
                           maxlength="3"
+                          :max="999"
+                          :min="0"
                         />
                       </div>
 
@@ -1205,7 +1217,7 @@
                         <label class="form-label">Umbrella</label>
 
                         <input
-                          type="text"
+                          type="number"
                           class="form-control w-100"
                           v-model="selectedUmbrella[`${day ? day + '-' : ''}-long day`]"
                           @input="
@@ -1215,6 +1227,8 @@
                             )
                           "
                           maxlength="3"
+                          :max="999"
+                          :min="0"
                         />
                       </div>
 
@@ -1222,7 +1236,7 @@
                         <label class="form-label">PAYE</label>
 
                         <input
-                          type="text"
+                          type="number"
                           class="form-control w-100"
                           v-model="selectedPaye[`${day ? day + '-' : ''}-long day`]"
                           @input="
@@ -1232,6 +1246,8 @@
                             )
                           "
                           maxlength="3"
+                          :max="999"
+                          :min="0"
                         />
                       </div>
                     </div>
@@ -1398,7 +1414,7 @@ export default {
       if (filteredValue.length > 0) {
         const numericValue = parseInt(filteredValue, 10);
 
-        if (numericValue >= 1 && numericValue <= 999) {
+        if (filteredValue.length > 0 && numericValue >= 1 && numericValue <= 999) {
           this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = true;
         } else {
           this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = false;
