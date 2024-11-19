@@ -789,7 +789,8 @@ export default {
         await this.getClientAccordingRatePayFetchMethod(
           this.client_id,
           this.site_shift_id,
-          this.job_id
+          this.job_id,
+          this.site_id
         );
       }
     },
@@ -834,7 +835,18 @@ export default {
         if (selectedDate > currentDate || this.isToday(selectedDate, currentDate)) {
           const formattedDate = selectedDate.toLocaleDateString("en-GB");
 
-          this.dates = [formattedDate];
+          // this.dates = [formattedDate];
+          if (!this.dates.includes(formattedDate)) {
+            this.dates.push(formattedDate);
+          }
+
+          this.getClientAccordingRatePayFetchMethod(
+            this.client_id,
+            this.site_shift_id,
+            this.job_id,
+            this.site_id,
+            this.selectedDate
+          );
 
           this.selectedDate = "";
           this.clearError();
@@ -1012,11 +1024,19 @@ export default {
         }
       }
     },
-    async getClientAccordingRatePayFetchMethod(client_id, site_shift_id, job_id) {
+    async getClientAccordingRatePayFetchMethod(
+      client_id,
+      site_shift_id,
+      job_id,
+      site_id,
+      selectedDate
+    ) {
       const params = {
         job_id: job_id,
         client_id: client_id,
         site_shift_id: site_shift_id,
+        site_id: site_id,
+        date: selectedDate,
       };
 
       try {
