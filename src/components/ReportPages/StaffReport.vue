@@ -548,7 +548,7 @@ export default {
             params,
           }
         );
-        this.getSiteReportData = response.data.timesheets || [];
+        this.getSiteReportData = response.data.data || [];
         this.errorMessageFilter = "";
       } catch (error) {
         if (error.response && error.response.status === 404) {

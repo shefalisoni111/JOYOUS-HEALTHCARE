@@ -668,11 +668,11 @@ export default {
             },
           }
         );
-        this.getSiteReportData = response.data.timesheets || [];
+        this.getSiteReportData = response.data.data || [];
         if (response.status === 200 && this.getSiteReportData.length === 0) {
           this.errorMessageCustom = `Data Not available for this month`;
         } else {
-          this.errorMessageCustom = "";
+          this.errorMessageCustom = "Data Not Found";
         }
       } catch (error) {
         this.errorMessageCustom = "Error fetching data.";

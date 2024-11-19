@@ -629,7 +629,7 @@ export default {
         if (response.status === 200 && this.getSiteReportData.length === 0) {
           this.errorMessageCustom = `Data Not available for this month`;
         } else {
-          this.errorMessageCustom = "";
+          this.errorMessageCustom = "Data Not Found";
         }
       } catch (error) {
         this.errorMessageCustom = "Error fetching data.";
@@ -669,11 +669,11 @@ export default {
           }
         );
 
-        if (response.data.timesheets && typeof response.data.timesheets === "string") {
-          this.errorMessage = response.data.timesheets;
+        if (response.data.data && typeof response.data.data === "string") {
+          this.errorMessage = response.data.data;
           this.searchResults = [];
         } else {
-          this.searchResults = response.data.timesheets || [];
+          this.searchResults = response.data.data || [];
           if (this.searchResults.length === 0) {
             this.errorMessage = "No Record found for the specified criteria.";
           } else {
