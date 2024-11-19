@@ -670,10 +670,17 @@ export default {
         (shift) => shift.id === this.site_shift_id
       );
       if (selectedShift) {
-        this.site_shift_id = selectedShift.id;
-        this.start_time = selectedShift.start_time;
-        this.end_time = selectedShift.end_time;
-        this.break = selectedShift.break_duration;
+        this.start_time = selectedShift.start_time || "";
+        this.end_time = selectedShift.end_time || "";
+        this.break = selectedShift.break_duration || "";
+
+        this.getClientAccordingRatePayFetchMethod(
+          this.client_id,
+          this.site_shift_id,
+          this.job_id,
+          this.site_id,
+          this.selectedDate
+        );
       } else {
         this.start_time = "";
         this.end_time = "";
@@ -785,7 +792,7 @@ export default {
       //   this.site_id,
       //   this.job_id
       // );
-      if (this.site_id && this.site_shift_id) {
+      if (this.site_id && this.site_shift_id && this.client_id && this.job_id) {
         await this.getClientAccordingRatePayFetchMethod(
           this.client_id,
           this.site_shift_id,
@@ -839,16 +846,17 @@ export default {
           if (!this.dates.includes(formattedDate)) {
             this.dates.push(formattedDate);
           }
+          this.selectedDate = formattedDate;
+          this.handleShiftChange();
 
-          this.getClientAccordingRatePayFetchMethod(
-            this.client_id,
-            this.site_shift_id,
-            this.job_id,
-            this.site_id,
-            this.selectedDate
-          );
+          // this.getClientAccordingRatePayFetchMethod(
+          //   this.client_id,
+          //   this.site_shift_id,
+          //   this.job_id,
+          //   this.site_id,
+          //   this.selectedDate
+          // );
 
-          this.selectedDate = "";
           this.clearError();
           this.validationDateType = true;
         } else {
@@ -1111,7 +1119,7 @@ export default {
           })) || [];
         if (this.shiftsTime.length > 0) {
           this.site_shift_id = this.shiftsTime[0].id;
-          this.handleShiftChange();
+          // this.handleShiftChange();
         }
         // return this.shiftsTime.length > 0 ? this.shiftsTime[0].id : null;
       } catch (error) {
