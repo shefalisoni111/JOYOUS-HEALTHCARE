@@ -485,7 +485,7 @@
               v-if="status.trim().toLowerCase() === 'approved'"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              @click.prevent="updateCustomTimeSheetMethod"
+              @click.prevent="handleApproveAndSave"
             >
               {{ buttonText }}
             </button>
@@ -493,7 +493,7 @@
               v-else
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              @click.prevent="updateCustomTimeSheetMethod"
+              @click.prevent="handleApproveAndSave"
             >
               {{ buttonText }}
             </button>
@@ -554,7 +554,7 @@ export default {
     buttonText() {
       return this.status && this.status.trim().toLowerCase() === "approved"
         ? "Approved"
-        : "Approve & Save";
+        : "UnApprove & Save";
     },
     // isSaveDisabled() {
     //   return (
@@ -779,6 +779,7 @@ export default {
         await this.approved_hourMethod();
         const message = "Custom TimeSheet Staff updated successfully";
         this.$refs.successAlert.showSuccess(message);
+        this.uploadedFile = "";
       } catch (error) {
         // console.error("Error updating custom timesheet:", error);
       }

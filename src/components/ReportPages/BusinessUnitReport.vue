@@ -297,7 +297,9 @@
                           </td>
                           <td scope="col">{{ data.id }}</td>
                           <td scope="col">{{ data.code }}</td>
-                          <td scope="col">{{ data.name }}</td>
+                          <td scope="col">
+                            {{ data.name || data.candidate_name }}
+                          </td>
                           <td scope="col">{{ data.site }}</td>
                           <td scope="col">{{ data.job }}</td>
                           <td scope="col">{{ data.shift_date }}</td>
@@ -523,7 +525,27 @@ export default {
       if (this.selectedSiteName) {
         params["report[site]"] = this.selectedSiteName;
       }
-
+      if (this.currentView === "weekly" && this.startDate) {
+        const startOfWeek = new Date(this.startDate);
+        startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+        const formattedStartOfWeek = `${(startOfWeek.getMonth() + 1)
+          .toString()
+          .padStart(2, "0")}/${startOfWeek
+          .getDate()
+          .toString()
+          .padStart(2, "0")}/${startOfWeek.getFullYear()}`;
+        params["report[date]"] = formattedStartOfWeek;
+      } else if (this.currentView === "monthly" && this.startDate) {
+        const startOfMonth = new Date(this.startDate);
+        startOfMonth.setDate(1);
+        const formattedStartOfMonth = `${(startOfMonth.getMonth() + 1)
+          .toString()
+          .padStart(2, "0")}/${startOfMonth
+          .getDate()
+          .toString()
+          .padStart(2, "0")}/${startOfMonth.getFullYear()}`;
+        params["report[date]"] = formattedStartOfMonth;
+      }
       if (this.selectedCandidate) {
         params["report[name]"] = this.selectedCandidate;
       }
@@ -536,8 +558,13 @@ export default {
             params,
           }
         );
-        this.getSiteReportData = response.data.timesheets || [];
+        this.getSiteReportData = response.data.data || [];
         this.errorMessageFilter = "";
+        if (response.status === 200 && this.getSiteReportData.length === 0) {
+          this.errorMessageCustom = `Data Not available for this month`;
+        } else {
+          this.errorMessageCustom = "Data Not Found";
+        }
       } catch (error) {
         if (error.response && error.response.status === 404) {
           this.getSiteReportData = [];
@@ -568,75 +595,75 @@ export default {
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
-      this.getSiteReportMethod();
+      this.filterData();
     },
-    async getSiteReportMethod() {
-      this.isLoading = true;
-      const token = localStorage.getItem("token");
-      const formatDate = (date) => {
-        const month = (date.getMonth() + 1).toString().padStart(2, "0");
-        const day = date.getDate().toString().padStart(2, "0");
-        const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
-      };
+    // async filterData() {
+    //   this.isLoading = true;
+    //   const token = localStorage.getItem("token");
+    //   const formatDate = (date) => {
+    //     const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    //     const day = date.getDate().toString().padStart(2, "0");
+    //     const year = date.getFullYear();
+    //     return `${day}/${month}/${year}`;
+    //   };
 
-      let startOfRange, endOfRange;
+    //   let startOfRange, endOfRange;
 
-      if (this.currentView === "weekly") {
-        const startOfWeek = new Date(this.startDate);
-        const dayOfWeek = this.startDate.getDay();
+    //   if (this.currentView === "weekly") {
+    //     const startOfWeek = new Date(this.startDate);
+    //     const dayOfWeek = this.startDate.getDay();
 
-        const diff = (dayOfWeek === 0 ? -6 : 1) - dayOfWeek;
-        startOfWeek.setDate(this.startDate.getDate() + diff);
+    //     const diff = (dayOfWeek === 0 ? -6 : 1) - dayOfWeek;
+    //     startOfWeek.setDate(this.startDate.getDate() + diff);
 
-        const endOfWeek = new Date(startOfWeek);
-        endOfWeek.setDate(startOfWeek.getDate() + 6);
+    //     const endOfWeek = new Date(startOfWeek);
+    //     endOfWeek.setDate(startOfWeek.getDate() + 6);
 
-        startOfRange = startOfWeek;
-        endOfRange = endOfWeek;
-      } else {
-        const startOfMonth = new Date(
-          this.startDate.getFullYear(),
-          this.startDate.getMonth(),
-          1
-        );
-        const endOfMonth = new Date(
-          this.startDate.getFullYear(),
-          this.startDate.getMonth() + 1,
-          0
-        );
+    //     startOfRange = startOfWeek;
+    //     endOfRange = endOfWeek;
+    //   } else {
+    //     const startOfMonth = new Date(
+    //       this.startDate.getFullYear(),
+    //       this.startDate.getMonth(),
+    //       1
+    //     );
+    //     const endOfMonth = new Date(
+    //       this.startDate.getFullYear(),
+    //       this.startDate.getMonth() + 1,
+    //       0
+    //     );
 
-        startOfRange = startOfMonth;
-        endOfRange = endOfMonth;
-      }
+    //     startOfRange = startOfMonth;
+    //     endOfRange = endOfMonth;
+    //   }
 
-      const requestData = {
-        date: formatDate(startOfRange),
-        filter_type: this.currentView === "weekly" ? "week" : "month",
-      };
-      try {
-        const response = await axios.get(
-          `${VITE_API_URL}/report_section_timesheet_data`,
-          {
-            params: requestData,
-            per_page: this.itemsPerPage,
-            headers: {
-              Authorization: "bearer " + token,
-            },
-          }
-        );
-        this.getSiteReportData = response.data.timesheets || [];
-        if (response.status === 200 && this.getSiteReportData.length === 0) {
-          this.errorMessageCustom = `Data Not available for this month`;
-        } else {
-          this.errorMessageCustom = "Data Not Found";
-        }
-      } catch (error) {
-        this.errorMessageCustom = "Error fetching data.";
-      } finally {
-        this.isLoading = false;
-      }
-    },
+    //   const requestData = {
+    //     date: formatDate(startOfRange),
+    //     filter_type: this.currentView === "weekly" ? "week" : "month",
+    //   };
+    //   try {
+    //     const response = await axios.get(
+    //       `${VITE_API_URL}/report_section_timesheet_data`,
+    //       {
+    //         params: requestData,
+    //         per_page: this.itemsPerPage,
+    //         headers: {
+    //           Authorization: "bearer " + token,
+    //         },
+    //       }
+    //     );
+    //     this.getSiteReportData = response.data.timesheets || [];
+    //     if (response.status === 200 && this.getSiteReportData.length === 0) {
+    //       this.errorMessageCustom = `Data Not available for this month`;
+    //     } else {
+    //       this.errorMessageCustom = "Data Not Found";
+    //     }
+    //   } catch (error) {
+    //     this.errorMessageCustom = "Error fetching data.";
+    //   } finally {
+    //     this.isLoading = false;
+    //   }
+    // },
     async getBusinessUnitMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/activated_site`);
@@ -808,7 +835,7 @@ export default {
           0
         );
       }
-      this.getSiteReportMethod();
+      this.filterData();
     },
     moveToNext() {
       if (this.currentView === "weekly") {
@@ -823,7 +850,7 @@ export default {
           0
         );
       }
-      this.getSiteReportMethod();
+      this.filterData();
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
@@ -867,7 +894,7 @@ export default {
       vm.getBusinessUnitMethod();
       // vm.updateDateRange();
       vm.getCandidateListMethod();
-      vm.getSiteReportMethod();
+      vm.filterData();
     });
   },
   async beforeRouteUpdate(to, from, next) {
@@ -876,7 +903,7 @@ export default {
     this.getClientMethod();
     this.getCandidateListMethod();
     // this.updateDateRange();
-    this.getSiteReportMethod();
+    this.filterData();
     next();
   },
   mounted() {
@@ -886,7 +913,7 @@ export default {
     this.getBusinessUnitMethod();
     this.getCandidateListMethod();
     this.getClientMethod();
-    this.getSiteReportMethod();
+    this.filterData();
     // this.updateDateRange();
     const currentDate = new Date();
     const dayOfWeek = currentDate.getDay();
