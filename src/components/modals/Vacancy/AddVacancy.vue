@@ -843,11 +843,11 @@ export default {
         if (selectedDate > currentDate || this.isToday(selectedDate, currentDate)) {
           const formattedDate = selectedDate.toLocaleDateString("en-GB");
 
-          // this.dates = [formattedDate];
-          if (!this.dates.includes(formattedDate)) {
-            this.dates.push(formattedDate);
-          }
-          this.selectedDate = formattedDate;
+          this.dates = [formattedDate];
+          // if (!this.dates.includes(formattedDate)) {
+          //   this.dates.push(formattedDate);
+          // }
+          // this.selectedDate = formattedDate;
           this.handleShiftChange();
 
           // this.getClientAccordingRatePayFetchMethod(
