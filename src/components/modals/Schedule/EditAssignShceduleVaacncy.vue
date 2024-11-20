@@ -459,15 +459,15 @@ export default {
       }
     },
 
-    async fetchVacancyIdMethod(id) {
-      if (!id) return;
+    async fetchVacancyIdMethod(candidateID, vacancyID) {
+      if (!vacancyID || !candidateID) return;
 
       const payload = {
-        vacancy_id: this.vacancyId,
-        candidate_id: this.candidateId,
+        vacancy_id: vacancyID,
+        candidate_id: candidateID,
       };
 
-      const response = await axios.get(`${VITE_API_URL}schedule_vacancy`, {
+      const response = await axios.get(`${VITE_API_URL}/schedule_vacancy`, {
         params: payload,
       });
       const { assign_to, vacancy_data } = response.data;
@@ -529,13 +529,14 @@ export default {
     candidateId: {
       immediate: true,
       handler(newCandidateId) {
-        this.fetchVacancyIdMethod(newCandidateId);
+        this.fetchVacancyIdMethod(newCandidateId, this.vacancyId);
       },
     },
+
     vacancyId: {
       immediate: true,
-      handler(newvacancyId) {
-        this.fetchVacancyIdMethod(newvacancyId);
+      handler(newVacancyId) {
+        this.fetchVacancyIdMethod(this.candidateId, newVacancyId);
       },
     },
     columnDateMatch(newDate) {

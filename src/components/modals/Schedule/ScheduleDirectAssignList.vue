@@ -278,9 +278,11 @@ export default {
 
   methods: {
     async fetchVacancyListMethod(selectedWeekDate) {
+      if (!selectedWeekDate) return;
       try {
         const requestData = {
           date: selectedWeekDate,
+          single_date: true,
         };
         const response = await axios.get(
           `${VITE_API_URL}/vacancies_and_candidates_availability`,
@@ -452,6 +454,7 @@ export default {
     } else {
       this.selectedWeekDate = this.columnDateMatch;
     }
+    this.fetchVacancyListMethod(this.selectedWeekDate);
   },
   async beforeRouteEnter(to, from, next) {
     next((vm) => {
