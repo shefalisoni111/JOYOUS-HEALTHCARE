@@ -75,11 +75,11 @@
         </div> -->
       </div>
     </div>
-    <loader :isLoading="isLoading"></loader>
+    <!-- <loader :isLoading="isLoading"></loader> -->
   </div>
 </template>
 
-<script>
+<!-- <script>
 import axios from "axios";
 
 import Loader from "../../Loader/Loader.vue";
@@ -265,7 +265,7 @@ export default {
     // this.getCandidateMethods();
   },
 };
-</script>
+</script> -->
 <style scoped>
 #main {
   transition: all 0.3s;

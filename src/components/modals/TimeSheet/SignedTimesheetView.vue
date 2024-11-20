@@ -436,12 +436,29 @@
               Cancel
             </button>
 
-            <button
+            <!-- <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="approved_TimesheetRevertMethod()"
             >
               Approve
+            </button> -->
+            <button
+              v-if="status.trim().toLowerCase() === 'approved'"
+              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              data-bs-dismiss="modal"
+              disabled
+              @click.prevent="approved_TimesheetRevertMethod()"
+            >
+              {{ buttonText }}
+            </button>
+            <button
+              v-else
+              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              data-bs-dismiss="modal"
+              @click.prevent="approved_TimesheetRevertMethod()"
+            >
+              {{ buttonText }}
             </button>
           </div>
         </div>
@@ -470,7 +487,7 @@ export default {
         staff_rate: "",
         shift: "",
         paper_timesheet: "",
-        status: "",
+        // status: "",
         notes: "",
         start_time: "",
         end_time: "",
@@ -478,6 +495,7 @@ export default {
         total_cost: "",
         custom_image: "",
       },
+      status: "",
       paper_timesheet: "",
       getSignedStaffView: [],
       apiResponse: "",
@@ -491,12 +509,22 @@ export default {
     };
   },
   components: { SuccessAlert },
-  computed: {},
+  computed: {
+    buttonText() {
+      return this.status && this.status.trim().toLowerCase() === "approved"
+        ? "Approved"
+        : "Approve";
+    },
+  },
   props: ["id"],
   watch: {
     id(newValue, oldValue) {
       this.signedTimeSheetViewMethod(newValue);
       this.fetchSignedTimesheetData(newValue);
+    },
+    status(newStatus) {
+      if (newStatus === "approved") {
+      }
     },
   },
   methods: {
@@ -584,6 +612,7 @@ export default {
 
           // Assign response data to your component's data properties
           this.getSignedStaffView = response.data.sign_timesheets;
+          this.status = response.data.sign_timesheets.status || "";
 
           this.fetchSignedTimeSheet = {
             ...this.fetchSignedTimeSheet,

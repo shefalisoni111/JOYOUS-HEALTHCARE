@@ -586,7 +586,7 @@ export default {
         return;
       }
       const response = await axios.get(
-        `https://recpalapp.co.uk/api/custom_timesheets/${this.customDataId}`
+        `${VITE_API_URL}custom_timesheets/${this.customDataId}`
       );
       this.status = response.data.status || "";
     },
