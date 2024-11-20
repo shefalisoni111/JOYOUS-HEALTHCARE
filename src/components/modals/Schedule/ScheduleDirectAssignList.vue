@@ -291,6 +291,9 @@ export default {
           }
         );
         this.vacancyList = response.data.data;
+        // if (this.vacancyList) {
+        //   window.location.reload();
+        // }
       } catch (error) {
         // console.error("Error in fetchVacancyListMethod:", error);
       }
@@ -381,11 +384,20 @@ export default {
           }
         );
 
-        if (response.ok) {
-          const message = "Staff Assigned Shift Successfully";
+        if (response.status === 200 && response.data.message) {
+          // const message = "Staff Assigned Shift Successfully";
+          // this.$refs.successAlert.showSuccess(message);
+          // this.checkedVacancies = {};
+          // this.$emit("Candidate-updated");
+          // window.location.reload();
+          const message = response.data.message;
           this.$refs.successAlert.showSuccess(message);
           this.checkedVacancies = {};
           this.$emit("Candidate-updated");
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+          // window.location.reload();
         } else {
           // throw new Error(`Failed to assign candidates. Status: ${response.status}`);
         }

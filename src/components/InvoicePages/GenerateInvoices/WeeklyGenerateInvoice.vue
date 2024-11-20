@@ -271,7 +271,7 @@ export default {
         );
       }
 
-      this.getSiteReportMethod();
+      this.fetWeekTimeSheetData();
     },
     moveToNext() {
       if (this.currentView === "weekly") {
@@ -287,7 +287,7 @@ export default {
         );
       }
 
-      this.getSiteReportMethod();
+      this.fetWeekTimeSheetData();
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
