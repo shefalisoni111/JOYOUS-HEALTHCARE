@@ -403,7 +403,7 @@
 
                   <div class="mb-3">
                     <div class="col-12">
-                      <label class="form-label">Notes</label>
+                      <label class="form-label">Comments</label>
                     </div>
                     <div class="col-12 mt-1" v-if="showSaveButton">
                       <textarea
