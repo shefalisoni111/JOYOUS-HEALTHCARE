@@ -482,11 +482,20 @@
             </button>
 
             <button
+              v-if="status.trim().toLowerCase() === 'approved'"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="updateCustomTimeSheetMethod"
             >
-              Approve & Save
+              {{ buttonText }}
+            </button>
+            <button
+              v-else
+              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              data-bs-dismiss="modal"
+              @click.prevent="updateCustomTimeSheetMethod"
+            >
+              {{ buttonText }}
             </button>
           </div>
         </div>
@@ -514,7 +523,7 @@ export default {
         staff_rate: "",
         shift_name: "",
         paper_timesheet: "",
-        status: "",
+
         notes: "",
         start_time: "",
         end_time: "",
@@ -523,6 +532,7 @@ export default {
         custom_image: "",
       },
       options: [],
+      status: "",
       apiResponse: "",
       apiResponse_EndTime: "",
       showSaveButton: true,
@@ -541,6 +551,11 @@ export default {
   },
   components: { SuccessAlert },
   computed: {
+    buttonText() {
+      return this.status && this.status.trim().toLowerCase() === "approved"
+        ? "Approved"
+        : "Approve & Save";
+    },
     // isSaveDisabled() {
     //   return (
     //     this.fetchCustomSheetData.client_rate === null ||
@@ -566,6 +581,15 @@ export default {
     },
   },
   methods: {
+    async fetchCustomSheetDataById() {
+      if (!this.customDataId) {
+        return;
+      }
+      const response = await axios.get(
+        `https://recpalapp.co.uk/api/custom_timesheets/${this.customDataId}`
+      );
+      this.status = response.data.status || "";
+    },
     resetChanges() {
       this.fetchCustomSheetData = { ...this.originalData };
     },
@@ -664,7 +688,7 @@ export default {
 
         if (response.data.custom_sheets) {
           const customSheet = response.data.custom_sheets;
-
+          this.status = response.data.custom_sheets.status;
           this.fetchCustomSheetData = {
             start_time: customSheet.start_time || "",
             end_time: customSheet.end_time || "",
@@ -787,8 +811,14 @@ export default {
         this.fetchCustomTimeSheetData(newcustomDataId);
       },
     },
+    status(newStatus) {
+      if (newStatus === "approved") {
+      }
+    },
   },
-  mounted() {},
+  mounted() {
+    this.fetchCustomSheetDataById();
+  },
 };
 </script>
 
