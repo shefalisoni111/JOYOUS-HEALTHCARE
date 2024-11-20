@@ -353,7 +353,6 @@ export default {
         .map((vacancy_id) => parseInt(vacancy_id));
 
       if (checkedVacancyIds.length === 0) {
-        // alert("Please select staff !");
         Swal.fire({
           icon: "warning",
           title: "Warning",
@@ -369,30 +368,58 @@ export default {
       };
 
       try {
-        const response = await fetch(`${VITE_API_URL}/assign_vacancy_with_schedule`, {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-
-            Authorization: "bearer " + token,
-          },
-          body: JSON.stringify(data),
-        });
-        // console.log(candidate_id, vacancy_id);
+        const response = await axios.post(
+          `${VITE_API_URL}/assign_vacancy_with_schedule`,
+          data,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `bearer ${token}`,
+            },
+          }
+        );
 
         if (response.ok) {
-          // alert("");
           const message = "Staff Assigned Shift Successfully";
           this.$refs.successAlert.showSuccess(message);
           this.checkedVacancies = {};
           this.$emit("Candidate-updated");
-          // this.fetchAssignList();
         } else {
           // throw new Error(`Failed to assign candidates. Status: ${response.status}`);
         }
       } catch (error) {
-        // console.error("Error assigning candidates:", error);
-        // Optionally, display an error message to the user
+        if (error.response) {
+          const { status, data } = error.response;
+
+          if (status === 404 || status === 422) {
+            if (data.error && Array.isArray(data.error)) {
+              const errorMessage = data.error.join(" ");
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: errorMessage,
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "An unexpected error occurred. Please try again.",
+              });
+            }
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: `An error occurred: ${status}. Please contact support.`,
+            });
+          }
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Network error or server is unreachable. Please check your connection.",
+          });
+        }
       }
     },
     async fetchAssignList() {
