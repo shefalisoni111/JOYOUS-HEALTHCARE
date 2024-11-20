@@ -223,7 +223,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="d-flex mt-2">
+                <!-- <div class="d-flex mt-2">
                   <div>
                     <button
                       @click="toggleSidebar"
@@ -251,7 +251,7 @@
                       </select>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
 
               <div class="sidebar-content" :class="{ 'slide-left': isOpen }">
