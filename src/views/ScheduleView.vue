@@ -1665,7 +1665,6 @@ input.dateInput {
   top: 62px;
   background-color: #f8f9fa;
   z-index: 10;
-  overflow-y: auto;
 }
 .cursor-pointer {
   cursor: pointer;
@@ -1732,8 +1731,8 @@ table {
 thead {
   position: sticky;
   top: 0;
-  background-color: white; /* Ensure the header has a visible background */
-  z-index: 100; /* Make sure it stays above the content */
+  background-color: white;
+  z-index: 100;
 }
 
 th,
