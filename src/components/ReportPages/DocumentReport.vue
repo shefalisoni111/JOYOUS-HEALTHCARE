@@ -11,7 +11,7 @@
                 v-if="activeTab === 0"
               >
                 <select v-model="selectedStaffStatus" @change="filterData">
-                  <option value="">All Staff Status</option>
+                  <option value="all">All Staff Status</option>
                   <option value="approved">Active</option>
                   <option value="rejected">Inactive</option>
                   <option value="pending">Pending</option>
@@ -28,12 +28,12 @@
                   </option>
                 </select>
 
-                <select v-model="selectedDocumentCategory" @change="filterData">
+                <select v-model="selectedDocumentCategory" @change="handleCategoryChange">
                   <option value="">All Document Category</option>
                   <option
                     v-for="option in getCategoryData"
                     :key="option.id"
-                    :value="option.category_name"
+                    :value="option.id"
                   >
                     {{ option.category_name }}
                   </option>
@@ -112,7 +112,9 @@
                       <tr v-for="data in paginateDocumentReport" :key="data.id">
                         <td scope="col">{{ data.id }}</td>
                         <td scope="col">{{ data.candidate_name }}</td>
-
+                        <!-- {{
+                          console.log(data.document_category)
+                        }} -->
                         <td scope="col">
                           {{
                             data.document_category
@@ -158,7 +160,7 @@
     <div
       class="mx-3 mb-3"
       style="text-align: right"
-      v-if="getDocumentReportData.length >= 10 && activeTab === 0"
+      v-if="getDocumentReportData?.length >= 10 && activeTab === 0"
     >
       <button
         class="btn btn-sm btn-primary dropdown-toggle"
@@ -245,10 +247,10 @@ export default {
       ],
       activeTab: 0,
       activeTabName: "",
-
+      selectedStaffStatus: "all",
       errorMessageCustom: "",
       errorMessageFilter: "",
-      selectedStaffStatus: "",
+      // selectedStaffStatus: "",
       selectedAllStatus: "",
       selectedStaff: "",
       selectedDocumentCategory: "",
@@ -299,50 +301,137 @@ export default {
       this.$router.push({ name: this.tabs[index].routeName });
     },
     async filterData() {
-      let filters = {
-        document_filter_type: this.selectedAllStatus
-          ? "document_status"
-          : this.selectedStaffStatus
-          ? "staff_status"
-          : this.selectedStaff
-          ? "staff"
-          : this.selectedDocumentCategory
-          ? "document_category"
-          : this.selectedDocumentType
-          ? "document_type"
-          : "",
-        document_filter: this.selectedAllStatus
-          ? ""
-          : this.selectedStaffStatus
-          ? ""
-          : this.selectedStaff
-          ? this.getStaffFullName(this.selectedStaff)
-          : this.selectedDocumentCategory
-          ? this.selectedDocumentCategory
-          : this.selectedDocumentType
-          ? this.selectedDocumentType
-          : "",
+      const apiUrl = `${VITE_API_URL}/candidate_documents`;
+
+      let params = {
+        "can_document[category_id]": this.selectedDocumentCategory || null,
+        "can_document[candidate_id]": this.selectedStaff || null,
+        "can_document[status]": this.selectedStaffStatus || null,
+        "can_document[document_id]": this.selectedDocumentType || null,
+        page: 1,
       };
 
+      Object.keys(params).forEach((key) => {
+        if (!params[key]) {
+          delete params[key];
+        }
+      });
+
       try {
-        await this.makeFilterAPICall(
-          filters.document_filter_type,
-          filters.document_filter
-        );
+        const response = await axios.get(apiUrl, { params });
+        this.getDocumentReportData = response.data.data || [];
       } catch (error) {
-        // this.errorMessageFilter = "An error occurred while fetching data.";
-        // console.error(error);
+        // console.error("Error fetching filtered data:", error);
+        this.getDocumentReportData = [];
       }
+    },
+    // async filterData() {
+    //   const candidateApiUrl = `${VITE_API_URL}/candidates`;
+    //   const documentCategoryApiUrl = `${VITE_API_URL}/document_categories`;
+
+    //   if (this.selectedDocumentCategory) {
+    //     try {
+    //       const documentTypesResponse = await axios.get(
+    //         `${VITE_API_URL}/document_categories/${this.selectedDocumentCategory}`
+    //       );
+    //       this.documentNames = documentTypesResponse.data.document || [];
+    //     } catch (error) {
+    //       this.documentNames = [];
+    //     }
+    //   } else {
+    //     this.documentNames = [];
+    //   }
+
+    //   let candidateParams = { page: 1 };
+
+    //   if (this.selectedStaffStatus === "all") {
+    //     candidateParams = { page: 1 };
+    //   } else if (this.selectedStaffStatus === "approved") {
+    //     candidateParams.activated_value = false;
+    //   } else if (this.selectedStaffStatus === "rejected") {
+    //     candidateParams.activated_value = true;
+    //   } else if (this.selectedStaffStatus === "pending") {
+    //     candidateParams.status_value = "pending";
+    //     candidateParams.activated_value = true;
+    //   }
+
+    //   if (this.selectedStaff) {
+    //     candidateParams["can_document[candidate_id]"] = this.selectedStaff;
+    //   }
+
+    //   if (this.selectedDocumentCategory) {
+    //     const categoryId = this.getCategoryIdByName(this.selectedDocumentCategory);
+    //     if (categoryId) candidateParams["can_document[category_id]"] = categoryId;
+    //   }
+
+    //   if (this.selectedDocumentType) {
+    //     const documentId = this.getDocumentIdByName(this.selectedDocumentType);
+    //     if (documentId) candidateParams["can_document[document_id]"] = documentId;
+    //   }
+
+    //   try {
+    //     const candidateResponse = await axios.get(candidateApiUrl, {
+    //       params: candidateParams,
+    //     });
+    //     this.candidateLists = candidateResponse.data.data || [];
+    //   } catch (error) {
+    //     // console.error("Error fetching candidates:", error);
+    //     this.candidateLists = [];
+    //   }
+
+    //   let documentParams = { page: 1 };
+
+    //   if (this.selectedStaffStatus) {
+    //     documentParams["can_document[status]"] = this.selectedStaffStatus;
+    //   }
+
+    //   if (this.selectedDocumentCategory) {
+    //     const categoryId = this.getCategoryIdByName(this.selectedDocumentCategory);
+    //     if (categoryId) documentParams["can_document[category_id]"] = categoryId;
+    //   }
+
+    //   if (this.selectedDocumentType) {
+    //     const documentId = this.getDocumentIdByName(this.selectedDocumentType);
+    //     if (documentId) documentParams["can_document[document_id]"] = documentId;
+    //   }
+
+    //   try {
+    //     const documentResponse = await axios.get(documentCategoryApiUrl, {
+    //       params: documentParams,
+    //     });
+    //     this.getDocumentReportData = documentResponse.data.data || [];
+    //   } catch (error) {
+    //     // console.error("Error fetching document categories:", error);
+    //     this.getDocumentReportData = [];
+    //   }
+    // },
+    async handleCategoryChange() {
+      await this.getDocByFetchCategoriMethod();
+      await this.filterData();
     },
     getStaffFullName(staffId) {
       const staff = this.candidateLists.find((candidate) => candidate.id === staffId);
       return staff ? `${staff.first_name} ${staff.last_name}` : "";
     },
+    getCategoryIdByName(categoryName) {
+      const category = this.getCategoryData.find(
+        (item) => item.category_name === categoryName
+      );
+      return category ? category.id : null;
+    },
+
+    getDocumentIdByName(documentName) {
+      const document = this.documentNames.find(
+        (item) => item.document_name === documentName
+      );
+      return document ? document.id : null;
+    },
     async documentCategoryDocumentTypeMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/document_categories`);
-        this.getCategoryData = response.data;
-        this.getDocumentReportData = response.data;
+        this.getCategoryDatas = response.data;
+        this.getDocumentReportData = response.data.data;
+        // console.log(this.getDocumentReportData);
 
         if (this.getDocumentReportData.length === 0) {
           this.errorMessageFilter = "Report Not Found!";
@@ -364,34 +453,25 @@ export default {
         // console.error("Error fetching documents:", error);
       }
     },
-    async makeFilterAPICall(document_filter_type, document_filter) {
+    async getDocByFetchCategoriMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/candidate_documents`, {
-          params: {
-            document_filter_type: document_filter_type,
-            document_filter: document_filter,
-          },
-        });
-
-        this.getDocumentReportData = response.data;
-        if (this.getDocumentReportData.length === 0) {
-          this.errorMessageFilter = "Report Not Found!";
-        } else {
-          this.errorMessageFilter = "Report Not Found!";
+        const response = await axios.get(`${VITE_API_URL}/document_categories`);
+        this.getCategoryData = response.data;
+        if (this.selectedDocumentCategory) {
+          try {
+            const documentTypesResponse = await axios.get(
+              `${VITE_API_URL}/document_categories/${this.selectedDocumentCategory}`
+            );
+            this.documentNames = documentTypesResponse.data.document || [];
+          } catch (error) {
+            this.documentNames = [];
+          }
         }
       } catch (error) {
-        if (error.response && error.response.status === 404) {
-          const errorMessages = error.response.data.error;
-          if (errorMessages === "Data Not available for this month") {
-            // alert("Data Not available for this month");
-          } else {
-            // alert(errorMessages);
-          }
-        } else {
-          // console.error(error);
-        }
+        // console.error("Error fetching documents:", error);
       }
     },
+
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
@@ -403,7 +483,7 @@ export default {
         const response = await axios.get(`${VITE_API_URL}/candidate_documents`, {
           per_page: this.itemsPerPage,
         });
-        this.getDocumentReportData = response.data;
+        this.getDocumentReportData = response.data.data;
         if (this.getDocumentReportData.length === 0) {
           this.errorMessageFilter = "Report Not Found!";
         } else {
@@ -472,14 +552,17 @@ export default {
     next();
   },
   mounted() {
-    // this.getDocumentReport();
+    this.getDocumentReport();
 
     this.getCandidateMethods();
     this.documentCategoryDocumentTypeMethod();
+    this.getDocByFetchCategoriMethod();
+
+    // this.filterData();
   },
   created() {
     this.getDocumentReport();
-    this.getCandidateMethods();
+    // this.getCandidateMethods();
   },
 };
 </script>
