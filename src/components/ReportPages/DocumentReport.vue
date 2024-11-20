@@ -44,7 +44,7 @@
                   <option
                     v-for="option in documentNames"
                     :key="option.id"
-                    :value="option.document_name"
+                    :value="option.id"
                   >
                     {{ option.document_name }}
                   </option>
@@ -316,6 +316,10 @@ export default {
           delete params[key];
         }
       });
+      if (this.selectedDocumentCategory || this.selectedStaffStatus) {
+        delete params["can_document[status]"];
+        delete params["can_document[candidate_id]"];
+      }
 
       try {
         const response = await axios.get(apiUrl, { params });
