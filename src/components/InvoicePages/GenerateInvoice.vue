@@ -239,20 +239,20 @@ export default {
       businessUnit: [],
       tabs: [
         {
-          name: "Weekly ",
+          name: "Invoice Data ",
           component: "WeeklyGenerateInvoice",
           routeName: "WeeklyGenerateInvoice",
         },
-        {
-          name: "Daily ",
-          component: "DailyGenerateInvoice",
-          routeName: "DailyGenerateInvoice",
-        },
-        {
-          name: "Monthly",
-          component: "MonthlyGenerateInvoice",
-          routeName: "MonthlyGenerateInvoice",
-        },
+        // {
+        //   name: "Daily ",
+        //   component: "DailyGenerateInvoice",
+        //   routeName: "DailyGenerateInvoice",
+        // },
+        // {
+        //   name: "Monthly",
+        //   component: "MonthlyGenerateInvoice",
+        //   routeName: "MonthlyGenerateInvoice",
+        // },
         {
           name: "Shift & Staff",
           component: "Shift_Staff_GenerateInvoice",
