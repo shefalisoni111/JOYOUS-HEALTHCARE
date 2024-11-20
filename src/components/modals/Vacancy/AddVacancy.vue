@@ -373,11 +373,11 @@
                   </div>
                   <div class="col-10">
                     <input
-                      type="number"
+                      type="text"
                       class="form-control w-25"
                       v-model="staff_required"
                       @input="validateStaffRequired"
-                      @keydown.prevent
+                      maxlength="2"
                     />
                     <span
                       v-if="!validationStaffRequired && staff_required < 0"
@@ -802,6 +802,7 @@ export default {
       }
     },
     validateStaffRequired() {
+      this.staff_required = this.staff_required.replace(/[^0-9]/g, "");
       if (this.staff_required <= 0) {
         this.staff_required = null;
         this.validationStaffRequired = false;

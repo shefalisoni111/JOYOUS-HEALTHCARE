@@ -292,7 +292,7 @@
                     </thead>
 
                     <tbody v-if="paginateCandidates?.length > 0">
-                      <tr>
+                      <tr class="sticky-header">
                         <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
                         <td>
                           <div
@@ -1659,6 +1659,13 @@ input.dateInput {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 5px;
+}
+.sticky-header {
+  position: sticky;
+  top: 62px;
+  background-color: #f8f9fa;
+  z-index: 10;
+  overflow-y: auto;
 }
 .cursor-pointer {
   cursor: pointer;
