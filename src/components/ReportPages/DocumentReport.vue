@@ -309,9 +309,10 @@ export default {
       if (this.selectedStaffStatus === "all") {
         candidateParams = { page: 1 };
       } else if (this.selectedStaffStatus === "approved") {
-        candidateParams.activated_value = false;
-      } else if (this.selectedStaffStatus === "rejected") {
         candidateParams.activated_value = true;
+        candidateParams.status_value = "approved";
+      } else if (this.selectedStaffStatus === "rejected") {
+        candidateParams.activated_value = false;
       } else if (this.selectedStaffStatus === "pending") {
         candidateParams.status_value = "pending";
         candidateParams.activated_value = true;
