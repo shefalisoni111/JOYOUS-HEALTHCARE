@@ -349,9 +349,8 @@
               </li> -->
 
               <li class="cursor-pointer my-1">
-                <a class="dropdown-item d-flex align-items-center"
-                  ><i class="bi bi-journal-arrow-down pe-2"></i
-                  ><span>Diary Notes</span></a
+                <router-link class="dropdown-item d-flex align-items-center" to="/dairy_notes"
+                  ><i class="bi bi-ban-fill pe-2"></i><span>Diary Notes</span></router-link
                 >
               </li>
 

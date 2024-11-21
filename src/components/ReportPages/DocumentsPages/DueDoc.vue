@@ -195,7 +195,7 @@ export default {
           params,
         });
 
-        this.getCategoryData = response.data;
+        this.getCategoryData = response.data.data;
         if (this.getCategoryData.length === 0) {
           this.errorMessageFilter = "Report Not Found!";
         } else {

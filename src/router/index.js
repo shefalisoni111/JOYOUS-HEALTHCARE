@@ -20,7 +20,7 @@ const router = createRouter({
       name: "Home",
       component: () => import("@/views/HomeView.vue"),
       meta: {
-        requiresAuth: true,
+      requiresAuth: true,  requiresAdmin:true,
       },
     },
     {
@@ -28,7 +28,7 @@ const router = createRouter({
       name: "AdminProfile",
       component: () => import("@/components/AdminProfile.vue"),
       meta: {
-         requiresAuth: true,
+        requiresAuth: true,  requiresAdmin:true,
       },
     },
 
@@ -37,7 +37,7 @@ const router = createRouter({
       name: "Client",
       component: () => import("@/views/ClientView.vue"),
       meta: {
-         requiresAuth: true,
+        requiresAuth: true, requiresAdmin:true,
       },
       children: [
         {
@@ -59,7 +59,7 @@ const router = createRouter({
                   "@/components/ClientsPages/AllClient.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true, requiresAdmin:true,
               },
             },
             {
@@ -70,7 +70,7 @@ const router = createRouter({
                   "@/components/ClientsPages/ActiveClient.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true, requiresAdmin:true,
               },
             },
             {
@@ -81,7 +81,7 @@ const router = createRouter({
                   "@/components/ClientsPages/InActiveClient.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true, requiresAdmin:true,
               },
             },
            
@@ -115,7 +115,7 @@ const router = createRouter({
           name: "Client",
           component: () => import("@/views/ClientView.vue"),
           meta: {
-             requiresAuth: true,
+            requiresAuth: true,   requiresAdmin:true,
           },
         },
         {
@@ -124,7 +124,7 @@ const router = createRouter({
           component: () => import("@/components/ClientsPages/Site.vue"),
           props: true,
           meta: {
-             requiresAuth: true,
+            requiresAuth: true, requiresAdmin:true,
           },
           children: [
             {
@@ -148,7 +148,7 @@ const router = createRouter({
                     ),
                     props: true,
                   meta: {
-                     requiresAuth: true,
+                    requiresAuth: true, requiresAdmin:true,
                   },
                 },
                 {
@@ -160,7 +160,7 @@ const router = createRouter({
                     ),
                     props: true,
                   meta: {
-                     requiresAuth: true,
+                    requiresAuth: true,  requiresAdmin:true,
                   },
                 },
                 {
@@ -172,7 +172,7 @@ const router = createRouter({
                     ),
                     props: true,
                   meta: {
-                     requiresAuth: true,
+                    requiresAuth: true,  requiresAdmin:true,
                   },
                 },
               ]
@@ -195,7 +195,7 @@ const router = createRouter({
           name: "Rates_and_Rules",
           component: () => import("@/components/ClientsPages/RateAndRules/Rates_and_Rules.vue"),
           meta: {
-             requiresAuth: true,
+            requiresAuth: true,   requiresAdmin:true,
           },
         },
       ],
@@ -205,7 +205,7 @@ const router = createRouter({
       name: "Candidate",
       component: () => import("@/views/CandidatesView.vue"),
       meta: {
-         requiresAuth: true,
+        requiresAuth: true, requiresAdmin:true,
       },
       children: [
         {
@@ -236,7 +236,7 @@ const router = createRouter({
                   "@/components/CandidatePages/AllCandidateListsDisplay.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true, requiresAdmin:true,
               },
             },
             {
@@ -247,7 +247,7 @@ const router = createRouter({
                   "@/components/CandidatePages/ActiveCandidate.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true, requiresAdmin:true,
               },
             },
             {
@@ -258,7 +258,7 @@ const router = createRouter({
                   "@/components/CandidatePages/InActiveCandidate.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true, requiresAdmin:true,
               },
             },
             {
@@ -269,7 +269,7 @@ const router = createRouter({
                   "@/components/CandidatePages/Rejected.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true,  requiresAdmin:true,
               },
             },
             {
@@ -280,7 +280,7 @@ const router = createRouter({
                   "@/components/CandidatePages/RejectCandidate.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true, requiresAdmin:true,
               },
             },
           ]
@@ -307,7 +307,7 @@ const router = createRouter({
                   "@/components/CandidatePages/ProfileDetail/Overview.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true,   requiresAdmin:true,
               },
             },
             {
@@ -318,7 +318,7 @@ const router = createRouter({
                   "@/components/CandidatePages/ProfileDetail/Document.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true, requiresAdmin:true,
               },
             },
             {
@@ -329,7 +329,7 @@ const router = createRouter({
                   "@/components/CandidatePages/ProfileDetail/ProfileTabs.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true,  requiresAdmin:true,
               },
             },
             {
@@ -340,7 +340,7 @@ const router = createRouter({
                   "@/components/CandidatePages/ProfileDetail/Restricted.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true, requiresAdmin:true,
               },
             },
             {
@@ -351,7 +351,7 @@ const router = createRouter({
                   "@/components/CandidatePages/ProfileDetail/RateCard.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true, requiresAdmin:true,
               },
             },
             {
@@ -360,7 +360,7 @@ const router = createRouter({
               component: () =>
                 import("@/components/CandidatePages/ProfileDetail/Notes.vue"),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true,  requiresAdmin:true,
               },
             },
             {
@@ -369,7 +369,7 @@ const router = createRouter({
               component: () =>
                 import("@/components/CandidatePages/ProfileDetail/StaffId.vue"),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true, requiresAdmin:true,
               },
             },
             {
@@ -380,7 +380,7 @@ const router = createRouter({
                   "@/components/CandidatePages/ProfileDetail/CandidateHistory.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true,  requiresAdmin:true,
               },
             },
             {
@@ -391,7 +391,7 @@ const router = createRouter({
                   "@/components/CandidatePages/ProfileDetail/CandidateReference.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true,   requiresAdmin:true,
               },
             },
           ],
@@ -407,7 +407,7 @@ const router = createRouter({
       name: "Vacancies",
       component: () => import("@/views/VacanciesView.vue"),
       meta: {
-         requiresAuth: true,
+        requiresAuth: true,  requiresAdmin:true,
       },
       children: [
         {
@@ -429,7 +429,15 @@ const router = createRouter({
       name: "Schedule",
       component: () => import("@/views/ScheduleView.vue"),
       meta: {
-         requiresAuth: true,
+        requiresAuth: true,requiresAdmin:true,
+      },
+    },
+    {
+      path: "/dairy_notes",
+      name: "DairyNotes",
+      component: () => import("@/views/DairyNotes.vue"),
+      meta: {
+        requiresAuth: true,requiresAdmin:true,
       },
     },
     {
@@ -437,7 +445,7 @@ const router = createRouter({
       name: "Booking",
       component: () => import("@/views/BookingView.vue"),
       meta: {
-         requiresAuth: true,
+        requiresAuth: true,  requiresAdmin:true,
       },
     },
     {
@@ -445,7 +453,7 @@ const router = createRouter({
       name: "Timesheet",
       component: () => import("@/views/TimesheetView.vue"),
       meta: {
-         requiresAuth: true,
+        requiresAuth: true,  requiresAdmin:true,
       },
       children: [
         {
@@ -478,7 +486,7 @@ const router = createRouter({
       name: "Invoice",
       component: () => import("@/views/InvoiceView.vue"),
       meta: {
-         requiresAuth: true,
+        requiresAuth: true, requiresAdmin:true,
       },
       children: [
         {
@@ -552,7 +560,7 @@ const router = createRouter({
                   "@/components/InvoicePages/GenerateInvoices/WeeklyGenerateInvoice.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true,  requiresAdmin:true,
               },
             },
             {
@@ -563,7 +571,7 @@ const router = createRouter({
                   "@/components/InvoicePages/GenerateInvoices/DailyGenerateInvoice.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true, requiresAdmin:true,
               },
             },
             {
@@ -574,7 +582,7 @@ const router = createRouter({
                   "@/components/InvoicePages/GenerateInvoices/MonthlyGenerateInvoice.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true,    requiresAdmin:true,
               },
             },
             {
@@ -585,7 +593,7 @@ const router = createRouter({
                   "@/components/InvoicePages/GenerateInvoices/Shift_Staff_GenerateInvoice.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true,   requiresAdmin:true,
               },
             },
             {
@@ -596,7 +604,7 @@ const router = createRouter({
                   "@/components/InvoicePages/GenerateInvoices/Staff_Weekly_GenerateInvoice.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true,  requiresAdmin:true,
               },
             },
           ]
@@ -608,7 +616,7 @@ const router = createRouter({
       name: "Report",
       component: () => import("@/views/ReportView.vue"),
       meta: {
-         requiresAuth: true,
+        requiresAuth: true,  requiresAdmin:true,
       },
       children: [
         {
@@ -619,7 +627,7 @@ const router = createRouter({
               "@/components/ReportPages/PayrollReport.vue"
             ),
           meta: {
-             requiresAuth: true,
+            requiresAuth: true, requiresAdmin:true,
           },
         },
         {
@@ -630,7 +638,7 @@ const router = createRouter({
               "@/components/ReportPages/StaffReport.vue"
             ),
           meta: {
-             requiresAuth: true,
+            requiresAuth: true, requiresAdmin:true,
           },
         },
         {
@@ -641,7 +649,7 @@ const router = createRouter({
               "@/components/ReportPages/ClientReport.vue"
             ),
           meta: {
-             requiresAuth: true,
+            requiresAuth: true,   requiresAdmin:true,
           },
         },
         {
@@ -652,7 +660,7 @@ const router = createRouter({
               "@/components/ReportPages/BusinessUnitReport.vue"
             ),
           meta: {
-             requiresAuth: true,
+            requiresAuth: true,  requiresAdmin:true,
           },
         },
         {
@@ -663,7 +671,7 @@ const router = createRouter({
               "@/components/ReportPages/InvoiceReport.vue"
             ),
           meta: {
-             requiresAuth: true,
+            requiresAuth: true, requiresAdmin:true,
           },
         },
         {
@@ -674,7 +682,7 @@ const router = createRouter({
               "@/components/ReportPages/DocumentReport.vue"
             ),
           meta: {
-             requiresAuth: true,
+            requiresAuth: true, requiresAdmin:true,
           },
           children: [
             {
@@ -685,7 +693,7 @@ const router = createRouter({
                   "@/components/ReportPages/DocumentsPages/AllDoc.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true, requiresAdmin:true,
               },
             },
             {
@@ -696,7 +704,7 @@ const router = createRouter({
                   "@/components/ReportPages/DocumentsPages/ActiveDocument.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true,  requiresAdmin:true,
               },
             },
             {
@@ -707,7 +715,7 @@ const router = createRouter({
                   "@/components/ReportPages/DocumentsPages/DueDoc.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true,  requiresAdmin:true,
               },
             },
             {
@@ -718,7 +726,7 @@ const router = createRouter({
                   "@/components/ReportPages/DocumentsPages/ExpiredDoc.vue"
                 ),
               meta: {
-                 requiresAuth: true,
+                requiresAuth: true,    requiresAdmin:true,
               },
             },
           ]
@@ -731,7 +739,7 @@ const router = createRouter({
               "@/components/ReportPages/RateCardReport.vue"
             ),
           meta: {
-             requiresAuth: true,
+            requiresAuth: true,  requiresAdmin:true,
           },
         },
         {
@@ -742,7 +750,7 @@ const router = createRouter({
               "@/components/ReportPages/EmailReport.vue"
             ),
           meta: {
-             requiresAuth: true,
+            requiresAuth: true, requiresAdmin:true,
           },
         },
       ]
@@ -753,7 +761,7 @@ const router = createRouter({
       name: "AppSetting",
       component: () => import("@/views/AppSetting.vue"),
       meta: {
-         requiresAuth: true,
+        requiresAuth: true, requiresAdmin:true,
       },
 
       children: [
@@ -830,7 +838,7 @@ const router = createRouter({
       component: () =>
         import("@/components/appsettingcomponent/AgencySetting.vue"),
         meta: {
-           requiresAuth: true,
+          requiresAuth: true, requiresAdmin:true,
         },
     },
     {
@@ -839,7 +847,7 @@ const router = createRouter({
       component: () =>
         import("@/components/appsettingcomponent/InvoiceSetting.vue"),
         meta: {
-           requiresAuth: true,
+          requiresAuth: true,  requiresAdmin:true,
         },
     },
     {
@@ -848,7 +856,7 @@ const router = createRouter({
       component: () =>
         import("@/components/appsettingcomponent/SubscriptionSetting.vue"),
         meta: {
-           requiresAuth: true,
+          requiresAuth: true,   requiresAdmin:true,
         },
     },
     {
@@ -857,7 +865,7 @@ const router = createRouter({
       component: () =>
         import("@/components/appsettingcomponent/NotificationSetting.vue"),
         meta: {
-           requiresAuth: true,
+          requiresAuth: true,  requiresAdmin:true,
         },
       children: [
         {
@@ -910,7 +918,7 @@ const router = createRouter({
       component: () =>
         import("@/components/appsettingcomponent/PrevilegesSetting.vue"),
         meta: {
-           requiresAuth: true,
+          requiresAuth: true,  requiresAdmin:true,
         },
     },
     {
@@ -919,7 +927,7 @@ const router = createRouter({
       component: () =>
         import("@/components/appsettingcomponent/ClientSettings.vue"),
         meta: {
-           requiresAuth: true,
+          requiresAuth: true,  requiresAdmin:true,
         },
         children: [
           {
@@ -947,7 +955,7 @@ const router = createRouter({
       component: () =>
         import("@/views/Recruitment.vue"),
         meta: {
-           requiresAuth: true,
+          requiresAuth: true, requiresAdmin:true,
         },
         children: [
           {
@@ -975,7 +983,116 @@ const router = createRouter({
           },
         ]
     },
-
+    {
+      path: "/client/clientDashboard/booking",
+      name: "ClientBooking",
+      component: () =>
+        import("@/views/ClientDashBoard/ClientBooking.vue"),
+        meta: {
+          requiresAuth: true, requiresClient: true
+        },
+       
+    },
+    {
+      path: "/client/clientDashboard",
+      name: "ClientDash",
+      component: () =>
+        import("@/views/ClientDashBoard/ClientDash.vue"),
+        meta: {
+          requiresAuth: true,  requiresClient: true
+        },
+       
+    },
+    {
+      path: "/client/clientDashboard/:id",
+      name: "ClientDashboard_Profile",
+      component: () =>
+        import("@/components/ClientDashBoard/ClientDashboard_Profile.vue"),
+        meta: {
+          requiresAuth: true,  requiresClient: true
+        },
+       
+    },
+    {
+      path: "/client/clientDashboard/invoice",
+      name: "ClientPanelInvoice",
+      component: () =>
+        import("@/views/ClientDashBoard/ClientPanelInvoice.vue"),
+        meta: {
+          requiresAuth: true,  requiresClient: true
+        },
+       
+    },
+    {
+      path: "/client/clientDashboard/schedule",
+      name: "ClientPanelSchedule",
+      component: () =>
+        import("@/views/ClientDashBoard/ClientPanelSchedule.vue"),
+        meta: {
+          requiresAuth: true,  requiresClient: true
+        },
+       
+    },
+    {
+      path: "/client/clientDashboard/signedTimesheet",
+      name: "ClientSignedTimesheet",
+      component: () =>
+        import("@/views/ClientDashBoard/ClientSignedTimesheet.vue"),
+        meta: {
+          requiresAuth: true, requiresClient: true
+        },
+       
+    },
+    {
+      path: "/client/clientDashboard/shift",
+      name: "ClientShift",
+      component: () =>
+        import("@/views/ClientDashBoard/ClientShift.vue"),
+        meta: {
+          requiresAuth: true, requiresClient: true
+        },
+        children: [
+          {
+            path: "", 
+            name: "RecruitmentOpenShiftRedirect",
+           redirect: { name: "OpenShift" } 
+          },
+          {
+            path: "/client/clientDashboard/shift/open-shift",
+            name: "OpenShift",
+            component: () =>
+              import("@/components/ClientDashBoard/ClientShiftPages/OpenShift.vue"),
+          },
+          {
+            path: "/client/clientDashboard/shift/assign-shift",
+            name: "AssignedShift",
+            component: () =>
+              import("@/components/ClientDashBoard/ClientShiftPages/AssignedShift.vue"),
+          },
+          {
+            path: "/client/clientDashboard/shift/closed-shift",
+            name: "ClosedShift",
+            component: () =>
+              import("@/components/ClientDashBoard/ClientShiftPages/ClosedShift.vue"),
+          },
+          {
+            path: "/client/clientDashboard/shift/deleted-shift",
+            name: "DeletedShift",
+            component: () =>
+              import("@/components/ClientDashBoard/ClientShiftPages/DeletedShift.vue"),
+          },
+        ]
+    },
+    {
+      path: "/client/clientDashboard/timesheet",
+      name: "ClientTimesheet",
+      component: () =>
+        import("@/views/ClientDashBoard/ClientTimesheet.vue"),
+        meta: {
+          requiresAuth: true, requiresClient: true
+        },
+       
+    },
     {
       path: "/",
       name: "Login",
@@ -994,27 +1111,53 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    const tokenExpiration = localStorage.getItem('tokenExpiration');
-    const currentTime = new Date().getTime();
+  const tokenExpiration = localStorage.getItem('tokenExpiration');
+  const currentTime = new Date().getTime();
+  const loginType = localStorage.getItem('loginType');
+  const token = localStorage.getItem('token');
 
-    if (tokenExpiration && currentTime >= parseInt(tokenExpiration)) {
+  
+  if (to.name === 'Login' && token) {
+   
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenExpiration');
+    localStorage.removeItem('loginType');
+    next(); 
+    return;
+  }
+
+ 
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+
     
+    if (tokenExpiration && currentTime >= parseInt(tokenExpiration)) {
       localStorage.removeItem('token');
       localStorage.removeItem('tokenExpiration');
+      localStorage.removeItem('loginType');
       next({ name: 'Login' });
-    } else if (!localStorage.getItem('token')) {
-     
-      next({ name: 'Login' });
-    } else {
+    } 
+    
   
-      next();
+    else if (!token) {
+      next({ name: 'Login' });
+    } 
+    
+    
+    else if (to.matched.some(record => record.meta.requiresAdmin) && loginType !== 'admin') {
+      next({ name: 'Login' }); 
+    } 
+    
+    
+    else if (to.matched.some(record => record.meta.requiresClient) && loginType !== 'client') {
+      next({ name: 'Login' }); 
+    } 
+    
+    else {
+      next(); 
     }
   } else {
-   
-    next();
+    next(); 
   }
 });
-
 
 export default router;

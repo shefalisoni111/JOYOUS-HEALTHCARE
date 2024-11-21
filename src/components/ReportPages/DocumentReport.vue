@@ -234,6 +234,7 @@ export default {
       currentPage: 1,
       itemsPerPage: 10,
       getCategoryData: [],
+      isLoading: false,
       tabs: [
         { name: "All ", component: "AllDoc", routeName: "AllDoc" },
 
@@ -301,6 +302,7 @@ export default {
       this.$router.push({ name: this.tabs[index].routeName });
     },
     async filterData() {
+      this.isLoading = true;
       const candidateApiUrl = `${VITE_API_URL}/candidates`;
       const apiUrl = `${VITE_API_URL}/candidate_documents`;
 
@@ -359,6 +361,8 @@ export default {
       } catch (error) {
         // console.error("Error fetching filtered data:", error);
         this.getDocumentReportData = [];
+      } finally {
+        this.isLoading = false;
       }
     },
     // async filterData() {
