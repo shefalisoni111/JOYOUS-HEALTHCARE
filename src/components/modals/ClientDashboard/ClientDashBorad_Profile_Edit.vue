@@ -7,6 +7,7 @@
       aria-labelledby="editClientDashboardProfile"
       tabindex="-1"
     >
+      <!-- jkj -->
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
