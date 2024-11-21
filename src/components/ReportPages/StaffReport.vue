@@ -283,7 +283,7 @@
                           </td>
                           <td scope="col">{{ data.id }}</td>
                           <td scope="col">{{ data.code }}</td>
-                          <td scope="col">{{ data.name }}</td>
+                          <td scope="col">{{ data.name || data.candidate_name }}</td>
                           <td scope="col">{{ data.site }}</td>
                           <td scope="col">{{ data.job }}</td>
                           <td scope="col">{{ data.shift_date }}</td>

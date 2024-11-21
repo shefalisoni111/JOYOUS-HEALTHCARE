@@ -33,7 +33,7 @@
                     <option
                       v-for="option in candidateLists"
                       :key="option.id"
-                      :value="option.id"
+                      :value="`${option.first_name} ${option.last_name}`"
                       placeholder="Select Staff"
                     >
                       {{ option.first_name + " " + option.last_name }}
@@ -192,7 +192,7 @@
                           </td>
                           <td scope="col">{{ data.id }}</td>
                           <td scope="col">{{ data.code }}</td>
-                          <td scope="col">{{ data.name }}</td>
+                          <td scope="col">{{ data.name || data.candidate_name }}</td>
                           <td scope="col">{{ data.site }}</td>
                           <td scope="col">{{ data.job }}</td>
                           <td scope="col">{{ data.date || data.shift_date }}</td>
