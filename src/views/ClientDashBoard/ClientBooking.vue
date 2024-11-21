@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ClientNavbar />
+    <!-- <ClientNavbar /> -->
     <div id="main">
       <div class="pagetitle d-flex justify-content-between px-2">
         <div class="py-3">
@@ -266,7 +266,7 @@
 </template>
 <script>
 import axios from "axios";
-import ClientNavbar from "../../components/ClientDashBoard/ClientNavbar.vue";
+// import ClientNavbar from "../../components/ClientDashBoard/ClientNavbar.vue";
 import Loader from "../../components/Loader/Loader.vue";
 // import SuccessAlert from "../components/Alerts/SuccessAlert.vue";
 // import ConfirmationAlert from "../components/Alerts/ConfirmationAlert.vue";
@@ -317,7 +317,7 @@ export default {
     };
   },
   components: {
-    ClientNavbar,
+    // ClientNavbar,
     Loader,
 
     // ShowDetailsMessage,
