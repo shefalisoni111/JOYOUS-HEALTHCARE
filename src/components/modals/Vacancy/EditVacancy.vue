@@ -218,11 +218,10 @@
                     <div>
                       <label class="form-label" for="staffRate">Staff Rate</label>
                       <input
-                        type="number"
+                        type="text"
                         class="form-control w-100"
                         v-model="fetchVacancy.staff_rate"
                         @input="validateRate('staff_rate', fetchVacancy.staff_rate)"
-                        @keydown.prevent
                       />
                       <span
                         v-if="!validationStaffRate && fetchVacancy.staff_rate"
@@ -294,11 +293,11 @@
                     </div>
                     <div class="col-10">
                       <input
-                        type="number"
+                        type="text"
                         class="form-select w-25"
                         v-model="fetchVacancy.staff_required"
                         @input="validateStaffRequired"
-                        @keydown.prevent
+                        maxlength="2"
                       />
                     </div>
                   </div>
@@ -368,7 +367,7 @@ export default {
         business_units_id: "",
         site_id: "",
         client_id: "",
-        staff_required: "",
+        staff_required: null,
         client_rate: null,
 
         staff_rate: null,
@@ -456,6 +455,23 @@ export default {
     },
   },
   methods: {
+    validateStaffRequired() {
+      this.fetchVacancy.staff_required = this.fetchVacancy.staff_required.replace(
+        /[^0-9]/g,
+        ""
+      );
+
+      this.fetchVacancy.staff_required = Number(this.fetchVacancy.staff_required);
+
+      this.fetchVacancy.staff_required = this.fetchVacancy.staff_required.replace(
+        /[^0-9]/g,
+        ""
+      );
+      if (this.fetchVacancy.staff_required <= 0) {
+        this.fetchVacancy.staff_required = null;
+      } else {
+      }
+    },
     validateRate(type, value) {
       switch (type) {
         case "client_rate":
@@ -561,11 +577,11 @@ export default {
       const [year, month, day] = value.split("-");
       this.fetchVacancy.dates[index] = `${day}-${month}-${year}`;
     },
-    validateStaffRequired() {
-      if (this.fetchVacancy.staff_required <= 0) {
-        this.fetchVacancy.staff_required = null;
-      }
-    },
+    // validateStaffRequired() {
+    //   if (this.fetchVacancy.staff_required <= 0) {
+    //     this.fetchVacancy.staff_required = null;
+    //   }
+    // },
 
     async fetchVacancyMethod(id) {
       const token = localStorage.getItem("token");
