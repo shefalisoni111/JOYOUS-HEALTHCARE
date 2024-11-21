@@ -1,1162 +1,1129 @@
-// import NotFound from "@/views/NotFound.vue";
+import NotFound from "@/views/NotFound.vue";
 
 import { createRouter, createWebHistory } from "vue-router";
-// import CandidateLists from '@/components/CandidatePages/CandidateLists.vue';
 
 const router = createRouter({
   history: createWebHistory(),
 
   routes: [
-    {
-      path: "/LoginType",
-      name: "Panel_Login",
-      component: () => import("@/components/auth/PanelLogin/Panel_Login.vue"),
-      meta: {
-        requiresAuth: true,
+   
+      {
+        path: "/LoginType",
+        name: "Panel_Login",
+        component: () => import("@/components/auth/PanelLogin/Panel_Login.vue"),
+        meta: {
+          requiresAuth: true,
+        },
       },
-    },
-    {
-      path: "/home",
-      name: "Home",
-      component: () => import("@/views/HomeView.vue"),
-      meta: {
-      requiresAuth: true,  requiresAdmin:true,
-      },
-    },
-    {
-      path: "/admin/:id",
-      name: "AdminProfile",
-      component: () => import("@/components/AdminProfile.vue"),
-      meta: {
+      {
+        path: "/home",
+        name: "Home",
+        component: () => import("@/views/HomeView.vue"),
+        meta: {
         requiresAuth: true,  requiresAdmin:true,
+        },
       },
-    },
-
-    {
-      path: "/client",
-      name: "Client",
-      component: () => import("@/views/ClientView.vue"),
-      meta: {
-        requiresAuth: true, requiresAdmin:true,
+      {
+        path: "/admin/:id",
+        name: "AdminProfile",
+        component: () => import("@/components/AdminProfile.vue"),
+        meta: {
+          requiresAuth: true,  requiresAdmin:true,
+        },
       },
-      children: [
-        {
-          path: "", 
-          name: "ClientsListsRedirect",
-          redirect: { name: "ClientsLists" } 
+  
+      {
+        path: "/client",
+        name: "Client",
+        component: () => import("@/views/ClientView.vue"),
+        meta: {
+          requiresAuth: true, requiresAdmin:true,
         },
-        {
-          path: "/client-list",
-          name: "ClientsLists",
-          component: () => import("@/components/ClientsPages/ClientsLists.vue"),
-          props: true,
-          children: [
-            {
-              path: "/client/allClient",
-              name: "AllClient",
-              component: () =>
-                import(
-                  "@/components/ClientsPages/AllClient.vue"
-                ),
-              meta: {
-                requiresAuth: true, requiresAdmin:true,
+        children: [
+          {
+            path: "", 
+            name: "ClientsListsRedirect",
+            redirect: { name: "ClientsLists" } 
+          },
+          {
+            path: "/client-list",
+            name: "ClientsLists",
+            component: () => import("@/components/ClientsPages/ClientsLists.vue"),
+            props: true,
+            children: [
+              {
+                path: "/client/allClient",
+                name: "AllClient",
+                component: () =>
+                  import(
+                    "@/components/ClientsPages/AllClient.vue"
+                  ),
+                meta: {
+                  requiresAuth: true, requiresAdmin:true,
+                },
               },
-            },
-            {
-              path: "/client/activeClient",
-              name: "ActiveClient",
-              component: () =>
-                import(
-                  "@/components/ClientsPages/ActiveClient.vue"
-                ),
-              meta: {
-                requiresAuth: true, requiresAdmin:true,
+              {
+                path: "/client/activeClient",
+                name: "ActiveClient",
+                component: () =>
+                  import(
+                    "@/components/ClientsPages/ActiveClient.vue"
+                  ),
+                meta: {
+                  requiresAuth: true, requiresAdmin:true,
+                },
               },
-            },
-            {
-              path: "/client/Inactive-Client",
-              name: "InActiveClient",
-              component: () =>
-                import(
-                  "@/components/ClientsPages/InActiveClient.vue"
-                ),
-              meta: {
-                requiresAuth: true, requiresAdmin:true,
+              {
+                path: "/client/Inactive-Client",
+                name: "InActiveClient",
+                component: () =>
+                  import(
+                    "@/components/ClientsPages/InActiveClient.vue"
+                  ),
+                meta: {
+                  requiresAuth: true, requiresAdmin:true,
+                },
               },
-            },
-           
-          ]
-        },
-        {
-          path: "edit/:id",
-          name: "EditClient",
-          component: () => import("@/components/ClientsPages/EditClient.vue"),
-          props: true,
-        },
-        {
-          path: "view/:id",
-          name: "ClientsProfileView",
-          component: () =>
-            import("@/components/ClientsPages/ClientsProfileView.vue"),
-          props: true,
-        },
-        {
-          path: "client/:id",
-          name: "SingleClientProfile",
-          component: () =>
-            import("@/components/ClientsPages/SingleClientProfile.vue"),
-          props: true,
+             
+            ]
+          },
+          {
+            path: "edit/:id",
+            name: "EditClient",
+            component: () => import("@/components/ClientsPages/EditClient.vue"),
+            props: true,
+          },
+          {
+            path: "view/:id",
+            name: "ClientsProfileView",
+            component: () =>
+              import("@/components/ClientsPages/ClientsProfileView.vue"),
+            props: true,
+          },
+          {
+            path: "client/:id",
+            name: "SingleClientProfile",
+            component: () =>
+              import("@/components/ClientsPages/SingleClientProfile.vue"),
+            props: true,
+            
+          },
           
+          
+          {
+            path: "/client-view",
+            name: "Client",
+            component: () => import("@/views/ClientView.vue"),
+            meta: {
+              requiresAuth: true,   requiresAdmin:true,
+            },
+          },
+          {
+            path: "/site",
+            name: "Site",
+            component: () => import("@/components/ClientsPages/Site.vue"),
+            props: true,
+            meta: {
+              requiresAuth: true, requiresAdmin:true,
+            },
+            children: [
+              {
+                path: "", 
+                name: "SiteListsRedirect",
+                redirect: { name: "SiteLists" } 
+              },
+              {
+                path: "/site/siteLists",
+                name: "SiteLists",
+                component: () =>
+                  import("../components/ClientsPages/SitePages/SiteLists.vue"),
+                props: true,
+                children: [
+                  {
+                    path: "/site/allSite",
+                    name: "AllSite",
+                    component: () =>
+                      import(
+                        "@/components/ClientsPages/SitePages/AllSite.vue"
+                      ),
+                      props: true,
+                    meta: {
+                      requiresAuth: true, requiresAdmin:true,
+                    },
+                  },
+                  {
+                    path: "/site/activeSite",
+                    name: "ActiveSite",
+                    component: () =>
+                      import(
+                        "@/components/ClientsPages/SitePages/ActiveSite.vue"
+                      ),
+                      props: true,
+                    meta: {
+                      requiresAuth: true,  requiresAdmin:true,
+                    },
+                  },
+                  {
+                    path: "/site/Inactive-Site",
+                    name: "InActiveSite",
+                    component: () =>
+                      import(
+                        "@/components/ClientsPages/SitePages/InActiveSite.vue"
+                      ),
+                      props: true,
+                    meta: {
+                      requiresAuth: true,  requiresAdmin:true,
+                    },
+                  },
+                ]
+               
+              },
+              {
+                path: "site-profile/:id",
+                name: "SingleSiteprofile",
+                component: () =>
+                  import("@/components/ClientsPages/SitePages/SingleSiteprofile.vue"),
+                props: true,
+               
+              },
+              
+             
+            ]
+          },
+          {
+            path: "/rates_and_rules",
+            name: "Rates_and_Rules",
+            component: () => import("@/components/ClientsPages/RateAndRules/Rates_and_Rules.vue"),
+            meta: {
+              requiresAuth: true,   requiresAdmin:true,
+            },
+          },
+        ],
+      },
+      {
+        path: "/staff",
+        name: "Candidate",
+        component: () => import("@/views/CandidatesView.vue"),
+        meta: {
+          requiresAuth: true, requiresAdmin:true,
         },
+        children: [
+          {
+            path: "", 
+            name: "CandidateAvailabilityRedirect",
+            redirect: { name: "CandidateAvailability" } 
+          },
+          {
+            path: "/availability",
+            name: "CandidateAvailability",
+            component: () => import("@/views/CandidateAvailability.vue"),
+            props: true,
+          },
+          {
+            path: "/staff-list",
+            name: "CandidateLists",
+            component:  () =>
+              import(
+                "@/components/CandidatePages/CandidateLists.vue"
+              ),
+            props: true,
+            children: [
+              {
+                path: "/staffs/allStaffs",
+                name: "AllCandidateListsDisplay",
+                component: () =>
+                  import(
+                    "@/components/CandidatePages/AllCandidateListsDisplay.vue"
+                  ),
+                meta: {
+                  requiresAuth: true, requiresAdmin:true,
+                },
+              },
+              {
+                path: "/staffs/activeStaff",
+                name: "ActiveCandidate",
+                component: () =>
+                  import(
+                    "@/components/CandidatePages/ActiveCandidate.vue"
+                  ),
+                meta: {
+                  requiresAuth: true, requiresAdmin:true,
+                },
+              },
+              {
+                path: "/staffs/InactiveStaff",
+                name: "InActiveCandidate",
+                component: () =>
+                  import(
+                    "@/components/CandidatePages/InActiveCandidate.vue"
+                  ),
+                meta: {
+                  requiresAuth: true, requiresAdmin:true,
+                },
+              },
+              {
+                path: "/staffs/pendingStaff",
+                name: "Rejected",
+                component: () =>
+                  import(
+                    "@/components/CandidatePages/Rejected.vue"
+                  ),
+                meta: {
+                  requiresAuth: true,  requiresAdmin:true,
+                },
+              },
+              {
+                path: "/staffs/rejectStaff",
+                name: "RejectCandidate",
+                component: () =>
+                  import(
+                    "@/components/CandidatePages/RejectCandidate.vue"
+                  ),
+                meta: {
+                  requiresAuth: true, requiresAdmin:true,
+                },
+              },
+            ]
+          },
+          {
+            path: "/staffs/profileview/:id",
+            name: "ProfileView",
+            component: () =>
+              import("@/components/CandidatePages/ProfileView.vue"),
+            props: true,
+          },
+       
+          {
+            path: ":id",
+            name: "Profile",
+            component: () => import("@/components/CandidatePages/Profile.vue"),
+            props: true,
+            children: [
+              {
+                path: "/staffs/:id/overview",
+                name: "Overview",
+                component: () =>
+                  import(
+                    "@/components/CandidatePages/ProfileDetail/Overview.vue"
+                  ),
+                meta: {
+                  requiresAuth: true,   requiresAdmin:true,
+                },
+              },
+              {
+                path: "/staffs/:id/document",
+                name: "Document",
+                component: () =>
+                  import(
+                    "@/components/CandidatePages/ProfileDetail/Document.vue"
+                  ),
+                meta: {
+                  requiresAuth: true, requiresAdmin:true,
+                },
+              },
+              {
+                path: "/staffs/:id/profiles",
+                name: "ProfileTabs",
+                component: () =>
+                  import(
+                    "@/components/CandidatePages/ProfileDetail/ProfileTabs.vue"
+                  ),
+                meta: {
+                  requiresAuth: true,  requiresAdmin:true,
+                },
+              },
+              {
+                path: "/staffs/:id/restricted",
+                name: "Restricted",
+                component: () =>
+                  import(
+                    "@/components/CandidatePages/ProfileDetail/Restricted.vue"
+                  ),
+                meta: {
+                  requiresAuth: true, requiresAdmin:true,
+                },
+              },
+              {
+                path: "/staffs/:id/rate-card",
+                name: "RateCard",
+                component: () =>
+                  import(
+                    "@/components/CandidatePages/ProfileDetail/RateCard.vue"
+                  ),
+                meta: {
+                  requiresAuth: true, requiresAdmin:true,
+                },
+              },
+              {
+                path: "/staffs/:id/notes",
+                name: "Notes",
+                component: () =>
+                  import("@/components/CandidatePages/ProfileDetail/Notes.vue"),
+                meta: {
+                  requiresAuth: true,  requiresAdmin:true,
+                },
+              },
+              {
+                path: "/staffs/:id/staff-id",
+                name: "StaffId",
+                component: () =>
+                  import("@/components/CandidatePages/ProfileDetail/StaffId.vue"),
+                meta: {
+                  requiresAuth: true, requiresAdmin:true,
+                },
+              },
+              {
+                path: "/staffs/:id/candidate-history",
+                name: "CandidateHistory",
+                component: () =>
+                  import(
+                    "@/components/CandidatePages/ProfileDetail/CandidateHistory.vue"
+                  ),
+                meta: {
+                  requiresAuth: true,  requiresAdmin:true,
+                },
+              },
+              {
+                path: "/staffs/:id/candidate-preference",
+                name: "CandidateReference",
+                component: () =>
+                  import(
+                    "@/components/CandidatePages/ProfileDetail/CandidateReference.vue"
+                  ),
+                meta: {
+                  requiresAuth: true,   requiresAdmin:true,
+                },
+              },
+            ],
+          },
+  
         
-        
-        {
-          path: "/client-view",
-          name: "Client",
-          component: () => import("@/views/ClientView.vue"),
+        ],
+  
+      },
+  
+      {
+        path: "/shifts",
+        name: "Vacancies",
+        component: () => import("@/views/VacanciesView.vue"),
+        meta: {
+          requiresAuth: true,  requiresAdmin:true,
+        },
+        children: [
+          {
+            path: "", 
+            name: "VacancyListRedirect",
+            redirect: { name: "VacancyList" } 
+          },
+          {
+            path: "/shift-list",
+            name: "VacancyList",
+            component: () => import("@/components/VacancyPages/VacancyList.vue"),
+            props: true,
+          },
+  
+        ],
+      },
+      {
+        path: "/schedule",
+        name: "Schedule",
+        component: () => import("@/views/ScheduleView.vue"),
+        meta: {
+          requiresAuth: true,requiresAdmin:true,
+        },
+      },
+      {
+        path: "/dairy_notes",
+        name: "DairyNotes",
+        component: () => import("@/views/DairyNotes.vue"),
+        meta: {
+          requiresAuth: true,requiresAdmin:true,
+        },
+      },
+      {
+        path: "/booking",
+        name: "Booking",
+        component: () => import("@/views/BookingView.vue"),
+        meta: {
+          requiresAuth: true,  requiresAdmin:true,
+        },
+      },
+      {
+        path: "/timesheet",
+        name: "Timesheet",
+        component: () => import("@/views/TimesheetView.vue"),
+        meta: {
+          requiresAuth: true,  requiresAdmin:true,
+        },
+        children: [
+          {
+            path: "", 
+            name: "WeeklyTimeSheetRedirect",
+            redirect: { name: "WeeklyTimeSheet" } 
+          },
+          {
+            path: "/timesheet/weekly",
+            name: "WeeklyTimeSheet",
+            component: () => import("@/components/TimeSheetPages/WeeklyTimeSheet.vue"),
+            props: true,
+          },
+          {
+            path: "/timesheet/custom",
+            name: "CustomTimeSheet",
+            component: () => import("@/components/TimeSheetPages/CustomTimeSheet.vue"),
+            props: true,
+          },
+          {
+            path: "/timesheet/signed",
+            name: "SignedTimeSheet",
+            component: () => import("@/components/TimeSheetPages/SignedTimeSheet.vue"),
+            props: true,
+          },
+        ]
+      },
+      {
+        path: "/invoice",
+        name: "Invoice",
+        component: () => import("@/views/InvoiceView.vue"),
+        meta: {
+          requiresAuth: true, requiresAdmin:true,
+        },
+        children: [
+          {
+            path: "", 
+            name: "ClientInvoiceRedirect",
+            redirect: { name: "ClientInvoice" } 
+          },
+          {
+            path: "/invoice/client-invoice",
+            name: "ClientInvoice",
+            component: () => import("@/components/InvoicePages/ClientInvoice.vue"),
+            props: true,
+          },
+          {
+            path: "/invoice/client-invoice/client-InvoiceView/:id",
+            name: "ClientInvoiceView",
+            component: () => import("@/components/InvoicePages/ClientInvoiceView.vue"),
+            props: true,
+           
+          },
+          {
+            path: "invoice/client-InvoiceView/:id/template1",
+            name: "First_TemplateEdit",
+            component: () => import("@/components/InvoicePages/TemplatesDesign/First_TemplateEdit.vue"),
+            props: true,
+          },
+          {
+            path: "invoice/client-InvoiceView/:id/template2",
+            name: "ClientSecontTemplateEdit",
+            component: () => import("@/components/InvoicePages/TemplatesDesign/ClientSecontTemplateEdit.vue"),
+            props: true,
+          },
+          {
+            path: '/edit/:id/:templateType',
+            name: 'First_Templates',
+            component: () => import("@/components/InvoicePages/TemplatesDesign/First_Templates.vue"),
+            props: true,
+          },
+          {
+            path: "/invoice/staff-invoice",
+            name: "CandidateInvoice",
+            component: () => import("@/components/InvoicePages/CandidateInvoice.vue"),
+            props: true,
+          },
+          {
+            path: "/invoice/staff-invoice/StaffInvoiceView/:id",
+            name: "CandidateInvoiceView",
+            component: () => import("@/components/InvoicePages/CandidateInvoiceView.vue"),
+            props: true,
+           
+  
+          },
+          {
+            path: '/invoice/StaffInvoiceViewEdit/:id',
+            name: "StaffInvoiceViewEdit",
+            component: () => import("@/components/InvoicePages/TemplatesDesign/StaffInvoiceViewEdit.vue"),
+            props: true,
+          },
+          {
+            path: "/invoice/Generate-invoice",
+            name: "GenerateInvoice",
+            component: () => import("@/components/InvoicePages/GenerateInvoice.vue"),
+            props: true,
+           
+            children: [
+              {
+                path: "/Generate-invoice/Weekly",
+                name: "WeeklyGenerateInvoice",
+                component: () =>
+                  import(
+                    "@/components/InvoicePages/GenerateInvoices/WeeklyGenerateInvoice.vue"
+                  ),
+                meta: {
+                  requiresAuth: true,  requiresAdmin:true,
+                },
+              },
+              {
+                path: "/Generate-invoice/daily",
+                name: "DailyGenerateInvoice",
+                component: () =>
+                  import(
+                    "@/components/InvoicePages/GenerateInvoices/DailyGenerateInvoice.vue"
+                  ),
+                meta: {
+                  requiresAuth: true, requiresAdmin:true,
+                },
+              },
+              {
+                path: "/Generate-invoice/monthly",
+                name: "MonthlyGenerateInvoice",
+                component: () =>
+                  import(
+                    "@/components/InvoicePages/GenerateInvoices/MonthlyGenerateInvoice.vue"
+                  ),
+                meta: {
+                  requiresAuth: true,    requiresAdmin:true,
+                },
+              },
+              {
+                path: "/Generate-invoice/shift_staff",
+                name: "Shift_Staff_GenerateInvoice",
+                component: () =>
+                  import(
+                    "@/components/InvoicePages/GenerateInvoices/Shift_Staff_GenerateInvoice.vue"
+                  ),
+                meta: {
+                  requiresAuth: true,   requiresAdmin:true,
+                },
+              },
+              {
+                path: "/Generate-invoice/staff_weekly",
+                name: "Staff_Weekly_GenerateInvoice",
+                component: () =>
+                  import(
+                    "@/components/InvoicePages/GenerateInvoices/Staff_Weekly_GenerateInvoice.vue"
+                  ),
+                meta: {
+                  requiresAuth: true,  requiresAdmin:true,
+                },
+              },
+            ]
+          },
+        ],
+      },
+      {
+        path: "/report",
+        name: "Report",
+        component: () => import("@/views/ReportView.vue"),
+        meta: {
+          requiresAuth: true,  requiresAdmin:true,
+        },
+        children: [
+          {
+            path: "/report/PayrollReport",
+            name: "PayrollReport",
+            component: () =>
+              import(
+                "@/components/ReportPages/PayrollReport.vue"
+              ),
+            meta: {
+              requiresAuth: true, requiresAdmin:true,
+            },
+          },
+          {
+            path: "/report/StaffReport",
+            name: "StaffReport",
+            component: () =>
+              import(
+                "@/components/ReportPages/StaffReport.vue"
+              ),
+            meta: {
+              requiresAuth: true, requiresAdmin:true,
+            },
+          },
+          {
+            path: "/report/ClientReport",
+            name: "ClientReport",
+            component: () =>
+              import(
+                "@/components/ReportPages/ClientReport.vue"
+              ),
+            meta: {
+              requiresAuth: true,   requiresAdmin:true,
+            },
+          },
+          {
+            path: "/report/BusinessUnitReport",
+            name: "BusinessUnitReport",
+            component: () =>
+              import(
+                "@/components/ReportPages/BusinessUnitReport.vue"
+              ),
+            meta: {
+              requiresAuth: true,  requiresAdmin:true,
+            },
+          },
+          {
+            path: "/report/InvoiceReport",
+            name: "InvoiceReport",
+            component: () =>
+              import(
+                "@/components/ReportPages/InvoiceReport.vue"
+              ),
+            meta: {
+              requiresAuth: true, requiresAdmin:true,
+            },
+          },
+          {
+            path: "/report/DocumentReport",
+            name: "DocumentReport",
+            component: () =>
+              import(
+                "@/components/ReportPages/DocumentReport.vue"
+              ),
+            meta: {
+              requiresAuth: true, requiresAdmin:true,
+            },
+            children: [
+              {
+                path: "AllDoc",
+                name: "AllDoc",
+                component: () =>
+                  import(
+                    "@/components/ReportPages/DocumentsPages/AllDoc.vue"
+                  ),
+                meta: {
+                  requiresAuth: true, requiresAdmin:true,
+                },
+              },
+              {
+                path: "ActiveDocument",
+                name: "ActiveDocument",
+                component: () =>
+                  import(
+                    "@/components/ReportPages/DocumentsPages/ActiveDocument.vue"
+                  ),
+                meta: {
+                  requiresAuth: true,  requiresAdmin:true,
+                },
+              },
+              {
+                path: "DueDoc",
+                name: "DueDoc",
+                component: () =>
+                  import(
+                    "@/components/ReportPages/DocumentsPages/DueDoc.vue"
+                  ),
+                meta: {
+                  requiresAuth: true,  requiresAdmin:true,
+                },
+              },
+              {
+                path: "ExpiredDoc",
+                name: "ExpiredDoc",
+                component: () =>
+                  import(
+                    "@/components/ReportPages/DocumentsPages/ExpiredDoc.vue"
+                  ),
+                meta: {
+                  requiresAuth: true,    requiresAdmin:true,
+                },
+              },
+            ]
+          },
+          {
+            path: "/report/RateCards",
+            name: "RateCardReport",
+            component: () =>
+              import(
+                "@/components/ReportPages/RateCardReport.vue"
+              ),
+            meta: {
+              requiresAuth: true,  requiresAdmin:true,
+            },
+          },
+          {
+            path: "/report/EmailReport",
+            name: "EmailReport",
+            component: () =>
+              import(
+                "@/components/ReportPages/EmailReport.vue"
+              ),
+            meta: {
+              requiresAuth: true, requiresAdmin:true,
+            },
+          },
+        ]
+      },
+  
+      {
+        path: "/appsetting",
+        name: "AppSetting",
+        component: () => import("@/views/AppSetting.vue"),
+        meta: {
+          requiresAuth: true, requiresAdmin:true,
+        },
+  
+        children: [
+          {
+            path: "", 
+            name: "AppSettingRedirect",
+            redirect: { name: "AppJobDetail" } 
+          },
+          {
+            path: "/addjobdetail",
+            name: "AppJobDetail",
+            component: () =>
+              import("@/components/appsettingcomponent/AppJobDetail.vue"),
+          },
+          {
+            path: "/staff-status",
+            name: "CandidateStatus",
+            component: () =>
+              import("@/components/appsettingcomponent/CandidateStatus.vue"),
+          },
+          {
+            path: "/employmenttypedetail",
+            name: "EmploymentTypeDetails",
+            component: () =>
+              import(
+                "@/components/appsettingcomponent/EmploymentTypeDetails.vue"
+              ),
+          },
+          {
+            path: "/shift",
+            name: "Shift",
+            component: () => import("@/components/appsettingcomponent/Shift.vue"),
+          },
+          {
+            path: "/holidaycalender",
+            name: "HolidaysCalender",
+            component: () =>
+              import("@/components/appsettingcomponent/HolidaysCalender.vue"),
+          },
+          {
+            path: "/staff-deduction",
+            name: "CandidateDeduction",
+            component: () =>
+              import("@/components/appsettingcomponent/CandidateDeduction.vue"),
+          },
+          {
+            path: "/staff-profiles",
+            name: "CandidateProfiles",
+            component: () =>
+              import("@/components/appsettingcomponent/CandidateProfiles.vue"),
+          },
+          {
+            path: "/staff-detail-field",
+            name: "CandidateDetailSectionField",
+            component: () =>
+              import(
+                "@/components/appsettingcomponent/CandidateDetailSectionField.vue"
+              ),
+          },
+          {
+            path: "/documentcategories",
+            name: "DocumentCategories",
+            component: () =>
+              import(
+                "@/components/appsettingcomponent/DocumentsCategoriesFile.vue"
+              ),
+          },
+        ],
+      },
+  
+      {
+        path: "/appsetting/agencysetting",
+        name: "AgencySetting",
+        component: () =>
+          import("@/components/appsettingcomponent/AgencySetting.vue"),
+          meta: {
+            requiresAuth: true, requiresAdmin:true,
+          },
+      },
+      {
+        path: "/appsetting/invoicesetting",
+        name: "InvoiceSetting",
+        component: () =>
+          import("@/components/appsettingcomponent/InvoiceSetting.vue"),
+          meta: {
+            requiresAuth: true,  requiresAdmin:true,
+          },
+      },
+      {
+        path: "/appsetting/SubscriptionSetting",
+        name: "SubscriptionSetting",
+        component: () =>
+          import("@/components/appsettingcomponent/SubscriptionSetting.vue"),
           meta: {
             requiresAuth: true,   requiresAdmin:true,
           },
-        },
-        {
-          path: "/site",
-          name: "Site",
-          component: () => import("@/components/ClientsPages/Site.vue"),
-          props: true,
+      },
+      {
+        path: "/appsetting/notificationsetting",
+        name: "NotificationSetting",
+        component: () =>
+          import("@/components/appsettingcomponent/NotificationSetting.vue"),
+          meta: {
+            requiresAuth: true,  requiresAdmin:true,
+          },
+        children: [
+          {
+            path: "", 
+            name: "NotificationSettingRedirect",
+            redirect: { name: "Email" } 
+          },
+          {
+            path: "/email",
+            name: "Email",
+            component: () =>
+              import("@/components/appsettingcomponent/notification/Email.vue"),
+          },
+          {
+            path: "/appsetting/notificationsetting/sms",
+            name: "Sms",
+            component: () =>
+              import("@/components/appsettingcomponent/notification/Sms.vue"),
+          },
+          {
+            path: "/appsetting/notificationsetting/pushnotification",
+            name: "PushNotification",
+  
+            component: () =>
+              import(
+                "@/components/appsettingcomponent/notification/PushNotification.vue"
+              ),
+          },
+          {
+            path: "/appsetting/notificationsetting/notificationalert",
+            name: "NotificationAlert",
+            component: () =>
+              import(
+                "@/components/appsettingcomponent/notification/NotificationAlert.vue"
+              ),
+          },
+          {
+            path: "/appsetting/notificationsetting/ActivatePayment",
+            name: "ActivatePayment",
+            component: () =>
+              import(
+                "@/components/appsettingcomponent/notification/ActivatePayment.vue"
+              ),
+          },
+        ],
+      },
+      {
+        path: "/appsetting/previlegesetting",
+        name: "PrevilegesSetting",
+        component: () =>
+          import("@/components/appsettingcomponent/PrevilegesSetting.vue"),
+          meta: {
+            requiresAuth: true,  requiresAdmin:true,
+          },
+      },
+      {
+        path: "/appsetting/ClientSettings",
+        name: "ClientSettings",
+        component: () =>
+          import("@/components/appsettingcomponent/ClientSettings.vue"),
+          meta: {
+            requiresAuth: true,  requiresAdmin:true,
+          },
+          children: [
+            {
+              path: "", 
+              name: "ClientSettingRedirect",
+              redirect: { name: "BasicClientSetting" } 
+            },
+            {
+              path: "basicClientSettings",
+              name: "BasicClientSetting",
+              component: () =>
+                import("@/components/appsettingcomponent/ClientSetting/BasicClientSetting.vue"),
+            },
+            {
+              path: "emailNotification",
+              name: "EmailNotification",
+              component: () =>
+                import("@/components/appsettingcomponent/ClientSetting/EmailNotification.vue"),
+            },
+          ]
+      },
+      {
+        path: "/recruitment",
+        name: "Recruitment",
+        component: () =>
+          import("@/views/Recruitment.vue"),
           meta: {
             requiresAuth: true, requiresAdmin:true,
           },
           children: [
             {
               path: "", 
-              name: "SiteListsRedirect",
-              redirect: { name: "SiteLists" } 
+              name: "RecruitmentStaffsRedirect",
+             redirect: { name: "Staffs" } 
             },
             {
-              path: "/site/siteLists",
-              name: "SiteLists",
+              path: "/staffs",
+              name: "Staffs",
               component: () =>
-                import("../components/ClientsPages/SitePages/SiteLists.vue"),
-              props: true,
-              children: [
-                {
-                  path: "/site/allSite",
-                  name: "AllSite",
-                  component: () =>
-                    import(
-                      "@/components/ClientsPages/SitePages/AllSite.vue"
-                    ),
-                    props: true,
-                  meta: {
-                    requiresAuth: true, requiresAdmin:true,
-                  },
-                },
-                {
-                  path: "/site/activeSite",
-                  name: "ActiveSite",
-                  component: () =>
-                    import(
-                      "@/components/ClientsPages/SitePages/ActiveSite.vue"
-                    ),
-                    props: true,
-                  meta: {
-                    requiresAuth: true,  requiresAdmin:true,
-                  },
-                },
-                {
-                  path: "/site/Inactive-Site",
-                  name: "InActiveSite",
-                  component: () =>
-                    import(
-                      "@/components/ClientsPages/SitePages/InActiveSite.vue"
-                    ),
-                    props: true,
-                  meta: {
-                    requiresAuth: true,  requiresAdmin:true,
-                  },
-                },
-              ]
-             
+                import("@/components/Recruitment/Staffs.vue"),
             },
             {
-              path: "site-profile/:id",
-              name: "SingleSiteprofile",
+              path: "/jobs",
+              name: "Jobs",
               component: () =>
-                import("@/components/ClientsPages/SitePages/SingleSiteprofile.vue"),
-              props: true,
-             
+                import("@/components/Recruitment/Jobs.vue"),
             },
-            
-           
+            {
+              path: "/settings",
+              name: "Settings",
+              component: () =>
+                import("@/components/Recruitment/Settings.vue"),
+            },
           ]
-        },
-        {
-          path: "/rates_and_rules",
-          name: "Rates_and_Rules",
-          component: () => import("@/components/ClientsPages/RateAndRules/Rates_and_Rules.vue"),
-          meta: {
-            requiresAuth: true,   requiresAdmin:true,
-          },
-        },
-      ],
-    },
-    {
-      path: "/staff",
-      name: "Candidate",
-      component: () => import("@/views/CandidatesView.vue"),
-      meta: {
-        requiresAuth: true, requiresAdmin:true,
       },
-      children: [
-        {
-          path: "", 
-          name: "CandidateAvailabilityRedirect",
-          redirect: { name: "CandidateAvailability" } 
-        },
-        {
-          path: "/availability",
-          name: "CandidateAvailability",
-          component: () => import("@/views/CandidateAvailability.vue"),
-          props: true,
-        },
-        {
-          path: "/staff-list",
-          name: "CandidateLists",
-          component:  () =>
-            import(
-              "@/components/CandidatePages/CandidateLists.vue"
-            ),
-          props: true,
+      {
+        path: "/client/clientDashboard/booking",
+        name: "ClientBooking",
+        component: () =>
+          import("@/views/ClientDashBoard/ClientBooking.vue"),
+          meta: {
+            requiresAuth: true, requiresClient: true
+          },
+         
+      },
+      {
+        path: "/client/clientDashboard",
+        name: "ClientDash",
+        component: () =>
+          import("@/views/ClientDashBoard/ClientDash.vue"),
+          meta: {
+            requiresAuth: true,  requiresClient: true
+          },
+         
+      },
+      {
+        path: "/client/clientDashboard/:id",
+        name: "ClientDashboard_Profile",
+        component: () =>
+          import("@/components/ClientDashBoard/ClientDashboard_Profile.vue"),
+          meta: {
+            requiresAuth: true,  requiresClient: true
+          },
+         
+      },
+      {
+        path: "/client/clientDashboard/invoice",
+        name: "ClientPanelInvoice",
+        component: () =>
+          import("@/views/ClientDashBoard/ClientPanelInvoice.vue"),
+          meta: {
+            requiresAuth: true,  requiresClient: true
+          },
+         
+      },
+      {
+        path: "/client/clientDashboard/schedule",
+        name: "ClientPanelSchedule",
+        component: () =>
+          import("@/views/ClientDashBoard/ClientPanelSchedule.vue"),
+          meta: {
+            requiresAuth: true,  requiresClient: true
+          },
+         
+      },
+      {
+        path: "/client/clientDashboard/signedTimesheet",
+        name: "ClientSignedTimesheet",
+        component: () =>
+          import("@/views/ClientDashBoard/ClientSignedTimesheet.vue"),
+          meta: {
+            requiresAuth: true, requiresClient: true
+          },
+         
+      },
+      {
+        path: "/client/clientDashboard/shift",
+        name: "ClientShift",
+        component: () =>
+          import("@/views/ClientDashBoard/ClientShift.vue"),
+          meta: {
+            requiresAuth: true, requiresClient: true
+          },
           children: [
             {
-              path: "/staffs/allStaffs",
-              name: "AllCandidateListsDisplay",
-              component: () =>
-                import(
-                  "@/components/CandidatePages/AllCandidateListsDisplay.vue"
-                ),
-              meta: {
-                requiresAuth: true, requiresAdmin:true,
-              },
+              path: "", 
+              name: "RecruitmentOpenShiftRedirect",
+             redirect: { name: "OpenShift" } 
             },
             {
-              path: "/staffs/activeStaff",
-              name: "ActiveCandidate",
+              path: "/client/clientDashboard/shift/open-shift",
+              name: "OpenShift",
               component: () =>
-                import(
-                  "@/components/CandidatePages/ActiveCandidate.vue"
-                ),
-              meta: {
-                requiresAuth: true, requiresAdmin:true,
-              },
+                import("@/components/ClientDashBoard/ClientShiftPages/OpenShift.vue"),
             },
             {
-              path: "/staffs/InactiveStaff",
-              name: "InActiveCandidate",
+              path: "/client/clientDashboard/shift/assign-shift",
+              name: "AssignedShift",
               component: () =>
-                import(
-                  "@/components/CandidatePages/InActiveCandidate.vue"
-                ),
-              meta: {
-                requiresAuth: true, requiresAdmin:true,
-              },
+                import("@/components/ClientDashBoard/ClientShiftPages/AssignedShift.vue"),
             },
             {
-              path: "/staffs/pendingStaff",
-              name: "Rejected",
+              path: "/client/clientDashboard/shift/closed-shift",
+              name: "ClosedShift",
               component: () =>
-                import(
-                  "@/components/CandidatePages/Rejected.vue"
-                ),
-              meta: {
-                requiresAuth: true,  requiresAdmin:true,
-              },
+                import("@/components/ClientDashBoard/ClientShiftPages/ClosedShift.vue"),
             },
             {
-              path: "/staffs/rejectStaff",
-              name: "RejectCandidate",
+              path: "/client/clientDashboard/shift/deleted-shift",
+              name: "DeletedShift",
               component: () =>
-                import(
-                  "@/components/CandidatePages/RejectCandidate.vue"
-                ),
-              meta: {
-                requiresAuth: true, requiresAdmin:true,
-              },
+                import("@/components/ClientDashBoard/ClientShiftPages/DeletedShift.vue"),
             },
           ]
+      },
+      {
+        path: "/client/clientDashboard/timesheet",
+        name: "ClientTimesheet",
+        component: () =>
+          import("@/views/ClientDashBoard/ClientTimesheet.vue"),
+          meta: {
+            requiresAuth: true, requiresClient: true
+          },
+         
+      },
+      {
+        path: "/",
+        name: "Login",
+        component: () => import("@/components/auth/login/Login.vue"),
+        meta: {
+          auth: true,
         },
-        {
-          path: "/staffs/profileview/:id",
-          name: "ProfileView",
-          component: () =>
-            import("@/components/CandidatePages/ProfileView.vue"),
-          props: true,
-        },
+      },
+  
+  
      
-        {
-          path: ":id",
-          name: "Profile",
-          component: () => import("@/components/CandidatePages/Profile.vue"),
-          props: true,
-          children: [
-            {
-              path: "/staffs/:id/overview",
-              name: "Overview",
-              component: () =>
-                import(
-                  "@/components/CandidatePages/ProfileDetail/Overview.vue"
-                ),
-              meta: {
-                requiresAuth: true,   requiresAdmin:true,
-              },
-            },
-            {
-              path: "/staffs/:id/document",
-              name: "Document",
-              component: () =>
-                import(
-                  "@/components/CandidatePages/ProfileDetail/Document.vue"
-                ),
-              meta: {
-                requiresAuth: true, requiresAdmin:true,
-              },
-            },
-            {
-              path: "/staffs/:id/profiles",
-              name: "ProfileTabs",
-              component: () =>
-                import(
-                  "@/components/CandidatePages/ProfileDetail/ProfileTabs.vue"
-                ),
-              meta: {
-                requiresAuth: true,  requiresAdmin:true,
-              },
-            },
-            {
-              path: "/staffs/:id/restricted",
-              name: "Restricted",
-              component: () =>
-                import(
-                  "@/components/CandidatePages/ProfileDetail/Restricted.vue"
-                ),
-              meta: {
-                requiresAuth: true, requiresAdmin:true,
-              },
-            },
-            {
-              path: "/staffs/:id/rate-card",
-              name: "RateCard",
-              component: () =>
-                import(
-                  "@/components/CandidatePages/ProfileDetail/RateCard.vue"
-                ),
-              meta: {
-                requiresAuth: true, requiresAdmin:true,
-              },
-            },
-            {
-              path: "/staffs/:id/notes",
-              name: "Notes",
-              component: () =>
-                import("@/components/CandidatePages/ProfileDetail/Notes.vue"),
-              meta: {
-                requiresAuth: true,  requiresAdmin:true,
-              },
-            },
-            {
-              path: "/staffs/:id/staff-id",
-              name: "StaffId",
-              component: () =>
-                import("@/components/CandidatePages/ProfileDetail/StaffId.vue"),
-              meta: {
-                requiresAuth: true, requiresAdmin:true,
-              },
-            },
-            {
-              path: "/staffs/:id/candidate-history",
-              name: "CandidateHistory",
-              component: () =>
-                import(
-                  "@/components/CandidatePages/ProfileDetail/CandidateHistory.vue"
-                ),
-              meta: {
-                requiresAuth: true,  requiresAdmin:true,
-              },
-            },
-            {
-              path: "/staffs/:id/candidate-preference",
-              name: "CandidateReference",
-              component: () =>
-                import(
-                  "@/components/CandidatePages/ProfileDetail/CandidateReference.vue"
-                ),
-              meta: {
-                requiresAuth: true,   requiresAdmin:true,
-              },
-            },
-          ],
-        },
-
-      
-      ],
-
-    },
-
-    {
-      path: "/shifts",
-      name: "Vacancies",
-      component: () => import("@/views/VacanciesView.vue"),
-      meta: {
-        requiresAuth: true,  requiresAdmin:true,
-      },
-      children: [
-        {
-          path: "", 
-          name: "VacancyListRedirect",
-          redirect: { name: "VacancyList" } 
-        },
-        {
-          path: "/shift-list",
-          name: "VacancyList",
-          component: () => import("@/components/VacancyPages/VacancyList.vue"),
-          props: true,
-        },
-
-      ],
-    },
-    {
-      path: "/schedule",
-      name: "Schedule",
-      component: () => import("@/views/ScheduleView.vue"),
-      meta: {
-        requiresAuth: true,requiresAdmin:true,
-      },
-    },
-    {
-      path: "/dairy_notes",
-      name: "DairyNotes",
-      component: () => import("@/views/DairyNotes.vue"),
-      meta: {
-        requiresAuth: true,requiresAdmin:true,
-      },
-    },
-    {
-      path: "/booking",
-      name: "Booking",
-      component: () => import("@/views/BookingView.vue"),
-      meta: {
-        requiresAuth: true,  requiresAdmin:true,
-      },
-    },
-    {
-      path: "/timesheet",
-      name: "Timesheet",
-      component: () => import("@/views/TimesheetView.vue"),
-      meta: {
-        requiresAuth: true,  requiresAdmin:true,
-      },
-      children: [
-        {
-          path: "", 
-          name: "WeeklyTimeSheetRedirect",
-          redirect: { name: "WeeklyTimeSheet" } 
-        },
-        {
-          path: "/timesheet/weekly",
-          name: "WeeklyTimeSheet",
-          component: () => import("@/components/TimeSheetPages/WeeklyTimeSheet.vue"),
-          props: true,
-        },
-        {
-          path: "/timesheet/custom",
-          name: "CustomTimeSheet",
-          component: () => import("@/components/TimeSheetPages/CustomTimeSheet.vue"),
-          props: true,
-        },
-        {
-          path: "/timesheet/signed",
-          name: "SignedTimeSheet",
-          component: () => import("@/components/TimeSheetPages/SignedTimeSheet.vue"),
-          props: true,
-        },
-      ]
-    },
-    {
-      path: "/invoice",
-      name: "Invoice",
-      component: () => import("@/views/InvoiceView.vue"),
-      meta: {
-        requiresAuth: true, requiresAdmin:true,
-      },
-      children: [
-        {
-          path: "", 
-          name: "ClientInvoiceRedirect",
-          redirect: { name: "ClientInvoice" } 
-        },
-        {
-          path: "/invoice/client-invoice",
-          name: "ClientInvoice",
-          component: () => import("@/components/InvoicePages/ClientInvoice.vue"),
-          props: true,
-        },
-        {
-          path: "/invoice/client-invoice/client-InvoiceView/:id",
-          name: "ClientInvoiceView",
-          component: () => import("@/components/InvoicePages/ClientInvoiceView.vue"),
-          props: true,
-         
-        },
-        {
-          path: "invoice/client-InvoiceView/:id/template1",
-          name: "First_TemplateEdit",
-          component: () => import("@/components/InvoicePages/TemplatesDesign/First_TemplateEdit.vue"),
-          props: true,
-        },
-        {
-          path: "invoice/client-InvoiceView/:id/template2",
-          name: "ClientSecontTemplateEdit",
-          component: () => import("@/components/InvoicePages/TemplatesDesign/ClientSecontTemplateEdit.vue"),
-          props: true,
-        },
-        {
-          path: '/edit/:id/:templateType',
-          name: 'First_Templates',
-          component: () => import("@/components/InvoicePages/TemplatesDesign/First_Templates.vue"),
-          props: true,
-        },
-        {
-          path: "/invoice/staff-invoice",
-          name: "CandidateInvoice",
-          component: () => import("@/components/InvoicePages/CandidateInvoice.vue"),
-          props: true,
-        },
-        {
-          path: "/invoice/staff-invoice/StaffInvoiceView/:id",
-          name: "CandidateInvoiceView",
-          component: () => import("@/components/InvoicePages/CandidateInvoiceView.vue"),
-          props: true,
-         
-
-        },
-        {
-          path: '/invoice/StaffInvoiceViewEdit/:id',
-          name: "StaffInvoiceViewEdit",
-          component: () => import("@/components/InvoicePages/TemplatesDesign/StaffInvoiceViewEdit.vue"),
-          props: true,
-        },
-        {
-          path: "/invoice/Generate-invoice",
-          name: "GenerateInvoice",
-          component: () => import("@/components/InvoicePages/GenerateInvoice.vue"),
-          props: true,
-         
-          children: [
-            {
-              path: "/Generate-invoice/Weekly",
-              name: "WeeklyGenerateInvoice",
-              component: () =>
-                import(
-                  "@/components/InvoicePages/GenerateInvoices/WeeklyGenerateInvoice.vue"
-                ),
-              meta: {
-                requiresAuth: true,  requiresAdmin:true,
-              },
-            },
-            {
-              path: "/Generate-invoice/daily",
-              name: "DailyGenerateInvoice",
-              component: () =>
-                import(
-                  "@/components/InvoicePages/GenerateInvoices/DailyGenerateInvoice.vue"
-                ),
-              meta: {
-                requiresAuth: true, requiresAdmin:true,
-              },
-            },
-            {
-              path: "/Generate-invoice/monthly",
-              name: "MonthlyGenerateInvoice",
-              component: () =>
-                import(
-                  "@/components/InvoicePages/GenerateInvoices/MonthlyGenerateInvoice.vue"
-                ),
-              meta: {
-                requiresAuth: true,    requiresAdmin:true,
-              },
-            },
-            {
-              path: "/Generate-invoice/shift_staff",
-              name: "Shift_Staff_GenerateInvoice",
-              component: () =>
-                import(
-                  "@/components/InvoicePages/GenerateInvoices/Shift_Staff_GenerateInvoice.vue"
-                ),
-              meta: {
-                requiresAuth: true,   requiresAdmin:true,
-              },
-            },
-            {
-              path: "/Generate-invoice/staff_weekly",
-              name: "Staff_Weekly_GenerateInvoice",
-              component: () =>
-                import(
-                  "@/components/InvoicePages/GenerateInvoices/Staff_Weekly_GenerateInvoice.vue"
-                ),
-              meta: {
-                requiresAuth: true,  requiresAdmin:true,
-              },
-            },
-          ]
-        },
-      ],
-    },
-    {
-      path: "/report",
-      name: "Report",
-      component: () => import("@/views/ReportView.vue"),
-      meta: {
-        requiresAuth: true,  requiresAdmin:true,
-      },
-      children: [
-        {
-          path: "/report/PayrollReport",
-          name: "PayrollReport",
-          component: () =>
-            import(
-              "@/components/ReportPages/PayrollReport.vue"
-            ),
-          meta: {
-            requiresAuth: true, requiresAdmin:true,
-          },
-        },
-        {
-          path: "/report/StaffReport",
-          name: "StaffReport",
-          component: () =>
-            import(
-              "@/components/ReportPages/StaffReport.vue"
-            ),
-          meta: {
-            requiresAuth: true, requiresAdmin:true,
-          },
-        },
-        {
-          path: "/report/ClientReport",
-          name: "ClientReport",
-          component: () =>
-            import(
-              "@/components/ReportPages/ClientReport.vue"
-            ),
-          meta: {
-            requiresAuth: true,   requiresAdmin:true,
-          },
-        },
-        {
-          path: "/report/BusinessUnitReport",
-          name: "BusinessUnitReport",
-          component: () =>
-            import(
-              "@/components/ReportPages/BusinessUnitReport.vue"
-            ),
-          meta: {
-            requiresAuth: true,  requiresAdmin:true,
-          },
-        },
-        {
-          path: "/report/InvoiceReport",
-          name: "InvoiceReport",
-          component: () =>
-            import(
-              "@/components/ReportPages/InvoiceReport.vue"
-            ),
-          meta: {
-            requiresAuth: true, requiresAdmin:true,
-          },
-        },
-        {
-          path: "/report/DocumentReport",
-          name: "DocumentReport",
-          component: () =>
-            import(
-              "@/components/ReportPages/DocumentReport.vue"
-            ),
-          meta: {
-            requiresAuth: true, requiresAdmin:true,
-          },
-          children: [
-            {
-              path: "AllDoc",
-              name: "AllDoc",
-              component: () =>
-                import(
-                  "@/components/ReportPages/DocumentsPages/AllDoc.vue"
-                ),
-              meta: {
-                requiresAuth: true, requiresAdmin:true,
-              },
-            },
-            {
-              path: "ActiveDocument",
-              name: "ActiveDocument",
-              component: () =>
-                import(
-                  "@/components/ReportPages/DocumentsPages/ActiveDocument.vue"
-                ),
-              meta: {
-                requiresAuth: true,  requiresAdmin:true,
-              },
-            },
-            {
-              path: "DueDoc",
-              name: "DueDoc",
-              component: () =>
-                import(
-                  "@/components/ReportPages/DocumentsPages/DueDoc.vue"
-                ),
-              meta: {
-                requiresAuth: true,  requiresAdmin:true,
-              },
-            },
-            {
-              path: "ExpiredDoc",
-              name: "ExpiredDoc",
-              component: () =>
-                import(
-                  "@/components/ReportPages/DocumentsPages/ExpiredDoc.vue"
-                ),
-              meta: {
-                requiresAuth: true,    requiresAdmin:true,
-              },
-            },
-          ]
-        },
-        {
-          path: "/report/RateCards",
-          name: "RateCardReport",
-          component: () =>
-            import(
-              "@/components/ReportPages/RateCardReport.vue"
-            ),
-          meta: {
-            requiresAuth: true,  requiresAdmin:true,
-          },
-        },
-        {
-          path: "/report/EmailReport",
-          name: "EmailReport",
-          component: () =>
-            import(
-              "@/components/ReportPages/EmailReport.vue"
-            ),
-          meta: {
-            requiresAuth: true, requiresAdmin:true,
-          },
-        },
-      ]
-    },
-
-    {
-      path: "/appsetting",
-      name: "AppSetting",
-      component: () => import("@/views/AppSetting.vue"),
-      meta: {
-        requiresAuth: true, requiresAdmin:true,
-      },
-
-      children: [
-        {
-          path: "", 
-          name: "AppSettingRedirect",
-          redirect: { name: "AppJobDetail" } 
-        },
-        {
-          path: "/addjobdetail",
-          name: "AppJobDetail",
-          component: () =>
-            import("@/components/appsettingcomponent/AppJobDetail.vue"),
-        },
-        {
-          path: "/staff-status",
-          name: "CandidateStatus",
-          component: () =>
-            import("@/components/appsettingcomponent/CandidateStatus.vue"),
-        },
-        {
-          path: "/employmenttypedetail",
-          name: "EmploymentTypeDetails",
-          component: () =>
-            import(
-              "@/components/appsettingcomponent/EmploymentTypeDetails.vue"
-            ),
-        },
-        {
-          path: "/shift",
-          name: "Shift",
-          component: () => import("@/components/appsettingcomponent/Shift.vue"),
-        },
-        {
-          path: "/holidaycalender",
-          name: "HolidaysCalender",
-          component: () =>
-            import("@/components/appsettingcomponent/HolidaysCalender.vue"),
-        },
-        {
-          path: "/staff-deduction",
-          name: "CandidateDeduction",
-          component: () =>
-            import("@/components/appsettingcomponent/CandidateDeduction.vue"),
-        },
-        {
-          path: "/staff-profiles",
-          name: "CandidateProfiles",
-          component: () =>
-            import("@/components/appsettingcomponent/CandidateProfiles.vue"),
-        },
-        {
-          path: "/staff-detail-field",
-          name: "CandidateDetailSectionField",
-          component: () =>
-            import(
-              "@/components/appsettingcomponent/CandidateDetailSectionField.vue"
-            ),
-        },
-        {
-          path: "/documentcategories",
-          name: "DocumentCategories",
-          component: () =>
-            import(
-              "@/components/appsettingcomponent/DocumentsCategoriesFile.vue"
-            ),
-        },
-      ],
-    },
-
-    {
-      path: "/appsetting/agencysetting",
-      name: "AgencySetting",
-      component: () =>
-        import("@/components/appsettingcomponent/AgencySetting.vue"),
-        meta: {
-          requiresAuth: true, requiresAdmin:true,
-        },
-    },
-    {
-      path: "/appsetting/invoicesetting",
-      name: "InvoiceSetting",
-      component: () =>
-        import("@/components/appsettingcomponent/InvoiceSetting.vue"),
-        meta: {
-          requiresAuth: true,  requiresAdmin:true,
-        },
-    },
-    {
-      path: "/appsetting/SubscriptionSetting",
-      name: "SubscriptionSetting",
-      component: () =>
-        import("@/components/appsettingcomponent/SubscriptionSetting.vue"),
-        meta: {
-          requiresAuth: true,   requiresAdmin:true,
-        },
-    },
-    {
-      path: "/appsetting/notificationsetting",
-      name: "NotificationSetting",
-      component: () =>
-        import("@/components/appsettingcomponent/NotificationSetting.vue"),
-        meta: {
-          requiresAuth: true,  requiresAdmin:true,
-        },
-      children: [
-        {
-          path: "", 
-          name: "NotificationSettingRedirect",
-          redirect: { name: "Email" } 
-        },
-        {
-          path: "/email",
-          name: "Email",
-          component: () =>
-            import("@/components/appsettingcomponent/notification/Email.vue"),
-        },
-        {
-          path: "/appsetting/notificationsetting/sms",
-          name: "Sms",
-          component: () =>
-            import("@/components/appsettingcomponent/notification/Sms.vue"),
-        },
-        {
-          path: "/appsetting/notificationsetting/pushnotification",
-          name: "PushNotification",
-
-          component: () =>
-            import(
-              "@/components/appsettingcomponent/notification/PushNotification.vue"
-            ),
-        },
-        {
-          path: "/appsetting/notificationsetting/notificationalert",
-          name: "NotificationAlert",
-          component: () =>
-            import(
-              "@/components/appsettingcomponent/notification/NotificationAlert.vue"
-            ),
-        },
-        {
-          path: "/appsetting/notificationsetting/ActivatePayment",
-          name: "ActivatePayment",
-          component: () =>
-            import(
-              "@/components/appsettingcomponent/notification/ActivatePayment.vue"
-            ),
-        },
-      ],
-    },
-    {
-      path: "/appsetting/previlegesetting",
-      name: "PrevilegesSetting",
-      component: () =>
-        import("@/components/appsettingcomponent/PrevilegesSetting.vue"),
-        meta: {
-          requiresAuth: true,  requiresAdmin:true,
-        },
-    },
-    {
-      path: "/appsetting/ClientSettings",
-      name: "ClientSettings",
-      component: () =>
-        import("@/components/appsettingcomponent/ClientSettings.vue"),
-        meta: {
-          requiresAuth: true,  requiresAdmin:true,
-        },
-        children: [
-          {
-            path: "", 
-            name: "ClientSettingRedirect",
-            redirect: { name: "BasicClientSetting" } 
-          },
-          {
-            path: "basicClientSettings",
-            name: "BasicClientSetting",
-            component: () =>
-              import("@/components/appsettingcomponent/ClientSetting/BasicClientSetting.vue"),
-          },
-          {
-            path: "emailNotification",
-            name: "EmailNotification",
-            component: () =>
-              import("@/components/appsettingcomponent/ClientSetting/EmailNotification.vue"),
-          },
-        ]
-    },
-    {
-      path: "/recruitment",
-      name: "Recruitment",
-      component: () =>
-        import("@/views/Recruitment.vue"),
-        meta: {
-          requiresAuth: true, requiresAdmin:true,
-        },
-        children: [
-          {
-            path: "", 
-            name: "RecruitmentStaffsRedirect",
-           redirect: { name: "Staffs" } 
-          },
-          {
-            path: "/staffs",
-            name: "Staffs",
-            component: () =>
-              import("@/components/Recruitment/Staffs.vue"),
-          },
-          {
-            path: "/jobs",
-            name: "Jobs",
-            component: () =>
-              import("@/components/Recruitment/Jobs.vue"),
-          },
-          {
-            path: "/settings",
-            name: "Settings",
-            component: () =>
-              import("@/components/Recruitment/Settings.vue"),
-          },
-        ]
-    },
-    {
-      path: "/client/clientDashboard/booking",
-      name: "ClientBooking",
-      component: () =>
-        import("@/views/ClientDashBoard/ClientBooking.vue"),
-        meta: {
-          requiresAuth: true, requiresClient: true
-        },
-       
-    },
-    {
-      path: "/client/clientDashboard",
-      name: "ClientDash",
-      component: () =>
-        import("@/views/ClientDashBoard/ClientDash.vue"),
-        meta: {
-          requiresAuth: true,  requiresClient: true
-        },
-       
-    },
-    {
-      path: "/client/clientDashboard/:id",
-      name: "ClientDashboard_Profile",
-      component: () =>
-        import("@/components/ClientDashBoard/ClientDashboard_Profile.vue"),
-        meta: {
-          requiresAuth: true,  requiresClient: true
-        },
-       
-    },
-    {
-      path: "/client/clientDashboard/invoice",
-      name: "ClientPanelInvoice",
-      component: () =>
-        import("@/views/ClientDashBoard/ClientPanelInvoice.vue"),
-        meta: {
-          requiresAuth: true,  requiresClient: true
-        },
-       
-    },
-    {
-      path: "/client/clientDashboard/schedule",
-      name: "ClientPanelSchedule",
-      component: () =>
-        import("@/views/ClientDashBoard/ClientPanelSchedule.vue"),
-        meta: {
-          requiresAuth: true,  requiresClient: true
-        },
-       
-    },
-    {
-      path: "/client/clientDashboard/signedTimesheet",
-      name: "ClientSignedTimesheet",
-      component: () =>
-        import("@/views/ClientDashBoard/ClientSignedTimesheet.vue"),
-        meta: {
-          requiresAuth: true, requiresClient: true
-        },
-       
-    },
-    {
-      path: "/client/clientDashboard/shift",
-      name: "ClientShift",
-      component: () =>
-        import("@/views/ClientDashBoard/ClientShift.vue"),
-        meta: {
-          requiresAuth: true, requiresClient: true
-        },
-        children: [
-          {
-            path: "", 
-            name: "RecruitmentOpenShiftRedirect",
-           redirect: { name: "OpenShift" } 
-          },
-          {
-            path: "/client/clientDashboard/shift/open-shift",
-            name: "OpenShift",
-            component: () =>
-              import("@/components/ClientDashBoard/ClientShiftPages/OpenShift.vue"),
-          },
-          {
-            path: "/client/clientDashboard/shift/assign-shift",
-            name: "AssignedShift",
-            component: () =>
-              import("@/components/ClientDashBoard/ClientShiftPages/AssignedShift.vue"),
-          },
-          {
-            path: "/client/clientDashboard/shift/closed-shift",
-            name: "ClosedShift",
-            component: () =>
-              import("@/components/ClientDashBoard/ClientShiftPages/ClosedShift.vue"),
-          },
-          {
-            path: "/client/clientDashboard/shift/deleted-shift",
-            name: "DeletedShift",
-            component: () =>
-              import("@/components/ClientDashBoard/ClientShiftPages/DeletedShift.vue"),
-          },
-        ]
-    },
-    {
-      path: "/client/clientDashboard/timesheet",
-      name: "ClientTimesheet",
-      component: () =>
-        import("@/views/ClientDashBoard/ClientTimesheet.vue"),
-        meta: {
-          requiresAuth: true, requiresClient: true
-        },
-       
-    },
-    {
-      path: "/",
-      name: "Login",
-      component: () => import("@/components/auth/login/Login.vue"),
-      meta: {
-        auth: true,
-      },
-    },
-
-
-   
-    { path: "/:pathMatch(.*)", component: () => import("@/views/NotFound.vue") },
-  ],
-
-  linkExactActiveClass: "exact-active",
-});
+      { path: "/:pathMatch(.*)", component: () => import("@/views/NotFound.vue") },
+    ],
+  
+    linkExactActiveClass: "exact-active",
+  });
 
 router.beforeEach((to, from, next) => {
-  const tokenExpiration = localStorage.getItem('tokenExpiration');
-  const currentTime = new Date().getTime();
-  const loginType = localStorage.getItem('loginType');
-  const token = localStorage.getItem('token');
-
-  
-  if (to.name === 'Login' && token) {
-   
-    localStorage.removeItem('token');
-    localStorage.removeItem('tokenExpiration');
-    localStorage.removeItem('loginType');
-    next(); 
-    return;
-  }
-
- 
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-
-    
-    if (tokenExpiration && currentTime >= parseInt(tokenExpiration)) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('tokenExpiration');
-      localStorage.removeItem('loginType');
+  // Check if the route requires authentication
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    // Check if there is a token in local storage
+    if (!localStorage.getItem('token')) {
+      // User is not authenticated, redirect to login
       next({ name: 'Login' });
-    } 
-    
-  
-    else if (!token) {
-      next({ name: 'Login' });
-    } 
-    
-    
-    else if (to.matched.some(record => record.meta.requiresAdmin) && loginType !== 'admin') {
-      next({ name: 'Login' }); 
-    } 
-    
-    
-    else if (to.matched.some(record => record.meta.requiresClient) && loginType !== 'client') {
-      next({ name: 'Login' }); 
-    } 
-    
-    else {
-      next(); 
+    } else {
+      // User is authenticated, proceed to the route
+      next();
     }
   } else {
-    next(); 
+    // Route does not require authentication, proceed
+    next();
   }
 });
 
