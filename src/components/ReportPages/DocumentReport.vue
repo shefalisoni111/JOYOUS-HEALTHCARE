@@ -301,7 +301,35 @@ export default {
       this.$router.push({ name: this.tabs[index].routeName });
     },
     async filterData() {
+      const candidateApiUrl = `${VITE_API_URL}/candidates`;
       const apiUrl = `${VITE_API_URL}/candidate_documents`;
+
+      let candidateParams = { page: 1 };
+
+      if (this.selectedStaffStatus === "all") {
+        candidateParams = { page: 1 };
+      } else if (this.selectedStaffStatus === "approved") {
+        candidateParams.activated_value = false;
+      } else if (this.selectedStaffStatus === "rejected") {
+        candidateParams.activated_value = true;
+      } else if (this.selectedStaffStatus === "pending") {
+        candidateParams.status_value = "pending";
+        candidateParams.activated_value = true;
+      }
+
+      if (this.selectedStaff) {
+        candidateParams["can_document[candidate_id]"] = this.selectedStaff;
+      }
+
+      try {
+        const candidateResponse = await axios.get(candidateApiUrl, {
+          params: candidateParams,
+        });
+        this.candidateLists = candidateResponse.data.data || [];
+      } catch (error) {
+        // console.error("Error fetching candidates:", error);
+        this.candidateLists = [];
+      }
 
       let params = {
         "can_document[category_id]": this.selectedDocumentCategory || null,
@@ -316,9 +344,12 @@ export default {
           delete params[key];
         }
       });
-      if (this.selectedDocumentCategory || this.selectedStaffStatus) {
+      if (this.selectedDocumentType) {
+        delete params["can_document[category_id]"];
+      }
+
+      if (this.selectedStaff) {
         delete params["can_document[status]"];
-        delete params["can_document[candidate_id]"];
       }
 
       try {
@@ -461,6 +492,7 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/document_categories`);
         this.getCategoryData = response.data;
+        this.documentNames = response.data.document || [];
         if (this.selectedDocumentCategory) {
           try {
             const documentTypesResponse = await axios.get(

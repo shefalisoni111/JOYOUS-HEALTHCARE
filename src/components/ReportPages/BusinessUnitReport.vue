@@ -195,7 +195,7 @@
                           <td scope="col">{{ data.name }}</td>
                           <td scope="col">{{ data.site }}</td>
                           <td scope="col">{{ data.job }}</td>
-                          <td scope="col">{{ data.shift_date }}</td>
+                          <td scope="col">{{ data.date || data.shift_date }}</td>
                           <td scope="col">
                             {{ data.start_time }}
                           </td>
@@ -525,29 +525,40 @@ export default {
       if (this.selectedSiteName) {
         params["report[site]"] = this.selectedSiteName;
       }
-      if (this.currentView === "weekly" && this.startDate) {
-        const startOfWeek = new Date(this.startDate);
-        startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+      const today = new Date();
+
+      if (this.currentView === "weekly") {
+        const startOfWeek = new Date(today);
+        const dayOfWeek = startOfWeek.getDay();
+        const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+        startOfWeek.setDate(startOfWeek.getDate() + diff);
+
         const formattedStartOfWeek = `${(startOfWeek.getMonth() + 1)
           .toString()
           .padStart(2, "0")}/${startOfWeek
           .getDate()
           .toString()
           .padStart(2, "0")}/${startOfWeek.getFullYear()}`;
+
         params["report[date]"] = formattedStartOfWeek;
-      } else if (this.currentView === "monthly" && this.startDate) {
-        const startOfMonth = new Date(this.startDate);
+        params["report[shift_date]"] = formattedStartOfWeek;
+      } else if (this.currentView === "monthly") {
+        const startOfMonth = new Date(today);
         startOfMonth.setDate(1);
+
         const formattedStartOfMonth = `${(startOfMonth.getMonth() + 1)
           .toString()
           .padStart(2, "0")}/${startOfMonth
           .getDate()
           .toString()
           .padStart(2, "0")}/${startOfMonth.getFullYear()}`;
+
         params["report[date]"] = formattedStartOfMonth;
+        params["report[shift_date]"] = formattedStartOfMonth;
       }
       if (this.selectedCandidate) {
         params["report[name]"] = this.selectedCandidate;
+        params["report[candidate_name]"] = this.selectedCandidate;
       }
       params.range = this.currentView === "weekly" ? "week" : "month";
 
@@ -871,6 +882,7 @@ export default {
 
       localStorage.setItem("startDate", this.startDate.toISOString());
       localStorage.setItem("endDate", this.endDate.toISOString());
+      this.filterData();
     },
     loadDateRangeFromLocalStorage() {
       const storedStartDate = localStorage.getItem("startDate");
