@@ -197,7 +197,28 @@
                       </select>
                     </div>
                   </div>
-                  <div class="d-flex justify-content-between">
+                  <div class="mb-3 d-flex justify-content-between">
+                    <div class="col-2">
+                      <label class="form-label" for="clientRate">Client Rate</label>
+                    </div>
+                    <div class="col-10">
+                      <input
+                        type="text"
+                        class="form-control w-25"
+                        v-model="fetchVacancy.client_rate"
+                        @input="handleInput('client_rate', $event.target.value)"
+                        maxlength="3"
+                        @keydown="allowNumbersOnly($event)"
+                      />
+                      <span
+                        v-if="!validationClientRate && fetchVacancy.client_rate"
+                        class="text-danger"
+                      >
+                        Client Rate must be greater than 0
+                      </span>
+                    </div>
+                  </div>
+                  <div class="mb-3 d-flex justify-content-between">
                     <div class="col-2">
                       <label class="form-label" for="clientRate">Staff Rate</label>
                     </div>
@@ -208,7 +229,7 @@
                           type="text"
                           class="form-control w-100"
                           v-model="fetchVacancy.staff_rate"
-                          @input="validateRate('staff_rate', fetchVacancy.staff_rate)"
+                          @input="handleInput('staff_rate', $event.target.value)"
                         />
                         <span
                           v-if="!validationStaffRate && fetchVacancy.staff_rate"
@@ -221,11 +242,12 @@
                       <div>
                         <label class="form-label" for="umbrella">Umbrella</label>
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
                           v-model="fetchVacancy.umbrella"
-                          @input="validateRate('umbrella', fetchVacancy.umbrella)"
-                          @keydown.prevent
+                          @input="handleInput('umbrella', $event.target.value)"
+                          maxlength="3"
+                          @keydown="allowNumbersOnly($event)"
                         />
                         <span
                           v-if="!validationUmbrella && fetchVacancy.umbrella"
@@ -238,11 +260,12 @@
                       <div>
                         <label class="form-label" for="paye">Paye</label>
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
                           v-model="fetchVacancy.paye"
-                          @input="validateRate('paye', fetchVacancy.paye)"
-                          @keydown.prevent
+                          @input="handleInput('paye', $event.target.value)"
+                          maxlength="3"
+                          @keydown="allowNumbersOnly($event)"
                         />
                         <span
                           v-if="!validationPaye && fetchVacancy.paye"
@@ -257,13 +280,12 @@
                           >Private Limited</label
                         >
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
                           v-model="fetchVacancy.private_limited"
-                          @input="
-                            validateRate('private_limited', fetchVacancy.private_limited)
-                          "
-                          @keydown.prevent
+                          @input="handleInput('private_limited', $event.target.value)"
+                          maxlength="3"
+                          @keydown="allowNumbersOnly($event)"
                         />
                         <span
                           v-if="!validationPrivateLimited && fetchVacancy.private_limited"
@@ -274,7 +296,6 @@
                       </div>
                     </div>
                   </div>
-                  <div class="mb-3 d-flex justify-content-between gap-1"></div>
 
                   <div class="mb-3 d-flex justify-content-between">
                     <div class="col-2">
@@ -371,6 +392,11 @@ export default {
         end_time: "",
         break: "",
       },
+      // validationClientRate: true,
+      // validationStaffRate: true,
+      // validationUmbrella: true,
+      // validationPaye: true,
+      validationPrivateLimited: true,
       validationClientRate: true,
       validationStaffRate: true,
       validationUmbrella: true,
@@ -461,22 +487,37 @@ export default {
       } else {
       }
     },
+    allowNumbersOnly(event) {
+      const allowedKeys = ["Backspace", "ArrowLeft", "ArrowRight", "Tab", "Delete"];
+      const isNumberKey = /^[0-9]$/.test(event.key);
+
+      if (!isNumberKey && !allowedKeys.includes(event.key)) {
+        event.preventDefault();
+      }
+    },
+    handleInput(type, value) {
+      const filteredValue = value.replace(/[^0-9]/g, "");
+      this.$set(this.fetchVacancy, type, filteredValue);
+
+      this.validateRate(type, filteredValue);
+    },
     validateRate(type, value) {
+      const isPositiveNumber = parseInt(value, 10) > 0;
       switch (type) {
         case "client_rate":
-          this.validationClientRate = value > 0;
+          this.validationClientRate = isPositiveNumber;
           break;
         case "staff_rate":
-          this.validationStaffRate = value > 0;
+          this.validationStaffRate = isPositiveNumber;
           break;
         case "umbrella":
-          this.validationUmbrella = value > 0;
+          this.validationUmbrella = isPositiveNumber;
           break;
         case "paye":
-          this.validationPaye = value > 0;
+          this.validationPaye = isPositiveNumber;
           break;
         case "private_limited":
-          this.validationPrivateLimited = value > 0;
+          this.validationPrivateLimited = isPositiveNumber;
           break;
         default:
           break;
