@@ -1,6 +1,5 @@
 <template>
-  <div></div>
-  <!-- <div>
+  <div>
     <ClientNavbarVue :profileImage="profileImage" />
     <div class="container">
       <div class="main-body" id="main">
@@ -9,7 +8,6 @@
           style="width: 100%"
         >
           Client Profile
-         
         </h3>
         <div class="row gutters-sm mt-3">
           <div class="col-md-4">
@@ -57,7 +55,6 @@
                     <p class="text-secondary mb-1">
                       {{ getClientData.position }}
                     </p>
-                   
                   </div>
                   <div>
                     <button
@@ -124,10 +121,10 @@
     </div>
     <ClientDashBorad_Profile_Edit @client-updated="handleClientUpdated" />
     <SuccessAlert ref="successAlert" />
-  </div> -->
+  </div>
 </template>
 
-<!-- <script>
+<script>
 import axios from "axios";
 
 import ClientNavbarVue from "../../components/ClientDashBoard/ClientNavbar.vue";
@@ -216,9 +213,9 @@ export default {
     await this.fetchClientProfileDataMethod();
   },
 };
-</script> -->
+</script>
 
-<!-- <style scoped>
+<style scoped>
 .img-div label {
   position: absolute;
   bottom: 0;
@@ -305,4 +302,4 @@ ul.profile .dropdown-item:focus {
     margin-top: 70px;
   }
 }
-</style> -->
+</style>

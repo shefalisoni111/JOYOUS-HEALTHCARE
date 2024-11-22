@@ -49,7 +49,11 @@
               <div class="d-flex gap-2">
                 <div></div>
 
-                <select v-model="site_id" id="selectBusinessUnit">
+                <select
+                  v-model="selectedSiteName"
+                  id="selectBusinessUnit"
+                  @change="filterData"
+                >
                   <option value="">All Site</option>
                   <option
                     v-for="option in businessUnit"
@@ -61,7 +65,11 @@
                   </option>
                 </select>
 
-                <select v-model="selectedCandidate" id="selectCandidateList">
+                <select
+                  v-model="selectedCandidate"
+                  id="selectCandidateList"
+                  @change="filterData"
+                >
                   <option value="">All Staff</option>
                   <option
                     v-for="option in candidateLists"
@@ -518,7 +526,7 @@
                     {{
                       data.candidate_id === null
                         ? "0.0"
-                        : data.total_hours !== undefined
+                        : typeof data.total_hours === "number"
                         ? data.total_hours.toFixed(2)
                         : "0.00"
                     }}
@@ -646,6 +654,7 @@ export default {
       dataCustomTimeSheet: [],
       selectedCandidate: "",
       errorMessageFilter: "",
+      selectedSiteName: "",
     };
   },
 
@@ -753,18 +762,18 @@ export default {
     },
   },
   watch: {
-    selectedCandidate(newValue) {
-      if (newValue !== "") {
-        this.makeFilterAPICall("candidate", newValue);
-      } else {
-      }
-    },
-    site_id(newValue) {
-      if (newValue !== "") {
-        this.makeFilterAPICall("site", newValue);
-      } else {
-      }
-    },
+    // selectedCandidate(newValue) {
+    //   if (newValue !== "") {
+    //     this.makeFilterAPICall("candidate", newValue);
+    //   } else {
+    //   }
+    // },
+    // site_id(newValue) {
+    //   if (newValue !== "") {
+    //     this.makeFilterAPICall("site", newValue);
+    //   } else {
+    //   }
+    // },
   },
 
   methods: {
@@ -1007,54 +1016,94 @@ export default {
 
       this.statusForSelectedDate = null;
     },
-    filterData() {
-      let filterType = "";
-      let filterValue = "";
+    async filterData() {
+      const params = {
+        page: 1,
+      };
 
-      if (this.site_id) {
-        filterType = "site";
-
-        filterValue = this.site_id;
-      } else if (this.selectedCandidate) {
-        filterType = "candidate";
-        filterValue = this.selectedCandidate;
+      // Add conditionally selected filters
+      if (this.selectedSiteName) {
+        params["weekly_timesheet[site]"] = this.selectedSiteName;
+      }
+      if (this.selectedCandidate) {
+        params["weekly_timesheet[candidate_name]"] = this.selectedCandidate;
+        params["weekly_timesheet[name]"] = this.selectedCandidate; // Assuming this is the same field
       }
 
-      this.makeFilterAPICall(filterType, filterValue);
+      // Determine which date parameter to use based on available data
+      if (this.selectedCandidate) {
+        // If custom_timesheets is being filtered, use the weekly_timesheet[date]
+        if (this.candidateList && this.candidateList.length > 0) {
+          const isCustomTimesheets = this.candidateList.some((item) =>
+            item.hasOwnProperty("custom_timesheets")
+          );
+
+          if (isCustomTimesheets) {
+            params["weekly_timesheet[date]"] = this.selectedCandidate;
+          } else {
+          }
+        }
+      } else {
+        if (this.selectedCandidate) {
+          params["weekly_timesheet[name]"] = this.selectedCandidate;
+        }
+        params["weekly_timesheet[shift_date]"] = this.selectedCandidate;
+      }
+
+      try {
+        const response = await axios.get(`${VITE_API_URL}/filter_timesheets`, {
+          params,
+        });
+
+        const mergedTimeSheets = [
+          ...response.data.custom_timesheets,
+          ...response.data.sign_timesheets,
+        ];
+
+        this.candidateList = mergedTimeSheets;
+        this.mergedTimesheetsArray = this.candidateList || [];
+
+        if (mergedTimeSheets?.length === 0) {
+          this.errorMessageFilter = "Data Not Found.";
+        }
+      } catch (error) {
+        // console.error("Error fetching timesheets:", error);
+        this.errorMessageFilter = "Data Not Found.";
+      }
     },
     getSiteName(site_id) {
       const site = this.businessUnit.find((option) => option.id === site_id);
       return site ? site.site_name : "";
     },
-    async makeFilterAPICall(filterType, filterValue) {
-      const token = localStorage.getItem("token");
-      try {
-        const response = await axios.get(`${VITE_API_URL}/filter_timesheets`, {
-          params: {
-            filter_type: filterType,
-            filter_value: filterValue,
-          },
-          headers: {
-            "content-type": "application/json",
-            Authorization: "bearer " + token,
-          },
-        });
-        const mergedTimeSheets = [
-          ...response.data.custom_timesheets,
-          ...response.data.sign_timesheets,
-        ];
-        this.candidateList = mergedTimeSheets;
-        this.mergedTimesheetsArray = this.candidateList || [];
-        this.errorMessageFilter = "";
-      } catch (error) {
-        if (error.response) {
-          this.errorMessageFilter = "Data Not Found!" || "Data Not Found!";
-        } else {
-          this.errorMessageFilter = "Data Not Found!";
-        }
-        this.mergedTimesheetsArray = [];
-      }
-    },
+    // async makeFilterAPICall(filterType, filterValue) {
+    //   const token = localStorage.getItem("token");
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/filter_timesheets`, {
+    //       params: {
+    //         filter_type: filterType,
+    //         filter_value: filterValue,
+    //       },
+    //       headers: {
+    //         "content-type": "application/json",
+    //         Authorization: "bearer " + token,
+    //       },
+    //     });
+    //     const mergedTimeSheets = [
+    //       ...response.data.custom_timesheets,
+    //       ...response.data.sign_timesheets,
+    //     ];
+    //     this.candidateList = mergedTimeSheets;
+    //     this.mergedTimesheetsArray = this.candidateList || [];
+    //     this.errorMessageFilter = "";
+    //   } catch (error) {
+    //     if (error.response) {
+    //       this.errorMessageFilter = "Data Not Found!" || "Data Not Found!";
+    //     } else {
+    //       this.errorMessageFilter = "Data Not Found!";
+    //     }
+    //     this.mergedTimesheetsArray = [];
+    //   }
+    // },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
@@ -1127,18 +1176,15 @@ export default {
         }
         if (this.mergedTimesheetsArray) {
           this.mergedTimesheetsArray.forEach((timesheet) => {
-            // Check if candidate_id exists in timesheet
             if (timesheet.candidate_id !== null) {
-              // Find the candidate in total_hourMain using candidate_id
               const matchingCandidate = this.total_hourMain.find(
                 (candidate) => candidate.candidate_id === timesheet.candidate_id
               );
 
-              // If a matching candidate is found, assign their total_hours to the timesheet
               if (matchingCandidate) {
-                timesheet.total_hours = matchingCandidate.total_hours; // Set the total_hours directly from matchingCandidate
+                timesheet.total_hours = matchingCandidate.total_hours;
               } else {
-                timesheet.total_hours = 0; // Default to 0 if no match found
+                timesheet.total_hours = 0;
               }
             }
           });

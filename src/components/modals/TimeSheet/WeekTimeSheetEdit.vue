@@ -661,17 +661,21 @@ export default {
                   },
                 }
               );
-
-              if (response.data.custom_sheets && response.data.custom_sheets.start_time) {
-                this.showValueCustom = true;
-                this.apiResponse = response.data.custom_sheets.start_time;
-                this.apiResponse_EndTime = response.data.custom_sheets.end_time;
-                this.fetchCustomTimeShetData.start_time = this.apiResponse;
-                this.fetchCustomTimeShetData.end_time = this.apiResponse_EndTime;
-                this.originalData = { ...this.fetchCustomTimeShetData };
-                this.showSaveButton = true;
-              } else {
-                this.apiResponse = "";
+              if (response.data.custom_sheets.custom_timesheet === "custom_timesheet") {
+                if (
+                  response.data.custom_sheets &&
+                  response.data.custom_sheets.start_time
+                ) {
+                  this.showValueCustom = true;
+                  this.apiResponse = response.data.custom_sheets.start_time;
+                  this.apiResponse_EndTime = response.data.custom_sheets.end_time;
+                  this.fetchCustomTimeShetData.start_time = this.apiResponse;
+                  this.fetchCustomTimeShetData.end_time = this.apiResponse_EndTime;
+                  this.originalData = { ...this.fetchCustomTimeShetData };
+                  this.showSaveButton = true;
+                } else {
+                  this.apiResponse = "";
+                }
               }
             } catch (error) {
               // console.error("Error fetching custom timesheets:", error);
@@ -690,24 +694,30 @@ export default {
               );
 
               if (
-                fallbackResponse.data.sign_timesheets &&
-                fallbackResponse.data.sign_timesheets.start_time
+                fallbackResponse.data.sign_timesheets.timesheet_type ===
+                "signed_timesheet"
               ) {
-                this.showValueCustom = false;
-                this.apiResponse = fallbackResponse.data.sign_timesheets.start_time;
-                this.apiResponse_EndTime = fallbackResponse.data.sign_timesheets.end_time;
-                this.fetchCustomTimeShetData.start_time = this.apiResponse;
-                this.fetchCustomTimeShetData.end_time = this.apiResponse_EndTime;
-                this.fetchCustomTimeShetData = {
-                  ...this.fetchCustomTimeShetData,
-                  ...fallbackResponse.data.sign_timesheets,
-                };
-                this.originalData = { ...this.fetchCustomTimeShetData };
-                this.showSaveButton = false;
-              } else {
-                this.fetchCustomTimeShetData = {};
-                this.originalData = {};
-                this.showSaveButton = false;
+                if (
+                  fallbackResponse.data.sign_timesheets &&
+                  fallbackResponse.data.sign_timesheets.start_time
+                ) {
+                  this.showValueCustom = false;
+                  this.apiResponse = fallbackResponse.data.sign_timesheets.start_time;
+                  this.apiResponse_EndTime =
+                    fallbackResponse.data.sign_timesheets.end_time;
+                  this.fetchCustomTimeShetData.start_time = this.apiResponse;
+                  this.fetchCustomTimeShetData.end_time = this.apiResponse_EndTime;
+                  this.fetchCustomTimeShetData = {
+                    ...this.fetchCustomTimeShetData,
+                    ...fallbackResponse.data.sign_timesheets,
+                  };
+                  this.originalData = { ...this.fetchCustomTimeShetData };
+                  this.showSaveButton = false;
+                } else {
+                  this.fetchCustomTimeShetData = {};
+                  this.originalData = {};
+                  this.showSaveButton = false;
+                }
               }
             } catch (fallbackError) {
               // console.error("Error fetching sign_timesheets:", fallbackError);

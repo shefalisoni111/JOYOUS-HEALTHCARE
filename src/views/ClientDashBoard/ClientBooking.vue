@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- <ClientNavbar /> -->
+    <ClientNavbar />
     <div id="main">
       <div class="pagetitle d-flex justify-content-between px-2">
         <div class="py-3">
@@ -261,16 +261,16 @@
     </div>
     <loader :isLoading="isLoading"></loader>
 
-    <!-- <ShowDetailsMessage v-if="showModal" :message="alertMessage" @close="closeModal" /> -->
+    <ShowDetailsMessage v-if="showModal" :message="alertMessage" @close="closeModal" />
   </div>
 </template>
 <script>
 import axios from "axios";
-// import ClientNavbar from "../../components/ClientDashBoard/ClientNavbar.vue";
+import ClientNavbar from "../../components/ClientDashBoard/ClientNavbar.vue";
 import Loader from "../../components/Loader/Loader.vue";
 // import SuccessAlert from "../components/Alerts/SuccessAlert.vue";
 // import ConfirmationAlert from "../components/Alerts/ConfirmationAlert.vue";
-// import ShowDetailsMessage from "../components/Alerts/ShowDetailsMessage.vue";
+import ShowDetailsMessage from "../components/Alerts/ShowDetailsMessage.vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -317,10 +317,10 @@ export default {
     };
   },
   components: {
-    // ClientNavbar,
+    ClientNavbar,
     Loader,
 
-    // ShowDetailsMessage,
+    ShowDetailsMessage,
   },
   computed: {
     getWeekDates() {
