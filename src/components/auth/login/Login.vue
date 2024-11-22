@@ -1,6 +1,9 @@
 <template>
   <div class="container-fluid p-0">
-    <div class="d-flex align-items-center justify-content-center whole-bg">
+    <div
+      class="d-flex align-items-center justify-content-center whole-bg"
+      :style="backgroundStyle"
+    >
       <div class="row no-gutter d-flex justify-content-center align-items-center w-100">
         <div class="col-4 d-flex wrapper-div p-0">
           <!-- <div class="col-md-6 d-none d-md-flex bg-image"></div> -->
@@ -17,10 +20,35 @@
               <div class="container">
                 <div class="row">
                   <div class="col-lg-10 mx-auto">
+                    <div class="d-flex justify-content-center mb-4">
+                      <button
+                        class="me-2"
+                        :class="{
+                          'btn btn-secondary': loginType === 'client',
+                          'btn btn-outline-secondary': loginType !== 'client',
+                        }"
+                        @click="setLoginType('client')"
+                      >
+                        Client Login
+                      </button>
+                      <button
+                        class="me-2"
+                        :class="{
+                          'btn btn-secondary': loginType === 'admin',
+                          'btn btn-outline-secondary': loginType !== 'admin',
+                        }"
+                        @click="setLoginType('admin')"
+                      >
+                        Admin Login
+                      </button>
+                    </div>
                     <div class="mb-4">
-                      <h4 class="mb-2 fw-bold">Login</h4>
+                      <h4 class="mb-2 fw-bold">
+                        {{ loginType === "admin" ? "Admin Login" : "Client Login" }}
+                      </h4>
                       <span>Welcome Back! Login to Access your Account</span>
                     </div>
+                    <!-- Form -->
                     <form @submit.prevent="login()" class="loginform">
                       <div class="mb-3">
                         <input
@@ -32,10 +60,8 @@
                           autofocus="true"
                           class="form-control border-0 shadow-sm"
                         />
-                        <!-- <div class="error" v-if="msg">
-                            <span class="text-danger">{{ msg }}</span>
-                          </div> -->
                       </div>
+
                       <div class="mb-3">
                         <input
                           id="inputPassword"
@@ -47,16 +73,23 @@
                           class="form-control border-0 shadow-sm text-primary"
                         />
                       </div>
+
+                      <!-- Conditionally Render Extra Field for Admin Login
+                      <div v-if="loginType === 'admin'" class="mb-3">
+                        <input
+                          id="adminCode"
+                          type="text"
+                          v-model="adminCode"
+                          placeholder="Admin Code"
+                          @input="clearError"
+                          class="form-control border-0 shadow-sm"
+                        />
+                      </div> -->
+
                       <div v-if="error" class="error-message text-danger">
                         {{ error }}
                       </div>
 
-                      <!-- <div class="form-check ps-0">
-                          <label>
-                            <input type="checkbox" v-model="rememberMe" /> Remember
-                            Password
-                          </label>
-                        </div> -->
                       <div class="my-4 d-flex justify-content-between">
                         <button
                           type="submit"
@@ -71,14 +104,7 @@
                             Loading...
                           </span>
                           <span v-else>Sign in</span>
-                          <!-- <span>Sign in</span> -->
                         </button>
-                        <!-- <div class="d-flex align-items-center">
-                            Did you
-                            <router-link class="ps-1" to="/forgotpassword">
-                              Forget your password ?</router-link
-                            >
-                          </div> -->
                       </div>
                     </form>
                   </div>
@@ -111,6 +137,9 @@ export default {
       loading: false,
       token: null,
       tokenExpiration: null,
+      adminCode: "",
+      loginType: "client",
+      backgroundStyle: {},
     };
   },
   components: {
@@ -118,8 +147,65 @@ export default {
   },
 
   methods: {
+    setLoginType(type) {
+      this.loginType = type;
+      this.clearError();
+    },
+    clearError() {
+      this.error = false;
+    },
     async login() {
       this.loading = true;
+      try {
+        if (this.loginType === "admin") {
+          // Handle admin login
+          await this.adminLogin();
+        } else {
+          // Handle client login
+          await this.clientLogin();
+        }
+      } catch (error) {
+        this.error = "Login failed. Please try again.";
+      } finally {
+        this.loading = false;
+      }
+    },
+    async clientLogin() {
+      const data = {
+        email: this.email,
+        password: this.password,
+      };
+      try {
+        const response = await axios.post(`${VITE_API_URL}/client_login`, data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const jsonData = response.data;
+
+        if (jsonData.is_logged_in) {
+          const tokenExpiration = new Date(jsonData.expiry_time).getTime();
+          const expirationTime = tokenExpiration;
+
+          localStorage.setItem("token", jsonData.token);
+          localStorage.setItem("tokenExpiration", expirationTime);
+          localStorage.setItem("c_unique", jsonData.client_id);
+          localStorage.setItem("loginType", "client");
+
+          this.$router.push({ name: "ClientDash" });
+
+          this.setupAutoLogout(tokenExpiration - new Date().getTime());
+        } else {
+          this.error = "Invalid Email or Password";
+        }
+      } catch (error) {
+        this.error = "Invalid Email or Password";
+      }
+    },
+
+    async adminLogin() {
+      // this.loading = true;
       const data = {
         email: this.email,
         password: this.password,
@@ -140,6 +226,7 @@ export default {
           localStorage.setItem("token", jsonData.token);
           localStorage.setItem("tokenExpiration", expirationTime);
           localStorage.setItem("merchant_id", jsonData.merchant_id);
+          localStorage.setItem("loginType", "admin");
           this.$router.push({ name: "Home" });
 
           this.setupAutoLogout(tokenExpiration - new Date().getTime());
@@ -148,9 +235,10 @@ export default {
         }
       } catch (error) {
         this.error = "Invalid Email or Password";
-      } finally {
-        this.loading = false;
       }
+      // finally {
+      //   this.loading = false;
+      // }
     },
 
     setupAutoLogout(timeToExpiration) {
@@ -193,10 +281,12 @@ export default {
     //   this.email = email;
     //   this.password = password;
     // }
+    this.backgroundStyle = {
+      backgroundImage: "url('src/assets/loginbggg11.png')",
+    };
   },
 };
 </script>
-
 <style scoped>
 .login,
 .image {
@@ -209,7 +299,6 @@ export default {
   align-items: center;
   justify-content: center;
   position: relative;
-  background-image: url("src/assets/loginbggg11.png");
 }
 
 .wrapper-div {
