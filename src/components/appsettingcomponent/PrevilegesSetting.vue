@@ -133,16 +133,18 @@
                           <tbody v-if="rolesActive?.length > 0">
                             <tr v-for="data in rolesActive" :key="data.id">
                               <td>{{ data.id }}</td>
-                              <td scope="row">{{ data.user_role }}</td>
+                              <td scope="row">
+                                {{ data.first_name + " " + data.last_name }}
+                              </td>
                               <td>{{ data.email }}</td>
                               <td>{{ data.phone_number }}</td>
-                              <td>1</td>
+                              <td>{{ data.user_role }}</td>
                               <!-- <td><i class="bi bi-trash text-danger"></i></td> -->
 
                               <td>
                                 <i
                                   class="bi bi-trash text-danger text-nowrap cursor-pointer"
-                                  v-on:click="confirmed(data.id)"
+                                  v-on:click="confirmed(data.id, false)"
                                 >
                                 </i>
                               </td>
@@ -183,10 +185,12 @@
                           <tbody v-if="rolesInActive?.length > 0">
                             <tr v-for="data in rolesInActive" :key="data.id">
                               <td>{{ data.id }}</td>
-                              <td scope="row">{{ data.user_role }}</td>
+                              <td scope="row">
+                                {{ data.first_name + " " + data.last_name }}
+                              </td>
                               <td>{{ data.email }}</td>
                               <td>{{ data.phone_number }}</td>
-                              <td>1</td>
+                              <td>{{ data.user_role }}</td>
                               <td>
                                 <i
                                   class="bi bi-trash text-danger cursor-pointer"
@@ -195,7 +199,7 @@
                                 >&nbsp;
                                 <button
                                   class="btn btn-primary btn-sm text-nowrap"
-                                  v-on:click="rolesReActiveMethod(data.id)"
+                                  v-on:click="confirmed(data.id, true)"
                                 >
                                   Re-Activate
                                 </button>
@@ -224,7 +228,7 @@
                           <tbody v-else>
                             <tr>
                               <td colspan="6" class="text-danger">
-                                {{ "Inactive users Not found!" }}
+                                {{ "Inactive users Not found!" || errorMessage }}
                               </td>
                             </tr>
                           </tbody>
@@ -271,6 +275,7 @@ export default {
       isLoading: false,
       isModalVisible: false,
       confirmMessage: "",
+      errorMessage: "",
       confirmCallback: null,
     };
   },
@@ -286,11 +291,10 @@ export default {
     handlePrivilegesAdd() {
       this.$refs.addPrivileges.getRolesMethod();
     },
-    confirmed(id) {
+    confirmed(id, isActive) {
       this.isModalVisible = false;
 
-      this.rolesInActiveMethod(id);
-      this.rolesReActiveMethod(id);
+      this.updateUserActivation(id, isActive);
     },
     canceled() {
       this.isModalVisible = false;
@@ -306,9 +310,12 @@ export default {
       this.isLoading = true;
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(`${VITE_API_URL}/find_active_user`, {
+        const response = await axios.get(`${VITE_API_URL}/find_active_inactive_users`, {
           headers: {
             Authorization: "bearer " + token,
+          },
+          params: {
+            activated_filter_value: true,
           },
         });
         this.totalActiveUserCount = response.data.total_user;
@@ -327,53 +334,69 @@ export default {
       this.isLoading = true;
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(`${VITE_API_URL}/find_inactive_user`, {
+        const response = await axios.get(`${VITE_API_URL}/find_active_inactive_users`, {
           headers: {
             Authorization: "bearer " + token,
           },
+          params: {
+            activated_filter_value: false,
+          },
         });
-        this.totalInActiveUserCount = response.data.total_user;
-        this.rolesInActive = response.data.users;
+        this.totalInActiveUserCount = response.data.total_user || [];
+        this.rolesInActive = response.data.users || [];
       } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
+        console.log(error.response.status);
+        if (error.response && error.response.status === 404) {
+          this.totalInActiveUserCount = 0;
+          this.rolesInActive = [];
+          this.errorMessage = "No inactive users found.";
+        } else {
+          this.errorMessage = "An error occurred while fetching data.";
         }
       } finally {
         this.isLoading = false;
       }
     },
-
-    async rolesInActiveMethod(id) {
-      this.confirmMessage = "Are you sure you want to In-activate this User?";
+    async updateUserActivation(id, isActive) {
+      if (isActive) {
+        isActive;
+      }
+      this.confirmMessage = isActive
+        ? "Are you sure you want to activate this user?"
+        : "Are you sure you want to deactivate this user?";
       this.isModalVisible = true;
+
       this.confirmCallback = async () => {
-        // const confirmationMessage = await this.$confirm("Are you sure you want to delete?");
-        // this.confirmationMessage = "Are you sure you want to delete this role?";
-        // this.showConfirmation = true;
-
         const token = localStorage.getItem("token");
-        try {
-          const response = await axios.put(`${VITE_API_URL}/inactive_user/${id}`, null, {
-            headers: {
-              Authorization: "bearer " + token,
-            },
-          });
 
+        try {
+          const response = await axios.put(
+            `${VITE_API_URL}/update_activated_status/${id}`,
+            { activated_value: isActive },
+            {
+              headers: {
+                Authorization: "bearer " + token,
+              },
+            }
+          );
           this.getRolesActiveMethod();
-          const message = "Privilege User InActivated successfully";
+          this.getRolesInActiveMethod();
+          // if (isActive) {
+          //   this.getRolesActiveMethod();
+          // } else {
+          //   this.getRolesInActiveMethod();
+          // }
+
+          // Show success message
+          const message = isActive
+            ? "Privilege User Activated successfully"
+            : "Privilege User Deactivated successfully";
           this.$refs.successAlert.showSuccess(message);
         } catch (error) {
           if (error.response) {
             if (error.response.status === 404) {
-              // Swal.fire({
-              //   icon: "error",
-              //   title: "Not Found",
-              //   text: "The requested resource was not found.",
-              // });
+              alert("User not found.");
             } else if (error.response.status === 422) {
-              // alert(error.response.data.message);
               Swal.fire({
                 icon: "warning",
                 title: "Validation Error",
@@ -385,50 +408,14 @@ export default {
         this.isModalVisible = false;
       };
     },
-    async rolesReActiveMethod(id) {
-      this.confirmMessage = "Are you sure you want to delete this role?";
-      this.isModalVisible = true;
-      this.confirmCallback = async () => {
-        // const confirmationMessage = await this.$confirm("Are you sure you want to delete?");
-        // this.confirmationMessage = "Are you sure you want to delete this role?";
-        // this.showConfirmation = true;
 
-        const token = localStorage.getItem("token");
-        try {
-          const response = await axios.put(`${VITE_API_URL}/active_user/${id}`, null, {
-            headers: {
-              Authorization: "bearer " + token,
-            },
-          });
-
-          this.getRolesInActiveMethod();
-          const message = "Privilege User Re-activated successfully";
-          this.$refs.successAlert.showSuccess(message);
-        } catch (error) {
-          if (error.response) {
-            if (error.response.status === 404) {
-            } else if (error.response.status === 422) {
-              // alert(error.response.data.message);
-              Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: error.response.data.message,
-                confirmButtonText: "OK",
-              });
-            }
-          }
-        }
-        this.isModalVisible = false;
-      };
-    },
     async rolesDeleteMethod(id) {
       this.confirmMessage = "Are you sure you want to delete this role?";
       this.isModalVisible = true;
-      (this.confirmCallback = async () => {
-        // this.confirmationMessage = "Are you sure you want to delete this role?";
-        // this.showConfirmation = true;
 
+      this.confirmCallback = async () => {
         const token = localStorage.getItem("token");
+
         try {
           const response = await axios.delete(`${VITE_API_URL}/merchants/${id}`, {
             headers: {
@@ -436,18 +423,32 @@ export default {
             },
           });
 
-          this.getRolesInActiveMethod();
-          const message = "Privilege User Deleted successfully";
-          this.$refs.successAlert.showSuccess(message);
+          if (response.status === 200) {
+            const message =
+              response.data.message || "Privilege User Deleted successfully";
+            this.$refs.successAlert.showSuccess(message);
+          }
         } catch (error) {
           if (error.response) {
-            if (error.response.status == 404) {
-              // alert(error.response.data.message);
+            if (error.response.status === 404) {
+              Swal.fire({
+                icon: "error",
+                title: "Not Found",
+                text: "Please try Again.",
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: error.response.data.message || "Please try Again.",
+                confirmButtonText: "OK",
+              });
             }
           }
+        } finally {
+          this.isModalVisible = false;
         }
-      }),
-        (this.isModalVisible = false);
+      };
     },
   },
   mounted() {

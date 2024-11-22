@@ -6,7 +6,9 @@
 
       <!-- Add Note Section -->
       <div class="card mb-4">
-        <div class="card-header bg-primary text-white">Add Dairy Note</div>
+        <div class="card-header text-white" style="background-color: #ff5f30">
+          Add Dairy Note
+        </div>
         <div class="card-body">
           <form @submit.prevent="addNote">
             <div class="mb-3">
