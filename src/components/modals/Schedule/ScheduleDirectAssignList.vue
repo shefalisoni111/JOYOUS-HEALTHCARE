@@ -417,14 +417,14 @@ export default {
               Swal.fire({
                 icon: "error",
                 title: "Error",
-                text: "An unexpected error occurred. Please try again.",
+                text: "Please try again.",
               });
             }
           } else {
             Swal.fire({
               icon: "error",
               title: "Error",
-              text: `An error occurred: ${status}. Please contact support.`,
+              text: `Please try again.`,
             });
           }
         } else {
