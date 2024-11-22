@@ -1,6 +1,5 @@
 <template>
-  <div></div>
-  <!-- <nav class="navbar navbar-expand-lg navbar-light fixed-navbar">
+  <nav class="navbar navbar-expand-lg navbar-light fixed-navbar">
     <div class="container-fluid">
       <a class="navbar-brand" href="/client/clientDashboard"
         ><img
@@ -19,7 +18,6 @@
         aria-expanded="false"
         aria-label="Toggle navigation"
       >
-
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -152,7 +150,7 @@
               </li>
             </ul>
           </li>
- 
+
           <li class="nav-item dropdown">
             <a
               class="nav-link nav-icon nav-profile d-flex align-items-center pe-0"
@@ -178,7 +176,6 @@
                 loading="eager"
               />
             </a>
-          
 
             <ul
               class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
@@ -236,7 +233,6 @@
                 </a>
               </li>
             </ul>
-          
           </li>
         </ul>
       </div>
@@ -247,10 +243,10 @@
       @confirm="confirmCallback"
       @cancel="canceled"
     />
-  </div> -->
+  </nav>
 </template>
 
-<!-- <script>
+<script>
 import axios from "axios";
 import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
 
@@ -549,4 +545,4 @@ a.router-link-active {
     margin-top: 4px;
   }
 }
-</style> -->
+</style>
