@@ -144,20 +144,6 @@
                         <th scope="col">Approve</th>
                       </tr>
                     </thead>
-                    <tbody v-if="getBookingData?.length > 0 && getBookingData">
-                      <tr v-for="data in getBookingData" :key="data.id"></tr>
-                    </tbody>
-                    <tbody v-else>
-                      <tr>
-                        <td colspan="15" class="text-danger text-center">
-                          {{
-                            errorMessageBooking ||
-                            errorMessageFilter ||
-                            "No bookings found."
-                          }}
-                        </td>
-                      </tr>
-                    </tbody>
                   </table>
                 </div>
               </div>
@@ -253,217 +239,9 @@ export default {
       const monthDates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
       return monthDates;
     },
-
-    selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
-      return site_id ? site_id.site_name : "";
-    },
-
-    selectCandidateList() {
-      const id = this.candidateLists.find((option) => option.id === this.id);
-      return id ? `${id.first_name} ${id.last_name}` : "";
-    },
-    selectedOptionText() {
-      const job_id = this.options.find((option) => option.id === this.job_id);
-      return job_id ? job_id.name : "";
-    },
   },
-  watch: {
-    job_id(newValue) {
-      if (newValue) {
-        this.filterData();
-      }
-    },
-    site_id(newValue) {
-      if (newValue) {
-        this.filterData();
-      }
-    },
-    id(newValue) {
-      if (newValue) {
-        this.filterData();
-      }
-    },
-  },
+  watch: {},
   methods: {
-    handleDeleteBooking() {
-      this.$refs.getDeleteBookingData();
-    },
-    confirmed(id) {
-      this.isModalVisible = false;
-
-      this.bookingDeleteMethod(id);
-    },
-    canceled() {
-      this.isModalVisible = false;
-    },
-
-    // toggleFilters() {
-    //   this.showFilters = !this.showFilters;
-    // },
-    filterData() {
-      const filters = {
-        filterType: this.job_id
-          ? "job_title"
-          : this.site_id
-          ? "site"
-          : this.id
-          ? "candidate"
-          : "",
-        filterValue: this.job_id || this.site_id || this.getCandidateName(this.id) || "",
-      };
-
-      this.makeFilterAPICall(filters.filterType, filters.filterValue);
-    },
-    getCandidateName(id) {
-      const candidate = this.candidateLists.find((candidate) => candidate.id === id);
-      return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
-    },
-    async makeFilterAPICall(filterType, filterValue) {
-      const token = localStorage.getItem("token");
-
-      try {
-        const response = await axios.get(`${VITE_API_URL}/booking_filter`, {
-          params: {
-            filter_type: filterType,
-            filter_value: filterValue,
-          },
-          headers: {
-            "content-type": "application/json",
-            Authorization: "bearer " + token,
-          },
-        });
-
-        this.getBookingData = response.data.booking_data || [];
-        this.errorMessageFilter = "";
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
-          this.getBookingData = [];
-          this.errorMessageFilter = error.response.data.error || "Report Not Found!";
-        } else {
-          this.errorMessageFilter = "Report Not Found!";
-        }
-      }
-    },
-    // async getDeleteBookingData() {
-    //   this.isLoading = true;
-    //   const formattedStartDate = this.formatDate(this.startDate);
-
-    //   let requestData = {
-    //     date: formattedStartDate,
-    //   };
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/find_deleted_bookings`, {
-    //       params: requestData,
-    //     });
-
-    //     this.deleteBookingData = response.data.booking_data;
-    //     if (response.status === 200) {
-    //       if (!this.deleteBookingData || this.deleteBookingData.length === 0) {
-    //         this.errorDelete = "Record Not found!";
-    //       } else {
-    //         this.errorDelete = "";
-    //         const deletedBookingIDs = response.data.booking_data.map(
-    //           (booking) => booking.id
-    //         );
-    //         if (deletedBookingIDs.includes(this.currentBookingID)) {
-    //           this.errorDelete = "Booking is already deleted!";
-    //         } else {
-    //           this.deleteBookingData = response.data.booking_data;
-    //         }
-    //       }
-    //     }
-    //   } catch (error) {
-    //     if (error.response) {
-    //       if (error.response.status == 404) {
-    //         // alert(error.response.data.message);
-    //       }
-    //     }
-    //     this.errorDelete = "An error occurred while fetching data.";
-    //   } finally {
-    //     this.isLoading = false;
-    //   }
-    // },
-
-    async bookingDeleteMethod(id) {
-      this.confirmMessage = "Are you sure you want to delete this booking?";
-      this.isModalVisible = true;
-      this.confirmCallback = async () => {
-        const token = localStorage.getItem("token");
-
-        await axios
-          .put(`${VITE_API_URL}/delete_booking/` + id, {
-            headers: {
-              "content-type": "application/json",
-              Authorization: "bearer " + token,
-            },
-          })
-          .then((response) => {
-            const message = "Booking Deleted!";
-            this.$refs.successAlert.showSuccess(message);
-            this.fetchBookingDataMethod();
-            // this.getDeleteBookingData();
-          });
-        this.isModalVisible = false;
-      };
-      // alert("Record Deleted ");
-    },
-    closeModal() {
-      this.showModal = false;
-    },
-    async getCandidateListMethod() {
-      const pagesToFetch = [1, 2, 3];
-      let allStaffData = [];
-
-      try {
-        const responses = await Promise.all(
-          pagesToFetch.map((page) =>
-            axios.get(`${VITE_API_URL}/candidates`, {
-              params: {
-                page: page,
-              },
-            })
-          )
-        );
-
-        responses.forEach((response) => {
-          allStaffData = allStaffData.concat(response.data.data);
-        });
-
-        this.candidateLists = allStaffData;
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
-          // Handle 404 error
-          // console.error('Error fetching client data:', error.response.data.message);
-        } else {
-          // console.error('Error fetching client data:', error);
-        }
-      }
-    },
-    async getPositionMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
-        this.options = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
-    async getBusinessUnitMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/activated_site`);
-        this.businessUnit = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
     moveToPrevious() {
       if (this.currentView === "weekly") {
         this.startDate.setDate(this.startDate.getDate() - 7);
@@ -529,54 +307,6 @@ export default {
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
-    setItemsPerPage(value) {
-      this.itemsPerPage = value;
-      this.currentPage = 1;
-      this.fetchBookingDataMethod();
-    },
-    async fetchBookingDataMethod() {
-      const token = localStorage.getItem("token");
-      this.isLoading = true;
-      let url = "";
-      let requestData = {};
-
-      if (this.currentView === "weekly") {
-        requestData = {
-          date: this.formatDate(this.startDate),
-          per_page: this.itemsPerPage,
-        };
-        url = `${VITE_API_URL}/find_booking_according_current_week`;
-      } else if (this.currentView === "monthly") {
-        const formattedStartDate = this.formatDate(this.startDate);
-        const formattedEndDate = this.formatDate(this.endDate);
-        requestData = {
-          date: formattedStartDate,
-        };
-        url = `${VITE_API_URL}/find_booking_according_mounth`;
-      }
-
-      try {
-        const response = await axios.get(url, {
-          params: requestData,
-          headers: {
-            "content-type": "application/json",
-            Authorization: "bearer " + token,
-          },
-        });
-        this.getBookingData = response.data.booking_data;
-
-        if (this.getBookingData.length === 0) {
-          this.errorMessageBooking = "No Booking found for the specified Criteria";
-        } else {
-          this.errorMessageBooking = "";
-        }
-      } catch (error) {
-        // Handle error
-        // console.error("Error fetching booking data:", error);
-      } finally {
-        this.isLoading = false;
-      }
-    },
   },
   async beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -590,7 +320,7 @@ export default {
     next();
   },
   async mounted() {
-    // this.loadDateRangeFromLocalStorage();
+    this.loadDateRangeFromLocalStorage();
 
     // await this.getPositionMethod();
 
