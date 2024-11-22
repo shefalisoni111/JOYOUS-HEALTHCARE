@@ -415,12 +415,7 @@
                     <div class="col-12">
                       <label class="form-label">Paper TimeSheet</label>
                     </div>
-                    <div
-                      class="col-12 mt-1"
-                      v-if="
-                        fetchCustomSheetData.status === 'Approved' && fullCustomImageUrl
-                      "
-                    >
+                    <div class="col-12 mt-1" v-if="fullCustomImageUrl">
                       <img
                         :src="fullCustomImageUrl"
                         alt="Current Paper TimeSheet"
@@ -483,7 +478,7 @@
               v-else
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              @click.prevent="handleApproveAndSave"
+              @click.prevent="updateCustomTimeSheetMethod()"
             >
               {{ buttonText }}
             </button>
@@ -693,12 +688,14 @@ export default {
             client_rate: customSheet.client_rate || "",
             staff_rate: customSheet.staff_rate || "",
             notes: customSheet.notes || "",
+            paper_timesheet: customSheet.paper_timesheet || "",
           };
 
           this.originalData = { ...this.fetchCustomSheetData };
 
           this.showSaveButton = true;
           this.showValueCustom = true;
+          this.fetchCustomSheetData.paper_timesheet = "";
         } else {
           this.apiResponse = "";
         }
@@ -744,8 +741,12 @@ export default {
           this.fetchCustomSheetData.staff_rate
         );
         formData.append("custom_timesheet[notes]", this.fetchCustomSheetData.notes);
-        if (this.uploadedFile) {
-          formData.append("custom_timesheet[paper_timesheet]", this.uploadedFile);
+
+        if (this.fetchCustomSheetData.paper_timesheet) {
+          formData.append(
+            "custom_timesheet[custom_image]",
+            this.fetchCustomSheetData.paper_timesheet
+          );
         }
 
         // console.log(formData);

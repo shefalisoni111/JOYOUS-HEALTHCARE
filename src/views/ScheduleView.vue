@@ -1340,6 +1340,20 @@ export default {
       }
     },
     async openModal(candidateId, day) {
+      // const today = new Date();
+      // const selectedDate = new Date(day);
+
+      // // Ensure the selected date is not in the past
+      // if (selectedDate < today) {
+      //   Swal.fire({
+      //     title: "Invalid Date",
+      //     text: "You cannot select a past date.",
+      //     icon: "error",
+      //     confirmButtonText: "OK",
+      //   });
+      //   return;
+      // }
+
       this.$refs.directAssignShiftList.fetchVacancyListMethod();
 
       if (!candidateId || !candidateId.candidate_id) {
@@ -1362,48 +1376,48 @@ export default {
         this.candidateJob = "";
       }
 
-      try {
-        const actualCandidateId = candidateId.candidate_id.toString();
+      const actualCandidateId = candidateId.candidate_id.toString();
 
-        await this.fetchVacancyListMethod();
+      await this.fetchVacancyListMethod();
 
-        await this.fetchCandidateList();
-        const selectedDate = new Date(this.startDate);
-        selectedDate.setDate(parseInt(day));
-        selectedDate.setDate(selectedDate.getDate() + 1);
+      await this.fetchCandidateList();
+      const selectedDate = new Date(this.startDate);
+      selectedDate.setDate(parseInt(day));
+      selectedDate.setDate(selectedDate.getDate() + 1);
 
-        this.selectedDate = selectedDate
-          .toISOString()
-          .split("T")[0]
-          .split("-")
-          .reverse()
-          .join("-");
-        this.selectedCandidateId = actualCandidateId;
+      this.selectedDate = selectedDate
+        .toISOString()
+        .split("T")[0]
+        .split("-")
+        .reverse()
+        .join("-");
+      this.selectedCandidateId = actualCandidateId;
 
-        const selectedCandidate = this.candidateList.find(
-          (candidate) => candidate.candidate_id === actualCandidateId
-        );
+      const selectedCandidate = this.candidateList.find(
+        (candidate) => candidate.candidate_id === actualCandidateId
+      );
 
-        const vacancy = this.vacancyList.find(
-          (vacancy) => vacancy.date === this.columnDateMatch
-        );
+      const vacancy = this.vacancyList.find(
+        (vacancy) => vacancy.date === this.columnDateMatch
+      );
 
-        if (selectedCandidate) {
-          this.currentSelectedCandidate = selectedCandidate;
-        } else {
-          this.selectedDate = null;
-          this.statusForSelectedDate = null;
-        }
-
-        if (vacancy && vacancy.dates.includes(this.formatDates(day))) {
-          this.statusForSelectedDate = "Vacancy Available";
-        } else {
-          this.statusForSelectedDate = "No Vacancy";
-        }
-      } catch (error) {
+      if (selectedCandidate) {
+        this.currentSelectedCandidate = selectedCandidate;
+      } else {
         this.selectedDate = null;
         this.statusForSelectedDate = null;
       }
+
+      if (vacancy && vacancy.dates.includes(this.formatDates(day))) {
+        this.statusForSelectedDate = "Vacancy Available";
+      } else {
+        this.statusForSelectedDate = "No Vacancy";
+      }
+
+      // catch (error) {
+      //   this.selectedDate = null;
+      //   this.statusForSelectedDate = null;
+      // }
     },
     closeModal() {
       this.selectedDate = null;
@@ -1499,6 +1513,7 @@ export default {
       try {
         const requestData = {
           date: this.formattedStartDate,
+          single_date: true,
         };
         const response = await axios.get(
           `${VITE_API_URL}/vacancies_and_candidates_availability`,

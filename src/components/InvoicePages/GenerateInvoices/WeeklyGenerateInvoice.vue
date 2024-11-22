@@ -235,8 +235,8 @@ export default {
           params: requestData,
           per_page: this.itemsPerPage,
         });
-        if (response.data.message) {
-          this.errorMessage = response.data.message;
+        if (response.data.error) {
+          this.errorMessage = response.data.error;
           this.candidateList = [];
         } else {
           this.candidateList = response.data.data;

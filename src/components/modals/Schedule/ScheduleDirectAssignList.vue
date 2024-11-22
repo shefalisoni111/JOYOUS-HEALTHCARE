@@ -103,7 +103,7 @@
                         </span>
                       </td>
 
-                      <td v-text="vacancyItem.shift"></td>
+                      <td v-text="vacancyItem.site_shift"></td>
                     </template>
                     <!-- <template v-else>
                       <td colspan="8" class="text-danger text-center">
@@ -191,6 +191,7 @@
               v-if="selectedCandidateItemId"
               class="btn btn-primary rounded-1"
               data-bs-target="#scheduleDirectAssignList"
+              :disabled="isDateBeforeToday(columnDateMatch)"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
               v-on:click="assignVacancyToCandidateDirectMethod($event)"
@@ -226,6 +227,7 @@ export default {
       debounceTimeout: null,
       searchResults: [],
       vacancyList: [],
+      vacancyListShow: false,
       errorMessage: "",
       checkedVacancies: reactive({}),
       selectAll: false,
@@ -277,6 +279,13 @@ export default {
   },
 
   methods: {
+    isDateBeforeToday(state) {
+      const today = new Date();
+      const stateDate = new Date(state);
+      today.setHours(0, 0, 0, 0);
+      stateDate.setHours(0, 0, 0, 0);
+      return stateDate < today;
+    },
     async fetchVacancyListMethod(selectedWeekDate) {
       if (!selectedWeekDate) return;
       try {
@@ -291,9 +300,11 @@ export default {
           }
         );
         this.vacancyList = response.data.data;
-        // if (this.vacancyList) {
-        //   window.location.reload();
-        // }
+        if (this.vacancyList?.length > 0) {
+          this.vacancyListShow = true;
+        } else {
+          this.vacancyListShow = false;
+        }
       } catch (error) {
         // console.error("Error in fetchVacancyListMethod:", error);
       }
