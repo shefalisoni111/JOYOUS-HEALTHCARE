@@ -189,7 +189,7 @@
                           <input
                             v-if="apiResponse_EndTime"
                             type="text"
-                            class="form-control custom-disabled"
+                            class="form-control"
                             v-model="fetchCustomSheetData.end_time"
                             disabled
                           />
@@ -197,7 +197,7 @@
                           <select
                             v-else
                             id="selectCustomStartTime"
-                            class="form-control custom-disabled"
+                            class="form-control"
                             v-model="fetchCustomSheetData.end_time"
                             @change="validateStartTime"
                             style="width: 240px"
@@ -231,7 +231,7 @@
                           <input
                             v-if="apiResponse_EndTime"
                             type="text"
-                            class="form-control custom-disabled"
+                            class="form-control"
                             v-model="fetchCustomSheetData.end_time"
                             disabled
                           />
@@ -239,7 +239,7 @@
                           <select
                             v-else
                             id="selectCustomStartTime"
-                            class="form-control custom-disabled"
+                            class="form-control"
                             v-model="fetchCustomSheetData.end_time"
                             @change="validateStartTime"
                             style="width: 240px"
@@ -290,21 +290,11 @@
                           >
                         </div>
                         <div class="col-12" v-if="showSaveButton">
-                          <select
-                            id="selectShiftsBreak"
-                            class="form-control"
+                          <input
+                            type="email"
+                            class="form-control p-2 custom-disabled"
                             v-model="fetchCustomSheetData.break"
-                            @change="validateBreak"
-                            style="width: 240px"
-                          >
-                            <option
-                              v-for="minute in [15, 30, 45, 60, 75, 90]"
-                              :key="minute"
-                              :value="minute"
-                            >
-                              {{ formatBreakTime(minute) }}
-                            </option>
-                          </select>
+                          />
                         </div>
                         <div class="col-12" v-else>
                           <select
@@ -482,7 +472,7 @@
             </button>
 
             <button
-              v-if="status.trim().toLowerCase() === 'approved'"
+              v-if="fetchCustomSheetData.status === 'Approved'"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="handleApproveAndSave"
@@ -523,7 +513,7 @@ export default {
         staff_rate: "",
         shift_name: "",
         paper_timesheet: "",
-
+        status: "",
         notes: "",
         start_time: "",
         end_time: "",
@@ -532,7 +522,7 @@ export default {
         custom_image: "",
       },
       options: [],
-      status: "",
+      // status: "",
       apiResponse: "",
       apiResponse_EndTime: "",
       showSaveButton: true,
@@ -552,7 +542,8 @@ export default {
   components: { SuccessAlert },
   computed: {
     buttonText() {
-      return this.status && this.status.trim().toLowerCase() === "approved"
+      return this.fetchCustomSheetData.status &&
+        this.fetchCustomSheetData.status === "Approved"
         ? "Approved"
         : "UnApprove & Save";
     },
