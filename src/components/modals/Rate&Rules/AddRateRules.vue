@@ -756,6 +756,7 @@
                             )
                           "
                           maxlength="3"
+                          :min="1"
                         />
                       </div>
 
@@ -775,6 +776,7 @@
                             )
                           "
                           maxlength="3"
+                          :min="1"
                         />
                       </div>
                     </div>
@@ -793,6 +795,7 @@
                             )
                           "
                           maxlength="3"
+                          :min="1"
                         />
                       </div>
 
@@ -810,6 +813,7 @@
                             )
                           "
                           maxlength="3"
+                          :min="1"
                         />
                       </div>
 
@@ -828,7 +832,7 @@
                           "
                           maxlength="3"
                           :max="999"
-                          :min="0"
+                          :min="1"
                         />
                       </div>
                     </div>
@@ -893,6 +897,7 @@
                             )
                           "
                           maxlength="3"
+                          :min="1"
                         />
                       </div>
 
@@ -910,6 +915,7 @@
                             )
                           "
                           maxlength="3"
+                          :min="1"
                         />
                       </div>
                     </div>
@@ -928,6 +934,7 @@
                             )
                           "
                           maxlength="3"
+                          :min="1"
                         />
                       </div>
 
@@ -945,6 +952,7 @@
                             )
                           "
                           maxlength="3"
+                          :min="1"
                         />
                       </div>
 
@@ -963,7 +971,7 @@
                           "
                           maxlength="3"
                           :max="999"
-                          :min="0"
+                          :min="1"
                         />
                       </div>
                     </div>
@@ -1028,6 +1036,7 @@
                             )
                           "
                           maxlength="3"
+                          :min="1"
                         />
                       </div>
 
@@ -1047,6 +1056,7 @@
                             )
                           "
                           maxlength="3"
+                          :min="1"
                         />
                       </div>
                     </div>
@@ -1065,6 +1075,7 @@
                             )
                           "
                           maxlength="3"
+                          :min="1"
                         />
                       </div>
 
@@ -1100,7 +1111,7 @@
                           "
                           maxlength="3"
                           :max="999"
-                          :min="0"
+                          :min="1"
                         />
                       </div>
                     </div>
@@ -1166,7 +1177,7 @@
                           "
                           maxlength="3"
                           :max="999"
-                          :min="0"
+                          :min="1"
                         />
                       </div>
 
@@ -1187,7 +1198,7 @@
                           "
                           maxlength="3"
                           :max="999"
-                          :min="0"
+                          :min="1"
                         />
                       </div>
                     </div>
@@ -1209,7 +1220,7 @@
                           "
                           maxlength="3"
                           :max="999"
-                          :min="0"
+                          :min="1"
                         />
                       </div>
 
@@ -1228,7 +1239,7 @@
                           "
                           maxlength="3"
                           :max="999"
-                          :min="0"
+                          :min="1"
                         />
                       </div>
 
@@ -1247,7 +1258,7 @@
                           "
                           maxlength="3"
                           :max="999"
-                          :min="0"
+                          :min="1"
                         />
                       </div>
                     </div>
@@ -1655,6 +1666,9 @@ export default {
       }
     },
     async getClientFetchSiteMethod() {
+      if (!this.client_id) {
+        return;
+      }
       try {
         const response = await axios.get(
           `${VITE_API_URL}/fetch_site_by_client_id/${this.client_id}`

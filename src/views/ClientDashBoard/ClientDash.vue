@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- <ClientNavbar /> -->
+    <ClientNavbar />
     <div id="main" class="main">
       <div class="pagetitle mainTop">
         <div class="row">
@@ -169,7 +169,7 @@
 <script>
 import axios from "axios";
 
-// import ClientNavbar from "../../components/ClientDashBoard/ClientNavbar.vue";
+import ClientNavbar from "../../components/ClientDashBoard/ClientNavbar.vue";
 
 export default {
   name: "ClientDash",
@@ -181,7 +181,7 @@ export default {
     };
   },
   components: {
-    // ClientNavbar,
+    ClientNavbar,
   },
   methods: {
     async fetchData() {
