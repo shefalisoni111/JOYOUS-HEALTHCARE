@@ -209,6 +209,7 @@
                         @input="handleInput('client_rate', $event.target.value)"
                         maxlength="3"
                         @keydown="allowNumbersOnly($event)"
+                        readonly
                       />
                       <span
                         v-if="!validationClientRate && fetchVacancy.client_rate"
@@ -230,6 +231,7 @@
                           class="form-control w-100"
                           v-model="fetchVacancy.staff_rate"
                           @input="handleInput('staff_rate', $event.target.value)"
+                          readonly
                         />
                         <span
                           v-if="!validationStaffRate && fetchVacancy.staff_rate"
@@ -248,6 +250,7 @@
                           @input="handleInput('umbrella', $event.target.value)"
                           maxlength="3"
                           @keydown="allowNumbersOnly($event)"
+                          readonly
                         />
                         <span
                           v-if="!validationUmbrella && fetchVacancy.umbrella"
@@ -266,6 +269,7 @@
                           @input="handleInput('paye', $event.target.value)"
                           maxlength="3"
                           @keydown="allowNumbersOnly($event)"
+                          readonly
                         />
                         <span
                           v-if="!validationPaye && fetchVacancy.paye"
@@ -286,6 +290,7 @@
                           @input="handleInput('private_limited', $event.target.value)"
                           maxlength="3"
                           @keydown="allowNumbersOnly($event)"
+                          readonly
                         />
                         <span
                           v-if="!validationPrivateLimited && fetchVacancy.private_limited"
