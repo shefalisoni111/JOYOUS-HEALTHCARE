@@ -307,6 +307,9 @@ export default {
     },
 
     async getRolesActiveMethod() {
+      // if (this.rolesActive?.length === 0) {
+      //   return;
+      // }
       this.isLoading = true;
       const token = localStorage.getItem("token");
       try {
@@ -331,6 +334,9 @@ export default {
       }
     },
     async getRolesInActiveMethod() {
+      if (this.rolesInActive?.length === 0) {
+        return;
+      }
       this.isLoading = true;
       const token = localStorage.getItem("token");
       try {
@@ -345,7 +351,7 @@ export default {
         this.totalInActiveUserCount = response.data.total_user || [];
         this.rolesInActive = response.data.users || [];
       } catch (error) {
-        console.log(error.response.status);
+        // console.log(error.response.status);
         if (error.response && error.response.status === 404) {
           this.totalInActiveUserCount = 0;
           this.rolesInActive = [];
@@ -375,7 +381,7 @@ export default {
             { activated_value: isActive },
             {
               headers: {
-                Authorization: "bearer " + token,
+                Authorization: `Bearer ${token}`,
               },
             }
           );
