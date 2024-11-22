@@ -197,95 +197,84 @@
                       </select>
                     </div>
                   </div>
-                  <div class="mb-3 d-flex justify-content-between gap-1">
-                    <div>
-                      <label class="form-label" for="clientRate">Client Rate</label>
-                      <input
-                        type="number"
-                        class="form-control w-100"
-                        v-model="fetchVacancy.client_rate"
-                        @input="validateRate('client_rate', fetchVacancy.client_rate)"
-                        @keydown.prevent
-                      />
-                      <span
-                        v-if="!validationClientRate && fetchVacancy.client_rate"
-                        class="text-danger"
-                      >
-                        Client Rate must be greater than 0
-                      </span>
+                  <div class="d-flex justify-content-between">
+                    <div class="col-2">
+                      <label class="form-label" for="clientRate">Staff Rate</label>
                     </div>
+                    <div class="col-10 d-flex gap-2">
+                      <div>
+                        <label class="form-label" for="staffRate">Self Employee</label>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="fetchVacancy.staff_rate"
+                          @input="validateRate('staff_rate', fetchVacancy.staff_rate)"
+                        />
+                        <span
+                          v-if="!validationStaffRate && fetchVacancy.staff_rate"
+                          class="text-danger"
+                        >
+                          Staff Rate must be greater than 0
+                        </span>
+                      </div>
 
-                    <div>
-                      <label class="form-label" for="staffRate">Staff Rate</label>
-                      <input
-                        type="text"
-                        class="form-control w-100"
-                        v-model="fetchVacancy.staff_rate"
-                        @input="validateRate('staff_rate', fetchVacancy.staff_rate)"
-                      />
-                      <span
-                        v-if="!validationStaffRate && fetchVacancy.staff_rate"
-                        class="text-danger"
-                      >
-                        Staff Rate must be greater than 0
-                      </span>
-                    </div>
+                      <div>
+                        <label class="form-label" for="umbrella">Umbrella</label>
+                        <input
+                          type="number"
+                          class="form-control w-100"
+                          v-model="fetchVacancy.umbrella"
+                          @input="validateRate('umbrella', fetchVacancy.umbrella)"
+                          @keydown.prevent
+                        />
+                        <span
+                          v-if="!validationUmbrella && fetchVacancy.umbrella"
+                          class="text-danger"
+                        >
+                          Umbrella must be greater than 0
+                        </span>
+                      </div>
 
-                    <div>
-                      <label class="form-label" for="umbrella">Umbrella</label>
-                      <input
-                        type="number"
-                        class="form-control w-100"
-                        v-model="fetchVacancy.umbrella"
-                        @input="validateRate('umbrella', fetchVacancy.umbrella)"
-                        @keydown.prevent
-                      />
-                      <span
-                        v-if="!validationUmbrella && fetchVacancy.umbrella"
-                        class="text-danger"
-                      >
-                        Umbrella must be greater than 0
-                      </span>
-                    </div>
+                      <div>
+                        <label class="form-label" for="paye">Paye</label>
+                        <input
+                          type="number"
+                          class="form-control w-100"
+                          v-model="fetchVacancy.paye"
+                          @input="validateRate('paye', fetchVacancy.paye)"
+                          @keydown.prevent
+                        />
+                        <span
+                          v-if="!validationPaye && fetchVacancy.paye"
+                          class="text-danger"
+                        >
+                          Paye must be greater than 0
+                        </span>
+                      </div>
 
-                    <div>
-                      <label class="form-label" for="paye">Paye</label>
-                      <input
-                        type="number"
-                        class="form-control w-100"
-                        v-model="fetchVacancy.paye"
-                        @input="validateRate('paye', fetchVacancy.paye)"
-                        @keydown.prevent
-                      />
-                      <span
-                        v-if="!validationPaye && fetchVacancy.paye"
-                        class="text-danger"
-                      >
-                        Paye must be greater than 0
-                      </span>
-                    </div>
-
-                    <div>
-                      <label class="form-label" for="privateLimited"
-                        >Private Limited</label
-                      >
-                      <input
-                        type="number"
-                        class="form-control w-100"
-                        v-model="fetchVacancy.private_limited"
-                        @input="
-                          validateRate('private_limited', fetchVacancy.private_limited)
-                        "
-                        @keydown.prevent
-                      />
-                      <span
-                        v-if="!validationPrivateLimited && fetchVacancy.private_limited"
-                        class="text-danger"
-                      >
-                        Private Limited must be greater than 0
-                      </span>
+                      <div>
+                        <label class="form-label" for="privateLimited"
+                          >Private Limited</label
+                        >
+                        <input
+                          type="number"
+                          class="form-control w-100"
+                          v-model="fetchVacancy.private_limited"
+                          @input="
+                            validateRate('private_limited', fetchVacancy.private_limited)
+                          "
+                          @keydown.prevent
+                        />
+                        <span
+                          v-if="!validationPrivateLimited && fetchVacancy.private_limited"
+                          class="text-danger"
+                        >
+                          Private Limited must be greater than 0
+                        </span>
+                      </div>
                     </div>
                   </div>
+                  <div class="mb-3 d-flex justify-content-between gap-1"></div>
 
                   <div class="mb-3 d-flex justify-content-between">
                     <div class="col-2">
