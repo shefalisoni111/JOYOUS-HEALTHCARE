@@ -17,14 +17,30 @@
               <form>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label">Agency Name</label>
+                    <label class="form-label">First Name</label>
                   </div>
 
                   <div class="col-10">
                     <input
                       type="text"
                       class="form-control"
-                      v-model="fetchAgencySetting.agency_name"
+                      v-model="fetchAgencySetting.first_name"
+                      placeholder="Last Name"
+                      style="padding-right: 1px"
+                    />
+                  </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
+                    <label class="form-label"> Last Name</label>
+                  </div>
+
+                  <div class="col-10">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="fetchAgencySetting.last_name"
+                      placeholder="Last Name"
                       style="padding-right: 1px"
                     />
                   </div>
@@ -57,6 +73,7 @@
                       @change="detectAutofill"
                       ref="email"
                       autocomplete="new-email"
+                      readonly
                     />
                   </div>
                 </div>
@@ -74,7 +91,7 @@
                     />
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
+                <!-- <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label class="form-label">Mobile Number</label>
                   </div>
@@ -87,7 +104,7 @@
                       @change="detectAutofill"
                     />
                   </div>
-                </div>
+                </div> -->
               </form>
             </div>
           </div>
@@ -104,7 +121,6 @@
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="updateAgencyMethod()"
-              :disabled="isSaveDisabled"
             >
               Save
             </button>
@@ -125,8 +141,8 @@ export default {
   data() {
     return {
       fetchAgencySetting: {
-        id: 1,
-        agency_name: "",
+        first_name: "",
+        last_name: "",
 
         mobile_number: "",
         address: "",
@@ -152,32 +168,31 @@ export default {
     isMobileNumberValid() {
       return /^[0-9]{10}$/.test(this.fetchAgencySetting.mobile_number);
     },
-
-    isEmailValid() {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
-      return emailRegex.test(this.fetchAgencySetting.email);
-    },
-    isSaveDisabled() {
-      return !this.isPhoneNumberValid || !this.isEmailValid || !this.isMobileNumberValid;
-    },
   },
   methods: {
     async fetchAgencySettingMethod(id) {
+      const merchantId = localStorage.getItem("merchant_id");
+      if (!merchantId) {
+        this.isLoading = false;
+        return;
+      }
+
       try {
-        const response = await axios.get(`${VITE_API_URL}/agency_settings/${id}`, {
+        const response = await axios.get(`${VITE_API_URL}/merchants/${merchantId}`, {
           headers: {
             "content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
 
-        const data = response.data;
+        const data = response.data.data;
 
         this.fetchAgencySetting.id = data.id;
-        this.fetchAgencySetting.agency_name = data.agency_name;
+        this.fetchAgencySetting.first_name = data.first_name;
+        this.fetchAgencySetting.last_name = data.last_name;
         this.fetchAgencySetting.address = data.address;
         this.fetchAgencySetting.phone_number = data.phone_number;
         this.fetchAgencySetting.email = data.email;
-        this.fetchAgencySetting.mobile_number = data.mobile_number;
       } catch (error) {}
     },
 
@@ -185,12 +200,12 @@ export default {
       const token = localStorage.getItem("token");
       try {
         const response = await axios.put(
-          `${VITE_API_URL}/agency_settings/${this.fetchAgencySetting.id}`,
+          `${VITE_API_URL}/merchants/${this.fetchAgencySetting.id}`,
           {
-            agency_name: this.fetchAgencySetting.agency_name,
-
+            first_name: this.fetchAgencySetting.first_name,
+            last_name: this.fetchAgencySetting.last_name,
             address: this.fetchAgencySetting.address,
-            mobile_number: this.fetchAgencySetting.mobile_number,
+
             phone_number: this.fetchAgencySetting.phone_number,
             email: this.fetchAgencySetting.email,
           },

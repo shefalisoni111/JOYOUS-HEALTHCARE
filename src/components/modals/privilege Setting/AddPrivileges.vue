@@ -4,7 +4,7 @@
     <div
       class="modal fade"
       id="AddPrivileges"
-      aria-labelledby="AddPrivilegesPages"
+      aria-labelledby="AddPrivilegess"
       tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
@@ -114,9 +114,7 @@
                       type="password"
                       class="form-control"
                       v-model="password"
-                      @input="validatePasswordMatch"
-                      @change="detectAutofill"
-                      autocomplete="new-password"
+                      @input="validatePassword(password)"
                     />
                   </div>
                 </div>
@@ -130,7 +128,6 @@
                       class="form-control"
                       v-model="confirm_password"
                       @input="validatePasswordMatch"
-                      @change="detectAutofill"
                     />
                     <span v-if="!passwordsMatch" class="text-danger"
                       >Passwords do No Match</span
@@ -267,7 +264,7 @@ export default {
     email: "validateEmailFormat",
     first_name: "validateNameFormat",
     last_name: "validateLNameFormat",
-    password: "validatePasswordMatch",
+    password: "validatePassword",
     confirm_password: "validatePasswordMatch",
     phone_number: "validatePhoneNumberFormat",
     address(newValue) {
@@ -385,6 +382,10 @@ export default {
       } else {
         this.isPasswordRequired = !this.password;
       }
+    },
+    validatePassword(password) {
+      const nameRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      return nameRegex.test(password);
     },
     validatePasswordMatch() {
       this.passwordsMatch = this.password === this.confirm_password;

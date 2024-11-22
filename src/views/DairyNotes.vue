@@ -45,48 +45,82 @@
           <div v-if="notes.length === 0" class="text-center text-muted">
             No notes added yet.
           </div>
-          <ul class="list-group">
-            <li
-              v-for="note in notes"
-              :key="note.id"
-              class="d-flex justify-content-between align-items-center"
-            >
-              <div v-if="!note.isEditing" class="d-flex w-100">
-                <div class="flex-grow-1">
-                  <h5 class="mb-1">{{ note.title }}</h5>
-                  <p class="mb-1">{{ note.description }}</p>
-                </div>
-                <div>
-                  <button class="btn btn-primary me-2" @click="editNote(note)">
-                    Edit
-                  </button>
-                  <button class="btn btn-danger" @click="deleteNote(note.id)">
-                    Delete
-                  </button>
-                </div>
-              </div>
-
-              <div v-if="note.isEditing">
-                <input
-                  v-model="newNote.title"
-                  type="text"
-                  class="form-control mb-2"
-                  placeholder="Edit Title"
-                />
-                <textarea
-                  v-model="newNote.description"
-                  class="form-control mb-2"
-                  placeholder="Edit Description"
-                ></textarea>
-                <button class="btn btn-primary me-2" @click="updateNote(note)">
-                  Save
-                </button>
-                <button class="btn btn-sm btn-secondary" @click="cancelEdit(note)">
-                  Cancel
-                </button>
-              </div>
-            </li>
-          </ul>
+          <div class="list-group">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Title</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Loop through notes to display them in rows -->
+                <tr v-for="note in notes" :key="note.id">
+                  <td>
+                    <div v-if="note.isEditing">
+                      <!-- Edit input for the title -->
+                      <input
+                        v-model="note.title"
+                        type="text"
+                        class="form-control mb-2"
+                        placeholder="Edit Title"
+                      />
+                    </div>
+                    <div v-else>
+                      {{ note.title }}
+                    </div>
+                  </td>
+                  <td>
+                    <div v-if="note.isEditing">
+                      <!-- Edit textarea for the description -->
+                      <textarea
+                        v-model="note.description"
+                        class="form-control mb-2"
+                        placeholder="Edit Description"
+                      ></textarea>
+                    </div>
+                    <div v-else>
+                      {{ note.description }}
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex">
+                      <!-- Conditionally render buttons for Edit/Save/Cancel -->
+                      <button
+                        v-if="note.isEditing"
+                        class="btn btn-primary me-2"
+                        @click="updateNote(note)"
+                      >
+                        Save
+                      </button>
+                      <button
+                        v-if="note.isEditing"
+                        class="btn btn-sm btn-secondary"
+                        @click="cancelEdit(note)"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        v-if="!note.isEditing"
+                        class="btn btn-primary me-2"
+                        @click="editNote(note)"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        class="btn btn-danger"
+                        @click="deleteNote(note.id)"
+                        v-if="!note.isEditing"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

@@ -49,61 +49,45 @@
           <div class="row">
             <div class="col-12">
               <div class="bg-white">
-                <div class="p-5 float-end">
-                  <!-- <button
-                    type="button"
-                    class="btn btn-outline-success text-nowrap text-nowrap"
-                    data-bs-toggle="modal"
-                    data-bs-target="#editAgencyData"
-                    data-bs-whatever="@mdo"
-                    @click="editagencyId(data.id)"
-                  >
-                    <i class="bi bi-pencil"></i> Edit
-                  </button> -->
-                </div>
-                <!-- <div class="col-5">
+                <div class="col-5">
                   <div class="d-flex justify-content-between align-items-center px-4">
-                    <img
-                      v-if="data.agency_logo"
-                      :src="completeImageUrl"
-                      class=""
-                      alt="Agency Logo"
-                      width="220"
-                      height="50"
-                      loading="eager"
-                    />
-                    <div v-else class="position-relative">
-                      <img
-                        src="./pic-image.jpg"
-                        class="img-fluid"
-                        alt="RecPal"
-                        width="220"
-                        height="50"
-                        loading="eager"
-                      />
-                      <input
-                        type="file"
-                        id="agencyMainInput"
-                        style="display: none"
-                        accept="image/*"
-                        @change="previewAgencyLogo"
-                      />
-                      <label
-                        for="agencyMainInput"
-                        v-if="!data.agency_logo"
-                        class="fs-3 fw-bold w-25 position-absolute end-0 top-0 text-center"
-                        style="border-radius: 0px; background-color: #57bd8e"
-                        >+</label
-                      >
+                    <div class="position-relative">
+                      <div>
+                        <div v-if="filteredLogo">
+                          <img
+                            :src="filteredLogo.logo_url"
+                            class=""
+                            alt="Agency Logo"
+                            width="220"
+                            height="220"
+                            loading="eager"
+                          />
+                          <input
+                            type="file"
+                            id="agencyMainInput"
+                            style="display: none"
+                            accept="image/*"
+                            @change="previewAgencyLogo($event, 2)"
+                          />
+                          <label
+                            for="agencyMainInput"
+                            class="fs-3 fw-bold w-25 position-absolute end-0 top-0 text-center"
+                            style="border-radius: 0px; background-color: #57bd8e"
+                            >+</label
+                          >
+                        </div>
+                      </div>
                     </div>
 
                     <div class="d-flex flex-column text-capitalize">
-                      <h5 class="mb-0">{{ data.agency_name }}</h5>
-                      <p class="mb-0">recruitment</p>
-                      <span>Description</span>
+                      <h5 class="mb-0">
+                        {{ getAgencyData.first_name + " " + getAgencyData.last_name }}
+                      </h5>
+                      <!-- <p class="mb-0">recruitment</p>
+                      <span>Description</span> -->
                     </div>
                   </div>
-                </div> -->
+                </div>
                 <div class="showdata p-4">
                   <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -170,43 +154,54 @@
                       role="tabpanel"
                       aria-labelledby="about"
                     >
-                      <div class="p-4 table-wrapper">
-                        <table
-                          class="table table-borderless"
-                          v-for="data in getAgencyData"
-                          :key="data.id"
+                      <div class="p-2 float-end">
+                        <button
+                          type="button"
+                          class="btn btn-outline-success text-nowrap text-nowrap"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editAgencyData"
+                          data-bs-whatever="@mdo"
+                          @click="editagencyId(getAgencyData.id)"
                         >
-                          <thead>
+                          <i class="bi bi-pencil"></i> Edit
+                        </button>
+                      </div>
+                      <div class="p-4 table-wrapper">
+                        <table class="table table-borderless" v-if="getAgencyData">
+                          <thead></thead>
+                          <tbody v-if="getAgencyData">
                             <tr>
                               <th scope="col">Agency name</th>
-                              <th scope="col">{{ data.agency_name }}</th>
+                              <th scope="col">
+                                {{
+                                  getAgencyData.first_name + " " + getAgencyData.last_name
+                                }}
+                              </th>
                             </tr>
-                          </thead>
-                          <tbody v-if="getAgencyData?.length > 0">
                             <tr>
                               <th scope="row">authorized person</th>
                               <td>
                                 {{
-                                  data.authorized_person ? data.authorized_person : "null"
+                                  getAgencyData.first_name + " " + getAgencyData.last_name
                                 }}
                               </td>
                             </tr>
                             <tr>
                               <th scope="row">email</th>
-                              <td>{{ data.email }}</td>
+                              <td>{{ getAgencyData.email }}</td>
                             </tr>
                             <tr>
                               <th scope="row">address</th>
-                              <td colspan="2">{{ data.address }}</td>
+                              <td colspan="2">{{ getAgencyData.address }}</td>
                             </tr>
                             <tr>
                               <th scope="row">mobile number</th>
-                              <td colspan="2">{{ data.mobile_number }}</td>
+                              <td colspan="2">{{ getAgencyData.phone_number }}</td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                               <th scope="row">phone number</th>
-                              <td colspan="2">{{ data.phone_number }}</td>
-                            </tr>
+                              <td colspan="2">{{ getAgencyData.phone_number }}</td>
+                            </tr> -->
                           </tbody>
                           <tbody v-else>
                             <tr>
@@ -232,22 +227,29 @@
                       </p>
                     </div>
                     <div
-                      class="tab-pane fade p-3"
+                      class="tab-pane fade p-3 d-flex"
                       id="contact"
                       role="tabpanel"
                       aria-labelledby="RecPal"
                     >
-                      <div class="col-12 d-flex gap-2 justify-content-between">
+                      <div
+                        class="col-4 d-flex gap-1 justify-content-between"
+                        v-for="agencyLogoList in agencyLogoList"
+                        :key="agencyLogoList.id"
+                      >
                         <div>
                           <h6>
-                            <span class="ps-1 fs-6 fw-bold">Favicon</span>&nbsp;
+                            <span class="ps-1 fs-6 fw-bold text-capitalize">{{
+                              agencyLogoList.logo_type.replace(/_/g, " ")
+                            }}</span
+                            >&nbsp;
                             <!-- <span class="text-muted">(dimension 32px * 32px)</span> -->
                           </h6>
                           <div class="col-4 w-100">
                             <div class="card">
-                              <div class="card-body position-relative">
+                              <div class="card-body">
                                 <img
-                                  v-if="!logoPreview"
+                                  v-if="!agencyLogoList.logo_url"
                                   src="./pic-image.jpg"
                                   class="img-fluid"
                                   loading="eager"
@@ -257,7 +259,7 @@
                                 />
                                 <img
                                   v-else
-                                  :src="logoPreview"
+                                  :src="agencyLogoList.logo_url"
                                   class="img-fluid m-auto d-block"
                                   loading="eager"
                                   width="300"
@@ -266,114 +268,16 @@
                                 />
                                 <input
                                   type="file"
-                                  id="faviconInput"
+                                  :id="'faviconInput-' + agencyLogoList.id"
                                   style="display: none"
                                   accept="image/*"
-                                  @change="previewLogo"
+                                  @change="previewAgencyLogo($event, agencyLogoList.id)"
                                 />
                                 <label
-                                  for="faviconInput"
+                                  :for="'faviconInput-' + agencyLogoList.id"
                                   class="btn btn-primary w-100 position-absolute bottom-0 end-0"
                                   style="border-radius: 0px"
                                   >Upload Favicon</label
-                                >
-                                <!-- <a
-                                  href="#"
-                                  class="btn btn-primary w-100"
-                                  style="border-radius: 0px"
-                                  >Upload Favicon</a
-                                > -->
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <h6>
-                            <span class="ps-1 fs-6 fw-bold">Agency logo</span> &nbsp;
-                            <!-- <span class="text-muted">(dimension 220px * 50px)</span> -->
-                          </h6>
-                          <div class="col-4 w-100">
-                            <div class="card">
-                              <div class="card-body position-relative">
-                                <img
-                                  v-if="!logoAgencyPreview"
-                                  src="./pic-image.jpg"
-                                  class="img-fluid"
-                                  loading="eager"
-                                  width="300"
-                                  height="300"
-                                  style="height: 300px"
-                                />
-                                <img
-                                  v-else
-                                  :src="logoAgencyPreview"
-                                  class="img-fluid m-auto d-block"
-                                  loading="eager"
-                                  width="300"
-                                  style="height: 300px"
-                                  height="300"
-                                />
-                                <input
-                                  type="file"
-                                  id="agencyInput"
-                                  style="display: none"
-                                  accept="image/*"
-                                  @change="previewAgencyLogo"
-                                />
-                                <label
-                                  for="agencyInput"
-                                  class="btn btn-primary w-100 position-absolute bottom-0 end-0"
-                                  style="border-radius: 0px"
-                                  >Upload Agency Logo</label
-                                >
-                                <!-- <a
-                                  href="#"
-                                  class="btn btn-primary w-100"
-                                  style="border-radius: 0px"
-                                  >Upload Favicon</a
-                                > -->
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <h6>
-                            <span class="ps-1 fs-6 fw-bold">Invoice Logo</span>&nbsp;
-                            <!-- <span class="text-muted">(dimension 150px * 75px)</span> -->
-                          </h6>
-                          <div class="col-4 w-100">
-                            <div class="card">
-                              <div class="card-body position-relative">
-                                <img
-                                  v-if="!logoInvoicePreview"
-                                  src="./pic-image.jpg"
-                                  class="img-fluid"
-                                  loading="eager"
-                                  width="300"
-                                  style="height: 300px; width: 300px"
-                                  height="300"
-                                />
-                                <img
-                                  v-else
-                                  :src="logoInvoicePreview"
-                                  class="img-fluid m-auto d-block"
-                                  loading="eager"
-                                  width="300"
-                                  style="height: 300px"
-                                  height="300"
-                                />
-                                <input
-                                  type="file"
-                                  id="invoiceInput"
-                                  style="display: none"
-                                  accept="image/*"
-                                  @change="previewInvoiceLogo"
-                                />
-                                <label
-                                  for="invoiceInput"
-                                  class="btn btn-primary w-100 position-absolute bottom-0 end-0"
-                                  style="border-radius: 0px"
-                                  >Upload Invoice Logo</label
                                 >
                                 <!-- <a
                                   href="#"
@@ -400,7 +304,6 @@
                         ipsam quis labore quod quo sint?
                       </p>
                     </div>
-                    <Loader :isLoading="isLoading"></Loader>
                   </div>
                 </div>
               </div>
@@ -410,6 +313,10 @@
       </div>
     </div>
 
+    <!-- <EditAgencySetting
+      :agencyId="selectedAgencyId || 0"
+      @editAgency="getAgencyDataMethod"
+    /> -->
     <EditAgencySetting
       :agencyId="selectedAgencyId || 0"
       @editAgency="getAgencyDataMethod"
@@ -425,6 +332,7 @@ import EditAgencySetting from "../modals/AgencySetting/EditAgencySetting.vue";
 import Loader from "../Loader/Loader.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
 import Swal from "sweetalert2";
+
 export default {
   name: "AgencySetting",
   data() {
@@ -435,6 +343,7 @@ export default {
       logoInvoicePreview: "",
       selectedAgencyId: 0,
       isLoading: false,
+      agencyLogoList: [],
     };
   },
   components: {
@@ -445,18 +354,16 @@ export default {
     SuccessAlert,
   },
   computed: {
-    completeImageUrl() {
-      if (this.getAgencyData && this.getAgencyData.agency_logo) {
-        return `${VITE_API_URL}${this.getAgencyData.agency_logo}`;
-      }
-      return null;
+    filteredLogo() {
+      return this.agencyLogoList.find((logo) => logo.id === 2);
     },
   },
   methods: {
     editagencyId(agencyId) {
       this.selectedAgencyId = agencyId;
     },
-    previewLogo(event) {
+
+    previewAgencyLogo(event, id) {
       const file = event.target.files[0];
       const formData = new FormData();
 
@@ -473,170 +380,94 @@ export default {
       const image = new Image();
       image.src = URL.createObjectURL(file);
       image.onload = () => {
-        // if (image.width !== 32 || image.height !== 32) {
-        //   alert("Please choose an image with dimensions of 32pxX32px.");
-        //   return;
-        // }
-
-        formData.append("agency_setting[agency_logo]", file);
+        formData.append("agency_logo[logo]", file);
         const token = localStorage.getItem("token");
 
-        fetch(`${VITE_API_URL}/agency_settings`, {
-          method: "POST",
-          headers: {
-            Authorization: "bearer " + token,
-          },
-          body: formData,
-        })
+        axios
+          .put(`${VITE_API_URL}/upload_logo/${id}`, formData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          })
           .then((response) => {
-            const message = "successfully Updated.";
+            const message = "Successfully Updated.";
             this.$refs.successAlert.showSuccess(message);
-            if (!response.ok) {
+            if (response.status === 200) {
+              window.location.reload();
             }
-            return response.json();
-          })
-          .then((data) => {
-            // console.log("Logo uploaded successfully:", data);
           })
           .catch((error) => {
-            // Handle error
+            Swal.fire({
+              icon: "error",
+              title: "Upload Failed",
+              text: error.response?.data?.message || "Something went wrong.",
+              confirmButtonText: "OK",
+            });
           });
 
         const reader = new FileReader();
-        reader.onload = (e) => {
-          this.logoPreview = reader.result;
-          this.localStorageImage = e.target.result;
-          localStorage.setItem("logoPreview", e.target.result);
-        };
+        reader.onload = (e) => {};
         reader.readAsDataURL(file);
       };
     },
-    previewAgencyLogo(event) {
-      const file = event.target.files[0];
-      const formData = new FormData();
 
-      if (!file) {
-        Swal.fire({
-          icon: "warning",
-          title: "No File Selected",
-          text: "Please choose an image file.",
-          confirmButtonText: "OK",
-        });
-        return;
-      }
-
-      const image = new Image();
-      image.src = URL.createObjectURL(file);
-      image.onload = () => {
-        // if (image.width !== 220 || image.height !== 50) {
-        //   alert("Please choose an image with dimensions of 220pxX50px.");
-        //   return;
-        // }
-
-        formData.append("agency_setting[agency_logo]", file);
-        const token = localStorage.getItem("token");
-
-        fetch(`${VITE_API_URL}/agency_settings`, {
-          method: "POST",
-          headers: {
-            Authorization: "bearer " + token,
-          },
-          body: formData,
-        })
-          .then((response) => {
-            const message = "successfully Updated.";
-            this.$refs.successAlert.showSuccess(message);
-
-            return response.json();
-          })
-          .then((data) => {
-            // console.log("Logo uploaded successfully:", data);
-          })
-          .catch((error) => {
-            // Handle error
-          });
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.logoAgencyPreview = reader.result;
-          this.localStorageImage = e.target.result;
-          localStorage.setItem("logoAgencyPreview", e.target.result);
-        };
-        reader.readAsDataURL(file);
-      };
-    },
-    previewInvoiceLogo(event) {
-      const file = event.target.files[0];
-      const formData = new FormData();
-
-      if (!file) {
-        Swal.fire({
-          icon: "warning",
-          title: "No File Selected",
-          text: "Please choose an image file.",
-          confirmButtonText: "OK",
-        });
-        return;
-      }
-
-      const image = new Image();
-      image.src = URL.createObjectURL(file);
-      image.onload = () => {
-        // if (image.width !== 150 || image.height !== 75) {
-        //   alert("Please choose an image with dimensions of 150pxX75px.");
-        //   return;
-        // }
-
-        formData.append("agency_setting[invoice_logo]", file);
-        const token = localStorage.getItem("token");
-
-        fetch(`${VITE_API_URL}/agency_settings`, {
-          method: "POST",
-          headers: {
-            Authorization: "bearer " + token,
-          },
-          body: formData,
-        })
-          .then((response) => {
-            const message = "successfully Updated.";
-            this.$refs.successAlert.showSuccess(message);
-            if (!response.ok) {
-            }
-            return response.json();
-          })
-          .then((data) => {
-            // console.log("Logo uploaded successfully:", data);
-          })
-          .catch((error) => {
-            // Handle error
-          });
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.logoInvoicePreview = reader.result;
-          this.localStorageImage = e.target.result;
-          localStorage.setItem("logoInvoicePreview", e.target.result);
-        };
-        reader.readAsDataURL(file);
-      };
-    },
-    //  method
     async getAgencyDataMethod() {
       this.isLoading = true;
-      await axios
-        .get(`${VITE_API_URL}/agency_settings`)
+      const merchantId = localStorage.getItem("merchant_id");
+
+      if (!merchantId) {
+        this.isLoading = false;
+        return;
+      }
+
+      try {
+        const response = await axios.get(`${VITE_API_URL}/merchants/${merchantId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        this.getAgencyData = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status === 404) {
+            // console.error("Merchant not found:", error.response.data.message);
+          }
+        } else {
+          // console.error("An unexpected error occurred:", error.message);
+        }
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    getAgencyLogoList() {
+      const token = localStorage.getItem("token");
+
+      axios
+        .get(`${VITE_API_URL}/agency_logo_list`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((response) => {
-          this.getAgencyData = response.data;
+          // Handle the success response
+          // console.log("Agency Logo List:", response.data);
+          this.agencyLogoList = response.data.data;
+          this.agencyLogoList.forEach((logo) => {
+            if (logo.logo_url) {
+              logo.logo_url = `${VITE_API_URL}${logo.logo_url}`;
+            }
+          });
         })
         .catch((error) => {
-          if (error.response) {
-            if (error.response.status == 404) {
-              // alert(error.response.data.message);
-            }
-          }
-        })
-        .finally(() => {
-          this.isLoading = false;
+          // Handle error
+          Swal.fire({
+            icon: "error",
+            title: "Error Fetching Logos",
+            text: error.response?.data?.message || "Something went wrong.",
+            confirmButtonText: "OK",
+          });
+          // console.error("Error fetching agency logo list:", error);
         });
     },
     loadFromLocalStorage() {
@@ -655,8 +486,9 @@ export default {
     },
   },
   mounted() {
-    this.getAgencyDataMethod();
+    this.getAgencyLogoList();
     this.loadFromLocalStorage();
+    this.getAgencyDataMethod();
   },
 };
 </script>
