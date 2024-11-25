@@ -370,14 +370,14 @@
                     <div class="col-12 mt-1" v-if="showSaveButton">
                       <textarea
                         class="form-control custom-disabled"
-                        v-model="fetchSignedTimeSheet.notes"
+                        v-model="fetchSignedTimeSheet.start_comment"
                         rows="3"
                       ></textarea>
                     </div>
                     <div class="col-12 mt-1" v-else>
                       <textarea
                         class="form-control custom-disabled"
-                        v-model="fetchSignedTimeSheet.notes"
+                        v-model="fetchSignedTimeSheet.start_comment"
                         rows="3"
                         disabled
                       ></textarea>
@@ -489,6 +489,7 @@ export default {
         paper_timesheet: "",
         // status: "",
         notes: "",
+        start_comment: "",
         start_time: "",
         end_time: "",
         client_rate: "",
