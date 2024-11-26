@@ -526,13 +526,13 @@ const router = createRouter({
           props: true,
         },
         {
-          path: "/invoice/staff-invoice",
+          path: "/invoice/staff-payroll",
           name: "CandidateInvoice",
           component: () => import("@/components/InvoicePages/CandidateInvoice.vue"),
           props: true,
         },
         {
-          path: "/invoice/staff-invoice/StaffInvoiceView/:id",
+          path: "/invoice/staff-payroll/StaffPayrollView/:id",
           name: "CandidateInvoiceView",
           component: () => import("@/components/InvoicePages/CandidateInvoiceView.vue"),
           props: true,
@@ -540,7 +540,7 @@ const router = createRouter({
 
         },
         {
-          path: '/invoice/StaffInvoiceViewEdit/:id',
+          path: '/invoice/StaffPayrollViewEdit/:id',
           name: "StaffInvoiceViewEdit",
           component: () => import("@/components/InvoicePages/TemplatesDesign/StaffInvoiceViewEdit.vue"),
           props: true,
@@ -968,18 +968,27 @@ const router = createRouter({
             name: "Staffs",
             component: () =>
               import("@/components/Recruitment/Staffs.vue"),
+            meta: {
+              requiresAuth: true, requiresAdmin:true,
+            },
           },
           {
             path: "/jobs",
             name: "Jobs",
             component: () =>
               import("@/components/Recruitment/Jobs.vue"),
+            meta: {
+              requiresAuth: true, requiresAdmin:true,
+            },
           },
           {
             path: "/settings",
             name: "Settings",
             component: () =>
               import("@/components/Recruitment/Settings.vue"),
+            meta: {
+              requiresAuth: true, requiresAdmin:true,
+            },
           },
         ]
     },
@@ -1062,24 +1071,36 @@ const router = createRouter({
             name: "OpenShift",
             component: () =>
               import("@/components/ClientDashBoard/ClientShiftPages/OpenShift.vue"),
+            meta: {
+              requiresAuth: true, requiresClient: true
+            },
           },
           {
             path: "/client/clientDashboard/shift/assign-shift",
             name: "AssignedShift",
             component: () =>
               import("@/components/ClientDashBoard/ClientShiftPages/AssignedShift.vue"),
+            meta: {
+              requiresAuth: true, requiresClient: true
+            },
           },
           {
             path: "/client/clientDashboard/shift/closed-shift",
             name: "ClosedShift",
             component: () =>
               import("@/components/ClientDashBoard/ClientShiftPages/ClosedShift.vue"),
+            meta: {
+              requiresAuth: true, requiresClient: true
+            },
           },
           {
             path: "/client/clientDashboard/shift/deleted-shift",
             name: "DeletedShift",
             component: () =>
               import("@/components/ClientDashBoard/ClientShiftPages/DeletedShift.vue"),
+            meta: {
+              requiresAuth: true, requiresClient: true
+            },
           },
         ]
     },

@@ -210,6 +210,15 @@
                     />
                   </div>
                 </div>
+                <div>
+                  <button
+                    @click="resetFilter"
+                    class="btn btn-secondary"
+                    :disabled="!site_id && !job_id && !id && !localSearchQuery"
+                  >
+                    Reset Filters
+                  </button>
+                </div>
               </div>
               <ul class="nav nav-pills my-2 gap-2" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
@@ -888,6 +897,14 @@ export default {
         // Handle error if needed
         // console.error("Error fetching filtered data:", error);
       }
+    },
+    resetFilter() {
+      this.job_id = null;
+      this.site_id = null;
+      this.id = null;
+      this.localSearchQuery = "";
+
+      this.filterData();
     },
     // filterData() {
     //   const filters = {
