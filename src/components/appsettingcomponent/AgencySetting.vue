@@ -276,9 +276,10 @@
                                 />
                                 <label
                                   :for="'faviconInput-' + agencyLogoList.id"
-                                  class="btn btn-primary w-100 position-absolute bottom-0 end-0"
+                                  class="btn btn-primary w-100 position-absolute bottom-0 end-0 text-capitalize"
                                   style="border-radius: 0px"
-                                  >Upload Favicon</label
+                                  >Upload
+                                  {{ agencyLogoList.logo_type.replace(/_/g, " ") }}</label
                                 >
                                 <!-- <a
                                   href="#"

@@ -91,8 +91,9 @@
                   type="button"
                   class="btn btn-outline-success text-nowrap text-nowrap"
                   data-bs-toggle="modal"
-                  data-bs-target="#generateInvoice"
+                  data-bs-target="#AddGenrateInvoiceFile"
                   data-bs-whatever="@mdo"
+                  @click="handleButtonClick(data.id)"
                 >
                   <i class="bi bi-plus-square"></i>
                 </button>
@@ -148,14 +149,14 @@
       </button>
     </div>
     <loader :isLoading="isLoading"></loader>
-    <GenerateInvoiceAdd />
+    <AddGenrateInvoiceFile :selected-id="selectedId" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import Loader from "../../Loader/Loader.vue";
-import GenerateInvoiceAdd from "../../modals/InvoicePagesModal/GenerateInvoiceAdd.vue";
+import AddGenrateInvoiceFile from "../../modals/InvoicePagesModal/AddGenrateInvoiceFile.vue";
 
 export default {
   data() {
@@ -171,6 +172,7 @@ export default {
         "Saturday",
       ],
       candidateList: [],
+      selectedId: null,
       errorMessage: "",
       currentPage: 1,
       itemsPerPage: 10,
@@ -179,7 +181,7 @@ export default {
       endDate: new Date(),
     };
   },
-  components: { Loader, GenerateInvoiceAdd },
+  components: { Loader, AddGenrateInvoiceFile },
   computed: {
     getWeekDates() {
       const currentDate = new Date();
@@ -206,6 +208,9 @@ export default {
     },
   },
   methods: {
+    handleButtonClick(id) {
+      this.selectedId = id;
+    },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
