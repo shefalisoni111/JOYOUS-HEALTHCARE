@@ -198,10 +198,10 @@
                       {{ option.first_name + " " + option.last_name }}
                     </option>
                   </select>
-                  &nbsp;
+
                   <div class="searchbox position-relative">
                     <input
-                      class="form-control"
+                      class="form-control w-100"
                       type="search"
                       placeholder="Search booking..."
                       aria-label="Search"

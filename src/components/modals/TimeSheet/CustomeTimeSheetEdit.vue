@@ -290,13 +290,28 @@
                           >
                         </div>
                         <div class="col-12" v-if="showSaveButton">
-                          <input
+                          <!-- <input
                             type="email"
                             class="form-control p-2 custom-disabled"
                             v-model="fetchCustomSheetData.break"
-                          />
+                          /> -->
+                          <select
+                            id="selectShiftsBreak"
+                            class="form-control"
+                            v-model="fetchCustomSheetData.break"
+                            @change="validateBreak"
+                            style="width: 240px"
+                          >
+                            <option
+                              v-for="minute in [15, 30, 45, 60, 75, 90]"
+                              :key="minute"
+                              :value="minute + ' minutes'"
+                            >
+                              {{ formatBreakTime(minute) }}
+                            </option>
+                          </select>
                         </div>
-                        <div class="col-12" v-else>
+                        <!-- <div class="col-12" v-else>
                           <select
                             id="selectShiftsBreak"
                             class="form-control"
@@ -313,7 +328,7 @@
                               {{ formatBreakTime(minute) }}
                             </option>
                           </select>
-                        </div>
+                        </div> -->
                       </div>
                       <div class="mb-3">
                         <div class="col-12">

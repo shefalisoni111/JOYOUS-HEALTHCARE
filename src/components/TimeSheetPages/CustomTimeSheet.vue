@@ -162,7 +162,7 @@
                       id="selectBusinessUnit"
                       @change="filterData"
                     >
-                      <option value="">All Site</option>
+                      <option value="" disabled>All Site</option>
                       <option
                         v-for="option in businessUnit"
                         :key="option.id"
@@ -178,7 +178,7 @@
                       id="selectCandidateList"
                       @change="filterData"
                     >
-                      <option value="">All Staff</option>
+                      <option value="" disabled>All Staff</option>
                       <option
                         v-for="option in candidateLists"
                         :key="option.id"
@@ -195,6 +195,17 @@
                       v-model="localSearchQuery"
                       @input="filterData"
                     />
+                  </div>
+                  <div>
+                    <button
+                      @click="resetFilter"
+                      class="btn btn-secondary"
+                      :disabled="
+                        !selectedSiteName && !selectedCandidate && !localSearchQuery
+                      "
+                    >
+                      Reset Filters
+                    </button>
                   </div>
                 </div>
                 <div class="tab-content mt-4" id="pills-tabContent" v-if="!searchQuery">
@@ -236,8 +247,8 @@
                             <th scope="col">Action</th>
                           </tr>
                         </thead>
-                        <tbody v-if="paginateCandidates?.length > 0">
-                          <tr v-for="data in paginateCandidates" :key="data.id">
+                        <tbody v-if="getCustomTimeSheet?.length > 0">
+                          <tr v-for="data in getCustomTimeSheet" :key="data.id">
                             <td>
                               <input
                                 class="form-check-input"
@@ -551,7 +562,7 @@
       <div
         class="mx-3 mb-2"
         style="text-align: right"
-        v-if="getCustomTimeSheet.length >= 10 && !searchResults.length"
+        v-if="getCustomTimeSheet?.length >= 10 && !searchResults.length"
       >
         <div class="dropdown d-inline-block">
           <button
@@ -592,7 +603,7 @@
         >&nbsp;&nbsp;
         <button
           class="btn btn-sm btn-primary ml-2"
-          :disabled="currentPage * itemsPerPage >= getCustomTimeSheet.length"
+          :disabled="currentPage * itemsPerPage >= getCustomTimeSheet?.length"
           @click="currentPage++"
         >
           Next
@@ -694,7 +705,7 @@ export default {
         return paper_timesheet ? `${VITE_API_URL}${paper_timesheet}` : "";
       };
     },
-    paginateCandidates() {
+    getCustomTimeSheet() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.getCustomTimeSheet.slice(startIndex, endIndex);
@@ -705,7 +716,7 @@ export default {
       return this.searchResults.slice(startIndex, endIndex);
     },
     totalRecordsOnPage() {
-      return this.paginateCandidates.length;
+      return this.getCustomTimeSheet.length;
     },
     getWeekDates() {
       const currentDate = new Date();
@@ -928,6 +939,13 @@ export default {
       } catch (error) {
         // console.error("Error fetching filtered data:", error);
       }
+    },
+    resetFilter() {
+      this.selectedSiteName = null;
+      this.selectedCandidate = null;
+      this.localSearchQuery = "";
+
+      this.filterData();
     },
     triggerFileInput() {
       this.$refs.fileInput.click();
