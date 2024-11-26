@@ -195,9 +195,31 @@ export default {
             Authorization: `Bearer ${token}`,
           },
         });
-        this.getRecords = response.data;
+        // this.getRecords = response.data;
+        if (response.data && response.data.client_name) {
+          this.getRecords = response.data;
+          this.errorMessage = "";
+        } else {
+          this.getRecords = null;
+        }
       } catch (error) {
         // console.error("Error fetching data:", error);
+        if (error.response && error.response.status === 404) {
+          const errorData = error.response.data;
+
+          if (errorData && errorData.message && errorData.client_name) {
+            this.getRecords = {
+              client_name: errorData.client_name,
+            };
+            this.errorMessage = errorData.message;
+          } else {
+            this.getRecords = null;
+            this.errorMessage = "Data Not Found.";
+          }
+        } else {
+          this.getRecords = null;
+          this.errorMessage = "Data Not Found.";
+        }
       }
     },
     async currentWeekClientShift() {

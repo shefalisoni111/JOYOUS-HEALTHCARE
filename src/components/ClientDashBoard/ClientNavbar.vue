@@ -312,6 +312,12 @@ export default {
       return this.localProfileImage;
     },
   },
+  watch: {
+    profileImage(newValue) {
+      this.localProfileImage = newValue;
+    },
+  },
+
   props: {
     profileImage: {
       type: String,
