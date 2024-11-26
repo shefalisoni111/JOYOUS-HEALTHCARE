@@ -114,6 +114,21 @@
           />
         </div>
       </div>
+      <div>
+        <button
+          @click="resetFilter"
+          class="btn btn-secondary"
+          :disabled="
+            !selectedFilter &&
+            !selectedClientName &&
+            !selectedSiteName &&
+            !selectedSiteAddress &&
+            !localSearchQuery
+          "
+        >
+          Reset Filters
+        </button>
+      </div>
     </div>
     <div class="table-wrapper mt-3">
       <table class="table siteTable">
@@ -336,6 +351,15 @@ export default {
     },
   },
   methods: {
+    resetFilter() {
+      this.selectedFilter = null;
+      this.selectedClientName = null;
+      this.selectedSiteName = null;
+      this.selectedSiteAddress = null;
+      this.localSearchQuery = "";
+
+      this.filterData();
+    },
     confirmed(id) {
       this.isModalVisible = false;
 

@@ -7,7 +7,9 @@
           <ol class="breadcrumb mb-1 ps-3">
             <li class="breadcrumb-item active fs-6 text-white">Dashboard</li>
           </ol>
-          <h5 class="fs-4 ps-3">Welcome to Client Dashboard - Client Name</h5>
+          <h5 class="fs-4 ps-3">
+            Welcome to Client Dashboard - {{ getRecords.client_name }}
+          </h5>
         </div>
       </div>
       <div>
@@ -34,7 +36,7 @@
                     <div class="card-body">
                       <h5 class="card-title">CURRENT WEEK</h5>
                       <p class="card-text mb-0">SHIFTS</p>
-                      <small class="text-muted">{{ getRecords.vacancies }}</small>
+                      <small class="text-muted">{{ getRecords.vacancies || 0 }}</small>
                     </div>
                   </div>
                 </div>
@@ -61,7 +63,7 @@
                     <div class="card-body">
                       <h5 class="card-title">CURRENT WEEK</h5>
                       <p class="card-text mb-0">BOOKINGS</p>
-                      <small class="text-muted">{{ getRecords.bookigs }}</small>
+                      <small class="text-muted">{{ getRecords.bookigs || 0 }}</small>
                     </div>
                   </div>
                 </div>
@@ -88,7 +90,7 @@
                     <div class="card-body">
                       <h5 class="card-title">TOTAL BUSINESS UNITS</h5>
                       <!-- <p class="card-text mb-0">SHIFTS</p> -->
-                      <small class="text-muted">{{ getRecords.sites }}</small>
+                      <small class="text-muted">{{ getRecords.sites || 0 }}</small>
                     </div>
                   </div>
                 </div>
@@ -115,7 +117,7 @@
                     <div class="card-body">
                       <h5 class="card-title">CURRENT WEEK</h5>
                       <p class="card-text mb-0">INVOICES</p>
-                      <small class="text-muted">{{ getRecords.invoices }}</small>
+                      <small class="text-muted">{{ getRecords.invoices || 0 }}</small>
                     </div>
                   </div>
                 </div>
@@ -190,7 +192,7 @@ export default {
         const response = await axios.get(`${VITE_API_URL}/client_dashboard_home_api`, {
           headers: {
             "content-type": "application/json",
-            Authorization: "bearer " + token,
+            Authorization: `Bearer ${token}`,
           },
         });
         this.getRecords = response.data;

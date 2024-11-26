@@ -90,6 +90,7 @@
             @input="filterData"
           />
         </div>
+
         <!-- <select id="selectClientsAddress" @change="filterData">
           <option value="">Address</option>
           <option
@@ -101,6 +102,20 @@
             {{ option.address }}
           </option>
         </select> -->
+      </div>
+      <div>
+        <button
+          :disabled="
+            !selectedClientExport &&
+            !selectedClient &&
+            !selectedJobTitle &&
+            !localSearchQuery
+          "
+          @click="resetFilters"
+          class="btn btn-secondary"
+        >
+          Reset Filters
+        </button>
       </div>
     </div>
 
@@ -554,6 +569,14 @@ export default {
         } else {
         }
       });
+    },
+    resetFilters() {
+      this.selectedClientExport = null;
+      this.selectedClient = null;
+      this.selectedJobTitle = null;
+      this.localSearchQuery = "";
+
+      this.filterData();
     },
     editClient(clientID) {
       this.selectedClientID = clientID;

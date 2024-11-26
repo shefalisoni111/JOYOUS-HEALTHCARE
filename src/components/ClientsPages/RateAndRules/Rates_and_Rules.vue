@@ -118,7 +118,7 @@
                     <div></div>
 
                     <select v-model="client_id" id="selectClients" @change="filterData">
-                      <option value="">All Client</option>
+                      <option value="" disabled>All Client</option>
                       <option
                         v-for="option in clientData"
                         :key="option.id"
@@ -133,7 +133,7 @@
                       id="selectBusinessUnit"
                       @change="filterData"
                     >
-                      <option value="">All Site</option>
+                      <option value="" disabled>All Site</option>
                       <option
                         v-for="option in businessUnit"
                         :key="option.id"
@@ -144,7 +144,7 @@
                       </option>
                     </select>
                     <select v-model="job_id" id="selectOption" @change="filterData">
-                      <option value="">All Position</option>
+                      <option value="" disabled>All Position</option>
                       <option
                         v-for="option in options"
                         :key="option.id"
@@ -164,10 +164,17 @@
                       />
                     </div>
                   </div>
+                  <div class="mt-3">
+                    <button
+                      @click="resetFilter"
+                      class="btn btn-secondary"
+                      :disabled="!client_id && !site_id && !job_id && !localSearchQuery"
+                    >
+                      Reset Filters
+                    </button>
+                  </div>
                 </div>
-                <div class="d-flex gap-2">
-                  <div></div>
-                </div>
+                <div class="d-flex gap-2"></div>
                 <div class="tab-content" id="pills-tabContent">
                   <div
                     class="tab-pane fade show active"
@@ -860,11 +867,23 @@ export default {
           params,
         });
         this.getRateRulesData = response.data.data || [];
+        if (this.getRateRulesData.length === 0) {
+          this.errorMessageFilter = "Report Not Found!";
+        } else {
+          this.errorMessageFilter = "";
+        }
       } catch (error) {
         // console.error("Error fetching filtered data:", error);
       }
     },
+    resetFilter() {
+      this.client_id = null;
+      this.site_id = null;
+      this.job_id = null;
+      this.localSearchQuery = "";
 
+      this.filterData();
+    },
     triggerFileInput() {
       this.$refs.fileInput.click();
     },
