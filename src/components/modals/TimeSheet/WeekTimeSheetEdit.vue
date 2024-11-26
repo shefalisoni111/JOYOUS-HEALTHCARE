@@ -40,8 +40,16 @@
                         readonly
                       /> -->
                       <input
+                        v-if="showValueCustom"
                         class="form-control text-capitalize custom-disabled"
                         v-model="fetchCustomTimeShetData.name"
+                        type="text"
+                        readonly
+                      />
+                      <input
+                        v-else
+                        class="form-control text-capitalize custom-disabled"
+                        v-model="fetchCustomTimeShetData.candidate_name"
                         type="text"
                         readonly
                       />
@@ -49,6 +57,15 @@
                     <div class="mb-3">
                       <label class="form-label">Site</label>
                       <input
+                        v-if="showValueCustom"
+                        type="text"
+                        class="form-control custom-disabled"
+                        v-model="fetchCustomTimeShetData.site"
+                        aria-describedby="site"
+                        readonly
+                      />
+                      <input
+                        v-else
                         type="text"
                         class="form-control custom-disabled"
                         v-model="fetchCustomTimeShetData.site"
@@ -97,9 +114,18 @@
                     <div class="mb-3">
                       <label class="form-label">Shift</label>
                       <input
+                        v-if="showValueCustom"
                         type="text"
                         class="form-control custom-disabled"
                         v-model="fetchCustomTimeShetData.shift_name"
+                        aria-describedby="position"
+                        readonly
+                      />
+                      <input
+                        v-else
+                        type="text"
+                        class="form-control custom-disabled"
+                        v-model="fetchCustomTimeShetData.shift"
                         aria-describedby="position"
                         readonly
                       />
@@ -127,7 +153,71 @@
                           </label>
                         </div>
                         <div class="col-12">
+                          <!-- <div v-if="showValueCustom">
+                            <select
+                              id="selectHour"
+                              class="form-control"
+                              v-model="startTime.hour"
+                              @change="updateStartTime"
+                              style="
+                                width: 80px;
+                                display: inline-block;
+                                margin-right: 10px;
+                              "
+                            >
+                              <option v-for="hour in 12" :key="hour" :value="hour">
+                                {{ hour }}
+                              </option>
+                            </select>
+
+                            <select
+                              id="selectMinute"
+                              class="form-control"
+                              v-model="startTime.minute"
+                              @change="updateStartTime"
+                              style="
+                                width: 80px;
+                                display: inline-block;
+                                margin-right: 10px;
+                              "
+                            >
+                              <option
+                                v-for="minute in minutes"
+                                :key="minute"
+                                :value="minute"
+                              >
+                                {{ minute }}
+                              </option>
+                            </select>
+
+                            <select
+                              id="selectAmPm"
+                              class="form-control"
+                              v-model="startTime.period"
+                              @change="updateStartTime"
+                              style="width: 80px; display: inline-block"
+                            >
+                              <option value="AM">AM</option>
+                              <option value="PM">PM</option>
+                            </select>
+                          </div>
+                          <input
+                            v-else
+                            type="text"
+                            class="form-control custom-disabled"
+                            v-model="fetchCustomTimeShetData.start_time"
+                            disabled
+                          /> -->
+
+                          <input
+                            v-if="!showValueCustom"
+                            type="text"
+                            class="form-control custom-disabled"
+                            v-model="fetchCustomTimeShetData.start_time"
+                            disabled
+                          />
                           <select
+                            v-else
                             id="selectCustomStartTime"
                             class="form-control"
                             v-model="fetchCustomTimeShetData.start_time"
@@ -162,9 +252,9 @@
                             >End Time</label
                           >
                         </div>
-                        <div class="col-12" v-if="showSaveButton">
+                        <div class="col-12">
                           <input
-                            v-if="apiResponse_EndTime"
+                            v-if="!showValueCustom"
                             type="text"
                             class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.end_time"
@@ -204,9 +294,9 @@
                             </option>
                           </select> -->
                         </div>
-                        <div class="col-12" v-else>
+                        <!-- <div class="col-12" v-else>
                           <input
-                            v-if="apiResponse_EndTime"
+                            v-if="!showValueCustom"
                             type="text"
                             class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.end_time"
@@ -230,23 +320,8 @@
                               {{ formatTime(hour) }}
                             </option>
                           </select>
-                          <!-- <select
-                            id="selectCustomEndTime"
-                            class="form-control"
-                            v-model="fetchCustomTimeShetData.end_time"
-                            @change="validateEndTime"
-                            style="width: 240px"
-                            disabled
-                          >
-                            <option
-                              v-for="hour in 24"
-                              :key="hour"
-                              :value="formatTime(hour)"
-                            >
-                              {{ formatTime(hour) }}
-                            </option>
-                          </select> -->
-                        </div>
+                         
+                        </div> -->
                       </div>
                       <!-- <div class="mb-3">
                         <div class="col-12">
@@ -266,7 +341,7 @@
                             >Break Time</label
                           >
                         </div>
-                        <div class="col-12" v-if="showSaveButton">
+                        <div class="col-12" v-if="showValueCustom">
                           <select
                             id="selectShiftsBreak"
                             class="form-control"
@@ -277,29 +352,18 @@
                             <option
                               v-for="minute in [15, 30, 45, 60, 75, 90]"
                               :key="minute"
-                              :value="minute"
+                              :value="minute + ' minutes'"
                             >
                               {{ formatBreakTime(minute) }}
                             </option>
                           </select>
                         </div>
                         <div class="col-12" v-else>
-                          <select
-                            id="selectShiftsBreak"
+                          <input
+                            type="text"
                             class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.break"
-                            @change="validateBreak"
-                            style="width: 240px"
-                            disabled
-                          >
-                            <option
-                              v-for="minute in [15, 30, 45, 60, 75, 90]"
-                              :key="minute"
-                              :value="minute"
-                            >
-                              {{ formatBreakTime(minute) }}
-                            </option>
-                          </select>
+                          />
                         </div>
                       </div>
                       <div class="mb-3">
@@ -307,13 +371,8 @@
                           <label class="form-label">Total Hours</label>
                         </div>
                         <div class="col-12 mt-1">
-                          <!-- <input
-                            type="email"
-                            class="form-control"
-                            v-model="fetchCustomTimeShetData.total_shift_hours"
-                          /> -->
                           <select
-                            id="selectCustomStartTime"
+                            v-if="showValueCustom"
                             class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.total_hours"
                             @change="validateStartTime"
@@ -324,15 +383,21 @@
                               {{ hour }} hour{{ hour > 1 ? "s" : "" }}
                             </option>
                           </select>
+                          <input
+                            v-else
+                            type="text"
+                            class="form-control custom-disabled"
+                            v-model="fetchCustomTimeShetData.total_hours"
+                          />
                         </div>
                       </div>
                     </div>
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex gap-5">
                       <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label">Client Rate</label>
                         </div>
-                        <div class="col-12 mt-1" v-if="showSaveButton">
+                        <div class="col-12 mt-1" v-if="showValueCustom">
                           <input
                             type="text"
                             class="form-control disabled"
@@ -373,11 +438,11 @@
                           />
                         </div>
                       </div> -->
-                      <div class="mb-3">
+                      <div class="mb-3 ps-2">
                         <div class="col-12">
                           <label class="form-label">Staff Rate</label>
                         </div>
-                        <div class="col-12 mt-1" v-if="showSaveButton">
+                        <div class="col-12 mt-1" v-if="showValueCustom">
                           <input
                             type="text"
                             class="form-control custom-disabled"
@@ -425,7 +490,7 @@
                     <div class="col-12">
                       <label class="form-label">Comments</label>
                     </div>
-                    <div class="col-12 mt-1" v-if="showSaveButton">
+                    <div class="col-12 mt-1" v-if="showValueCustom">
                       <textarea
                         class="form-control"
                         v-model="fetchCustomTimeShetData.notes"
@@ -435,23 +500,17 @@
                     <div class="col-12 mt-1" v-else>
                       <textarea
                         class="form-control custom-disabled"
-                        v-model="fetchCustomTimeShetData.notes"
+                        v-model="fetchCustomTimeShetData.start_comment"
                         rows="3"
                         disabled
                       ></textarea>
                     </div>
                   </div>
-                  <div class="mb-3" v-if="showSaveButton">
+                  <!-- <div class="mb-3" v-if="showValueCustom">
                     <div class="col-12">
                       <label class="form-label">Paper TimeSheet</label>
                     </div>
-                    <div
-                      class="col-12 mt-1"
-                      v-if="
-                        fetchCustomTimeShetData.status === 'Approved' &&
-                        fullCustomImageUrl
-                      "
-                    >
+                    <div class="col-12 mt-1" v-if="fullCustomImageUrl">
                       <img
                         :src="fullCustomImageUrl"
                         alt="Current Paper TimeSheet"
@@ -466,11 +525,9 @@
                         accept="image/*"
                         @change="handleFileUpload"
                       />
-                      <!-- <span v-if="!validationPaperTimeSheet" class="text-danger">
-                        Paper TimeSheet is required
-                      </span> -->
+                      
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </form>
             </div>
@@ -525,11 +582,13 @@ export default {
       fetchCustomTimeShetData: {
         id: "",
         name: "",
-
+        site: "",
+        shift: "",
         date: "",
         shift_date: "",
         candidate_name: "",
         total_hours: "",
+        shift_name: "",
         start_time: "",
         end_time: "",
         break: "",
@@ -538,13 +597,22 @@ export default {
         total_cost: "",
         notes: "",
         status: "",
+        start_comment: "",
       },
+      startTime: {
+        hour: "",
+        minute: "",
+        period: "",
+      },
+      minutes: Array.from({ length: 60 }, (_, i) => String(i).padStart(2, "0")),
       apiResponse: "",
-      showValueCustom: false,
+      showValueCustom: "false",
       apiResponse_EndTime: "",
+      validationPaperTimeSheet: true,
       showSaveButton: true,
-      isPublished: false,
+      isPublished: "",
       originalData: null,
+      fullCustomImageUrl: null,
     };
   },
   props: {
@@ -573,29 +641,67 @@ export default {
       } = this.fetchCustomTimeShetData;
       return !notes || !start_time || !paper_timesheet || !end_time;
     },
-    fullCustomImageUrl() {
-      return this.fetchCustomTimeShetData.paper_timesheet
-        ? `${VITE_API_URL}${this.fetchCustomTimeShetData.paper_timesheet}`
-        : "";
-      // console.log(`${VITE_API_URL}${this.fetchCustomTimeShetData.paper_timesheet}`);
-    },
+    // fullCustomImageUrl() {
+    //   return this.fetchCustomTimeShetData.paper_timesheet
+    //     ? `${VITE_API_URL}${this.fetchCustomTimeShetData.paper_timesheet}`
+    //     : "";
+    //   // console.log(`${VITE_API_URL}${this.fetchCustomTimeShetData.paper_timesheet}`);
+    // },
   },
   methods: {
-    validateStartTime() {
-      const hour = this.fetchCustomTimeShetData.start_hour;
-      const minute = this.fetchCustomTimeShetData.start_minute;
-      this.fetchCustomTimeShetData.start_time = `${String(hour).padStart(
-        2,
-        "0"
-      )}:${String(minute).padStart(2, "0")}`;
+    parseStartTime(startTime) {
+      if (!startTime) return;
+
+      const [time, period] = startTime.split(" ");
+      const [hour, minute] = time.split(":");
+
+      this.startTime.hour = parseInt(hour, 10);
+      this.startTime.minute = minute;
+      this.startTime.period = period;
     },
-    validateEndTime() {
-      const hour = this.fetchCustomTimeShetData.start_hour;
-      const minute = this.fetchCustomTimeShetData.start_minute;
-      this.fetchCustomTimeShetData.end_time = `${String(hour).padStart(2, "0")}:${String(
-        minute
-      ).padStart(2, "0")}`;
+    updateStartTime() {
+      const { hour, minute, period } = this.startTime;
+      if (hour && minute && period) {
+        this.fetchCustomTimeShetData.start_time = `${hour}:${minute} ${period}`;
+      } else {
+        this.fetchCustomTimeShetData.start_time = "";
+      }
     },
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        if (file.type.startsWith("image/")) {
+          this.fetchCustomTimeShetData.paper_timesheet = file;
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            this.fullCustomImageUrl = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        } else {
+        }
+        this.validatePaperTimeSheet();
+      } else {
+        this.fetchCustomTimeShetData.paper_timesheet = null;
+      }
+    },
+    validatePaperTimeSheet() {
+      this.validationPaperTimeSheet = !this.fetchCustomTimeShetData.paper_timesheet;
+    },
+    // validateStartTime() {
+    //   const hour = this.fetchCustomTimeShetData.start_hour;
+    //   const minute = this.fetchCustomTimeShetData.start_minute;
+    //   this.fetchCustomTimeShetData.start_time = `${String(hour).padStart(
+    //     2,
+    //     "0"
+    //   )}:${String(minute).padStart(2, "0")}`;
+    // },
+    // validateEndTime() {
+    //   const hour = this.fetchCustomTimeShetData.start_hour;
+    //   const minute = this.fetchCustomTimeShetData.start_minute;
+    //   this.fetchCustomTimeShetData.end_time = `${String(hour).padStart(2, "0")}:${String(
+    //     minute
+    //   ).padStart(2, "0")}`;
+    // },
     async handleApproveAndSave() {
       try {
         await this.updateCandidateMethod();
@@ -634,98 +740,55 @@ export default {
       if (!this.vacancyId) {
         return;
       }
-      if (
-        !Array.isArray(this.paginatedTimesheets) ||
-        this.paginatedTimesheets.length === 0
-      ) {
-        return;
-      }
+
+      const token = localStorage.getItem("token");
+
       try {
-        for (const day of this.paginatedTimesheets) {
-          const customTimesheets = Array.isArray(day.custom_timesheets)
-            ? day.custom_timesheets
-            : [];
-          const signTimesheets = Array.isArray(day.sign_timesheets)
-            ? day.sign_timesheets
-            : [];
-
-          if (customTimesheets.length > 0) {
-            const token = localStorage.getItem("token");
-            try {
-              const response = await axios.get(
-                `${VITE_API_URL}/custom_timesheets/${this.vacancyId}`,
-                {
-                  headers: {
-                    "content-type": "application/json",
-                    Authorization: "bearer " + token,
-                  },
-                }
-              );
-              if (response.data.custom_sheets.custom_timesheet === "custom_timesheet") {
-                if (
-                  response.data.custom_sheets &&
-                  response.data.custom_sheets.start_time
-                ) {
-                  this.showValueCustom = true;
-                  this.apiResponse = response.data.custom_sheets.start_time;
-                  this.apiResponse_EndTime = response.data.custom_sheets.end_time;
-                  this.fetchCustomTimeShetData.start_time = this.apiResponse;
-                  this.fetchCustomTimeShetData.end_time = this.apiResponse_EndTime;
-                  this.originalData = { ...this.fetchCustomTimeShetData };
-                  this.showSaveButton = true;
-                } else {
-                  this.apiResponse = "";
-                }
+        if (this.paginatedTimesheets.some((ts) => ts.sheet_type === "CustomTimeSheet")) {
+          try {
+            const response = await axios.get(
+              `${VITE_API_URL}/custom_timesheets/${this.vacancyId}`,
+              {
+                headers: {
+                  "content-type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
               }
-            } catch (error) {
-              // console.error("Error fetching custom timesheets:", error);
-            }
-          } else if (signTimesheets.length > 0) {
-            const token = localStorage.getItem("token");
-            try {
-              const fallbackResponse = await axios.get(
-                `${VITE_API_URL}/sign_timesheets/${this.vacancyId}`,
-                {
-                  headers: {
-                    "content-type": "application/json",
-                    Authorization: "bearer " + token,
-                  },
-                }
-              );
+            );
 
-              if (
-                fallbackResponse.data.sign_timesheets.timesheet_type ===
-                "signed_timesheet"
-              ) {
-                if (
-                  fallbackResponse.data.sign_timesheets &&
-                  fallbackResponse.data.sign_timesheets.start_time
-                ) {
-                  this.showValueCustom = false;
-                  this.apiResponse = fallbackResponse.data.sign_timesheets.start_time;
-                  this.apiResponse_EndTime =
-                    fallbackResponse.data.sign_timesheets.end_time;
-                  this.fetchCustomTimeShetData.start_time = this.apiResponse;
-                  this.fetchCustomTimeShetData.end_time = this.apiResponse_EndTime;
-                  this.fetchCustomTimeShetData = {
-                    ...this.fetchCustomTimeShetData,
-                    ...fallbackResponse.data.sign_timesheets,
-                  };
-                  this.originalData = { ...this.fetchCustomTimeShetData };
-                  this.showSaveButton = false;
-                } else {
-                  this.fetchCustomTimeShetData = {};
-                  this.originalData = {};
-                  this.showSaveButton = false;
-                }
+            // const weeklyTimesheets = response.data?.weekly_timesheets || [];
+            // console.log("Fetched weekly timesheets:", this.paginatedTimesheets);
+
+            this.showValueCustom = true;
+            this.fetchCustomTimeShetData = {
+              ...response.data.custom_sheets,
+            };
+            this.originalData = { ...this.fetchCustomTimeShetData };
+            // this.parseStartTime(this.fetchCustomTimeShetData.start_time);
+          } catch (error) {
+            console.error("Error fetching custom timesheets:", error);
+          }
+        }
+
+        if (this.paginatedTimesheets.some((ts) => ts.sheet_type === "SignTimeSheet")) {
+          try {
+            const fallbackResponse = await axios.get(
+              `${VITE_API_URL}/sign_timesheets/${this.vacancyId}`,
+              {
+                headers: {
+                  "content-type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
               }
-            } catch (fallbackError) {
-              // console.error("Error fetching sign_timesheets:", fallbackError);
-            }
-          } else {
-            // console.log(
-            //   "No custom_timesheets or sign_timesheets available for this day."
-            // );
+            );
+
+            this.showValueCustom = false;
+            this.fetchCustomTimeShetData = {
+              ...fallbackResponse.data.sign_timesheets,
+            };
+            this.originalData = { ...this.fetchCustomTimeShetData };
+          } catch (fallbackError) {
+            // console.error("Error fetching signed timesheets:", fallbackError);
           }
         }
       } catch (error) {
@@ -781,22 +844,36 @@ export default {
       const token = localStorage.getItem("token");
 
       try {
-        const payload = { ...this.fetchCustomTimeShetData };
+        // this.updateStartTime();
+        // const formData = new FormData();
+        const payload = {
+          ...this.fetchCustomTimeShetData,
+          // start_time: this.fetchCustomTimeShetData.start_time,
+          // end_time: this.fetchCustomTimeShetData.end_time,
+          // custom_image_url: this.fetchCustomSheetData.paper_timesheet_url,
+        };
 
         if (payload.start_time !== null || payload.start_time !== "") {
-          delete payload.start_time;
+          payload.start_time;
         }
 
         if (payload.end_time !== null || payload.end_time !== "") {
-          delete payload.end_time;
+          payload.end_time;
         }
+        // for (const [key, value] of Object.entries(payload)) {
+        //   if (value !== null && value !== "") {
+        //     formData.append(`custom_timesheet[${key}]`, value);
+        //   }
+        // }
+
+        // console.log(payload);
 
         const response = await axios.put(
           `${VITE_API_URL}/custom_timesheets/${this.fetchCustomTimeShetData.id}`,
           payload,
           {
             headers: {
-              "Content-Type": "multipart/form-data",
+              "Content-Type": "application/json",
               Authorization: "bearer " + token,
             },
           }
@@ -880,7 +957,9 @@ select {
 .custom-disabled {
   cursor: not-allowed;
 }
-
+.modal-body {
+  background: transparent;
+}
 .custom-disabled:hover {
   cursor: not-allowed;
 }

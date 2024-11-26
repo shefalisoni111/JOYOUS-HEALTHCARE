@@ -80,6 +80,15 @@
                   </option>
                 </select>
               </div>
+              <div>
+                <button
+                  @click="resetFilter"
+                  class="btn btn-secondary"
+                  :disabled="!selectedSiteName && !selectedCandidate && !localSearchQuery"
+                >
+                  Reset Filters
+                </button>
+              </div>
             </div>
             <div class="row">
               <div class="col-3">
@@ -254,102 +263,7 @@
                   <th rowspan="3">Approved By</th>
                 </tr>
               </thead>
-              <!-- <tbody v-if="paginateCandidates?.length > 0">
-                <tr v-if="errorMessageFilter">
-                  <td colspan="9" class="text-danger text-center">
-                    {{ errorMessageFilter }}
-                  </td>
-                </tr>
-                <div v-else></div>
-                <tr v-for="data in paginateCandidates" :key="data.id">
-                  <td>{{ data.id }}</td>
-                  <td class="text-capitalize fw-bold">
-                    {{ data.author_name ? data.author_name + " " : data.name + " " }}
 
-                    <span class="fs-6 text-muted fw-100"
-                      ><br /><span style="background: rgb(209, 207, 207); padding: 3px">{{
-                        data.job ? data.job : "Null"
-                      }}</span></span
-                    >
-                  </td>
-
-                   <td>
-                    {{ data.site ? data.site : "Null" }}
-                  </td>
-                  <td>{{ data.shift_date }}</td> 
-
-                  <td>
-                    <div class="calendar-grid">
-                      <div
-                        v-for="day in selectedDateRow"
-                        :key="day"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editWeeklyTs"
-                        data-bs-whatever="@mdo"
-                        @click="openModal(data, day)"
-                        :class="{
-                          'calendar-day': true,
-                          clickable: day !== '',
-                        }"
-                        class="d-flex justify-content-between gap-2"
-                      >
-                        <div v-if="formatDate(day)" class="d-flex gap-2">
-                          <td>
-                            <div class="column">
-                              <div class="column-cell">
-                                {{
-                                  typeof data.start_time === "number"
-                                    ? data.start_time.toFixed(2)
-                                    : data.start_time === null
-                                    ? "null"
-                                    : data.start_time
-                                }}
-                              </div>
-                            </div>
-                          </td>
-                          {{ data.start_time }}
-
-                          <td>
-                            <div class="column">
-                              <div class="column-cell">
-                                {{
-                                  typeof data.end_time === "number"
-                                    ? data.end_time.toFixed(2)
-                                    : data.end_time === null
-                                    ? "null"
-                                    : data.end_time
-                                }}
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <div class="column">
-                              <div class="column-cell">
-                                {{
-                                  typeof data.total_hours === "number"
-                                    ? data.total_hours.toFixed(2) + " hours"
-                                    : data.total_hours === null
-                                    ? "null"
-                                    : data.total_hours + " hours"
-                                }}
-                              </div>
-                            </div>
-                          </td>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-
-                  <td>{{ data.total_hours ? data.total_hours : "Null" }}</td>
-                  <td>{{ data.total_cost ? data.total_cost : "Null" }}</td>
-                  <td>{{ data.approved_by ? data.approved_by : "Null" }}</td>
-                   <th>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" />
-                    </div>
-                  </th> 
-                </tr>
-              </tbody> -->
               <tbody v-if="mergedTimesheetsArray && mergedTimesheetsArray?.length > 0">
                 <!-- <tr v-if="errorMessageFilter">
                   <td colspan="9" class="text-danger text-center">
@@ -371,7 +285,7 @@
                     </span>
                   </td>
                   <td>
-                    {{ data.site ? data.site : "Null" }}
+                    {{ data.site_name ? data.site_name : "Null" }}
                   </td>
                   <td>{{ data.shift_name }}</td>
                   <td>
@@ -461,17 +375,17 @@
                               <div class="column">
                                 <div class="column-cell">
                                   {{
-                                    typeof data.hours === "number"
-                                      ? data.hours.toFixed(2)
-                                      : data.hours === null
+                                    typeof data.total_minutes === "number"
+                                      ? data.total_minutes.toFixed(2)
+                                      : data.total_minutes === null
                                       ? "0.00"
-                                      : data.hours
+                                      : data.total_minutes
                                   }}
                                 </div>
                               </div>
                             </td>
                           </div>
-                          <!-- dgf -->
+
                           <div
                             v-else
                             :style="{
@@ -523,15 +437,9 @@
                     }}
                   </td> -->
                   <td>
-                    {{
-                      data.candidate_id === null
-                        ? "0.0"
-                        : typeof data.total_hours === "number"
-                        ? data.total_hours.toFixed(2)
-                        : "0.00"
-                    }}
+                    {{ data.total_week_hours ? data.total_week_hours : "0.00" }}
                   </td>
-                  <td>{{ data.total_cost ? data.total_cost : "0.00" }}</td>
+                  <td>{{ data.total_week_cost ? data.total_week_cost : "0.00" }}</td>
                   <td>{{ data.approved_by ? data.approved_by : "Null" }}</td>
                 </tr>
               </tbody>
@@ -607,7 +515,7 @@
       :initialDate="selectedDate"
       :vacancyId="vacancyId"
       @closeModal="closeModal"
-      :paginatedTimesheets="paginatedTimesheets"
+      :paginatedTimesheets="mergedTimesheetsArray"
     />
     <loader :isLoading="isLoading"></loader>
     <SuccessAlert ref="successAlert" />
@@ -1021,18 +929,15 @@ export default {
         page: 1,
       };
 
-      // Add conditionally selected filters
       if (this.selectedSiteName) {
         params["weekly_timesheet[site]"] = this.selectedSiteName;
       }
       if (this.selectedCandidate) {
         params["weekly_timesheet[candidate_name]"] = this.selectedCandidate;
-        params["weekly_timesheet[name]"] = this.selectedCandidate; // Assuming this is the same field
+        params["weekly_timesheet[name]"] = this.selectedCandidate;
       }
 
-      // Determine which date parameter to use based on available data
       if (this.selectedCandidate) {
-        // If custom_timesheets is being filtered, use the weekly_timesheet[date]
         if (this.candidateList && this.candidateList.length > 0) {
           const isCustomTimesheets = this.candidateList.some((item) =>
             item.hasOwnProperty("custom_timesheets")
@@ -1070,6 +975,13 @@ export default {
         // console.error("Error fetching timesheets:", error);
         this.errorMessageFilter = "Data Not Found.";
       }
+    },
+    resetFilter() {
+      this.selectedSiteName = null;
+      this.selectedCandidate = null;
+      this.localSearchQuery = "";
+
+      this.filterData();
     },
     getSiteName(site_id) {
       const site = this.businessUnit.find((option) => option.id === site_id);
@@ -1139,56 +1051,65 @@ export default {
 
         this.dataCustomTimeSheet = response.data;
 
-        this.paginatedTimesheets = this.dataCustomTimeSheet.data.paginated_timesheets;
-        this.total_hourMain = this.dataCustomTimeSheet.data.candidate_hours;
+        this.weeklyTimesheets = this.dataCustomTimeSheet.weekly_timesheets;
 
         const mergedTimesheetsArray = [];
+        const candidateHoursMap = {};
 
-        this.paginatedTimesheets.forEach((day) => {
-          const customTimesheets = Array.isArray(day.custom_timesheets)
-            ? day.custom_timesheets
-            : [];
-          const signTimesheets = Array.isArray(day.sign_timesheets)
-            ? day.sign_timesheets
-            : [];
+        this.weeklyTimesheets.forEach((candidateTimesheet) => {
+          const {
+            candidate_name,
+            candidate_id,
+            site_name,
+            shift,
+            job,
+            total_week_hours,
+            total_week_cost,
+            data,
+          } = candidateTimesheet;
 
-          const mergedTimesheets = customTimesheets.concat(signTimesheets);
+          const customTimesheets = Array.isArray(data) ? data : [];
 
-          if (mergedTimesheets.length) {
-            mergedTimesheets.forEach((timesheet) => {
-              mergedTimesheetsArray.push({ ...timesheet });
+          customTimesheets.forEach((timesheet) => {
+            mergedTimesheetsArray.push({
+              candidate_name,
+              candidate_id,
+              site_name,
+              shift,
+              job,
+              total_week_hours,
+              total_week_cost,
+              ...timesheet,
             });
+          });
+
+          if (total_week_hours !== undefined && total_week_hours !== null) {
+            candidateHoursMap[candidate_id] = total_week_hours;
           }
         });
+
         this.mergedTimesheetsArray = mergedTimesheetsArray;
+
         if (this.mergedTimesheetsArray.length === 0) {
-          this.errorMessage = "No Weekly timesheets found for the specified month";
+          this.errorMessage = "No Weekly timesheets found for the specified week.";
         } else {
           this.errorMessage = "";
         }
-        this.candidateHoursMap = {};
-        if (this.total_hourMain) {
-          this.total_hourMain.forEach((candidate) => {
-            if (candidate.candidate_id !== null) {
-              this.total_hourMain[candidate.candidate_id] = candidate.total_hours;
-            }
-          });
-        }
-        if (this.mergedTimesheetsArray) {
-          this.mergedTimesheetsArray.forEach((timesheet) => {
-            if (timesheet.candidate_id !== null) {
-              const matchingCandidate = this.total_hourMain.find(
-                (candidate) => candidate.candidate_id === timesheet.candidate_id
-              );
 
-              if (matchingCandidate) {
-                timesheet.total_hours = matchingCandidate.total_hours;
-              } else {
-                timesheet.total_hours = 0;
-              }
+        this.mergedTimesheetsArray.forEach((timesheet) => {
+          if (timesheet.candidate_id !== null) {
+            const matchingCandidate = this.total_hourMain.find(
+              (candidate) => candidate.candidate_id === timesheet.candidate_id
+            );
+
+            if (matchingCandidate) {
+              timesheet.total_week_hours = matchingCandidate.total_hours || 0;
+            } else {
+              timesheet.total_week_hours = 0;
             }
-          });
-        }
+          }
+        });
+        // console.log(this.mergedTimesheetsArray);
         // console.log(this.total_hourMain, this.candidateHoursMap);
       } catch (error) {
         // console.error("Error fetching week timesheets:", error);
