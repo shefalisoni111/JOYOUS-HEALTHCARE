@@ -405,9 +405,9 @@ export default {
           this.$refs.successAlert.showSuccess(message);
           this.checkedVacancies = {};
           this.$emit("Candidate-updated");
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
+          // setTimeout(() => {
+          //   window.location.reload();
+          // }, 2000);
           // window.location.reload();
         } else {
           // throw new Error(`Failed to assign candidates. Status: ${response.status}`);
