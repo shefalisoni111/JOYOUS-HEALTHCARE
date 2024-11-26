@@ -140,8 +140,8 @@
                 >
               </li>
               <li>
-                <router-link class="dropdown-item" to="/invoice/staff-invoice"
-                  >Staff Invoice</router-link
+                <router-link class="dropdown-item" to="/invoice/staff-payroll"
+                  >Staff Payroll</router-link
                 >
               </li>
             </ul>

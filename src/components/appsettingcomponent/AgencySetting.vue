@@ -238,6 +238,7 @@
                         :key="agencyLogoList.id"
                       >
                         <div>
+                          <loader :isLoading="isLoading"></loader>
                           <h6>
                             <span class="ps-1 fs-6 fw-bold text-capitalize">{{
                               agencyLogoList.logo_type.replace(/_/g, " ")
@@ -322,6 +323,7 @@
       @editAgency="getAgencyDataMethod"
     />
     <SuccessAlert ref="successAlert" />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 <script>
@@ -331,6 +333,7 @@ import Sidebar from "../Sidebar.vue";
 import EditAgencySetting from "../modals/AgencySetting/EditAgencySetting.vue";
 import Loader from "../Loader/Loader.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
+
 import Swal from "sweetalert2";
 
 export default {
@@ -364,6 +367,11 @@ export default {
     },
 
     previewAgencyLogo(event, id) {
+      if (!id) {
+        this.isLoading = false;
+        return;
+      }
+
       const file = event.target.files[0];
       const formData = new FormData();
 
@@ -394,7 +402,8 @@ export default {
             const message = "Successfully Updated.";
             this.$refs.successAlert.showSuccess(message);
             if (response.status === 200) {
-              window.location.reload();
+              // window.location.reload();
+              this.getAgencyLogoList();
             }
           })
           .catch((error) => {

@@ -59,6 +59,7 @@
               />
               <ScheduleDirectAssignList
                 ref="directAssignShiftList"
+                @Candidate-updated="fetchAssignList"
                 :vacancyId="String(vacancyId)"
                 :columnDateMatch="columnDateMatch"
                 :initialDate="selectedDate"
@@ -109,7 +110,7 @@
                         class="form-select"
                         @change="filterData($event.target.value, 'availablity')"
                       >
-                        <option value="" selected for="SelectAvailability">
+                        <option value="" selected for="SelectAvailability" disabled>
                           All Availability
                         </option>
                         <option id="SelectAvailability" value="Late">Late</option>
@@ -142,7 +143,7 @@
                         class="form-select"
                         @change="filterData($event.target.value, 'job')"
                       >
-                        <option value="" selected>Select Jobs</option>
+                        <option value="" selected disabled>Select Jobs</option>
                         <option
                           id="selectJobTitle"
                           v-for="option in options"
@@ -175,7 +176,7 @@
                         class="form-select"
                         @change="filterData($event.target.value, 'site')"
                       >
-                        <option value="" selected>Select Site</option>
+                        <option value="" selected disabled>Select Site</option>
                         <option
                           id="selectBusinessUnit"
                           v-for="option in businessUnit"
@@ -208,7 +209,7 @@
                         class="form-select"
                         @change="filterData($event.target.value, 'shift')"
                       >
-                        <option value="" selected>All Shift</option>
+                        <option value="" selected disabled>All Shift</option>
                         <option
                           v-for="option in shiftsTime"
                           :key="option.shift_name"
