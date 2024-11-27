@@ -1403,8 +1403,8 @@ export default {
   methods: {
     handleInput(field, value) {
       this.hasInteracted = true;
-
-      const filteredValue = value.replace(/[^0-9]/g, "");
+      const valueStr = String(value || "");
+      const filteredValue = valueStr.replace(/[^0-9]/g, "");
 
       const [type, day, period] = field.split("-");
 
@@ -1651,7 +1651,13 @@ export default {
         // this.$refs.dangerAlert.showSuccess("An unexpected error occurred.");
       }
     },
-
+    addRate(day) {
+      const key = `${day}-long day`;
+      this.$set(this.selectedPaye, key, 0);
+      this.$set(this.selectedPrivateLimited, key, 0);
+      this.$set(this.selectedSelfEmployee, key, 0);
+      this.$set(this.selectedUmbrella, key, 0);
+    },
     async getClientMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/get_client_id_name`);

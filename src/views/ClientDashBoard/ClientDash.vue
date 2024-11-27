@@ -135,7 +135,7 @@
               <th>Position</th>
               <th>Date</th>
               <th>Shift</th>
-              <th>Space</th>
+              <th>Staff Required</th>
               <th>Assigned</th>
             </tr>
           </thead>
