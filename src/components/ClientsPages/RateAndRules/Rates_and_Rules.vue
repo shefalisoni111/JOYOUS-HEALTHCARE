@@ -433,7 +433,7 @@
                           <td class="text-capitalize">
                             <span
                               style="background: orange; padding: 3px; border-radius: 4px"
-                              >{{ rate.day }}</span
+                              >{{ rate.day === "all_day" ? "weekly" : rate.day }}</span
                             >
                           </td>
                           <td>

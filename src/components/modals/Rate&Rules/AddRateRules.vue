@@ -746,17 +746,16 @@
                         <label class="form-label">Client Rate</label>
 
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
-                          v-model="selectedClientRate[`${day ? day + '-' : ''}-early`]"
+                          v-model="selectedClientRate[`early`]"
                           @input="
-                            handleInput(
-                              `clientRate-${day ? day + '-' : ''}-early`,
-                              selectedClientRate[`${day ? day + '-' : ''}-early`]
+                            handleInputSingle(
+                              `clientRate-early`,
+                              selectedClientRate[`early`]
                             )
                           "
                           maxlength="3"
-                          :min="1"
                         />
                       </div>
 
@@ -764,19 +763,16 @@
                         <label class="form-label">Private Limited</label>
 
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
-                          v-model="
-                            selectedPrivateLimited[`${day ? day + '-' : ''}-early`]
-                          "
+                          v-model="selectedPrivateLimited[`early`]"
                           @input="
-                            handleInput(
-                              `privateLimited-${day ? day + '-' : ''}-early`,
-                              selectedPrivateLimited[`${day ? day + '-' : ''}-early`]
+                            handleInputSingle(
+                              `privateLimited-early`,
+                              selectedPrivateLimited[`early`]
                             )
                           "
                           maxlength="3"
-                          :min="1"
                         />
                       </div>
                     </div>
@@ -785,17 +781,16 @@
                         <label class="form-label">Self Employed</label>
 
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
-                          v-model="selectedSelfEmployee[`${day ? day + '-' : ''}-early`]"
+                          v-model="selectedSelfEmployee[`early`]"
                           @input="
-                            handleInput(
-                              `selfEmployee-${day ? day + '-' : ''}-early`,
-                              selectedSelfEmployee[`${day ? day + '-' : ''}-early`]
+                            handleInputSingle(
+                              `selfEmployee-early`,
+                              selectedSelfEmployee[`early`]
                             )
                           "
                           maxlength="3"
-                          :min="1"
                         />
                       </div>
 
@@ -803,17 +798,13 @@
                         <label class="form-label">Umbrella</label>
 
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
-                          v-model="selectedUmbrella[`${day ? day + '-' : ''}-early`]"
+                          v-model="selectedUmbrella[`early`]"
                           @input="
-                            handleInput(
-                              `umbrella-${day ? day + '-' : ''}-early`,
-                              selectedUmbrella[`${day ? day + '-' : ''}-early`]
-                            )
+                            handleInputSingle(`umbrella-early`, selectedUmbrella[`early`])
                           "
                           maxlength="3"
-                          :min="1"
                         />
                       </div>
 
@@ -821,18 +812,11 @@
                         <label class="form-label">PAYE</label>
 
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
-                          v-model="selectedPaye[`${day ? day + '-' : ''}-early`]"
-                          @input="
-                            handleInput(
-                              `paye-${day ? day + '-' : ''}-early`,
-                              selectedPaye[`${day ? day + '-' : ''}-early`]
-                            )
-                          "
+                          v-model="selectedPaye[`early`]"
+                          @input="handleInputSingle(`paye-early`, selectedPaye[`early`])"
                           maxlength="3"
-                          :max="999"
-                          :min="1"
                         />
                       </div>
                     </div>
@@ -887,17 +871,16 @@
                         <label class="form-label">Client Rate</label>
 
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
-                          v-model="selectedClientRate[`${day ? day + '-' : ''}-late`]"
+                          v-model="selectedClientRate[`late`]"
                           @input="
-                            handleInput(
-                              `clientRate-${day ? day + '-' : ''}-late`,
-                              selectedClientRate[`${day ? day + '-' : ''}-late`]
+                            handleInputSingle(
+                              `clientRate-late`,
+                              selectedClientRate[`late`]
                             )
                           "
                           maxlength="3"
-                          :min="1"
                         />
                       </div>
 
@@ -905,17 +888,16 @@
                         <label class="form-label">Private Limited</label>
 
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
-                          v-model="selectedPrivateLimited[`${day ? day + '-' : ''}-late`]"
+                          v-model="selectedPrivateLimited[`late`]"
                           @input="
-                            handleInput(
-                              `privateLimited-${day ? day + '-' : ''}-late`,
-                              selectedPrivateLimited[`${day ? day + '-' : ''}-late`]
+                            handleInputSingle(
+                              `privateLimited-late`,
+                              selectedPrivateLimited[`late`]
                             )
                           "
                           maxlength="3"
-                          :min="1"
                         />
                       </div>
                     </div>
@@ -924,17 +906,16 @@
                         <label class="form-label">Self Employed</label>
 
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
-                          v-model="selectedSelfEmployee[`${day ? day + '-' : ''}-late`]"
+                          v-model="selectedSelfEmployee[`late`]"
                           @input="
-                            handleInput(
-                              `selfEmployee-${day ? day + '-' : ''}-late`,
-                              selectedSelfEmployee[`${day ? day + '-' : ''}-late`]
+                            handleInputSingle(
+                              `selfEmployee-late`,
+                              selectedSelfEmployee[`late`]
                             )
                           "
                           maxlength="3"
-                          :min="1"
                         />
                       </div>
 
@@ -942,17 +923,13 @@
                         <label class="form-label">Umbrella</label>
 
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
-                          v-model="selectedUmbrella[`${day ? day + '-' : ''}-late`]"
+                          v-model="selectedUmbrella[`late`]"
                           @input="
-                            handleInput(
-                              `umbrella-${day ? day + '-' : ''}-late`,
-                              selectedUmbrella[`${day ? day + '-' : ''}-late`]
-                            )
+                            handleInputSingle(`umbrella-late`, selectedUmbrella[`late`])
                           "
                           maxlength="3"
-                          :min="1"
                         />
                       </div>
 
@@ -960,18 +937,11 @@
                         <label class="form-label">PAYE</label>
 
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
-                          v-model="selectedPaye[`${day ? day + '-' : ''}-late`]"
-                          @input="
-                            handleInput(
-                              `paye-${day ? day + '-' : ''}-late`,
-                              selectedPaye[`${day ? day + '-' : ''}-late`]
-                            )
-                          "
+                          v-model="selectedPaye[`late`]"
+                          @input="handleInputSingle(`paye-late`, selectedPaye[`late`])"
                           maxlength="3"
-                          :max="999"
-                          :min="1"
                         />
                       </div>
                     </div>
@@ -1026,17 +996,16 @@
                         <label class="form-label">Client Rate</label>
 
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
-                          v-model="selectedClientRate[`${day ? day + '-' : ''}-night`]"
+                          v-model="selectedClientRate[`night`]"
                           @input="
-                            handleInput(
-                              `clientRate-${day ? day + '-' : ''}-night`,
-                              selectedClientRate[`${day ? day + '-' : ''}-night`]
+                            handleInputSingle(
+                              `clientRate-night`,
+                              selectedClientRate[`night`]
                             )
                           "
                           maxlength="3"
-                          :min="1"
                         />
                       </div>
 
@@ -1044,19 +1013,16 @@
                         <label class="form-label">Private Limited</label>
 
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
-                          v-model="
-                            selectedPrivateLimited[`${day ? day + '-' : ''}-night`]
-                          "
+                          v-model="selectedPrivateLimited[`night`]"
                           @input="
-                            handleInput(
-                              `privateLimited-${day ? day + '-' : ''}-night`,
-                              selectedPrivateLimited[`${day ? day + '-' : ''}-night`]
+                            handleInputSingle(
+                              `privateLimited-night`,
+                              selectedPrivateLimited[`night`]
                             )
                           "
                           maxlength="3"
-                          :min="1"
                         />
                       </div>
                     </div>
@@ -1065,17 +1031,16 @@
                         <label class="form-label">Self Employed</label>
 
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
-                          v-model="selectedSelfEmployee[`${day ? day + '-' : ''}-night`]"
+                          v-model="selectedSelfEmployee[`night`]"
                           @input="
-                            handleInput(
-                              `selfEmployee-${day ? day + '-' : ''}-night`,
-                              selectedSelfEmployee[`${day ? day + '-' : ''}-night`]
+                            handleInputSingle(
+                              `selfEmployee-night`,
+                              selectedSelfEmployee[`night`]
                             )
                           "
                           maxlength="3"
-                          :min="1"
                         />
                       </div>
 
@@ -1083,14 +1048,11 @@
                         <label class="form-label">Umbrella</label>
 
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
-                          v-model="selectedUmbrella[`${day ? day + '-' : ''}-night`]"
+                          v-model="selectedUmbrella[`night`]"
                           @input="
-                            handleInput(
-                              `umbrella-${day ? day + '-' : ''}-night`,
-                              selectedUmbrella[`${day ? day + '-' : ''}-night`]
-                            )
+                            handleInputSingle(`umbrella-night`, selectedUmbrella[`night`])
                           "
                           maxlength="3"
                         />
@@ -1100,18 +1062,11 @@
                         <label class="form-label">PAYE</label>
 
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
-                          v-model="selectedPaye[`${day ? day + '-' : ''}-night`]"
-                          @input="
-                            handleInput(
-                              `paye-${day ? day + '-' : ''}-night`,
-                              selectedPaye[`${day ? day + '-' : ''}-night`]
-                            )
-                          "
+                          v-model="selectedPaye[`night`]"
+                          @input="handleInputSingle(`paye-night`, selectedPaye[`night`])"
                           maxlength="3"
-                          :max="999"
-                          :min="1"
                         />
                       </div>
                     </div>
@@ -1166,18 +1121,16 @@
                         <label class="form-label">Client Rate</label>
 
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
                           v-model="selectedClientRate[`${day ? day + '-' : ''}long day`]"
                           @input="
-                            handleInput(
+                            handleInputSingle(
                               `clientRate-${day ? day + '-' : ''}long day`,
                               selectedClientRate[`${day ? day + '-' : ''}long day`]
                             )
                           "
                           maxlength="3"
-                          :max="999"
-                          :min="1"
                         />
                       </div>
 
@@ -1185,20 +1138,18 @@
                         <label class="form-label">Private Limited</label>
 
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
                           v-model="
                             selectedPrivateLimited[`${day ? day + '-' : ''}long day`]
                           "
                           @input="
-                            handleInput(
+                            handleInputSingle(
                               `privateLimited-${day ? day + '-' : ''}long day`,
                               selectedPrivateLimited[`${day ? day + '-' : ''}long day`]
                             )
                           "
                           maxlength="3"
-                          :max="999"
-                          :min="1"
                         />
                       </div>
                     </div>
@@ -1207,20 +1158,16 @@
                         <label class="form-label">Self Employed</label>
 
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
-                          v-model="
-                            selectedSelfEmployee[`${day ? day + '-' : ''}-long day`]
-                          "
+                          v-model="selectedSelfEmployee[`long day`]"
                           @input="
-                            handleInput(
-                              `selfEmployee-${day ? day + '-' : ''}-long day`,
-                              selectedSelfEmployee[`${day ? day + '-' : ''}-long day`]
+                            handleInputSingle(
+                              `selfEmployee-long day`,
+                              selectedSelfEmployee[`long day`]
                             )
                           "
                           maxlength="3"
-                          :max="999"
-                          :min="1"
                         />
                       </div>
 
@@ -1228,18 +1175,16 @@
                         <label class="form-label">Umbrella</label>
 
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
-                          v-model="selectedUmbrella[`${day ? day + '-' : ''}-long day`]"
+                          v-model="selectedUmbrella[`long day`]"
                           @input="
-                            handleInput(
-                              `umbrella-${day ? day + '-' : ''}-long day`,
-                              selectedUmbrella[`${day ? day + '-' : ''}-long day`]
+                            handleInputSingle(
+                              `umbrella-long day`,
+                              selectedUmbrella[`long day`]
                             )
                           "
                           maxlength="3"
-                          :max="999"
-                          :min="1"
                         />
                       </div>
 
@@ -1247,18 +1192,13 @@
                         <label class="form-label">PAYE</label>
 
                         <input
-                          type="number"
+                          type="text"
                           class="form-control w-100"
-                          v-model="selectedPaye[`${day ? day + '-' : ''}-long day`]"
+                          v-model="selectedPaye[`long day`]"
                           @input="
-                            handleInput(
-                              `paye-${day ? day + '-' : ''}-long day`,
-                              selectedPaye[`${day ? day + '-' : ''}-long day`]
-                            )
+                            handleInputSingle(`paye-long day`, selectedPaye[`long day`])
                           "
                           maxlength="3"
-                          :max="999"
-                          :min="1"
                         />
                       </div>
                     </div>
@@ -1415,6 +1355,39 @@ export default {
       const [type, day, period] = field.split("-");
 
       const key = day ? `${day}-${period}` : period;
+
+      if (type === "clientRate") {
+        this.selectedClientRate[key] = filteredValue;
+      } else if (type === "privateLimited") {
+        this.selectedPrivateLimited[key] = filteredValue;
+      } else if (type === "paye") {
+        this.selectedPaye[key] = filteredValue;
+      } else if (type === "selfEmployee") {
+        this.selectedSelfEmployee[key] = filteredValue;
+      } else if (type === "umbrella") {
+        this.selectedUmbrella[key] = filteredValue;
+      }
+
+      if (filteredValue.length > 0) {
+        const numericValue = parseInt(filteredValue, 10);
+
+        if (filteredValue.length > 0 && numericValue >= 1 && numericValue <= 999) {
+          this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = true;
+        } else {
+          this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = false;
+        }
+      } else {
+        this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = false;
+      }
+    },
+    handleInputSingle(field, value) {
+      this.hasInteracted = true;
+      const valueStr = String(value || "");
+      const filteredValue = valueStr.replace(/[^0-9]/g, "");
+
+      const [type, period] = field.split("-");
+
+      const key = period;
 
       if (type === "clientRate") {
         this.selectedClientRate[key] = filteredValue;
