@@ -311,7 +311,7 @@
                           type="text"
                           class="form-control w-100"
                           v-model="umbrella"
-                          @input="handleInput('umbrellas', umbrella)"
+                          @input="handleInput('umbrella', umbrella)"
                           maxlength="3"
                         />
                         <span v-if="!validationUmbrella" class="text-danger">
@@ -329,7 +329,7 @@
                           type="text"
                           class="form-control w-100"
                           v-model="paye"
-                          @input="handleInput('payes', paye)"
+                          @input="handleInput('paye', paye)"
                           maxlength="3"
                         />
                         <span v-if="!validationPaye" class="text-danger">
@@ -518,8 +518,8 @@ export default {
         this.break !== null &&
         this.client_rate !== "" &&
         this.staff_rate !== "" &&
-        this.umbrella !== "" &&
-        this.paye !== "" &&
+        this.umbrella !== null &&
+        this.paye !== null &&
         this.private_limited !== "" &&
         this.validationSelectedOptionText &&
         this.validationSelectedBusinessUnit &&
@@ -594,10 +594,10 @@ export default {
       this.validateRate("staff_rate", newValue);
     },
     umbrella(newValue) {
-      this.validateRate("umbrellas", newValue);
+      this.validateRate("umbrella", newValue);
     },
     paye(newValue) {
-      this.validateRate("payes", newValue);
+      this.validateRate("paye", newValue);
     },
     private_limited(newValue) {
       this.validateRate("private_limited", newValue);
@@ -642,13 +642,13 @@ export default {
 
         if (field === "client_rate") {
           this.validationClientRate = isValidNumber;
-        } else if (field === "payes") {
+        } else if (field === "paye") {
           this.validationPaye = isValidNumber;
         } else if (field === "private_limited") {
           this.validationPrivateLimited = isValidNumber;
         } else if (field === "staff_rate") {
           this.validationStaffRate = isValidNumber;
-        } else if (field === "umbrellas") {
+        } else if (field === "umbrella") {
           this.validationUmbrella = isValidNumber;
         }
       } else {
