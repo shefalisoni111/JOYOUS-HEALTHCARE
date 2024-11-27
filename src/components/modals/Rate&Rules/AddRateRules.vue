@@ -1277,7 +1277,7 @@
             >
               Cancel
             </button>
-            <!-- <button
+            <button
               v-if="this.splitRate"
               :disabled="!isFormValid()"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
@@ -1295,13 +1295,13 @@
               v-on:click="addVacancyMethod()"
             >
               Add Rate
-            </button> -->
-            <button
+            </button>
+            <!-- <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               v-on:click="addVacancyMethod()"
             >
               Add Rate
-            </button>
+            </button> -->
           </div>
         </div>
       </div>
