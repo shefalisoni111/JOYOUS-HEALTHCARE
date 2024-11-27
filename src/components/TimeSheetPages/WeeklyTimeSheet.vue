@@ -375,11 +375,11 @@
                               <div class="column">
                                 <div class="column-cell">
                                   {{
-                                    typeof data.total_minutes === "number"
-                                      ? data.total_minutes.toFixed(2)
-                                      : data.total_minutes === null
+                                    typeof data.total_hours === "number"
+                                      ? data.total_hours.toFixed(2)
+                                      : data.total_hours === null
                                       ? "0.00"
-                                      : data.total_minutes
+                                      : data.total_hours
                                   }}
                                 </div>
                               </div>
