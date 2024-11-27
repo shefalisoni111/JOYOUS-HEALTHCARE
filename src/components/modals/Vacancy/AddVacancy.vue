@@ -311,7 +311,7 @@
                           type="text"
                           class="form-control w-100"
                           v-model="umbrella"
-                          @input="handleInput('umbrella', umbrella)"
+                          @input="handleInput('umbrellas', umbrella)"
                           maxlength="3"
                         />
                         <span v-if="!validationUmbrella" class="text-danger">
@@ -329,7 +329,7 @@
                           type="text"
                           class="form-control w-100"
                           v-model="paye"
-                          @input="handleInput('paye', paye)"
+                          @input="handleInput('payes', paye)"
                           maxlength="3"
                         />
                         <span v-if="!validationPaye" class="text-danger">
@@ -360,6 +360,9 @@
                   </div>
 
                   <br />
+                </div>
+                <div class="text-danger mb-3 text-center">
+                  <span class="ms-5">{{ errormsg }}</span>
                 </div>
                 <div class="text-danger mb-3">
                   <span v-if="hasInteracted && !site_id">
@@ -481,6 +484,7 @@ export default {
       clientData: [],
       job_id: "",
       options: [],
+      errormsg: "",
       businessUnit: [],
       dates: [],
       fetchRatesData: [],
@@ -590,10 +594,10 @@ export default {
       this.validateRate("staff_rate", newValue);
     },
     umbrella(newValue) {
-      this.validateRate("umbrella", newValue);
+      this.validateRate("umbrellas", newValue);
     },
     paye(newValue) {
-      this.validateRate("paye", newValue);
+      this.validateRate("payes", newValue);
     },
     private_limited(newValue) {
       this.validateRate("private_limited", newValue);
@@ -638,18 +642,21 @@ export default {
 
         if (field === "client_rate") {
           this.validationClientRate = isValidNumber;
-        } else if (field === "paye") {
+        } else if (field === "payes") {
           this.validationPaye = isValidNumber;
         } else if (field === "private_limited") {
           this.validationPrivateLimited = isValidNumber;
         } else if (field === "staff_rate") {
           this.validationStaffRate = isValidNumber;
+        } else if (field === "umbrellas") {
+          this.validationUmbrella = isValidNumber;
         }
       } else {
         this.validationClientRate = true;
         this.validationPaye = true;
         this.validationPrivateLimited = true;
         this.validationStaffRate = true;
+        this.validationUmbrella = true;
       }
     },
 
@@ -1063,7 +1070,7 @@ export default {
         const response = await axios.get(`${VITE_API_URL}/find_rates`, { params });
         this.fetchRatesData = response.data.rates;
         // console.log(this.fetchRatesData);
-
+        this.errormsg = "";
         if (this.fetchRatesData.length > 0) {
           const rates = this.fetchRatesData[0];
           this.client_rate = rates.client_rate;
@@ -1077,15 +1084,14 @@ export default {
           this.umbrella = "";
           this.paye = "";
           this.private_limited = "";
+          this.errormsg = "";
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {
-          Swal.fire({
-            icon: "error",
-            title: "Rates Not Found",
-            text: error.response.data.message,
-            confirmButtonText: "OK",
-          });
+          this.errormsg = error.response.data.message;
+          if (this.errormsg) {
+            this.errormsg = "Rates Not Found.";
+          }
 
           this.client_rate = "";
           this.staff_rate = "";
@@ -1097,6 +1103,8 @@ export default {
           this.validationUmbrella = true;
           this.validationPaye = true;
           this.validationPrivateLimited = true;
+        } else {
+          // this.errormsg = "Rates Not Found.";
         }
       }
     },
@@ -1204,8 +1212,7 @@ export default {
         (this.validationDateType = true),
         (this.validationBreak = true);
       this.hasInteracted = false;
-      this.validationPaye = true;
-      this.validationUmbrella = true;
+
       // this.selectedDate = null;
     },
     clearFields() {
