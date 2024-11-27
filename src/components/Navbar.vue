@@ -353,6 +353,14 @@
                   ><i class="bi bi-ban-fill pe-2"></i><span>Diary Notes</span></router-link
                 >
               </li>
+<!-- 
+              <li class="cursor-pointer my-1">
+                <router-link
+                  class="dropdown-item text-capitalize d-flex align-items-center"
+            :to="adminLink"
+                  ><i class="bi bi-gear-wide pe-2"></i><span>Personal Settings</span>
+                </router-link>
+              </li> -->
 
               <li class="cursor-pointer my-1">
                 <router-link
@@ -360,7 +368,7 @@
             :to="adminLink"
                   ><i class="bi bi-gear-wide pe-2"></i><span>Personal Settings</span>
                 </router-link>
-              </li>
+              </li> 
          
 
               <li class="cursor-pointer my-1">

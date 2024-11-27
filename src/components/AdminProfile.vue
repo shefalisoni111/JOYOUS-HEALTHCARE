@@ -80,7 +80,7 @@
                     <h6 class="mb-0">Full Name</h6>
                   </div>
                   <div class="col-sm-9 text-secondary text-capitalize">
-                    {{ getAdmin.first_name }}
+                    {{ getAdmin.first_name + " " + getAdmin.last_name }}
                   </div>
                 </div>
                 <hr />

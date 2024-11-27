@@ -15,12 +15,12 @@
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
               <form>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
+                <div class="mb-3">
+                  <div class="col-12">
                     <label class="form-label">First Name</label>
                   </div>
 
-                  <div class="col-10">
+                  <div class="col-12">
                     <input
                       type="text"
                       class="form-control"
@@ -30,12 +30,12 @@
                     />
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
+                <div class="mb-3">
+                  <div class="col-12">
                     <label class="form-label"> Last Name</label>
                   </div>
 
-                  <div class="col-10">
+                  <div class="col-12">
                     <input
                       type="text"
                       class="form-control"
@@ -46,11 +46,11 @@
                   </div>
                 </div>
 
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
+                <div class="mb-3">
+                  <div class="col-12">
                     <label class="form-label" for="selectJobTitle">Address</label>
                   </div>
-                  <div class="col-10">
+                  <div class="col-12">
                     <input
                       type="text"
                       class="form-control"
@@ -60,11 +60,11 @@
                   </div>
                 </div>
 
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
+                <div class="mb-3">
+                  <div class="col-12">
                     <label class="form-label">Email</label>
                   </div>
-                  <div class="col-10">
+                  <div class="col-12">
                     <input
                       type="email"
                       class="form-control"
@@ -73,15 +73,14 @@
                       @change="detectAutofill"
                       ref="email"
                       autocomplete="new-email"
-                      readonly
                     />
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
+                <div class="mb-3">
+                  <div class="col-12">
                     <label class="form-label">Phone Number</label>
                   </div>
-                  <div class="col-10">
+                  <div class="col-12">
                     <input
                       type="text"
                       class="form-control"
@@ -135,6 +134,7 @@
 <script>
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+import Swal from "sweetalert2";
 
 export default {
   name: "EditSite",
@@ -223,6 +223,13 @@ export default {
         this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         // console.error("Error updating vacancy:", error);
+        const errorMessage = error.response?.data?.message;
+
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: errorMessage,
+        });
       }
     },
   },
@@ -255,6 +262,5 @@ select {
 }
 .modal-body {
   border-radius: 5px;
-  background: #dbdbdb;
 }
 </style>

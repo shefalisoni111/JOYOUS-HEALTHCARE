@@ -171,31 +171,27 @@
                           <thead></thead>
                           <tbody v-if="getAgencyData">
                             <tr>
-                              <th scope="col">Agency name</th>
-                              <th scope="col">
-                                {{
-                                  getAgencyData.first_name + " " + getAgencyData.last_name
-                                }}
-                              </th>
-                            </tr>
-                            <tr>
-                              <th scope="row">authorized person</th>
-                              <td>
-                                {{
-                                  getAgencyData.first_name + " " + getAgencyData.last_name
-                                }}
+                              <th scope="col">First Name</th>
+                              <td scope="col">
+                                {{ getAgencyData.first_name }}
                               </td>
                             </tr>
                             <tr>
-                              <th scope="row">email</th>
+                              <th scope="row">Last Name</th>
+                              <td>
+                                {{ getAgencyData.last_name }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <th scope="row">Email</th>
                               <td>{{ getAgencyData.email }}</td>
                             </tr>
                             <tr>
-                              <th scope="row">address</th>
+                              <th scope="row">Address</th>
                               <td colspan="2">{{ getAgencyData.address }}</td>
                             </tr>
                             <tr>
-                              <th scope="row">mobile number</th>
+                              <th scope="row">Phone Number</th>
                               <td colspan="2">{{ getAgencyData.phone_number }}</td>
                             </tr>
                             <!-- <tr>
@@ -511,9 +507,6 @@ export default {
   padding-top: 65px;
 }
 table th,
-table tr td {
-  text-transform: capitalize;
-}
 .pagetitle {
   margin-bottom: 10px;
   background-color: #fff;

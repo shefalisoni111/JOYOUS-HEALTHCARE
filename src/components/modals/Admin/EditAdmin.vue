@@ -13,13 +13,27 @@
                 <div class="mb-3">
                   <div class="">
                     <div class="col-12">
-                      <label class="form-label">Name</label>
+                      <label class="form-label">First Name</label>
                     </div>
                     <div class="col-12 mt-1">
                       <input
                         type="text"
                         class="form-control"
                         v-model="fetchAdmin.first_name"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="">
+                    <div class="col-12">
+                      <label class="form-label">Last Name</label>
+                    </div>
+                    <div class="col-12 mt-1">
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="fetchAdmin.last_name"
                       />
                     </div>
                   </div>
