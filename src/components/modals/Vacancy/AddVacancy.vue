@@ -128,6 +128,7 @@
                       class="form-control w-100"
                       v-model="selectedDate"
                       @change="addDate"
+                      :min="minDate"
                       style="padding-right: 1px"
                     />
                     <span v-if="!validationDateType" class="text-danger"
@@ -490,7 +491,8 @@ export default {
       isValidForm: false,
       selectedDate: null,
       selectedSiteId: null,
-      // minDate: this.getTodayDate(),
+
+      minDate: this.getTodayDate(),
       // maxDate: this.getLastDayOfMonth(),
     };
   },
@@ -605,13 +607,13 @@ export default {
     },
   },
   methods: {
-    // getTodayDate() {
-    //   const today = new Date();
-    //   const year = today.getFullYear();
-    //   const month = String(today.getMonth() + 1).padStart(2, "0");
-    //   const day = String(today.getDate()).padStart(2, "0");
-    //   return `${year}-${month}-${day}`;
-    // },
+    getTodayDate() {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, "0");
+      const day = String(today.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    },
     formatRate(rate) {
       return rate.replace(/_/g, " ");
     },
