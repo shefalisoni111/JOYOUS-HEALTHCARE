@@ -734,7 +734,7 @@
                         <label class="form-label">Rate Type</label>
 
                         <select
-                          v-model="this.selectedRateType[`${day ? day + '-' : ''}-early`]"
+                          v-model="this.selectedRateType[`early`]"
                           class="form-select w-25"
                         >
                           <option value="Hourly">Hourly</option>
@@ -875,7 +875,7 @@
                         <label class="form-label">Rate Type</label>
 
                         <select
-                          v-model="selectedRateType[`${day ? day + '-' : ''}-late`]"
+                          v-model="this.selectedRateType[`late`]"
                           class="form-select w-25"
                         >
                           <option value="Hourly">Hourly</option>
@@ -1014,7 +1014,7 @@
                         <label class="form-label">Rate Type</label>
 
                         <select
-                          v-model="selectedRateType[`${day ? day + '-' : ''}-night`]"
+                          v-model="this.selectedRateType[`night`]"
                           class="form-select w-25"
                         >
                           <option value="Hourly">Hourly</option>
@@ -1154,7 +1154,7 @@
                         <label class="form-label">Rate Type</label>
 
                         <select
-                          v-model="selectedRateType[`${day ? day + '-' : ''}long day`]"
+                          v-model="this.selectedRateType[`long day`]"
                           class="form-select w-25"
                         >
                           <option value="Hourly">Hourly</option>
@@ -1277,7 +1277,7 @@
             >
               Cancel
             </button>
-            <button
+            <!-- <button
               v-if="this.splitRate"
               :disabled="!isFormValid()"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
@@ -1292,6 +1292,12 @@
               :disabled="!isFormValidTrue()"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               v-bind:data-bs-dismiss="isFormValidTrue() ? 'modal' : null"
+              v-on:click="addVacancyMethod()"
+            >
+              Add Rate
+            </button> -->
+            <button
+              class="btn btn-primary rounded-1 text-capitalize fw-medium"
               v-on:click="addVacancyMethod()"
             >
               Add Rate
@@ -1595,7 +1601,7 @@ export default {
             (s) => s.shift_name.toLowerCase() === shiftName
           );
 
-          const shiftKey = shiftName;
+          const shiftKey = `${shiftName}`;
 
           const shiftEntry = {
             ...commonData,
