@@ -287,7 +287,7 @@
                   <td>
                     {{ data.site_name ? data.site_name : "Null" }}
                   </td>
-                  <td>{{ data.shift_name }}</td>
+                  <td>{{ data.shift }}</td>
                   <td>
                     <div class="calendar-grid">
                       <div
@@ -430,8 +430,6 @@
                   <!-- <td>
                     {{
                       data.candidate_id === null
-                        ? "0.0"
-                        : this.candidateHoursMap[data.candidate_id] === data.candidate_id
                         ? this.candidateHoursMap[data.candidate_id].toFixed(2)
                         : "0.00"
                     }}
@@ -540,7 +538,7 @@ export default {
       candidateList: [],
       selectedCandidateId: null,
       start_time: "",
-
+      total_week_hours: "",
       end_time: "",
       vacancyId: "",
       site_id: "",
@@ -1096,19 +1094,6 @@ export default {
           this.errorMessage = "";
         }
 
-        this.mergedTimesheetsArray.forEach((timesheet) => {
-          if (timesheet.candidate_id !== null) {
-            const matchingCandidate = this.total_hourMain.find(
-              (candidate) => candidate.candidate_id === timesheet.candidate_id
-            );
-
-            if (matchingCandidate) {
-              timesheet.total_week_hours = matchingCandidate.total_hours || 0;
-            } else {
-              timesheet.total_week_hours = 0;
-            }
-          }
-        });
         // console.log(this.mergedTimesheetsArray);
         // console.log(this.total_hourMain, this.candidateHoursMap);
       } catch (error) {
