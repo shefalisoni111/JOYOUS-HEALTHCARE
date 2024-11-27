@@ -1063,6 +1063,7 @@ export default {
             job,
             total_week_hours,
             total_week_cost,
+            approved_by,
             data,
           } = candidateTimesheet;
 
@@ -1077,6 +1078,7 @@ export default {
               job,
               total_week_hours,
               total_week_cost,
+              approved_by,
               ...timesheet,
             });
           });
