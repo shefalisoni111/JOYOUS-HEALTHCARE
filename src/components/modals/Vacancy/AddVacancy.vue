@@ -447,6 +447,7 @@ import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 import NotSuccessAlertVue from "../../Alerts/NotSuccessAlert.vue";
 import Datepicker from "vue3-datepicker";
+import Swal from "sweetalert2";
 export default {
   name: "AddVacancy",
   data() {
@@ -778,6 +779,7 @@ export default {
       // );
     },
     async onSiteSelect() {
+      this.selectedDate = this.selectedDate;
       this.selectedSiteId = this.site_id;
       await this.getTimeShift(this.selectedSiteId);
       // const siteShiftId = await this.getTimeShift(selectedSiteId);
@@ -794,12 +796,19 @@ export default {
       //   this.site_id,
       //   this.job_id
       // );
-      if (this.site_id && this.site_shift_id && this.client_id && this.job_id) {
+      if (
+        this.site_id &&
+        this.site_shift_id &&
+        this.client_id &&
+        this.job_id &&
+        this.selectedDate
+      ) {
         await this.getClientAccordingRatePayFetchMethod(
           this.client_id,
           this.site_shift_id,
           this.job_id,
-          this.site_id
+          this.site_id,
+          this.selectedDate
         );
       }
     },
@@ -1070,11 +1079,24 @@ export default {
           this.private_limited = "";
         }
       } catch (error) {
-        if (error.response) {
-          if (error.response.status === 404) {
-            // Handle the 404 error here (e.g., display an alert)
-            // alert(error.response.data.message);
-          }
+        if (error.response && error.response.status === 404) {
+          Swal.fire({
+            icon: "error",
+            title: "Rates Not Found",
+            text: error.response.data.message,
+            confirmButtonText: "OK",
+          });
+
+          this.client_rate = "";
+          this.staff_rate = "";
+          this.umbrella = "";
+          this.paye = "";
+          this.private_limited = "";
+          this.validationClientRate = true;
+          this.validationStaffRate = true;
+          this.validationUmbrella = true;
+          this.validationPaye = true;
+          this.validationPrivateLimited = true;
         }
       }
     },
