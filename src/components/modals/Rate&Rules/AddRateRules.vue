@@ -1492,36 +1492,26 @@ export default {
       }
     },
     async onClientSelect() {
-      await this.getClientFetchSiteMethod();
+      this.selectedClientId = this.client_id;
 
-      // Set default site_id based on the first site in the list
-      if (this.businessUnit.length > 0) {
-        this.selectedSiteId = this.businessUnit[0].site_id;
-      } else {
-        this.selectedSiteId = null;
-      }
+      await this.getClientFetchSiteMethod(this.selectedSiteId);
     },
 
     async onJobTitleChange() {
+      // await this.getClientFetchSiteMethod();
       const selectedJob = this.options.find(
         (option) => option.job_id === this.selectedJobId
       );
+
       if (selectedJob) {
         this.job_id = selectedJob.job_id;
       }
     },
 
     async onSiteSelect() {
-      const selectedSite = this.businessUnit.find(
-        (site) => site.site_id === this.selectedSiteId
-      );
-
-      if (selectedSite) {
-        this.site_id = selectedSite.site_id;
-        await this.getTimeShift(this.site_id);
-      } else {
-        this.site_id = null;
-      }
+      this.selectedDate = this.selectedDate;
+      this.selectedSiteId = this.site_id;
+      await this.getTimeShift(this.selectedSiteId);
     },
 
     clearFieldsData() {
@@ -1661,10 +1651,23 @@ export default {
 
         this.businessUnit = response.data.sites;
 
-        this.selectedSiteId = this.businessUnit[0].site_id;
-        this.splitRate = this.businessUnit[0].split_rate;
-
+        // this.selectedSiteId = this.businessUnit[0].site_id;
         this.options = response.data.jobs;
+        if (siteId) {
+          const selectedSite = this.businessUnit.find((site) => site.site_id === siteId);
+
+          if (selectedSite) {
+            this.selectedSiteId = selectedSite.site_id;
+            this.splitRate = selectedSite.split_rate || false;
+          } else {
+            // console.warn("Provided siteId not found in businessUnit:", siteId);
+          }
+        } else {
+          if (this.businessUnit.length > 0) {
+            this.selectedSiteId = this.businessUnit[0].site_id;
+            this.splitRate = this.businessUnit[0].split_rate || false;
+          }
+        }
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
