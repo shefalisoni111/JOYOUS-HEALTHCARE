@@ -54,7 +54,7 @@
                   id="selectBusinessUnit"
                   @change="filterData"
                 >
-                  <option value="">All Site</option>
+                  <option value="" disabled>All Site</option>
                   <option
                     v-for="option in businessUnit"
                     :key="option.id"
@@ -70,7 +70,7 @@
                   id="selectCandidateList"
                   @change="filterData"
                 >
-                  <option value="">All Staff</option>
+                  <option value="" disabled>All Staff</option>
                   <option
                     v-for="option in candidateLists"
                     :key="option.id"
@@ -84,7 +84,7 @@
                 <button
                   @click="resetFilter"
                   class="btn btn-secondary"
-                  :disabled="!selectedSiteName && !selectedCandidate && !localSearchQuery"
+                  :disabled="!selectedSiteName && !selectedCandidate"
                 >
                   Reset Filters
                 </button>
@@ -285,7 +285,7 @@
                     </span>
                   </td>
                   <td>
-                    {{ data.site_name ? data.site_name : "Null" }}
+                    {{ data.site_name || data.site }}
                   </td>
                   <td>{{ data.shift }}</td>
                   <td>
@@ -818,6 +818,14 @@ export default {
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
+    formatDates(date) {
+      const d = new Date(date);
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      const year = d.getFullYear();
+
+      return `${month}/${day}/${year}`;
+    },
     formatDateFormate(dateStr) {
       if (!dateStr || typeof dateStr !== "string") {
         return "";
@@ -926,7 +934,7 @@ export default {
       const params = {
         page: 1,
       };
-
+      const { start, end } = this.getWeekRange(this.startDate);
       if (this.selectedSiteName) {
         params["weekly_timesheet[site]"] = this.selectedSiteName;
       }
@@ -950,7 +958,8 @@ export default {
         if (this.selectedCandidate) {
           params["weekly_timesheet[name]"] = this.selectedCandidate;
         }
-        params["weekly_timesheet[shift_date]"] = this.selectedCandidate;
+
+        params["weekly_timesheet[shift_date]"] = this.formatDates(start);
       }
 
       try {
@@ -977,7 +986,6 @@ export default {
     resetFilter() {
       this.selectedSiteName = null;
       this.selectedCandidate = null;
-      this.localSearchQuery = "";
 
       this.filterData();
     },

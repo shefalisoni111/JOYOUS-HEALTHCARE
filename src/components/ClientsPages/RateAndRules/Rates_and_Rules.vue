@@ -248,6 +248,7 @@
                                 data.job_id
                               )
                             "
+                            style="cursor: pointer"
                           >
                             {{ data.site }}
                           </td>
@@ -261,6 +262,7 @@
                                 data.job_id
                               )
                             "
+                            style="cursor: pointer"
                           >
                             {{ data.job }}
                           </td>
@@ -274,6 +276,7 @@
                                 data.job_id
                               )
                             "
+                            style="cursor: pointer"
                           >
                             &nbsp;
                           </td>
@@ -287,6 +290,7 @@
                                 data.job_id
                               )
                             "
+                            style="cursor: pointer"
                           >
                             &nbsp;
                           </td>
@@ -300,6 +304,7 @@
                                 data.job_id
                               )
                             "
+                            style="cursor: pointer"
                           >
                             &nbsp;
                           </td>
@@ -313,6 +318,7 @@
                                 data.job_id
                               )
                             "
+                            style="cursor: pointer"
                           >
                             &nbsp;
                           </td>
@@ -326,6 +332,7 @@
                                 data.job_id
                               )
                             "
+                            style="cursor: pointer"
                           >
                             &nbsp;
                           </td>
@@ -339,6 +346,7 @@
                                 data.job_id
                               )
                             "
+                            style="cursor: pointer"
                           >
                             &nbsp;
                           </td>
@@ -352,6 +360,7 @@
                                 data.job_id
                               )
                             "
+                            style="cursor: pointer"
                           >
                             &nbsp;
                           </td>
@@ -365,6 +374,7 @@
                                 data.job_id
                               )
                             "
+                            style="cursor: pointer"
                           >
                             &nbsp;
                           </td>
@@ -378,6 +388,7 @@
                                 data.job_id
                               )
                             "
+                            style="cursor: pointer"
                           >
                             &nbsp;
                           </td>
@@ -391,6 +402,7 @@
                                 data.job_id
                               )
                             "
+                            style="cursor: pointer"
                           >
                             &nbsp;
                           </td>
