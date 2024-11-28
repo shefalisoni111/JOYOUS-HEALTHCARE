@@ -1096,6 +1096,7 @@ export default {
           this.errormsg = error.response.data.message;
           if (this.errormsg) {
             this.errormsg = "Rates Not Found.";
+            this.hideErrorMessage();
           }
 
           this.client_rate = "";
@@ -1112,6 +1113,11 @@ export default {
           // this.errormsg = "Rates Not Found.";
         }
       }
+    },
+    hideErrorMessage() {
+      setTimeout(() => {
+        this.errormsg = "";
+      }, 2000);
     },
     async getBusinessUnitMethod() {
       try {

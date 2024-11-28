@@ -25,7 +25,7 @@
                     </div>
                   </router-link>
                 </li>
-                <li class="list-items d-flex mt-3">
+                <!-- <li class="list-items d-flex mt-3">
                   <i class="bi bi-check-lg rounded-circle"></i>
                   <router-link to="/staff-status" class="text-decoration-none">
                     <div class="job ms-2">
@@ -33,7 +33,7 @@
                       <p class="text-capitalize mb-0">view & modify</p>
                     </div>
                   </router-link>
-                </li>
+                </li> -->
                 <li class="list-items d-flex mt-3">
                   <i class="bi bi-person-square rounded-circle"></i>
                   <router-link to="/employmenttypedetail" class="text-decoration-none">

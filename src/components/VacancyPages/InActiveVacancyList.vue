@@ -245,20 +245,22 @@ export default {
       this.isModalVisible = false;
     },
     async vacancyDeleteMethod(id) {
-      if (!window.confirm("Are you Sure ?")) {
-        return;
-      }
-      const token = localStorage.getItem("token");
-      await axios
-        .delete(`${VITE_API_URL}/vacancies/` + id, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: "bearer " + token,
-          },
-        })
-        .then((response) => {
-          this.getInactiveVacancyMethod();
-        });
+      this.confirmMessage = "Are you Sure want to delete Shift?";
+      this.isModalVisible = true;
+      this.confirmCallback = async () => {
+        const token = localStorage.getItem("token");
+        await axios
+          .delete(`${VITE_API_URL}/vacancies/` + id, {
+            headers: {
+              "content-type": "application/json",
+              Authorization: "bearer " + token,
+            },
+          })
+          .then((response) => {
+            this.getInactiveVacancyMethod();
+          });
+        this.isModalVisible = false;
+      };
     },
     reActivatedMethod(id) {
       axios

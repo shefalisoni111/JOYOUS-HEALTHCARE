@@ -414,9 +414,9 @@ export default {
           });
         // alert("InActive Shift");
         Swal.fire({
-          icon: "warning",
-          title: "Shift Status",
-          text: "Inactive Shift",
+          icon: "success",
+          title: "Success!",
+          text: "Shift status updated successfully.",
           confirmButtonText: "OK",
         });
         this.isModalVisible = false;
