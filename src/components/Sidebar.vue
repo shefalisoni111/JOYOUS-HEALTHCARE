@@ -36,11 +36,11 @@
           <i class="bi bi-person-check"></i>
         </router-link>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <router-link class="nav-link" to="/appsetting/ClientSettings" exact>
           <i class="bi bi-people"></i>
         </router-link>
-      </li>
+      </li> -->
     </ul>
   </aside>
   <!-- End Sidebar-->
