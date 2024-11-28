@@ -269,7 +269,7 @@
                     <span class="currency-symbol">£</span>
                     <input
                       type="text"
-                      class="form-control w-75"
+                      class="form-control sp w-75"
                       v-model="client_rate"
                       @input="handleInput('client_rate', client_rate)"
                       maxlength="3"
@@ -293,7 +293,7 @@
                         <span class="currency-symbol">£</span>
                         <input
                           type="text"
-                          class="form-control w-100"
+                          class="form-control sp w-100"
                           v-model="staff_rate"
                           @input="handleInput('staff_rate', staff_rate)"
                           maxlength="3"
@@ -312,7 +312,7 @@
                         <span class="currency-symbol">£</span>
                         <input
                           type="text"
-                          class="form-control w-100"
+                          class="form-control sp w-100"
                           v-model="umbrella"
                           @input="handleInput('umbrella', umbrella)"
                           maxlength="3"
@@ -331,7 +331,7 @@
                         <span class="currency-symbol">£</span>
                         <input
                           type="text"
-                          class="form-control w-100"
+                          class="form-control sp w-100"
                           v-model="paye"
                           @input="handleInput('paye', paye)"
                           maxlength="3"
@@ -352,7 +352,7 @@
                         <span class="currency-symbol">£</span>
                         <input
                           type="text"
-                          class="form-control w-100"
+                          class="form-control sp w-100"
                           v-model="private_limited"
                           @input="handleInput('private_limited', private_limited)"
                           maxlength="3"
@@ -1292,7 +1292,7 @@ select {
   color: #333;
 }
 
-input.form-control {
+input.form-control.sp {
   padding-left: 25px;
 }
 label.form-label {
