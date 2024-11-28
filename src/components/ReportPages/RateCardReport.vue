@@ -163,11 +163,11 @@
                     <table class="table reportTable">
                       <thead>
                         <tr>
-                          <th>
+                          <!-- <th>
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
                             </div>
-                          </th>
+                          </th> -->
                           <th scope="col">Client</th>
                           <th scope="col">Site</th>
                           <th scope="col">Job</th>
@@ -186,11 +186,11 @@
 
                       <tbody v-if="paginateCandidates?.length > 0">
                         <tr v-for="(rate, index) in paginateCandidates" :key="index">
-                          <td>
+                          <!-- <td>
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
                             </div>
-                          </td>
+                          </td> -->
                           <td>{{ rate.client }}</td>
                           <td>{{ rate.site }}</td>
                           <td>{{ rate.job }}</td>
@@ -228,12 +228,12 @@
                       </tbody>
                       <tbody v-else>
                         <tr v-if="errorMessageFilter">
-                          <td colspan="15" class="text-danger text-center">
+                          <td colspan="14" class="text-danger text-center">
                             {{ errorMessageFilter }}
                           </td>
                         </tr>
                         <tr v-else>
-                          <td colspan="15" class="text-danger text-center">
+                          <td colspan="14" class="text-danger text-center">
                             {{ errorMessageCustom }}
                           </td>
                         </tr>
@@ -260,9 +260,9 @@
                       <thead>
                         <tr>
                           <th>
-                            <div class="form-check">
+                            <!-- <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
-                            </div>
+                            </div> -->
                           </th>
                           <th scope="col">Client</th>
                           <th scope="col">Site</th>
@@ -283,9 +283,9 @@
                       <tbody v-if="paginateSearchResults?.length > 0">
                         <tr v-for="(rate, index) in paginateSearchResults" :key="index">
                           <td>
-                            <div class="form-check">
+                            <!-- <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
-                            </div>
+                            </div> -->
                           </td>
                           <td>{{ rate.client }}</td>
                           <td>{{ rate.site }}</td>
@@ -324,7 +324,7 @@
                       </tbody>
                       <tbody v-else>
                         <tr>
-                          <td colspan="15" class="text-danger text-center">
+                          <td colspan="14" class="text-danger text-center">
                             No Match Found !!
                           </td>
                         </tr>
@@ -707,7 +707,7 @@ export default {
               this.downloadOneCSV(csvData, filename);
               const message = "Export file downloaded successfully";
               this.$refs.successAlert.showSuccess(message);
-              this.ids = [];
+              this.rate_ids = [];
               for (let key in this.checkedClient) {
                 this.checkedClient[key] = false;
               }
@@ -716,7 +716,7 @@ export default {
         })
         .catch((error) => {})
         .finally(() => {
-          this.ids = [];
+          this.rate_ids = [];
         });
     },
     blobToText(blob) {
