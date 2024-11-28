@@ -215,20 +215,31 @@ export default {
             },
           }
         );
-
-        this.$emit("editAgency");
-        // this.$emit("updateVacancyInactive");
-        // alert("Vacancy updated successfully");
-        const message = "Agency Updated successfully";
-        this.$refs.successAlert.showSuccess(message);
+        if (response.status === 200 && response.data?.error) {
+          const emailError = response.data.error?.email?.[0];
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: emailError ? `Email ${emailError}` : "Email has already been taken",
+          });
+        } else {
+          const message = "Admin updated successfully";
+          this.$refs.successAlert.showSuccess(message);
+          this.$emit("admin-updated");
+        }
+        // this.$emit("editAgency");
+        // // this.$emit("updateVacancyInactive");
+        // // alert("Vacancy updated successfully");
+        // const message = "Agency Updated successfully";
+        // this.$refs.successAlert.showSuccess(message);
       } catch (error) {
-        // console.error("Error updating vacancy:", error);
-        const errorMessage = error.response?.data?.message;
+        const emailError = error.response?.data?.error?.email?.[0];
+        const errorMessage = emailError || error.response?.data?.message;
 
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: errorMessage,
+          text: emailError ? `Email ${emailError}` : errorMessage,
         });
       }
     },

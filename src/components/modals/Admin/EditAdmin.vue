@@ -182,13 +182,13 @@ export default {
           `${VITE_API_URL}/merchants/${this.fetchAdmin.id}`,
           this.fetchAdmin
         );
-        this.$emit("admin-updated");
-        if (response.status === 200 && response.data && response.data.error) {
-          const errorMessage = response.data.error || "An error occurred";
+        // this.$emit("admin-updated");
+        if (response.status === 200 && response.data?.error) {
+          const emailError = response.data.error?.email?.[0];
           Swal.fire({
             icon: "error",
             title: "Error",
-            text: "Error updating admin",
+            text: emailError ? `Email ${emailError}` : "Email has already been taken",
           });
         } else {
           const message = "Admin updated successfully";
@@ -199,11 +199,13 @@ export default {
         // this.$refs.successAlert.showSuccess(message);
         // alert("Admin updated successfully");
       } catch (error) {
-        const errorMessage = error.response?.data?.message || "Error updating admin";
+        const emailError = error.response?.data?.error?.email?.[0];
+        const errorMessage = emailError || error.response?.data?.message;
+
         Swal.fire({
           icon: "error",
-          title: "Error",
-          text: errorMessage,
+          title: "Oops...",
+          text: emailError ? `Email ${emailError}` : errorMessage,
         });
       }
     },
