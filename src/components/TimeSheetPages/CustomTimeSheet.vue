@@ -293,8 +293,16 @@
                                   name: 'SingleSiteprofile',
                                   params: { id: data.site_id_and_client_id.site_id },
                                 }"
-                                >{{ data.site }}</router-link
                               >
+                                {{ data.site }}
+                              </router-link>
+
+                              <span
+                                v-else
+                                class="text-black text-decoration-none fw-bold"
+                              >
+                                {{ data.site }}
+                              </span>
                             </td>
                             <td scope="col">{{ data.job }}</td>
                             <td scope="col">{{ data.shift_name }}</td>
@@ -467,8 +475,16 @@
                                   name: 'SingleSiteprofile',
                                   params: { id: data.site_id_and_client_id.site_id },
                                 }"
-                                >{{ data.site }}</router-link
                               >
+                                {{ data.site }}
+                              </router-link>
+
+                              <span
+                                v-else
+                                class="text-black text-decoration-none fw-bold"
+                              >
+                                {{ data.site }}
+                              </span>
                             </td>
                             <td scope="col">{{ data.job }}</td>
                             <td scope="col">{{ data.shift_name }}</td>

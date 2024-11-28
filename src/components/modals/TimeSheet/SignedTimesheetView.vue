@@ -596,7 +596,7 @@ export default {
       }
     },
     getFullImageUrl(relativeUrl) {
-      return `${this.VITE_API_URL}${relativeUrl}`;
+      return `${VITE_API_URL}${relativeUrl}`;
     },
     ...mapActions(["fetchSignedTimesheetData"]),
     async signedTimeSheetViewMethod(id) {

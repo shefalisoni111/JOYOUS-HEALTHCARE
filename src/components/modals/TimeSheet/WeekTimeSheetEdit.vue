@@ -369,6 +369,7 @@
                       <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label">Total Hours</label>
+                          <!-- {{ console.log(fetchCustomTimeShetData.total_hours) }} -->
                         </div>
                         <div class="col-12 mt-1">
                           <select
@@ -458,6 +459,56 @@
                             v-model="fetchCustomTimeShetData.staff_rate"
                             @input="validateNumber('staff_rate')"
                             disabled
+                          />
+                        </div>
+                      </div>
+                      <div class="mb-3" v-if="!showValueCustom">
+                        <div class="col-12">
+                          <label class="form-label">Authorized Signature</label>
+                        </div>
+                        <div class="col-12 mt-1">
+                          <img
+                            :src="
+                              getFullImageUrl(
+                                fetchCustomTimeShetData.administrator_signature_url
+                              )
+                            "
+                            alt="Administrator Signature"
+                            height="100px"
+                            class="remove-white-background d-block m-auto"
+                            loading="eager"
+                          />
+                        </div>
+                      </div>
+                      <div class="mb-3" v-if="!showValueCustom">
+                        <div class="col-12">
+                          <label class="form-label">Staff Signature</label>
+                        </div>
+                        <div class="col-12 mt-1">
+                          <img
+                            :src="getFullImageUrl(fetchCustomTimeShetData.signature_url)"
+                            alt="Administrator Signature"
+                            height="100px"
+                            class="remove-white-background d-block m-auto"
+                            loading="eager"
+                          />
+                        </div>
+                      </div>
+                      <div class="mb-3" v-if="!showValueCustom">
+                        <div class="col-12">
+                          <label class="form-label">Administrator Signature</label>
+                        </div>
+                        <div class="col-12 mt-1">
+                          <img
+                            :src="
+                              getFullImageUrl(
+                                fetchCustomTimeShetData.administrator_signature_url
+                              )
+                            "
+                            alt="Administrator Signature"
+                            height="100px"
+                            class="remove-white-background d-block m-auto"
+                            loading="eager"
                           />
                         </div>
                       </div>
@@ -649,6 +700,9 @@ export default {
     // },
   },
   methods: {
+    getFullImageUrl(relativeUrl) {
+      return `${VITE_API_URL}${relativeUrl}`;
+    },
     parseStartTime(startTime) {
       if (!startTime) return;
 
@@ -766,7 +820,7 @@ export default {
             this.originalData = { ...this.fetchCustomTimeShetData };
             // this.parseStartTime(this.fetchCustomTimeShetData.start_time);
           } catch (error) {
-            console.error("Error fetching custom timesheets:", error);
+            // console.error("Error fetching custom timesheets:", error);
           }
         }
 

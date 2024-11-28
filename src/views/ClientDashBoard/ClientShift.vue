@@ -174,7 +174,7 @@
     </div>
 
     <!-- <AddVacancy @addVacancy="createVacancy" /> -->
-    <AddClietShift />
+    <AddClietShift @addVacancy="createVacancy" />
   </div>
 </template>
 <script>
