@@ -269,7 +269,7 @@
                     <span class="currency-symbol">£</span>
                     <input
                       type="text"
-                      class="form-control w-25"
+                      class="form-control w-75"
                       v-model="client_rate"
                       @input="handleInput('client_rate', client_rate)"
                       maxlength="3"
