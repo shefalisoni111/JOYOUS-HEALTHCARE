@@ -62,7 +62,7 @@
                             height="220"
                             loading="eager"
                           />
-                          <input
+                          <!-- <input
                             type="file"
                             id="agencyMainInput"
                             style="display: none"
@@ -74,7 +74,7 @@
                             class="fs-3 fw-bold w-25 position-absolute end-0 top-0 text-center"
                             style="border-radius: 0px; background-color: #57bd8e"
                             >+</label
-                          >
+                          > -->
                         </div>
                       </div>
                     </div>

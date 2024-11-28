@@ -2,7 +2,16 @@
   <div>
     <div class="row">
       <div class="col-12">
-        <h6 class="fw-bold">Rate settings</h6>
+        <div class="d-flex justify-content-between align-content-center my-3">
+          <h6 class="fw-bold">Rate settings</h6>
+          <button
+            class="btn btn-primary"
+            @click.prevent="updateInvoiceMethod()"
+            :disabled="!isModified"
+          >
+            <i class="bi bi-save2-fill"></i> Save
+          </button>
+        </div>
         <div class="col-4">
           <div class="d-flex justify-content-between my-3">
             <div>Split rate:</div>
@@ -35,13 +44,6 @@
         </div>
         <div class="d-flex justify-content-between align-content-center my-3">
           <h6 class="fw-bold d-flex align-content-center">Invoice settings</h6>
-          <button
-            class="btn btn-primary"
-            @click.prevent="updateInvoiceMethod()"
-            :disabled="!isModified"
-          >
-            <i class="bi bi-save2-fill"></i> Save
-          </button>
         </div>
         <div class="col-4">
           <div class="d-flex justify-content-between my-3">
