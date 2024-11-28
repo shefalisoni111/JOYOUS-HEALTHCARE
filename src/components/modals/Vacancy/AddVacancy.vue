@@ -265,7 +265,8 @@
                   <div class="col-2">
                     <label class="form-label" for="clientRate">Client Rate</label>
                   </div>
-                  <div class="col-10">
+                  <div class="input-container">
+                    <span class="currency-symbol">£</span>
                     <input
                       type="text"
                       class="form-control w-25"
@@ -273,11 +274,11 @@
                       @input="handleInput('client_rate', client_rate)"
                       maxlength="3"
                     />
-
-                    <span v-if="!validationClientRate" class="text-danger">
-                      Client Rate must be must be Number.
-                    </span>
                   </div>
+
+                  <span v-if="!validationClientRate" class="text-danger">
+                    Client Rate must be must be Number.
+                  </span>
                 </div>
                 <div class="d-flex justify-content-between">
                   <div class="col-2">
@@ -288,7 +289,8 @@
                       <div class="">
                         <label class="form-label" for="staffRate">Self Employee</label>
                       </div>
-                      <div class="">
+                      <div class="input-container">
+                        <span class="currency-symbol">£</span>
                         <input
                           type="text"
                           class="form-control w-100"
@@ -296,17 +298,18 @@
                           @input="handleInput('staff_rate', staff_rate)"
                           maxlength="3"
                         />
-                        <span v-if="!validationStaffRate" class="text-danger">
-                          Staff Rate must be must be Number.
-                        </span>
                       </div>
+                      <span v-if="!validationStaffRate" class="text-danger">
+                        Staff Rate must be must be Number.
+                      </span>
                     </div>
 
                     <div class="">
                       <div class="">
                         <label class="form-label" for="umbrella">Umbrella</label>
                       </div>
-                      <div class="">
+                      <div class="input-container">
+                        <span class="currency-symbol">£</span>
                         <input
                           type="text"
                           class="form-control w-100"
@@ -314,17 +317,18 @@
                           @input="handleInput('umbrella', umbrella)"
                           maxlength="3"
                         />
-                        <span v-if="!validationUmbrella" class="text-danger">
-                          Umbrella must be must be Number.
-                        </span>
                       </div>
+                      <!-- <span v-if="!validationUmbrella" class="text-danger">
+                        Umbrella must be must be Number.
+                      </span> -->
                     </div>
 
                     <div class="">
                       <div class="">
                         <label class="form-label" for="paye">Paye</label>
                       </div>
-                      <div class="">
+                      <div class="input-container">
+                        <span class="currency-symbol">£</span>
                         <input
                           type="text"
                           class="form-control w-100"
@@ -332,10 +336,10 @@
                           @input="handleInput('paye', paye)"
                           maxlength="3"
                         />
-                        <span v-if="!validationPaye" class="text-danger">
-                          Paye must be must be Number.
-                        </span>
                       </div>
+                      <!-- <span v-if="!validationPaye" class="text-danger">
+                        Paye must be must be Number.
+                      </span> -->
                     </div>
 
                     <div class="">
@@ -344,7 +348,8 @@
                           >Private Limited</label
                         >
                       </div>
-                      <div class="">
+                      <div class="input-container">
+                        <span class="currency-symbol">£</span>
                         <input
                           type="text"
                           class="form-control w-100"
@@ -352,10 +357,10 @@
                           @input="handleInput('private_limited', private_limited)"
                           maxlength="3"
                         />
-                        <span v-if="!validationPrivateLimited" class="text-danger">
-                          Private Limited must be Number.
-                        </span>
                       </div>
+                      <span v-if="!validationPrivateLimited" class="text-danger">
+                        Private Limited must be Number.
+                      </span>
                     </div>
                   </div>
 
@@ -1273,6 +1278,22 @@ select {
   padding: 10px;
   border-radius: 4px;
   border: 0px;
+}
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.currency-symbol {
+  position: absolute;
+  left: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+input.form-control {
+  padding-left: 25px;
 }
 label.form-label {
   text-transform: capitalize;

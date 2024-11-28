@@ -202,15 +202,17 @@
                       <label class="form-label" for="clientRate">Client Rate</label>
                     </div>
                     <div class="col-10">
-                      <input
-                        type="text"
-                        class="form-control w-25"
-                        v-model="fetchVacancy.client_rate"
-                        @input="handleInput('client_rate', $event.target.value)"
-                        maxlength="3"
-                        @keydown="allowNumbersOnly($event)"
-                        readonly
-                      />
+                      <div class="input-container">
+                        <span class="currency-symbol">£</span>
+                        <input
+                          type="text"
+                          class="form-control w-25"
+                          v-model="fetchVacancy.client_rate"
+                          @input="handleInput('client_rate', $event.target.value)"
+                          maxlength="3"
+                          @keydown="allowNumbersOnly($event)"
+                        />
+                      </div>
                       <span
                         v-if="!validationClientRate && fetchVacancy.client_rate"
                         class="text-danger"
@@ -226,13 +228,16 @@
                     <div class="col-10 d-flex gap-2">
                       <div>
                         <label class="form-label" for="staffRate">Self Employee</label>
-                        <input
-                          type="text"
-                          class="form-control w-100"
-                          v-model="fetchVacancy.staff_rate"
-                          @input="handleInput('staff_rate', $event.target.value)"
-                          readonly
-                        />
+                        <div class="input-container">
+                          <span class="currency-symbol">£</span>
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="fetchVacancy.staff_rate"
+                            @input="handleInput('staff_rate', $event.target.value)"
+                            @keydown="allowNumbersOnly($event)"
+                          />
+                        </div>
                         <span
                           v-if="!validationStaffRate && fetchVacancy.staff_rate"
                           class="text-danger"
@@ -243,15 +248,17 @@
 
                       <div>
                         <label class="form-label" for="umbrella">Umbrella</label>
-                        <input
-                          type="text"
-                          class="form-control w-100"
-                          v-model="fetchVacancy.umbrella"
-                          @input="handleInput('umbrella', $event.target.value)"
-                          maxlength="3"
-                          @keydown="allowNumbersOnly($event)"
-                          readonly
-                        />
+                        <div class="input-container">
+                          <span class="currency-symbol">£</span>
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="fetchVacancy.umbrella"
+                            @input="handleInput('umbrella', $event.target.value)"
+                            maxlength="3"
+                            @keydown="allowNumbersOnly($event)"
+                          />
+                        </div>
                         <span
                           v-if="!validationUmbrella && fetchVacancy.umbrella"
                           class="text-danger"
@@ -262,15 +269,17 @@
 
                       <div>
                         <label class="form-label" for="paye">Paye</label>
-                        <input
-                          type="text"
-                          class="form-control w-100"
-                          v-model="fetchVacancy.paye"
-                          @input="handleInput('paye', $event.target.value)"
-                          maxlength="3"
-                          @keydown="allowNumbersOnly($event)"
-                          readonly
-                        />
+                        <div class="input-container">
+                          <span class="currency-symbol">£</span>
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="fetchVacancy.paye"
+                            @input="handleInput('paye', $event.target.value)"
+                            maxlength="3"
+                            @keydown="allowNumbersOnly($event)"
+                          />
+                        </div>
                         <span
                           v-if="!validationPaye && fetchVacancy.paye"
                           class="text-danger"
@@ -283,15 +292,17 @@
                         <label class="form-label" for="privateLimited"
                           >Private Limited</label
                         >
-                        <input
-                          type="text"
-                          class="form-control w-100"
-                          v-model="fetchVacancy.private_limited"
-                          @input="handleInput('private_limited', $event.target.value)"
-                          maxlength="3"
-                          @keydown="allowNumbersOnly($event)"
-                          readonly
-                        />
+                        <div class="input-container">
+                          <span class="currency-symbol">£</span>
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            v-model="fetchVacancy.private_limited"
+                            @input="handleInput('private_limited', $event.target.value)"
+                            maxlength="3"
+                            @keydown="allowNumbersOnly($event)"
+                          />
+                        </div>
                         <span
                           v-if="!validationPrivateLimited && fetchVacancy.private_limited"
                           class="text-danger"
@@ -650,7 +661,9 @@ export default {
         this.fetchVacancy.start_time = response.data.start_time;
         this.fetchVacancy.end_time = response.data.end_time;
         this.fetchVacancy.break = response.data.break;
-        this.fetchVacancy.staff_rate = response.data.staff_rate;
+        if (response.data.staff_rate) {
+          this.fetchVacancy.staff_rate = response.data.staff_rate.replace(/£/g, "");
+        }
         this.fetchVacancy.client_rate = response.data.client_rate;
         this.fetchVacancy.paye = response.data.paye;
         this.fetchVacancy.umbrella = response.data.umbrella;
@@ -871,6 +884,22 @@ select {
 
   border-radius: 4px;
   border: 1px solid #80808059;
+}
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.currency-symbol {
+  position: absolute;
+  left: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+input.form-control {
+  padding-left: 25px;
 }
 .modal {
   --bs-modal-width: 841px;
