@@ -80,8 +80,11 @@
                   @click="editVacancyId(data.id)"
                 ></i> -->
                 &nbsp;&nbsp;
-                <button class="btn btn-outline-danger text-nowrap">
-                  <i class="bi bi-trash" v-on:click="confirmed(data.id)"></i>
+                <button
+                  class="btn btn-outline-danger text-nowrap"
+                  v-on:click="confirmed(data.id)"
+                >
+                  <i class="bi bi-trash"></i>
                 </button>
               </td>
             </tr>
