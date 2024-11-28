@@ -5029,7 +5029,7 @@ export default {
       type: Number,
       required: true,
     },
-    ids: {
+    rate_ids: {
       type: Array,
       required: true,
     },
@@ -5337,7 +5337,7 @@ export default {
       },
     },
 
-    ids: {
+    rate_ids: {
       immediate: true,
       handler(newIds) {
         if (newIds.length > 0) {

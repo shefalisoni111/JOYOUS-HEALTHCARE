@@ -186,9 +186,14 @@
                       <thead>
                         <tr>
                           <th>
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" />
-                            </div>
+                            <!-- <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                v-model="checkedAll"
+                                @change="toggleSelectAll"
+                              />
+                            </div> -->
                           </th>
                           <!-- <th scope="col">ID</th> -->
                           <th scope="col">Client</th>
@@ -215,7 +220,7 @@
                       >
                         <tr>
                           <td>
-                            <div class="form-check">
+                            <!-- <div class="form-check">
                               <input
                                 class="form-check-input"
                                 type="checkbox"
@@ -224,7 +229,7 @@
                                 v-model="checkedClient[data.id]"
                                 @change="handleCheckboxChange(data.id)"
                               />
-                            </div>
+                            </div> -->
                           </td>
 
                           <td>
@@ -435,8 +440,18 @@
                           :key="rate.id"
                         >
                           <td>
-                            <div class="form-check">
+                            <!-- <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
+                            </div> -->
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                :value="rate.id"
+                                :id="rate.id"
+                                v-model="checkedClient[rate.id]"
+                                @change="handleCheckboxChange(rate.id)"
+                              />
                             </div>
                           </td>
                           <td>{{ rate.client }}</td>
@@ -498,9 +513,9 @@
                       <thead>
                         <tr>
                           <th>
-                            <div class="form-check">
+                            <!-- <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
-                            </div>
+                            </div> -->
                           </th>
                           <th scope="col">Client</th>
                           <th scope="col">Site</th>
@@ -724,7 +739,7 @@
       :RateRulesId="selectedRatesRulesId || 0"
       :SiteID="selectedSiteID || 0"
       :jobID="selectedJobID || 0"
-      :ids="ids"
+      :rate_ids="rate_ids"
       :ClientID="selectedClientID || 0"
       @editMultipleUpdatedRateRules="getRateRulesDataMethod"
       ref="multipleEdit_rate_rules"
@@ -771,7 +786,7 @@ export default {
       filteredRateRulesData: [],
       checkedClient: reactive({}),
       // checkedClient: {},
-      ids: [],
+      rate_ids: [],
       errorMessageFilter: "",
       searchQuery: null,
       debounceTimeout: null,
@@ -976,9 +991,9 @@ export default {
         queryParams.search = this.localSearchQuery;
       }
       if (exportType === "all") {
-        queryParams.ids = [];
+        queryParams.rate_ids = [];
       } else {
-        if (!this.ids || this.ids.length === 0) {
+        if (!this.rate_ids || this.rate_ids.length === 0) {
           // alert("Please select at least one Site.");
           Swal.fire({
             icon: "warning",
@@ -988,10 +1003,10 @@ export default {
           });
           return;
         }
-        if (this.ids.length > 0) {
-          queryParams.ids = this.ids;
+        if (this.rate_ids.length > 0) {
+          queryParams.rate_ids = this.rate_ids;
         } else {
-          queryParams.ids = [];
+          queryParams.rate_ids = [];
         }
       }
       // const filterName = this.getFilterName(this.selectedFilter);
@@ -1011,7 +1026,7 @@ export default {
               this.downloadOneCSV(csvData, filename);
               const message = "Export file downloaded successfully";
               this.$refs.successAlert.showSuccess(message);
-              this.ids = [];
+              this.rate_ids = [];
               for (let key in this.checkedClient) {
                 this.checkedClient[key] = false;
               }
@@ -1020,7 +1035,7 @@ export default {
         })
         .catch((error) => {})
         .finally(() => {
-          this.ids = [];
+          this.rate_ids = [];
         });
     },
     blobToText(blob) {
@@ -1096,7 +1111,7 @@ export default {
       // }, 400);
     },
     extractFilteredRateRulesIds() {
-      this.ids = this.filteredRateRulesData.map((rate) => rate.id);
+      this.rate_ids = this.filteredRateRulesData.map((rate) => rate.id);
     },
     async getClientFetchSiteMethod() {
       if (!this.client_id) {
@@ -1134,16 +1149,16 @@ export default {
     },
     handleCheckboxChange(dataId) {
       if (this.checkedClient[dataId]) {
-        if (!this.ids.includes(dataId)) {
-          this.ids.push(dataId);
+        if (!this.rate_ids.includes(dataId)) {
+          this.rate_ids.push(dataId);
         }
       } else {
-        const index = this.ids.indexOf(dataId);
+        const index = this.rate_ids.indexOf(dataId);
         if (index !== -1) {
-          this.ids.splice(index, 1);
+          this.rate_ids.splice(index, 1);
         }
       }
-      // console.log("Updated ids array:", this.ids);
+      // console.log("Updated rate_ids array:", this.rate_ids);
     },
     editRateRulesMultiId(RateRulesId, siteID, jobID, job, clientID) {
       this.selectedRatesRulesId = RateRulesId;
@@ -1317,7 +1332,7 @@ export default {
     this.getClientFetchSiteMethod();
   },
   created() {
-    this.ids = this.groupedRateRulesData.map((data) => data.id);
+    this.rate_ids = this.groupedRateRulesData.map((data) => data.id);
 
     this.groupedRateRulesData.forEach((data) => {
       this.$set(this.checkedClient, data.id, false);
