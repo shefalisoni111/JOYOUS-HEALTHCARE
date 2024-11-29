@@ -157,16 +157,22 @@
                             </td>
                             <td scope="col">
                               <router-link
+                                v-if="data?.site_id_and_client_id?.client_id"
                                 class="text-black text-decoration-none fw-bold"
                                 :to="{
                                   name: 'SingleClientProfile',
                                   params: { id: data?.site_id_and_client_id?.client_id },
                                 }"
-                                >{{ data.client }}</router-link
                               >
+                                {{ data.client }}
+                              </router-link>
+                              <span v-else>
+                                {{ data.client }}
+                              </span>
                             </td>
                             <td scope="col">
                               <router-link
+                                v-if="data?.site_id_and_client_id?.site_id"
                                 class="text-black text-decoration-none fw-bold"
                                 :to="{
                                   name: 'SingleSiteprofile',
@@ -174,6 +180,9 @@
                                 }"
                                 >{{ data.site }}</router-link
                               >
+                              <span v-else>
+                                {{ data.site }}
+                              </span>
                             </td>
                             <td scope="col">{{ data.job }}</td>
                             <td scope="col">{{ data.shift }}</td>
@@ -286,16 +295,22 @@
                             </td>
                             <td scope="col">
                               <router-link
+                                v-if="data?.site_id_and_client_id?.client_id"
                                 class="text-black text-decoration-none fw-bold"
                                 :to="{
                                   name: 'SingleClientProfile',
                                   params: { id: data?.site_id_and_client_id?.client_id },
                                 }"
-                                >{{ data.client }}</router-link
                               >
+                                {{ data.client }}
+                              </router-link>
+                              <span v-else>
+                                {{ data.client }}
+                              </span>
                             </td>
                             <td scope="col">
                               <router-link
+                                v-if="data?.site_id_and_client_id?.site_id"
                                 class="text-black text-decoration-none fw-bold"
                                 :to="{
                                   name: 'SingleSiteprofile',
@@ -303,6 +318,9 @@
                                 }"
                                 >{{ data.site }}</router-link
                               >
+                              <span v-else>
+                                {{ data.site }}
+                              </span>
                             </td>
                             <td scope="col">{{ data.job }}</td>
                             <td scope="col">{{ data.shift }}</td>
@@ -531,26 +549,7 @@ export default {
       return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
     },
   },
-  watch: {
-    selectedCandidate(newValue) {
-      if (newValue !== "") {
-        this.makeFilterAPICall("candidate", newValue);
-      } else {
-      }
-    },
-    client_id(newValue) {
-      if (newValue !== "") {
-        this.makeFilterAPICall("client", newValue);
-      } else {
-      }
-    },
-    site_id(newValue) {
-      if (newValue !== "") {
-        this.makeFilterAPICall("site", newValue);
-      } else {
-      }
-    },
-  },
+  watch: {},
 
   methods: {
     async ApproveMethod(id) {
@@ -679,69 +678,11 @@ export default {
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
-    // async vacancyDeleteMethod(id) {
-    //   if (!window.confirm("Are you Sure ?")) {
-    //     return;
-    //   }
-    //   const token = localStorage.getItem("token");
-    //   await axios
-    //     .delete(`${VITE_API_URL}/vacancies/` + id, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => {
-    //       this.createVacancy();
-    //     });
-    //   // alert("Record Deleted ");
-    // },
-    filterData() {
-      let filterType = "";
-      let filterValue = "";
 
-      if (this.client_id) {
-        filterType = "client";
-        filterValue = this.client_id;
-      } else if (this.site_id) {
-        filterType = "site";
-
-        filterValue = this.site_id;
-      } else if (this.selectedCandidate) {
-        filterType = "candidate";
-        filterValue = this.selectedCandidate;
-      }
-
-      this.makeFilterAPICall(filterType, filterValue);
-    },
-    async makeFilterAPICall(filterType, filterValue) {
-      const token = localStorage.getItem("token");
-      try {
-        const response = await axios.get(`${VITE_API_URL}/filter_sign_timesheets`, {
-          params: {
-            filter_type: filterType,
-            filter_value: filterValue,
-          },
-          headers: {
-            "content-type": "application/json",
-            Authorization: "bearer " + token,
-          },
-        });
-        this.getSignedTimeSheetData = response.data.sign_timesheets || [];
-        this.errorMessageFilter = "";
-      } catch (error) {
-        if (error.response) {
-          this.errorMessageFilter = error.response.data.error || "Data Not Found!";
-        } else {
-          this.errorMessageFilter = "Data Not Found!";
-        }
-        this.getSignedTimeSheetData = [];
-      }
-    },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
-      // this.signedTimeSheetMethod();
+      this.signedTimeSheetMethod();
     },
     async signedTimeSheetMethod() {
       this.isLoading = true;
