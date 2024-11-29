@@ -1,6 +1,71 @@
 <template>
   <div>
     <div class="row">
+      <div class="d-flex gap-3">
+        <div class="d-flex gap-3">
+          <div>
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              v-model="site_id"
+              @change="onSiteChange"
+            >
+              <option value="" disabled>All Site</option>
+              <option
+                v-for="option in siteData"
+                :key="option.id"
+                :value="option.id"
+                :id="option.id"
+                aria-placeholder="Select Job"
+              >
+                {{ option.site_name }}
+              </option>
+            </select>
+          </div>
+          <div>
+            <select
+              class="form-select"
+              v-model="site_shift_id"
+              id="selectShifts"
+              @change="filterData"
+            >
+              <option value="" disabled>All Shift</option>
+              <option
+                v-for="option in shiftsTime"
+                :key="option.id"
+                :value="option.id"
+                aria-placeholder="Select Job"
+              >
+                {{ option.shift_name.replace(/_/g, " ") }}
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <select
+              class="form-select"
+              v-model="job_id"
+              id="selectJobTitle"
+              @change="filterData"
+            >
+              <option value="" disabled>All Jobs</option>
+              <option v-for="option in options" :key="option.id" :value="option.id">
+                {{ option.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <button
+            type="button"
+            class="btn btn-outline-success text-nowrap"
+            @click="exportOneFile('all')"
+          >
+            <i class="bi bi-filetype-csv"></i> Export CSV
+          </button>
+        </div>
+      </div>
+      &nbsp;&nbsp;
       <div class="col-12 wrapper-vacancy">
         <table class="table vacancyTable">
           <thead>
@@ -22,8 +87,8 @@
             <tr v-for="data in getShiftAssignData" :key="data.id">
               <td scope="col">{{ data.id }}</td>
               <td scope="col">{{ data.ref_code }}</td>
-              <td scope="col">{{ data.site }}</td>
-              <td scope="col">{{ data.job_title }}</td>
+              <td scope="col">{{ data.site_name }}</td>
+              <td scope="col">{{ data.job_name }}</td>
               <td class="widthDefine">
                 <span v-for="(date, index) in data.dates" :key="index">
                   {{ date }}
@@ -31,9 +96,11 @@
                   <template v-if="index !== data.dates.length - 1">, </template>
                 </span>
               </td>
-              <td scope="col">{{ data.site_shift }}</td>
-              <td scope="col">{{ data.assigned_vacancy }}</td>
-              <td scope="col"></td>
+              <td scope="col">{{ data.shift }}</td>
+              <td scope="col">{{ data.assigned }}</td>
+              <td scope="col">
+                <i class="bi bi-trash cursor-pointer" v-on:click="confirmed(data.id)"></i>
+              </td>
             </tr>
           </tbody>
           <tbody v-else>
@@ -67,16 +134,43 @@ export default {
       getShiftAssignData: [],
       CurrentWekShift: [],
       isLoading: false,
+      // siteData: [],
+      site_id: "",
+      client_id: null,
+      clientData: [],
+      job_id: "",
+      // options: [],
+      shiftsTime: [],
+      businessUnit: [],
+      selectedSiteId: null,
+      selectedJobId: null,
+
+      selectedJobId: "",
+      site_shift_id: "",
     };
   },
   components: { Loader },
   props: {
     startDate: Date,
     currentView: String,
+    options: Array,
+
+    siteData: Array,
   },
   watch: {
     startDate: "fetchData",
     currentView: "fetchData",
+  },
+  computed: {
+    selectClients() {
+      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      return this.client_id;
+    },
+
+    selectShifts() {
+      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
+      return shifts_id ? shifts_id.shift_name : "";
+    },
   },
   methods: {
     async fetchData() {
@@ -122,25 +216,197 @@ export default {
       const requestData = {
         date: formatDate(startOfRange),
         filter_type: this.currentView === "weekly" ? "week" : "month",
-        // status: "assigned",
+        status: "deleted",
       };
       try {
-        const response = await axios.get(`${VITE_API_URL}/find_deleted_vacancies`, {
-          params: requestData,
-          headers: {
-            "content-type": "application/json",
-            Authorization: "bearer " + token,
-          },
-        });
-        this.getShiftAssignData = response.data.vacancies_data;
+        const response = await axios.get(
+          `${VITE_API_URL}/client_dashboard/shift_filter`,
+          {
+            params: requestData,
+            headers: {
+              "content-type": "application/json",
+              Authorization: "bearer " + token,
+            },
+          }
+        );
+        this.getShiftAssignData = response.data.data;
       } catch (error) {
         // console.error("Error fetching data:", error);
       }
+    },
+    formatDates(date) {
+      const d = new Date(date);
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      const year = d.getFullYear();
+
+      return `${day}/${month}/${year}`;
+    },
+    async onSiteChange() {
+      this.filterData();
+      const selectSite = this.site_id;
+      await this.getTimeShift(selectSite);
+    },
+    async filterData() {
+      const token = localStorage.getItem("token");
+
+      const params = {
+        date: this.formatDates(this.startDate),
+        "shift[site_id]": this.site_id,
+        filter_type: this.currentView === "weekly" ? "week" : "month",
+        status: "opened",
+        "shift[client_id]": localStorage.getItem("c_unique"),
+        "shift[job_id]": this.job_id,
+        page: 1,
+      };
+
+      // if (this.localSearchQuery) {
+      //   params.search = this.localSearchQuery;
+      // }
+
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/client_dashboard/shift_filter`,
+          {
+            params,
+            headers: {
+              "content-type": "application/json",
+              Authorization: "bearer " + token,
+            },
+          }
+        );
+        this.getShiftAssignData = response.data.data;
+      } catch (error) {
+        // console.error("Error fetching filtered data:", error);
+      }
+    },
+    async getTimeShift(selectionSite) {
+      if (!selectionSite) {
+        return;
+      }
+      try {
+        const response = await axios.get(`${VITE_API_URL}/site_shift/${selectionSite}`);
+
+        this.shiftsTime =
+          response.data.site_shift_data.map((shift) => ({
+            ...shift,
+            start_time: shift.start_time,
+            end_time: shift.end_time,
+            site_shift_id: shift.id,
+          })) || [];
+        // console.log(this.shiftsTime);
+      } catch (error) {
+        // console.error("Error fetching shifts:", error);
+      }
+    },
+    exportOneFile(exportType) {
+      const token = localStorage.getItem("token");
+      const queryParams = {
+        date: this.formatDates(this.startDate),
+        "shift[site_id]": this.site_id,
+        filter_type: this.currentView === "weekly" ? "week" : "month",
+        status: "opened",
+        "shift[client_id]": localStorage.getItem("c_unique"),
+        "shift[job_id]": this.job_id,
+        format: "csv",
+      };
+
+      if (exportType === "all") {
+        queryParams.client_ids = [];
+      } else {
+        if (!this.clientId || this.clientId.length === 0) {
+          Swal.fire({
+            icon: "info",
+            title: "No Client Selected",
+            text: "Please select at least one Client.",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+        if (this.clientId.length > 0) {
+          queryParams.client_ids = this.clientId;
+        } else {
+          queryParams.client_ids = [];
+        }
+      }
+
+      return axios
+        .get(`${VITE_API_URL}/client_dashboard/shift_filter`, {
+          params: queryParams,
+          headers: {
+            Accept: "text/csv",
+            Authorization: "bearer " + token,
+          },
+          responseType: "blob",
+        })
+        .then((response) => {
+          this.blobToText(response.data)
+            .then((csvData) => {
+              const filename = "ClientShift.csv";
+              this.downloadOneCSV(csvData, filename);
+              const message = "Export file downloaded successfully";
+              this.$refs.successAlert.showSuccess(message);
+              this.clientId = [];
+              for (let key in this.checkedClient) {
+                this.checkedClient[key] = false;
+              }
+            })
+            .catch((error) => {});
+        })
+        .catch((error) => {})
+        .finally(() => {
+          this.clientId = [];
+        });
+    },
+
+    blobToText(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          resolve(reader.result);
+        };
+        reader.onerror = reject;
+        reader.readAsText(blob);
+      });
+    },
+
+    combineCsvData(csvDataArray) {
+      let combinedCsvData = "";
+      csvDataArray.forEach((csvData, index) => {
+        if (index > 0) {
+          const lines = csvData.split("\n");
+          lines.shift();
+          csvData = lines.join("\n");
+        }
+
+        combinedCsvData += csvData;
+        if (index < csvDataArray.length - 1) {
+          combinedCsvData += "\n";
+        }
+      });
+      return combinedCsvData;
+    },
+    downloadOneCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv" });
+
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+
+      document.body.appendChild(a);
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
     },
   },
   mounted() {
     this.fetchData();
     // this.currentWeekClientShift();
+    // this.getClientFetchSiteMethod();
+    // this.getSiteNameMethod();
   },
 };
 </script>

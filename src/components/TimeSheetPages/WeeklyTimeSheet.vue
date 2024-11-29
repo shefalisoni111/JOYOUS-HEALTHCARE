@@ -552,6 +552,8 @@ export default {
       mergedTimesheetsArray: [],
       total_hourMain: [],
       candidateHoursMap: {},
+      candidateCostsMap: "",
+      candidateApprovedByMap: "",
       vacancyList: [],
       currentPage: 1,
       itemsPerPage: 10,
@@ -950,7 +952,7 @@ export default {
           );
 
           if (isCustomTimesheets) {
-            params["weekly_timesheet[date]"] = this.selectedCandidate;
+            params["weekly_timesheet[date]"] = this.formatDates(start);
           } else {
           }
         }
@@ -1094,9 +1096,19 @@ export default {
           if (total_week_hours !== undefined && total_week_hours !== null) {
             candidateHoursMap[candidate_id] = total_week_hours;
           }
+          // if (total_week_cost !== undefined && total_week_cost !== null) {
+          //   candidateCostsMap[candidate_id] = total_week_cost;
+          // }
+
+          // if (approved_by !== undefined && approved_by !== null) {
+          //   candidateApprovedByMap[candidate_id] = approved_by;
+          // }
         });
 
         this.mergedTimesheetsArray = mergedTimesheetsArray;
+
+        // this.candidateCostsMap = candidateCostsMap;
+        // this.candidateApprovedByMap = candidateApprovedByMap;
 
         if (this.mergedTimesheetsArray.length === 0) {
           this.errorMessage = "No Weekly timesheets found for the specified week.";

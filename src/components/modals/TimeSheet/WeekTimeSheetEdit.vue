@@ -153,8 +153,8 @@
                           </label>
                         </div>
                         <div class="col-12">
-                          <!-- <div v-if="showValueCustom">
-                            <select
+                          <div>
+                            <!-- <select
                               id="selectHour"
                               class="form-control"
                               v-model="startTime.hour"
@@ -200,8 +200,8 @@
                               <option value="AM">AM</option>
                               <option value="PM">PM</option>
                             </select>
-                          </div>
-                          <input
+                          </div> -->
+                            <!-- <input
                             v-else
                             type="text"
                             class="form-control custom-disabled"
@@ -209,29 +209,30 @@
                             disabled
                           /> -->
 
-                          <input
-                            v-if="!showValueCustom"
-                            type="text"
-                            class="form-control custom-disabled"
-                            v-model="fetchCustomTimeShetData.start_time"
-                            disabled
-                          />
-                          <select
-                            v-else
-                            id="selectCustomStartTime"
-                            class="form-control"
-                            v-model="fetchCustomTimeShetData.start_time"
-                            @change="validateStartTime"
-                            style="width: 240px"
-                          >
-                            <option
-                              v-for="hour in 24"
-                              :key="hour"
-                              :value="formatTime(hour)"
+                            <input
+                              v-if="!showValueCustom"
+                              type="text"
+                              class="form-control custom-disabled"
+                              v-model="fetchCustomTimeShetData.start_time"
+                              disabled
+                            />
+                            <select
+                              v-else
+                              id="selectCustomStartTime"
+                              class="form-control"
+                              v-model="fetchCustomTimeShetData.start_time"
+                              @change="validateStartTime"
+                              style="width: 240px"
                             >
-                              {{ formatTime(hour) }}
-                            </option>
-                          </select>
+                              <option
+                                v-for="hour in 24"
+                                :key="hour"
+                                :value="formatTime(hour)"
+                              >
+                                {{ formatTime(hour) }}
+                              </option>
+                            </select>
+                          </div>
                         </div>
                       </div>
                       <!-- <div class="mb-3">
@@ -294,7 +295,8 @@
                             </option>
                           </select> -->
                         </div>
-                        <!-- <div class="col-12" v-else>
+                      </div>
+                      <!-- <div class="col-12" v-else>
                           <input
                             v-if="!showValueCustom"
                             type="text"
@@ -322,19 +324,7 @@
                           </select>
                          
                         </div> -->
-                      </div>
-                      <!-- <div class="mb-3">
-                        <div class="col-12">
-                          <label class="form-label">Break</label>
-                        </div>
-                        <div class="col-12 mt-1">
-                          <input
-                            type="email"
-                            class="form-control"
-                            v-model="fetchCustomTimeShetData.break"
-                          />
-                        </div>
-                      </div> -->
+
                       <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label" for="selectShiftsBreak"
@@ -650,12 +640,12 @@ export default {
         status: "",
         start_comment: "",
       },
-      startTime: {
-        hour: "",
-        minute: "",
-        period: "",
-      },
-      minutes: Array.from({ length: 60 }, (_, i) => String(i).padStart(2, "0")),
+      // startTime: {
+      //   hour: "",
+      //   minute: "",
+      //   period: "",
+      // },
+      // minutes: Array.from({ length: 60 }, (_, i) => String(i).padStart(2, "0")),
       apiResponse: "",
       showValueCustom: "false",
       apiResponse_EndTime: "",
@@ -678,6 +668,7 @@ export default {
     },
   },
   components: { SuccessAlert },
+
   computed: {
     getCandidatesData() {
       return this.$store.state.candidates;
@@ -741,21 +732,7 @@ export default {
     validatePaperTimeSheet() {
       this.validationPaperTimeSheet = !this.fetchCustomTimeShetData.paper_timesheet;
     },
-    // validateStartTime() {
-    //   const hour = this.fetchCustomTimeShetData.start_hour;
-    //   const minute = this.fetchCustomTimeShetData.start_minute;
-    //   this.fetchCustomTimeShetData.start_time = `${String(hour).padStart(
-    //     2,
-    //     "0"
-    //   )}:${String(minute).padStart(2, "0")}`;
-    // },
-    // validateEndTime() {
-    //   const hour = this.fetchCustomTimeShetData.start_hour;
-    //   const minute = this.fetchCustomTimeShetData.start_minute;
-    //   this.fetchCustomTimeShetData.end_time = `${String(hour).padStart(2, "0")}:${String(
-    //     minute
-    //   ).padStart(2, "0")}`;
-    // },
+
     async handleApproveAndSave() {
       try {
         await this.updateCandidateMethod();
@@ -797,56 +774,57 @@ export default {
 
       const token = localStorage.getItem("token");
 
-      try {
-        if (this.paginatedTimesheets.some((ts) => ts.sheet_type === "CustomTimeSheet")) {
-          try {
-            const response = await axios.get(
-              `${VITE_API_URL}/custom_timesheets/${this.vacancyId}`,
-              {
-                headers: {
-                  "content-type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
+      if (this.paginatedTimesheets.some((ts) => ts.sheet_type === "CustomTimeSheet")) {
+        try {
+          const response = await axios.get(
+            `${VITE_API_URL}/custom_timesheets/${this.vacancyId}`,
+            {
+              headers: {
+                "content-type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
 
-            // const weeklyTimesheets = response.data?.weekly_timesheets || [];
-            // console.log("Fetched weekly timesheets:", this.paginatedTimesheets);
+          // const weeklyTimesheets = response.data?.weekly_timesheets || [];
+          // console.log("Fetched weekly timesheets:", this.paginatedTimesheets);
 
-            this.showValueCustom = true;
-            this.fetchCustomTimeShetData = {
-              ...response.data.custom_sheets,
-            };
-            this.originalData = { ...this.fetchCustomTimeShetData };
-            // this.parseStartTime(this.fetchCustomTimeShetData.start_time);
-          } catch (error) {
-            // console.error("Error fetching custom timesheets:", error);
-          }
+          this.showValueCustom = true;
+          this.fetchCustomTimeShetData = {
+            ...response.data.custom_sheets,
+          };
+          this.originalData = { ...this.fetchCustomTimeShetData };
+          // this.parseStartTime(this.fetchCustomTimeShetData.start_time);
+        } catch (error) {
+          // console.error("Error fetching custom timesheets:", error);
         }
+      } else {
+        return this.vacancyId === null;
+      }
+      if (this.paginatedTimesheets.some((ts) => ts.sheet_type === "SignTimeSheet")) {
+        try {
+          const fallbackResponse = await axios.get(
+            `${VITE_API_URL}/sign_timesheets/${this.vacancyId}`,
+            {
+              headers: {
+                "content-type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
 
-        if (this.paginatedTimesheets.some((ts) => ts.sheet_type === "SignTimeSheet")) {
-          try {
-            const fallbackResponse = await axios.get(
-              `${VITE_API_URL}/sign_timesheets/${this.vacancyId}`,
-              {
-                headers: {
-                  "content-type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
+          this.showValueCustom = false;
+          this.fetchCustomTimeShetData = {
+            ...fallbackResponse.data.sign_timesheets,
+          };
+          this.originalData = { ...this.fetchCustomTimeShetData };
 
-            this.showValueCustom = false;
-            this.fetchCustomTimeShetData = {
-              ...fallbackResponse.data.sign_timesheets,
-            };
-            this.originalData = { ...this.fetchCustomTimeShetData };
-          } catch (fallbackError) {
-            // console.error("Error fetching signed timesheets:", fallbackError);
-          }
+          // this.parseStartTime(this.fetchCustomTimeShetData.start_time);
+        } catch (fallbackError) {
+          // console.error("Error fetching signed timesheets:", fallbackError);
         }
-      } catch (error) {
-        // console.error("Error in fetchCustomTimeSheetData:", error);
+      } else {
+        return this.vacancyId === null;
       }
     },
     convertTimeFormat(dateTimeString) {
@@ -941,27 +919,7 @@ export default {
 
         const message = "TimeSheet updated successfully";
         this.$refs.successAlert.showSuccess(message);
-      } catch (error) {
-        // if (error.response && error.response.status === 404) {
-        //   try {
-        //     const fallbackResponse = await axios.put(
-        //       `${DEV}/update_sign_timesheet/${this.fetchCustomTimeShetData.id}`,
-        //       this.fetchCustomTimeShetData
-        //     );
-        //     this.$store.commit("updateCandidate", {
-        //       id: this.fetchCustomTimeShetData.id,
-        //       newData: fallbackResponse.data.custom_sheets,
-        //     });
-        //     this.$emit("CustomTimeSheetData-updated");
-        //     const message = "TimeSheet updated successfully via fallback";
-        //     this.$refs.successAlert.showSuccess(message);
-        //   } catch (fallbackError) {
-        //     // console.error("Error updating candidate via fallback API:", fallbackError);
-        //   }
-        // } else {
-        //   // console.error("Error updating candidate:", error);
-        // }
-      }
+      } catch (error) {}
     },
   },
   watch: {
@@ -978,22 +936,6 @@ export default {
     },
   },
 
-  async beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      const vacancyId = to.params.vacancyId;
-      if (vacancyId) {
-        vm.fetchCustomTimeSheetData(vacancyId);
-      }
-    });
-  },
-
-  async beforeRouteUpdate(to, from, next) {
-    const vacancyId = to.params.vacancyId;
-    if (vacancyId) {
-      this.fetchCustomTimeSheetData(vacancyId);
-    }
-    next();
-  },
   mounted() {},
 };
 </script>

@@ -992,16 +992,16 @@ const router = createRouter({
           },
         ]
     },
-    {
-      path: "/client/clientDashboard/booking",
-      name: "ClientBooking",
-      component: () =>
-        import("@/views/ClientDashBoard/ClientBooking.vue"),
-        meta: {
-          requiresAuth: true, requiresClient: true
-        },
+    // {
+    //   path: "/client/clientDashboard/booking",
+    //   name: "ClientBooking",
+    //   component: () =>
+    //     import("@/views/ClientDashBoard/ClientBooking.vue"),
+    //     meta: {
+    //       requiresAuth: true, requiresClient: true
+    //     },
        
-    },
+    // },
     {
       path: "/client/clientDashboard",
       name: "ClientDash",

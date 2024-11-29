@@ -15,7 +15,7 @@
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
               <form>
-                <div class="mb-3 d-flex justify-content-between">
+                <!-- <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label for="selectClients" class="form-label">Client</label>
                   </div>
@@ -36,11 +36,9 @@
                         {{ option.client_name }}
                       </option>
                     </select>
-                    <!-- <span v-if="!validationSelectedClient" class="text-danger"
-                      >Client Required</span
-                    > -->
+                  
                   </div>
-                </div>
+                </div> -->
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label class="form-label" for="selectBusinessUnit">Site</label>
@@ -87,37 +85,6 @@
                     > -->
                   </div>
                 </div>
-
-                <!-- <div class="mb-3 d-flex">
-                  <div class="col-2">
-                    <label class="form-label">Dated</label>
-                  </div>
-                  <div class="col-10">
-                    <input
-                      type="date"
-                      class="form-control w-100"
-                      v-model="selectedDate"
-                      @change="addDate"
-                      style="padding-right: 1px"
-                    />
-                    <span v-if="!validationDateType" class="text-danger"
-                      >Please choose a date from today onwards!</span
-                    >
-                    <div v-if="dates.length > 0" class="mt-2">
-                      <span
-                        v-for="(date, index) in dates"
-                        :key="index"
-                        class="badge bg-secondary me-1"
-                      >
-                        {{ date }}
-                        <button
-                          class="btn-close btn-sm"
-                          @click="removeDate(index)"
-                        ></button>
-                      </span>
-                    </div>
-                  </div>
-                </div> -->
 
                 <div class="mb-3 d-flex">
                   <div class="col-2">
@@ -260,112 +227,6 @@
                       Break Time is required
                     </span> -->
                   </div>
-                </div>
-                <div class="mb-3 d-flex">
-                  <div class="col-2">
-                    <label class="form-label" for="clientRate">Client Rate</label>
-                  </div>
-                  <div class="col-10">
-                    <input
-                      type="text"
-                      class="form-control w-25"
-                      v-model="client_rate"
-                      @input="handleInput('client_rate', client_rate)"
-                      maxlength="3"
-                    />
-
-                    <span v-if="!validationClientRate" class="text-danger">
-                      Client Rate must be must be Number.
-                    </span>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label" for="clientRate">Staff Rate</label>
-                  </div>
-                  <div class="col-10 d-flex gap-2">
-                    <div class="">
-                      <div class="">
-                        <label class="form-label" for="staffRate">Self Employee</label>
-                      </div>
-                      <div class="">
-                        <input
-                          type="text"
-                          class="form-control w-100"
-                          v-model="staff_rate"
-                          @input="handleInput('staff_rate', staff_rate)"
-                          maxlength="3"
-                        />
-                        <span v-if="!validationStaffRate" class="text-danger">
-                          Staff Rate must be must be Number.
-                        </span>
-                      </div>
-                    </div>
-
-                    <div class="">
-                      <div class="">
-                        <label class="form-label" for="umbrella">Umbrella</label>
-                      </div>
-                      <div class="">
-                        <input
-                          type="text"
-                          class="form-control w-100"
-                          v-model="umbrella"
-                          @input="handleInput('umbrella', umbrella)"
-                          maxlength="3"
-                        />
-                        <span v-if="!validationUmbrella" class="text-danger">
-                          Umbrella must be must be Number.
-                        </span>
-                      </div>
-                    </div>
-
-                    <div class="">
-                      <div class="">
-                        <label class="form-label" for="paye">Paye</label>
-                      </div>
-                      <div class="">
-                        <input
-                          type="text"
-                          class="form-control w-100"
-                          v-model="paye"
-                          @input="handleInput('paye', paye)"
-                          maxlength="3"
-                        />
-                        <span v-if="!validationPaye" class="text-danger">
-                          Paye must be must be Number.
-                        </span>
-                      </div>
-                    </div>
-
-                    <div class="">
-                      <div class="">
-                        <label class="form-label" for="privateLimited"
-                          >Private Limited</label
-                        >
-                      </div>
-                      <div class="">
-                        <input
-                          type="text"
-                          class="form-control w-100"
-                          v-model="private_limited"
-                          @input="handleInput('private_limited', private_limited)"
-                          maxlength="3"
-                        />
-                        <span v-if="!validationPrivateLimited" class="text-danger">
-                          Private Limited must be Number.
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <br />
-                </div>
-                <div class="text-danger mb-3">
-                  <span v-if="hasInteracted && !site_id">
-                    Please select a site before entering the client, Staff , Umbrella,
-                    Paye, Private limited.
-                  </span>
                 </div>
 
                 <div class="mb-3 d-flex justify-content-between">
@@ -510,11 +371,6 @@ export default {
         this.staff_required !== "" &&
         this.selectedDate !== null &&
         this.break !== null &&
-        this.client_rate !== "" &&
-        this.staff_rate !== "" &&
-        this.umbrella !== "" &&
-        this.paye !== "" &&
-        this.private_limited !== "" &&
         this.validationSelectedOptionText &&
         this.validationSelectedBusinessUnit &&
         this.validationSelectedClient &&
@@ -581,21 +437,7 @@ export default {
     notes: function (newValue) {
       this.validationNotesText = this.ValidationNotes(newValue);
     },
-    client_rate(newValue) {
-      this.validateRate("client_rate", newValue);
-    },
-    staff_rate(newValue) {
-      this.validateRate("staff_rate", newValue);
-    },
-    umbrella(newValue) {
-      this.validateRate("umbrella", newValue);
-    },
-    paye(newValue) {
-      this.validateRate("paye", newValue);
-    },
-    private_limited(newValue) {
-      this.validateRate("private_limited", newValue);
-    },
+
     isFormValid: function (newVal) {
       this.isValidForm = newVal;
     },
@@ -946,11 +788,6 @@ export default {
           start_time: this.start_time,
           end_time: this.end_time,
           break: this.break,
-          staff_rate: this.staff_rate,
-          client_rate: this.client_rate,
-          paye: this.paye,
-          umbrella: this.umbrella,
-          private_limited: this.private_limited,
         };
         if (this.end_time !== null && this.end_time !== "") {
           data.end_time = this.end_time;
@@ -1001,12 +838,16 @@ export default {
     },
 
     async getJobTitleMethod() {
-      if (!this.selectedClientId) {
-        return;
-      }
+      const token = localStorage.getItem("token");
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/job_title_for_client/${this.selectedClientId}`
+          `${VITE_API_URL}/client_dashboard/client_job_list`,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: "bearer " + token,
+            },
+          }
         );
         this.options = response.data.data;
       } catch (error) {
@@ -1200,11 +1041,7 @@ export default {
         (this.staff_required = ""),
         (this.notes = "");
       this.selectedDate = null;
-      this.client_rate = "";
-      this.staff_rate = "";
-      this.umbrella = "";
-      this.paye = "";
-      this.private_limited = "";
+
       this.hasInteracted = false;
       this.clearError();
     },
@@ -1220,9 +1057,10 @@ export default {
     next();
   },
   async mounted() {
-    await this.getClientMethod();
+    await this.getSiteAccordingClientMethod();
 
     // await this.getTimeShift();
+    this.getJobTitleMethod();
     this.isValidForm = this.isFormValid;
     await this.clearError();
   },

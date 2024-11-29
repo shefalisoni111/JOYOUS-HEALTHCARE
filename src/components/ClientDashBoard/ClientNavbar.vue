@@ -42,7 +42,7 @@
               Shifts
             </router-link>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <router-link
               class="nav-link"
               aria-current="page"
@@ -50,7 +50,7 @@
             >
               Bookings
             </router-link>
-          </li>
+          </li> -->
           <li class="nav-item">
             <router-link
               class="nav-link"

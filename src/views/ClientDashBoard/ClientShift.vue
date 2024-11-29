@@ -65,24 +65,6 @@
                   </div>
 
                   &nbsp;&nbsp;
-                  <select class="form-select" aria-label="Default select example">
-                    <option selected>Site</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option></select
-                  >&nbsp;&nbsp;
-                  <select class="form-select" aria-label="Default select example">
-                    <option selected>Shift</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option></select
-                  >&nbsp;&nbsp;
-                  <select class="form-select" aria-label="Default select example">
-                    <option selected>Jobs</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
                 </div>
                 <div>
                   <div>
@@ -97,15 +79,6 @@
                       + Add Shift
                     </button>
                     &nbsp;&nbsp;
-                    <button
-                      type="button"
-                      class="btn btn-outline-success text-nowrap"
-                      data-bs-toggle="modal"
-                      data-bs-target="#addVacancies"
-                      data-bs-whatever="@mdo"
-                    >
-                      <i class="bi bi-filetype-csv"></i> Export CSV
-                    </button>
                   </div>
                 </div>
               </div>
@@ -142,6 +115,8 @@
                       :is="activeComponent"
                       :startDate="startDate"
                       :currentView="currentView"
+                      :options="options"
+                      :siteData="siteData"
                     ></component>
                   </div>
                 </div>
@@ -193,6 +168,8 @@ export default {
       currentView: "weekly",
       startDate: new Date(),
       getVacancyDetail: [],
+      siteData: [],
+      options: [],
       endDate: new Date(),
       tabs: [
         { name: "Open", component: "OpenShift", routeName: "OpenShift" },
@@ -201,6 +178,7 @@ export default {
         { name: "DeletedShift", component: "DeletedShift", routeName: "DeletedShift" },
       ],
       activeTab: 0,
+
       activeTabName: "",
       currentPage: 1,
       itemsPerPage: 10,
@@ -353,6 +331,50 @@ export default {
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
+    async getClientFetchSiteMethod() {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/client_dashboard/client_job_list`,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: "bearer " + token,
+            },
+          }
+        );
+        this.options = response.data.data;
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          // Handle 404 error
+          // console.error('Error fetching client data:', error.response.data.message);
+        } else {
+          // console.error('Error fetching client data:', error);
+        }
+      }
+    },
+    async getSiteNameMethod() {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/client_dashboard/client_sites`,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: "bearer " + token,
+            },
+          }
+        );
+        this.siteData = response.data.data;
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          // Handle 404 error
+          // console.error('Error fetching client data:', error.response.data.message);
+        } else {
+          // console.error('Error fetching client data:', error);
+        }
+      }
+    },
   },
 
   created() {
@@ -363,6 +385,8 @@ export default {
     // this.createVacancy();
     this.currentView = "weekly";
     this.loadDateRangeFromLocalStorage();
+    this.getClientFetchSiteMethod();
+    this.getSiteNameMethod();
     const currentDate = new Date();
     const dayOfWeek = currentDate.getDay();
     const startOfWeek = new Date(currentDate);
