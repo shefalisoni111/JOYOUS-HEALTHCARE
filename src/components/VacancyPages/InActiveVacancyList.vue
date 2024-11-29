@@ -164,6 +164,7 @@ import axios from "axios";
 import Loader from "../Loader/Loader.vue";
 import EditVacancy from "../modals/Vacancy/EditVacancy.vue";
 import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
+import Swal from "sweetalert2";
 
 export default {
   name: "ActiveCandidate",
@@ -272,10 +273,22 @@ export default {
           this.inactiveCandidateData = response.data;
 
           this.getInactiveVacancyMethod();
-          alert("Successful Reactivate");
+          // alert("Successful Reactivate");
+          Swal.fire({
+            title: "Reactivated Successfully",
+            text: "The vacancy has been successfully reactivated.",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
         })
         .catch((error) => {
           // console.error("Error reactivating vacancy:", error);
+          Swal.fire({
+            title: "Error",
+            text: "There was an error reactivating the vacancy. Please try again.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
         });
     },
     editVacancyId(vacancyId) {

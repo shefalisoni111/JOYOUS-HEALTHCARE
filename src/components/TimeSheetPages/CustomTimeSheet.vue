@@ -626,9 +626,34 @@
         </button>
       </div>
       <div class="mx-3 mb-2" style="text-align: right" v-if="searchResults.length >= 10">
-        <button class="btn btn-outline-dark btn-sm">
-          {{ totalRecordsOnPage }} Records Per Page
-        </button>
+        <div class="dropdown d-inline-block">
+          <button
+            class="btn btn-sm btn-primary dropdown-toggle"
+            type="button"
+            id="recordsPerPageDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            {{ itemsPerPage }} Records
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+            <li>
+              <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(20)"
+                >20 Records</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(50)"
+                >50 Records</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(100)"
+                >100 Records</a
+              >
+            </li>
+          </ul>
+        </div>
         &nbsp;&nbsp;
         <button
           class="btn btn-sm btn-primary mr-2"
@@ -731,9 +756,9 @@ export default {
       const endIndex = startIndex + this.itemsPerPage;
       return this.searchResults.slice(startIndex, endIndex);
     },
-    totalRecordsOnPage() {
-      return this.paginateGetCustomTimeSheet.length;
-    },
+    // totalRecordsOnPage() {
+    //   return this.paginateGetCustomTimeSheet.length;
+    // },
     getWeekDates() {
       const currentDate = new Date();
       const weekStart = new Date(currentDate);
