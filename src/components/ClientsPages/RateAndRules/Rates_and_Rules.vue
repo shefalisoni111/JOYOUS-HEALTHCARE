@@ -904,12 +904,12 @@ export default {
       }
     },
     resetFilter() {
-      this.client_id = null;
-      this.site_id = null;
-      this.job_id = null;
+      this.client_id = "";
+      this.site_id = "";
+      this.job_id = "";
       this.localSearchQuery = "";
 
-      this.filterData();
+      this.getRateRulesDataMethod();
     },
     triggerFileInput() {
       this.$refs.fileInput.click();
