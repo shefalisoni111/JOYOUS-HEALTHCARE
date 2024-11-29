@@ -88,15 +88,15 @@
                             >
                           </li>
                           <li><hr class="dropdown-divider" /></li>
-                          <li>
+                          <!-- <li>
                             <a
                               class="dropdown-item"
                               href="#"
                               @click="exportOneFile('selected')"
                               >Export</a
                             >
-                          </li>
-                          <li><hr class="dropdown-divider" /></li>
+                          </li> -->
+                          <!-- <li><hr class="dropdown-divider" /></li> -->
                           <li>
                             <a
                               class="dropdown-item"
@@ -220,7 +220,7 @@
                       >
                         <tr :class="{ 'table-active': activeSiteId === index }">
                           <td>
-                            <div class="form-check">
+                            <!-- <div class="form-check">
                               <input
                                 class="form-check-input"
                                 type="checkbox"
@@ -229,7 +229,7 @@
                                 v-model="checkedClient[data.id]"
                                 @change="handleCheckboxChange(data.id)"
                               />
-                            </div>
+                            </div> -->
                           </td>
 
                           <td>
@@ -443,15 +443,16 @@
                             <!-- <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
                             </div> -->
-                            <div class="form-check">
+                            <!-- <div class="form-check">
                               <input
                                 class="form-check-input"
                                 type="checkbox"
-                                :value="rate.id"
-                                :id="'rate-' + rate.id"
-                                v-model="checkedClient[rate.id]"
+                                :value="data.id"
+                                :id="'group-' + data.id"
+                                v-model="checkedClient[data.id]"
+                                @change="handleCheckboxChange(data.id)"
                               />
-                            </div>
+                            </div> -->
                           </td>
                           <td>{{ rate.client }}</td>
                           <td>{{ rate.site }}</td>
@@ -1148,13 +1149,11 @@ export default {
     },
 
     handleCheckboxChange(groupId) {
-      const groupChecked = this.checkedClient[groupId];
-      const relatedRates = this.filteredRateRulesData.filter(
-        (rate) => rate.groupId === groupId
-      );
+      // const groupChecked = this.checkedClient[groupId];
+      const relatedRates = this.filteredRateRulesData.filter((rate) => rate.id === id);
 
       relatedRates.forEach((rate) => {
-        this.$set(this.checkedClient, rate.id, groupChecked);
+        this.$set(this.checkedClient, rate.id);
       });
     },
     editRateRulesMultiId(RateRulesId, siteID, jobID, job, clientID) {
