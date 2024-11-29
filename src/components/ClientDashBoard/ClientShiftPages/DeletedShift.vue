@@ -99,7 +99,10 @@
               <td scope="col">{{ data.shift }}</td>
               <td scope="col">{{ data.assigned }}</td>
               <td scope="col">
-                <i class="bi bi-trash cursor-pointer" v-on:click="confirmed(data.id)"></i>
+                <i
+                  class="bi bi-trash cursor-pointer btn btn-outline-danger text-nowrap"
+                  v-on:click="confirmed(data.id)"
+                ></i>
               </td>
             </tr>
           </tbody>
@@ -126,6 +129,8 @@
 <script>
 import axios from "axios";
 import Loader from "../../Loader/Loader.vue";
+import Swal from "sweetalert2";
+
 export default {
   name: "ClientDash",
 
@@ -173,6 +178,67 @@ export default {
     },
   },
   methods: {
+    async confirmed(vacancyId) {
+      if (!vacancyId) {
+        Swal.fire({
+          icon: "error",
+          title: "Invalid Action",
+          text: "No vacancy ID provided.",
+        });
+        return;
+      }
+
+      try {
+        const confirmation = await Swal.fire({
+          title: "Are you sure?",
+          text: "Do you want to delete this vacancy?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "Cancel",
+        });
+
+        if (!confirmation.isConfirmed) {
+          return;
+        }
+
+        const response = await axios.put(
+          `${VITE_API_URL}/delete_vacancy/${vacancyId}`,
+          {},
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          Swal.fire({
+            icon: "success",
+            title: "Deleted!",
+            text: "Vacancy deleted successfully.",
+          });
+
+          this.fetchData();
+        } else {
+          console.error("Unexpected response:", response);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Unexpected error occurred.",
+          });
+        }
+      } catch (error) {
+        // Handle errors
+        // console.error("Error deleting vacancy:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: "Could not delete the vacancy. Please try again later.",
+        });
+      }
+    },
     async fetchData() {
       const token = localStorage.getItem("token");
 

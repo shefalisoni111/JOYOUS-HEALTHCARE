@@ -218,18 +218,18 @@
                         v-for="(data, index) in groupedRateRulesData"
                         :key="index"
                       >
-                        <tr>
+                        <tr :class="{ 'table-active': activeSiteId === index }">
                           <td>
-                            <!-- <div class="form-check">
+                            <div class="form-check">
                               <input
                                 class="form-check-input"
                                 type="checkbox"
                                 :value="data.id"
-                                :id="data.id"
+                                :id="'group-' + data.id"
                                 v-model="checkedClient[data.id]"
                                 @change="handleCheckboxChange(data.id)"
                               />
-                            </div> -->
+                            </div>
                           </td>
 
                           <td>
@@ -448,9 +448,8 @@
                                 class="form-check-input"
                                 type="checkbox"
                                 :value="rate.id"
-                                :id="rate.id"
+                                :id="'rate-' + rate.id"
                                 v-model="checkedClient[rate.id]"
-                                @change="handleCheckboxChange(rate.id)"
                               />
                             </div>
                           </td>
@@ -784,8 +783,8 @@ export default {
       selectedJobID: null,
       rateRulesIds: [],
       filteredRateRulesData: [],
-      checkedClient: reactive({}),
-      // checkedClient: {},
+      // checkedClient: reactive({}),
+      checkedClient: {},
       rate_ids: [],
       errorMessageFilter: "",
       searchQuery: null,
@@ -1147,18 +1146,16 @@ export default {
         }
       }
     },
-    handleCheckboxChange(dataId) {
-      if (this.checkedClient[dataId]) {
-        if (!this.rate_ids.includes(dataId)) {
-          this.rate_ids.push(dataId);
-        }
-      } else {
-        const index = this.rate_ids.indexOf(dataId);
-        if (index !== -1) {
-          this.rate_ids.splice(index, 1);
-        }
-      }
-      // console.log("Updated rate_ids array:", this.rate_ids);
+
+    handleCheckboxChange(groupId) {
+      const groupChecked = this.checkedClient[groupId];
+      const relatedRates = this.filteredRateRulesData.filter(
+        (rate) => rate.groupId === groupId
+      );
+
+      relatedRates.forEach((rate) => {
+        this.$set(this.checkedClient, rate.id, groupChecked);
+      });
     },
     editRateRulesMultiId(RateRulesId, siteID, jobID, job, clientID) {
       this.selectedRatesRulesId = RateRulesId;
