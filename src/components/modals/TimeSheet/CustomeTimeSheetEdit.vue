@@ -482,7 +482,8 @@
             </button>
 
             <button
-              v-if="fetchCustomSheetData.status === 'Approved'"
+              v-if="(status || '').trim().toLowerCase() === 'approved'"
+              :key="status"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="handleApproveAndSave"
@@ -491,6 +492,7 @@
             </button>
             <button
               v-else
+              :key="status"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="updateCustomTimeSheetMethod()"
@@ -523,7 +525,7 @@ export default {
         staff_rate: "",
         shift_name: "",
         paper_timesheet: "",
-        status: "",
+        // status: "",
         notes: "",
         start_time: "",
         end_time: "",
@@ -532,7 +534,7 @@ export default {
         custom_image: "",
       },
       options: [],
-      // status: "",
+      status: "",
       apiResponse: "",
       apiResponse_EndTime: "",
       showSaveButton: true,
@@ -550,12 +552,12 @@ export default {
     },
   },
   components: { SuccessAlert },
+
   computed: {
     buttonText() {
-      return this.fetchCustomSheetData.status &&
-        this.fetchCustomSheetData.status === "Approved"
+      return this.status && this.status.trim().toLowerCase() === "approved"
         ? "Approved"
-        : "UnApprove & Save";
+        : "Approve";
     },
     // isSaveDisabled() {
     //   return (
@@ -596,7 +598,7 @@ export default {
     },
     async handleApproveAndSave() {
       await this.updateCustomTimeSheetMethod();
-
+      this.status = "Approved";
       await this.approved_hourMethod();
     },
     formatBreakTime(minute) {
@@ -776,7 +778,7 @@ export default {
             },
           }
         );
-
+        this.status = response.data.status || this.status;
         this.$store.commit("updateCandidate", {
           id: this.fetchCustomSheetData.id,
           newData: response.data.custom_sheets,
@@ -825,7 +827,7 @@ export default {
     },
   },
   mounted() {
-    this.fetchCustomSheetDataById();
+    // this.fetchCustomSheetDataById();
   },
 };
 </script>

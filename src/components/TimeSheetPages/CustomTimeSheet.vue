@@ -535,7 +535,7 @@
                                 @click="ApproveMethod(data.id)"
                               >
                                 {{
-                                  data.status === "Approved" ? "Unapproved" : "Approve"
+                                  data.status === "Approved" ? "Approved" : "Approve"
                                 }}</button
                               >&nbsp;
                               <button
@@ -653,7 +653,7 @@
       ref="customEdit"
     />
     <loader :isLoading="isLoading"></loader>
-    <PaperTimeSheetViewVue :customDataId="selectedCustomTimesheetId" />
+    <!-- <PaperTimeSheetViewVue :customDataId="selectedCustomTimesheetId" /> -->
   </div>
 </template>
 <script>
@@ -662,7 +662,7 @@ import Navbar from "../Navbar.vue";
 import CustomeTimeSheetEdit from "../modals/TimeSheet/CustomeTimeSheetEdit.vue";
 import Loader from "../Loader/Loader.vue";
 import { reactive } from "vue";
-import PaperTimeSheetViewVue from "../modals/TimeSheet/PaperTimeSheetView.vue";
+// import PaperTimeSheetViewVue from "../modals/TimeSheet/PaperTimeSheetView.vue";
 import Swal from "sweetalert2";
 const axiosInstance = axios.create({
   headers: {
@@ -711,7 +711,7 @@ export default {
       this.$set(this.checkedSites, data.id, false);
     });
   },
-  components: { Navbar, CustomeTimeSheetEdit, Loader, PaperTimeSheetViewVue },
+  components: { Navbar, CustomeTimeSheetEdit, Loader },
   computed: {
     isSaveDisabled() {
       return !this.notes || !this.paper_timesheet || !this.start_time || !this.end_time;
@@ -721,7 +721,7 @@ export default {
         return paper_timesheet ? `${VITE_API_URL}${paper_timesheet}` : "";
       };
     },
-    getCustomTimeSheet() {
+    paginateGetCustomTimeSheet() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.getCustomTimeSheet.slice(startIndex, endIndex);
@@ -732,7 +732,7 @@ export default {
       return this.searchResults.slice(startIndex, endIndex);
     },
     totalRecordsOnPage() {
-      return this.getCustomTimeSheet.length;
+      return this.paginateGetCustomTimeSheet.length;
     },
     getWeekDates() {
       const currentDate = new Date();
@@ -886,7 +886,7 @@ export default {
 
     openEditModal(customDataId) {
       this.selectedCustomTimesheetId = customDataId;
-      this.$refs.customEdit.fetchCustomTimeSheetData(customDataId);
+      // this.$refs.customEdit.fetchCustomTimeSheetData(customDataId);
     },
 
     updateDateRange() {
@@ -1215,7 +1215,7 @@ export default {
     this.getCustomSheetMethod();
     this.getBusinessUnitMethod();
 
-    this.getCandidateListMethod();
+    // this.getCandidateListMethod();
     // this.loadDateRangeFromLocalStorage();
     // const currentDate = new Date();
     // const startOfWeek = new Date(currentDate);
