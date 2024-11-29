@@ -440,14 +440,14 @@ const router = createRouter({
         requiresAuth: true,requiresAdmin:true,
       },
     },
-    {
-      path: "/booking",
-      name: "Booking",
-      component: () => import("@/views/BookingView.vue"),
-      meta: {
-        requiresAuth: true,  requiresAdmin:true,
-      },
-    },
+    // {
+    //   path: "/booking",
+    //   name: "Booking",
+    //   component: () => import("@/views/BookingView.vue"),
+    //   meta: {
+    //     requiresAuth: true,  requiresAdmin:true,
+    //   },
+    // },
     {
       path: "/timesheet",
       name: "Timesheet",

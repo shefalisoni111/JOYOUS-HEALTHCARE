@@ -86,11 +86,11 @@
               Schedule
             </router-link>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <router-link class="nav-link" aria-current="page" to="/booking">
               Booking
             </router-link>
-          </li>
+          </li> -->
           <!-- <li class="nav-item">
             <router-link class="nav-link" aria-current="page" to="/timesheet">
               Timesheet
