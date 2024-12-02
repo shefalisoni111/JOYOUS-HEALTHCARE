@@ -4,7 +4,7 @@
     <div
       class="modal fade"
       id="editWeeklyTs"
-      aria-labelledby="editWeeklyTs"
+      aria-labelledby="editWeeklyTss"
       tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -798,8 +798,6 @@ export default {
         } catch (error) {
           // console.error("Error fetching custom timesheets:", error);
         }
-      } else {
-        return this.vacancyId === null;
       }
       if (this.paginatedTimesheets.some((ts) => ts.sheet_type === "SignTimeSheet")) {
         try {
