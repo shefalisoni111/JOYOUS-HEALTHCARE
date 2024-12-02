@@ -675,7 +675,7 @@
     <div
       class="mx-3 mb-2"
       style="text-align: right"
-      v-if="paginateCandidates?.length >= 8 && !searchResults.length"
+      v-if="getRateRulesData?.length >= 8 && !searchResults.length"
     >
       <div class="dropdown d-inline-block">
         <button
@@ -716,7 +716,7 @@
       >&nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= paginateCandidates?.length"
+        :disabled="currentPage * itemsPerPage >= getRateRulesData?.length"
         @click="currentPage++"
       >
         Next
