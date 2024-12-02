@@ -88,15 +88,15 @@
                             >
                           </li>
                           <li><hr class="dropdown-divider" /></li>
-                          <!-- <li>
+                          <li>
                             <a
                               class="dropdown-item"
                               href="#"
                               @click="exportOneFile('selected')"
                               >Export</a
                             >
-                          </li> -->
-                          <!-- <li><hr class="dropdown-divider" /></li> -->
+                          </li>
+                          <li><hr class="dropdown-divider" /></li>
                           <li>
                             <a
                               class="dropdown-item"
@@ -214,22 +214,21 @@
                       </thead>
 
                       <tbody
-                        v-if="groupedRateRulesData?.length > 0"
-                        v-for="(data, index) in groupedRateRulesData"
-                        :key="index"
+                        v-if="uniquePaginateCandidates?.length > 0"
+                        v-for="(data, index) in uniquePaginateCandidates"
+                        :key="data.id + '-' + index"
                       >
                         <tr :class="{ 'table-active': activeSiteId === index }">
                           <td>
-                            <!-- <div class="form-check">
+                            <div class="form-check">
                               <input
                                 class="form-check-input"
                                 type="checkbox"
-                                :value="data.id"
-                                :id="'group-' + data.id"
+                                :id="'checkbox-' + data.id"
                                 v-model="checkedClient[data.id]"
                                 @change="handleCheckboxChange(data.id)"
                               />
-                            </div> -->
+                            </div>
                           </td>
 
                           <td>
@@ -443,16 +442,16 @@
                             <!-- <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
                             </div> -->
-                            <!-- <div class="form-check">
+                            <div class="form-check">
                               <input
                                 class="form-check-input"
                                 type="checkbox"
-                                :value="data.id"
-                                :id="'group-' + data.id"
-                                v-model="checkedClient[data.id]"
-                                @change="handleCheckboxChange(data.id)"
+                                :value="rate.id"
+                                :id="'rate-' + rate.id"
+                                v-model="checkedClient[rate.id]"
+                                @change="handleCheckboxChange(rate.id)"
                               />
-                            </div> -->
+                            </div>
                           </td>
                           <td>{{ rate.client }}</td>
                           <td>{{ rate.site }}</td>
@@ -673,12 +672,11 @@
         </div>
       </div>
     </div>
-    <!-- <div
+    <div
       class="mx-3 mb-2"
       style="text-align: right"
-      v-if="filteredRateRulesData?.length >= 8 && !searchResults.length"
+      v-if="paginateCandidates?.length >= 8 && !searchResults.length"
     >
-      
       <div class="dropdown d-inline-block">
         <button
           class="btn btn-sm btn-primary dropdown-toggle"
@@ -718,12 +716,12 @@
       >&nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= filteredRateRulesData?.length"
+        :disabled="currentPage * itemsPerPage >= paginateCandidates?.length"
         @click="currentPage++"
       >
         Next
       </button>
-    </div> -->
+    </div>
     <AddRateRules
       @UpdatedRateRules="getRateRulesDataMethod"
       ref="add_rate_rules"
@@ -809,6 +807,20 @@ export default {
     SuccessAlert,
   },
   computed: {
+    uniquePaginateCandidates() {
+      const uniqueEntries = [];
+      const seenKeys = new Set();
+
+      this.paginateCandidates.forEach((item) => {
+        const uniqueKey = `${item.client}-${item.job}-${item.job_id}`;
+        if (!seenKeys.has(uniqueKey)) {
+          seenKeys.add(uniqueKey);
+          uniqueEntries.push(item);
+        }
+      });
+
+      return uniqueEntries;
+    },
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
@@ -856,7 +868,6 @@ export default {
   },
   methods: {
     getFilteredData(siteId) {
-      // Assuming you have a method to filter data based on site_id
       return this.filteredRateRulesData.find((rate) => rate.site_id === siteId) || {};
     },
     AddRateRules() {
@@ -1148,13 +1159,34 @@ export default {
       }
     },
 
-    handleCheckboxChange(groupId) {
-      // const groupChecked = this.checkedClient[groupId];
-      const relatedRates = this.filteredRateRulesData.filter((rate) => rate.id === id);
+    handleCheckboxChange(dataId) {
+      const selectedData = this.paginateCandidates.find((data) => data.id === dataId);
 
-      relatedRates.forEach((rate) => {
-        this.$set(this.checkedClient, rate.id);
+      if (!selectedData) {
+        return;
+      }
+
+      const { job_id, job, client_id } = selectedData;
+
+      this.paginateCandidates.forEach((data) => {
+        if (data.job_id === job_id && data.job === job && data.client_id === client_id) {
+          this.checkedClient[data.id] = this.checkedClient[dataId];
+
+          if (this.checkedClient[dataId]) {
+            if (!this.rate_ids.includes(data.id)) {
+              this.rate_ids.push(data.id);
+            }
+          } else {
+            const index = this.rate_ids.indexOf(data.id);
+            if (index !== -1) {
+              this.rate_ids.splice(index, 1);
+            }
+          }
+        }
       });
+
+      // console.log("Updated checkedClient:", this.checkedClient);
+      // console.log("Updated rate_ids:", this.rate_ids);
     },
     editRateRulesMultiId(RateRulesId, siteID, jobID, job, clientID) {
       this.selectedRatesRulesId = RateRulesId;
@@ -1328,11 +1360,11 @@ export default {
     this.getClientFetchSiteMethod();
   },
   created() {
-    this.rate_ids = this.groupedRateRulesData.map((data) => data.id);
-
-    this.groupedRateRulesData.forEach((data) => {
-      this.$set(this.checkedClient, data.id, false);
-    });
+    // console.log("Initial Data:", this.paginateCandidates);
+    // this.rate_ids = this.paginateCandidates.map((data) => data.id);
+    // this.paginateCandidates.forEach((data) => {
+    //   this.checkedClient[data.id] = false;
+    // });
   },
 };
 </script>
@@ -1340,7 +1372,7 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-
+  min-height: 40vw;
   background-color: #fdce5e17;
 }
 .main-content {
