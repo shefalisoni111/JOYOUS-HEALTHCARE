@@ -4,7 +4,7 @@
     <div
       class="modal fade"
       id="addClientSite"
-      aria-labelledby="addClientSite"
+      aria-labelledby="addClientSites"
       tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">

@@ -1,110 +1,94 @@
 <template>
   <div>
-    <span>work in progress..</span>
+    <!-- <span>work in progress..</span> -->
+    <button
+      type="button"
+      class="btn btn-outline-success text-nowrap"
+      data-bs-toggle="modal"
+      data-bs-target="#addClientUser"
+      data-bs-whatever="@mdo"
+    >
+      + Add Client User
+    </button>
     <div class="table-wrapper mt-3">
-      <!-- <table class="table clientTable">
+      <table class="table">
         <thead>
           <tr>
-            
-            <th scope="col">#RefCode</th>
-            <th scope="col">ClientName</th>
-            <th scope="col" style="width: 10%">Jobs</th>
-            <th scope="col">Address</th>
-            <th scope="col">PhoneNumber</th>
-            <th scope="col">Email</th>
-            <th scope="col">Status</th>
-            <th scope="col">Portal Access</th>
-            <th scope="col">Action</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Actions</th>
           </tr>
         </thead>
-        <tbody v-if="getClientDetail?.length > 0">
-          <tr v-for="client in getClientDetail" :key="client.id">
-           
-            <td v-text="client.ref_code"></td>
+        <tbody v-if="getClientUser?.length > 0">
+          <tr v-for="data in getClientUser" :key="data.id">
+            <td>{{ data.email }}</td>
+            <td>{{ data.password }}</td>
             <td>
-              <router-link
-                class="text-capitalize"
-                :to="{
-                  name: 'SingleClientProfile',
-                  params: { id: client.id },
-                }"
-              >
-                {{ client.first_name }}
-              </router-link>
-              
-            </td>
-            <td>
-              <span
-                v-for="(job, index) in client.job_name"
-                :key="index"
-                :style="{ backgroundColor: getColor(index) }"
-                class="p-1 me-2 pb-1 mt-5 rounded-1"
-              >
-                {{ job }}
-
-                <template v-if="index !== client.job_name.length - 1"> </template>
-              </span>
-            </td>
-
-            <td v-text="client.address"></td>
-
-            <td v-text="client.phone_number"></td>
-
-            <td v-text="client.email"></td>
-
-            <td>
-             
-              <label class="switch">
-                <input
-                  type="checkbox"
-                  id="togBtn"
-                  v-model="client.activated"
-                  @change="clientStatusChangeMethod(client.id, client.activated)"
-                  :checked="client.activated"
-                />
-                <div class="slider round"></div>
-              </label>
-            </td>
-           
-            <td>
-              <span
-                class="text-white p-1 rounded-1"
-                style="font-size: 13px"
-                :class="{
-                  'bg-success': client.activated,
-                  'bg-danger': !client.activated,
-                }"
-                >{{ client.activated ? "Active" : "No Account" }}</span
-              >
-            </td>
-            <td class="cursor-pointer">
               <button
                 type="button"
-                class="btn btn-outline-success text-nowrap text-nowrap"
+                class="btn btn-primary text-nowrap"
                 data-bs-toggle="modal"
-                data-bs-target="#editClient"
+                data-bs-target="#editClientUser"
                 data-bs-whatever="@mdo"
-                @click="editClient(client.id)"
+                @click="editsiteId(data.id)"
               >
-                <i class="bi bi-pencil-square"></i>
+                Edit
               </button>
-              &nbsp;&nbsp;
-            
-              <router-link
-                :to="{
-                  name: 'SingleClientProfile',
-                  params: { id: client.id },
-                }"
-                class="btn btn-outline-success text-nowrap"
-              >
-                <i class="bi bi-eye"></i>
-              </router-link>
             </td>
           </tr>
         </tbody>
-        
-      </table> -->
+        <tbody v-else>
+          <tr>
+            <td class="text-danger text-center mt-2" v-if="!isLoading">
+              {{ "Data Not Found!" }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+    <!-- <div v-if="getClientUser?.length > 0">
+      <div class="card mt-2" v-for="data in getClientUser" :key="data.id">
+        <div class="card-header">
+           <router-link
+          :to="{ name: 'SingleSiteprofile' }"
+          class="text-decoration-none text-black"
+          >Hospital 1</router-link
+        > 
+        </div>
+        <div class="card-body">
+          <h5 class="card-title"></h5>
+          <div class="card-text d-flex gap-3">
+           <div class="mt-3">
+              <router-link :to="{ name: 'SingleSiteprofile', params: { id: data.id } }">
+                <span class="rounded-circle p-3 text-decoration-none text-black">{{
+                  getFirstCharAndNumber(data.site_name)
+                }}</span></router-link
+              >
+            </div> 
+            <div class="">
+              <span>{{ data.email }}</span
+              ><br />
+              <span>{{ data.password }}</span
+              ><br />
+             <span>{{ data.address }}</span
+              > 
+              <br />
+            </div>
+          </div>
+          <button
+            type="button"
+            class="btn btn-primary mt-3 text-nowrap text-nowrap"
+            data-bs-toggle="modal"
+            data-bs-target="#editClientSite"
+            data-bs-whatever="@mdo"
+            @click="editsiteId(data.id)"
+          >
+            Edit
+          </button>
+        </div>
+      </div>
+    </div> -->
+
     <!-- <div class="mx-3" style="text-align: right" v-if="getClientDetail.length >= 11">
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
@@ -128,7 +112,12 @@
     </div> -->
 
     <SuccessAlert ref="successAlert" />
-    <!-- <loader :isLoading="isLoading"></loader> -->
+    <EditClientUserVue
+      :ClientUserId="selectedClientUserID || 0"
+      @updatedUser="createdClientUser"
+    />
+    <AddClientUser @addUser="createdClientUser" />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 <script>
@@ -136,12 +125,14 @@ import axios from "axios";
 
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 import Loader from "../../Loader/Loader.vue";
+import EditClientUserVue from "../../modals/Clients/EditClientUser.vue";
+import AddClientUser from "../../modals/Clients/AddClientUser.vue";
 
 export default {
   data() {
     return {
-      getClientDetail: [],
-      selectedClientID: null,
+      getClientUser: [],
+      selectedClientUserID: null,
       isActive: true,
       searchQuery: "",
       currentPage: 1,
@@ -150,23 +141,49 @@ export default {
     };
   },
 
-  components: { SuccessAlert, Loader },
+  components: { SuccessAlert, Loader, EditClientUserVue, AddClientUser },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
-      return this.getClientDetail.slice(startIndex, endIndex);
+      return this.getClientUser.slice(startIndex, endIndex);
     },
   },
   methods: {
-    // async createdClient() {
-    //   await axios
-    //     .get(`${VITE_API_URL}/clients`)
-    //     .then((response) => (this.getClientDetail = response.data.data));
-    // },
+    editsiteId(ClientUSerID) {
+      this.selectedClientUserID = ClientUSerID;
+    },
+    async createdClientUser() {
+      this.isLoading = true;
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}client_users?client_id=${this.$route.params.id}`,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        // this.getClientUser = response.data.data || [];
+        if (response.data.data) {
+          this.getClientUser = response.data.data;
+        } else {
+          this.getClientUser = [];
+        }
+        // await this.$refs.addClientUserRef.getClientFetchSiteMethod();
+      } catch (error) {
+        this.getClientUser = [];
+      } finally {
+        this.isLoading = false;
+      }
+    },
   },
   mounted() {
-    // this.createdClient();
+    this.createdClientUser();
+    // this.getClientFetchSiteMethod();
   },
 };
 </script>
