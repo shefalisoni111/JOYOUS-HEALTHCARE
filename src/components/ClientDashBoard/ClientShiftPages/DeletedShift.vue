@@ -63,6 +63,15 @@
           >
             <i class="bi bi-filetype-csv"></i> Export CSV
           </button>
+          &nbsp;&nbsp;
+
+          <button
+            :disabled="!isFilterSelected"
+            @click="resetFilters"
+            class="btn btn-secondary"
+          >
+            Reset Filters
+          </button>
         </div>
       </div>
       &nbsp;&nbsp;
@@ -83,8 +92,8 @@
               <th scope="col">Action</th>
             </tr>
           </thead>
-          <tbody v-if="getShiftAssignData?.length > 0">
-            <tr v-for="data in getShiftAssignData" :key="data.id">
+          <tbody v-if="paginatedShift?.length > 0">
+            <tr v-for="data in paginatedShift" :key="data.id">
               <td scope="col">{{ data.id }}</td>
               <td scope="col">{{ data.ref_code }}</td>
               <td scope="col">{{ data.site_name }}</td>
@@ -123,6 +132,44 @@
         /> -->
 
     <!-- <AddVacancy @addVacancy="createVacancy" /> -->
+    <div class="mt-3" style="text-align: right" v-if="getShiftAssignData?.length >= 10">
+      <button
+        class="btn btn-sm btn-primary dropdown-toggle"
+        type="button"
+        id="recordsPerPageDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {{ itemsPerPage }} Records
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+        </li>
+      </ul>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= getShiftAssignData?.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div>
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
@@ -149,7 +196,9 @@ export default {
       businessUnit: [],
       selectedSiteId: null,
       selectedJobId: null,
-
+      currentPage: 1,
+      itemsPerPage: 10,
+      totalRecords: 0,
       selectedJobId: "",
       site_shift_id: "",
     };
@@ -167,6 +216,9 @@ export default {
     currentView: "fetchData",
   },
   computed: {
+    isFilterSelected() {
+      return this.site_id || this.site_shift_id || this.job_id;
+    },
     selectClients() {
       const client_id = this.clientData.find((option) => option.id === this.client_id);
       return this.client_id;
@@ -176,8 +228,23 @@ export default {
       const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
       return shifts_id ? shifts_id.shift_name : "";
     },
+    paginatedShift() {
+      if (!this.getShiftAssignData) return [];
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.getShiftAssignData.slice(startIndex, endIndex);
+    },
+    totalPages() {
+      return Math.ceil(this.totalRecords / this.itemsPerPage);
+    },
   },
   methods: {
+    resetFilters() {
+      this.site_id = "";
+      this.site_shift_id = "";
+      this.job_id = "";
+      this.filterData();
+    },
     async confirmed(vacancyId) {
       if (!vacancyId) {
         Swal.fire({
@@ -239,6 +306,11 @@ export default {
         });
       }
     },
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.fetchData();
+    },
     async fetchData() {
       const token = localStorage.getItem("token");
 
@@ -291,7 +363,7 @@ export default {
             params: requestData,
             headers: {
               "content-type": "application/json",
-              Authorization: "bearer " + token,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -300,35 +372,26 @@ export default {
         // console.error("Error fetching data:", error);
       }
     },
-    formatDates(date) {
-      const d = new Date(date);
-      const month = String(d.getMonth() + 1).padStart(2, "0");
-      const day = String(d.getDate()).padStart(2, "0");
-      const year = d.getFullYear();
-
-      return `${day}/${month}/${year}`;
-    },
-    async onSiteChange() {
-      this.filterData();
-      const selectSite = this.site_id;
-      await this.getTimeShift(selectSite);
-    },
     async filterData() {
       const token = localStorage.getItem("token");
 
       const params = {
         date: this.formatDates(this.startDate),
-        "shift[site_id]": this.site_id,
+        // "shift[site_id]": this.site_id,
         filter_type: this.currentView === "weekly" ? "week" : "month",
-        status: "opened",
+        status: "deleted",
         "shift[client_id]": localStorage.getItem("c_unique"),
-        "shift[job_id]": this.job_id,
+        // "shift[job_id]": this.job_id,
         page: 1,
       };
 
-      // if (this.localSearchQuery) {
-      //   params.search = this.localSearchQuery;
-      // }
+      if (this.job_id) {
+        params["shift[job_id]"] = this.job_id;
+      }
+
+      if (this.site_id) {
+        params["shift[site_id]"] = this.site_id;
+      }
 
       try {
         const response = await axios.get(
@@ -346,6 +409,20 @@ export default {
         // console.error("Error fetching filtered data:", error);
       }
     },
+    formatDates(date) {
+      const d = new Date(date);
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      const year = d.getFullYear();
+
+      return `${day}/${month}/${year}`;
+    },
+    async onSiteChange() {
+      this.filterData();
+      const selectSite = this.site_id;
+      await this.getTimeShift(selectSite);
+    },
+
     async getTimeShift(selectionSite) {
       if (!selectionSite) {
         return;
@@ -371,7 +448,7 @@ export default {
         date: this.formatDates(this.startDate),
         "shift[site_id]": this.site_id,
         filter_type: this.currentView === "weekly" ? "week" : "month",
-        status: "opened",
+        status: "deleted",
         "shift[client_id]": localStorage.getItem("c_unique"),
         "shift[job_id]": this.job_id,
         format: "csv",
