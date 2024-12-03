@@ -115,6 +115,9 @@ export default {
       this.selectedClientNotesID = ClientNotesID;
     },
     async deleteClientNote(id) {
+      if (id === 0) {
+        return;
+      }
       try {
         const result = await Swal.fire({
           title: "Are you sure?",

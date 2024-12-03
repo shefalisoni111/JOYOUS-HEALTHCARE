@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <span>work in progress..</span> -->
     <button
       type="button"
       class="btn btn-outline-success text-nowrap"
@@ -34,6 +33,13 @@
               >
                 Edit
               </button>
+              &nbsp;&nbsp;
+              <button
+                class="btn btn-outline-danger text-nowrap"
+                v-on:click="deleteUser(data.id)"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
             </td>
           </tr>
         </tbody>
@@ -46,70 +52,6 @@
         </tbody>
       </table>
     </div>
-    <!-- <div v-if="getClientUser?.length > 0">
-      <div class="card mt-2" v-for="data in getClientUser" :key="data.id">
-        <div class="card-header">
-           <router-link
-          :to="{ name: 'SingleSiteprofile' }"
-          class="text-decoration-none text-black"
-          >Hospital 1</router-link
-        > 
-        </div>
-        <div class="card-body">
-          <h5 class="card-title"></h5>
-          <div class="card-text d-flex gap-3">
-           <div class="mt-3">
-              <router-link :to="{ name: 'SingleSiteprofile', params: { id: data.id } }">
-                <span class="rounded-circle p-3 text-decoration-none text-black">{{
-                  getFirstCharAndNumber(data.site_name)
-                }}</span></router-link
-              >
-            </div> 
-            <div class="">
-              <span>{{ data.email }}</span
-              ><br />
-              <span>{{ data.password }}</span
-              ><br />
-             <span>{{ data.address }}</span
-              > 
-              <br />
-            </div>
-          </div>
-          <button
-            type="button"
-            class="btn btn-primary mt-3 text-nowrap text-nowrap"
-            data-bs-toggle="modal"
-            data-bs-target="#editClientSite"
-            data-bs-whatever="@mdo"
-            @click="editsiteId(data.id)"
-          >
-            Edit
-          </button>
-        </div>
-      </div>
-    </div> -->
-
-    <!-- <div class="mx-3" style="text-align: right" v-if="getClientDetail.length >= 11">
-      <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
-      </button>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="currentPage--"
-      >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getClientDetail.length"
-        @click="currentPage++"
-      >
-        Next
-      </button>
-    </div> -->
 
     <SuccessAlert ref="successAlert" />
     <EditClientUserVue
@@ -127,6 +69,7 @@ import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 import Loader from "../../Loader/Loader.vue";
 import EditClientUserVue from "../../modals/Clients/EditClientUser.vue";
 import AddClientUser from "../../modals/Clients/AddClientUser.vue";
+import Swal from "sweetalert2";
 
 export default {
   data() {
@@ -152,6 +95,41 @@ export default {
   methods: {
     editsiteId(ClientUSerID) {
       this.selectedClientUserID = ClientUSerID;
+    },
+    async deleteUser(userId) {
+      if (!userId) {
+        return;
+      }
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "Are you sure you want to delete this User?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
+
+      if (result.isConfirmed) {
+        try {
+          const token = localStorage.getItem("token");
+          const response = await axios.delete(`${VITE_API_URL}/client_users/${userId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (response.status === 200 || response.status === 204) {
+            Swal.fire("Deleted!", "User has been deleted.", "success");
+
+            this.createdClientUser();
+          } else {
+            Swal.fire("Error", "There was an issue deleting the user.", "error");
+          }
+        } catch (error) {
+          Swal.fire("Error", "There was an issue deleting the user.", "error");
+        }
+      }
     },
     async createdClientUser() {
       this.isLoading = true;

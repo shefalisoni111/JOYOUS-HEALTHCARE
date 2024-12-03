@@ -103,6 +103,9 @@ export default {
   },
   methods: {
     async getClientNotesMethod() {
+      if (this.ClientNotesID === 0 || !this.ClientNotesID) {
+        return;
+      }
       try {
         const response = await axios.get(
           `${VITE_API_URL}/client_notes/${this.ClientNotesID}`
