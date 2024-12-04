@@ -402,39 +402,68 @@
             <div class="chat-header">
               <div class="divide_sec d-flex">
                 <img
-                  v-if="selectedCandidate.profile_photo"
+                  v-if="selectedCandidate && selectedCandidate.profile_photo"
                   :src="getProfilePhotoUrl(selectedCandidate.profile_photo)"
                   class="img-fluid"
                   alt="Profile Photo"
-                   loading="eager"
+                  loading="eager"
                 />
                 <div
                   class="else_profile"
                   v-else
-                  v-html="getProfilePhotoUrl(selectedCandidate.profile_photo)"
+                  v-html="getProfilePhotoUrl(selectedCandidate ? selectedCandidate.profile_photo : '')"
                 ></div>
                 <h5 class="mb-0 text-capitalize d-flex align-items-center ms-2">
-                  {{ selectedCandidate.first_name }}
-                  {{ selectedCandidate.last_name }}
+                  {{ selectedCandidate?.first_name || '' }}
+                  {{ selectedCandidate?.last_name || '' }}
                 </h5>
               </div>
-
               <button class="btn btn-danger btn-sm" @click="closeChatBox">
                 <i class="bi bi-x-lg"></i>
               </button>
             </div>
-            <div class="chat-messages">
-              <div
-                v-for="(message, index) in selectedCandidateMessages"
-                :key="index"
-                class="message"
+            <!-- <div class="chat-messages">
+              <div 
+                v-for="message in selectedCandidateMessages" 
+                :key="message.id"
+                :class="{
+                  'chat-message-left': message.sender?.type === 'Candidate', 
+                  'chat-message-right': message.sender?.type === 'Merchant'
+                }"
               >
-                <div class="message-sender">{{ message.sender }}</div>
-                <div class="message-content">{{ message.content }}</div>
+                <strong>{{ message.sender?.name || 'Unknown Sender' }}</strong>: {{ message.content || 'No content' }}
+              </div>
+            </div> -->
+            <div class="chat-messages">
+              <div 
+                v-for="message in selectedCandidateMessages" 
+                :key="message.id"
+                :class="{
+                  'chat-message-left': message.sender?.type === 'Candidate', 
+                  'chat-message-right': message.sender?.type === 'Merchant'
+                }"
+              >
+              
+                <div v-if="message.sender?.name && message?.is_read === true">
+                  <strong>{{ message.sender?.name || 'Unknown Receiver' }}</strong>
+                  <div>
+                    {{ message.content || 'No content' }}
+                  </div>
+                </div>
+            
+              
+                <div v-if="message.sender?.name && message?.is_read === false">
+                  <strong>{{ message.sender?.name === message.sender?.name ? 'You' : message.sender?.name || 'Unknown Sender' }}</strong>
+                  <div>
+                  {{ message.content || 'No content' }}
+                </div>
+                </div>
+            
+              
+                
               </div>
             </div>
             <div class="chat-input">
-              <!-- <input v-model="newMessage" type="text"  placeholder="Type your message" /> -->
               <input
                 ref="fileInput"
                 v-model="newMessage"
@@ -445,26 +474,21 @@
                 style="padding-bottom: 45px"
               />
             </div>
-            <div class="px-3 pb-2 d-flex justify-content-between">
-              <button
+            <div class="px-3 pb-2 d-flex justify-content-end">
+              <!-- <button
                 class="btn btn-outline-secondary"
                 type="button"
                 @click="handleClick"
               >
                 <i class="bi bi-paperclip"></i>
-              </button>
-              <button @click="sendMessage" class="btn btn-primary">Send</button>
+              </button> -->
+              <button @click="sendMessage"  :disabled="!newMessage.trim()" class="btn btn-primary flex-end">Send</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- <ConfirmationAlert
-    :show-modal="isModalVisible"
-    :message="confirmMessage"
-    @confirm="confirmCallback"
-    @cancel="canceled"
-  /> -->
+  
   </nav>
 </template>
 
@@ -492,6 +516,7 @@ export default {
       getCandidatesData: [],
       newMessage: "",
       selectedCandidate: null,
+      selectedCandidateMessages: [] ,
       messages: [],
       searchQuery: "",
       debounceTimeout: null,
@@ -503,6 +528,11 @@ export default {
       showBadge: true,
       dropdownOpen: false,
       showAll: false,
+      channelSid: "",
+    
+   
+    senderId:null,
+   
       storedImageUrl: "",
       localProfileImage: this.profileImage,
       notifications: [
@@ -515,7 +545,7 @@ export default {
     };
   },
   components:{
-    // ConfirmationAlert
+    
   },
   computed: {
     visibleNotifications() {
@@ -526,19 +556,7 @@ export default {
     isScrollable() {
       return this.notifications.length > this.visibleNotifications.length;
     },
-    // profilePhotoUrl() {
-    //   // const storedImageUrl = localStorage.getItem("profileImage");
-    //   return this.storedImageUrl || "./profile.png";
-    // },
-    selectedCandidateMessages() {
-      if (this.selectedCandidate) {
-        return this.messages.filter(
-          (message) => message.sender === this.selectedCandidate.id
-        );
-      } else {
-        return [];
-      }
-    },
+  
     computedProfileImage() {
       return this.localProfileImage; 
     },
@@ -550,6 +568,13 @@ export default {
       default: "./profile.png",
     },
   },
+  watch: {
+  selectedCandidate(newCandidate) {
+    if (newCandidate) {
+      this.fetchMessagesForCandidate(newCandidate);
+    }
+  },
+},
   methods: {
     async fetchProfileImage() {
       const token = localStorage.getItem("token");
@@ -576,14 +601,7 @@ export default {
       event.preventDefault();
       this.showAll = true; 
     },
-    // confirmed() {
-    //   this.isModalVisible = false;
-
-    //   this.confirmed();
-    // },
-    // canceled() {
-    //   this.isModalVisible = false;
-    // },
+    
     handleClickOutside(event) {
       if (!this.$el.contains(event.target)) {
         this.dropdownOpen = false; 
@@ -641,12 +659,17 @@ export default {
       }
     },
     openChat(candidate) {
+  
       this.selectedCandidate = candidate;
       this.showChatBox = true;
+       this.fetchChatChannel(candidate.id);
+      
+      
     },
     closeChatBox() {
       this.showChatBox = false;
       this.selectedCandidate = null;
+    
     },
     fetchMessagesForCandidate(candidate) {
       this.selectedCandidateMessages = this.messages.filter(
@@ -657,12 +680,137 @@ export default {
       this.selectedCandidate = candidate;
       this.showChatBox = !this.showChatBox;
     },
-    sendMessage() {
-      if (this.newMessage.trim() !== "") {
-        this.messages.push({ sender: "You", content: this.newMessage });
-        this.newMessage = "";
+    async fetchChatChannel(id) {
+      const merchantId = localStorage.getItem("merchant_id");
+      try {
+        const response = await fetch(`${VITE_API_URL}/chats/create_channel`, {
+          method: "POST",
+          body: JSON.stringify({
+            sender_id:id,
+            sender_type:"Candidate",
+            receiver_id: merchantId,
+            receiver_type: "Merchant", 
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const data = await response.json();
+        
+        if (response.ok && data.channel_sid) {
+          this.channelSid = data.channel_sid; 
+          await   this.fetchMessages(data.channel_sid)
+        } else {
+          swal.fire({
+            title: "Error!",
+            text: data.message || "Failed to create chat channel. Please try again.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      } catch (error) {
+        swal.fire({
+          title: "Error!",
+          text: "An unexpected error occurred while creating the chat channel. Please try again later.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
       }
     },
+
+
+    async sendMessage() {
+    
+      if (!this.channelSid) {
+        console.error("Channel SID is not available. Fetch the channel first.");
+        return;
+      }
+      if (this.newMessage.trim() === "") {
+      
+        return;
+      }
+
+      const tempMessage = this.newMessage; 
+
+      const token = localStorage.getItem("token");
+      try {
+        const response = await fetch(`${VITE_API_URL}/chats/send_message_to_channel`, {
+          method: "POST",
+          body: JSON.stringify({
+            channel_sid: this.channelSid,
+            message: tempMessage
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, 
+          },
+        });
+
+        const data = await response.json();
+     
+        if (response.ok) {
+      this.selectedCandidateMessages.push({
+        sender: "You",
+        content: tempMessage,
+      });
+      this.newMessage = ""; 
+      this.fetchMessages(this.channelSid) 
+      } else {
+        swal.fire({
+          title: "Error!",
+          text: data.message || "Failed to send the message. Please try again.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+      
+        if (data.success) {
+          
+          // this.fetchMessages(this.channelSid) 
+          this.newMessage = ""; 
+        } 
+      } catch (error) {
+        swal.fire({
+          title: "Error!",
+          text: "An unexpected error occurred while sending the message. Please try again.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+    },
+    async fetchMessages(channelSid)  {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(`${VITE_API_URL}/chats/fetch_messages`, {
+        params: {
+          channel_sid: channelSid, 
+        },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      
+      this.selectedCandidateMessages = response.data.messages;
+
+    
+    } catch (error) {
+      swal.fire({
+      title: "Error!",
+      text: error.response?.data?.message || "Failed to fetch messages. Please try again.",
+      icon: "error",
+      confirmButtonText: "OK",
+    });
+    }
+  },
+  closeChatBox() {
+    this.showChatBox = false;
+  },
+  handleClick() {
+    this.$refs.fileInput.click(); 
+  },
     confirmed() {
       if (localStorage.getItem("token")) {
         
@@ -715,13 +863,17 @@ export default {
 
  async mounted() {
   this.fetchProfileImage()
+
   await  this.getCandidateMethods();
   document.addEventListener('click', this.handleClickOutside);
   const merchantId = localStorage.getItem('merchant_id');
     if (merchantId) {
       this.adminLink = `/admin/${merchantId}`;
     }
- 
+    
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.handleClickOutside);
   },
   
 };
@@ -782,11 +934,6 @@ export default {
   background-color: #f6851d !important;
   color: #fff !important;
 }
-.chat-messages {
-  height: 190px;
-  overflow-y: auto;
-  padding: 10px;
-}
 
 .message {
   margin-bottom: 10px;
@@ -796,6 +943,31 @@ export default {
   font-weight: bold;
 }
 
+.chat-messages {
+ 
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  height: 222px;
+  overflow-y: auto;
+}
+
+.chat-message-left {
+  align-self: flex-start;
+  background: #f1f1f1;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 60%;
+}
+
+.chat-message-right {
+  align-self: flex-end;
+  background: #d1f7c4;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 60%;
+}
 .chat-input {
   padding: 10px;
   display: flex;
