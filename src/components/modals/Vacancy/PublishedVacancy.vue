@@ -405,6 +405,9 @@ export default {
     },
 
     async publicCandidateMail() {
+      if (!this.$store.state.selectedPublishItemId) {
+        return;
+      }
       const token = localStorage.getItem("token");
 
       if (this.$store.state.selectedPublishItemId) {
@@ -455,7 +458,33 @@ export default {
             // Handle unexpected response status
           }
         } catch (error) {
-          // Handle error
+          let errorMessage = "An error occurred while sending the notification.";
+
+          if (error.response) {
+            if (error.response.data && error.response.data.message) {
+              errorMessage = error.response.data.message;
+            } else if (error.response.status === 400) {
+              errorMessage = "Invalid request. Please check the data and try again.";
+            } else if (error.response.status === 401) {
+              errorMessage = "Unauthorized. Please log in again.";
+            } else if (error.response.status === 403) {
+              errorMessage = "You don't have permission to perform this action.";
+            } else if (error.response.status === 500) {
+              errorMessage = "Internal server error. Please try again later.";
+            }
+          } else if (error.request) {
+            errorMessage = "No response from the server. Please check your network.";
+          } else {
+            errorMessage = error.message;
+          }
+
+          Swal.fire({
+            title: "Error!",
+            text: errorMessage,
+            icon: "error",
+            confirmButtonText: "OK",
+            confirmButtonColor: "rgb(255 112 8)",
+          });
         }
       } else {
         // Handle case where selectedPublishItemId is falsy
