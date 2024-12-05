@@ -672,10 +672,10 @@
         </div>
       </div>
     </div>
-    <div
+    <!-- <div
       class="mx-3 mb-2"
       style="text-align: right"
-      v-if="getRateRulesData?.length >= 8 && !searchResults.length"
+      v-if="getRateRulesData?.length >= 10 && !searchResults.length"
     >
       <div class="dropdown d-inline-block">
         <button
@@ -709,19 +709,22 @@
       <button
         class="btn btn-sm btn-primary mr-2"
         :disabled="currentPage === 1"
-        @click="currentPage--"
+        @click="currentPage > 1 && currentPage--"
       >
         Previous</button
       >&nbsp;&nbsp; <span>{{ currentPage }}</span
       >&nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getRateRulesData?.length"
+        :disabled="
+          currentPage * itemsPerPage >= getRateRulesData?.length ||
+          getRateRulesData?.length === 0
+        "
         @click="currentPage++"
       >
         Next
       </button>
-    </div>
+    </div> -->
     <AddRateRules
       @UpdatedRateRules="getRateRulesDataMethod"
       ref="add_rate_rules"
@@ -811,7 +814,7 @@ export default {
       const uniqueEntries = [];
       const seenKeys = new Set();
 
-      this.paginateCandidates.forEach((item) => {
+      this.getRateRulesData.forEach((item) => {
         const uniqueKey = `${item.client}-${item.job}-${item.job_id}`;
         if (!seenKeys.has(uniqueKey)) {
           seenKeys.add(uniqueKey);
@@ -819,40 +822,44 @@ export default {
         }
       });
 
-      return uniqueEntries;
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return uniqueEntries.slice(startIndex, endIndex);
     },
     paginateCandidates() {
+      if (!this.getRateRulesData || this.getRateRulesData.length === 0) return [];
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.getRateRulesData.slice(startIndex, endIndex);
     },
 
     totalRecordsOnPage() {
-      return this.paginateCandidates.length;
+      if (!this.getRateRulesData || this.getRateRulesData.length === 0) return 1;
+      return Math.ceil(this.getRateRulesData.length / this.itemsPerPage);
     },
-    groupedRateRulesData() {
-      const groupedData = {};
+    // groupedRateRulesData() {
+    //   const groupedData = {};
 
-      this.getRateRulesData.forEach((data) => {
-        const groupKey = `${data.site_id}-${data.client}-${data.job}-${data.client_id}`;
+    //   this.getRateRulesData.forEach((data) => {
+    //     const groupKey = `${data.site_id}-${data.client}-${data.job}-${data.client_id}`;
 
-        if (!groupedData[groupKey]) {
-          groupedData[groupKey] = {
-            site_id: data.site_id,
-            site: data.site,
-            client: data.client,
-            job: data.job,
-            client_id: data.client_id,
-            job_id: data.job_id,
-            data: [],
-          };
-        }
+    //     if (!groupedData[groupKey]) {
+    //       groupedData[groupKey] = {
+    //         site_id: data.site_id,
+    //         site: data.site,
+    //         client: data.client,
+    //         job: data.job,
+    //         client_id: data.client_id,
+    //         job_id: data.job_id,
+    //         data: [],
+    //       };
+    //     }
 
-        groupedData[groupKey].data.push(data);
-      });
+    //     groupedData[groupKey].data.push(data);
+    //   });
 
-      return Object.values(groupedData);
-    },
+    //   return Object.values(groupedData);
+    // },
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return site_id ? site_id.site_name : "";
@@ -1091,16 +1098,6 @@ export default {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     },
-    // exportAll() {
-    //   axios
-    //     .get(`${VITE_API_URL}/export_rate_and_rules_csv.csv`)
-    //     .then((response) => {
-    //       this.downloadCSV(response.data, "Rate_RulesData.csv");
-    //     })
-    //     .catch((error) => {
-    //       // console.error("Error:", error);
-    //     });
-    // },
 
     editRateRulesId(RateRulesId) {
       this.selectedRatesRulesId = RateRulesId;
@@ -1160,7 +1157,7 @@ export default {
     },
 
     handleCheckboxChange(dataId) {
-      const selectedData = this.paginateCandidates.find((data) => data.id === dataId);
+      const selectedData = this.getRateRulesData.find((data) => data.id === dataId);
 
       if (!selectedData) {
         return;
@@ -1168,7 +1165,7 @@ export default {
 
       const { job_id, job, client_id } = selectedData;
 
-      this.paginateCandidates.forEach((data) => {
+      this.getRateRulesData.forEach((data) => {
         if (data.job_id === job_id && data.job === job && data.client_id === client_id) {
           this.checkedClient[data.id] = this.checkedClient[dataId];
 
