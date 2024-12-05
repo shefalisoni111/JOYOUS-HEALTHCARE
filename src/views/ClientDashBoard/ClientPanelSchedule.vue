@@ -7,44 +7,23 @@
           <div class="py-3">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active text-uppercase fs-6">
-                <router-link
-                  class="nav-link d-inline"
-                  aria-current="page"
-                  to="/client/clientDashboard"
+                <router-link class="nav-link d-inline" aria-current="page" to="/home"
                   >Dashboard</router-link
                 >
                 / <span class="color-fonts">Schedule</span>
               </li>
             </ol>
           </div>
+
+          <div class="d-flex align-items-center gap-2">
+            <div></div>
+          </div>
         </div>
 
         <div class="row">
           <div class="full-page-calendar">
-            <!-- <SchedulePublishStaffList
-                @updated-assignPublish="fetchAssignList"
-                ref="shiftPublishStaff"
-              /> -->
-
-            <!-- <SuccessAlert ref="successAlert" /> -->
-            <div>
-              <!-- <EditAssignShceduleVaacncy
-                  ref="editAssignScheduleShift"
-                  :vacancyId="String(vacancyId)"
-                  :candidateId="selectedCandidateId"
-                  :columnDateMatch="columnDateMatch"
-                  @updated-assign="fetchAssignList"
-                />
-                <ScheduleDirectAssignList
-                  ref="directAssignShiftList"
-                  :vacancyId="String(vacancyId)"
-                  :columnDateMatch="columnDateMatch"
-                  :initialDate="selectedDate"
-                  :candidateId="selectedCandidateId"
-                  :candidateJob="candidateJob"
-                  @closeModal="closeModal"
-                /> -->
-            </div>
+            <SuccessAlert ref="successAlert" />
+            <div></div>
           </div>
           <div class="table-wrapper">
             <div class="sidebar-container scheduleTable">
@@ -67,36 +46,7 @@
                     ></i>
                   </div>
                 </div>
-                <div class="d-flex mt-2">
-                  <div>
-                    <button
-                      @click="toggleSidebar"
-                      class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
-                    >
-                      <i
-                        class="bi bi-person-fill-add"
-                        style="border-radius: 50%; background: #ef5261; padding: 10px"
-                      ></i>
-                    </button>
-                  </div>
-                  <div>
-                    <div class="filters" v-show="isOpen">
-                      <select
-                        v-model="availability_id"
-                        for="SelectAvailability"
-                        class="form-select"
-                      >
-                        <option value="" selected for="SelectAvailability">
-                          All Availability
-                        </option>
-                        <option id="SelectAvailability">Late</option>
-                        <option id="SelectAvailability">Night</option>
-                        <option id="SelectAvailability">Unavailable</option>
-                        <option id="SelectAvailability">Early</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
+
                 <div class="d-flex mt-2">
                   <div>
                     <button
@@ -115,14 +65,15 @@
                         v-model="job_id"
                         for="selectJobTitle"
                         class="form-select"
-                        @change="filterData($event.target.value, 'job_title')"
+                        @change="filterData(job_id, 'job')"
                       >
-                        <option value="" selected>Select Jobs</option>
+                        <option value="" selected disabled>Select Jobs</option>
+
                         <option
                           id="selectJobTitle"
                           v-for="option in options"
-                          :key="option.name"
-                          :value="option.name"
+                          :key="option.id"
+                          :value="option.id"
                         >
                           {{ option.name }}
                         </option>
@@ -145,16 +96,17 @@
                   <div>
                     <div class="filters" v-show="isOpen">
                       <select
-                        v-model="site_shift_id"
+                        v-model="site_id"
                         for="selectBusinessUnit"
                         class="form-select"
-                        @change="filterData($event.target.value, 'site')"
+                        @change="onSiteChange"
                       >
-                        <option value="" selected>Select Site</option>
+                        <option value="" selected disabled>Select Site</option>
+
                         <option
                           id="selectBusinessUnit"
                           v-for="option in businessUnit"
-                          :key="option.site_name"
+                          :key="option.id"
                           :value="option.id"
                         >
                           {{ option.site_name }}
@@ -178,19 +130,22 @@
                   <div>
                     <div class="filters" v-show="isOpen">
                       <select
-                        v-model="site_id"
+                        v-model="site_shift_id"
                         for="selectShifts"
                         class="form-select"
-                        @change="filterData($event.target.value, 'site')"
+                        @change="filterData(site_shift_id, 'shift')"
                       >
-                        <option value="" selected>All Shift</option>
+                        <option value="" selected disabled>All Shift</option>
+
                         <option
                           v-for="option in shiftsTime"
-                          :key="option.shift_name"
-                          :value="option.shift_name"
+                          :key="option.id"
+                          :value="option.id"
                           id="selectShifts"
                         >
-                          {{ option.shift_name.replace(/_/g, " ") }}
+                          {{
+                            option.shift_name ? option.shift_name.replace(/_/g, " ") : ""
+                          }}
                         </option>
                       </select>
                     </div>
@@ -210,65 +165,67 @@
                   </div>
                   <div>
                     <div class="filters" v-show="isOpen">
-                      <select
-                        @change="filterData($event.target.value, 'publish')"
-                        v-model="publish"
-                        for="selectPublishStatus"
-                        class="form-select"
+                      <button
+                        :disabled="!isFilterSelected"
+                        @click="resetFilters"
+                        class="btn btn-secondary"
                       >
-                        <option value="" id="selectPublishStatus" selected>
-                          Publish Status
-                        </option>
-                        <option value="true" id="selectPublishStatus">Publish</option>
-                        <option value="false" id="selectPublishStatus">UnPublish</option>
-                      </select>
+                        Reset <i class="bi bi-funnel-fill"></i>
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div class="sidebar-content" :class="{ 'slide-left': isOpen }">
-                <table class="table" v-if="!searchQuery">
-                  <thead>
-                    <tr>
-                      <th style="width: 15%">
-                        <div class="d-flex justify-content-between">
-                          <div class="d-flex align-items-center">Shifts</div>
-                          &nbsp; &nbsp; &nbsp;&nbsp;
-                          <div class="d-flex align-items-center fs-4">
-                            <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
-                            <i class="bi bi-calendar2-check-fill"></i>
-                            <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                <div class="table-container">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th style="width: 15%">
+                          <div class="d-flex justify-content-between">
+                            <div class="d-flex align-items-center">Shifts</div>
+                            &nbsp; &nbsp; &nbsp;&nbsp;
+                            <div class="d-flex align-items-center fs-4">
+                              <i
+                                class="bi bi-caret-left-fill"
+                                @click="moveToPrevious"
+                              ></i>
+                              <i class="bi bi-calendar2-check-fill"></i>
+                              <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                            </div>
                           </div>
-                        </div>
-                      </th>
+                        </th>
 
-                      <th>
-                        <div class="calendar-grid" v-if="!searchQuery">
-                          <div v-for="day in daysOfWeek" :key="day" class="day-header">
-                            {{ day }}
+                        <th>
+                          <div class="calendar-grid">
+                            <div v-for="day in daysOfWeek" :key="day" class="day-header">
+                              {{ day }}
+                            </div>
+                            <div
+                              v-for="date in selectedDateRow"
+                              :key="date"
+                              class="day-header"
+                            >
+                              {{ formatDate(date) }}
+                            </div>
                           </div>
+                        </th>
+                      </tr>
+                    </thead>
+
+                    <tbody v-if="paginateCandidates?.length > 0">
+                      <tr class="sticky-header">
+                        <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
+                        <td>
                           <div
-                            v-for="date in selectedDateRow"
-                            :key="date"
-                            class="day-header"
+                            class="calendar-grid"
+                            style="
+                              max-height: 240px;
+                              overflow-y: auto;
+                              overflow-x: hidden;
+                            "
                           >
-                            {{ formatDate(date) }}
-                          </div>
-                        </div>
-                      </th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    <tr>
-                      <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
-                      <td>
-                        <div
-                          class="calendar-grid"
-                          style="max-height: 90px; overflow-y: auto; overflow-x: hidden"
-                        >
-                          <div v-for="(data, index) in vacancyList" :key="index">
                             <div
                               v-for="day in selectedDateRow"
                               :key="day"
@@ -276,11 +233,17 @@
                             >
                               <ul
                                 class="list-unstyled mb-0"
-                                v-if="data.day === formattedDate(day)"
+                                v-if="
+                                  vacancyList.some(
+                                    (data) => data.day === formattedDate(day)
+                                  )
+                                "
                               >
                                 <li
                                   class="position-relative"
-                                  v-for="(vacancy, liIndex) in data.vacancies"
+                                  v-for="(vacancy, liIndex) in vacancyList.find(
+                                    (data) => data.day === formattedDate(day)
+                                  )?.vacancies || []"
                                   :key="vacancy.id"
                                   :draggable="true"
                                   @dragstart="handleDragStart(vacancy)"
@@ -295,13 +258,9 @@
                                 >
                                   <span class="d-flex flex-column align-items-baseline">
                                     <span class="text-capitalize"
-                                      >{{ vacancy.site }},{{ vacancy.job_title }}</span
+                                      >{{ vacancy.site }}, {{ vacancy.job_title }}</span
                                     >
-
-                                    <!-- <span class="">{{
-                                        extractTimeRange(vacancy.site_shift)
-                                      }}</span> -->
-                                    <span class="">{{
+                                    <span>{{
                                       vacancy.site_shift.replace(/_/g, " ")
                                     }}</span>
                                   </span>
@@ -309,334 +268,79 @@
                                     vacancy.staff_required
                                   }}</span>
                                 </li>
-                                <!-- <li>business_unit</li> -->
                               </ul>
                             </div>
                           </div>
-                        </div>
-                      </td>
-                    </tr>
+                        </td>
+                      </tr>
 
-                    <tr v-for="data in paginateCandidates" :key="data.id">
-                      <div
-                        class="text-capitalize fw-bold"
-                        style="border-right: 1px solid rgb(209, 208, 208)"
-                      >
-                        {{ data.candidate_name }}
-
-                        <span class="fs-6 text-muted fw-100"
-                          ><br /><span
-                            style="background: rgb(209, 207, 207); padding: 3px"
-                            >{{ data.job }}</span
-                          ></span
-                        >
-                      </div>
-
-                      <td>
-                        <div>
-                          <div class="calendar-grid" @dragover.prevent="handleDragOver">
-                            <div
-                              v-for="day in selectedDateRow"
-                              :key="day"
-                              class="pt-2"
-                              data-bs-toggle="modal"
-                              data-bs-target="#scheduleDirectAssignList"
-                              data-bs-whatever="@mdo"
-                              @click="openModal(data, formattedDate(day))"
-                              :class="{
-                                'calendar-day': true,
-                                clickable: day !== '',
-                              }"
-                              @drop="handleDrop(data, formattedDate(day))"
-                            >
-                              <span v-for="avail in data.availability" :key="avail.id">
-                                <span v-if="avail.date === formattedDate(day)">
-                                  <span>
-                                    <span
-                                      v-if="avail.status"
-                                      style="font-size: small; padding: 0px 5px"
-                                      v-bind:class="{
-                                        'btn btn-warning ': avail.status === 'Late',
-                                        'btn btn-primary ':
-                                          avail.status === 'Unavailable',
-                                        'btn btn-secondary ': avail.status === 'Night',
-                                        'btn btn-light ': avail.status === 'Early',
-                                      }"
-                                    >
-                                      {{
-                                        avail.status ? avail.status[0].toUpperCase() : ""
-                                      }}
-                                    </span>
-                                  </span>
-                                </span>
-                              </span>
-                              &nbsp;&nbsp;
-
-                              <span v-for="assign in assignStaffDisplay" :key="assign.id">
-                                <span v-if="data.candidate_id === assign.candidate_id">
-                                  <span v-for="data in assign.vacancies" :key="data.id">
-                                    <span v-for="date in data.dates" :key="date">
-                                      <span
-                                        v-if="formatDates(date) === formattedDate(day)"
-                                      >
-                                        <span
-                                          :draggable="true"
-                                          @dragstart="
-                                            handleDragRevert(data, assign.candidate_id)
-                                          "
-                                        >
-                                          <div
-                                            data-bs-toggle="modal"
-                                            data-bs-target=" #editAssignScheduleVacancy"
-                                            data-bs-whatever="@mdo"
-                                            @click="
-                                              openModalEdit(data, formattedDate(day))
-                                            "
-                                            :class="{
-                                              'calendar-day': true,
-                                              clickable: day !== '',
-                                            }"
-                                          >
-                                            <span
-                                              class="assignVacancyDesign mt-1 text-capitalize d-flex justify-content-center"
-                                            >
-                                              {{ data.site }},
-                                              <!-- {{ extractTimeRange(data.site_shift)
-                                                  }} -->
-                                              <br />
-                                              {{ data.site_shift.replace(/_/g, " ") }}
-                                              {{ data.job_title }} &nbsp;
-
-                                              <br />
-                                            </span>
-                                          </div>
-                                        </span>
-                                      </span>
-                                    </span>
-                                  </span>
-                                </span>
-                              </span>
-
-                              <div
-                                v-if="dropCandidateId === data.id && dropDay === day"
-                                class="drop-zone"
-                              >
-                                {{ droppedContent }}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <loader :isLoading="isLoading"></loader>
-                <table class="table" v-if="searchQuery">
-                  <thead>
-                    <tr>
-                      <th style="width: 15%">
-                        <div class="d-flex justify-content-between">
-                          <div class="d-flex align-items-center">Shifts</div>
-                          &nbsp; &nbsp; &nbsp;&nbsp;
-                          <div class="d-flex align-items-center fs-4">
-                            <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
-                            <i class="bi bi-calendar2-check-fill"></i>
-                            <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
-                          </div>
-                        </div>
-                      </th>
-
-                      <th>
-                        <div class="calendar-grid">
-                          <div v-for="day in daysOfWeek" :key="day" class="day-header">
-                            {{ day }}
-                          </div>
-                          <div
-                            v-for="date in selectedDateRow"
-                            :key="date"
-                            class="day-header"
-                          >
-                            {{ formatDate(date) }}
-                          </div>
-                        </div>
-                      </th>
-                    </tr>
-                  </thead>
-
-                  <tbody v-if="searchResults?.length > 0">
-                    <tr v-for="data in searchResults" :key="data.id">
-                      <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
-                      <td>
+                      <tr v-for="staff in paginateCandidates" :key="staff.id">
                         <div
-                          v-if="searchQuery"
-                          class="calendar-grid"
-                          style="max-height: 90px; overflow-y: auto; overflow-x: hidden"
+                          v-for="staff in staff"
+                          :key="staff.id"
+                          class="text-capitalize fw-bold"
+                          style="border-right: 1px solid rgb(209, 208, 208)"
                         >
-                          <div v-for="(data, index) in vacancyList" :key="index">
-                            <div
-                              v-for="day in selectedDateRow"
-                              :key="day"
-                              class="text-center"
-                            >
-                              <ul
-                                class="list-unstyled mb-0"
-                                v-if="data.day === formattedDate(day)"
-                              >
-                                <li
-                                  class="position-relative"
-                                  v-for="(vacancy, liIndex) in data.vacancies"
-                                  :key="vacancy.id"
-                                  :draggable="true"
-                                  @dragstart="handleDragStart(vacancy)"
-                                  @drop="handleRevertDrop(vacancy.id, $event)"
-                                  @dragover.prevent="handleDragOver"
-                                  :class="{
-                                    'bg-info': liIndex === 0,
-                                    'bg-warning': liIndex === 1,
-                                    'bg-success': liIndex === 2,
-                                    'bg-primary': liIndex >= 3,
-                                  }"
-                                >
-                                  <span class="d-flex flex-column align-items-baseline">
-                                    <span class="text-capitalize"
-                                      >{{ vacancy.site }},{{ vacancy.job_title }}</span
-                                    >
+                          {{ staff.candidate_name }}
 
-                                    <!-- <span class="">{{
-                                      extractTimeRange(vacancy.site_shift)
-                                    }}</span> -->
-                                    <span class="">{{
-                                      vacancy.site_shift.replace(/_/g, " ")
-                                    }}</span>
-                                  </span>
-                                  <span class="staff-count-round text-white">{{
-                                    vacancy.staff_required
-                                  }}</span>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
+                          <span class="fs-6 text-muted fw-100"
+                            ><br /><span
+                              style="background: rgb(209, 207, 207); padding: 3px"
+                              >{{ staff.job }}</span
+                            ></span
+                          >
                         </div>
-                      </td>
-                    </tr>
 
-                    <tr v-for="data in paginateSearch" :key="data.id">
-                      <div
-                        class="text-capitalize fw-bold"
-                        style="border-right: 1px solid rgb(209, 208, 208)"
-                      >
-                        {{ data.candidate_name }}
-
-                        <span class="fs-6 text-muted fw-100"
-                          ><br /><span
-                            style="background: rgb(209, 207, 207); padding: 3px"
-                            >{{ data.job }}</span
-                          ></span
-                        >
-                      </div>
-
-                      <td>
-                        <div>
-                          <div class="calendar-grid" @dragover.prevent="handleDragOver">
-                            <div
-                              v-for="day in selectedDateRow"
-                              :key="day"
-                              class="pt-2"
-                              data-bs-toggle="modal"
-                              data-bs-target="#scheduleDirectAssignList"
-                              data-bs-whatever="@mdo"
-                              @click="openModal(data, formattedDate(day))"
-                              :class="{
-                                'calendar-day': true,
-                                clickable: day !== '',
-                              }"
-                              @drop="handleDrop(data, formattedDate(day))"
-                            >
-                              <span v-for="avail in data.availability" :key="avail.id">
-                                <span v-if="avail.date === formattedDate(day)">
+                        <td>
+                          <div v-for="staffData in staff" :key="staffData.id">
+                            <div class="calendar-grid">
+                              <div v-for="day in selectedDateRow" :key="day" class="pt-2">
+                                <span
+                                  v-for="assign in assignStaffDisplay"
+                                  :key="assign.id"
+                                >
                                   <span
-                                    v-if="avail.status"
-                                    style="font-size: small; padding: 0px 5px"
-                                    v-bind:class="{
-                                      'btn btn-warning ': avail.status === 'Late',
-                                      'btn btn-primary ': avail.status === 'Unavailable',
-                                      'btn btn-secondary ': avail.status === 'Night',
-                                      'btn btn-light ': avail.status === 'Early',
-                                    }"
+                                    v-for="assignStaff in assign.assign_vacancy"
+                                    :key="assignStaff.id"
                                   >
-                                    {{
-                                      avail.status ? avail.status[0].toUpperCase() : ""
-                                    }}
-                                  </span>
-                                </span>
-                              </span>
-                              &nbsp;&nbsp;
-
-                              <span v-for="assign in assignStaffDisplay" :key="assign.id">
-                                <span v-if="data.candidate_id === assign.candidate_id">
-                                  <span v-for="data in assign.vacancies" :key="data.id">
-                                    <span v-for="date in data.dates" :key="date">
+                                    <span
+                                      v-if="
+                                        staffData.candidate_id ===
+                                          assignStaff.candidate_id &&
+                                        assign.date === formattedDate(day)
+                                      "
+                                    >
                                       <span
-                                        v-if="formatDates(date) === formattedDate(day)"
+                                        class="assignVacancyDesign mt-1 text-capitalize d-flex justify-content-center"
                                       >
-                                        <span
-                                          :draggable="true"
-                                          @dragstart="
-                                            handleDragRevert(data, assign.candidate_id)
-                                          "
-                                        >
-                                          <div
-                                            data-bs-toggle="modal"
-                                            data-bs-target=" #editAssignScheduleVacancy"
-                                            data-bs-whatever="@mdo"
-                                            @click="
-                                              openModalEdit(data, formattedDate(day))
-                                            "
-                                            :class="{
-                                              'calendar-day': true,
-                                              clickable: day !== '',
-                                            }"
-                                          >
-                                            <span
-                                              class="assignVacancyDesign mt-1 text-capitalize d-flex justify-content-center"
-                                            >
-                                              {{ data.site }},
-                                              <!-- {{ extractTimeRange(data.site_shift)
-                                                  }}-->
-                                              {{ data.site_shift.replace(/_/g, " ") }}
-                                              <br />
-                                              {{ data.job_title }} &nbsp;
+                                        {{ assignStaff.site_name }},
 
-                                              <br />
-                                            </span>
-                                          </div>
-                                        </span>
+                                        <br />
+                                        {{
+                                          assignStaff.site_shift_name?.replace(/_/g, " ")
+                                        }}, {{ assignStaff.job_name }} &nbsp;
+
+                                        <br />
                                       </span>
                                     </span>
                                   </span>
                                 </span>
-                              </span>
-
-                              <div
-                                v-if="dropCandidateId === data.id && dropDay === day"
-                                class="drop-zone"
-                              >
-                                {{ droppedContent }}
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                  <tbody v-else>
-                    <tr>
-                      <td colspan="2" class="text-danger text-center">
-                        {{ errorMessage }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tbody v-else>
+                      <tr v-if="!isLoading">
+                        <td colspan="7" class="text-danger text-center">
+                          {{ "Data Not found!" }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <loader :isLoading="isLoading"></loader>
               </div>
             </div>
           </div>
@@ -644,34 +348,38 @@
       </div>
     </div>
     <!-- <div
-          class="mx-3"
-          style="text-align: right"
-          v-if="!candidateList && searchResults?.length >= 8"
-        >
-          <button class="btn btn-outline-dark btn-sm">
-            {{ totalRecordsOnPage }} Records Per Page
-          </button>
-          &nbsp;&nbsp;
-          <button
-            class="btn btn-sm btn-primary mr-2"
-            :disabled="currentPage === 1"
-            @click="currentPage--"
-          >
-            Previous</button
-          >&nbsp;&nbsp; <span>{{ currentPage }}</span
-          >&nbsp;&nbsp;
-          <button
-            class="btn btn-sm btn-primary ml-2"
-            :disabled="currentPage * itemsPerPage >= searchResults.length"
-            @click="currentPage++"
-          >
-            Next
-          </button>
-        </div> -->
-    <div class="mx-3 mb-3" style="text-align: right" v-if="candidateList?.length >= 10">
+      class="mx-3"
+      style="text-align: right"
+      v-if="!candidateList && searchResults?.length >= 8"
+    >
+      <button class="btn btn-outline-dark btn-sm">
+        {{ totalRecordsOnPage }} Records Per Page
+      </button>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="currentPage--"
+      >
+        Previous</button
+      >&nbsp;&nbsp; <span>{{ currentPage }}</span
+      >&nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage * itemsPerPage >= searchResults.length"
+        @click="currentPage++"
+      >
+        Next
+      </button>
+    </div> -->
+    <div
+      class="mx-3 mb-3 mt-3"
+      style="text-align: right"
+      v-if="candidateList?.length >= 10"
+    >
       <!-- <button class="btn btn-outline-dark btn-sm">
-            {{ totalRecordsOnPage }} Records Per Page
-          </button> -->
+        {{ totalRecordsOnPage }} Records Per Page
+      </button> -->
       <button
         class="btn btn-sm btn-primary dropdown-toggle"
         type="button"
@@ -696,15 +404,17 @@
       <button
         class="btn btn-sm btn-primary mr-2"
         :disabled="currentPage === 1"
-        @click="currentPage--"
+        @click="previousPage"
       >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
+        Previous
+      </button>
+      &nbsp;&nbsp;
+      <span>{{ currentPage }}</span>
+      &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= candidateList.length"
-        @click="currentPage++"
+        :disabled="currentPage >= totalCandidateCount"
+        @click="nextPage"
       >
         Next
       </button>
@@ -714,10 +424,15 @@
 
 <script>
 import axios from "axios";
-
+// import EditAssignShceduleVaacncy from "../components/modals/Schedule/EditAssignShceduleVaacncy.vue";
+// import ScheduleDirectAssignList from "../components/modals/Schedule/ScheduleDirectAssignList.vue";
 import ClientNavbar from "../../components/ClientDashBoard/ClientNavbar.vue";
+
+// import SchedulePublishStaffList from "../components/modals/Schedule/SchedulePublishStaffList.vue";
+import SuccessAlert from "../../components/Alerts/SuccessAlert.vue";
 import Loader from "../../components/Loader/Loader.vue";
 import Swal from "sweetalert2";
+
 const axiosInstance = axios.create({
   headers: {
     "Cache-Control": "no-cache",
@@ -726,6 +441,13 @@ const axiosInstance = axios.create({
 export default {
   data() {
     return {
+      filters: {
+        availablity: "",
+        job: "",
+        site: "",
+        shift: "",
+        status: "",
+      },
       isOpen: false,
       currentView: "weekly",
       startDate: new Date(),
@@ -751,9 +473,8 @@ export default {
       dropDay: null,
       droppedContent: null,
       currentPage: 1,
-      totalPages: 1,
       itemsPerPage: 10,
-      totalCount: 0,
+      totalCandidateCount: 0,
       options: [],
       job_id: "",
       site_id: "",
@@ -772,6 +493,12 @@ export default {
   },
 
   computed: {
+    isFilterSelected() {
+      return this.site_id || this.site_shift_id || this.job_id;
+    },
+    totalPages() {
+      return Math.ceil(this.candidateList.length / this.itemsPerPage);
+    },
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return site_id ? site_id.site_name : "";
@@ -781,9 +508,7 @@ export default {
       return job_id ? job_id.name : "";
     },
     paginateCandidates() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.candidateList.slice(startIndex, endIndex);
+      return this.candidateList;
     },
     paginateSearch() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -857,7 +582,7 @@ export default {
     filteredAssignStaff() {
       return function (candidateId) {
         return this.assignStaffDisplay.filter(
-          (assign) => assign.candidate_id === candidateId
+          (assign) => assign_vacancy.candidate_id === candidateId
         );
       };
     },
@@ -868,76 +593,111 @@ export default {
     },
   },
   methods: {
-    // handleShiftPublishStaffList() {
-    //   this.$refs.shiftPublishStaff.getPublishStaffListMethod();
-    // },
-    filterData(value, filterType) {
-      switch (filterType) {
-        case "job_title":
-          this.site_id = "";
-          this.site_shift = "";
-          this.publish = "";
-          break;
-        case "site":
-          this.job_id = "";
-          this.site_shift = "";
-          this.publish = "";
-          break;
-        case "site_shift":
-          this.job_id = "";
-          this.site_id = "";
-          this.publish = "";
-          break;
-        case "publish":
-          this.job_id = "";
-          this.site_id = "";
-          this.site_shift = "";
-          break;
-        default:
-          break;
-      }
-
-      this.makeFilterAPICall(filterType, value);
+    resetFilters() {
+      this.site_id = "";
+      this.site_shift_id = "";
+      this.job_id = "";
+      this.fetchCandidateList();
     },
-    async makeFilterAPICall(filter_type, filter_value) {
+    async filterData(value, filterType) {
+      if (!value) {
+        return;
+      }
+      this.filters[filterType] = value;
+      await this.makeFilterAPICall();
+    },
+    async makeFilterAPICall() {
+      this.isLoading = true;
+
       const requestData = {
-        date: this.formattedStartDate,
+        "vac_schedule[job_id]": this.filters.job || null,
+        "vac_schedule[site_id]": this.filters.site || null,
+        "vac_schedule[site_shift_id]": this.filters.shift || null,
       };
+
+      const token = localStorage.getItem("token");
+
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/candidates_availability_vacancies`,
+          `${VITE_API_URL}/client_dashboard/assigned_candidate_list`,
           {
-            params: {
-              filter_type: filter_type,
-              filter_value: filter_value,
-              date: this.formattedStartDate,
+            params: requestData,
+            headers: {
+              Authorization: `Bearer ${token}`,
             },
           }
         );
-        this.candidateList = response.data.data;
 
-        this.searchResults = response.data.data;
-        this.vacancyList = response.data.vacancies;
+        const responseData = response.data?.data || [];
 
-        this.fetchVacancyListMethod();
+        if (
+          responseData.length === 0 ||
+          (responseData.length === 1 && responseData[0].length === 0)
+        ) {
+          this.errorMessages = "Data Not Found.";
+          this.candidateList = [];
+        } else {
+          this.errorMessages = "";
+          this.candidateList = responseData;
+          this.vacancyList = response.data.vacancies || [];
+        }
       } catch (error) {
-        if (error.response && error.response.status === 404) {
-          const errorMessages = error.response.data.error;
-          if (errorMessages === "No records found for the given filter") {
-            // alert("No records found for the given filter");
+        if (error.response) {
+          if (error.response.data.error) {
+            Swal.fire("Error", error.response.data.error, "error");
           } else {
-            // alert(errorMessages);
-            Swal.fire({
-              icon: "error",
-              title: "Error",
-              text: errorMessages,
-              confirmButtonText: "OK",
-            });
+            Swal.fire("Error", "Server returned a 500 error", "error");
           }
         } else {
+          Swal.fire("Error", "An unexpected error occurred", "error");
         }
+      } finally {
+        this.isLoading = false;
       }
     },
+    // filterData(value, filterType) {
+    //   this.filters[filterType] = value;
+
+    //   this.makeFilterAPICall();
+    // },
+
+    // async makeFilterAPICall() {
+    //   const requestData = {
+    //     availablity: this.filters.availablity,
+    //     job: this.filters.job,
+    //     site: this.filters.site,
+    //     shift: this.filters.shift,
+    //     status: this.filters.status,
+    //     date: this.formattedStartDate,
+    //   };
+
+    //   try {
+    //     const response = await axios.get(
+    //       `${VITE_API_URL}/candidates_availability_vacancies`,
+    //       {
+    //         params: {
+    //           currentPage: this.currentPage,
+    //           ...requestData,
+    //         },
+    //       }
+    //     );
+
+    //     this.candidateList = response.data.data;
+    //     this.searchResults = response.data.data;
+    //     this.vacancyList = response.data.vacancies;
+    //   } catch (error) {
+    //     if (error.response && error.response.status === 404) {
+    //       const errorMessages = error.response.data.error;
+    //       if (errorMessages === "No records found for the given filter") {
+    //         errorMessages === "No records found for the given filter";
+    //       } else {
+    //         errorMessages === "No records found for the given filter";
+    //       }
+    //     } else {
+    //       // console.error("An error occurred:", error);
+    //     }
+    //   }
+    // },
     async getTimeShift() {
       await axios
         .get(`${VITE_API_URL}/shifts`)
@@ -1089,21 +849,20 @@ export default {
         );
 
         if (response.status >= 200 && response.status < 300) {
-          // const message = "Staff UnAssigned Shift Successfully";
-          // this.$refs.successAlert.showSuccess(message);
+          const message = "Staff UnAssigned Shift Successfully";
+          this.$refs.successAlert.showSuccess(message);
           this.fetchCandidateList();
-          this.fetchAssignList();
+          // this.fetchAssignList();
         }
       } catch (error) {
         if (error.response && error.response.status === 422) {
           const errorMessage = error.response.data.error;
           // alert(errorMessage);
-          // Swal.fire({
-          //   icon: "error",
-          //   title: "Error",
-          //   text: errorMessages,
-          //   confirmButtonText: "OK",
-          // });
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: errorMessage,
+          });
         } else {
           // Handle other errors if needed
         }
@@ -1135,10 +894,10 @@ export default {
         );
 
         if (response.status >= 200 && response.status < 300) {
-          // const message = "Staff Assigned Shift Successfully";
-          // this.$refs.successAlert.showSuccess(message);
+          const message = "Staff Assigned Shift Successfully";
+          this.$refs.successAlert.showSuccess(message);
           this.fetchCandidateList();
-          this.fetchAssignList();
+          // this.fetchAssignList();
         }
       } catch (error) {
         let errorMessage;
@@ -1159,8 +918,7 @@ export default {
         Swal.fire({
           icon: "error",
           title: "Error",
-          text: errorMessages,
-          confirmButtonText: "OK",
+          text: errorMessage,
         });
       } finally {
         this.vacancyBeingDragged = null;
@@ -1198,166 +956,28 @@ export default {
       }
     },
 
-    async openModalEdit(candidateId, day) {
-      if (this.$refs.editAssignScheduleShift) {
-        await this.$refs.editAssignScheduleShift.fetchVacancyIdMethod();
-        await this.$refs.editAssignScheduleShift.getJobTitleMethod();
-        await this.$refs.editAssignScheduleShift.fetchVacancyListMethod();
-      }
-
-      this.vacancyId = candidateId.id.toString() || "";
-      if (!candidateId || !candidateId.candidate_id) {
-        return;
-      }
-
-      this.columnDateMatch = day !== null ? day.toString() : "";
-      this.selectedCandidateId = candidateId.candidate_id.toString();
-      this.candidateJob = candidateId.job;
-
-      if (candidateId && candidateId.id) {
-        // this.vacancyId = candidateId.id;
-      } else {
-        return;
-      }
-
-      if (candidateId && candidateId.job !== undefined && candidateId.job !== null) {
-        this.candidateJob = candidateId.job.toString();
-      } else {
-        this.candidateJob = "";
-      }
-
-      try {
-        const actualCandidateId = candidateId.candidate_id.toString();
-
-        await this.fetchVacancyListMethod();
-        await this.fetchCandidateList();
-        const selectedDate = new Date(this.startDate);
-        selectedDate.setDate(parseInt(day));
-        selectedDate.setDate(selectedDate.getDate() + 1);
-
-        this.selectedDate = selectedDate
-          .toISOString()
-          .split("T")[0]
-          .split("-")
-          .reverse()
-          .join("-");
-        this.selectedCandidateId = actualCandidateId;
-
-        const selectedCandidate = this.candidateList.find(
-          (candidate) => candidate.candidate_id === actualCandidateId
-        );
-
-        const vacancy = this.vacancyList.find(
-          (vacancy) => vacancy.date === this.columnDateMatch
-        );
-
-        if (selectedCandidate) {
-          this.currentSelectedCandidate = selectedCandidate;
-        } else {
-          this.selectedDate = null;
-          this.statusForSelectedDate = null;
-        }
-
-        if (vacancy && vacancy.dates.includes(this.formatDates(day))) {
-          this.statusForSelectedDate = "Vacancy Available";
-        } else {
-          this.statusForSelectedDate = "No Vacancy";
-        }
-      } catch (error) {
-        this.selectedDate = null;
-        this.statusForSelectedDate = null;
-      }
+    async onSiteChange() {
+      await this.filterData(this.site_id, "site");
+      const selectSite = this.site_id;
+      await this.getTimeShift(selectSite);
     },
-    async openModal(candidateId, day) {
-      this.$refs.directAssignShiftList.fetchVacancyListMethod();
-
-      if (!candidateId || !candidateId.candidate_id) {
+    async getTimeShift(selectionSite) {
+      if (!selectionSite) {
         return;
       }
-
-      this.columnDateMatch = day !== null ? day.toString() : "";
-      this.selectedCandidateId = candidateId.candidate_id.toString();
-      this.candidateJob = candidateId.job;
-
-      if (candidateId && candidateId.id) {
-        // this.vacancyId = candidateId.id;
-      } else {
-        return;
-      }
-
-      if (candidateId && candidateId.job !== undefined && candidateId.job !== null) {
-        this.candidateJob = candidateId.job.toString();
-      } else {
-        this.candidateJob = "";
-      }
-
       try {
-        const actualCandidateId = candidateId.candidate_id.toString();
+        const response = await axios.get(`${VITE_API_URL}/site_shift/${selectionSite}`);
 
-        await this.fetchVacancyListMethod();
-
-        await this.fetchCandidateList();
-        const selectedDate = new Date(this.startDate);
-        selectedDate.setDate(parseInt(day));
-        selectedDate.setDate(selectedDate.getDate() + 1);
-
-        this.selectedDate = selectedDate
-          .toISOString()
-          .split("T")[0]
-          .split("-")
-          .reverse()
-          .join("-");
-        this.selectedCandidateId = actualCandidateId;
-
-        const selectedCandidate = this.candidateList.find(
-          (candidate) => candidate.candidate_id === actualCandidateId
-        );
-
-        const vacancy = this.vacancyList.find(
-          (vacancy) => vacancy.date === this.columnDateMatch
-        );
-
-        if (selectedCandidate) {
-          this.currentSelectedCandidate = selectedCandidate;
-        } else {
-          this.selectedDate = null;
-          this.statusForSelectedDate = null;
-        }
-
-        if (vacancy && vacancy.dates.includes(this.formatDates(day))) {
-          this.statusForSelectedDate = "Vacancy Available";
-        } else {
-          this.statusForSelectedDate = "No Vacancy";
-        }
+        this.shiftsTime =
+          response.data.site_shift_data.map((shift) => ({
+            ...shift,
+            start_time: shift.start_time,
+            end_time: shift.end_time,
+            site_shift_id: shift.id,
+          })) || [];
+        // console.log(this.shiftsTime);
       } catch (error) {
-        this.selectedDate = null;
-        this.statusForSelectedDate = null;
-      }
-    },
-    closeModal() {
-      this.selectedDate = null;
-
-      this.statusForSelectedDate = null;
-      this.isModalOpen = false;
-    },
-    async fetchAssignList() {
-      try {
-        const response = await axios.get(
-          `${VITE_API_URL}find_assign_vacancies_and_candidates`
-        );
-        this.assignStaffDisplay = response.data.vacancies;
-
-        const vacanciesInsideVacancies = response.data.vacancies.map((item) => {
-          return item.vacancies;
-        });
-
-        this.flattenedAssignVacancies = vacanciesInsideVacancies.flat();
-
-        // this.fetchAssignList();
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
-          return;
-        }
+        // console.error("Error fetching shifts:", error);
       }
     },
     setItemsPerPage(value) {
@@ -1365,24 +985,49 @@ export default {
       this.currentPage = 1;
       this.fetchCandidateList();
     },
+    nextPage() {
+      this.currentPage++;
+      this.fetchCandidateList();
+    },
+
+    previousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.fetchCandidateList();
+      }
+    },
     async fetchCandidateList() {
       this.isLoading = true;
+      const token = localStorage.getItem("token");
       try {
         const requestData = {
           date: this.formattedStartDate,
+          page: this.currentPage,
+          per_page: this.itemsPerPage,
         };
 
         const response = await axios.get(
-          `${VITE_API_URL}/candidates_availability_vacancies`,
+          `${VITE_API_URL}/client_dashboard/assigned_candidate_list`,
           {
             params: requestData,
-            per_page: this.itemsPerPage,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
         this.candidateList = response.data.data;
 
         this.searchResults = response.data.data;
-        this.vacancyList = response.data.vacancies;
+        this.assignStaffDisplay = response.data.vacancies;
+        // console.log(this.assignStaffDisplay);
+        const vacanciesInsideVacancies = response.data.vacancies.map((item) => {
+          return item.assign_vacancy;
+        });
+
+        this.flattenedAssignVacancies = vacanciesInsideVacancies.flat();
+        // console.log(this.flattenedAssignVacancies);
+        this.totalCandidateCount = response.data.total_count;
         this.ColumnDateMatchDates = this.candidateList.map((candidate) =>
           candidate.availability.map((avail) => avail.date)
         );
@@ -1408,6 +1053,7 @@ export default {
       try {
         const requestData = {
           date: this.formattedStartDate,
+          single_date: true,
         };
         const response = await axios.get(
           `${VITE_API_URL}/vacancies_and_candidates_availability`,
@@ -1417,7 +1063,7 @@ export default {
         );
 
         this.fetchCandidateList();
-        this.fetchAssignList();
+        // this.fetchAssignList();
         // this.fetchAssignVacancyStaffList();
       } catch (error) {
         // console.error("Error in fetchVacancyListMethod:", error);
@@ -1450,22 +1096,26 @@ export default {
     },
   },
   components: {
-    Loader,
+    // EditAssignShceduleVaacncy,
     ClientNavbar,
+    // ScheduleDirectAssignList,
+    // SchedulePublishStaffList,
+    SuccessAlert,
+    Loader,
   },
   async beforeRouteEnter(to, from, next) {
     next((vm) => {
       // vm.fetchAssignList();
-      // vm.getBusinessUnitMethod();
-      // vm.getJobTitleMethod();
-      // vm.getTimeShift();
+      vm.getBusinessUnitMethod();
+      vm.getJobTitleMethod();
+      vm.getTimeShift();
     });
   },
   async beforeRouteUpdate(to, from, next) {
     // this.fetchAssignList();
-    // this.getBusinessUnitMethod();
-    // this.getJobTitleMethod();
-    // this.getTimeShift();
+    this.getBusinessUnitMethod();
+    this.getJobTitleMethod();
+    this.getTimeShift();
     next();
   },
   async mounted() {
@@ -1489,7 +1139,7 @@ export default {
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(endOfWeek.getDate() + 6);
     this.endDate = endOfWeek;
-    // await this.fetchCandidateList();
+    await this.fetchCandidateList();
     // await this.fetchVacancyListMethod();
   },
 };
@@ -1565,6 +1215,12 @@ input.dateInput {
   grid-template-columns: repeat(7, 1fr);
   gap: 5px;
 }
+.sticky-header {
+  position: sticky;
+  top: 62px;
+  background-color: #f8f9fa;
+  z-index: 10;
+}
 .cursor-pointer {
   cursor: pointer;
 }
@@ -1617,7 +1273,29 @@ input.dateInput {
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.4);
 }
+.table-container {
+  max-height: 730px;
+  overflow-y: auto;
+}
 
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 100;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+}
 .modal-content {
   background-color: #fefefe;
   margin: 15% auto;
@@ -1637,7 +1315,7 @@ input.dateInput {
   padding: 2px;
   color: #fff;
   font-weight: 600;
-  font-size: larger;
+  font-size: small;
   padding: 4px;
 }
 
