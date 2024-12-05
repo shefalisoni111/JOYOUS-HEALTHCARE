@@ -628,6 +628,7 @@ export default {
 
     async search() {
       try {
+        this.errorMessage = "";
         this.searchResults = [];
 
         const response = await axiosInstance.get(`${VITE_API_URL}/search_candidate`, {
@@ -636,14 +637,28 @@ export default {
       }
     });
 
-        this.searchResults = response.data.candidate|| [];
+        // this.searchResults = response.data.candidate|| [];
+        if (response.data.candidate && response.data.candidate.length > 0) {
+      this.searchResults = response.data.candidate || [];
+    } else if (response.data.message) {
+ 
+      this.errorMessage = response.data.message;
+    }
       } catch (error) {
         if (
-          (error.response && error.response.status === 404) ||
-          error.response.status === 400
+        (error.response && error.response.status === 404) ||
+        error.response.status === 400
         ) {
           this.errorMessage = "Not Staff found for the specified criteria";
+        } else {
+          this.errorMessage = "An unexpected error occurred. Please try again later.";
         }
+        // if (
+        //   (error.response && error.response.status === 404) ||
+        //   error.response.status === 400
+        // ) {
+        //   this.errorMessage = "Not Staff found for the specified criteria";
+        // }
       }
     },
 
