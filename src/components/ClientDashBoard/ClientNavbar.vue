@@ -60,7 +60,7 @@
               Schedule
             </router-link>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <router-link
               class="nav-link"
               aria-current="page"
@@ -68,14 +68,14 @@
             >
               Timesheet
             </router-link>
-          </li>
+          </li> -->
           <li class="nav-item">
             <router-link
               class="nav-link"
               aria-current="page"
               to="/client/clientDashboard/signedTimesheet"
             >
-              Signed Timesheet
+              Timesheet
             </router-link>
           </li>
           <li class="nav-item">

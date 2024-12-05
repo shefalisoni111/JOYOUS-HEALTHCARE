@@ -139,9 +139,8 @@
                         <th scope="col">End Time</th>
                         <th scope="col">Break</th>
                         <th scope="col">Total Hour</th>
-                        <th scope="col">View</th>
-
-                        <th scope="col">Approve</th>
+                        <th scope="col">Total Cost</th>
+                        <th scope="col">Type</th>
                       </tr>
                     </thead>
                   </table>

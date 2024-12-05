@@ -621,11 +621,7 @@ export default {
 
       this.debounceTimeout = setTimeout(() => {
       
-        if (this.searchQuery.trim()) {
-          this.search();
-        } else {
-          this.searchResults = []; 
-        }
+        this.search();
       }, 300); 
     },
     //search api start

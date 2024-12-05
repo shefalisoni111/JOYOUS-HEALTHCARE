@@ -1104,16 +1104,16 @@ const router = createRouter({
           },
         ]
     },
-    {
-      path: "/client/clientDashboard/timesheet",
-      name: "ClientTimesheet",
-      component: () =>
-        import("@/views/ClientDashBoard/ClientTimesheet.vue"),
-        meta: {
-          requiresAuth: true, requiresClient: true
-        },
+    // {
+    //   path: "/client/clientDashboard/timesheet",
+    //   name: "ClientTimesheet",
+    //   component: () =>
+    //     import("@/views/ClientDashBoard/ClientTimesheet.vue"),
+    //     meta: {
+    //       requiresAuth: true, requiresClient: true
+    //     },
        
-    },
+    // },
     {
       path: "/",
       name: "Login",
