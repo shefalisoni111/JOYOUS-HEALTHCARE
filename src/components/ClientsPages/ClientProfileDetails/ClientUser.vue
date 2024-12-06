@@ -6,6 +6,7 @@
       data-bs-toggle="modal"
       data-bs-target="#addClientUser"
       data-bs-whatever="@mdo"
+      @click="openAddUser"
     >
       + Add Client User
     </button>
@@ -57,8 +58,9 @@
     <EditClientUserVue
       :ClientUserId="selectedClientUserID || 0"
       @updatedUser="createdClientUser"
+      ref="editClientUser"
     />
-    <AddClientUser @addUser="createdClientUser" />
+    <AddClientUser @addUser="createdClientUser" ref="addClientUser" />
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
@@ -95,6 +97,10 @@ export default {
   methods: {
     editsiteId(ClientUSerID) {
       this.selectedClientUserID = ClientUSerID;
+      this.$refs.editClientUser.getClientFetchSiteMethod();
+    },
+    openAddUser() {
+      this.$refs.addClientUser.getClientFetchSiteMethod();
     },
     async deleteUser(userId) {
       if (!userId) {

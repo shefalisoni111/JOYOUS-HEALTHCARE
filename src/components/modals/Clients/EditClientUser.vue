@@ -298,7 +298,7 @@ export default {
   },
   mounted() {
     // this.getClientMethod();
-    this.getClientFetchSiteMethod();
+    // this.getClientFetchSiteMethod();
   },
 };
 </script>

@@ -154,8 +154,11 @@
             </button>
             <button
               data-bs-target="#addClientUser"
+              :disabled="!isFormValid"
+              :class="{ disabled: !isFormValid }"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               v-on:click="addClientSiteMethod()"
+              :data-bs-dismiss="isFormValid ? 'modal' : null"
             >
               Add Client Site
             </button>
@@ -195,14 +198,14 @@ export default {
 
   components: {},
   computed: {
-    // isFormValid() {
-    //   return (
-    //     this.site_name !== "" &&
-    //     this.email !== "" &&
-    //     this.password !== "" &&
-    //     this.confirm_password !== ""
-    //   );
-    // },
+    isFormValid() {
+      return (
+        this.site_ids !== "" &&
+        this.email !== "" &&
+        this.password !== "" &&
+        this.confirm_password !== ""
+      );
+    },
 
     selectClients() {
       const client_id = this.clientData.find((option) => option.id === this.client_id);
@@ -404,7 +407,7 @@ export default {
   },
   mounted() {
     this.client_id = this.$route.params.id;
-    this.getClientFetchSiteMethod();
+    // this.getClientFetchSiteMethod();
   },
 };
 </script>
