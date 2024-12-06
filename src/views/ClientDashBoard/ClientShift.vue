@@ -280,8 +280,9 @@ export default {
           this.startDate.getMonth() + 1,
           0
         );
+        // this.updateDateRange();
       }
-      this.createVacancy();
+      // this.createVacancy();
     },
     moveToNext() {
       if (this.currentView === "weekly") {
@@ -295,8 +296,9 @@ export default {
           this.startDate.getMonth() + 1,
           0
         );
+        // this.updateDateRange();
       }
-      this.createVacancy();
+      // this.createVacancy();
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
@@ -383,10 +385,9 @@ export default {
   },
   mounted() {
     // this.createVacancy();
-    this.currentView = "weekly";
+    // this.currentView = "weekly";
     this.loadDateRangeFromLocalStorage();
-    this.getClientFetchSiteMethod();
-    this.getSiteNameMethod();
+
     const currentDate = new Date();
     const dayOfWeek = currentDate.getDay();
     const startOfWeek = new Date(currentDate);
@@ -399,6 +400,8 @@ export default {
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(endOfWeek.getDate() + 6);
     this.endDate = endOfWeek;
+    this.getClientFetchSiteMethod();
+    this.getSiteNameMethod();
   },
 
   beforeRouteEnter(to, from, next) {
