@@ -224,11 +224,11 @@
               <li v-else>
                 <li
                
-                class="notification-item p-2 d-flex gap-1 divide_sec"
+                class="notification-item p-2 d-flex gap-1 divide_sec cursor-pointer"
                 v-for="candidate in getCandidatesData"
-                :key="candidate.id"
+                :key="candidate.id" @click="openChat(candidate)"
               >
-                <div>
+                <div @click="openChat(candidate)">
                   <img
                     v-if="candidate.profile_photo"
                     :src="getProfilePhotoUrl(candidate.profile_photo)"
@@ -242,11 +242,11 @@
                     v-html="getProfilePhotoUrl(candidate.profile_photo)"
                   ></div>
                 </div>
-                <div class="ms-1">
+                <div class="ms-1" @click="openChat(candidate)">
                   <h5
                     class="text-capitalize chat-staff mb-0"
                     style="color: #f6851d"
-                    @click="openChat(candidate)"
+                    
                   >
                     {{ candidate.first_name }} {{ candidate.last_name }}
                   </h5>

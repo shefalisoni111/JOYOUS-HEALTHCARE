@@ -223,11 +223,6 @@ import Loader from "../../components/Loader/Loader.vue";
 // import ShowDetailsMessage from "../components/Alerts/ShowDetailsMessage.vue";
 import Swal from "sweetalert2";
 
-const axiosInstance = axios.create({
-  headers: {
-    "Cache-Control": "no-cache",
-  },
-});
 export default {
   data() {
     return {
