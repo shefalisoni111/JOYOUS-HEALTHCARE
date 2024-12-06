@@ -602,12 +602,12 @@ export default {
       this.showAll = true; 
     },
     
-    handleClickOutside(event) {
-      if (!this.$el.contains(event.target)) {
-        this.dropdownOpen = false; 
-        this.showBadge = true; 
-      }
-    },
+  //  handleClickOutside(event) {
+  //     if (!this.$el.contains(event.target)) {
+  //       this.dropdownOpen = false; 
+  //       this.showBadge = true; 
+  //     }
+  //   },
     handleClick() {
       this.$nextTick(() => {
         if (this.$refs.fileInput) {
@@ -876,16 +876,17 @@ export default {
   this.fetchProfileImage()
 
   await  this.getCandidateMethods();
-  document.addEventListener('click', this.handleClickOutside);
+  // document.addEventListener('click', this.handleClickOutside);
+  const token = localStorage.getItem("token");
   const merchantId = localStorage.getItem('merchant_id');
-    if (merchantId) {
+    if (merchantId && token) {
       this.adminLink = `/admin/${merchantId}`;
     }
     
   },
-  beforeDestroy() {
-    document.removeEventListener('click', this.handleClickOutside);
-  },
+  // beforeDestroy() {
+  //   document.removeEventListener('click', this.handleClickOutside);
+  // },
   
 };
 </script>
