@@ -122,10 +122,10 @@
                   <div class="col-2">
                     <label class="form-label">Dated</label>
                   </div>
-                  <div class="col-10">
+                  <div class="col-5">
                     <input
                       type="date"
-                      class="form-control w-100"
+                      class="form-control w-50"
                       v-model="selectedDate"
                       @change="addDate"
                       :min="minDate"

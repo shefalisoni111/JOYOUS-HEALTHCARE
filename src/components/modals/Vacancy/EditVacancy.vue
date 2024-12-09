@@ -74,47 +74,39 @@
                   </div>
                 </div>
 
-                <div class="mb-3">
-                  <div class="d-flex">
-                    <div class="col-2">
-                      <label class="form-label">Date</label>
-                    </div>
-                    <div></div>
-                    <div
-                      v-for="(date, index) in fetchVacancy.dates"
-                      :key="index"
-                      class=""
-                    >
-                      <div class="col-10 position-relative">
-                        <input
-                          type="date"
-                          class="form-select"
-                          :value="formatDate(date)"
-                          @input="updateDate($event.target.value, index)"
-                        />
-                        <span
-                          v-if="
-                            !isDateValid(date) && fetchVacancy.dates[index].length > 0
-                          "
-                          class="text-danger"
-                          >Please choose a date from today onwards!</span
-                        >
-                        <button
-                          v-if="fetchVacancy.dates.length > 1 && !isDateValid(date)"
-                          style="
-                            position: absolute;
-                            bottom: 96px;
-                            right: -7px;
-                            border-radius: 50%;
-                            padding: 0px 5px;
-                            font-size: small;
-                          "
-                          class="btn btn-danger btn-sm mt-2"
-                          @click.prevent="removeDate(index)"
-                        >
-                          x
-                        </button>
-                      </div>
+                <div class="mb-3 d-flex">
+                  <div class="col-2">
+                    <label class="form-label">Date</label>
+                  </div>
+
+                  <div v-for="(date, index) in fetchVacancy.dates" :key="index" class="">
+                    <div class="col-10 position-relative">
+                      <input
+                        type="date"
+                        class="form-select w-100"
+                        :value="formatDate(date)"
+                        @input="updateDate($event.target.value, index)"
+                      />
+                      <span
+                        v-if="!isDateValid(date) && fetchVacancy.dates[index].length > 0"
+                        class="text-danger"
+                        >Please choose a date from today onwards!</span
+                      >
+                      <button
+                        v-if="fetchVacancy.dates.length > 1 && !isDateValid(date)"
+                        style="
+                          position: absolute;
+                          bottom: 96px;
+                          right: -7px;
+                          border-radius: 50%;
+                          padding: 0px 5px;
+                          font-size: small;
+                        "
+                        class="btn btn-danger btn-sm mt-2"
+                        @click.prevent="removeDate(index)"
+                      >
+                        x
+                      </button>
                     </div>
                   </div>
                 </div>
