@@ -138,7 +138,7 @@
                               </td>
                               <td>{{ data.email }}</td>
                               <td>{{ data.phone_number }}</td>
-                              <td>{{ data.user_role }}</td>
+                              <td>{{ data.user_role.split("_").join(" ") }}</td>
                               <!-- <td><i class="bi bi-trash text-danger"></i></td> -->
 
                               <td>
@@ -190,7 +190,7 @@
                               </td>
                               <td>{{ data.email }}</td>
                               <td>{{ data.phone_number }}</td>
-                              <td>{{ data.user_role }}</td>
+                              <td>{{ data.user_role.split("_").join(" ") }}</td>
                               <td>
                                 <i
                                   class="bi bi-trash text-danger cursor-pointer"

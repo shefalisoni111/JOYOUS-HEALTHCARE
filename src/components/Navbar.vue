@@ -434,7 +434,7 @@
                 <strong>{{ message.sender?.name || 'Unknown Sender' }}</strong>: {{ message.content || 'No content' }}
               </div>
             </div> -->
-            <div class="chat-messages">
+            <div class="chat-messages" ref="chatMessages">
               <div 
                 v-for="message in selectedCandidateMessages" 
                 :key="message.id"
@@ -497,6 +497,7 @@ import axios from "axios";
 // import ConfirmationAlert from "./Alerts/ConfirmationAlert.vue";
 import Swal from "sweetalert2";
 import logo from '../assets/logo.png';
+import { nextTick } from "vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -569,13 +570,32 @@ export default {
     },
   },
   watch: {
+    selectedCandidateMessages() {
+      this.scrollToBottom(); 
+    },
+    showChatBox(newVal) {
+      if (newVal) this.scrollToBottom(); 
+    },
   selectedCandidate(newCandidate) {
     if (newCandidate) {
       this.fetchMessagesForCandidate(newCandidate);
     }
   },
+  newMessage(newValue) {
+    if (newValue) { 
+      this.fetchMessages(this.channelSid);
+    }
+  }
 },
   methods: {
+    scrollToBottom() {
+      nextTick(() => {
+        const chatMessages = this.$refs.chatMessages;
+        if (chatMessages) {
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+      });
+    },
     async fetchProfileImage() {
       const token = localStorage.getItem("token");
       const merchantId = localStorage.getItem("merchant_id");
@@ -674,7 +694,7 @@ export default {
       this.selectedCandidate = candidate;
       this.showChatBox = true;
        this.fetchChatChannel(candidate.id);
-      
+    
       
     },
     closeChatBox() {
@@ -713,7 +733,7 @@ export default {
           this.channelSid = data.channel_sid; 
           await   this.fetchMessages(data.channel_sid)
         } else {
-          swal.fire({
+          Swal.fire({
             title: "Error!",
             text: data.message || "Failed to create chat channel. Please try again.",
             icon: "error",
@@ -721,7 +741,7 @@ export default {
           });
         }
       } catch (error) {
-        swal.fire({
+        Swal.fire({
           title: "Error!",
           text: "An unexpected error occurred while creating the chat channel. Please try again later.",
           icon: "error",
@@ -768,7 +788,7 @@ export default {
       this.newMessage = ""; 
       this.fetchMessages(this.channelSid) 
       } else {
-        swal.fire({
+        Swal.fire({
           title: "Error!",
           text: data.message || "Failed to send the message. Please try again.",
           icon: "error",
@@ -782,7 +802,7 @@ export default {
           this.newMessage = ""; 
         } 
       } catch (error) {
-        swal.fire({
+        Swal.fire({
           title: "Error!",
           text: "An unexpected error occurred while sending the message. Please try again.",
           icon: "error",
@@ -808,7 +828,7 @@ export default {
 
     
     } catch (error) {
-      swal.fire({
+      Swal.fire({
       title: "Error!",
       text: error.response?.data?.message || "Failed to fetch messages. Please try again.",
       icon: "error",
@@ -874,7 +894,7 @@ export default {
 
  async mounted() {
   this.fetchProfileImage()
-
+  this.scrollToBottom();
   await  this.getCandidateMethods();
   // document.addEventListener('click', this.handleClickOutside);
   const token = localStorage.getItem("token");
