@@ -1323,7 +1323,7 @@ td {
   background: #fdce5e17 !important;
 }
 
-@media (max-width: 1520px) {
+@media (max-width: 1020px) {
   .candidateTable {
     width: 1890px;
   }

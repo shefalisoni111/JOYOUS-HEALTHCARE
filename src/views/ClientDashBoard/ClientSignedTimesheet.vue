@@ -90,11 +90,11 @@
                     <select
                       v-model="site_id"
                       id="selectBusinessUnit"
-                      @change="filterData"
+                      @change="fetchCandidateList"
                     >
                       <option value="">All Site</option>
                       <option
-                        v-for="option in businessUnit"
+                        v-for="option in siteData"
                         :key="option.id"
                         :value="option.site_name"
                         placeholder="Select BusinessUnit"
@@ -103,17 +103,30 @@
                       </option>
                     </select>
 
-                    <select v-model="id" @change="filterData" id="selectCandidateList">
+                    <select
+                      v-model="id"
+                      @change="fetchCandidateList"
+                      id="selectCandidateList"
+                    >
                       <option value="">All Staff</option>
                       <option
-                        v-for="option in candidateLists"
+                        v-for="option in StaffData"
                         :key="option.id"
-                        :value="option.first_name"
+                        :value="option.id"
                         placeholder="Select Staff"
                       >
                         {{ option.first_name + " " + option.last_name }}
                       </option>
                     </select>
+                    &nbsp;&nbsp;
+
+                    <button
+                      :disabled="!isFilterSelected"
+                      @click="resetFilters"
+                      class="btn btn-secondary"
+                    >
+                      Reset Filters
+                    </button>
                   </div>
                 </div>
               </div>
@@ -128,8 +141,6 @@
                   <table class="table bookingTable">
                     <thead>
                       <tr>
-                        <th>Type</th>
-
                         <th scope="col">Staff</th>
                         <th scope="col">Site</th>
                         <th scope="col">Job Title</th>
@@ -143,6 +154,53 @@
                         <th scope="col">Type</th>
                       </tr>
                     </thead>
+                    <tbody v-if="candidateLists?.length > 0">
+                      <tr v-for="data in candidateLists" :key="data.id">
+                        <td scope="col">{{ data.candidate_name }}</td>
+                        <td scope="col">{{ data.site_name }}</td>
+                        <td scope="col">{{ data.job }}</td>
+                        <td scope="col">
+                          <div v-for="data in data.data" :key="data.id">
+                            {{ data.date }}
+                          </div>
+                        </td>
+                        <td scope="col">
+                          <div v-for="data in data.data" :key="data.id">
+                            {{ data.start_time }}
+                          </div>
+                        </td>
+                        <td scope="col">
+                          <div v-for="data in data.data" :key="data.id">
+                            {{ data.end_time }}
+                          </div>
+                        </td>
+                        <td scope="col"></td>
+                        <td scope="col">
+                          <div v-for="data in data.data" :key="data.id">
+                            {{ data.total_hours }}
+                          </div>
+                        </td>
+                        <td scope="col">
+                          {{ data.total_week_cost }}
+                        </td>
+                        <td scope="col">
+                          <div v-for="data in data.data" :key="data.id">
+                            {{ data.sheet_type }}
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tbody v-else>
+                      <tr>
+                        <td
+                          colspan="10"
+                          class="text-danger text-center"
+                          v-if="!isLoading"
+                        >
+                          {{ errorMessageCustom || "Data Not found!" }}
+                        </td>
+                      </tr>
+                    </tbody>
                   </table>
                 </div>
               </div>
@@ -163,16 +221,11 @@ import Loader from "../../components/Loader/Loader.vue";
 // import SuccessAlert from "../components/Alerts/SuccessAlert.vue";
 // import ConfirmationAlert from "../components/Alerts/ConfirmationAlert.vue";
 // import ShowDetailsMessage from "../components/Alerts/ShowDetailsMessage.vue";
+import Swal from "sweetalert2";
 
-const axiosInstance = axios.create({
-  headers: {
-    "Cache-Control": "no-cache",
-  },
-});
 export default {
   data() {
     return {
-      currentTab: "AllBooking",
       currentView: "weekly",
       daysOfWeek: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
       startDate: new Date(),
@@ -194,11 +247,11 @@ export default {
       debounceTimeout: null,
 
       errorMessageFilter: "",
-      errorMessage: "",
+      errorMessageCustom: "",
       job_id_value: "",
       job_id: "",
-      options: [],
-
+      siteData: [],
+      StaffData: [],
       errorMessageBooking: [],
       isLoading: false,
       errorDelete: [],
@@ -215,6 +268,9 @@ export default {
     // ShowDetailsMessage,
   },
   computed: {
+    isFilterSelected() {
+      return this.id || this.site_id;
+    },
     getWeekDates() {
       const currentDate = new Date();
       const weekStart = new Date(currentDate);
@@ -241,6 +297,54 @@ export default {
   },
   watch: {},
   methods: {
+    async getSiteNameMethod() {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/client_dashboard/client_sites`,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: "bearer " + token,
+            },
+          }
+        );
+        this.siteData = response.data.data;
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          // Handle 404 error
+          // console.error('Error fetching client data:', error.response.data.message);
+        } else {
+          // console.error('Error fetching client data:', error);
+        }
+      }
+    },
+    async getCandidateListMethod() {
+      const pagesToFetch = [1, 2, 3];
+      let allStaffData = [];
+
+      try {
+        const responses = await Promise.all(
+          pagesToFetch.map((page) =>
+            axios.get(`${VITE_API_URL}/candidates`, {
+              params: {
+                page: page,
+              },
+            })
+          )
+        );
+
+        responses.forEach((response) => {
+          allStaffData = allStaffData.concat(response.data.data);
+        });
+
+        this.StaffData = allStaffData;
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+        } else {
+        }
+      }
+    },
     moveToPrevious() {
       if (this.currentView === "weekly") {
         this.startDate.setDate(this.startDate.getDate() - 7);
@@ -254,7 +358,7 @@ export default {
           0
         );
       }
-      this.fetchBookingDataMethod();
+      this.fetchCandidateList();
       //   this.getDeleteBookingData();
     },
     moveToNext() {
@@ -270,8 +374,63 @@ export default {
           0
         );
       }
-      this.fetchBookingDataMethod();
-      //   this.getDeleteBookingData();
+      this.fetchCandidateList();
+    },
+    resetFilters() {
+      this.site_id = "";
+      this.id = "";
+
+      this.fetchCandidateList();
+    },
+    async fetchCandidateList() {
+      const token = localStorage.getItem("token");
+      this.isLoading = true;
+      const params = {
+        page: 1,
+      };
+
+      if (this.site_id) {
+        params["timesheet[site]"] = this.site_id;
+      }
+      if (this.id) {
+        params["timesheet[id]"] = this.id;
+      }
+
+      const today = new Date();
+
+      params["timesheet[date]"] = this.formatDates(this.startDate);
+
+      params.range = this.currentView === "weekly" ? "week" : "month";
+
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/client_dashboard/client_timesheets`,
+          {
+            params,
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        this.candidateLists = response.data.weekly_timesheets || [];
+        this.errorMessageFilter = "";
+        if (response.status === 200 && this.candidateLists.length === 0) {
+          this.errorMessageCustom = `Data Not available for this month`;
+        } else {
+          this.errorMessageCustom = "Data Not Found";
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          this.candidateLists = [];
+          this.errorMessageFilter = error.response.data.error || "Report Not Found!";
+          Swal("Error", errorMessageFilter, "error");
+        } else {
+          this.errorMessageFilter = "Report Not Found!";
+          Swal("Error", errorMessageFilter, "error");
+        }
+      } finally {
+        this.isLoading = false;
+      }
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
@@ -282,14 +441,17 @@ export default {
         const weekEnd = new Date(this.startDate);
         weekEnd.setDate(weekEnd.getDate() + 6);
         this.endDate = weekEnd;
+        // this.queryParams.range = "week";
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
         this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
         this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        // this.queryParams.range = "month";
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());
       localStorage.setItem("endDate", this.endDate.toISOString());
+      this.fetchCandidateList();
     },
     loadDateRangeFromLocalStorage() {
       const storedStartDate = localStorage.getItem("startDate");
@@ -306,19 +468,26 @@ export default {
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
+    formatDates(date) {
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      return `${month}/${day}/${year}`;
+    },
   },
   async beforeRouteEnter(to, from, next) {
     next((vm) => {
-      // vm.fetchBookingDataMethod();
+      // vm.fetchCandidateList();
       // vm.getDeleteBookingData();
     });
   },
   async beforeRouteUpdate(to, from, next) {
-    // this.fetchBookingDataMethod();
+    // this.fetchCandidateList();
     // this.getDeleteBookingData();
     next();
   },
   async mounted() {
+    this.currentView === "weekly";
     this.loadDateRangeFromLocalStorage();
 
     // await this.getPositionMethod();
@@ -338,7 +507,9 @@ export default {
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(endOfWeek.getDate() + 6);
     this.endDate = endOfWeek;
-    // await this.fetchBookingDataMethod();
+    await this.fetchCandidateList();
+    await this.getCandidateListMethod();
+    await this.getSiteNameMethod();
     // await this.getDeleteBookingData();
   },
 };

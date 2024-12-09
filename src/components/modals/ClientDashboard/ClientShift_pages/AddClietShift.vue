@@ -4,7 +4,7 @@
     <div
       class="modal fade"
       id="addShiftClient"
-      aria-labelledby="addShiftClient"
+      aria-labelledby="addShiftClientData"
       tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
@@ -307,6 +307,7 @@
 import axios from "axios";
 import SuccessAlert from "../../../Alerts/SuccessAlert.vue";
 import NotSuccessAlertVue from "../../../Alerts/NotSuccessAlert.vue";
+import Swal from "sweetalert2";
 
 export default {
   name: "AddVacancy",
@@ -517,13 +518,13 @@ export default {
         this.end_time = selectedShift.end_time || "";
         this.break = selectedShift.break_duration || "";
 
-        this.getClientAccordingRatePayFetchMethod(
-          this.client_id,
-          this.site_shift_id,
-          this.job_id,
-          this.site_id,
-          this.selectedDate
-        );
+        // this.getClientAccordingRatePayFetchMethod(
+        //   this.client_id,
+        //   this.site_shift_id,
+        //   this.job_id,
+        //   this.site_id,
+        //   this.selectedDate
+        // );
       } else {
         this.start_time = "";
         this.end_time = "";
@@ -635,14 +636,14 @@ export default {
       //   this.site_id,
       //   this.job_id
       // );
-      if (this.site_id && this.site_shift_id && this.client_id && this.job_id) {
-        await this.getClientAccordingRatePayFetchMethod(
-          this.client_id,
-          this.site_shift_id,
-          this.job_id,
-          this.site_id
-        );
-      }
+      // if (this.site_id && this.site_shift_id && this.client_id && this.job_id) {
+      //   await this.getClientAccordingRatePayFetchMethod(
+      //     this.client_id,
+      //     this.site_shift_id,
+      //     this.job_id,
+      //     this.site_id
+      //   );
+      // }
     },
     validateStaffRequired() {
       this.staff_required = this.staff_required.replace(/[^0-9]/g, "");
@@ -775,7 +776,6 @@ export default {
         this.validationStaffRequired &&
         this.validationDateType
       ) {
-        // console.log(this.end_date);
         const data = {
           site_id: this.site_id,
           job_id: this.job_id,
@@ -789,20 +789,16 @@ export default {
           end_time: this.end_time,
           break: this.break,
         };
-        if (this.end_time !== null && this.end_time !== "") {
-          data.end_time = this.end_time;
-        }
-        if (this.start_time !== null && this.start_time !== "") {
-          data.start_time = this.start_time;
-        }
+        if (this.end_time) data.end_time = this.end_time;
+        if (this.start_time) data.start_time = this.start_time;
 
         try {
           const token = localStorage.getItem("token");
           const response = await fetch(`${VITE_API_URL}/create_vacncy`, {
             method: "POST",
             headers: {
-              "content-type": "application/json",
-              Authorization: "bearer " + token,
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(data),
           });
@@ -812,31 +808,58 @@ export default {
             this.clearFields();
             this.clearError();
             this.removeDate();
-            const message = "Successful Shift added";
-            this.$refs.successAlert.showSuccess(message);
+            Swal.fire("Success", "Shift added successfully!", "success");
           } else {
-            if (this.client_rate.length === 0 && this.staff_rate.length === 0) {
-              this.$refs.dangerAlert.showSuccess(
-                "Please create rate for this client, job and site shift."
+            // If status is not 201, handle error scenarios
+            let errorData;
+            try {
+              errorData = await response.json();
+            } catch (parseError) {
+              errorData = { message: "Unknown error occurred." }; // Default error message
+            }
+
+            if (response.status === 200) {
+              // Handle 200 OK case with custom error message
+              if (errorData.error) {
+                // Show the specific error message from the response
+                Swal.fire(
+                  "Error",
+                  errorData.error || "Rate cards are missing. Please contact the agency.",
+                  "error"
+                );
+              } else {
+                // Show a generic error message if no specific error message is provided
+                Swal.fire(
+                  "Error",
+                  "An unexpected error occurred. Please try again.",
+                  "error"
+                );
+              }
+            } else {
+              Swal.fire(
+                "Error",
+                errorData.message || "Failed to add shift. Please try again.",
+                "error"
               );
             }
-            this.clearFieldsData();
           }
         } catch (error) {
+          Swal.fire("Error", "Please try again.", "error");
+        } finally {
           this.clearFieldsData();
-          this.clearFields();
-          setTimeout(() => {
-            this.clearError();
-          }, 100);
         }
       } else {
+        Swal.fire(
+          "Error",
+          "Please create a rate for this client, job, and site shift.",
+          "error"
+        );
         this.clearFields();
         setTimeout(() => {
           this.clearError();
         }, 100);
       }
     },
-
     async getJobTitleMethod() {
       const token = localStorage.getItem("token");
       try {
@@ -875,49 +898,49 @@ export default {
         }
       }
     },
-    async getClientAccordingRatePayFetchMethod(
-      client_id,
-      site_shift_id,
-      job_id,
-      site_id,
-      selectedDate
-    ) {
-      const params = {
-        job_id: job_id,
-        client_id: client_id,
-        site_shift_id: site_shift_id,
-        site_id: site_id,
-        date: selectedDate,
-      };
+    // async getClientAccordingRatePayFetchMethod(
+    //   client_id,
+    //   site_shift_id,
+    //   job_id,
+    //   site_id,
+    //   selectedDate
+    // ) {
+    //   const params = {
+    //     job_id: job_id,
+    //     client_id: client_id,
+    //     site_shift_id: site_shift_id,
+    //     site_id: site_id,
+    //     date: selectedDate,
+    //   };
 
-      try {
-        const response = await axios.get(`${VITE_API_URL}/find_rates`, { params });
-        this.fetchRatesData = response.data.rates;
-        // console.log(this.fetchRatesData);
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/find_rates`, { params });
+    //     this.fetchRatesData = response.data.rates;
+    //     // console.log(this.fetchRatesData);
 
-        if (this.fetchRatesData.length > 0) {
-          const rates = this.fetchRatesData[0];
-          this.client_rate = rates.client_rate;
-          this.staff_rate = rates.staff_rate;
-          this.umbrella = rates.umbrella_rate;
-          this.paye = rates.paye_rate;
-          this.private_limited = rates.private_limited_rate;
-        } else {
-          this.client_rate = "";
-          this.staff_rate = "";
-          this.umbrella = "";
-          this.paye = "";
-          this.private_limited = "";
-        }
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status === 404) {
-            // Handle the 404 error here (e.g., display an alert)
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
+    //     if (this.fetchRatesData.length > 0) {
+    //       const rates = this.fetchRatesData[0];
+    //       this.client_rate = rates.client_rate;
+    //       this.staff_rate = rates.staff_rate;
+    //       this.umbrella = rates.umbrella_rate;
+    //       this.paye = rates.paye_rate;
+    //       this.private_limited = rates.private_limited_rate;
+    //     } else {
+    //       this.client_rate = "";
+    //       this.staff_rate = "";
+    //       this.umbrella = "";
+    //       this.paye = "";
+    //       this.private_limited = "";
+    //     }
+    //   } catch (error) {
+    //     if (error.response) {
+    //       if (error.response.status === 404) {
+    //         // Handle the 404 error here (e.g., display an alert)
+    //         // alert(error.response.data.message);
+    //       }
+    //     }
+    //   }
+    // },
     async getBusinessUnitMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/activated_site`);
@@ -1027,7 +1050,6 @@ export default {
       // this.selectedDate = null;
     },
     clearFields() {
-      this.site_id = "";
       this.client_id = "";
       this.job_id = "";
       this.dates = [];

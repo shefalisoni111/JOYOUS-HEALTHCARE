@@ -332,9 +332,9 @@
                       </tr>
                     </tbody>
                     <tbody v-else>
-                      <tr v-if="!isLoading">
-                        <td colspan="7" class="text-danger text-center">
-                          {{ "Data Not found!" }}
+                      <tr>
+                        <td colspan="7" class="text-danger text-center" v-if="!isLoading">
+                          {{ errorMessage || "Data Not found!" }}
                         </td>
                       </tr>
                     </tbody>
@@ -1016,7 +1016,20 @@ export default {
             },
           }
         );
-        this.candidateList = response.data.data;
+        // this.candidateList = response.data.data;
+        const responseData = response.data?.data || [];
+
+        if (
+          responseData.length === 0 ||
+          (responseData.length === 1 && responseData[0].length === 0)
+        ) {
+          this.errorMessages = "Data Not Found.";
+          this.candidateList = [];
+        } else {
+          this.errorMessages = "";
+          this.candidateList = responseData;
+          this.vacancyList = response.data.vacancies || [];
+        }
 
         this.searchResults = response.data.data;
         this.assignStaffDisplay = response.data.vacancies;
@@ -1031,19 +1044,6 @@ export default {
         this.ColumnDateMatchDates = this.candidateList.map((candidate) =>
           candidate.availability.map((avail) => avail.date)
         );
-
-        this.availabilityIds = this.candidateList.map((candidate) => {
-          return candidate.availability.map(
-            (availabilityItem) => availabilityItem.availability_id
-          );
-        });
-
-        this.availabilityIds = this.searchResults.map((candidate) => {
-          return candidate.availability.map(
-            (availabilityItem) => availabilityItem.availability_id
-          );
-        });
-        // this.fetchAssignList();
       } catch (error) {
       } finally {
         this.isLoading = false;
