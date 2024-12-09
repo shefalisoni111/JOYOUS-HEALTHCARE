@@ -58,7 +58,7 @@
                   <div class="col-8">
                     <select v-model="user_role_id" @change="clearError">
                       <option v-for="option in roles" :key="option.id" :value="option.id">
-                        {{ option.name }}
+                        {{ option.name.split("_").join(" ") }}
                       </option>
                     </select>
                     <span
