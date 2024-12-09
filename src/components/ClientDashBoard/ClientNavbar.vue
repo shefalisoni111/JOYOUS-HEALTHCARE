@@ -89,7 +89,7 @@
           </li>
         </ul>
         <ul class="navbar-nav m-0 mb-2 mb-lg-0 inline-nav">
-          <li class="nav-item dropdown mt-2">
+          <!-- <li class="nav-item dropdown mt-2">
             <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
               <i class="bi bi-chat-left-dots"></i
             ></a>
@@ -102,9 +102,9 @@
                 <hr class="dropdown-divider" />
               </li>
             </ul>
-          </li>
+          </li> -->
 
-          <li class="nav-item dropdown mt-2">
+          <!-- <li class="nav-item dropdown mt-2">
             <a
               class="nav-link nav-icon"
               href="#"
@@ -149,7 +149,7 @@
                 </div>
               </li>
             </ul>
-          </li>
+          </li> -->
 
           <li class="nav-item dropdown">
             <a
@@ -246,7 +246,8 @@
 <script>
 import axios from "axios";
 import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
-
+import Swal from "sweetalert2";
+import logo from "../../assets/logo.png";
 export default {
   name: "ClientNavbar",
 
@@ -334,16 +335,29 @@ export default {
       this.isModalVisible = false;
     },
     confirmed() {
-      this.confirmMessage = "Are you sure want to sign out?";
       if (localStorage.getItem("token")) {
-        if (this.confirmMessage) {
-          this.isModalVisible = true;
-          this.confirmCallback = async () => {
+        Swal.fire({
+          html: '<p style="font-size: 25px;">Are you sure want to sign out?</p>',
+          imageUrl: logo,
+          imageWidth: 200,
+          imageAlt: "RecPal",
+          showCancelButton: true,
+          confirmButtonColor: "#ff5f30",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, sign me out!",
+          cancelButtonText: "Cancel",
+          didOpen: () => {
+            const popup = document.querySelector(".swal2-popup");
+            popup.style.border = "4px solid #fc7d4f";
+          },
+        }).then((result) => {
+          if (result.isConfirmed) {
             localStorage.removeItem("token");
             localStorage.removeItem("tokenExpiration");
+
             this.$router.replace({ name: "Login" });
-          };
-        }
+          }
+        });
       }
     },
     async fetchProfileImage() {

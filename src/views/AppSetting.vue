@@ -70,7 +70,7 @@
                     </div>
                   </router-link>
                 </li>
-                <li class="list-items d-flex mt-3">
+                <!-- <li class="list-items d-flex mt-3">
                   <i class="bi bi-person-vcard rounded-circle"></i>
                   <router-link to="/staff-profiles" class="text-decoration-none">
                     <div class="job ms-2">
@@ -87,7 +87,7 @@
                       <p class="text-capitalize mb-0">Add Staff Detail Section Field</p>
                     </div>
                   </router-link>
-                </li>
+                </li> -->
                 <div class="heading my-3 position-relative px-sm-2">
                   <p class="bforeline"></p>
                   <p class="mb-0 text-uppercase fw-bold docSetting">Documents Setting</p>
