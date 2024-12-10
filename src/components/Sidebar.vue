@@ -25,11 +25,11 @@
         </router-link>
       </li> -->
 
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <router-link class="nav-link" to="/appsetting/notificationsetting" exact>
           <i class="bi bi-bell"></i>
         </router-link>
-      </li>
+      </li> -->
 
       <li class="nav-item">
         <router-link class="nav-link" to="/appsetting/previlegesetting" exact>
