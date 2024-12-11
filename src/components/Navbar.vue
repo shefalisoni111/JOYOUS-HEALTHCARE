@@ -498,7 +498,7 @@ import axios from "axios";
 // import ConfirmationAlert from "./Alerts/ConfirmationAlert.vue";
 import Swal from "sweetalert2";
 import logo from '../assets/logo.png';
-import { io } from 'socket.io-client';
+
 import { nextTick } from "vue";
 
 const axiosInstance = axios.create({
