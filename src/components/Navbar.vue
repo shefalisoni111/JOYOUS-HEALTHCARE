@@ -259,7 +259,7 @@
             </ul>
           </li>
 
-          <li class="nav-item dropdown mt-2">
+          <!-- <li class="nav-item dropdown mt-2">
             <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" >
               <i class="bi bi-bell"></i>
               <span v-if="!dropdownOpen && showBadge" class="badge bg-primary badge-number" >2</span>
@@ -283,7 +283,7 @@
                 </div>
               </li>
             </ul>
-          </li>
+          </li> -->
           <!-- End Notification Nav -->
           <li class="nav-item dropdown">
             <a
@@ -472,6 +472,7 @@
                 placeholder="Write a message..."
                 rows="3"
                 style="padding-bottom: 45px"
+                @keydown.enter="sendMessage"
               />
             </div>
             <div class="px-3 pb-2 d-flex justify-content-end">
@@ -497,6 +498,7 @@ import axios from "axios";
 // import ConfirmationAlert from "./Alerts/ConfirmationAlert.vue";
 import Swal from "sweetalert2";
 import logo from '../assets/logo.png';
+import { io } from 'socket.io-client';
 import { nextTick } from "vue";
 
 const axiosInstance = axios.create({
@@ -529,11 +531,12 @@ export default {
       showBadge: true,
       dropdownOpen: false,
       showAll: false,
-      channelSid: "",
-    
+      // channelSid: "",
+      isFetchingMessages: false,
+      messageFetchInterval: null,
    
     senderId:null,
-   
+    socket: null,
       storedImageUrl: "",
       localProfileImage: this.profileImage,
       notifications: [
@@ -561,6 +564,11 @@ export default {
     computedProfileImage() {
       return this.localProfileImage; 
     },
+    channelSid() {
+      // Access `channelSid` from the store (adjust according to your store setup)
+      return this.$store.state.channelSid;
+    },
+  
   },
   
   props: {
@@ -573,21 +581,77 @@ export default {
     selectedCandidateMessages() {
       this.scrollToBottom(); 
     },
-    showChatBox(newVal) {
-      if (newVal) this.scrollToBottom(); 
-    },
+    // showChatBox(newVal) {
+    //   if (newVal) this.scrollToBottom(); 
+    // },
   selectedCandidate(newCandidate) {
     if (newCandidate) {
       this.fetchMessagesForCandidate(newCandidate);
     }
   },
+  // newMessage(newValue) {
+  //   const senderTypes = this.selectedCandidateMessages.map(message => message.sender.type);
+  //   console.log(senderTypes)
+  //   if (newValue && this.channelSid) {
+  //     console.log("New message detected:", newValue);
+  //     this.fetchMessages(this.channelSid);
+  //   }
+  // },
   newMessage(newValue) {
-    if (newValue) { 
+  if (newValue && this.channelSid) {
+    const lastMessage = this.selectedCandidateMessages.at(-1);
+    const isCandidateMessage = lastMessage?.sender?.type === "Candidate";
+
+    if (isCandidateMessage) {
+    
       this.fetchMessages(this.channelSid);
+    } else {
+     
     }
   }
 },
+showChatBox(newVal) {
+    if (!newVal) {
+      clearInterval(this.messageFetchInterval);
+    } else {
+      this.scrollToBottom(); 
+      
+        if (this.showChatBox && this.channelSid) {
+          this.fetchMessages(this.channelSid);
+        }
+      
+    }
+  },
+  // newMessage(newValue) {
+  //   const senderTypes = this.selectedCandidateMessages.map(message => message.sender.type);
+  //   console.log(senderTypes)
+  //   if (newValue && newValue.sender) {
+  //     if (senderTypes === "Candidate") {
+  //       console.log("New message detected from sender:", newValue);
+  //       this.handleNewMessage();
+  //     } else {
+  //       console.log("Message from other sender:", newValue);
+  //     }
+  //   } else {
+  //     console.log("No sender found in message:", newValue);
+  //   }
+  // },
+  channelSid(newChannelSid) {
+      if (newChannelSid) {
+        // console.log('Channel SID changed:', newChannelSid);
+        this.fetchMessages(newChannelSid);
+      }
+    }
+},
   methods: {
+    handleNewMessage() {
+    if (this.channelSid) {
+      // console.log("Fetching messages for new message on channel:", this.channelSid);
+      this.fetchMessages(this.channelSid);
+    } else {
+      // console.error("No channelSid available for fetching messages.");
+    }
+  },
     scrollToBottom() {
       nextTick(() => {
         const chatMessages = this.$refs.chatMessages;
@@ -622,12 +686,7 @@ export default {
       this.showAll = true; 
     },
     
-  //  handleClickOutside(event) {
-  //     if (!this.$el.contains(event.target)) {
-  //       this.dropdownOpen = false; 
-  //       this.showBadge = true; 
-  //     }
-  //   },
+
     handleClick() {
       this.$nextTick(() => {
         if (this.$refs.fileInput) {
@@ -700,7 +759,7 @@ export default {
     closeChatBox() {
       this.showChatBox = false;
       this.selectedCandidate = null;
-    
+      this.$store.dispatch('updateChannelSid', null);
     },
     fetchMessagesForCandidate(candidate) {
       this.selectedCandidateMessages = this.messages.filter(
@@ -723,6 +782,7 @@ export default {
             receiver_type: "Merchant", 
           }),
           headers: {
+            "Access-Control-Allow-Headers": "Content-Type",
             "Content-Type": "application/json",
           },
         });
@@ -730,7 +790,7 @@ export default {
         const data = await response.json();
         
         if (response.ok && data.channel_sid) {
-          this.channelSid = data.channel_sid; 
+          this.$store.dispatch('updateChannelSid', data.channel_sid);
           await   this.fetchMessages(data.channel_sid)
         } else {
           Swal.fire({
@@ -754,7 +814,7 @@ export default {
     async sendMessage() {
     
       if (!this.channelSid) {
-        console.error("Channel SID is not available. Fetch the channel first.");
+        // console.error("Channel SID is not available. Fetch the channel first.");
         return;
       }
       if (this.newMessage.trim() === "") {
@@ -773,6 +833,7 @@ export default {
             message: tempMessage
           }),
           headers: {
+            "Access-Control-Allow-Headers": "Content-Type",
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`, 
           },
@@ -786,7 +847,7 @@ export default {
         content: tempMessage,
       });
       this.newMessage = ""; 
-      this.fetchMessages(this.channelSid) 
+      await  this.fetchMessages(this.channelSid) 
       } else {
         Swal.fire({
           title: "Error!",
@@ -798,7 +859,7 @@ export default {
       
         if (data.success) {
           
-          // this.fetchMessages(this.channelSid) 
+         
           this.newMessage = ""; 
         } 
       } catch (error) {
@@ -811,6 +872,9 @@ export default {
       }
     },
     async fetchMessages(channelSid)  {
+      
+      this.isFetchingMessages = true;
+     
     const token = localStorage.getItem("token");
     try {
       const response = await axios.get(`${VITE_API_URL}/chats/fetch_messages`, {
@@ -818,6 +882,7 @@ export default {
           channel_sid: channelSid, 
         },
         headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
@@ -834,6 +899,8 @@ export default {
       icon: "error",
       confirmButtonText: "OK",
     });
+    } finally {
+      this.isFetchingMessages = false; 
     }
   },
   closeChatBox() {
@@ -896,7 +963,14 @@ export default {
   this.fetchProfileImage()
   this.scrollToBottom();
   await  this.getCandidateMethods();
-  // document.addEventListener('click', this.handleClickOutside);
+  this.messageFetchInterval = setInterval(() => {
+    if ( this.channelSid) {
+      this.fetchMessages(this.channelSid);
+    } else {
+      this.$store.dispatch('updateChannelSid', null);
+    }
+  }, 2000);
+  
   const token = localStorage.getItem("token");
   const merchantId = localStorage.getItem('merchant_id');
     if (merchantId && token) {
@@ -904,9 +978,14 @@ export default {
     }
     
   },
-  // beforeDestroy() {
-  //   document.removeEventListener('click', this.handleClickOutside);
-  // },
+  beforeUnmount() {
+   
+    if (this.messageFetchInterval) {
+    clearInterval(this.messageFetchInterval);
+  }
+  this.$store.dispatch('updateChannelSid', null);
+  },
+ 
   
 };
 </script>
