@@ -960,6 +960,11 @@ showChatBox(newVal) {
   },
 
  async mounted() {
+  const token = localStorage.getItem("token");
+  const merchantId = localStorage.getItem('merchant_id');
+    if (merchantId && token) {
+      this.adminLink = `/admin/${merchantId}`;
+    }
   this.fetchProfileImage()
   this.scrollToBottom();
   await  this.getCandidateMethods();
@@ -971,11 +976,7 @@ showChatBox(newVal) {
     }
   }, 2000);
   
-  const token = localStorage.getItem("token");
-  const merchantId = localStorage.getItem('merchant_id');
-    if (merchantId && token) {
-      this.adminLink = `/admin/${merchantId}`;
-    }
+ 
     
   },
   beforeUnmount() {
