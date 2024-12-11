@@ -7,7 +7,14 @@ const router = createRouter({
   history: createWebHistory(),
 
   routes: [
-  
+    {
+      path: "/LoginType",
+      name: "Panel_Login",
+      component: () => import("@/components/auth/PanelLogin/Panel_Login.vue"),
+      meta: {
+        requiresAuth: true,
+      },
+    },
     {
       path: "/home",
       name: "Home",
