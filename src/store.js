@@ -3,6 +3,7 @@ import { createStore } from 'vuex';
 
 export default createStore({
   state: {
+    channelSid: null,
     selectedAppliedItemId: null,
     selectedCandidateItemId: null,
     selectedAssignedItemId: null,
@@ -21,6 +22,9 @@ export default createStore({
      selectedTemplate: localStorage.getItem('selectedTemplate') || 'TemplateOne',
   },
   mutations: {
+    setChannelSid(state, channelSid) {
+      state.channelSid = channelSid; 
+    },
     setSelectedTemplateClient(state, template) {
       state.selectedTemplateClient = template;
     },
@@ -90,6 +94,10 @@ export default createStore({
   
   },
   actions: {
+    updateChannelSid({ commit }, channelSid) {
+      commit('setChannelSid', channelSid);
+     
+    },
     updateSelectedTemplate({ commit }, template) {
       commit('setSelectedTemplate', template);
     },
@@ -129,6 +137,7 @@ export default createStore({
   },
    getters: {
     getSelectedTemplate: (state) => state.selectedTemplate,
+    getChannelSid: (state) => state.channelSid,
   },
  
 });
