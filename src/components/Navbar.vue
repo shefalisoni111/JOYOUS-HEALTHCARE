@@ -262,7 +262,7 @@
           <li class="nav-item dropdown mt-2">
             <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" >
               <i class="bi bi-bell"></i>
-              <span v-if="!dropdownOpen && showBadge" class="badge bg-primary badge-number" >2</span>
+              <span v-if="!dropdownOpen && showBadge" class="badge bg-primary badge-number" >0</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" @click.self="dropdownOpen = false" style="height:310px;    width: 266px;"  @scroll="onScroll"  ref="notificationDropdown">
               <!-- <li class="dropdown-header d-flex">
@@ -423,24 +423,9 @@
                 <i class="bi bi-x-lg"></i>
               </button>
             </div>
-            <!-- <div class="chat-messages">
-              <div 
-                v-for="message in selectedCandidateMessages" 
-                :key="message.id"
-                :class="{
-                  'chat-message-left': message.sender?.type === 'Candidate', 
-                  'chat-message-right': message.sender?.type === 'Merchant'
-                }"
-              >
-                <strong>{{ message.sender?.name || 'Unknown Sender' }}</strong>: {{ message.content || 'No content' }}
-              </div>
-            </div> -->
+           
             <div class="chat-messages" ref="chatMessages">
-              <!-- <div v-if="isLoading" class="chat-loader">
-                <div class="spinner-border text-primary" role="status">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div> -->
+            
               <div v-if="selectedCandidateMessages?.length >0"
                 v-for="message in selectedCandidateMessages" 
                 :key="message.id"
