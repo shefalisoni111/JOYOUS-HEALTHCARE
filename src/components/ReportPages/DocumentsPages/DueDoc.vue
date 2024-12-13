@@ -48,11 +48,7 @@
             </tr>
           </tbody>
         </table>
-        <div
-          class="mx-3"
-          style="text-align: right"
-          v-if="getDocumentReportData.length >= 10"
-        >
+        <div class="mx-3" style="text-align: right" v-if="getCategoryData.length >= 10">
           <!-- <button class="btn btn-outline-dark btn-sm">
             {{ totalRecordsOnPage }} Records Per Page
           </button> -->
@@ -93,7 +89,7 @@
           >&nbsp;&nbsp;
           <button
             class="btn btn-sm btn-primary ml-2"
-            :disabled="currentPage * itemsPerPage >= getDocumentReportData?.length"
+            :disabled="currentPage * itemsPerPage >= getCategoryData?.length"
             @click="currentPage++"
           >
             Next
