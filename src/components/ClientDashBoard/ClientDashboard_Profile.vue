@@ -18,7 +18,7 @@
                     <router-view to="/home">
                       <img
                         v-if="!profileImage"
-                        src="./profile.png"
+                        src="../profile.png"
                         width="150"
                         height="150"
                         @click.prevent
