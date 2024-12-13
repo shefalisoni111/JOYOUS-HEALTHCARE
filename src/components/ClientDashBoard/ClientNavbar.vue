@@ -159,7 +159,7 @@
               aria-label="profile detail"
             >
               <img
-                v-if="computedProfileImage !== './profile.png'"
+                v-if="computedProfileImage !== '../profile.png'"
                 :src="computedProfileImage"
                 alt="USer"
                 class="rounded-circle profileAdminImg"
@@ -169,7 +169,7 @@
               />
               <img
                 v-else
-                src="./profile.png"
+                src="../profile.png"
                 alt="USer"
                 class="rounded-circle profileAdminImg"
                 width="40"
@@ -322,7 +322,7 @@ export default {
   props: {
     profileImage: {
       type: String,
-      default: "./profile.png",
+      default: "../profile.png",
     },
   },
   methods: {
