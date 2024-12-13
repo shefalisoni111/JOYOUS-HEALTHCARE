@@ -264,14 +264,14 @@
               <i class="bi bi-bell"></i>
               <span v-if="!dropdownOpen && showBadge" class="badge bg-primary badge-number" >2</span>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" @click.self="dropdownOpen = false" style="height:390px;"  @scroll="onScroll"  ref="notificationDropdown">
-              <li class="dropdown-header d-flex">
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" @click.self="dropdownOpen = false" style="height:310px;    width: 266px;"  @scroll="onScroll"  ref="notificationDropdown">
+              <!-- <li class="dropdown-header d-flex">
                 You have {{ notifications.length }} new notifications
                 <a href="#" class="mt-2 ms-2" @click.prevent="toggleShowAll">
                   <span class="badge rounded-pill bg-primary p-2 ms-2">{{ showAll ? 'Show less' : 'View all' }}</span>
                 </a>
-              </li>
-              <li>
+              </li> -->
+              <!-- <li>
                 <hr class="dropdown-divider" />
               </li>
               <li v-for="(notification, index) in visibleNotifications" :key="index" class="notification-item p-2 d-flex gap-1">
@@ -281,7 +281,8 @@
                   <p>{{ notification.message }}</p>
                   <p>{{ notification.time }}</p>
                 </div>
-              </li>
+              </li> -->
+              <li class="notification-item p-2 d-flex gap-1 text-danger">No Notification Found!</li>
             </ul>
           </li>
           <!-- End Notification Nav -->
@@ -435,7 +436,12 @@
               </div>
             </div> -->
             <div class="chat-messages" ref="chatMessages">
-              <div 
+              <!-- <div v-if="isLoading" class="chat-loader">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div> -->
+              <div v-if="selectedCandidateMessages?.length >0"
                 v-for="message in selectedCandidateMessages" 
                 :key="message.id"
                 :class="{
@@ -453,14 +459,29 @@
             
               
                 <div v-if="message.sender?.name && message?.is_read === false">
-                  <strong>{{ message.sender?.name === message.sender?.name ? 'You' : message.sender?.name || 'Unknown Sender' }}</strong>
+                  <!-- <strong>{{ message.sender?.name === message.sender?.name ? 'You' : message.sender?.name || 'Unknown Sender' }}</strong> -->
+                  <strong>
+                   
+                    {{ message.sender?.type === 'Merchant' && message.sender?.name  ? 'You' : message.sender?.name || 'Unknown Sender' }}
+                  </strong>
                   <div>
                   {{ message.content || 'No content' }}
                 </div>
                 </div>
+              </div>
+              
+             
+              <div v-else-if="selectedCandidateMessages?.length === 0 && !isLoading">
+                <div class="text-danger text-center">
+                  No Chat Found!
+                </div>
+              </div>
             
               
-                
+              <div v-else-if="selectedCandidateMessages?.length === 0 && isLoading">
+                <div class="spinner-border  d-block m-auto" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
               </div>
             </div>
             <div class="chat-input">
@@ -499,7 +520,9 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import logo from '../assets/logo.png';
 
+
 import { nextTick } from "vue";
+import LoaderVue from './Loader/Loader.vue';
 
 const axiosInstance = axios.create({
   headers: {
@@ -514,6 +537,7 @@ export default {
     return {
       adminLink: '/admin/',
       getAdminData: [],
+      isUserScrolling: false,
       showChatBox: false,
       getAdminProfile: [],
       getCandidatesData: [],
@@ -532,6 +556,7 @@ export default {
       dropdownOpen: false,
       showAll: false,
       // channelSid: "",
+      isLoading: true,
       isFetchingMessages: false,
       messageFetchInterval: null,
    
@@ -589,53 +614,31 @@ export default {
       this.fetchMessagesForCandidate(newCandidate);
     }
   },
-  // newMessage(newValue) {
-  //   const senderTypes = this.selectedCandidateMessages.map(message => message.sender.type);
-  //   console.log(senderTypes)
-  //   if (newValue && this.channelSid) {
-  //     console.log("New message detected:", newValue);
-  //     this.fetchMessages(this.channelSid);
-  //   }
-  // },
   newMessage(newValue) {
-  if (newValue && this.channelSid) {
-    const lastMessage = this.selectedCandidateMessages.at(-1);
-    const isCandidateMessage = lastMessage?.sender?.type === "Candidate";
-
-    if (isCandidateMessage) {
-    
-      this.fetchMessages(this.channelSid);
-    } else {
-     
-    }
-  }
-},
-showChatBox(newVal) {
-    if (!newVal) {
-      clearInterval(this.messageFetchInterval);
-    } else {
-      this.scrollToBottom(); 
-      
-        if (this.showChatBox && this.channelSid) {
-          this.fetchMessages(this.channelSid);
-        }
-      
+   
+    if (newValue && this.channelSid) {
+      this.fetchMessages(this.channelSid).then(() => {
+      this.scrollToBottom();
+    }).catch((error) => {
+      // console.error('Error fetching messages:', error);
+    });
+      // this.fetchMessages(this.channelSid);
     }
   },
-  // newMessage(newValue) {
-  //   const senderTypes = this.selectedCandidateMessages.map(message => message.sender.type);
-  //   console.log(senderTypes)
-  //   if (newValue && newValue.sender) {
-  //     if (senderTypes === "Candidate") {
-  //       console.log("New message detected from sender:", newValue);
-  //       this.handleNewMessage();
-  //     } else {
-  //       console.log("Message from other sender:", newValue);
-  //     }
-  //   } else {
-  //     console.log("No sender found in message:", newValue);
-  //   }
-  // },
+//   newMessage(newValue) {
+//   if (newValue && this.channelSid) {
+//     const lastMessage = this.selectedCandidateMessages.at(-1);
+//     const isCandidateMessage = lastMessage?.sender?.type === "Candidate";
+
+//     if (isCandidateMessage) {
+    
+//       this.fetchMessages(this.channelSid);
+//     } else {
+     
+//     }
+//   }
+// },
+
   channelSid(newChannelSid) {
       if (newChannelSid) {
         // console.log('Channel SID changed:', newChannelSid);
@@ -644,15 +647,18 @@ showChatBox(newVal) {
     }
 },
   methods: {
-    handleNewMessage() {
-    if (this.channelSid) {
-      // console.log("Fetching messages for new message on channel:", this.channelSid);
-      this.fetchMessages(this.channelSid);
-    } else {
-      // console.error("No channelSid available for fetching messages.");
-    }
-  },
+    onScroll() {
+      const chatMessages = this.$refs.chatMessages;
+    
+      if (chatMessages.scrollHeight - chatMessages.scrollTop <= chatMessages.clientHeight + 10) {
+        this.isUserScrolling = false;
+      } else {
+        this.isUserScrolling = true; 
+      }
+    },
+
     scrollToBottom() {
+      if (this.isUserScrolling) return;
       nextTick(() => {
         const chatMessages = this.$refs.chatMessages;
         if (chatMessages) {
@@ -872,7 +878,7 @@ showChatBox(newVal) {
       }
     },
     async fetchMessages(channelSid)  {
-      
+      this.isLoading = true;
       this.isFetchingMessages = true;
      
     const token = localStorage.getItem("token");
@@ -889,8 +895,8 @@ showChatBox(newVal) {
       });
 
       
-      this.selectedCandidateMessages = response.data.messages;
-
+      this.selectedCandidateMessages = response.data.messages || [];
+    
     
     } catch (error) {
       Swal.fire({
@@ -901,6 +907,8 @@ showChatBox(newVal) {
     });
     } finally {
       this.isFetchingMessages = false; 
+      this.isLoading = false;
+     
     }
   },
   closeChatBox() {
@@ -966,7 +974,7 @@ showChatBox(newVal) {
       this.adminLink = `/admin/${merchantId}`;
     }
   this.fetchProfileImage()
-  this.scrollToBottom();
+  // this.scrollToBottom();
   await  this.getCandidateMethods();
   this.messageFetchInterval = setInterval(() => {
     if ( this.channelSid) {
@@ -976,7 +984,7 @@ showChatBox(newVal) {
     }
   }, 2000);
   
- 
+
     
   },
   beforeUnmount() {
@@ -1056,13 +1064,14 @@ showChatBox(newVal) {
 }
 
 .chat-messages {
- 
+
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 10px;
   height: 222px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .chat-message-left {
@@ -1085,6 +1094,13 @@ showChatBox(newVal) {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.chat-loader {
+  color: #f6851d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
 }
 .fixed-navbar {
   position: fixed;
@@ -1160,6 +1176,7 @@ ul.profile .dropdown-item:focus {
   background-color: #f6851d !important;
   color: #fff;
 }
+.spinner-border{color: #f6851d;}
 .logo span {
   font-size: 26px;
   font-weight: 700;

@@ -292,7 +292,7 @@
                       </tr>
                     </thead>
 
-                    <tbody v-if="paginateCandidates?.length > 0">
+                    <tbody v-if="candidateList?.length > 0">
                       <tr class="sticky-header">
                         <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
                         <td>
@@ -352,7 +352,7 @@
                         </td>
                       </tr>
 
-                      <tr v-for="data in paginateCandidates" :key="data.id">
+                      <tr v-for="data in candidateList" :key="data.id">
                         <div
                           class="text-capitalize fw-bold"
                           style="border-right: 1px solid rgb(209, 208, 208)"
@@ -738,14 +738,12 @@
         Next
       </button>
     </div> -->
-    <div
+    <!-- <div
       class="mx-3 mb-3 mt-3"
       style="text-align: right"
       v-if="candidateList?.length >= 10"
     >
-      <!-- <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
-      </button> -->
+     
       <button
         class="btn btn-sm btn-primary dropdown-toggle"
         type="button"
@@ -784,7 +782,7 @@
       >
         Next
       </button>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -1602,6 +1600,10 @@ export default {
     this.endDate = endOfWeek;
     await this.fetchCandidateList();
     // await this.fetchVacancyListMethod();
+    document.documentElement.style.overflowY = "hidden";
+  },
+  beforeUnmount() {
+    document.documentElement.style.overflowY = "";
   },
 };
 </script>
@@ -1790,6 +1792,7 @@ td {
   .scheduleTable {
     width: 1090px;
   }
+
   .table-wrapper {
     overflow-x: scroll;
   }
