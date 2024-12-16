@@ -97,28 +97,41 @@
                     <div v-for="(day, index) in getMonthDates" :key="index"></div>
                   </div>
                 </div> -->
-
-                <ul class="nav nav-pills mt-3 gap-2" id="pills-tab" role="tablist">
-                  <li
-                    class="nav-item d-inline-flex align-items-baseline gap-2"
-                    role="presentation"
-                  >
-                    <button
-                      class="nav-link text-nowrap"
-                      :class="{ active: activeTab === index }"
-                      :to="`/${tab.routeName}`"
-                      aria-selected="true"
-                      type="button"
-                      role="tab"
-                      data-bs-toggle="pill"
-                      v-for="(tab, index) in tabs"
-                      :key="index"
-                      @click="selectTab(index)"
+                <div class="d-flex justify-content-between align-items-baseline">
+                  <ul class="nav nav-pills mt-3 gap-2" id="pills-tab" role="tablist">
+                    <li
+                      class="nav-item d-inline-flex align-items-baseline gap-2"
+                      role="presentation"
                     >
-                      {{ tab.name }}
+                      <button
+                        class="nav-link text-nowrap"
+                        :class="{ active: activeTab === index }"
+                        :to="`/${tab.routeName}`"
+                        aria-selected="true"
+                        type="button"
+                        role="tab"
+                        data-bs-toggle="pill"
+                        v-for="(tab, index) in tabs"
+                        :key="index"
+                        @click="selectTab(index)"
+                      >
+                        {{ tab.name }}
+                      </button>
+                    </li>
+                  </ul>
+                  <div>
+                    <button
+                      type="button"
+                      class="btn btn-outline-success text-nowrap text-nowrap text-capitalize"
+                      data-bs-toggle="modal"
+                      data-bs-target="#generateInvoice"
+                      data-bs-whatever="@mdo"
+                    >
+                      + generate invoice
                     </button>
-                  </li>
-                </ul>
+                  </div>
+                </div>
+
                 <div>
                   <component :is="activeComponent"></component>
                 </div>
@@ -208,11 +221,12 @@
       </div>
     </div>
     <loader :isLoading="isLoading"></loader>
+    <GenerateInvoiceAdd />
   </div>
 </template>
 <script>
 import axios from "axios";
-
+import GenerateInvoiceAdd from "../modals/InvoicePagesModal/GenerateInvoiceAdd.vue";
 import WeeklyGenerateInvoice from "../InvoicePages/GenerateInvoices/WeeklyGenerateInvoice.vue";
 import DailyGenerateInvoice from "../InvoicePages/GenerateInvoices/DailyGenerateInvoice.vue";
 import MonthlyGenerateInvoice from "../InvoicePages/GenerateInvoices/MonthlyGenerateInvoice.vue";
@@ -276,6 +290,7 @@ export default {
     Shift_Staff_GenerateInvoice,
     Staff_Weekly_GenerateInvoice,
     Loader,
+    GenerateInvoiceAdd,
   },
   computed: {
     activeComponent() {

@@ -443,9 +443,9 @@ label.form-label {
                 v-model="selectedDateOption"
                 @change="handleDateSelection"
               >
-                <option value="today">Today</option>
+                <!-- <option value="today">Today</option>
                 <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
+                <option value="monthly">Monthly</option> -->
                 <option value="custom">Custom</option>
               </select>
             </div>

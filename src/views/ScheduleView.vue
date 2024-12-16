@@ -432,6 +432,7 @@
                                               @click="
                                                 openModalEdit(data, formattedDate(day))
                                               "
+                                              class="position-relative"
                                               :class="{
                                                 'calendar-day': true,
                                                 clickable: day !== '',
@@ -448,6 +449,40 @@
                                                 {{ data.job_title }} &nbsp;
 
                                                 <br />
+                                              </span>
+                                              <span
+                                                class="bg-success text-white position-absolute top-0 clickable"
+                                                style="
+                                                  padding: 3px 6px;
+                                                  border-radius: 10px;
+                                                  color: #fff;
+
+                                                  right: 0;
+                                                  font-size: larger;
+                                                "
+                                                v-if="
+                                                  getBookingStatus(
+                                                    assign.candidate_id,
+                                                    assign.booking_data,
+                                                    formattedDate(day)
+                                                  )
+                                                "
+                                                @click.stop="
+                                                  handleBookingClick(
+                                                    $event,
+                                                    assign.candidate_id,
+                                                    assign.booking_data,
+                                                    formattedDate(day)
+                                                  )
+                                                "
+                                              >
+                                                {{
+                                                  getBookingStatus(
+                                                    assign.candidate_id,
+                                                    assign.booking_data,
+                                                    formattedDate(day)
+                                                  )
+                                                }}
                                               </span>
                                             </div>
                                           </span>
@@ -484,7 +519,7 @@
                   </table>
                 </div>
                 <loader :isLoading="isLoading"></loader>
-                <div class="table-container">
+                <!-- <div class="table-container">
                   <table class="table" v-if="searchQuery">
                     <thead>
                       <tr>
@@ -533,7 +568,7 @@
                               overflow-x: hidden;
                             "
                           >
-                            <!-- gg -->
+                        
                             <div v-for="(data, index) in vacancyList" :key="index">
                               <div
                                 v-for="day in selectedDateRow"
@@ -567,9 +602,7 @@
                                         >{{ vacancy.site }},{{ vacancy.job_title }}</span
                                       >
 
-                                      <!-- <span class="">{{
-                                  extractTimeRange(vacancy.site_shift)
-                                }}</span> -->
+                                  
                                       <span class="">{{
                                         vacancy.site_shift.replace(/_/g, " ")
                                       }}</span>
@@ -657,6 +690,10 @@
                                             <div
                                               data-bs-toggle="modal"
                                               data-bs-target=" #editAssignScheduleVacancy"
+                                              :disabled="
+                                                new Date(formattedDate(day)) <
+                                                new Date(today)
+                                              "
                                               data-bs-whatever="@mdo"
                                               @click="
                                                 openModalEdit(data, formattedDate(day))
@@ -666,15 +703,11 @@
                                                 clickable: day !== '',
                                               }"
                                             >
+                                              {{ console.log(data) }}
                                               <span
                                                 class="assignVacancyDesign mt-1 text-capitalize d-flex justify-content-center"
                                               >
-                                                {{ data.site }},
-                                                <!-- {{ extractTimeRange(data.site_shift)
-                                              }}-->
-                                                {{ data.site_shift.replace(/_/g, " ") }}
-                                                <br />
-                                                {{ data.job_title }} &nbsp;
+                                                
 
                                                 <br />
                                               </span>
@@ -706,83 +739,13 @@
                       </tr>
                     </tbody>
                   </table>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- <div
-      class="mx-3"
-      style="text-align: right"
-      v-if="!candidateList && searchResults?.length >= 8"
-    >
-      <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
-      </button>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="currentPage--"
-      >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= searchResults.length"
-        @click="currentPage++"
-      >
-        Next
-      </button>
-    </div> -->
-    <!-- <div
-      class="mx-3 mb-3 mt-3"
-      style="text-align: right"
-      v-if="candidateList?.length >= 10"
-    >
-     
-      <button
-        class="btn btn-sm btn-primary dropdown-toggle"
-        type="button"
-        id="recordsPerPageDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        {{ itemsPerPage }} Records
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
-        </li>
-      </ul>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="previousPage"
-      >
-        Previous
-      </button>
-      &nbsp;&nbsp;
-      <span>{{ currentPage }}</span>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage >= totalCandidateCount"
-        @click="nextPage"
-      >
-        Next
-      </button>
-    </div> -->
   </div>
 </template>
 
@@ -953,14 +916,93 @@ export default {
     },
   },
   methods: {
+    getBookingStatus(candidateId, bookingData, date) {
+      const matchingBooking = bookingData.find(
+        (booking) => booking.candidate_id === candidateId
+      );
+
+      // return matchingBooking?.booking_status === "confirmed" ? "Booked" : null;
+      if (
+        matchingBooking &&
+        matchingBooking.booking_status === "confirmed" &&
+        new Date(date) >= new Date()
+      ) {
+        return "Booked";
+      }
+
+      return null;
+    },
+    async handleBookingClick(event, candidateId, bookingData, date) {
+      event.stopImmediatePropagation();
+      const status = this.getBookingStatus(candidateId, bookingData, date);
+      const matchingBooking = bookingData.find(
+        (booking) => booking.candidate_id === candidateId
+      );
+
+      const bookingId = matchingBooking.booking_id;
+
+      if (status === "Booked") {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "Do you want to cancel this booking?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, cancel it!",
+          cancelButtonText: "No, keep it",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              const formData = new FormData();
+              formData.append("id", bookingId);
+
+              const token = localStorage.getItem("token");
+
+              const response = await axios.put(
+                `${VITE_API_URL}/cancel_booking`,
+                formData,
+                {
+                  headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
+
+              if (response.status === 200) {
+                Swal.fire(
+                  "Cancelled!",
+                  "The booking has been cancelled successfully.",
+                  "success"
+                );
+
+                this.fetchAssignList();
+              } else {
+                Swal.fire("Error!", response.data.data.message, "error");
+              }
+            } catch (error) {
+              if (error.response) {
+                if (error.response.status === 401) {
+                  Swal.fire("Error!", error.response.data.error, "error");
+                } else if (error.response.status === 404) {
+                  Swal.fire("Error!", error.response.data.error, "error");
+                } else {
+                  Swal.fire("Error!", error.response.data.error, "error");
+                }
+              } else {
+                Swal.fire("Error!", error.response.data.error, "error");
+              }
+            }
+          }
+        });
+      }
+    },
     isTodayOrGreaterThanToday(day) {
-      const today = new Date(); // Get today's date
+      const today = new Date();
       const formattedToday = this.formattedDate(today);
       const formattedDay = this.formattedDate(day);
-      return formattedDay >= formattedToday; // Compare the formatted day to today
+      return formattedDay >= formattedToday;
     },
 
-    // Method to check if a vacancy day is today or greater
     isVacancyForToday(dataDay, selectedDay) {
       return this.formattedDate(dataDay) === this.formattedDate(selectedDay);
     },
@@ -1438,11 +1480,13 @@ export default {
         }
         this.assignStaffDisplay = response.data.vacancies;
 
-        const vacanciesInsideVacancies = response.data.vacancies.map((item) => {
-          return item.vacancies;
-        });
+        // const vacanciesInsideVacancies = response.data.vacancies.map((item) => {
+        //   return item.vacancies;
+        // });
 
-        this.flattenedAssignVacancies = vacanciesInsideVacancies.flat();
+        // this.flattenedAssignVacancies = vacanciesInsideVacancies.flat();
+
+        // console.log(this.assignStaffDisplay);
 
         // this.fetchAssignList();
       } catch (error) {
@@ -1600,10 +1644,10 @@ export default {
     this.endDate = endOfWeek;
     await this.fetchCandidateList();
     // await this.fetchVacancyListMethod();
-    document.documentElement.style.overflowY = "hidden";
+    // document.documentElement.style.overflowY = "hidden";
   },
   beforeUnmount() {
-    document.documentElement.style.overflowY = "";
+    // document.documentElement.style.overflowY = "";
   },
 };
 </script>
