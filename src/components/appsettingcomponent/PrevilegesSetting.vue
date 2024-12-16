@@ -100,6 +100,7 @@
                         role="tab"
                         aria-controls="pills-profile"
                         aria-selected="false"
+                        :class="{ active: activeTab === 'inactive' }"
                         @click="setActiveTab('inactive')"
                       >
                         Inactive Users
@@ -165,7 +166,7 @@
                       id="pills-profile"
                       role="tabpanel"
                       aria-labelledby="inactive"
-                      tabindex="0"
+                      tabindex="1"
                     >
                       <div class="mt-4 table-wrapper">
                         <table class="table table table-hover addjobtable">
@@ -287,6 +288,7 @@ export default {
     Loader,
     ConfirmationAlert,
   },
+
   methods: {
     handlePrivilegesAdd() {
       this.$refs.addPrivileges.getRolesMethod();
@@ -301,6 +303,8 @@ export default {
     },
     setActiveTab(tab) {
       this.activeTab = tab;
+      const activatedFilterValue = tab === "active";
+      this.fetchUsers(activatedFilterValue);
     },
     jobsEdit(jobID) {
       this.selectedjobID = jobID;
@@ -348,8 +352,8 @@ export default {
             activated_filter_value: false,
           },
         });
-        this.totalInActiveUserCount = response.data.total_user || [];
-        this.rolesInActive = response.data.users || [];
+        this.totalInActiveUserCount = response.data.total_user;
+        this.rolesInActive = response.data.users;
       } catch (error) {
         // console.log(error.response.status);
         if (error.response && error.response.status === 404) {
@@ -358,6 +362,42 @@ export default {
           this.errorMessage = "No inactive users found.";
         } else {
           this.errorMessage = "An error occurred while fetching data.";
+        }
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    async fetchUsers(activatedFilterValue) {
+      this.isLoading = true;
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get(`${VITE_API_URL}/find_active_inactive_users`, {
+          headers: {
+            Authorization: "bearer " + token,
+          },
+          params: {
+            activated_filter_value: activatedFilterValue,
+          },
+        });
+
+        if (activatedFilterValue) {
+          this.totalActiveUserCount = response.data.total_user;
+          this.rolesActive = response.data.users;
+        } else {
+          this.totalInActiveUserCount = response.data.total_user;
+          this.rolesInActive = response.data.users;
+        }
+      } catch (error) {
+        if (activatedFilterValue) {
+          this.rolesActive = [];
+          this.totalActiveUserCount = 0;
+        } else {
+          this.rolesInActive = [];
+          this.totalInActiveUserCount = 0;
+          this.errorMessage =
+            error.response?.status === 404
+              ? "No inactive users found."
+              : "An error occurred while fetching data.";
         }
       } finally {
         this.isLoading = false;
@@ -457,9 +497,10 @@ export default {
       };
     },
   },
-  mounted() {
-    this.getRolesActiveMethod();
-    this.getRolesInActiveMethod();
+  async mounted() {
+    // this.getRolesActiveMethod();
+    // await this.getRolesInActiveMethod();
+    await this.fetchUsers(true);
   },
 };
 </script>
