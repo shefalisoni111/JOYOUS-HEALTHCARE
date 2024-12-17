@@ -1644,10 +1644,10 @@ export default {
     this.endDate = endOfWeek;
     await this.fetchCandidateList();
     // await this.fetchVacancyListMethod();
-    // document.documentElement.style.overflowY = "hidden";
+    document.documentElement.style.overflowY = "hidden";
   },
   beforeUnmount() {
-    // document.documentElement.style.overflowY = "";
+    document.documentElement.style.overflowY = "";
   },
 };
 </script>
