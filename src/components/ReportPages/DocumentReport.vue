@@ -281,6 +281,14 @@ export default {
       return this.paginateDocumentReport.length;
     },
   },
+  watch: {
+    // $route(to) {
+    //   if (to.query.redirectTo) {
+    //     this.$router.push({ name: to.query.redirectTo });
+    //   }
+    // },
+  },
+
   methods: {
     setActiveTabFromRoute() {
       const currentRouteName = this.$route.name;
@@ -296,9 +304,20 @@ export default {
     setActiveTabNameOnLoad() {
       this.activeTabName = this.tabs[this.activeTab].name;
     },
-    selectTab(index) {
+    async selectTab(index) {
+      // this.activeTab = index;
+      // this.activeTabName = this.tabs[index].name;
+      // this.$router.push({ name: this.tabs[index].routeName });
       this.activeTab = index;
       this.activeTabName = this.tabs[index].name;
+
+      const componentName = this.tabs[index].component;
+      if (!this.$options.components[componentName]) {
+        this.$options.components[componentName] = (
+          await import(`../ReportPages/${componentName}.vue`)
+        ).default;
+      }
+
       this.$router.push({ name: this.tabs[index].routeName });
     },
     async filterData() {
@@ -572,10 +591,33 @@ export default {
       }
     },
   },
+
+  mounted() {
+    this.getDocumentReport();
+
+    this.getCandidateMethods();
+    this.documentCategoryDocumentTypeMethod();
+    this.getDocByFetchCategoriMethod();
+    const redirectTo = this.$route.query.redirectTo;
+    if (redirectTo === "DueDoc") {
+      this.$router.replace({ name: "DueDoc" });
+    } else if (redirectTo === "AllDoc") {
+      this.$router.replace({ name: "AllDoc" });
+    }
+    // this.filterData();
+  },
+  created() {
+    this.getDocumentReport();
+    this.setActiveTabFromRoute();
+    this.setActiveTabNameOnLoad();
+    // this.getCandidateMethods();
+    if (this.$route.query.redirectTo) {
+      this.$router.push({ name: this.$route.query.redirectTo });
+    }
+  },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
-
       if (matchingTabIndex !== -1) {
         vm.activeTab = matchingTabIndex;
         vm.activeTabName = vm.tabs[matchingTabIndex].name;
@@ -584,26 +626,11 @@ export default {
   },
   beforeRouteUpdate(to, from, next) {
     const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
-
     if (matchingTabIndex !== -1) {
       this.activeTab = matchingTabIndex;
       this.activeTabName = this.tabs[matchingTabIndex].name;
     }
-
     next();
-  },
-  mounted() {
-    this.getDocumentReport();
-
-    this.getCandidateMethods();
-    this.documentCategoryDocumentTypeMethod();
-    this.getDocByFetchCategoriMethod();
-
-    // this.filterData();
-  },
-  created() {
-    this.getDocumentReport();
-    // this.getCandidateMethods();
   },
 };
 </script>

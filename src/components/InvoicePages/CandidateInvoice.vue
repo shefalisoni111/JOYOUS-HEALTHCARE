@@ -80,6 +80,15 @@
                           @input="debounceSearch"
                         />
                       </form>
+                      <button
+                        type="button"
+                        class="btn btn-outline-success text-nowrap text-nowrap text-capitalize"
+                        data-bs-toggle="modal"
+                        data-bs-target="#generateInvoice"
+                        data-bs-whatever="@mdo"
+                      >
+                        + generate invoice
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -308,12 +317,13 @@
       </button>
     </div>
     <loader :isLoading="isLoading"></loader>
+    <GenerateInvoiceAdd />
   </div>
 </template>
 <script>
 import axios from "axios";
 // import Navbar from "../Navbar.vue";
-
+import GenerateInvoiceAdd from "../modals/InvoicePagesModal/GenerateInvoiceAdd.vue";
 import Loader from "../Loader/Loader.vue";
 
 const axiosInstance = axios.create({
@@ -340,7 +350,7 @@ export default {
       totalCount: 0,
     };
   },
-  components: { Loader },
+  components: { Loader, GenerateInvoiceAdd },
   computed: {
     getWeekDates() {
       const currentDate = new Date();

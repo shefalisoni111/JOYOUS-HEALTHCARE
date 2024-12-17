@@ -376,13 +376,21 @@
                           >
                         </div>
                         <div class="ps-4 mt-2">
-                          <span
+                          <router-link
+                            class="text-capitalize text-decoration-none text-muted"
+                            :to="{
+                              name: 'DocumentReport',
+                              query: { redirectTo: 'AllDoc' },
+                            }"
+                            >See More</router-link
+                          >
+                          <!-- <span
                             class="text-muted pt-2 text-capitalize cursor-pointer"
                             data-bs-toggle="modal"
                             data-bs-target="#inprogress"
                             data-bs-whatever="@mdo"
                             >See More</span
-                          >
+                          > -->
                         </div>
                       </div>
                     </div>
@@ -403,13 +411,20 @@
                           >
                         </div>
                         <div class="ps-4 mt-2">
-                          <span
+                          <router-link
+                            class="text-capitalize text-decoration-none text-muted"
+                            :to="{
+                              name: 'DocumentReport',
+                            }"
+                            >See More</router-link
+                          >
+                          <!-- <span
                             class="text-muted pt-2 text-capitalize cursor-pointer"
                             data-bs-toggle="modal"
                             data-bs-target="#inprogress"
                             data-bs-whatever="@mdo"
                             >See More</span
-                          >
+                          > -->
                         </div>
                       </div>
                     </div>
@@ -428,13 +443,20 @@
                           >
                         </div>
                         <div class="ps-4 mt-2">
-                          <span
+                          <router-link
+                            class="text-capitalize text-decoration-none text-muted"
+                            :to="{
+                              name: 'DocumentReport',
+                            }"
+                            >See More</router-link
+                          >
+                          <!-- <span
                             class="text-muted pt-2 text-capitalize cursor-pointer"
                             data-bs-toggle="modal"
                             data-bs-target="#inprogress"
                             data-bs-whatever="@mdo"
                             >See More</span
-                          >
+                          > -->
                         </div>
                       </div>
                     </div>
@@ -615,6 +637,9 @@ export default {
     },
   },
   methods: {
+    navigateToDueDoc() {
+      this.$router.push({ name: "DueDoc" });
+    },
     formatDate(date) {
       const day = date.getDate();
       const month = date.getMonth() + 1;

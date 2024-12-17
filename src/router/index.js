@@ -618,6 +618,7 @@ const router = createRouter({
       meta: {
         requiresAuth: true,  requiresAdmin:true,
       },
+      redirect: { name: "StaffReport" },
       children: [
         {
           path: "/report/PayrollReport",
@@ -684,6 +685,7 @@ const router = createRouter({
           meta: {
             requiresAuth: true, requiresAdmin:true,
           },
+       
           children: [
             {
               path: "AllDoc",

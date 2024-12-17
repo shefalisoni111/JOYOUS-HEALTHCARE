@@ -271,6 +271,7 @@
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="updateCandidateMethod()"
+              :disabled="isDateBeforeToday(columnDateMatch)"
             >
               Save
             </button>
@@ -348,6 +349,13 @@ export default {
     },
   },
   methods: {
+    isDateBeforeToday(state) {
+      const today = new Date();
+      const stateDate = new Date(state);
+      today.setHours(0, 0, 0, 0);
+      stateDate.setHours(0, 0, 0, 0);
+      return stateDate < today;
+    },
     async assignVacancyToCandidateDirectMethodPublish() {
       const data = {
         candidate_id: this.candidateId,
