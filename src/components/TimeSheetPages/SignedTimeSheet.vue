@@ -167,7 +167,18 @@
                                 {{ data.client }}
                               </router-link>
                               <span v-else>
-                                {{ data.client }}
+                                <router-link
+                                  v-if="data?.site_id_and_client_id?.client_id"
+                                  class="text-black text-decoration-none fw-bold"
+                                  :to="{
+                                    name: 'SingleClientProfile',
+                                    params: {
+                                      id: data?.site_id_and_client_id?.client_id,
+                                    },
+                                  }"
+                                >
+                                  {{ data.client }}
+                                </router-link>
                               </span>
                             </td>
                             <td scope="col">
@@ -181,7 +192,16 @@
                                 >{{ data.site }}</router-link
                               >
                               <span v-else>
-                                {{ data.site }}
+                                <router-link
+                                  v-if="data?.site_id_and_client_id?.site_id"
+                                  class="text-black text-decoration-none fw-bold"
+                                  :to="{
+                                    name: 'SingleSiteprofile',
+                                    params: { id: data?.site_id_and_client_id?.site_id },
+                                  }"
+                                >
+                                  {{ data.site }}
+                                </router-link>
                               </span>
                             </td>
                             <td scope="col">{{ data.job }}</td>
@@ -305,7 +325,18 @@
                                 {{ data.client }}
                               </router-link>
                               <span v-else>
-                                {{ data.client }}
+                                <router-link
+                                  v-if="data?.site_id_and_client_id?.client_id"
+                                  class="text-black text-decoration-none fw-bold"
+                                  :to="{
+                                    name: 'SingleClientProfile',
+                                    params: {
+                                      id: data?.site_id_and_client_id?.client_id,
+                                    },
+                                  }"
+                                >
+                                  {{ data.client }}
+                                </router-link>
                               </span>
                             </td>
                             <td scope="col">
@@ -319,7 +350,16 @@
                                 >{{ data.site }}</router-link
                               >
                               <span v-else>
-                                {{ data.site }}
+                                <router-link
+                                  v-if="data?.site_id_and_client_id?.site_id"
+                                  class="text-black text-decoration-none fw-bold"
+                                  :to="{
+                                    name: 'SingleSiteprofile',
+                                    params: { id: data?.site_id_and_client_id?.site_id },
+                                  }"
+                                >
+                                  {{ data.site }}
+                                </router-link>
                               </span>
                             </td>
                             <td scope="col">{{ data.job }}</td>
