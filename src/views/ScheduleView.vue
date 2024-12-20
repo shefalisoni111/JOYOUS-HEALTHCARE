@@ -614,24 +614,24 @@ export default {
       const job_id = this.options.find((option) => option.id === this.job_id);
       return job_id ? job_id.name : "";
     },
-    paginateCandidates() {
-      return this.candidateList;
-    },
-    paginateSearch() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.searchResults.slice(startIndex, endIndex);
-    },
+    // paginateCandidates() {
+    //   return this.candidateList;
+    // },
+    // paginateSearch() {
+    //   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    //   const endIndex = startIndex + this.itemsPerPage;
+    //   return this.searchResults.slice(startIndex, endIndex);
+    // },
     selectShifts() {
       const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
       return shifts_id ? shifts_id.shift_name : "";
     },
-    totalRecordsOnPage() {
-      return this.paginateCandidates.length;
-    },
-    totalRecordsOnPage() {
-      return this.paginateSearch.length;
-    },
+    // totalRecordsOnPage() {
+    //   return this.paginateCandidates.length;
+    // },
+    // totalRecordsOnPage() {
+    //   return this.paginateSearch.length;
+    // },
     daysOfWeek() {
       return [
         "Monday",
@@ -871,8 +871,10 @@ export default {
         );
       }
       this.columnDateMatch = this.formattedStartDate;
-      this.fetchVacancyListMethod();
+      // this.fetchVacancyListMethod();
       this.fetchCandidateList();
+
+      this.fetchAssignList();
     },
     moveToNext() {
       if (this.currentView === "weekly") {
@@ -888,8 +890,10 @@ export default {
         );
       }
       this.columnDateMatch = this.formattedStartDate;
-      this.fetchVacancyListMethod();
+      // this.fetchVacancyListMethod();
       this.fetchCandidateList();
+
+      // this.fetchAssignList();
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
@@ -956,7 +960,7 @@ export default {
           const message = "Staff UnAssigned Shift Successfully";
           this.$refs.successAlert.showSuccess(message);
           this.fetchCandidateList();
-          this.fetchAssignList();
+          // this.fetchAssignList();
         }
       } catch (error) {
         if (error.response && error.response.status === 422) {
@@ -1092,7 +1096,7 @@ export default {
         const actualCandidateId = candidateId.candidate_id.toString();
 
         await this.fetchVacancyListMethod();
-        // await this.fetchCandidateList();
+        await this.fetchCandidateList();
         const selectedDate = new Date(this.startDate);
         selectedDate.setDate(parseInt(day));
         selectedDate.setDate(selectedDate.getDate() + 1);
@@ -1171,7 +1175,7 @@ export default {
 
       await this.fetchVacancyListMethod();
 
-      // await this.fetchCandidateList();
+      await this.fetchCandidateList();
       const selectedDate = new Date(this.startDate);
       selectedDate.setDate(parseInt(day));
       selectedDate.setDate(selectedDate.getDate() + 1);
@@ -1245,24 +1249,23 @@ export default {
         }
       }
     },
-    setItemsPerPage(value) {
-      this.itemsPerPage = value;
-      this.currentPage = 1;
-      this.fetchCandidateList();
-    },
-    nextPage() {
-      this.currentPage++;
-      this.fetchCandidateList();
-    },
+    // setItemsPerPage(value) {
+    //   this.itemsPerPage = value;
+    //   this.currentPage = 1;
+    //   this.fetchCandidateList();
+    // },
+    // nextPage() {
+    //   this.currentPage++;
+    //   this.fetchCandidateList();
+    // },
 
-    previousPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-        this.fetchCandidateList();
-      }
-    },
+    // previousPage() {
+    //   if (this.currentPage > 1) {
+    //     this.currentPage--;
+    //     this.fetchCandidateList();
+    //   }
+    // },
     async fetchCandidateList() {
-      if (this.isFetching) return;
       this.isFetching = true;
       this.isLoading = true;
       try {
@@ -1299,9 +1302,11 @@ export default {
           );
         });
         // this.fetchAssignList();
+        // this.currentPage += 1;
       } catch (error) {
       } finally {
         this.isLoading = false;
+        this.isFetching = false;
       }
     },
     async fetchVacancyListMethod() {
@@ -1319,7 +1324,7 @@ export default {
           }
         );
 
-        await this.fetchCandidateList();
+        this.fetchCandidateList();
         // await this.fetchAssignList();
         // this.fetchAssignVacancyStaffList();
       } catch (error) {
@@ -1378,7 +1383,7 @@ export default {
   mounted() {
     this.loadDateRangeFromLocalStorage();
 
-    // await this.fetchAssignList();
+    // this.fetchAssignList();
     // await this.getBusinessUnitMethod();
     // this.fetchAssignVacancyStaffList();
     // await this.getJobTitleMethod();
