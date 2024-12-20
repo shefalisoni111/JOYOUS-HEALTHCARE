@@ -324,6 +324,7 @@ export default {
       },
       options: [],
       bookingStatus: "",
+      // localBookingData: { ...this.matchingBookingData },/
     };
   },
   props: {
@@ -340,8 +341,26 @@ export default {
       type: String,
       required: true,
     },
+    // matchingBookingData: {
+    //   type: Object,
+    //   required: false,
+    //   default: () => null,
+    // },
+    // matchingBookingData: {
+    //   type: Object,
+    //   default: null,
+    // },
+    // matchingBookingData: {
+    //   type: Object,
+    //   required: false,
+    // },
+    // matchingBookingData: Object,
+    // matchingBookingData: {
+    //   type: Object,
+    //   required: true,
+    // },
   },
-
+  // props: ["matchingBookingData"],
   components: { SuccessAlert },
   computed: {
     isFutureDate() {
