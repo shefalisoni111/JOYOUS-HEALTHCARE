@@ -1,13 +1,13 @@
 <template>
   <div class="container-fluid p-0">
     <div class="row">
-      <div class="my-3">
+      <!-- <div class="my-3">
         <div class="d-flex">
           <div class="d-flex align-items-center gap-2">
-            <select class="form-control" v-model="currentView" @change="updateDateRange">
+           <select class="form-control" v-model="currentView" @change="updateDateRange">
               <option value="weekly">Weekly</option>
               <option value="monthly">Monthly</option>
-            </select>
+            </select> 
           </div>
 
           &nbsp;&nbsp;
@@ -43,7 +43,7 @@
             <div v-for="(day, index) in getMonthDates" :key="index"></div>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="col-12 table-wrapper">
         <table class="table reportTable">
           <thead>

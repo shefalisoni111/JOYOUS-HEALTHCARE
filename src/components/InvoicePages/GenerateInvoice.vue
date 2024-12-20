@@ -267,16 +267,16 @@ export default {
         //   component: "MonthlyGenerateInvoice",
         //   routeName: "MonthlyGenerateInvoice",
         // },
-        {
-          name: "Shift & Staff",
-          component: "Shift_Staff_GenerateInvoice",
-          routeName: "Shift_Staff_GenerateInvoice",
-        },
-        {
-          name: "Staff Weekly",
-          component: "Staff_Weekly_GenerateInvoice",
-          routeName: "Staff_Weekly_GenerateInvoice",
-        },
+        // {
+        //   name: "Shift & Staff",
+        //   component: "Shift_Staff_GenerateInvoice",
+        //   routeName: "Shift_Staff_GenerateInvoice",
+        // },
+        // {
+        //   name: "Staff Weekly",
+        //   component: "Staff_Weekly_GenerateInvoice",
+        //   routeName: "Staff_Weekly_GenerateInvoice",
+        // },
       ],
       activeTab: 0,
       activeTabName: "",

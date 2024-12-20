@@ -186,15 +186,19 @@
       <button
         class="btn btn-sm btn-primary mr-2"
         :disabled="currentPage === 1"
-        @click="currentPage--"
+        @click="previousPage"
       >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
+        Previous
+      </button>
+      &nbsp;&nbsp;
+
+      <span>{{ currentPage }}</span>
+      &nbsp;&nbsp;
+
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getDocumentReportData.length"
-        @click="currentPage++"
+        :disabled="currentPage >= totalPages"
+        @click="nextPage"
       >
         Next
       </button>
@@ -233,6 +237,7 @@ export default {
       isLoading: false,
       currentPage: 1,
       itemsPerPage: 10,
+      totalPages: 0,
       getCategoryData: [],
       isLoading: false,
       tabs: [
@@ -271,17 +276,34 @@ export default {
       return id ? id.name : "";
     },
     paginateDocumentReport() {
+      if (!this.getDocumentReportData) return [];
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
-      return Array.isArray(this.getDocumentReportData)
-        ? this.getDocumentReportData.slice(startIndex, endIndex)
-        : [];
+      return this.getDocumentReportData.slice(startIndex, endIndex);
     },
     totalRecordsOnPage() {
       return this.paginateDocumentReport.length;
     },
   },
   watch: {
+    // "$route.query.child"() {
+    //   console.log("Child query parameter:", this.$route.query.child);
+    //   // Ensure that the 'child' query exists before navigating
+    //   if (this.$route.query.child && this.$route.name !== this.$route.query.child) {
+    //     this.$router.push({
+    //       name: "DocumentReport", // Navigate to the parent route
+    //       query: { child: this.$route.query.child }, // Include the query to navigate correctly
+    //     });
+    //     console.log("Navigating to parent route with child:", this.$route.query.child);
+    //   }
+    // },
+    // "$route.query.child"(newChild) {
+    //   console.log("Child query parameter:", newChild);
+    //   if (newChild && this.$route.name !== newChild) {
+    //     // Only navigate if it's not the same route as the current one
+    //     this.$router.push({ name: newChild });
+    //   }
+    // },
     // $route(to) {
     //   if (to.query.redirectTo) {
     //     this.$router.push({ name: to.query.redirectTo });
@@ -325,10 +347,10 @@ export default {
       const candidateApiUrl = `${VITE_API_URL}/candidates`;
       const apiUrl = `${VITE_API_URL}/candidate_documents`;
 
-      let candidateParams = { page: 1 };
+      let candidateParams = { page: this.currentPage, per_page: this.itemsPerPage };
 
       if (this.selectedStaffStatus === "all") {
-        candidateParams = { page: 1 };
+        candidateParams = { page: this.currentPage, per_page: this.itemsPerPage };
       } else if (this.selectedStaffStatus === "approved") {
         candidateParams.activated_value = true;
         candidateParams.status_value = "approved";
@@ -358,7 +380,8 @@ export default {
         "can_document[candidate_id]": this.selectedStaff || null,
         "can_document[status]": this.selectedStaffStatus || null,
         "can_document[document_id]": this.selectedDocumentType || null,
-        page: 1,
+        page: this.currentPage,
+        per_page: this.itemsPerPage,
       };
 
       Object.keys(params).forEach((key) => {
@@ -531,16 +554,28 @@ export default {
         // console.error("Error fetching documents:", error);
       }
     },
-
+    previousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.filterData();
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+        this.filterData();
+      }
+    },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
-      this.getDocumentReport();
+      this.filterData();
     },
     async getDocumentReport() {
       this.isLoading = true;
       try {
         const response = await axios.get(`${VITE_API_URL}/candidate_documents`, {
+          page: this.currentPage,
           per_page: this.itemsPerPage,
         });
         this.getDocumentReportData = response.data.data;
@@ -593,27 +628,38 @@ export default {
   },
 
   mounted() {
-    this.getDocumentReport();
-
+    // this.getDocumentReport();
+    this.filterData();
     this.getCandidateMethods();
     this.documentCategoryDocumentTypeMethod();
     this.getDocByFetchCategoriMethod();
-    const redirectTo = this.$route.query.redirectTo;
-    if (redirectTo === "DueDoc") {
-      this.$router.replace({ name: "DueDoc" });
-    } else if (redirectTo === "AllDoc") {
-      this.$router.replace({ name: "AllDoc" });
-    }
+    // const redirectTo = this.$route.query.redirectTo;
+    // if (redirectTo === "DueDoc") {
+    //   this.$router.replace({ name: "DueDoc" });
+    // } else if (redirectTo === "AllDoc") {
+    //   this.$router.replace({ name: "AllDoc" });
+    // }
     // this.filterData();
+
+    // const child = this.$route.query.child;
+    // console.log("Initial child query:", child); // Corrected the log statement
+
+    // if (child && this.$route.name !== child) {
+    //   this.$nextTick(() => {
+    //     // Navigate to the child route
+    //     this.$router.push({ name: child });
+    //     console.log("Navigating to child route:", child);
+    //   });
+    // }
   },
   created() {
-    this.getDocumentReport();
+    // this.getDocumentReport();
     this.setActiveTabFromRoute();
     this.setActiveTabNameOnLoad();
     // this.getCandidateMethods();
-    if (this.$route.query.redirectTo) {
-      this.$router.push({ name: this.$route.query.redirectTo });
-    }
+    // if (this.$route.query.redirectTo) {
+    //   this.$router.push({ name: this.$route.query.redirectTo });
+    // }
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {

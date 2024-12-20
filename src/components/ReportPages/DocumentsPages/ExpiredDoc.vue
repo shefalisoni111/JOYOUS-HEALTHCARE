@@ -79,15 +79,19 @@
           <button
             class="btn btn-sm btn-primary mr-2"
             :disabled="currentPage === 1"
-            @click="currentPage--"
+            @click="previousPage"
           >
-            Previous</button
-          >&nbsp;&nbsp; <span>{{ currentPage }}</span
-          >&nbsp;&nbsp;
+            Previous
+          </button>
+          &nbsp;&nbsp;
+
+          <span>{{ currentPage }}</span>
+          &nbsp;&nbsp;
+
           <button
             class="btn btn-sm btn-primary ml-2"
-            :disabled="currentPage * itemsPerPage >= getCategoryData?.length"
-            @click="currentPage++"
+            :disabled="currentPage >= totalPages"
+            @click="nextPage"
           >
             Next
           </button>
@@ -126,6 +130,7 @@ export default {
       isLoading: false,
       currentPage: 1,
       itemsPerPage: 10,
+      totalPages: 0,
       getCategoryData: [],
 
       errorMessageCustom: "",
@@ -150,11 +155,10 @@ export default {
       return id ? id.name : "";
     },
     paginateDocumentReport() {
+      if (!this.getCategoryData) return [];
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
-      return Array.isArray(this.getCategoryData)
-        ? this.getCategoryData.slice(startIndex, endIndex)
-        : [];
+      return this.getCategoryData.slice(startIndex, endIndex);
     },
     totalRecordsOnPage() {
       return this.paginateDocumentReport.length;
@@ -180,6 +184,18 @@ export default {
       this.activeTabName = this.tabs[index].name;
       this.$router.push({ name: this.tabs[index].routeName });
     },
+    previousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.documentCategoryDocumentTypeMethod();
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+        this.documentCategoryDocumentTypeMethod();
+      }
+    },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
@@ -188,7 +204,11 @@ export default {
     async documentCategoryDocumentTypeMethod() {
       this.isLoading = true;
       try {
-        const params = { document_status: "Expired", per_page: this.itemsPerPage };
+        const params = {
+          document_status: "Expired",
+          page: this.currentPage,
+          per_page: this.itemsPerPage,
+        };
         const response = await axios.get(`${VITE_API_URL}/candidate_documents`, {
           params,
         });
