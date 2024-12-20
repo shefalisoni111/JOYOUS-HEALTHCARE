@@ -198,7 +198,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex gap-5">
                       <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label">Client Rate</label>
@@ -219,7 +219,7 @@
                           <input type="text" class="form-control" />
                         </div>
                       </div> -->
-                      <div class="mb-3">
+                      <div class="mb-3 ms-3">
                         <div class="col-12">
                           <label class="form-label">Staff Rate</label>
                         </div>
@@ -275,6 +275,15 @@
             >
               Save
             </button>
+            <button
+              v-if="bookingStatus === 'accepted' && isFutureDate"
+              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              data-bs-dismiss="modal"
+              @click.stop="handleBookingClick()"
+            >
+              Cancel Shift
+            </button>
+
             <!-- <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
@@ -314,6 +323,7 @@ export default {
         notes: "",
       },
       options: [],
+      bookingStatus: "",
     };
   },
   props: {
@@ -325,19 +335,24 @@ export default {
       type: String,
       default: null,
     },
+
     columnDateMatch: {
       type: String,
       required: true,
     },
   },
+
   components: { SuccessAlert },
   computed: {
-    // formattedStartTime() {
-    //   return this.convertTimeFormat(this.fetchAssignVacancy.start_time);
-    // },
-    // formattedEndTime() {
-    //   return this.convertTimeFormat(this.fetchAssignVacancy.end_time);
-    // },
+    isFutureDate() {
+      const columnDate = new Date(this.columnDateMatch);
+      const today = new Date();
+
+      today.setHours(0, 0, 0, 0);
+
+      return columnDate >= today;
+    },
+
     getCandidatesData() {
       return this.$store.state.candidates;
     },
@@ -349,6 +364,93 @@ export default {
     },
   },
   methods: {
+    async fetchAssignList() {
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/find_assign_vacancies_and_candidates`
+        );
+        if (response.data.error) {
+          // console.error(response.data.error);
+
+          this.assignStaffDisplay = [];
+          this.flattenedAssignVacancies = [];
+          return;
+        }
+        this.assignStaffDisplay = response.data.vacancies;
+
+        const flattenedVacancies = response.data.vacancies.flatMap(
+          (item) => item.vacancies
+        );
+
+        const matchingVacancy = flattenedVacancies.find(
+          (vacancy) => String(vacancy.id) === String(this.vacancyId)
+        );
+
+        if (matchingVacancy) {
+          this.bookingStatus = matchingVacancy.booking_status;
+        } else {
+          this.bookingStatus = null;
+        }
+
+        // this.fetchAssignList();
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          return;
+        }
+      }
+    },
+    async handleBookingClick() {
+      if (this.bookingStatus === "accepted") {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "Do you want to cancel this booking?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, cancel it!",
+          cancelButtonText: "No, keep it",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              const formData = new FormData();
+              formData.append("id", bookingId);
+              const token = localStorage.getItem("token");
+              const response = await axios.put(
+                `${VITE_API_URL}/cancel_booking`,
+                formData,
+                {
+                  headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
+              if (response.status === 200) {
+                Swal.fire(
+                  "Cancelled!",
+                  "The booking has been cancelled successfully.",
+                  "success"
+                );
+                this.fetchAssignList();
+              } else {
+                Swal.fire("Error!", response.data.data.message, "error");
+              }
+            } catch (error) {
+              if (error.response) {
+                if (error.response.status === 401) {
+                  Swal.fire("Error!", error.response.data.error, "error");
+                } else if (error.response.status === 404) {
+                  Swal.fire("Error!", error.response.data.error, "error");
+                } else {
+                  Swal.fire("Error!", error.response.data.error, "error");
+                }
+              } else {
+                Swal.fire("Error!", error.response.data.error, "error");
+              }
+            }
+          }
+        });
+      }
+    },
     isDateBeforeToday(state) {
       const today = new Date();
       const stateDate = new Date(state);
@@ -532,6 +634,7 @@ export default {
     // this.fetchAssignVacancyMethod();
     // await this.fetchVacancyIdMethod();
     // this.fetchVacancyListMethod(this.selectedWeekDate);
+    this.fetchAssignList();
   },
   watch: {
     candidateId: {
@@ -545,6 +648,7 @@ export default {
       immediate: true,
       handler(newVacancyId) {
         this.fetchVacancyIdMethod(this.candidateId, newVacancyId);
+        this.fetchAssignList();
       },
     },
     columnDateMatch(newDate) {

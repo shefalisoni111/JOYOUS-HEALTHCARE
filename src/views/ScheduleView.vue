@@ -91,7 +91,7 @@
                   </div>
                 </div>
                 <div class="d-flex mt-2">
-                  <div>
+                  <!-- <div>
                     <button
                       @click="toggleSidebar"
                       class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
@@ -101,7 +101,7 @@
                         style="border-radius: 50%; background: #ef5261; padding: 10px"
                       ></i>
                     </button>
-                  </div>
+                  </div> -->
                   <div>
                     <div class="filters" v-show="isOpen">
                       <select
@@ -124,7 +124,7 @@
                   </div>
                 </div>
                 <div class="d-flex mt-2">
-                  <div>
+                  <!-- <div>
                     <button
                       @click="toggleSidebar"
                       class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
@@ -134,7 +134,7 @@
                         style="border-radius: 50%; background: #28c77d; padding: 10px"
                       ></i>
                     </button>
-                  </div>
+                  </div> -->
                   <div>
                     <div class="filters" v-show="isOpen">
                       <select
@@ -157,7 +157,7 @@
                   </div>
                 </div>
                 <div class="d-flex mt-2">
-                  <div>
+                  <!-- <div>
                     <button
                       @click="toggleSidebar"
                       class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
@@ -167,7 +167,7 @@
                         style="border-radius: 50%; background: #ffeb3b; padding: 10px"
                       ></i>
                     </button>
-                  </div>
+                  </div> -->
                   <div>
                     <div class="filters" v-show="isOpen">
                       <select
@@ -190,7 +190,7 @@
                   </div>
                 </div>
                 <div class="d-flex mt-2">
-                  <div>
+                  <!-- <div>
                     <button
                       @click="toggleSidebar"
                       class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
@@ -200,7 +200,7 @@
                         style="border-radius: 50%; background: #ff6d3f; padding: 10px"
                       ></i>
                     </button>
-                  </div>
+                  </div> -->
                   <div>
                     <div class="filters" v-show="isOpen">
                       <select
@@ -253,6 +253,17 @@
                     </div>
                   </div>
                 </div> -->
+                <div>
+                  <div class="filters" v-show="isOpen">
+                    <button
+                      :disabled="!isFilterSelected"
+                      @click="resetFilters"
+                      class="btn btn-secondary"
+                    >
+                      Reset <i class="bi bi-funnel-fill"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
 
               <div class="sidebar-content" :class="{ 'slide-left': isOpen }">
@@ -445,11 +456,12 @@
                                                 <!-- {{ extractTimeRange(data.site_shift)
                                               }} -->
                                                 <br />
-                                                {{ data.site_shift?.replace(/_/g, " ") }}
+                                                {{ data.site_shift?.replace(/_/g, " ") }},
                                                 {{ data.job_title }} &nbsp;
 
                                                 <br />
                                               </span>
+
                                               <span
                                                 class="bg-success text-white position-absolute top-0 clickable"
                                                 style="
@@ -462,24 +474,14 @@
                                                 "
                                                 v-if="
                                                   getBookingStatus(
-                                                    assign.candidate_id,
-                                                    assign.booking_data,
-                                                    formattedDate(day)
-                                                  )
-                                                "
-                                                @click.stop="
-                                                  handleBookingClick(
-                                                    $event,
-                                                    assign.candidate_id,
-                                                    assign.booking_data,
+                                                    data,
                                                     formattedDate(day)
                                                   )
                                                 "
                                               >
                                                 {{
                                                   getBookingStatus(
-                                                    assign.candidate_id,
-                                                    assign.booking_data,
+                                                    data,
                                                     formattedDate(day)
                                                   )
                                                 }}
@@ -519,227 +521,6 @@
                   </table>
                 </div>
                 <loader :isLoading="isLoading"></loader>
-                <!-- <div class="table-container">
-                  <table class="table" v-if="searchQuery">
-                    <thead>
-                      <tr>
-                        <th style="width: 15%">
-                          <div class="d-flex justify-content-between">
-                            <div class="d-flex align-items-center">Shifts</div>
-                            &nbsp; &nbsp; &nbsp;&nbsp;
-                            <div class="d-flex align-items-center fs-4">
-                              <i
-                                class="bi bi-caret-left-fill"
-                                @click="moveToPrevious"
-                              ></i>
-                              <i class="bi bi-calendar2-check-fill"></i>
-                              <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
-                            </div>
-                          </div>
-                        </th>
-
-                        <th>
-                          <div class="calendar-grid">
-                            <div v-for="day in daysOfWeek" :key="day" class="day-header">
-                              {{ day }}
-                            </div>
-                            <div
-                              v-for="date in selectedDateRow"
-                              :key="date"
-                              class="day-header"
-                            >
-                              {{ formatDate(date) }}
-                            </div>
-                          </div>
-                        </th>
-                      </tr>
-                    </thead>
-
-                    <tbody v-if="searchResults?.length > 0">
-                      <tr v-for="data in searchResults" :key="data.id">
-                        <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
-                        <td>
-                          <div
-                            v-if="searchQuery"
-                            class="calendar-grid"
-                            style="
-                              max-height: 210px;
-                              overflow-y: auto;
-                              overflow-x: hidden;
-                            "
-                          >
-                        
-                            <div v-for="(data, index) in vacancyList" :key="index">
-                              <div
-                                v-for="day in selectedDateRow"
-                                :key="day"
-                                class="text-center"
-                              >
-                                <ul
-                                  class="list-unstyled mb-0"
-                                  v-if="
-                                    isTodayOrGreaterThanToday(day) &&
-                                    isVacancyForToday(data.day, day)
-                                  "
-                                >
-                                  <li
-                                    class="position-relative"
-                                    v-for="(vacancy, liIndex) in data.vacancies"
-                                    :key="vacancy.id"
-                                    :draggable="true"
-                                    @dragstart="handleDragStart(vacancy)"
-                                    @drop="handleRevertDrop(vacancy.id, $event)"
-                                    @dragover.prevent="handleDragOver"
-                                    :class="{
-                                      'bg-info': liIndex === 0,
-                                      'bg-warning': liIndex === 1,
-                                      'bg-success': liIndex === 2,
-                                      'bg-primary': liIndex >= 3,
-                                    }"
-                                  >
-                                    <span class="d-flex flex-column align-items-baseline">
-                                      <span class="text-capitalize"
-                                        >{{ vacancy.site }},{{ vacancy.job_title }}</span
-                                      >
-
-                                  
-                                      <span class="">{{
-                                        vacancy.site_shift.replace(/_/g, " ")
-                                      }}</span>
-                                    </span>
-                                    <span class="staff-count-round text-white">{{
-                                      vacancy.staff_required
-                                    }}</span>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-
-                      <tr v-for="data in paginateSearch" :key="data.id">
-                        <div
-                          class="text-capitalize fw-bold"
-                          style="border-right: 1px solid rgb(209, 208, 208)"
-                        >
-                          {{ data.candidate_name }}
-
-                          <span class="fs-6 text-muted fw-100"
-                            ><br /><span
-                              style="background: rgb(209, 207, 207); padding: 3px"
-                              >{{ data.job }}</span
-                            ></span
-                          >
-                        </div>
-
-                        <td>
-                          <div>
-                            <div class="calendar-grid" @dragover.prevent="handleDragOver">
-                              <div
-                                v-for="day in selectedDateRow"
-                                :key="day"
-                                class="pt-2"
-                                data-bs-toggle="modal"
-                                data-bs-target="#scheduleDirectAssignList"
-                                data-bs-whatever="@mdo"
-                                @click="openModal(data, formattedDate(day))"
-                                :class="{
-                                  'calendar-day': true,
-                                  clickable: day !== '',
-                                }"
-                                @drop="handleDrop(data, formattedDate(day))"
-                              >
-                                <span v-for="avail in data.availability" :key="avail.id">
-                                  <span v-if="avail.date === formattedDate(day)">
-                                    <span
-                                      v-if="avail.status"
-                                      style="font-size: small; padding: 0px 5px"
-                                      v-bind:class="{
-                                        'btn btn-warning ': avail.status === 'Late',
-                                        'btn btn-primary ':
-                                          avail.status === 'Unavailable',
-                                        'btn btn-secondary ': avail.status === 'Night',
-                                        'btn btn-light ': avail.status === 'Early',
-                                      }"
-                                    >
-                                      {{
-                                        avail.status ? avail.status[0].toUpperCase() : ""
-                                      }}
-                                    </span>
-                                  </span>
-                                </span>
-                                &nbsp;&nbsp;
-
-                                <span
-                                  v-for="assign in assignStaffDisplay"
-                                  :key="assign.id"
-                                >
-                                  <span v-if="data.candidate_id === assign.candidate_id">
-                                    <span v-for="data in assign.vacancies" :key="data.id">
-                                      <span v-for="date in data.dates" :key="date">
-                                        <span
-                                          v-if="formatDates(date) === formattedDate(day)"
-                                        >
-                                          <span
-                                            :draggable="true"
-                                            @dragstart="
-                                              handleDragRevert(data, assign.candidate_id)
-                                            "
-                                          >
-                                            <div
-                                              data-bs-toggle="modal"
-                                              data-bs-target=" #editAssignScheduleVacancy"
-                                              :disabled="
-                                                new Date(formattedDate(day)) <
-                                                new Date(today)
-                                              "
-                                              data-bs-whatever="@mdo"
-                                              @click="
-                                                openModalEdit(data, formattedDate(day))
-                                              "
-                                              :class="{
-                                                'calendar-day': true,
-                                                clickable: day !== '',
-                                              }"
-                                            >
-                                              {{ console.log(data) }}
-                                              <span
-                                                class="assignVacancyDesign mt-1 text-capitalize d-flex justify-content-center"
-                                              >
-                                                
-
-                                                <br />
-                                              </span>
-                                            </div>
-                                          </span>
-                                        </span>
-                                      </span>
-                                    </span>
-                                  </span>
-                                </span>
-
-                                <div
-                                  v-if="dropCandidateId === data.id && dropDay === day"
-                                  class="drop-zone"
-                                >
-                                  {{ droppedContent }}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                    <tbody v-else>
-                      <tr>
-                        <td colspan="2" class="text-danger text-center">
-                          {{ errorMessage }}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div> -->
               </div>
             </div>
           </div>
@@ -758,6 +539,7 @@ import Navbar from "../components/Navbar.vue";
 import SuccessAlert from "../components/Alerts/SuccessAlert.vue";
 import Loader from "../components/Loader/Loader.vue";
 import Swal from "sweetalert2";
+import { mapActions, mapGetters } from "vuex";
 
 const axiosInstance = axios.create({
   headers: {
@@ -775,6 +557,7 @@ export default {
         status: "",
       },
       isOpen: false,
+      isFetching: false,
       currentView: "weekly",
       startDate: new Date(),
       endDate: new Date(),
@@ -815,6 +598,7 @@ export default {
 
       ColumnDateMatchDates: [],
       isLoading: false,
+      matchingBookingData: {},
     };
   },
 
@@ -909,93 +693,59 @@ export default {
         );
       };
     },
+    isFilterSelected() {
+      return (
+        this.filters.availablity !== "" ||
+        this.filters.job !== "" ||
+        this.filters.site !== "" ||
+        this.filters.shift !== "" ||
+        this.filters.status !== ""
+      );
+    },
   },
   watch: {
     columnDateMatch() {
       // this.filteredVacancies();
     },
+    matchingBookingData(newVal) {
+      if (newVal) {
+        this.updateBookingData(newVal);
+      }
+    },
   },
   methods: {
-    getBookingStatus(candidateId, bookingData, date) {
-      const matchingBooking = bookingData.find(
-        (booking) => booking.candidate_id === candidateId
-      );
+    resetFilters() {
+      this.filters.availablity = "";
+      this.availability_id = "";
+      this.site_id = "";
+      this.site_shift_id = "";
+      this.job_id = "";
+      this.filters.job = "";
+      this.filters.site = "";
+      this.filters.shift = "";
+      this.filters.status = "";
 
-      // return matchingBooking?.booking_status === "confirmed" ? "Booked" : null;
-      if (
-        matchingBooking &&
-        matchingBooking.booking_status === "confirmed" &&
-        new Date(date) >= new Date()
-      ) {
+      this.currentPage = 1;
+      this.makeFilterAPICall();
+      // this.fetchAssignList();
+    },
+    getBookingStatus(data, date) {
+      const today = new Date();
+      const formattedToday = today.toISOString().split("T")[0];
+
+      if (new Date(date) < new Date(formattedToday)) {
+        return "";
+      }
+
+      if (data.booking_status === "accepted") {
         return "Booked";
+      } else if (data.booking_status === "assigned") {
+        return "";
       }
 
       return null;
     },
-    async handleBookingClick(event, candidateId, bookingData, date) {
-      event.stopImmediatePropagation();
-      const status = this.getBookingStatus(candidateId, bookingData, date);
-      const matchingBooking = bookingData.find(
-        (booking) => booking.candidate_id === candidateId
-      );
 
-      const bookingId = matchingBooking.booking_id;
-
-      if (status === "Booked") {
-        Swal.fire({
-          title: "Are you sure?",
-          text: "Do you want to cancel this booking?",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonText: "Yes, cancel it!",
-          cancelButtonText: "No, keep it",
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            try {
-              const formData = new FormData();
-              formData.append("id", bookingId);
-
-              const token = localStorage.getItem("token");
-
-              const response = await axios.put(
-                `${VITE_API_URL}/cancel_booking`,
-                formData,
-                {
-                  headers: {
-                    "Content-Type": "multipart/form-data",
-                    Authorization: `Bearer ${token}`,
-                  },
-                }
-              );
-
-              if (response.status === 200) {
-                Swal.fire(
-                  "Cancelled!",
-                  "The booking has been cancelled successfully.",
-                  "success"
-                );
-
-                this.fetchAssignList();
-              } else {
-                Swal.fire("Error!", response.data.data.message, "error");
-              }
-            } catch (error) {
-              if (error.response) {
-                if (error.response.status === 401) {
-                  Swal.fire("Error!", error.response.data.error, "error");
-                } else if (error.response.status === 404) {
-                  Swal.fire("Error!", error.response.data.error, "error");
-                } else {
-                  Swal.fire("Error!", error.response.data.error, "error");
-                }
-              } else {
-                Swal.fire("Error!", error.response.data.error, "error");
-              }
-            }
-          }
-        });
-      }
-    },
     isTodayOrGreaterThanToday(day) {
       const today = new Date();
       const formattedToday = this.formattedDate(today);
@@ -1342,7 +1092,7 @@ export default {
         const actualCandidateId = candidateId.candidate_id.toString();
 
         await this.fetchVacancyListMethod();
-        await this.fetchCandidateList();
+        // await this.fetchCandidateList();
         const selectedDate = new Date(this.startDate);
         selectedDate.setDate(parseInt(day));
         selectedDate.setDate(selectedDate.getDate() + 1);
@@ -1421,7 +1171,7 @@ export default {
 
       await this.fetchVacancyListMethod();
 
-      await this.fetchCandidateList();
+      // await this.fetchCandidateList();
       const selectedDate = new Date(this.startDate);
       selectedDate.setDate(parseInt(day));
       selectedDate.setDate(selectedDate.getDate() + 1);
@@ -1472,7 +1222,7 @@ export default {
           `${VITE_API_URL}/find_assign_vacancies_and_candidates`
         );
         if (response.data.error) {
-          console.error(response.data.error);
+          // console.error(response.data.error);
 
           this.assignStaffDisplay = [];
           this.flattenedAssignVacancies = [];
@@ -1512,6 +1262,8 @@ export default {
       }
     },
     async fetchCandidateList() {
+      if (this.isFetching) return;
+      this.isFetching = true;
       this.isLoading = true;
       try {
         const requestData = {
@@ -1553,6 +1305,8 @@ export default {
       }
     },
     async fetchVacancyListMethod() {
+      if (this.isFetching) return;
+      this.isFetching = true;
       try {
         const requestData = {
           date: this.formattedStartDate,
@@ -1565,8 +1319,8 @@ export default {
           }
         );
 
-        this.fetchCandidateList();
-        this.fetchAssignList();
+        await this.fetchCandidateList();
+        // await this.fetchAssignList();
         // this.fetchAssignVacancyStaffList();
       } catch (error) {
         // console.error("Error in fetchVacancyListMethod:", error);
@@ -1621,8 +1375,8 @@ export default {
     this.getTimeShift();
     next();
   },
-  async mounted() {
-    await this.loadDateRangeFromLocalStorage();
+  mounted() {
+    this.loadDateRangeFromLocalStorage();
 
     // await this.fetchAssignList();
     // await this.getBusinessUnitMethod();
@@ -1642,12 +1396,14 @@ export default {
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(endOfWeek.getDate() + 6);
     this.endDate = endOfWeek;
-    await this.fetchCandidateList();
-    // await this.fetchVacancyListMethod();
-    document.documentElement.style.overflowY = "hidden";
+
+    this.fetchCandidateList();
+
+    this.fetchVacancyListMethod();
+    // document.documentElement.style.overflowY = "hidden";
   },
   beforeUnmount() {
-    document.documentElement.style.overflowY = "";
+    // document.documentElement.style.overflowY = "";
   },
 };
 </script>
