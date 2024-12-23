@@ -205,7 +205,7 @@ export default {
       this.isLoading = true;
       try {
         const params = {
-          document_status: "Expired",
+          document_status: "expired",
           page: this.currentPage,
           per_page: this.itemsPerPage,
         };

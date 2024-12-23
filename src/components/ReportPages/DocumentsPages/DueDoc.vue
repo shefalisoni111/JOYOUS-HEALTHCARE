@@ -203,7 +203,7 @@ export default {
       this.isLoading = true;
       try {
         const params = {
-          document_status: "Due30days",
+          document_status: "due30days",
           page: this.currentPage,
           per_page: this.itemsPerPage,
         };

@@ -197,7 +197,7 @@
 
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage >= totalPages"
+        :disabled="currentPage === totalRecordsOnPage"
         @click="nextPage"
       >
         Next
@@ -236,8 +236,8 @@ export default {
       documentNames: [],
       isLoading: false,
       currentPage: 1,
+      totalRecords: 0,
       itemsPerPage: 10,
-      totalPages: 0,
       getCategoryData: [],
       isLoading: false,
       tabs: [
@@ -327,20 +327,20 @@ export default {
       this.activeTabName = this.tabs[this.activeTab].name;
     },
     async selectTab(index) {
-      // this.activeTab = index;
-      // this.activeTabName = this.tabs[index].name;
-      // this.$router.push({ name: this.tabs[index].routeName });
       this.activeTab = index;
       this.activeTabName = this.tabs[index].name;
-
-      const componentName = this.tabs[index].component;
-      if (!this.$options.components[componentName]) {
-        this.$options.components[componentName] = (
-          await import(`../ReportPages/${componentName}.vue`)
-        ).default;
-      }
-
       this.$router.push({ name: this.tabs[index].routeName });
+      // this.activeTab = index;
+      // this.activeTabName = this.tabs[index].name;
+
+      // const componentName = this.tabs[index].component;
+      // if (!this.$options.components[componentName]) {
+      //   this.$options.components[componentName] = (
+      //     await import(`../ReportPages/${componentName}.vue`)
+      //   ).default;
+      // }
+
+      // this.$router.push({ name: this.tabs[index].routeName });
     },
     async filterData() {
       this.isLoading = true;
@@ -371,7 +371,6 @@ export default {
         });
         this.candidateLists = candidateResponse.data.data || [];
       } catch (error) {
-        // console.error("Error fetching candidates:", error);
         this.candidateLists = [];
       }
 
@@ -398,7 +397,13 @@ export default {
       }
 
       try {
-        const response = await axios.get(apiUrl, { params });
+        const response = await axios.get(apiUrl, {
+          params: {
+            document_status: "all",
+            page: this.currentPage,
+            per_page: this.itemsPerPage,
+          },
+        });
         this.getDocumentReportData = response.data.data || [];
       } catch (error) {
         // console.error("Error fetching filtered data:", error);
@@ -512,10 +517,10 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/document_categories`);
         this.getCategoryDatas = response.data;
-        this.getDocumentReportData = response.data.data;
+        this.getDocumentReportDatas = response.data.data;
         // console.log(this.getDocumentReportData);
 
-        if (this.getDocumentReportData.length === 0) {
+        if (this.getDocumentReportDatas.length === 0) {
           this.errorMessageFilter = "Report Not Found!";
         } else {
           this.errorMessageFilter = "Report Not Found!";
@@ -575,6 +580,7 @@ export default {
       this.isLoading = true;
       try {
         const response = await axios.get(`${VITE_API_URL}/candidate_documents`, {
+          document_status: "all",
           page: this.currentPage,
           per_page: this.itemsPerPage,
         });
@@ -626,7 +632,23 @@ export default {
       }
     },
   },
-
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
+      if (matchingTabIndex !== -1) {
+        vm.activeTab = matchingTabIndex;
+        vm.activeTabName = vm.tabs[matchingTabIndex].name;
+      }
+    });
+  },
+  beforeRouteUpdate(to, from, next) {
+    const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
+    if (matchingTabIndex !== -1) {
+      this.activeTab = matchingTabIndex;
+      this.activeTabName = this.tabs[matchingTabIndex].name;
+    }
+    next();
+  },
   mounted() {
     // this.getDocumentReport();
     this.filterData();
@@ -651,6 +673,12 @@ export default {
     //     console.log("Navigating to child route:", child);
     //   });
     // }
+    // if (!this.$route.params.child) {
+    //   // Navigate to the default child (ExpiredDoc)
+    //   this.$router.replace({
+    //     name: "ExpiredDoc",
+    //   });
+    // }
   },
   created() {
     // this.getDocumentReport();
@@ -660,23 +688,6 @@ export default {
     // if (this.$route.query.redirectTo) {
     //   this.$router.push({ name: this.$route.query.redirectTo });
     // }
-  },
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
-      if (matchingTabIndex !== -1) {
-        vm.activeTab = matchingTabIndex;
-        vm.activeTabName = vm.tabs[matchingTabIndex].name;
-      }
-    });
-  },
-  beforeRouteUpdate(to, from, next) {
-    const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
-    if (matchingTabIndex !== -1) {
-      this.activeTab = matchingTabIndex;
-      this.activeTabName = this.tabs[matchingTabIndex].name;
-    }
-    next();
   },
 };
 </script>
