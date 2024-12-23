@@ -108,8 +108,8 @@
                         <!-- <th scope="col">Status</th> -->
                       </tr>
                     </thead>
-                    <tbody v-if="paginateDocumentReport?.length > 0">
-                      <tr v-for="data in paginateDocumentReport" :key="data.id">
+                    <tbody v-if="getDocumentReportData?.length > 0">
+                      <tr v-for="data in getDocumentReportData" :key="data.id">
                         <td scope="col">{{ data.id }}</td>
                         <td scope="col">{{ data.candidate_name }}</td>
                         <!-- {{
@@ -197,7 +197,7 @@
 
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage === totalRecordsOnPage"
+        :disabled="currentPage >= totalPages"
         @click="nextPage"
       >
         Next
@@ -236,7 +236,7 @@ export default {
       documentNames: [],
       isLoading: false,
       currentPage: 1,
-      totalRecords: 0,
+      totalPages: 0,
       itemsPerPage: 10,
       getCategoryData: [],
       isLoading: false,
@@ -274,15 +274,6 @@ export default {
     selectedOptionText() {
       const id = this.options.find((option) => option.id === this.id);
       return id ? id.name : "";
-    },
-    paginateDocumentReport() {
-      if (!this.getDocumentReportData) return [];
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.getDocumentReportData.slice(startIndex, endIndex);
-    },
-    totalRecordsOnPage() {
-      return this.paginateDocumentReport.length;
     },
   },
   watch: {
@@ -405,6 +396,8 @@ export default {
           },
         });
         this.getDocumentReportData = response.data.data || [];
+        this.totalRecords = response.data.can_document_filter || 0;
+        this.totalPages = Math.ceil(this.totalRecords / this.itemsPerPage);
       } catch (error) {
         // console.error("Error fetching filtered data:", error);
         this.getDocumentReportData = [];
@@ -681,6 +674,7 @@ export default {
     // }
   },
   created() {
+    this.filterData();
     // this.getDocumentReport();
     this.setActiveTabFromRoute();
     this.setActiveTabNameOnLoad();

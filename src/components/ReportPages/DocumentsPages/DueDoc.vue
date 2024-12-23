@@ -16,8 +16,8 @@
               <!-- <th scope="col">Status</th> -->
             </tr>
           </thead>
-          <tbody v-if="paginateDocumentReport?.length > 0">
-            <tr v-for="data in paginateDocumentReport" :key="data.id">
+          <tbody v-if="getCategoryData?.length > 0">
+            <tr v-for="data in getCategoryData" :key="data.id">
               <td scope="col">{{ data.id }}</td>
               <td scope="col">{{ data.candidate_name }}</td>
 
@@ -132,8 +132,8 @@ export default {
       documentNames: [],
       isLoading: false,
       currentPage: 1,
-      itemsPerPage: 10,
       totalPages: 0,
+      itemsPerPage: 10,
       getCategoryData: [],
 
       errorMessageCustom: "",
@@ -212,6 +212,8 @@ export default {
         });
 
         this.getCategoryData = response.data.data;
+        this.totalRecords = response.data.can_document_filter || 0;
+        this.totalPages = Math.ceil(this.totalRecords / this.itemsPerPage);
         if (this.getCategoryData.length === 0) {
           this.errorMessageFilter = "Report Not Found!";
         } else {

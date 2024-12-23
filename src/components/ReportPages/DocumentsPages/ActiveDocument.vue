@@ -16,8 +16,8 @@
               <!-- <th scope="col">Status</th> -->
             </tr>
           </thead>
-          <tbody v-if="paginateDocumentReport?.length > 0">
-            <tr v-for="data in paginateDocumentReport" :key="data.id">
+          <tbody v-if="getCategoryData?.length > 0">
+            <tr v-for="data in getCategoryData" :key="data.id">
               <td scope="col">{{ data.id }}</td>
               <td scope="col">{{ data.candidate_name }}</td>
 
@@ -129,8 +129,8 @@ export default {
       documentNames: [],
       isLoading: false,
       currentPage: 1,
-      itemsPerPage: 10,
       totalPages: 0,
+      itemsPerPage: 10,
       getCategoryData: [],
 
       errorMessageCustom: "",
@@ -154,21 +154,21 @@ export default {
       const id = this.options.find((option) => option.id === this.id);
       return id ? id.name : "";
     },
-    paginateDocumentReport() {
-      if (!this.getCategoryData) return [];
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.getCategoryData.slice(startIndex, endIndex);
+    // paginateDocumentReport() {
+    //   if (!this.getCategoryData) return [];
+    //   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    //   const endIndex = startIndex + this.itemsPerPage;
+    //   return this.getCategoryData.slice(startIndex, endIndex);
 
-      // const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      // const endIndex = startIndex + this.itemsPerPage;
-      // return Array.isArray(this.getCategoryData)
-      //   ? this.getCategoryData.slice(startIndex, endIndex)
-      //   : [];
-    },
-    totalRecordsOnPage() {
-      return this.paginateDocumentReport.length;
-    },
+    //   // const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    //   // const endIndex = startIndex + this.itemsPerPage;
+    //   // return Array.isArray(this.getCategoryData)
+    //   //   ? this.getCategoryData.slice(startIndex, endIndex)
+    //   //   : [];
+    // },
+    // totalRecordsOnPage() {
+    //   return this.paginateDocumentReport.length;
+    // },
   },
   methods: {
     setActiveTabFromRoute() {
@@ -220,6 +220,8 @@ export default {
         });
 
         this.getCategoryData = response.data.data;
+        this.totalRecords = response.data.can_document_filter || 0;
+        this.totalPages = Math.ceil(this.totalRecords / this.itemsPerPage);
         if (this.getCategoryData.length === 0) {
           this.errorMessageFilter = "Report Not Found!";
         } else {
