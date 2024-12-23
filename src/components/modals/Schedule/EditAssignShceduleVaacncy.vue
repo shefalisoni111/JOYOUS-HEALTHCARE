@@ -324,6 +324,7 @@ export default {
       },
       options: [],
       bookingStatus: "",
+      bookingID: "",
       // localBookingData: { ...this.matchingBookingData },/
     };
   },
@@ -406,7 +407,8 @@ export default {
         );
 
         if (matchingVacancy) {
-          this.bookingStatus = matchingVacancy.booking_status;
+          this.bookingStatus = matchingVacancy.booking_status.status;
+          this.bookingID = matchingVacancy.booking_status.booking_id;
         } else {
           this.bookingStatus = null;
         }
@@ -428,10 +430,11 @@ export default {
           confirmButtonText: "Yes, cancel it!",
           cancelButtonText: "No, keep it",
         }).then(async (result) => {
+          // console.log(this.bookingID);
           if (result.isConfirmed) {
             try {
               const formData = new FormData();
-              formData.append("id", bookingId);
+              formData.append("id", this.bookingID);
               const token = localStorage.getItem("token");
               const response = await axios.put(
                 `${VITE_API_URL}/cancel_booking`,
@@ -675,6 +678,13 @@ export default {
 
       this.fetchVacancyListMethod(this.selectedWeekDate);
       // this.fetchAssignList();
+    },
+    bookingStatus(newStatus) {
+      if (newStatus === "accepted") {
+        // console.log("Booking status is accepted. Button will be visible.");
+      } else {
+        // console.log("Booking status is not accepted. Button will be hidden.");
+      }
     },
   },
   created() {

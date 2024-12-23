@@ -737,10 +737,12 @@ export default {
         return "";
       }
 
-      if (data.booking_status === "accepted") {
-        return "Booked";
-      } else if (data.booking_status === "assigned") {
-        return "";
+      if (data.booking_status && typeof data.booking_status === "object") {
+        if (data.booking_status.status === "accepted") {
+          return "Booked";
+        } else if (data.booking_status.status === "assigned") {
+          return "";
+        }
       }
 
       return null;
