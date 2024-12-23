@@ -294,7 +294,11 @@
                         <td>
                           <div v-for="staffData in staff" :key="staffData.id">
                             <div class="calendar-grid">
-                              <div v-for="day in selectedDateRow" :key="day" class="pt-2">
+                              <div
+                                v-for="day in selectedDateRow"
+                                :key="day"
+                                class="pt-2 calendar-day"
+                              >
                                 <span
                                   v-for="assign in assignStaffDisplay"
                                   :key="assign.id"
