@@ -618,7 +618,7 @@ const router = createRouter({
       meta: {
         requiresAuth: true,  requiresAdmin:true,
       },
-      redirect: { name: "StaffReport" },
+      
       children: [
         {
           path: "/report/PayrollReport",
@@ -685,7 +685,7 @@ const router = createRouter({
           meta: {
             requiresAuth: true, requiresAdmin:true,
           },
-       
+        
           children: [
             {
               path: "AllDoc",
@@ -721,7 +721,7 @@ const router = createRouter({
               },
             },
             {
-              path: "ExpiredDoc",
+              path: "/report/DocumentReport/ExpiredDoc",
               name: "ExpiredDoc",
               component: () =>
                 import(
@@ -730,6 +730,19 @@ const router = createRouter({
               meta: {
                 requiresAuth: true,    requiresAdmin:true,
               },
+             
+            },
+            {
+              path: "/report/DocumentReport/DueDoc60Days",
+              name: "Due60Days",
+              component: () =>
+                import(
+                  "@/components/ReportPages/DocumentsPages/DueDoc60Days.vue"
+                ),
+              meta: {
+                requiresAuth: true,    requiresAdmin:true,
+              },
+             
             },
           ]
         },

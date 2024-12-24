@@ -380,7 +380,7 @@
                             class="text-capitalize text-decoration-none text-muted"
                             :to="{
                               name: 'DocumentReport',
-                              query: { redirectTo: 'AllDoc' },
+                              query: { tabIndex: 4, redirectTo: 'DueDoc60Days' },
                             }"
                             >See More</router-link
                           >
@@ -415,6 +415,7 @@
                             class="text-capitalize text-decoration-none text-muted"
                             :to="{
                               name: 'DocumentReport',
+                              query: { tabIndex: 2, redirectTo: 'DueDoc' },
                             }"
                             >See More</router-link
                           >
@@ -447,16 +448,10 @@
                             class="text-capitalize text-decoration-none text-muted"
                             :to="{
                               name: 'DocumentReport',
+                              query: { tabIndex: 3, redirectTo: 'ExpiredDoc' },
                             }"
                             >See More</router-link
                           >
-                          <!-- <span
-                            class="text-muted pt-2 text-capitalize cursor-pointer"
-                            data-bs-toggle="modal"
-                            data-bs-target="#inprogress"
-                            data-bs-whatever="@mdo"
-                            >See More</span
-                          > -->
                         </div>
                       </div>
                     </div>
@@ -594,6 +589,7 @@
       </div>
     </div>
     <InProgress />
+    <DocumentReport :tabIndex="tabIndex" />
   </div>
 </template>
 
@@ -603,6 +599,7 @@ import VueBarChart from "../components/charts/VueBarChart.vue";
 import TimeSheet from "../components/charts/TimeSheet.vue";
 import Navbar from "../components/Navbar.vue";
 import InProgress from "../components/modals/InProgress.vue";
+import DocumentReport from "../components/ReportPages/DocumentReport.vue";
 
 export default {
   name: "Home",
@@ -613,7 +610,7 @@ export default {
       getRecords: [],
       startDate: new Date(),
       endDate: new Date(),
-
+      tabIndex: null,
       getShiftCount: [],
     };
   },
@@ -622,8 +619,13 @@ export default {
     TimeSheet,
     Navbar,
     InProgress,
+    DocumentReport,
   },
-
+  watch: {
+    "$route.query.tabIndex"(newTabIndex) {
+      this.tabIndex = parseInt(newTabIndex, 10) || 0;
+    },
+  },
   computed: {
     getMonthDates() {
       const currentDate = new Date();
@@ -725,6 +727,7 @@ export default {
     },
   },
   created() {
+    this.tabIndex = parseInt(this.$route.query.tabIndex, 10) || 0;
     if (!localStorage.getItem("calendarData")) {
       const today = new Date();
       const defaultStartDate = `${today.getFullYear()}-${(today.getMonth() + 1)

@@ -203,6 +203,7 @@
         Next
       </button>
     </div>
+
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
@@ -214,6 +215,7 @@ import AllDoc from "./DocumentsPages/AllDoc.vue";
 import ActiveDocument from "./DocumentsPages/ActiveDocument.vue";
 import DueDoc from "./DocumentsPages/DueDoc.vue";
 import ExpiredDoc from "./DocumentsPages/ExpiredDoc.vue";
+import DueDoc60Days from "./DocumentsPages/DueDoc60Days.vue";
 
 export default {
   data() {
@@ -250,6 +252,7 @@ export default {
         },
         { name: "Due30days ", component: "DueDoc", routeName: "DueDoc" },
         { name: "Expired ", component: "ExpiredDoc", routeName: "ExpiredDoc" },
+        { name: "Due60Days ", component: "DueDoc60Days", routeName: "DueDoc60Days" },
       ],
       activeTab: 0,
       activeTabName: "",
@@ -264,9 +267,24 @@ export default {
       selectedDocumentStatus: "",
       selectedDocumentFilterType: "",
       selectedDocumentFilter: "",
+      localTabIndex: null,
     };
   },
-  components: { Loader, Navbar, AllDoc, ActiveDocument, DueDoc, ExpiredDoc },
+  props: {
+    tabIndex: {
+      type: Number,
+      default: null,
+    },
+  },
+  components: {
+    Loader,
+    Navbar,
+    AllDoc,
+    ActiveDocument,
+    DueDoc,
+    ExpiredDoc,
+    DueDoc60Days,
+  },
   computed: {
     activeComponent() {
       return this.tabs[this.activeTab].component;
@@ -277,32 +295,39 @@ export default {
     },
   },
   watch: {
-    // "$route.query.child"() {
-    //   console.log("Child query parameter:", this.$route.query.child);
-    //   // Ensure that the 'child' query exists before navigating
-    //   if (this.$route.query.child && this.$route.name !== this.$route.query.child) {
-    //     this.$router.push({
-    //       name: "DocumentReport", // Navigate to the parent route
-    //       query: { child: this.$route.query.child }, // Include the query to navigate correctly
-    //     });
-    //     console.log("Navigating to parent route with child:", this.$route.query.child);
-    //   }
-    // },
-    // "$route.query.child"(newChild) {
-    //   console.log("Child query parameter:", newChild);
-    //   if (newChild && this.$route.name !== newChild) {
-    //     // Only navigate if it's not the same route as the current one
-    //     this.$router.push({ name: newChild });
-    //   }
-    // },
-    // $route(to) {
-    //   if (to.query.redirectTo) {
-    //     this.$router.push({ name: to.query.redirectTo });
-    //   }
-    // },
+    "$route.query.tabIndex": {
+      immediate: true,
+      handler(newTabIndex) {
+        if (newTabIndex) {
+          this.localTabIndex = parseInt(newTabIndex, 10);
+          this.handleTabChange(this.localTabIndex);
+        }
+      },
+    },
+    tabs: {
+      immediate: true,
+      handler(newTabs) {
+        if (newTabs.length > 0) {
+          this.setActiveTabNameOnLoad();
+        }
+      },
+    },
+    activeTab: {
+      immediate: true,
+      handler() {
+        this.setActiveTabNameOnLoad();
+      },
+    },
+    tabIndex(newTabIndex) {
+      this.localTabIndex = newTabIndex;
+    },
   },
 
   methods: {
+    handleTabChange(newTabIndex) {
+      this.activeTab = newTabIndex;
+    },
+
     setActiveTabFromRoute() {
       const currentRouteName = this.$route.name;
       const matchingTabIndex = this.tabs.findIndex(
@@ -315,23 +340,14 @@ export default {
     },
 
     setActiveTabNameOnLoad() {
-      this.activeTabName = this.tabs[this.activeTab].name;
+      if (this.localTabIndex !== null) {
+        this.activeTab = this.localTabIndex;
+        this.activeTabName = this.tabs[this.activeTab]?.name || "";
+      }
     },
     async selectTab(index) {
       this.activeTab = index;
-      this.activeTabName = this.tabs[index].name;
-      this.$router.push({ name: this.tabs[index].routeName });
-      // this.activeTab = index;
-      // this.activeTabName = this.tabs[index].name;
-
-      // const componentName = this.tabs[index].component;
-      // if (!this.$options.components[componentName]) {
-      //   this.$options.components[componentName] = (
-      //     await import(`../ReportPages/${componentName}.vue`)
-      //   ).default;
-      // }
-
-      // this.$router.push({ name: this.tabs[index].routeName });
+      this.$router.push({ name: "DocumentReport", query: { tabIndex: index } });
     },
     async filterData() {
       this.isLoading = true;
@@ -405,86 +421,7 @@ export default {
         this.isLoading = false;
       }
     },
-    // async filterData() {
-    //   const candidateApiUrl = `${VITE_API_URL}/candidates`;
-    //   const documentCategoryApiUrl = `${VITE_API_URL}/document_categories`;
 
-    //   if (this.selectedDocumentCategory) {
-    //     try {
-    //       const documentTypesResponse = await axios.get(
-    //         `${VITE_API_URL}/document_categories/${this.selectedDocumentCategory}`
-    //       );
-    //       this.documentNames = documentTypesResponse.data.document || [];
-    //     } catch (error) {
-    //       this.documentNames = [];
-    //     }
-    //   } else {
-    //     this.documentNames = [];
-    //   }
-
-    //   let candidateParams = { page: 1 };
-
-    //   if (this.selectedStaffStatus === "all") {
-    //     candidateParams = { page: 1 };
-    //   } else if (this.selectedStaffStatus === "approved") {
-    //     candidateParams.activated_value = false;
-    //   } else if (this.selectedStaffStatus === "rejected") {
-    //     candidateParams.activated_value = true;
-    //   } else if (this.selectedStaffStatus === "pending") {
-    //     candidateParams.status_value = "pending";
-    //     candidateParams.activated_value = true;
-    //   }
-
-    //   if (this.selectedStaff) {
-    //     candidateParams["can_document[candidate_id]"] = this.selectedStaff;
-    //   }
-
-    //   if (this.selectedDocumentCategory) {
-    //     const categoryId = this.getCategoryIdByName(this.selectedDocumentCategory);
-    //     if (categoryId) candidateParams["can_document[category_id]"] = categoryId;
-    //   }
-
-    //   if (this.selectedDocumentType) {
-    //     const documentId = this.getDocumentIdByName(this.selectedDocumentType);
-    //     if (documentId) candidateParams["can_document[document_id]"] = documentId;
-    //   }
-
-    //   try {
-    //     const candidateResponse = await axios.get(candidateApiUrl, {
-    //       params: candidateParams,
-    //     });
-    //     this.candidateLists = candidateResponse.data.data || [];
-    //   } catch (error) {
-    //     // console.error("Error fetching candidates:", error);
-    //     this.candidateLists = [];
-    //   }
-
-    //   let documentParams = { page: 1 };
-
-    //   if (this.selectedStaffStatus) {
-    //     documentParams["can_document[status]"] = this.selectedStaffStatus;
-    //   }
-
-    //   if (this.selectedDocumentCategory) {
-    //     const categoryId = this.getCategoryIdByName(this.selectedDocumentCategory);
-    //     if (categoryId) documentParams["can_document[category_id]"] = categoryId;
-    //   }
-
-    //   if (this.selectedDocumentType) {
-    //     const documentId = this.getDocumentIdByName(this.selectedDocumentType);
-    //     if (documentId) documentParams["can_document[document_id]"] = documentId;
-    //   }
-
-    //   try {
-    //     const documentResponse = await axios.get(documentCategoryApiUrl, {
-    //       params: documentParams,
-    //     });
-    //     this.getDocumentReportData = documentResponse.data.data || [];
-    //   } catch (error) {
-    //     // console.error("Error fetching document categories:", error);
-    //     this.getDocumentReportData = [];
-    //   }
-    // },
     async handleCategoryChange() {
       await this.getDocByFetchCategoriMethod();
       await this.filterData();
@@ -648,40 +585,22 @@ export default {
     this.getCandidateMethods();
     this.documentCategoryDocumentTypeMethod();
     this.getDocByFetchCategoriMethod();
+
     // const redirectTo = this.$route.query.redirectTo;
     // if (redirectTo === "DueDoc") {
     //   this.$router.replace({ name: "DueDoc" });
-    // } else if (redirectTo === "AllDoc") {
-    //   this.$router.replace({ name: "AllDoc" });
-    // }
-    // this.filterData();
-
-    // const child = this.$route.query.child;
-    // console.log("Initial child query:", child); // Corrected the log statement
-
-    // if (child && this.$route.name !== child) {
-    //   this.$nextTick(() => {
-    //     // Navigate to the child route
-    //     this.$router.push({ name: child });
-    //     console.log("Navigating to child route:", child);
-    //   });
-    // }
-    // if (!this.$route.params.child) {
-    //   // Navigate to the default child (ExpiredDoc)
-    //   this.$router.replace({
-    //     name: "ExpiredDoc",
-    //   });
+    // } else if (redirectTo === "ExpiredDoc") {
+    //   this.$router.replace({ name: "ExpiredDoc" });
     // }
   },
   created() {
+    if (this.$route.query.tabIndex) {
+      this.localTabIndex = parseInt(this.$route.query.tabIndex, 10);
+    }
     this.filterData();
-    // this.getDocumentReport();
+
     this.setActiveTabFromRoute();
     this.setActiveTabNameOnLoad();
-    // this.getCandidateMethods();
-    // if (this.$route.query.redirectTo) {
-    //   this.$router.push({ name: this.$route.query.redirectTo });
-    // }
   },
 };
 </script>
