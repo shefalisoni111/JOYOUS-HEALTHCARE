@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="d-flex mt-2">
-                  <div>
+                  <!-- <div>
                     <button
                       @click="toggleSidebar"
                       class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
@@ -58,7 +58,7 @@
                         style="border-radius: 50%; background: #28c77d; padding: 10px"
                       ></i>
                     </button>
-                  </div>
+                  </div> -->
                   <div>
                     <div class="filters" v-show="isOpen">
                       <select
@@ -82,7 +82,7 @@
                   </div>
                 </div>
                 <div class="d-flex mt-2">
-                  <div>
+                  <!-- <div>
                     <button
                       @click="toggleSidebar"
                       class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
@@ -92,7 +92,7 @@
                         style="border-radius: 50%; background: #ffeb3b; padding: 10px"
                       ></i>
                     </button>
-                  </div>
+                  </div> -->
                   <div>
                     <div class="filters" v-show="isOpen">
                       <select
@@ -116,7 +116,7 @@
                   </div>
                 </div>
                 <div class="d-flex mt-2">
-                  <div>
+                  <!-- <div>
                     <button
                       @click="toggleSidebar"
                       class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
@@ -126,7 +126,7 @@
                         style="border-radius: 50%; background: #ff6d3f; padding: 10px"
                       ></i>
                     </button>
-                  </div>
+                  </div> -->
                   <div>
                     <div class="filters" v-show="isOpen">
                       <select
@@ -152,7 +152,7 @@
                   </div>
                 </div>
                 <div class="d-flex mt-2">
-                  <div>
+                  <!-- <div>
                     <button
                       @click="toggleSidebar"
                       class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
@@ -162,7 +162,7 @@
                         style="border-radius: 50%; background: #5388d5; padding: 10px"
                       ></i>
                     </button>
-                  </div>
+                  </div> -->
                   <div>
                     <div class="filters" v-show="isOpen">
                       <button
