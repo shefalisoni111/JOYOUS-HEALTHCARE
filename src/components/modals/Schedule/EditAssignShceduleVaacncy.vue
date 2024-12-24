@@ -276,7 +276,7 @@
               Save
             </button>
             <button
-              v-if="bookingStatus === 'accepted' && isFutureDate"
+              v-if="isBookingAccepted && isFutureDate"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.stop="handleBookingClick()"
@@ -364,6 +364,12 @@ export default {
   // props: ["matchingBookingData"],
   components: { SuccessAlert },
   computed: {
+    isBookingAccepted() {
+      const result =
+        this.bookingStatus === "accepted" || this.bookingStatus === "assigned";
+
+      return result;
+    },
     isFutureDate() {
       const columnDate = new Date(this.columnDateMatch);
       const today = new Date();
@@ -412,7 +418,7 @@ export default {
         } else {
           this.bookingStatus = null;
         }
-
+        // console.log(matchingVacancy, this.bookingStatus);
         // this.fetchAssignList();
       } catch (error) {
         if (error.response && error.response.status === 404) {
@@ -656,7 +662,7 @@ export default {
     // this.fetchAssignVacancyMethod();
     // await this.fetchVacancyIdMethod();
     // this.fetchVacancyListMethod(this.selectedWeekDate);
-    this.fetchAssignList();
+    // this.fetchAssignList();
   },
   watch: {
     candidateId: {
@@ -670,14 +676,13 @@ export default {
       immediate: true,
       handler(newVacancyId) {
         this.fetchVacancyIdMethod(this.candidateId, newVacancyId);
-        this.fetchAssignList();
+        // this.fetchAssignList();
       },
     },
     columnDateMatch(newDate) {
       this.selectedWeekDate = newDate;
 
       this.fetchVacancyListMethod(this.selectedWeekDate);
-      // this.fetchAssignList();
     },
     bookingStatus(newStatus) {
       if (newStatus === "accepted") {

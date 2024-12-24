@@ -214,7 +214,7 @@
                       </tr>
                     </thead>
 
-                    <tbody v-if="paginateCandidates?.length > 0">
+                    <tbody v-if="candidateList?.length > 0">
                       <tr class="sticky-header">
                         <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
                         <td>
@@ -274,7 +274,7 @@
                         </td>
                       </tr>
 
-                      <tr v-for="staff in paginateCandidates" :key="staff.id">
+                      <tr v-for="staff in candidateList" :key="staff.id">
                         <div
                           v-for="staff in staff"
                           :key="staff.id"
@@ -308,6 +308,7 @@
                                     :key="assignStaff.id"
                                   >
                                     <span
+                                      class="position-relative"
                                       v-if="
                                         staffData.candidate_id ===
                                           assignStaff.candidate_id &&
@@ -325,6 +326,30 @@
                                         }}, {{ assignStaff.job_name }} &nbsp;
 
                                         <br />
+                                      </span>
+                                      <span
+                                        class="bg-success text-white position-absolute top-0 clickable"
+                                        style="
+                                          padding: 3px 6px;
+                                          border-radius: 10px;
+                                          color: #fff;
+
+                                          right: 0;
+                                          font-size: small;
+                                        "
+                                        v-if="
+                                          getBookingStatus(
+                                            assignStaff,
+                                            formattedDate(day)
+                                          )
+                                        "
+                                      >
+                                        {{
+                                          getBookingStatus(
+                                            assignStaff,
+                                            formattedDate(day)
+                                          )
+                                        }}
                                       </span>
                                     </span>
                                   </span>
@@ -597,6 +622,24 @@ export default {
     },
   },
   methods: {
+    getBookingStatus(data, date) {
+      const today = new Date();
+      const formattedToday = today.toISOString().split("T")[0];
+
+      if (new Date(date) < new Date(formattedToday)) {
+        return "";
+      }
+
+      if (data.booking) {
+        if (data.booking === "accepted") {
+          return "Booked";
+        } else if (data.booking === "assigned") {
+          return "";
+        }
+      }
+
+      return null;
+    },
     resetFilters() {
       this.site_id = "";
       this.site_shift_id = "";

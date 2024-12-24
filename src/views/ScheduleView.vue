@@ -1071,6 +1071,7 @@ export default {
         await this.$refs.editAssignScheduleShift.fetchVacancyIdMethod();
         await this.$refs.editAssignScheduleShift.getJobTitleMethod();
         await this.$refs.editAssignScheduleShift.fetchVacancyListMethod();
+        await this.$refs.editAssignScheduleShift.fetchAssignList();
       }
 
       this.vacancyId = candidateId.id.toString() || "";
@@ -1407,10 +1408,10 @@ export default {
     this.fetchCandidateList();
 
     this.fetchVacancyListMethod();
-    // document.documentElement.style.overflowY = "hidden";
+    document.documentElement.style.overflowY = "hidden";
   },
   beforeUnmount() {
-    // document.documentElement.style.overflowY = "";
+    document.documentElement.style.overflowY = "";
   },
 };
 </script>

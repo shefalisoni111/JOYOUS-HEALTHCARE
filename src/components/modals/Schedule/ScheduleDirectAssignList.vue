@@ -477,17 +477,17 @@ export default {
     } else {
       this.selectedWeekDate = this.columnDateMatch;
     }
-    this.fetchVacancyListMethod(this.selectedWeekDate);
+    // this.fetchVacancyListMethod(this.selectedWeekDate);
   },
-  async beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      vm.fetchVacancyListMethod(this.selectedWeekDate);
-    });
-  },
-  async beforeRouteUpdate(to, from, next) {
-    this.fetchVacancyListMethod(this.selectedWeekDate);
-    next();
-  },
+  // async beforeRouteEnter(to, from, next) {
+  //   next((vm) => {
+  //     vm.fetchVacancyListMethod(this.selectedWeekDate);
+  //   });
+  // },
+  // async beforeRouteUpdate(to, from, next) {
+  //   this.fetchVacancyListMethod(this.selectedWeekDate);
+  //   next();
+  // },
   mounted() {
     // this.fetchVacancyListMethod(this.selectedWeekDate);
     if (this.job) {
