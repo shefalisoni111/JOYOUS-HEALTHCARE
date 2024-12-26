@@ -589,7 +589,7 @@
       </div>
     </div>
     <InProgress />
-    <DocumentReport :tabIndex="tabIndex" />
+    <!-- <DocumentReport :tabIndex="tabIndex" /> -->
   </div>
 </template>
 
