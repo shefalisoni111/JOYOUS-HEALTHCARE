@@ -247,8 +247,8 @@
                             <th scope="col">Action</th>
                           </tr>
                         </thead>
-                        <tbody v-if="getCustomTimeSheet?.length > 0">
-                          <tr v-for="data in getCustomTimeSheet" :key="data.id">
+                        <tbody v-if="paginateGetCustomTimeSheet?.length > 0">
+                          <tr v-for="data in paginateGetCustomTimeSheet" :key="data.id">
                             <td>
                               <input
                                 class="form-check-input"
@@ -612,15 +612,19 @@
         <button
           class="btn btn-sm btn-primary mr-2"
           :disabled="currentPage === 1"
-          @click="currentPage--"
+          @click="previousPage"
         >
-          Previous</button
-        >&nbsp;&nbsp; <span>{{ currentPage }}</span
-        >&nbsp;&nbsp;
+          Previous
+        </button>
+        &nbsp;&nbsp;
+
+        <span>{{ currentPage }}</span>
+        &nbsp;&nbsp;
+
         <button
           class="btn btn-sm btn-primary ml-2"
-          :disabled="currentPage * itemsPerPage >= getCustomTimeSheet?.length"
-          @click="currentPage++"
+          :disabled="currentPage >= totalPages"
+          @click="nextPage"
         >
           Next
         </button>
@@ -703,13 +707,14 @@ export default {
       startDate: new Date(),
       endDate: new Date(),
       getCustomTimeSheet: [],
-      currentPage: 1,
+
       notes: "",
       start_time: "",
       end_time: "",
       paper_timesheet: "",
+      currentPage: 1,
+      totalPages: 0,
       itemsPerPage: 10,
-      totalRecords: 0,
       selectedCustomTimesheetId: null,
       searchQuery: null,
       debounceTimeout: null,
@@ -747,15 +752,16 @@ export default {
       };
     },
     paginateGetCustomTimeSheet() {
+      if (!this.getCustomTimeSheet) return [];
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.getCustomTimeSheet.slice(startIndex, endIndex);
     },
-    paginateSearchResults() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.searchResults.slice(startIndex, endIndex);
-    },
+    // paginateSearchResults() {
+    //   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    //   const endIndex = startIndex + this.itemsPerPage;
+    //   return this.searchResults.slice(startIndex, endIndex);
+    // },
     // totalRecordsOnPage() {
     //   return this.paginateGetCustomTimeSheet.length;
     // },
@@ -1142,6 +1148,18 @@ export default {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     },
+    previousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.getCustomSheetMethod();
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+        this.getCustomSheetMethod();
+      }
+    },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
@@ -1169,6 +1187,7 @@ export default {
       const requestData = {
         date: formatDate(startOfMonth),
         per_page: this.itemsPerPage,
+        page: this.currentPage,
         // end_date: endOfMonth.toLocaleDateString(),
       };
       try {
@@ -1182,6 +1201,8 @@ export default {
           }
         );
         this.getCustomTimeSheet = response.data.custom_timesheets;
+        this.totalRecords = response.data.total_record || 0;
+        this.totalPages = Math.ceil(this.totalRecords / this.itemsPerPage);
         if (this.getCustomTimeSheet.length === 0) {
           this.errorMessageCustom = "No Custom timesheets found for the specified month";
         } else {

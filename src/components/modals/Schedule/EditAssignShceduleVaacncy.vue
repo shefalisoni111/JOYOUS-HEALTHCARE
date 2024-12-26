@@ -647,14 +647,14 @@ export default {
   async beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.fetchVacancyIdMethod();
-      vm.getJobTitleMethod();
-      vm.fetchVacancyListMethod(this.selectedWeekDate);
+      // vm.getJobTitleMethod();
+      // vm.fetchVacancyListMethod(this.selectedWeekDate);
     });
   },
   async beforeRouteUpdate(to, from, next) {
     this.fetchVacancyIdMethod();
-    this.getJobTitleMethod();
-    this.fetchVacancyListMethod(this.selectedWeekDate);
+    // this.getJobTitleMethod();
+    // this.fetchVacancyListMethod(this.selectedWeekDate);
     next();
   },
   mounted() {

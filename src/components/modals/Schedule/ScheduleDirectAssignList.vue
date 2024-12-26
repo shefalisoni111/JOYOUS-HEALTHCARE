@@ -311,7 +311,7 @@ export default {
     },
     async selectedWeekChanged(newWeekDate) {
       this.selectedWeekDate = newWeekDate;
-      await this.fetchVacancyListMethod(newWeekDate);
+      // await this.fetchVacancyListMethod(newWeekDate);
     },
     //   debounceSearch() {
     //     clearTimeout(this.debounceTimeout);
@@ -502,7 +502,7 @@ export default {
     columnDateMatch(newDate) {
       this.selectedWeekDate = newDate;
 
-      this.fetchVacancyListMethod(this.selectedWeekDate);
+      // this.fetchVacancyListMethod(this.selectedWeekDate);
       // this.fetchAssignList();
     },
   },
