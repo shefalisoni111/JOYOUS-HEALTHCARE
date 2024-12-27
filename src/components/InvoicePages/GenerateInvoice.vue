@@ -127,7 +127,7 @@
                       data-bs-target="#generateInvoice"
                       data-bs-whatever="@mdo"
                     >
-                      + generate invoice
+                      + generate CSV
                     </button>
                   </div>
                 </div>

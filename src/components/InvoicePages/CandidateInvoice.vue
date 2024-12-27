@@ -84,10 +84,10 @@
                         type="button"
                         class="btn btn-outline-success text-nowrap text-nowrap text-capitalize"
                         data-bs-toggle="modal"
-                        data-bs-target="#generateInvoice"
+                        data-bs-target="#staffGenerateCsv"
                         data-bs-whatever="@mdo"
                       >
-                        + generate invoice
+                        + generate cSV
                       </button>
                     </div>
                   </div>
@@ -317,13 +317,13 @@
       </button>
     </div>
     <loader :isLoading="isLoading"></loader>
-    <GenerateInvoiceAdd />
+    <StaffGenrateInvoice />
   </div>
 </template>
 <script>
 import axios from "axios";
 // import Navbar from "../Navbar.vue";
-import GenerateInvoiceAdd from "../modals/InvoicePagesModal/GenerateInvoiceAdd.vue";
+import StaffGenrateInvoice from "../modals/InvoicePagesModal/StaffGenrateInvoice.vue";
 import Loader from "../Loader/Loader.vue";
 
 const axiosInstance = axios.create({
@@ -350,7 +350,7 @@ export default {
       totalCount: 0,
     };
   },
-  components: { Loader, GenerateInvoiceAdd },
+  components: { Loader, StaffGenrateInvoice },
   computed: {
     getWeekDates() {
       const currentDate = new Date();

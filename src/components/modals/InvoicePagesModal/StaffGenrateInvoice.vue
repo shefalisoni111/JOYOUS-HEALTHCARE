@@ -2,15 +2,15 @@
   <div>
     <div
       class="modal fade"
-      id="generateInvoice"
+      id="staffGenerateCsv"
       tabindex="-1"
-      aria-labelledby="generateInvoiceLabel"
+      aria-labelledby="staffGenerateCsvLabel"
       aria-hidden="true"
     >
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="generateInvoiceLabel">Generate Invoice</h5>
+            <h5 class="modal-title" id="staffGenerateCsvLabel">Generate Invoice</h5>
             <button
               type="button"
               class="btn-close"
@@ -40,23 +40,23 @@
                 </option>
               </select>
               <!-- <div class="d-flex gap-3 flex-wrap">
-                <div v-for="client in clientData" :key="client.id" class="form-check">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    :id="'client-' + client.id"
-                    :value="client.client_name"
-                    v-model="selectedClients"
-                    @change="onSingleClientSelect(client.id)"
-                  />
-                  <label
-                    :for="'client-' + client.id"
-                    class="form-check-label text-capitalize"
-                  >
-                    &nbsp;{{ client.client_name }} &nbsp;
-                  </label>
-                </div>
-              </div> -->
+                  <div v-for="client in clientData" :key="client.id" class="form-check">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      :id="'client-' + client.id"
+                      :value="client.client_name"
+                      v-model="selectedClients"
+                      @change="onSingleClientSelect(client.id)"
+                    />
+                    <label
+                      :for="'client-' + client.id"
+                      class="form-check-label text-capitalize"
+                    >
+                      &nbsp;{{ client.client_name }} &nbsp;
+                    </label>
+                  </div>
+                </div> -->
             </div>
 
             <!-- Site Selection -->
@@ -103,25 +103,25 @@
 
             <!-- Shift Selection -->
             <!-- <div class="mb-3">
-              <label class="form-label">Shifts</label>
-              <div class="d-flex gap-3 flex-wrap">
-                <div v-for="shift in shiftsTime" :key="shift.id" class="form-check">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    :id="'shift-' + shift.id"
-                    :value="shift.id"
-                    v-model="selectedShifts"
-                  />
-                  <label
-                    :for="'shift-' + shift.id"
-                    class="form-check-label text-capitalize"
-                  >
-                    {{ shift.shift_name }}&nbsp;
-                  </label>
+                <label class="form-label">Shifts</label>
+                <div class="d-flex gap-3 flex-wrap">
+                  <div v-for="shift in shiftsTime" :key="shift.id" class="form-check">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      :id="'shift-' + shift.id"
+                      :value="shift.id"
+                      v-model="selectedShifts"
+                    />
+                    <label
+                      :for="'shift-' + shift.id"
+                      class="form-check-label text-capitalize"
+                    >
+                      {{ shift.shift_name }}&nbsp;
+                    </label>
+                  </div>
                 </div>
-              </div>
-            </div> -->
+              </div> -->
 
             <!-- Date Selection -->
             <div class="mb-3">
@@ -133,8 +133,8 @@
                 @change="handleDateSelection"
               >
                 <!-- <option value="today">Today</option>
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option> -->
+                  <option value="weekly">Weekly</option>
+                  <option value="monthly">Monthly</option> -->
                 <option value="custom">Date</option>
               </select>
             </div>
@@ -165,23 +165,23 @@
             </button>
           </div>
           <!-- <div class="modal-footer">
-            <button
-              class="btn btn-secondary rounded-1"
-              data-bs-dismiss="modal"
-              @click="clearFieldsData"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
-              :disabled="!isValidForm || isFieldEmpty"
-              @click="addCandidate"
-              :data-bs-dismiss="!isFieldEmpty && isValidForm ? 'modal' : null"
-            >
-              Add
-            </button>
-          </div> -->
+              <button
+                class="btn btn-secondary rounded-1"
+                data-bs-dismiss="modal"
+                @click="clearFieldsData"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary rounded-1 text-capitalize fw-medium"
+                :disabled="!isValidForm || isFieldEmpty"
+                @click="addCandidate"
+                :data-bs-dismiss="!isFieldEmpty && isValidForm ? 'modal' : null"
+              >
+                Add
+              </button>
+            </div> -->
         </div>
       </div>
     </div>

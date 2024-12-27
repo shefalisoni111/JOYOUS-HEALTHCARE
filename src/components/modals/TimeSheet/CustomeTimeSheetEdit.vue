@@ -125,7 +125,7 @@
                           <select
                             v-else
                             id="selectCustomStartTime"
-                            class="form-control custom-disabled"
+                            class="form-control"
                             v-model="fetchCustomSheetData.start_time"
                             @change="validateStartTime"
                             style="width: 240px"

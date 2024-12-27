@@ -614,24 +614,12 @@ export default {
       const job_id = this.options.find((option) => option.id === this.job_id);
       return job_id ? job_id.name : "";
     },
-    // paginateCandidates() {
-    //   return this.candidateList;
-    // },
-    // paginateSearch() {
-    //   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    //   const endIndex = startIndex + this.itemsPerPage;
-    //   return this.searchResults.slice(startIndex, endIndex);
-    // },
+
     selectShifts() {
       const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
       return shifts_id ? shifts_id.shift_name : "";
     },
-    // totalRecordsOnPage() {
-    //   return this.paginateCandidates.length;
-    // },
-    // totalRecordsOnPage() {
-    //   return this.paginateSearch.length;
-    // },
+
     daysOfWeek() {
       return [
         "Monday",
@@ -858,6 +846,10 @@ export default {
 
     toggleSidebar() {
       this.isOpen = !this.isOpen;
+      // this.fetchAssignList();
+      this.getBusinessUnitMethod();
+      this.getJobTitleMethod();
+      this.getTimeShift();
     },
     moveToPrevious() {
       if (this.currentView === "weekly") {
@@ -873,7 +865,7 @@ export default {
         );
       }
       this.columnDateMatch = this.formattedStartDate;
-      // this.fetchVacancyListMethod();
+      this.fetchVacancyListMethod();
       this.fetchCandidateList();
 
       this.fetchAssignList();
@@ -892,10 +884,10 @@ export default {
         );
       }
       this.columnDateMatch = this.formattedStartDate;
-      // this.fetchVacancyListMethod();
+      this.fetchVacancyListMethod();
       this.fetchCandidateList();
 
-      // this.fetchAssignList();
+      this.fetchAssignList();
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
@@ -1098,8 +1090,8 @@ export default {
       try {
         const actualCandidateId = candidateId.candidate_id.toString();
 
-        await this.fetchVacancyListMethod();
-        await this.fetchCandidateList();
+        // await this.fetchVacancyListMethod();
+        // await this.fetchCandidateList();
         const selectedDate = new Date(this.startDate);
         selectedDate.setDate(parseInt(day));
         selectedDate.setDate(selectedDate.getDate() + 1);
@@ -1176,9 +1168,9 @@ export default {
 
       const actualCandidateId = candidateId.candidate_id.toString();
 
-      await this.fetchVacancyListMethod();
+      // await this.fetchVacancyListMethod();
 
-      await this.fetchCandidateList();
+      // await this.fetchCandidateList();
       const selectedDate = new Date(this.startDate);
       selectedDate.setDate(parseInt(day));
       selectedDate.setDate(selectedDate.getDate() + 1);
@@ -1327,7 +1319,7 @@ export default {
           }
         );
 
-        this.fetchCandidateList();
+        // this.fetchCandidateList();
         // await this.fetchAssignList();
         // this.fetchAssignVacancyStaffList();
       } catch (error) {
@@ -1371,16 +1363,13 @@ export default {
   async beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.fetchAssignList();
-      vm.getBusinessUnitMethod();
-      vm.getJobTitleMethod();
-      vm.getTimeShift();
     });
   },
   async beforeRouteUpdate(to, from, next) {
     this.fetchAssignList();
-    this.getBusinessUnitMethod();
-    this.getJobTitleMethod();
-    this.getTimeShift();
+    // this.getBusinessUnitMethod();
+    // this.getJobTitleMethod();
+    // this.getTimeShift();
     next();
   },
   mounted() {

@@ -458,10 +458,10 @@ export default {
                   "The booking has been cancelled successfully.",
                   "success"
                 );
-                this.fetchAssignList();
               } else {
                 Swal.fire("Error!", response.data.data.message, "error");
               }
+              this.fetchAssignList();
             } catch (error) {
               if (error.response) {
                 if (error.response.status === 401) {
