@@ -1,6 +1,6 @@
 // store.js
 import { createStore } from 'vuex';
-
+import axios from "axios";
 export default createStore({
   state: {
     channelSid: null,
@@ -20,8 +20,13 @@ export default createStore({
      selectedSignedTimesheetId: null,
      selectedCustomTimesheetId: null,
      selectedTemplate: localStorage.getItem('selectedTemplate') || 'TemplateOne',
+     getCandidatesData:[],
+     
   },
   mutations: {
+    setNavData(state, data) {
+      state.getCandidatesData = data;
+    },
     setChannelSid(state, channelSid) {
       state.channelSid = channelSid; 
     },
@@ -94,6 +99,10 @@ export default createStore({
   
   },
   actions: {
+    async getCandidateMethods({ commit }) {
+      const response = await axios.get(`${VITE_API_URL}/candidates`);
+      commit("setNavData", response.data.data);
+    },
     updateChannelSid({ commit }, channelSid) {
       commit('setChannelSid', channelSid);
      

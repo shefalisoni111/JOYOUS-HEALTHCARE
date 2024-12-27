@@ -424,7 +424,7 @@
               </button>
             </div>
            
-            <div class="chat-messages" ref="chatMessages">
+            <div class="chat-messages" ref="chatMessages" @scroll="handleScroll">
             
               <div v-if="selectedCandidateMessages?.length >0"
                 v-for="message in selectedCandidateMessages" 
@@ -750,6 +750,7 @@ export default {
     closeChatBox() {
       this.showChatBox = false;
       this.selectedCandidate = null;
+      
       this.$store.dispatch('updateChannelSid', null);
     },
     fetchMessagesForCandidate(candidate) {
@@ -792,12 +793,12 @@ export default {
           });
         }
       } catch (error) {
-        Swal.fire({
-          title: "Error!",
-          text: "An unexpected error occurred while creating the chat channel. Please try again later.",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
+        // Swal.fire({
+        //   title: "Error!",
+        //   text: "An unexpected error occurred while creating the chat channel. Please try again later.",
+        //   icon: "error",
+        //   confirmButtonText: "OK",
+        // });
       }
     },
 
@@ -896,9 +897,7 @@ export default {
      
     }
   },
-  closeChatBox() {
-    this.showChatBox = false;
-  },
+ 
   handleClick() {
     this.$refs.fileInput.click(); 
   },
@@ -935,7 +934,30 @@ export default {
       }
     
     },
-  
+    handleScroll() {
+      const chatMessages = this.$refs.chatMessages;
+
+      if (!chatMessages) return;
+
+      // User scroll detection
+      const isAtTop = chatMessages.scrollTop === 0;
+      const isAtBottom =
+        chatMessages.scrollTop + chatMessages.clientHeight >= chatMessages.scrollHeight;
+
+      if (isAtTop) {
+        // Fetch older messages if scrolled to top
+        // this.fetchMessages(this.channelSid);
+      } else if (!isAtBottom) {
+        // User is actively scrolling
+        this.isUserScrolling = true;
+        clearTimeout(this.scrollTimeout);
+
+        // Reset scrolling state after 2 seconds of inactivity
+        this.scrollTimeout = setTimeout(() => {
+          this.isUserScrolling = false;
+        }, 2000);
+      }
+    },
     async getCandidateMethods() {
       try {
         const response = await axios.get(`${VITE_API_URL}/candidates`);
@@ -977,8 +999,9 @@ export default {
     if (this.messageFetchInterval) {
     clearInterval(this.messageFetchInterval);
   }
-  this.$store.dispatch('updateChannelSid', null);
+  // this.$store.dispatch('updateChannelSid', null);
   },
+  
  
   
 };
