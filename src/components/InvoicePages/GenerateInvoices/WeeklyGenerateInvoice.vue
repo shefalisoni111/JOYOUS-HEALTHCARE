@@ -206,6 +206,7 @@ import axios from "axios";
 import Loader from "../../Loader/Loader.vue";
 import AddGenrateInvoiceFile from "../../modals/InvoicePagesModal/AddGenrateInvoiceFile.vue";
 import GenerateInvoiceAdd from "../../modals/InvoicePagesModal/GenerateInvoiceAdd.vue";
+import Swal from "sweetalert2";
 
 export default {
   data() {

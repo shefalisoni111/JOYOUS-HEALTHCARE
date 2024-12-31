@@ -97,7 +97,7 @@
                 </div>
               </div>
             </div>
-
+            <!-- 
             <div class="mb-3">
               <label class="form-label">Shifts</label>
               <div class="d-flex gap-3 flex-wrap">
@@ -117,7 +117,7 @@
                   </label>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- Date Selection -->
             <div class="mb-3">
@@ -196,7 +196,7 @@
 
 <script>
 import axios from "axios";
-
+import Swal from "sweetalert2";
 export default {
   data() {
     return {
@@ -355,11 +355,27 @@ export default {
         })
         .then((response) => {
           if (response.status === 200) {
+            if (response.data.data && response.data.data.length === 0) {
+              // this.candidateList = response.data.data;
+
+              this.errorMessage = "Data Not Found for the specified Date";
+              Swal.fire({
+                icon: "success",
+                title: "No Data Found",
+                text: this.errorMessage,
+              });
+            }
             this.resetFields();
           }
         })
         .catch((error) => {
           // console.error("Error generating the report:", error);
+          this.errorMessage = "Data Not Found.";
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: this.errorMessage,
+          });
         });
     },
     resetFields() {
