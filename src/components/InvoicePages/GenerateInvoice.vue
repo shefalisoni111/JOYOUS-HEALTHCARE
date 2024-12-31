@@ -98,7 +98,7 @@
                   </div>
                 </div> -->
                 <div class="d-flex justify-content-between align-items-baseline">
-                  <ul class="nav nav-pills mt-3 gap-2" id="pills-tab" role="tablist">
+                  <ul class="nav mt-3 gap-2" id="pills-tab" role="tablist">
                     <li
                       class="nav-item d-inline-flex align-items-baseline gap-2"
                       role="presentation"
@@ -122,7 +122,7 @@
                   <div>
                     <button
                       type="button"
-                      class="btn btn-outline-success text-nowrap text-nowrap text-capitalize"
+                      class="btn btn-outline-success text-nowrap text-nowrap text-capitalize mb-2"
                       data-bs-toggle="modal"
                       data-bs-target="#generateInvoice"
                       data-bs-whatever="@mdo"
@@ -237,7 +237,7 @@ import Loader from "../Loader/Loader.vue";
 export default {
   data() {
     return {
-      currentView: "weekly",
+      currentView: "monthly",
       daysOfWeek: [
         "Monday",
         "Tuesday",
@@ -253,7 +253,7 @@ export default {
       businessUnit: [],
       tabs: [
         {
-          name: "Invoice Data ",
+          name: "",
           component: "WeeklyGenerateInvoice",
           routeName: "WeeklyGenerateInvoice",
         },

@@ -23,10 +23,8 @@
                 <div class="p-2">
                   <div class="d-lg-flex justify-content-lg-between">
                     <div class="d-flex">
-                      <div class="d-flex align-items-center gap-2">
-                        <!-- <select>
-                          <option>By Created Date :</option>
-                        </select> -->
+                      <!-- <div class="d-flex align-items-center gap-2">
+                      
                         <select
                           class="form-control"
                           v-model="currentView"
@@ -35,7 +33,7 @@
                           <option value="weekly">Weekly</option>
                           <option value="monthly">Monthly</option>
                         </select>
-                      </div>
+                      </div> -->
 
                       &nbsp;&nbsp;
                       <div class="d-flex align-items-center">
@@ -95,7 +93,7 @@
                 <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                    
                   </ul> -->
-                <div v-if="currentView === 'weekly'">
+                <!-- <div v-if="currentView === 'weekly'">
                   <div>
                     <div v-for="(day, index) in daysOfWeek" :key="index"></div>
                     <div v-for="(day, index) in getWeekDates" :key="index"></div>
@@ -106,7 +104,7 @@
                   <div>
                     <div v-for="(day, index) in getMonthDates" :key="index"></div>
                   </div>
-                </div>
+                </div> -->
                 <div class="d-flex gap-2">
                   <div></div>
                 </div>
@@ -180,7 +178,7 @@
                             v-if="!isLoading"
                             class="text-danger text-center"
                           >
-                            {{ "Data Not Found !" }}
+                            {{ errorMessage }}
                           </td>
                         </tr>
                       </tbody>
@@ -325,6 +323,7 @@ import axios from "axios";
 // import Navbar from "../Navbar.vue";
 import StaffGenrateInvoice from "../modals/InvoicePagesModal/StaffGenrateInvoice.vue";
 import Loader from "../Loader/Loader.vue";
+import Swal from "sweetalert2";
 
 const axiosInstance = axios.create({
   headers: {
@@ -344,7 +343,7 @@ export default {
       debounceTimeout: null,
       searchResults: [],
       isLoading: false,
-
+      errorMessage: "",
       totalPages: 1,
       itemsPerPage: 10,
       totalCount: 0,
@@ -377,6 +376,94 @@ export default {
     },
   },
   methods: {
+    async fetWeekTimeSheetData() {
+      this.isLoading = true;
+      if (
+        !this.selectedJobs ||
+        !this.client_id ||
+        !this.selectedSites ||
+        !this.startDate
+      ) {
+        this.errorMessage = "Data Not Found for the specified Date.";
+        this.isLoading = false;
+        return;
+      }
+
+      const token = localStorage.getItem("token");
+
+      const params = {
+        "job_id[]": this.selectedJobs,
+        client_id: this.client_id,
+        "site_id[]": this.selectedSites,
+        shift_date: this.formatDate(this.startDate),
+        invoice_type: "client_invoice",
+      };
+
+      if (this.selectedDateOption === "custom") {
+        params.start_date = this.formatDate(this.startDate);
+        params.end_date = this.formatDate(this.endDate);
+      }
+
+      const queryParams = new URLSearchParams();
+
+      Object.entries(params).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach((item) => queryParams.append(key, item));
+        } else if (value !== undefined && value !== null) {
+          queryParams.append(key, value);
+        }
+      });
+
+      const url = `${VITE_API_URL}/generate_client_invoices?${queryParams.toString()}`;
+
+      axios
+        .get(url, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            if (response.data.data && response.data.data.length > 0) {
+              this.getStaffInvoiceDetail = response.data.data;
+              this.errorMessage = "";
+              Swal.fire({
+                icon: "success",
+                title: "Data Loaded Successfully",
+                text: "Staff invoice details have been loaded.",
+              });
+            } else {
+              this.getStaffInvoiceDetail = [];
+              this.errorMessage = "Data Not Found for the specified Week";
+              Swal.fire({
+                icon: "error",
+                title: "No Data Found",
+                text: this.errorMessage,
+              });
+            }
+          }
+        })
+        .catch((error) => {
+          // console.error("Error generating the report:", error);
+          this.errorMessage = "An error occurred while fetching data.";
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: this.errorMessage,
+          });
+        })
+        .finally(() => {
+          if (this.getStaffInvoiceDetail.length === 0) {
+            Swal.fire({
+              icon: "error",
+              title: "No Data Found",
+              text: "No data available for the Date.",
+            });
+          }
+          this.isLoading = false;
+        });
+    },
     //search api start
 
     async search() {
@@ -426,7 +513,7 @@ export default {
           0
         );
       }
-      this.createStaffInvoiceMethod();
+      this.fetWeekTimeSheetData();
     },
     moveToNext() {
       if (this.currentView === "weekly") {
@@ -441,7 +528,7 @@ export default {
           0
         );
       }
-      this.createStaffInvoiceMethod();
+      this.fetWeekTimeSheetData();
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
@@ -496,54 +583,54 @@ export default {
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
-      this.createStaffInvoiceMethod();
+      this.fetWeekTimeSheetData();
     },
-    async createStaffInvoiceMethod() {
-      this.isLoading = true;
-      const token = localStorage.getItem("token");
-      let requestData = {};
+    // async createStaffInvoiceMethod() {
+    //   this.isLoading = true;
+    //   const token = localStorage.getItem("token");
+    //   let requestData = {};
 
-      if (this.currentView === "weekly") {
-        requestData = {
-          date: this.formatDate(this.startDate),
-          per_page: this.itemsPerPage,
-        };
-      } else if (this.currentView === "monthly") {
-        const formattedStartDate = this.formatDate(this.startDate);
-        const formattedEndDate = this.formatDate(this.endDate);
-        requestData = {
-          start_date: formattedStartDate,
-          end_date: formattedEndDate,
-          per_page: this.itemsPerPage,
-        };
-      }
+    //   if (this.currentView === "weekly") {
+    //     requestData = {
+    //       date: this.formatDate(this.startDate),
+    //       per_page: this.itemsPerPage,
+    //     };
+    //   } else if (this.currentView === "monthly") {
+    //     const formattedStartDate = this.formatDate(this.startDate);
+    //     const formattedEndDate = this.formatDate(this.endDate);
+    //     requestData = {
+    //       start_date: formattedStartDate,
+    //       end_date: formattedEndDate,
+    //       per_page: this.itemsPerPage,
+    //     };
+    //   }
 
-      try {
-        const response = await axios.get(`${VITE_API_URL}/staff_invoices`, {
-          params: requestData,
-          headers: {
-            "content-type": "application/json",
-            Authorization: "bearer " + token,
-          },
-        });
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/staff_invoices`, {
+    //       params: requestData,
+    //       headers: {
+    //         "content-type": "application/json",
+    //         Authorization: "bearer " + token,
+    //       },
+    //     });
 
-        this.getStaffInvoiceDetail = response.data.data;
+    //     this.getStaffInvoiceDetail = response.data.data;
 
-        if (this.getStaffInvoiceDetail.length === 0) {
-          this.errorMessage = "No staff invoices found for the specified criteria.";
-        } else {
-          this.errorMessage = "";
-        }
-      } catch (error) {
-        // Handle the error
-      } finally {
-        this.isLoading = false;
-      }
-    },
+    //     if (this.getStaffInvoiceDetail.length === 0) {
+    //       this.errorMessage = "No staff invoices found for the specified criteria.";
+    //     } else {
+    //       this.errorMessage = "";
+    //     }
+    //   } catch (error) {
+    //     // Handle the error
+    //   } finally {
+    //     this.isLoading = false;
+    //   }
+    // },
   },
 
   mounted() {
-    this.createStaffInvoiceMethod();
+    // this.createStaffInvoiceMethod();
     this.loadDateRangeFromLocalStorage();
     this.updateDateRange();
     // const currentDate = new Date();
@@ -566,6 +653,7 @@ export default {
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(endOfWeek.getDate() + 6);
     this.endDate = endOfWeek;
+    this.fetWeekTimeSheetData();
   },
 };
 </script>

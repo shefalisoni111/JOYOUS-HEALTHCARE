@@ -221,7 +221,7 @@
                           </td>
 
                           <td scope="col">
-                            {{ data.approved_hour ? "Approved" : "No Approved" }}
+                            {{ data.status ? "Approved" : "No Approved" }}
                           </td>
                         </tr>
                       </tbody>
@@ -304,7 +304,7 @@
                           </td>
 
                           <td scope="col">
-                            {{ data.approved_hour ? "Approved" : "No Approved" }}
+                            {{ data.status ? "Approved" : "No Approved" }}
                           </td>
                         </tr>
                       </tbody>
@@ -421,6 +421,7 @@
       </button>
     </div> -->
     <loader :isLoading="isLoading"></loader>
+    <StaffGenrateInvoice @StaffReportData="filterData" />
   </div>
 </template>
 <script>
@@ -428,6 +429,8 @@ import axios from "axios";
 import Navbar from "../Navbar.vue";
 import Loader from "../Loader/Loader.vue";
 import Swal from "sweetalert2";
+import StaffGenrateInvoice from "../modals/InvoicePagesModal/StaffGenrateInvoice.vue";
+
 const axiosInstance = axios.create({
   headers: {
     "Cache-Control": "no-cache",
@@ -471,7 +474,7 @@ export default {
       queryParams: {},
     };
   },
-  components: { Navbar, Loader },
+  components: { Navbar, Loader, StaffGenrateInvoice },
   computed: {
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);

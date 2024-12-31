@@ -21,9 +21,9 @@
           <div class="modal-body">
             <!-- Client Selection -->
             <div class="mb-3">
-              <label class="form-label">Clients</label>
+              <label class="form-label">Staff</label>
 
-              <select
+              <!-- <select
                 v-model="client_id"
                 id="selectClients"
                 @change="onSingleClientSelect(client_id)"
@@ -38,52 +38,52 @@
                 >
                   {{ option.client_name }}
                 </option>
+              </select> -->
+              <select v-model="selectedCandidate" @change="fetchJobs()" id="selectStaff">
+                <option value="">All Staff</option>
+
+                <option
+                  v-for="option in candidateLists"
+                  :key="option.id"
+                  :value="option.id"
+                  placeholder="Select Staff"
+                >
+                  {{ option.first_name + " " + option.last_name }}
+                </option>
               </select>
-              <!-- <div class="d-flex gap-3 flex-wrap">
-                  <div v-for="client in clientData" :key="client.id" class="form-check">
-                    <input
-                      type="checkbox"
-                      class="form-check-input"
-                      :id="'client-' + client.id"
-                      :value="client.client_name"
-                      v-model="selectedClients"
-                      @change="onSingleClientSelect(client.id)"
-                    />
-                    <label
-                      :for="'client-' + client.id"
-                      class="form-check-label text-capitalize"
-                    >
-                      &nbsp;{{ client.client_name }} &nbsp;
-                    </label>
-                  </div>
-                </div> -->
             </div>
 
-            <!-- Site Selection -->
+            <!-- Date Selection -->
             <div class="mb-3">
-              <label class="form-label">Sites</label>
-              <div class="d-flex gap-3 flex-wrap">
-                <div v-for="site in siteData" :key="site.id" class="form-check">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    :id="'site-' + site.id"
-                    :value="site.site_name"
-                    v-model="selectedSites"
-                    @change="onSiteSelect(site.id)"
-                  />
-                  <label
-                    :for="'site-' + site.id"
-                    class="form-check-label text-capitalize"
-                  >
-                    &nbsp;{{ site.site_name }}&nbsp;
-                  </label>
-                </div>
-              </div>
+              <label for="dateSelect" class="form-label">Date</label>
+              <select class="form-select" id="dateSelect" v-model="selectedDateOption">
+                <!-- <option value="today">Today</option>
+                  <option value="weekly">Weekly</option>
+                  <option value="monthly">Monthly</option> -->
+                <option value="custom">Date</option>
+              </select>
             </div>
 
+            <!-- Custom Date Picker -->
+            <div v-if="selectedDateOption === 'custom'" class="mb-3">
+              <label for="customDateRange" class="form-label">Custom Date Range</label>
+              <input
+                type="date"
+                class="form-control mb-2"
+                v-model="customStartDate"
+                placeholder="Start Date"
+                @change="fetchJobs()"
+              />
+              <input
+                type="date"
+                class="form-control"
+                v-model="customEndDate"
+                placeholder="End Date"
+                @change="fetchJobs()"
+              />
+            </div>
             <!-- Job Position Selection -->
-            <div class="mb-3">
+            <div class="mb-3" v-if="jobData.length > 0">
               <label class="form-label">Job Positions</label>
               <div class="d-flex gap-3 flex-wrap">
                 <div v-for="job in jobData" :key="job.id" class="form-check">
@@ -122,46 +122,23 @@
                   </div>
                 </div>
               </div> -->
-
-            <!-- Date Selection -->
-            <div class="mb-3">
-              <label for="dateSelect" class="form-label">Date</label>
-              <select
-                class="form-select"
-                id="dateSelect"
-                v-model="selectedDateOption"
-                @change="handleDateSelection"
-              >
-                <!-- <option value="today">Today</option>
-                  <option value="weekly">Weekly</option>
-                  <option value="monthly">Monthly</option> -->
-                <option value="custom">Date</option>
-              </select>
-            </div>
-
-            <!-- Custom Date Picker -->
-            <div v-if="selectedDateOption === 'custom'" class="mb-3">
-              <label for="customDateRange" class="form-label">Custom Date Range</label>
-              <input
-                type="date"
-                class="form-control mb-2"
-                v-model="customStartDate"
-                placeholder="Start Date"
-              />
-              <input
-                type="date"
-                class="form-control"
-                v-model="customEndDate"
-                placeholder="End Date"
-              />
-            </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+              @click="resetFields"
+            >
               Close
             </button>
-            <button type="button" class="btn btn-primary" @click="applyFilters">
-              Generate CSV
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+              @click="applyFilters"
+            >
+              Generate View
             </button>
           </div>
           <!-- <div class="modal-footer">
@@ -203,19 +180,81 @@ export default {
       selectedSites: [],
       selectedJobs: [],
       selectedShifts: [],
+      candidateLists: [],
+      startDate: new Date(),
+      endDate: new Date(),
+      jobData: [],
       client_id: "",
       selectedDateOption: "today",
       customStartDate: "",
       customEndDate: "",
+      selectedCandidate: "",
     };
   },
+  computed: {
+    selectStaff() {
+      const id = this.candidateLists.find((option) => option.id === this.id);
+      return id ? id.first_name : "";
+    },
+  },
   methods: {
-    async getClientMethod() {
+    formatDate(date) {
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      return `${month}/${day}/${year}`;
+    },
+    getCandidateName(id) {
+      const candidate = this.candidateLists.find((candidate) => candidate.id === id);
+      return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
+    },
+    async fetchJobs() {
+      if (!this.selectedCandidate) {
+        this.jobData = [];
+        return;
+      }
+
       try {
-        const response = await axios.get(`${VITE_API_URL}/get_client_id_name`);
-        this.clientData = response.data.data || [];
+        const response = await axios.get(`${VITE_API_URL}/find_candidates_jobs`, {
+          params: {
+            candidate_id: this.selectedCandidate,
+            start_date: this.customStartDate,
+            end_date: this.customEndDate,
+          },
+        });
+        this.jobData = response.data;
       } catch (error) {
-        console.error("Error fetching client data:", error);
+        // console.error("Error fetching job positions:", error);
+      }
+    },
+
+    async getCandidateListMethod() {
+      const pagesToFetch = [1, 2, 3];
+      let allStaffData = [];
+
+      try {
+        const responses = await Promise.all(
+          pagesToFetch.map((page) =>
+            axios.get(`${VITE_API_URL}/candidates`, {
+              params: {
+                page: page,
+              },
+            })
+          )
+        );
+
+        responses.forEach((response) => {
+          allStaffData = allStaffData.concat(response.data.data);
+        });
+
+        this.candidateLists = allStaffData;
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          // Handle 404 error
+          // console.error('Error fetching client data:', error.response.data.message);
+        } else {
+          // console.error('Error fetching client data:', error);
+        }
       }
     },
     async onSingleClientSelect(clientId) {
@@ -233,17 +272,17 @@ export default {
         return [];
       }
     },
-    async getJobTitleMethod(clientId) {
-      try {
-        const response = await axios.get(
-          `${VITE_API_URL}/job_title_for_client/${clientId}`
-        );
-        this.jobData = response.data.data || [];
-      } catch (error) {
-        console.error("Error fetching jobs:", error);
-        return [];
-      }
-    },
+    // async getJobTitleMethod(clientId) {
+    //   try {
+    //     const response = await axios.get(
+    //       `${VITE_API_URL}/job_title_for_client/${clientId}`
+    //     );
+    //     this.jobData = response.data.data || [];
+    //   } catch (error) {
+    //     console.error("Error fetching jobs:", error);
+    //     return [];
+    //   }
+    // },
     async onSiteSelect(siteId) {
       await this.getTimeShift(siteId);
     },
@@ -252,7 +291,7 @@ export default {
         const response = await axios.get(`${VITE_API_URL}/site_shift/${siteId}`);
         this.shiftsTime = response.data.site_shift_data;
       } catch (error) {
-        console.error("Error fetching shifts:", error);
+        // console.error("Error fetching shifts:", error);
         return [];
       }
     },
@@ -308,18 +347,26 @@ export default {
       const day = String(d.getDate()).padStart(2, "0");
       const year = d.getFullYear();
 
-      return `${month}/${day}/${year}`;
+      return `${day}/${month}/${year}`;
+    },
+    resetFields() {
+      this.selectedStaff = [];
+      this.selectedSites = [];
+      this.selectedCandidate = "";
+      this.selectedDateOption = "";
+      this.customStartDate = null;
+      this.customEndDate = null;
     },
     applyFilters() {
+      this.fetchJobs();
       const token = localStorage.getItem("token");
 
       const params = {
-        range: this.selectedDateOption,
-        "report[candidate_id][]": this.selectedStaff,
-        "report[client][]": this.selectedClients,
-        "report[site][]": this.selectedSites,
-        "report[shift_date]": this.customStartDate,
-        format: "csv",
+        "candidate_id[]": this.selectedStaff,
+
+        "site_id[]": this.selectedSites,
+
+        invoice_type: "staff_invoice",
       };
 
       if (this.selectedDateOption === "custom") {
@@ -339,7 +386,7 @@ export default {
         }
       });
 
-      const url = `${VITE_API_URL}/generate_report?${queryParams.toString()}`;
+      const url = `${VITE_API_URL}/generate_client_invoices?${queryParams.toString()}`;
 
       axios
         .get(url, {
@@ -347,24 +394,20 @@ export default {
             "content-type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          responseType: "blob",
         })
         .then((response) => {
-          const fileURL = window.URL.createObjectURL(new Blob([response.data]));
-          const link = document.createElement("a");
-          link.href = fileURL;
-          link.setAttribute("download", "report.csv");
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
+          if (response.status === 200) {
+            this.resetFields();
+            this.$emit("StaffReportData");
+          }
         })
         .catch((error) => {
-          console.error("Error generating the report:", error);
+          // console.error("Error generating the report:", error);
         });
     },
   },
   mounted() {
-    this.getClientMethod();
+    this.getCandidateListMethod();
   },
 };
 </script>

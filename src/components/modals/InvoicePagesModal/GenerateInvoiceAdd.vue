@@ -67,15 +67,12 @@
                   <input
                     type="checkbox"
                     class="form-check-input"
-                    :id="'site-' + site.id"
-                    :value="site.site_name"
+                    :id="site.id"
+                    :value="site.id"
                     v-model="selectedSites"
                     @change="onSiteSelect(site.id)"
                   />
-                  <label
-                    :for="'site-' + site.id"
-                    class="form-check-label text-capitalize"
-                  >
+                  <label :for="site.id" class="form-check-label text-capitalize">
                     &nbsp;{{ site.site_name }}&nbsp;
                   </label>
                 </div>
@@ -90,19 +87,18 @@
                   <input
                     type="checkbox"
                     class="form-check-input"
-                    :id="'job-' + job.id"
+                    :id="job.id"
                     :value="job.id"
                     v-model="selectedJobs"
                   />
-                  <label :for="'job-' + job.id" class="form-check-label text-capitalize">
+                  <label :for="job.id" class="form-check-label text-capitalize">
                     &nbsp;{{ job.name }}&nbsp;
                   </label>
                 </div>
               </div>
             </div>
 
-            <!-- Shift Selection -->
-            <!-- <div class="mb-3">
+            <div class="mb-3">
               <label class="form-label">Shifts</label>
               <div class="d-flex gap-3 flex-wrap">
                 <div v-for="shift in shiftsTime" :key="shift.id" class="form-check">
@@ -121,7 +117,7 @@
                   </label>
                 </div>
               </div>
-            </div> -->
+            </div>
 
             <!-- Date Selection -->
             <div class="mb-3">
@@ -157,11 +153,21 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+              @click="resetFields"
+            >
               Close
             </button>
-            <button type="button" class="btn btn-primary" @click="applyFilters">
-              Generate CSV
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+              @click="applyFilters"
+            >
+              Generate View
             </button>
           </div>
           <!-- <div class="modal-footer">
@@ -293,7 +299,7 @@ export default {
     // },
     formatDate(date) {
       if (!date) {
-        console.error("Invalid date provided:", date);
+        // console.error("Invalid date provided:", date);
         return null;
       }
 
@@ -308,25 +314,24 @@ export default {
       const day = String(d.getDate()).padStart(2, "0");
       const year = d.getFullYear();
 
-      return `${month}/${day}/${year}`;
+      return `${day}/${month}/${year}`;
     },
     applyFilters() {
       const token = localStorage.getItem("token");
 
       const params = {
-        range: this.selectedDateOption,
-        "report[candidate_id][]": this.selectedStaff,
-        "report[client][]": this.selectedClients,
-        "report[site][]": this.selectedSites,
-        "report[shift_date]": this.customStartDate,
-        format: "csv",
+        "job_id[]": this.selectedJobs,
+        "candidate_id[]": this.selectedStaff,
+        client_id: this.client_id,
+        "site_id[]": this.selectedSites,
+        shift_date: this.formatDate(this.customStartDate),
+        invoice_type: "client_invoice",
       };
 
       if (this.selectedDateOption === "custom") {
         params.start_date = this.formatDate(this.customStartDate);
         params.end_date = this.formatDate(this.customEndDate);
-      } else {
-        params["report[date]"] = this.customStartDate;
+        params.invoice_type = "client_invoice";
       }
 
       const queryParams = new URLSearchParams();
@@ -339,7 +344,7 @@ export default {
         }
       });
 
-      const url = `${VITE_API_URL}/generate_report?${queryParams.toString()}`;
+      const url = `${VITE_API_URL}/generate_client_invoices?${queryParams.toString()}`;
 
       axios
         .get(url, {
@@ -347,20 +352,25 @@ export default {
             "content-type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          responseType: "blob",
         })
         .then((response) => {
-          const fileURL = window.URL.createObjectURL(new Blob([response.data]));
-          const link = document.createElement("a");
-          link.href = fileURL;
-          link.setAttribute("download", "report.csv");
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
+          if (response.status === 200) {
+            this.resetFields();
+          }
         })
         .catch((error) => {
-          console.error("Error generating the report:", error);
+          // console.error("Error generating the report:", error);
         });
+    },
+    resetFields() {
+      this.selectedJobs = [];
+      this.selectedStaff = [];
+      this.selectedSites = [];
+      this.selectedShifts = [];
+      this.client_id = null;
+      this.selectedDateOption = "";
+      this.customStartDate = null;
+      this.customEndDate = null;
     },
   },
   mounted() {

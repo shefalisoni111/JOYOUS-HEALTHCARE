@@ -66,10 +66,57 @@
             <tr v-for="(data, index) in candidateList" :key="data.id || index">
               <td scope="col">{{ data.id }}</td>
               <td scope="col">{{ data.code }}</td>
-              <td scope="col">{{ data.site_id_and_client_id.client_name }}</td>
-              <td scope="col">{{ data.site }}</td>
+              <td scope="col">
+                <router-link
+                  v-if="data?.site_id_and_client_id?.client_id"
+                  class="text-black text-decoration-none fw-bold"
+                  :to="{
+                    name: 'SingleClientProfile',
+                    params: { id: data?.site_id_and_client_id?.client_id },
+                  }"
+                >
+                  {{ data.client }}
+                </router-link>
+                <span v-else>
+                  <router-link
+                    v-if="data?.site_id_and_client_id?.client_id"
+                    class="text-black text-decoration-none fw-bold"
+                    :to="{
+                      name: 'SingleClientProfile',
+                      params: {
+                        id: data?.site_id_and_client_id?.client_id,
+                      },
+                    }"
+                  >
+                    {{ data.client }}
+                  </router-link>
+                </span>
+              </td>
+              <td scope="col">
+                <router-link
+                  v-if="data?.site_id_and_client_id?.site_id"
+                  class="text-black text-decoration-none fw-bold"
+                  :to="{
+                    name: 'SingleSiteprofile',
+                    params: { id: data?.site_id_and_client_id?.site_id },
+                  }"
+                  >{{ data.site }}</router-link
+                >
+                <span v-else>
+                  <router-link
+                    v-if="data?.site_id_and_client_id?.site_id"
+                    class="text-black text-decoration-none fw-bold"
+                    :to="{
+                      name: 'SingleSiteprofile',
+                      params: { id: data?.site_id_and_client_id?.site_id },
+                    }"
+                  >
+                    {{ data.site }}
+                  </router-link>
+                </span>
+              </td>
               <td scope="col">{{ data.job }}</td>
-              <td scope="col">{{ data.shift_date }}</td>
+              <td scope="col">{{ data.date }}</td>
               <td scope="col">
                 {{ data.start_time }}
               </td>
@@ -86,7 +133,7 @@
                 {{ data.total_cost }}
               </td>
               <td>
-                <i class="bi bi-eye"></i> &nbsp;
+                <!-- <i class="bi bi-eye"></i> &nbsp; -->
                 <button
                   type="button"
                   class="btn btn-outline-success text-nowrap text-nowrap"
@@ -150,6 +197,7 @@
     </div>
     <loader :isLoading="isLoading"></loader>
     <AddGenrateInvoiceFile :selected-id="selectedId" />
+    <GenerateInvoiceAdd @updated="applyFilters" />
   </div>
 </template>
 
@@ -157,11 +205,12 @@
 import axios from "axios";
 import Loader from "../../Loader/Loader.vue";
 import AddGenrateInvoiceFile from "../../modals/InvoicePagesModal/AddGenrateInvoiceFile.vue";
+import GenerateInvoiceAdd from "../../modals/InvoicePagesModal/GenerateInvoiceAdd.vue";
 
 export default {
   data() {
     return {
-      currentView: "weekly",
+      currentView: "monthly",
       daysOfWeek: [
         "Sunday",
         "Monday",
@@ -172,6 +221,10 @@ export default {
         "Saturday",
       ],
       candidateList: [],
+      job_id: "",
+      site_id: "",
+      client_id: "",
+      shift_date: "",
       selectedId: null,
       errorMessage: "",
       currentPage: 1,
@@ -181,7 +234,7 @@ export default {
       endDate: new Date(),
     };
   },
-  components: { Loader, AddGenrateInvoiceFile },
+  components: { Loader, AddGenrateInvoiceFile, GenerateInvoiceAdd },
   computed: {
     getWeekDates() {
       const currentDate = new Date();
@@ -214,48 +267,135 @@ export default {
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
-      this.fetWeekTimeSheetData();
+      this.applyFilters();
     },
-    async fetWeekTimeSheetData() {
+    applyFilters() {
       this.isLoading = true;
-      const currentDate = new Date();
+      if (
+        !this.selectedJobs ||
+        !this.client_id ||
+        !this.selectedSites ||
+        !this.startDate
+      ) {
+        this.errorMessage = "Data Not Found for the specified Date.";
+        this.isLoading = false;
+        return;
+      }
+      const token = localStorage.getItem("token");
 
-      const formatDate = (date) => {
-        const month = (date.getMonth() + 1).toString().padStart(2, "0");
-        const day = date.getDate().toString().padStart(2, "0");
-        const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
+      const params = {
+        "job_id[]": this.selectedJobs,
+        // "candidate_id[]": this.selectedStaff,
+        client_id: this.client_id,
+        "site_id[]": this.selectedSites,
+        shift_date: this.formatDate(this.startDate),
+
+        invoice_type: "client_invoice",
       };
 
-      this.formattedStartDate = formatDate(this.startDate);
-      this.formattedEndDate = formatDate(this.endDate);
-      try {
-        const requestData = {
-          start_date: this.formattedStartDate,
-          end_date: this.formattedEndDate,
-          per_page: this.itemsPerPage,
-        };
-
-        const response = await axios.get(`${VITE_API_URL}/generate_invoice_filters`, {
-          params: requestData,
-          per_page: this.itemsPerPage,
-        });
-        if (response.data.error) {
-          this.errorMessage = response.data.error;
-          this.candidateList = [];
-        } else {
-          this.candidateList = response.data.data;
-
-          this.errorMessage =
-            this.candidateList.length === 0
-              ? "Data Not Found for the specified Week"
-              : "";
-        }
-      } catch (error) {
-      } finally {
-        this.isLoading = false;
+      if (this.selectedDateOption === "custom") {
+        params.start_date = this.formatDate(this.startDate);
+        params.end_date = this.formatDate(this.endDate);
+      } else {
+        // params["report[date]"] = this.startDate;
       }
+
+      const queryParams = new URLSearchParams();
+
+      Object.entries(params).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach((item) => queryParams.append(key, item));
+        } else if (value !== undefined && value !== null) {
+          queryParams.append(key, value);
+        }
+      });
+
+      const url = `${VITE_API_URL}/generate_client_invoices?${queryParams.toString()}`;
+
+      axios
+        .get(url, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            // this.resetFields();
+            if (response.data.data && response.data.data.length > 0) {
+              this.candidateList = response.data.data;
+              this.errorMessage = "";
+            } else {
+              this.candidateList = [];
+              this.errorMessage = "Data Not Found for the specified Week";
+              Swal.fire({
+                icon: "error",
+                title: "No Data Found",
+                text: this.errorMessage,
+              });
+            }
+          }
+        })
+        .catch((error) => {
+          // console.error("Error generating the report:", error);
+          this.errorMessage = "An error occurred while fetching data.";
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: this.errorMessage,
+          });
+        })
+        .finally(() => {
+          if (this.getStaffInvoiceDetail.length === 0) {
+            Swal.fire({
+              icon: "error",
+              title: "No Data Found",
+              text: "No data available for the Date.",
+            });
+          }
+          this.isLoading = false;
+        });
     },
+    // async fetWeekTimeSheetData() {
+    //   this.isLoading = true;
+    //   const currentDate = new Date();
+
+    //   const formatDate = (date) => {
+    //     const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    //     const day = date.getDate().toString().padStart(2, "0");
+    //     const year = date.getFullYear();
+    //     return `${day}/${month}/${year}`;
+    //   };
+
+    //   this.formattedStartDate = formatDate(this.startDate);
+    //   this.formattedEndDate = formatDate(this.endDate);
+    //   try {
+    //     const requestData = {
+    //       start_date: this.formattedStartDate,
+    //       end_date: this.formattedEndDate,
+    //       per_page: this.itemsPerPage,
+    //     };
+
+    //     const response = await axios.get(`${VITE_API_URL}/generate_invoice_filters`, {
+    //       params: requestData,
+    //       per_page: this.itemsPerPage,
+    //     });
+    //     if (response.data.error) {
+    //       this.errorMessage = response.data.error;
+    //       this.candidateList = [];
+    //     } else {
+    //       this.candidateList = response.data.data;
+
+    //       this.errorMessage =
+    //         this.candidateList.length === 0
+    //           ? "Data Not Found for the specified Week"
+    //           : "";
+    //     }
+    //   } catch (error) {
+    //   } finally {
+    //     this.isLoading = false;
+    //   }
+    // },
     formatDate(date) {
       const day = date.getDate();
       const month = date.getMonth() + 1;
@@ -276,7 +416,7 @@ export default {
         );
       }
 
-      this.fetWeekTimeSheetData();
+      this.applyFilters();
     },
     moveToNext() {
       if (this.currentView === "weekly") {
@@ -292,7 +432,7 @@ export default {
         );
       }
 
-      this.fetWeekTimeSheetData();
+      this.applyFilters();
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
@@ -311,7 +451,7 @@ export default {
 
       localStorage.setItem("startDate", this.startDate.toISOString());
       localStorage.setItem("endDate", this.endDate.toISOString());
-      this.fetWeekTimeSheetData();
+      this.applyFilters();
     },
     loadDateRangeFromLocalStorage() {
       const storedStartDate = localStorage.getItem("startDate");
@@ -346,7 +486,7 @@ export default {
       }
     }
 
-    this.fetWeekTimeSheetData();
+    this.applyFilters();
   },
 };
 </script>
