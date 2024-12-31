@@ -547,7 +547,7 @@
                       ></textarea>
                     </div>
                   </div>
-                  <!-- <div class="mb-3" v-if="showValueCustom">
+                  <div class="mb-3" v-if="showValueCustom">
                     <div class="col-12">
                       <label class="form-label">Paper TimeSheet</label>
                     </div>
@@ -556,7 +556,7 @@
                         :src="fullCustomImageUrl"
                         alt="Current Paper TimeSheet"
                         class="img-fluid"
-                        width="20%"
+                        width="10%"
                       />
                     </div>
                     <div class="col-12 mt-1" v-else>
@@ -566,9 +566,8 @@
                         accept="image/*"
                         @change="handleFileUpload"
                       />
-                      
                     </div>
-                  </div> -->
+                  </div>
                 </div>
               </form>
             </div>
@@ -640,12 +639,7 @@ export default {
         status: "",
         start_comment: "",
       },
-      // startTime: {
-      //   hour: "",
-      //   minute: "",
-      //   period: "",
-      // },
-      // minutes: Array.from({ length: 60 }, (_, i) => String(i).padStart(2, "0")),
+      previewImageUrl: "",
       apiResponse: "",
       showValueCustom: "false",
       apiResponse_EndTime: "",
@@ -653,7 +647,6 @@ export default {
       showSaveButton: true,
       isPublished: "",
       originalData: null,
-      fullCustomImageUrl: null,
     };
   },
   props: {
@@ -683,12 +676,12 @@ export default {
       } = this.fetchCustomTimeShetData;
       return !notes || !start_time || !paper_timesheet || !end_time;
     },
-    // fullCustomImageUrl() {
-    //   return this.fetchCustomTimeShetData.paper_timesheet
-    //     ? `${VITE_API_URL}${this.fetchCustomTimeShetData.paper_timesheet}`
-    //     : "";
-    //   // console.log(`${VITE_API_URL}${this.fetchCustomTimeShetData.paper_timesheet}`);
-    // },
+
+    fullCustomImageUrl() {
+      return this.fetchCustomTimeShetData.paper_timesheet
+        ? `${VITE_API_URL}${this.fetchCustomTimeShetData.paper_timesheet}`
+        : "";
+    },
   },
   methods: {
     getFullImageUrl(relativeUrl) {
@@ -716,17 +709,20 @@ export default {
       const file = event.target.files[0];
       if (file) {
         if (file.type.startsWith("image/")) {
-          this.fetchCustomTimeShetData.paper_timesheet = file;
+          this.fetchCustomSheetData.paper_timesheet = file;
+
           const reader = new FileReader();
           reader.onload = (e) => {
-            this.fullCustomImageUrl = e.target.result;
+            this.previewImageUrl = e.target.result;
           };
           reader.readAsDataURL(file);
         } else {
+          this.$refs.successAlert.showError("Please upload a valid image file.");
         }
         this.validatePaperTimeSheet();
       } else {
-        this.fetchCustomTimeShetData.paper_timesheet = null;
+        this.fetchCustomSheetData.paper_timesheet = null;
+        this.previewImageUrl = "";
       }
     },
     validatePaperTimeSheet() {
@@ -921,6 +917,13 @@ export default {
     },
   },
   watch: {
+    fullCustomImageUrl(newVal) {
+      if (newVal) {
+        // console.log("Image URL loaded:", newVal);
+      } else {
+        // console.log("No image URL found.");
+      }
+    },
     vacancyId: {
       immediate: true,
       handler(newvacancyId) {

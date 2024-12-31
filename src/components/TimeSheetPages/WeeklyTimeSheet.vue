@@ -58,7 +58,7 @@
                   <option
                     v-for="option in businessUnit"
                     :key="option.id"
-                    :value="option.site_name"
+                    :value="option.id"
                     placeholder="Select BusinessUnit"
                   >
                     {{ option.site_name }}
@@ -74,7 +74,7 @@
                   <option
                     v-for="option in candidateLists"
                     :key="option.id"
-                    :value="`${option.first_name} ${option.last_name}`"
+                    :value="option.id"
                   >
                     {{ option.first_name }} {{ option.last_name }}
                   </option>
@@ -509,7 +509,7 @@
     <!-- <AppointmentAdd /> -->
     <WeekTimeSheetEdit
       ref="editWeekly"
-      @CustomTimeSheetData-updated="fetWeekTimeSheetData"
+      @CustomTimeSheetData-updated="filterData"
       :initialDate="selectedDate"
       :vacancyId="vacancyId"
       @closeModal="closeModal"
@@ -761,7 +761,7 @@ export default {
         this.startDate.setDate(this.startDate.getDate() - 7);
         this.endDate.setDate(this.endDate.getDate() - 7);
         this.updateDateRange();
-        this.fetWeekTimeSheetData();
+        this.filterData();
       } else if (this.currentView === "monthly") {
         this.startDate.setMonth(this.startDate.getMonth() - 1);
         this.endDate = new Date(
@@ -770,14 +770,14 @@ export default {
           0
         );
       }
-      // this.fetWeekTimeSheetData();
+      // this.filterData();
     },
     moveToNext() {
       if (this.currentView === "weekly") {
         this.startDate.setDate(this.startDate.getDate() + 7);
         this.endDate.setDate(this.endDate.getDate() + 7);
         this.updateDateRange();
-        this.fetWeekTimeSheetData();
+        this.filterData();
       } else if (this.currentView === "monthly") {
         this.startDate.setMonth(this.startDate.getMonth() + 1);
         this.endDate = new Date(
@@ -935,32 +935,18 @@ export default {
     async filterData() {
       const params = {
         page: 1,
+        per_page: this.itemsPerPage,
       };
       const { start, end } = this.getWeekRange(this.startDate);
+      params["weekly_timesheet[date]"] = this.formatDates(start);
+
       if (this.selectedSiteName) {
-        params["weekly_timesheet[site]"] = this.selectedSiteName;
-      }
-      if (this.selectedCandidate) {
-        params["weekly_timesheet[candidate_name]"] = this.selectedCandidate;
-        params["weekly_timesheet[name]"] = this.selectedCandidate;
+        params["weekly_timesheet[site_id]"] = this.selectedSiteName;
+        params["weekly_timesheet[shift_date]"] = this.formatDates(start);
       }
 
       if (this.selectedCandidate) {
-        if (this.candidateList && this.candidateList.length > 0) {
-          const isCustomTimesheets = this.candidateList.some((item) =>
-            item.hasOwnProperty("custom_timesheets")
-          );
-
-          if (isCustomTimesheets) {
-            params["weekly_timesheet[date]"] = this.formatDates(start);
-          } else {
-          }
-        }
-      } else {
-        if (this.selectedCandidate) {
-          params["weekly_timesheet[name]"] = this.selectedCandidate;
-        }
-
+        params["weekly_timesheet[candidate_id]"] = this.selectedCandidate;
         params["weekly_timesheet[shift_date]"] = this.formatDates(start);
       }
 
@@ -969,97 +955,9 @@ export default {
           params,
         });
 
-        const mergedTimeSheets = [
-          ...response.data.custom_timesheets,
-          ...response.data.sign_timesheets,
-        ];
-
-        this.candidateList = mergedTimeSheets;
-        this.mergedTimesheetsArray = this.candidateList || [];
-
-        if (mergedTimeSheets?.length === 0) {
-          this.errorMessageFilter = "Data Not Found.";
-        }
-      } catch (error) {
-        // console.error("Error fetching timesheets:", error);
-        this.errorMessageFilter = "Data Not Found.";
-      }
-    },
-    resetFilter() {
-      this.selectedSiteName = null;
-      this.selectedCandidate = null;
-
-      this.filterData();
-    },
-    getSiteName(site_id) {
-      const site = this.businessUnit.find((option) => option.id === site_id);
-      return site ? site.site_name : "";
-    },
-    // async makeFilterAPICall(filterType, filterValue) {
-    //   const token = localStorage.getItem("token");
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/filter_timesheets`, {
-    //       params: {
-    //         filter_type: filterType,
-    //         filter_value: filterValue,
-    //       },
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     });
-    //     const mergedTimeSheets = [
-    //       ...response.data.custom_timesheets,
-    //       ...response.data.sign_timesheets,
-    //     ];
-    //     this.candidateList = mergedTimeSheets;
-    //     this.mergedTimesheetsArray = this.candidateList || [];
-    //     this.errorMessageFilter = "";
-    //   } catch (error) {
-    //     if (error.response) {
-    //       this.errorMessageFilter = "Data Not Found!" || "Data Not Found!";
-    //     } else {
-    //       this.errorMessageFilter = "Data Not Found!";
-    //     }
-    //     this.mergedTimesheetsArray = [];
-    //   }
-    // },
-    setItemsPerPage(value) {
-      this.itemsPerPage = value;
-      this.currentPage = 1;
-      this.fetWeekTimeSheetData();
-    },
-    getWeekRange(date) {
-      const start = new Date(date);
-      const end = new Date(date);
-      start.setDate(start.getDate() - start.getDay() + 1);
-      end.setDate(end.getDate() + 6);
-      return { start, end };
-    },
-    isDateInRange(dateStr, startDate, endDate) {
-      const date = new Date(dateStr);
-      return date >= startDate && date <= endDate;
-    },
-    async fetWeekTimeSheetData() {
-      this.isLoading = true;
-      try {
-        const { start, end } = this.getWeekRange(this.startDate);
-        const requestData = {
-          date: this.formatDate(start),
-          //  end_date: this.formatDate(end),
-        };
-
-        const response = await axios.get(
-          `${VITE_API_URL}/find_timesheets_according_week`,
-          {
-            params: requestData,
-            per_page: this.itemsPerPage,
-          }
-        );
-
         this.dataCustomTimeSheet = response.data;
 
-        this.weeklyTimesheets = this.dataCustomTimeSheet.weekly_timesheets;
+        this.weeklyTimesheets = response.data.weekly_timesheets;
 
         const mergedTimesheetsArray = [];
         const candidateHoursMap = {};
@@ -1115,15 +1013,175 @@ export default {
         } else {
           this.errorMessage = "";
         }
-
-        // console.log(this.mergedTimesheetsArray);
-        // console.log(this.total_hourMain, this.candidateHoursMap);
       } catch (error) {
-        // console.error("Error fetching week timesheets:", error);
-      } finally {
-        this.isLoading = false;
+        // console.error("Error fetching timesheets:", error);
+        this.errorMessageFilter = "Data Not Found.";
       }
     },
+    resetFilter() {
+      this.selectedSiteName = null;
+      this.selectedCandidate = null;
+
+      this.filterData();
+    },
+    getSiteName(site_id) {
+      const site = this.businessUnit.find((option) => option.id === site_id);
+      return site ? site.site_name : "";
+    },
+    // async makeFilterAPICall(filterType, filterValue) {
+    //   const token = localStorage.getItem("token");
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/filter_timesheets`, {
+    //       params: {
+    //         filter_type: filterType,
+    //         filter_value: filterValue,
+    //       },
+    //       headers: {
+    //         "content-type": "application/json",
+    //         Authorization: "bearer " + token,
+    //       },
+    //     });
+    //     const mergedTimeSheets = [
+    //       ...response.data.custom_timesheets,
+    //       ...response.data.sign_timesheets,
+    //     ];
+    //     this.candidateList = mergedTimeSheets;
+    //     this.mergedTimesheetsArray = this.candidateList || [];
+    //     this.errorMessageFilter = "";
+    //   } catch (error) {
+    //     if (error.response) {
+    //       this.errorMessageFilter = "Data Not Found!" || "Data Not Found!";
+    //     } else {
+    //       this.errorMessageFilter = "Data Not Found!";
+    //     }
+    //     this.mergedTimesheetsArray = [];
+    //   }
+    // },
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.filterData();
+    },
+    getWeekRange(date) {
+      const start = new Date(date);
+      const end = new Date(date);
+      start.setDate(start.getDate() - start.getDay() + 1);
+      end.setDate(end.getDate() + 6);
+      return { start, end };
+    },
+    isDateInRange(dateStr, startDate, endDate) {
+      const date = new Date(dateStr);
+      return date >= startDate && date <= endDate;
+    },
+    // async filterData() {
+    //   this.isLoading = true;
+    //   try {
+    //     const { start, end } = this.getWeekRange(this.startDate);
+
+    //     // Unified parameters for both APIs
+    //     const filterParams = {
+    //       page: 1,
+    //       // "weekly_timesheet[date]": this.formatDates(start),
+    //       date: this.formatDate(start),
+    //     };
+
+    //     if (this.selectedSiteName) {
+    //       filterParams["weekly_timesheet[site_id]"] = this.selectedSiteName;
+    //     }
+
+    //     if (this.selectedCandidate) {
+    //       filterParams["weekly_timesheet[candidate_id]"] = this.selectedCandidate;
+
+    //       if (this.candidateList && this.candidateList.length > 0) {
+    //         const isCustomTimesheets = this.candidateList.some((item) =>
+    //           item.hasOwnProperty("custom_timesheets")
+    //         );
+
+    //         if (isCustomTimesheets) {
+    //           filterParams["weekly_timesheet[date]"] = this.formatDates(start);
+    //         }
+    //       }
+    //     } else {
+    //       filterParams["weekly_timesheet[shift_date]"] = this.formatDates(start);
+    //     }
+
+    //     // const requestData = {
+    //     //   date: this.formatDate(start),
+    //     //   //  end_date: this.formatDate(end),
+    //     // };
+
+    //     const response = await axios.get(`${VITE_API_URL}/filter_timesheets`, {
+    //       params: filterParams,
+    //       per_page: this.itemsPerPage,
+    //     });
+
+    //     this.dataCustomTimeSheet = response.data;
+
+    //     this.weeklyTimesheets = this.dataCustomTimeSheet.weekly_timesheets;
+
+    //     const mergedTimesheetsArray = [];
+    //     const candidateHoursMap = {};
+
+    //     this.weeklyTimesheets.forEach((candidateTimesheet) => {
+    //       const {
+    //         candidate_name,
+    //         candidate_id,
+    //         site_name,
+    //         shift,
+    //         job,
+    //         total_week_hours,
+    //         total_week_cost,
+    //         approved_by,
+    //         data,
+    //       } = candidateTimesheet;
+
+    //       const customTimesheets = Array.isArray(data) ? data : [];
+
+    //       customTimesheets.forEach((timesheet) => {
+    //         mergedTimesheetsArray.push({
+    //           candidate_name,
+    //           candidate_id,
+    //           site_name,
+    //           shift,
+    //           job,
+    //           total_week_hours,
+    //           total_week_cost,
+    //           approved_by,
+    //           ...timesheet,
+    //         });
+    //       });
+
+    //       if (total_week_hours !== undefined && total_week_hours !== null) {
+    //         candidateHoursMap[candidate_id] = total_week_hours;
+    //       }
+    //       // if (total_week_cost !== undefined && total_week_cost !== null) {
+    //       //   candidateCostsMap[candidate_id] = total_week_cost;
+    //       // }
+
+    //       // if (approved_by !== undefined && approved_by !== null) {
+    //       //   candidateApprovedByMap[candidate_id] = approved_by;
+    //       // }
+    //     });
+
+    //     this.mergedTimesheetsArray = mergedTimesheetsArray;
+
+    //     // this.candidateCostsMap = candidateCostsMap;
+    //     // this.candidateApprovedByMap = candidateApprovedByMap;
+
+    //     if (this.mergedTimesheetsArray.length === 0) {
+    //       this.errorMessage = "No Weekly timesheets found for the specified week.";
+    //     } else {
+    //       this.errorMessage = "";
+    //     }
+
+    //     // console.log(this.mergedTimesheetsArray);
+    //     // console.log(this.total_hourMain, this.candidateHoursMap);
+    //   } catch (error) {
+    //     // console.error("Error fetching week timesheets:", error);
+    //   } finally {
+    //     this.isLoading = false;
+    //   }
+    // },
   },
   components: {
     WeekTimeSheetEdit,
@@ -1150,7 +1208,7 @@ export default {
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(endOfWeek.getDate() + 6);
     this.endDate = endOfWeek;
-    await this.fetWeekTimeSheetData();
+    await this.filterData();
   },
 };
 </script>

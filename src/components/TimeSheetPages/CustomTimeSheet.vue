@@ -1278,7 +1278,7 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-
+  padding-bottom: 65px;
   padding-top: 65px;
   background-color: #fdce5e17;
 }
