@@ -403,18 +403,6 @@
                             class="form-control"
                             v-model="fetchCustomSheetData.total_hours"
                           />
-                          <!-- <select
-                            id="selectCustomStartTime"
-                            class="form-control custom-disabled"
-                            v-model="fetchCustomSheetData.total_hours"
-                            @change="validateStartTime"
-                            style="width: 240px"
-                            disabled
-                          >
-                            <option v-for="hour in 24" :key="hour" :value="hour">
-                              {{ hour }} hour{{ hour > 1 ? "s" : "" }}
-                            </option>
-                          </select> -->
                         </div>
                       </div>
                     </div>
@@ -512,23 +500,6 @@
                         Paper TimeSheet is required
                       </span> -->
                     </div>
-                    <!-- <div class="col-12 mt-1">
-                      <img
-                        :src="fullCustomImageUrl"
-                        alt="Current Paper TimeSheet"
-                        class="img-fluid"
-                        width="20%"
-                      />
-                      <input
-                        type="file"
-                        class="form-control"
-                        accept="image/*"
-                        @change="handleFileUpload"
-                      />
-                      <span v-if="!validationPaperTimeSheet" class="text-danger">
-                        Paper TimeSheet is required
-                      </span>
-                    </div> -->
                   </div>
                 </div>
               </form>
@@ -853,48 +824,6 @@ export default {
       try {
         this.updateStartTime();
         this.updateEndTime();
-        // const formData = new FormData();
-        // if (
-        //   this.fetchCustomSheetData.start_time !== null ||
-        //   this.fetchCustomSheetData.start_time !== ""
-        // ) {
-        //   formData.append(
-        //     "custom_timesheet[start_time]",
-        //     this.fetchCustomSheetData.start_time
-        //   );
-        // }
-
-        // if (
-        //   this.fetchCustomSheetData.end_time !== null ||
-        //   this.fetchCustomSheetData.end_time !== ""
-        // ) {
-        //   formData.append(
-        //     "custom_timesheet[end_time]",
-        //     this.fetchCustomSheetData.end_time
-        //   );
-        // }
-
-        // formData.append(
-        //   "custom_timesheet[shift_date]",
-        //   this.fetchCustomSheetData.shift_date
-        // );
-
-        // formData.append(
-        //   "custom_timesheet[client_rate]",
-        //   this.fetchCustomSheetData.client_rate
-        // );
-        // formData.append(
-        //   "custom_timesheet[staff_rate]",
-        //   this.fetchCustomSheetData.staff_rate
-        // );
-        // formData.append("custom_timesheet[notes]", this.fetchCustomSheetData.notes);
-
-        // if (this.fetchCustomSheetData.paper_timesheet) {
-        //   formData.append(
-        //     "custom_timesheet[custom_image]",
-        //     this.fetchCustomSheetData.paper_timesheet
-        //   );
-        // }
 
         const formData = new FormData();
 
