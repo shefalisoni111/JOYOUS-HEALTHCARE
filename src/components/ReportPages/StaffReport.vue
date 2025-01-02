@@ -169,7 +169,7 @@
                     <table class="table reportTable">
                       <thead>
                         <tr>
-                          <th scope="col">SI No</th>
+                          <!-- <th scope="col">SI No</th> -->
                           <th scope="col">ID</th>
 
                           <th scope="col" style="width: 153px">Employee Name</th>
@@ -189,11 +189,11 @@
                       </thead>
                       <tbody v-if="paginateCandidates && paginateCandidates?.length > 0">
                         <tr v-for="data in paginateCandidates" :key="data.id">
-                          <td>
+                          <!-- <td>
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
                             </div>
-                          </td>
+                          </td> -->
                           <td scope="col">{{ data.id }}</td>
 
                           <td scope="col">

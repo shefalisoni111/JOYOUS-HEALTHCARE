@@ -160,11 +160,11 @@
                     <table class="table reportTable">
                       <thead>
                         <tr>
-                          <th>
+                          <!-- <th>
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
                             </div>
-                          </th>
+                          </th> -->
                           <th scope="col">ID</th>
                           <th scope="col">Code</th>
                           <th scope="col" style="width: 153px">Name</th>
@@ -185,11 +185,11 @@
                           v-for="(data, index) in paginateCandidates"
                           :key="data.id || index"
                         >
-                          <td>
+                          <!-- <td>
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
                             </div>
-                          </td>
+                          </td> -->
                           <td scope="col">{{ data.id }}</td>
                           <td scope="col">{{ data.code }}</td>
                           <td scope="col">{{ data.name || data.candidate_name }}</td>
@@ -265,11 +265,11 @@
                     <table class="table reportTable">
                       <thead>
                         <tr>
-                          <th>
+                          <!-- <th>
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
                             </div>
-                          </th>
+                          </th> -->
                           <th scope="col">ID</th>
                           <th scope="col">Code</th>
                           <th scope="col" style="width: 153px">Name</th>
@@ -290,11 +290,11 @@
                           v-for="(data, index) in paginateSearchResults"
                           :key="data.id || index"
                         >
-                          <td>
+                          <!-- <td>
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" />
                             </div>
-                          </td>
+                          </td> -->
                           <td scope="col">{{ data.id }}</td>
                           <td scope="col">{{ data.code }}</td>
                           <td scope="col">
