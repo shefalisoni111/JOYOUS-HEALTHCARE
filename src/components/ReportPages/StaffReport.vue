@@ -421,7 +421,7 @@
       </button>
     </div> -->
     <loader :isLoading="isLoading"></loader>
-    <StaffGenrateInvoice @StaffReportData="filterData" />
+    <!-- <StaffGenrateInvoice @StaffReportData="filterData" /> -->
   </div>
 </template>
 <script>
@@ -429,7 +429,7 @@ import axios from "axios";
 import Navbar from "../Navbar.vue";
 import Loader from "../Loader/Loader.vue";
 import Swal from "sweetalert2";
-import StaffGenrateInvoice from "../modals/InvoicePagesModal/StaffGenrateInvoice.vue";
+// import StaffGenrateInvoice from "../modals/InvoicePagesModal/StaffGenrateInvoice.vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -474,7 +474,7 @@ export default {
       queryParams: {},
     };
   },
-  components: { Navbar, Loader, StaffGenrateInvoice },
+  components: { Navbar, Loader },
   computed: {
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
@@ -854,12 +854,18 @@ export default {
     async getCandidateListMethod() {
       const pagesToFetch = [1, 2, 3];
       let allStaffData = [];
+      const payload = {
+        status_value: "approved",
+        activated_value: true,
+        per_page: 10,
+      };
 
       try {
         const responses = await Promise.all(
           pagesToFetch.map((page) =>
             axios.get(`${VITE_API_URL}/candidates`, {
               params: {
+                ...payload,
                 page: page,
               },
             })
@@ -867,7 +873,9 @@ export default {
         );
 
         responses.forEach((response) => {
-          allStaffData = allStaffData.concat(response.data.data);
+          if (response.data && response.data.data) {
+            allStaffData = allStaffData.concat(response.data.data);
+          }
         });
 
         this.candidateLists = allStaffData;

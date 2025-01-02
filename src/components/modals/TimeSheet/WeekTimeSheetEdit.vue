@@ -898,8 +898,6 @@ export default {
               period: endPeriod,
             };
           }
-          // const weeklyTimesheets = response.data?.weekly_timesheets || [];
-          // console.log("Fetched weekly timesheets:", this.paginatedTimesheets);
 
           this.showValueCustom = true;
           this.fetchCustomTimeShetData = {
@@ -985,6 +983,7 @@ export default {
       }
     },
     async updateCandidateMethod() {
+      this.updateStartTime();
       this.updateEndTime();
       const token = localStorage.getItem("token");
 
@@ -993,11 +992,13 @@ export default {
         // const formData = new FormData();
         const payload = {
           ...this.fetchCustomTimeShetData,
-          // start_time: this.fetchCustomTimeShetData.start_time,
-          // end_time: this.fetchCustomTimeShetData.end_time,
-          // custom_image_url: this.fetchCustomSheetData.paper_timesheet_url,
         };
-
+        if (payload.total_hours) {
+          delete payload.total_hours;
+        }
+        if (payload.total_cost) {
+          delete payload.total_cost;
+        }
         if (payload.start_time !== null || payload.start_time !== "") {
           payload.start_time;
         }

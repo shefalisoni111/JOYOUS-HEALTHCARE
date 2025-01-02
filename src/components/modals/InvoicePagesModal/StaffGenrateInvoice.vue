@@ -231,12 +231,18 @@ export default {
     async getCandidateListMethod() {
       const pagesToFetch = [1, 2, 3];
       let allStaffData = [];
+      const payload = {
+        status_value: "approved",
+        activated_value: true,
+        per_page: 10,
+      };
 
       try {
         const responses = await Promise.all(
           pagesToFetch.map((page) =>
             axios.get(`${VITE_API_URL}/candidates`, {
               params: {
+                ...payload,
                 page: page,
               },
             })
@@ -244,9 +250,10 @@ export default {
         );
 
         responses.forEach((response) => {
-          allStaffData = allStaffData.concat(response.data.data);
+          if (response.data && response.data.data) {
+            allStaffData = allStaffData.concat(response.data.data);
+          }
         });
-
         this.candidateLists = allStaffData;
       } catch (error) {
         if (error.response && error.response.status === 404) {

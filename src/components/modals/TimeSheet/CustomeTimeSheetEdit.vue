@@ -828,33 +828,32 @@ export default {
         const formData = new FormData();
 
         const dataPayload = {
-          custom_timesheet: {
-            ...(this.fetchCustomSheetData.start_time &&
-              this.fetchCustomSheetData.start_time !== "" && {
-                start_time: this.fetchCustomSheetData.start_time,
-              }),
-            ...(this.fetchCustomSheetData.end_time &&
-              this.fetchCustomSheetData.end_time !== "" && {
-                end_time: this.fetchCustomSheetData.end_time,
-              }),
-            shift_date: this.fetchCustomSheetData.shift_date || "",
-            client_rate: this.fetchCustomSheetData.client_rate || "",
-            staff_rate: this.fetchCustomSheetData.staff_rate || "",
-            notes: this.fetchCustomSheetData.notes || "",
-          },
+          ...(this.fetchCustomSheetData.start_time &&
+            this.fetchCustomSheetData.start_time !== "" && {
+              start_time: this.fetchCustomSheetData.start_time,
+            }),
+          ...(this.fetchCustomSheetData.end_time &&
+            this.fetchCustomSheetData.end_time !== "" && {
+              end_time: this.fetchCustomSheetData.end_time,
+            }),
+          shift_date: this.fetchCustomSheetData.shift_date || "",
+          client_rate: this.fetchCustomSheetData.client_rate || "",
+          staff_rate: this.fetchCustomSheetData.staff_rate || "",
+          notes: this.fetchCustomSheetData.notes || "",
         };
-
-        formData.append("dataPayload", JSON.stringify(dataPayload));
+        // for (const [key, value] of Object.entries(dataPayload)) {
+        //   formData.append(`custom_timesheet[${key}]`, value);
+        // }
+        formData.append(
+          "custom_timesheet[custom_image]",
+          this.fetchCustomSheetData.client_rate
+        );
 
         if (this.fetchCustomSheetData.paper_timesheet) {
           formData.append(
             "custom_timesheet[custom_image]",
             this.fetchCustomSheetData.paper_timesheet
           );
-        }
-
-        for (let [key, value] of formData.entries()) {
-          // console.log(`${key}:`, value);
         }
 
         const token = localStorage.getItem("token");

@@ -435,7 +435,7 @@
                     }}
                   </td> -->
                   <td>
-                    {{ data.total_week_hours ? data.total_week_hours : "0.00" }}
+                    {{ data.display_hours ? data.display_hours : "0.00" }}
                   </td>
                   <td>{{ data.total_week_cost ? data.total_week_cost : "0.00" }}</td>
                   <td>{{ data.approved_by ? data.approved_by : "Null" }}</td>
@@ -538,7 +538,7 @@ export default {
       candidateList: [],
       selectedCandidateId: null,
       start_time: "",
-      total_week_hours: "",
+      display_hours: "",
       end_time: "",
       vacancyId: "",
       site_id: "",
@@ -721,12 +721,18 @@ export default {
     async getCandidateListMethod() {
       const pagesToFetch = [1, 2, 3];
       let allStaffData = [];
+      const payload = {
+        status_value: "approved",
+        activated_value: true,
+        per_page: 10,
+      };
 
       try {
         const responses = await Promise.all(
           pagesToFetch.map((page) =>
             axios.get(`${VITE_API_URL}/candidates`, {
               params: {
+                ...payload,
                 page: page,
               },
             })
@@ -734,7 +740,9 @@ export default {
         );
 
         responses.forEach((response) => {
-          allStaffData = allStaffData.concat(response.data.data);
+          if (response.data && response.data.data) {
+            allStaffData = allStaffData.concat(response.data.data);
+          }
         });
 
         this.candidateLists = allStaffData;
@@ -969,7 +977,7 @@ export default {
             site_name,
             shift,
             job,
-            total_week_hours,
+            display_hours,
             total_week_cost,
             approved_by,
             data,
@@ -984,15 +992,15 @@ export default {
               site_name,
               shift,
               job,
-              total_week_hours,
+              display_hours,
               total_week_cost,
               approved_by,
               ...timesheet,
             });
           });
 
-          if (total_week_hours !== undefined && total_week_hours !== null) {
-            candidateHoursMap[candidate_id] = total_week_hours;
+          if (display_hours !== undefined && display_hours !== null) {
+            candidateHoursMap[candidate_id] = display_hours;
           }
           // if (total_week_cost !== undefined && total_week_cost !== null) {
           //   candidateCostsMap[candidate_id] = total_week_cost;
@@ -1129,7 +1137,7 @@ export default {
     //         site_name,
     //         shift,
     //         job,
-    //         total_week_hours,
+    //         display_hours,
     //         total_week_cost,
     //         approved_by,
     //         data,
@@ -1144,15 +1152,15 @@ export default {
     //           site_name,
     //           shift,
     //           job,
-    //           total_week_hours,
+    //           display_hours,
     //           total_week_cost,
     //           approved_by,
     //           ...timesheet,
     //         });
     //       });
 
-    //       if (total_week_hours !== undefined && total_week_hours !== null) {
-    //         candidateHoursMap[candidate_id] = total_week_hours;
+    //       if (display_hours !== undefined && display_hours !== null) {
+    //         candidateHoursMap[candidate_id] = display_hours;
     //       }
     //       // if (total_week_cost !== undefined && total_week_cost !== null) {
     //       //   candidateCostsMap[candidate_id] = total_week_cost;
