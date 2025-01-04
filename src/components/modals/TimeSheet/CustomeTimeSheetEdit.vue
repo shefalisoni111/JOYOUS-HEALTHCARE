@@ -825,46 +825,43 @@ export default {
         this.updateStartTime();
         this.updateEndTime();
 
-        const formData = new FormData();
-
-        const dataPayload = {
-          ...(this.fetchCustomSheetData.start_time &&
-            this.fetchCustomSheetData.start_time !== "" && {
-              start_time: this.fetchCustomSheetData.start_time,
-            }),
-          ...(this.fetchCustomSheetData.end_time &&
-            this.fetchCustomSheetData.end_time !== "" && {
-              end_time: this.fetchCustomSheetData.end_time,
-            }),
-          shift_date: this.fetchCustomSheetData.shift_date || "",
-          client_rate: this.fetchCustomSheetData.client_rate || "",
-          staff_rate: this.fetchCustomSheetData.staff_rate || "",
-          notes: this.fetchCustomSheetData.notes || "",
+        const payload = {
+          ...this.fetchCustomSheetData,
         };
-        // for (const [key, value] of Object.entries(dataPayload)) {
-        //   formData.append(`custom_timesheet[${key}]`, value);
-        // }
-        formData.append(
-          "custom_timesheet[custom_image]",
-          this.fetchCustomSheetData.client_rate
-        );
 
+        delete payload.total_hours;
+        delete payload.total_cost;
+
+        let formData = null;
         if (this.fetchCustomSheetData.paper_timesheet) {
+          formData = new FormData();
           formData.append(
             "custom_timesheet[custom_image]",
             this.fetchCustomSheetData.paper_timesheet
           );
+
+          Object.keys(payload).forEach((key) => {
+            if (payload[key] !== null && payload[key] !== "") {
+              formData.append(`custom_timesheet[${key}]`, payload[key]);
+            }
+          });
         }
 
-        const token = localStorage.getItem("token");
+        const requestData = formData || payload;
+        const headers = {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        };
+        if (formData) {
+          headers["Content-Type"] = "multipart/form-data";
+        } else {
+          headers["Content-Type"] = "application/json";
+        }
+
         const response = await axios.put(
           `${VITE_API_URL}/custom_timesheets/${this.customDataId}`,
-          formData,
+          requestData,
           {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: "bearer " + token,
-            },
+            headers,
           }
         );
         this.status = response.data.status || this.status;
