@@ -353,8 +353,8 @@ export default {
       const token = localStorage.getItem("token");
 
       const params = {
-        "candidate_id[]": this.selectedStaff,
-
+        // "candidate_id[]": this.selectedStaff,
+        "candidate_id[]": this.selectedCandidate,
         "site_id[]": this.selectedSites,
 
         invoice_type: "staff_invoice",

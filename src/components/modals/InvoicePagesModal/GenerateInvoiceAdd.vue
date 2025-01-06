@@ -62,6 +62,17 @@
             <!-- Site Selection -->
             <div class="mb-3">
               <label class="form-label">Sites</label>
+              <div class="form-check" v-if="siteData?.length > 0">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="select-all-sites"
+                  @change="toggleAllSites"
+                />
+                <label for="select-all-sites" class="form-check-label">
+                  &nbsp;Select All Sites&nbsp; </label
+                ><br />
+              </div>
               <div class="d-flex gap-3 flex-wrap">
                 <div v-for="site in siteData" :key="site.id" class="form-check">
                   <input
@@ -82,6 +93,20 @@
             <!-- Job Position Selection -->
             <div class="mb-3">
               <label class="form-label">Job Positions</label>
+
+              <div class="form-check" v-if="jobData?.length > 0">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="select-all-jobs"
+                  :checked="selectedJobs.length === jobData.length"
+                  @change="toggleAllJobs"
+                />
+                <label for="select-all-jobs" class="form-check-label">
+                  &nbsp;Select All Jobs&nbsp;
+                </label>
+              </div>
+
               <div class="d-flex gap-3 flex-wrap">
                 <div v-for="job in jobData" :key="job.id" class="form-check">
                   <input
@@ -92,8 +117,8 @@
                     v-model="selectedJobs"
                   />
                   <label :for="job.id" class="form-check-label text-capitalize">
-                    &nbsp;{{ job.name }}&nbsp;
-                  </label>
+                    &nbsp;{{ job.name }}&nbsp; </label
+                  ><br />
                 </div>
               </div>
             </div>
@@ -213,9 +238,25 @@ export default {
       selectedDateOption: "custom",
       customStartDate: "",
       customEndDate: "",
+      selectedSites: [],
+      selectedJobs: [],
     };
   },
   methods: {
+    toggleAllSites() {
+      if (this.selectedSites.length === this.siteData.length) {
+        this.selectedSites = [];
+      } else {
+        this.selectedSites = this.siteData.map((site) => site.id);
+      }
+    },
+    toggleAllJobs() {
+      if (this.selectedJobs.length === this.jobData.length) {
+        this.selectedJobs = [];
+      } else {
+        this.selectedJobs = this.jobData.map((job) => job.id);
+      }
+    },
     async getClientMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/get_client_id_name`);
