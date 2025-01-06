@@ -80,15 +80,25 @@
                           @input="debounceSearch"
                         />
                       </form>
-                      <router-link
+                      <!-- <router-link
                         type="button"
                         class="btn btn-primary text-nowrap fs-6 text-capitalize"
                         to="/invoice/Generate-invoice"
                       >
                         <i class="bi bi-file-earmark"></i>
                         generate invoice
-                      </router-link>
-
+                      </router-link> -->
+                      <div>
+                        <button
+                          type="button"
+                          class="btn btn-outline-success text-nowrap text-nowrap text-capitalize mb-2"
+                          data-bs-toggle="modal"
+                          data-bs-target="#generateInvoice"
+                          data-bs-whatever="@mdo"
+                        >
+                          + generate CSV
+                        </button>
+                      </div>
                       <button
                         v-if="getClientInvoiceDetail?.length != 0"
                         type="button"
@@ -418,7 +428,7 @@
     </div>
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
-    <!-- <GenerateInvoiceAdd /> -->
+    <GenerateInvoiceAdd />
   </div>
 </template>
 <script>
@@ -426,6 +436,7 @@ import axios from "axios";
 // import Navbar from "../Navbar.vue";
 
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
+import GenerateInvoiceAdd from "../modals/InvoicePagesModal/GenerateInvoiceAdd.vue";
 import Loader from "../Loader/Loader.vue";
 import Swal from "sweetalert2";
 const axiosInstance = axios.create({
@@ -460,7 +471,7 @@ export default {
       isLoading: false,
     };
   },
-  components: { SuccessAlert, Loader },
+  components: { SuccessAlert, Loader, GenerateInvoiceAdd },
   computed: {
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);

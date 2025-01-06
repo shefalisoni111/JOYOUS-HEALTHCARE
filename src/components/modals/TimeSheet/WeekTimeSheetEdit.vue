@@ -427,21 +427,14 @@
                       <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label">Total Hours</label>
-                          <!-- {{ console.log(fetchCustomTimeShetData.total_hours) }} -->
                         </div>
                         <div class="col-12 mt-1">
-                          <select
+                          <input
                             v-if="showValueCustom"
+                            type="text"
                             class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.total_hours"
-                            @change="validateStartTime"
-                            style="width: 240px"
-                            disabled
-                          >
-                            <option v-for="hour in 24" :key="hour" :value="hour">
-                              {{ hour }} hour{{ hour > 1 ? "s" : "" }}
-                            </option>
-                          </select>
+                          />
                           <input
                             v-else
                             type="text"
@@ -475,28 +468,7 @@
                           />
                         </div>
                       </div>
-                      <!-- <div class="mb-3">
-                        <div class="col-12">
-                          <label class="form-label">Client Pay Amount</label>
-                        </div>
-                        <div class="col-12 mt-1" v-if="showSaveButton">
-                          <input
-                            type="text"
-                            class="form-control"
-                            v-model="fetchCustomTimeShetData.total_cost"
-                            @input="validateNumber('total_cost')"
-                          />
-                        </div>
-                        <div class="col-12 mt-1" v-else>
-                          <input
-                            type="text"
-                            class="form-control"
-                            v-model="fetchCustomTimeShetData.total_cost"
-                            @input="validateNumber('total_cost')"
-                            disabled
-                          />
-                        </div>
-                      </div> -->
+
                       <div class="mb-3 ps-2">
                         <div class="col-12">
                           <label class="form-label">Staff Rate</label>
@@ -570,28 +542,6 @@
                           />
                         </div>
                       </div>
-                      <!-- <div class="mb-3">
-                        <div class="col-12">
-                          <label class="form-label">Staff Rate Amount</label>
-                        </div>
-                        <div class="col-12 mt-1" v-if="showSaveButton">
-                          <input
-                            type="text"
-                            class="form-control"
-                            v-model="fetchCustomTimeShetData.staff_rate_amount"
-                            @input="validateNumber('staff_rate_amount')"
-                          />
-                        </div>
-                        <div class="col-12 mt-1" v-else>
-                          <input
-                            type="text"
-                            class="form-control"
-                            v-model="fetchCustomTimeShetData.staff_rate_amount"
-                            @input="validateNumber('staff_rate_amount')"
-                            disabled
-                          />
-                        </div>
-                      </div> -->
                     </div>
                   </div>
 
@@ -905,6 +855,7 @@ export default {
             end_time: endTime,
             ...response.data.custom_sheets,
           };
+
           this.originalData = { ...this.fetchCustomTimeShetData };
           // this.parseStartTime(this.fetchCustomTimeShetData.start_time);
         } catch (error) {

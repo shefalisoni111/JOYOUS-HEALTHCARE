@@ -640,7 +640,7 @@ export default {
       const token = localStorage.getItem("token");
       try {
         const response = await axios.put(
-          `${VITE_API_URL}set_invoice_setting`,
+          `${VITE_API_URL}/set_invoice_setting`,
           this.fetchInvoiceSetting,
           {
             headers: {

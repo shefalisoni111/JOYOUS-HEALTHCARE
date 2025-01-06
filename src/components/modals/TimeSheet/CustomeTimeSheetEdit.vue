@@ -835,16 +835,20 @@ export default {
         let formData = null;
         if (this.fetchCustomSheetData.paper_timesheet) {
           formData = new FormData();
-          formData.append(
-            "custom_timesheet[custom_image]",
-            this.fetchCustomSheetData.paper_timesheet
-          );
 
           Object.keys(payload).forEach((key) => {
             if (payload[key] !== null && payload[key] !== "") {
               formData.append(`custom_timesheet[${key}]`, payload[key]);
             }
           });
+
+          const paperTimesheet = this.fetchCustomSheetData.paper_timesheet;
+
+          if (paperTimesheet instanceof File || paperTimesheet instanceof Blob) {
+            formData.append("custom_timesheet[paper_timesheet]", paperTimesheet);
+          } else if (typeof paperTimesheet === "string") {
+            formData.append("custom_timesheet[paper_timesheet]", paperTimesheet);
+          }
         }
 
         const requestData = formData || payload;

@@ -119,7 +119,7 @@
                       </button>
                     </li>
                   </ul>
-                  <div>
+                  <!-- <div>
                     <button
                       type="button"
                       class="btn btn-outline-success text-nowrap text-nowrap text-capitalize mb-2"
@@ -129,7 +129,7 @@
                     >
                       + generate CSV
                     </button>
-                  </div>
+                  </div> -->
                 </div>
 
                 <div>
@@ -221,7 +221,7 @@
       </div>
     </div>
     <loader :isLoading="isLoading"></loader>
-    <GenerateInvoiceAdd />
+    <!-- <GenerateInvoiceAdd /> -->
   </div>
 </template>
 <script>
