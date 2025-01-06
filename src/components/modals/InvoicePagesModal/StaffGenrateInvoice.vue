@@ -55,18 +55,18 @@
 
             <!-- Date Selection -->
             <div class="mb-3">
-              <label for="dateSelect" class="form-label">Date</label>
-              <select class="form-select" id="dateSelect" v-model="selectedDateOption">
-                <!-- <option value="today">Today</option>
+              <!-- <label for="dateSelect" class="form-label">Date</label> -->
+              <!-- <select class="form-select" id="dateSelect" v-model="selectedDateOption"> -->
+              <!-- <option value="today">Today</option>
                   <option value="weekly">Weekly</option>
                   <option value="monthly">Monthly</option> -->
-                <option value="custom">Date</option>
-              </select>
+              <!-- <option value="custom">Date</option> -->
+              <!-- </select> -->
             </div>
 
             <!-- Custom Date Picker -->
             <div v-if="selectedDateOption === 'custom'" class="mb-3">
-              <label for="customDateRange" class="form-label">Custom Date Range</label>
+              <label for="customDateRange" class="form-label">Custom Date</label>
               <input
                 type="date"
                 class="form-control mb-2"
@@ -185,7 +185,7 @@ export default {
       endDate: new Date(),
       jobData: [],
       client_id: "",
-      selectedDateOption: "today",
+      selectedDateOption: "custom",
       customStartDate: "",
       customEndDate: "",
       selectedCandidate: "",
@@ -303,23 +303,7 @@ export default {
       }
     },
     handleDateSelection() {
-      if (this.selectedDateOption === "today") {
-        const today = new Date().toISOString().split("T")[0];
-        this.customStartDate = today;
-        this.customEndDate = today;
-      } else if (this.selectedDateOption === "weekly") {
-        const today = new Date();
-        const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
-        const endOfWeek = new Date(today.setDate(today.getDate() + 6));
-        this.customStartDate = startOfWeek.toISOString().split("T")[0];
-        this.customEndDate = endOfWeek.toISOString().split("T")[0];
-      } else if (this.selectedDateOption === "monthly") {
-        const today = new Date();
-        const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-        const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-        this.customStartDate = startOfMonth.toISOString().split("T")[0];
-        this.customEndDate = endOfMonth.toISOString().split("T")[0];
-      } else {
+      if (this.selectedDateOption === "custom") {
         this.customStartDate = "";
         this.customEndDate = "";
       }
