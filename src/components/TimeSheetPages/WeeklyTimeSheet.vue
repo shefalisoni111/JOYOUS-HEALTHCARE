@@ -947,6 +947,7 @@ export default {
       };
       const { start, end } = this.getWeekRange(this.startDate);
       params["weekly_timesheet[date]"] = this.formatDates(start);
+      params["weekly_timesheet[shift_date]"] = this.formatDates(start);
 
       if (this.selectedSiteName) {
         params["weekly_timesheet[site_id]"] = this.selectedSiteName;
