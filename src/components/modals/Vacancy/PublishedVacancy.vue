@@ -301,11 +301,13 @@
         </div>
       </div>
     </div>
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import Loader from "../../Loader/Loader.vue";
 
 import { reactive } from "vue";
 import Swal from "sweetalert2";
@@ -332,9 +334,10 @@ export default {
       searchQuery: null,
       debounceTimeout: null,
       searchResults: [],
+      isLoading: false,
     };
   },
-  components: {},
+  components: { Loader },
 
   created() {
     this.getCandidatesData.forEach((data) => {
@@ -415,6 +418,8 @@ export default {
           .filter((candidate_ids) => this.checkedCandidates[candidate_ids])
           .map((candidate_ids) => parseInt(candidate_ids));
 
+        this.isLoading = true;
+
         try {
           const notificationType = this.enableMailNotification
             ? "email_notification"
@@ -485,6 +490,8 @@ export default {
             confirmButtonText: "OK",
             confirmButtonColor: "rgb(255 112 8)",
           });
+        } finally {
+          this.isLoading = false;
         }
       } else {
         // Handle case where selectedPublishItemId is falsy
