@@ -91,17 +91,6 @@
                   </div>
                 </div>
                 <div class="d-flex mt-2">
-                  <!-- <div>
-                    <button
-                      @click="toggleSidebar"
-                      class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
-                    >
-                      <i
-                        class="bi bi-person-fill-add"
-                        style="border-radius: 50%; background: #ef5261; padding: 10px"
-                      ></i>
-                    </button>
-                  </div> -->
                   <div>
                     <div class="filters" v-show="isOpen">
                       <select
@@ -124,17 +113,6 @@
                   </div>
                 </div>
                 <div class="d-flex mt-2">
-                  <!-- <div>
-                    <button
-                      @click="toggleSidebar"
-                      class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
-                    >
-                      <i
-                        class="bi bi-suitcase-lg-fill"
-                        style="border-radius: 50%; background: #28c77d; padding: 10px"
-                      ></i>
-                    </button>
-                  </div> -->
                   <div>
                     <div class="filters" v-show="isOpen">
                       <select
@@ -157,17 +135,6 @@
                   </div>
                 </div>
                 <div class="d-flex mt-2">
-                  <!-- <div>
-                    <button
-                      @click="toggleSidebar"
-                      class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
-                    >
-                      <i
-                        class="bi bi-building"
-                        style="border-radius: 50%; background: #ffeb3b; padding: 10px"
-                      ></i>
-                    </button>
-                  </div> -->
                   <div>
                     <div class="filters" v-show="isOpen">
                       <select
@@ -190,17 +157,6 @@
                   </div>
                 </div>
                 <div class="d-flex mt-2">
-                  <!-- <div>
-                    <button
-                      @click="toggleSidebar"
-                      class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
-                    >
-                      <i
-                        class="bi bi-calendar3"
-                        style="border-radius: 50%; background: #ff6d3f; padding: 10px"
-                      ></i>
-                    </button>
-                  </div> -->
                   <div>
                     <div class="filters" v-show="isOpen">
                       <select
@@ -224,35 +180,7 @@
                     </div>
                   </div>
                 </div>
-                <!-- <div class="d-flex mt-2">
-                  <div>
-                    <button
-                      @click="toggleSidebar"
-                      class="btn btn-default border-0 ps-0 pe-2 fs-5 mt-2"
-                    >
-                      <i
-                        class="bi bi-bell-fill"
-                        style="border-radius: 50%; background: #5388d5; padding: 10px"
-                      ></i>
-                    </button>
-                  </div>
-                  <div>
-                    <div class="filters" v-show="isOpen">
-                      <select
-                        @change="filterData($event.target.value, 'status')"
-                        v-model="publish"
-                        for="selectPublishStatus"
-                        class="form-select"
-                      >
-                        <option value="" id="selectPublishStatus" selected>
-                          Publish Status
-                        </option>
-                        <option value="true" id="selectPublishStatus">Publish</option>
-                        <option value="false" id="selectPublishStatus">UnPublish</option>
-                      </select>
-                    </div>
-                  </div>
-                </div> -->
+
                 <div>
                   <div class="filters" v-show="isOpen">
                     <button
@@ -954,7 +882,7 @@ export default {
           const message = "Staff UnAssigned Shift Successfully";
           this.$refs.successAlert.showSuccess(message);
           this.fetchCandidateList();
-          // this.fetchAssignList();
+          this.fetchAssignList();
         }
       } catch (error) {
         if (error.response && error.response.status === 422) {
@@ -1397,10 +1325,10 @@ export default {
     this.fetchCandidateList();
 
     this.fetchVacancyListMethod();
-    document.documentElement.style.overflowY = "hidden";
+    // document.documentElement.style.overflowY = "hidden";
   },
   beforeUnmount() {
-    document.documentElement.style.overflowY = "";
+    // document.documentElement.style.overflowY = "";
   },
 };
 </script>
