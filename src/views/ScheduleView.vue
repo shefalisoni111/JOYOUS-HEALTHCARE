@@ -56,6 +56,7 @@
                 :candidateId="selectedCandidateId"
                 :columnDateMatch="columnDateMatch"
                 @updated-assign="fetchAssignList"
+                :status="bookingStatus"
               />
               <ScheduleDirectAssignList
                 ref="directAssignShiftList"
@@ -359,9 +360,21 @@
                                           v-if="formatDates(date) === formattedDate(day)"
                                         >
                                           <span
-                                            :draggable="true"
+                                            :draggable="
+                                              getBookingStatus(
+                                                data,
+                                                formattedDate(day)
+                                              ) !== 'Booked'
+                                            "
                                             @dragstart="
-                                              handleDragRevert(data, assign.candidate_id)
+                                              getBookingStatus(
+                                                data,
+                                                formattedDate(day)
+                                              ) !== 'Booked' &&
+                                                handleDragRevert(
+                                                  data,
+                                                  assign.candidate_id
+                                                )
                                             "
                                           >
                                             <div
@@ -369,7 +382,17 @@
                                               data-bs-target=" #editAssignScheduleVacancy"
                                               data-bs-whatever="@mdo"
                                               @click="
-                                                openModalEdit(data, formattedDate(day))
+                                                () => {
+                                                  const status = getBookingStatus(
+                                                    data,
+                                                    formattedDate(day)
+                                                  );
+                                                  openModalEdit(
+                                                    data,
+                                                    formattedDate(day),
+                                                    status
+                                                  );
+                                                }
                                               "
                                               class="position-relative"
                                               :class="{
@@ -523,7 +546,7 @@ export default {
       debounceTimeout: null,
       searchResults: [],
       errorMessage: "",
-
+      bookingStatus: "",
       ColumnDateMatchDates: [],
       isLoading: false,
       matchingBookingData: {},
@@ -986,7 +1009,8 @@ export default {
       }
     },
 
-    async openModalEdit(candidateId, day) {
+    async openModalEdit(candidateId, day, status) {
+      this.bookingStatus = status;
       if (this.$refs.editAssignScheduleShift) {
         await this.$refs.editAssignScheduleShift.fetchVacancyIdMethod();
         await this.$refs.editAssignScheduleShift.getJobTitleMethod();

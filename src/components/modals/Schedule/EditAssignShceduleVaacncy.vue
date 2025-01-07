@@ -5,7 +5,6 @@
       class="modal fade"
       id="editAssignScheduleVacancy"
       aria-labelledby="editAssignScheduleVacancy"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
@@ -276,7 +275,7 @@
               Save
             </button>
             <button
-              v-if="isBookingAccepted && isFutureDate"
+              v-if="status === 'Booked' && isFutureDate"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.stop="handleBookingClick()"
@@ -323,7 +322,7 @@ export default {
         notes: "",
       },
       options: [],
-      bookingStatus: "",
+      // bookingStatus: "",
       bookingID: "",
       // localBookingData: { ...this.matchingBookingData },/
     };
@@ -339,6 +338,10 @@ export default {
     },
 
     columnDateMatch: {
+      type: String,
+      required: true,
+    },
+    status: {
       type: String,
       required: true,
     },
@@ -599,25 +602,38 @@ export default {
 
     async fetchVacancyIdMethod(candidateID, vacancyID) {
       if (!vacancyID || !candidateID) return;
+      try {
+        const payload = {
+          vacancy_id: vacancyID,
+          candidate_id: candidateID,
+        };
 
-      const payload = {
-        vacancy_id: vacancyID,
-        candidate_id: candidateID,
-      };
-
-      const response = await axios.get(`${VITE_API_URL}/schedule_vacancy`, {
-        params: payload,
-      });
-      const { assign_to, vacancy_data } = response.data;
-      this.fetchAssignVacancy = {
-        ...this.fetchAssignVacancy,
-        ...vacancy_data,
-      };
-      this.fetchAssignVacancy.start_time = vacancy_data.start_time;
-      this.fetchAssignVacancy.end_time = vacancy_data.end_time;
-      this.fetchAssignVacancy.assign_to = assign_to;
+        const response = await axios.get(`${VITE_API_URL}/schedule_vacancy`, {
+          params: {
+            vacancy_id: this.vacancyId,
+            candidate_id: this.candidateId,
+          },
+        });
+        const { assign_to, vacancy_data } = response.data;
+        this.fetchAssignVacancy = {
+          ...this.fetchAssignVacancy,
+          ...vacancy_data,
+        };
+        this.fetchAssignVacancy.start_time = vacancy_data.start_time;
+        this.fetchAssignVacancy.end_time = vacancy_data.end_time;
+        this.fetchAssignVacancy.assign_to = assign_to;
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          // console.error("Vacancy not found:", error.response.data.message);
+        } else {
+          // console.error("Error fetching vacancy:", error);
+        }
+      }
     },
     async updateCandidateMethod() {
+      if (!this.fetchAssignVacancy.id) {
+        return;
+      }
       const token = localStorage.getItem("token");
       try {
         const response = await axios.put(
