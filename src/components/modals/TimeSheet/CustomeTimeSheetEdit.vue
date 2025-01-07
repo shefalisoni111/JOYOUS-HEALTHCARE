@@ -845,9 +845,9 @@ export default {
           const paperTimesheet = this.fetchCustomSheetData.paper_timesheet;
 
           if (paperTimesheet instanceof File || paperTimesheet instanceof Blob) {
-            formData.append("custom_timesheet[paper_timesheet]", paperTimesheet);
+            formData.append("custom_timesheet[custom_image]", paperTimesheet);
           } else if (typeof paperTimesheet === "string") {
-            formData.append("custom_timesheet[paper_timesheet]", paperTimesheet);
+            formData.append("custom_timesheet[custom_image]", paperTimesheet);
           }
         }
 
