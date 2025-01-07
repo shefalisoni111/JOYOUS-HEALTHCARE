@@ -136,6 +136,7 @@
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
+
                       <tbody v-if="getStaffInvoiceDetail?.length > 0">
                         <tr v-for="(data, index) in getStaffInvoiceDetail" :key="index">
                           <td scope="col">#{{ index + 1 }}</td>
@@ -425,7 +426,7 @@ export default {
         })
         .then((response) => {
           if (response.status === 200) {
-            if (response.data.data && response.data.data.length > 0) {
+            if (response.data.data) {
               this.getStaffInvoiceDetail = response.data.data;
               this.errorMessage = "";
               Swal.fire({
@@ -633,6 +634,7 @@ export default {
     // this.createStaffInvoiceMethod();
     this.loadDateRangeFromLocalStorage();
     this.updateDateRange();
+    this.fetWeekTimeSheetData();
     // const currentDate = new Date();
     // const startOfWeek = new Date(currentDate);
     // startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
@@ -653,7 +655,6 @@ export default {
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(endOfWeek.getDate() + 6);
     this.endDate = endOfWeek;
-    this.fetWeekTimeSheetData();
   },
 };
 </script>

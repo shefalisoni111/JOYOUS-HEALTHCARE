@@ -1325,10 +1325,10 @@ export default {
     this.fetchCandidateList();
 
     this.fetchVacancyListMethod();
-    // document.documentElement.style.overflowY = "hidden";
+    document.documentElement.style.overflowY = "hidden";
   },
   beforeUnmount() {
-    // document.documentElement.style.overflowY = "";
+    document.documentElement.style.overflowY = "";
   },
 };
 </script>
