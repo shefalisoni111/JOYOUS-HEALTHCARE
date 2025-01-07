@@ -698,7 +698,7 @@ export default {
           `${VITE_API_URL}/candidates_availability_vacancies`,
           {
             params: {
-              currentPage: this.currentPage,
+              // currentPage: this.currentPage,
               ...requestData,
             },
           }
@@ -1194,8 +1194,8 @@ export default {
       try {
         const requestData = {
           date: this.formattedStartDate,
-          page: this.currentPage,
-          per_page: this.itemsPerPage,
+          // page: this.currentPage,
+          // per_page: this.itemsPerPage,
         };
 
         const response = await axios.get(
@@ -1512,6 +1512,11 @@ td {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+@media (max-width: 1900px) {
+  .table-container {
+    max-height: 590px;
+  }
 }
 @media (max-width: 1120px) {
   .scheduleTable {
