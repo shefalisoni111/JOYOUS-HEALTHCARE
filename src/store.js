@@ -21,9 +21,12 @@ export default createStore({
      selectedCustomTimesheetId: null,
      selectedTemplate: localStorage.getItem('selectedTemplate') || 'TemplateOne',
      getCandidatesData:[],
-     
+     invoiceData: [],
   },
   mutations: {
+    SET_INVOICE_DATA(state, data) {
+      state.invoiceData = data;
+    },
     setNavData(state, data) {
       state.getCandidatesData = data;
     },
@@ -99,6 +102,9 @@ export default createStore({
   
   },
   actions: {
+    setInvoiceData({ commit }, data) {
+      commit("SET_INVOICE_DATA", data);
+    },
     async getCandidateMethods({ commit }) {
       const response = await axios.get(`${VITE_API_URL}/candidates`);
       commit("setNavData", response.data.data);
@@ -145,6 +151,7 @@ export default createStore({
     
   },
    getters: {
+    getInvoiceData: (state) => state.invoiceData,
     getSelectedTemplate: (state) => state.selectedTemplate,
     getChannelSid: (state) => state.channelSid,
   },

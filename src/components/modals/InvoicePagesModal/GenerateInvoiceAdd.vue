@@ -146,7 +146,7 @@
 
             <!-- Date Selection -->
             <div class="mb-3">
-              <label for="dateSelect" class="form-label">Date</label>
+              <!-- <label for="dateSelect" class="form-label">Date</label> -->
               <!-- <select
                 class="form-select"
                 id="dateSelect"
@@ -222,6 +222,8 @@
 <script>
 import axios from "axios";
 import Swal from "sweetalert2";
+import { mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -243,6 +245,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["setInvoiceData"]),
     toggleAllSites() {
       if (this.selectedSites.length === this.siteData.length) {
         this.selectedSites = [];
@@ -382,6 +385,7 @@ export default {
           if (response.status === 200) {
             if (response.data.data && response.data.data.length === 0) {
               // this.candidateList = response.data.data;
+              console.log(response.data.data);
 
               this.errorMessage = "Data Not Found for the specified Date";
               Swal.fire({
@@ -389,6 +393,9 @@ export default {
                 title: "No Data Found",
                 text: this.errorMessage,
               });
+            } else {
+              this.$store.dispatch("setInvoiceData", response.data.data);
+              this.$router.push({ name: "GenerateView" });
             }
             this.resetFields();
           }
@@ -410,8 +417,8 @@ export default {
       this.selectedShifts = [];
       this.client_id = null;
       this.selectedDateOption = "";
-      this.customStartDate = null;
-      this.customEndDate = null;
+      this.start_date = "";
+      this.end_date = "";
     },
   },
   mounted() {
