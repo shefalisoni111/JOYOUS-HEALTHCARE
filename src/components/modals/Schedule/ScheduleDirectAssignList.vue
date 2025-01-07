@@ -502,8 +502,8 @@ export default {
     columnDateMatch(newDate) {
       this.selectedWeekDate = newDate;
 
-      // this.fetchVacancyListMethod(this.selectedWeekDate);
-      // this.fetchAssignList();
+      this.fetchVacancyListMethod(this.selectedWeekDate);
+      this.fetchAssignList();
     },
   },
 };
