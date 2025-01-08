@@ -960,9 +960,29 @@ export default {
     },
     async getCandidateMethods() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/candidates`);
+        
+        let allCandidates = [];
+    let currentPage = 1;
+    const itemsPerPage = 10;
+    let totalPages = 1;
 
-        this.getCandidatesData = response.data.data;
+    do {
+      const response = await axios.get(`${VITE_API_URL}/candidates`, {
+        params: { page: currentPage, per_page: itemsPerPage },
+      });
+
+   
+      allCandidates = [...allCandidates, ...response.data.data];
+
+    
+      totalPages = response.data.total_pages;
+
+      
+      currentPage++;
+    } while (currentPage <= totalPages);
+
+    this.getCandidatesData = allCandidates; 
+    
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
