@@ -197,6 +197,112 @@
                       <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label" for="selectCustomStartTime"
+                            >Start Time</label
+                          >
+                        </div>
+                        <div class="col-12" v-if="showSaveButton">
+                          <input
+                            v-if="apiResponse"
+                            type="text"
+                            class="form-control custom-disabled"
+                            v-model="fetchSignedTimeSheet.start_time"
+                            disabled
+                          />
+                          <div
+                            v-else
+                            style="display: flex; gap: 8px; align-items: center"
+                          >
+                            <!-- Hour Dropdown -->
+                            <select
+                              id="selectCustomHourStart"
+                              class="form-control"
+                              v-model="startTime.hour"
+                              @change="updateStartTime"
+                              style="width: 80px"
+                            >
+                              <option v-for="hour in 24" :key="hour" :value="hour">
+                                {{ formatTime(hour) }}
+                                <!-- Only the time portion -->
+                              </option>
+                            </select>
+                            <!-- Minute Dropdown -->
+                            <select
+                              id="selectCustomMinuteStart"
+                              class="form-control"
+                              v-model="startTime.minute"
+                              @change="updateStartTime"
+                              style="width: 80px"
+                            >
+                              <option
+                                v-for="minute in 60"
+                                :key="minute"
+                                :value="minute - 1"
+                              >
+                                {{ minute - 1 < 10 ? "0" + (minute - 1) : minute - 1 }}
+                              </option>
+                            </select>
+                            <!-- AM/PM Dropdown -->
+                            <select
+                              id="selectCustomPeriodStart"
+                              class="form-control"
+                              v-model="startTime.period"
+                              @change="updateStartTime"
+                              style="width: 80px"
+                            >
+                              <option value="AM">AM</option>
+                              <option value="PM">PM</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-12" v-else>
+                          <input
+                            v-if="apiResponse"
+                            type="text"
+                            class="form-control custom-disabled"
+                            v-model="fetchSignedTimeSheet.start_time"
+                            disabled
+                          />
+                          <div
+                            v-else
+                            style="display: flex; gap: 8px; align-items: center"
+                          >
+                            <select
+                              id="selectCustomHourStart"
+                              class="form-control custom-disabled"
+                              disabled
+                            >
+                              <option v-for="hour in 24" :key="hour" :value="hour">
+                                {{ formatTime(hour) }}
+                                <!-- Only the time portion -->
+                              </option>
+                            </select>
+                            <select
+                              id="selectCustomMinuteStart"
+                              class="form-control custom-disabled"
+                              disabled
+                            >
+                              <option
+                                v-for="minute in 60"
+                                :key="minute"
+                                :value="minute - 1"
+                              >
+                                {{ minute - 1 < 10 ? "0" + (minute - 1) : minute - 1 }}
+                              </option>
+                            </select>
+                            <select
+                              id="selectCustomPeriodStart"
+                              class="form-control custom-disabled"
+                              disabled
+                            >
+                              <option value="AM">AM</option>
+                              <option value="PM">PM</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- <div class="mb-3">
+                        <div class="col-12">
+                          <label class="form-label" for="selectCustomStartTime"
                             >Start Time
                           </label>
                         </div>
@@ -208,9 +314,9 @@
                             disabled
                           />
                         </div>
-                      </div>
+                      </div> -->
 
-                      <div class="mb-3">
+                      <!-- <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label" for="selectCustomEndTime"
                             >End Time</label
@@ -224,19 +330,115 @@
                             disabled
                           />
                         </div>
-                      </div>
-                      <!-- <div class="mb-3">
-                        <div class="col-12">
-                          <label class="form-label">Break</label>
-                        </div>
-                        <div class="col-12 mt-1">
-                          <input
-                            type="email"
-                            class="form-control"
-                            v-model="fetchSignedTimeSheet.break"
-                          />
-                        </div>
                       </div> -->
+                      <div class="mb-3">
+                        <div class="mb-3">
+                          <div class="col-12">
+                            <label class="form-label" for="selectCustomEndTime"
+                              >End Time</label
+                            >
+                          </div>
+                          <div class="col-12" v-if="showSaveButton">
+                            <input
+                              v-if="apiResponse_EndTime"
+                              type="text"
+                              class="form-control"
+                              v-model="fetchSignedTimeSheet.end_time"
+                              disabled
+                            />
+                            <div
+                              v-else
+                              style="display: flex; gap: 8px; align-items: center"
+                            >
+                              <!-- Hour Dropdown -->
+                              <select
+                                id="selectCustomHour"
+                                class="form-control"
+                                v-model="endTime.hour"
+                                @change="updateEndTime"
+                                style="width: 80px"
+                              >
+                                <option v-for="hour in 24" :key="hour" :value="hour">
+                                  {{ formatTime(hour) }}
+                                  <!-- Only the time portion -->
+                                </option>
+                              </select>
+                              <!-- Minute Dropdown -->
+                              <select
+                                id="selectCustomMinute"
+                                class="form-control"
+                                v-model="endTime.minute"
+                                @change="updateEndTime"
+                                style="width: 80px"
+                              >
+                                <option
+                                  v-for="minute in 60"
+                                  :key="minute"
+                                  :value="minute - 1"
+                                >
+                                  {{ minute - 1 < 10 ? "0" + (minute - 1) : minute - 1 }}
+                                </option>
+                              </select>
+                              <!-- AM/PM Dropdown -->
+                              <select
+                                id="selectCustomPeriod"
+                                class="form-control"
+                                v-model="endTime.period"
+                                @change="updateEndTime"
+                                style="width: 80px"
+                              >
+                                <option value="AM">AM</option>
+                                <option value="PM">PM</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-12" v-else>
+                            <input
+                              v-if="apiResponse_EndTime"
+                              type="text"
+                              class="form-control custom-disabled"
+                              v-model="fetchSignedTimeSheet.end_time"
+                              disabled
+                            />
+                            <div
+                              v-else
+                              style="display: flex; gap: 8px; align-items: center"
+                            >
+                              <select
+                                id="selectCustomHour"
+                                class="form-control custom-disabled"
+                                disabled
+                              >
+                                <option v-for="hour in 24" :key="hour" :value="hour">
+                                  {{ formatTime(hour) }}
+                                  <!-- Only the time portion -->
+                                </option>
+                              </select>
+                              <select
+                                id="selectCustomMinute"
+                                class="form-control custom-disabled"
+                                disabled
+                              >
+                                <option
+                                  v-for="minute in 60"
+                                  :key="minute"
+                                  :value="minute - 1"
+                                >
+                                  {{ minute - 1 < 10 ? "0" + (minute - 1) : minute - 1 }}
+                                </option>
+                              </select>
+                              <select
+                                id="selectCustomPeriod"
+                                class="form-control custom-disabled"
+                                disabled
+                              >
+                                <option value="AM">AM</option>
+                                <option value="PM">PM</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                       <div class="mb-3">
                         <div class="col-12">
                           <label class="form-label" for="selectShiftsBreak"
@@ -510,11 +712,22 @@ export default {
         total_hours: "",
         custom_image: "",
       },
+      startTime: {
+        hour: "",
+        minute: "",
+        period: "",
+      },
+      endTime: {
+        hour: "",
+        minute: "",
+        period: "",
+      },
       status: "",
       paper_timesheet: "",
       getSignedStaffView: [],
       apiResponse: "",
       showValueCustom: false,
+      apiResponse_EndTime: "",
       fullCustomImageUrl: null,
       apiResponse_EndTime: "",
       showSaveButton: true,
@@ -543,32 +756,44 @@ export default {
     },
   },
   methods: {
-    // handleFileUpload(event) {
-    //   const file = event.target.files[0];
+    formatTime(hour) {
+      // if (hour === 0 || hour === 24) {
+      //   return "12";
+      // } else if (hour < 12) {
+      //   return String(hour).padStart(2, "0");
+      // } else if (hour === 12) {
+      //   return "12";
+      // } else {
+      //   return String(hour - 12).padStart(2, "0");
+      // }
+      if (hour === 0 || hour === 24) {
+        return `12`;
+      } else if (hour < 12) {
+        return String(hour).padStart(2, "0");
+      } else if (hour === 12) {
+        return String(hour).padStart(2, "0");
+      } else {
+        return String(hour - 12).padStart(2, "0");
+      }
+    },
+    updateStartTime() {
+      const { hour, minute, period } = this.startTime;
+      const hour24 = period === "PM" ? (hour < 12 ? hour + 12 : hour) : hour % 12;
+      const formattedMinute = minute < 10 ? `0${minute}` : minute;
 
-    //   if (file) {
-    //     this.paper_timesheet = file;
-    //     this.fullCustomImageUrl = URL.createObjectURL(file);
-    //   } else {
-    //     this.paper_timesheet = null;
-    //     this.fullCustomImageUrl = null;
-    //   }
-    // },
+      this.fetchSignedTimeSheet.start_time = `${hour24}:${formattedMinute} ${period}`;
+    },
+    updateEndTime() {
+      const { hour, minute, period } = this.endTime;
+      const hour24 = period === "PM" ? (hour < 12 ? hour + 12 : hour) : hour % 12;
+      const formattedMinute = minute < 10 ? `0${minute}` : minute;
+
+      this.fetchSignedTimeSheet.end_time = `${hour24}:${formattedMinute} ${period}`;
+    },
     isSaveDisabled() {
       return !this.paper_timesheet;
     },
-    formatTime(hour) {
-      if (hour < 12) {
-        return `${String(hour).padStart(2, "0")}:00 AM`;
-      } else if (hour === 12) {
-        return `${String(hour).padStart(2, "0")}:00 PM`;
-      } else if (hour === 24) {
-        return `00:00`;
-      } else {
-        const adjustedHour = hour % 12;
-        return `${String(adjustedHour).padStart(2, "0")}:00 PM`;
-      }
-    },
+
     formatBreakTime(minute) {
       if (minute === 60) {
         return "1 hour";
@@ -630,19 +855,55 @@ export default {
             },
           });
 
-          // Assign response data to your component's data properties
           this.getSignedStaffView = response.data.sign_timesheets;
+          const signTimesheets = response.data.sign_timesheets;
           this.status = response.data.sign_timesheets.status || "";
 
-          this.fetchSignedTimeSheet = {
-            ...this.fetchSignedTimeSheet,
+          const startTime = signTimesheets.start_time || "";
+          if (startTime) {
+            const [startHour24, startMinute] = startTime.split(":");
+            const startHour = parseInt(startHour24, 10);
+            const startPeriod = startHour >= 12 ? "PM" : "AM";
 
-            ...this.getSignedStaffView,
+            this.startTime = {
+              hour: startHour > 12 ? startHour - 12 : startHour === 0 ? 12 : startHour,
+              minute: parseInt(startMinute, 10),
+              period: startPeriod,
+            };
+          }
+
+          const endTime = signTimesheets.end_time || "";
+          if (endTime) {
+            const [endHour24, endMinute] = endTime.split(":");
+            const endHour = parseInt(endHour24, 10);
+            const endPeriod = endHour >= 12 ? "PM" : "AM";
+
+            this.endTime = {
+              hour: endHour > 12 ? endHour - 12 : endHour === 0 ? 12 : endHour,
+              minute: parseInt(endMinute, 10),
+              period: endPeriod,
+            };
+          }
+
+          this.fetchSignedTimeSheet = {
+            start_time: startTime,
+            end_time: endTime,
+            author_name: signTimesheets.author_name || "",
+            site: signTimesheets.site || "",
+            job: signTimesheets.job || "",
+            date: signTimesheets.date || "",
+            shift: signTimesheets.shift || "",
+            shift_name: signTimesheets.shift_name || "",
+            break: signTimesheets.break || "",
+            total_hours: signTimesheets.total_hours || "",
+            client_rate: signTimesheets.client_rate || "",
+            staff_rate: signTimesheets.staff_rate || "",
+            start_comment: signTimesheets.start_comment || "",
           };
 
           // Store original data for potential resetting
           this.originalData = { ...this.fetchSignedTimeSheet };
-          this.showSaveButton = false; // Update button visibility based on your logic
+          this.showSaveButton = true; // Update button visibility based on your logic
         } catch (error) {
           // console.error("Error fetching signed timesheet data:", error);
           // Optionally, you can set an error message to inform the user
@@ -652,6 +913,8 @@ export default {
     },
     async updateCustomTimeSheetMethod() {
       try {
+        this.updateStartTime();
+        this.updateEndTime();
         const payload = {
           ...this.fetchSignedTimeSheet,
         };
