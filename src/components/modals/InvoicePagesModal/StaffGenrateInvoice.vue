@@ -23,22 +23,6 @@
             <div class="mb-3">
               <label class="form-label">Staff</label>
 
-              <!-- <select
-                v-model="client_id"
-                id="selectClients"
-                @change="onSingleClientSelect(client_id)"
-                class="form-select"
-              >
-                <option
-                  v-for="option in clientData"
-                  :key="option.id"
-                  :value="option.id"
-                  :id="option.id"
-                  aria-placeholder="Select Job"
-                >
-                  {{ option.client_name }}
-                </option>
-              </select> -->
               <select v-model="selectedCandidate" @change="fetchJobs()" id="selectStaff">
                 <option value="">All Staff</option>
 
@@ -54,15 +38,7 @@
             </div>
 
             <!-- Date Selection -->
-            <div class="mb-3">
-              <!-- <label for="dateSelect" class="form-label">Date</label> -->
-              <!-- <select class="form-select" id="dateSelect" v-model="selectedDateOption"> -->
-              <!-- <option value="today">Today</option>
-                  <option value="weekly">Weekly</option>
-                  <option value="monthly">Monthly</option> -->
-              <!-- <option value="custom">Date</option> -->
-              <!-- </select> -->
-            </div>
+            <div class="mb-3"></div>
 
             <!-- Custom Date Picker -->
             <div v-if="selectedDateOption === 'custom'" class="mb-3">
@@ -100,28 +76,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- Shift Selection -->
-            <!-- <div class="mb-3">
-                <label class="form-label">Shifts</label>
-                <div class="d-flex gap-3 flex-wrap">
-                  <div v-for="shift in shiftsTime" :key="shift.id" class="form-check">
-                    <input
-                      type="checkbox"
-                      class="form-check-input"
-                      :id="'shift-' + shift.id"
-                      :value="shift.id"
-                      v-model="selectedShifts"
-                    />
-                    <label
-                      :for="'shift-' + shift.id"
-                      class="form-check-label text-capitalize"
-                    >
-                      {{ shift.shift_name }}&nbsp;
-                    </label>
-                  </div>
-                </div>
-              </div> -->
           </div>
           <div class="modal-footer">
             <button
@@ -137,28 +91,11 @@
               class="btn btn-primary"
               data-bs-dismiss="modal"
               @click="applyFilters"
+              :disabled="!isFormValid"
             >
               Generate View
             </button>
           </div>
-          <!-- <div class="modal-footer">
-              <button
-                class="btn btn-secondary rounded-1"
-                data-bs-dismiss="modal"
-                @click="clearFieldsData"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                class="btn btn-primary rounded-1 text-capitalize fw-medium"
-                :disabled="!isValidForm || isFieldEmpty"
-                @click="addCandidate"
-                :data-bs-dismiss="!isFieldEmpty && isValidForm ? 'modal' : null"
-              >
-                Add
-              </button>
-            </div> -->
         </div>
       </div>
     </div>
@@ -192,6 +129,9 @@ export default {
     };
   },
   computed: {
+    isFormValid() {
+      return this.selectedCandidate && this.customStartDate && this.customEndDate;
+    },
     selectStaff() {
       const id = this.candidateLists.find((option) => option.id === this.id);
       return id ? id.first_name : "";
@@ -344,7 +284,7 @@ export default {
       this.selectedStaff = [];
       this.selectedSites = [];
       this.selectedCandidate = "";
-      this.selectedDateOption = "";
+      // this.selectedDateOption = "";
       this.customStartDate = null;
       this.customEndDate = null;
     },

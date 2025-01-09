@@ -12,7 +12,7 @@
               /
               <router-link to="/invoice/client-invoice" class="text-decoration-none"
                 ><span class="color-fonts"
-                  >Client Invoices / {{ invoiceData.number }}</span
+                  >Client Invoices / Generate View</span
                 ></router-link
               >
             </li>
@@ -52,12 +52,14 @@
                   <div class="row">
                     <div class="col-4">
                       <h6 class="text-muted">SUPPLIER</h6>
+                      <h5 class="fw-bold">{{ invoiceData.client_name }}</h5>
                       <p class="mb-0">Mob No:</p>
                       <p class="mb-0">Email:</p>
                     </div>
                     <div class="col-4 text-center">
                       <!-- <p>{{ invoiceData.number }}</p> -->
                       <h6 class="text-muted">SHIP To</h6>
+                      <h5 class="fw-bold">{{ invoiceData.site_name }}</h5>
                       <p class="mb-0">Mob No:</p>
                       <p class="mb-0">Email:</p>
                     </div>
@@ -84,42 +86,102 @@
                         <th scope="col">Job</th>
                         <th scope="col">Unit</th>
                         <th scope="col">Rate</th>
-                        <th scope="col">Total</th>
+                        <th scope="col">Total Hour</th>
+                        <th scope="col">Total Cost</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {{
-                        console.log(invoiceData)
-                      }}
                       <tr>
                         <td scope="col">
                           {{ this.formatDate(invoiceData.start_date) }}
                         </td>
-                        <td scope="col"></td>
-                        <td scope="col"></td>
+                        <td scope="col">
+                          {{
+                            invoiceData?.candidate_details?.[0]?.can_timesheets?.[0]
+                              ?.start_time || "N/A"
+                          }}
+                        </td>
+                        <td scope="col">
+                          {{
+                            invoiceData?.candidate_details?.[0]?.can_timesheets?.[0]
+                              ?.end_time || "N/A"
+                          }}
+                        </td>
                         <td scope="col"></td>
                         <td scope="col" class="text-capitalize">
-                          {{ invoiceData.candidate }}
+                          {{ invoiceData?.candidate_details?.[0]?.candidate_id || "N/A" }}
                         </td>
-                        <td scope="col">{{ invoiceData.job }}</td>
+                        <td scope="col">
+                          {{
+                            invoiceData?.candidate_details?.[0]?.can_timesheets?.[0]
+                              ?.job_position || "N/A"
+                          }}
+                        </td>
                         <td scope="col">{{ invoiceData.unit }}</td>
-                        <td scope="col">{{ invoiceData.rate }}</td>
-                        <td scope="col">{{ invoiceData.total_amount }}</td>
+                        <td scope="col">
+                          {{
+                            invoiceData?.candidate_details?.[0]?.can_timesheets?.[0]
+                              ?.client_rate || "N/A"
+                          }}
+                        </td>
+                        <td scope="col">
+                          {{
+                            invoiceData?.candidate_details?.[0]?.can_timesheets?.[0]
+                              ?.hours || "N/A"
+                          }}
+                        </td>
+                        <td scope="col">
+                          {{
+                            invoiceData?.candidate_details?.[0]?.can_timesheets?.[0]
+                              ?.cost || "N/A"
+                          }}
+                        </td>
                       </tr>
                       <tr>
                         <td scope="col">
                           {{ this.formatDate(invoiceData.end_date) }}
                         </td>
-                        <td scope="col"></td>
-                        <td scope="col"></td>
+                        <td scope="col">
+                          {{
+                            invoiceData?.candidate_details?.[0]?.can_timesheets?.[1]
+                              ?.start_time || "N/A"
+                          }}
+                        </td>
+                        <td scope="col">
+                          {{
+                            invoiceData?.candidate_details?.[0]?.can_timesheets?.[1]
+                              ?.end_time || "N/A"
+                          }}
+                        </td>
                         <td scope="col"></td>
                         <td scope="col" class="text-capitalize">
-                          {{ invoiceData.candidate }}
+                          {{ invoiceData?.candidate_details?.[0]?.candidate_id || "N/A" }}
                         </td>
-                        <td scope="col">{{ invoiceData.job }}</td>
+                        <td scope="col">
+                          {{
+                            invoiceData?.candidate_details?.[0]?.can_timesheets?.[1]
+                              ?.job_position || "N/A"
+                          }}
+                        </td>
                         <td scope="col">{{ invoiceData.unit }}</td>
-                        <td scope="col">{{ invoiceData.rate }}</td>
-                        <td scope="col">{{ invoiceData.total_amount }}</td>
+                        <td scope="col">
+                          {{
+                            invoiceData?.candidate_details?.[0]?.can_timesheets?.[1]
+                              ?.client_rate || "N/A"
+                          }}
+                        </td>
+                        <td scope="col">
+                          {{
+                            invoiceData?.candidate_details?.[0]?.can_timesheets?.[1]
+                              ?.hours || "N/A"
+                          }}
+                        </td>
+                        <td scope="col">
+                          {{
+                            invoiceData?.candidate_details?.[0]?.can_timesheets?.[1]
+                              ?.cost || "N/A"
+                          }}
+                        </td>
                       </tr>
                     </tbody>
                   </table>
