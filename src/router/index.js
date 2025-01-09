@@ -507,6 +507,12 @@ const router = createRouter({
           props: true,
         },
         {
+          path: "/invoice/GenerateView/generateView/:id",
+          name: "GenerateInvoiceView",
+          component: () => import("@/components/InvoicePages/GenerateInvoiceView.vue"),
+          props: true,
+        },
+        {
           path: "/invoice/client-invoice/client-InvoiceView/:id",
           name: "ClientInvoiceView",
           component: () => import("@/components/InvoicePages/ClientInvoiceView.vue"),

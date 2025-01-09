@@ -312,19 +312,7 @@ export default {
         this.customEndDate = "";
       }
     },
-    // applyFilters() {
-    //   console.log("Selected Filters:", {
-    //     staff: this.selectedStaff,
-    //     clients: this.selectedClients,
-    //     sites: this.selectedSites,
-    //     jobs: this.selectedJobs,
-    //     shifts: this.selectedShifts,
-    //     dateRange: {
-    //       start: this.customStartDate,
-    //       end: this.customEndDate,
-    //     },
-    //   });
-    // },
+
     formatDate(date) {
       if (!date) {
         // console.error("Invalid date provided:", date);

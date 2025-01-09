@@ -117,6 +117,9 @@ export default createStore({
       commit('setSelectedTemplate', template);
     },
     async fetchSignedTimesheetData({ commit, state }) {
+      if(!state.selectedSignedTimesheetId){
+        return
+      }
       try {
         const token = localStorage.getItem('token');
         const response = await axios.get(`${VITE_API_URL}/sign_timesheets/${state.selectedSignedTimesheetId}`, {

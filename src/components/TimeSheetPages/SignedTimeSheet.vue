@@ -487,7 +487,10 @@
         </button>
       </div>
     </div>
-    <SignedTimesheetViewVue :id="selectedSignedTimesheetId" />
+    <SignedTimesheetViewVue
+      :id="selectedSignedTimesheetId"
+      @SignTimeSheetData-updated="signedTimeSheetMethod"
+    />
     <loader :isLoading="isLoading"></loader>
     <SuccessAlert ref="successAlert" />
   </div>

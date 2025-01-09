@@ -26,27 +26,37 @@
               <th scope="col">Ref Code</th>
               <th scope="col">ClientName</th>
               <th scope="col">Site</th>
-
+              <th scope="col">Staff</th>
+              <th scope="col">Position</th>
               <th scope="col">Start Date</th>
               <th scope="col">End Date</th>
               <th scope="col">Total Cost</th>
+              <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody v-if="getInvoiceData?.length > 0">
-            <tr v-for="data in getInvoiceData" :key="data.id">
+            <tr v-for="(data, index) in getInvoiceData" :key="index">
               <td v-text="data.reference_code"></td>
-              <td v-text="data.client"></td>
-              <td v-text="data.site"></td>
-
+              <td v-text="data.client_name"></td>
+              <td v-text="data.site_name"></td>
+              <td v-text="data.candidate_details[0]?.candidate_id || 'N/A'"></td>
+              <td v-text="data.candidate_details[0]?.job_position || 'N/A'"></td>
               <td v-text="data.start_date"></td>
               <td v-text="data.end_date"></td>
 
               <td v-text="data.total_amount"></td>
+              <td>
+                <router-link
+                  :to="{ name: 'GenerateInvoiceView', params: { id: index } }"
+                  class="text-success"
+                  ><i class="bi bi-eye"></i
+                ></router-link>
+              </td>
             </tr>
           </tbody>
           <tbody v-else>
             <tr>
-              <td colspan="6" class="text-danger text-center">
+              <td colspan="9" class="text-danger text-center">
                 {{ "Data Not Found !" }}
               </td>
             </tr>

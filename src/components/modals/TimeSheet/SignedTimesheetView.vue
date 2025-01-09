@@ -244,12 +244,27 @@
                           >
                         </div>
                         <div class="col-12">
-                          <input
+                          <!-- <input
                             type="text"
                             class="form-control custom-disabled"
                             v-model="fetchSignedTimeSheet.break"
                             disabled
-                          />
+                          /> -->
+                          <select
+                            id="selectShiftsBreak"
+                            class="form-control"
+                            v-model="fetchSignedTimeSheet.break"
+                            @change="validateBreak"
+                            style="width: 240px"
+                          >
+                            <option
+                              v-for="minute in [15, 30, 45, 60, 75, 90]"
+                              :key="minute"
+                              :value="minute + ' minutes'"
+                            >
+                              {{ formatBreakTime(minute) }}
+                            </option>
+                          </select>
                         </div>
                       </div>
                       <div class="mb-3">
@@ -369,17 +384,16 @@
                     </div>
                     <div class="col-12 mt-1" v-if="showSaveButton">
                       <textarea
-                        class="form-control custom-disabled"
+                        class="form-control"
                         v-model="fetchSignedTimeSheet.start_comment"
                         rows="3"
                       ></textarea>
                     </div>
                     <div class="col-12 mt-1" v-else>
                       <textarea
-                        class="form-control custom-disabled"
+                        class="form-control"
                         v-model="fetchSignedTimeSheet.start_comment"
                         rows="3"
-                        disabled
                       ></textarea>
                     </div>
                   </div>
@@ -436,19 +450,18 @@
               Cancel
             </button>
 
-            <!-- <button
+            <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              @click.prevent="approved_TimesheetRevertMethod()"
+              @click.prevent="updateCustomTimeSheetMethod()"
             >
-              Approve
-            </button> -->
-            <button
+              Save
+            </button>
+            <!-- <button
               v-if="status.trim().toLowerCase() === 'approved'"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              disabled
-              @click.prevent="approved_TimesheetRevertMethod()"
+              @click.prevent="handleApproveAndSave()"
             >
               {{ buttonText }}
             </button>
@@ -456,10 +469,10 @@
               v-else
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              @click.prevent="approved_TimesheetRevertMethod()"
+              @click.prevent="handleApproveAndSave()"
             >
               {{ buttonText }}
-            </button>
+            </button> -->
           </div>
         </div>
       </div>
@@ -494,6 +507,7 @@ export default {
         end_time: "",
         client_rate: "",
         total_cost: "",
+        total_hours: "",
         custom_image: "",
       },
       status: "",
@@ -572,6 +586,11 @@ export default {
         return formattedTime.trim();
       }
     },
+    async handleApproveAndSave() {
+      await this.updateCustomTimeSheetMethod();
+      this.status = "Approved";
+      await this.approved_TimesheetRevertMethod();
+    },
     async approved_TimesheetRevertMethod() {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -629,6 +648,42 @@ export default {
           // Optionally, you can set an error message to inform the user
           this.errorMessage = "Failed to fetch timesheet data. Please try again.";
         }
+      }
+    },
+    async updateCustomTimeSheetMethod() {
+      try {
+        const payload = {
+          ...this.fetchSignedTimeSheet,
+        };
+
+        delete payload.total_hours;
+        delete payload.total_cost;
+
+        const headers = {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        };
+
+        const response = await axios.put(
+          `${VITE_API_URL}/update_sign_timesheet/${this.id}`,
+          payload,
+          {
+            headers,
+          }
+        );
+        this.status = response.data.status || this.status;
+        this.$store.commit("updateCandidate", {
+          id: this.fetchSignedTimeSheet.id,
+          newData: response.data.sign_timesheets,
+        });
+
+        this.$emit("SignTimeSheetData-updated");
+        // await this.approved_TimesheetRevertMethod();
+        const message = "Sign TimeSheet updated successfully";
+        this.$refs.successAlert.showSuccess(message);
+        this.uploadedFile = "";
+      } catch (error) {
+        // console.error("Error updating custom timesheet:", error);
       }
     },
   },
