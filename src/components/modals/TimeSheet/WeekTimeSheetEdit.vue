@@ -423,11 +423,26 @@
                           </select>
                         </div>
                         <div class="col-12" v-else>
-                          <input
+                          <!-- <input
                             type="text"
                             class="form-control custom-disabled"
                             v-model="fetchCustomTimeShetData.break"
-                          />
+                          /> -->
+                          <select
+                            id="selectShiftsBreak"
+                            class="form-control"
+                            v-model="fetchCustomTimeShetData.break"
+                            @change="validateBreak"
+                            style="width: 240px"
+                          >
+                            <option
+                              v-for="minute in [15, 30, 45, 60, 75, 90]"
+                              :key="minute"
+                              :value="minute + ' minutes'"
+                            >
+                              {{ formatBreakTime(minute) }}
+                            </option>
+                          </select>
                         </div>
                       </div>
                       <div class="mb-3">
@@ -564,10 +579,9 @@
                     </div>
                     <div class="col-12 mt-1" v-else>
                       <textarea
-                        class="form-control custom-disabled"
+                        class="form-control"
                         v-model="fetchCustomTimeShetData.start_comment"
                         rows="3"
-                        disabled
                       ></textarea>
                     </div>
                   </div>
