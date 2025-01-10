@@ -1,12 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="editWeeklyTs"
-      aria-labelledby="editWeeklyTss"
-      tabindex="-1"
-    >
+    <div class="modal fade" id="editWeeklyTs" aria-labelledby="editWeeklyTss">
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header" style="background-color: #f9944b">
@@ -750,16 +745,15 @@ export default {
       this.fetchCustomTimeShetData.end_time = `${hour24}:${formattedMinute} ${period}`;
     },
     async calculateTotalHours() {
-      if (!startTime || !endTime || !this.vacancyId) {
-        return;
-      }
       const startTime = `${this.formatTime(this.startTime.hour)}:${
         this.startTime.minute
       } ${this.startTime.period}`;
       const endTime = `${this.formatTime(this.endTime.hour)}:${this.endTime.minute} ${
         this.endTime.period
       }`;
-
+      if (!startTime || !endTime || !this.vacancyId) {
+        return;
+      }
       try {
         const response = await axios.get(`${VITE_API_URL}/calculate_total_hour`, {
           params: { start_time: startTime, end_time: endTime, id: this.vacancyId },
