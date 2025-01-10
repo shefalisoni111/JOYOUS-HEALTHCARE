@@ -91,7 +91,53 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
+                      <template
+                        v-for="(
+                          candidate, candidateIndex
+                        ) in invoiceData.candidate_details"
+                        :key="candidateIndex"
+                      >
+                        <tr
+                          v-for="(timesheet, timesheetIndex) in candidate.can_timesheets"
+                          :key="timesheetIndex"
+                        >
+                          <td scope="col">
+                            {{
+                              this.formatDate(
+                                timesheetIndex === 0
+                                  ? invoiceData.start_date
+                                  : invoiceData.end_date
+                              )
+                            }}
+                          </td>
+                          <td scope="col">
+                            {{ timesheet?.start_time || "N/A" }}
+                          </td>
+                          <td scope="col">
+                            {{ timesheet?.end_time || "N/A" }}
+                          </td>
+                          <td scope="col"></td>
+                          <td scope="col" class="text-capitalize">
+                            {{ candidate.candidate_id || "N/A" }}
+                          </td>
+                          <td scope="col">
+                            {{ timesheet?.job_position || "N/A" }}
+                          </td>
+                          <td scope="col">
+                            {{ invoiceData.unit }}
+                          </td>
+                          <td scope="col">
+                            {{ timesheet?.client_rate || "N/A" }}
+                          </td>
+                          <td scope="col">
+                            {{ timesheet?.hours || "N/A" }}
+                          </td>
+                          <td scope="col">
+                            {{ timesheet?.cost || "N/A" }}
+                          </td>
+                        </tr>
+                      </template>
+                      <!-- <tr>
                         <td scope="col">
                           {{ this.formatDate(invoiceData.start_date) }}
                         </td>
@@ -182,7 +228,7 @@
                               ?.cost || "N/A"
                           }}
                         </td>
-                      </tr>
+                      </tr> -->
                     </tbody>
                   </table>
                 </div>
