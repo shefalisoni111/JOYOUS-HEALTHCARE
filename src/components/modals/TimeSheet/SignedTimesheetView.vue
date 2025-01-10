@@ -599,45 +599,6 @@
                       ></textarea>
                     </div>
                   </div>
-                  <!-- <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-8">
-                      <div>
-                        <label class="form-label">Paper TimeSheet</label>
-                      </div>
-                      <div
-                        class="col-8 mt-1"
-                        v-if="
-                          fetchSignedTimeSheet.status === 'Approved' && fullCustomImageUrl
-                        "
-                      >
-                        <img
-                          :src="fullCustomImageUrl"
-                          alt="Current Paper TimeSheet"
-                          class="img-fluid"
-                          width="20%"
-                        />
-                      </div>
-                      <div class="col-8 mt-1" v-else>
-                        <input
-                          type="file"
-                          class="form-control custom-disabled"
-                          accept="image/*"
-                          @change="handleFileUpload"
-                        />
-                      </div>
-                    </div>
-                    <div class="col-4 mt-3">
-                      <div>
-                        <img
-                          :src="getFullImageUrl(fetchSignedTimeSheet.paper_timesheet)"
-                          alt="PaperTimeSheet"
-                          height="100px"
-                          class="remove-white-background d-block m-auto"
-                          loading="eager"
-                        />
-                      </div>
-                    </div>
-                  </div> -->
                 </div>
               </form>
             </div>
@@ -659,22 +620,6 @@
             >
               Save
             </button>
-            <!-- <button
-              v-if="status.trim().toLowerCase() === 'approved'"
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
-              data-bs-dismiss="modal"
-              @click.prevent="handleApproveAndSave()"
-            >
-              {{ buttonText }}
-            </button>
-            <button
-              v-else
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
-              data-bs-dismiss="modal"
-              @click.prevent="handleApproveAndSave()"
-            >
-              {{ buttonText }}
-            </button> -->
           </div>
         </div>
       </div>
@@ -901,12 +846,9 @@ export default {
             start_comment: signTimesheets.start_comment || "",
           };
 
-          // Store original data for potential resetting
           this.originalData = { ...this.fetchSignedTimeSheet };
-          this.showSaveButton = true; // Update button visibility based on your logic
+          this.showSaveButton = true;
         } catch (error) {
-          // console.error("Error fetching signed timesheet data:", error);
-          // Optionally, you can set an error message to inform the user
           this.errorMessage = "Failed to fetch timesheet data. Please try again.";
         }
       }

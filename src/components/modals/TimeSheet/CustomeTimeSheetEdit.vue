@@ -130,7 +130,7 @@
                               id="selectCustomHourStart"
                               class="form-control"
                               v-model="startTime.hour"
-                              @change="updateStartTime"
+                              @change="calculateTotalHours"
                               style="width: 80px"
                             >
                               <option v-for="hour in 24" :key="hour" :value="hour">
@@ -143,7 +143,7 @@
                               id="selectCustomMinuteStart"
                               class="form-control"
                               v-model="startTime.minute"
-                              @change="updateStartTime"
+                              @change="calculateTotalHours"
                               style="width: 80px"
                             >
                               <option
@@ -159,7 +159,7 @@
                               id="selectCustomPeriodStart"
                               class="form-control"
                               v-model="startTime.period"
-                              @change="updateStartTime"
+                              @change="calculateTotalHours"
                               style="width: 80px"
                             >
                               <option value="AM">AM</option>
@@ -250,7 +250,7 @@
                                 id="selectCustomHour"
                                 class="form-control"
                                 v-model="endTime.hour"
-                                @change="updateEndTime"
+                                @change="calculateTotalHours"
                                 style="width: 80px"
                               >
                                 <option v-for="hour in 24" :key="hour" :value="hour">
@@ -263,7 +263,7 @@
                                 id="selectCustomMinute"
                                 class="form-control"
                                 v-model="endTime.minute"
-                                @change="updateEndTime"
+                                @change="calculateTotalHours"
                                 style="width: 80px"
                               >
                                 <option
@@ -279,7 +279,7 @@
                                 id="selectCustomPeriod"
                                 class="form-control"
                                 v-model="endTime.period"
-                                @change="updateEndTime"
+                                @change="calculateTotalHours"
                                 style="width: 80px"
                               >
                                 <option value="AM">AM</option>
@@ -632,6 +632,24 @@ export default {
     // },
   },
   methods: {
+    async calculateTotalHours() {
+      const startTime = `${this.formatTime(this.startTime.hour)}:${
+        this.startTime.minute
+      } ${this.startTime.period}`;
+      const endTime = `${this.formatTime(this.endTime.hour)}:${this.endTime.minute} ${
+        this.endTime.period
+      }`;
+
+      try {
+        const response = await axios.get(`${VITE_API_URL}/calculate_total_hour`, {
+          params: { start_time: startTime, end_time: endTime, id: this.customDataId },
+        });
+
+        this.fetchCustomSheetData.total_hours = response.data.total_hours;
+      } catch (error) {
+        // console.error("Error calculating total hours:", error);
+      }
+    },
     updateStartTime() {
       const { hour, minute, period } = this.startTime;
       const hour24 = period === "PM" ? (hour < 12 ? hour + 12 : hour) : hour % 12;
@@ -831,6 +849,13 @@ export default {
 
         delete payload.total_hours;
         delete payload.total_cost;
+        if (payload.start_time !== null || payload.start_time !== "") {
+          payload.start_time;
+        }
+
+        if (payload.end_time !== null || payload.end_time !== "") {
+          payload.end_time;
+        }
 
         let formData = null;
         if (this.fetchCustomSheetData.paper_timesheet) {
