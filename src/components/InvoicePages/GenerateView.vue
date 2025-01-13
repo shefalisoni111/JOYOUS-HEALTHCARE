@@ -35,7 +35,28 @@
             </tr>
           </thead>
           <tbody v-if="getInvoiceData?.length > 0">
-            <tr v-for="(data, index) in getInvoiceData" :key="index">
+            <template v-for="(data, index) in getInvoiceData" :key="index">
+              <tr>
+                <td v-text="data.reference_code"></td>
+                <td v-text="data.client_name"></td>
+                <td v-text="data.site_name"></td>
+                <!-- <td v-text="data.site_name"></td> -->
+                <td v-text="getCandidateId(data.candidate_details)"></td>
+                <td v-text="getJobPosition(data.candidate_details)"></td>
+                <td v-text="data.start_date"></td>
+                <td v-text="data.end_date"></td>
+                <td v-text="data.total_amount"></td>
+                <td>
+                  <router-link
+                    :to="{ name: 'GenerateInvoiceView', params: { id: index } }"
+                    class="text-success"
+                  >
+                    <i class="bi bi-eye"></i>
+                  </router-link>
+                </td>
+              </tr>
+            </template>
+            <!-- <tr v-for="(data, index) in getInvoiceData" :key="index">
               <td v-text="data.reference_code"></td>
               <td v-text="data.client_name"></td>
               <td v-text="data.site_name"></td>
@@ -52,7 +73,7 @@
                   ><i class="bi bi-eye"></i
                 ></router-link>
               </td>
-            </tr>
+            </tr> -->
           </tbody>
           <tbody v-else>
             <tr>
@@ -73,6 +94,24 @@ import { mapGetters } from "vuex";
 export default {
   computed: {
     ...mapGetters(["getInvoiceData"]),
+  },
+  methods: {
+    getCandidateId(candidateDetails) {
+      // if (!candidateDetails || !Array.isArray(candidateDetails)) {
+      //   return "";
+      // }
+      // return candidateDetails.map((candidate) => candidate.candidate_id || "").join(", ");
+      const validCandidate = candidateDetails.find(
+        (candidate) => candidate.candidate_id && candidate.candidate_id.trim() !== ""
+      );
+      return validCandidate ? validCandidate.candidate_id : "";
+    },
+    getJobPosition(candidateDetails) {
+      const validCandidate = candidateDetails.find(
+        (candidate) => candidate.job_position && candidate.job_position.trim() !== ""
+      );
+      return validCandidate ? validCandidate.job_position : "";
+    },
   },
   mounted() {
     // console.log(this.getInvoiceData);
