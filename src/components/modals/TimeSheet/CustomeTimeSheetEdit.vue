@@ -845,10 +845,16 @@ export default {
 
         const payload = {
           ...this.fetchCustomSheetData,
+          status: "Approved",
         };
 
         delete payload.total_hours;
         delete payload.total_cost;
+        ["total_hours", "total_cost", "staff_pay_amount"].forEach((field) => {
+          if (payload[field] === null) {
+            delete payload[field];
+          }
+        });
         if (payload.start_time !== null || payload.start_time !== "") {
           payload.start_time;
         }
@@ -861,6 +867,11 @@ export default {
         if (this.fetchCustomSheetData.paper_timesheet) {
           formData = new FormData();
 
+          // Object.keys(payload).forEach((key) => {
+          //   if (payload[key] !== null && payload[key] !== "") {
+          //     formData.append(`custom_timesheet[${key}]`, payload[key]);
+          //   }
+          // });
           Object.keys(payload).forEach((key) => {
             if (payload[key] !== null && payload[key] !== "") {
               formData.append(`custom_timesheet[${key}]`, payload[key]);

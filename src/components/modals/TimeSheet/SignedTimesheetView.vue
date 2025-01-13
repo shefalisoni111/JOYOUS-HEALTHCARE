@@ -859,6 +859,7 @@ export default {
         this.updateEndTime();
         const payload = {
           ...this.fetchSignedTimeSheet,
+          status: "Approved",
         };
 
         delete payload.total_hours;
