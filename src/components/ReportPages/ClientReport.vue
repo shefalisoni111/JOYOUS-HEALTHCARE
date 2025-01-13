@@ -203,7 +203,7 @@
                           <td scope="col">{{ data.code }}</td>
 
                           <td scope="col">
-                            {{ data.client_name }}
+                            {{ data.client_name ? data.client_name : data.client }}
                           </td>
 
                           <td scope="col">{{ data.name || data.candidate_name }}</td>
@@ -291,7 +291,7 @@
                           <td scope="col">{{ data.code }}</td>
 
                           <td scope="col">
-                            {{ data.client_name }}
+                            {{ data.client_name ? data.client_name : data.client }}
                           </td>
 
                           <td scope="col">{{ data.name || data.candidate_name }}</td>

@@ -53,15 +53,15 @@
                     <div class="col-4">
                       <h6 class="text-muted">SUPPLIER</h6>
                       <h5 class="fw-bold">{{ invoiceData.client_name }}</h5>
-                      <p class="mb-0">Mob No:</p>
-                      <p class="mb-0">Email:</p>
+                      <p class="mb-0">Mob No: {{ invoiceData.client_phone_number }}</p>
+                      <p class="mb-0">Email: {{ invoiceData.client_email }}</p>
                     </div>
-                    <div class="col-4 text-center">
+                    <div class="col-4">
                       <!-- <p>{{ invoiceData.number }}</p> -->
                       <h6 class="text-muted">SHIP To</h6>
                       <h5 class="fw-bold">{{ invoiceData.site_name }}</h5>
-                      <p class="mb-0">Mob No:</p>
-                      <p class="mb-0">Email:</p>
+                      <p class="mb-0">Mob No: {{ invoiceData.site_phone_number }}</p>
+                      <p class="mb-0">Email: {{ invoiceData.site_email }}</p>
                     </div>
                     <div class="col-4">
                       <div class="pe-3 float-end">
