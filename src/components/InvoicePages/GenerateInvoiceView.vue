@@ -33,10 +33,10 @@
                   <div class="row">
                     <div class="col-4">
                       <h6 class="text-muted">BILLED FROM</h6>
-                      <h5 class="fw-bold">Logezy</h5>
+                      <h5 class="fw-bold">{{ invoiceData.merchant_name }}</h5>
 
-                      <p class="mb-0">Mob No:</p>
-                      <p class="mb-0">Email:</p>
+                      <p class="mb-0">Mob No:{{ invoiceData.merchant_phone }}</p>
+                      <p class="mb-0">Email:{{ invoiceData.merchant_email }}</p>
                     </div>
                     <div class="col-4"></div>
                     <div class="col-4">
@@ -110,33 +110,21 @@
                               )
                             }}
                           </td>
-                          <td scope="col">
-                            {{ timesheet?.start_time || "N/A" }}
-                          </td>
-                          <td scope="col">
-                            {{ timesheet?.end_time || "N/A" }}
-                          </td>
-                          <td scope="col"></td>
+                          <td scope="col">{{ timesheet?.start_time || "" }}</td>
+                          <td scope="col">{{ timesheet?.end_time || "" }}</td>
+                          <td scope="col">{{ invoiceData.site_name }}</td>
                           <td scope="col" class="text-capitalize">
-                            {{ candidate.candidate_id || "N/A" }}
+                            {{ candidate.candidate_id }}
                           </td>
-                          <td scope="col">
-                            {{ timesheet?.job_position || "N/A" }}
-                          </td>
-                          <td scope="col">
-                            {{ invoiceData.unit }}
-                          </td>
-                          <td scope="col">
-                            {{ timesheet?.client_rate || "N/A" }}
-                          </td>
-                          <td scope="col">
-                            {{ timesheet?.hours || "N/A" }}
-                          </td>
-                          <td scope="col">
-                            {{ timesheet?.cost || "N/A" }}
-                          </td>
+
+                          <td scope="col">{{ timesheet?.job_position || "" }}</td>
+                          <td scope="col">{{ candidate?.can_total_units || "" }}</td>
+                          <td scope="col">{{ timesheet?.client_rate || "" }}</td>
+                          <td scope="col">{{ timesheet?.hours || "" }}</td>
+                          <td scope="col">{{ timesheet?.cost || "" }}</td>
                         </tr>
                       </template>
+
                       <!-- <tr>
                         <td scope="col">
                           {{ this.formatDate(invoiceData.start_date) }}

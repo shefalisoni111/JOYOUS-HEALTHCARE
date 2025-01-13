@@ -48,6 +48,7 @@
                   type="checkbox"
                   class="form-check-input"
                   id="select-all-sites"
+                  :checked="isAllSitesSelected"
                   @change="toggleAllSites"
                 />
                 <label for="select-all-sites" class="form-check-label">
@@ -80,7 +81,7 @@
                   type="checkbox"
                   class="form-check-input"
                   id="select-all-jobs"
-                  :checked="selectedJobs.length === jobData.length"
+                  :checked="isAllJobsSelected"
                   @change="toggleAllJobs"
                 />
                 <label for="select-all-jobs" class="form-check-label">
@@ -175,6 +176,12 @@ export default {
     };
   },
   computed: {
+    isAllSitesSelected() {
+      return this.selectedSites.length === this.siteData.length;
+    },
+    isAllJobsSelected() {
+      return this.selectedJobs.length === this.jobData.length;
+    },
     isFormValid() {
       return (
         this.client_id &&
@@ -188,14 +195,14 @@ export default {
   methods: {
     ...mapActions(["setInvoiceData"]),
     toggleAllSites() {
-      if (this.selectedSites.length === this.siteData.length) {
+      if (this.isAllSitesSelected) {
         this.selectedSites = [];
       } else {
         this.selectedSites = this.siteData.map((site) => site.id);
       }
     },
     toggleAllJobs() {
-      if (this.selectedJobs.length === this.jobData.length) {
+      if (this.isAllJobsSelected) {
         this.selectedJobs = [];
       } else {
         this.selectedJobs = this.jobData.map((job) => job.id);
@@ -236,7 +243,8 @@ export default {
       }
     },
     async onSiteSelect(siteId) {
-      await this.getTimeShift(siteId);
+      // await this.getTimeShift(siteId);
+      // this.isAllSitesSelected = this.selectedSites.length === this.siteData.length;
     },
     async getTimeShift(siteId) {
       try {
