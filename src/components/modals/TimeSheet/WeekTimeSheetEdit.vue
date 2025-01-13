@@ -780,6 +780,7 @@ export default {
         this.updateEndTime();
         const payload = {
           ...this.fetchCustomTimeShetData,
+          status: "Approved",
         };
 
         delete payload.total_hours;
@@ -845,7 +846,7 @@ export default {
           // console.log("Handling SignTimeSheet...");
           await this.updateSignTimeSheetMethod();
         }
-        await this.approved_TimesheetRevertMethod();
+        // await this.approved_TimesheetRevertMethod();
       } catch (error) {
         // console.error("Error during approval process:", error);
       }
@@ -1042,6 +1043,7 @@ export default {
         // const formData = new FormData();
         const payload = {
           ...this.fetchCustomTimeShetData,
+          status: "Approved",
         };
 
         delete payload.total_hours;
