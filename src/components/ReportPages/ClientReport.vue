@@ -201,7 +201,11 @@
                           </td> -->
                           <td scope="col">{{ data.id }}</td>
                           <td scope="col">{{ data.code }}</td>
-                          <td scope="col">{{ data.client }}</td>
+
+                          <td scope="col">
+                            {{ data.client_name }}
+                          </td>
+
                           <td scope="col">{{ data.name || data.candidate_name }}</td>
                           <td scope="col">{{ data.site }}</td>
                           <td scope="col">{{ data.job }}</td>
@@ -262,6 +266,7 @@
                           </th> -->
                           <th scope="col">ID</th>
                           <th scope="col">Code</th>
+                          <th scope="col">Client</th>
                           <th scope="col" style="width: 153px">Name</th>
                           <th scope="col">Site</th>
                           <th scope="col">Job</th>
@@ -284,10 +289,15 @@
                           </td> -->
                           <td scope="col">{{ data.id }}</td>
                           <td scope="col">{{ data.code }}</td>
+
+                          <td scope="col">
+                            {{ data.client_name }}
+                          </td>
+
                           <td scope="col">{{ data.name || data.candidate_name }}</td>
                           <td scope="col">{{ data.site }}</td>
                           <td scope="col">{{ data.job }}</td>
-                          <td scope="col">{{ data.shift_date }}</td>
+                          <td scope="col">{{ data.date || data.shift_date }}</td>
                           <td scope="col">
                             {{ data.start_time }}
                           </td>
