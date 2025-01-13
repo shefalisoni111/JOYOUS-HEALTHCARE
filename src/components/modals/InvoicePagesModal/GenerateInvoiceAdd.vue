@@ -3,10 +3,8 @@
     <div
       class="modal fade"
       id="generateInvoice"
-      tabindex="-1"
       aria-labelledby="generateInvoiceLabel"
-      :aria-hidden="!isModalVisible"
-      :inert="!isModalVisible ? '' : null"
+      aria-hidden="true"
     >
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -339,6 +337,7 @@ export default {
             title: "Error",
             text: this.errorMessage,
           });
+          this.resetFields();
         });
     },
     resetFields() {
