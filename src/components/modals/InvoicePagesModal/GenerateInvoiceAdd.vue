@@ -5,7 +5,8 @@
       id="generateInvoice"
       tabindex="-1"
       aria-labelledby="generateInvoiceLabel"
-      aria-hidden="true"
+      :aria-hidden="!isModalVisible"
+      :inert="!isModalVisible ? '' : null"
     >
       <div class="modal-dialog modal-lg">
         <div class="modal-content">

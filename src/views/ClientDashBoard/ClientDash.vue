@@ -137,6 +137,7 @@
               <th>Shift</th>
               <th>Staff Required</th>
               <th>Assigned</th>
+              <th>Booking</th>
             </tr>
           </thead>
           <tbody class="text-capitalize" v-if="CurrentWekShift?.length > 0">
@@ -154,6 +155,7 @@
               <td>{{ shift.site_shift }}</td>
               <td>{{ shift.staff_required }}</td>
               <td>{{ shift.assigned }}</td>
+              <td>{{ shift.accepted }}</td>
             </tr>
           </tbody>
           <tbody v-else>

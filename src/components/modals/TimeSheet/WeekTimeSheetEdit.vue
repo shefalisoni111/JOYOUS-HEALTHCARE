@@ -945,7 +945,7 @@ export default {
 
           this.showValueCustom = false;
           const signTimesheets = fallbackResponse.data.sign_timesheets;
-          this.status = signTimesheets.status || "";
+          // this.status = signTimesheets.status || "";
 
           const startTime = signTimesheets.start_time || "";
           if (startTime) {
@@ -1043,12 +1043,15 @@ export default {
         const payload = {
           ...this.fetchCustomTimeShetData,
         };
-        if (payload.total_hours) {
-          delete payload.total_hours;
-        }
-        if (payload.total_cost) {
-          delete payload.total_cost;
-        }
+
+        delete payload.total_hours;
+        delete payload.total_cost;
+        // if (payload.total_hours) {
+        //   delete payload.total_hours;
+        // }
+        // if (payload.total_cost) {
+        //   delete payload.total_cost;
+        // }
         if (payload.start_time !== null || payload.start_time !== "") {
           payload.start_time;
         }
