@@ -45,7 +45,7 @@
         <div class="d-flex justify-content-between align-content-center my-3">
           <h6 class="fw-bold d-flex align-content-center">Invoice settings</h6>
         </div>
-        <div class="col-4">
+        <!-- <div class="col-4">
           <div class="d-flex justify-content-between my-3">
             <div>Rate per mile in client invoice:</div>
             <div>
@@ -74,7 +74,7 @@
               </label>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="col-11">
           <div class="d-flex my-3" style="gap: 20%">
             <div>Invoice creation period:</div>
@@ -345,8 +345,8 @@ export default {
         enable_invoice_footer_note: null,
         split_rate: true,
         holiday_split_rate: true,
-        rate_per_mile_client_invoice: null,
-        rate_per_mile_staff_invoice: null,
+        // rate_per_mile_client_invoice: null,
+        // rate_per_mile_staff_invoice: null,
       },
       errorSiteUnitName: "",
       errorInvoiceNumberFormat: "",

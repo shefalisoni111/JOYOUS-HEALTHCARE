@@ -3,7 +3,6 @@
     <div
       class="modal fade"
       id="staffGenerateCsv"
-      tabindex="-1"
       aria-labelledby="staffGenerateCsvLabel"
       aria-hidden="true"
     >

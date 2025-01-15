@@ -83,7 +83,7 @@
                   </button>
                 </div>
 
-                <div class="col-6">
+                <!-- <div class="col-6">
                   <div class="d-flex justify-content-between my-3">
                     <div>Rate per mile in client invoice:</div>
                     <div>
@@ -98,9 +98,9 @@
                       </label>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
-              <div class="d-flex my-3" style="gap: 29.6%">
+              <!-- <div class="d-flex my-3" style="gap: 29.6%">
                 <div>Rate per mile in Staff invoice:</div>
                 <div>
                   <label class="switch">
@@ -113,7 +113,7 @@
                     <div class="slider round"></div>
                   </label>
                 </div>
-              </div>
+              </div> -->
               <div class="d-flex my-3" style="gap: 3.3%">
                 <div class="">
                   <div>Invoice cut off day (Weekly):</div>
@@ -527,8 +527,8 @@ export default {
         enable_booking_code: false,
         break_time: false,
         split_rate: false,
-        rate_per_mile_in_client: false,
-        rate_per_mile_in_staff: false,
+        // rate_per_mile_in_client: false,
+        // rate_per_mile_in_staff: false,
         invoice_hash: false,
         enable_site_name_in_invoice: false,
       },

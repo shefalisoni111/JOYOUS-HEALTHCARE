@@ -18,7 +18,7 @@
                     <input type="text" class="form-control" v-model="title" />
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
+                <!-- <div class="mb-3 d-flex justify-content-between">
                   <div class="col-4">
                     <label class="form-label" for="selectAddDeduction">JOB</label>
                   </div>
@@ -33,7 +33,7 @@
                       </option>
                     </select>
                   </div>
-                </div>
+                </div> -->
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-4">
                     <label class="form-label">AMOUNT</label>
@@ -47,15 +47,15 @@
                     />
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
+                <!-- <div class="mb-3 d-flex justify-content-between">
                   <div class="col-4">
                     <label class="form-label">FREQUENCY</label>
                   </div>
                   <div class="col-8 mt-1">
                     <input type="text" class="form-control" v-model="frequency" />
-                    <!-- <i class="bi bi-square-fill"></i> -->
+                    
                   </div>
-                </div>
+                </div> -->
               </form>
             </div>
           </div>
@@ -94,9 +94,9 @@ export default {
   data() {
     return {
       title: "",
-      jobs_id: "",
+      // jobs_id: "",
       amount: "",
-      frequency: "",
+      // frequency: "",
       error: [],
       options: [],
     };
@@ -107,7 +107,8 @@ export default {
       return jobs_id ? jobs_id.name : "";
     },
     isFormInvalid() {
-      return !this.title || !this.jobs_id || !this.amount || !this.frequency;
+      // return !this.title || !this.jobs_id || !this.amount || !this.frequency;
+      return !this.title || !this.amount;
     },
   },
   components: { SuccessAlert },
@@ -115,17 +116,17 @@ export default {
     clearFieldsData() {
       setTimeout(() => {
         this.title = "";
-        this.jobs_id = "";
+        // this.jobs_id = "";
         this.amount = "";
-        this.frequency = "";
+        // this.frequency = "";
       }, 10);
     },
     async addDeductionMethod() {
       const data = {
         title: this.title,
-        jobs_id: this.jobs_id,
+        // jobs_id: this.jobs_id,
         amount: this.amount,
-        frequency: this.frequency,
+        // frequency: this.frequency,
       };
       try {
         const response = await fetch(`${VITE_API_URL}/candidate_deductions`, {
@@ -141,9 +142,9 @@ export default {
           const message = "Add Deduction Successful";
           this.$refs.successAlert.showSuccess(message);
           this.title = "";
-          this.jobs_id = "";
+          // this.jobs_id = "";
           this.amount = "";
-          this.frequency = "";
+          // this.frequency = "";
         } else {
           // console.error("Failed to add candidate deduction:", response.statusText);
         }
