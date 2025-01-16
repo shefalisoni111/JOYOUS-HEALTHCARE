@@ -89,7 +89,7 @@
                     <tr>
                       <th scope="col">Document</th>
                       <th scope="col">Mandatory</th>
-                      <th scope="col">Hide</th>
+                      <th scope="col">Expiry Date</th>
                       <th scope="col">Profile View</th>
                       <th scope="col">Action</th>
                     </tr>
