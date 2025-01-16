@@ -44,8 +44,15 @@
           </div>
 
           <div class="days overflow-x-auto">
-            <div v-for="day in days" :key="day" class="day">
-              <span class="date_round" :style="getDayPadding(day)">{{ day }}</span>
+            <div
+              v-for="(day, index) in days"
+              :key="index"
+              class="day"
+              :class="{ empty: !day }"
+            >
+              <span v-if="day" class="date_round" :style="getDayPadding(day)">{{
+                day
+              }}</span>
 
               <div v-for="date in getHolidayData" :key="date.id" class="mt-3">
                 <span v-if="date.holiday_date === formatDate(day)" class="event-data">
@@ -142,9 +149,23 @@ export default {
     generateDays() {
       const year = this.currentDate.getFullYear();
       const month = this.currentDate.getMonth();
+
+      // Get the total number of days in the current month
       const daysInMonth = new Date(year, month + 1, 0).getDate();
-      this.days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+
+      // Get the day of the week for the 1st day of the month (0 = Sunday, 6 = Saturday)
+      const firstDayOfWeek = new Date(year, month, 1).getDay();
+
+      // Create an array with empty slots for the days before the 1st of the month
+      const emptyDays = Array((firstDayOfWeek === 0 ? 7 : firstDayOfWeek) - 1).fill(null);
+
+      // Create an array for the actual days of the month
+      const monthDays = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+
+      // Combine the empty slots and the actual days
+      this.days = [...emptyDays, ...monthDays];
     },
+
     getDayPadding(day) {
       return day < 10 ? "padding: 10px 14px;" : "padding: 11px 11px;";
     },
@@ -256,7 +277,11 @@ td i.bi-trash {
 .btn-primary {
   border: none;
 }
-
+.day.empty {
+  background-color: transparent;
+  border: none;
+  pointer-events: none;
+}
 table thead th {
   background-color: #f9944b !important;
 }
