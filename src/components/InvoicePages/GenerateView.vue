@@ -55,6 +55,7 @@
                   </router-link>
                 </td>
               </tr>
+              <!-- <tr></tr> -->
             </template>
             <!-- <tr v-for="(data, index) in getInvoiceData" :key="index">
               <td v-text="data.reference_code"></td>

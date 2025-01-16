@@ -478,6 +478,44 @@
         </div>
       </div>
     </div>
+    <div class="mx-3 mb-3" style="text-align: right" v-if="candidateList?.length">
+      <button
+        class="btn btn-sm btn-primary dropdown-toggle"
+        type="button"
+        id="recordsPerPageDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {{ itemsPerPage }} Records
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+        </li>
+      </ul>
+      &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary mr-2"
+        :disabled="currentPage === 1"
+        @click="previousPage"
+      >
+        Previous
+      </button>
+      &nbsp;&nbsp; <span>{{ currentPage }}</span> &nbsp;&nbsp;
+      <button
+        class="btn btn-sm btn-primary ml-2"
+        :disabled="currentPage >= totalPages"
+        @click="nextPage"
+      >
+        Next
+      </button>
+    </div>
   </div>
 </template>
 
@@ -538,6 +576,8 @@ export default {
       options: [],
       job_id: "",
       site_id: "",
+      hasMore: true,
+      isFetching: false,
       assignedCandidateList: [],
       businessUnit: [],
       isModalOpen: false,
@@ -555,7 +595,7 @@ export default {
 
   computed: {
     totalPages() {
-      return Math.ceil(this.candidateList.length / this.itemsPerPage);
+      return Math.ceil(this.totalCandidateCount / this.itemsPerPage);
     },
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
@@ -646,6 +686,9 @@ export default {
     columnDateMatch() {
       // this.filteredVacancies();
     },
+    // totalCandidateCount(newCount) {
+    //   this.totalPages = Math.ceil(newCount / this.itemsPerPage);
+    // },
     matchingBookingData(newVal) {
       if (newVal) {
         this.updateBookingData(newVal);
@@ -664,7 +707,7 @@ export default {
       this.filters.shift = "";
       this.filters.status = "";
 
-      this.currentPage = 1;
+      // this.currentPage = 1;
       this.makeFilterAPICall();
       // this.fetchAssignList();
     },
@@ -714,6 +757,8 @@ export default {
         shift: this.filters.shift,
         status: this.filters.status,
         date: this.formattedStartDate,
+        page: this.currentPage,
+        per_page: this.itemsPerPage,
       };
 
       try {
@@ -728,6 +773,9 @@ export default {
         );
 
         this.candidateList = response.data.data;
+        this.totalCandidateCount = response.data.total_count;
+        this.totalPages = Math.ceil(this.totalCandidateCount / this.itemsPerPage);
+        // this.currentPage = response.data.current_page;
         this.searchResults = response.data.data;
         this.vacancyList = response.data.vacancies;
       } catch (error) {
@@ -1196,30 +1244,33 @@ export default {
         }
       }
     },
-    // setItemsPerPage(value) {
-    //   this.itemsPerPage = value;
-    //   this.currentPage = 1;
-    //   this.fetchCandidateList();
-    // },
-    // nextPage() {
-    //   this.currentPage++;
-    //   this.fetchCandidateList();
-    // },
-
-    // previousPage() {
-    //   if (this.currentPage > 1) {
-    //     this.currentPage--;
-    //     this.fetchCandidateList();
-    //   }
-    // },
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.fetchCandidateList();
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+        this.fetchCandidateList();
+      }
+    },
+    previousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.fetchCandidateList();
+      }
+    },
     async fetchCandidateList() {
+      if (!this.hasMore || this.isFetching) return;
+
       this.isFetching = true;
       this.isLoading = true;
       try {
         const requestData = {
           date: this.formattedStartDate,
-          // page: this.currentPage,
-          // per_page: this.itemsPerPage,
+          page: this.currentPage,
+          per_page: this.itemsPerPage,
         };
 
         const response = await axios.get(
@@ -1228,7 +1279,10 @@ export default {
             params: requestData,
           }
         );
+
         this.candidateList = response.data.data;
+        this.totalCandidateCount = response.data.total_count;
+        this.totalPages = Math.ceil(this.totalCandidateCount / this.itemsPerPage);
 
         this.searchResults = response.data.data;
         this.vacancyList = response.data.vacancies;
@@ -1248,6 +1302,11 @@ export default {
             (availabilityItem) => availabilityItem.availability_id
           );
         });
+        if (newCandidates.length < this.itemsPerPage) {
+          this.hasMore = false;
+        } else {
+          this.currentPage += 1;
+        }
         // this.fetchAssignList();
         // this.currentPage += 1;
       } catch (error) {
@@ -1303,6 +1362,15 @@ export default {
         }
       }
     },
+    handleScroll() {
+      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrolled = window.scrollY;
+
+      if (scrolled >= scrollableHeight - 100) {
+        // Load more records when nearing the bottom of the page
+        this.fetchCandidateList();
+      }
+    },
   },
   components: {
     EditAssignShceduleVaacncy,
@@ -1349,10 +1417,12 @@ export default {
     this.fetchCandidateList();
 
     this.fetchVacancyListMethod();
+    window.addEventListener("scroll", this.handleScroll);
     document.documentElement.style.overflowY = "hidden";
   },
   beforeUnmount() {
     document.documentElement.style.overflowY = "";
+    window.removeEventListener("scroll", this.handleScroll);
   },
 };
 </script>

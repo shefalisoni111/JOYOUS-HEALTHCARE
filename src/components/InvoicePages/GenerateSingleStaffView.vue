@@ -121,7 +121,7 @@
 
                           <td scope="col">{{ invoiceData?.job_position || "" }}</td>
                           <td scope="col">{{ invoiceData?.unit || "" }}</td>
-                          <td scope="col">{{ timesheet?.client_rate || "" }}</td>
+                          <td scope="col">{{ timesheet?.staff_rate || "" }}</td>
                           <td scope="col">{{ timesheet?.hours || "" }}</td>
                           <td scope="col">{{ timesheet?.cost || "" }}</td>
                         </tr>
