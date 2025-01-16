@@ -132,7 +132,7 @@
                         Favicon & Logo
                       </button>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    <!-- <li class="nav-item" role="presentation">
                       <button
                         class="nav-link"
                         id="customUrl"
@@ -145,7 +145,7 @@
                       >
                         Custom Url
                       </button>
-                    </li>
+                    </li> -->
                   </ul>
                   <div class="tab-content" id="myTabContent">
                     <div
@@ -289,7 +289,7 @@
                         </div>
                       </div>
                     </div>
-                    <div
+                    <!-- <div
                       class="tab-pane fade"
                       id="contacts"
                       role="tabpanel"
@@ -301,7 +301,7 @@
                         eaque possimus ipsum. Necessitatibus molestias rerum architecto
                         ipsam quis labore quod quo sint?
                       </p>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>

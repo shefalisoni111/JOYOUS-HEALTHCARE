@@ -11,10 +11,10 @@
               <router-link
                 class="nav-link d-inline color-fonts"
                 aria-current="page"
-                to="/invoice/client-invoice"
-                >Client Invoice</router-link
+                to="/invoice/staff-payroll"
+                >Staff Invoice</router-link
               >
-              / <span class="color-fonts">Generate Client View</span>
+              / <span class="color-fonts">Generate Staff View</span>
             </li>
           </ol>
         </div>
@@ -34,21 +34,22 @@
               <th scope="col">Action</th>
             </tr>
           </thead>
-          <tbody v-if="getInvoiceData?.length > 0">
-            <template v-for="(data, index) in getInvoiceData" :key="index">
+
+          <tbody v-if="getInvoiceStaffData?.length > 0">
+            <template v-for="(data, index) in getInvoiceStaffData" :key="index">
               <tr>
-                <td v-text="data.reference_code"></td>
-                <td v-text="data.client_name"></td>
-                <td v-text="data.site_name"></td>
+                <td v-text="getRefCode(data.site_details)"></td>
+                <td v-text="getSiteId(data.site_details)"></td>
+                <td v-text="getSiteId(data.site_details)"></td>
                 <!-- <td v-text="data.site_name"></td> -->
-                <td v-text="getCandidateId(data.candidate_details)"></td>
-                <td v-text="getJobPosition(data.candidate_details)"></td>
+                <td v-text="data.candidate_name"></td>
+                <td v-text="data.job_position"></td>
                 <td v-text="data.start_date"></td>
                 <td v-text="data.end_date"></td>
                 <td v-text="data.total_amount"></td>
                 <td>
                   <router-link
-                    :to="{ name: 'GenerateInvoiceView', params: { id: index } }"
+                    :to="{ name: 'GenerateSingleStaffView', params: { id: index } }"
                     class="text-success"
                   >
                     <i class="bi bi-eye"></i>
@@ -57,23 +58,23 @@
               </tr>
             </template>
             <!-- <tr v-for="(data, index) in getInvoiceData" :key="index">
-              <td v-text="data.reference_code"></td>
-              <td v-text="data.client_name"></td>
-              <td v-text="data.site_name"></td>
-              <td v-text="data.candidate_details[0]?.candidate_id || 'N/A'"></td>
-              <td v-text="data.candidate_details[0]?.job_position || 'N/A'"></td>
-              <td v-text="data.start_date"></td>
-              <td v-text="data.end_date"></td>
-
-              <td v-text="data.total_amount"></td>
-              <td>
-                <router-link
-                  :to="{ name: 'GenerateInvoiceView', params: { id: index } }"
-                  class="text-success"
-                  ><i class="bi bi-eye"></i
-                ></router-link>
-              </td>
-            </tr> -->
+                <td v-text="data.reference_code"></td>
+                <td v-text="data.client_name"></td>
+                <td v-text="data.site_name"></td>
+                <td v-text="data.candidate_details[0]?.candidate_id || 'N/A'"></td>
+                <td v-text="data.candidate_details[0]?.job_position || 'N/A'"></td>
+                <td v-text="data.start_date"></td>
+                <td v-text="data.end_date"></td>
+  
+                <td v-text="data.total_amount"></td>
+                <td>
+                  <router-link
+                    :to="{ name: 'GenerateInvoiceView', params: { id: index } }"
+                    class="text-success"
+                    ><i class="bi bi-eye"></i
+                  ></router-link>
+                </td>
+              </tr> -->
           </tbody>
           <tbody v-else>
             <tr>
@@ -93,24 +94,26 @@ import { mapGetters } from "vuex";
 
 export default {
   computed: {
-    ...mapGetters(["getInvoiceData"]),
+    ...mapGetters(["getInvoiceStaffData"]),
   },
   methods: {
-    getCandidateId(candidateDetails) {
-      // if (!candidateDetails || !Array.isArray(candidateDetails)) {
-      //   return "";
-      // }
-      // return candidateDetails.map((candidate) => candidate.candidate_id || "").join(", ");
-      const validCandidate = candidateDetails.find(
-        (candidate) => candidate.candidate_id && candidate.candidate_id.trim() !== ""
+    getSiteId(site_details) {
+      const validCandidate = site_details.find(
+        (candidate) => candidate.site_name && candidate.site_name.trim() !== ""
       );
-      return validCandidate ? validCandidate.candidate_id : "";
+      return validCandidate ? validCandidate.site_name : "";
     },
-    getJobPosition(candidateDetails) {
-      const validCandidate = candidateDetails.find(
-        (candidate) => candidate.job_position && candidate.job_position.trim() !== ""
+    getClientID(site_details) {
+      const validCandidate = site_details.find(
+        (candidate) => candidate.client_name && candidate.client_name.trim() !== ""
       );
-      return validCandidate ? validCandidate.job_position : "";
+      return validCandidate ? validCandidate.client_name : "";
+    },
+    getRefCode(site_details) {
+      const validCandidate = site_details.find(
+        (candidate) => candidate.ref_code && candidate.ref_code.trim() !== ""
+      );
+      return validCandidate ? validCandidate.ref_code : "";
     },
   },
   mounted() {

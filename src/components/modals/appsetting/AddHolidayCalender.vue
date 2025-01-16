@@ -1,12 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="addHolidayCalender"
-      aria-labelledby="addHolidayCalender"
-      tabindex="-1"
-    >
+    <div class="modal fade" id="addHolidayCalender" aria-labelledby="addHolidayCalender">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">

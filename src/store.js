@@ -22,10 +22,14 @@ export default createStore({
      selectedTemplate: localStorage.getItem('selectedTemplate') || 'TemplateOne',
      getCandidatesData:[],
      invoiceData: [],
+     invoiceStaffData: [],
   },
   mutations: {
     SET_INVOICE_DATA(state, data) {
       state.invoiceData = data;
+    },
+    SET_INVOICE_STAFF_DATA(state, data) {
+      state.invoiceStaffData = data;
     },
     setNavData(state, data) {
       state.getCandidatesData = data;
@@ -105,6 +109,9 @@ export default createStore({
     setInvoiceData({ commit }, data) {
       commit("SET_INVOICE_DATA", data);
     },
+    setInvoiceStaffData({ commit }, data) {
+      commit("SET_INVOICE_STAFF_DATA", data);
+    },
     async getCandidateMethods({ commit }) {
       const response = await axios.get(`${VITE_API_URL}/candidates`);
       commit("setNavData", response.data.data);
@@ -155,6 +162,7 @@ export default createStore({
   },
    getters: {
     getInvoiceData: (state) => state.invoiceData,
+    getInvoiceStaffData: (state) => state.invoiceStaffData,
     getSelectedTemplate: (state) => state.selectedTemplate,
     getChannelSid: (state) => state.channelSid,
   },

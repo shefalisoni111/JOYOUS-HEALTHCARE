@@ -104,6 +104,8 @@
 <script>
 import axios from "axios";
 import Swal from "sweetalert2";
+import { mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -137,6 +139,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["setInvoiceStaffData"]),
     formatDate(date) {
       const day = date.getDate();
       const month = date.getMonth() + 1;
@@ -339,6 +342,9 @@ export default {
                   title: "No Data Found",
                   text: this.errorMessage,
                 });
+              } else {
+                this.$store.dispatch("setInvoiceStaffData", response.data.data);
+                this.$router.push({ name: "GenerateStaffView" });
               }
               this.resetFields();
             }

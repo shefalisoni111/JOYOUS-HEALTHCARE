@@ -506,6 +506,7 @@ const router = createRouter({
           component: () => import("@/components/InvoicePages/GenerateView.vue"),
           props: true,
         },
+       
         {
           path: "/invoice/GenerateView/generateView/:id",
           name: "GenerateInvoiceView",
@@ -541,6 +542,18 @@ const router = createRouter({
           path: "/invoice/staff-payroll",
           name: "CandidateInvoice",
           component: () => import("@/components/InvoicePages/CandidateInvoice.vue"),
+          props: true,
+        },
+        {
+          path: "/invoice/staff-payroll/GenerateStaff",
+          name: "GenerateStaffView",
+          component: () => import("@/components/InvoicePages/GenerateStaffView.vue"),
+          props: true,
+        },
+        {
+          path: "/invoice/staff-payroll/GenerateSingleStaff/:id",
+          name: "GenerateSingleStaffView",
+          component: () => import("@/components/InvoicePages/GenerateSingleStaffView.vue"),
           props: true,
         },
         {
