@@ -520,7 +520,7 @@
               :key="status"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              @click.prevent="handleApproveAndSave"
+              @click.prevent="updateCustomTimeSheetMethod()"
             >
               {{ buttonText }}
             </button>
@@ -559,7 +559,7 @@ export default {
         staff_rate: "",
         shift_name: "",
         paper_timesheet: "",
-        // status: "",
+        status: "",
         notes: "",
         start_time: "",
         end_time: "",
@@ -843,9 +843,10 @@ export default {
         this.updateStartTime();
         this.updateEndTime();
 
+        this.fetchCustomSheetData.status = "Approved";
+
         const payload = {
           ...this.fetchCustomSheetData,
-          status: "Approved",
         };
 
         delete payload.total_hours;
@@ -864,21 +865,15 @@ export default {
         }
 
         let formData = null;
-        if (this.fetchCustomSheetData.paper_timesheet) {
+        const paperTimesheet = this.fetchCustomSheetData.paper_timesheet;
+        if (paperTimesheet) {
           formData = new FormData();
 
-          // Object.keys(payload).forEach((key) => {
-          //   if (payload[key] !== null && payload[key] !== "") {
-          //     formData.append(`custom_timesheet[${key}]`, payload[key]);
-          //   }
-          // });
           Object.keys(payload).forEach((key) => {
             if (payload[key] !== null && payload[key] !== "") {
               formData.append(`custom_timesheet[${key}]`, payload[key]);
             }
           });
-
-          const paperTimesheet = this.fetchCustomSheetData.paper_timesheet;
 
           if (paperTimesheet instanceof File || paperTimesheet instanceof Blob) {
             formData.append("custom_timesheet[custom_image]", paperTimesheet);
@@ -904,7 +899,7 @@ export default {
             headers,
           }
         );
-        this.status = response.data.status || this.status;
+        // this.status = response.data.status || this.status;
         this.$store.commit("updateCandidate", {
           id: this.fetchCustomSheetData.id,
           newData: response.data.custom_sheets,

@@ -264,14 +264,14 @@
                 </tr>
               </thead>
 
-              <tbody v-if="mergedTimesheetsArray && mergedTimesheetsArray?.length > 0">
+              <tbody v-if="paginateCandidates && paginateCandidates?.length > 0">
                 <!-- <tr v-if="errorMessageFilter">
                   <td colspan="9" class="text-danger text-center">
                     {{ errorMessageFilter || "Data not Found!" }}
                   </td>
                 </tr> -->
 
-                <tr v-for="data in mergedTimesheetsArray" :key="data.id">
+                <tr v-for="data in paginateCandidates" :key="data.id">
                   <td>{{ data.id }}</td>
                   <td class="text-capitalize fw-bold">
                     {{
@@ -465,7 +465,7 @@
         </div>
       </div>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="candidateList.length >= 10">
+    <div class="mx-3" style="text-align: right" v-if="mergedTimesheetsArray.length >= 10">
       <!-- <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button> -->
@@ -500,7 +500,7 @@
       >&nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= candidateList.length"
+        :disabled="currentPage * itemsPerPage >= mergedTimesheetsArray.length"
         @click="currentPage++"
       >
         Next
