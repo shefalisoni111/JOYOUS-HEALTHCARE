@@ -71,9 +71,10 @@
                         <tr>
                           <th scope="col" class="col-2 bg-primary text-white">ID</th>
                           <th scope="col" class="col-2 bg-primary text-white">Title</th>
-                          <th scope="col" class="col-2 bg-primary text-white">Job</th>
-                          <!-- <th scope="col" class="col-2 bg-primary text-white">Amount</th>
-                          <th scope="col" class="col-1 bg-primary text-white">
+                          <!-- <th scope="col" class="col-2 bg-primary text-white">Job</th> -->
+                          <th scope="col" class="col-2 bg-primary text-white">Amount</th>
+
+                          <!--  <th scope="col" class="col-1 bg-primary text-white">
                             Frequency
                           </th> -->
                           <th scope="col" class="col-1 bg-primary text-white">Action</th>
@@ -90,14 +91,14 @@
                           <td>
                             {{ getDeduction.title }}
                           </td>
-                          <td>
-                            {{ getDeduction.jobs_id }}
-                          </td>
                           <!-- <td>
+                            {{ getDeduction.jobs_id }}
+                          </td> -->
+                          <td>
                             {{ getDeduction.amount }}
                           </td>
-                          <td>
-                            {{ getDeduction.frequency }}
+                          <!-- <td>
+                            {{ getDeduction.frequency }}fgfd
                           </td> -->
 
                           <td>
