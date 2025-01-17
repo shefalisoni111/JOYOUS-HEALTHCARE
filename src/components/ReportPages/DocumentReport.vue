@@ -385,23 +385,23 @@ export default {
         this.candidateLists = [];
       }
 
-      // let params = {
-      //   "can_document[category_id]": this.selectedDocumentCategory || null,
-      //   "can_document[candidate_id]": this.selectedStaff || null,
-      //   "can_document[status]": this.selectedStaffStatus || null,
-      //   "can_document[document_id]": this.selectedDocumentType || null,
-      //   page: this.currentPage,
-      //   per_page: this.itemsPerPage,
-      // };
+      let params = {
+        "can_document[category_id]": this.selectedDocumentCategory || null,
+        "can_document[candidate_id]": this.selectedStaff || null,
+        //  "can_document[status]": this.selectedStaffStatus || null,
+        "can_document[document_id]": this.selectedDocumentType || null,
+        page: this.currentPage,
+        per_page: this.itemsPerPage,
+      };
 
       // Object.keys(params).forEach((key) => {
       //   if (!params[key]) {
       //     delete params[key];
       //   }
       // });
-      // if (this.selectedDocumentType) {
-      //   delete params["can_document[category_id]"];
-      // }
+      if (this.selectedDocumentType) {
+        delete params["can_document[category_id]"];
+      }
 
       // if (this.selectedStaff) {
       //   delete params["can_document[status]"];
@@ -410,13 +410,14 @@ export default {
       try {
         const response = await axios.get(apiUrl, {
           params: {
+            ...params,
             document_status: "all",
-            "can_document[category_id]": this.selectedDocumentCategory || null,
-            "can_document[candidate_id]": this.selectedStaff || null,
+            // "can_document[category_id]": this.selectedDocumentCategory || null,
+            // "can_document[candidate_id]": this.selectedStaff || null,
             // "can_document[status]": this.selectedStaffStatus || null,
-            "can_document[document_id]": this.selectedDocumentType || null,
-            page: this.currentPage,
-            per_page: this.itemsPerPage,
+            // "can_document[document_id]": this.selectedDocumentType || null,
+            //  page: this.currentPage,
+            //   per_page: this.itemsPerPage,
             // page: this.currentPage,
             // per_page: this.itemsPerPage,
           },
