@@ -817,7 +817,7 @@ export default {
       const file = event.target.files[0];
       if (file) {
         if (file.type.startsWith("image/")) {
-          this.fetchCustomSheetData.paper_timesheet = file;
+          this.fetchCustomTimeShetData.paper_timesheet = file;
 
           const reader = new FileReader();
           reader.onload = (e) => {
@@ -925,6 +925,49 @@ export default {
           this.fetchCustomTimeShetData = {
             ...response.data.custom_sheets,
           };
+
+          delete payload.total_hours;
+          delete payload.total_cost;
+          ["total_hours", "total_cost", "staff_pay_amount"].forEach((field) => {
+            if (payload[field] === null) {
+              delete payload[field];
+            }
+          });
+          if (payload.start_time !== null || payload.start_time !== "") {
+            payload.start_time;
+          }
+
+          if (payload.end_time !== null || payload.end_time !== "") {
+            payload.end_time;
+          }
+
+          let formData = null;
+          const paperTimesheet = this.fetchCustomSheetData.paper_timesheet;
+          if (paperTimesheet) {
+            formData = new FormData();
+
+            Object.keys(payload).forEach((key) => {
+              if (payload[key] !== null && payload[key] !== "") {
+                formData.append(`custom_timesheet[${key}]`, payload[key]);
+              }
+            });
+
+            if (paperTimesheet instanceof File || paperTimesheet instanceof Blob) {
+              formData.append("custom_timesheet[custom_image]", paperTimesheet);
+            } else if (typeof paperTimesheet === "string") {
+              formData.append("custom_timesheet[custom_image]", paperTimesheet);
+            }
+          }
+
+          const requestData = formData || payload;
+          const headers = {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          };
+          if (formData) {
+            headers["Content-Type"] = "multipart/form-data";
+          } else {
+            headers["Content-Type"] = "application/json";
+          }
 
           this.originalData = { ...this.fetchCustomTimeShetData };
           // this.parseStartTime(this.fetchCustomTimeShetData.start_time);
@@ -1067,16 +1110,56 @@ export default {
         //   }
         // }
 
+        delete payload.total_hours;
+        delete payload.total_cost;
+        ["total_hours", "total_cost", "staff_pay_amount"].forEach((field) => {
+          if (payload[field] === null) {
+            delete payload[field];
+          }
+        });
+        if (payload.start_time !== null || payload.start_time !== "") {
+          payload.start_time;
+        }
+
+        if (payload.end_time !== null || payload.end_time !== "") {
+          payload.end_time;
+        }
+
+        let formData = null;
+        const paperTimesheet = this.fetchCustomTimeShetData.paper_timesheet;
+        if (paperTimesheet) {
+          formData = new FormData();
+
+          Object.keys(payload).forEach((key) => {
+            if (payload[key] !== null && payload[key] !== "") {
+              formData.append(`custom_timesheet[${key}]`, payload[key]);
+            }
+          });
+
+          if (paperTimesheet instanceof File || paperTimesheet instanceof Blob) {
+            formData.append("custom_timesheet[custom_image]", paperTimesheet);
+          } else if (typeof paperTimesheet === "string") {
+            formData.append("custom_timesheet[custom_image]", paperTimesheet);
+          }
+        }
+
+        const requestData = formData || payload;
+        const headers = {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        };
+        if (formData) {
+          headers["Content-Type"] = "multipart/form-data";
+        } else {
+          headers["Content-Type"] = "application/json";
+        }
+
         // console.log(payload);
 
         const response = await axios.put(
           `${VITE_API_URL}/custom_timesheets/${this.fetchCustomTimeShetData.id}`,
-          payload,
+          requestData,
           {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "bearer " + token,
-            },
+            headers,
           }
         );
 
