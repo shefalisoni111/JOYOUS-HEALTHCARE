@@ -678,7 +678,7 @@ export default {
     },
     async handleApproveAndSave() {
       await this.updateCustomTimeSheetMethod();
-      this.status = "Approved";
+      this.fetchCustomSheetData.status = "Approved";
       await this.approved_hourMethod();
     },
     formatBreakTime(minute) {
@@ -842,8 +842,9 @@ export default {
       try {
         this.updateStartTime();
         this.updateEndTime();
-
-        this.fetchCustomSheetData.status = "Approved";
+        if (this.fetchCustomSheetData.status !== "Approved") {
+          await this.approved_hourMethod();
+        }
 
         const payload = {
           ...this.fetchCustomSheetData,
@@ -899,7 +900,7 @@ export default {
             headers,
           }
         );
-        // this.status = response.data.status || this.status;
+        this.status = response.data.status || this.status;
         this.$store.commit("updateCandidate", {
           id: this.fetchCustomSheetData.id,
           newData: response.data.custom_sheets,
