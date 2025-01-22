@@ -561,23 +561,64 @@
                     </div>
                   </div>
 
-                  <div class="mb-3">
+                  <div class="mb-3" v-if="showValueCustom">
                     <div class="col-12">
                       <label class="form-label">Comments</label>
                     </div>
-                    <div class="col-12 mt-1" v-if="showValueCustom">
+                    <div class="col-12 mt-1">
                       <textarea
                         class="form-control"
                         v-model="fetchCustomTimeShetData.notes"
                         rows="3"
                       ></textarea>
                     </div>
-                    <div class="col-12 mt-1" v-else>
+                    <!-- <div class="col-12 mt-1" v-else>
                       <textarea
                         class="form-control"
                         v-model="fetchCustomTimeShetData.start_comment"
                         rows="3"
                       ></textarea>
+                    </div> -->
+                  </div>
+                  <div class="mb-3 row" v-if="!showValueCustom">
+                    <div class="col-4">
+                      <div class="col-12">
+                        <label class="form-label">Start Comments</label>
+                      </div>
+
+                      <div class="col-12 mt-1">
+                        <textarea
+                          class="form-control"
+                          v-model="fetchCustomTimeShetData.start_comment"
+                          rows="3"
+                        ></textarea>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="col-12">
+                        <label class="form-label">End Comments</label>
+                      </div>
+
+                      <div class="col-12 mt-1">
+                        <textarea
+                          class="form-control"
+                          v-model="fetchCustomTimeShetData.start_comment"
+                          rows="3"
+                        ></textarea>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="col-12">
+                        <label class="form-label">Comments</label>
+                      </div>
+
+                      <div class="col-12 mt-1">
+                        <textarea
+                          class="form-control"
+                          v-model="fetchCustomTimeShetData.start_comment"
+                          rows="3"
+                        ></textarea>
+                      </div>
                     </div>
                   </div>
                   <div class="mb-3" v-if="showValueCustom">
@@ -660,6 +701,7 @@ export default {
         date: "",
         shift_date: "",
         candidate_name: "",
+        end_comment: "",
         total_hours: "",
         shift_name: "",
         start_time: "",

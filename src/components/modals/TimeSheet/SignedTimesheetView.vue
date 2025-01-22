@@ -580,23 +580,63 @@
                     </div>
                   </div>
 
-                  <div class="mb-3">
-                    <div class="col-12">
-                      <label class="form-label">Comments</label>
+                  <div class="mb-3 row">
+                    <div class="col-4">
+                      <div class="col-12">
+                        <label class="form-label">Start Comments</label>
+                      </div>
+                      <div class="col-12 mt-1" v-if="showSaveButton">
+                        <textarea
+                          class="form-control"
+                          v-model="fetchSignedTimeSheet.start_comment"
+                          rows="3"
+                        ></textarea>
+                      </div>
+                      <div class="col-12 mt-1" v-else>
+                        <textarea
+                          class="form-control"
+                          v-model="fetchSignedTimeSheet.start_comment"
+                          rows="3"
+                        ></textarea>
+                      </div>
                     </div>
-                    <div class="col-12 mt-1" v-if="showSaveButton">
-                      <textarea
-                        class="form-control"
-                        v-model="fetchSignedTimeSheet.start_comment"
-                        rows="3"
-                      ></textarea>
+                    <div class="col-4">
+                      <div class="col-12">
+                        <label class="form-label">End Comments</label>
+                      </div>
+                      <div class="col-12 mt-1" v-if="showSaveButton">
+                        <textarea
+                          class="form-control"
+                          v-model="fetchSignedTimeSheet.end_comment"
+                          rows="3"
+                        ></textarea>
+                      </div>
+                      <div class="col-12 mt-1" v-else>
+                        <textarea
+                          class="form-control"
+                          v-model="fetchSignedTimeSheet.end_comment"
+                          rows="3"
+                        ></textarea>
+                      </div>
                     </div>
-                    <div class="col-12 mt-1" v-else>
-                      <textarea
-                        class="form-control"
-                        v-model="fetchSignedTimeSheet.start_comment"
-                        rows="3"
-                      ></textarea>
+                    <div class="col-4">
+                      <div class="col-12">
+                        <label class="form-label">Comments</label>
+                      </div>
+                      <div class="col-12 mt-1" v-if="showSaveButton">
+                        <textarea
+                          class="form-control"
+                          v-model="fetchSignedTimeSheet.start_comment"
+                          rows="3"
+                        ></textarea>
+                      </div>
+                      <div class="col-12 mt-1" v-else>
+                        <textarea
+                          class="form-control"
+                          v-model="fetchSignedTimeSheet.start_comment"
+                          rows="3"
+                        ></textarea>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -646,6 +686,8 @@ export default {
         job: "",
         staff_rate: "",
         shift: "",
+        end_comment: "",
+        start_comment: "",
         paper_timesheet: "",
         // status: "",
         notes: "",
@@ -840,6 +882,7 @@ export default {
             shift: signTimesheets.shift || "",
             shift_name: signTimesheets.shift_name || "",
             break: signTimesheets.break || "",
+            end_comment: signTimesheets.end_comment || "",
             total_hours: signTimesheets.total_hours || "",
             client_rate: signTimesheets.client_rate || "",
             staff_rate: signTimesheets.staff_rate || "",
