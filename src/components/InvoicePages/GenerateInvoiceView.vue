@@ -124,7 +124,12 @@
                           <td scope="col">{{ timesheet?.cost || "" }}</td>
                         </tr>
                       </template>
-
+                      <tr>
+                        <td colspan="9" class="text-start fw-bold">Total Cost</td>
+                        <td colspan="9" class="font-weight-bold">
+                          {{ invoiceData?.total_amount || "" }}
+                        </td>
+                      </tr>
                       <!-- <tr>
                         <td scope="col">
                           {{ this.formatDate(invoiceData.start_date) }}

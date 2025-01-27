@@ -119,6 +119,14 @@
                         <td scope="col">{{ getClientInvoiceDetail.rate }}</td>
                         <td scope="col">{{ getClientInvoiceDetail.total_amount }}</td>
                       </tr>
+                      <tr>
+                        <!-- Leave the first 4 columns blank -->
+                        <td colspan="8" class="text-end fw-bold">Total Cost:</td>
+                        <!-- Display the total in the last column -->
+                        <td class="fw-bold">
+                          {{ getClientInvoiceDetail?.total_amount || "" }}
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>

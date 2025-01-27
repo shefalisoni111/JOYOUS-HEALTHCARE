@@ -663,15 +663,15 @@
               Save
             </button> -->
             <button
-              v-show="!showSaveButton"
+              v-if="fetchCustomTimeShetData.status === 'Approved'"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="approved_TimesheetRevertMethod()"
             >
-              Approve
+              Approved
             </button>
             <button
-              v-show="showSaveButton"
+              v-else
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="handleApproveAndSave"

@@ -335,7 +335,7 @@
                               : formatDate(day) === formatDateFormate(data.shift_date) &&
                                 data.status !== 'Approved'
                           "
-                          class="d-flex gap-2"
+                          class="d-flex flex-column gap-2"
                         >
                           <div
                             v-if="data.status !== 'Approved'"
@@ -406,22 +406,19 @@
                               <span
                                 class="btn btn-danger btn-sm position-absolute p-0"
                                 style="left: 17px; top: 28px"
-                                @click.prevent="ApproveMethod(data, $event)"
                               >
-                                Revert
+                                Approved
                               </span>
                             </span>
-                            <!-- <span
-                              
-                              class="text-center"
-                              :class="
-                                data.status === 'Approved' ? 'btn-danger' : 'btn-danger'
-                              "
-                              @click.prevent="ApproveMethod(data, $event)"
-                            >
-                              Revert
-                            </span> -->
                           </div>
+                          <span
+                            class="text-center"
+                            :class="
+                              data.status === 'Approved' ? 'btn-success' : 'btn-success'
+                            "
+                          >
+                            Approved
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -1350,7 +1347,14 @@ td {
 
   font-weight: bold;
 }
-
+.btn-success {
+  background-color: #198a2c;
+  color: #fff;
+}
+.btn-danger {
+  background-color: #cf250f;
+  color: #fff;
+}
 /* Modal styles */
 .modal {
   display: block;

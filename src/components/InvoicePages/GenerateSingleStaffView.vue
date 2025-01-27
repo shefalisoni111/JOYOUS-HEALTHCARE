@@ -90,10 +90,10 @@
                         <th scope="col">Unit</th>
                         <th scope="col">Rate</th>
                         <th scope="col">Total Hour</th>
-                        <th scope="col">Total Cost</th>
                       </tr>
                     </thead>
                     <tbody>
+                      <!-- Loop through site details and timesheets -->
                       <template
                         v-for="(candidate, candidateIndex) in invoiceData?.site_details"
                         :key="candidateIndex"
@@ -111,21 +111,27 @@
                               )
                             }}
                           </td>
-
                           <td scope="col">{{ timesheet?.start_time || "" }}</td>
                           <td scope="col">{{ timesheet?.end_time || "" }}</td>
                           <td scope="col">{{ candidate.site_name }}</td>
                           <td scope="col" class="text-capitalize">
                             {{ invoiceData?.candidate_name }}
                           </td>
-
                           <td scope="col">{{ invoiceData?.job_position || "" }}</td>
                           <td scope="col">{{ invoiceData?.unit || "" }}</td>
                           <td scope="col">{{ timesheet?.staff_rate || "" }}</td>
                           <td scope="col">{{ timesheet?.hours || "" }}</td>
-                          <td scope="col">{{ timesheet?.cost || "" }}</td>
                         </tr>
                       </template>
+
+                      <tr>
+                        <td colspan="8" class="text-start font-weight-bold">
+                          Total Cost
+                        </td>
+                        <td colspan="8" class="font-weight-bold">
+                          {{ invoiceData?.total_amount || 0 }}
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
