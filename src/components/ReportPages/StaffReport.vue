@@ -214,10 +214,10 @@
                             {{ data.total_hours }}
                           </td>
                           <td scope="col">
-                            {{ data.client_rate }}
+                            {{ "£" + data.client_rate }}
                           </td>
                           <td scope="col">
-                            {{ data.total_cost }}
+                            {{ "£" + data.total_cost }}
                           </td>
 
                           <td scope="col">
@@ -297,10 +297,10 @@
                             {{ data.total_hours }}
                           </td>
                           <td scope="col">
-                            {{ data.client_rate }}
+                            {{ "£" + data.client_rate }}
                           </td>
                           <td scope="col">
-                            {{ data.total_cost }}
+                            {{ "£" + data.total_cost }}
                           </td>
 
                           <td scope="col">

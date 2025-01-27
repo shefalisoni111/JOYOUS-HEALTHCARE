@@ -45,7 +45,7 @@
                 <td v-text="getJobPosition(data.candidate_details)"></td>
                 <td v-text="data.start_date"></td>
                 <td v-text="data.end_date"></td>
-                <td v-text="data.total_amount"></td>
+                <td v-text="'£' + data.total_amount"></td>
                 <td>
                   <router-link
                     :to="{ name: 'GenerateInvoiceView', params: { id: index } }"

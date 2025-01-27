@@ -434,7 +434,9 @@
                   <td>
                     {{ data.display_hours ? data.display_hours : "0.00" }}
                   </td>
-                  <td>{{ data.total_week_cost ? data.total_week_cost : "0.00" }}</td>
+                  <td>
+                    {{ "£" + data.total_week_cost ? data.total_week_cost : "0.00" }}
+                  </td>
                   <td>{{ data.approved_by ? data.approved_by : "Null" }}</td>
                 </tr>
               </tbody>

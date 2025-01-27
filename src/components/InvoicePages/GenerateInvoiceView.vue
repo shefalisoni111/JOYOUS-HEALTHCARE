@@ -119,15 +119,15 @@
 
                           <td scope="col">{{ timesheet?.job_position || "" }}</td>
                           <td scope="col">{{ candidate?.can_total_units || "" }}</td>
-                          <td scope="col">{{ timesheet?.client_rate || "" }}</td>
+                          <td scope="col">{{ "£" + timesheet?.client_rate || "" }}</td>
                           <td scope="col">{{ timesheet?.hours || "" }}</td>
-                          <td scope="col">{{ timesheet?.cost || "" }}</td>
+                          <td scope="col">{{ "£" + timesheet?.cost || "" }}</td>
                         </tr>
                       </template>
                       <tr>
                         <td colspan="9" class="text-start fw-bold">Total Cost</td>
                         <td colspan="9" class="font-weight-bold">
-                          {{ invoiceData?.total_amount || "" }}
+                          {{ "£" + invoiceData?.total_amount || "" }}
                         </td>
                       </tr>
                       <!-- <tr>

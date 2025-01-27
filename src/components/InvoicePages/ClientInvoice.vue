@@ -218,10 +218,14 @@
                           <td scope="col">
                             {{ data.due_date }}
                           </td>
-                          <td scope="col" class="text-center">{{ data.total_amount }}</td>
-                          <td scope="col" class="text-center">{{ data.paid_amount }}</td>
                           <td scope="col" class="text-center">
-                            {{ data.balance_amount }}
+                            {{ "£" + data.total_amount }}
+                          </td>
+                          <td scope="col" class="text-center">
+                            {{ "£" + data.paid_amount }}
+                          </td>
+                          <td scope="col" class="text-center">
+                            {{ "£" + data.balance_amount }}
                           </td>
                           <td scope="col">{{ data.status }}</td>
                           <td scope="col">

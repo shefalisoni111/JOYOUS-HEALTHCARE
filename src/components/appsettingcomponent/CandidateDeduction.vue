@@ -95,7 +95,7 @@
                             {{ getDeduction.jobs_id }}
                           </td> -->
                           <td>
-                            {{ getDeduction.amount }}
+                            {{ "£" + getDeduction.amount }}
                           </td>
                           <!-- <td>
                             {{ getDeduction.frequency }}fgfd

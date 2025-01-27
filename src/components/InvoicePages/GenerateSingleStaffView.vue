@@ -119,7 +119,7 @@
                           </td>
                           <td scope="col">{{ invoiceData?.job_position || "" }}</td>
                           <td scope="col">{{ invoiceData?.unit || "" }}</td>
-                          <td scope="col">{{ timesheet?.staff_rate || "" }}</td>
+                          <td scope="col">{{ "£" + timesheet?.staff_rate || "" }}</td>
                           <td scope="col">{{ timesheet?.hours || "" }}</td>
                         </tr>
                       </template>
@@ -129,7 +129,7 @@
                           Total Cost
                         </td>
                         <td colspan="8" class="font-weight-bold">
-                          {{ invoiceData?.total_amount || 0 }}
+                          {{ "£" + invoiceData?.total_amount || 0 }}
                         </td>
                       </tr>
                     </tbody>

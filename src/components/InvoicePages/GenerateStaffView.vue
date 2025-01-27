@@ -24,7 +24,7 @@
           <thead>
             <tr>
               <th scope="col">Ref Code</th>
-              <th scope="col">ClientName</th>
+              <th scope="col">Client Name</th>
               <th scope="col">Site</th>
               <th scope="col">Staff</th>
               <th scope="col">Position</th>
@@ -46,7 +46,7 @@
                 <td v-text="data.job_position"></td>
                 <td v-text="data.start_date"></td>
                 <td v-text="data.end_date"></td>
-                <td v-text="data.total_amount"></td>
+                <td v-text="'£' + data.total_amount"></td>
                 <td>
                   <router-link
                     :to="{ name: 'GenerateSingleStaffView', params: { id: index } }"

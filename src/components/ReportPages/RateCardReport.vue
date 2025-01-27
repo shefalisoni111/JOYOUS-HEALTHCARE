@@ -208,16 +208,16 @@
                           <td>
                             {{ rate.rate_type ? rate.rate_type : "Null" }}
                           </td>
-                          <td>{{ rate.client_rate }}</td>
+                          <td>{{ "£" + rate.client_rate }}</td>
                           <td>
-                            {{ rate.private_limited }}
+                            {{ "£" + rate.private_limited }}
                           </td>
-                          <td>{{ rate.self_employed }}</td>
+                          <td>{{ "£" + rate.self_employed }}</td>
                           <td>
-                            {{ rate.umbrella ? rate.umbrella : "Null" }}
+                            {{ "£" + rate.umbrella ? rate.umbrella : "Null" }}
                           </td>
                           <td>
-                            {{ rate.paye ? rate.paye : "Null" }}
+                            {{ "£" + rate.paye ? rate.paye : "Null" }}
                           </td>
                           <td>
                             {{ rate.created_by_and_time }}
@@ -302,18 +302,18 @@
                             }}-{{ formatTime(rate.end_time) }}
                           </td>
                           <td>
-                            {{ rate.rate_type ? rate.rate_type : "Null" }}
+                            {{ "£" + rate.rate_type ? rate.rate_type : "Null" }}
                           </td>
-                          <td>{{ rate.client_rate }}</td>
+                          <td>{{ "£" + rate.client_rate }}</td>
                           <td>
-                            {{ rate.private_limited }}
+                            {{ "£" + rate.private_limited }}
                           </td>
-                          <td>{{ rate.self_employed }}</td>
+                          <td>{{ "£" + rate.self_employed }}</td>
                           <td>
-                            {{ rate.umbrella ? rate.umbrella : "Null" }}
+                            {{ "£" + rate.umbrella ? rate.umbrella : "Null" }}
                           </td>
                           <td>
-                            {{ rate.paye ? rate.paye : "Null" }}
+                            {{ "£" + rate.paye ? rate.paye : "Null" }}
                           </td>
                           <td>
                             {{ rate.created_by_and_time }}

@@ -211,9 +211,11 @@
                           <td scope="col">{{ data.start_date }}</td>
                           <td scope="col">{{ data.end_date }}</td>
                           <td scope="col">{{ data.end_date }}</td>
-                          <td scope="col" class="text-center">{{ data.paid_amount }}</td>
                           <td scope="col" class="text-center">
-                            {{ data.balance_amount }}
+                            {{ "£" + data.paid_amount }}
+                          </td>
+                          <td scope="col" class="text-center">
+                            {{ "£" + data.balance_amount }}
                           </td>
                           <td scope="col">{{ data.status }}</td>
                           <td scope="col">{{ data.invoice_creation_period }}</td>
@@ -302,9 +304,11 @@
                           <td scope="col">{{ data.start_date }}</td>
                           <td scope="col">{{ data.end_date }}</td>
                           <td scope="col">{{ data.end_date }}</td>
-                          <td scope="col" class="text-center">{{ data.paid_amount }}</td>
                           <td scope="col" class="text-center">
-                            {{ data.balance_amount }}
+                            {{ "£" + data.paid_amount }}
+                          </td>
+                          <td scope="col" class="text-center">
+                            {{ "£" + data.balance_amount }}
                           </td>
                           <td scope="col">{{ data.status }}</td>
                           <td scope="col">{{ data.invoice_creation_period }}</td>

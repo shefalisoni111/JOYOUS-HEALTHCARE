@@ -109,15 +109,19 @@
 
                         <td scope="col">{{ getClientInvoiceDetail.unit }}</td>
                         <td scope="col">{{ getClientInvoiceDetail.rate }}</td>
-                        <td scope="col">{{ getClientInvoiceDetail.total_amount }}</td>
+                        <td scope="col">
+                          {{ "£" + getClientInvoiceDetail.total_amount }}
+                        </td>
                       </tr>
                       <tr>
                         <td scope="col">{{ getClientInvoiceDetail.end_date }}</td>
                         <td scope="col">{{ getClientInvoiceDetail.notes }}</td>
 
                         <td scope="col">{{ getClientInvoiceDetail.unit }}</td>
-                        <td scope="col">{{ getClientInvoiceDetail.rate }}</td>
-                        <td scope="col">{{ getClientInvoiceDetail.total_amount }}</td>
+                        <td scope="col">{{ "£" + getClientInvoiceDetail.rate }}</td>
+                        <td scope="col">
+                          {{ "£" + getClientInvoiceDetail.total_amount }}
+                        </td>
                       </tr>
                       <tr>
                         <!-- Leave the first 4 columns blank -->
