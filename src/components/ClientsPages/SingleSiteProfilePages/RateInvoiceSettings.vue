@@ -82,7 +82,7 @@
               <select
                 class="form-control"
                 v-model="fetchInvoiceSetting.invoice_creation_period"
-                @input="handleInputChange"
+                @change="handleInputChange"
               >
                 <option v-for="day in creation" :key="day" :value="day">
                   {{ day }}
