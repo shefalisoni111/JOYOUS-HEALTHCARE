@@ -667,7 +667,7 @@
             </button>
 
             <button
-              v-else
+              v-if="isModified"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="handleApproveAndSave()"
@@ -744,6 +744,11 @@ export default {
   components: { SuccessAlert },
 
   computed: {
+    isModified() {
+      return (
+        JSON.stringify(this.fetchCustomTimeShetData) !== JSON.stringify(this.originalData)
+      );
+    },
     getCandidatesData() {
       return this.$store.state.candidates;
     },
