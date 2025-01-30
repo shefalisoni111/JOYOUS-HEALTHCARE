@@ -655,26 +655,22 @@
             >
               Cancel
             </button>
-            <!-- <button
-              class="btn btn-primary rounded-1 text-capitalize fw-medium"
-              data-bs-dismiss="modal"
-              @click.prevent="updateCandidateMethod()"
-            >
-              Save
-            </button> -->
+
             <button
-              v-if="fetchCustomTimeShetData.status === 'Approved' && showValueCustom"
+              v-if="fetchCustomTimeShetData.status === 'Approved'"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="approved_TimesheetRevertMethod()"
+              disabled
             >
               Approved
             </button>
+
             <button
               v-else
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              @click.prevent="handleApproveAndSave"
+              @click.prevent="handleApproveAndSave()"
             >
               Approve & Save
             </button>

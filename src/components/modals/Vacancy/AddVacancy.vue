@@ -380,7 +380,7 @@
                     <label class="form-label"> Percentage</label>
                   </div>
                   <div class="col-10 mt-1">
-                    <select class="form-control" v-model="holiday_percentage">
+                    <select class="form-control" v-model="percentage">
                       <option value="" disabled>Select Percentage</option>
                       <option
                         v-for="value in [0, 25, 50, 75, 100]"
@@ -390,8 +390,8 @@
                         {{ value }}%
                       </option>
                     </select>
-                    <!-- <div v-if="getError('holiday_percentage')" class="text-danger">
-                      {{ getError("holiday_percentage") }}
+                    <!-- <div v-if="getError('percentage')" class="text-danger">
+                      {{ getError("percentage") }}
                     </div> -->
                   </div>
                 </div>
@@ -500,7 +500,7 @@ export default {
       client_rate: null,
       end_date: "",
       staff_rate: null,
-      holiday_percentage: "",
+      percentage: "",
       umbrella: null,
       paye: null,
       private_limited: null,
@@ -546,7 +546,7 @@ export default {
         this.umbrella !== null &&
         this.paye !== null &&
         this.private_limited !== "" &&
-        this.holiday_percentage !== "" &&
+        this.percentage !== "" &&
         this.validationSelectedOptionText &&
         this.validationSelectedBusinessUnit &&
         this.validationSelectedClient &&
@@ -1098,11 +1098,8 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/find_rates`, { params });
         this.fetchRatesData = response.data.rates;
-        if (response.data.holiday_percentage !== undefined) {
-          this.holiday_percentage = Number(response.data.holiday_percentage);
-        } else {
-          this.holiday_percentage = 0;
-        }
+
+        this.percentage = Number(response.data.holiday_percentage);
 
         this.errormsg = "";
         if (this.fetchRatesData.length > 0) {
@@ -1121,8 +1118,11 @@ export default {
           this.errormsg = "";
         }
       } catch (error) {
-        if (error.response && error.response.status === 404) {
-          this.holiday_percentage = response.data.holiday_percentage;
+        if (error.response) {
+          this.percentage = error.response.data.holiday_percentage
+            ? Number(error.response.data.holiday_percentage)
+            : 0;
+          console.log(this.percentage);
           this.errormsg = error.response.data.message;
           if (this.errormsg) {
             this.errormsg = "Rates Not Found.";
@@ -1134,7 +1134,7 @@ export default {
           this.umbrella = "";
           this.paye = "";
           this.private_limited = "";
-          this.holiday_percentage = 0;
+          this.percentage = "";
           this.validationClientRate = true;
           this.validationStaffRate = true;
           this.validationUmbrella = true;

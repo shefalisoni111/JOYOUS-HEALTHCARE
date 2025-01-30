@@ -79,21 +79,18 @@
                     <label class="form-label">Date</label>
                   </div>
 
-                  <div v-for="(date, index) in fetchVacancy.dates" :key="index" class="">
+                  <div v-for="(date, index) in fetchVacancy.dates" :key="index">
                     <div class="col-10 position-relative">
                       <input
                         type="date"
                         class="form-select w-100"
-                        :value="formatDate(date)"
-                        @input="updateDate($event.target.value, index)"
+                        v-model="fetchVacancy.dates[index]"
                       />
-                      <span
-                        v-if="!isDateValid(date) && fetchVacancy.dates[index].length > 0"
-                        class="text-danger"
-                        >Please choose a date from today onwards!</span
-                      >
+                      <span v-if="!isDateValid(date)" class="text-danger">
+                        Please choose a date from today onwards!
+                      </span>
                       <button
-                        v-if="fetchVacancy.dates.length > 1 && !isDateValid(date)"
+                        v-if="fetchVacancy.dates.length > 1"
                         style="
                           position: absolute;
                           bottom: 96px;
@@ -132,6 +129,7 @@
                   </div>
                 </div>
                 <div>
+                  {{ console.log(fetchVacancy.start_time) }}
                   <div class="mb-3 d-flex justify-content-between">
                     <div class="col-2">
                       <label class="form-label" for="selectCustomStartTime"
@@ -309,10 +307,7 @@
                       <label class="form-label"> Percentage</label>
                     </div>
                     <div class="col-10 mt-1">
-                      <select
-                        class="form-control"
-                        v-model="fetchVacancy.holiday_percentage"
-                      >
+                      <select class="form-control" v-model="fetchVacancy.percentage">
                         <option value="" disabled>Select Percentage</option>
                         <option
                           v-for="value in [0, 25, 50, 75, 100]"
@@ -322,8 +317,8 @@
                           {{ value }}%
                         </option>
                       </select>
-                      <!-- <div v-if="getError('holiday_percentage')" class="text-danger">
-                        {{ getError("holiday_percentage") }}
+                      <!-- <div v-if="getError('percentage')" class="text-danger">
+                        {{ getError("percentage") }}
                       </div> -->
                     </div>
                   </div>
@@ -341,20 +336,6 @@
                       />
                     </div>
                   </div>
-                  <!-- <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
-                      <label class="form-label">Client Rate</label>
-                    </div>
-                    <div class="col-10">
-                      <input
-                        type="number"
-                        class="form-select w-25"
-                        v-model="fetchVacancy.client_rate"
-                        @input="validateStaffRequired"
-                        @keydown.prevent
-                      />
-                    </div>
-                  </div> -->
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
@@ -409,7 +390,7 @@ export default {
         client_id: "",
         staff_required: null,
         client_rate: null,
-        holiday_percentage: "",
+        percentage: "",
         staff_rate: null,
         umbrella: null,
         paye: null,
@@ -553,19 +534,19 @@ export default {
           break;
       }
     },
-    validateDates() {
-      const today = new Date().toISOString().slice(0, 10);
-      this.invalidDate = this.fetchVacancy.dates.some((date) => {
-        const [day, month, year] = date.split("-");
-        const formattedDate = `${year}-${month}-${day}`;
-        return formattedDate < today;
-      });
-    },
-    updateDate(value, index) {
-      const [year, month, day] = value.split("-");
-      this.fetchVacancy.dates[index] = `${day}-${month}-${year}`;
-      this.validateDates();
-    },
+    // validateDates() {
+    //   const today = new Date().toISOString().slice(0, 10);
+    //   this.invalidDate = this.fetchVacancy.dates.some((date) => {
+    //     const [day, month, year] = date.split("-");
+    //     const formattedDate = `${year}-${month}-${day}`;
+    //     return formattedDate < today;
+    //   });
+    // },
+    // updateDate(value, index) {
+    //   const [year, month, day] = value.split("-");
+    //   this.fetchVacancy.dates[index] = `${day}-${month}-${year}`;
+    //   this.validateDates();
+    // },
     onShiftSelect() {
       const selectedShift = this.shiftsTime.find(
         (shift) => shift.id === this.fetchVacancy.site_shift_id
@@ -576,15 +557,30 @@ export default {
       }
     },
     formatTime(hour) {
+      // if (hour === 0) {
+      //   return "12:00 AM";
+      // } else if (hour < 12) {
+      //   return `${String(hour).padStart(2, "0")}:00 AM`;
+      // } else if (hour === 12) {
+      //   return "12:00 AM";
+      // } else {
+      //   return `${String(hour - 12).padStart(2, "0")}:00 PM`;
+      // }
       if (hour === 0) {
         return "12:00 AM";
       } else if (hour < 12) {
         return `${String(hour).padStart(2, "0")}:00 AM`;
       } else if (hour === 12) {
-        return "12:00 AM";
+        return "12:00 PM";
       } else {
         return `${String(hour - 12).padStart(2, "0")}:00 PM`;
       }
+    },
+    extractTime(dateTime) {
+      if (!dateTime) return "";
+
+      const date = new Date(dateTime);
+      return date.toISOString().substr(11, 5);
     },
     formatTimes(hour) {
       if (hour < 12) {
@@ -623,7 +619,6 @@ export default {
       return formattedDate >= today;
     },
     removeDate(index) {
-      // this.fetchVacancy.dates.splice(index, 1);
       const updatedDates = this.fetchVacancy.dates.filter((_, i) => i !== index);
 
       this.fetchVacancy.dates = updatedDates;
@@ -633,10 +628,10 @@ export default {
       const [day, month, year] = date.split("-");
       return `${year}-${month}-${day}`;
     },
-    updateDate(value, index) {
-      const [year, month, day] = value.split("-");
-      this.fetchVacancy.dates[index] = `${day}-${month}-${year}`;
-    },
+    // updateDate(value, index) {
+    //   const [year, month, day] = value.split("-");
+    //   this.fetchVacancy.dates[index] = `${day}-${month}-${year}`;
+    // },
     // validateStaffRequired() {
     //   if (this.fetchVacancy.staff_required <= 0) {
     //     this.fetchVacancy.staff_required = null;
@@ -652,39 +647,96 @@ export default {
             Authorization: "bearer " + token,
           },
         });
+        const data = response.data;
 
-        if (response.data.id !== undefined) {
-          this.fetchVacancy.id = response.data.id;
+        if (data.id !== undefined) {
+          this.fetchVacancy.id = data.id;
         }
 
-        this.fetchVacancy.site_id = response.data.site_id;
-        this.fetchVacancy.client_id = response.data.client_id;
-        this.fetchVacancy.job_id = response.data.job_id;
-        this.fetchVacancy.staff_required = response.data.staff_required;
+        this.fetchVacancy.site_id = data.site_id || "";
+        this.fetchVacancy.client_id = data.client_id || "";
+        this.fetchVacancy.job_id = data.job_id || "";
+        this.fetchVacancy.staff_required = data.staff_required || 0;
+        this.fetchVacancy.notes = data.notes || "";
+        this.fetchVacancy.site_shift_id = data.site_shift_id || "";
+        this.fetchVacancy.break = data.break || "0";
 
-        this.fetchVacancy.dates = response.data.dates.map((date) => {
-          const dateParts = date.split(",")[1].trim().split("-");
-          const day = dateParts[0].trim();
-          const month = dateParts[1].trim();
-          const year = dateParts[2].trim();
-          return `${day}-${month}-${year}`;
-        });
-        // this.fetchVacancy.dates = response.data.dates;
-        this.fetchVacancy.notes = response.data.notes;
-        this.fetchVacancy.site_shift_id = response.data.site_shift_id;
-        this.fetchVacancy.start_time = response.data.start_time;
-        this.fetchVacancy.end_time = response.data.end_time;
-        this.fetchVacancy.break = response.data.break;
-        if (response.data.staff_rate) {
-          this.fetchVacancy.staff_rate = response.data.staff_rate.replace(/£/g, "");
+        if (Array.isArray(data.dates)) {
+          this.fetchVacancy.dates = data.dates.map((date) =>
+            this.formatDateForInput(date)
+          );
+        } else {
+          this.fetchVacancy.dates = [];
         }
-        this.fetchVacancy.client_rate = response.data.client_rate;
-        this.fetchVacancy.paye = response.data.paye;
-        this.fetchVacancy.umbrella = response.data.umbrella;
-        this.fetchVacancy.private_limited = response.data.private_limited;
+
+        this.fetchVacancy.staff_rate =
+          data.staff_rate !== null ? String(data.staff_rate).replace(/£/g, "") : "";
+        this.fetchVacancy.client_rate =
+          data.client_rate !== null ? String(data.client_rate) : "";
+        this.fetchVacancy.paye = data.paye !== null ? String(data.paye) : "";
+        this.fetchVacancy.umbrella = data.umbrella !== null ? String(data.umbrella) : "";
+        this.fetchVacancy.private_limited =
+          data.private_limited !== null ? String(data.private_limited) : "";
+
+        this.fetchVacancy.start_time = data.start_time
+          ? this.formatTime(new Date(data.start_time).getHours())
+          : "";
+        this.fetchVacancy.end_time = data.end_time
+          ? this.formatTime(new Date(data.end_time).getHours())
+          : "";
+        this.fetchVacancy.percentage = response.data.percentage;
+        // if (response.data.id !== undefined) {
+        //   this.fetchVacancy.id = response.data.id;
+        // }
+
+        // this.fetchVacancy.site_id = response.data.site_id;
+        // this.fetchVacancy.client_id = response.data.client_id;
+        // this.fetchVacancy.job_id = response.data.job_id;
+        // this.fetchVacancy.staff_required = response.data.staff_required;
+
+        // // this.fetchVacancy.dates = response.data.dates.map((date) => {
+        // //   const dateParts = date.split(",")[1].trim().split("-");
+        // //   const day = dateParts[0].trim();
+        // //   const month = dateParts[1].trim();
+        // //   const year = dateParts[2].trim();
+        // //   return `${day}-${month}-${year}`;
+        // // });
+        // if (Array.isArray(response.data.dates)) {
+        //   this.fetchVacancy.dates = response.data.dates.map((date) =>
+        //     this.formatDateForInput(date)
+        //   );
+        // } else {
+        //   this.fetchVacancy.dates = [];
+        // }
+        // // this.fetchVacancy.dates = response.data.dates;
+
+        // this.fetchVacancy.notes = response.data.notes;
+        // this.fetchVacancy.site_shift_id = response.data.site_shift_id;
+        // this.fetchVacancy.start_time = response.data.start_time;
+        // this.fetchVacancy.end_time = response.data.end_time;
+        // this.fetchVacancy.break = response.data.break;
+        // if (response.data.staff_rate) {
+        //   this.fetchVacancy.staff_rate = response.data.staff_rate.replace(/£/g, "");
+        // }
+        // this.fetchVacancy.client_rate = response.data.client_rate;
+        // this.fetchVacancy.paye = response.data.paye;
+        // this.fetchVacancy.umbrella = response.data.umbrella;
+        // this.fetchVacancy.private_limited = response.data.private_limited;
       } catch (error) {}
     },
+    formatDateForInput(date) {
+      if (!date) return "";
+      return new Date(date).toISOString().split("T")[0];
+    },
 
+    updateDate(value, index) {
+      this.fetchVacancy.dates[index] = value;
+    },
+
+    isDateValid(date) {
+      const today = new Date().toISOString().split("T")[0];
+      return date >= today;
+    },
     async updateVacancyMethod() {
       const token = localStorage.getItem("token");
 
