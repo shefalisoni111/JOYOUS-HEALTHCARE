@@ -11,10 +11,10 @@
             <div class="row g-3 align-items-center">
               <form>
                 <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
+                  <div class="col-3">
                     <label class="form-label">Title</label>
                   </div>
-                  <div class="col-10 mt-1">
+                  <div class="col-9 mt-1">
                     <input
                       type="text"
                       class="form-control"
@@ -28,10 +28,10 @@
                 </div>
 
                 <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
+                  <div class="col-3">
                     <label class="form-label"> Date</label>
                   </div>
-                  <div class="col-10 mt-1">
+                  <div class="col-9 mt-1">
                     <input
                       type="date"
                       class="form-control"
@@ -42,6 +42,31 @@
                     />
                     <div v-if="getError('holiday_date')" class="text-danger">
                       {{ getError("holiday_date") }}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-3">
+                    <label class="form-label"> Percentage</label>
+                  </div>
+                  <div class="col-9 mt-1">
+                    <select
+                      class="form-control"
+                      v-model="percentage"
+                      @change="clearError('percentage')"
+                    >
+                      <option value="" disabled>Select Percentage</option>
+                      <option
+                        v-for="value in [0, 25, 50, 75, 100]"
+                        :key="value"
+                        :value="value"
+                      >
+                        {{ value }}%
+                      </option>
+                    </select>
+                    <div v-if="getError('percentage')" class="text-danger">
+                      {{ getError("percentage") }}
                     </div>
                   </div>
                 </div>
@@ -85,7 +110,7 @@ export default {
       title: "",
 
       holiday_date: "",
-
+      percentage: "",
       errors: {},
     };
   },
@@ -114,6 +139,7 @@ export default {
     clearFields() {
       this.title = "";
       this.holiday_date = "";
+      this.percentage = "";
     },
     clearError(fieldName) {
       this.errors[fieldName] = null;
@@ -122,7 +148,7 @@ export default {
       return this.errors[fieldName];
     },
     isEmptyField() {
-      return !this.title.trim() || !this.holiday_date.trim();
+      return !this.title.trim() || !this.holiday_date.trim() || !this.percentage;
     },
     validateAndAddJob() {
       this.errors = {};
@@ -146,6 +172,7 @@ export default {
       const data = {
         title: this.title,
         holiday_date: this.holiday_date,
+        percentage: String(this.percentage),
       };
       try {
         const response = await axios.post(`${VITE_API_URL}/holiday_calenders`, data);
@@ -155,6 +182,7 @@ export default {
           this.$refs.successAlert.showSuccess(message);
           this.title = "";
           this.holiday_date = "";
+          this.percentage = "";
         }
       } catch (error) {
         // console.error("Error adding employee:", error);

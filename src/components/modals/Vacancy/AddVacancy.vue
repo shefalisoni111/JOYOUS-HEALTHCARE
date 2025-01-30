@@ -375,7 +375,26 @@
                     Paye, Private limited.
                   </span>
                 </div>
-
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-2">
+                    <label class="form-label"> Percentage</label>
+                  </div>
+                  <div class="col-10 mt-1">
+                    <select class="form-control" v-model="holiday_percentage">
+                      <option value="" disabled>Select Percentage</option>
+                      <option
+                        v-for="value in [0, 25, 50, 75, 100]"
+                        :key="value"
+                        :value="value"
+                      >
+                        {{ value }}%
+                      </option>
+                    </select>
+                    <!-- <div v-if="getError('holiday_percentage')" class="text-danger">
+                      {{ getError("holiday_percentage") }}
+                    </div> -->
+                  </div>
+                </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
                     <label class="form-label" for="selectShifts">Staff Required</label>
@@ -481,6 +500,7 @@ export default {
       client_rate: null,
       end_date: "",
       staff_rate: null,
+      holiday_percentage: "",
       umbrella: null,
       paye: null,
       private_limited: null,
@@ -526,6 +546,7 @@ export default {
         this.umbrella !== null &&
         this.paye !== null &&
         this.private_limited !== "" &&
+        this.holiday_percentage !== "" &&
         this.validationSelectedOptionText &&
         this.validationSelectedBusinessUnit &&
         this.validationSelectedClient &&
@@ -617,6 +638,9 @@ export default {
     },
   },
   methods: {
+    // getError(fieldName) {
+    //   return this.errors[fieldName];
+    // },
     getTodayDate() {
       const today = new Date();
       const year = today.getFullYear();
@@ -1074,7 +1098,12 @@ export default {
       try {
         const response = await axios.get(`${VITE_API_URL}/find_rates`, { params });
         this.fetchRatesData = response.data.rates;
-        // console.log(this.fetchRatesData);
+        if (response.data.holiday_percentage !== undefined) {
+          this.holiday_percentage = Number(response.data.holiday_percentage);
+        } else {
+          this.holiday_percentage = 0;
+        }
+
         this.errormsg = "";
         if (this.fetchRatesData.length > 0) {
           const rates = this.fetchRatesData[0];
@@ -1093,6 +1122,7 @@ export default {
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {
+          this.holiday_percentage = response.data.holiday_percentage;
           this.errormsg = error.response.data.message;
           if (this.errormsg) {
             this.errormsg = "Rates Not Found.";
@@ -1104,6 +1134,7 @@ export default {
           this.umbrella = "";
           this.paye = "";
           this.private_limited = "";
+          this.holiday_percentage = 0;
           this.validationClientRate = true;
           this.validationStaffRate = true;
           this.validationUmbrella = true;

@@ -12,17 +12,6 @@
           </div>
           <!-- End Page Title -->
           <div class="d-flex align-items-center">
-            <!-- <button
-              type="button"
-              class="btn btn-primary text-nowrap fs-5 text-capitalize"
-              data-bs-toggle="modal"
-              data-bs-target="#inprogress"
-              data-bs-whatever="@mdo"
-            >
-              <i class="bi bi-file-earmark"></i>
-              generate report
-            </button> -->
-
             <router-link
               type="button"
               class="btn btn-primary text-nowrap fs-5 text-capitalize"
@@ -643,38 +632,51 @@ export default {
       this.$router.push({ name: "DueDoc" });
     },
     formatDate(date) {
-      const day = date.getDate();
-      const month = date.getMonth() + 1;
-      const year = date.getFullYear();
-      return `${day}/${month}/${year}`;
+      //    const day = date.getDate();
+      // const month = date.getMonth() + 1;
+      // const year = date.getFullYear();
+      // return `${day}/${month}/${year}`;
+      return date.toLocaleDateString("en-GB", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
     },
     moveToPrevious() {
-      if (this.currentView === "weekly") {
-        this.startDate.setDate(this.startDate.getDate() - 7);
-        this.endDate.setDate(this.endDate.getDate() - 7);
-        this.updateDateRange();
-      } else if (this.currentView === "monthly") {
-        this.startDate.setMonth(this.startDate.getMonth() - 1);
-        this.endDate = new Date(
-          this.startDate.getFullYear(),
-          this.startDate.getMonth() + 1,
-          0
-        );
-      }
+      // if (this.currentView === "weekly") {
+      //   this.startDate.setDate(this.startDate.getDate() - 7);
+      //   this.endDate.setDate(this.endDate.getDate() - 7);
+      //   this.updateDateRange();
+      // } else if (this.currentView === "monthly") {
+      //   this.startDate.setMonth(this.startDate.getMonth() - 1);
+      //   this.endDate = new Date(
+      //     this.startDate.getFullYear(),
+      //     this.startDate.getMonth() + 1,
+      //     0
+      //   );
+      // }
+      this.startDate.setDate(this.startDate.getDate() - 7);
+      this.endDate.setDate(this.endDate.getDate() - 7);
+      this.startDate = new Date(this.startDate); // Ensure reactivity
+      this.endDate = new Date(this.endDate);
     },
     moveToNext() {
-      if (this.currentView === "weekly") {
-        this.startDate.setDate(this.startDate.getDate() + 7);
-        this.endDate.setDate(this.endDate.getDate() + 7);
-        this.updateDateRange();
-      } else if (this.currentView === "monthly") {
-        this.startDate.setMonth(this.startDate.getMonth() + 1);
-        this.endDate = new Date(
-          this.startDate.getFullYear(),
-          this.startDate.getMonth() + 1,
-          0
-        );
-      }
+      // if (this.currentView === "weekly") {
+      //   this.startDate.setDate(this.startDate.getDate() + 7);
+      //   this.endDate.setDate(this.endDate.getDate() + 7);
+      //   this.updateDateRange();
+      // } else if (this.currentView === "monthly") {
+      //   this.startDate.setMonth(this.startDate.getMonth() + 1);
+      //   this.endDate = new Date(
+      //     this.startDate.getFullYear(),
+      //     this.startDate.getMonth() + 1,
+      //     0
+      //   );
+      // }
+      this.startDate.setDate(this.startDate.getDate() + 7);
+      this.endDate.setDate(this.endDate.getDate() + 7);
+      this.startDate = new Date(this.startDate); // Ensure reactivity
+      this.endDate = new Date(this.endDate);
     },
     updateDateRange() {
       if (this.currentView === "weekly") {

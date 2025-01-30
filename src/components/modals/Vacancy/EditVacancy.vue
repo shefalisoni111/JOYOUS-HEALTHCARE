@@ -304,7 +304,29 @@
                       </div>
                     </div>
                   </div>
-
+                  <div class="mb-3 d-flex justify-content-between">
+                    <div class="col-2">
+                      <label class="form-label"> Percentage</label>
+                    </div>
+                    <div class="col-10 mt-1">
+                      <select
+                        class="form-control"
+                        v-model="fetchVacancy.holiday_percentage"
+                      >
+                        <option value="" disabled>Select Percentage</option>
+                        <option
+                          v-for="value in [0, 25, 50, 75, 100]"
+                          :key="value"
+                          :value="value"
+                        >
+                          {{ value }}%
+                        </option>
+                      </select>
+                      <!-- <div v-if="getError('holiday_percentage')" class="text-danger">
+                        {{ getError("holiday_percentage") }}
+                      </div> -->
+                    </div>
+                  </div>
                   <div class="mb-3 d-flex justify-content-between">
                     <div class="col-2">
                       <label class="form-label">Staff Required</label>
@@ -387,7 +409,7 @@ export default {
         client_id: "",
         staff_required: null,
         client_rate: null,
-
+        holiday_percentage: "",
         staff_rate: null,
         umbrella: null,
         paye: null,

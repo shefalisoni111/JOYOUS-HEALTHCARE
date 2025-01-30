@@ -240,6 +240,7 @@ import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 import NotSuccessAlertVue from "../../Alerts/NotSuccessAlert.vue";
+import Swal from "sweetalert2";
 
 export default {
   name: "CandidateAdd",
@@ -439,6 +440,7 @@ export default {
               // const message = "Unsuccessful Staff added";
               this.$refs.dangerAlert(this.emailError);
               this.emailInUse = true;
+              Swal("Error", this.emailError, "error");
             } else {
               this.emailError = "";
               this.emailInUse = false;
@@ -448,8 +450,13 @@ export default {
               this.$refs.successAlert.showSuccess(message);
             }
           } else {
-            this.emailError = "Error adding Staff";
-            this.emailInUse = false;
+            // this.emailError = "Error adding Staff";
+            // this.emailInUse = false;
+            if (responseData.error && responseData.error.candidate_devices) {
+              Swal("Error", responseData.error.candidate_devices[0], "error");
+            } else {
+              Swal("Error", "Failed to add staff. Please try again.", "error");
+            }
           }
         } catch (error) {
           // alert("Error adding Staff");

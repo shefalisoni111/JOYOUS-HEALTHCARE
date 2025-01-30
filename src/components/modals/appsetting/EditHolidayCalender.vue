@@ -16,10 +16,10 @@
             <div class="row g-3 align-items-center">
               <form>
                 <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
+                  <div class="col-3">
                     <label class="form-label">Title</label>
                   </div>
-                  <div class="col-10 mt-1">
+                  <div class="col-9 mt-1">
                     <input
                       type="text"
                       class="form-control"
@@ -33,10 +33,10 @@
                 </div>
 
                 <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
+                  <div class="col-3">
                     <label class="form-label"> Date</label>
                   </div>
-                  <div class="col-10 mt-1">
+                  <div class="col-9 mt-1">
                     <input
                       type="date"
                       class="form-control"
@@ -47,6 +47,31 @@
                     />
                     <div v-if="getError('holiday_date')" class="text-danger">
                       {{ getError("holiday_date") }}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-3 d-flex justify-content-between">
+                  <div class="col-3">
+                    <label class="form-label"> Percentage</label>
+                  </div>
+                  <div class="col-9 mt-1">
+                    <select
+                      class="form-control"
+                      v-model="fetchHolidayCalender.percentage"
+                      @change="clearError('percentage')"
+                    >
+                      <option value="" disabled>Select Percentage</option>
+                      <option
+                        v-for="value in [0, 25, 50, 75, 100]"
+                        :key="value"
+                        :value="value"
+                      >
+                        {{ value }}%
+                      </option>
+                    </select>
+                    <div v-if="getError('percentage')" class="text-danger">
+                      {{ getError("percentage") }}
                     </div>
                   </div>
                 </div>
@@ -90,6 +115,7 @@ export default {
         id: "",
         title: "",
         holiday_date: "",
+        percentage: "",
       },
       errors: {},
     };
@@ -128,7 +154,7 @@ export default {
   },
   methods: {
     clearFields() {
-      this.fetchHolidayCalender = { id: "", title: "", holiday_date: "" };
+      this.fetchHolidayCalender = { id: "", title: "", holiday_date: "", percentage: "" };
     },
     clearError(fieldName) {
       this.$set(this.errors, fieldName, null);
@@ -139,7 +165,8 @@ export default {
     isEmptyField() {
       return (
         !this.fetchHolidayCalender.title.trim() ||
-        !this.fetchHolidayCalender.holiday_date.trim()
+        !this.fetchHolidayCalender.holiday_date.trim() ||
+        !this.fetchHolidayCalender.percentage.trim()
       );
     },
 
@@ -147,6 +174,7 @@ export default {
       const data = {
         title: this.fetchHolidayCalender.title,
         holiday_date: this.fetchHolidayCalender.holiday_date,
+        percentage: String(this.fetchHolidayCalender.percentage),
       };
       try {
         const response = await axios.put(
@@ -157,7 +185,7 @@ export default {
           this.$emit("updateHoliday");
           const message = "Holiday Update Successful";
           this.$refs.successAlert.showSuccess(message);
-          this.clearFields();
+          // this.clearFields();
         }
       } catch (error) {
         // console.error("Error updating holiday:", error);
@@ -170,6 +198,7 @@ export default {
           id: response.data.data.id,
           title: response.data.data.title,
           holiday_date: response.data.data.holiday_date,
+          percentage: response.data.data.percentage,
         };
       } catch (error) {
         // console.error("Error fetching holiday details:", error);
