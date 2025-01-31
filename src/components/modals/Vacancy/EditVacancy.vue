@@ -129,7 +129,6 @@
                   </div>
                 </div>
                 <div>
-                  <!-- {{ console.log(fetchVacancy.start_time) }} -->
                   <div class="mb-3 d-flex justify-content-between">
                     <div class="col-2">
                       <label class="form-label" for="selectCustomStartTime"
@@ -567,31 +566,12 @@ export default {
       // } else {
       //   return `${String(hour - 12).padStart(2, "0")}:00 PM`;
       // }
-      if (hour === 0) {
-        return "12:00 AM";
-      } else if (hour < 12) {
-        return `${String(hour).padStart(2, "0")}:00 AM`;
-      } else if (hour === 12) {
-        return "12:00 PM";
-      } else {
-        return `${String(hour - 12).padStart(2, "0")}:00 PM`;
-      }
-    },
-    extractTime(dateTime) {
-      if (!dateTime) return "";
+      let period = hour >= 12 ? "PM" : "AM";
+      let formattedHour = hour % 12 || 12;
 
-      const date = new Date(dateTime);
-      return date.toISOString().substr(11, 5);
+      return `${formattedHour}:00 ${period}`;
     },
-    formatTimes(hour) {
-      if (hour < 12) {
-        return `${String(hour).padStart(2, "0")}:00 AM`;
-      } else if (hour === 12) {
-        return `${String(hour).padStart(2, "0")}:00 PM`;
-      } else if (hour === 24) {
-        return `00:00`;
-      }
-    },
+
     formatBreakTime(minute) {
       const hours = Math.floor(minute / 60);
       const mins = minute % 60;
@@ -679,12 +659,12 @@ export default {
         this.fetchVacancy.private_limited =
           data.private_limited !== null ? String(data.private_limited) : "";
 
-        this.fetchVacancy.start_time = data.start_time
-          ? this.formatTime(new Date(data.start_time).getHours())
-          : "";
-        this.fetchVacancy.end_time = data.end_time
-          ? this.formatTime(new Date(data.end_time).getHours())
-          : "";
+        // this.fetchVacancy.start_time = data.start_time
+        //   ? this.formatTime(new Date(data.start_time).getHours())
+        //   : "";
+        // this.fetchVacancy.end_time = data.end_time
+        //   ? this.formatTime(new Date(data.end_time).getHours())
+        //   : "";
         this.fetchVacancy.percentage = response.data.percentage;
         // if (response.data.id !== undefined) {
         //   this.fetchVacancy.id = response.data.id;
@@ -713,8 +693,8 @@ export default {
 
         // this.fetchVacancy.notes = response.data.notes;
         // this.fetchVacancy.site_shift_id = response.data.site_shift_id;
-        // this.fetchVacancy.start_time = response.data.start_time;
-        // this.fetchVacancy.end_time = response.data.end_time;
+        this.fetchVacancy.start_time = this.convertTimeFormat(response.data.start_time);
+        this.fetchVacancy.end_time = this.convertTimeFormat(response.data.end_time);
         // this.fetchVacancy.break = response.data.break;
         // if (response.data.staff_rate) {
         //   this.fetchVacancy.staff_rate = response.data.staff_rate.replace(/£/g, "");
