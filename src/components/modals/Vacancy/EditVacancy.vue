@@ -129,7 +129,7 @@
                   </div>
                 </div>
                 <div>
-                  {{ console.log(fetchVacancy.start_time) }}
+                  <!-- {{ console.log(fetchVacancy.start_time) }} -->
                   <div class="mb-3 d-flex justify-content-between">
                     <div class="col-2">
                       <label class="form-label" for="selectCustomStartTime"
@@ -394,6 +394,7 @@ export default {
         staff_rate: null,
         umbrella: null,
         paye: null,
+
         private_limited: null,
         job_id: "",
         dates: [],
@@ -788,6 +789,7 @@ export default {
             paye: this.fetchVacancy.paye,
             umbrella: this.fetchVacancy.umbrella,
             private_limited: this.fetchVacancy.private_limited,
+            percentage: String(this.fetchVacancy.percentage),
           },
           {
             headers: {

@@ -1122,7 +1122,7 @@ export default {
           this.percentage = error.response.data.holiday_percentage
             ? Number(error.response.data.holiday_percentage)
             : 0;
-          console.log(this.percentage);
+
           this.errormsg = error.response.data.message;
           if (this.errormsg) {
             this.errormsg = "Rates Not Found.";
