@@ -700,6 +700,7 @@ export default {
         end_comment: "",
         total_hours: "",
         shift_name: "",
+        booking_id: "",
         start_time: "",
         end_time: "",
         break: "",
@@ -824,6 +825,7 @@ export default {
         const payload = {
           ...this.fetchCustomTimeShetData,
           status: "Approved",
+          id: this.fetchCustomTimeShetData.booking_id,
         };
 
         delete payload.total_hours;
@@ -920,6 +922,18 @@ export default {
     resetChanges() {
       this.fetchCustomTimeShetData = { ...this.originalData };
     },
+    parseTime(timeString) {
+      if (!timeString) return { hour: "", minute: "", period: "" };
+
+      const [time, period] = timeString.split(" ");
+      let [hour, minute] = time.split(":").map(Number);
+
+      return {
+        hour: hour,
+        minute: minute,
+        period: period,
+      };
+    },
     async fetchCustomTimeSheetData() {
       if (!this.vacancyId) {
         return;
@@ -963,7 +977,13 @@ export default {
               period: endPeriod,
             };
           }
+          if (response.data.custom_sheets.start_time) {
+            this.startTime = this.parseTime(response.data.custom_sheets.start_time);
+          }
 
+          if (response.data.custom_sheets.end_time) {
+            this.endTime = this.parseTime(response.data.custom_sheets.end_time);
+          }
           this.showValueCustom = true;
           this.fetchCustomTimeShetData = {
             ...response.data.custom_sheets,
@@ -1064,6 +1084,13 @@ export default {
             end_time: endTime,
             ...fallbackResponse.data.sign_timesheets,
           };
+          if (signTimesheets.start_time) {
+            this.startTime = this.parseTime(signTimesheets.start_time);
+          }
+
+          if (signTimesheets.end_time) {
+            this.endTime = this.parseTime(signTimesheets.end_time);
+          }
           this.originalData = { ...this.fetchCustomTimeShetData };
 
           // this.parseStartTime(this.fetchCustomTimeShetData.start_time);

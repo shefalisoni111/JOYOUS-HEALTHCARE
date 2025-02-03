@@ -391,6 +391,7 @@
                             :style="{
                               border: data.status !== 'Approved' ? '1px dashed red' : '',
                             }"
+                            class="btn p-2 position-relative"
                           >
                             <span
                               v-if="
@@ -417,7 +418,7 @@
                               data.status === 'Approved' ? 'btn-success' : 'btn-success'
                             "
                           >
-                            Approved
+                            <!-- {{ console.log(data.status) }} -->
                           </span>
                         </div>
                       </div>
