@@ -122,8 +122,8 @@
                 <div style="width: 56%">
                   <select
                     class="form-control"
-                    v-model="selectedDay"
-                    @input="handleInputChange"
+                    v-model="fetchInvoiceSetting.invoice_cut_off_day"
+                    @change="handleInputChange"
                   >
                     <option v-for="day in weekDays" :key="day" :value="day">
                       {{ day }}
@@ -152,7 +152,7 @@
                     <select
                       class="form-control"
                       v-model="fetchInvoiceSetting.invoice_creation_period"
-                      @input="handleInputChange"
+                      @change="handleInputChange"
                     >
                       <option v-for="day in creation" :key="day" :value="day">
                         {{ day }}
