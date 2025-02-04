@@ -667,12 +667,21 @@
             </button>
 
             <button
+              v-else-if="fetchCustomTimeShetData.status === 'Pending'"
+              class="btn btn-primary rounded-1 text-capitalize fw-medium"
+              data-bs-dismiss="modal"
+              @click.prevent="approved_TimesheetRevertMethod()"
+            >
+              Approve
+            </button>
+
+            <button
               v-if="isModified"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="handleApproveAndSave()"
             >
-              Approve & Save
+              Save
             </button>
           </div>
         </div>

@@ -333,7 +333,14 @@
                           "
                           class="d-flex flex-column gap-2"
                         >
-                          <div>
+                          <div
+                            v-if="data.status !== 'Approved'"
+                            :style="
+                              data.status !== 'Approved'
+                                ? 'border: 1px dashed red'
+                                : 'border: 1px dashed green'
+                            "
+                          >
                             <td>
                               <div class="column pe-2">
                                 <div class="column-cell">
@@ -377,31 +384,75 @@
                             </td>
                           </div>
 
-                          <!-- <div
+                          <div
                             v-else
                             :style="{
-                              border: data.status !== 'Approved' ? '1px dashed red' : '',
+                              border:
+                                data.status !== 'Approved'
+                                  ? '1px dashed red'
+                                  : '1px dashed green',
                             }"
-                            class="btn p-2 position-relative"
                           >
-                            <span
+                            <!-- <span
                               v-if="
                                 data.date
                                   ? formatDate(day) === formatDateFormate(data.date)
-                                  : formatDate(day) === formatDateFormate(data.shift_date)
+                                  : formatDate(day) ===
+                                      formatDateFormate(data.shift_date) &&
+                                    data.status === 'Approved'
                               "
                               class="text-center btn-success bg-success text-white p-2 position-relative"
                               style="left: 34px"
                             >
                               {{ data.status }}
+                            </span> -->
+                            <td>
+                              <div class="column pe-2">
+                                <div class="column-cell">
+                                  {{
+                                    typeof data.start_time === "number"
+                                      ? data.start_time.toFixed(2)
+                                      : data.start_time === null
+                                      ? "0.00"
+                                      : data.start_time
+                                  }}
+                                </div>
+                              </div>
+                            </td>
 
-                              <span
-                                class="btn btn-danger btn-sm position-absolute p-0"
-                                style="left: 17px; top: 28px"
-                              >
-                                {{ data.status }}
-                              </span>
-                            </span>
+                            <td>
+                              <div class="column px-2">
+                                <div class="column-cell">
+                                  {{
+                                    typeof data.end_time === "number"
+                                      ? data.end_time.toFixed(2)
+                                      : data.end_time === null
+                                      ? "0.00"
+                                      : data.end_time
+                                  }}
+                                </div>
+                              </div>
+                            </td>
+
+                            <td>
+                              <div class="column">
+                                <div class="column-cell">
+                                  {{
+                                    typeof data.total_hours === "number"
+                                      ? data.total_hours.toFixed(2)
+                                      : data.total_hours === null
+                                      ? "0.00"
+                                      : data.total_hours
+                                  }}
+                                </div>
+                              </div>
+                            </td>
+                            <!-- <span
+                              class="btn btn-danger btn-sm position-absolute p-0"
+                              style="left: 17px; top: 28px"
+                            >
+                              {{ data.status }}
+                            </span> -->
                           </div>
                           <span
                             class="text-center"
@@ -410,7 +461,7 @@
                             "
                           >
                             {{ data.status }}
-                          </span> -->
+                          </span>
                         </div>
                       </div>
                     </div>
