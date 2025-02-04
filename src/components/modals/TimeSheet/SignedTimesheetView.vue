@@ -581,7 +581,7 @@
                   </div>
 
                   <div class="mb-3 row">
-                    <div class="col-4">
+                    <div class="col-6">
                       <div class="col-12">
                         <label class="form-label">Start Comments</label>
                       </div>
@@ -600,7 +600,7 @@
                         ></textarea>
                       </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-6">
                       <div class="col-12">
                         <label class="form-label">End Comments</label>
                       </div>
@@ -619,7 +619,7 @@
                         ></textarea>
                       </div>
                     </div>
-                    <div class="col-4">
+                    <!-- <div class="col-4">
                       <div class="col-12">
                         <label class="form-label">Comments</label>
                       </div>
@@ -637,7 +637,7 @@
                           rows="3"
                         ></textarea>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </form>

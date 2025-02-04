@@ -297,8 +297,7 @@
                           mergedTimesheetsArray &&
                           (data.date
                             ? formatDate(day) === formatDateFormate(data.date)
-                            : formatDate(day) === formatDateFormate(data.shift_date)) &&
-                          data.status !== 'Approved'
+                            : formatDate(day) === formatDateFormate(data.shift_date))
                             ? 'modal'
                             : ''
                         "
@@ -306,8 +305,7 @@
                           mergedTimesheetsArray &&
                           (data.date
                             ? formatDate(day) === formatDateFormate(data.date)
-                            : formatDate(day) === formatDateFormate(data.shift_date)) &&
-                          data.status !== 'Approved'
+                            : formatDate(day) === formatDateFormate(data.shift_date))
                             ? '#editWeeklyTs'
                             : ''
                         "
@@ -316,8 +314,7 @@
                           mergedTimesheetsArray &&
                           (data.date
                             ? formatDate(day) === formatDateFormate(data.date)
-                            : formatDate(day) === formatDateFormate(data.shift_date)) &&
-                          data.status !== 'Approved'
+                            : formatDate(day) === formatDateFormate(data.shift_date))
                             ? openModal(data, formatDate(day))
                             : null
                         "
@@ -332,17 +329,11 @@
                           v-if="
                             data.date
                               ? formatDate(day) === formatDateFormate(data.date)
-                              : formatDate(day) === formatDateFormate(data.shift_date) &&
-                                data.status !== 'Approved'
+                              : formatDate(day) === formatDateFormate(data.shift_date)
                           "
                           class="d-flex flex-column gap-2"
                         >
-                          <div
-                            v-if="data.status !== 'Approved'"
-                            :style="
-                              data.status !== 'Approved' ? 'border: 1px dashed red' : ''
-                            "
-                          >
+                          <div>
                             <td>
                               <div class="column pe-2">
                                 <div class="column-cell">
@@ -386,7 +377,7 @@
                             </td>
                           </div>
 
-                          <div
+                          <!-- <div
                             v-else
                             :style="{
                               border: data.status !== 'Approved' ? '1px dashed red' : '',
@@ -408,18 +399,18 @@
                                 class="btn btn-danger btn-sm position-absolute p-0"
                                 style="left: 17px; top: 28px"
                               >
-                                Approved
+                                {{ data.status }}
                               </span>
                             </span>
                           </div>
                           <span
                             class="text-center"
                             :class="
-                              data.status === 'Approved' ? 'btn-success' : 'btn-success'
+                              data.status === 'Approved' ? 'btn-success' : 'btn-danger'
                             "
                           >
-                            <!-- {{ console.log(data.status) }} -->
-                          </span>
+                            {{ data.status }}
+                          </span> -->
                         </div>
                       </div>
                     </div>

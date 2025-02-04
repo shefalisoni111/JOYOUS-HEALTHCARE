@@ -581,7 +581,7 @@
                     </div> -->
                   </div>
                   <div class="mb-3 row" v-if="!showValueCustom">
-                    <div class="col-4">
+                    <div class="col-6">
                       <div class="col-12">
                         <label class="form-label">Start Comments</label>
                       </div>
@@ -594,7 +594,7 @@
                         ></textarea>
                       </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-6">
                       <div class="col-12">
                         <label class="form-label">End Comments</label>
                       </div>
@@ -602,12 +602,12 @@
                       <div class="col-12 mt-1">
                         <textarea
                           class="form-control"
-                          v-model="fetchCustomTimeShetData.start_comment"
+                          v-model="fetchCustomTimeShetData.end_comment"
                           rows="3"
                         ></textarea>
                       </div>
                     </div>
-                    <div class="col-4">
+                    <!-- <div class="col-4">
                       <div class="col-12">
                         <label class="form-label">Comments</label>
                       </div>
@@ -619,7 +619,7 @@
                           rows="3"
                         ></textarea>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                   <div class="mb-3" v-if="showValueCustom">
                     <div class="col-12">
