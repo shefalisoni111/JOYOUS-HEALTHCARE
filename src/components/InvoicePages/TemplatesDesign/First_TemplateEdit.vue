@@ -28,21 +28,47 @@
               class="text-muted bg-white p-3"
               style="border: 1px solid #f8f8f8; box-shadow: 2px 2px 7px 2px #e7d7d7"
             >
-              <div class="">
+              <div class="row">
                 <div class="col-12">
                   <div class="row">
                     <div class="col-4">
-                      <h5 class="fw-bold">Recpal Demo1</h5>
-                      <p class="mb-0">Mob No: {{ agencySetting.contact }}</p>
-                      <p class="mb-0">Email: {{ agencySetting.email }}</p>
+                      <h6 class="text-muted">BILLED FROM</h6>
+                      <!-- <h5 class="fw-bold">{{ agencySetting.agency_name }}</h5>
+                  <p class="mb-0">Mob No: {{ agencySetting.contact }}</p>
+                  <p class="mb-0">Email: {{ agencySetting.email }}</p>
+                  <p class="mb-0">Address: {{ agencySetting.address }}</p> -->
                     </div>
-                    <div class="col-4"></div>
+                    <div class="col-4">
+                      <!-- <div class="m-auto text-center mt-3">
+                      <img src="../recpal_favicon.png" class="img-fluid" width="20%" />
+                    </div> -->
+                    </div>
                     <div class="col-4">
                       <div class="float-end">
-                        <h5 class="fw-bold">Demo</h5>
-                        <p class="mb-0">London, UK</p>
-                        <p class="mb-0">Mob No: {{ agencySetting.contact }}</p>
-                        <p class="mb-0">Email: {{ agencySetting.email }}</p>
+                        <h6 class="text-muted">INVOICE NUMBER</h6>
+                        <h1 class="mb-0">{{ getClientInvoiceDetail.number }}</h1>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="my-3">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-4">
+                      <h6 class="text-muted">SUPPLIER</h6>
+                      <h5 class="fw-bold">{{ siteData.client }}</h5>
+                      <p class="mb-0">{{ siteData.address }}</p>
+                    </div>
+                    <div class="col-4"></div>
+                    <div class="col-4 my-3">
+                      <div class="float-end">
+                        <h6 class="text-muted">SHIP To</h6>
+
+                        <h5 class="fw-bold">{{ getClientInvoiceDetail.site }}</h5>
+
+                        <p class="mb-0">Mob No: {{ siteData?.contact_person_number }}</p>
+                        <p class="mb-0">Email: {{ siteData?.contact_person_email }}</p>
                       </div>
                     </div>
                   </div>
