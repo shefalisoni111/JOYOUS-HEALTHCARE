@@ -12,10 +12,10 @@
                 <div class="row">
                   <div class="col-4">
                     <h6 class="text-muted">BILLED FROM</h6>
-                    <h5 class="fw-bold">{{ agencySetting.agency_name }}</h5>
+                    <!-- <h5 class="fw-bold">{{ agencySetting.agency_name }}</h5>
                     <p class="mb-0">Mob No: {{ agencySetting.contact }}</p>
                     <p class="mb-0">Email: {{ agencySetting.email }}</p>
-                    <p class="mb-0">Address: {{ agencySetting.address }}</p>
+                    <p class="mb-0">Address: {{ agencySetting.address }}</p> -->
                   </div>
                   <div class="col-4">
                     <div class="m-auto text-center mt-3">
@@ -35,17 +35,19 @@
               <div class="col-12">
                 <div class="row">
                   <div class="col-4">
-                    <h6 class="text-muted">BILLED TO</h6>
-                    <h5 class="fw-bold">Recpal Demo2</h5>
+                    <h6 class="text-muted">SUPPLIER</h6>
+                    <h5 class="fw-bold">{{ siteData.client }}</h5>
                     <p class="mb-0">{{ siteData.address }}</p>
                   </div>
                   <div class="col-4"></div>
                   <div class="col-4 my-3">
                     <div class="float-end">
-                      <h5 class="fw-bold">Demo</h5>
-                      <p class="mb-0">London, UK</p>
-                      <p class="mb-0">Mob No: {{ siteData.contact_person_number }}</p>
-                      <p class="mb-0">Email: {{ siteData.contact_person_email }}</p>
+                      <h6 class="text-muted">SHIP To</h6>
+
+                      <h5 class="fw-bold">{{ getClientInvoiceDetail.site }}</h5>
+
+                      <p class="mb-0">Mob No: {{ siteData?.contact_person_number }}</p>
+                      <p class="mb-0">Email: {{ siteData?.contact_person_email }}</p>
                     </div>
                   </div>
                 </div>
@@ -65,8 +67,10 @@
                   </div>
                   <div class="col-4">
                     <div class="pe-3 float-end">
-                      <h5>FROM: 03-07-2023</h5>
-                      <h5>TO : 09-07-2023</h5>
+                      <h5>
+                        FROM: {{ this.formatDate(getClientInvoiceDetail.start_date) }}
+                      </h5>
+                      <h5>TO : {{ this.formatDate(getClientInvoiceDetail.end_date) }}</h5>
                     </div>
                   </div>
                 </div>
