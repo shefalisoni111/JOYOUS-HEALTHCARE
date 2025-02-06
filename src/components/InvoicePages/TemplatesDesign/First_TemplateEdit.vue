@@ -217,7 +217,7 @@
                     class="btn btn-outline-success text-nowrap text-nowrap"
                     v-on:click="updateCustomTimeSheetMethod()"
                   >
-                    <i class="bi bi-envelope"></i> Save
+                    Save
                   </button>
                   &nbsp;
                   <button
@@ -391,10 +391,10 @@ export default {
           }
         );
 
-        // this.$store.commit("updateCandidate", {
-        //   id: this.fetchCustomSheetData.id,
-        //   newData: response.data.client_invoice,
-        // });
+        this.$store.commit("updateCandidate", {
+          id: this.fetchCustomSheetData.id,
+          newData: response.data.client_invoice,
+        });
         this.$emit("ClientInvoice-updated");
 
         const message = "Client Invoice updated successfully";
