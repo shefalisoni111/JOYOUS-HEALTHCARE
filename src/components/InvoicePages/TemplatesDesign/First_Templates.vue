@@ -36,8 +36,8 @@
                 <div class="row">
                   <div class="col-4">
                     <h6 class="text-muted">SUPPLIER</h6>
-                    <h5 class="fw-bold">{{ siteData.client }}</h5>
-                    <p class="mb-0">{{ siteData.address }}</p>
+                    <h5 class="fw-bold">{{ getClientInvoiceDetail.client }}</h5>
+                    <p class="mb-0">{{ getClientInvoiceDetail.address }}</p>
                   </div>
                   <div class="col-4"></div>
                   <div class="col-4 my-3">
@@ -96,57 +96,35 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    <tr
+                      v-for="(candidate, index) in getClientInvoiceDetail.candidate_data"
+                      :key="index"
+                    >
                       <td scope="col">
-                        {{ this.formatDate(getClientInvoiceDetail.start_date) }}
+                        {{ formatDate(candidate.date) }}
                       </td>
-                      <td scope="col"></td>
-                      <td scope="col"></td>
-                      <td scope="col" class="text-capitalize">
-                        {{ getClientInvoiceDetail.candidate }}
+                      <td scope="col">{{ candidate.start_time || "N/A" }}</td>
+                      <td scope="col">{{ candidate.end_time || "N/A" }}</td>
+                      <td scope="col">{{ candidate.can_name || "N/A" }}</td>
+                      <td scope="col">{{ candidate.job || "N/A" }}</td>
+                      <td scope="col">{{ getClientInvoiceDetail.unit || "N/A" }}</td>
+                      <td scope="col">
+                        {{ candidate.rate ? "£" + candidate.rate : "N/A" }}
                       </td>
-                      <td scope="col">{{ getClientInvoiceDetail.job }}</td>
-                      <td scope="col">{{ getClientInvoiceDetail.unit }}</td>
-                      <td scope="col">{{ getClientInvoiceDetail.rate }}</td>
-                      <!-- <td scope="col">
-                        <select v-model="selectedDeduction" class="form-select">
-                         
-                          <option
-                            v-for="deduction in deductions"
-                            :key="deduction.id"
-                            :value="deduction.id"
-                          >
-                            {{ "£" + deduction.amount }}
-                          </option>
-                        </select>
-                      </td> -->
-                      <td scope="col">{{ getClientInvoiceDetail.total_amount }}</td>
+                      <td scope="col">
+                        {{ candidate.total_cost ? "£" + candidate.total_cost : "N/A" }}
+                      </td>
                     </tr>
+
                     <tr>
-                      <td scope="col">
-                        {{ this.formatDate(getClientInvoiceDetail.end_date) }}
+                      <td colspan="7" class="text-start fw-bold">Total Cost</td>
+                      <td colspan="2" class="font-weight-bold">
+                        {{
+                          getClientInvoiceDetail?.total_amount !== undefined
+                            ? "£" + getClientInvoiceDetail.total_amount
+                            : ""
+                        }}
                       </td>
-                      <td scope="col"></td>
-                      <td scope="col"></td>
-                      <td scope="col" class="text-capitalize">
-                        {{ getClientInvoiceDetail.candidate }}
-                      </td>
-                      <td scope="col">{{ getClientInvoiceDetail.job }}</td>
-                      <td scope="col">{{ getClientInvoiceDetail.unit }}</td>
-                      <td scope="col">{{ getClientInvoiceDetail.rate }}</td>
-                      <!-- <td scope="col">
-                        <select v-model="selectedDeduction" class="form-select">
-                    
-                          <option
-                            v-for="deduction in deductions"
-                            :key="deduction.id"
-                            :value="deduction.id"
-                          >
-                            {{ "£" + deduction.amount }}
-                          </option>
-                        </select>
-                      </td> -->
-                      <td scope="col">{{ getClientInvoiceDetail.total_amount }}</td>
                     </tr>
                   </tbody>
                 </table>
