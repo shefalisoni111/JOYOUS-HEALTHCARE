@@ -409,7 +409,7 @@ export default {
         this.getStaffInvoiceDetail = response.data.data;
 
         if (this.getStaffInvoiceDetail.length === 0) {
-          this.errorMessage = "No client invoices found for the specified criteria.";
+          this.errorMessage = "No Staff invoices found for the specified criteria.";
         } else {
           this.errorMessage = "";
         }
