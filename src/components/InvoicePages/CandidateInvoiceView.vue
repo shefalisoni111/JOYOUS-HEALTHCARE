@@ -10,7 +10,7 @@
                 >Dashboard</router-link
               >
               /
-              <router-link to="/invoice/staff-invoice" class="text-decoration-none"
+              <router-link to="/invoice/staff-payroll" class="text-decoration-none"
                 ><span class="color-fonts">Staff Invoices</span> /
                 <span class="color-fonts">{{
                   getClientInvoiceDetail.invoice_number
