@@ -91,7 +91,7 @@
                       <div>
                         <button
                           type="button"
-                          class="btn btn-outline-success text-nowrap text-nowrap text-capitalize mb-2"
+                          class="btn btn-outline-success text-nowrap text-nowrap text-capitalize mb"
                           data-bs-toggle="modal"
                           data-bs-target="#generateInvoice"
                           data-bs-whatever="@mdo"

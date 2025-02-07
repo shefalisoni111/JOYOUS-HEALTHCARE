@@ -91,7 +91,7 @@
                       <th scope="col">Job</th>
                       <th scope="col">Unit</th>
                       <th scope="col">Rate</th>
-                      <th scope="col" style="width: 13%">Staff Deduction</th>
+                      <!-- <th scope="col" style="width: 13%">Staff Deduction</th> -->
                       <th scope="col">Total</th>
                     </tr>
                   </thead>
@@ -108,9 +108,9 @@
                       <td scope="col">{{ getClientInvoiceDetail.job }}</td>
                       <td scope="col">{{ getClientInvoiceDetail.unit }}</td>
                       <td scope="col">{{ getClientInvoiceDetail.rate }}</td>
-                      <td scope="col">
+                      <!-- <td scope="col">
                         <select v-model="selectedDeduction" class="form-select">
-                          <!-- <option value="" disabled>Select Deduction</option> -->
+                     
                           <option
                             v-for="deduction in deductions"
                             :key="deduction.id"
@@ -119,7 +119,7 @@
                             {{ "£" + deduction.amount }}
                           </option>
                         </select>
-                      </td>
+                      </td> -->
                       <td scope="col">{{ getClientInvoiceDetail.total_amount }}</td>
                     </tr>
                     <tr>
@@ -134,9 +134,9 @@
                       <td scope="col">{{ getClientInvoiceDetail.job }}</td>
                       <td scope="col">{{ getClientInvoiceDetail.unit }}</td>
                       <td scope="col">{{ getClientInvoiceDetail.rate }}</td>
-                      <td scope="col">
+                      <!-- <td scope="col">
                         <select v-model="selectedDeduction" class="form-select">
-                          <!-- <option value="" disabled>Select Deduction</option> -->
+                         
                           <option
                             v-for="deduction in deductions"
                             :key="deduction.id"
@@ -145,7 +145,7 @@
                             {{ "£" + deduction.amount }}
                           </option>
                         </select>
-                      </td>
+                      </td> -->
                       <td scope="col">{{ getClientInvoiceDetail.total_amount }}</td>
                     </tr>
                   </tbody>

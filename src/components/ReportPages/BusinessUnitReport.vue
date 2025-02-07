@@ -528,22 +528,24 @@ export default {
       const today = new Date();
 
       if (this.currentView === "weekly") {
-        const startOfWeek = new Date(today);
-        const dayOfWeek = startOfWeek.getDay();
-        const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-        startOfWeek.setDate(startOfWeek.getDate() + diff);
+        // const formattedStartOfWeek = this.formatDate(this.startDate);
+        const { start, end } = this.getWeekRange(this.startDate);
+        // const startOfWeek = new Date(today);
+        // const dayOfWeek = startOfWeek.getDay();
+        // const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+        // startOfWeek.setDate(startOfWeek.getDate() + diff);
 
-        const formattedStartOfWeek = `${(startOfWeek.getMonth() + 1)
-          .toString()
-          .padStart(2, "0")}/${startOfWeek
-          .getDate()
-          .toString()
-          .padStart(2, "0")}/${startOfWeek.getFullYear()}`;
+        // const formattedStartOfWeek = `${(startOfWeek.getMonth() + 1)
+        //   .toString()
+        //   .padStart(2, "0")}/${startOfWeek
+        //   .getDate()
+        //   .toString()
+        //   .padStart(2, "0")}/${startOfWeek.getFullYear()}`;
 
-        params["report[date]"] = formattedStartOfWeek;
-        params["report[shift_date]"] = formattedStartOfWeek;
+        params["report[date]"] = this.formatDates(start);
+        params["report[shift_date]"] = this.formatDates(start);
       } else if (this.currentView === "monthly") {
-        const startOfMonth = new Date(today);
+        const startOfMonth = this.startDate;
         startOfMonth.setDate(1);
 
         const formattedStartOfMonth = `${(startOfMonth.getMonth() + 1)
@@ -841,6 +843,21 @@ export default {
         }
       }
     },
+    formatDates(date) {
+      const d = new Date(date);
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      const year = d.getFullYear();
+
+      return `${month}/${day}/${year}`;
+    },
+    getWeekRange(date) {
+      const start = new Date(date);
+      const end = new Date(date);
+      start.setDate(start.getDate() - start.getDay() + 1);
+      end.setDate(end.getDate() + 6);
+      return { start, end };
+    },
     moveToPrevious() {
       if (this.currentView === "weekly") {
         this.startDate.setDate(this.startDate.getDate() - 7);
@@ -890,7 +907,7 @@ export default {
 
       localStorage.setItem("startDate", this.startDate.toISOString());
       localStorage.setItem("endDate", this.endDate.toISOString());
-      this.filterData();
+      // this.filterData();
     },
     loadDateRangeFromLocalStorage() {
       const storedStartDate = localStorage.getItem("startDate");
@@ -905,7 +922,7 @@ export default {
       const day = date.getDate();
       const month = date.getMonth() + 1;
       const year = date.getFullYear();
-      return `${day}/${month}/${year}`;
+      return `${month}/${day}/${year}`;
     },
   },
   async beforeRouteEnter(to, from, next) {
@@ -914,7 +931,7 @@ export default {
       vm.getBusinessUnitMethod();
       // vm.updateDateRange();
       vm.getCandidateListMethod();
-      vm.filterData();
+      // vm.filterData();
     });
   },
   async beforeRouteUpdate(to, from, next) {
@@ -923,17 +940,17 @@ export default {
     this.getClientMethod();
     this.getCandidateListMethod();
     // this.updateDateRange();
-    this.filterData();
+    // this.filterData();
     next();
   },
-  mounted() {
+  async mounted() {
     // this.createVacancy();
     // this.currentView = "monthly";
     this.loadDateRangeFromLocalStorage();
     this.getBusinessUnitMethod();
     this.getCandidateListMethod();
     this.getClientMethod();
-    this.filterData();
+    // this.filterData();
     // this.updateDateRange();
     const currentDate = new Date();
     const dayOfWeek = currentDate.getDay();
@@ -947,6 +964,7 @@ export default {
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(endOfWeek.getDate() + 6);
     this.endDate = endOfWeek;
+    await this.filterData();
   },
 };
 </script>
