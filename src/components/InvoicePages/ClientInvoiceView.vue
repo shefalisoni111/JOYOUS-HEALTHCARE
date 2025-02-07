@@ -251,9 +251,15 @@ export default {
       }
     },
     async createClientInvoice() {
+      const token = localStorage.getItem("token");
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/client_invoices/${this.$route.params.id}`
+          `${VITE_API_URL}/client_invoices/${this.$route.params.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         const clientInvoice = response.data.client_invoice;
 

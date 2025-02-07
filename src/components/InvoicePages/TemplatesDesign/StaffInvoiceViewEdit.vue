@@ -10,7 +10,7 @@
                 >Dashboard</router-link
               >
               /
-              <router-link to="/invoice/staff-invoice" class="text-decoration-none"
+              <router-link to="/invoice/staff-payroll" class="text-decoration-none"
                 ><span class="color-fonts">Staff Invoices</span> /
                 <span class="color-fonts">{{
                   getClientInvoiceDetail.invoice_number
@@ -32,17 +32,71 @@
                 <div class="col-12">
                   <div class="row">
                     <div class="col-4">
-                      <h5 class="fw-bold">Recpal Demo1</h5>
-                      <p class="mb-0">Mob No: {{ agencySetting.contact }}</p>
-                      <p class="mb-0">Email: {{ agencySetting.email }}</p>
+                      <h6 class="text-muted">BILLED FROM</h6>
+                      <h5 class="fw-bold">
+                        {{ getClientInvoiceDetail?.merchant_data?.merc_name }}
+                      </h5>
+                      <p class="mb-0">
+                        Mob No: {{ getClientInvoiceDetail?.merchant_data?.mer_phone }}
+                      </p>
+                      <p class="mb-0">
+                        Email: {{ getClientInvoiceDetail?.merchant_data?.mer_email }}
+                      </p>
+                      <p class="mb-0">
+                        Address: {{ getClientInvoiceDetail?.merchant_data?.mer_address }}
+                      </p>
                     </div>
                     <div class="col-4"></div>
                     <div class="col-4">
                       <div class="float-end">
-                        <h5 class="fw-bold">Demo</h5>
-                        <p class="mb-0">London, UK</p>
-                        <p class="mb-0">Mob No: {{ agencySetting.contact }}</p>
-                        <p class="mb-0">Email: {{ agencySetting.email }}</p>
+                        <p class="mb-0">INVOICE NUMBER</p>
+                        <h6>{{ getClientInvoiceDetail.invoice_number }}</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-5">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-5">
+                      <p class="mb-1">SUPPLIER</p>
+                      <h5 class="fw-bold">
+                        {{ getClientInvoiceDetail?.candidate_data?.can_name }}
+                      </h5>
+                      <p class="mb-0">
+                        Add: {{ getClientInvoiceDetail?.candidate_data?.can_address }}
+                      </p>
+                      <p class="mb-0">
+                        Email: {{ getClientInvoiceDetail?.candidate_data?.can_email }}
+                      </p>
+                    </div>
+                    <div class="col-3">
+                      <!-- <p class="mb-1">SHIP TO</p>
+                      <h5 class="fw-bold">
+                        {{ getClientInvoiceDetail.agency_setting?.agency_name }}
+                      </h5>
+                      <p class="mb-0">
+                        {{ getClientInvoiceDetail.agency_setting?.email }}
+                      </p>
+                      <p class="mb-0">
+                        Email: {{ getClientInvoiceDetail.agency_setting?.email }}
+                      </p> -->
+                    </div>
+                    <div class="col-4">
+                      <div class="float-end">
+                        <p class="mb-1">INVOICE INFORMATION</p>
+
+                        <p class="mb-0">
+                          Date: {{ this.formatDate(getClientInvoiceDetail.start_date) }}
+                        </p>
+                        <!-- <p class="mb-0">Due Date:19-07-2023</p> -->
+                        <p class="mb-0">
+                          From: {{ this.formatDate(getClientInvoiceDetail.start_date) }}
+                        </p>
+                        <p class="mb-0">
+                          To: {{ this.formatDate(getClientInvoiceDetail.end_date) }}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -52,16 +106,22 @@
                 <div class="col-12">
                   <div class="row">
                     <div class="col-4">
-                      <h5>DATE: {{ getClientInvoiceDetail.start_date }}</h5>
-                      <h5>DUE DATE: {{ getClientInvoiceDetail.due_date }}</h5>
+                      <h5>
+                        DATE: {{ this.formatDate(getClientInvoiceDetail.start_date) }}
+                      </h5>
+                      <!-- <h5>DUE DATE: {{ getClientInvoiceDetail.due_date }}</h5> -->
                     </div>
                     <div class="col-4 text-center">
                       <p>{{ getClientInvoiceDetail.number }}</p>
                     </div>
                     <div class="col-4">
                       <div class="pe-3 float-end">
-                        <h5>FROM: 03-07-2023</h5>
-                        <h5>TO : 09-07-2023</h5>
+                        <h5>
+                          FROM:{{ this.formatDate(getClientInvoiceDetail.start_date) }}
+                        </h5>
+                        <h5>
+                          TO : {{ this.formatDate(getClientInvoiceDetail.end_date) }}
+                        </h5>
                       </div>
                     </div>
                   </div>
@@ -74,38 +134,69 @@
                     <thead>
                       <tr>
                         <th scope="col">Date</th>
-                        <th scope="col">Description</th>
-
-                        <th scope="col">Unit</th>
+                        <th scope="col">Start</th>
+                        <th scope="col">End</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Job</th>
+                        <th scope="col">client</th>
+                        <!-- <th scope="col">Unit</th> -->
                         <th scope="col">Rate</th>
-                        <th scope="col">Amount</th>
+                        <!-- <th scope="col" style="width: 13%">Staff Deduction</th> -->
+                        <th scope="col">Total</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td scope="col">{{ getClientInvoiceDetail.start_date }}</td>
-                        <!-- <td scope="col">{{ getClientInvoiceDetail.notes }}</td> -->
+                      <tr
+                        v-for="(candidate, index) in getClientInvoiceDetail.site_data"
+                        :key="index"
+                      >
                         <td scope="col">
-                          <input type="text" v-model="fetchCustomSheetData.notes" />
+                          {{ formatDate(candidate.date) }}
                         </td>
-
-                        <td scope="col">{{ getClientInvoiceDetail.unit }}</td>
-                        <td scope="col">{{ getClientInvoiceDetail.rate }}</td>
-                        <td scope="col">{{ getClientInvoiceDetail.total_amount }}</td>
+                        <td scope="col">{{ candidate.start_time || "" }}</td>
+                        <td scope="col">{{ candidate.end_time || "" }}</td>
+                        <td scope="col">
+                          {{ getClientInvoiceDetail?.candidate_data?.can_name }}
+                        </td>
+                        <td scope="col">
+                          {{ getClientInvoiceDetail?.candidate_data?.job || "" }}
+                        </td>
+                        <td scope="col">{{ candidate.client_name || "" }}</td>
+                        <!-- <td scope="col">{{ getClientInvoiceDetail.unit || "" }}</td> -->
+                        <td scope="col">
+                          {{ candidate.staff_rate ? "£" + candidate.staff_rate : "" }}
+                        </td>
+                        <td scope="col">
+                          {{ candidate.total_cost ? "£" + candidate.total_cost : "" }}
+                        </td>
                       </tr>
-                      <tr>
-                        <td scope="col">{{ getClientInvoiceDetail.end_date }}</td>
-                        <td scope="col">
-                          <input type="text" v-model="fetchCustomSheetData.notes" />
-                        </td>
-                        <!-- <td scope="col">{{ getClientInvoiceDetail.notes }}</td> -->
 
-                        <td scope="col">{{ getClientInvoiceDetail.unit }}</td>
-                        <td scope="col">{{ getClientInvoiceDetail.rate }}</td>
-                        <td scope="col">{{ getClientInvoiceDetail.total_amount }}</td>
+                      <tr>
+                        <td colspan="7" class="text-start fw-bold">Total Cost</td>
+                        <td colspan="2" class="font-weight-bold">
+                          {{
+                            getClientInvoiceDetail?.total_amount !== undefined
+                              ? "£" + getClientInvoiceDetail.total_amount
+                              : ""
+                          }}
+                        </td>
                       </tr>
                     </tbody>
                   </table>
+                </div>
+
+                <div class="mt-3">
+                  <div class="col-12">
+                    <div class="row mt-5">
+                      <div class="col-12">
+                        <h6>
+                          Addition Rate Per Mile
+                          {{ "£" + getClientInvoiceDetail.rate_per_mile }} and Total Cost
+                          to be paid {{ "£" + getClientInvoiceDetail.grand_total_amount }}
+                        </h6>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="mt-3">
                   <div class="col-12">
@@ -127,7 +218,47 @@
               class="text-muted bg-white p-3"
               style="border: 1px solid #f8f8f8; box-shadow: 2px 2px 7px 2px #e7d7d7"
             >
-              <div class="row"></div>
+              <div class="row">
+                <div class="d-flex">
+                  <label class="col-2 form-label">Rate Per Mile</label>
+                  <div class="col-10">
+                    <div class="input-group">
+                      <span class="input-group-text">£</span>
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="fetchCustomSheetData.rate_per_mile"
+                        placeholder="Enter rate per mile"
+                        @input="validateInput"
+                        :minlength="3"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="d-flex">
+                  <label class="col-2 form-label">Staff Deduction</label>
+                  <div class="col-10">
+                    <div class="input-group">
+                      <select
+                        class="form-select"
+                        v-model="fetchCustomSheetData.staff_deduction"
+                      >
+                        <option value="" disabled>Select Deduction</option>
+                        <option
+                          v-for="deduction in deductions"
+                          :key="deduction.id"
+                          :value="deduction.amount"
+                        >
+                          £{{ deduction.amount }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="row mt-5">
                 <div class="d-flex gap-2">
                   <button
@@ -170,6 +301,8 @@ export default {
       fetchCustomSheetData: {
         // id: "",
         shift_date: "",
+        rate_per_mile: "",
+        staff_deduction: "",
         code: "",
         name: "",
         business_unit: "",
@@ -201,12 +334,31 @@ export default {
     cancelButtonClicked() {
       this.$router.push("/invoice/staff-invoice");
     },
-    // toggleEditMode(invoiceId) {
-    //   this.$router.push({
-    //     name: "ClientInvoiceViewEdit",
-    //     params: { id: invoiceId },
-    //   });
-    // },
+    validateInputStaffDeduction() {
+      this.fetchCustomSheetData.staff_deduction = this.fetchCustomSheetData.staff_deduction.replace(
+        /[^0-9.]/g,
+        ""
+      );
+    },
+    async fetchDeductions() {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/candidate_deductions`);
+        this.deductions = response.data;
+      } catch (error) {
+        // console.error("Error fetching deductions:", error);
+      }
+    },
+    formatDate(date) {
+      const d = new Date(date);
+      let day = d.getDate();
+      let month = d.getMonth() + 1;
+      let year = d.getFullYear();
+
+      if (day < 10) day = "0" + day;
+      if (month < 10) month = "0" + month;
+
+      return `${day}-${month}-${year}`;
+    },
     updateTemplate() {
       this.$store.commit("setSelectedTemplate", this.selectedTemplate);
     },
@@ -245,12 +397,17 @@ export default {
       return isValid;
     },
     async createClientInvoice() {
+      const token = localStorage.getItem("token");
       const id = this.$route.params.id;
       if (!id) {
         return;
       }
       try {
-        const response = await axios.get(`${VITE_API_URL}/staff_invoices/${id}`);
+        const response = await axios.get(`${VITE_API_URL}/staff_invoices/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const staffInvoice = response.data.staff_invoice;
 
         this.getClientInvoiceDetail = staffInvoice;
@@ -267,7 +424,8 @@ export default {
         // }));
         this.fetchCustomSheetData = {
           shift_date: staffInvoice.start_date,
-
+          rate_per_mile: staffInvoice.rate_per_mile,
+          staff_deduction: staffInvoice.staff_deduction,
           name: staffInvoice.candidate,
           business_unit: staffInvoice.business_unit,
           notes: staffInvoice.notes,
@@ -312,6 +470,7 @@ export default {
   created() {
     this.selectedTemplate = this.$store.state.selectedTemplate;
     this.createClientInvoice();
+    this.fetchDeductions();
   },
 };
 </script>

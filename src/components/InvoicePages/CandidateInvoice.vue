@@ -414,12 +414,12 @@ export default {
 
       const payload = {
         staff_invoice_id: data.id,
-        lock_value: newLockValue,
+        lock_value: String(newLockValue),
       };
 
       try {
         const response = await axios.put(
-          `${VITE_API_URL}/enable_and_disable__staff_invoice_lock/${data.id}`,
+          `${VITE_API_URL}/enable_and_disable__staff_invoice_lock`,
           payload,
           {
             headers: {
@@ -429,18 +429,19 @@ export default {
         );
 
         if (response.status === 200) {
-          data.invoice_lock = newLockValue;
-
+          data.data.invoice_lock = newLockValue;
+          console.log(data.data.invoice_lock);
           const message = newLockValue
-            ? "Client Invoice locked successfully!"
-            : "Client Invoice unlocked successfully!";
+            ? "Staff Payroll locked successfully!"
+            : "Staff Payroll unlocked successfully!";
           this.$refs.successAlert.showSuccess(message);
-          // const updatedClient = this.getClientInvoiceDetail.find(
-          //   (client) => client.id === data.id
-          // );
-          // if (updatedClient) {
-          //   updatedClient.invoice_lock = newLockValue;
-          // }
+          // this.$nextTick(() => {
+          //   if (this.$refs.successAlert) {
+          //     this.$refs.successAlert.showSuccess(message);
+          //   } else {
+          //     console.error("SuccessAlert component is not found.");
+          //   }
+          // });
           this.fetWeekTimeSheetData();
         } else {
           // console.error("Failed to update invoice lock:", response.data);
@@ -484,7 +485,7 @@ export default {
         this.getStaffInvoiceDetail = response.data.staff_invoices;
 
         if (this.getStaffInvoiceDetail.length === 0) {
-          this.errorMessage = "No Staff invoices found for the specified criteria.";
+          this.errorMessage = "No Staff Payroll found for the specified criteria.";
         } else {
           this.errorMessage = "";
         }

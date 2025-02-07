@@ -33,15 +33,18 @@
                 <div class="col-12">
                   <div class="row">
                     <div class="col-4">
-                      <p class="mb-1">BILLED FROM</p>
+                      <h6 class="text-muted">BILLED FROM</h6>
                       <h5 class="fw-bold">
-                        {{ getClientInvoiceDetail.agency_setting?.agency_name }}
+                        {{ getClientInvoiceDetail?.merchant_data?.merc_name }}
                       </h5>
                       <p class="mb-0">
-                        Mob No: {{ getClientInvoiceDetail.agency_setting?.contact }}
+                        Mob No: {{ getClientInvoiceDetail?.merchant_data?.mer_phone }}
                       </p>
                       <p class="mb-0">
-                        Email: {{ getClientInvoiceDetail.agency_setting?.email }}
+                        Email: {{ getClientInvoiceDetail?.merchant_data?.mer_email }}
+                      </p>
+                      <p class="mb-0">
+                        Address: {{ getClientInvoiceDetail?.merchant_data?.mer_address }}
                       </p>
                     </div>
                     <div class="col-4"></div>
@@ -57,14 +60,20 @@
               <div class="mt-5">
                 <div class="col-12">
                   <div class="row">
-                    <div class="col-4">
+                    <div class="col-5">
                       <p class="mb-1">SUPPLIER</p>
-                      <h5 class="fw-bold">{{ getClientInvoiceDetail.staff }}</h5>
-                      <p class="mb-0">Mob No: {{ getClientInvoiceDetail.staff }}</p>
-                      <p class="mb-0">Email: geethu@recpal.co.uk</p>
+                      <h5 class="fw-bold">
+                        {{ getClientInvoiceDetail?.candidate_data?.can_name }}
+                      </h5>
+                      <p class="mb-0">
+                        Add: {{ getClientInvoiceDetail?.candidate_data?.can_address }}
+                      </p>
+                      <p class="mb-0">
+                        Email: {{ getClientInvoiceDetail?.candidate_data?.can_email }}
+                      </p>
                     </div>
-                    <div class="col-4">
-                      <p class="mb-1">SHIP TO</p>
+                    <div class="col-3">
+                      <!-- <p class="mb-1">SHIP TO</p>
                       <h5 class="fw-bold">
                         {{ getClientInvoiceDetail.agency_setting?.agency_name }}
                       </h5>
@@ -73,16 +82,22 @@
                       </p>
                       <p class="mb-0">
                         Email: {{ getClientInvoiceDetail.agency_setting?.email }}
-                      </p>
+                      </p> -->
                     </div>
                     <div class="col-4">
                       <div class="float-end">
                         <p class="mb-1">INVOICE INFORMATION</p>
 
-                        <p class="mb-0">Date: 07-07-2023 15:33</p>
-                        <p class="mb-0">Due Date:19-07-2023</p>
-                        <p class="mb-0">From: 03-07-2023</p>
-                        <p class="mb-0">To: 09-07-2023</p>
+                        <p class="mb-0">
+                          Date: {{ this.formatDate(getClientInvoiceDetail.start_date) }}
+                        </p>
+                        <!-- <p class="mb-0">Due Date:19-07-2023</p> -->
+                        <p class="mb-0">
+                          From: {{ this.formatDate(getClientInvoiceDetail.start_date) }}
+                        </p>
+                        <p class="mb-0">
+                          To: {{ this.formatDate(getClientInvoiceDetail.end_date) }}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -99,7 +114,8 @@
                         <th scope="col">End</th>
                         <th scope="col">Name</th>
                         <th scope="col">Job</th>
-                        <th scope="col">Unit</th>
+                        <th scope="col">client</th>
+                        <!-- <th scope="col">Unit</th> -->
                         <th scope="col">Rate</th>
                         <!-- <th scope="col" style="width: 13%">Staff Deduction</th> -->
                         <th scope="col">Total</th>
@@ -107,24 +123,27 @@
                     </thead>
                     <tbody>
                       <tr
-                        v-for="(
-                          candidate, index
-                        ) in getClientInvoiceDetail.candidate_data"
+                        v-for="(candidate, index) in getClientInvoiceDetail.site_data"
                         :key="index"
                       >
                         <td scope="col">
                           {{ formatDate(candidate.date) }}
                         </td>
-                        <td scope="col">{{ candidate.start_time || "N/A" }}</td>
-                        <td scope="col">{{ candidate.end_time || "N/A" }}</td>
-                        <td scope="col">{{ candidate.can_name || "N/A" }}</td>
-                        <td scope="col">{{ candidate.job || "N/A" }}</td>
-                        <td scope="col">{{ getClientInvoiceDetail.unit || "N/A" }}</td>
+                        <td scope="col">{{ candidate.start_time || "" }}</td>
+                        <td scope="col">{{ candidate.end_time || "" }}</td>
                         <td scope="col">
-                          {{ candidate.rate ? "£" + candidate.rate : "N/A" }}
+                          {{ getClientInvoiceDetail?.candidate_data?.can_name }}
                         </td>
                         <td scope="col">
-                          {{ candidate.total_cost ? "£" + candidate.total_cost : "N/A" }}
+                          {{ getClientInvoiceDetail?.candidate_data?.job || "" }}
+                        </td>
+                        <td scope="col">{{ candidate.client_name || "" }}</td>
+                        <!-- <td scope="col">{{ getClientInvoiceDetail.unit || "" }}</td> -->
+                        <td scope="col">
+                          {{ candidate.staff_rate ? "£" + candidate.staff_rate : "" }}
+                        </td>
+                        <td scope="col">
+                          {{ candidate.total_cost ? "£" + candidate.total_cost : "" }}
                         </td>
                       </tr>
 
@@ -140,6 +159,20 @@
                       </tr>
                     </tbody>
                   </table>
+                </div>
+
+                <div class="mt-3">
+                  <div class="col-12">
+                    <div class="row mt-5">
+                      <div class="col-12">
+                        <h6>
+                          Addition Rate Per Mile
+                          {{ "£" + getClientInvoiceDetail.rate_per_mile }} and Total Cost
+                          to be paid {{ "£" + getClientInvoiceDetail.grand_total_amount }}
+                        </h6>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="mt-3">
                   <div class="col-12">
@@ -186,14 +219,7 @@
                   >
                     <i class="bi bi-pencil-fill"></i> Edit
                   </router-link>
-                  <!-- <button
-                    v-else
-                    type="button"
-                    class="btn btn-outline-success text-nowrap text-nowrap"
-                    @click="toggleEditMode(getClientInvoiceDetail.id)"
-                  >
-                    <i class="bi bi-pencil-fill"></i> Edit
-                  </button> -->
+
                   <button
                     type="button"
                     class="btn btn-outline-success text-nowrap text-nowrap"
@@ -221,8 +247,8 @@
                       </div>
 
                       <div class="ps-2">
-                        Invoice created for £{{ getClientInvoiceDetail.rate }} by
-                        <b>{{ agencySetting?.agency_name }}</b
+                        Invoice created by
+                        <b>{{ getClientInvoiceDetail?.merchant_data?.merc_name }}</b
                         ><br />
                         {{ this.formatDate(getClientInvoiceDetail.created_on) }}
                       </div>
@@ -319,6 +345,7 @@ export default {
 
       return `${day}-${month}-${year}`;
     },
+
     // async generatePDF() {
     //   try {
     //     const response = await axios.get(
@@ -358,8 +385,13 @@ export default {
       if (!id) {
         return;
       }
+      const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(`${VITE_API_URL}/staff_invoices/${id}`);
+        const response = await axios.get(`${VITE_API_URL}/staff_invoices/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const clientInvoice = response.data.staff_invoice;
 
         this.getClientInvoiceDetail = clientInvoice;

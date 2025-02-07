@@ -12,10 +12,18 @@
                 <div class="row">
                   <div class="col-4">
                     <h6 class="text-muted">BILLED FROM</h6>
-                    <!-- <h5 class="fw-bold">{{ agencySetting.agency_name }}</h5>
-                  <p class="mb-0">Mob No: {{ agencySetting.contact }}</p>
-                  <p class="mb-0">Email: {{ agencySetting.email }}</p>
-                  <p class="mb-0">Address: {{ agencySetting.address }}</p> -->
+                    <h5 class="fw-bold">
+                      {{ getClientInvoiceDetail?.merchant_data?.merc_name }}
+                    </h5>
+                    <p class="mb-0">
+                      Mob No: {{ getClientInvoiceDetail?.merchant_data?.mer_phone }}
+                    </p>
+                    <p class="mb-0">
+                      Email: {{ getClientInvoiceDetail?.merchant_data?.mer_email }}
+                    </p>
+                    <p class="mb-0">
+                      Address: {{ getClientInvoiceDetail?.merchant_data?.mer_address }}
+                    </p>
                   </div>
                   <div class="col-4">
                     <!-- <div class="m-auto text-center mt-3">
@@ -36,8 +44,15 @@
                 <div class="row">
                   <div class="col-4">
                     <h6 class="text-muted">SUPPLIER</h6>
-                    <h5 class="fw-bold">{{ getClientInvoiceDetail.client }}</h5>
-                    <p class="mb-0">{{ getClientInvoiceDetail.address }}</p>
+                    <h5 class="fw-bold">
+                      {{ getClientInvoiceDetail?.client_data?.client_name }}
+                    </h5>
+                    <p class="mb-0">
+                      {{ getClientInvoiceDetail?.client_data?.client_add }}
+                    </p>
+                    <p class="mb-0">
+                      {{ getClientInvoiceDetail?.client_data?.client_email }}
+                    </p>
                   </div>
                   <div class="col-4"></div>
                   <div class="col-4 my-3">
@@ -129,7 +144,19 @@
                   </tbody>
                 </table>
               </div>
-
+              <div class="mt-3">
+                <div class="col-12">
+                  <div class="row mt-5">
+                    <div class="col-12">
+                      <h6>
+                        Addition Rate Per Mile
+                        {{ "£" + getClientInvoiceDetail.rate_per_mile }} and Total Cost to
+                        be paid {{ "£" + getClientInvoiceDetail.total_amount }}
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="mt-3">
                 <div class="col-12">
                   <div class="row mt-5">
@@ -161,7 +188,7 @@ export default {
       getClientInvoiceDetail: [],
       agencySetting: [],
       siteData: [],
-      deductions: [],
+
       selectedDeduction: "",
       showEditComponent: false,
     };
@@ -183,9 +210,15 @@ export default {
       return `${day}-${month}-${year}`;
     },
     async createClientInvoice() {
+      const token = localStorage.getItem("token");
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/client_invoices/${this.$route.params.id}`
+          `${VITE_API_URL}/client_invoices/${this.$route.params.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         const clientInvoice = response.data.client_invoice;
         const invoiceNumber = clientInvoice.number;
@@ -198,19 +231,11 @@ export default {
         // console.error("Error fetching client invoice:", error);
       }
     },
-    async fetchDeductions() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/candidate_deductions`);
-        this.deductions = response.data;
-      } catch (error) {
-        // console.error("Error fetching deductions:", error);
-      }
-    },
   },
   created() {
     this.selectedTemplate = this.$store.state.selectedTemplate;
     this.createClientInvoice();
-    this.fetchDeductions();
+    // this.fetchDeductions();
   },
   mounted() {},
 };

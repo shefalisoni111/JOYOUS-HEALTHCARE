@@ -52,7 +52,7 @@
                     </div>
                     <div class="col-10 ms-5 p-0" style="margin-left: 90px">
                       <!-- <TextFormator v-model="body" /> -->
-                      <div style="width: 100%; margin-left: 13.3%">
+                      <div style="width: 90.7%; margin-left: 12.1%">
                         <textarea
                           class="form-control"
                           v-model="body"
