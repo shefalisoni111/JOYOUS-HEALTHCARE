@@ -95,40 +95,47 @@
                     <thead>
                       <tr>
                         <th scope="col">Date</th>
-                        <th scope="col">Description</th>
-
+                        <th scope="col">Start</th>
+                        <th scope="col">End</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Job</th>
                         <th scope="col">Unit</th>
                         <th scope="col">Rate</th>
-                        <th scope="col">Amount</th>
+                        <!-- <th scope="col" style="width: 13%">Staff Deduction</th> -->
+                        <th scope="col">Total</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td scope="col">{{ getClientInvoiceDetail.start_date }}</td>
-                        <td scope="col">{{ getClientInvoiceDetail.notes }}</td>
-
-                        <td scope="col">{{ getClientInvoiceDetail.unit }}</td>
-                        <td scope="col">{{ getClientInvoiceDetail.rate }}</td>
+                      <tr
+                        v-for="(
+                          candidate, index
+                        ) in getClientInvoiceDetail.candidate_data"
+                        :key="index"
+                      >
                         <td scope="col">
-                          {{ "£" + getClientInvoiceDetail.total_amount }}
+                          {{ formatDate(candidate.date) }}
+                        </td>
+                        <td scope="col">{{ candidate.start_time || "N/A" }}</td>
+                        <td scope="col">{{ candidate.end_time || "N/A" }}</td>
+                        <td scope="col">{{ candidate.can_name || "N/A" }}</td>
+                        <td scope="col">{{ candidate.job || "N/A" }}</td>
+                        <td scope="col">{{ getClientInvoiceDetail.unit || "N/A" }}</td>
+                        <td scope="col">
+                          {{ candidate.rate ? "£" + candidate.rate : "N/A" }}
+                        </td>
+                        <td scope="col">
+                          {{ candidate.total_cost ? "£" + candidate.total_cost : "N/A" }}
                         </td>
                       </tr>
-                      <tr>
-                        <td scope="col">{{ getClientInvoiceDetail.end_date }}</td>
-                        <td scope="col">{{ getClientInvoiceDetail.notes }}</td>
 
-                        <td scope="col">{{ getClientInvoiceDetail.unit }}</td>
-                        <td scope="col">{{ "£" + getClientInvoiceDetail.rate }}</td>
-                        <td scope="col">
-                          {{ "£" + getClientInvoiceDetail.total_amount }}
-                        </td>
-                      </tr>
                       <tr>
-                        <!-- Leave the first 4 columns blank -->
-                        <td colspan="8" class="text-end fw-bold">Total Cost:</td>
-                        <!-- Display the total in the last column -->
-                        <td class="fw-bold">
-                          {{ getClientInvoiceDetail?.total_amount || "" }}
+                        <td colspan="7" class="text-start fw-bold">Total Cost</td>
+                        <td colspan="2" class="font-weight-bold">
+                          {{
+                            getClientInvoiceDetail?.total_amount !== undefined
+                              ? "£" + getClientInvoiceDetail.total_amount
+                              : ""
+                          }}
                         </td>
                       </tr>
                     </tbody>
