@@ -379,91 +379,45 @@ export default {
   methods: {
     async fetWeekTimeSheetData() {
       this.isLoading = true;
-      if (
-        !this.selectedJobs ||
-        !this.client_id ||
-        !this.selectedSites ||
-        !this.startDate
-      ) {
-        this.errorMessage = "Data Not Found for the specified Date.";
-        this.isLoading = false;
-        return;
-      }
-
       const token = localStorage.getItem("token");
+      let requestData = {};
 
-      const params = {
-        "job_id[]": this.selectedJobs,
-        client_id: this.client_id,
-        "site_id[]": this.selectedSites,
-        shift_date: this.formatDate(this.startDate),
-        invoice_type: "client_invoice",
-      };
-
-      if (this.selectedDateOption === "custom") {
-        params.start_date = this.formatDate(this.startDate);
-        params.end_date = this.formatDate(this.endDate);
+      if (this.currentView === "weekly") {
+        requestData = {
+          date: this.formatDate(this.startDate),
+          per_page: this.itemsPerPage,
+        };
+      } else if (this.currentView === "monthly") {
+        const formattedStartDate = this.formatDate(this.startDate);
+        const formattedEndDate = this.formatDate(this.endDate);
+        requestData = {
+          start_date: formattedStartDate,
+          end_date: formattedEndDate,
+          per_page: this.itemsPerPage,
+        };
       }
 
-      const queryParams = new URLSearchParams();
-
-      Object.entries(params).forEach(([key, value]) => {
-        if (Array.isArray(value)) {
-          value.forEach((item) => queryParams.append(key, item));
-        } else if (value !== undefined && value !== null) {
-          queryParams.append(key, value);
-        }
-      });
-
-      const url = `${VITE_API_URL}/generate_client_invoices?${queryParams.toString()}`;
-
-      axios
-        .get(url, {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/staff_invoices`, {
+          params: requestData,
           headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
           },
-        })
-        .then((response) => {
-          if (response.status === 200) {
-            if (response.data.data) {
-              this.getStaffInvoiceDetail = response.data.data;
-              this.errorMessage = "";
-              Swal.fire({
-                icon: "success",
-                title: "Data Loaded Successfully",
-                text: "Staff invoice details have been loaded.",
-              });
-            } else {
-              this.getStaffInvoiceDetail = [];
-              this.errorMessage = "Data Not Found for the specified Week";
-              Swal.fire({
-                icon: "error",
-                title: "No Data Found",
-                text: this.errorMessage,
-              });
-            }
-          }
-        })
-        .catch((error) => {
-          // console.error("Error generating the report:", error);
-          this.errorMessage = "An error occurred while fetching data.";
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: this.errorMessage,
-          });
-        })
-        .finally(() => {
-          if (this.getStaffInvoiceDetail.length === 0) {
-            Swal.fire({
-              icon: "error",
-              title: "No Data Found",
-              text: "No data available for the Date.",
-            });
-          }
-          this.isLoading = false;
         });
+
+        this.getStaffInvoiceDetail = response.data.data;
+
+        if (this.getStaffInvoiceDetail.length === 0) {
+          this.errorMessage = "No client invoices found for the specified criteria.";
+        } else {
+          this.errorMessage = "";
+        }
+      } catch (error) {
+        // Handle error
+      } finally {
+        this.isLoading = false;
+      }
     },
     //search api start
 
