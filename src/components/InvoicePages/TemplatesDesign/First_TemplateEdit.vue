@@ -295,7 +295,7 @@ export default {
   computed: {
     isSaveEnabled() {
       const value = this.fetchCustomSheetData.rate_per_mile;
-      return value && value.length >= 2;
+      return value && value.length >= 0;
     },
   },
   methods: {
