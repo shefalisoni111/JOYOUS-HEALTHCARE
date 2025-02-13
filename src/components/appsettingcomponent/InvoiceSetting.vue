@@ -226,16 +226,16 @@
                 <div class="d-flex my-3" style="gap: 8%">
                   <div>Invoice Number format:</div>
                   <div class="input-group mb-3" style="width: 75%">
+                    <span class="input-group-text" id="basic-addon2">INV-</span>
                     <input
                       type="text"
                       class="form-control ps-2"
-                      placeholder="INV-"
                       aria-label="Specify invoice number formal"
                       aria-describedby="basic-addon2"
                       v-model="fetchInvoiceSetting.invoice_number_format"
                       @input="updateInvoiceNumberFormat"
                     />
-                    <span class="input-group-text" id="basic-addon2">1234</span>
+                    <!-- <span class="input-group-text" id="basic-addon2">1234</span> -->
                   </div>
                 </div>
                 <div class="d-flex my-3" style="gap: 13.55%">
