@@ -181,6 +181,26 @@
                           }}
                         </td>
                       </tr>
+                      <tr>
+                        <td colspan="7" class="text-start fw-bold">Rate Per Mile</td>
+                        <td colspan="2" class="font-weight-bold">
+                          {{
+                            getClientInvoiceDetail?.rate_per_mile !== undefined
+                              ? "£" + getClientInvoiceDetail?.rate_per_mile
+                              : ""
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="7" class="text-start fw-bold">Grand Total</td>
+                        <td colspan="2" class="font-weight-bold">
+                          {{
+                            getClientInvoiceDetail?.grand_total_amount !== undefined
+                              ? "£" + getClientInvoiceDetail?.grand_total_amount
+                              : ""
+                          }}
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -191,8 +211,9 @@
                       <div class="col-12">
                         <h6>
                           Addition Rate Per Mile
-                          {{ "£" + getClientInvoiceDetail.rate_per_mile }} and Total Cost
-                          to be paid {{ "£" + getClientInvoiceDetail.grand_total_amount }}
+                          {{ "£" + getClientInvoiceDetail.grand_total_amount }} and Total
+                          Cost to be paid
+                          {{ "£" + getClientInvoiceDetail.grand_total_amount }}
                         </h6>
                       </div>
                     </div>
@@ -230,7 +251,6 @@
                         v-model="fetchCustomSheetData.rate_per_mile"
                         placeholder="Enter rate per mile"
                         @input="validateInput"
-                        :minlength="3"
                       />
                     </div>
                   </div>
@@ -315,6 +335,7 @@ export default {
         staff_rate: "",
         total_amount: "",
         custom_image: "",
+        grand_total_amount: "",
       },
       options: [],
       validationClientRate: true,

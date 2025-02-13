@@ -168,6 +168,26 @@
                           }}
                         </td>
                       </tr>
+                      <tr>
+                        <td colspan="7" class="text-start fw-bold">Rate Per Mile</td>
+                        <td colspan="2" class="font-weight-bold">
+                          {{
+                            getClientInvoiceDetail?.rate_per_mile !== undefined
+                              ? "£" + getClientInvoiceDetail?.rate_per_mile
+                              : ""
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="7" class="text-start fw-bold">Grand Total</td>
+                        <td colspan="2" class="font-weight-bold">
+                          {{
+                            getClientInvoiceDetail?.grand_total !== undefined
+                              ? "£" + getClientInvoiceDetail?.grand_total
+                              : ""
+                          }}
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -178,7 +198,7 @@
                         <h6>
                           Addition Rate Per Mile
                           {{ "£" + getClientInvoiceDetail.rate_per_mile }} and Total Cost
-                          to be paid {{ "£" + getClientInvoiceDetail.total_amount }}
+                          to be paid {{ "£" + getClientInvoiceDetail.grand_total }}
                         </h6>
                       </div>
                     </div>
@@ -216,7 +236,6 @@
                         v-model="fetchCustomSheetData.rate_per_mile"
                         placeholder="Enter rate per mile"
                         @input="validateInput"
-                        :minlength="3"
                       />
                     </div>
                   </div>
@@ -277,6 +296,7 @@ export default {
         rate: "",
         total_amount: "",
         custom_image: "",
+        grand_total: "",
       },
       options: [],
       validationClientRate: true,
