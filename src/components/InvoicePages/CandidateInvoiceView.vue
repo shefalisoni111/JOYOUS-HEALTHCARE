@@ -157,6 +157,26 @@
                           }}
                         </td>
                       </tr>
+                      <tr>
+                        <td colspan="7" class="text-start fw-bold">Rate Per Mile</td>
+                        <td colspan="2" class="font-weight-bold">
+                          {{
+                            getClientInvoiceDetail?.rate_per_mile !== undefined
+                              ? "£" + getClientInvoiceDetail?.rate_per_mile
+                              : ""
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="7" class="text-start fw-bold">Grand Total</td>
+                        <td colspan="2" class="font-weight-bold">
+                          {{
+                            getClientInvoiceDetail?.grand_total_amount !== undefined
+                              ? "£" + getClientInvoiceDetail?.grand_total_amount
+                              : ""
+                          }}
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
