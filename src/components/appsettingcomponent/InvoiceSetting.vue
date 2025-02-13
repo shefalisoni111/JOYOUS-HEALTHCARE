@@ -573,6 +573,7 @@ export default {
       return validatedValue;
     },
     updateInvoiceNumberFormat() {
+      this.isModified = true;
       this.fetchInvoiceSetting.invoice_number_format = this.validationNumber(
         this.fetchInvoiceSetting.invoice_number_format,
         10
