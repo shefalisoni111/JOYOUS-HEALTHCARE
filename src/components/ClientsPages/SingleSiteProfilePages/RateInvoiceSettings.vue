@@ -132,7 +132,7 @@
               </div>
             </div>
           </div>
-          <div class="d-flex my-3" style="gap: 28%">
+          <!-- <div class="d-flex my-3" style="gap: 28%">
             <div>VAT (%):</div>
             <div style="width: 50%">
               <input
@@ -144,7 +144,7 @@
                 {{ errorVAT }}
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="d-flex my-3" style="gap: 21.6%">
             <div>Invoice PO Number:</div>
             <div style="width: 50%">

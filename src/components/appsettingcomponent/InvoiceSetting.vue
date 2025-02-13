@@ -279,7 +279,7 @@
               </div>
 
               <div class="col-8">
-                <div class="d-flex my-3" style="gap: 57.3%">
+                <!-- <div class="d-flex my-3" style="gap: 57.3%">
                   <div>Reference Code:</div>
                   <div>
                     <label class="switch">
@@ -299,9 +299,9 @@
                       To enable or disable the reference code in the client invoice.
                     </div>
                   </div>
-                </div>
+                </div> -->
                 <div class="d-flex my-3" style="gap: 42%">
-                  <div>Enable NI Number in Client Invoice:</div>
+                  <!-- <div>Enable NI Number in Client Invoice:</div>
                   <div>
                     <label class="switch">
                       <input
@@ -321,8 +321,8 @@
                       affect the entire site accordingly.
                     </div>
                   </div>
-                </div>
-                <div class="d-flex my-3" style="gap: 38.4%">
+                </div> -->
+                  <!-- <div class="d-flex my-3" style="gap: 38.4%">
                   <div>Enable NI Number in Staff Invoice:</div>
                   <div>
                     <label class="switch">
@@ -335,16 +335,16 @@
                       <div class="slider round"></div>
                     </label>
                   </div>
-                </div>
-                <div class="col-12">
+                </div> -->
+                  <!-- <div class="col-12">
                   <div class="d-flex my-3">
                     <div class="card p-2 alert alert-warning">
                       <b>Warning!</b> Changes you made on staff Invoice NI Number, will
                       affect the entire staff invoice accordingly.
                     </div>
                   </div>
-                </div>
-                <div class="d-flex my-3" style="gap: 55.6%">
+                </div> -->
+                  <!-- <div class="d-flex my-3" style="gap: 55.6%">
                   <div>Enable Vat Number:</div>
                   <div>
                     <label class="switch">
@@ -356,18 +356,18 @@
                       />
                       <div class="slider round"></div>
                     </label>
-                  </div>
+                  </div>-->
                 </div>
-                <div class="col-12">
+                <!-- <div class="col-12">
                   <div class="d-flex my-3">
                     <div class="card p-2 alert alert-warning">
                       <b>Warning:</b> Changes you made on enable vat number, will affect
                       the entire site accordingly.
                     </div>
                   </div>
-                </div>
+                </div> -->
                 <div class="d-flex my-3" style="gap: 30.6%">
-                  <div class="d-flex justify-content-between gap-3">
+                  <!-- <div class="d-flex justify-content-between gap-3">
                     <div>Exclude VAT:</div>
                     <div>
                       <div>
@@ -386,16 +386,16 @@
                         </label>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
-                <div class="col-12">
+                <!-- <div class="col-12">
                   <div class="d-flex my-3">
                     <div class="card p-2 alert alert-warning">
                       <b>Warning!</b> Changes you made on enable Exclude VAT on mileage or
                       new row, will affect the entire site accordingly.
                     </div>
                   </div>
-                </div>
+                </div> -->
                 <div class="d-flex my-3" style="gap: 54.6%">
                   <div>Enable Booking Code:</div>
                   <div>

@@ -186,7 +186,7 @@
                     </tbody>
                   </table>
                 </div>
-                <div class="mt-3">
+                <!-- <div class="mt-3">
                   <div class="col-12">
                     <div class="row mt-5">
                       <div class="col-12">
@@ -198,7 +198,7 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> -->
                 <div class="mt-3">
                   <div class="col-12">
                     <div class="row mt-5">
