@@ -578,6 +578,7 @@ export default {
 
       localStorage.setItem("startDate", this.startDate.toISOString());
       localStorage.setItem("endDate", this.endDate.toISOString());
+      this.fetWeekTimeSheetData();
     },
     loadDateRangeFromLocalStorage() {
       const storedStartDate = localStorage.getItem("startDate");

@@ -742,6 +742,7 @@ export default {
 
       localStorage.setItem("startDate", this.startDate.toISOString());
       localStorage.setItem("endDate", this.endDate.toISOString());
+      this.getClientInvoice();
     },
     loadDateRangeFromLocalStorage() {
       const storedStartDate = localStorage.getItem("startDate");
@@ -789,6 +790,7 @@ export default {
         requestData = {
           date: this.formatDate(this.startDate),
           per_page: this.itemsPerPage,
+          range: "Weekly",
         };
       } else if (this.currentView === "monthly") {
         const formattedStartDate = this.formatDate(this.startDate);
@@ -797,6 +799,7 @@ export default {
           start_date: formattedStartDate,
           end_date: formattedEndDate,
           per_page: this.itemsPerPage,
+          range: "Monthly ",
         };
       }
 

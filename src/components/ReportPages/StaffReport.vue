@@ -300,7 +300,7 @@
                             {{ "£" + data.client_rate }}
                           </td>
                           <td scope="col">
-                            {{ "£" + data.total_cost }}
+                            {{ "£" + data.staff_pay_amount }}
                           </td>
 
                           <td scope="col">

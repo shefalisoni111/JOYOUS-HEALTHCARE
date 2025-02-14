@@ -226,7 +226,12 @@
                 <div class="d-flex my-3" style="gap: 8%">
                   <div>Invoice Number format:</div>
                   <div class="input-group mb-3" style="width: 75%">
-                    <span class="input-group-text" id="basic-addon2">INV-</span>
+                    <span
+                      v-if="!fetchInvoiceSetting.invoice_number_format"
+                      class="input-group-text"
+                      id="basic-addon2"
+                      >INV-</span
+                    >
                     <input
                       type="text"
                       class="form-control ps-2"
@@ -574,12 +579,20 @@ export default {
     },
     updateInvoiceNumberFormat() {
       this.isModified = true;
-      this.fetchInvoiceSetting.invoice_number_format = this.validationNumber(
+      this.fetchInvoiceSetting.invoice_number_format = this.validationNumberString(
         this.fetchInvoiceSetting.invoice_number_format,
         10
       );
     },
+    validationNumberString(value, maxLength) {
+      if (!value) return "";
 
+      if (value.length > maxLength) {
+        value = value.slice(0, maxLength);
+      }
+
+      return value;
+    },
     updateInvoiceStartNumber() {
       this.fetchInvoiceSetting.invoice_start_number = this.validationNumber(
         this.fetchInvoiceSetting.invoice_start_number,
