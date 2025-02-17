@@ -214,10 +214,10 @@
                             {{ data.total_hours }}
                           </td>
                           <td scope="col">
-                            {{ "£" + data.client_rate }}
+                            {{ "£" + data.staff_rate }}
                           </td>
                           <td scope="col">
-                            {{ "£" + data.total_cost }}
+                            {{ "£" + data.staff_pay_amount }}
                           </td>
 
                           <td scope="col">
@@ -297,7 +297,7 @@
                             {{ data.total_hours }}
                           </td>
                           <td scope="col">
-                            {{ "£" + data.client_rate }}
+                            {{ "£" + data.staff_rate }}
                           </td>
                           <td scope="col">
                             {{ "£" + data.staff_pay_amount }}
@@ -608,8 +608,11 @@ export default {
       return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
     },
     exportOneFile(exportType) {
+      const { start, end } = this.getWeekRange(this.startDate);
       let queryParams = {
         format: "csv",
+        "report[date]": this.formatDates(start),
+        "report[shift_date]": this.formatDates(start),
       };
 
       if (this.selectedSiteName) {

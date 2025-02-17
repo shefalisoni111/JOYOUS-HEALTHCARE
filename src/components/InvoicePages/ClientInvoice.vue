@@ -796,8 +796,9 @@ export default {
         const formattedStartDate = this.formatDate(this.startDate);
         const formattedEndDate = this.formatDate(this.endDate);
         requestData = {
-          start_date: formattedStartDate,
-          end_date: formattedEndDate,
+          // start_date: formattedStartDate,
+          // end_date: formattedEndDate,
+          date: this.formatDate(this.startDate),
           per_page: this.itemsPerPage,
           range: "Monthly ",
         };
