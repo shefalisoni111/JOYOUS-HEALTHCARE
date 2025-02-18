@@ -190,34 +190,41 @@
                           <th scope="col">Sl No</th>
                           <th scope="col">Client</th>
 
-                          <th scope="col">Employee Name</th>
-                          <th scope="col">Job</th>
+                          <!-- <th scope="col">Employee Name</th>
+                          <th scope="col">Job</th> -->
                           <th scope="col">Shift Date</th>
-                          <th scope="col">Payment Ref</th>
+                          <!-- <th scope="col">Payment Ref</th> -->
                           <th scope="col">Time From</th>
                           <th scope="col">Time To</th>
                           <th scope="col">Hours</th>
-                          <th scope="col">Charge Rate</th>
+                          <!-- <th scope="col">Charge Rate</th> -->
                           <th scope="col">Total Charge</th>
                           <th scope="col">Status</th>
+                          <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody v-if="paginateClientReport?.length > 0">
                         <tr v-for="(data, index) in paginateClientReport" :key="index">
                           <td scope="col">{{ index + 1 }}</td>
                           <td scope="col">{{ data.client }}</td>
-                          <td scope="col">{{ data.candidate }}</td>
-                          <td scope="col">{{ data.job }}</td>
+                          <!-- <td scope="col">
+                            {{ data.candidate_data?.[index]?.can_name }}
+                          </td>
+                          <td scope="col">{{ data.candidate_data?.[0]?.job }}</td> -->
                           <td scope="col">{{ data.start_date }}</td>
                           <td scope="col">{{ data.end_date }}</td>
                           <td scope="col">{{ data.end_date }}</td>
-                          <td scope="col" class="text-center">
-                            {{ "£" + data.paid_amount }}
+                          <td scope="col">
+                            {{ data.candidate_data?.[index]?.total_hours }}
                           </td>
-                          <td scope="col" class="text-center">
-                            {{ "£" + data.balance_amount }}
+                          <td scope="col">
+                            {{
+                              data.candidate_data?.[index]?.total_cost
+                                ? "£" + data.candidate_data[index].total_cost
+                                : ""
+                            }}
                           </td>
-                          <td scope="col">{{ data.status }}</td>
+                          <!-- <td scope="col">{{ data.status }}</td> -->
                           <td scope="col">{{ data.invoice_creation_period }}</td>
 
                           <td><button class="btn btn-success">Approved</button></td>
@@ -225,12 +232,12 @@
                       </tbody>
                       <tbody v-else>
                         <tr v-if="errorMessageFilter">
-                          <td colspan="12" class="text-danger text-center">
+                          <td colspan="10" class="text-danger text-center">
                             {{ errorMessageFilter }}
                           </td>
                         </tr>
                         <tr v-else>
-                          <td colspan="12" class="text-danger text-center">
+                          <td colspan="10" class="text-danger text-center">
                             {{ errorMessageCustom }}
                           </td>
                         </tr>
@@ -283,34 +290,41 @@
                           <th scope="col">Sl No</th>
                           <th scope="col">Client</th>
 
-                          <th scope="col">Employee Name</th>
-                          <th scope="col">Job</th>
+                          <!-- <th scope="col">Employee Name</th> -->
+                          <!-- <th scope="col">Job</th> -->
                           <th scope="col">Shift Date</th>
-                          <th scope="col">Payment Ref</th>
+                          <!-- <th scope="col">Payment Ref</th> -->
                           <th scope="col">Time From</th>
                           <th scope="col">Time To</th>
                           <th scope="col">Hours</th>
                           <th scope="col">Charge Rate</th>
                           <th scope="col">Total Charge</th>
                           <th scope="col">Status</th>
+                          <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody v-if="paginateSearchResults?.length > 0">
                         <tr v-for="(data, index) in paginateSearchResults" :key="index">
                           <td scope="col">{{ index + 1 }}</td>
                           <td scope="col">{{ data.client }}</td>
-                          <td scope="col">{{ data.candidate }}</td>
-                          <td scope="col">{{ data.job }}</td>
+                          <!-- <td scope="col">
+                            {{ data.candidate_data?.[index]?.can_name }}
+                          </td>
+                          <td scope="col">{{ data.candidate_data?.[0]?.job }}</td> -->
                           <td scope="col">{{ data.start_date }}</td>
                           <td scope="col">{{ data.end_date }}</td>
                           <td scope="col">{{ data.end_date }}</td>
-                          <td scope="col" class="text-center">
-                            {{ "£" + data.paid_amount }}
+                          <td scope="col">
+                            {{ data.candidate_data?.[index]?.total_hours }}
                           </td>
-                          <td scope="col" class="text-center">
-                            {{ "£" + data.balance_amount }}
+                          <td scope="col">
+                            {{
+                              data.candidate_data?.[index]?.total_cost
+                                ? "£" + data.candidate_data[index].total_cost
+                                : ""
+                            }}
                           </td>
-                          <td scope="col">{{ data.status }}</td>
+                          <!-- <td scope="col">{{ data.status }}</td> -->
                           <td scope="col">{{ data.invoice_creation_period }}</td>
 
                           <td><button class="btn btn-success">Approved</button></td>
@@ -318,7 +332,7 @@
                       </tbody>
                       <tbody v-else>
                         <tr>
-                          <td colspan="12" class="text-danger text-center">
+                          <td colspan="10" class="text-danger text-center">
                             {{ errorMessage }}
                           </td>
                         </tr>
