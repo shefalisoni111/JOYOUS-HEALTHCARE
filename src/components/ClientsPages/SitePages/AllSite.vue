@@ -475,7 +475,7 @@ export default {
       const formData = new FormData();
       formData.append("file", file);
       axios
-        .post(`${VITE_API_URL}/site_filter`, formData, {
+        .post(`${VITE_API_URL}/import_all_csv_site`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
