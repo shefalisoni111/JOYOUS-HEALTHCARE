@@ -216,12 +216,12 @@
                           <td scope="col">{{ data.end_date }}</td>
                           <td scope="col">{{ data.end_date }}</td>
                           <td scope="col">
-                            {{ data.candidate_data?.[index]?.total_hours }}
+                            {{ data.candidate_data?.[0]?.total_hours }}
                           </td>
                           <td scope="col">
                             {{
-                              data.candidate_data?.[index]?.total_cost
-                                ? "£" + data.candidate_data[index].total_cost
+                              data.candidate_data?.[0]?.total_cost
+                                ? "£" + data.candidate_data[0].total_cost
                                 : ""
                             }}
                           </td>
@@ -317,12 +317,12 @@
                           <td scope="col">{{ data.end_date }}</td>
                           <td scope="col">{{ data.end_date }}</td>
                           <td scope="col">
-                            {{ data.candidate_data?.[index]?.total_hours }}
+                            {{ data.candidate_data?.[0]?.total_hours }}
                           </td>
                           <td scope="col">
                             {{
-                              data.candidate_data?.[index]?.total_cost
-                                ? "£" + data.candidate_data[index].total_cost
+                              data.candidate_data?.[0]?.total_cost
+                                ? "£" + data.candidate_data[0].total_cost
                                 : ""
                             }}
                           </td>
