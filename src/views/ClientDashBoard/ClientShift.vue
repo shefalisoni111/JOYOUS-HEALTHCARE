@@ -218,7 +218,7 @@ export default {
       const componentName = this.tabs[index].component;
       if (!this.$options.components[componentName]) {
         this.$options.components[componentName] = (
-          await import(`../clientDashboard/shift/${componentName}.vue`)
+          await import(`/src/views/ClientDashBoard/shift/${componentName}.vue`)
         ).default;
       }
 

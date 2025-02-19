@@ -31,7 +31,14 @@ const router = createRouter({
         requiresAuth: true,  requiresAdmin:true,
       },
     },
-
+// {
+        //   path: "/client-view",
+        //   name: "Client",
+        //   component: () => import("@/views/ClientView.vue"),
+        //   meta: {
+        //     requiresAuth: true,   requiresAdmin:true,
+        //   },
+        // },
     {
       path: "/client",
       name: "Client",
@@ -52,7 +59,7 @@ const router = createRouter({
           props: true,
           children: [
             {
-              path: "/client/allClient",
+              path: "allClient",
               name: "AllClient",
               component: () =>
                 import(
@@ -63,7 +70,7 @@ const router = createRouter({
               },
             },
             {
-              path: "/client/activeClient",
+              path: "activeClient",
               name: "ActiveClient",
               component: () =>
                 import(
@@ -74,7 +81,7 @@ const router = createRouter({
               },
             },
             {
-              path: "/client/Inactive-Client",
+              path: "Inactive-Client",
               name: "InActiveClient",
               component: () =>
                 import(
@@ -110,14 +117,7 @@ const router = createRouter({
         },
         
         
-        {
-          path: "/client-view",
-          name: "Client",
-          component: () => import("@/views/ClientView.vue"),
-          meta: {
-            requiresAuth: true,   requiresAdmin:true,
-          },
-        },
+        
         {
           path: "/site",
           name: "Site",
