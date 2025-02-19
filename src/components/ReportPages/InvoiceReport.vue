@@ -192,7 +192,7 @@
                           <th scope="col">Site</th>
                           <!-- <th scope="col">Employee Name</th>
                           <th scope="col">Job</th> -->
-                          <th scope="col">Shift Date</th>
+                          <!-- <th scope="col">Shift Date</th> -->
                           <!-- <th scope="col">Payment Ref</th> -->
                           <th scope="col">Time From</th>
                           <th scope="col">Time To</th>
@@ -212,18 +212,14 @@
                             {{ data.candidate_data?.[index]?.can_name }}
                           </td>
                           <td scope="col">{{ data.candidate_data?.[0]?.job }}</td> -->
+                          <!-- <td scope="col">{{ data.start_date }}</td> -->
                           <td scope="col">{{ data.start_date }}</td>
                           <td scope="col">{{ data.end_date }}</td>
-                          <td scope="col">{{ data.end_date }}</td>
                           <td scope="col">
-                            {{ data.candidate_data?.[0]?.total_hours }}
+                            {{ data.unit }}
                           </td>
                           <td scope="col">
-                            {{
-                              data.candidate_data?.[0]?.total_cost
-                                ? "£" + data.candidate_data[0].total_cost
-                                : ""
-                            }}
+                            {{ data.total_amount ? "£" + data.total_amount : "" }}
                           </td>
                           <!-- <td scope="col">{{ data.status }}</td> -->
                           <td scope="col">{{ data.invoice_creation_period }}</td>
@@ -233,12 +229,12 @@
                       </tbody>
                       <tbody v-else>
                         <tr v-if="errorMessageFilter">
-                          <td colspan="9" class="text-danger text-center">
+                          <td colspan="8" class="text-danger text-center">
                             {{ errorMessageFilter }}
                           </td>
                         </tr>
                         <tr v-else>
-                          <td colspan="9" class="text-danger text-center">
+                          <td colspan="8" class="text-danger text-center">
                             {{ errorMessageCustom }}
                           </td>
                         </tr>
@@ -293,7 +289,7 @@
                           <th scope="col">Site</th>
                           <!-- <th scope="col">Employee Name</th> -->
                           <!-- <th scope="col">Job</th> -->
-                          <th scope="col">Shift Date</th>
+                          <!-- <th scope="col">Shift Date</th> -->
                           <!-- <th scope="col">Payment Ref</th> -->
                           <th scope="col">Time From</th>
                           <th scope="col">Time To</th>
@@ -313,18 +309,14 @@
                             {{ data.candidate_data?.[index]?.can_name }}
                           </td>
                           <td scope="col">{{ data.candidate_data?.[0]?.job }}</td> -->
+                          <!-- <td scope="col">{{ data.start_date }}</td> -->
                           <td scope="col">{{ data.start_date }}</td>
                           <td scope="col">{{ data.end_date }}</td>
-                          <td scope="col">{{ data.end_date }}</td>
                           <td scope="col">
-                            {{ data.candidate_data?.[0]?.total_hours }}
+                            {{ data.unit }}
                           </td>
                           <td scope="col">
-                            {{
-                              data.candidate_data?.[0]?.total_cost
-                                ? "£" + data.candidate_data[0].total_cost
-                                : ""
-                            }}
+                            {{ data.total_amount ? "£" + data.total_amount : "" }}
                           </td>
                           <!-- <td scope="col">{{ data.status }}</td> -->
                           <td scope="col">{{ data.invoice_creation_period }}</td>
@@ -334,7 +326,7 @@
                       </tbody>
                       <tbody v-else>
                         <tr>
-                          <td colspan="9" class="text-danger text-center">
+                          <td colspan="8" class="text-danger text-center">
                             {{ errorMessage }}
                           </td>
                         </tr>
