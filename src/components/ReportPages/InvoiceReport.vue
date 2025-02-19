@@ -317,6 +317,7 @@
                           </td>
                           <td scope="col">
                             {{ data.total_amount ? "£" + data.total_amount : "" }}
+                            <!-- {{ data.total_amount ? "£" + data.total_amount : "" }} -->
                           </td>
                           <!-- <td scope="col">{{ data.status }}</td> -->
                           <td scope="col">{{ data.invoice_creation_period }}</td>
