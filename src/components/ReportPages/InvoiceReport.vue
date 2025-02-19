@@ -216,14 +216,10 @@
                           <td scope="col">{{ data.start_date }}</td>
                           <td scope="col">{{ data.end_date }}</td>
                           <td scope="col">
-                            {{ data.candidate_data?.[0]?.total_hours }}
+                            {{ data.unit }}
                           </td>
                           <td scope="col">
-                            {{
-                              data.candidate_data?.[0]?.total_cost
-                                ? "£" + data.candidate_data[0].total_cost
-                                : ""
-                            }}
+                            {{ data.total_amount ? "£" + data.total_amount : "" }}
                           </td>
                           <!-- <td scope="col">{{ data.status }}</td> -->
                           <td scope="col">{{ data.invoice_creation_period }}</td>
@@ -317,14 +313,10 @@
                           <td scope="col">{{ data.start_date }}</td>
                           <td scope="col">{{ data.end_date }}</td>
                           <td scope="col">
-                            {{ data.candidate_data?.[0]?.total_hours }}
+                            {{ data.unit }}
                           </td>
                           <td scope="col">
-                            {{
-                              data.candidate_data?.[0]?.total_cost
-                                ? "£" + data.candidate_data[0].total_cost
-                                : ""
-                            }}
+                            {{ data.total_amount ? "£" + data.total_amount : "" }}
                           </td>
                           <!-- <td scope="col">{{ data.status }}</td> -->
                           <td scope="col">{{ data.invoice_creation_period }}</td>
