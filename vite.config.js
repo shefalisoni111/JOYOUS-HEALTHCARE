@@ -19,7 +19,12 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
-    
+    server: {
+      watch: {
+        ignored: ['**/vite.config.js'],
+      },
+    },
+    allowedHosts: [`API_URL`], 
   },
   define: {
       VITE_API_URL: JSON.stringify(API_URL),
