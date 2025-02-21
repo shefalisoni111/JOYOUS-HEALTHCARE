@@ -1,11 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="editAssignScheduleVacancy"
-      aria-labelledby="editAssignScheduleVacancy"
-    >
+    <div class="modal fade" id="editAssignScheduleVacancy">
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header" style="background-color: #f9944b">
@@ -278,7 +274,7 @@
               v-if="status === 'Booked' && isFutureDate"
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              @click.stop="handleBookingClick()"
+              @click.prevent="handleBookingClick()"
             >
               Cancel Shift
             </button>
@@ -421,6 +417,7 @@ export default {
         } else {
           this.bookingStatus = null;
         }
+
         // console.log(matchingVacancy, this.bookingStatus);
         // this.fetchAssignList();
       } catch (error) {
@@ -430,57 +427,55 @@ export default {
       }
     },
     async handleBookingClick() {
-      if (this.bookingStatus === "accepted") {
-        Swal.fire({
-          title: "Are you sure?",
-          text: "Do you want to cancel this booking?",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonText: "Yes, cancel it!",
-          cancelButtonText: "No, keep it",
-        }).then(async (result) => {
-          // console.log(this.bookingID);
-          if (result.isConfirmed) {
-            try {
-              const formData = new FormData();
-              formData.append("id", this.bookingID);
-              const token = localStorage.getItem("token");
-              const response = await axios.put(
-                `${VITE_API_URL}/cancel_booking`,
-                formData,
-                {
-                  headers: {
-                    "Content-Type": "multipart/form-data",
-                    Authorization: `Bearer ${token}`,
-                  },
-                }
+      // console.log("Booking Status:", this.bookingStatus);
+      // if (this.bookingStatus === "accepted") {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to cancel this booking?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, cancel it!",
+        cancelButtonText: "No, keep it",
+      }).then(async (result) => {
+        // console.log(this.bookingID);
+        if (result.isConfirmed) {
+          try {
+            const formData = new FormData();
+            formData.append("id", this.bookingID);
+            formData.append("cancelled_by", "admin");
+            const token = localStorage.getItem("token");
+            const response = await axios.put(`${VITE_API_URL}/cancel_booking`, formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            if (response.status === 200) {
+              Swal.fire(
+                "Cancelled!",
+                "The booking has been cancelled successfully.",
+                "success"
               );
-              if (response.status === 200) {
-                Swal.fire(
-                  "Cancelled!",
-                  "The booking has been cancelled successfully.",
-                  "success"
-                );
-              } else {
-                Swal.fire("Error!", response.data.data.message, "error");
-              }
-              this.fetchAssignList();
-            } catch (error) {
-              if (error.response) {
-                if (error.response.status === 401) {
-                  Swal.fire("Error!", error.response.data.error, "error");
-                } else if (error.response.status === 404) {
-                  Swal.fire("Error!", error.response.data.error, "error");
-                } else {
-                  Swal.fire("Error!", error.response.data.error, "error");
-                }
+            } else {
+              Swal.fire("Error!", response.data.data.message, "error");
+            }
+            this.fetchAssignList();
+          } catch (error) {
+            if (error.response) {
+              if (error.response.status === 401) {
+                Swal.fire("Error!", error.response.data.error, "error");
+              } else if (error.response.status === 404) {
+                Swal.fire("Error!", error.response.data.error, "error");
               } else {
                 Swal.fire("Error!", error.response.data.error, "error");
               }
+            } else {
+              Swal.fire("Error!", error.response.data.error, "error");
             }
           }
-        });
-      }
+        }
+      });
+      // }
     },
     isDateBeforeToday(state) {
       const today = new Date();

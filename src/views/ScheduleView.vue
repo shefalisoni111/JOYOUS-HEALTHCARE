@@ -774,7 +774,7 @@ export default {
 
         this.candidateList = response.data.data;
         this.totalCandidateCount = response.data.total_count;
-        this.totalPages = Math.ceil(this.totalCandidateCount / this.itemsPerPage);
+        // this.totalPages = Math.ceil(this.totalCandidateCount / this.itemsPerPage);
         // this.currentPage = response.data.current_page;
         this.searchResults = response.data.data;
         this.vacancyList = response.data.vacancies;
@@ -1282,7 +1282,7 @@ export default {
 
         this.candidateList = response.data.data;
         this.totalCandidateCount = response.data.total_count;
-        this.totalPages = Math.ceil(this.totalCandidateCount / this.itemsPerPage);
+        // this.totalPages = Math.ceil(this.totalCandidateCount / this.itemsPerPage);
 
         this.searchResults = response.data.data;
         this.vacancyList = response.data.vacancies;
