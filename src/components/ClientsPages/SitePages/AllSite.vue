@@ -461,11 +461,11 @@ export default {
       const file = event.target.files[0];
       if (!file) return;
 
-      const isValidFileType = file.type === "text/csv";
+      const isValidFileType = file.type === "text/csv" || file.name.endsWith(".csv");
       if (!isValidFileType) {
         Swal.fire({
-          icon: "warning",
-          title: "No File Selected",
+          icon: "info",
+          title: "Invalid File Type",
           text: "Please select a CSV file.",
           confirmButtonText: "OK",
         });
@@ -474,6 +474,16 @@ export default {
 
       const formData = new FormData();
       formData.append("file", file);
+
+      Swal.fire({
+        title: "Uploading...",
+        text: "Please wait while the file is being imported.",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
       axios
         .post(`${VITE_API_URL}/import_all_csv_site`, formData, {
           headers: {
@@ -481,13 +491,26 @@ export default {
           },
         })
         .then((response) => {
-          const message = "Import Successfully";
-          this.$refs.successAlert.showSuccess(message);
-          this.ImportCSV(response.data, file.name);
+          const message = response.data.message || "CSV file imported successfully.";
+
+          Swal.fire({
+            icon: "success",
+            title: "Import Successful",
+            text: message,
+          });
+
+          this.getSiteAllDataMethod();
         })
         .catch((error) => {
-          // Handle error
-          // console.log(error);
+          console.error("File upload failed:", error);
+
+          Swal.fire({
+            icon: "error",
+            title: "Import Failed",
+            text:
+              error.response?.data?.errors ||
+              "There was an issue importing the file. Please try again.",
+          });
         });
     },
 

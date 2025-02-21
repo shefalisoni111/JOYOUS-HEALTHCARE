@@ -739,7 +739,7 @@ export default {
           },
         })
         .then((response) => {
-          const message = response.data.errors || "CSV file imported successfully.";
+          const message = response.data.message || "CSV file imported successfully.";
 
           Swal.fire({
             icon: "success",
