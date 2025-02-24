@@ -1011,7 +1011,7 @@ export default {
         this.weeklyTimesheets = response.data.weekly_timesheets;
 
         const mergedTimesheetsArray = [];
-        const candidateHoursMap = {};
+        const seenTimesheets = new Map(); // To track unique timesheets
 
         this.weeklyTimesheets.forEach((candidateTimesheet) => {
           const {
@@ -1029,32 +1029,41 @@ export default {
           const customTimesheets = Array.isArray(data) ? data : [];
 
           customTimesheets.forEach((timesheet) => {
-            mergedTimesheetsArray.push({
-              candidate_name,
-              candidate_id,
-              site_name,
-              shift,
-              job,
-              display_hours,
-              total_week_cost,
-              approved_by,
-              ...timesheet,
-            });
+            const uniqueKey = `${candidate_id}-${site_name}-${shift}-${job}`; // Unique identifier for each entry
+
+            if (!seenTimesheets.has(uniqueKey)) {
+              seenTimesheets.set(uniqueKey, true);
+              mergedTimesheetsArray.push({
+                candidate_name,
+                candidate_id,
+                site_name,
+                shift,
+                job,
+                display_hours,
+                total_week_cost,
+                approved_by,
+                ...timesheet,
+              });
+            }
           });
-
-          if (display_hours !== undefined && display_hours !== null) {
-            candidateHoursMap[candidate_id] = display_hours;
-          }
-          // if (total_week_cost !== undefined && total_week_cost !== null) {
-          //   candidateCostsMap[candidate_id] = total_week_cost;
-          // }
-
-          // if (approved_by !== undefined && approved_by !== null) {
-          //   candidateApprovedByMap[candidate_id] = approved_by;
-          // }
         });
 
         this.mergedTimesheetsArray = mergedTimesheetsArray;
+        // console.log(this.mergedTimesheetsArray);
+
+        if (display_hours !== undefined && display_hours !== null) {
+          candidateHoursMap[candidate_id] = display_hours;
+        }
+        // if (total_week_cost !== undefined && total_week_cost !== null) {
+        //   candidateCostsMap[candidate_id] = total_week_cost;
+        // }
+
+        // if (approved_by !== undefined && approved_by !== null) {
+        //   candidateApprovedByMap[candidate_id] = approved_by;
+        // }
+
+        // this.mergedTimesheetsArray = mergedTimesheetsArray;
+        // console.log(this.mergedTimesheetsArray);
 
         // this.candidateCostsMap = candidateCostsMap;
         // this.candidateApprovedByMap = candidateApprovedByMap;
@@ -1066,7 +1075,7 @@ export default {
         }
       } catch (error) {
         // console.error("Error fetching timesheets:", error);
-        this.errorMessageFilter = "Data Not Found.";
+        this.errorMessageFilter = "No Weekly timesheets found for the specified week.";
       }
     },
     resetFilter() {
