@@ -491,15 +491,30 @@ export default {
           },
         })
         .then((response) => {
-          const message = response.data.message || "CSV file imported successfully.";
+          if (response.status === 204 || !response.data) {
+            Swal.fire({
+              icon: "error",
+              title: "Import Failed",
+              text: "No valid data found in the CSV file.",
+            });
+            return;
+          }
 
-          Swal.fire({
-            icon: "success",
-            title: "Import Successful",
-            text: message,
-          });
+          if (response.data.errors) {
+            Swal.fire({
+              icon: "error",
+              title: "Import Failed",
+              text: response.data.errors || "No valid rows found in the CSV file.",
+            });
+          } else {
+            Swal.fire({
+              icon: "success",
+              title: "Import Successful",
+              text: response.data.message || "CSV file imported successfully.",
+            });
 
-          this.getSiteAllDataMethod();
+            this.getSiteAllDataMethod();
+          }
         })
         .catch((error) => {
           console.error("File upload failed:", error);
