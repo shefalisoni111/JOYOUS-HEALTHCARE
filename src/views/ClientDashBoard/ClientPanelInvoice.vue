@@ -158,7 +158,7 @@
                           {{
                             errorMessageBooking ||
                             errorMessageFilter ||
-                            "No bookings found."
+                            "No InvoicE found."
                           }}
                         </td>
                       </tr>
@@ -566,6 +566,7 @@ export default {
 
       localStorage.setItem("startDate", this.startDate.toISOString());
       localStorage.setItem("endDate", this.endDate.toISOString());
+      this.fetchBookingDataMethod();
     },
     loadDateRangeFromLocalStorage() {
       const storedStartDate = localStorage.getItem("startDate");
@@ -597,15 +598,18 @@ export default {
         requestData = {
           date: this.formatDate(this.startDate),
           per_page: this.itemsPerPage,
+          range: "Weekly",
         };
-        url = `${VITE_API_URL}/find_booking_according_current_week`;
+        url = `${VITE_API_URL}/client_dashboard/client_invoices`;
       } else if (this.currentView === "monthly") {
         const formattedStartDate = this.formatDate(this.startDate);
         const formattedEndDate = this.formatDate(this.endDate);
         requestData = {
           date: formattedStartDate,
+          per_page: this.itemsPerPage,
+          range: "Monthly",
         };
-        url = `${VITE_API_URL}/find_booking_according_mounth`;
+        url = `${VITE_API_URL}/client_dashboard/client_invoices`;
       }
 
       try {
@@ -616,12 +620,12 @@ export default {
             Authorization: "bearer " + token,
           },
         });
-        this.getBookingData = response.data.booking_data;
+        this.getBookingData = response.data.data;
 
         if (this.getBookingData.length === 0) {
-          this.errorMessageBooking = "No Booking found for the specified Criteria";
+          this.errorMessageBooking = "No Invoice found for the specified Criteria";
         } else {
-          this.errorMessageBooking = "";
+          this.errorMessageBooking = "No Invoice found for the specified Criteria";
         }
       } catch (error) {
         // Handle error
@@ -644,7 +648,7 @@ export default {
   },
   async mounted() {
     // this.loadDateRangeFromLocalStorage();
-
+    this.fetchBookingDataMethod();
     // await this.getPositionMethod();
 
     // await this.getBusinessUnitMethod();
