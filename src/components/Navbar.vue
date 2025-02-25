@@ -444,7 +444,7 @@
             
               
                 <div v-if="message.sender?.name && message?.is_read === false">
-                  <!-- <strong>{{ message.sender?.name === message.sender?.name ? 'You' : message.sender?.name || 'Unknown Sender' }}</strong> -->
+                  <!--gh <strong>{{ message.sender?.name === message.sender?.name ? 'You' : message.sender?.name || 'Unknown Sender' }}</strong> -->
                   <strong>
                    
                     {{ message.sender?.type === 'Merchant' && message.sender?.name  ? 'You' : message.sender?.name || 'Unknown Sender' }}
