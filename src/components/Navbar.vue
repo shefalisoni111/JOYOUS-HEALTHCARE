@@ -262,28 +262,34 @@
           <li class="nav-item dropdown mt-2">
             <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" >
               <i class="bi bi-bell"></i>
-              <span v-if="!dropdownOpen && showBadge" class="badge bg-primary badge-number" >0</span>
+              <!-- <span v-if="!dropdownOpen && showBadge" class="badge bg-primary badge-number" >0</span> -->
+              <span v-if="!dropdownOpen && notifications.length > 0" class="badge bg-primary badge-number">
+                {{ notifications.length }}
+              </span>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" @click.self="dropdownOpen = false" style="height:310px;    width: 266px;"  @scroll="onScroll"  ref="notificationDropdown">
-              <!-- <li class="dropdown-header d-flex">
-                You have {{ notifications.length }} new notifications
-                <a href="#" class="mt-2 ms-2" @click.prevent="toggleShowAll">
-                  <span class="badge rounded-pill bg-primary p-2 ms-2">{{ showAll ? 'Show less' : 'View all' }}</span>
-                </a>
-              </li> -->
-              <!-- <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li v-for="(notification, index) in visibleNotifications" :key="index" class="notification-item p-2 d-flex gap-1">
-                <i class="bi bi-exclamation-circle text-warning"></i>
-                <div>
-                  <h4>{{ notification.title }}</h4>
-                  <p>{{ notification.message }}</p>
-                  <p>{{ notification.time }}</p>
-                </div>
-              </li> -->
-              <li class="notification-item p-2 d-flex gap-1 text-danger">No Notification Found!</li>
-            </ul>
+            <!-- <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" @click.self="dropdownOpen = false" style="height:310px;    width: 266px;"  @scroll="onScroll"  ref="notificationDropdown">
+           
+               <li class="notification-item p-2 d-flex gap-1 text-danger">No Notification Found!</li>
+            </ul> -->
+            <ul
+  class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
+  @click.self="dropdownOpen = false"
+  style="height: 310px; width: 266px"
+  @scroll="onScroll"
+  ref="notificationDropdown"
+>
+  <li v-if="notifications.length === 0" class="notification-item p-2 d-flex gap-1 text-danger">
+    {{ errorMessageNotification }}
+  </li>
+  <li v-for="(notification, index) in notifications" :key="index" class="notification-item p-2 d-flex gap-1">
+    <i class="bi bi-exclamation-circle text-warning"></i>
+    <div>
+      <h4>{{ notification.title }}</h4>
+      <p>{{ notification.message }}</p>
+      <p>{{ notification.time }}</p>
+    </div>
+  </li>
+</ul>
           </li>
           <!-- End Notification Nav -->
           <li class="nav-item dropdown">
@@ -534,6 +540,7 @@ export default {
       debounceTimeout: null,
       searchResults: [],
       errorMessage: "",
+      errorMessageNotification:'',
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,
@@ -550,10 +557,7 @@ export default {
       storedImageUrl: "",
       localProfileImage: this.profileImage,
       notifications: [
-        { title: "Lorem Ipsum", message: "Quae dolorem earum veritatis oditseno", time: "30 min. ago" },
-        { title: "Lorem Ipsum", message: "Quae dolorem earum veritatis oditseno", time: "30 min. ago" },
-        { title: "Lorem Ipsum", message: "Quae dolorem earum veritatis oditseno", time: "30 min. ago" },
-        { title: "Lorem Ipsum", message: "Quae dolorem earum veritatis oditseno", time: "30 min. ago" },
+        
        
       ],
     };
@@ -992,9 +996,39 @@ export default {
         }
       }
     },
+    async fetchNotifications() {
+  const token = localStorage.getItem("token");
+  this.isLoading = true;
+  
+  try {
+    const response = await axios.get(`${VITE_API_URL}/agency_notifications`, {
+      params: {
+        page: this.currentPage, 
+        per_page: 3
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (response.status === 200) {
+      this.notifications = response.data.notifications || [];
+      
+      this.errorMessageNotification = this.notifications.length === 0 ? response.data.message : "";
+    }
+  } catch (error) {
+    // console.error("Error fetching notifications:", error);
+    this.errorMessage = "Failed to load notifications";
+  } finally {
+    this.isLoading = false;
+  }
+    },
   },
 
  async mounted() {
+  this.fetchNotifications();
   const token = localStorage.getItem("token");
   const merchantId = localStorage.getItem('merchant_id');
     if (merchantId && token) {
