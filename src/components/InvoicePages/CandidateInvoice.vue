@@ -482,7 +482,7 @@ export default {
           },
         });
 
-        this.getStaffInvoiceDetail = response.data.staff_invoices;
+        this.getStaffInvoiceDetail = response.data.data;
 
         if (this.getStaffInvoiceDetail.length === 0) {
           this.errorMessage = "No Staff Payroll found for the specified criteria.";
