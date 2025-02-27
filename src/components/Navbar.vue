@@ -972,7 +972,8 @@ export default {
 
     do {
       const response = await axios.get(`${VITE_API_URL}/candidates`, {
-        params: { page: currentPage, per_page: itemsPerPage },
+        params: { page: currentPage, per_page: itemsPerPage,status_value: "approved", 
+        activated_value: true, },
       });
 
    
