@@ -166,9 +166,17 @@
                         <td>{{ data.invoice_creation_period }}</td>
                         <td>{{ data.generated_by }}</td>
                         <td>
-                          <button class="btn btn-success" @click="viewInvoice(data.id)">
+                          <!-- <button class="btn btn-success" @click="viewInvoice(data.id)">
                             <i class="bi bi-eye"></i>
-                          </button>
+                          </button> -->
+                          <router-link
+                            :to="{
+                              name: 'ClientPanelInvoiceView',
+                              params: { id: data.id },
+                            }"
+                            class="text-success"
+                            ><i class="bi bi-eye"></i
+                          ></router-link>
                         </td>
                       </tr>
                     </tbody>

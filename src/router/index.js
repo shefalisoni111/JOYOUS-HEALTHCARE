@@ -1067,28 +1067,22 @@ const router = createRouter({
       name: "ClientPanelInvoice",
       component: () =>
         import("@/views/ClientDashBoard/ClientPanelInvoice.vue"),
+      props: true,
         meta: {
           requiresAuth: true,  requiresClient: true
         },
-        // children: [
-        //   {
-        //     path: "", 
-        //     name: "RecruitmentInvoiceRedirect",
-        //     redirect: { name: "ClientPanelInvoice" } 
-        //   },
-        //   {
-        //     path: "/client/clientDashboard/invoice/:id", 
-        //     name: "ClientPanelInvoiceView",
-        //     component: () =>
-        //       import("@/components/ClientDashBoard/ClientPanelInvoices/ClientPanelInvoiceView.vue"),
-        //     props: true,
-        //     meta: {
-        //       requiresAuth: true,
-        //       requiresClient: true, 
-        //     },
-        //   },
-          
-        // ]
+        
+    },
+    {
+      path: "/client/clientDashboard/invoice/:id", 
+      name: "ClientPanelInvoiceView",
+      component: () =>
+        import("@/components/ClientDashBoard/ClientPanelInvoices/ClientPanelInvoiceView.vue"),
+      props: true,
+      meta: {
+        requiresAuth: true,
+        requiresClient: true, 
+      },
     },
     {
       path: "/client/clientDashboard/schedule",
