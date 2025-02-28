@@ -802,12 +802,12 @@ this.fetchChatChannel(candidate.id).then((channelSid) => {
           await   this.fetchMessages(data.channel_sid)
           return data.channel_sid;
         } else {
-          Swal.fire({
-            title: "Error!",
-            text: data.message || "Failed to create chat channel. Please try again.",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
+          // Swal.fire({
+          //   title: "Error!",
+          //   text: data.message || "Failed to create chat channel. Please try again.",
+          //   icon: "error",
+          //   confirmButtonText: "OK",
+          // });
           return null;
         }
       } catch (error) {
