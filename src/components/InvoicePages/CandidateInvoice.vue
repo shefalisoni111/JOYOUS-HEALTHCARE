@@ -63,7 +63,7 @@
                     </div>
 
                     <div class="d-flex gap-3 align-items-center">
-                      <form
+                      <!-- <form
                         v-if="getStaffInvoiceDetail?.length != 0"
                         @submit.prevent="search"
                         class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
@@ -76,7 +76,7 @@
                           v-model="searchQuery"
                           @input="debounceSearch"
                         />
-                      </form>
+                      </form> -->
                       <button
                         type="button"
                         class="btn btn-outline-success text-nowrap text-nowrap text-capitalize"
@@ -136,8 +136,8 @@
                         </tr>
                       </thead>
 
-                      <tbody v-if="getStaffInvoiceDetail?.length > 0">
-                        <tr v-for="(data, index) in getStaffInvoiceDetail" :key="index">
+                      <tbody v-if="paginateCandidates?.length > 0">
+                        <tr v-for="(data, index) in paginateCandidates" :key="index">
                           <td scope="col">#{{ index + 1 }}</td>
                           <td scope="col">{{ data.staff }}</td>
 
@@ -328,7 +328,7 @@
         </li>
       </ul>
       &nbsp;&nbsp;
-      <button
+      <!-- <button
         class="btn btn-sm btn-primary mr-2"
         :disabled="currentPage === 1"
         @click="currentPage--"
@@ -344,7 +344,7 @@
         @click="currentPage++"
       >
         Next
-      </button>
+      </button> -->
     </div>
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
@@ -378,12 +378,21 @@ export default {
       isLoading: false,
       errorMessage: "",
       totalPages: 1,
+      currentPage: 1,
       itemsPerPage: 10,
       totalCount: 0,
     };
   },
   components: { Loader, StaffGenrateInvoice, SuccessAlert },
   computed: {
+    paginateCandidates() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.getStaffInvoiceDetail.slice(startIndex, endIndex);
+    },
+    totalRecordsOnPage() {
+      return this.paginateCandidates.length;
+    },
     getWeekDates() {
       const currentDate = new Date();
       const weekStart = new Date(currentDate);
@@ -461,7 +470,7 @@ export default {
         requestData = {
           date: this.formatDate(this.startDate),
           period: "week",
-          per_page: this.totalPages,
+          per_page: this.itemsPerPage,
         };
       } else if (this.currentView === "monthly") {
         const formattedStartDate = this.formatDate(this.startDate);
@@ -469,7 +478,7 @@ export default {
         requestData = {
           start_date: formattedStartDate,
           period: "month",
-          per_page: this.totalPages,
+          per_page: this.itemsPerPage,
         };
       }
 
@@ -595,70 +604,12 @@ export default {
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
-    // async vacancyDeleteMethod(id) {
-    //   if (!window.confirm("Are you Sure ?")) {
-    //     return;
-    //   }
-    //   const token = localStorage.getItem("token");
-    //   await axios
-    //     .delete(`${VITE_API_URL}/vacancies/` + id, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => {
-    //       this.createStaffInvoiceMethod();
-    //     });
-    //   // alert("Record Deleted ");
-    // },
+
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
       this.fetWeekTimeSheetData();
     },
-    // async createStaffInvoiceMethod() {
-    //   this.isLoading = true;
-    //   const token = localStorage.getItem("token");
-    //   let requestData = {};
-
-    //   if (this.currentView === "weekly") {
-    //     requestData = {
-    //       date: this.formatDate(this.startDate),
-    //       per_page: this.itemsPerPage,
-    //     };
-    //   } else if (this.currentView === "monthly") {
-    //     const formattedStartDate = this.formatDate(this.startDate);
-    //     const formattedEndDate = this.formatDate(this.endDate);
-    //     requestData = {
-    //       start_date: formattedStartDate,
-    //       end_date: formattedEndDate,
-    //       per_page: this.itemsPerPage,
-    //     };
-    //   }
-
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/staff_invoices`, {
-    //       params: requestData,
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     });
-
-    //     this.getStaffInvoiceDetail = response.data.data;
-
-    //     if (this.getStaffInvoiceDetail.length === 0) {
-    //       this.errorMessage = "No staff invoices found for the specified criteria.";
-    //     } else {
-    //       this.errorMessage = "";
-    //     }
-    //   } catch (error) {
-    //     // Handle the error
-    //   } finally {
-    //     this.isLoading = false;
-    //   }
-    // },
   },
 
   async mounted() {

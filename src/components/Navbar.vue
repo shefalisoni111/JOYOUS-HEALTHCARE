@@ -274,7 +274,7 @@
             <ul
   class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
   @click.self="dropdownOpen = false"
-  style="height: 310px; width: 266px"
+  style="height: 310px; width: 266px;    overflow-x: scroll;"
   @scroll="onScroll"
   ref="notificationDropdown"
 >
@@ -342,12 +342,12 @@
                   <i class="bi bi-gear pe-2"></i><span>App Settings</span>
                 </router-link>
               </li>
-
+<!-- 
               <li class="cursor-pointer my-1">
                 <a class="dropdown-item d-flex align-items-center">
                   <i class="bi bi-asterisk pe-2"></i><span>Activity Log</span></a
                 >
-              </li>
+              </li> -->
 
               <!-- <li class="cursor-pointer my-1">
                 <router-link class="dropdown-item d-flex align-items-center" to="/recruitment"
@@ -551,6 +551,7 @@ export default {
       isLoading: true,
       isFetchingMessages: false,
       messageFetchInterval: null,
+      
    
     senderId:null,
     socket: null,
@@ -1005,7 +1006,7 @@ export default {
     const response = await axios.get(`${VITE_API_URL}/agency_notifications`, {
       params: {
         page: this.currentPage, 
-        per_page: 3
+        per_page: this.currentPage
       },
       headers: {
         "Content-Type": "application/json",
@@ -1016,7 +1017,8 @@ export default {
 
     if (response.status === 200) {
       this.notifications = response.data.notifications || [];
-      
+      this.currentPage = response.data.current_page;
+    
       this.errorMessageNotification = this.notifications.length === 0 ? response.data.message : "";
     }
   } catch (error) {

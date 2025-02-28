@@ -66,7 +66,7 @@
                     </div>
 
                     <div class="d-flex gap-3 align-items-center">
-                      <form
+                      <!-- <form
                         v-if="getClientInvoiceDetail?.length != 0"
                         @submit.prevent="search"
                         class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
@@ -79,7 +79,7 @@
                           v-model="searchQuery"
                           @input="debounceSearch"
                         />
-                      </form>
+                      </form> -->
                       <!-- <router-link
                         type="button"
                         class="btn btn-primary text-nowrap fs-6 text-capitalize"
@@ -111,12 +111,13 @@
                     </div>
                   </div>
                 </div>
-                <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
-                  <div class="d-flex gap-2 mt-3">
-                    <div></div>
-
+                <div
+                  class="d-flex gap-2 mb-3 justify-content-between align-items-center"
+                  v-if="showFilters"
+                >
+                  <div class="d-flex gap-2">
                     <select
-                      @change="filterData('site', $event.target.value)"
+                      @change="filterData('site_id', $event.target.value)"
                       v-model="site_id"
                       id="selectBusinessUnit"
                     >
@@ -131,7 +132,7 @@
                       </option>
                     </select>
                     <select
-                      @change="filterData('client', $event.target.value)"
+                      @change="filterData('client_id', $event.target.value)"
                       v-model="client_id"
                       id="selectClients"
                     >
@@ -145,7 +146,8 @@
                         {{ option.client_name }}
                       </option>
                     </select>
-                    <select
+
+                    <!-- <select
                       @change="filterData('staff', $event.target.value)"
                       v-model="id"
                       id="selectCandidateList"
@@ -158,7 +160,15 @@
                       >
                         {{ option.first_name }}
                       </option>
-                    </select>
+                    </select> -->
+
+                    <button
+                      :disabled="!isFilterSelected"
+                      @click="resetFilters"
+                      class="btn btn-secondary text-nowrap"
+                    >
+                      Reset Filters
+                    </button>
                   </div>
                 </div>
                 <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -176,9 +186,7 @@
                     <div v-for="(day, index) in getMonthDates" :key="index"></div>
                   </div>
                 </div>
-                <div class="d-flex gap-2">
-                  <div></div>
-                </div>
+
                 <div class="tab-content mt-4" id="pills-tabContent">
                   <div
                     class="tab-pane fade show active table-wrapper"
@@ -412,7 +420,7 @@
         </li>
       </ul>
       &nbsp;&nbsp;
-      <button
+      <!-- <button
         class="btn btn-sm btn-primary mr-2"
         :disabled="currentPage === 1"
         @click="changePage(currentPage - 1)"
@@ -428,7 +436,7 @@
         @click="changePage(currentPage + 1)"
       >
         Next
-      </button>
+      </button> -->
     </div>
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
@@ -473,10 +481,17 @@ export default {
       site_id: "",
       id: "",
       isLoading: false,
+      filters: {
+        site_id: null,
+        client_id: null,
+      },
     };
   },
   components: { SuccessAlert, Loader, GenerateInvoiceAdd },
   computed: {
+    isFilterSelected() {
+      return this.site_id || this.client_id;
+    },
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return site_id ? site_id.site_name : "";
@@ -512,6 +527,12 @@ export default {
     },
   },
   methods: {
+    resetFilters() {
+      this.site_id = "";
+
+      this.client_id = "";
+      this.getClientInvoice();
+    },
     getIconClass(invoiceLock) {
       return invoiceLock === false
         ? "bi bi-exclamation-circle-fill text-success"
@@ -655,15 +676,17 @@ export default {
       this.showFilters = !this.showFilters;
     },
     filterData(filter_type, value) {
-      this.makeFilterAPICall(filter_type, value);
+      this.filters[filter_type] = value;
+      this.makeFilterAPICall();
     },
 
     async makeFilterAPICall(filterType, filterValue) {
       try {
-        const response = await axios.get(`${VITE_API_URL}/invoice_filter`, {
+        const response = await axios.get(`${VITE_API_URL}/client_invoices`, {
           params: {
-            filter_type: filterType,
-            filter_value: filterValue,
+            per_page: this.totalPages,
+            "client_invoice[site_id]": this.filters.site_id,
+            "client_invoice[client_id]": this.filters.client_id,
           },
         });
 

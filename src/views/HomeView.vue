@@ -743,7 +743,7 @@ export default {
   },
 
   async mounted() {
-    await this.loadDateRangeFromLocalStorage();
+    // await this.loadDateRangeFromLocalStorage();
 
     const currentDate = new Date();
     const dayOfWeek = currentDate.getDay();
