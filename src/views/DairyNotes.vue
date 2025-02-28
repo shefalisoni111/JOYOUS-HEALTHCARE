@@ -2,7 +2,7 @@
   <div>
     <Navbar />
     <div class="container my-5 pt-5">
-      <h1 class="text-center mb-4">Dairy Notes</h1>
+      <h1 class="text-center mb-4">Diary Notes</h1>
 
       <!-- Add Note Section -->
       <div class="card mb-4">
