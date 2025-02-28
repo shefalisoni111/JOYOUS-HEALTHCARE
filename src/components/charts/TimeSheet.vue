@@ -24,9 +24,9 @@ export default {
           "Total timeSheet hours",
           "Approved timeSheet hours",
           "Invoiced timeSheet hours",
-          "Total pay rate",
+          // "Total pay rate",
           "Pending timeSheet hours",
-          "Total charge rate",
+          // "Total charge rate",
         ],
         datasets: [
           {
@@ -152,13 +152,13 @@ export default {
         const apiData = response.data;
 
         this.dataObject.datasets[0].data = [
-          apiData.total_records || 0,
           apiData.total_hours || 0,
           apiData.approved_timesheet_hours || 0,
-          apiData.pending_timesheet_hours || 0,
           apiData.invoice_total_hours || 0,
-          apiData.staff_invoice_rates || 0,
-          apiData.client_invoice_rates || 0,
+          // apiData.client_invoice_rates || 0,
+          apiData.pending_timesheet_hours || 0,
+
+          // apiData.staff_invoice_rates || 0,
         ];
 
         this.renderChart();

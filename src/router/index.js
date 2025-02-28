@@ -434,8 +434,8 @@ const router = createRouter({
     },
     {
       path: "/dairy_notes",
-      name: "DairyNotes",
-      component: () => import("@/views/DairyNotes.vue"),
+      name: "DiaryNotes",
+      component: () => import("@/views/DiaryNotes.vue"),
       meta: {
         requiresAuth: true,requiresAdmin:true,
       },
@@ -1070,7 +1070,25 @@ const router = createRouter({
         meta: {
           requiresAuth: true,  requiresClient: true
         },
-       
+        children: [
+          {
+            path: "", 
+            name: "RecruitmentInvoiceRedirect",
+            redirect: { name: "ClientPanelInvoice" } 
+          },
+          {
+            path: "/client/clientDashboard/invoice/:id", 
+            name: "ClientPanelInvoiceView",
+            component: () =>
+              import("@/components/ClientDashBoard/ClientPanelInvoices/ClientPanelInvoiceView.vue"),
+            props: true,
+            meta: {
+              requiresAuth: true,
+              requiresClient: true, 
+            },
+          },
+          
+        ]
     },
     {
       path: "/client/clientDashboard/schedule",
