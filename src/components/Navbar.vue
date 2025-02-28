@@ -274,7 +274,7 @@
             <ul
   class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
   @click.self="dropdownOpen = false"
-  style="height: 310px; width: 266px;    overflow-x: scroll;"
+  style="height: 310px; width: 266px; overflow-x: scroll;"
   @scroll="onScroll"
   ref="notificationDropdown"
 >
@@ -356,7 +356,7 @@
               </li> -->
 
               <li class="cursor-pointer my-1">
-                <router-link class="dropdown-item d-flex align-items-center" to="/diary_notes"
+                <router-link class="dropdown-item d-flex align-items-center" to="/dairy_notes"
                   ><i class="bi bi-ban-fill pe-2"></i><span>Diary Notes</span></router-link
                 >
               </li>
