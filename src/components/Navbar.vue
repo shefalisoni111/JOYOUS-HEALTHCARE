@@ -747,9 +747,20 @@ export default {
     openChat(candidate) {
   
       this.selectedCandidate = candidate;
-      this.showChatBox = true;
-       this.fetchChatChannel(candidate.id);
-    
+      // this.showChatBox = true;
+      //  this.fetchChatChannel(candidate.id);
+      this.showChatBox = false; 
+
+this.fetchChatChannel(candidate.id).then((channelSid) => {
+  if (channelSid) {
+    this.showChatBox = true; 
+  } else {
+    // console.warn("Chat channel not available for this candidate.");
+  }
+}).catch((error) => {
+  // console.error("Error fetching chat channel:", error);
+  this.showChatBox = false; 
+});
       
     },
     closeChatBox() {
@@ -789,6 +800,7 @@ export default {
         if (response.ok && data.channel_sid) {
           this.$store.dispatch('updateChannelSid', data.channel_sid);
           await   this.fetchMessages(data.channel_sid)
+          return data.channel_sid;
         } else {
           Swal.fire({
             title: "Error!",
@@ -796,6 +808,7 @@ export default {
             icon: "error",
             confirmButtonText: "OK",
           });
+          return null;
         }
       } catch (error) {
         // Swal.fire({

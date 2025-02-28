@@ -675,7 +675,7 @@ export default {
       // }
       this.startDate.setDate(this.startDate.getDate() + 7);
       this.endDate.setDate(this.endDate.getDate() + 7);
-      this.startDate = new Date(this.startDate); // Ensure reactivity
+      this.startDate = new Date(this.startDate);
       this.endDate = new Date(this.endDate);
     },
     updateDateRange() {
@@ -739,7 +739,7 @@ export default {
       this.updateDateRange();
     }
 
-    this.loadDateRangeFromLocalStorage();
+    // this.loadDateRangeFromLocalStorage();
   },
 
   async mounted() {
