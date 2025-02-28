@@ -356,7 +356,7 @@
               </li> -->
 
               <li class="cursor-pointer my-1">
-                <router-link class="dropdown-item d-flex align-items-center" to="/dairy_notes"
+                <router-link class="dropdown-item d-flex align-items-center" to="/diary_notes"
                   ><i class="bi bi-ban-fill pe-2"></i><span>Diary Notes</span></router-link
                 >
               </li>

@@ -433,9 +433,9 @@ const router = createRouter({
       },
     },
     {
-      path: "/dairy_notes",
-      name: "DiaryNotes",
-      component: () => import("@/views/DiaryNotes.vue"),
+      path: "/diary_notes",
+      name: "DairyNotes",
+      component: () => import("@/views/DairyNotes.vue"),
       meta: {
         requiresAuth: true,requiresAdmin:true,
       },
