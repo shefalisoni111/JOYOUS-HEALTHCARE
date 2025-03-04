@@ -6,7 +6,7 @@
     >
       <div class="row no-gutter d-flex justify-content-center align-items-center w-100">
         <div class="col-4 d-flex wrapper-div p-0">
-          <!-- <div class="col-md-6 d-none d-md-flex bg-image"></div> -->
+          <!-- <div class="col-md-6 d-none d-md-flex bg-image"></div>g -->
           <!-- <div class="col-md-6 d-none d-md-flex bg-image"></div> -->
           <div class="login-form">
             <img
@@ -192,7 +192,12 @@ export default {
           localStorage.setItem("tokenExpiration", expirationTime);
           localStorage.setItem("c_unique", jsonData.client_id);
           localStorage.setItem("loginType", "client");
-
+          this.$store.dispatch("setUser", {
+            // token: jsonData.token,
+            role: "client",
+            // client_id: jsonData.client_id,
+            // expiration: tokenExpiration,
+          });
           this.$router.push({ name: "ClientDash" });
 
           this.setupAutoLogout(tokenExpiration - new Date().getTime());
@@ -282,7 +287,7 @@ export default {
     //   this.password = password;
     // }
     this.backgroundStyle = {
-      backgroundImage: "url('src/assets/loginbggg11.png')",
+      backgroundImage: "url('src/assets/loginbggg12.png')",
     };
   },
 };
@@ -308,7 +313,7 @@ export default {
 }
 .bg-image {
   flex: 1;
-  background-image: url("src/assets/loginbggg11.png");
+  background-image: url("src/assets/loginbggg12.png");
   background-size: cover;
   background-position: center center;
 }

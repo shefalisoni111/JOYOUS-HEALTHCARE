@@ -23,8 +23,22 @@ export default createStore({
      getCandidatesData:[],
      invoiceData: [],
      invoiceStaffData: [],
+     role: null,
+    //  client_id: null,
   },
   mutations: {
+    setUser(state, payload) {
+      // state.token = payload.token;
+      state.role = payload.role;
+      // state.client_id = payload.client_id;
+      // state.expiration = payload.expiration;
+    },
+    clearUser(state) {
+      // state.token = null;
+      state.role = null;
+      // state.client_id = null;
+      // state.expiration = null;
+    },
     SET_INVOICE_DATA(state, data) {
       state.invoiceData = data;
     },
@@ -106,6 +120,12 @@ export default createStore({
   
   },
   actions: {
+    setUser({ commit }, userData) {
+      commit("setUser", userData);
+    },
+    logout({ commit }) {
+      commit("clearUser");
+    },
     setInvoiceData({ commit }, data) {
       commit("SET_INVOICE_DATA", data);
     },
@@ -161,6 +181,9 @@ export default createStore({
     
   },
    getters: {
+    // isAuthenticated: (state) => !!state.token,
+    userRole: (state) => state.role,
+    // clientId: (state) => state.client_id,
     getInvoiceData: (state) => state.invoiceData,
     getInvoiceStaffData: (state) => state.invoiceStaffData,
     getSelectedTemplate: (state) => state.selectedTemplate,

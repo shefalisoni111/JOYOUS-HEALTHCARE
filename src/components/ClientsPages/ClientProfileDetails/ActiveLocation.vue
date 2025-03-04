@@ -37,6 +37,8 @@
                   >
                 </div>
                 <div class="">
+                  <span class="fw-bold text-capitalize">{{ data.site_name }}</span
+                  ><br />
                   <span>{{ data.email }}</span
                   ><br />
                   <span>{{ data.phone_number }}</span

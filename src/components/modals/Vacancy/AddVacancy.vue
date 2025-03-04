@@ -377,7 +377,7 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label"> Percentage</label>
+                    <label class="form-label"> Bank Holiday Rate</label>
                   </div>
                   <div class="col-10 mt-1">
                     <select class="form-control" v-model="percentage">

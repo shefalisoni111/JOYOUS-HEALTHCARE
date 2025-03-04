@@ -260,11 +260,10 @@
           </li>
 
           <li class="nav-item dropdown mt-2">
-            <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" >
+            <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" @click="markAllAsRead">
               <i class="bi bi-bell"></i>
-              <!-- <span v-if="!dropdownOpen && showBadge" class="badge bg-primary badge-number" >0</span> -->
-              <span v-if="!dropdownOpen && notifications.length > 0" class="badge bg-primary badge-number">
-                {{ notifications.length }}
+              <span v-if="!dropdownOpen && unread_count > 0" class="badge bg-primary badge-number">
+                {{ unread_count }}
               </span>
             </a>
             <!-- <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" @click.self="dropdownOpen = false" style="height:310px;    width: 266px;"  @scroll="onScroll"  ref="notificationDropdown">
@@ -275,7 +274,7 @@
   class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
   @click.self="dropdownOpen = false"
   style="height: 310px; width: 266px; overflow-x: scroll;"
-  @scroll="onScroll"
+
   ref="notificationDropdown"
 >
   <li v-if="notifications.length === 0" class="notification-item p-2 d-flex gap-1 text-danger">
@@ -289,8 +288,12 @@
       <p>{{ notification.time }}</p>
     </div>
   </li>
+  <li v-if="notifications.length < totalCount" class="p-2 text-center">
+    <button @click.stop="loadMore" class="btn btn-sm btn-primary">Read More</button>
+  </li>
 </ul>
           </li>
+          
           <!-- End Notification Nav -->
           <li class="nav-item dropdown">
             <a
@@ -547,8 +550,14 @@ export default {
       showBadge: true,
       dropdownOpen: false,
       showAll: false,
+      currentPage: 1,
+      totalPages: 1,
+      itemsPerPage: 10,
+      totalCount: 0,
+      unread_count:0,
       // channelSid: "",
       isLoading: true,
+      // unreadNotifications: 0,
       isFetchingMessages: false,
       messageFetchInterval: null,
       
@@ -567,6 +576,7 @@ export default {
     
   },
   computed: {
+   
     visibleNotifications() {
      
      return this.showAll ? this.notifications : this.notifications.slice(0, 2);
@@ -593,6 +603,14 @@ export default {
     },
   },
   watch: {
+    notifications: {
+      handler(newNotifications) {
+
+        this.unread_count = newNotifications.filter((n) => !n.read).length;
+      },
+      deep: true, 
+      immediate: true, 
+    },
     selectedCandidateMessages() {
       this.scrollToBottom(); 
     },
@@ -637,6 +655,10 @@ export default {
     }
 },
   methods: {
+    async loadMore() {
+    this.currentPage++; 
+    await this.fetchNotifications(); 
+  },
     onScroll() {
       const chatMessages = this.$refs.chatMessages;
     
@@ -963,14 +985,14 @@ this.fetchChatChannel(candidate.id).then((channelSid) => {
         chatMessages.scrollTop + chatMessages.clientHeight >= chatMessages.scrollHeight;
 
       if (isAtTop) {
-        // Fetch older messages if scrolled to top
+        
         // this.fetchMessages(this.channelSid);
       } else if (!isAtBottom) {
-        // User is actively scrolling
+        
         this.isUserScrolling = true;
         clearTimeout(this.scrollTimeout);
 
-        // Reset scrolling state after 2 seconds of inactivity
+
         this.scrollTimeout = setTimeout(() => {
           this.isUserScrolling = false;
         }, 2000);
@@ -1011,6 +1033,37 @@ this.fetchChatChannel(candidate.id).then((channelSid) => {
         }
       }
     },
+    async markAllAsRead() {
+    if (this.unread_count > 0) {
+      const token = localStorage.getItem("token");
+
+      try {
+        const response = await axios.put(
+          `${VITE_API_URL}/merchant_notification_read_all`,
+          {},
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+         
+          this.unread_count = 0;
+
+         
+          this.notifications.forEach((notification) => {
+            notification.read = true;
+          });
+        }
+      } catch (error) {
+        // console.error("Error marking notifications as read:", error);
+      }
+    }
+  },
     async fetchNotifications() {
   const token = localStorage.getItem("token");
   this.isLoading = true;
@@ -1018,8 +1071,8 @@ this.fetchChatChannel(candidate.id).then((channelSid) => {
   try {
     const response = await axios.get(`${VITE_API_URL}/agency_notifications`, {
       params: {
-        page: this.currentPage, 
-        per_page: this.currentPage
+        page: this.currentPage,
+            per_page: this.itemsPerPage,
       },
       headers: {
         "Content-Type": "application/json",
@@ -1029,20 +1082,28 @@ this.fetchChatChannel(candidate.id).then((channelSid) => {
     });
 
     if (response.status === 200) {
-      this.notifications = response.data.notifications || [];
-      this.currentPage = response.data.current_page;
+      // this.notifications = response.data.notifications || [];
     
+      if (this.currentPage === 1) {
+        this.notifications = response.data.notifications || [];
+      } else {
+        this.notifications = [...this.notifications, ...(response.data.notifications || [])];
+      }
+      this.currentPage = response.data.current_page;
+      this.totalCount = response.data.total_count;
+      this.unread_count = response.data.unread_count || 0;
+      // this.total_count = response.data.total_count;
       this.errorMessageNotification = this.notifications.length === 0 ? response.data.message : "";
     }
   } catch (error) {
-    // console.error("Error fetching notifications:", error);
+    
     this.errorMessage = "Failed to load notifications";
   } finally {
     this.isLoading = false;
   }
     },
   },
-
+ 
  async mounted() {
   this.fetchNotifications();
   const token = localStorage.getItem("token");

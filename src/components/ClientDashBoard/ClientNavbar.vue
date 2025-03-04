@@ -103,6 +103,82 @@
               </li>
             </ul>
           </li> -->
+          <!-- <li>
+            <ul
+              class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
+           
+              @click.self="dropdownOpen = false"
+              style="height: 310px; width: 266px; overflow-x: scroll"
+              @scroll="onScroll"
+              ref="notificationDropdown"
+            >
+              <li
+                v-if="notifications.length === 0"
+                class="notification-item p-2 d-flex gap-1 text-danger"
+              >
+                {{ errorMessageNotification }}
+              </li>
+              <li
+                v-for="(notification, index) in notifications"
+                :key="index"
+                class="notification-item p-2 d-flex gap-1"
+              >
+                <i class="bi bi-exclamation-circle text-warning"></i>
+                <div>
+                  <h4>{{ notification.title }}</h4>
+                  <p>{{ notification.message }}</p>
+                  <p>{{ notification.time }}</p>
+                </div>
+              </li>
+            </ul>
+          </li> -->
+          <li class="nav-item dropdown mt-2">
+            <a
+              class="nav-link nav-icon"
+              href="#"
+              data-bs-toggle="dropdown"
+              v-if="$store.getters.userRole && $store.getters.userRole === 'client'"
+            >
+              <i class="bi bi-bell"></i>
+              <!-- <span v-if="!dropdownOpen && showBadge" class="badge bg-primary badge-number" >0</span> -->
+              <span
+                v-if="!dropdownOpen && notifications.length > 0"
+                class="badge bg-primary badge-number"
+              >
+                {{ notifications.length }}
+              </span>
+            </a>
+            <!-- <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" @click.self="dropdownOpen = false" style="height:310px;    width: 266px;"  @scroll="onScroll"  ref="notificationDropdown">
+           
+               <li class="notification-item p-2 d-flex gap-1 text-danger">No Notification Found!</li>
+            </ul> -->
+            <ul
+              class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
+              @click.self="dropdownOpen = false"
+              style="height: 310px; width: 266px; overflow-x: scroll"
+              @scroll="onScroll"
+              ref="notificationDropdown"
+            >
+              <li
+                v-if="notifications.length === 0"
+                class="notification-item p-2 d-flex gap-1 text-danger"
+              >
+                {{ errorMessageNotification }}
+              </li>
+              <li
+                v-for="(notification, index) in notifications"
+                :key="index"
+                class="notification-item p-2 d-flex gap-1"
+              >
+                <i class="bi bi-exclamation-circle text-warning"></i>
+                <div>
+                  <h4>{{ notification.title }}</h4>
+                  <p>{{ notification.message }}</p>
+                  <p>{{ notification.time }}</p>
+                </div>
+              </li>
+            </ul>
+          </li>
 
           <!-- <li class="nav-item dropdown mt-2">
             <a
@@ -262,32 +338,15 @@ export default {
       dropdownOpen: false,
       showAll: false,
       localProfileImage: this.profileImage,
-      notifications: [
-        {
-          title: "Lorem Ipsum",
-          message: "Quae dolorem earum veritatis oditseno",
-          time: "30 min. ago",
-        },
-        {
-          title: "Lorem Ipsum",
-          message: "Quae dolorem earum veritatis oditseno",
-          time: "30 min. ago",
-        },
-        {
-          title: "Lorem Ipsum",
-          message: "Quae dolorem earum veritatis oditseno",
-          time: "30 min. ago",
-        },
-        {
-          title: "Lorem Ipsum",
-          message: "Quae dolorem earum veritatis oditseno",
-          time: "30 min. ago",
-        },
-      ],
+      errorMessageNotification: "",
+      notifications: [],
     };
   },
   components: { ConfirmationAlert },
   computed: {
+    userRole() {
+      return this.$store.getters.userRole;
+    },
     visibleNotifications() {
       return this.showAll ? this.notifications : this.notifications.slice(0, 2);
       //  return this.notifications.slice(0, 5);
@@ -317,6 +376,14 @@ export default {
     profileImage(newValue) {
       this.localProfileImage = newValue;
     },
+    "$store.getters.userRole": {
+      handler(newRole) {
+        if (newRole !== "client") {
+          this.hideNotificationIcon();
+        }
+      },
+      immediate: true,
+    },
   },
 
   props: {
@@ -326,6 +393,44 @@ export default {
     },
   },
   methods: {
+    hideNotificationIcon() {
+      this.showNotificationIcon = false;
+    },
+    async fetchNotifications() {
+      const token = localStorage.getItem("token");
+      const clientId = localStorage.getItem("c_unique");
+      this.isLoading = true;
+
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/client_notifications/${clientId}`,
+          {
+            params: {
+              page: this.currentPage,
+              per_page: this.currentPage,
+            },
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          this.notifications = response.data.notifications || [];
+          this.currentPage = response.data.current_page;
+
+          this.errorMessageNotification =
+            this.notifications.length === 0 ? response.data.message : "";
+        }
+      } catch (error) {
+        // console.error("Error fetching notifications:", error);
+        this.errorMessage = "Failed to load notifications";
+      } finally {
+        this.isLoading = false;
+      }
+    },
     confirmed() {
       this.isModalVisible = false;
 
@@ -378,6 +483,7 @@ export default {
     },
   },
   mounted() {
+    this.fetchNotifications();
     this.fetchProfileImage();
     const clientId = localStorage.getItem("c_unique");
     const token = localStorage.getItem("token");

@@ -303,7 +303,7 @@
                   </div>
                   <div class="mb-3 d-flex justify-content-between">
                     <div class="col-2">
-                      <label class="form-label"> Percentage</label>
+                      <label class="form-label"> Bank Holiday Rate</label>
                     </div>
                     <div class="col-10 mt-1">
                       <select class="form-control" v-model="fetchVacancy.percentage">
@@ -360,7 +360,7 @@
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
               @click.prevent="updateVacancyMethod()"
-              :disabled="!isValidDate"
+              :disabled="!isFormValid"
             >
               Save
             </button>
@@ -473,12 +473,12 @@ export default {
         return formattedDate >= today;
       });
     },
-    isFormValid() {
-      const today = new Date();
-      return this.fetchVacancy.dates.every(
-        (date) => new Date(this.formatDate(date)) > today
-      );
-    },
+    //isFormValid() {
+    //   const today = new Date();
+    //   return this.fetchVacancy.dates.every(
+    //     (date) => new Date(this.formatDate(date)) > today
+    //   );
+    // },
   },
   methods: {
     validateStaffRequired() {

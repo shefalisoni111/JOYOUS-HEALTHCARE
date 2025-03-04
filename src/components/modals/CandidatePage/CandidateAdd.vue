@@ -1,12 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="addCandidate"
-      aria-labelledby="candidatePage"
-      tabindex="-1"
-    >
+    <div class="modal fade" id="addCandidate" aria-labelledby="candidatePage">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -230,7 +225,7 @@
         </div>
       </div>
     </div>
-    <SuccessAlert ref="showSuccess" />
+    <SuccessAlert ref="successAlert" />
     <NotSuccessAlertVue ref="dangerAlert" />
   </div>
 </template>
@@ -434,7 +429,7 @@ export default {
 
           const responseData = await response.json();
 
-          if (response.ok) {
+          if (response.status === 200) {
             if (responseData.error && responseData.error.email) {
               this.emailError = responseData.error.email[0];
               // const message = "Unsuccessful Staff added";

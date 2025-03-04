@@ -470,8 +470,8 @@
                     </tr> -->
                     </tbody>
                   </table>
+                  <loader :isLoading="isLoading || candidateList.length === 0"></loader>
                 </div>
-                <loader :isLoading="isLoading"></loader>
               </div>
             </div>
           </div>
