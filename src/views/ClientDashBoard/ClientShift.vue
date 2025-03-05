@@ -149,7 +149,7 @@
     </div>
 
     <!-- <AddVacancy @addVacancy="createVacancy" /> -->
-    <AddClietShift @addVacancy="createVacancy" />
+    <!-- <AddClietShift @addVacancy="createVacancy" /> -->
   </div>
 </template>
 <script>
@@ -160,7 +160,7 @@ import DeletedShift from "../../components/ClientDashBoard/ClientShiftPages/Dele
 import OpenShift from "../../components/ClientDashBoard/ClientShiftPages/OpenShift.vue";
 import ClientNavbar from "../../components/ClientDashBoard/ClientNavbar.vue";
 // import AddVacancy from "../modals/Vacancy/AddVacancy.vue";
-import AddClietShift from "../../components/modals/ClientDashboard/ClientShift_pages/AddClietShift.vue";
+// import AddClietShift from "../../components/modals/ClientDashboard/ClientShift_pages/AddClietShift.vue";
 
 export default {
   data() {
@@ -204,7 +204,6 @@ export default {
     DeletedShift,
     OpenShift,
     ClientNavbar,
-    AddClietShift,
   },
 
   methods: {

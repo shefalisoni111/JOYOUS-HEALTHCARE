@@ -260,7 +260,7 @@
                               <div class="slider round"></div>
                             </label>
                           </td>
-                          <td scope="col">{{ data.generated_by }}</td>
+                          <td scope="col">Auto Generated</td>
                           <td scope="col">
                             {{ data.email_status }}
                           </td>
@@ -334,7 +334,7 @@
                           <td scope="col">{{ data.status }}</td> -->
                           <td scope="col">{{ data.invoice_creation_period }}</td>
                           <td scope="col">{{ data.invoice_lock }}</td>
-                          <td scope="col">{{ data.generated_by }}</td>
+                          <td scope="col">Auto Generated</td>
                           <td scope="col">
                             {{ data.email_status }}
                           </td>

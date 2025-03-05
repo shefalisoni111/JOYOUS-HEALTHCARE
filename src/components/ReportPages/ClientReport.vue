@@ -675,84 +675,25 @@ export default {
       this.currentPage = 1;
       this.filterData();
     },
-    // async filterData() {
-    //   this.isLoading = true;
-    //   const token = localStorage.getItem("token");
-    //   const formatDate = (date) => {
-    //     const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    //     const day = date.getDate().toString().padStart(2, "0");
-    //     const year = date.getFullYear();
-    //     return `${day}/${month}/${year}`;
-    //   };
 
-    //   let startOfRange, endOfRange;
-
-    //   if (this.currentView === "weekly") {
-    //     const startOfWeek = new Date(this.startDate);
-    //     const dayOfWeek = this.startDate.getDay();
-
-    //     const diff = (dayOfWeek === 0 ? -6 : 1) - dayOfWeek;
-    //     startOfWeek.setDate(this.startDate.getDate() + diff);
-
-    //     const endOfWeek = new Date(startOfWeek);
-    //     endOfWeek.setDate(startOfWeek.getDate() + 6);
-
-    //     startOfRange = startOfWeek;
-    //     endOfRange = endOfWeek;
-    //   } else {
-    //     const startOfMonth = new Date(
-    //       this.startDate.getFullYear(),
-    //       this.startDate.getMonth(),
-    //       1
-    //     );
-    //     const endOfMonth = new Date(
-    //       this.startDate.getFullYear(),
-    //       this.startDate.getMonth() + 1,
-    //       0
-    //     );
-
-    //     startOfRange = startOfMonth;
-    //     endOfRange = endOfMonth;
-    //   }
-
-    //   const requestData = {
-    //     date: formatDate(startOfRange),
-    //     filter_type: this.currentView === "weekly" ? "week" : "month",
-    //   };
-    //   try {
-    //     const response = await axios.get(
-    //       `${VITE_API_URL}/report_section_timesheet_data`,
-    //       {
-    //         params: requestData,
-    //         per_page: this.itemsPerPage,
-    //         headers: {
-    //           Authorization: "bearer " + token,
-    //         },
-    //       }
-    //     );
-    //     this.getSiteReportData = response.data.data || [];
-    //     if (response.status === 200 && this.getSiteReportData.length === 0) {
-    //       this.errorMessageCustom = `Data Not available for this month`;
-    //     } else {
-    //       this.errorMessageCustom = "Data Not Found";
-    //     }
-    //   } catch (error) {
-    //     this.errorMessageCustom = "Data Not Found";
-    //   } finally {
-    //     this.isLoading = false;
-    //   }
-    // },
     exportOneFile(exportType) {
+      const { start, end } = this.getWeekRange(this.startDate);
       let queryParams = {
         format: "csv",
+        "report[date]": this.formatDates(start),
+        "report[shift_date]": this.formatDates(start),
       };
 
       if (this.selectedSiteName) {
         queryParams["report[site]"] = this.selectedSiteName;
+        queryParams["report[date]"] = this.formatDates(start);
+        queryParams["report[shift_date]"] = this.formatDates(start);
       }
 
       if (this.selectedCandidate) {
         queryParams["report[name]"] = this.selectedCandidate;
+        queryParams["report[date]"] = this.formatDates(start);
+        queryParams["report[shift_date]"] = this.formatDates(start);
       }
 
       queryParams.range = this.currentView === "weekly" ? "week" : "month";

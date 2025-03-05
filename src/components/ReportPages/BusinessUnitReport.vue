@@ -723,16 +723,23 @@ export default {
       } catch (error) {}
     },
     exportOneFile(exportType) {
+      const { start, end } = this.getWeekRange(this.startDate);
       let queryParams = {
         format: "csv",
+        "report[date]": this.formatDates(start),
+        "report[shift_date]": this.formatDates(start),
       };
 
       if (this.selectedSiteName) {
         queryParams["report[site]"] = this.selectedSiteName;
+        queryParams["report[date]"] = this.formatDates(start);
+        queryParams["report[shift_date]"] = this.formatDates(start);
       }
 
       if (this.selectedCandidate) {
         queryParams["report[name]"] = this.selectedCandidate;
+        queryParams["report[date]"] = this.formatDates(start);
+        queryParams["report[shift_date]"] = this.formatDates(start);
       }
 
       queryParams.range = this.currentView === "weekly" ? "week" : "month";

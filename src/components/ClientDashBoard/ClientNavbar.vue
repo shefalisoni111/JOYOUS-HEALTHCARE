@@ -137,21 +137,19 @@
               class="nav-link nav-icon"
               href="#"
               data-bs-toggle="dropdown"
-              v-if="$store.getters.userRole && $store.getters.userRole === 'client'"
+              v-if="showNotificationIcon"
+              @click="markAllAsRead"
             >
               <i class="bi bi-bell"></i>
-              <!-- <span v-if="!dropdownOpen && showBadge" class="badge bg-primary badge-number" >0</span> -->
+
               <span
-                v-if="!dropdownOpen && notifications.length > 0"
+                v-if="!dropdownOpen && unread_count > 0"
                 class="badge bg-primary badge-number"
               >
-                {{ notifications.length }}
+                {{ unread_count }}
               </span>
             </a>
-            <!-- <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" @click.self="dropdownOpen = false" style="height:310px;    width: 266px;"  @scroll="onScroll"  ref="notificationDropdown">
-           
-               <li class="notification-item p-2 d-flex gap-1 text-danger">No Notification Found!</li>
-            </ul> -->
+
             <ul
               class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
               @click.self="dropdownOpen = false"
@@ -176,6 +174,11 @@
                   <p>{{ notification.message }}</p>
                   <p>{{ notification.time }}</p>
                 </div>
+              </li>
+              <li v-if="notifications.length < totalCount" class="p-2 text-center">
+                <button @click.stop="loadMore" class="btn btn-sm btn-primary">
+                  Read More
+                </button>
               </li>
             </ul>
           </li>
@@ -340,6 +343,12 @@ export default {
       localProfileImage: this.profileImage,
       errorMessageNotification: "",
       notifications: [],
+      showNotificationIcon: false,
+      currentPage: 1,
+      totalPages: 1,
+      itemsPerPage: 10,
+      totalCount: 0,
+      unread_count: 0,
     };
   },
   components: { ConfirmationAlert },
@@ -354,11 +363,7 @@ export default {
     isScrollable() {
       return this.notifications.length > this.visibleNotifications.length;
     },
-    // profilePhotoUrl() {
-    //   const storedImageUrl = localStorage.getItem("profileImage");
 
-    //   return storedImageUrl ? storedImageUrl : "./profile.png";
-    // },
     selectedCandidateMessages() {
       if (this.selectedCandidate) {
         return this.messages.filter(
@@ -376,12 +381,17 @@ export default {
     profileImage(newValue) {
       this.localProfileImage = newValue;
     },
-    "$store.getters.userRole": {
+    userRole: {
       handler(newRole) {
-        if (newRole !== "client") {
-          this.hideNotificationIcon();
-        }
+        this.showNotificationIcon = newRole !== "client_user";
       },
+      immediate: true,
+    },
+    notifications: {
+      handler(newNotifications) {
+        this.unread_count = newNotifications.filter((n) => !n.read).length;
+      },
+      deep: true,
       immediate: true,
     },
   },
@@ -394,7 +404,49 @@ export default {
   },
   methods: {
     hideNotificationIcon() {
-      this.showNotificationIcon = false;
+      this.showNotificationIcon = true;
+    },
+    async loadMore() {
+      this.currentPage++;
+      await this.fetchNotifications();
+    },
+    async markAllAsRead() {
+      if (this.unread_count > 0) {
+        const token = localStorage.getItem("token");
+        const clientId = localStorage.getItem("c_unique");
+
+        if (!clientId) {
+          console.error("Client ID is missing. Cannot mark notifications as read.");
+          return;
+        }
+
+        try {
+          const response = await axios.put(
+            `${VITE_API_URL}/client_notification_read_all?id=${clientId}`,
+            {}, // Empty body
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (response.status === 200) {
+            this.unread_count = 0;
+
+            this.notifications.forEach((notification) => {
+              notification.read = true;
+            });
+          }
+        } catch (error) {
+          // console.error(
+          //   "Error marking notifications as read:",
+          //   error.response?.data || error
+          // );
+        }
+      }
     },
     async fetchNotifications() {
       const token = localStorage.getItem("token");
@@ -418,8 +470,17 @@ export default {
         );
 
         if (response.status === 200) {
-          this.notifications = response.data.notifications || [];
+          if (this.currentPage === 1) {
+            this.notifications = response.data.notifications || [];
+          } else {
+            this.notifications = [
+              ...this.notifications,
+              ...(response.data.notifications || []),
+            ];
+          }
           this.currentPage = response.data.current_page;
+          this.totalCount = response.data.total_count;
+          this.unread_count = response.data.unread_count || 0;
 
           this.errorMessageNotification =
             this.notifications.length === 0 ? response.data.message : "";
@@ -484,6 +545,7 @@ export default {
   },
   mounted() {
     this.fetchNotifications();
+    this.$store.dispatch("fetchUser");
     this.fetchProfileImage();
     const clientId = localStorage.getItem("c_unique");
     const token = localStorage.getItem("token");

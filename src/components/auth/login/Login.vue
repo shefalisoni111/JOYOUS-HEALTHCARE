@@ -193,10 +193,7 @@ export default {
           localStorage.setItem("c_unique", jsonData.client_id);
           localStorage.setItem("loginType", "client");
           this.$store.dispatch("setUser", {
-            // token: jsonData.token,
-            role: "client",
-            // client_id: jsonData.client_id,
-            // expiration: tokenExpiration,
+            role: jsonData.role,
           });
           this.$router.push({ name: "ClientDash" });
 

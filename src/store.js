@@ -27,11 +27,8 @@ export default createStore({
     //  client_id: null,
   },
   mutations: {
-    setUser(state, payload) {
-      // state.token = payload.token;
-      state.role = payload.role;
-      // state.client_id = payload.client_id;
-      // state.expiration = payload.expiration;
+    setUser(state, user) {
+      state.role = user.role; 
     },
     clearUser(state) {
       // state.token = null;
@@ -120,8 +117,32 @@ export default createStore({
   
   },
   actions: {
-    setUser({ commit }, userData) {
-      commit("setUser", userData);
+    // setUser({ commit }, userData) {
+    //   commit("setUser", userData);
+    // },
+    // logout({ commit }) {
+    //   commit("clearUser");
+    // },
+    async setUser({ commit }, user) {
+      commit("setUser", user);
+    },
+    async login({ commit, dispatch }, credentials) {
+      try {
+        const response = await axios.post(`${VITE_API_URL}/client_login`, credentials);
+        commit("setUser", response.data);
+        dispatch("fetchUser"); 
+      } catch (error) {
+        // console.error("Login failed:", error);
+      }
+    },
+  
+    async fetchUser({ commit }) {
+      try {
+        const response = await axios.get(`${VITE_API_URL}/client_login`); 
+        commit("setUser", response.data); 
+      } catch (error) {
+        // console.error("Failed to fetch user:", error);
+      }
     },
     logout({ commit }) {
       commit("clearUser");

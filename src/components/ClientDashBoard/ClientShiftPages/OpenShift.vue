@@ -174,12 +174,14 @@
       </button>
     </div>
     <loader :isLoading="isLoading"></loader>
+    <AddClietShift @addVacancy="fetchData" />
   </div>
 </template>
 <script>
 import axios from "axios";
 import Loader from "../../Loader/Loader.vue";
 import Swal from "sweetalert2";
+import AddClietShift from "../../modals/ClientDashboard/ClientShift_pages/AddClietShift.vue";
 
 export default {
   name: "ClientDash",
@@ -206,7 +208,7 @@ export default {
       site_shift_id: "",
     };
   },
-  components: { Loader },
+  components: { Loader, AddClietShift },
   props: {
     startDate: Date,
     currentView: String,

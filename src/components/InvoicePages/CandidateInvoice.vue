@@ -171,7 +171,7 @@
                               <div class="slider round"></div>
                             </label>
                           </td>
-                          <td scope="col">{{ data.generated_by }}</td>
+                          <td scope="col">Auto Generated</td>
                           <td scope="col">
                             {{ data.email_status }}
                           </td>
@@ -255,7 +255,7 @@
                               <div class="slider round"></div>
                             </label>
                           </td>
-                          <td scope="col">{{ data.generated_by }}</td>
+                          <td scope="col">Auto Generated</td>
                           <td scope="col">
                             {{ data.email_status }}
                           </td>

@@ -10,7 +10,7 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addShiftClient">Add Shift</h5>
+            <h5 class="modal-title" id="addShiftClient">Add Client Shift</h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -311,6 +311,7 @@ import Swal from "sweetalert2";
 
 export default {
   name: "AddVacancy",
+  emits: ["addVacancy"],
   data() {
     return {
       validationSelectedOptionText: true,

@@ -148,6 +148,7 @@
 <script>
 import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
+import Swal from "sweetalert2";
 
 export default {
   name: "EditClientModal",
@@ -242,16 +243,33 @@ export default {
     },
     async updateClientMethod() {
       try {
-        await axios.put(
+        const response = await axios.put(
           `${VITE_API_URL}/clients/${this.fetchClients.id}`,
           this.fetchClients
         );
+
+        if (response.data.error && response.data.error.email) {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: response.data.error.email[0],
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+
         this.$emit("client-updated");
-        // alert("Client updated successfully");
         const message = "Client Updated Successfully";
         this.$refs.successAlert.showSuccess(message);
       } catch (error) {
-        // console.error("Error updating candidate:", error);
+        // console.error("Error updating client:", error);
+
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: error.response?.data?.message || "Please try again.",
+          confirmButtonText: "OK",
+        });
       }
     },
     validatePhoneNumberFormat(phone_number) {
