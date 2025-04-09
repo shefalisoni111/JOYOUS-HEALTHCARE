@@ -462,7 +462,7 @@ ul.profile .dropdown-item:focus {
   font-size: 26px;
   font-weight: 700;
   color: #012970;
-  font-family: "Nunito", sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .active {

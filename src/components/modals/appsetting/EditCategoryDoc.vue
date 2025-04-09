@@ -107,10 +107,21 @@ export default {
       if (!id) return;
       try {
         const response = await axios.get(`${VITE_API_URL}/document_categories/${id}`);
-        this.fetchCategory = { ...this.fetchCategory, ...response.data.data };
+        const categoryData = response.data.category;
+
+        this.fetchCategory = {
+          category_name: categoryData.category_name || "",
+          job_id: categoryData.job_id || [],
+          id: categoryData.id || id,
+        };
+
+        // console.log("Fetched category ID:", categoryData);
       } catch (error) {}
     },
     async updateCategoryMethod() {
+      if (!this.fetchCategory.id) {
+        return;
+      }
       try {
         const response = await axios.put(
           `${VITE_API_URL}/document_categories/${this.fetchCategory.id}`,

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <!-- <Navbar /> -->
     <div class="container-fluid p-0">
       <div id="main">
         <div class="pagetitle d-flex justify-content-between px-2 pt-3">
@@ -470,7 +470,7 @@
                     </tr> -->
                     </tbody>
                   </table>
-                  <loader :isLoading="isLoading || candidateList.length === 0"></loader>
+                  <loader :isLoading="isLoading"></loader>
                 </div>
               </div>
             </div>
@@ -523,7 +523,7 @@
 import axios from "axios";
 import EditAssignShceduleVaacncy from "../components/modals/Schedule/EditAssignShceduleVaacncy.vue";
 import ScheduleDirectAssignList from "../components/modals/Schedule/ScheduleDirectAssignList.vue";
-import Navbar from "../components/Navbar.vue";
+// import Navbar from "../components/Navbar.vue";
 // import SchedulePublishStaffList from "../components/modals/Schedule/SchedulePublishStaffList.vue";
 import SuccessAlert from "../components/Alerts/SuccessAlert.vue";
 import Loader from "../components/Loader/Loader.vue";
@@ -1374,7 +1374,7 @@ export default {
   },
   components: {
     EditAssignShceduleVaacncy,
-    Navbar,
+    // Navbar,
     ScheduleDirectAssignList,
     // SchedulePublishStaffList,
     SuccessAlert,

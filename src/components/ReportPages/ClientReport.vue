@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <!-- <Navbar /> -->
     <div id="main">
       <div class="container-fluid pt-3">
         <div class="row">
@@ -11,7 +11,7 @@
                   <select
                     v-model="selectedClientName"
                     id="selectClients"
-                    @change="filterData"
+                    @change="handleClientChange"
                   >
                     <option value="">All Client</option>
                     <option
@@ -27,6 +27,7 @@
                     v-model="selectedSiteName"
                     id="selectBusinessUnit"
                     @change="filterData"
+                    :disabled="!businessUnit.length"
                   >
                     <option value="">All Site</option>
                     <option
@@ -44,10 +45,10 @@
                     <option
                       v-for="option in candidateLists"
                       :key="option.id"
-                      :value="`${option.first_name} ${option.last_name}`"
+                      :value="`${option.full_name}`"
                       placeholder="Select Staff"
                     >
-                      {{ option.first_name + " " + option.last_name }}
+                      {{ option.full_name }}
                     </option>
                   </select>
                 </div>
@@ -429,7 +430,7 @@
 </template>
 <script>
 import axios from "axios";
-import Navbar from "../Navbar.vue";
+// import Navbar from "../Navbar.vue";
 import Loader from "../Loader/Loader.vue";
 const axiosInstance = axios.create({
   headers: {
@@ -475,7 +476,10 @@ export default {
       queryParams: {},
     };
   },
-  components: { Navbar, Loader },
+  components: {
+    // Navbar,
+    Loader,
+  },
   computed: {
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
@@ -532,6 +536,34 @@ export default {
     },
   },
   methods: {
+    async handleClientChange() {
+      const selectedClient = this.clientData.find(
+        (client) => client.client_name === this.selectedClientName
+      );
+
+      this.client_id = selectedClient ? selectedClient.id : null;
+      this.selectedSiteName = "";
+      this.businessUnit = [];
+      if (this.client_id) {
+        await this.getSiteAccordingClientMethod();
+      }
+      this.filterData();
+    },
+
+    async getSiteAccordingClientMethod() {
+      if (!this.client_id) return;
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/site_according_client/${this.client_id}`
+        );
+        this.businessUnit = response.data.site || [];
+      } catch (error) {
+        this.businessUnit = [];
+        if (error.response && error.response.status == 404) {
+          // console.error("No sites found for this client.");
+        }
+      }
+    },
     async filterData() {
       const params = {
         page: 1,
@@ -607,7 +639,7 @@ export default {
     },
     getCandidateName(id) {
       const candidate = this.candidateLists.find((candidate) => candidate.id === id);
-      return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
+      return candidate ? `${candidate.full_name}` : "";
     },
     formatDates(date) {
       const d = new Date(date);
@@ -767,49 +799,42 @@ export default {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     },
-    async getBusinessUnitMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/activated_site`);
-        this.businessUnit = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
+    // async getBusinessUnitMethod() {
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/activated_site`);
+    //     this.businessUnit = response.data.data;
+    //   } catch (error) {
+    //     if (error.response) {
+    //       if (error.response.status == 404) {
+    //         // alert(error.response.data.message);
+    //       }
+    //     }
+    //   }
+    // },
     async getCandidateListMethod() {
-      const pagesToFetch = [1, 2, 3];
-      let allStaffData = [];
-      const payload = {
-        status_value: "approved",
-        activated_value: true,
-        per_page: 10,
-      };
+      this.candidateLists = [];
 
       try {
-        const responses = await Promise.all(
-          pagesToFetch.map((page) =>
-            axios.get(`${VITE_API_URL}/candidates`, {
-              params: {
-                ...payload,
-                page: page,
-              },
-            })
-          )
-        );
-
-        responses.forEach((response) => {
-          if (response.data && response.data.data) {
-            allStaffData = allStaffData.concat(response.data.data);
-          }
+        const response = await axios.get(`${VITE_API_URL}/candidate_list`, {
+          params: {
+            "candidate[activated]": true,
+            "candidate[status]": "approved",
+          },
         });
 
-        this.candidateLists = allStaffData;
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
+        if (response.data && response.data.data) {
+          this.candidateLists = response.data.data;
         } else {
+          // console.warn("No approved candidates found.");
+        }
+      } catch (error) {
+        if (error.response) {
+          // console.error(
+          //   "Error fetching candidate data:",
+          //   error.response.data.message || error
+          // );
+        } else {
+          // console.error("Network or Server Error:", error.message);
         }
       }
     },
@@ -891,14 +916,14 @@ export default {
   async beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.getClientMethod();
-      vm.getBusinessUnitMethod();
+      // vm.getBusinessUnitMethod();
       // vm.updateDateRange();
       vm.getCandidateListMethod();
       // vm.filterData();
     });
   },
   async beforeRouteUpdate(to, from, next) {
-    this.getBusinessUnitMethod();
+    // this.getBusinessUnitMethod();
 
     this.getClientMethod();
     this.getCandidateListMethod();
@@ -910,7 +935,7 @@ export default {
     // this.createVacancy();
     // this.currentView = "monthly";
     this.loadDateRangeFromLocalStorage();
-    this.getBusinessUnitMethod();
+    // this.getBusinessUnitMethod();
     this.getCandidateListMethod();
     this.getClientMethod();
 

@@ -89,15 +89,12 @@
                         <p class="mb-1">INVOICE INFORMATION</p>
 
                         <p class="mb-0">
-                          Date: {{ this.formatDate(getClientInvoiceDetail.start_date) }}
+                          Date:
+                          {{ getClientInvoiceDetail.start_date }}
                         </p>
                         <!-- <p class="mb-0">Due Date:19-07-2023</p> -->
-                        <p class="mb-0">
-                          From: {{ this.formatDate(getClientInvoiceDetail.start_date) }}
-                        </p>
-                        <p class="mb-0">
-                          To: {{ this.formatDate(getClientInvoiceDetail.end_date) }}
-                        </p>
+                        <p class="mb-0">From: {{ getClientInvoiceDetail.end_date }}</p>
+                        <p class="mb-0">To: {{ getClientInvoiceDetail.end_date }}</p>
                       </div>
                     </div>
                   </div>
@@ -270,7 +267,7 @@
                         Invoice created by
                         <b>{{ getClientInvoiceDetail?.merchant_data?.merc_name }}</b
                         ><br />
-                        {{ this.formatDate(getClientInvoiceDetail.created_on) }}
+                        {{ getClientInvoiceDetail.created_on }}
                       </div>
                     </li>
                   </ul>
@@ -363,28 +360,9 @@ export default {
       if (day < 10) day = "0" + day;
       if (month < 10) month = "0" + month;
 
-      return `${day}-${month}-${year}`;
+      return `${day}/${month}/${year}`;
     },
 
-    // async generatePDF() {
-    //   try {
-    //     const response = await axios.get(
-    //       `${VITE_API_URL}/generate_staff_pdf/${this.$route.params.id}`,
-    //       {
-    //         responseType: "blob",
-    //       }
-    //     );
-
-    //     const url = window.URL.createObjectURL(new Blob([response.data]));
-    //     const link = document.createElement("a");
-    //     link.href = url;
-    //     link.setAttribute("download", `invoice_${this.$route.params.id}.pdf`);
-    //     document.body.appendChild(link);
-    //     link.click();
-    //   } catch (error) {
-    //     // console.error("Error generating PDF:", error);
-    //   }
-    // },
     handleEditClick() {
       if (!this.getClientInvoiceDetail.invoice_lock) {
         this.toggleEditMode(this.getClientInvoiceDetail.id);
@@ -413,7 +391,7 @@ export default {
           },
         });
         const clientInvoice = response.data.staff_invoice;
-
+        // console.log(response.data.staff_invoice);
         this.getClientInvoiceDetail = clientInvoice;
         this.agencySetting = clientInvoice.agency_setting;
         this.invoiceLogs = clientInvoice.logs.map((log) => ({

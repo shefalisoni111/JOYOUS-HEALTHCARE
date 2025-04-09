@@ -1,6 +1,8 @@
 <template>
   <div>
-    <Navbar />
+    <!-- <keep-alive>
+      <Navbar />
+    </keep-alive> -->
     <div id="main">
       <div class="container-fluid pt-3">
         <div class="row">
@@ -33,10 +35,10 @@
                     <option
                       v-for="option in candidateLists"
                       :key="option.id"
-                      :value="`${option.first_name} ${option.last_name}`"
+                      :value="`${option.full_name}`"
                       placeholder="Select Staff"
                     >
-                      {{ option.first_name + " " + option.last_name }}
+                      {{ option.full_name }}
                     </option>
                   </select>
                 </div>
@@ -426,7 +428,7 @@
 </template>
 <script>
 import axios from "axios";
-import Navbar from "../Navbar.vue";
+// import Navbar from "../Navbar.vue";
 import Loader from "../Loader/Loader.vue";
 import Swal from "sweetalert2";
 // import StaffGenrateInvoice from "../modals/InvoicePagesModal/StaffGenrateInvoice.vue";
@@ -474,7 +476,7 @@ export default {
       queryParams: {},
     };
   },
-  components: { Navbar, Loader },
+  components: { Loader },
   computed: {
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
@@ -605,7 +607,7 @@ export default {
     },
     getCandidateName(id) {
       const candidate = this.candidateLists.find((candidate) => candidate.id === id);
-      return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
+      return candidate ? `${candidate.full_name}` : "";
     },
     exportOneFile(exportType) {
       const { start, end } = this.getWeekRange(this.startDate);
@@ -694,33 +696,7 @@ export default {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     },
-    // exportAll() {
-    //   const formattedDate = this.formatDate(this.startDate);
 
-    //   const params = {
-    //     date: formattedDate,
-    //   };
-
-    //   axios
-    //     .get(`${VITE_API_URL}/export_timesheet.csv`, { params })
-    //     .then((response) => {
-    //       this.downloadCSV(response.data, "Staff_ReportData.csv");
-    //     })
-    //     .catch((error) => {
-    //       // console.error("Error:", error);
-    //     });
-    // },
-    // downloadCSV(csvData, filename) {
-    //   const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
-    //   const url = window.URL.createObjectURL(blob);
-    //   const a = document.createElement("a");
-    //   a.href = url;
-    //   a.download = filename;
-    //   document.body.appendChild(a);
-    //   a.click();
-    //   window.URL.revokeObjectURL(url);
-    //   document.body.removeChild(a);
-    // },
     async getClientMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/get_client_id_name`);
@@ -739,74 +715,7 @@ export default {
       this.currentPage = 1;
       this.filterData();
     },
-    // async filterData() {
-    //   this.isLoading = true;
-    //   const token = localStorage.getItem("token");
-    //   const formatDate = (date) => {
-    //     const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    //     const day = date.getDate().toString().padStart(2, "0");
-    //     const year = date.getFullYear();
-    //     return `${day}/${month}/${year}`;
-    //   };
 
-    //   let startOfRange, endOfRange;
-
-    //   if (this.currentView === "weekly") {
-    //     const startOfWeek = new Date(this.startDate);
-    //     const dayOfWeek = this.startDate.getDay();
-
-    //     const diff = (dayOfWeek === 0 ? -6 : 1) - dayOfWeek;
-    //     startOfWeek.setDate(this.startDate.getDate() + diff);
-
-    //     const endOfWeek = new Date(startOfWeek);
-    //     endOfWeek.setDate(startOfWeek.getDate() + 6);
-
-    //     startOfRange = startOfWeek;
-    //     endOfRange = endOfWeek;
-    //   } else {
-    //     const startOfMonth = new Date(
-    //       this.startDate.getFullYear(),
-    //       this.startDate.getMonth(),
-    //       1
-    //     );
-    //     const endOfMonth = new Date(
-    //       this.startDate.getFullYear(),
-    //       this.startDate.getMonth() + 1,
-    //       0
-    //     );
-
-    //     startOfRange = startOfMonth;
-    //     endOfRange = endOfMonth;
-    //   }
-
-    //   const requestData = {
-    //     // date: formatDate(startOfRange),
-    //     "report[date]": formatDate(startOfRange),
-    //     range: this.currentView === "weekly" ? "week" : "month",
-    //     // filter_type: this.currentView === "weekly" ? "week" : "month",
-    //   };
-    //   try {
-    //     const response = await axios.get(
-    //       `${VITE_API_URL}/report_section_timesheet_filter`,
-    //       {
-    //         params: requestData,
-    //         headers: {
-    //           Authorization: "bearer " + token,
-    //         },
-    //       }
-    //     );
-    //     this.getSiteReportData = response.data.data || [];
-    //     if (response.status === 200 && this.getSiteReportData.length === 0) {
-    //       this.errorMessageCustom = `Data Not available for this month`;
-    //     } else {
-    //       this.errorMessageCustom = "";
-    //     }
-    //   } catch (error) {
-    //     this.errorMessageCustom = "Error fetching data.";
-    //   } finally {
-    //     this.isLoading = false;
-    //   }
-    // },
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
 
@@ -872,39 +781,29 @@ export default {
       return { start, end };
     },
     async getCandidateListMethod() {
-      const pagesToFetch = [1, 2, 3];
-      let allStaffData = [];
-      const payload = {
-        status_value: "approved",
-        activated_value: true,
-        per_page: 10,
-      };
+      this.candidateLists = [];
 
       try {
-        const responses = await Promise.all(
-          pagesToFetch.map((page) =>
-            axios.get(`${VITE_API_URL}/candidates`, {
-              params: {
-                ...payload,
-                page: page,
-              },
-            })
-          )
-        );
-
-        responses.forEach((response) => {
-          if (response.data && response.data.data) {
-            allStaffData = allStaffData.concat(response.data.data);
-          }
+        const response = await axios.get(`${VITE_API_URL}/candidate_list`, {
+          params: {
+            "candidate[activated]": true,
+            "candidate[status]": "approved",
+          },
         });
 
-        this.candidateLists = allStaffData;
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
-          // Handle 404 error
-          // console.error('Error fetching client data:', error.response.data.message);
+        if (response.data && response.data.data) {
+          this.candidateLists = response.data.data;
         } else {
-          // console.error('Error fetching client data:', error);
+          // console.warn("No approved candidates found.");
+        }
+      } catch (error) {
+        if (error.response) {
+          // console.error(
+          //   "Error fetching candidate data:",
+          //   error.response.data.message || error
+          // );
+        } else {
+          // console.error("Network or Server Error:", error.message);
         }
       }
     },

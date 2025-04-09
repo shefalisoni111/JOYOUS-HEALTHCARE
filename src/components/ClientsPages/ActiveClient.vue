@@ -6,7 +6,7 @@
           <tr>
             <!-- <th scope="col">ID</th> -->
             <th scope="col">#RefCode</th>
-            <th scope="col">ClientName</th>
+            <th scope="col">Client Name</th>
             <th scope="col" style="width: 10%">Jobs</th>
             <th scope="col" style="width: 10%">Address</th>
             <th scope="col">PhoneNumber</th>
@@ -325,7 +325,7 @@ export default {
   transition: all 0.3s;
 }
 .bg-define {
-  background-color: #fdce5e17;
+  background-color: #f9f9f9;
 }
 .btn-primary {
   border: none;
@@ -457,7 +457,7 @@ a {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
-  font-family: Verdana, sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {

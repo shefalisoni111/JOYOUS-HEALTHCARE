@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <!-- <Navbar /> -->
     <div id="main">
       <div class="container-fluid pt-3">
         <div class="row">
@@ -209,7 +209,7 @@
 </template>
 <script>
 import axios from "axios";
-import Navbar from "../Navbar.vue";
+// import Navbar from "../Navbar.vue";
 import Loader from "../Loader/Loader.vue";
 import AllDoc from "./DocumentsPages/AllDoc.vue";
 import ActiveDocument from "./DocumentsPages/ActiveDocument.vue";
@@ -282,7 +282,7 @@ export default {
   },
   components: {
     Loader,
-    Navbar,
+    // Navbar,
     AllDoc,
     ActiveDocument,
     DueDoc,

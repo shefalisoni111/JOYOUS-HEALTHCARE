@@ -142,6 +142,7 @@ export default {
       backgroundStyle: {},
     };
   },
+
   components: {
     Loader,
   },
@@ -250,6 +251,10 @@ export default {
     },
     checkTokenExpiration() {
       const tokenExpiration = localStorage.getItem("tokenExpiration");
+      // if (!tokenExpiration) {
+      //   this.$router.push("/home");
+      //   return;
+      // }
       const currentTime = new Date().getTime();
 
       if (tokenExpiration && currentTime >= parseInt(tokenExpiration)) {

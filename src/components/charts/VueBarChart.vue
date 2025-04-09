@@ -6,7 +6,9 @@
 import axios from "axios";
 import { Doughnut } from "vue-chartjs";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-ChartJS.register(ArcElement, Tooltip, Legend);
+import ChartDataLabels from "chartjs-plugin-datalabels";
+
+ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
 export default {
   name: "DonutChart",
@@ -22,75 +24,36 @@ export default {
         ],
         datasets: [
           {
-            backgroundColor: ["#57e3b4", "#e66e65", "#22cbe0", "#fc1414cf"],
-            data: [0, 0, 0, 0],
+            backgroundColor: ["#4a3aff", "#e0c6fd", "#c6d2fd", "#f5aaac"], // Match colors from the image
+            borderWidth: 2, // Remove borders
+            borderRadius: 15, // Makes the segments rounded
+            hoverOffset: 10, // Adds a hover effect
+            data: [9, 5, 9, 3], // Example Data
           },
         ],
       },
       chartOptions: {
         responsive: true,
         maintainAspectRatio: false,
+        cutout: "60%", // Controls the inner radius to make it a donut
         plugins: {
-          title: {
-            display: false,
-          },
           legend: {
-            display: false,
-            position: "bottom",
-            align: "center",
-            padding: {
-              top: 30,
-            },
-            labels: {
-              font: {
-                size: 15,
-              },
-            },
+            display: false, // Hide legend
           },
           tooltip: {
-            enabled: true,
+            enabled: true, // Enable tooltips
           },
-          afterDatasetsDraw: (chart) => {
-            const ctx = chart.ctx;
-            const { datasets, data, scale, width, height } = chart;
-            const total = datasets[0].data.reduce((acc, value) => acc + value, 0);
-
-            ctx.save();
-            ctx.font = "15px Arial";
-            ctx.fillStyle = "black";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-
-            const centerX = width / 2;
-            const centerY = height / 2;
-
-            chart.data.labels.forEach((label, index) => {
-              const percent = data[index] / total;
-              const angle = Math.PI * 2 * percent;
-              const x = centerX + Math.cos(angle) * scale.xLength * 0.5;
-              const y = centerY + Math.sin(angle) * scale.yLength * 0.5;
-
-              ctx.fillText(label, x, y);
-            });
-
-            ctx.restore();
-          },
-        },
-      },
-
-      doughnutlabel: {
-        labels: [
-          {
-            text: "550",
+          datalabels: {
+            color: "#ffffff", // White text inside segments
             font: {
-              size: 10,
+              size: 16,
               weight: "bold",
             },
+            align: "center",
+            anchor: "center",
+            formatter: (value) => (value > 0 ? value : ""), // Hide zero values
           },
-          {
-            text: "total",
-          },
-        ],
+        },
       },
     };
   },
@@ -100,23 +63,18 @@ export default {
         .get(`${VITE_API_URL}/home_vacancy_data`)
         .then((response) => {
           const apiData = response.data.data;
-
-          this.chartData.datasets[0].data[0] = apiData.activate_vacancy || 0;
-          this.chartData.datasets[0].data[1] = apiData.applied_vacancies || 0;
-          this.chartData.datasets[0].data[2] = apiData.assigned_vacancies || 0;
-          this.chartData.datasets[0].data[3] = apiData.inactive_vacancies || 0;
-
-          const data = this.chartData.datasets[0].data;
-
+          this.chartData.datasets[0].data = [
+            apiData.activate_vacancy || 0,
+            apiData.applied_vacancies || 0,
+            apiData.assigned_vacancies || 0,
+            apiData.inactive_vacancies || 0,
+          ];
           if (this.$refs.myChart && this.$refs.myChart.chart) {
             this.$refs.myChart.chart.update();
-            // console.log("Chart updated successfully");
-          } else {
-            // console.error("Chart instance or reference No found:", this.$refs.myChart);
           }
         })
         .catch((error) => {
-          // console.error("Error fetching data:", error);
+          console.error("Error fetching data:", error);
         });
     },
   },

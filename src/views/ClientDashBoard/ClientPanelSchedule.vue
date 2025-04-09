@@ -923,57 +923,57 @@ export default {
     handleDragOver(event) {
       event.preventDefault();
     },
-    async handleDrop(candidateId, date) {
-      try {
-        if (!this.vacancyBeingDragged || !this.vacancyBeingDragged.id) {
-          return;
-        }
+    // async handleDrop(candidateId, date) {
+    //   try {
+    //     if (!this.vacancyBeingDragged || !this.vacancyBeingDragged.id) {
+    //       return;
+    //     }
 
-        const payload = {
-          vacancy_id: this.vacancyBeingDragged.id,
-          candidate_id: candidateId.candidate_id,
-          // date: date,
-        };
+    //     const payload = {
+    //       vacancy_id: this.vacancyBeingDragged.id,
+    //       candidate_id: candidateId.candidate_id,
+    //       // date: date,
+    //     };
 
-        const response = await axios.post(
-          `${VITE_API_URL}/assign_vacancy_with_schedule`,
-          payload
-        );
+    //     const response = await axios.post(
+    //       `${VITE_API_URL}/assign_vacancy_with_schedule`,
+    //       payload
+    //     );
 
-        if (response.status >= 200 && response.status < 300) {
-          const message = "Staff Assigned Shift Successfully";
-          this.$refs.successAlert.showSuccess(message);
-          this.fetchCandidateList();
-          // this.fetchAssignList();
-        }
-      } catch (error) {
-        let errorMessage;
-        if (
-          error.response &&
-          error.response.status === 422 &&
-          typeof error.response.data === "object" &&
-          error.response.data.error &&
-          error.response.data.error.base &&
-          Array.isArray(error.response.data.error.base) &&
-          error.response.data.error.base.length > 0
-        ) {
-          errorMessage = error.response.data.error.base[0];
-        } else {
-          errorMessage = error.response.data.error;
-        }
-        // alert(errorMessage);
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: errorMessage,
-        });
-      } finally {
-        this.vacancyBeingDragged = null;
-        this.dropCandidateId = null;
-        this.dropDay = null;
-        this.droppedContent = null;
-      }
-    },
+    //     if (response.status >= 200 && response.status < 300) {
+    //       const message = "Staff Assigned Shift Successfully";
+    //       this.$refs.successAlert.showSuccess(message);
+    //       this.fetchCandidateList();
+    //       // this.fetchAssignList();
+    //     }
+    //   } catch (error) {
+    //     let errorMessage;
+    //     if (
+    //       error.response &&
+    //       error.response.status === 422 &&
+    //       typeof error.response.data === "object" &&
+    //       error.response.data.error &&
+    //       error.response.data.error.base &&
+    //       Array.isArray(error.response.data.error.base) &&
+    //       error.response.data.error.base.length > 0
+    //     ) {
+    //       errorMessage = error.response.data.error.base[0];
+    //     } else {
+    //       errorMessage = error.response.data.error;
+    //     }
+    //     // alert(errorMessage);
+    //     Swal.fire({
+    //       icon: "error",
+    //       title: "Error",
+    //       text: errorMessage,
+    //     });
+    //   } finally {
+    //     this.vacancyBeingDragged = null;
+    //     this.dropCandidateId = null;
+    //     this.dropDay = null;
+    //     this.droppedContent = null;
+    //   }
+    // },
 
     formattedDate(day) {
       if (typeof day === "number") {

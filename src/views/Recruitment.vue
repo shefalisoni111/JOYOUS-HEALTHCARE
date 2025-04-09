@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <!-- <Navbar /> -->
 
     <div id="main" class="main px-sm-2">
       <div class="row">
@@ -54,11 +54,11 @@
   </div>
 </template>
 <script>
-import Navbar from "../components/Navbar.vue";
+// import Navbar from "../components/Navbar.vue";
 
 export default {
   components: {
-    Navbar,
+    // Navbar,
   },
   data() {
     return {};

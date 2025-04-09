@@ -402,7 +402,7 @@ export default {
 
       this.debounceTimeout = setTimeout(() => {
         this.search();
-        this.searchByStatus();
+        //  this.searchByStatus();
       }, 100);
     },
     setActiveTabNameOnLoad() {
@@ -476,48 +476,48 @@ export default {
       }
     },
 
-    async searchByStatus() {
-      try {
-        this.searchResults = [];
-        let activatedStatus = null;
+    // async searchByStatus() {
+    //   try {
+    //     this.searchResults = [];
+    //     let activatedStatus = null;
 
-        if (this.activeTab === 3) {
-          activatedStatus = "pending";
-        } else if (this.activeTab === 4) {
-          activatedStatus = "rejected";
-        }
+    //     if (this.activeTab === 3) {
+    //       activatedStatus = "pending";
+    //     } else if (this.activeTab === 4) {
+    //       activatedStatus = "rejected";
+    //     }
 
-        const response = await axiosInstance.get(
-          `${VITE_API_URL}/candidate_searching_according_to_status`,
-          {
-            params: {
-              candidate_query: this.searchQuery,
-              status: activatedStatus,
-              tab: this.activeTabName.toLowerCase(),
-            },
-          }
-        );
+    //     const response = await axiosInstance.get(
+    //       `${VITE_API_URL}/candidate_searching_according_to_status`,
+    //       {
+    //         params: {
+    //           candidate_query: this.searchQuery,
+    //           status: activatedStatus,
+    //           tab: this.activeTabName.toLowerCase(),
+    //         },
+    //       }
+    //     );
 
-        if (
-          response.status === 200 &&
-          response.data.length === 0 &&
-          error.response &&
-          error.response.data &&
-          error.response.data.message
-        ) {
-          this.errorMessage = "No Staff found for the specified criteria";
-        } else {
-          this.searchResults = response.data;
-          this.errorMessage = "";
-        }
-      } catch (error) {
-        if (error.response && error.response.data && error.response.data.message) {
-          this.errorMessage = error.response.data.message;
-        } else {
-          this.errorMessage = "No Staff found for the specified criteria";
-        }
-      }
-    },
+    //     if (
+    //       response.status === 200 &&
+    //       response.data.length === 0 &&
+    //       error.response &&
+    //       error.response.data &&
+    //       error.response.data.message
+    //     ) {
+    //       this.errorMessage = "No Staff found for the specified criteria";
+    //     } else {
+    //       this.searchResults = response.data;
+    //       this.errorMessage = "";
+    //     }
+    //   } catch (error) {
+    //     if (error.response && error.response.data && error.response.data.message) {
+    //       this.errorMessage = error.response.data.message;
+    //     } else {
+    //       this.errorMessage = "No Staff found for the specified criteria";
+    //     }
+    //   }
+    // },
     async getActiveCAndidateMethod() {
       const params = {
         status_value: "approved",
@@ -704,7 +704,7 @@ a:link {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
-  font-family: Verdana, sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {

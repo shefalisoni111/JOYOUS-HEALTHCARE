@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <!-- <Navbar /> -->
     <div class="container-fluid">
       <div id="main">
         <div class="pagetitle d-flex justify-content-between px-2">
@@ -76,7 +76,7 @@
                     :key="option.id"
                     :value="option.id"
                   >
-                    {{ option.first_name }} {{ option.last_name }}
+                    {{ option.full_name }}
                   </option>
                 </select>
               </div>
@@ -565,7 +565,7 @@
 <script>
 import axios from "axios";
 // import AppointmentAdd from "../modals/Schedule/EditAssignedShift.vue";
-import Navbar from "../Navbar.vue";
+// import Navbar from "../Navbar.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
 import WeekTimeSheetEdit from "../modals/TimeSheet/WeekTimeSheetEdit.vue";
 import Loader from "../Loader/Loader.vue";
@@ -649,7 +649,7 @@ export default {
     },
 
     candidateName() {
-      return this.selectedCandidate ? this.selectedCandidate.first_name : "";
+      return this.selectedCandidate ? this.selectedCandidate.full_name : "";
     },
 
     formattedDates() {
@@ -706,9 +706,9 @@ export default {
 
     selectCandidateList() {
       const candidate = this.candidateLists.find(
-        (option) => option.first_name === this.selectedCandidate
+        (option) => option.full_name === this.selectedCandidate
       );
-      return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
+      return candidate ? `${candidate.full_name}` : "";
     },
   },
   watch: {
@@ -761,36 +761,29 @@ export default {
       this.showFilters = !this.showFilters;
     },
     async getCandidateListMethod() {
-      const pagesToFetch = [1, 2, 3];
-      let allStaffData = [];
-      const payload = {
-        status_value: "approved",
-        activated_value: true,
-        per_page: 10,
-      };
+      this.candidateLists = [];
 
       try {
-        const responses = await Promise.all(
-          pagesToFetch.map((page) =>
-            axios.get(`${VITE_API_URL}/candidates`, {
-              params: {
-                ...payload,
-                page: page,
-              },
-            })
-          )
-        );
-
-        responses.forEach((response) => {
-          if (response.data && response.data.data) {
-            allStaffData = allStaffData.concat(response.data.data);
-          }
+        const response = await axios.get(`${VITE_API_URL}/candidate_list`, {
+          params: {
+            "candidate[activated]": true,
+            "candidate[status]": "approved",
+          },
         });
 
-        this.candidateLists = allStaffData;
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
+        if (response.data && response.data.data) {
+          this.candidateLists = response.data.data;
         } else {
+          // console.warn("No approved candidates found.");
+        }
+      } catch (error) {
+        if (error.response) {
+          // console.error(
+          //   "Error fetching candidate data:",
+          //   error.response.data.message || error
+          // );
+        } else {
+          // console.error("Network or Server Error:", error.message);
         }
       }
     },
@@ -938,7 +931,7 @@ export default {
       return selectedDate.toISOString().split("T")[0];
     },
     getCandidateName() {
-      return this.selectedCandidate ? this.selectedCandidate.first_name : "Default Name";
+      return this.selectedCandidate ? this.selectedCandidate.full_name : "Default Name";
     },
 
     openModal(candidateId, day) {
@@ -1005,7 +998,13 @@ export default {
         });
 
         this.dataCustomTimeSheet = response.data;
-        this.weeklyTimesheets = response.data.weekly_timesheets;
+        this.weeklyTimesheets = response.data.weekly_timesheets || [];
+
+        if (!this.weeklyTimesheets.length) {
+          this.errorMessageFilter = "No Weekly timesheets found for the specified week.";
+        } else {
+          this.errorMessageFilter = "";
+        }
 
         const mergedTimesheetsArray = [];
         const seenTimesheets = new Map();
@@ -1225,7 +1224,7 @@ export default {
   },
   components: {
     WeekTimeSheetEdit,
-    Navbar,
+    // Navbar,
     Loader,
     SuccessAlert,
   },

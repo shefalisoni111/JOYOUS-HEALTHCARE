@@ -1,135 +1,5 @@
 <template>
   <div>
-    <div class="mt-2">
-      <button
-        type="button"
-        class="btn btn-outline-success text-nowrap"
-        @click="toggleFilters"
-      >
-        <i class="bi bi-funnel"></i>
-        Show Filters
-      </button>
-      <input
-        ref="fileInput"
-        id="fileAll"
-        type="file"
-        accept=".csv"
-        style="display: none"
-        @change="handleFileUpload"
-      />
-      &nbsp;
-      <button
-        class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
-        type="button"
-        id="navbarDropdown"
-        role="button"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        Export
-
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <li>
-            <!-- Hide the default file input -->
-            <label
-              for="fileAll"
-              class="custom-file-label dropdown-item"
-              style="border-radius: 0px; cursor: pointer"
-              @click="triggerFileInput"
-            >
-              Import
-            </label>
-          </li>
-          <li><hr class="dropdown-divider" /></li>
-          <li>
-            <a class="dropdown-item" href="#" @click="exportOneFile('selected')"
-              >Export</a
-            >
-          </li>
-          <li><hr class="dropdown-divider" /></li>
-          <li>
-            <a class="dropdown-item" href="#" @click="exportOneFile('all')">Export All</a>
-          </li>
-        </div>
-      </button>
-    </div>
-
-    <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
-      <div class="d-flex gap-2 mt-3">
-        <div></div>
-
-        <select v-model="selectedFilter" @change="filterData">
-          <option value="" disabled>Status</option>
-          <option value="true">Active</option>
-          <option value="false">In-Active</option>
-        </select>
-
-        <select id="selectClients" v-model="selectedClientName" @change="filterData">
-          <option value="" disabled>Client Name</option>
-          <option
-            v-for="option in clientData"
-            :key="option.id"
-            :value="option.id"
-            aria-placeholder="Select Client"
-          >
-            {{ option.client_name }}
-          </option>
-        </select>
-
-        <select id="selectSite" v-model="selectedSiteName" @change="filterData">
-          <option value="" disabled>Site Name</option>
-          <option
-            v-for="option in businessUnit"
-            :key="option.id"
-            :value="option.site_name"
-            aria-placeholder="Select Site"
-          >
-            {{ option.site_name }}
-          </option>
-        </select>
-
-        <select
-          id="selectSitesAddress"
-          v-model="selectedSiteAddress"
-          @change="filterData"
-        >
-          <option value="" disabled>Site Address</option>
-          <option
-            v-for="option in businessUnit"
-            :key="option.id"
-            :value="option.address"
-            aria-placeholder="Select Address"
-          >
-            {{ option.address }}
-          </option>
-        </select>
-        <div class="searchbox position-relative">
-          <input
-            class="form-control"
-            type="search"
-            placeholder="Search Site..."
-            aria-label="Search"
-            v-model="localSearchQuery"
-            @input="filterData"
-          />
-        </div>
-      </div>
-      <div>
-        <button
-          @click="resetFilter"
-          class="btn btn-secondary"
-          :disabled="
-            !selectedFilter &&
-            !selectedClientName &&
-            !selectedSiteName &&
-            !selectedSiteAddress &&
-            !localSearchQuery
-          "
-        >
-          Reset Filters
-        </button>
-      </div>
-    </div>
     <div class="table-wrapper mt-3">
       <table class="table siteTable">
         <thead>
@@ -148,8 +18,8 @@
             <th scope="col">Action</th>
           </tr>
         </thead>
-        <tbody v-if="paginateSiteData?.length > 0">
-          <tr v-for="data in paginateSiteData" :key="data.id">
+        <tbody v-if="getSiteAllData?.length > 0">
+          <tr v-for="data in getSiteAllData" :key="data.id">
             <td>
               <input
                 class="form-check-input"
@@ -231,10 +101,16 @@
     />
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
-    <div class="mx-3" style="text-align: right" v-if="getSiteAllData?.length >= 10">
-      <div class="dropdown d-inline-block">
+    <div
+      class="mx-3 d-flex justify-content-between"
+      style="text-align: right"
+      v-if="getSiteAllData?.length >= 10"
+    >
+      <div class="d-flex">
+        <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
         <button
-          class="btn btn-sm btn-primary dropdown-toggle"
+          class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+          style="color: #00000080"
           type="button"
           id="recordsPerPageDropdown"
           data-bs-toggle="dropdown"
@@ -244,38 +120,45 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(20)"
-              >20 Records</a
-            >
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(50)"
-              >50 Records</a
-            >
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(100)"
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
               >100 Records</a
             >
           </li>
         </ul>
       </div>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="currentPage--"
-      >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getSiteAllData?.length"
-        @click="currentPage++"
-      >
-        Next
-      </button>
+      <div class="d-flex align-items-center">
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === 1"
+          @click="changePage(currentPage - 1)"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+        >
+          {{ currentPage }}
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === totalPages"
+          @click="changePage(currentPage + 1)"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -351,6 +234,10 @@ export default {
     },
   },
   methods: {
+    changePage(page) {
+      this.currentPage = page;
+      this.filterData();
+    },
     resetFilter() {
       this.selectedFilter = null;
       this.selectedClientName = null;
@@ -711,16 +598,12 @@ export default {
 #main {
   padding: 20px 20px;
   transition: all 0.3s;
-
-  background-color: #fdce5e17;
 }
 ul.generalsetting h6 {
   font-size: 14px;
   font-weight: bold;
 }
-.siteTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
+
 select {
   padding: 10px;
   border-radius: 4px;

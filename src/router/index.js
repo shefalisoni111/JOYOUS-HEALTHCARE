@@ -1188,7 +1188,10 @@ router.beforeEach((to, from, next) => {
   const currentTime = new Date().getTime();
   const loginType = localStorage.getItem('loginType');
   const token = localStorage.getItem('token');
-
+  if (to.path === "/" && token && tokenExpiration && currentTime < parseInt(tokenExpiration)) {
+    next("/home");
+    return;
+  }
   
   if (to.name === 'Login' && token) {
    

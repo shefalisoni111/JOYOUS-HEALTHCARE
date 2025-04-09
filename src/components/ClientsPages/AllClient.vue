@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mt-2">
+    <!-- <div class="mt-2">
       <button
         type="button"
         class="btn btn-outline-success text-nowrap"
@@ -51,9 +51,9 @@
           </li>
         </ul>
       </button>
-    </div>
+    </div> -->
 
-    <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
+    <!-- <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
       <div class="d-flex gap-2 mt-3">
         <div></div>
 
@@ -91,17 +91,7 @@
           />
         </div>
 
-        <!-- <select id="selectClientsAddress" @change="filterData">
-          <option value="">Address</option>
-          <option
-            v-for="option in clientData"
-            :key="option.id"
-            :value="option.address"
-            aria-placeholder="Select Address"
-          >
-            {{ option.address }}
-          </option>
-        </select> -->
+        
       </div>
       <div>
         <button
@@ -117,22 +107,94 @@
           Reset Filters
         </button>
       </div>
-    </div>
+    </div> -->
 
     <div class="table-wrapper mt-3">
       <table class="table clientTable">
         <thead>
           <tr>
             <th scope="col"></th>
-            <th scope="col">#RefCode</th>
-            <th scope="col">ClientName</th>
-            <th scope="col" style="width: 10%">Jobs</th>
-            <th scope="col" style="width: 10%">Address</th>
-            <th scope="col">PhoneNumber</th>
-            <th scope="col" style="width: 10%">Email</th>
-            <th scope="col">Status</th>
-            <th scope="col">Portal Access</th>
-            <th scope="col">Action</th>
+            <th scope="col">
+              #RefCode
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Client Name
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col" style="width: 10%">
+              Jobs
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col" style="width: 10%">
+              Address
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              PhoneNumber
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col" style="width: 10%">
+              Email
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Status
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Portal Access
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Action
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
           </tr>
         </thead>
         <tbody v-if="paginateCandidates?.length > 0">
@@ -251,45 +313,60 @@
         </tbody>
       </table>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="getClientDetail?.length >= 10">
-      <button
-        class="btn btn-sm btn-primary dropdown-toggle"
-        type="button"
-        id="recordsPerPageDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        {{ itemsPerPage }} Records
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
-        </li>
-      </ul>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="changePage(currentPage - 1)"
-      >
-        Previous
-      </button>
-      &nbsp;&nbsp;
-      <span>{{ currentPage }} of {{ totalPages }}</span>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage === totalPages"
-        @click="changePage(currentPage + 1)"
-      >
-        Next
-      </button>
+    <div class="mx-3 d-flex justify-content-between" v-if="getClientDetail?.length >= 10">
+      <div class="d-flex">
+        <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+        <button
+          class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+          style="color: #00000080"
+          type="button"
+          id="recordsPerPageDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ itemsPerPage }} Records
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+              >100 Records</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="d-flex align-items-center">
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === 1"
+          @click="changePage(currentPage - 1)"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+        >
+          {{ currentPage }}
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === totalPages"
+          @click="changePage(currentPage + 1)"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
     </div>
     <EditClientModal
       :clientID="selectedClientID || 0"
@@ -519,7 +596,8 @@ export default {
       this.isModalVisible = false;
     },
     clientStatusChangeMethod(id, activated) {
-      const action = activated ? "activate" : "inactivate";
+      const newStatus = !activated;
+      const action = newStatus ? "activate" : "inactivate";
       const confirmMessage = `Are you sure you want to ${action} this client?<br>Please ensure all the shifts, bookings, and payments are cleared.`;
 
       Swal.fire({
@@ -530,11 +608,11 @@ export default {
         confirmButtonText: "Yes",
         cancelButtonText: "No",
       }).then((result) => {
-        if (!result.isConfirmed) {
+        if (result.isConfirmed) {
           axios
-            .put(`${VITE_API_URL}/update_status/${id}?activated=${activated}`)
+            .put(`${VITE_API_URL}/update_status/${id}?activated=${newStatus}`)
             .then((response) => {
-              const message = activated
+              const message = newStatus
                 ? "Client activated successfully!"
                 : "Client inactivated successfully!";
               Swal.fire({
@@ -547,7 +625,7 @@ export default {
                 (client) => client.id === id
               );
               if (updatedClient) {
-                updatedClient.activated = activated;
+                updatedClient.activated = newStatus;
               }
 
               this.createdClient();
@@ -563,10 +641,9 @@ export default {
                 (client) => client.id === id
               );
               if (updatedClient) {
-                updatedClient.activated = !activated;
+                updatedClient.activated = activated;
               }
             });
-        } else {
         }
       });
     },
@@ -873,7 +950,7 @@ export default {
   transition: all 0.3s;
 }
 .bg-define {
-  background-color: #fdce5e17;
+  background-color: #f9f9f9;
 }
 .btn-primary {
   border: none;
@@ -926,9 +1003,7 @@ a:link {
   color: black;
   text-decoration: none;
 }
-.clientTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
+
 .btn-primary {
   border-radius: 4px;
 }
@@ -952,7 +1027,7 @@ ul.nav-pills {
   border-bottom: 1px solid #b8b1b1;
 }
 table th {
-  background-color: #ff5f30;
+  background-color: #ffffff;
 }
 
 button.nav-link > li.nav-item {
@@ -1017,7 +1092,7 @@ a {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
-  font-family: Verdana, sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {

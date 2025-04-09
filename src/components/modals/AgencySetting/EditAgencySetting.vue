@@ -225,7 +225,7 @@ export default {
         } else {
           const message = "Admin updated successfully";
           this.$refs.successAlert.showSuccess(message);
-          this.$emit("admin-updated");
+          this.$emit("editAgency");
         }
         // this.$emit("editAgency");
         // // this.$emit("updateVacancyInactive");

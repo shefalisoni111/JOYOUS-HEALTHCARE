@@ -539,7 +539,7 @@
                               )
                             "
                             alt="Administrator Signature"
-                            height="100px"
+                            height="100"
                             class="remove-white-background d-block m-auto"
                             loading="eager"
                           />
@@ -553,7 +553,7 @@
                           <img
                             :src="getFullImageUrl(getSignedStaffView.signature_url)"
                             alt="Administrator Signature"
-                            height="100px"
+                            height="100"
                             class="remove-white-background d-block m-auto"
                             loading="eager"
                           />
@@ -571,7 +571,7 @@
                               )
                             "
                             alt="Administrator Signature"
-                            height="100px"
+                            height="100"
                             class="remove-white-background d-block m-auto"
                             loading="eager"
                           />
@@ -687,6 +687,7 @@ export default {
         staff_rate: "",
         shift: "",
         end_comment: "",
+        booking_id: "",
         start_comment: "",
         paper_timesheet: "",
         // status: "",
@@ -827,8 +828,16 @@ export default {
       }
     },
     getFullImageUrl(relativeUrl) {
-      return `${VITE_API_URL}${relativeUrl}`;
+      // console.log("Image URL:", relativeUrl);
+      // return `${VITE_API_URL}${relativeUrl}`;
+      if (!relativeUrl) return "";
+      const fullUrl = `${VITE_API_URL}${
+        relativeUrl.startsWith("/") ? relativeUrl : "/" + relativeUrl
+      }`;
+      console.log("Full Image URL:", fullUrl);
+      return fullUrl;
     },
+
     ...mapActions(["fetchSignedTimesheetData"]),
     async signedTimeSheetViewMethod(id) {
       if (id) {
@@ -887,6 +896,8 @@ export default {
             client_rate: signTimesheets.client_rate || "",
             staff_rate: signTimesheets.staff_rate || "",
             start_comment: signTimesheets.start_comment || "",
+            booking_id: signTimesheets.booking_id || "",
+            id: signTimesheets.id || "",
           };
 
           this.originalData = { ...this.fetchSignedTimeSheet };
@@ -903,7 +914,9 @@ export default {
         const payload = {
           ...this.fetchSignedTimeSheet,
           status: "Approved",
+          id: this.fetchSignedTimeSheet.booking_id,
         };
+        console.log(this.fetchSignedTimeSheet.booking_id);
 
         delete payload.total_hours;
         delete payload.total_cost;
@@ -914,7 +927,7 @@ export default {
         };
 
         const response = await axios.put(
-          `${VITE_API_URL}/update_sign_timesheet/${this.id}`,
+          `${VITE_API_URL}/update_sign_timesheet/${this.fetchSignedTimeSheet.id}`,
           payload,
           {
             headers,

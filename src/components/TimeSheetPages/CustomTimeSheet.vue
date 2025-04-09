@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <!-- <Navbar /> -->
     <div id="main">
       <div class="pagetitle d-flex justify-content-between px-2">
         <div class="py-3">
@@ -182,9 +182,9 @@
                       <option
                         v-for="option in candidateLists"
                         :key="option.id"
-                        :value="`${option.first_name} ${option.last_name}`"
+                        :value="`${option.full_name}`"
                       >
-                        {{ option.first_name }} {{ option.last_name }}
+                        {{ option.full_name }}
                       </option>
                     </select>
                     <input
@@ -687,7 +687,7 @@
 </template>
 <script>
 import axios from "axios";
-import Navbar from "../Navbar.vue";
+// import Navbar from "../Navbar.vue";
 import CustomeTimeSheetEdit from "../modals/TimeSheet/CustomeTimeSheetEdit.vue";
 import Loader from "../Loader/Loader.vue";
 import { reactive } from "vue";
@@ -741,7 +741,11 @@ export default {
       this.$set(this.checkedSites, data.id, false);
     });
   },
-  components: { Navbar, CustomeTimeSheetEdit, Loader },
+  components: {
+    // Navbar,
+    CustomeTimeSheetEdit,
+    Loader,
+  },
   computed: {
     isSaveDisabled() {
       return !this.notes || !this.paper_timesheet || !this.start_time || !this.end_time;
@@ -795,7 +799,7 @@ export default {
 
     selectCandidateList() {
       const candidate = this.candidateLists.find((option) => option.id === this.id);
-      return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
+      return candidate ? `${candidate.full_name}` : "";
     },
   },
   // watch: {
@@ -874,38 +878,29 @@ export default {
       }
     },
     async getCandidateListMethod() {
-      const pagesToFetch = [1, 2, 3];
-      let allStaffData = [];
-      const payload = {
-        status_value: "approved",
-        activated_value: true,
-        per_page: 10,
-      };
-      try {
-        const responses = await Promise.all(
-          pagesToFetch.map((page) =>
-            axios.get(`${VITE_API_URL}/candidates`, {
-              params: {
-                ...payload,
-                page: page,
-              },
-            })
-          )
-        );
+      this.candidateLists = [];
 
-        responses.forEach((response) => {
-          if (response.data && response.data.data) {
-            allStaffData = allStaffData.concat(response.data.data);
-          }
+      try {
+        const response = await axios.get(`${VITE_API_URL}/candidate_list`, {
+          params: {
+            "candidate[activated]": true,
+            "candidate[status]": "approved",
+          },
         });
 
-        this.candidateLists = allStaffData;
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
-          // Handle 404 error
-          // console.error('Error fetching client data:', error.response.data.message);
+        if (response.data && response.data.data) {
+          this.candidateLists = response.data.data;
         } else {
-          // console.error('Error fetching client data:', error);
+          // console.warn("No approved candidates found.");
+        }
+      } catch (error) {
+        if (error.response) {
+          // console.error(
+          //   "Error fetching candidate data:",
+          //   error.response.data.message || error
+          // );
+        } else {
+          // console.error("Network or Server Error:", error.message);
         }
       }
     },

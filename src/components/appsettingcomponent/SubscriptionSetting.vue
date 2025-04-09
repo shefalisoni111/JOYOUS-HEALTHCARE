@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <!-- <Navbar /> -->
 
     <div id="main" class="main">
       <div class="row">
@@ -157,7 +157,7 @@
 </template>
 
 <script>
-import Navbar from "../Navbar.vue";
+// import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
 
 export default {
@@ -166,7 +166,7 @@ export default {
     return {};
   },
   components: {
-    Navbar,
+    // Navbar,
     Sidebar,
   },
 
@@ -209,7 +209,7 @@ ul.generalsetting li i.rounded-circle a.router-link-active:active {
 }
 a.router-link-active::after {
   content: "\F285";
-  font-family: "bootstrap-icons";
+  font-family: 'Inter', sans-serif;
   display: flex;
   align-items: center;
   color: #ff5722;}
@@ -245,7 +245,7 @@ a.router-link-active {
 }
 a.router-link-active::after {
   content: "\F285";
-  font-family: "bootstrap-icons";
+  font-family: 'Inter', sans-serif;
   display: flex;
   align-items: center;
   color: #ff5722;

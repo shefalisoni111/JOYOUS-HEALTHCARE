@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div class="modal fade" id="editVacancy" aria-labelledby="editVacancy" tabindex="-1">
+    <div class="modal fade" id="editVacancy" aria-labelledby="editVacancy">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">

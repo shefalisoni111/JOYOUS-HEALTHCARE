@@ -186,6 +186,9 @@ export default {
       }
     },
     async getRestrictedLocationMethod() {
+      if (!this.restrictedID || this.restrictedID === 0) {
+        return;
+      }
       try {
         const response = await axios.get(
           `${VITE_API_URL}/restricted_business_units/${this.restrictedID}`

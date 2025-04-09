@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <!-- <Navbar /> -->
     <div id="main">
       <div class="container-fluid pt-3">
         <div class="row">
@@ -8,30 +8,39 @@
             <div class="">
               <div class="d-flex ms-2 justify-content-between">
                 <div class="d-flex gap-2">
-                  <select v-model="client_id" id="selectClients" @change="filterData">
+                  <select
+                    v-model="client_id"
+                    id="selectClients"
+                    @change="handleClientChange"
+                  >
                     <option value="">All Client</option>
                     <option
                       v-for="option in clientData"
                       :key="option.id"
-                      :value="option.client_name"
+                      :value="option.id"
                       aria-placeholder="Select Job"
                     >
                       {{ option.client_name }}
                     </option>
                   </select>
-                  <select v-model="site_id" id="selectBusinessUnit" @change="filterData">
+                  <select
+                    v-model="site_id"
+                    id="selectBusinessUnit"
+                    @change="filterData"
+                    :disabled="!businessUnit.length"
+                  >
                     <option value="">All Site</option>
                     <option
                       v-for="option in businessUnit"
                       :key="option.id"
-                      :value="option.site_name"
+                      :value="option.id"
                       placeholder="Select BusinessUnit"
                     >
                       {{ option.site_name }}
                     </option>
                   </select>
 
-                  <select v-model="id" @change="filterData">
+                  <!-- <select v-model="id" @change="filterData">
                     <option value="">All Staff</option>
                     <option
                       v-for="option in candidateLists"
@@ -41,7 +50,7 @@
                     >
                       {{ option.first_name + " " + option.last_name }}
                     </option>
-                  </select>
+                  </select> -->
                 </div>
 
                 <div>
@@ -79,7 +88,7 @@
 
                       &nbsp;&nbsp;
                       <div class="d-flex align-items-center">
-                        <span
+                        <!-- <span
                           v-if="currentView === 'weekly' && startDate && endDate"
                           class="fw-bold"
                         >
@@ -89,12 +98,16 @@
                             " to Sunday " +
                             formatDate(endDate)
                           }}
-                        </span>
+                        </span> -->
                         <span
-                          v-else-if="currentView === 'monthly' && startDate && endDate"
+                          v-if="currentView === 'monthly' && startDate && endDate"
                           class="fw-bold"
                         >
-                          {{ formatDate(startDate) + " to " + formatDate(endDate) }}
+                          {{
+                            formatDate(getMonthStartDate(this.startDate)) +
+                            " to " +
+                            formatDate(endDate)
+                          }}
                         </span>
                       </div>
                       &nbsp;&nbsp;
@@ -115,7 +128,7 @@
                         <button
                           type="button"
                           class="btn btn-outline-success text-nowrap"
-                          @click="exportAll"
+                          @click="exportOneFile('all')"
                           :disabled="true"
                         >
                           <i class="bi bi-download"></i> Export CSV
@@ -125,7 +138,7 @@
                         <button
                           type="button"
                           class="btn btn-outline-success text-nowrap"
-                          @click="exportAll"
+                          @click="exportOneFile('all')"
                         >
                           <i class="bi bi-download"></i> Export CSV
                         </button>
@@ -138,14 +151,14 @@
                   </div>
                 </div>
 
-                <div v-if="currentView === 'weekly'">
+                <!-- <div v-if="currentView === 'weekly'">
                   <div>
                     <div v-for="(day, index) in daysOfWeek" :key="index"></div>
                     <div v-for="(day, index) in getWeekDates" :key="index"></div>
                   </div>
-                </div>
+                </div> -->
 
-                <div v-else-if="currentView === 'monthly'">
+                <div v-if="currentView === 'monthly'">
                   <div>
                     <div v-for="(day, index) in getMonthDates" :key="index"></div>
                   </div>
@@ -350,15 +363,35 @@
       </div>
     </div>
     <div
-      class="mx-3"
+      class="mx-3 mb-2"
       style="text-align: right"
-      v-if="getClientInvoiceDetail?.length >= 8 && !searchResults.length"
+      v-if="getClientInvoiceDetail?.length >= 10 && !searchResults.length"
     >
-      <button class="btn btn-outline-dark btn-sm">
+      <!-- <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
-      </button>
-      &nbsp;&nbsp;
+      </button> -->
       <button
+        class="btn btn-sm btn-primary dropdown-toggle"
+        type="button"
+        id="recordsPerPageDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {{ itemsPerPage }} Records
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+        </li>
+      </ul>
+      &nbsp;&nbsp;
+      <!-- <button
         class="btn btn-sm btn-primary mr-2"
         :disabled="currentPage === 1"
         @click="currentPage--"
@@ -372,14 +405,32 @@
         @click="currentPage++"
       >
         Next
-      </button>
+      </button> -->
     </div>
+
     <div class="mx-3 mb-2" style="text-align: right" v-if="searchResults.length >= 10">
-      <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
-      </button>
-      &nbsp;&nbsp;
       <button
+        class="btn btn-sm btn-primary dropdown-toggle"
+        type="button"
+        id="recordsPerPageDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {{ itemsPerPage }} Records
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+        </li>
+      </ul>
+      &nbsp;&nbsp;
+      <!-- <button
         class="btn btn-sm btn-primary mr-2"
         :disabled="currentPage === 1"
         @click="currentPage--"
@@ -393,14 +444,14 @@
         @click="currentPage++"
       >
         Next
-      </button>
+      </button> -->
     </div>
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 <script>
 import axios from "axios";
-import Navbar from "../Navbar.vue";
+// import Navbar from "../Navbar.vue";
 import Loader from "../Loader/Loader.vue";
 const axiosInstance = axios.create({
   headers: {
@@ -444,12 +495,12 @@ export default {
       candidateLists: [],
     };
   },
-  components: { Navbar, Loader },
+  components: {
+    // Navbar,
+    Loader,
+  },
   computed: {
     paginateClientReport() {
-      if (!Array.isArray(this.getClientInvoiceDetail)) {
-        return [];
-      }
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.getClientInvoiceDetail.slice(startIndex, endIndex);
@@ -460,7 +511,7 @@ export default {
       return this.searchResults.slice(startIndex, endIndex);
     },
     totalRecordsOnPage() {
-      return this.paginateClientReport.length;
+      return this.paginateSearchResults.length;
     },
     selectBusinessUnit() {
       const site_id = this.businessUnit.find((option) => option.id === this.site_id);
@@ -505,47 +556,104 @@ export default {
     },
   },
   methods: {
+    async handleClientChange() {
+      this.site_id = "";
+      this.businessUnit = [];
+
+      if (this.client_id) {
+        await this.getSiteAccordingClientMethod();
+      }
+
+      this.filterData();
+    },
+
+    async getSiteAccordingClientMethod() {
+      if (!this.client_id) return;
+      try {
+        const response = await axios.get(
+          `${VITE_API_URL}/site_according_client/${this.client_id}`
+        );
+        this.businessUnit = response.data.site || [];
+      } catch (error) {
+        this.businessUnit = [];
+        if (error.response && error.response.status == 404) {
+          // console.error("No sites found for this client.");
+        }
+      }
+    },
+    getMonthStartDate(date) {
+      const selectedDate = new Date(date);
+      return new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+    },
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.filterData();
+    },
+    formatDates(date) {
+      const d = new Date(date);
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      const year = d.getFullYear();
+
+      return `${day}/${month}/${year}`;
+    },
+    // getCandidateName(id) {
+    //   const candidate = this.candidateLists.find((candidate) => candidate.id === id);
+    //   return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
+    // },
+    getWeekRange(date) {
+      const start = new Date(date);
+      const end = new Date(date);
+      start.setDate(start.getDate() - start.getDay() + 1);
+      end.setDate(end.getDate() + 6);
+      return { start, end };
+    },
     async filterData() {
-      const filters = {
-        filter_type: this.client_id
-          ? "client"
-          : this.site_id
-          ? "site"
-          : this.id
-          ? "staff"
-          : "",
-        filter_value:
-          this.client_id || this.site_id || this.getCandidateName(this.id) || "",
+      const params = {
+        page: 1,
+        per_page: this.itemsPerPage,
       };
 
-      await this.makeFilterAPICall(filters.filter_type, filters.filter_value);
-    },
-    getCandidateName(id) {
-      const candidate = this.candidateLists.find((candidate) => candidate.id === id);
-      return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
-    },
-    async makeFilterAPICall(filter_type, filter_value) {
+      // Handle client and site filters
+      if (this.client_id) {
+        params["client_invoice[client_id]"] = this.client_id;
+      }
+      if (this.site_id) {
+        params["client_invoice[site_id]"] = this.site_id;
+      }
+
+      if (this.currentView === "weekly") {
+        const { start, end } = this.getWeekRange(this.startDate);
+        params["date"] = this.formatDates(start);
+        // params["client_invoice[shift_date]"] = this.formatDates(start);
+      } else if (this.currentView === "monthly") {
+        const startOfMonth = new Date(this.startDate);
+        startOfMonth.setDate(1);
+
+        const formattedStartOfMonth = this.formatDates(startOfMonth);
+        params["date"] = formattedStartOfMonth;
+        // params["client_invoice[shift_date]"] = formattedStartOfMonth;
+      }
+      params.range = this.currentView === "weekly" ? "week" : "Monthly";
+
       try {
-        const response = await axios.get(`${VITE_API_URL}/invoice_report_filter`, {
-          params: {
-            filter_type: filter_type,
-            filter_value: filter_value,
-          },
-        });
+        const response = await axios.get(`${VITE_API_URL}/client_invoices`, { params });
 
         this.getClientInvoiceDetail = response.data.data || [];
-        if (this.getClientInvoiceDetail.length === 0) {
-          this.errorMessageFilter = "Report Not Found!";
+        this.errorMessageFilter = "";
+
+        if (response.status === 200 && this.getClientInvoiceDetail.length === 0) {
+          this.errorMessageCustom = `Data Not available for this ${this.currentView}`;
         } else {
-          this.errorMessageFilter = "Report Not Found!";
+          this.errorMessageCustom = "";
         }
       } catch (error) {
+        this.getClientInvoiceDetail = [];
         if (error.response && error.response.status === 404) {
-          // Handle 404 error specifically
-          // alert("No records found for the given filter.");
+          this.errorMessageFilter = error.response.data.error || "Report Not Found!";
         } else {
-          // Handle other errors
-          // alert("An unexpected error occurred. Please try again later.");
+          this.errorMessageFilter = "Report Not Found!";
         }
       }
     },
@@ -562,30 +670,93 @@ export default {
         }
       }
     },
-    exportAll() {
-      const formattedDate = this.formatDate(this.startDate);
 
-      const params = {
-        date: formattedDate,
+    exportOneFile(exportType) {
+      const startOfMonth = new Date(this.startDate);
+      startOfMonth.setDate(1);
+      const formattedStartOfMonth = this.formatDates(startOfMonth);
+
+      let queryParams = {
+        format: "csv",
+        date: formattedStartOfMonth,
+        // "report[shift_date]": this.formatDates(start),
       };
 
-      axios
-        .get(`${VITE_API_URL}/export_invoices.csv`, { params })
-        .then((response) => {
-          this.downloadCSV(response.data, "Client_ReportData.csv");
+      if (this.client_id) {
+        queryParams["client_invoice[client_id]"] = this.client_id;
+      }
+      if (this.site_id) {
+        queryParams["client_invoice[site_id]"] = this.site_id;
+      }
+
+      // queryParams.range = this.currentView === "weekly" ? "week" : "Monthly";
+      queryParams.range = this.currentView === "weekly" ? "week" : "Monthly";
+      return axios
+        .get(`${VITE_API_URL}/client_invoices`, {
+          params: queryParams,
+          headers: {
+            Accept: "text/csv",
+          },
+          responseType: "blob",
         })
-        .catch((error) => {
-          // console.error("Error:", error);
+        .then((response) => {
+          this.blobToText(response.data)
+            .then((csvData) => {
+              const filename = "Invoice_ReportData.csv";
+              this.downloadOneCSV(csvData, filename);
+              const message = "Export file downloaded successfully";
+              this.$refs.successAlert.showSuccess(message);
+              this.site_ids = [];
+              for (let key in this.checkedSites) {
+                this.checkedSites[key] = false;
+              }
+            })
+            .catch((error) => {});
+        })
+        .catch((error) => {})
+        .finally(() => {
+          this.site_ids = [];
         });
     },
-    downloadCSV(csvData, filename) {
-      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+    blobToText(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          resolve(reader.result);
+        };
+        reader.onerror = reject;
+        reader.readAsText(blob);
+      });
+    },
+
+    combineCsvData(csvDataArray) {
+      let combinedCsvData = "";
+      csvDataArray.forEach((csvData, index) => {
+        if (index > 0) {
+          const lines = csvData.split("\n");
+          lines.shift();
+          csvData = lines.join("\n");
+        }
+
+        combinedCsvData += csvData;
+        if (index < csvDataArray.length - 1) {
+          combinedCsvData += "\n";
+        }
+      });
+      return combinedCsvData;
+    },
+    downloadOneCSV(csvData, filename) {
+      const blob = new Blob([csvData], { type: "text/csv" });
+
       const url = window.URL.createObjectURL(blob);
+
       const a = document.createElement("a");
       a.href = url;
       a.download = filename;
+
       document.body.appendChild(a);
       a.click();
+
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     },
@@ -657,18 +828,18 @@ export default {
         }
       }
     },
-    async getBusinessUnitMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/activated_site`);
-        this.businessUnit = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
+    // async getBusinessUnitMethod() {
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/activated_site`);
+    //     this.businessUnit = response.data.data;
+    //   } catch (error) {
+    //     if (error.response) {
+    //       if (error.response.status == 404) {
+    //         // alert(error.response.data.message);
+    //       }
+    //     }
+    //   }
+    // },
     moveToPrevious() {
       if (this.currentView === "weekly") {
         this.startDate.setDate(this.startDate.getDate() - 7);
@@ -682,7 +853,7 @@ export default {
           0
         );
       }
-      this.getClientInvoiceReport();
+      this.filterData();
     },
     moveToNext() {
       if (this.currentView === "weekly") {
@@ -697,7 +868,7 @@ export default {
           0
         );
       }
-      this.getClientInvoiceReport();
+      this.filterData();
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
@@ -732,62 +903,13 @@ export default {
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
-
-    async getClientInvoiceReport() {
-      const token = localStorage.getItem("token");
-
-      const startOfMonth = new Date(
-        this.startDate.getFullYear(),
-        this.startDate.getMonth(),
-        1
-      );
-      const endOfMonth = new Date(
-        this.endDate.getFullYear(),
-        this.endDate.getMonth() + 1,
-        0
-      );
-
-      const formatDate = (date) => {
-        const month = (date.getMonth() + 1).toString().padStart(2, "0");
-        const day = date.getDate().toString().padStart(2, "0");
-        const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
-      };
-
-      const requestData = {
-        date: formatDate(startOfMonth),
-      };
-
-      try {
-        const response = await axios.get(`${VITE_API_URL}/client_invoices`, {
-          params: requestData,
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        });
-
-        // Set the invoice details
-        this.getClientInvoiceDetail = response.data.data || [];
-
-        // Check if the result is empty and set the error message
-        if (this.getClientInvoiceDetail.length === 0) {
-          this.errorMessageFilter = "Data Not available for this month.";
-        } else {
-          this.errorMessageFilter = "";
-        }
-      } catch (error) {
-        // console.error("Error fetching client invoice report:", error);
-        this.errorMessageFilter = "An error occurred while fetching the report.";
-      }
-    },
   },
 
-  mounted() {
+  async mounted() {
     // this.createVacancy();
-    this.getClientInvoiceReport();
+    // this.getClientInvoiceReport();
     this.loadDateRangeFromLocalStorage();
-    this.getBusinessUnitMethod();
+    // this.getBusinessUnitMethod();
     this.getCandidateMethods();
     this.getClientMethod();
 
@@ -803,6 +925,7 @@ export default {
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(endOfWeek.getDate() + 6);
     this.endDate = endOfWeek;
+    await this.filterData();
   },
 };
 </script>

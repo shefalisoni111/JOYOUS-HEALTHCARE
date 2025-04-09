@@ -1,22 +1,22 @@
 <template>
   <div>
-    <Navbar />
+    <!-- <Navbar /> -->
 
     <div id="main" class="main px-sm-2">
       <div class="row">
         <div class="col-md-1"><Sidebar /></div>
         <div class="col-md-3 p-3 p-0 bg-white borderight">
           <div class="leftside">
-            <div class="heading mb-3 position-relative">
+            <!-- <div class="heading mb-3 position-relative">
               <p class="bforeline"></p>
               <p class="mb-0 text-uppercase fw-bold genSetting ms-3 ms-lg-0">
                 General Settings
               </p>
               <p class="afterline"></p>
-            </div>
+            </div> -->
             <div>
               <ul class="list-unstyled text-capitalize generalsetting px-3">
-                <li class="list-items d-flex">
+                <!-- <li class="list-items d-flex">
                   <i class="bi bi-suitcase-lg rounded-circle"></i>
                   <router-link to="/addjobdetail" class="text-decoration-none">
                     <div class="job ms-2">
@@ -24,7 +24,7 @@
                       <p class="text-capitalize mb-0">Add jobs, positions & roles</p>
                     </div>
                   </router-link>
-                </li>
+                </li> -->
                 <!-- <li class="list-items d-flex mt-3">
                   <i class="bi bi-check-lg rounded-circle"></i>
                   <router-link to="/staff-status" class="text-decoration-none">
@@ -34,7 +34,7 @@
                     </div>
                   </router-link>
                 </li> -->
-                <li class="list-items d-flex mt-3">
+                <!-- <li class="list-items d-flex mt-3">
                   <i class="bi bi-person-square rounded-circle"></i>
                   <router-link to="/employmenttypedetail" class="text-decoration-none">
                     <div class="job ms-2">
@@ -69,7 +69,7 @@
                       <p class="text-capitalize mb-0">Add & modify Deduction</p>
                     </div>
                   </router-link>
-                </li>
+                </li> -->
                 <!-- <li class="list-items d-flex mt-3">
                   <i class="bi bi-person-vcard rounded-circle"></i>
                   <router-link to="/staff-profiles" class="text-decoration-none">
@@ -88,7 +88,7 @@
                     </div>
                   </router-link>
                 </li> -->
-                <div class="heading my-3 position-relative px-sm-2">
+                <!-- <div class="heading my-3 position-relative px-sm-2">
                   <p class="bforeline"></p>
                   <p class="mb-0 text-uppercase fw-bold docSetting">Documents Setting</p>
                   <p class="afterlines"></p>
@@ -101,14 +101,14 @@
                       <p class="text-capitalize mb-0">create & update categories</p>
                     </div>
                   </router-link>
-                </li>
+                </li> -->
               </ul>
             </div>
           </div>
         </div>
         <div class="col-md-8">
           <div class="col-12 bg-white p-4">
-            <RouterView />
+            <!-- <RouterView /> -->
           </div>
         </div>
       </div>
@@ -116,7 +116,7 @@
   </div>
 </template>
 <script>
-import Navbar from "../components/Navbar.vue";
+// import Navbar from "../components/Navbar.vue";
 import Sidebar from "../components/Sidebar.vue";
 // import AppJobDetail from "../components/appsettingcomponent/AppJobDetail.vue";
 
@@ -126,7 +126,7 @@ import Sidebar from "../components/Sidebar.vue";
 
 export default {
   components: {
-    Navbar,
+    // Navbar,
     Sidebar,
     // AppJobDetail,
     // CandidateStatus,

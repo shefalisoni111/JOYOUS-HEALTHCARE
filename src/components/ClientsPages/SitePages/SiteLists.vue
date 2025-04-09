@@ -1,25 +1,57 @@
 <template>
   <div>
-    <div class="container-fluid p-0">
-      <div id="main">
-        <div class="d-flex justify-content-between px-2">
-          <div class="py-3">
-            <ol class="breadcrumb mb-1">
-              <li class="breadcrumb-item active text-uppercase fs-6">
-                <router-link class="nav-link d-inline" aria-current="page" to="/home"
-                  >Dashboard</router-link
-                >
-                /
-                <span class="color-fonts">{{ activeTabName }} Site </span>
-              </li>
-            </ol>
+    <div id="main" class="main d-flex" style="gap: 7%">
+      <div class="col-1"><Navbar /></div>
+      <div class="col-10">
+        <div>
+          <div class="d-flex justify-content-between px-2">
+            <div class="py-2">
+              <!-- <ol class="breadcrumb mb-1">
+                <li class="breadcrumb-item active text-uppercase fs-6">
+                  <router-link class="nav-link d-inline" aria-current="page" to="/home"
+                    >Dashboard</router-link
+                  >
+                  /
+                  <span class="color-fonts">{{ activeTabName }} Site </span>
+                </li>
+              </ol> -->
+              <ol class="breadcrumb mb-1">
+                <li class="breadcrumb-item active">
+                  <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                    >All Clients</a
+                  >
+                  <p>
+                    Client /
+                    <router-link
+                      class="nav-link d-inline fw-bolder"
+                      style="color: #000000"
+                      aria-current="page"
+                      to="/SiteLists"
+                      >Site</router-link
+                    >
+                    / Rated and rules
+                  </p>
+                </li>
+              </ol>
+            </div>
+            <div>
+              <button
+                v-if="activeTab === 0"
+                type="button"
+                class="btn btn-lg text-nowrap"
+                style="background: #f9944b; color: #fff"
+                data-bs-toggle="modal"
+                data-bs-target="#addSite"
+                data-bs-whatever="@mdo"
+                @click="handleSiteAdded"
+              >
+                + Add Site
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="container-fluid p-0 bg-define"></div>
 
-        <div class="container-fluid pt-3">
-          <div class="row">
-            <div class="col-12">
+          <div class="container-fluid">
+            <div class="row">
               <div class="">
                 <div>
                   <div class="d-flex justify-content-between">
@@ -50,7 +82,156 @@
                         </li>
                       </div>
                     </ul>
-                    <div class="d-flex justify-content-end align-items-center">
+                    <div class="d-flex gap-2">
+                      <div class="mt-2">
+                        <button
+                          type="button"
+                          class="btn btn-lg btn-danger text-nowrap"
+                          @click="toggleFilters"
+                        >
+                          <i class="bi bi-funnel"></i>
+                          Show Filters
+                        </button>
+                        <input
+                          ref="fileInput"
+                          id="fileAll"
+                          type="file"
+                          accept=".csv"
+                          style="display: none"
+                          @change="handleFileUpload"
+                        />
+                        &nbsp;
+                        <button
+                          class="nav-item dropdown btn btn-lg btn-outline-success text-nowrap dropdown-toggle"
+                          type="button"
+                          id="navbarDropdown"
+                          role="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          Export
+
+                          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li>
+                              <!-- Hide the default file input -->
+                              <label
+                                for="fileAll"
+                                class="custom-file-label dropdown-item"
+                                style="border-radius: 0px; cursor: pointer"
+                                @click="triggerFileInput"
+                              >
+                                Import
+                              </label>
+                            </li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                              <a
+                                class="dropdown-item"
+                                href="#"
+                                @click="exportOneFile('selected')"
+                                >Export</a
+                              >
+                            </li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                              <a
+                                class="dropdown-item"
+                                href="#"
+                                @click="exportOneFile('all')"
+                                >Export All</a
+                              >
+                            </li>
+                          </div>
+                        </button>
+                      </div>
+
+                      <div
+                        class="d-flex gap-2 mb-3 justify-content-between"
+                        v-if="showFilters"
+                      >
+                        <div class="d-flex gap-2 mt-3">
+                          <div></div>
+
+                          <select v-model="selectedFilter" @change="filterData">
+                            <option value="" disabled>Status</option>
+                            <option value="true">Active</option>
+                            <option value="false">In-Active</option>
+                          </select>
+
+                          <select
+                            id="selectClients"
+                            v-model="selectedClientName"
+                            @change="filterData"
+                          >
+                            <option value="" disabled>Client Name</option>
+                            <option
+                              v-for="option in clientData"
+                              :key="option.id"
+                              :value="option.id"
+                              aria-placeholder="Select Client"
+                            >
+                              {{ option.client_name }}
+                            </option>
+                          </select>
+
+                          <select
+                            id="selectSite"
+                            v-model="selectedSiteName"
+                            @change="filterData"
+                          >
+                            <option value="" disabled>Site Name</option>
+                            <option
+                              v-for="option in businessUnit"
+                              :key="option.id"
+                              :value="option.site_name"
+                              aria-placeholder="Select Site"
+                            >
+                              {{ option.site_name }}
+                            </option>
+                          </select>
+
+                          <select
+                            id="selectSitesAddress"
+                            v-model="selectedSiteAddress"
+                            @change="filterData"
+                          >
+                            <option value="" disabled>Site Address</option>
+                            <option
+                              v-for="option in businessUnit"
+                              :key="option.id"
+                              :value="option.address"
+                              aria-placeholder="Select Address"
+                            >
+                              {{ option.address }}
+                            </option>
+                          </select>
+                          <div class="searchbox position-relative">
+                            <input
+                              class="form-control"
+                              type="search"
+                              placeholder="Search Site..."
+                              aria-label="Search"
+                              v-model="localSearchQuery"
+                              @input="filterData"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <button
+                            @click="resetFilter"
+                            class="btn btn-secondary"
+                            :disabled="
+                              !selectedFilter &&
+                              !selectedClientName &&
+                              !selectedSiteName &&
+                              !selectedSiteAddress &&
+                              !localSearchQuery
+                            "
+                          >
+                            Reset Filters
+                          </button>
+                        </div>
+                      </div>
                       <div
                         class="d-flex align-items-center gap-2 justify-content-between"
                       >
@@ -63,24 +244,15 @@
                               aria-label="Search"
                               v-model="searchQuery"
                               @input="debounceSearch"
+                              style="height: 49px"
                             />
                           </form>
                         </div>
-                        <button
-                          v-if="activeTab === 0"
-                          type="button"
-                          class="btn btn-outline-success text-nowrap"
-                          data-bs-toggle="modal"
-                          data-bs-target="#addSite"
-                          data-bs-whatever="@mdo"
-                          @click="handleSiteAdded"
-                        >
-                          + Add Site
-                        </button>
+
                         <!-- <button type="button" class="btn btn-outline-success text-nowrap">
-                          <i class="bi bi-funnel"></i>
-                          Show Filters
-                        </button> -->
+                        <i class="bi bi-funnel"></i>
+                        Show Filters
+                      </button> -->
                       </div>
                     </div>
                   </div>
@@ -155,7 +327,10 @@
                               ></i></button
                             >&nbsp;&nbsp; -->
                             <router-link
-                              :to="{ name: 'SingleSiteprofile', params: { id: data.id } }"
+                              :to="{
+                                name: 'SingleSiteprofile',
+                                params: { id: data.id },
+                              }"
                               class="btn btn-outline-success text-nowrap"
                             >
                               <i class="bi bi-eye"></i>
@@ -177,36 +352,39 @@
             </div>
           </div>
         </div>
+
+        <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 9">
+          <button class="btn btn-outline-dark btn-sm">
+            {{ totalRecordsOnPage }} Records Per Page
+          </button>
+          &nbsp;&nbsp;
+          <button
+            class="btn btn-sm btn-primary mr-2"
+            :disabled="currentPage === 1"
+            @click="changePage(currentPage - 1)"
+          >
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          &nbsp;&nbsp;
+          <span>{{ currentPage }}</span>
+          &nbsp;&nbsp;
+          <button
+            class="btn btn-sm btn-primary ml-2"
+            :disabled="currentPage === totalPages"
+            @click="changePage(currentPage + 1)"
+          >
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+        <AddSiteNotes />
+        <!-- <AddSite @site="handleSiteAdded" ref="addSite" /> -->
+        <EditSite
+          :siteId="selectedsiteId || 0"
+          @editSite="getSiteAllDataMethod"
+          ref="refSite"
+        />
       </div>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 9">
-      <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
-      </button>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="currentPage--"
-      >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= searchResults.length"
-        @click="currentPage++"
-      >
-        Next
-      </button>
-    </div>
-    <AddSiteNotes />
-    <!-- <AddSite @site="handleSiteAdded" ref="addSite" /> -->
-    <EditSite
-      :siteId="selectedsiteId || 0"
-      @editSite="getSiteAllDataMethod"
-      ref="refSite"
-    />
   </div>
 </template>
 <script>
@@ -217,6 +395,7 @@ import ActiveSite from "../SitePages/ActiveSite.vue";
 import AddSite from "../../modals/Site/AddSite.vue";
 import EditSite from "../../modals/Site/EditSite.vue";
 import AddSiteNotes from "../../modals/Site/AddSiteNotes.vue";
+import Navbar from "../../Navbar.vue";
 import Swal from "sweetalert2";
 const axiosInstance = axios.create({
   headers: {
@@ -231,11 +410,17 @@ export default {
       isActive: true,
       searchQuery: null,
       debounceTimeout: null,
-
+      localSearchQuery: this.searchQuery,
+      showFilters: false,
       searchResults: [],
+      selectedFilter: "",
+      selectedFilter: "",
+      selectedClientName: "",
+      selectedSiteName: "",
+      selectedSiteAddress: "",
       errorMessage: "",
       tabs: [
-        { name: "All ", component: "AllSite", routeName: "AllSite" },
+        { name: "All Site", component: "AllSite", routeName: "AllSite" },
 
         { name: "Active ", component: "ActiveSite", routeName: "ActiveSite" },
         { name: "InActive ", component: "InActiveSite", routeName: "InActiveSite" },
@@ -260,9 +445,21 @@ export default {
     },
   },
 
-  components: { AllSite, InActiveSite, ActiveSite, AddSiteNotes, AddSite, EditSite },
+  components: {
+    AllSite,
+    InActiveSite,
+    ActiveSite,
+    AddSiteNotes,
+    AddSite,
+    EditSite,
+    Navbar,
+  },
 
   methods: {
+    changePage(page) {
+      this.currentPage = page;
+      this.filterData();
+    },
     handleSiteAdded() {
       // this.$refs.addSite.();
       // console.log(this.$refs, addSite);
@@ -300,41 +497,41 @@ export default {
       }, 100);
     },
     //search api start
-    async search() {
-      try {
-        this.searchResults = [];
-        const modifiedSearchQuery = this.searchQuery.replace(/ /g, "_");
-        let apiUrl = "";
+    // async search() {
+    //   try {
+    //     this.searchResults = [];
+    //     const modifiedSearchQuery = this.searchQuery.replace(/ /g, "_");
+    //     let apiUrl = "";
 
-        if (this.activeTab === 0) {
-          apiUrl = `${VITE_API_URL}/search_api_site`;
-        } else if (this.activeTab === 1) {
-          apiUrl = `${VITE_API_URL}/active_search_api_site`;
-        } else if (this.activeTab === 2) {
-          apiUrl = `${VITE_API_URL}/inactive_search_api_site`;
-        } else {
-          return;
-        }
+    //     if (this.activeTab === 0) {
+    //       apiUrl = `${VITE_API_URL}/search_api_site`;
+    //     } else if (this.activeTab === 1) {
+    //       apiUrl = `${VITE_API_URL}/active_search_api_site`;
+    //     } else if (this.activeTab === 2) {
+    //       apiUrl = `${VITE_API_URL}/inactive_search_api_site`;
+    //     } else {
+    //       return;
+    //     }
 
-        const response = await axiosInstance.get(apiUrl, {
-          params: {
-            query: modifiedSearchQuery,
-          },
-        });
+    //     const response = await axiosInstance.get(apiUrl, {
+    //       params: {
+    //         query: modifiedSearchQuery,
+    //       },
+    //     });
 
-        this.searchResults = response.data.data;
-        // if (this.searchResults.length > 0) {
-        //   this.errorMessage = "No candidates found for the specified criteria";
-        // }
-      } catch (error) {
-        if (
-          (error.response && error.response.status === 404) ||
-          error.response.status === 400
-        ) {
-          this.errorMessage = "No candidates found for the specified criteria";
-        }
-      }
-    },
+    //     this.searchResults = response.data.data;
+    //     // if (this.searchResults.length > 0) {
+    //     //   this.errorMessage = "No candidates found for the specified criteria";
+    //     // }
+    //   } catch (error) {
+    //     if (
+    //       (error.response && error.response.status === 404) ||
+    //       error.response.status === 400
+    //     ) {
+    //       this.errorMessage = "No candidates found for the specified criteria";
+    //     }
+    //   }
+    // },
     async getSiteAllDataMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/sites`);
@@ -342,52 +539,43 @@ export default {
         // console.error("Error fetching data:", error);
       }
     },
-    // exportAll() {
-    //   axios
-    //     .get(`${VITE_API_URL}/export_all_csv_site.csv`)
-    //     .then((response) => {
-    //       this.downloadCSV(response.data, "All_SiteData.csv");
-    //     })
-    //     .catch((error) => {
-    //       // console.error("Error:", error);
-    //     });
-    // },
-    // downloadCSV(csvData, filename) {
-    //   const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
-    //   const url = window.URL.createObjectURL(blob);
-    //   const a = document.createElement("a");
-    //   a.href = url;
-    //   a.download = filename;
-    //   document.body.appendChild(a);
-    //   a.click();
-    //   window.URL.revokeObjectURL(url);
-    //   document.body.removeChild(a);
-    // },
-    // triggerFileInput() {
-    //   this.$refs.fileInput.click();
-    // },
-    // handleFileUpload(event) {
-    //   const file = event.target.files[0];
-    //   if (file) {
-    //     this.importAll(file);
-    //   }
-    // },
-    // importAll(fileData) {
-    //   const formData = new FormData();
-    //   formData.append("file", fileData);
-    //   axios
-    //     .post(`${VITE_API_URL}/import_all_csv_site.csv`, formData, {
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //       },
-    //     })
-    //     .then((response) => {
-    //       this.ImportCSV(response.data, "filename.csv");
-    //     })
-    //     .catch((error) => {
-    //       // console.error("Error:", error);
-    //     });
-    // },
+    toggleFilters() {
+      this.showFilters = !this.showFilters;
+    },
+    async filterData() {
+      const params = {
+        page: 1,
+      };
+
+      if (this.selectedFilter) {
+        params["site[status]"] = this.selectedFilter;
+      }
+
+      if (this.selectedClientName) {
+        params["site[client_id]"] = this.selectedClientName;
+      }
+
+      if (this.selectedSiteName) {
+        params["site[site_name]"] = this.selectedSiteName;
+      }
+
+      if (this.selectedSiteAddress) {
+        params["site[address]"] = this.selectedSiteAddress;
+      }
+
+      if (this.localSearchQuery) {
+        params.search = this.localSearchQuery;
+      }
+
+      try {
+        const response = await axios.get(`${VITE_API_URL}/site_filter`, {
+          params,
+        });
+        this.getSiteAllData = response.data.data || [];
+      } catch (error) {
+        // console.error("Error fetching filtered data:", error);
+      }
+    },
     triggerFileInput() {
       this.$refs.fileInput.click();
     },
@@ -444,19 +632,7 @@ export default {
       }
       // console.log("Updated siteIds array:", this.siteIds);
     },
-    exportOneFile() {
-      const queryParams = new URLSearchParams({
-        site_ids: JSON.stringify(this.siteIds),
-      }).toString();
-      axios
-        .get(`${VITE_API_URL}/selected_export_site?${queryParams}`)
-        .then((response) => {
-          this.downloadOneCSV(response.data, "All_SiteData.csv");
-        })
-        .catch((error) => {
-          // console.error("Error:", error);
-        });
-    },
+
     downloadOneCSV(csvData, filename) {
       const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
       const url = window.URL.createObjectURL(blob);
@@ -468,17 +644,6 @@ export default {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     },
-    // ImportCSV(csvData, filename) {
-    //   const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
-    //   const url = window.URL.createObjectURL(blob);
-    //   const a = document.createElement("a");
-    //   a.href = url;
-    //   a.download = filename;
-    //   document.body.appendChild(a);
-    //   a.click();
-    //   window.URL.revokeObjectURL(url);
-    //   document.body.removeChild(a);
-    // },
   },
   async mounted() {
     await this.setActiveTabFromRoute();
@@ -559,9 +724,7 @@ a:link {
   color: black;
   text-decoration: none;
 }
-.siteTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
+
 table {
   background-color: transparent !important;
 }
@@ -571,21 +734,26 @@ table {
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  background-color: transparent;
-  border: 1px solid green;
-  border-radius: 22px;
-  color: green;
+  background: #000000;
+  width: 100;
+  height: 37;
+  color: #fff;
+  border-radius: 13px;
+  padding-top: 10px;
+  padding-right: 15px;
+  padding-bottom: 11px;
+  padding-left: 15px;
 }
-
-.nav-pills .nav-link {
-  background-color: transparent;
-  border: 1px solid #9e9e9e;
-  border-radius: 22px;
-  color: #607d8b;
+.nav-link,
+.nav-link:hover,
+.nav-link:focus {
+  color: #667085;
 }
-ul.nav-pills {
-  height: 53px;
-  border-bottom: 1px solid #b8b1b1;
+.nav-pills {
+  background: #fff;
+  padding: 10px;
+  border-radius: 20px;
+  border-width: 1px;
 }
 table th {
   background-color: #ff5f30;
@@ -653,7 +821,7 @@ a {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
-  font-family: Verdana, sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {

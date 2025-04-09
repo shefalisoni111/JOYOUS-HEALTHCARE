@@ -352,28 +352,28 @@ export default {
     updateTemplate() {
       this.$store.commit("setSelectedTemplate", this.selectedTemplate);
     },
-    async generatePDF() {
-      if (!this.$route.params.id) {
-        return;
-      }
-      try {
-        const response = await axios.get(
-          `${VITE_API_URL}/generate_pdf/${this.$route.params.id}`,
-          {
-            responseType: "blob",
-          }
-        );
+    // async generatePDF() {
+    //   if (!this.$route.params.id) {
+    //     return;
+    //   }
+    //   try {
+    //     const response = await axios.get(
+    //       `${VITE_API_URL}/generate_pdf/${this.$route.params.id}`,
+    //       {
+    //         responseType: "blob",
+    //       }
+    //     );
 
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", `invoice_${this.id}.pdf`);
-        document.body.appendChild(link);
-        link.click();
-      } catch (error) {
-        // console.error("Error generating PDF:", error);
-      }
-    },
+    //     const url = window.URL.createObjectURL(new Blob([response.data]));
+    //     const link = document.createElement("a");
+    //     link.href = url;
+    //     link.setAttribute("download", `invoice_${this.id}.pdf`);
+    //     document.body.appendChild(link);
+    //     link.click();
+    //   } catch (error) {
+    //     // console.error("Error generating PDF:", error);
+    //   }
+    // },
 
     validatePayload(payload) {
       let isValid = true;

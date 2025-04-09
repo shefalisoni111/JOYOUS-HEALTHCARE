@@ -233,7 +233,7 @@
                 >
                   payroll
                 </h5>
-                <button type="button" class="btn btn-primary mb-3">Edit</button>
+                <!-- <button type="button" class="btn btn-primary mb-3">Edit</button> -->
               </div>
             </div>
             <div class="card-body">
@@ -289,7 +289,7 @@
                 </div>
 
                 <div>
-                  <button type="button" class="btn btn-primary">Edit</button>
+                  <!-- <button type="button" class="btn btn-primary">Edit</button> -->
                 </div>
               </div>
             </div>
@@ -346,7 +346,7 @@
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
-                <tbody v-if="getNextToKin">
+                <tbody v-if="getNextToKin?.length > 0">
                   <tr v-for="(data, index) in getNextToKin" :key="index">
                     <td v-if="data">{{ data.name }}</td>
                     <td v-if="data">{{ data.phone_number }}</td>
@@ -371,6 +371,13 @@
                           v-on:click="nextKinEdit(data.id)"
                         ></i>
                       </button>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody v-else>
+                  <tr>
+                    <td colspan="8" class="text-center text-danger">
+                      {{ noDataMessage }}
                     </td>
                   </tr>
                 </tbody>
@@ -413,7 +420,7 @@
                     <th scope="col">Description</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody v-if="getWorkExpData?.length > 0">
                   <tr v-for="(data, index) in getWorkExpData" :key="index">
                     <td v-if="data">{{ data.id }}</td>
                     <td v-if="data">{{ data.title }}</td>
@@ -422,6 +429,13 @@
                     <td v-if="data">{{ data.experience }}</td>
                     <td v-if="data">{{ data.position }}</td>
                     <td v-if="data">{{ data.description }}</td>
+                  </tr>
+                </tbody>
+                <tbody v-else>
+                  <tr>
+                    <td colspan="6" class="text-center text-danger">
+                      {{ noWorkDataMessage }}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -459,10 +473,17 @@
                     <th scope="col">Description</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody v-if="getEducationExpData?.length > 0">
                   <tr v-for="data in getEducationExpData" :key="data.id">
                     <td v-text="data.title"></td>
                     <td v-text="data.description"></td>
+                  </tr>
+                </tbody>
+                <tbody v-else>
+                  <tr>
+                    <td colspan="2" class="text-center text-danger">
+                      {{ noEducationDataMessage }}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -520,6 +541,9 @@ export default {
         employment_type_id: "",
       },
       getJobs: [],
+      noDataMessage: [],
+      noEducationDataMessage: [],
+      noWorkDataMessage: [],
       bankDetailChecked: false,
       selectedNextKinId: null,
       options: [],
@@ -597,7 +621,13 @@ export default {
           `${VITE_API_URL}/candidate_work_experiences/${this.$route.params.id}`
         );
 
-        this.getWorkExpData = response.data;
+        if (response.data && response.data.length > 0) {
+          this.getWorkExpData = response.data;
+          this.noWorkDataMessage = "";
+        } else {
+          this.getNextToKin = [];
+          this.noWorkDataMessage = "Data not found.";
+        }
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
@@ -614,7 +644,13 @@ export default {
           `${VITE_API_URL}/candidates/${this.$route.params.id}/candidates_all_educations`
         );
 
-        this.getEducationExpData = response.data;
+        if (response.data && response.data.length > 0) {
+          this.getEducationExpData = response.data;
+          this.noEducationDataMessage = "";
+        } else {
+          this.getEducationExpData = [];
+          this.noEducationDataMessage = "Data not found.";
+        }
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
@@ -631,9 +667,16 @@ export default {
           `${VITE_API_URL}/candidates/${this.$route.params.id}/next_of_kins`
         );
 
-        if (response.data) {
+        // if (response.data) {
+        //   this.getNextToKin = response.data;
+        // } else {
+        // }
+        if (response.data && response.data.length > 0) {
           this.getNextToKin = response.data;
+          this.noDataMessage = "";
         } else {
+          this.getNextToKin = [];
+          this.noDataMessage = "Data not found.";
         }
       } catch (error) {
         // console.error("Error fetching next of kin data:", error);
@@ -823,7 +866,7 @@ table th {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
-  font-family: Verdana, sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {

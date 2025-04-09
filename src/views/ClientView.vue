@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <!-- <Navbar /> -->
     <div id="main">
       <!-- <h6>Client Page in Progress.....</h6> -->
       <router-view />
@@ -8,7 +8,7 @@
   </div>
 </template>
 <script>
-import Navbar from "../components/Navbar.vue";
+// import Navbar from "../components/Navbar.vue";
 // import ClientsProfileView from "../components/ClientsPages/ClientsProfileView.vue";
 
 export default {
@@ -16,7 +16,7 @@ export default {
     return {};
   },
   components: {
-    Navbar,
+    // Navbar,
     // ClientsProfileView,
   },
 
@@ -29,15 +29,15 @@ export default {
 #main {
   padding: 20px 1px;
   transition: all 0.3s;
-  margin-top: 45px;
+  padding-top: 45px;
 
-  background-color: #fdce5e17;
+  background-color: #f9f9f9;
 }
 .main-content {
   transition: all 0.3s;
 }
 .bg-define {
-  background-color: #fdce5e17;
+  background-color: #f9f9f9;
 }
 .btn-primary {
   border: none;
@@ -161,7 +161,7 @@ a {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
-  font-family: Verdana, sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {

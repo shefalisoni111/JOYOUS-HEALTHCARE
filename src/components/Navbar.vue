@@ -1,162 +1,133 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light fixed-navbar">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/home"
-        ><img src="../assets/logo.png" class="img-fluid" alt="RecPal" width="119" loading="eager"
-      /></a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <!-- <router-link class="nav-link" aria-current="page" to="/LoginType">
-        <button class="border-0 bg-transparent fw-bolder fs-3"><i class="bi bi-arrow-clockwise"></i></button>
-      </router-link> -->
+  <div class="">
+    <!-- Sidebar -->
+    <nav id="sidebar" >
+      <div class="sidebar-header">
+        <a class="navbar-brand ps-3" href="/home"
+          ><img
+            src="../assets/logo.png"
+            class="img-fluid"
+            alt="RecPal"
+            width="138"
+            height="31"
+            loading="eager"
+        /></a>
+        <!-- <button class="btn btn-toggle" @click="toggleSidebar">
+          <i class="bi bi-list"></i>
+        </button> -->
+      </div>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav m-auto mt-0 mb-lg-0 fw-bold">
-          <li class="nav-item">
-            <router-link class="nav-link" aria-current="page" to="/home">
-              Home
-            </router-link>
-          </li>
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="/client-list"
-              id="vendorDropdown"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Client
-            </a>
+      <ul class="list-unstyled components">
+        <li>
+          <router-link to="/home" class="ps-2">
+            <i class="bi bi-house-door "></i> Dashboard
+          </router-link>
+        </li>
 
-            <div class="dropdown-menu" aria-labelledby="vendorDropdown">
-              <router-link class="dropdown-item" to="/client-list">Client</router-link>
-              <router-link class="dropdown-item" to="/site">Site</router-link>
-              <router-link class="dropdown-item" to="/rates_and_rules"
-                >Rates and Rules</router-link
-              >
-            </div>
+        <li>
+          <a href="#clientMenu" data-bs-toggle="collapse" class=" d-flex justify-content-between">
+            <span ><i class="bi bi-people "></i> <span class="ms-2">Client</span></span>
+            <img
+            src="../assets/ArrowDown.png"
+            class="img-fluid pe-2"
+            alt="RecPal"
+           
+            loading="eager"
+        />
+          </a>
+          <ul class="collapse list-unstyled" id="clientMenu">
+            <li><router-link to="/client-list">Client List</router-link></li>
+            <li><router-link to="/site">Site</router-link></li>
+            <li><router-link to="/rates_and_rules">Rates & Rules</router-link></li>
+          </ul>
+        </li>
 
-            <!-- <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li>
-                <router-link class="dropdown-item" to="/">Client 1</router-link>
-              </li>
-              <li>
-                <router-link class="dropdown-item" to="/">Client 2</router-link>
-              </li>
-            </ul> -->
-          </li>
+        <li>
+          <a href="#staffMenu" data-bs-toggle="collapse" class=" d-flex justify-content-between">
+            <span >
+            <i class="bi bi-person"></i> <span class="ms-2">Staff</span>
+</span>
+            <img
+            src="../assets/ArrowDown.png"
+            class="img-fluid pe-2"
+            alt="RecPal"
+           
+            loading="eager"
+        />
+          </a>
+          <ul class="collapse list-unstyled" id="staffMenu">
+            <li><router-link to="/staff-list">Staff List</router-link></li>
+            <li><router-link to="/availability">Staff Availability</router-link></li>
+          </ul>
+        </li>
 
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="/staff-list"
-              id="candidatesDropdown"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Staff
-            </a>
-            <div class="dropdown-menu" aria-labelledby="candidatesDropdown">
-              <router-link class="dropdown-item" to="/staff-list">Staff List</router-link>
-              <router-link class="dropdown-item" to="/availability"
-                >Staff Availability</router-link
-              >
-            </div>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" aria-current="page" to="/shift-list">
-              Shifts
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" aria-current="page" to="/schedule">
-              Schedule
-            </router-link>
-          </li>
-          <!-- <li class="nav-item">
-            <router-link class="nav-link" aria-current="page" to="/booking">
-              Booking
-            </router-link>
-          </li> -->
-          <!-- <li class="nav-item">
-            <router-link class="nav-link" aria-current="page" to="/timesheet">
-              Timesheet
-            </router-link>
-          </li> -->
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              to="/timesheet/weekly"
-              id="timesheetDropdown"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Timesheet
-            </a>
-            <div class="dropdown-menu" aria-labelledby="timesheetDropdown">
-              <router-link class="dropdown-item" to="/timesheet/weekly"
-                >Weekly TimeSheet</router-link
-              >
-              <router-link class="dropdown-item" to="/timesheet/custom"
-                >Custom TimeSheet</router-link
-              >
-              <router-link class="dropdown-item" to="/timesheet/signed"
-                >Signed TimeSheet</router-link
-              >
-            </div>
-          </li>
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              aria-current="page"
-              to="/invoice/client-invoice"
-              role="button"
-              id="invoiceDropdown"
-              data-bs-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Invoice
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="invoiceDropdown">
-              <li>
-                <router-link class="dropdown-item" to="/invoice/client-invoice"
-                  >Client Invoice</router-link
-                >
-              </li>
-              <li>
-                <router-link class="dropdown-item" to="/invoice/staff-payroll"
-                  >Staff Payroll</router-link
-                >
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" aria-current="page" to="/report">
-              Reports
-            </router-link>
-          </li>
-        </ul>
+        <li>
+          <router-link to="/shift-list">
+            <i class="bi bi-calendar"></i> Shifts
+          </router-link>
+        </li>
+
+        <li>
+          <router-link to="/schedule"> <i class="bi bi-clock"></i> Schedule </router-link>
+        </li>
+
+        <li >
+          <a href="#timesheetMenu" data-bs-toggle="collapse" class=" d-flex justify-content-between">  
+            <span >
+              <i class="bi bi-file-earmark-text"></i><span class="ms-2">Timesheet</span> 
+            </span> 
+              
+                <img
+                src="../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+               
+                loading="eager"
+            />
+          </a>
+       
+          <ul class="collapse list-unstyled" id="timesheetMenu">
+            <li><router-link to="/timesheet/weekly">Weekly Timesheet</router-link></li>
+            <li><router-link to="/timesheet/custom">Custom Timesheet</router-link></li>
+            <li><router-link to="/timesheet/signed">Signed Timesheet</router-link></li>
+          </ul>
+        </li>
+
+        <li>
+          <a href="#invoiceMenu" data-bs-toggle="collapse" class=" d-flex justify-content-between">
+            <span ><i class="bi bi-receipt"></i><span class="ms-2">Invoice</span> </span>
+            
+            <img
+                src="../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+               
+                loading="eager"
+            />
+          </a>
+          <ul class="collapse list-unstyled" id="invoiceMenu">
+            <li>
+              <router-link to="/invoice/client-invoice">Client Invoice</router-link>
+            </li>
+            <li><router-link to="/invoice/staff-payroll">Staff Payroll</router-link></li>
+          </ul>
+        </li>
+
+        <li>
+          <router-link to="/report">
+            <i class="bi bi-bar-chart"></i> Reports
+          </router-link>
+        </li>
+
+        <li class=" fw-bold text-muted mt-2">
+          Support
+        </li>
+
         <ul class="navbar-nav m-0 mb-2 mb-lg-0 inline-nav">
           <li class="nav-item dropdown mt-2">
             <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
               <i class="bi bi-chat-left-dots"></i
-            ></a>
+            >Message</a>
             <ul
               class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
               style="height: 454px; overflow-y: auto; width: 386px; overflow-x: hidden"
@@ -174,7 +145,7 @@
                 </form>
               </li>
               <li>
-                <hr class="dropdown-divider" />
+                <hr class="" />
               </li>
               <li v-if="searchQuery">
                 <template v-if="searchResults?.length > 0">
@@ -210,7 +181,7 @@
                         candidate.position
                       }}</span>
                     </div>
-                    <hr class="dropdown-divider" />
+                    <hr class="" />
                   </li>
                 </template>
                 <template v-else>
@@ -226,9 +197,9 @@
                
                 class="notification-item p-2 d-flex gap-1 divide_sec cursor-pointer"
                 v-for="candidate in getCandidatesData"
-                :key="candidate.id" @click="openChat(candidate)"
+                :key="candidate.id" 
               >
-                <div @click="openChat(candidate)">
+                <div >
                   <img
                     v-if="candidate.profile_photo"
                     :src="getProfilePhotoUrl(candidate.profile_photo)"
@@ -253,7 +224,7 @@
 
                   <span class="text-muted text-capitalize">{{ candidate.possition }}</span>
                 </div>
-                <hr class="dropdown-divider" />
+                <hr class="" />
               </li>
               </li>
             </ul>
@@ -264,13 +235,14 @@
               <i class="bi bi-bell"></i>
               <span v-if="!dropdownOpen && unread_count > 0" class="badge bg-primary badge-number">
                 {{ unread_count }}
-              </span>
+              </span>Notification
             </a>
+            <NotificationsAdmin/>
             <!-- <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" @click.self="dropdownOpen = false" style="height:310px;    width: 266px;"  @scroll="onScroll"  ref="notificationDropdown">
            
                <li class="notification-item p-2 d-flex gap-1 text-danger">No Notification Found!</li>
             </ul> -->
-            <ul
+            <!-- <ul
   class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
   @click.self="dropdownOpen = false"
   style="height: 310px; width: 266px; overflow-x: scroll;"
@@ -291,10 +263,29 @@
   <li v-if="notifications.length < totalCount" class="p-2 text-center">
     <button @click.stop="loadMore" class="btn btn-sm btn-primary">Read More</button>
   </li>
-</ul>
+</ul> -->
           </li>
           
           <!-- End Notification Nav -->
+          
+          <li class="cursor-pointer my-1 ">
+            <a class="dropdown-item d-flex align-items-center" href="https://recpal.co.uk/support/">
+              <i class="bi bi-brightness-low pe-2" ></i><span>Support</span>
+            </a>
+          </li>
+          <li>
+            <router-link
+              class="dropdown-item d-flex align-items-center"
+              aria-current="page"
+              to="/appsetting"
+            >
+              <i class="bi bi-gear pe-2"></i><span> Settings</span>
+            </router-link>
+          </li>
+          <br/><br/>
+          <li>
+            <hr class="" />
+          </li>
           <li class="nav-item dropdown">
             <a
               class="nav-link nav-icon nav-profile d-flex align-items-center pe-0"
@@ -318,7 +309,7 @@
                 class="rounded-circle profileAdminImg"
                 width="40"
                 loading="eager"
-              />
+              />   <span class="d-block">Admin</span>
             </a>
             <!-- End Profile Image Icon -->
 
@@ -329,22 +320,11 @@
               <li>
                 <a class="dropdown-item text-capitalize">
                   <h5 class="d-block mb-0 fw-bold">{{ getAdminData.first_name }}</h5>
-                  <span class="d-block">Admin</span>
+                  <!-- <span class="d-block">Admin</span> -->
                 </a>
               </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-
-              <li>
-                <router-link
-                  class="dropdown-item d-flex align-items-center"
-                  aria-current="page"
-                  to="/appsetting"
-                >
-                  <i class="bi bi-gear pe-2"></i><span>App Settings</span>
-                </router-link>
-              </li>
+             
+             
 <!-- 
               <li class="cursor-pointer my-1">
                 <a class="dropdown-item d-flex align-items-center">
@@ -381,13 +361,9 @@
               </li> 
          
 
-              <li class="cursor-pointer my-1">
-                <a class="dropdown-item d-flex align-items-center" href="https://recpal.co.uk/support/">
-                  <i class="bi bi-brightness-low pe-2" ></i><span>Support</span>
-                </a>
-              </li>
+              
               <li>
-                <hr class="dropdown-divider" />
+                <hr class="" />
               </li>
 
               <li class="cursor-pointer">
@@ -498,25 +474,25 @@
               >
                 <i class="bi bi-paperclip"></i>
               </button> -->
-              <button @click="sendMessage"  :disabled="!newMessage.trim()" class="btn btn-primary flex-end">Send</button>
+              <button @click="sendMessage"  :disabled="!newMessage.trim() || sending" class="btn btn-primary flex-end">Send</button>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  
-  </nav>
+      </ul>
+    </nav>
+  </div>
 </template>
 
 <script>
 import axios from "axios";
 // import ConfirmationAlert from "./Alerts/ConfirmationAlert.vue";
+import NotificationsAdmin from "../components/Notifiations/NotificationsAdmin.vue"
 import Swal from "sweetalert2";
-import logo from '../assets/logo.png';
+import logo from "../assets/logo.png";
 
 
 import { nextTick } from "vue";
-import LoaderVue from './Loader/Loader.vue';
+import LoaderVue from "./Loader/Loader.vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -529,7 +505,7 @@ export default {
 
   data() {
     return {
-      adminLink: '/admin/',
+      adminLink: "/admin/",
       getAdminData: [],
       isUserScrolling: false,
       showChatBox: false,
@@ -537,13 +513,14 @@ export default {
       getCandidatesData: [],
       newMessage: "",
       selectedCandidate: null,
-      selectedCandidateMessages: [] ,
+      selectedCandidateMessages: [],
       messages: [],
       searchQuery: "",
       debounceTimeout: null,
       searchResults: [],
+      sending: false,
       errorMessage: "",
-      errorMessageNotification:'',
+      errorMessageNotification: "",
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,
@@ -554,118 +531,123 @@ export default {
       totalPages: 1,
       itemsPerPage: 10,
       totalCount: 0,
-      unread_count:0,
+      unread_count: 0,
       // channelSid: "",
       isLoading: true,
       // unreadNotifications: 0,
       isFetchingMessages: false,
       messageFetchInterval: null,
-      
-   
-    senderId:null,
-    socket: null,
+
+      senderId: null,
+      socket: null,
       storedImageUrl: "",
       localProfileImage: this.profileImage,
-      notifications: [
-        
-       
-      ],
+      notifications: [],
     };
   },
-  components:{
-    
+
+  components: {
+    NotificationsAdmin
   },
   computed: {
-   
     visibleNotifications() {
-     
-     return this.showAll ? this.notifications : this.notifications.slice(0, 2);
-    
+      return this.showAll ? this.notifications : this.notifications.slice(0, 2);
     },
     isScrollable() {
       return this.notifications.length > this.visibleNotifications.length;
     },
-  
+
     computedProfileImage() {
-      return this.localProfileImage; 
+      return this.localProfileImage;
     },
     channelSid() {
       // Access `channelSid` from the store (adjust according to your store setup)
       return this.$store.state.channelSid;
     },
-  
   },
-  
+
   props: {
     profileImage: {
       type: String,
       default: "./profile.png",
     },
+    disableApiCall: {
+      type: Boolean,
+      default: false,
+    },
   },
   watch: {
+    "$route.name"(newRoute) {
+      if (newRoute === "Navbar") {
+        this.getCandidateMethods();
+      }
+    },
     notifications: {
       handler(newNotifications) {
-
         this.unread_count = newNotifications.filter((n) => !n.read).length;
       },
-      deep: true, 
-      immediate: true, 
+      deep: true,
+      immediate: true,
     },
     selectedCandidateMessages() {
-      this.scrollToBottom(); 
+      this.scrollToBottom();
     },
     // showChatBox(newVal) {
-    //   if (newVal) this.scrollToBottom(); 
+    //   if (newVal) this.scrollToBottom();
     // },
-  selectedCandidate(newCandidate) {
-    if (newCandidate) {
-      this.fetchMessagesForCandidate(newCandidate);
-    }
-  },
-  newMessage(newValue) {
-   
-    if (newValue && this.channelSid) {
-      this.fetchMessages(this.channelSid).then(() => {
-      this.scrollToBottom();
-    }).catch((error) => {
-      // console.error('Error fetching messages:', error);
-    });
-      // this.fetchMessages(this.channelSid);
-    }
-  },
-//   newMessage(newValue) {
-//   if (newValue && this.channelSid) {
-//     const lastMessage = this.selectedCandidateMessages.at(-1);
-//     const isCandidateMessage = lastMessage?.sender?.type === "Candidate";
-
-//     if (isCandidateMessage) {
-    
-//       this.fetchMessages(this.channelSid);
-//     } else {
-     
-//     }
-//   }
-// },
-
-  channelSid(newChannelSid) {
-      if (newChannelSid) {
-        // console.log('Channel SID changed:', newChannelSid);
-        this.fetchMessages(newChannelSid);
+    selectedCandidate(newCandidate) {
+      if (newCandidate) {
+        this.fetchMessagesForCandidate(newCandidate);
       }
-    }
-},
+    },
+    newMessage(newValue) {
+      if (newValue && this.channelSid) {
+        this.fetchMessages(this.channelSid)
+          .then(() => {
+            this.scrollToBottom();
+          })
+          .catch((error) => {
+            // console.error('Error fetching messages:', error);
+          });
+        // this.fetchMessages(this.channelSid);
+      }
+    },
+    //   newMessage(newValue) {
+    //   if (newValue && this.channelSid) {
+    //     const lastMessage = this.selectedCandidateMessages.at(-1);
+    //     const isCandidateMessage = lastMessage?.sender?.type === "Candidate";
+
+    //     if (isCandidateMessage) {
+
+    //       this.fetchMessages(this.channelSid);
+    //     } else {
+
+    //     }
+    //   }
+    // },
+
+    // channelSid(newChannelSid) {
+    //     if (newChannelSid) {
+    //       // console.log('Channel SID changed:', newChannelSid);
+    //       this.fetchMessages(newChannelSid);
+    //     }
+    //   }
+  },
   methods: {
     async loadMore() {
-    this.currentPage++; 
-    await this.fetchNotifications(); 
-  },
+      this.currentPage++;
+      await this.fetchNotifications();
+    },
     onScroll() {
       const chatMessages = this.$refs.chatMessages;
-    
-      if (chatMessages.scrollHeight - chatMessages.scrollTop <= chatMessages.clientHeight + 10) {
+
+      if (
+        chatMessages.scrollHeight - chatMessages.scrollTop <=
+        chatMessages.clientHeight + 10
+      ) {
         this.isUserScrolling = false;
       } else {
-        this.isUserScrolling = true; 
+        this.isUserScrolling = true;
       }
     },
 
@@ -697,13 +679,11 @@ export default {
     },
     toggleDropdown() {
       this.dropdownOpen = !this.dropdownOpen;
-     
     },
     showAllNotifications(event) {
       event.preventDefault();
-      this.showAll = true; 
+      this.showAll = true;
     },
-    
 
     handleClick() {
       this.$nextTick(() => {
@@ -712,14 +692,13 @@ export default {
         }
       });
     },
-    
+
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
 
       this.debounceTimeout = setTimeout(() => {
-      
         this.search();
-      }, 300); 
+      }, 300);
     },
     //search api start
 
@@ -729,22 +708,21 @@ export default {
         this.searchResults = [];
 
         const response = await axiosInstance.get(`${VITE_API_URL}/search_candidate`, {
-      params: {
-        candidate_query: this.searchQuery.trim()
-      }
-    });
+          params: {
+            candidate_query: this.searchQuery.trim(),
+          },
+        });
 
         // this.searchResults = response.data.candidate|| [];
         if (response.data.candidate && response.data.candidate.length > 0) {
-      this.searchResults = response.data.candidate || [];
-    } else if (response.data.message) {
- 
-      this.errorMessage = response.data.message;
-    }
+          this.searchResults = response.data.candidate || [];
+        } else if (response.data.message) {
+          this.errorMessage = response.data.message;
+        }
       } catch (error) {
         if (
-        (error.response && error.response.status === 404) ||
-        error.response.status === 400
+          (error.response && error.response.status === 404) ||
+          error.response.status === 400
         ) {
           this.errorMessage = "Not Staff found for the specified criteria";
         } else {
@@ -767,29 +745,29 @@ export default {
       }
     },
     openChat(candidate) {
-  
       this.selectedCandidate = candidate;
       // this.showChatBox = true;
       //  this.fetchChatChannel(candidate.id);
-      this.showChatBox = false; 
+      this.showChatBox = false;
 
-this.fetchChatChannel(candidate.id).then((channelSid) => {
-  if (channelSid) {
-    this.showChatBox = true; 
-  } else {
-    // console.warn("Chat channel not available for this candidate.");
-  }
-}).catch((error) => {
-  // console.error("Error fetching chat channel:", error);
-  this.showChatBox = false; 
-});
-      
+      this.fetchChatChannel(candidate.id)
+        .then((channelSid) => {
+          if (channelSid) {
+            this.showChatBox = true;
+          } else {
+            // console.warn("Chat channel not available for this candidate.");
+          }
+        })
+        .catch((error) => {
+          // console.error("Error fetching chat channel:", error);
+          this.showChatBox = false;
+        });
     },
     closeChatBox() {
       this.showChatBox = false;
       this.selectedCandidate = null;
-      
-      this.$store.dispatch('updateChannelSid', null);
+
+      this.$store.dispatch("updateChannelSid", null);
     },
     fetchMessagesForCandidate(candidate) {
       this.selectedCandidateMessages = this.messages.filter(
@@ -806,10 +784,10 @@ this.fetchChatChannel(candidate.id).then((channelSid) => {
         const response = await fetch(`${VITE_API_URL}/chats/create_channel`, {
           method: "POST",
           body: JSON.stringify({
-            sender_id:id,
-            sender_type:"Candidate",
+            sender_id: id,
+            sender_type: "Candidate",
             receiver_id: merchantId,
-            receiver_type: "Merchant", 
+            receiver_type: "Merchant",
           }),
           headers: {
             "Access-Control-Allow-Headers": "Content-Type",
@@ -818,10 +796,10 @@ this.fetchChatChannel(candidate.id).then((channelSid) => {
         });
 
         const data = await response.json();
-        
+
         if (response.ok && data.channel_sid) {
-          this.$store.dispatch('updateChannelSid', data.channel_sid);
-          await   this.fetchMessages(data.channel_sid)
+          this.$store.dispatch("updateChannelSid", data.channel_sid);
+          await this.fetchMessages(data.channel_sid);
           return data.channel_sid;
         } else {
           // Swal.fire({
@@ -842,19 +820,16 @@ this.fetchChatChannel(candidate.id).then((channelSid) => {
       }
     },
 
-
     async sendMessage() {
-    
       if (!this.channelSid) {
         // console.error("Channel SID is not available. Fetch the channel first.");
         return;
       }
       if (this.newMessage.trim() === "") {
-      
         return;
       }
-
-      const tempMessage = this.newMessage; 
+      this.sending = true;
+      const tempMessage = this.newMessage;
 
       const token = localStorage.getItem("token");
       try {
@@ -862,117 +837,110 @@ this.fetchChatChannel(candidate.id).then((channelSid) => {
           method: "POST",
           body: JSON.stringify({
             channel_sid: this.channelSid,
-            message: tempMessage
+            message: tempMessage,
           }),
           headers: {
             "Access-Control-Allow-Headers": "Content-Type",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, 
+            Authorization: `Bearer ${token}`,
           },
         });
 
         const data = await response.json();
-     
+
         if (response.ok) {
-      this.selectedCandidateMessages.push({
-        sender: "You",
-        content: tempMessage,
-      });
-      this.newMessage = ""; 
-      await  this.fetchMessages(this.channelSid) 
-      } else {
-        Swal.fire({
-          title: "Error!",
-          text: data.message || "Failed to send the message. Please try again.",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-      }
-      
+          this.selectedCandidateMessages.push({
+            sender: "You",
+            content: tempMessage,
+          });
+          this.newMessage = "";
+          await this.fetchMessages(this.channelSid);
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: data.message || "Failed to send the message. Please try again.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+
         if (data.success) {
-          
-         
-          this.newMessage = ""; 
-        } 
+          this.newMessage = "";
+        }
       } catch (error) {
         Swal.fire({
           title: "Error!",
-          text: "An unexpected error occurred while sending the message. Please try again.",
+          text:
+            "An unexpected error occurred while sending the message. Please try again.",
           icon: "error",
           confirmButtonText: "OK",
         });
+      } finally {
+        this.sending = false;
       }
     },
-    async fetchMessages(channelSid)  {
+
+    async fetchMessages(channelSid) {
       this.isLoading = true;
       this.isFetchingMessages = true;
-     
-    const token = localStorage.getItem("token");
-    try {
-      const response = await axios.get(`${VITE_API_URL}/chats/fetch_messages`, {
-        params: {
-          channel_sid: channelSid, 
-        },
-        headers: {
-          "Access-Control-Allow-Headers": "Content-Type",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
 
-      
-      this.selectedCandidateMessages = response.data.messages || [];
-    
-    
-    } catch (error) {
-      Swal.fire({
-      title: "Error!",
-      text: error.response?.data?.message || "Failed to fetch messages. Please try again.",
-      icon: "error",
-      confirmButtonText: "OK",
-    });
-    } finally {
-      this.isFetchingMessages = false; 
-      this.isLoading = false;
-     
-    }
-  },
- 
-  handleClick() {
-    this.$refs.fileInput.click(); 
-  },
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get(`${VITE_API_URL}/chats/fetch_messages`, {
+          params: {
+            channel_sid: channelSid,
+          },
+          headers: {
+            "Access-Control-Allow-Headers": "Content-Type",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        this.selectedCandidateMessages = response.data.messages || [];
+      } catch (error) {
+        Swal.fire({
+          title: "Error!",
+          text:
+            error.response?.data?.message ||
+            "Failed to fetch messages. Please try again.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      } finally {
+        this.isFetchingMessages = false;
+        this.isLoading = false;
+      }
+    },
+
+    handleClick() {
+      this.$refs.fileInput.click();
+    },
     confirmed() {
       if (localStorage.getItem("token")) {
-        
         Swal.fire({
           html: '<p style="font-size: 25px;">Are you sure want to sign out?</p>',
-      imageUrl: logo,
-      imageWidth: 200,
-      imageAlt: 'RecPal',
-      showCancelButton: true,
-      confirmButtonColor: '#ff5f30',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, sign me out!',
-      cancelButtonText: 'Cancel',
-      didOpen: () => {
-        
-        const popup = document.querySelector('.swal2-popup');
-        popup.style.border = '4px solid #fc7d4f'; 
-      }
+          imageUrl: logo,
+          imageWidth: 200,
+          imageAlt: "RecPal",
+          showCancelButton: true,
+          confirmButtonColor: "#ff5f30",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, sign me out!",
+          cancelButtonText: "Cancel",
+          didOpen: () => {
+            const popup = document.querySelector(".swal2-popup");
+            popup.style.border = "4px solid #fc7d4f";
+          },
         }).then((result) => {
           if (result.isConfirmed) {
-           
             localStorage.removeItem("token");
             localStorage.removeItem("tokenExpiration");
 
-           
             this.$router.replace({ name: "Login" });
-
-        
           }
         });
       }
-    
     },
     handleScroll() {
       const chatMessages = this.$refs.chatMessages;
@@ -985,13 +953,10 @@ this.fetchChatChannel(candidate.id).then((channelSid) => {
         chatMessages.scrollTop + chatMessages.clientHeight >= chatMessages.scrollHeight;
 
       if (isAtTop) {
-        
         // this.fetchMessages(this.channelSid);
       } else if (!isAtBottom) {
-        
         this.isUserScrolling = true;
         clearTimeout(this.scrollTimeout);
-
 
         this.scrollTimeout = setTimeout(() => {
           this.isUserScrolling = false;
@@ -1000,30 +965,29 @@ this.fetchChatChannel(candidate.id).then((channelSid) => {
     },
     async getCandidateMethods() {
       try {
-        
         let allCandidates = [];
-    let currentPage = 1;
-    const itemsPerPage = 10;
-    let totalPages = 1;
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let totalPages = 1;
 
-    do {
-      const response = await axios.get(`${VITE_API_URL}/candidates`, {
-        params: { page: currentPage, per_page: itemsPerPage,status_value: "approved", 
-        activated_value: true, },
-      });
+        do {
+          const response = await axios.get(`${VITE_API_URL}/candidates`, {
+            params: {
+              page: currentPage,
+              per_page: itemsPerPage,
+              status_value: "approved",
+              activated_value: true,
+            },
+          });
 
-   
-      allCandidates = [...allCandidates, ...response.data.data];
+          allCandidates = [...allCandidates, ...response.data.data];
 
-    
-      totalPages = response.data.total_pages;
+          totalPages = response.data.total_pages;
 
-      
-      currentPage++;
-    } while (currentPage <= totalPages);
+          currentPage++;
+        } while (currentPage <= totalPages);
 
-    this.getCandidatesData = allCandidates; 
-    
+        this.getCandidatesData = allCandidates;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
@@ -1034,328 +998,213 @@ this.fetchChatChannel(candidate.id).then((channelSid) => {
       }
     },
     async markAllAsRead() {
-    if (this.unread_count > 0) {
+      if (this.unread_count > 0) {
+        const token = localStorage.getItem("token");
+
+        try {
+          const response = await axios.put(
+            `${VITE_API_URL}/merchant_notification_read_all`,
+            {},
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (response.status === 200) {
+            this.unread_count = 0;
+
+            this.notifications.forEach((notification) => {
+              notification.read = true;
+            });
+          }
+        } catch (error) {
+          // console.error("Error marking notifications as read:", error);
+        }
+      }
+    },
+    async fetchNotifications() {
       const token = localStorage.getItem("token");
+      this.isLoading = true;
 
       try {
-        const response = await axios.put(
-          `${VITE_API_URL}/merchant_notification_read_all`,
-          {},
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${VITE_API_URL}/agency_notifications`, {
+          params: {
+            page: this.currentPage,
+            per_page: this.itemsPerPage,
+          },
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (response.status === 200) {
-         
-          this.unread_count = 0;
+          // this.notifications = response.data.notifications || [];
 
-         
-          this.notifications.forEach((notification) => {
-            notification.read = true;
-          });
+          if (this.currentPage === 1) {
+            this.notifications = response.data.notifications || [];
+          } else {
+            this.notifications = [
+              ...this.notifications,
+              ...(response.data.notifications || []),
+            ];
+          }
+          this.currentPage = response.data.current_page;
+          this.totalCount = response.data.total_count;
+          this.unread_count = response.data.unread_count || 0;
+          // this.total_count = response.data.total_count;
+          this.errorMessageNotification =
+            this.notifications.length === 0 ? response.data.message : "";
         }
       } catch (error) {
-        // console.error("Error marking notifications as read:", error);
+        this.errorMessage = "Failed to load notifications";
+      } finally {
+        this.isLoading = false;
       }
-    }
-  },
-    async fetchNotifications() {
-  const token = localStorage.getItem("token");
-  this.isLoading = true;
-  
-  try {
-    const response = await axios.get(`${VITE_API_URL}/agency_notifications`, {
-      params: {
-        page: this.currentPage,
-            per_page: this.itemsPerPage,
-      },
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${token}`
-      }
-    });
-
-    if (response.status === 200) {
-      // this.notifications = response.data.notifications || [];
-    
-      if (this.currentPage === 1) {
-        this.notifications = response.data.notifications || [];
-      } else {
-        this.notifications = [...this.notifications, ...(response.data.notifications || [])];
-      }
-      this.currentPage = response.data.current_page;
-      this.totalCount = response.data.total_count;
-      this.unread_count = response.data.unread_count || 0;
-      // this.total_count = response.data.total_count;
-      this.errorMessageNotification = this.notifications.length === 0 ? response.data.message : "";
-    }
-  } catch (error) {
-    
-    this.errorMessage = "Failed to load notifications";
-  } finally {
-    this.isLoading = false;
-  }
     },
   },
- 
- async mounted() {
-  this.fetchNotifications();
-  const token = localStorage.getItem("token");
-  const merchantId = localStorage.getItem('merchant_id');
+
+  async mounted() {
+    if (this.disableApiCall) {
+      const token = localStorage.getItem("token");
+      const merchantId = localStorage.getItem("merchant_id");
+      if (merchantId && token) {
+        this.adminLink = `/admin/${merchantId}`;
+      }
+      this.fetchProfileImage();
+      await this.getCandidateMethods();
+      // this.fetchNotifications();
+      return;
+    }
+    const token = localStorage.getItem("token");
+    const merchantId = localStorage.getItem("merchant_id");
     if (merchantId && token) {
       this.adminLink = `/admin/${merchantId}`;
     }
-  this.fetchProfileImage()
-  // this.scrollToBottom();
-  await  this.getCandidateMethods();
-  this.messageFetchInterval = setInterval(() => {
-    if ( this.channelSid) {
-      this.fetchMessages(this.channelSid);
-    } else {
-      this.$store.dispatch('updateChannelSid', null);
-    }
-  }, 2000);
-  
+    this.fetchProfileImage();
+    // this.fetchNotifications();
 
-    
+    // this.scrollToBottom();
+    await this.getCandidateMethods();
+    // this.messageFetchInterval = setInterval(() => {
+    //   if ( this.channelSid) {
+    //     this.fetchMessages(this.channelSid);
+    //   } else {
+    //     this.$store.dispatch('updateChannelSid', null);
+    //   }
+    // }, 2000);
   },
   beforeUnmount() {
-   
     if (this.messageFetchInterval) {
-    clearInterval(this.messageFetchInterval);
-  }
-  // this.$store.dispatch('updateChannelSid', null);
+      clearInterval(this.messageFetchInterval);
+    }
+    // this.$store.dispatch('updateChannelSid', null);
   },
-  
- 
-  
 };
 </script>
 
 <style scoped>
-.chat-staff {
-  cursor: pointer;
-}
-.divide_sec {
-  border-bottom: 1px solid #f0eeed;
-  width: 335px;
-  margin: auto;
-}
-.divide_sec img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 3px solid #fc7d4f;
-}
-.divide_sec .else_profile {
-  font-size: 29px;
-  padding-left: 3px;
-  border-radius: 50%;
-  border: 3px solid #fc7d4f;
-  color: #979493;
-  width: 40px;
-  height: 40px;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-.chat-box {
+/* Sidebar styles */
+#sidebar {
+  width: 246px;
+  height: 100vh;
+  border: 1px solid #eff0f6;
+  box-shadow: 0px 5px 20px 0px #0000000d;
+  border-radius: 20px;
+  border-width: 1px;
+  background: #ffffff;
+  color: #000000;
+  padding-top: 12px;
+  transition: 0.3s;
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-}
-.chat-container {
-  width: 400px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.chat-header {
-  background-color: #f0f0f0;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.dropdown-item:hover,
-.dropdown-item:focus {
-  background-color: #f6851d !important;
-  color: #fff !important;
-}
-
-.message {
-  margin-bottom: 10px;
-}
-
-.message-sender {
-  font-weight: bold;
-}
-
-.chat-messages {
-
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 10px;
-  height: 222px;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.chat-message-left {
-  align-self: flex-start;
-  background: #f1f1f1;
-  padding: 10px;
-  border-radius: 10px;
-  max-width: 60%;
-}
-
-.chat-message-right {
-  align-self: flex-end;
-  background: #d1f7c4;
-  padding: 10px;
-  border-radius: 10px;
-  max-width: 60%;
-}
-.chat-input {
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.chat-loader {
-  color: #f6851d;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 200px;
-}
-.fixed-navbar {
-  position: fixed;
+  left: 0;
   top: 0;
-  width: 100%;
-  background-color: #ffffff;
-  border-bottom: 1px solid #80808021;
-  z-index: 1000;
-}
-.bi-person::before {
-  font-size: 60px;
-}
-.bi-person-circle::before {
-  content: "\F4D7";
-  font-size: 36px;
-}
-.bi-bell::before {
-  content: "\f18a";
-  font-size: 21px;
-}
-.bi-chat-left-dots::before {
-  font-size: 21px;
-}
-ul.navbar-nav li a span.badge {
-  translate: -9px -12px;
-}
-.logo {
-  line-height: 1;
-}
-.custom-popup {
-  border: 10px solid #3085d6; 
-  border-radius: 10px; 
+  overflow-y: auto;
 }
 
-.custom-title {
-  font-size: 30px; 
-  font-weight: bold; 
+#sidebar.active {
+  width: 70px;
 }
 
-.custom-content {
-  font-size:30px; 
-  color: #333; 
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
 }
 
-.dropdown-item.active,
-.dropdown-item:active {
-  color: #fff;
+.sidebar-header h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0;
+}
+
+.btn-toggle {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+ul.components {
+  padding: 0;
+  list-style: none;
+}
+
+ul.components li {
+  padding: 7px;
+}
+
+ul.components li a {
+  color: #000000;
   text-decoration: none;
-  background-color: #f6851d !important;
-}
-.dropdown-item:hover,
-.dropdown-item:focus {
-  background-color: #fdce5e17;
-  color: #000;
-}
-.profileAdminImg {
-  border: 1px solid grey;
-}
-.logo img {
-  max-height: 26px;
-  margin-right: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 193px;
+  height: 38px;
+
+  padding-left: 5px;
 }
 
-.bi-arrow-repeat {
-  font-weight: bold;
-  font-size: xx-large;
-  color: #235ec1;
+ul.components li a:hover {
+  background: #1b59f81a;
+  color: #1b59f8;
+  width: 193px;
+  height: 38px;
+
+  padding-left: 5px;
+  border-radius: 10px;
 }
 
-ul.profile li a:hover,
-ul.profile .dropdown-item:hover,
-ul.profile .dropdown-item:focus {
-  background-color: #f6851d !important;
-  color: #fff;
-}
-.spinner-border{color: #f6851d;}
-.logo span {
-  font-size: 26px;
-  font-weight: 700;
-  color: #012970;
-  font-family: "Nunito", sans-serif;
+/* Dropdown menu styles */
+ul.list-unstyled {
+  padding-left: 15px;
 }
 
-.active {
-  color: blue;
+#content {
+  margin-left: 250px;
+  transition: 0.3s;
+  padding: 20px;
 }
 
-main {
-  margin-left: 48px;
-  padding: 20px 30px;
-  transition: all 0.3s;
+#content.active {
+  margin-left: 70px;
 }
-a.router-link-active {
-  color: #fff;
-  background-color: #f6851d;
-  border-radius: 4px;
-}
-@media (max-width: 991px) {
-  .nav-item {
-    font-size: 15px;
-    padding: 5px;
-    margin-top: -5px;
+
+/* Responsive */
+@media (max-width: 768px) {
+  #sidebar {
+    width: 70px;
   }
-  ul.inline-nav {
-    display: -webkit-box;
-  }
-}
-@media (min-width: 1200px) {
-  .logo {
-    width: 280px;
-  }
-}
-@media (max-width: 1400px) {
-  .bi-chat-left-dots::before {
-    font-size: 18px;
-    margin-top: 4px;
+
+  #content {
+    margin-left: 70px;
   }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <!-- <Navbar /> -->
     <div id="main">
       <div class="pagetitle d-flex justify-content-between px-2">
         <div class="py-3">
@@ -497,7 +497,7 @@
 </template>
 <script>
 import axios from "axios";
-import Navbar from "../Navbar.vue";
+// import Navbar from "../Navbar.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
 import SignedTimesheetViewVue from "../modals/TimeSheet/SignedTimesheetView.vue";
 import Loader from "../Loader/Loader.vue";
@@ -537,7 +537,12 @@ export default {
       errorMessageFilter: "",
     };
   },
-  components: { Navbar, SignedTimesheetViewVue, Loader, SuccessAlert },
+  components: {
+    // Navbar,
+    SignedTimesheetViewVue,
+    Loader,
+    SuccessAlert,
+  },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;

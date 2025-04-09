@@ -263,7 +263,7 @@ input:checked + .slider:before {
   top: 50%;
   left: 50%;
   font-size: 10px;
-  font-family: Verdana, sans-serif;
+ font-family: 'Inter', sans-serif;
 }
 
 input:checked + .slider:after {

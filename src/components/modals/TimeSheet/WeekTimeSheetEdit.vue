@@ -520,7 +520,7 @@
                               )
                             "
                             alt="Administrator Signature"
-                            height="100px"
+                            height="100"
                             class="remove-white-background d-block m-auto"
                             loading="eager"
                           />
@@ -534,7 +534,7 @@
                           <img
                             :src="getFullImageUrl(fetchCustomTimeShetData.signature_url)"
                             alt="Administrator Signature"
-                            height="100px"
+                            height="100"
                             class="remove-white-background d-block m-auto"
                             loading="eager"
                           />
@@ -552,7 +552,7 @@
                               )
                             "
                             alt="Administrator Signature"
-                            height="100px"
+                            height="100"
                             class="remove-white-background d-block m-auto"
                             loading="eager"
                           />
@@ -836,7 +836,7 @@ export default {
           status: "Approved",
           id: this.fetchCustomTimeShetData.booking_id,
         };
-
+        console.log(this.fetchCustomTimeShetData.booking_id);
         delete payload.total_hours;
         delete payload.total_cost;
 

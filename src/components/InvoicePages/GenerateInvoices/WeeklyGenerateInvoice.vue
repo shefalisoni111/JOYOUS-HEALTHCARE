@@ -357,46 +357,7 @@ export default {
           this.isLoading = false;
         });
     },
-    // async fetWeekTimeSheetData() {
-    //   this.isLoading = true;
-    //   const currentDate = new Date();
 
-    //   const formatDate = (date) => {
-    //     const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    //     const day = date.getDate().toString().padStart(2, "0");
-    //     const year = date.getFullYear();
-    //     return `${day}/${month}/${year}`;
-    //   };
-
-    //   this.formattedStartDate = formatDate(this.startDate);
-    //   this.formattedEndDate = formatDate(this.endDate);
-    //   try {
-    //     const requestData = {
-    //       start_date: this.formattedStartDate,
-    //       end_date: this.formattedEndDate,
-    //       per_page: this.itemsPerPage,
-    //     };
-
-    //     const response = await axios.get(`${VITE_API_URL}/generate_invoice_filters`, {
-    //       params: requestData,
-    //       per_page: this.itemsPerPage,
-    //     });
-    //     if (response.data.error) {
-    //       this.errorMessage = response.data.error;
-    //       this.candidateList = [];
-    //     } else {
-    //       this.candidateList = response.data.data;
-
-    //       this.errorMessage =
-    //         this.candidateList.length === 0
-    //           ? "Data Not Found for the specified Week"
-    //           : "";
-    //     }
-    //   } catch (error) {
-    //   } finally {
-    //     this.isLoading = false;
-    //   }
-    // },
     formatDate(date) {
       const day = date.getDate();
       const month = date.getMonth() + 1;

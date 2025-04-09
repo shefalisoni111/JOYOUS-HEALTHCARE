@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <!-- <Navbar /> -->
 
     <div id="main" class="main">
       <div class="row">
@@ -325,7 +325,7 @@
 </template>
 <script>
 import axios from "axios";
-import Navbar from "../Navbar.vue";
+// import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
 import EditAgencySetting from "../modals/AgencySetting/EditAgencySetting.vue";
 import Loader from "../Loader/Loader.vue";
@@ -347,7 +347,7 @@ export default {
     };
   },
   components: {
-    Navbar,
+    // Navbar,
     Sidebar,
     EditAgencySetting,
     Loader,
@@ -551,7 +551,7 @@ a.router-link-active {
 }
 a.router-link-active::after {
   content: "\F285";
-  font-family: "bootstrap-icons";
+  font-family: "Inter", sans-serif;
   display: flex;
   align-items: center;
   color: #ff5722;

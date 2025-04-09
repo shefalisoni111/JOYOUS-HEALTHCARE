@@ -103,6 +103,9 @@ export default {
   },
   methods: {
     async getSiteNotesMethod() {
+      if (!this.SiteNotesID || this.SiteNotesID === 0) {
+        return;
+      }
       try {
         const response = await axios.get(
           `${VITE_API_URL}/site_notes/${this.SiteNotesID}`
@@ -118,9 +121,12 @@ export default {
     },
 
     async updatedSiteMethod() {
+      if (!this.SiteNotesID || this.SiteNotesID === 0) {
+        return;
+      }
       try {
         await axios.put(`${VITE_API_URL}/site_notes/${this.SiteNotesID}`, {
-          notes: this.fetchSiteData.notes,
+          notes: this.fetchSiteData.notes || "",
         });
 
         // alert("Candidate updated successfully");

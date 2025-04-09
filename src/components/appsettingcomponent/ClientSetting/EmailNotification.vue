@@ -294,7 +294,7 @@ ul.generalsetting li a .job h6 {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
-  font-family: Verdana, sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {
@@ -329,7 +329,7 @@ a.router-link-active {
 }
 a.router-link-active::after {
   content: "\F285";
-  font-family: "bootstrap-icons";
+  font-family: "Inter", sans-serif;
   display: flex;
   align-items: center;
   color: #ff5722;

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- <Navbar /> -->
     <div class="container-fluid p-0">
       <div id="main">
         <div class="pagetitle d-flex justify-content-between px-2">
@@ -54,7 +55,9 @@
             </div>
           </div>
           <div>
-            <component :is="activeComponent"></component>
+            <keep-alive>
+              <!-- <component :is="activeComponent"></component> -->
+            </keep-alive>
           </div>
         </div>
       </div>
@@ -70,6 +73,7 @@ import BusinessUnitReport from "../components/ReportPages/BusinessUnitReport.vue
 import InvoiceReport from "../components/ReportPages/InvoiceReport.vue";
 import DocumentReport from "../components/ReportPages/DocumentReport.vue";
 import RateCardReport from "../components/ReportPages/RateCardReport.vue";
+// import Navbar from "../components/Navbar.vue";
 // import EmailReport from "../components/ReportPages/EmailReport.vue";
 
 export default {
@@ -124,6 +128,7 @@ export default {
     },
   },
   components: {
+    // Navbar,
     // PayrollReport,
     StaffReport,
     ClientReport,
@@ -308,7 +313,7 @@ a:link {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
-  font-family: Verdana, sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {

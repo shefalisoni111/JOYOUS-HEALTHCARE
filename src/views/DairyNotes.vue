@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <!-- <Navbar /> -->
     <div class="container my-5 pt-5">
       <h1 class="text-center mb-4">Diary Notes</h1>
 
@@ -130,7 +130,7 @@
 <script>
 import axios from "axios";
 import Swal from "sweetalert2";
-import Navbar from "../components/Navbar.vue";
+// import Navbar from "../components/Navbar.vue";
 export default {
   data() {
     return {
@@ -144,7 +144,7 @@ export default {
     };
   },
   components: {
-    Navbar,
+    // Navbar,
   },
   methods: {
     addNote() {

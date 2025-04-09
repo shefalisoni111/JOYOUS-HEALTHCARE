@@ -1,580 +1,560 @@
 <template>
   <div>
-    <Navbar />
-    <div id="main" class="main">
-      <div class="pagetitle mx-4 mt-4" style="margin-top: 30px">
-        <div class="d-flex justify-content-between">
-          <div class="">
-            <ol class="breadcrumb mb-1">
-              <li class="breadcrumb-item active fs-6">Dashboard</li>
-            </ol>
-            <h5 class="fs-4" style="color: #ff5f30">Welcome to Recpal</h5>
-          </div>
-          <!-- End Page Title -->
-          <div class="d-flex align-items-center">
-            <router-link
-              type="button"
-              class="btn btn-primary text-nowrap fs-5 text-capitalize"
-              to="/report"
-            >
-              <i class="bi bi-file-earmark"></i>
-              generate report
-            </router-link>
+    <div id="main" class="main d-flex" style="gap: 13%">
+      <div class=""><Navbar /></div>
+      <div class="">
+        <div class="pagetitle mx-4 mt-4" style="margin-top: 30px">
+          <div class="d-flex justify-content-between">
+            <div class="">
+              <h3 class="fs-4 fw-bolder" style="color: #000000">Welcome to Recpal</h3>
+            </div>
+            <!-- End Page Title -->
+            <div class="d-flex align-items-center">
+              <router-link
+                type="button"
+                class="text-nowrap fs-5 text-capitalize text-decoration-none"
+                style="
+                  color: #f9944b;
+                  font-family: Inter;
+                  font-weight: 600;
+                  font-size: 14px;
+                "
+                to="/report"
+              >
+                <i class="bi bi-download"></i>
+                generate report
+              </router-link>
+            </div>
           </div>
         </div>
-      </div>
-      <div v-if="getRecords">
-        <section class="section dashboard mt-5">
-          <div class="row">
-            <!-- Left side columns -->
-            <div class="col-lg-3 mb-3">
-              <div class="row d-flex justify-content-center">
-                <!-- Sales Card -->
-                <h5
-                  class="text-uppercase fw-bold d-flex justify-content-start fs-6 pb-2 ps-5"
-                >
-                  Client
-                </h5>
+        <div v-if="getRecords">
+          <section class="section dashboard mt-5">
+            <div class="row gx-5 mx-3">
+              <!-- Left side columns -->
+              <div class="col-lg-6 mb-3">
+                <div class="row d-flex">
+                  <!-- Sales Card -->
 
-                <div class="col-10 mb-3">
-                  <div class="card h-100 info-card sales-card border-left-blue">
-                    <div class="card-body px-4 py-1">
-                      <div class="d-flex justify-content-between">
-                        <div class="card-icon d-flex flex-column">
-                          <i class="bi bi-people fs-1 text-info"></i>
-                          <span class="text-muted text-capitalize fs-6"
-                            ><router-link
+                  <div class="col-12 mb-3 pb-2">
+                    <div class="card h-100 info-card sales-card border-left-blue py-4">
+                      <h5 class="card-title fw-bold d-flex fs-6 m-2 ps-3">
+                        Client Overview
+                      </h5>
+
+                      <div class="card-body py-1">
+                        <div class="card-section">
+                          <div class="ps-4 mt-2">
+                            <a class="navbar-brand"
+                              ><img
+                                src="../assets/Sales.png"
+                                class="img-fluid"
+                                alt="client"
+                                loading="eager"
+                            /></a>
+                          </div>
+                          <div class="card-icon d-flex gap-3">
+                            <router-link
+                              class="text-capitalize text-decoration-none text-black"
+                              :to="{ name: 'AllClient' }"
+                            >
+                              <h6
+                                v-text="getRecords.Total_client"
+                                class="fs-5 fw-bold mb-0"
+                              ></h6>
+                            </router-link>
+                            <router-link
                               class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'AllClient' }"
-                              >Total Clients</router-link
-                            ></span
-                          >
+                            >
+                              Total Clients
+                            </router-link>
+                          </div>
                         </div>
-                        <div class="ps-4 mt-2">
-                          <router-link
-                            class="text-capitalize text-decoration-none text-black"
-                            :to="{ name: 'AllClient' }"
-                          >
-                            <h6
-                              v-text="getRecords.Total_client"
-                              class="fs-3 fw-bold mb-0"
-                            ></h6
-                          ></router-link>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-10 mb-3">
-                  <div class="card h-100 info-card sales-card border-left-green">
-                    <div class="card-body px-4 py-1">
-                      <div class="d-flex justify-content-between">
-                        <div class="card-icon d-flex flex-column">
-                          <i class="bi bi-people fs-1 text-success"></i>
-                          <span class="text-muted text-capitalize fs-6"
-                            ><router-link
+
+                        <div class="border-left-right"></div>
+
+                        <div class="card-section">
+                          <div class="ps-4 mt-2">
+                            <a class="navbar-brand"
+                              ><img
+                                src="../assets/Revenue.png"
+                                class="img-fluid"
+                                alt="client"
+                                loading="eager"
+                            /></a>
+                          </div>
+                          <div class="card-icon d-flex gap-3">
+                            <router-link
+                              class="text-capitalize text-decoration-none text-black"
+                              :to="{ name: 'ActiveClient' }"
+                            >
+                              <h6
+                                v-text="getRecords.Active_client"
+                                class="fs-5 fw-bold mb-0"
+                              ></h6>
+                            </router-link>
+                            <router-link
                               class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'ActiveClient' }"
-                              >Active Clients</router-link
-                            ></span
-                          >
+                            >
+                              Active Clients
+                            </router-link>
+                          </div>
                         </div>
-                        <div class="ps-4 mt-2">
-                          <router-link
-                            class="text-capitalize text-decoration-none text-black"
-                            :to="{ name: 'ActiveClient' }"
-                          >
-                            <h6
-                              v-text="getRecords.Active_client"
-                              class="fs-3 fw-bold mb-0"
-                            ></h6
-                          ></router-link>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-10 mb-3">
-                  <div class="card h-100 info-card sales-card border-left-red">
-                    <div class="card-body px-4 py-1">
-                      <div class="d-flex justify-content-between">
-                        <div class="card-icon d-flex flex-column">
-                          <i class="bi bi-people fs-1 text-danger"></i>
-                          <span class="text-muted text-capitalize fs-6"
-                            ><router-link
+
+                        <div class="border-left-right"></div>
+
+                        <div class="card-section">
+                          <div class="ps-4 mt-2">
+                            <a class="navbar-brand"
+                              ><img
+                                src="../assets/clients.png"
+                                class="img-fluid"
+                                alt="client"
+                                loading="eager"
+                            /></a>
+                          </div>
+                          <div class="card-icon d-flex gap-3">
+                            <router-link
+                              class="text-capitalize text-decoration-none text-black"
+                              :to="{ name: 'InActiveClient' }"
+                            >
+                              <h6
+                                v-text="getRecords.Passive_client"
+                                class="fs-5 fw-bold mb-0"
+                              ></h6>
+                            </router-link>
+                            <router-link
                               class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'InActiveClient' }"
-                              >inactive Clients</router-link
-                            ></span
-                          >
-                        </div>
-                        <div class="ps-4 mt-2">
-                          <router-link
-                            class="text-capitalize text-decoration-none text-black"
-                            :to="{ name: 'InActiveClient' }"
-                          >
-                            <h6
-                              v-text="getRecords.Passive_client"
-                              class="fs-3 fw-bold mb-0"
-                            ></h6
-                          ></router-link>
+                            >
+                              Inactive Clients
+                            </router-link>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
+
+                  <!-- End Sales Card -->
+
+                  <!-- End Sales Card -->
                 </div>
-                <!-- End Sales Card -->
-
-                <!-- End Sales Card -->
               </div>
-            </div>
-            <!-- End Left side columns -->
-            <!-- right side columns -->
-            <div class="col-lg-3 mb-3">
-              <div class="row d-flex justify-content-center">
-                <!-- Sales Card -->
-                <h5
-                  class="text-uppercase fw-bold d-flex justify-content-start fs-6 pb-2 ps-5"
-                >
-                  Staff
-                </h5>
+              <!-- End Left side columns -->
+              <!-- right side columns -->
+              <div class="col-lg-6 mb-3">
+                <div class="row d-flex">
+                  <!-- Sales Card -->
 
-                <div class="col-10 mb-3">
-                  <div class="card h-100 info-card sales-card border-left-blue">
-                    <div class="card-body px-4 py-1">
-                      <div class="d-flex justify-content-between">
-                        <div class="card-icon d-flex flex-column">
-                          <i class="bi bi-people fs-1 text-info"></i>
-                          <span class="text-muted text-capitalize fs-6">
+                  <div class="col-12 mb-3 pb-2">
+                    <div class="card h-100 info-card sales-card border-left-blue py-4">
+                      <h5 class="card-title fw-bold d-flex fs-6 m-2 ps-3">
+                        Staff Overview
+                      </h5>
+
+                      <div class="card-body py-1">
+                        <div class="card-section">
+                          <div class="ps-4 mt-2">
+                            <a class="navbar-brand"
+                              ><img
+                                src="../assets/Sales.png"
+                                class="img-fluid"
+                                alt="client"
+                                loading="eager"
+                            /></a>
+                          </div>
+                          <div class="card-icon d-flex gap-3">
+                            <router-link
+                              class="text-capitalize text-decoration-none text-black"
+                              :to="{ name: 'AllCandidateListsDisplay' }"
+                            >
+                              <h6
+                                v-text="getRecords.candidates"
+                                class="fs-5 fw-bold mb-0"
+                              ></h6
+                            ></router-link>
                             <router-link
                               class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'AllCandidateListsDisplay' }"
                               >Total Staff
-                            </router-link></span
-                          >
+                            </router-link>
+                          </div>
                         </div>
-                        <div class="ps-4 mt-2">
-                          <router-link
-                            class="text-capitalize text-decoration-none text-black"
-                            :to="{ name: 'AllCandidateListsDisplay' }"
-                          >
-                            <h6
-                              v-text="getRecords.candidates"
-                              class="fs-3 fw-bold mb-0"
-                            ></h6
-                          ></router-link>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
-                <!-- End Sales Card -->
+                        <div class="border-left-right"></div>
 
-                <div class="col-10 mb-3">
-                  <div class="card h-100 info-card sales-card border-left-green">
-                    <div class="card-body px-4 py-1">
-                      <div class="d-flex justify-content-between">
-                        <div class="card-icon d-flex flex-column">
-                          <i class="bi bi-people fs-1 text-success"></i>
-                          <span class="text-muted text-capitalize fs-6">
+                        <div class="card-section">
+                          <div class="ps-4 mt-2">
+                            <a class="navbar-brand"
+                              ><img
+                                src="../assets/Revenue.png"
+                                class="img-fluid"
+                                alt="client"
+                                loading="eager"
+                            /></a>
+                          </div>
+                          <div class="card-icon d-flex gap-3">
+                            <router-link
+                              class="text-capitalize text-decoration-none text-black"
+                              :to="{ name: 'ActiveCandidate' }"
+                            >
+                              <h6
+                                v-text="getRecords.current_candidate"
+                                class="fs-5 fw-bold mb-0"
+                              ></h6
+                            ></router-link>
                             <router-link
                               class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'ActiveCandidate' }"
                               >active Staff</router-link
-                            ></span
-                          >
+                            >
+                          </div>
                         </div>
-                        <div class="ps-4 mt-2">
-                          <router-link
-                            class="text-capitalize text-decoration-none text-black"
-                            :to="{ name: 'ActiveCandidate' }"
-                          >
-                            <h6
-                              v-text="getRecords.current_candidate"
-                              class="fs-3 fw-bold mb-0"
-                            ></h6
-                          ></router-link>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- End Revenue Card -->
 
-                <div class="col-10 mb-3">
-                  <div class="card h-100 info-card sales-card border-left-red">
-                    <div class="card-body px-4 py-1">
-                      <div class="d-flex justify-content-between">
-                        <div class="card-icon d-flex flex-column">
-                          <i class="bi bi-people fs-1 text-danger"></i>
-                          <span class="text-muted text-capitalize fs-6">
+                        <div class="border-left-right"></div>
+
+                        <div class="card-section">
+                          <div class="ps-4 mt-2">
+                            <a class="navbar-brand"
+                              ><img
+                                src="../assets/clients.png"
+                                class="img-fluid"
+                                alt="client"
+                                loading="eager"
+                            /></a>
+                          </div>
+                          <div class="card-icon d-flex gap-3">
+                            <router-link
+                              class="text-capitalize text-decoration-none text-black"
+                              :to="{ name: 'InActiveCandidate' }"
+                            >
+                              <h6
+                                v-text="getRecords.deleted_candidate"
+                                class="fs-5 fw-bold mb-0"
+                              ></h6
+                            ></router-link>
                             <router-link
                               class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'InActiveCandidate' }"
                               >inactive Staff</router-link
-                            ></span
-                          >
-                        </div>
-                        <div class="ps-4 mt-2">
-                          <router-link
-                            class="text-capitalize text-decoration-none text-black"
-                            :to="{ name: 'InActiveCandidate' }"
-                          >
-                            <h6
-                              v-text="getRecords.deleted_candidate"
-                              class="fs-3 fw-bold mb-0"
-                            ></h6
-                          ></router-link>
+                            >
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <!-- End Sales Card -->
-              </div>
-            </div>
 
-            <div class="col-lg-3 mb-3">
-              <div class="row d-flex justify-content-center">
-                <!-- Sales Card -->
-                <h5
-                  class="text-uppercase fw-bold d-flex justify-content-start fs-6 pb-2 ps-5"
-                >
-                  Site
-                </h5>
-                <div class="col-10 mb-3">
-                  <div class="card h-100 info-card sales-card border-left-blue">
-                    <div class="card-body px-4 py-1">
-                      <div class="d-flex justify-content-between">
-                        <div class="card-icon d-flex flex-column">
-                          <i class="bi bi-people fs-1 text-info"></i>
-                          <span class="text-muted text-capitalize fs-6"
-                            ><router-link
+                  <!-- End Sales Card -->
+
+                  <!-- End Sales Card -->
+                </div>
+              </div>
+
+              <div class="col-lg-6 mb-3">
+                <div class="row d-flex">
+                  <!-- Sales Card -->
+
+                  <div class="col-12 mb-3 pb-2">
+                    <div class="card h-100 info-card sales-card border-left-blue py-4">
+                      <h5 class="card-title fw-bold d-flex fs-6 m-2 ps-3">
+                        Site Overview
+                      </h5>
+
+                      <div class="card-body py-1">
+                        <div class="card-section">
+                          <div class="ps-4 mt-2">
+                            <a class="navbar-brand"
+                              ><img
+                                src="../assets/Sales.png"
+                                class="img-fluid"
+                                alt="client"
+                                loading="eager"
+                            /></a>
+                          </div>
+                          <div class="card-icon d-flex gap-3">
+                            <router-link
+                              class="text-capitalize text-decoration-none text-black"
+                              :to="{ name: 'AllSite' }"
+                            >
+                              <h6
+                                v-text="getRecords.Total_business_unit"
+                                class="fs-5 fw-bold mb-0"
+                              ></h6
+                            ></router-link>
+                            <router-link
                               class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'AllSite' }"
                               >Total Sites</router-link
-                            ></span
-                          >
+                            >
+                          </div>
                         </div>
-                        <div class="ps-4 mt-2">
-                          <router-link
-                            class="text-capitalize text-decoration-none text-black"
-                            :to="{ name: 'AllSite' }"
-                          >
-                            <h6
-                              v-text="getRecords.Total_business_unit"
-                              class="fs-3 fw-bold mb-0"
-                            ></h6
-                          ></router-link>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- End Sales Card -->
 
-                <!-- Revenue Card -->
+                        <div class="border-left-right"></div>
 
-                <div class="col-10 mb-3">
-                  <div class="card h-100 info-card sales-card border-left-green">
-                    <div class="card-body px-4 py-1">
-                      <div class="d-flex justify-content-between">
-                        <div class="card-icon d-flex flex-column">
-                          <i class="bi bi-people fs-1 text-success"></i>
-                          <span class="text-muted text-capitalize fs-6"
-                            ><router-link
+                        <div class="card-section">
+                          <div class="ps-4 mt-2">
+                            <a class="navbar-brand"
+                              ><img
+                                src="../assets/Revenue.png"
+                                class="img-fluid"
+                                alt="client"
+                                loading="eager"
+                            /></a>
+                          </div>
+                          <div class="card-icon d-flex gap-3">
+                            <router-link
+                              class="text-capitalize text-decoration-none text-black"
+                              :to="{ name: 'ActiveSite' }"
+                            >
+                              <h6
+                                v-text="getRecords.Active_business_unit"
+                                class="fs-5 fw-bold mb-0"
+                              ></h6
+                            ></router-link>
+                            <router-link
                               class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'ActiveSite' }"
                               >active Sites</router-link
-                            ></span
-                          >
+                            >
+                          </div>
                         </div>
-                        <div class="ps-4 mt-2">
-                          <router-link
-                            class="text-capitalize text-decoration-none text-black"
-                            :to="{ name: 'ActiveSite' }"
-                          >
-                            <h6
-                              v-text="getRecords.Active_business_unit"
-                              class="fs-3 fw-bold mb-0"
-                            ></h6
-                          ></router-link>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- End Revenue Card -->
 
-                <!-- Sales Card -->
+                        <div class="border-left-right"></div>
 
-                <div class="col-10 mb-3">
-                  <div class="card h-100 info-card sales-card border-left-red">
-                    <div class="card-body px-4 py-1">
-                      <div class="d-flex justify-content-between">
-                        <div class="card-icon d-flex flex-column">
-                          <i class="bi bi-people fs-1 text-danger"></i>
-                          <span class="text-muted text-capitalize fs-6"
-                            ><router-link
+                        <div class="card-section">
+                          <div class="ps-4 mt-2">
+                            <a class="navbar-brand"
+                              ><img
+                                src="../assets/clients.png"
+                                class="img-fluid"
+                                alt="client"
+                                loading="eager"
+                            /></a>
+                          </div>
+                          <div class="card-icon d-flex gap-3">
+                            <router-link
+                              class="text-capitalize text-decoration-none text-black"
+                              :to="{ name: 'InActiveSite' }"
+                            >
+                              <h6
+                                v-text="getRecords.Inactive_business_unit"
+                                class="fs-5 fw-bold mb-0"
+                              ></h6
+                            ></router-link>
+                            <router-link
                               class="text-capitalize text-decoration-none text-muted"
                               :to="{ name: 'InActiveSite' }"
                               >inactive Sites</router-link
-                            ></span
-                          >
-                        </div>
-                        <div class="ps-4 mt-2">
-                          <router-link
-                            class="text-capitalize text-decoration-none text-black"
-                            :to="{ name: 'InActiveSite' }"
-                          >
-                            <h6
-                              v-text="getRecords.Inactive_business_unit"
-                              class="fs-3 fw-bold mb-0"
-                            ></h6
-                          ></router-link>
+                            >
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <!-- End Sales Card -->
-              </div>
-            </div>
-            <!-- End Left side columns -->
-            <!-- right side columns -->
-            <div class="col-lg-3 mb-3">
-              <div class="row d-flex justify-content-center">
-                <!-- Sales Card -->
-                <h5
-                  class="text-uppercase fw-bold d-flex justify-content-start fs-6 pb-2 ps-5"
-                >
-                  Training Insight
-                </h5>
 
-                <div class="col-10 mb-3">
-                  <div class="card h-100 info-card sales-card border-left-blue">
-                    <div class="card-body px-4 py-1">
-                      <div class="d-flex justify-content-between">
-                        <div class="card-icon d-flex flex-column">
-                          <i class="bi bi-people fs-1 text-info"></i>
-                          <span class="text-muted text-capitalize fs-6"
-                            >Expiring in 60 days({{
-                              getRecords.expiring_in_60_days
-                            }})</span
-                          >
-                        </div>
-                        <div class="ps-4 mt-2">
-                          <router-link
-                            class="text-capitalize text-decoration-none text-muted"
-                            :to="{
-                              name: 'DocumentReport',
-                              query: { tabIndex: 4, redirectTo: 'DueDoc60Days' },
-                            }"
-                            >See More</router-link
-                          >
-                          <!-- <span
-                            class="text-muted pt-2 text-capitalize cursor-pointer"
-                            data-bs-toggle="modal"
-                            data-bs-target="#inprogress"
-                            data-bs-whatever="@mdo"
-                            >See More</span
-                          > -->
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- End Sales Card -->
+                  <!-- End Sales Card -->
 
-                <div class="col-10 mb-3">
-                  <div class="card h-100 success-card sales-card border-left-green">
-                    <div class="card-body px-4 py-1">
-                      <div class="d-flex justify-content-between">
-                        <div class="card-icon d-flex flex-column">
-                          <i class="bi bi-people fs-1 text-success"></i>
-                          <span class="text-muted text-capitalize fs-6">
-                            Expiring in 30 days({{
-                              getRecords.expiring_in_30_days
-                            }})</span
-                          >
-                        </div>
-                        <div class="ps-4 mt-2">
-                          <router-link
-                            class="text-capitalize text-decoration-none text-muted"
-                            :to="{
-                              name: 'DocumentReport',
-                              query: { tabIndex: 2, redirectTo: 'DueDoc' },
-                            }"
-                            >See More</router-link
-                          >
-                          <!-- <span
-                            class="text-muted pt-2 text-capitalize cursor-pointer"
-                            data-bs-toggle="modal"
-                            data-bs-target="#inprogress"
-                            data-bs-whatever="@mdo"
-                            >See More</span
-                          > -->
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- End Revenue Card -->
-
-                <div class="col-10 mb-3">
-                  <div class="card h-100 info-card sales-card border-left-red">
-                    <div class="card-body px-4 py-1">
-                      <div class="d-flex justify-content-between">
-                        <div class="card-icon d-flex flex-column">
-                          <i class="bi bi-people fs-1 text-danger"></i>
-                          <span class="text-muted text-capitalize fs-6">
-                            Expired ({{ getRecords.compliance_insight }})</span
-                          >
-                        </div>
-                        <div class="ps-4 mt-2">
-                          <router-link
-                            class="text-capitalize text-decoration-none text-muted"
-                            :to="{
-                              name: 'DocumentReport',
-                              query: { tabIndex: 3, redirectTo: 'ExpiredDoc' },
-                            }"
-                            >See More</router-link
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- End Sales Card -->
-              </div>
-            </div>
-            <!-- End right side columns -->
-          </div>
-        </section>
-
-        <section class="section dashboard mt-4 mb-4">
-          <div class="row gx-5 mx-3">
-            <!-- Left side columns -->
-
-            <div class="col-sm-12 col-lg-4">
-              <div class="card h-100 card-border">
-                <div class="col-8 p-3">
-                  <h5
-                    class="fs-5 p-2 text-white mb-0 rounded-2"
-                    style="background: #f9944b"
-                  >
-                    Shifts
-                  </h5>
-                  <div class="">
-                    <ol class="breadcrumb mb-1">
-                      <li class="breadcrumb-item active">Current Week</li>
-                    </ol>
-                  </div>
-                </div>
-
-                <div class="d-lg-flex justify-content-lg-between bg-white rounded mt-2">
-                  <div class="col-sm-12 col-lg-5 px-3 d-flex align-items-center">
-                    <div class="">
-                      <ul class="list-unstyled">
-                        <li class="d-flex mb-2">
-                          <div class="d-flex">
-                            <span class="box-icon mt-2"></span>
-                            <div class="d-flex flex-column">
-                              <span class="fs-4 ps-2 fw-bold">{{
-                                getShiftCount.activate_vacancy
-                              }}</span>
-                              <span class="d-flex ms-2">Open Shifts</span>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex mb-2">
-                          <div class="d-flex">
-                            <span class="box-icon2 mt-2"></span>
-                            <div class="d-flex flex-column">
-                              <span class="fs-4 ps-2 fw-bold">{{
-                                getShiftCount.applied_vacancies
-                              }}</span>
-                              <span class="d-flex ms-2">Applied Shifts</span>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex mb-2">
-                          <div class="d-flex">
-                            <span class="box-icon3 mt-2"></span>
-                            <div class="d-flex flex-column">
-                              <span class="fs-4 ps-2 fw-bold">{{
-                                getShiftCount.assigned_vacancies
-                              }}</span>
-                              <span class="d-flex ms-2">Assigned Shifts</span>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex mb-2">
-                          <div class="d-flex">
-                            <span class="box-icon4 mt-2"></span>
-                            <div class="d-flex flex-column">
-                              <span class="fs-4 ps-2 fw-bold">{{
-                                getShiftCount.inactive_vacancies
-                              }}</span>
-                              <span class="d-flex ms-2">Inactive Shifts</span>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="col-sm-12 col-lg-7 px-3">
-                    <VueBarChart />
-                  </div>
+                  <!-- End Sales Card -->
                 </div>
               </div>
-            </div>
-            <!-- Left side columns end -->
+              <!-- End Left side columns -->
+              <!-- right side columns -->
+              <div class="col-lg-6 mb-3">
+                <div class="row d-flex">
+                  <!-- Sales Card -->
 
-            <!-- right side columns -->
-            <div class="col-sm-12 col-lg-8">
-              <div class="card h-100 card-border">
-                <div class="bg-white rounded">
-                  <div class="col-lg-12 pt-3 ps-3">
-                    <div class="d-lg-flex justify-content-lg-between">
-                      <div class="col-7">
-                        <h5
-                          class="fs-5 p-2 text-white rounded-1"
-                          style="background: #f9944b"
-                        >
-                          TimeSheet
+                  <div class="col-12 mb-3 pb-2">
+                    <div class="card h-100 info-card sales-card border-left-blue py-4">
+                      <div class="d-flex justify-content-between">
+                        <h5 class="card-title fw-bold d-flex fs-6 m-2 ps-3">
+                          Training Insight
                         </h5>
+                        <router-link
+                          :to="{ name: 'DocumentReport' }"
+                          class="text-decoration-none"
+                          ><span
+                            class="d-flex align-items-center pe-3"
+                            style="color: #f9944b"
+                            >View All</span
+                          ></router-link
+                        >
                       </div>
-                      <div class="px-3 d-flex align-items-center">
-                        <div class="d-flex justify-content-between">
-                          <span
-                            v-if="currentView === 'weekly' && startDate && endDate"
-                            class="fw-bold d-flex align-items-center"
-                          >
-                            {{ formatDate(startDate) + " to " + formatDate(endDate) }}
-                          </span>
-                          &nbsp;&nbsp;
-                          <div class="d-flex align-items-center fs-4">
-                            <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
-                            <i class="bi bi-calendar3"></i>
-                            <!-- <i class="bi bi-calendar2-check-fill"></i> -->
-                            <!-- <input type="month" id="dateInput" class="form-control" /> -->
-                            <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+
+                      <div class="card-body py-1">
+                        <div class="card-section">
+                          <div class="ps-4 mt-2">
+                            <a class="navbar-brand"
+                              ><img
+                                src="../assets/Sales.png"
+                                class="img-fluid"
+                                alt="client"
+                                loading="eager"
+                            /></a>
+                          </div>
+                          <div class="card-icon d-flex gap-3">
+                            <router-link
+                              class="text-capitalize text-decoration-none text-muted"
+                              :to="{
+                                name: 'DocumentReport',
+                                query: { tabIndex: 4, redirectTo: 'DueDoc60Days' },
+                              }"
+                              >Expiring in 60 days({{ getRecords.expiring_in_60_days }})
+                            </router-link>
+                          </div>
+                        </div>
+
+                        <div class="border-left-right"></div>
+
+                        <div class="card-section">
+                          <div class="ps-4 mt-2">
+                            <a class="navbar-brand"
+                              ><img
+                                src="../assets/Revenue.png"
+                                class="img-fluid"
+                                alt="client"
+                                loading="eager"
+                            /></a>
+                          </div>
+                          <div class="card-icon d-flex gap-3">
+                            <router-link
+                              class="text-capitalize text-decoration-none text-muted"
+                              :to="{
+                                name: 'DocumentReport',
+                                query: { tabIndex: 2, redirectTo: 'DueDoc' },
+                              }"
+                            >
+                              Expiring in 30 days({{
+                                getRecords.expiring_in_30_days
+                              }})</router-link
+                            >
+                          </div>
+                        </div>
+
+                        <div class="border-left-right"></div>
+
+                        <div class="card-section">
+                          <div class="ps-4 mt-2">
+                            <a class="navbar-brand"
+                              ><img
+                                src="../assets/clients.png"
+                                class="img-fluid"
+                                alt="client"
+                                loading="eager"
+                            /></a>
+                          </div>
+                          <div class="card-icon d-flex gap-3">
+                            <router-link
+                              class="text-capitalize text-decoration-none text-muted"
+                              :to="{
+                                name: 'DocumentReport',
+                                query: { tabIndex: 3, redirectTo: 'ExpiredDoc' },
+                              }"
+                            >
+                              Expired ({{ getRecords.compliance_insight }})</router-link
+                            >
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-12 px-3">
-                    <TimeSheet :startDate="startDate" />
+
+                  <!-- End Sales Card -->
+
+                  <!-- End Sales Card -->
+                </div>
+              </div>
+              <!-- End right side columns -->
+            </div>
+          </section>
+
+          <section class="section dashboard mt-4 mb-4">
+            <div class="row gx-5 mx-3">
+              <!-- Left side columns -->
+              <div class="col-sm-12 col-lg-8">
+                <TimeSheet />
+              </div>
+
+              <!-- Left side columns end -->
+
+              <!-- right side columns -->
+              <div class="col-sm-12 col-lg-4">
+                <div class="card h-100 card-border">
+                  <div class="col-8 p-3">
+                    <h5 class="fs-6 p-2 mb-0 fw-bold">Shifts</h5>
+                  </div>
+
+                  <div class="bg-white rounded mt-2">
+                    <div class="col-sm-12 col-lg-12 px-3">
+                      <VueBarChart />
+                    </div>
+                    <div class="col-sm-12 col-lg-12 px-3">
+                      <div class="">
+                        <ul class="list-unstyled">
+                          <li class="mb-2">
+                            <div class="d-flex justify-content-between gap-4">
+                              <div class="d-flex align-items-center">
+                                <span class="box-icon"></span>
+                                <span class="d-flex ms-2 fw-bold">Open Shifts</span>
+                              </div>
+
+                              <div class="d-flex">
+                                <span class="fs-6 ps-2 fw-bold">{{
+                                  getShiftCount.activate_vacancy
+                                }}</span>
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-2">
+                            <div class="d-flex justify-content-between gap-4">
+                              <div class="d-flex align-items-center">
+                                <span class="box-icon2"></span>
+                                <span class="d-flex ms-2 fw-bold">Applied Shifts</span>
+                              </div>
+
+                              <div class="d-flex">
+                                <span class="fs-6 ps-2 fw-bold">{{
+                                  getShiftCount.applied_vacancies
+                                }}</span>
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-2">
+                            <div class="d-flex justify-content-between gap-4">
+                              <div class="d-flex align-items-center">
+                                <span class="box-icon3"></span>
+                                <span class="d-flex ms-2 fw-bold">Assigned Shifts</span>
+                              </div>
+                              <div class="d-flex">
+                                <span class="fs-6 ps-2 fw-bold">{{
+                                  getShiftCount.assigned_vacancies
+                                }}</span>
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-2">
+                            <div class="d-flex justify-content-between gap-4">
+                              <div class="d-flex align-items-center">
+                                <span class="box-icon4"></span>
+                                <span class="d-flex ms-2 fw-bold">Inactive Shifts</span>
+                              </div>
+                              <div class="d-flex">
+                                <span class="fs-6 ps-2 fw-bold">{{
+                                  getShiftCount.inactive_vacancies
+                                }}</span>
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
+              <!-- right side columns end -->
             </div>
-            <!-- right side columns end -->
-          </div>
-        </section>
+          </section>
+        </div>
       </div>
     </div>
     <InProgress />
@@ -601,6 +581,7 @@ export default {
       endDate: new Date(),
       tabIndex: null,
       getShiftCount: [],
+      getShiftTiming: [],
     };
   },
   components: {
@@ -631,80 +612,7 @@ export default {
     navigateToDueDoc() {
       this.$router.push({ name: "DueDoc" });
     },
-    formatDate(date) {
-      //    const day = date.getDate();
-      // const month = date.getMonth() + 1;
-      // const year = date.getFullYear();
-      // return `${day}/${month}/${year}`;
-      return date.toLocaleDateString("en-GB", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      });
-    },
-    moveToPrevious() {
-      // if (this.currentView === "weekly") {
-      //   this.startDate.setDate(this.startDate.getDate() - 7);
-      //   this.endDate.setDate(this.endDate.getDate() - 7);
-      //   this.updateDateRange();
-      // } else if (this.currentView === "monthly") {
-      //   this.startDate.setMonth(this.startDate.getMonth() - 1);
-      //   this.endDate = new Date(
-      //     this.startDate.getFullYear(),
-      //     this.startDate.getMonth() + 1,
-      //     0
-      //   );
-      // }
-      this.startDate.setDate(this.startDate.getDate() - 7);
-      this.endDate.setDate(this.endDate.getDate() - 7);
-      this.startDate = new Date(this.startDate); // Ensure reactivity
-      this.endDate = new Date(this.endDate);
-    },
-    moveToNext() {
-      // if (this.currentView === "weekly") {
-      //   this.startDate.setDate(this.startDate.getDate() + 7);
-      //   this.endDate.setDate(this.endDate.getDate() + 7);
-      //   this.updateDateRange();
-      // } else if (this.currentView === "monthly") {
-      //   this.startDate.setMonth(this.startDate.getMonth() + 1);
-      //   this.endDate = new Date(
-      //     this.startDate.getFullYear(),
-      //     this.startDate.getMonth() + 1,
-      //     0
-      //   );
-      // }
-      this.startDate.setDate(this.startDate.getDate() + 7);
-      this.endDate.setDate(this.endDate.getDate() + 7);
-      this.startDate = new Date(this.startDate);
-      this.endDate = new Date(this.endDate);
-    },
-    updateDateRange() {
-      if (this.currentView === "weekly") {
-        const weekStart = new Date(this.startDate);
-        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
-        this.startDate = weekStart;
 
-        const weekEnd = new Date(this.startDate);
-        weekEnd.setDate(weekEnd.getDate() + 6);
-        this.endDate = weekEnd;
-      } else if (this.currentView === "monthly") {
-        const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-      }
-
-      localStorage.setItem("startDate", this.startDate.toISOString());
-      localStorage.setItem("endDate", this.endDate.toISOString());
-    },
-    loadDateRangeFromLocalStorage() {
-      const storedStartDate = localStorage.getItem("startDate");
-      const storedEndDate = localStorage.getItem("endDate");
-
-      if (storedStartDate && storedEndDate) {
-        this.startDate = new Date(storedStartDate);
-        this.endDate = new Date(storedEndDate);
-      }
-    },
     async fetchData() {
       const token = localStorage.getItem("token");
       try {
@@ -728,35 +636,8 @@ export default {
       }
     },
   },
-  created() {
-    this.tabIndex = parseInt(this.$route.query.tabIndex, 10) || 0;
-    if (!localStorage.getItem("calendarData")) {
-      const today = new Date();
-      const defaultStartDate = `${today.getFullYear()}-${(today.getMonth() + 1)
-        .toString()
-        .padStart(2, "0")}`;
-      this.selectedMonth = defaultStartDate;
-      this.updateDateRange();
-    }
-
-    // this.loadDateRangeFromLocalStorage();
-  },
 
   async mounted() {
-    // await this.loadDateRangeFromLocalStorage();
-
-    const currentDate = new Date();
-    const dayOfWeek = currentDate.getDay();
-    const startOfWeek = new Date(currentDate);
-
-    const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-    startOfWeek.setDate(startOfWeek.getDate() + diff);
-
-    this.startDate = startOfWeek;
-
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(endOfWeek.getDate() + 6);
-    this.endDate = endOfWeek;
     await this.fetchData();
     await this.FetchShiftsMethod();
   },
@@ -766,15 +647,44 @@ export default {
 <style scoped>
 .pagetitle {
   margin-bottom: 10px;
-  background-color: #fff;
+
   border-radius: 10px;
   padding: 10px;
 }
 #main {
+  font-family: "Inter";
 }
+
 .left-flex-border,
 .right-flex-border {
   border: 1px solid #80808042;
+}
+.card {
+  background: #ffffff;
+  box-shadow: 0px 5px 20px 0px #0000000d;
+
+  border-radius: 20px;
+  border-width: 1px;
+}
+.card-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.border-left-right {
+  width: 2px;
+  height: 50px;
+
+  border: 1px solid #f0f1f3;
 }
 .pagetitle h1 {
   font-size: 24px;
@@ -860,52 +770,40 @@ table th.cw {
 #main {
   padding: 0px 20px;
   transition: all 0.3s;
-  background: #fef8f8;
-  padding-top: 65px;
-  background-color: #fdce5e17;
+  background-color: #f9f9f9;
 }
 h6 {
   font-size: 14px;
 }
 
-.card.sales-card {
-  border-top-right-radius: 2rem;
-  border-bottom-right-radius: 2rem;
-}
-.card.border-left-blue {
-  border-left: 4px solid #2196f3;
-}
-.card.border-left-red {
-  border-left: 4px solid red;
-}
-.card.border-left-green {
-  border-left: 4px solid rgb(53, 119, 27);
-}
 .box-icon {
-  width: 18px;
-  height: 17px;
-  background-color: #57e3b4;
-  border-radius: 5px;
+  width: 10.38px;
+  height: 10.38px;
+  background-color: #4a3aff;
+
+  border-radius: 50%;
 }
 .box-icon2 {
-  width: 18px;
-  height: 17px;
-  background-color: #e66e65;
-  border-radius: 5px;
+  width: 10.38px;
+  height: 10.38px;
+  background-color: #e0c6fd;
+  border-radius: 50%;
 }
 .box-icon3 {
-  width: 18px;
-  height: 17px;
-  background-color: #22cbe0;
-  border-radius: 5px;
+  width: 10.38px;
+  height: 10.38px;
+  background-color: #c6d2fd;
+  border-radius: 50%;
 }
 .box-icon4 {
-  width: 18px;
-  height: 17px;
-  background-color: #fc1414cf;
-  border-radius: 5px;
+  width: 10.38px;
+  height: 10.38px;
+  background-color: #f5aaac;
+  border-radius: 50%;
 }
 .card-border {
-  border: 0.8px solid #ff5722;
+  box-shadow: 0px 5px 20px 0px #0000000d;
+  border-radius: 20px;
+  border-width: 1px;
 }
 </style>

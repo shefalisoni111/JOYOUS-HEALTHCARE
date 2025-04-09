@@ -99,7 +99,7 @@
                         Invoice created for £{{ getClientInvoiceDetail.rate }} by
                         <b>{{ agencySetting?.agency_name }}</b
                         ><br />
-                        {{ this.formatDate(getClientInvoiceDetail.created_on) }}
+                        {{ getClientInvoiceDetail.created_on }}
                       </div>
                     </li>
                   </ul>

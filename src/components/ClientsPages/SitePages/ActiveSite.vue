@@ -202,7 +202,4 @@ ul.generalsetting h6 {
   font-size: 14px;
   font-weight: bold;
 }
-.siteTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
 </style>

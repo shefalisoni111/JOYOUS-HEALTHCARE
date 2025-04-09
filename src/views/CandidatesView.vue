@@ -1,23 +1,22 @@
 <template>
   <div>
-    <Navbar />
+    <!-- <Navbar /> -->
 
     <!-- <CandidateAdd /> -->
 
-    <router-view />
+    <!-- <router-view /> -->
   </div>
 </template>
 
 <script>
-import Navbar from "../components/Navbar.vue";
+// import Navbar from "../components/Navbar.vue";
 
 // import CandidateAdd from "../components/modals/CandidatePage/CandidateAdd.vue";
 
 export default {
   name: "CandidatesView",
   components: {
-    Navbar,
-
+    // Navbar,
     // CandidateAdd,
   },
 };

@@ -59,7 +59,7 @@
                   <i class="bi bi-person-circle"></i>
                 </button>
               </td>
-              <td>{{ candidate.last_login }}</td>
+              <td>{{ formatDateFORUpdate(candidate.last_login) }}</td>
               <td class="cursor-pointer">
                 <button
                   type="button"
@@ -228,6 +228,19 @@ export default {
     },
   },
   methods: {
+    formatDateFORUpdate(dateString) {
+      if (!dateString) return "";
+
+      const date = new Date(dateString);
+      if (isNaN(date)) return "";
+      // const date = new Date(dateString);
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const year = date.getFullYear();
+      const time = date.toLocaleTimeString();
+
+      return `${day}-${month}-${year} ${time}`;
+    },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
@@ -387,7 +400,7 @@ a {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
-  font-family: Verdana, sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {

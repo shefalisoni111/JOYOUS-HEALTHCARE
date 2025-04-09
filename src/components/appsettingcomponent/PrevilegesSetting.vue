@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <!-- <Navbar /> -->
 
     <div id="main" class="main">
       <div class="row">
@@ -258,7 +258,7 @@
 
 <script>
 import axios from "axios";
-import Navbar from "../Navbar.vue";
+// import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
 import AddPrivileges from "../modals/privilege Setting/AddPrivileges.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
@@ -281,7 +281,7 @@ export default {
     };
   },
   components: {
-    Navbar,
+    // Navbar,
     Sidebar,
     AddPrivileges,
     SuccessAlert,
@@ -579,7 +579,7 @@ a.router-link-active {
 
 a.router-link-active::after {
   content: "\F285";
-  font-family: "bootstrap-icons";
+  font-family: "Inter", sans-serif;
   display: flex;
   align-items: center;
   color: #ff5722;

@@ -1,29 +1,53 @@
 <template>
   <div>
-    <div class="container-fluid p-0">
-      <div id="main">
+    <div id="main" class="main d-flex pe-4" style="gap: 16%">
+      <div class=""><Navbar /></div>
+      <div>
         <div class="d-flex justify-content-between px-2">
-          <div class="py-3">
+          <div class="">
             <ol class="breadcrumb mb-1">
-              <li class="breadcrumb-item active text-uppercase fs-6">
-                <router-link class="nav-link d-inline" aria-current="page" to="/home"
-                  >Dashboard</router-link
+              <li class="breadcrumb-item active">
+                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                  >All Clients</a
                 >
-                / <span class="color-fonts">{{ activeTabName }} Clients </span>
+                <p>
+                  <router-link
+                    class="nav-link d-inline fw-bolder"
+                    style="color: #000000"
+                    aria-current="page"
+                    to="/ClientsLists"
+                    >Client</router-link
+                  >
+                  / Site / Rated and rules
+                </p>
               </li>
             </ol>
           </div>
+          <div class="d-flex align-items-center">
+            <button
+              v-if="activeTab === 0"
+              type="button"
+              class="btn btn-lg text-nowrap"
+              style="background: #f9944b; color: #fff"
+              data-bs-toggle="modal"
+              data-bs-target="#addClients"
+              data-bs-whatever="@mdo"
+              @click="handleAddClient"
+            >
+              + Add Client
+            </button>
+          </div>
         </div>
-        <div class="container-fluid p-0 bg-define"></div>
+        <div class="p-0 bg-define"></div>
 
-        <div class="container-fluid pt-3">
+        <div class="">
           <div class="row">
             <div class="col-12">
               <div class="">
                 <div>
-                  <div class="d-flex justify-content-between mb-2">
+                  <div class="mb-2 d-flex justify-content-between">
                     <ul
-                      class="nav nav-pills mb-3 d-flex justify-content-between"
+                      class="nav nav-pills mb-3 d-flex justify-content-between ps-0 py-0"
                       id="pills-tab"
                       role="tablist"
                     >
@@ -49,12 +73,82 @@
                         </li>
                       </div>
                     </ul>
+                    <div
+                      class="d-flex gap-2 mb-3 justify-content-between"
+                      v-if="showFilters"
+                    >
+                      <div
+                        class="d-flex gap-2 flex-column position-absolute"
+                        style="
+                          transform: translate(150%, 21%);
+                          background: rgb(255, 255, 255);
+                          padding: 8px 13px 9px 13px;
+                          border-radius: 10px;
+                          box-shadow: 0px 4px 40px 0px #0000000d;
+                        "
+                      >
+                        <div></div>
+
+                        <select v-model="selectedClientExport" @change="filterData">
+                          <option value="" disabled>Status</option>
+                          <option value="true">Active</option>
+                          <option value="false">In-Active</option>
+                        </select>
+
+                        <select v-model="selectedClient" @change="filterData">
+                          <option value="" disabled>Select Client</option>
+                          <option
+                            v-for="option in clientData"
+                            :key="option.id"
+                            :value="option.client_name"
+                          >
+                            {{ option.client_name }}
+                          </option>
+                        </select>
+
+                        <select v-model="selectedJobTitle" @change="filterData">
+                          <option value="" disabled>Select Job</option>
+                          <option
+                            v-for="option in options"
+                            :key="option.id"
+                            :value="option.id"
+                          >
+                            {{ option.name }}
+                          </option>
+                        </select>
+                        <div class="searchbox position-relative">
+                          <input
+                            class="form-control"
+                            type="search"
+                            placeholder="Search clients..."
+                            aria-label="Search"
+                            v-model="localSearchQuery"
+                            @input="filterData"
+                          />
+                        </div>
+                        <div>
+                          <button
+                            :disabled="
+                              !selectedClientExport &&
+                              !selectedClient &&
+                              !selectedJobTitle &&
+                              !localSearchQuery
+                            "
+                            @click="resetFilters"
+                            class="btn-sm bg-dark text-white px-4 py-1"
+                            style="border-radius: 4px"
+                          >
+                            Reset
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                     <div class="d-flex justify-content-end align-items-center">
                       <div
                         class="d-flex align-items-center gap-2 justify-content-between"
                       >
                         <div class="searchbox position-relative">
-                          <form
+                          <!-- <form
                             @submit.prevent="search"
                             v-if="activeTab === 1 || activeTab === 2"
                           >
@@ -66,77 +160,76 @@
                               v-model="searchQuery"
                               @input="filterData"
                             />
-                          </form>
-                        </div>
-                        <button
-                          v-if="activeTab === 0"
-                          type="button"
-                          class="btn btn-outline-success text-nowrap"
-                          data-bs-toggle="modal"
-                          data-bs-target="#addClients"
-                          data-bs-whatever="@mdo"
-                          @click="handleAddClient"
-                        >
-                          + Add Client
-                        </button>
-                        <!-- <button
-                          v-if="!searchQuery"
-                          type="button"
-                          class="btn btn-outline-success text-nowrap"
-                          @click="toggleFilters"
-                        >
-                          <i class="bi bi-funnel"></i>
-                          Show Filters
-                        </button>
-                        <button
-                          v-if="!searchQuery"
-                          class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
-                          type="button"
-                          id="navbarDropdown"
-                          role="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          :
+                          </form> -->
+                          <div class="mt-2 d-flex justify-content-between">
+                            <button
+                              type="button"
+                              class="btn btn-danger text-nowrap btn-lg"
+                              @click="toggleFilters"
+                            >
+                              <i class="bi bi-funnel"></i>
+                              Show Filters
+                            </button>
+                            <input
+                              ref="fileInput"
+                              id="fileAll"
+                              type="file"
+                              accept=".csv"
+                              style="display: none"
+                              @change="handleFileUpload"
+                            />
+                            &nbsp;
+                            <button
+                              class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
+                              type="button"
+                              id="navbarDropdown"
+                              role="button"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                            >
+                              Export
 
-                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Import</a></li>
-                            <li><hr class="dropdown-divider" /></li>
-                            <li><a class="dropdown-item" href="#">Export</a></li>
-                            <li><hr class="dropdown-divider" /></li>
-                            <li>
-                              <a class="dropdown-item" href="#" @click="exportAll"
-                                >Export All</a
-                              >
-                            </li>
-                          </ul>
-                        </button> -->
+                              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li>
+                                  <label
+                                    for="fileAll"
+                                    class="custom-file-label dropdown-item"
+                                    style="border-radius: 0px; cursor: pointer"
+                                    @click="triggerFileInput"
+                                  >
+                                    Import
+                                  </label>
+                                </li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li>
+                                  <a
+                                    class="dropdown-item"
+                                    href="#"
+                                    @click="exportOneFile('selected')"
+                                    >Export</a
+                                  >
+                                </li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li>
+                                  <a
+                                    class="dropdown-item"
+                                    href="#"
+                                    @click="exportOneFile('all')"
+                                    >Export All</a
+                                  >
+                                </li>
+                              </ul>
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <!-- <div
-                    class="d-flex gap-2 mb-3 justify-content-between"
-                    v-if="showFilters"
-                  >
-                    <div class="d-flex gap-2 mt-3">
-                      <div></div>
 
-                      <select
-                    
-                        @change="filterData($event.target.value)"
-                      >
-                        <option value="all">All Client</option>
-                        <option value="active_client">Active</option>
-                        <option value="inactive_client">In-Active</option>
-                      </select>
-
-                   
-                    </div>
-                  </div> -->
                   <div v-if="!searchQuery">
                     <component
                       :is="activeComponent"
-                      :showFiltersValue="showFiltersValue"
+                      :errorMessageFilter="errorMessageFilter"
                       :clientData="clientData"
                       :options="options"
                     ></component>
@@ -148,7 +241,7 @@
                         <tr>
                           <th scope="col">ID</th>
                           <th scope="col">#RefCode</th>
-                          <th scope="col">ClientName</th>
+                          <th scope="col">Client Name</th>
                           <th scope="col">Jobs</th>
                           <th scope="col">Address</th>
                           <th scope="col">PhoneNumber</th>
@@ -265,17 +358,17 @@
         :disabled="currentPage === 1"
         @click="changePage(currentPage - 1)"
       >
-        Previous
+        <i class="bi bi-chevron-left"></i>
       </button>
       &nbsp;&nbsp;
-      <span>{{ currentPage }} of {{ totalPages }}</span>
+      <span>{{ currentPage }}</span>
       &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary ml-2"
         :disabled="currentPage === totalPages"
         @click="changePage(currentPage + 1)"
       >
-        Next
+        <i class="bi bi-chevron-right"></i>
       </button>
     </div>
     <!-- <AddClients ref="addClient" @client-updated="createdClient" /> -->
@@ -293,6 +386,8 @@ import AddClients from "@/components/modals/Clients/AddClients.vue";
 import InActiveClient from "../ClientsPages/InActiveClient.vue";
 import ActiveClient from "./ActiveClient.vue";
 import EditClientModal from "../modals/Clients/EditClientModal.vue";
+import Navbar from "../Navbar.vue";
+
 const axiosInstance = axios.create({
   headers: {
     "Cache-Control": "no-cache",
@@ -310,11 +405,17 @@ export default {
       options: [],
       debounceTimeout: null,
       searchResults: [],
+      errorMessageFilter: "",
+      selectedFilter: "",
+      selectedClientExport: "",
+      selectedClient: "",
+      selectedJobTitle: "",
       showFilters: false,
       selectedFilter: "true",
       errorMessage: "",
+      localSearchQuery: this.searchQuery,
       tabs: [
-        { name: "All ", component: "AllClient", routeName: "AllClient" },
+        { name: "All Clients", component: "AllClient", routeName: "AllClient" },
 
         { name: "Active ", component: "ActiveClient", routeName: "ActiveClient" },
         { name: "InActive ", component: "InActiveClient", routeName: "InActiveClient" },
@@ -325,7 +426,7 @@ export default {
       totalPages: 1,
       itemsPerPage: 10,
       totalCount: 0,
-      showFiltersValue: false,
+      errorMessageFilter: false,
       selectedClientStatus: "",
       colors: [
         "lightblue",
@@ -356,7 +457,14 @@ export default {
       return this.paginateSearchResults.length;
     },
   },
-  components: { AllClient, InActiveClient, ActiveClient, EditClientModal, AddClients },
+  components: {
+    AllClient,
+    InActiveClient,
+    ActiveClient,
+    EditClientModal,
+    AddClients,
+    Navbar,
+  },
 
   methods: {
     async getClientMethod() {
@@ -474,21 +582,33 @@ export default {
       await this.filterData();
     },
     async filterData() {
-      this.searchResults = [];
-      this.errorMessage = "";
-      const modifiedSearchQuery = this.searchQuery.replace(/ /g, "_");
       const params = {
-        search: modifiedSearchQuery,
+        page: 1,
       };
 
+      if (this.selectedClientExport) {
+        params["client[activated]"] = this.selectedClientExport;
+      }
+
+      if (this.selectedClient) {
+        params["client[client_name]"] = this.selectedClient;
+      }
+
+      if (this.selectedJobTitle) {
+        params["client[job_ids]"] = this.selectedJobTitle;
+      }
+
+      if (this.localSearchQuery) {
+        params.search = this.localSearchQuery;
+      }
+
       try {
-        const response = await axiosInstance.get(`${VITE_API_URL}/client_filter`, {
+        const response = await axios.get(`${VITE_API_URL}/client_filter`, {
           params,
         });
         this.getClientDetail = response.data.data;
-        this.searchResults = response.data.data;
-        if (this.searchResults.length > 0) {
-          this.errorMessage = "No candidates found for the specified criteria";
+        if (this.getClientDetail?.length === 0) {
+          this.errorMessageFilter = "Data Not Found!";
         }
       } catch (error) {
         // console.error("Error fetching filtered data:", error);
@@ -544,7 +664,14 @@ export default {
         this.selectTab(matchingTabIndex);
       }
     },
+    resetFilters() {
+      this.selectedClientExport = null;
+      this.selectedClient = null;
+      this.selectedJobTitle = null;
+      this.localSearchQuery = "";
 
+      this.filterData();
+    },
     setActiveTabNameOnLoad() {
       this.activeTabName = this.tabs[this.activeTab].name;
     },
@@ -607,7 +734,7 @@ export default {
   transition: all 0.3s;
 }
 .bg-define {
-  background-color: #fdce5e17;
+  background-color: #f9f9f9;
 }
 .btn-primary {
   border: none;
@@ -616,6 +743,11 @@ ul.nav-pills {
   border-bottom: none !important;
   height: auto !important;
   margin-bottom: 0px !important;
+}
+ul.nav-pills .nav-item {
+  background: #ffffff;
+  padding: 5px 10px 5px 10px;
+  border-radius: 50px;
 }
 .form-check-input {
   border: 2px solid grey;
@@ -657,24 +789,30 @@ a:link {
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  background-color: transparent;
-  border: 1px solid green !important;
-  border-radius: 22px;
-  color: green;
+  background: #000000;
+  width: 100;
+  height: 37;
+  color: #fff;
+  border-radius: 13px;
+  padding-top: 10px;
+  padding-right: 15px;
+  padding-bottom: 11px;
+  padding-left: 15px;
 }
-
-.nav-pills .nav-link {
-  background-color: transparent;
-  border: 1px solid #ff5722 !important;
-  border-radius: 22px;
-  color: #ff5722;
+.nav-link,
+.nav-link:hover,
+.nav-link:focus {
+  color: #667085;
 }
-ul.nav-pills {
-  height: 53px;
-  border-bottom: 1px solid #b8b1b1;
+.nav-pills {
+  background: #f8f8ff;
+  padding: 10px;
+  border-radius: 20px;
+  border-width: 1px;
 }
 table th {
-  background-color: #ff5f30;
+  background-color: #ffffff;
+  color: #667085;
 }
 
 button.nav-link > li.nav-item {
@@ -682,8 +820,11 @@ button.nav-link > li.nav-item {
   padding-bottom: 5px; /* Optional: Add padding for spacing */
 }
 
-.searchbox {
+input.form-control,
+input.form-control:focus {
   width: 100%;
+  border: 1px solid rgb(202 198 198 / 0%);
+  background: #fff4f5;
 }
 
 .switch {
@@ -720,7 +861,8 @@ select {
   padding: 10px;
   border-radius: 4px;
   border: 0px;
-  border: 1px solid rgb(202, 198, 198);
+  border: 1px solid rgb(202 198 198 / 0%);
+  background: #fff4f5;
 }
 .switch .slider:before {
   position: absolute;
@@ -744,7 +886,7 @@ select {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
-  font-family: Verdana, sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {

@@ -250,26 +250,26 @@ export default {
       }
     },
 
-    async getClientMethod() {
-      if (!this.$route.params.id) {
-        return;
-      }
-      try {
-        const response = await axios.get(
-          `${VITE_API_URL.replace(/\/$/, "")}/clients/${this.$route.params.id}`
-        );
+    // async getClientMethod() {
+    //   if (!this.$route.params.id) {
+    //     return;
+    //   }
+    //   try {
+    //     const response = await axios.get(
+    //       `${VITE_API_URL.replace(/\/$/, "")}/clients/${this.$route.params.id}`
+    //     );
 
-        this.getClientDatas = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        } else {
-          // console.error("Error fetching candidates:", error);
-        }
-      }
-    },
+    //     this.getClientDatas = response.data.data;
+    //   } catch (error) {
+    //     if (error.response) {
+    //       if (error.response.status == 404) {
+    //         // alert(error.response.data.message);
+    //       }
+    //     } else {
+    //       // console.error("Error fetching candidates:", error);
+    //     }
+    //   }
+    // },
     async getSiteMethod() {
       if (!this.$route.params.id) {
         return;
@@ -293,17 +293,17 @@ export default {
   },
   async beforeRouteEnter(to, from, next) {
     next(async (vm) => {
-      await vm.getClientMethod();
+      // await vm.getClientMethod();
       await vm.getSiteMethod();
     });
   },
   async beforeRouteUpdate(to, from, next) {
-    this.getClientMethod();
+    // this.getClientMethod();
     this.getSiteMethod();
     next();
   },
   mounted() {
-    this.getClientMethod();
+    // this.getClientMethod();
     this.getSiteMethod();
   },
 };
@@ -442,7 +442,7 @@ table th {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
-  font-family: Verdana, sans-serif;
+ font-family: 'Inter', sans-serif;
 }
 
 .switch input:checked + .slider:after {

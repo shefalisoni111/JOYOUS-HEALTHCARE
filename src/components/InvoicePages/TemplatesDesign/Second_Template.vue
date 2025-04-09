@@ -72,20 +72,16 @@
               <div class="col-12">
                 <div class="row">
                   <div class="col-4">
-                    <h5>
-                      DATE: {{ this.formatDate(getClientInvoiceDetail.start_date) }}
-                    </h5>
-                    <h5>DUE DATE: {{ getClientInvoiceDetail.due_date }}</h5>
+                    <h5>DATE: {{ getClientInvoiceDetail.start_date }}</h5>
+                    <!-- <h5>DUE DATE: {{ getClientInvoiceDetail.due_date }}</h5> -->
                   </div>
                   <div class="col-4 text-center">
                     <p>{{ getClientInvoiceDetail.number }}</p>
                   </div>
                   <div class="col-4">
                     <div class="pe-3 float-end">
-                      <h5>
-                        FROM: {{ this.formatDate(getClientInvoiceDetail.start_date) }}
-                      </h5>
-                      <h5>TO : {{ this.formatDate(getClientInvoiceDetail.end_date) }}</h5>
+                      <h5>FROM: {{ getClientInvoiceDetail.end_date }}</h5>
+                      <h5>TO : {{ getClientInvoiceDetail.end_date }}</h5>
                     </div>
                   </div>
                 </div>

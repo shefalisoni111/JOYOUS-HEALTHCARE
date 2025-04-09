@@ -2,8 +2,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Josefin Sans", sans-serif;
+  font-family: 'Inter', sans-serif;
 }
+.fs-5{ font-size: 18px !important;}
+.fs-6{ font-size: 14px !important;}
 html {
   scroll-behavior: smooth;
   margin: 0px !important;
@@ -19,11 +21,18 @@ body {
 
   overflow-x: hidden !important;
   overflow-y: hidden !important;
+  font-family: 'Inter', sans-serif;
 }
 #main {
   transition: all 0.3s;
 
 }
+@font-face {
+  font-family: 'Inter', sans-serif;
+  font-weight: normal;
+  font-style: normal;
+}
+
 
 .cursor-pointer {
   cursor: pointer;
@@ -82,7 +91,10 @@ ul.breadcrumb li span {
 }
 
 table thead th {
-  background-color: #f9944b !important;
+  background-color: #ffffff !important;
+  color: #667085 !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 500;
 }
 
 .ribbon {

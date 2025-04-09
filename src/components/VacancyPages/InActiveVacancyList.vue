@@ -67,10 +67,10 @@
                 </button>
                 <button
                   v-else
-                  class="btn btn-outline-success text-nowrap"
-                  @click="editAndReactivate(data.id)"
+                  class="btn btn-success text-nowrap"
+                  @click="editAndReactivates(data.id)"
                 >
-                  <i class="bi bi-person-fill-check"></i>
+                  Re-activate
                 </button>
                 <!-- <i
                   class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
@@ -237,8 +237,11 @@ export default {
       });
     },
     editAndReactivate(vacancyId) {
-      this.reActivatedMethod(vacancyId);
+      // this.reActivatedMethod(vacancyId);
       this.editVacancyId(vacancyId);
+    },
+    editAndReactivates(vacancyId) {
+      this.reActivatedMethod(vacancyId);
     },
     confirmed(id) {
       this.isModalVisible = false;
@@ -310,6 +313,10 @@ export default {
       setTimeout(() => {
         this.$refs.editShift.fetchVacancyMethod(vacancyId);
       }, 400);
+
+      // setTimeout(() => {
+      //   this.$refs.editShift.reActivatedMethod(vacancyId);
+      // }, 500);
     },
     async getInactiveVacancyMethod() {
       this.isLoading = true;

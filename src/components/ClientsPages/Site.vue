@@ -1,21 +1,20 @@
 <template>
   <div>
-    <Navbar />
-    <div id="main">
-      <!-- <h6>Client Page in Progress.....</h6> -->
-      <router-view />
-    </div>
+    <!-- <Navbar /> -->
+
+    <!-- <h6>Client Page in Progress.....</h6> -->
+    <router-view />
   </div>
 </template>
 <script>
-import Navbar from "../Navbar.vue";
+// import Navbar from "../Navbar.vue";
 
 export default {
   data() {
     return {};
   },
   components: {
-    Navbar,
+    // Navbar,
   },
 
   methods: {},
@@ -27,8 +26,6 @@ export default {
 #main {
   padding: 20px 1px;
   transition: all 0.3s;
-
-  background-color: #fdce5e17;
 }
 .main-content {
   transition: all 0.3s;
@@ -158,7 +155,7 @@ a {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
-  font-family: Verdana, sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {

@@ -329,7 +329,7 @@ select {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
-  font-family: Verdana, sans-serif;
+ font-family: 'Inter', sans-serif;
 }
 
 .switch input:checked + .slider:after {

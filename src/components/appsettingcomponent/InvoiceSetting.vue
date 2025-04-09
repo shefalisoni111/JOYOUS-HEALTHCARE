@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <!-- <Navbar /> -->
 
     <div id="main" class="main">
       <div class="row">
@@ -493,7 +493,7 @@
 <script>
 import axios from "axios";
 import ClientInvoiceTemplatesVue from "../modals/appsetting/InvoiceSetting/ClientInvoiceTemplates.vue";
-import Navbar from "../Navbar.vue";
+// import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
 import TextFormator from "../textformator/TextFormator.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
@@ -542,7 +542,7 @@ export default {
     };
   },
   components: {
-    Navbar,
+    // Navbar,
     Sidebar,
     TextFormator,
     SuccessAlert,
@@ -778,7 +778,7 @@ a.router-link-active {
 
 a.router-link-active::after {
   content: "\F285";
-  font-family: "bootstrap-icons";
+  font-family: "Inter", sans-serif;
   display: flex;
   align-items: center;
   color: #ff5722;
@@ -859,7 +859,7 @@ table thead th {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
-  font-family: Verdana, sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {
