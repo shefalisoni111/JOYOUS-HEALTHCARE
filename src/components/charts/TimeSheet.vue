@@ -81,7 +81,7 @@
               role="tabpanel"
               aria-labelledby="pills-week-tab"
             >
-              <canvas ref="chartWeeklyCanvas" height="335"></canvas>
+              <canvas id="timesheetChartOne" height="80"></canvas>
             </div>
             <div
               class="tab-pane fade"
@@ -89,7 +89,7 @@
               role="tabpanel"
               aria-labelledby="pills-month-tab"
             >
-              <canvas ref="chartMonthlyCanvas" height="335"></canvas>
+              <canvas id="timesheetChartTwo" height=""></canvas>
             </div>
             <div
               class="tab-pane fade"
@@ -97,7 +97,7 @@
               role="tabpanel"
               aria-labelledby="pills-year-tab"
             >
-              <canvas ref="chartYearlyCanvas" height="335"></canvas>
+              <canvas id="timesheetChartThird" height=""></canvas>
             </div>
           </div>
           <div class="">
@@ -176,6 +176,10 @@ export default {
       startDate: new Date(),
       endDate: new Date(),
       chart: null,
+      totalHours: [],
+      approvedHours: [],
+      invoicedHours: [],
+      pendingHours: [],
       dataObject: {
         datasets: [
           {
@@ -214,30 +218,93 @@ export default {
       },
     };
   },
-
+  computed: {
+    chartLabels() {
+      switch (this.currentView) {
+        case "week":
+          return ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+        case "month":
+          return Array.from({ length: 30 }, (_, i) => `Day ${i + 1}`);
+        case "year":
+          return [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ];
+        default:
+          return [];
+      }
+    },
+  },
   methods: {
     async renderChart(viewType) {
       await nextTick();
 
       if (this.chart) {
         this.chart.destroy();
+        this.chart = null;
       }
       let ctx;
       if (viewType === "week") {
-        ctx = this.$refs.chartWeeklyCanvas?.getContext("2d");
+        ctx = document.getElementById("timesheetChartOne").getContext("2d");
       } else if (viewType === "month") {
-        ctx = this.$refs.chartMonthlyCanvas?.getContext("2d");
+        ctx = document.getElementById("timesheetChartTwo").getContext("2d");
       } else if (viewType === "year") {
-        ctx = this.$refs.chartYearlyCanvas?.getContext("2d");
+        ctx = document.getElementById("timesheetChartThird").getContext("2d");
       }
 
       if (!ctx) return;
+
       this.chart = new Chart(ctx, {
         type: "line",
-        data: this.dataObject,
+        data: {
+          labels: this.chartLabels,
+          datasets: [
+            {
+              label: "Total Hours",
+              data: this.totalHours || [],
+              borderColor: "#9b5de5",
+              borderDash: [10, 5],
+              fill: false,
+              tension: 0.4,
+            },
+            {
+              label: "Approved Hours",
+              data: this.approvedHours || [],
+              borderColor: "#ff6b6b",
+              borderDash: [10, 5],
+              fill: false,
+              tension: 0.4,
+            },
+            {
+              label: "Invoiced Hours",
+              data: this.invoicedHours || [],
+              borderColor: "#a0c4ff",
+              borderDash: [10, 5],
+              fill: false,
+              tension: 0.4,
+            },
+            {
+              label: "Pending Hours",
+              data: this.pendingHours || [],
+              borderColor: "#3b3b98",
+              borderDash: [10, 5],
+              fill: false,
+              tension: 0.4,
+            },
+          ],
+        },
         options: {
           responsive: true,
-          maintainAspectRatio: false,
           plugins: {
             legend: {
               display: false,
@@ -245,11 +312,30 @@ export default {
             },
           },
           scales: {
-            x: { type: "category", grid: { display: false } },
-            y: { beginAtZero: true },
+            y: {
+              beginAtZero: true,
+            },
           },
         },
       });
+      // this.chart = new Chart(ctx, {
+      //   type: "line",
+      //   data: this.dataObject,
+      //   options: {
+      //     responsive: true,
+      //     maintainAspectRatio: false,
+      //     plugins: {
+      //       legend: {
+      //         display: false,
+      //         position: "bottom",
+      //       },
+      //     },
+      //     scales: {
+      //       x: { type: "category", grid: { display: false } },
+      //       y: { beginAtZero: true },
+      //     },
+      //   },
+      // });
     },
     async fetchData() {
       // if (
@@ -282,10 +368,10 @@ export default {
           {
             // label: "Total timeSheet hours",
             data: [
-              apiData.total_hours || 0,
-              apiData.approved_timesheet_hours || 0,
-              apiData.invoice_total_hours || 0,
-              apiData.pending_timesheet_hours || 0,
+              (this.totalHours = apiData.total_hours || []),
+              (this.approvedHours = apiData.approved_timesheet_hours || []),
+              (this.invoicedHours = apiData.invoice_total_hours || []),
+              (this.pendingHours = apiData.pending_timesheet_hours || []),
             ],
             // borderColor: "#16aa8a",
             // backgroundColor: "transparent",
@@ -293,24 +379,37 @@ export default {
           },
         ];
 
-        await nextTick();
-        this.renderChart(this.currentView);
+        // this.totalHours = apiData.total_hours || [];
+        // this.approvedHours = apiData.approved_timesheet_hours || [];
+        // this.invoicedHours = apiData.invoice_total_hours || [];
+        // this.pendingHours = apiData.pending_timesheet_hours || [];
+        // this.dataObject.datasets[0].data = [
+        //   apiData.total_hours || 0,
+        //   apiData.approved_timesheet_hours || 0,
+        //   apiData.invoice_total_hours || 0,
+        //   apiData.pending_timesheet_hours || 0,
+        // ];
+        // await nextTick();
+        await this.renderChart(this.currentView);
       } catch (error) {
         // console.error("Error fetching data:", error);
       }
     },
     moveToWeek() {
       this.currentView = "week";
+      this.renderChart("week");
       this.fetchData();
     },
 
     moveToMonth() {
       this.currentView = "month";
+      this.renderChart("month");
       this.fetchData();
     },
 
     moveToYear() {
       this.currentView = "year";
+      this.renderChart("year");
       this.fetchData();
     },
     moveToPrevious() {
@@ -353,6 +452,11 @@ export default {
   // },
   async mounted() {
     // await nextTick();
+    // this.totalHours = [8, 7, 6, 5, 7, 6, 9];
+    // this.approvedHours = [6, 6, 5, 4, 6, 5, 8];
+    // this.invoicedHours = [5, 4, 3, 2, 5, 3, 6];
+    // this.pendingHours = [2, 1, 2, 1, 1, 2, 2];
+    this.renderChart("week");
     await this.fetchData();
   },
 };
@@ -361,7 +465,7 @@ export default {
 <style scoped>
 .card-border {
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 20px;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
 }
 .nav-pills .nav-link.active,

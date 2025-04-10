@@ -124,7 +124,7 @@
         </li>
 
         <ul class="navbar-nav m-0 mb-2 mb-lg-0 inline-nav">
-          <li class="nav-item dropdown mt-2">
+          <li class="nav-item dropdown ">
             <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
               <i class="bi bi-chat-left-dots"></i
             >Message</a>
@@ -230,7 +230,7 @@
             </ul>
           </li>
 
-          <li class="nav-item dropdown mt-2">
+          <li class="nav-item dropdown">
             <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" @click="markAllAsRead">
               <i class="bi bi-bell"></i>
               <span v-if="!dropdownOpen && unread_count > 0" class="badge bg-primary badge-number">
@@ -268,7 +268,7 @@
           
           <!-- End Notification Nav -->
           
-          <li class="cursor-pointer my-1 ">
+          <li class="cursor-pointer ">
             <a class="dropdown-item d-flex align-items-center" href="https://recpal.co.uk/support/">
               <i class="bi bi-brightness-low pe-2" ></i><span>Support</span>
             </a>
@@ -1111,20 +1111,19 @@ export default {
 <style scoped>
 /* Sidebar styles */
 #sidebar {
-  width: 246px;
+  position: inherit; 
+  top: 0;
+  left: 0;
   height: 100vh;
+  width: 246px;
+  overflow-y: auto;
+  background: #ffffff;
   border: 1px solid #eff0f6;
   box-shadow: 0px 5px 20px 0px #0000000d;
   border-radius: 20px;
-  border-width: 1px;
-  background: #ffffff;
   color: #000000;
   padding-top: 12px;
   transition: 0.3s;
-  position: fixed;
-  left: 0;
-  top: 0;
-  overflow-y: auto;
 }
 
 #sidebar.active {

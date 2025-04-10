@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="main" class="main d-flex" style="gap: 13%">
+    <div id="main" class="main d-flex">
       <div class=""><Navbar /></div>
       <div class="">
         <div class="pagetitle mx-4 mt-4" style="margin-top: 30px">
@@ -768,7 +768,6 @@ table th.cw {
   transform: translateX(-34px);
 }
 #main {
-  padding: 0px 20px;
   transition: all 0.3s;
   background-color: #f9f9f9;
 }
@@ -803,7 +802,7 @@ h6 {
 }
 .card-border {
   box-shadow: 0px 5px 20px 0px #0000000d;
-  border-radius: 20px;
+
   border-width: 1px;
 }
 </style>

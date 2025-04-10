@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div id="main" class="main d-flex pe-4" style="gap: 16%">
+    <div id="main" class="main d-flex">
       <div class=""><Navbar /></div>
-      <div>
+      <div class="p-5">
         <div class="d-flex justify-content-between px-2">
           <div class="">
             <ol class="breadcrumb mb-1">
@@ -799,6 +799,7 @@ a:link {
   padding-bottom: 11px;
   padding-left: 15px;
 }
+
 .nav-link,
 .nav-link:hover,
 .nav-link:focus {

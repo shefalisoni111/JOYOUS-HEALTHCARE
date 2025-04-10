@@ -2,151 +2,178 @@
   <div>
     <!-- Modal -->
     <div class="modal fade" id="addClients" aria-labelledby="addClients" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addClients">Add Client</h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body mx-3" style="background: #dbdbdb">
             <div class="row g-3 align-items-center">
               <form>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Client Name</label>
+                <div class="col-12">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Client Name</label>
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="client_name"
+                          @input="clearError"
+                          @change="detectAutofill"
+                        />
+                        <span v-if="!validateClientName" class="text-danger"
+                          >Client Name Required</span
+                        >
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-12">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="client_name"
-                      @input="clearError"
-                      @change="detectAutofill"
-                    />
-                    <span v-if="!validateClientName" class="text-danger"
-                      >Client Name Required</span
-                    >
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label" for="selectOption">Jobs</label>
-                  </div>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label" for="selectOption">Jobs</label>
+                      </div>
 
-                  <div class="col-12">
-                    <div v-for="option in options" :key="option.id">
-                      <input
-                        type="checkbox"
-                        :value="option.id"
-                        v-model="job_ids"
-                        @change="toggleJobsSelection"
-                      />
-                      <label class="text-capitalize">&nbsp;{{ option.name }}</label>
-                    </div>
-                    <div v-if="getError('job_id')" class="text-danger">
-                      {{ getError("job_id") }}
+                      <div class="col-12">
+                        <div v-for="option in options" :key="option.id">
+                          <input
+                            type="checkbox"
+                            :value="option.id"
+                            v-model="job_ids"
+                            @change="toggleJobsSelection"
+                          />
+                          <label class="text-capitalize">&nbsp;{{ option.name }}</label>
+                        </div>
+                        <div v-if="getError('job_id')" class="text-danger">
+                          {{ getError("job_id") }}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="">
+                <div class="col-12">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="">
+                        <div class="col-12">
+                          <label class="form-label">email</label>
+                        </div>
+                        <div class="col-12">
+                          <input
+                            type="email"
+                            class="form-control"
+                            v-model="email"
+                            @input="validateEmailFormat(email)"
+                            @change="checkEmailUniqueness"
+                            ref="email"
+                            autocomplete="new-email"
+                          />
+                          <span
+                            v-if="email && !validateEmailFormat(email)"
+                            class="text-danger"
+                            >Invalid Email format</span
+                          >
+                          <span v-if="emailInUse" class="text-danger">
+                            This email is already in use.
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="mb-3">
                     <div class="col-12">
-                      <label class="form-label">email</label>
+                      <label class="form-label">phone number</label>
                     </div>
                     <div class="col-12">
                       <input
-                        type="email"
+                        type="text"
                         class="form-control"
-                        v-model="email"
-                        @input="validateEmailFormat(email)"
-                        @change="checkEmailUniqueness"
-                        ref="email"
-                        autocomplete="new-email"
+                        v-model="phone_number"
+                        @input="cleanPhoneNumber"
+                        @change="detectAutofill"
                       />
+                      <!-- <span v-if="!validatePhoneNumber" class="text-danger"
+                      >Invalid Phone Number</span
+                    > -->
                       <span
-                        v-if="email && !validateEmailFormat(email)"
+                        v-if="phone_number && !validatePhoneNumberFormat(phone_number)"
                         class="text-danger"
-                        >Invalid Email format</span
+                        >Invalid Phone Number</span
                       >
-                      <span v-if="emailInUse" class="text-danger">
-                        This email is already in use.
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="mb-3">
+                    <div class="col-12">
+                      <label class="form-label">Password</label>
+                    </div>
+                    <div class="col-12">
+                      <input
+                        type="password"
+                        class="form-control"
+                        v-model="password"
+                        @input="validatePasswordCriteria"
+                        @change="detectAutofill"
+                        ref="password"
+                        autocomplete="new-password"
+                      />
+                      <span v-if="password && !isPasswordValid" class="text-danger">
+                        Password must be at least 8 characters long and include uppercase,
+                        lowercase, numeric, and special characters.
                       </span>
                     </div>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">phone number</label>
-                  </div>
-                  <div class="col-12">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="phone_number"
-                      @input="cleanPhoneNumber"
-                      @change="detectAutofill"
-                    />
-                    <!-- <span v-if="!validatePhoneNumber" class="text-danger"
-                      >Invalid Phone Number</span
-                    > -->
-                    <span
-                      v-if="phone_number && !validatePhoneNumberFormat(phone_number)"
-                      class="text-danger"
-                      >Invalid Phone Number</span
-                    >
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Password</label>
-                  </div>
-                  <div class="col-12">
-                    <input
-                      type="password"
-                      class="form-control"
-                      v-model="password"
-                      @input="validatePasswordCriteria"
-                      @change="detectAutofill"
-                      ref="password"
-                      autocomplete="new-password"
-                    />
-                    <span v-if="password && !isPasswordValid" class="text-danger">
-                      Password must be at least 8 characters long and include uppercase,
-                      lowercase, numeric, and special characters.
-                    </span>
+                <div class="col-6">
+                  <div class="mb-3">
+                    <div class="col-12">
+                      <label class="form-label">Confirm Password</label>
+                    </div>
+                    <div class="col-12">
+                      <input
+                        type="password"
+                        class="form-control"
+                        v-model="confirm_password"
+                        @input="validatePasswordMatch"
+                        @change="detectAutofill"
+                      />
+                      <span
+                        v-if="confirm_password && !passwordsMatch"
+                        class="text-danger"
+                      >
+                        Passwords do No match.
+                      </span>
+                    </div>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Confirm Password</label>
-                  </div>
-                  <div class="col-12">
-                    <input
-                      type="password"
-                      class="form-control"
-                      v-model="confirm_password"
-                      @input="validatePasswordMatch"
-                      @change="detectAutofill"
-                    />
-                    <span v-if="confirm_password && !passwordsMatch" class="text-danger">
-                      Passwords do No match.
-                    </span>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label" for="selectOption">address</label>
-                  </div>
-                  <div class="col-12">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="address"
-                      @input="clearError"
-                      @change="detectAutofill"
-                    />
-                    <span v-if="!validateAddress" class="text-danger"
-                      >Address Required</span
-                    >
+                <div class="col-6">
+                  <div class="mb-3">
+                    <div class="col-12">
+                      <label class="form-label" for="selectOption">address</label>
+                    </div>
+                    <div class="col-12">
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="address"
+                        @input="clearError"
+                        @change="detectAutofill"
+                      />
+                      <span v-if="!validateAddress" class="text-danger"
+                        >Address Required</span
+                      >
+                    </div>
                   </div>
                 </div>
               </form>
@@ -547,7 +574,7 @@ select {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
- font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {
@@ -558,6 +585,24 @@ select {
 
 .switch input:checked + .slider {
   background-color: #d3d6d9;
+}
+
+.custom-close {
+  background-color: orange !important;
+  border-radius: 50% !important;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0px;
+}
+.custom-close::before {
+  content: "×";
+  color: white;
+  font-size: 27px;
+  line-height: 1;
 }
 
 .switch input:checked + .slider:before {

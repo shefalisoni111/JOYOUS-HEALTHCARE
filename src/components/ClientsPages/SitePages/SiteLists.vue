@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div id="main" class="main d-flex" style="gap: 7%">
-      <div class="col-1"><Navbar /></div>
-      <div class="col-10">
+    <div id="main" class="main d-flex">
+      <div class=""><Navbar /></div>
+      <div class="p-5">
         <div>
           <div class="d-flex justify-content-between px-2">
             <div class="py-2">
@@ -352,38 +352,37 @@
             </div>
           </div>
         </div>
-
-        <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 9">
-          <button class="btn btn-outline-dark btn-sm">
-            {{ totalRecordsOnPage }} Records Per Page
-          </button>
-          &nbsp;&nbsp;
-          <button
-            class="btn btn-sm btn-primary mr-2"
-            :disabled="currentPage === 1"
-            @click="changePage(currentPage - 1)"
-          >
-            <i class="bi bi-chevron-left"></i>
-          </button>
-          &nbsp;&nbsp;
-          <span>{{ currentPage }}</span>
-          &nbsp;&nbsp;
-          <button
-            class="btn btn-sm btn-primary ml-2"
-            :disabled="currentPage === totalPages"
-            @click="changePage(currentPage + 1)"
-          >
-            <i class="bi bi-chevron-right"></i>
-          </button>
-        </div>
-        <AddSiteNotes />
-        <!-- <AddSite @site="handleSiteAdded" ref="addSite" /> -->
-        <EditSite
-          :siteId="selectedsiteId || 0"
-          @editSite="getSiteAllDataMethod"
-          ref="refSite"
-        />
       </div>
+      <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 9">
+        <button class="btn btn-outline-dark btn-sm">
+          {{ totalRecordsOnPage }} Records Per Page
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm btn-primary mr-2"
+          :disabled="currentPage === 1"
+          @click="changePage(currentPage - 1)"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        &nbsp;&nbsp;
+        <span>{{ currentPage }}</span>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm btn-primary ml-2"
+          :disabled="currentPage === totalPages"
+          @click="changePage(currentPage + 1)"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+      <AddSiteNotes />
+      <!-- <AddSite @site="handleSiteAdded" ref="addSite" /> -->
+      <EditSite
+        :siteId="selectedsiteId || 0"
+        @editSite="getSiteAllDataMethod"
+        ref="refSite"
+      />
     </div>
   </div>
 </template>

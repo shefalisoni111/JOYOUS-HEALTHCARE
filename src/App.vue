@@ -19,7 +19,7 @@ export default {
 
 <template>
   <div>
-    <Navbar v-if="$route.path !== '/'" :disableApiCall="true" />
+    <!-- <Navbar v-if="$route.path !== '/'" :disableApiCall="true" /> -->
     <div>
       <RouterView />
     </div>

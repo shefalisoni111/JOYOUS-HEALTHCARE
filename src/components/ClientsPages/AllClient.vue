@@ -1003,6 +1003,9 @@ a:link {
   color: black;
   text-decoration: none;
 }
+input.form-check-input {
+  color: #667085 !important;
+}
 
 .btn-primary {
   border-radius: 4px;

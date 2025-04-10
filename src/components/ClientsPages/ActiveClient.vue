@@ -400,6 +400,10 @@ button.nav-link > li.nav-item {
   padding-bottom: 5px;
 }
 
+input.form-check-input {
+  color: #667085 !important;
+}
+
 .searchbox {
   width: 100%;
 }

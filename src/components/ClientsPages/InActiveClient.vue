@@ -363,7 +363,9 @@ a:link {
 .btn-primary {
   border-radius: 4px;
 }
-
+input.form-check-input {
+  color: #667085 !important;
+}
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   background-color: transparent;

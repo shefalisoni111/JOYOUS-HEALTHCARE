@@ -27,9 +27,7 @@ export default {
 
 <style scoped>
 #main {
-  padding: 20px 1px;
   transition: all 0.3s;
-  padding-top: 45px;
 
   background-color: #f9f9f9;
 }
