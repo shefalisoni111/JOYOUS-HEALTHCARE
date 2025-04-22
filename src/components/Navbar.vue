@@ -1,9 +1,9 @@
 <template>
   <div class="">
     <!-- Sidebar -->
-    <nav id="sidebar" >
+    <nav id="sidebar">
       <div class="sidebar-header">
-        <a class="navbar-brand ps-3" href="/home"
+        <a class="navbar-brand ps-3" href="/home" style="outline: none; box-shadow: none"
           ><img
             src="../assets/logo.png"
             class="img-fluid"
@@ -20,20 +20,30 @@
       <ul class="list-unstyled components">
         <li>
           <router-link to="/home" class="ps-2">
-            <i class="bi bi-house-door "></i> Dashboard
+            <img
+              src="../assets/Vector.png"
+              class="img-fluid pe-2"
+              alt="RecPal"
+              loading="eager"
+            />
+            Dashboard
           </router-link>
         </li>
 
         <li>
-          <a href="#clientMenu" data-bs-toggle="collapse" class=" d-flex justify-content-between">
-            <span ><i class="bi bi-people "></i> <span class="ms-2">Client</span></span>
+          <a
+            href="#clientMenu"
+            data-bs-toggle="collapse"
+            aria-expanded="true"
+            class="d-flex justify-content-between"
+          >
+            <span><i class="bi bi-people"></i> <span class="ms-2">Client</span></span>
             <img
-            src="../assets/ArrowDown.png"
-            class="img-fluid pe-2"
-            alt="RecPal"
-           
-            loading="eager"
-        />
+              src="../assets/ArrowDown.png"
+              class="img-fluid pe-2"
+              alt="RecPal"
+              loading="eager"
+            />
           </a>
           <ul class="collapse list-unstyled" id="clientMenu">
             <li><router-link to="/client-list">Client List</router-link></li>
@@ -43,17 +53,18 @@
         </li>
 
         <li>
-          <a href="#staffMenu" data-bs-toggle="collapse" class=" d-flex justify-content-between">
-            <span >
-            <i class="bi bi-person"></i> <span class="ms-2">Staff</span>
-</span>
+          <a
+            href="#staffMenu"
+            data-bs-toggle="collapse"
+            class="d-flex justify-content-between"
+          >
+            <span> <i class="bi bi-person"></i> <span class="ms-2">Staff</span> </span>
             <img
-            src="../assets/ArrowDown.png"
-            class="img-fluid pe-2"
-            alt="RecPal"
-           
-            loading="eager"
-        />
+              src="../assets/ArrowDown.png"
+              class="img-fluid pe-2"
+              alt="RecPal"
+              loading="eager"
+            />
           </a>
           <ul class="collapse list-unstyled" id="staffMenu">
             <li><router-link to="/staff-list">Staff List</router-link></li>
@@ -71,21 +82,24 @@
           <router-link to="/schedule"> <i class="bi bi-clock"></i> Schedule </router-link>
         </li>
 
-        <li >
-          <a href="#timesheetMenu" data-bs-toggle="collapse" class=" d-flex justify-content-between">  
-            <span >
-              <i class="bi bi-file-earmark-text"></i><span class="ms-2">Timesheet</span> 
-            </span> 
-              
-                <img
-                src="../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-               
-                loading="eager"
+        <li>
+          <a
+            href="#timesheetMenu"
+            data-bs-toggle="collapse"
+            class="d-flex justify-content-between"
+          >
+            <span>
+              <i class="bi bi-file-earmark-text"></i><span class="ms-2">Timesheet</span>
+            </span>
+
+            <img
+              src="../assets/ArrowDown.png"
+              class="img-fluid pe-2"
+              alt="RecPal"
+              loading="eager"
             />
           </a>
-       
+
           <ul class="collapse list-unstyled" id="timesheetMenu">
             <li><router-link to="/timesheet/weekly">Weekly Timesheet</router-link></li>
             <li><router-link to="/timesheet/custom">Custom Timesheet</router-link></li>
@@ -94,15 +108,18 @@
         </li>
 
         <li>
-          <a href="#invoiceMenu" data-bs-toggle="collapse" class=" d-flex justify-content-between">
-            <span ><i class="bi bi-receipt"></i><span class="ms-2">Invoice</span> </span>
-            
+          <a
+            href="#invoiceMenu"
+            data-bs-toggle="collapse"
+            class="d-flex justify-content-between"
+          >
+            <span><i class="bi bi-receipt"></i><span class="ms-2">Invoice</span> </span>
+
             <img
-                src="../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-               
-                loading="eager"
+              src="../assets/ArrowDown.png"
+              class="img-fluid pe-2"
+              alt="RecPal"
+              loading="eager"
             />
           </a>
           <ul class="collapse list-unstyled" id="invoiceMenu">
@@ -119,158 +136,43 @@
           </router-link>
         </li>
 
-        <li class=" fw-bold text-muted mt-2">
-          Support
-        </li>
+        <li class="fw-bold text-muted mt-2">Support</li>
 
         <ul class="navbar-nav m-0 mb-2 mb-lg-0 inline-nav">
-          <li class="nav-item dropdown ">
-            <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-              <i class="bi bi-chat-left-dots"></i
-            >Message</a>
-            <ul
-              class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
-              style="height: 454px; overflow-y: auto; width: 386px; overflow-x: hidden"
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link nav-icon"
+              href="#"
+              data-bs-toggle="dropdown"
+              @click.prevent="handleChatClick"
             >
-              <li class="dropdown-header">
-                <form @submit.prevent="search">
-                  <input
-                    class="form-control mr-sm-2"
-                    type="search"
-                    placeholder="Search..."
-                    aria-label="Search"
-                    v-model="searchQuery"
-                    @input="debounceSearch"
-                  />
-                </form>
-              </li>
-              <li>
-                <hr class="" />
-              </li>
-              <li v-if="searchQuery">
-                <template v-if="searchResults?.length > 0">
-                  <li
-                    class="notification-item p-2 d-flex gap-1 divide_sec"
-                    v-for="candidate in searchResults"
-                    :key="candidate.id"
-                  >
-                    <div>
-                      <img
-                        v-if="candidate.profile_photo"
-                        :src="getProfilePhotoUrl(candidate.profile_photo)"
-                        class="img-fluid"
-                        alt="Profile Photo"
-                         loading="eager"
-                      />
-                      <div
-                        class="else_profile"
-                        v-else
-                        v-html="getProfilePhotoUrl(candidate.profile_photo)"
-                      ></div>
-                    </div>
-                    <div class="ms-1">
-                      <h5
-                        class="text-capitalize chat-staff mb-0"
-                        style="color: #f6851d"
-                        @click="openChat(candidate)"
-                      >
-                        {{ candidate.first_name }} {{ candidate.last_name }}
-                      </h5>
-
-                      <span class="text-muted text-capitalize">{{
-                        candidate.position
-                      }}</span>
-                    </div>
-                    <hr class="" />
-                  </li>
-                </template>
-                <template v-else>
-                  <li>
-                    <h6 class="text-danger text-center">
-                      {{ errorMessage }}
-                    </h6>
-                  </li>
-                </template>
-              </li>
-              <li v-else>
-                <li
-               
-                class="notification-item p-2 d-flex gap-1 divide_sec cursor-pointer"
-                v-for="candidate in getCandidatesData"
-                :key="candidate.id" 
-              >
-                <div >
-                  <img
-                    v-if="candidate.profile_photo"
-                    :src="getProfilePhotoUrl(candidate.profile_photo)"
-                    class="img-fluid"
-                    alt="Profile Photo"
-                     loading="eager"
-                  />
-                  <div
-                    class="else_profile"
-                    v-else
-                    v-html="getProfilePhotoUrl(candidate.profile_photo)"
-                  ></div>
-                </div>
-                <div class="ms-1" @click="openChat(candidate)">
-                  <h5
-                    class="text-capitalize chat-staff mb-0"
-                    style="color: #f6851d"
-                    
-                  >
-                    {{ candidate.first_name }} {{ candidate.last_name }}
-                  </h5>
-
-                  <span class="text-muted text-capitalize">{{ candidate.possition }}</span>
-                </div>
-                <hr class="" />
-              </li>
-              </li>
-            </ul>
+              <i class="bi bi-chat-left-dots"></i>Message</a
+            >
           </li>
 
           <li class="nav-item dropdown">
-            <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" @click="markAllAsRead">
+            <a
+              class="nav-link nav-icon"
+              href="#"
+              data-bs-toggle="dropdown"
+              @click.prevent="handleNotificationClick"
+            >
               <i class="bi bi-bell"></i>
-              <span v-if="!dropdownOpen && unread_count > 0" class="badge bg-primary badge-number">
+              <span v-if="unread_count > 0" class="badge bg-primary badge-number">
                 {{ unread_count }}
-              </span>Notification
+              </span>
+              Notification
             </a>
-            <NotificationsAdmin/>
-            <!-- <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" @click.self="dropdownOpen = false" style="height:310px;    width: 266px;"  @scroll="onScroll"  ref="notificationDropdown">
-           
-               <li class="notification-item p-2 d-flex gap-1 text-danger">No Notification Found!</li>
-            </ul> -->
-            <!-- <ul
-  class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
-  @click.self="dropdownOpen = false"
-  style="height: 310px; width: 266px; overflow-x: scroll;"
-
-  ref="notificationDropdown"
->
-  <li v-if="notifications.length === 0" class="notification-item p-2 d-flex gap-1 text-danger">
-    {{ errorMessageNotification }}
-  </li>
-  <li v-for="(notification, index) in notifications" :key="index" class="notification-item p-2 d-flex gap-1">
-    <i class="bi bi-exclamation-circle text-warning"></i>
-    <div>
-      <h4>{{ notification.title }}</h4>
-      <p>{{ notification.message }}</p>
-      <p>{{ notification.time }}</p>
-    </div>
-  </li>
-  <li v-if="notifications.length < totalCount" class="p-2 text-center">
-    <button @click.stop="loadMore" class="btn btn-sm btn-primary">Read More</button>
-  </li>
-</ul> -->
           </li>
-          
+
           <!-- End Notification Nav -->
-          
-          <li class="cursor-pointer ">
-            <a class="dropdown-item d-flex align-items-center" href="https://recpal.co.uk/support/">
-              <i class="bi bi-brightness-low pe-2" ></i><span>Support</span>
+
+          <li class="cursor-pointer">
+            <a
+              class="dropdown-item d-flex align-items-center"
+              href="https://recpal.co.uk/support/"
+            >
+              <i class="bi bi-brightness-low pe-2"></i><span>Support</span>
             </a>
           </li>
           <li>
@@ -282,7 +184,7 @@
               <i class="bi bi-gear pe-2"></i><span> Settings</span>
             </router-link>
           </li>
-          <br/><br/>
+          <br /><br />
           <li>
             <hr class="" />
           </li>
@@ -309,13 +211,14 @@
                 class="rounded-circle profileAdminImg"
                 width="40"
                 loading="eager"
-              />   <span class="d-block">Admin</span>
+              />
+              <span class="d-block">Admin</span>
             </a>
             <!-- End Profile Image Icon -->
 
             <ul
               class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
-              style="width: 220px" 
+              style="width: 220px"
             >
               <li>
                 <a class="dropdown-item text-capitalize">
@@ -323,9 +226,8 @@
                   <!-- <span class="d-block">Admin</span> -->
                 </a>
               </li>
-             
-             
-<!-- 
+
+              <!-- 
               <li class="cursor-pointer my-1">
                 <a class="dropdown-item d-flex align-items-center">
                   <i class="bi bi-asterisk pe-2"></i><span>Activity Log</span></a
@@ -339,11 +241,14 @@
               </li> -->
 
               <li class="cursor-pointer my-1">
-                <router-link class="dropdown-item d-flex align-items-center" to="/dairy_notes"
-                  ><i class="bi bi-ban-fill pe-2"></i><span>Diary Notes</span></router-link
+                <router-link
+                  class="dropdown-item d-flex align-items-center"
+                  to="/dairy_notes"
+                  ><i class="bi bi-ban-fill pe-2"></i
+                  ><span>Diary Notes</span></router-link
                 >
               </li>
-<!-- 
+              <!-- 
               <li class="cursor-pointer my-1">
                 <router-link
                   class="dropdown-item text-capitalize d-flex align-items-center"
@@ -355,13 +260,11 @@
               <li class="cursor-pointer my-1">
                 <router-link
                   class="dropdown-item text-capitalize d-flex align-items-center"
-            :to="adminLink"
+                  :to="adminLink"
                   ><i class="bi bi-gear-wide pe-2"></i><span>Personal Settings</span>
                 </router-link>
-              </li> 
-         
+              </li>
 
-              
               <li>
                 <hr class="" />
               </li>
@@ -383,101 +286,6 @@
           </li>
           <!-- End Profile Nav -->
         </ul>
-        <div v-if="showChatBox" class="chat-box">
-          <div class="chat-container">
-            <div class="chat-header">
-              <div class="divide_sec d-flex">
-                <img
-                  v-if="selectedCandidate && selectedCandidate.profile_photo"
-                  :src="getProfilePhotoUrl(selectedCandidate.profile_photo)"
-                  class="img-fluid"
-                  alt="Profile Photo"
-                  loading="eager"
-                />
-                <div
-                  class="else_profile"
-                  v-else
-                  v-html="getProfilePhotoUrl(selectedCandidate ? selectedCandidate.profile_photo : '')"
-                ></div>
-                <h5 class="mb-0 text-capitalize d-flex align-items-center ms-2">
-                  {{ selectedCandidate?.first_name || '' }}
-                  {{ selectedCandidate?.last_name || '' }}
-                </h5>
-              </div>
-              <button class="btn btn-danger btn-sm" @click="closeChatBox">
-                <i class="bi bi-x-lg"></i>
-              </button>
-            </div>
-           
-            <div class="chat-messages" ref="chatMessages" @scroll="handleScroll">
-            
-              <div v-if="selectedCandidateMessages?.length >0"
-                v-for="message in selectedCandidateMessages" 
-                :key="message.id"
-                :class="{
-                  'chat-message-left': message.sender?.type === 'Candidate', 
-                  'chat-message-right': message.sender?.type === 'Merchant'
-                }"
-              >
-              
-                <div v-if="message.sender?.name && message?.is_read === true">
-                  <strong>{{ message.sender?.name || 'Unknown Receiver' }}</strong>
-                  <div>
-                    {{ message.content || 'No content' }}
-                  </div>
-                </div>
-            
-              
-                <div v-if="message.sender?.name && message?.is_read === false">
-                  <!--gh <strong>{{ message.sender?.name === message.sender?.name ? 'You' : message.sender?.name || 'Unknown Sender' }}</strong> -->
-                  <strong>
-                   
-                    {{ message.sender?.type === 'Merchant' && message.sender?.name  ? 'You' : message.sender?.name || 'Unknown Sender' }}
-                  </strong>
-                  <div>
-                  {{ message.content || 'No content' }}
-                </div>
-                </div>
-              </div>
-              
-             
-              <div v-else-if="selectedCandidateMessages?.length === 0 && !isLoading">
-                <div class="text-danger text-center">
-                  No Chat Found!
-                </div>
-              </div>
-            
-              
-              <div v-else-if="selectedCandidateMessages?.length === 0 && isLoading">
-                <div class="spinner-border  d-block m-auto" role="status">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div>
-            </div>
-            <div class="chat-input">
-              <input
-                ref="fileInput"
-                v-model="newMessage"
-                type="text"
-                class="form-control"
-                placeholder="Write a message..."
-                rows="3"
-                style="padding-bottom: 45px"
-                @keydown.enter="sendMessage"
-              />
-            </div>
-            <div class="px-3 pb-2 d-flex justify-content-end">
-              <!-- <button
-                class="btn btn-outline-secondary"
-                type="button"
-                @click="handleClick"
-              >
-                <i class="bi bi-paperclip"></i>
-              </button> -->
-              <button @click="sendMessage"  :disabled="!newMessage.trim() || sending" class="btn btn-primary flex-end">Send</button>
-            </div>
-          </div>
-        </div>
       </ul>
     </nav>
   </div>
@@ -486,10 +294,9 @@
 <script>
 import axios from "axios";
 // import ConfirmationAlert from "./Alerts/ConfirmationAlert.vue";
-import NotificationsAdmin from "../components/Notifiations/NotificationsAdmin.vue"
+
 import Swal from "sweetalert2";
 import logo from "../assets/logo.png";
-
 
 import { nextTick } from "vue";
 import LoaderVue from "./Loader/Loader.vue";
@@ -546,9 +353,7 @@ export default {
     };
   },
 
-  components: {
-    NotificationsAdmin
-  },
+  components: {},
   computed: {
     visibleNotifications() {
       return this.showAll ? this.notifications : this.notifications.slice(0, 2);
@@ -634,6 +439,13 @@ export default {
     //   }
   },
   methods: {
+    handleChatClick() {
+      this.$router.push("/chat");
+    },
+    handleNotificationClick() {
+      this.markAllAsRead();
+      this.$router.push("/notification");
+    },
     async loadMore() {
       this.currentPage++;
       await this.fetchNotifications();
@@ -1111,7 +923,7 @@ export default {
 <style scoped>
 /* Sidebar styles */
 #sidebar {
-  position: inherit; 
+  position: inherit;
   top: 0;
   left: 0;
   height: 100vh;
@@ -1171,7 +983,8 @@ ul.components li a {
   padding-left: 5px;
 }
 
-ul.components li a:hover {
+ul.components li a:hover,
+ul.components li a:active {
   background: #1b59f81a;
   color: #1b59f8;
   width: 193px;

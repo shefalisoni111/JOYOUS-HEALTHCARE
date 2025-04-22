@@ -2,7 +2,7 @@
   <div>
     <!-- <Navbar /> -->
 
-    <!-- <router-view /> -->
+    <router-view />
   </div>
 </template>
 <script>
@@ -50,30 +50,10 @@ export default {
   height: 100vh;
 }
 
-.candidateTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
 .btn-primary {
   border-radius: 4px;
 }
 
-.nav-pills .nav-link.active,
-.nav-pills .show > .nav-link {
-  background-color: transparent;
-  border: 1px solid green;
-  border-radius: 22px;
-  color: green;
-}
-
-.nav-pills .nav-link {
-  background-color: transparent;
-  border: 1px solid #0d6efd;
-  border-radius: 22px;
-}
-ul.nav-pills {
-  height: 53px;
-  border-bottom: 1px solid #b8b1b1;
-}
 table th {
   background-color: #ff5f30;
 }

@@ -1,268 +1,440 @@
 <template>
   <div>
     <div class="container-fluid p-0">
-      <div id="main">
-        <div class="pagetitle d-flex justify-content-between px-2">
-          <div class="py-3">
-            <ol class="breadcrumb my-2">
-              <li class="breadcrumb-item active text-uppercase fs-6">
-                <router-link class="nav-link d-inline" aria-current="page" to="/home"
-                  >Dashboard</router-link
-                >
-                /
-
-                <span class="color-fonts">{{ activeTabName }} Shifts</span>
-              </li>
-            </ol>
-          </div>
+      <div id="main" class="d-flex" style="background: #f8f8ff">
+        <div>
+          <Navbar />
         </div>
-
-        <div class="container-fluid mt-3">
-          <div class="row">
-            <div class="col-12">
-              <div class="">
-                <div>
-                  <ul
-                    class="nav nav-pills mb-3 d-flex justify-content-between mb-3"
-                    id="pills-tab"
-                    role="tablist"
+        <div class="col-10 pt-3 ps-5">
+          <div class="pagetitle d-flex justify-content-between px-2">
+            <div class="py-3">
+              <ol class="breadcrumb my-2">
+                <li class="breadcrumb-item active fs-6">
+                  <a
+                    class="nav-link d-inline fs-4 fw-bolder"
+                    style="color: #000000; background: none"
+                    >Shift</a
                   >
-                    <div>
-                      <li class="nav-item d-flex gap-2" role="presentation">
-                        <button
-                          class="nav-link"
-                          :class="{ active: activeTab === index }"
-                          aria-selected="true"
-                          type="button"
-                          role="tab"
-                          v-for="(tab, index) in tabs"
-                          :key="index"
-                          @click="selectTab(index)"
-                        >
-                          {{ tab.name }}
-                        </button>
-                      </li>
-                    </div>
 
-                    <div class="d-flex gap-2">
-                      <div>
-                        <form @submit.prevent="search">
-                          <input
-                            class="form-control mr-sm-2"
-                            type="search"
-                            placeholder="Search..."
-                            aria-label="Search"
-                            v-model="searchQuery"
-                            @input="debounceSearch"
-                          />
-                        </form>
-                      </div>
-                      <div>
-                        <button
-                          v-if="activeTab === 0"
-                          type="button"
-                          class="btn btn-outline-success text-nowrap"
-                          data-bs-toggle="modal"
-                          data-bs-target="#addVacancies"
-                          data-bs-whatever="@mdo"
-                        >
-                          + Add Shift
-                        </button>
-                      </div>
-                    </div>
-                  </ul>
-                  <div v-if="!searchQuery">
-                    <component :is="activeComponent"></component>
-                  </div>
+                  <!-- <span class="color-fonts">{{ activeTabName }} Shifts</span> -->
+                </li>
+              </ol>
+            </div>
+            <div class="d-flex align-items-center">
+              <button
+                v-if="activeTab === 0"
+                type="button"
+                class="btn btn-lg text-white"
+                style="background-color: #f9944b"
+                data-bs-toggle="modal"
+                data-bs-target="#addVacancies"
+                data-bs-whatever="@mdo"
+              >
+                + Add Shift
+              </button>
+            </div>
+          </div>
 
-                  <div v-if="searchQuery">
-                    <table class="table candidateTable">
-                      <thead>
-                        <tr>
-                          <th scope="col">ID</th>
-                          <th scope="col">#RefCode</th>
-                          <th scope="col">Vendor</th>
-                          <th scope="col">Site</th>
-                          <th scope="col">Job Title</th>
-                          <th scope="col">Date</th>
-                          <th scope="col">Shift</th>
-                          <th scope="col" class="withShow">Staff Required</th>
-                          <th scope="col">Notes</th>
-                          <th scope="col">Publish</th>
-                          <th scope="col" class="text-center">All</th>
-                          <th scope="col">Applied</th>
-                          <th scope="col">Assigned</th>
-                          <th scope="col">Rejected</th>
-                          <th scope="col">Created by</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody v-if="paginationVacancySearch?.length > 0">
-                        <tr v-for="data in paginationVacancySearch" :key="data.id">
-                          <td v-text="data.id"></td>
-                          <td v-text="data.ref_code"></td>
-                          <td>
-                            <router-link
-                              class="text-capitalize text-black text-decoration-underline fw-bold"
-                              :to="{
-                                name: 'SingleClientProfile',
-                                params: { id: data.client_id },
-                              }"
-                            >
-                              {{ data.client }}
-                            </router-link>
-                          </td>
-                          <td v-text="data.site"></td>
-                          <td v-text="data.job_title"></td>
+          <div class="pe-0">
+            <ul
+              class="nav nav-pills mb-3 d-flex justify-content-between mb-3 px-0"
+              id="pills-tab"
+              role="tablist"
+            >
+              <div>
+                <li class="nav-item d-flex gap-2" role="presentation">
+                  <button
+                    class="nav-link"
+                    :class="{ active: activeTab === index }"
+                    aria-selected="true"
+                    type="button"
+                    role="tab"
+                    v-for="(tab, index) in tabs"
+                    :key="index"
+                    @click="selectTab(index)"
+                  >
+                    {{ tab.name }}
+                  </button>
+                </li>
+              </div>
 
-                          <td class="widthDefine">
-                            <span v-for="(date, index) in data.dates" :key="index">
-                              {{ date }}
-
-                              <template v-if="index !== data.dates.length - 1"
-                                >,
-                              </template>
-                            </span>
-                          </td>
-
-                          <td v-text="data.shift"></td>
-                          <td class="withShow text-center">
-                            {{ data.staff_required === null ? 0 : data.staff_required }}
-                          </td>
-                          <td v-text="data.notes"></td>
-
-                          <td>
-                            <i
-                              data-bs-toggle="modal"
-                              data-bs-target="#publishVacancy"
-                              data-bs-whatever="@mdo"
-                              v-if="data.publish === 'true'"
-                              class="btn btn-success bi bi-check-circle-fill"
-                              :class="{
-                                'btn-success': data.publish === 'true',
-                                'bi-check-circle-fill': data.publish === 'true',
-                                'bi-bell': data.publish !== 'true',
-                              }"
-                              @click="openPublished(data.id)"
-                            ></i>
-                            <i
-                              data-bs-toggle="modal"
-                              data-bs-target="#publishVacancy"
-                              data-bs-whatever="@mdo"
-                              @click="openPublished(data.id)"
-                              v-else
-                              class="btn btn-success bi bi-bell"
-                            ></i>
-                          </td>
-
-                          <td class="text-center">
-                            <button
-                              type="button"
-                              class="btn text-nowrap"
-                              data-bs-toggle="modal"
-                              data-bs-target="#allCandidateVacancyList"
-                              data-bs-whatever="@mdo"
-                              @click="openAllApplied(data.id)"
-                            >
-                              <span class="rounded-circle">{{ data.all_candidate }}</span>
-                            </button>
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              class="btn text-nowrap"
-                              data-bs-toggle="modal"
-                              data-bs-target="#appliedVacancy"
-                              data-bs-whatever="@mdo"
-                              @click="openPopup(data.id)"
-                            >
-                              <span class="rounded-circle">{{ data.applied }}</span>
-                            </button>
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              class="btn text-nowrap"
-                              data-bs-toggle="modal"
-                              data-bs-target="#assignedVacancyList"
-                              data-bs-whatever="@mdo"
-                              @click="openAssigned(data.id)"
-                            >
-                              <span class="rounded-circle">{{ data.assigned }}</span>
-                            </button>
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              class="btn text-nowrap"
-                              data-bs-toggle="modal"
-                              data-bs-target="#rejectedVacancyList"
-                              data-bs-whatever="@mdo"
-                              @click="openRejected(data.id)"
-                            >
-                              <span class="rounded-circle">{{ data.rejected }}</span>
-                            </button>
-                          </td>
-                          <td v-text="data.create_by_and_time.split(' ')[0]"></td>
-
-                          <td class="cursor-pointer">
-                            <i
-                              class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
-                              data-bs-toggle="modal"
-                              data-bs-target="#editVacancy"
-                              data-bs-whatever="@mdo"
-                              @click="editVacancyId(data.id)"
-                            ></i>
-                            &nbsp;&nbsp;
-                            <button
-                              class="btn btn-outline-danger text-nowrap"
-                              v-on:click="vacancyDeleteMethod(data.id)"
-                            >
-                              In-Active
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                      <tbody v-else>
-                        <tr>
-                          <td colspan="15" class="text-danger text-center">
-                            No Match Found !!
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+              <div class="d-flex gap-2">
+                <div>
+                  <form
+                    @submit.prevent="search"
+                    class="d-flex align-items-center position-relative"
+                  >
+                    <input
+                      class="form-control form-control-lg"
+                      type="search"
+                      placeholder="Search..."
+                      aria-label="Search"
+                      v-model="searchQuery"
+                      @input="debounceSearch"
+                    />
+                    <span
+                      class="position-absolute"
+                      style="right: 10px; top: 50%; transform: translateY(-50%)"
+                    >
+                      <img
+                        src="../../assets/Search.png"
+                        class="img-fluid pe-2"
+                        alt="Search"
+                      />
+                    </span>
+                  </form>
                 </div>
               </div>
+            </ul>
+            <div v-if="!searchQuery">
+              <component :is="activeComponent"></component>
+            </div>
+
+            <div v-if="searchQuery">
+              <table class="table candidateTable">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 4%">
+                      ID
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col" style="width: 6%">
+                      #RefCode
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col" style="width: 4%">
+                      Vendor
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col" style="width: 4%">
+                      Site
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col" style="width: 4%">
+                      Job Title
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Date
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Shift
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col" class="withShow">
+                      Staff Required
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Notes
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Publish
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col" class="text-center">
+                      All
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Applied
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Assigned
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Rejected
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Created by
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Action
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                  </tr>
+                </thead>
+                <tbody v-if="paginationVacancySearch?.length > 0">
+                  <tr v-for="data in paginationVacancySearch" :key="data.id">
+                    <td v-text="data.id"></td>
+                    <td v-text="data.ref_code"></td>
+                    <td>
+                      <router-link
+                        class="text-capitalize text-black text-decoration-underline fw-bold"
+                        :to="{
+                          name: 'SingleClientProfile',
+                          params: { id: data.client_id },
+                        }"
+                      >
+                        {{ data.client }}
+                      </router-link>
+                    </td>
+                    <td v-text="data.site"></td>
+                    <td v-text="data.job_title"></td>
+
+                    <td class="widthDefine">
+                      <span v-for="(date, index) in data.dates" :key="index">
+                        {{ date }}
+
+                        <template v-if="index !== data.dates.length - 1">, </template>
+                      </span>
+                    </td>
+
+                    <td v-text="data.shift"></td>
+                    <td class="withShow text-center">
+                      {{ data.staff_required === null ? 0 : data.staff_required }}
+                    </td>
+                    <td v-text="data.notes"></td>
+
+                    <td>
+                      <i
+                        data-bs-toggle="modal"
+                        data-bs-target="#publishVacancy"
+                        data-bs-whatever="@mdo"
+                        v-if="data.publish === 'true'"
+                        class="btn btn-success bi bi-check-circle-fill"
+                        :class="{
+                          'btn-success': data.publish === 'true',
+                          'bi-check-circle-fill': data.publish === 'true',
+                          'bi-bell': data.publish !== 'true',
+                        }"
+                        @click="openPublished(data.id)"
+                      ></i>
+                      <i
+                        data-bs-toggle="modal"
+                        data-bs-target="#publishVacancy"
+                        data-bs-whatever="@mdo"
+                        @click="openPublished(data.id)"
+                        v-else
+                        class="btn btn-success bi bi-bell"
+                      ></i>
+                    </td>
+
+                    <td class="text-center">
+                      <button
+                        type="button"
+                        class="btn text-nowrap"
+                        data-bs-toggle="modal"
+                        data-bs-target="#allCandidateVacancyList"
+                        data-bs-whatever="@mdo"
+                        @click="openAllApplied(data.id)"
+                      >
+                        <span class="rounded-circle">{{ data.all_candidate }}</span>
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        type="button"
+                        class="btn text-nowrap"
+                        data-bs-toggle="modal"
+                        data-bs-target="#appliedVacancy"
+                        data-bs-whatever="@mdo"
+                        @click="openPopup(data.id)"
+                      >
+                        <span class="rounded-circle">{{ data.applied }}</span>
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        type="button"
+                        class="btn text-nowrap"
+                        data-bs-toggle="modal"
+                        data-bs-target="#assignedVacancyList"
+                        data-bs-whatever="@mdo"
+                        @click="openAssigned(data.id)"
+                      >
+                        <span class="rounded-circle">{{ data.assigned }}</span>
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        type="button"
+                        class="btn text-nowrap"
+                        data-bs-toggle="modal"
+                        data-bs-target="#rejectedVacancyList"
+                        data-bs-whatever="@mdo"
+                        @click="openRejected(data.id)"
+                      >
+                        <span class="rounded-circle">{{ data.rejected }}</span>
+                      </button>
+                    </td>
+                    <td v-text="data.create_by_and_time.split(' ')[0]"></td>
+
+                    <td class="cursor-pointer">
+                      <i
+                        class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editVacancy"
+                        data-bs-whatever="@mdo"
+                        @click="editVacancyId(data.id)"
+                      ></i>
+                      &nbsp;&nbsp;
+                      <button
+                        class="btn btn-outline-danger text-nowrap"
+                        v-on:click="vacancyDeleteMethod(data.id)"
+                      >
+                        In-Active
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody v-else>
+                  <tr>
+                    <td colspan="15" class="text-danger text-center">
+                      No Match Found !!
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
     </div>
     <div
-      class="mt-3"
+      class="mt-3 d-flex justify-content-between"
       style="text-align: right"
       v-if="searchQuery && searchResults?.length > 8"
     >
-      <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
-      </button>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="currentPage--"
-      >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= searchResults.length"
-        @click="currentPage++"
-      >
-        Next
-      </button>
+      <div class="d-flex">
+        <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+        <button
+          class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+          style="color: #00000080"
+          type="button"
+          id="recordsPerPageDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ itemsPerPage }} Records
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+              >100 Records</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="d-flex align-items-center">
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === 1"
+          @click="changePage(currentPage - 1)"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+          style="background: #ffffff; color: #f9944b"
+        >
+          {{ currentPage }}
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === totalPages"
+          @click="changePage(currentPage + 1)"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
     </div>
     <EditVacancy
       :vacancyId="selectedVacancyId || 0"
@@ -289,6 +461,7 @@ import RejectedVacancyList from "../modals/Vacancy/RejectedVacancyList.vue";
 import AllVacancyCandidateList from "../modals/Vacancy/AllVacancyCandidateList.vue";
 import AddVacancy from "../modals/Vacancy/AddVacancy.vue";
 import Swal from "sweetalert2";
+import Navbar from "../Navbar.vue";
 const axiosInstance = axios.create({
   headers: {
     "Cache-Control": "no-cache",
@@ -307,7 +480,7 @@ export default {
       allVacancyCount: [],
       errorMessage: "",
       tabs: [
-        { name: "All", component: "AllVacancyDisplay" },
+        { name: "All Shift", component: "AllVacancyDisplay" },
         { name: "Active ", component: "AllVacancyList" },
         { name: "In-Active ", component: "InActiveVacancyList" },
       ],
@@ -335,6 +508,7 @@ export default {
     InActiveVacancyList,
     AllVacancyDisplay,
     EditVacancy,
+    Navbar,
     AddVacancy,
     PublishedVacancy,
     AppliedVacancyList,
@@ -356,6 +530,10 @@ export default {
     },
     setActiveTabNameOnLoad() {
       this.activeTabName = this.tabs[this.activeTab].name;
+    },
+    async changePage(page) {
+      this.currentPage = page;
+      await this.search();
     },
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
@@ -662,14 +840,17 @@ export default {
 }
 #main {
   transition: all 0.3s;
-  padding-top: 63px;
-  background-color: #fdce5e17;
 }
 .main-content {
   transition: all 0.3s;
 }
 .bg-define {
   background-color: #fdce5e17;
+}
+ul.nav-pills .nav-item {
+  background: #ffffff;
+  padding: 5px 10px 5px 10px;
+  border-radius: 50px;
 }
 .color-fonts {
   color: #ff5f30;
@@ -700,39 +881,34 @@ export default {
 a[data-v-507f63b7] {
   text-decoration: none;
 }
-.candidateTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
+
 .btn-primary {
   border-radius: 4px;
 }
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  background-color: transparent;
-  border: 1px solid green;
-  border-radius: 22px;
-  color: green;
+  background: #000000;
+  width: 100;
+  height: 37;
+  color: #fff;
+  border-radius: 13px;
+  padding-top: 10px;
+  padding-right: 15px;
+  padding-bottom: 11px;
+  padding-left: 15px;
 }
 
-.nav-pills .nav-link {
-  background-color: transparent;
-  border: 1px solid #0d6efd;
-  border-radius: 22px;
+.nav-link,
+.nav-link:hover,
+.nav-link:focus {
+  color: #667085;
 }
-
-table th {
-  background-color: #ff5f30;
-}
-.nav-pills .nav-link {
-  background-color: transparent;
-  border: 1px solid #ff5722;
-  border-radius: 22px;
-  color: #ff5722;
-}
-button.nav-link > li.nav-item {
-  border-bottom: 2px solid red;
-  padding-bottom: 5px;
+.nav-pills {
+  background: #f8f8ff;
+  padding: 10px;
+  border-radius: 20px;
+  border-width: 1px;
 }
 
 .form-select {

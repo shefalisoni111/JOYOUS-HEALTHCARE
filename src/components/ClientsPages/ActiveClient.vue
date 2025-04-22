@@ -5,15 +5,87 @@
         <thead>
           <tr>
             <!-- <th scope="col">ID</th> -->
-            <th scope="col">#RefCode</th>
-            <th scope="col">Client Name</th>
-            <th scope="col" style="width: 10%">Jobs</th>
-            <th scope="col" style="width: 10%">Address</th>
-            <th scope="col">PhoneNumber</th>
-            <th scope="col" style="width: 10%">Email</th>
-            <th scope="col">Status</th>
-            <th scope="col">Portal Access</th>
-            <th scope="col">Action</th>
+            <th scope="col">
+              #RefCode
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Client Name
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col" style="width: 10%">
+              Jobs
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col" style="width: 10%">
+              Address
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              PhoneNumber
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col" style="width: 10%">
+              Email
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Status
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Portal Access
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Action
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
           </tr>
         </thead>
         <tbody v-if="paginateCandidates?.length > 0">
@@ -121,48 +193,67 @@
         </tbody>
       </table>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="getClientDetail?.length >= 10">
+    <div
+      class="mx-3 d-flex justify-content-between"
+      style="text-align: right"
+      v-if="getClientDetail?.length >= 10"
+    >
       <!-- <button class="btn btn-outline-dark btn-sm">
         {{ getClientDetail.length }} Records Per Page
       </button> -->
-      <button
-        class="btn btn-sm btn-primary dropdown-toggle"
-        type="button"
-        id="recordsPerPageDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        {{ itemsPerPage }} Records
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
-        </li>
-      </ul>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="changePage(currentPage - 1)"
-      >
-        Previous
-      </button>
-      &nbsp;&nbsp;
-      <span>{{ currentPage }} of {{ totalPages }}</span>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage === totalPages"
-        @click="changePage(currentPage + 1)"
-      >
-        Next
-      </button>
+      <div class="d-flex">
+        <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+        <button
+          class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+          style="color: #00000080"
+          type="button"
+          id="recordsPerPageDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ itemsPerPage }} Records
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+              >100 Records</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="d-flex align-items-center">
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === 1"
+          @click="changePage(currentPage - 1)"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+          style="background: #ffffff; color: #f9944b"
+        >
+          {{ currentPage }}
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === totalPages"
+          @click="changePage(currentPage + 1)"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
     </div>
     <EditClientModal
       :clientID="selectedClientID || 0"
@@ -300,6 +391,7 @@ export default {
         };
         const response = await axios.get(`${VITE_API_URL}/client_filter`, { params });
         this.getClientDetail = response.data.data;
+        this.totalPages = Math.ceil(response.data.client_filter / this.itemsPerPage);
         // this.currentPage = response.data.current_page;
         // this.totalPages = response.data.total_pages;
         // this.totalCount = response.data.clients_count;

@@ -1,508 +1,545 @@
 <template>
   <div>
     <!-- <Navbar /> -->
-    <div class="container-fluid">
-      <div id="main">
-        <div class="pagetitle d-flex justify-content-between px-2">
-          <div class="py-3">
-            <ol class="breadcrumb mb-1">
-              <li class="breadcrumb-item active text-uppercase fs-6">
-                <router-link class="nav-link d-inline" aria-current="page" to="/home"
-                  >Dashboard</router-link
-                >
-                / <span class="color-fonts">Weekly Timesheet</span>
-              </li>
-            </ol>
-          </div>
-        </div>
-        <div class="row p-3">
-          <div class="full-page-calendar pt-1 pb-0">
-            <div class="d-flex justify-content-between mb-3">
-              <div class="calendar-header align-items-center">
-                <span
-                  v-if="currentView === 'weekly' && startDate && endDate"
-                  class="fw-bold"
-                >
-                  {{
-                    "Monday " +
-                    formatDate(startDate) +
-                    " to Sunday " +
-                    formatDate(endDate)
-                  }} </span
-                >&nbsp; &nbsp; &nbsp;&nbsp;
-                <div class="d-flex align-items-center fs-4">
-                  <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
-                  <i class="bi bi-calendar2-check-fill"></i>
-                  <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
-                </div>
-              </div>
-              <button
-                type="button"
-                class="btn btn-outline-success text-nowrap"
-                @click="toggleFilters"
-              >
-                <i class="bi bi-funnel"></i>
-                Show Filters
-              </button>
+    <div class="">
+      <div id="main" class="main d-flex">
+        <div class=""><Navbar /></div>
+        <div class="p-3">
+          <div class="pagetitle d-flex justify-content-between px-2">
+            <div class="py-3">
+              <!-- <ol class="breadcrumb mb-1">
+                <li class="breadcrumb-item active text-uppercase fs-6">
+                  <router-link class="nav-link d-inline" aria-current="page" to="/home"
+                    >Dashboard</router-link
+                  >
+                  / <span class="color-fonts">Weekly Timesheet</span>
+                </li>
+              </ol> -->
+              <ol class="breadcrumb mb-1">
+                <li class="breadcrumb-item active">
+                  <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                    >Timesheet</a
+                  >
+                  <p>
+                    <router-link
+                      class="nav-link d-inline fw-bolder"
+                      style="color: #000000"
+                      aria-current="page"
+                      to="/WeeklyTimeSheet"
+                      >Weekly Timesheet</router-link
+                    >
+                    / Custom Timesheet / Signed Timesheet
+                  </p>
+                </li>
+              </ol>
             </div>
-            <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
-              <div class="d-flex gap-2">
-                <div></div>
-
-                <select
-                  v-model="selectedSiteName"
-                  id="selectBusinessUnit"
-                  @change="filterData"
-                >
-                  <option value="" disabled>All Site</option>
-                  <option
-                    v-for="option in businessUnit"
-                    :key="option.id"
-                    :value="option.id"
-                    placeholder="Select BusinessUnit"
-                  >
-                    {{ option.site_name }}
-                  </option>
-                </select>
-
-                <select
-                  v-model="selectedCandidate"
-                  id="selectCandidateList"
-                  @change="filterData"
-                >
-                  <option value="" disabled>All Staff</option>
-                  <option
-                    v-for="option in candidateLists"
-                    :key="option.id"
-                    :value="option.id"
-                  >
-                    {{ option.full_name }}
-                  </option>
-                </select>
-              </div>
-              <div>
+          </div>
+          <div class="row p-3">
+            <div class="full-page-calendar pt-1 pb-0">
+              <div class="d-flex justify-content-between mb-3">
+                <div class="calendar-header align-items-center">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <i
+                      class="bi bi-caret-left-fill"
+                      @click="moveToPrevious"
+                      style="cursor: pointer"
+                    ></i>
+                    &nbsp;
+                    <img
+                      src="../../assets/calender.png"
+                      class="img-fluid pe-2"
+                      alt="calender"
+                      loading="eager"
+                    />
+                    &nbsp;
+                    <span class="fw-bold fs-5">
+                      {{ formatMonthYear(currentDate) }}
+                    </span>
+                    &nbsp;
+                    <i
+                      class="bi bi-caret-right-fill"
+                      @click="moveToNext"
+                      style="cursor: pointer"
+                    ></i>
+                  </div>
+                </div>
                 <button
-                  @click="resetFilter"
-                  class="btn btn-secondary"
-                  :disabled="!selectedSiteName && !selectedCandidate"
+                  type="button"
+                  class="btn btn-outline-success text-nowrap"
+                  @click="toggleFilters"
                 >
-                  Reset Filters
+                  <i class="bi bi-funnel"></i>
+                  Show Filters
                 </button>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-3">
-                <div class="card border-0 bg-transparent">
-                  <div class="row g-0">
-                    <div class="d-flex">
-                      <div class="d-flex align-items-center">
-                        <i class="bi bi-check-circle-fill text-success fs-1"></i>
-                      </div>
-                      <div class="">
-                        <div class="card-body">
-                          <h5 class="card-title fw-bold">#Approved Timesheets</h5>
-                          <!-- <p class="card-text fw-bold">
-                            <span class="text-success">Hours</span> 24.00
-                            <span class="text-info">Amount</span> £324.00
-                          </p> -->
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="card border-0 bg-transparent">
-                  <div class="row g-0">
-                    <div class="d-flex">
-                      <div class="d-flex align-items-center">
-                        <i class="bi bi-file-spreadsheet text-success fs-1"></i>
-                      </div>
-                      <div class="">
-                        <div class="card-body">
-                          <h5 class="card-title fw-bold">#Invoiced Timesheets</h5>
-                          <!-- <p class="card-text fw-bold">
-                            <span class="text-success">Hours</span> 0.00
-                            <span class="text-info">Amount</span> £0.00
-                          </p> -->
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="card border-0 bg-transparent">
-                  <div class="row g-0">
-                    <div class="d-flex">
-                      <div class="d-flex align-items-center">
-                        <i class="bi bi-exclamation-triangle-fill fs-1 text-warning"></i>
-                      </div>
-                      <div class="">
-                        <div class="card-body">
-                          <h5 class="card-title fw-bold">#Pending Timesheets</h5>
-                          <!-- <p class="card-text fw-bold">
-                            <span class="text-success">Hours</span> 11.50
-                            <span class="text-info">Amount</span> £126.50
-                          </p> -->
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="card border-0 bg-transparent">
-                  <div class="row g-0">
-                    <div class="d-flex">
-                      <div class="d-flex align-items-center">
-                        <i
-                          class="bi bi-file-earmark-spreadsheet-fill text-success fs-1"
-                        ></i>
-                      </div>
-                      <div class="">
-                        <div class="card-body">
-                          <h5 class="card-title fw-bold">#All Timesheets</h5>
-                          <!-- <p class="card-text fw-bold">
-                            <span class="text-success">Hours</span> 35.50
-                            <span class="text-info">Amount</span> £450.50
-                          </p> -->
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+              <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
+                <div class="d-flex gap-2">
+                  <div></div>
 
-            <!-- Modal -->
+                  <select
+                    v-model="selectedSiteName"
+                    id="selectBusinessUnit"
+                    @change="filterData"
+                  >
+                    <option value="" disabled>All Site</option>
+                    <option
+                      v-for="option in businessUnit"
+                      :key="option.id"
+                      :value="option.id"
+                      placeholder="Select BusinessUnit"
+                    >
+                      {{ option.site_name }}
+                    </option>
+                  </select>
 
-            <div v-if="selectedDate !== null" class="modal">
-              <div class="modal-content">
-                <div class="close d-flex justify-content-between my-3">
-                  <h3 class="d-flex align-items-center mb-0">
-                    Edit Assigned Shift -BOOKING CODE
-                  </h3>
-                  <span class="close text-white" @click="closeModal">&times;</span>
+                  <select
+                    v-model="selectedCandidate"
+                    id="selectCandidateList"
+                    @change="filterData"
+                  >
+                    <option value="" disabled>All Staff</option>
+                    <option
+                      v-for="option in candidateLists"
+                      :key="option.id"
+                      :value="option.id"
+                    >
+                      {{ option.full_name }}
+                    </option>
+                  </select>
                 </div>
+                <div>
+                  <button
+                    @click="resetFilter"
+                    class="btn btn-secondary"
+                    :disabled="!selectedSiteName && !selectedCandidate"
+                  >
+                    Reset Filters
+                  </button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-3">
+                  <div class="card border-0 bg-transparent">
+                    <div class="row g-0">
+                      <div class="d-flex">
+                        <div class="d-flex align-items-center">
+                          <i class="bi bi-check-circle-fill text-success fs-1"></i>
+                        </div>
+                        <div class="">
+                          <div class="card-body">
+                            <h5 class="card-title fw-bold">#Approved Timesheets</h5>
+                            <!-- <p class="card-text fw-bold">
+                              <span class="text-success">Hours</span> 24.00
+                              <span class="text-info">Amount</span> £324.00
+                            </p> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="card border-0 bg-transparent">
+                    <div class="row g-0">
+                      <div class="d-flex">
+                        <div class="d-flex align-items-center">
+                          <i class="bi bi-file-spreadsheet text-success fs-1"></i>
+                        </div>
+                        <div class="">
+                          <div class="card-body">
+                            <h5 class="card-title fw-bold">#Invoiced Timesheets</h5>
+                            <!-- <p class="card-text fw-bold">
+                              <span class="text-success">Hours</span> 0.00
+                              <span class="text-info">Amount</span> £0.00
+                            </p> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="card border-0 bg-transparent">
+                    <div class="row g-0">
+                      <div class="d-flex">
+                        <div class="d-flex align-items-center">
+                          <i
+                            class="bi bi-exclamation-triangle-fill fs-1 text-warning"
+                          ></i>
+                        </div>
+                        <div class="">
+                          <div class="card-body">
+                            <h5 class="card-title fw-bold">#Pending Timesheets</h5>
+                            <!-- <p class="card-text fw-bold">
+                              <span class="text-success">Hours</span> 11.50
+                              <span class="text-info">Amount</span> £126.50
+                            </p> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="card border-0 bg-transparent">
+                    <div class="row g-0">
+                      <div class="d-flex">
+                        <div class="d-flex align-items-center">
+                          <i
+                            class="bi bi-file-earmark-spreadsheet-fill text-success fs-1"
+                          ></i>
+                        </div>
+                        <div class="">
+                          <div class="card-body">
+                            <h5 class="card-title fw-bold">#All Timesheets</h5>
+                            <!-- <p class="card-text fw-bold">
+                              <span class="text-success">Hours</span> 35.50
+                              <span class="text-info">Amount</span> £450.50
+                            </p> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-                <h4 class="text-capitalize">{{ getCandidateName() }}</h4>
-                <p>You clicked on {{ selectedDate }}</p>
-                <p>CandidateId: {{ selectedCandidateId }}</p>
-                <!-- Pass initialDate to the Calendar component -->
-                <!-- <WeekTimeSheetEdit
-                  :initialDate="selectedDate"
-                  :candidateId="selectedCandidateId"
-                  @closeModal="closeModal"
-                  :vacancyId="vacancyId"
-                  :paginatedTimesheets="paginatedTimesheets"
-                /> -->
+              <!-- Modal -->
+
+              <div v-if="selectedDate !== null" class="modal">
+                <div class="modal-content">
+                  <div class="close d-flex justify-content-between my-3">
+                    <h3 class="d-flex align-items-center mb-0">
+                      Edit Assigned Shift -BOOKING CODE
+                    </h3>
+                    <span class="close text-white" @click="closeModal">&times;</span>
+                  </div>
+
+                  <h4 class="text-capitalize">{{ getCandidateName() }}</h4>
+                  <p>You clicked on {{ selectedDate }}</p>
+                  <p>CandidateId: {{ selectedCandidateId }}</p>
+                  <!-- Pass initialDate to the Calendar component -->
+                  <!-- <WeekTimeSheetEdit
+                    :initialDate="selectedDate"
+                    :candidateId="selectedCandidateId"
+                    @closeModal="closeModal"
+                    :vacancyId="vacancyId"
+                    :paginatedTimesheets="paginatedTimesheets"
+                  /> -->
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-12 wrapper-timeSheet">
-            <table class="table candidateTable">
-              <thead>
-                <tr>
-                  <th rowspan="3">ID</th>
-                  <th rowspan="3" style="width: 10%">Name</th>
-                  <th rowspan="3">Site</th>
-                  <th rowspan="3">Shift</th>
-                  <th>
-                    <div class="calendar-grid">
-                      <div v-for="day in daysOfWeek" :key="day" class="day-header">
-                        {{ day }}
-                      </div>
-                      <div v-for="date in selectedDateRow" :key="date" class="day-header">
-                        {{ formatDate(date) }}
-                        <!-- <tr>
-                        <th>Start</th>
-                        <th>End</th>
-                        <th>Total</th>
-                      </tr> -->
-                        <!-- <div class="column">
-                        <div class="column-header">Start</div>
-                      </div>
-                      <div class="column">
-                        <div class="column-header">End</div>
-                      </div>
-                      <div class="column">
-                        <div class="column-header">Total</div>
-                      </div> -->
+            <div class="col-12 wrapper-timeSheet">
+              <table class="table candidateTable">
+                <thead>
+                  <tr>
+                    <th rowspan="3">ID</th>
+                    <th rowspan="3" style="width: 10%">Name</th>
+                    <th rowspan="3">Site</th>
+                    <th rowspan="3">Shift</th>
+                    <th>
+                      <div class="calendar-grid">
+                        <div v-for="day in daysOfWeek" :key="day" class="day-header">
+                          {{ day }}
+                        </div>
                         <div
-                          class="additional-column day-header d-flex justify-content-center"
+                          v-for="date in selectedDateRow"
+                          :key="date"
+                          class="day-header"
                         >
-                          <tr>
-                            <th
-                              class="additional-header"
-                              style="border-right: 1px solid #e1d4d4; padding-right: 5px"
-                            >
-                              Start
-                            </th>
-                            <th
-                              class="additional-header"
-                              style="
-                                border-right: 1px solid #e1d4d4;
-                                padding-left: 5px;
-                                padding-right: 5px;
-                              "
-                            >
-                              End
-                            </th>
-                            <th class="additional-header" style="padding-left: 5px">
-                              Total
-                            </th>
-                          </tr>
+                          {{ formatDate(date) }}
+                          <!-- <tr>
+                          <th>Start</th>
+                          <th>End</th>
+                          <th>Total</th>
+                        </tr> -->
+                          <!-- <div class="column">
+                          <div class="column-header">Start</div>
+                        </div>
+                        <div class="column">
+                          <div class="column-header">End</div>
+                        </div>
+                        <div class="column">
+                          <div class="column-header">Total</div>
+                        </div> -->
+                          <div
+                            class="additional-column day-header d-flex justify-content-center"
+                          >
+                            <tr>
+                              <th
+                                class="additional-header"
+                                style="
+                                  border-right: 1px solid #e1d4d4;
+                                  padding-right: 5px;
+                                "
+                              >
+                                Start
+                              </th>
+                              <th
+                                class="additional-header"
+                                style="
+                                  border-right: 1px solid #e1d4d4;
+                                  padding-left: 5px;
+                                  padding-right: 5px;
+                                "
+                              >
+                                End
+                              </th>
+                              <th class="additional-header" style="padding-left: 5px">
+                                Total
+                              </th>
+                            </tr>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </th>
+                    </th>
 
-                  <th rowspan="3">Total Hours</th>
-                  <th rowspan="3">Total Cost</th>
-                  <th rowspan="3">Approved By</th>
-                </tr>
-              </thead>
+                    <th rowspan="3">Total Hours</th>
+                    <th rowspan="3">Total Cost</th>
+                    <th rowspan="3">Approved By</th>
+                  </tr>
+                </thead>
 
-              <tbody v-if="paginateCandidates && paginateCandidates?.length > 0">
-                <!-- <tr v-if="errorMessageFilter">
-                  <td colspan="9" class="text-danger text-center">
-                    {{ errorMessageFilter || "Data not Found!" }}
-                  </td>
-                </tr> -->
+                <tbody v-if="paginateCandidates && paginateCandidates?.length > 0">
+                  <!-- <tr v-if="errorMessageFilter">
+                    <td colspan="9" class="text-danger text-center">
+                      {{ errorMessageFilter || "Data not Found!" }}
+                    </td>
+                  </tr> -->
 
-                <tr v-for="data in paginateCandidates" :key="data.id">
-                  <td>{{ data.id }}</td>
-                  <td class="text-capitalize fw-bold">
-                    {{
-                      data.candidate_name ? data.candidate_name + " " : data.name + " "
-                    }}
-                    <span class="fs-6 text-muted fw-100">
-                      <br />
-                      <span style="background: rgb(209, 207, 207); padding: 3px">
-                        {{ data.job ? data.job : "Null" }}
+                  <tr v-for="data in paginateCandidates" :key="data.id">
+                    <td>{{ data.id }}</td>
+                    <td class="text-capitalize fw-bold">
+                      {{
+                        data.candidate_name ? data.candidate_name + " " : data.name + " "
+                      }}
+                      <span class="fs-6 text-muted fw-100">
+                        <br />
+                        <span style="background: rgb(209, 207, 207); padding: 3px">
+                          {{ data.job ? data.job : "Null" }}
+                        </span>
                       </span>
-                    </span>
-                  </td>
-                  <td>
-                    {{ data.site_name || data.site }}
-                  </td>
-                  <td>{{ data.shift }}</td>
-                  <td>
-                    <div class="calendar-grid">
-                      <div
-                        v-for="day in selectedDateRow"
-                        :key="day"
-                        :data-bs-toggle="
-                          mergedTimesheetsArray &&
-                          (data.date
-                            ? formatDate(day) === formatDateFormate(data.date)
-                            : formatDate(day) === formatDateFormate(data.shift_date))
-                            ? 'modal'
-                            : ''
-                        "
-                        :data-bs-target="
-                          mergedTimesheetsArray &&
-                          (data.date
-                            ? formatDate(day) === formatDateFormate(data.date)
-                            : formatDate(day) === formatDateFormate(data.shift_date))
-                            ? '#editWeeklyTs'
-                            : ''
-                        "
-                        :data-bs-whatever="mergedTimesheetsArray ? '@mdo' : ''"
-                        @click="
-                          mergedTimesheetsArray &&
-                          (data.date
-                            ? formatDate(day) === formatDateFormate(data.date)
-                            : formatDate(day) === formatDateFormate(data.shift_date))
-                            ? openModal(data, formatDate(day))
-                            : null
-                        "
-                        :class="{
-                          'calendar-day': true,
-                          clickable: day !== '' && mergedTimesheetsArray !== null,
-                          'disabled-edit': mergedTimesheetsArray === null,
-                        }"
-                        class="d-flex justify-content-between gap-2"
-                      >
+                    </td>
+                    <td>
+                      {{ data.site_name || data.site }}
+                    </td>
+                    <td>{{ data.shift }}</td>
+                    <td>
+                      <div class="calendar-grid">
                         <div
-                          v-if="
-                            data.date
+                          v-for="day in selectedDateRow"
+                          :key="day"
+                          :data-bs-toggle="
+                            mergedTimesheetsArray &&
+                            (data.date
                               ? formatDate(day) === formatDateFormate(data.date)
-                              : formatDate(day) === formatDateFormate(data.shift_date)
+                              : formatDate(day) === formatDateFormate(data.shift_date))
+                              ? 'modal'
+                              : ''
                           "
-                          class="d-flex flex-column gap-2"
+                          :data-bs-target="
+                            mergedTimesheetsArray &&
+                            (data.date
+                              ? formatDate(day) === formatDateFormate(data.date)
+                              : formatDate(day) === formatDateFormate(data.shift_date))
+                              ? '#editWeeklyTs'
+                              : ''
+                          "
+                          :data-bs-whatever="mergedTimesheetsArray ? '@mdo' : ''"
+                          @click="
+                            mergedTimesheetsArray &&
+                            (data.date
+                              ? formatDate(day) === formatDateFormate(data.date)
+                              : formatDate(day) === formatDateFormate(data.shift_date))
+                              ? openModal(data, formatDate(day))
+                              : null
+                          "
+                          :class="{
+                            'calendar-day': true,
+                            clickable: day !== '' && mergedTimesheetsArray !== null,
+                            'disabled-edit': mergedTimesheetsArray === null,
+                          }"
+                          class="d-flex justify-content-between gap-2"
                         >
                           <div
-                            v-if="data.status !== 'Approved'"
-                            :style="
-                              data.status !== 'Approved'
-                                ? 'border: 1px dashed red'
-                                : 'border: 1px dashed green'
+                            v-if="
+                              data.date
+                                ? formatDate(day) === formatDateFormate(data.date)
+                                : formatDate(day) === formatDateFormate(data.shift_date)
                             "
+                            class="d-flex flex-column gap-2"
                           >
-                            <td>
-                              <div class="column pe-2">
-                                <div class="column-cell">
-                                  {{
-                                    typeof data.start_time === "number"
-                                      ? data.start_time.toFixed(2)
-                                      : data.start_time === null
-                                      ? "0.00"
-                                      : data.start_time
-                                  }}
-                                </div>
-                              </div>
-                            </td>
-
-                            <td>
-                              <div class="column px-2">
-                                <div class="column-cell">
-                                  {{
-                                    typeof data.end_time === "number"
-                                      ? data.end_time.toFixed(2)
-                                      : data.end_time === null
-                                      ? "0.00"
-                                      : data.end_time
-                                  }}
-                                </div>
-                              </div>
-                            </td>
-
-                            <td>
-                              <div class="column">
-                                <div class="column-cell">
-                                  {{
-                                    typeof data.total_hours === "number"
-                                      ? data.total_hours.toFixed(2)
-                                      : data.total_hours === null
-                                      ? "0.00"
-                                      : data.total_hours
-                                  }}
-                                </div>
-                              </div>
-                            </td>
-                          </div>
-
-                          <div
-                            v-else
-                            :style="{
-                              border:
+                            <div
+                              v-if="data.status !== 'Approved'"
+                              :style="
                                 data.status !== 'Approved'
-                                  ? '1px dashed red'
-                                  : '1px dashed green',
-                            }"
-                          >
-                            <!-- <span
-                              v-if="
-                                data.date
-                                  ? formatDate(day) === formatDateFormate(data.date)
-                                  : formatDate(day) ===
-                                      formatDateFormate(data.shift_date) &&
-                                    data.status === 'Approved'
+                                  ? 'border: 1px dashed red'
+                                  : 'border: 1px dashed green'
                               "
-                              class="text-center btn-success bg-success text-white p-2 position-relative"
-                              style="left: 34px"
+                            >
+                              <td>
+                                <div class="column pe-2">
+                                  <div class="column-cell">
+                                    {{
+                                      typeof data.start_time === "number"
+                                        ? data.start_time.toFixed(2)
+                                        : data.start_time === null
+                                        ? "0.00"
+                                        : data.start_time
+                                    }}
+                                  </div>
+                                </div>
+                              </td>
+
+                              <td>
+                                <div class="column px-2">
+                                  <div class="column-cell">
+                                    {{
+                                      typeof data.end_time === "number"
+                                        ? data.end_time.toFixed(2)
+                                        : data.end_time === null
+                                        ? "0.00"
+                                        : data.end_time
+                                    }}
+                                  </div>
+                                </div>
+                              </td>
+
+                              <td>
+                                <div class="column">
+                                  <div class="column-cell">
+                                    {{
+                                      typeof data.total_hours === "number"
+                                        ? data.total_hours.toFixed(2)
+                                        : data.total_hours === null
+                                        ? "0.00"
+                                        : data.total_hours
+                                    }}
+                                  </div>
+                                </div>
+                              </td>
+                            </div>
+
+                            <div
+                              v-else
+                              :style="{
+                                border:
+                                  data.status !== 'Approved'
+                                    ? '1px dashed red'
+                                    : '1px dashed green',
+                              }"
+                            >
+                              <!-- <span
+                                v-if="
+                                  data.date
+                                    ? formatDate(day) === formatDateFormate(data.date)
+                                    : formatDate(day) ===
+                                        formatDateFormate(data.shift_date) &&
+                                      data.status === 'Approved'
+                                "
+                                class="text-center btn-success bg-success text-white p-2 position-relative"
+                                style="left: 34px"
+                              >
+                                {{ data.status }}
+                              </span> -->
+                              <td>
+                                <div class="column pe-2">
+                                  <div class="column-cell">
+                                    {{
+                                      typeof data.start_time === "number"
+                                        ? data.start_time.toFixed(2)
+                                        : data.start_time === null
+                                        ? "0.00"
+                                        : data.start_time
+                                    }}
+                                  </div>
+                                </div>
+                              </td>
+
+                              <td>
+                                <div class="column px-2">
+                                  <div class="column-cell">
+                                    {{
+                                      typeof data.end_time === "number"
+                                        ? data.end_time.toFixed(2)
+                                        : data.end_time === null
+                                        ? "0.00"
+                                        : data.end_time
+                                    }}
+                                  </div>
+                                </div>
+                              </td>
+
+                              <td>
+                                <div class="column">
+                                  <div class="column-cell">
+                                    {{
+                                      typeof data.total_hours === "number"
+                                        ? data.total_hours.toFixed(2)
+                                        : data.total_hours === null
+                                        ? "0.00"
+                                        : data.total_hours
+                                    }}
+                                  </div>
+                                </div>
+                              </td>
+                              <!-- <span
+                                class="btn btn-danger btn-sm position-absolute p-0"
+                                style="left: 17px; top: 28px"
+                              >
+                                {{ data.status }}
+                              </span> -->
+                            </div>
+                            <span
+                              class="text-center"
+                              :class="
+                                data.status === 'Approved' ? 'btn-success' : 'btn-danger'
+                              "
                             >
                               {{ data.status }}
-                            </span> -->
-                            <td>
-                              <div class="column pe-2">
-                                <div class="column-cell">
-                                  {{
-                                    typeof data.start_time === "number"
-                                      ? data.start_time.toFixed(2)
-                                      : data.start_time === null
-                                      ? "0.00"
-                                      : data.start_time
-                                  }}
-                                </div>
-                              </div>
-                            </td>
-
-                            <td>
-                              <div class="column px-2">
-                                <div class="column-cell">
-                                  {{
-                                    typeof data.end_time === "number"
-                                      ? data.end_time.toFixed(2)
-                                      : data.end_time === null
-                                      ? "0.00"
-                                      : data.end_time
-                                  }}
-                                </div>
-                              </div>
-                            </td>
-
-                            <td>
-                              <div class="column">
-                                <div class="column-cell">
-                                  {{
-                                    typeof data.total_hours === "number"
-                                      ? data.total_hours.toFixed(2)
-                                      : data.total_hours === null
-                                      ? "0.00"
-                                      : data.total_hours
-                                  }}
-                                </div>
-                              </div>
-                            </td>
-                            <!-- <span
-                              class="btn btn-danger btn-sm position-absolute p-0"
-                              style="left: 17px; top: 28px"
-                            >
-                              {{ data.status }}
-                            </span> -->
+                            </span>
                           </div>
-                          <span
-                            class="text-center"
-                            :class="
-                              data.status === 'Approved' ? 'btn-success' : 'btn-danger'
-                            "
-                          >
-                            {{ data.status }}
-                          </span>
                         </div>
                       </div>
-                    </div>
-                  </td>
-                  <!-- <td>{{ data.total_hours ? data.total_hours : "Null" }}</td> -->
-                  <!-- <td>
-                    {{
-                      data.candidate_id === null
-                        ? this.candidateHoursMap[data.candidate_id].toFixed(2)
-                        : "0.00"
-                    }}
-                  </td> -->
-                  <td>
-                    {{ data.display_hours ? data.display_hours : "0.00" }}
-                  </td>
-                  <td>
-                    {{ "£" + data.total_week_cost ? data.total_week_cost : "0.00" }}
-                  </td>
-                  <td>{{ data.approved_by ? data.approved_by : "Null" }}</td>
-                </tr>
-              </tbody>
-              <!-- <tbody v-else>
-                <tr>
-                  <td colspan="9" class="text-danger text-center">
-                    {{ errorMessage }}
-                  </td>
-                </tr>
-              </tbody> -->
-              <tbody v-else>
-                <tr v-if="errorMessageFilter">
-                  <td colspan="9" class="text-danger text-center">
-                    {{ errorMessageFilter }}
-                  </td>
-                </tr>
-                <tr v-else>
-                  <td colspan="9" v-if="!isLoading" class="text-danger text-center">
-                    {{ errorMessage }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                    </td>
+                    <!-- <td>{{ data.total_hours ? data.total_hours : "Null" }}</td> -->
+                    <!-- <td>
+                      {{
+                        data.candidate_id === null
+                          ? this.candidateHoursMap[data.candidate_id].toFixed(2)
+                          : "0.00"
+                      }}
+                    </td> -->
+                    <td>
+                      {{ data.display_hours ? data.display_hours : "0.00" }}
+                    </td>
+                    <td>
+                      {{ "£" + data.total_week_cost ? data.total_week_cost : "0.00" }}
+                    </td>
+                    <td>{{ data.approved_by ? data.approved_by : "Null" }}</td>
+                  </tr>
+                </tbody>
+                <!-- <tbody v-else>
+                  <tr>
+                    <td colspan="9" class="text-danger text-center">
+                      {{ errorMessage }}
+                    </td>
+                  </tr>
+                </tbody> -->
+                <tbody v-else>
+                  <tr v-if="errorMessageFilter">
+                    <td colspan="9" class="text-danger text-center">
+                      {{ errorMessageFilter }}
+                    </td>
+                  </tr>
+                  <tr v-else>
+                    <td colspan="9" v-if="!isLoading" class="text-danger text-center">
+                      {{ errorMessage }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -569,12 +606,15 @@ import axios from "axios";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
 import WeekTimeSheetEdit from "../modals/TimeSheet/WeekTimeSheetEdit.vue";
 import Loader from "../Loader/Loader.vue";
+import Navbar from "../Navbar.vue";
 
 export default {
   data() {
     return {
-      currentView: "weekly",
+      // currentView: "weekly",
       startDate: new Date(),
+
+      currentDate: new Date(),
       endDate: new Date(),
       selectedDate: null,
       candidateList: [],
@@ -727,6 +767,82 @@ export default {
   },
 
   methods: {
+    moveToNext() {
+      this.currentDate = new Date(
+        this.currentDate.setMonth(this.currentDate.getMonth() + 1)
+      );
+      // this.updateDateRange();
+    },
+    moveToPrevious() {
+      this.currentDate = new Date(
+        this.currentDate.setMonth(this.currentDate.getMonth() - 1)
+      );
+      // this.updateDateRange();
+    },
+    formatMonthYear(date) {
+      return new Intl.DateTimeFormat("en-US", {
+        month: "long",
+        year: "numeric",
+      }).format(date);
+    },
+    // moveToPrevious() {
+    //   if (this.currentView === "weekly") {
+    //     this.startDate.setDate(this.startDate.getDate() - 7);
+    //     this.endDate.setDate(this.endDate.getDate() - 7);
+    //     this.updateDateRange();
+    //     this.filterData();
+    //   } else if (this.currentView === "monthly") {
+    //     this.startDate.setMonth(this.startDate.getMonth() - 1);
+    //     this.endDate = new Date(
+    //       this.startDate.getFullYear(),
+    //       this.startDate.getMonth() + 1,
+    //       0
+    //     );
+    //   }
+    // this.filterData();
+    // },
+    // moveToNext() {
+    //   if (this.currentView === "weekly") {
+    //     this.startDate.setDate(this.startDate.getDate() + 7);
+    //     this.endDate.setDate(this.endDate.getDate() + 7);
+    //     this.updateDateRange();
+    //     this.filterData();
+    //   } else if (this.currentView === "monthly") {
+    //     this.startDate.setMonth(this.startDate.getMonth() + 1);
+    //     this.endDate = new Date(
+    //       this.startDate.getFullYear(),
+    //       this.startDate.getMonth() + 1,
+    //       0
+    //     );
+    //   }
+    // },
+    updateDateRange() {
+      if (this.currentView === "weekly") {
+        const weekStart = new Date(this.startDate);
+        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
+        this.startDate = weekStart;
+
+        const weekEnd = new Date(this.startDate);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+        this.endDate = weekEnd;
+      } else if (this.currentView === "monthly") {
+        const currentDate = new Date();
+        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+      }
+
+      localStorage.setItem("startDate", this.startDate.toISOString());
+      localStorage.setItem("endDate", this.endDate.toISOString());
+    },
+    loadDateRangeFromLocalStorage() {
+      const storedStartDate = localStorage.getItem("startDate");
+      const storedEndDate = localStorage.getItem("endDate");
+
+      if (storedStartDate && storedEndDate) {
+        this.startDate = new Date(storedStartDate);
+        this.endDate = new Date(storedEndDate);
+      }
+    },
     async ApproveMethod(data, event) {
       const token = localStorage.getItem("token");
       event.preventDefault();
@@ -799,64 +915,7 @@ export default {
         }
       }
     },
-    moveToPrevious() {
-      if (this.currentView === "weekly") {
-        this.startDate.setDate(this.startDate.getDate() - 7);
-        this.endDate.setDate(this.endDate.getDate() - 7);
-        this.updateDateRange();
-        this.filterData();
-      } else if (this.currentView === "monthly") {
-        this.startDate.setMonth(this.startDate.getMonth() - 1);
-        this.endDate = new Date(
-          this.startDate.getFullYear(),
-          this.startDate.getMonth() + 1,
-          0
-        );
-      }
-      // this.filterData();
-    },
-    moveToNext() {
-      if (this.currentView === "weekly") {
-        this.startDate.setDate(this.startDate.getDate() + 7);
-        this.endDate.setDate(this.endDate.getDate() + 7);
-        this.updateDateRange();
-        this.filterData();
-      } else if (this.currentView === "monthly") {
-        this.startDate.setMonth(this.startDate.getMonth() + 1);
-        this.endDate = new Date(
-          this.startDate.getFullYear(),
-          this.startDate.getMonth() + 1,
-          0
-        );
-      }
-    },
-    updateDateRange() {
-      if (this.currentView === "weekly") {
-        const weekStart = new Date(this.startDate);
-        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
-        this.startDate = weekStart;
 
-        const weekEnd = new Date(this.startDate);
-        weekEnd.setDate(weekEnd.getDate() + 6);
-        this.endDate = weekEnd;
-      } else if (this.currentView === "monthly") {
-        const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-      }
-
-      localStorage.setItem("startDate", this.startDate.toISOString());
-      localStorage.setItem("endDate", this.endDate.toISOString());
-    },
-    loadDateRangeFromLocalStorage() {
-      const storedStartDate = localStorage.getItem("startDate");
-      const storedEndDate = localStorage.getItem("endDate");
-
-      if (storedStartDate && storedEndDate) {
-        this.startDate = new Date(storedStartDate);
-        this.endDate = new Date(storedEndDate);
-      }
-    },
     formatDate(date) {
       const day = date.getDate();
       const month = date.getMonth() + 1;
@@ -1224,7 +1283,7 @@ export default {
   },
   components: {
     WeekTimeSheetEdit,
-    // Navbar,
+    Navbar,
     Loader,
     SuccessAlert,
   },
@@ -1234,7 +1293,6 @@ export default {
     await this.getBusinessUnitMethod();
 
     await this.getCandidateListMethod();
-
     const currentDate = new Date();
     const dayOfWeek = currentDate.getDay();
     const startOfWeek = new Date(currentDate);
@@ -1254,8 +1312,6 @@ export default {
 
 <style scoped>
 #main {
-  background-color: #fdce5e17;
-  padding-top: 65px;
 }
 .disabled-edit {
   pointer-events: none;

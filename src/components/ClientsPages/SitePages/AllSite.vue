@@ -6,16 +6,88 @@
           <tr>
             <th></th>
 
-            <th scope="col">#RefCode</th>
-            <th scope="col">Site</th>
-            <th scope="col">ClientName</th>
+            <th scope="col">
+              #RefCode
+              <img
+                src="../../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Site
+              <img
+                src="../../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              ClientName
+              <img
+                src="../../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
 
-            <th scope="col">Address</th>
-            <th scope="col">PhoneNumber</th>
-            <th scope="col" style="width: 10%">Email</th>
-            <th scope="col">Status</th>
-            <th scope="col">Portal Access</th>
-            <th scope="col">Action</th>
+            <th scope="col">
+              Address
+              <img
+                src="../../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              PhoneNumber
+              <img
+                src="../../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col" style="width: 10%">
+              Email
+              <img
+                src="../../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Status
+              <img
+                src="../../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Portal Access
+              <img
+                src="../../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Action
+              <img
+                src="../../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
           </tr>
         </thead>
         <tbody v-if="getSiteAllData?.length > 0">
@@ -87,20 +159,7 @@
         </tbody>
       </table>
     </div>
-    <AddSite @addSite="getSiteAllDataMethod" />
-    <EditSite
-      :siteId="selectedsiteId || 0"
-      @editSite="getSiteAllDataMethod"
-      ref="refSite"
-    />
-    <ConfirmationAlert
-      :show-modal="isModalVisible"
-      :message="confirmMessage"
-      @confirm="confirmCallback"
-      @cancel="canceled"
-    />
-    <SuccessAlert ref="successAlert" />
-    <loader :isLoading="isLoading"></loader>
+
     <div
       class="mx-3 d-flex justify-content-between"
       style="text-align: right"
@@ -120,13 +179,17 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(20)"
+              >20 Records</a
+            >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(50)"
+              >50 Records</a
+            >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(100)"
               >100 Records</a
             >
           </li>
@@ -140,12 +203,15 @@
           :disabled="currentPage === 1"
           @click="changePage(currentPage - 1)"
         >
-          <i class="bi bi-chevron-left"></i>
+          <i
+            class="bi bi-chevron-left"
+            :class="{ 'fw-bolder': currentPage !== totalPages }"
+          ></i>
         </button>
         &nbsp;&nbsp;
         <button
-          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
-          style="background: #ffffff"
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 fw-bolder"
+          style="background: #ffffff; color: #f9944b"
         >
           {{ currentPage }}
         </button>
@@ -156,10 +222,23 @@
           :disabled="currentPage === totalPages"
           @click="changePage(currentPage + 1)"
         >
-          <i class="bi bi-chevron-right"></i>
+          <i
+            class="bi bi-chevron-right"
+            :class="{ 'fw-bolder': currentPage !== totalPages }"
+          ></i>
         </button>
       </div>
     </div>
+    <AddSite @addSite="filterData" />
+    <EditSite :siteId="selectedsiteId || 0" @editSite="filterData" ref="refSite" />
+    <ConfirmationAlert
+      :show-modal="isModalVisible"
+      :message="confirmMessage"
+      @confirm="confirmCallback"
+      @cancel="canceled"
+    />
+    <SuccessAlert ref="successAlert" />
+    <loader :isLoading="isLoading"></loader>
   </div>
 </template>
 <script>
@@ -192,6 +271,9 @@ export default {
       confirmMessage: "",
       confirmCallback: null,
       checkedSites: reactive({}),
+      totalPages: 1,
+
+      totalCount: 0,
       selectedFilter: "",
       selectedFilter: "",
       selectedClientName: "",
@@ -224,14 +306,14 @@ export default {
       const client = this.clientData.find((option) => option.id === this.client_id);
       return client ? client.first_name : "";
     },
-    selectSite() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
-      return site_id ? site_id.site_name : "";
-    },
-    selectSitesAddress() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
-      return site_id ? site_id.address : "";
-    },
+    // selectSite() {
+    //   const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+    //   return site_id ? site_id.site_name : "";
+    // },
+    // selectSitesAddress() {
+    //   const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+    //   return site_id ? site_id.address : "";
+    // },
   },
   methods: {
     changePage(page) {
@@ -260,7 +342,7 @@ export default {
       this.isModalVisible = true;
       this.confirmCallback = async () => {
         axios.delete(`${VITE_API_URL}/sites/` + id).then((response) => {
-          this.getSiteAllDataMethod();
+          this.filterData();
           // this.getInactiveJobData();
         });
         const message = "Record deleted successfully";
@@ -304,7 +386,8 @@ export default {
     },
     async filterData() {
       const params = {
-        page: 1,
+        page: this.currentPage,
+        per_page: this.itemsPerPage,
       };
 
       if (this.selectedFilter) {
@@ -332,6 +415,7 @@ export default {
           params,
         });
         this.getSiteAllData = response.data.data || [];
+        this.totalPages = Math.ceil(response.data.site_filter / this.itemsPerPage);
       } catch (error) {
         // console.error("Error fetching filtered data:", error);
       }
@@ -400,7 +484,7 @@ export default {
               text: response.data.message || "CSV file imported successfully.",
             });
 
-            this.getSiteAllDataMethod();
+            this.filterData();
           }
         })
         .catch((error) => {
@@ -441,7 +525,7 @@ export default {
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
-      this.getSiteAllDataMethod();
+      this.filterData();
     },
 
     async getSiteAllDataMethod() {
@@ -588,9 +672,10 @@ export default {
     },
   },
   async mounted() {
-    await this.getSiteAllDataMethod();
-    this.getBusinessUnitMethod();
+    // await this.getSiteAllDataMethod();
+    // this.getBusinessUnitMethod();
     this.getClientMethod();
+    this.filterData();
   },
 };
 </script>

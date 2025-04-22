@@ -197,8 +197,8 @@
             </th>
           </tr>
         </thead>
-        <tbody v-if="paginateCandidates?.length > 0">
-          <tr v-for="client in paginateCandidates" :key="client.id">
+        <tbody v-if="getClientDetail?.length > 0">
+          <tr v-for="client in getClientDetail" :key="client.id">
             <td>
               <input
                 class="form-check-input"
@@ -352,7 +352,7 @@
         </button>
         &nbsp;&nbsp;
         <button
-          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
           style="background: #ffffff"
         >
           {{ currentPage }}
@@ -527,16 +527,11 @@ export default {
     //     }
     //   }
     // },
-    async changePage(newPage) {
-      if (newPage < 1 || newPage > this.totalPages) return;
-      this.currentPage = newPage;
+    async changePage(page) {
+      this.currentPage = page;
       await this.createdClient();
     },
-    async changePage(newPage) {
-      if (newPage < 1 || newPage > this.totalPages) return;
-      this.currentPage = newPage;
-      await this.createdClient();
-    },
+
     toggleFilters() {
       this.showFilters = !this.showFilters;
     },
@@ -555,36 +550,36 @@ export default {
     //     }
     //   }
     // },
-    async filterData() {
-      const params = {
-        page: 1,
-      };
+    // async filterData() {
+    //   const params = {
+    //     page: 1,
+    //   };
 
-      if (this.selectedClientExport) {
-        params["client[activated]"] = this.selectedClientExport;
-      }
+    //   if (this.selectedClientExport) {
+    //     params["client[activated]"] = this.selectedClientExport;
+    //   }
 
-      if (this.selectedClient) {
-        params["client[client_name]"] = this.selectedClient;
-      }
+    //   if (this.selectedClient) {
+    //     params["client[client_name]"] = this.selectedClient;
+    //   }
 
-      if (this.selectedJobTitle) {
-        params["client[job_ids]"] = this.selectedJobTitle;
-      }
+    //   if (this.selectedJobTitle) {
+    //     params["client[job_ids]"] = this.selectedJobTitle;
+    //   }
 
-      if (this.localSearchQuery) {
-        params.search = this.localSearchQuery;
-      }
+    //   if (this.localSearchQuery) {
+    //     params.search = this.localSearchQuery;
+    //   }
 
-      try {
-        const response = await axios.get(`${VITE_API_URL}/client_filter`, {
-          params,
-        });
-        this.getClientDetail = response.data.data;
-      } catch (error) {
-        // console.error("Error fetching filtered data:", error);
-      }
-    },
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/client_filter`, {
+    //       params,
+    //     });
+    //     this.getClientDetail = response.data.data;
+    //   } catch (error) {
+    //     // console.error("Error fetching filtered data:", error);
+    //   }
+    // },
 
     getColor(index) {
       return this.colors[index % this.colors.length];
@@ -653,7 +648,7 @@ export default {
       this.selectedJobTitle = null;
       this.localSearchQuery = "";
 
-      this.filterData();
+      this.createdClient();
     },
     editClient(clientID) {
       this.selectedClientID = clientID;
@@ -913,14 +908,37 @@ export default {
     },
     async createdClient() {
       this.isLoading = true;
+      const params = {
+        page: this.currentPage,
+        per_page: this.itemsPerPage,
+      };
+
+      // if (this.selectedClientExport) {
+      //   params["client[activated]"] = this.selectedClientExport;
+      // }
+
+      if (this.selectedClient) {
+        params["client[client_name]"] = this.selectedClient;
+      }
+
+      if (this.selectedJobTitle) {
+        params["client[job_ids]"] = this.selectedJobTitle;
+      }
+
+      if (this.localSearchQuery) {
+        params.search = this.localSearchQuery;
+      }
+
       try {
         const response = await axios.get(`${VITE_API_URL}/client_filter`, {
-          params: {
-            page: this.currentPage,
-            per_page: this.itemsPerPage,
-          },
+          params,
         });
         this.getClientDetail = response.data.data;
+        this.totalPages = Math.ceil(response.data.client_filter / this.itemsPerPage);
+        if (this.getClientDetail?.length === 0) {
+          this.errorMessageFilter = "Data Not Found!";
+        }
+
         // this.currentPage = response.data.current_page;
         // this.totalPages = response.data.total_pages;
         // this.totalCount = response.data.clients_count;

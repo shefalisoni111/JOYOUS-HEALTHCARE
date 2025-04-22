@@ -69,46 +69,64 @@
         </tr>
       </tbody>
     </table>
-    <div class="mx-3" style="text-align: right" v-if="totalCount > 0">
-      <!-- <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
-      </button> -->
-      <button
-        class="btn btn-sm btn-primary dropdown-toggle"
-        type="button"
-        id="recordsPerPageDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        {{ itemsPerPage }} Records
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
-        </li>
-      </ul>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="currentPage--"
-      >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getPendingCandidatesData?.length"
-        @click="currentPage++"
-      >
-        Next
-      </button>
+    <div
+      class="mx-3 d-flex justify-content-between"
+      style="text-align: right"
+      v-if="getPendingCandidatesData?.length"
+    >
+      <div class="d-flex">
+        <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+        <button
+          class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+          style="color: #00000080"
+          type="button"
+          id="recordsPerPageDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ itemsPerPage }} Records
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+              >100 Records</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="d-flex align-items-center">
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === 1"
+          @click="changePage(currentPage - 1)"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+          style="background: #ffffff; color: #f9944b"
+        >
+          {{ currentPage }}
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === totalPages"
+          @click="changePage(currentPage + 1)"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
     </div>
     <ConfirmationAlert
       :show-modal="isModalVisible"
@@ -177,18 +195,23 @@ export default {
         this.isLoading = false;
       }
     },
-    previousPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-        this.fetchPendingCandidates(this.currentPage);
-      }
+    async changePage(newPage) {
+      if (newPage < 1 || newPage > this.totalPages) return;
+      this.currentPage = newPage;
+      await this.fetchPendingCandidates();
     },
-    nextPage() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
-        this.fetchPendingCandidates(this.currentPage);
-      }
-    },
+    // previousPage() {
+    //   if (this.currentPage > 1) {
+    //     this.currentPage--;
+    //     this.fetchPendingCandidates(this.currentPage);
+    //   }
+    // },
+    // nextPage() {
+    //   if (this.currentPage < this.totalPages) {
+    //     this.currentPage++;
+    //     this.fetchPendingCandidates(this.currentPage);
+    //   }
+    // },
     confirmed(id) {
       this.isModalVisible = false;
 
@@ -268,9 +291,6 @@ table th.widthSet {
   width: 16%;
 }
 
-.candidateTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
 a {
   color: black;
   text-decoration: none;

@@ -1,148 +1,249 @@
 <template>
   <div>
-    <div class="row">
-      <div class="col-12 wrapper-vacancy">
-        <table class="table vacancyTable">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">#RefCode</th>
-              <th scope="col">Client</th>
-              <th scope="col">Site</th>
-              <th scope="col">Job Title</th>
-              <th scope="col">Date</th>
-              <th scope="col">Shift</th>
-              <th scope="col" class="withShow">Staff required</th>
-              <!-- <th scope="col">Client Rate</th> -->
-              <th scope="col" class="widthDefineNotes">Notes</th>
-              <th scope="col">Status</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody v-if="getInactiveData?.length > 0">
-            <tr v-for="data in getInactiveData" :key="data.id">
-              <td v-text="data.id"></td>
-              <td v-text="data.ref_code"></td>
-              <td>
-                <router-link
-                  class="text-capitalize text-black text-decoration-underline fw-bold"
-                  :to="{
-                    name: 'SingleClientProfile',
-                    params: { id: data.client_id },
-                  }"
-                >
-                  {{ data.client_name }}
-                </router-link>
-              </td>
-              <td v-text="data.site_name"></td>
-              <td v-text="data.job_name"></td>
-              <td class="">
-                <div v-for="(date, index) in data.dates" :key="index">
-                  {{ date }}
+    <div class="wrapper-vacancy">
+      <table class="table vacancyTable">
+        <thead>
+          <tr>
+            <th scope="col">
+              ID
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              #RefCode
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Client
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Site
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Job Title
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Date
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Shift
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col" class="withShow">
+              Staff required
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <!-- <th scope="col">Client Rate</th> -->
+            <th scope="col" class="widthDefineNotes">
+              Notes
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Status
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Action
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+          </tr>
+        </thead>
+        <tbody v-if="getInactiveData?.length > 0">
+          <tr v-for="data in getInactiveData" :key="data.id">
+            <td v-text="data.id"></td>
+            <td v-text="data.ref_code"></td>
+            <td>
+              <router-link
+                class="text-capitalize text-black text-decoration-underline fw-bold"
+                :to="{
+                  name: 'SingleClientProfile',
+                  params: { id: data.client_id },
+                }"
+              >
+                {{ data.client_name }}
+              </router-link>
+            </td>
+            <td v-text="data.site_name"></td>
+            <td v-text="data.job_name"></td>
+            <td class="">
+              <div v-for="(date, index) in data.dates" :key="index">
+                {{ date }}
 
-                  <template v-if="index !== data.dates.length - 1">, </template>
-                </div>
-              </td>
-              <!-- <td v-for="(date, index) in data.dates" :key="index" v-text="date"></td> -->
+                <template v-if="index !== data.dates.length - 1">, </template>
+              </div>
+            </td>
+            <!-- <td v-for="(date, index) in data.dates" :key="index" v-text="date"></td> -->
 
-              <td v-text="data.shift ? data.shift.replace(/_/g, ' ') : ' '"></td>
-              <td class="withShow text-center">
-                {{ data.staff_required === null ? 0 : data.staff_required }}
-              </td>
-              <!-- <td class="text-center">
+            <td v-text="data.shift ? data.shift.replace(/_/g, ' ') : ' '"></td>
+            <td class="withShow text-center">
+              {{ data.staff_required === null ? 0 : data.staff_required }}
+            </td>
+            <!-- <td class="text-center">
                 {{ data.client_rate }}
               </td> -->
-              <td class="widthDefineNotes" v-text="data.notes"></td>
-              <td v-text="data.status"></td>
-              <td>
-                <button
-                  v-if="isEditAllowed(data.dates)"
-                  class="btn btn-outline-success text-nowrap"
-                  data-bs-toggle="modal"
-                  data-bs-target="#editVacancy"
-                  data-bs-whatever="@mdo"
-                  @click="editAndReactivate(data.id)"
-                >
-                  <i class="bi bi-pencil"></i>
-                </button>
-                <button
-                  v-else
-                  class="btn btn-success text-nowrap"
-                  @click="editAndReactivates(data.id)"
-                >
-                  Re-activate
-                </button>
-                <!-- <i
+            <td class="widthDefineNotes" v-text="data.notes"></td>
+            <td v-text="data.status"></td>
+            <td>
+              <button
+                v-if="isEditAllowed(data.dates)"
+                class="btn btn-outline-success text-nowrap"
+                data-bs-toggle="modal"
+                data-bs-target="#editVacancy"
+                data-bs-whatever="@mdo"
+                @click="editAndReactivate(data.id)"
+              >
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button
+                v-else
+                class="btn btn-success text-nowrap"
+                @click="editAndReactivates(data.id)"
+              >
+                Re-activate
+              </button>
+              <!-- <i
                   class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
                   data-bs-toggle="modal"
                   data-bs-target="#editVacancy"
                   data-bs-whatever="@mdo"
                   @click="editVacancyId(data.id)"
                 ></i> -->
-                &nbsp;&nbsp;
-                <button
-                  class="btn btn-outline-danger text-nowrap"
-                  v-on:click="confirmed(data.id)"
-                >
-                  <i class="bi bi-trash"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-          <tbody v-else>
-            <tr>
-              <td colspan="16" class="text-center text-danger" v-if="!isLoading">
-                {{ "Data Not Found!" }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+              &nbsp;&nbsp;
+              <button
+                class="btn btn-outline-danger text-nowrap"
+                v-on:click="confirmed(data.id)"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+        <tbody v-else>
+          <tr>
+            <td colspan="16" class="text-center text-danger" v-if="!isLoading">
+              {{ "Data Not Found!" }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="mt-3 mb-3" style="text-align: right" v-if="totalCount > 10">
-      <!-- <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
-      </button> -->
-      <button
-        class="btn btn-sm btn-primary dropdown-toggle"
-        type="button"
-        id="recordsPerPageDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        {{ itemsPerPage }} Records
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
-        </li>
-      </ul>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="previousPage"
-      >
-        Previous
-      </button>
-      &nbsp;&nbsp;
 
-      <span>{{ currentPage }}</span>
-      &nbsp;&nbsp;
-
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage >= totalPages"
-        @click="nextPage"
-      >
-        Next
-      </button>
+    <div
+      class="mt-3 mb-3 d-flex justify-content-between"
+      style="text-align: right"
+      v-if="totalCount > 10"
+    >
+      <div class="d-flex">
+        <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+        <button
+          class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+          style="color: #00000080"
+          type="button"
+          id="recordsPerPageDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ itemsPerPage }} Records
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+              >100 Records</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="d-flex align-items-center">
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === 1"
+          @click="changePage(currentPage - 1)"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+          style="background: #ffffff; color: #f9944b"
+        >
+          {{ currentPage }}
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === totalPages"
+          @click="changePage(currentPage + 1)"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
     </div>
     <EditVacancy
       :vacancyId="selectedVacancyId || 0"
@@ -201,18 +302,11 @@ export default {
   },
 
   methods: {
-    previousPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-        this.getInactiveVacancyMethod();
-      }
+    async changePage(page) {
+      this.currentPage = page;
+      await this.getInactiveVacancyMethod();
     },
-    nextPage() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
-        this.getInactiveVacancyMethod();
-      }
-    },
+
     setItemsPerPage(number) {
       this.itemsPerPage = number;
       this.currentPage = 1;
@@ -399,9 +493,7 @@ export default {
 a[data-v-507f63b7] {
   text-decoration: none;
 }
-.vacancyTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
+
 .btn-primary {
   border-radius: 4px;
 }

@@ -1,193 +1,318 @@
 <template>
   <div>
-    <div class="row">
-      <div class="col-12 wrapper-vacancy">
-        <table class="table vacancyTable">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">#RefCode</th>
-              <th scope="col">Client</th>
-              <th scope="col">Site</th>
-              <th scope="col">Job Title</th>
-              <th scope="col">Date</th>
-              <th scope="col">Shift</th>
-              <th scope="col" class="withShow">Staff Required</th>
-              <!-- <th scope="col">Client Rate</th> -->
-              <th scope="col" class="widthDefineNotes">Notes</th>
-              <th scope="col">Publish</th>
-              <th scope="col" class="text-center withShow">All Staff</th>
-              <th scope="col">Applied</th>
-              <th scope="col">Assigned</th>
-              <th scope="col">Rejected</th>
-              <th scope="col">Created by</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody v-if="getVacancyDetail?.length > 0">
-            <tr v-for="getdata in getVacancyDetail" :key="getdata.id">
-              <td v-text="getdata.id"></td>
-              <td v-text="getdata.ref_code"></td>
-              <td>
-                <!-- <router-link
+    <div class="wrapper-vacancy">
+      <table class="table vacancyTable">
+        <thead>
+          <tr>
+            <th scope="col">
+              ID
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              #RefCode
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Client
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Site
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Job Title
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Date
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Shift
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col" class="withShow">
+              Staff Required
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <!-- <th scope="col">Client Rate</th> -->
+            <th scope="col" class="widthDefineNotes">
+              Notes
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Publish
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col" class="text-center withShow">
+              All Staff
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Applied
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Assigned
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Rejected
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Created by
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Action
+              <img
+                src="../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+          </tr>
+        </thead>
+        <tbody v-if="getVacancyDetail?.length > 0">
+          <tr v-for="getdata in getVacancyDetail" :key="getdata.id">
+            <td v-text="getdata.id"></td>
+            <td v-text="getdata.ref_code"></td>
+            <td>
+              <!-- <router-link
                   class="text-capitalize text-black text-decoration-underline fw-bold"
                   to="/client"
                   >{{ getdata.client }}</router-link
                 > -->
-                <router-link
-                  class="text-capitalize text-black text-decoration-underline fw-bold"
-                  :to="{
-                    name: 'SingleClientProfile',
-                    params: { id: getdata.client_id },
-                  }"
-                >
-                  {{ getdata.client_name }}
-                </router-link>
-              </td>
-              <td v-text="getdata.site_name"></td>
-              <td v-text="getdata.job_name"></td>
-              <td class="widthDefine">
-                <span v-for="(date, index) in getdata.dates" :key="index">
-                  {{ date }}
+              <router-link
+                class="text-capitalize text-black text-decoration-underline fw-bold"
+                :to="{
+                  name: 'SingleClientProfile',
+                  params: { id: getdata.client_id },
+                }"
+              >
+                {{ getdata.client_name }}
+              </router-link>
+            </td>
+            <td v-text="getdata.site_name"></td>
+            <td v-text="getdata.job_name"></td>
+            <td class="widthDefine">
+              <span v-for="(date, index) in getdata.dates" :key="index">
+                {{ date }}
 
-                  <template v-if="index !== getdata.dates.length - 1">, </template>
-                </span>
-              </td>
-              <!-- <td v-for="(date, index) in getdata.dates" :key="index" v-text="date"></td> -->
+                <template v-if="index !== getdata.dates.length - 1">, </template>
+              </span>
+            </td>
+            <!-- <td v-for="(date, index) in getdata.dates" :key="index" v-text="date"></td> -->
 
-              <td v-text="getdata.shift ? getdata.shift.replace(/_/g, ' ') : ' '"></td>
-              <td class="withShow text-center">
-                {{ getdata.staff_required === null ? 0 : getdata.staff_required }}
-              </td>
-              <!-- <td class="text-center">
+            <td v-text="getdata.shift ? getdata.shift.replace(/_/g, ' ') : ' '"></td>
+            <td class="withShow text-center">
+              {{ getdata.staff_required === null ? 0 : getdata.staff_required }}
+            </td>
+            <!-- <td class="text-center">
                 {{ getdata.client_rate }}
               </td> -->
-              <td class="widthDefineNotes" v-text="getdata.notes"></td>
+            <td class="widthDefineNotes" v-text="getdata.notes"></td>
 
-              <td>
-                <i
-                  data-bs-toggle="modal"
-                  data-bs-target="#publishVacancy"
-                  data-bs-whatever="@mdo"
-                  v-if="getdata.publish === 'true'"
-                  class="btn btn-success bi bi-check-circle-fill"
-                  :class="{
-                    'btn-success': getdata.publish === 'true',
-                    'bi-check-circle-fill': getdata.publish === 'true',
-                    'bi-bell': getdata.publish !== 'true',
-                  }"
-                  @click="openPublished(getdata.id)"
-                ></i>
-                <i
-                  data-bs-toggle="modal"
-                  data-bs-target="#publishVacancy"
-                  data-bs-whatever="@mdo"
-                  @click="openPublished(getdata.id)"
-                  v-else
-                  class="btn btn-success bi bi-bell"
-                ></i>
-              </td>
+            <td>
+              <i
+                data-bs-toggle="modal"
+                data-bs-target="#publishVacancy"
+                data-bs-whatever="@mdo"
+                v-if="getdata.publish === 'true'"
+                class="btn btn-success bi bi-check-circle-fill"
+                :class="{
+                  'btn-success': getdata.publish === 'true',
+                  'bi-check-circle-fill': getdata.publish === 'true',
+                  'bi-bell': getdata.publish !== 'true',
+                }"
+                @click="openPublished(getdata.id)"
+              ></i>
+              <i
+                data-bs-toggle="modal"
+                data-bs-target="#publishVacancy"
+                data-bs-whatever="@mdo"
+                @click="openPublished(getdata.id)"
+                v-else
+                class="btn btn-success bi bi-bell"
+              ></i>
+            </td>
 
-              <td class="text-center">
-                <button
-                  type="button"
-                  class="btn text-nowrap"
-                  data-bs-toggle="modal"
-                  data-bs-target="#allCandidateVacancyList"
-                  data-bs-whatever="@mdo"
-                  @click="openAllApplied(getdata.id)"
+            <td class="text-center">
+              <button
+                type="button"
+                class="btn text-nowrap"
+                data-bs-toggle="modal"
+                data-bs-target="#allCandidateVacancyList"
+                data-bs-whatever="@mdo"
+                @click="openAllApplied(getdata.id)"
+              >
+                <span
+                  :style="{ padding: getPadding(getdata.all_candidate) }"
+                  class="rounded-circle"
+                  >{{ getdata.all_candidate }}</span
                 >
-                  <span
-                    :style="{ padding: getPadding(getdata.all_candidate) }"
-                    class="rounded-circle"
-                    >{{ getdata.all_candidate }}</span
-                  >
-                </button>
-              </td>
-              <td>
-                <button
-                  type="button"
-                  class="btn text-nowrap"
-                  data-bs-toggle="modal"
-                  data-bs-target="#appliedVacancy"
-                  data-bs-whatever="@mdo"
-                  @click="openPopup(getdata.id)"
+              </button>
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn text-nowrap"
+                data-bs-toggle="modal"
+                data-bs-target="#appliedVacancy"
+                data-bs-whatever="@mdo"
+                @click="openPopup(getdata.id)"
+              >
+                <span
+                  :style="{ padding: getPadding(getdata.applied) }"
+                  class="rounded-circle"
+                  >{{ getdata.applied }}</span
                 >
-                  <span
-                    :style="{ padding: getPadding(getdata.applied) }"
-                    class="rounded-circle"
-                    >{{ getdata.applied }}</span
-                  >
-                </button>
-              </td>
-              <td>
-                <button
-                  type="button"
-                  class="btn text-nowrap"
-                  data-bs-toggle="modal"
-                  data-bs-target="#assignedVacancyList"
-                  data-bs-whatever="@mdo"
-                  @click="openAssigned(getdata.id)"
+              </button>
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn text-nowrap"
+                data-bs-toggle="modal"
+                data-bs-target="#assignedVacancyList"
+                data-bs-whatever="@mdo"
+                @click="openAssigned(getdata.id)"
+              >
+                <span
+                  :style="{ padding: getPadding(getdata.assigned) }"
+                  class="rounded-circle"
+                  >{{ getdata.assigned }}</span
                 >
-                  <span
-                    :style="{ padding: getPadding(getdata.assigned) }"
-                    class="rounded-circle"
-                    >{{ getdata.assigned }}</span
-                  >
-                </button>
-              </td>
-              <td>
-                <button
-                  type="button"
-                  class="btn text-nowrap"
-                  data-bs-toggle="modal"
-                  data-bs-target="#rejectedVacancyList"
-                  data-bs-whatever="@mdo"
-                  @click="openRejected(getdata.id)"
+              </button>
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn text-nowrap"
+                data-bs-toggle="modal"
+                data-bs-target="#rejectedVacancyList"
+                data-bs-whatever="@mdo"
+                @click="openRejected(getdata.id)"
+              >
+                <span
+                  :style="{ padding: getPadding(getdata.rejected) }"
+                  class="rounded-circle"
+                  >{{ getdata.rejected }}</span
                 >
-                  <span
-                    :style="{ padding: getPadding(getdata.rejected) }"
-                    class="rounded-circle"
-                    >{{ getdata.rejected }}</span
-                  >
-                </button>
-              </td>
-              <td>
-                {{
-                  getdata.create_by_and_time
-                    ? getdata.create_by_and_time.split(" ")[0]
-                    : ""
-                }}
-              </td>
+              </button>
+            </td>
+            <td>
+              {{
+                getdata.create_by_and_time ? getdata.create_by_and_time.split(" ")[0] : ""
+              }}
+            </td>
 
-              <td class="cursor-pointer">
-                <i
-                  class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
-                  data-bs-toggle="modal"
-                  data-bs-target="#editVacancy"
-                  data-bs-whatever="@mdo"
-                  @click="editVacancyId(getdata.id)"
-                ></i>
-                &nbsp;&nbsp;
-                <button
-                  class="btn btn-outline-danger text-nowrap"
-                  v-on:click="confirmed(getdata.id)"
-                >
-                  In-Active
-                </button>
-              </td>
-            </tr>
-          </tbody>
-          <tbody v-else>
-            <tr>
-              <td colspan="16" class="text-center text-danger" v-if="!isLoading">
-                {{ "Data Not Found!" }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+            <td class="cursor-pointer">
+              <i
+                class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
+                data-bs-toggle="modal"
+                data-bs-target="#editVacancy"
+                data-bs-whatever="@mdo"
+                @click="editVacancyId(getdata.id)"
+              ></i>
+              &nbsp;&nbsp;
+              <button
+                class="btn btn-outline-danger text-nowrap"
+                v-on:click="confirmed(getdata.id)"
+              >
+                In-Active
+              </button>
+            </td>
+          </tr>
+        </tbody>
+        <tbody v-else>
+          <tr>
+            <td colspan="16" class="text-center text-danger" v-if="!isLoading">
+              {{ "Data Not Found!" }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+
     <EditVacancy
       :vacancyId="selectedVacancyId || 0"
       @updateVacancy="createVacancy"
@@ -199,50 +324,64 @@
     <RejectedVacancyList @rejectVacancy="createVacancy" />
     <AllVacancyCandidateList @allVacancy="createVacancy" />
     <!-- <AddVacancy @addVacancy="createVacancy" /> -->
-    <div class="mt-3" style="text-align: right" v-if="getVacancyDetail?.length >= 10">
-      <!-- <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
-      </button> -->
-      <button
-        class="btn btn-sm btn-primary dropdown-toggle"
-        type="button"
-        id="recordsPerPageDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        {{ itemsPerPage }} Records
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
-        </li>
-      </ul>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="previousPage"
-      >
-        Previous
-      </button>
-      &nbsp;&nbsp;
-
-      <span>{{ currentPage }}</span>
-      &nbsp;&nbsp;
-
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage >= totalPages"
-        @click="nextPage"
-      >
-        Next
-      </button>
+    <div
+      class="mt-3 d-flex justify-content-between"
+      style="text-align: right"
+      v-if="getVacancyDetail?.length >= 10"
+    >
+      <div class="d-flex">
+        <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+        <button
+          class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+          style="color: #00000080"
+          type="button"
+          id="recordsPerPageDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ itemsPerPage }} Records
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+              >100 Records</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="d-flex align-items-center">
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === 1"
+          @click="changePage(currentPage - 1)"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+          style="background: #ffffff; color: #f9944b"
+        >
+          {{ currentPage }}
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === totalPages"
+          @click="changePage(currentPage + 1)"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
     </div>
     <ConfirmationAlert
       :show-modal="isModalVisible"
@@ -315,18 +454,11 @@ export default {
   },
 
   methods: {
-    previousPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-        this.createVacancy();
-      }
+    async changePage(page) {
+      this.currentPage = page;
+      await this.createVacancy();
     },
-    nextPage() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
-        this.createVacancy();
-      }
-    },
+
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
@@ -501,9 +633,7 @@ export default {
 a[data-v-507f63b7] {
   text-decoration: none;
 }
-.vacancyTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
+
 .btn-primary {
   border-radius: 4px;
 }

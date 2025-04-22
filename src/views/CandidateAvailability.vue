@@ -1,253 +1,281 @@
 <template>
   <div>
-    <div class="container-fluid">
-      <div id="main">
-        <div class="pagetitle d-flex justify-content-between px-2 mt-2">
-          <div class="py-3">
-            <ol class="breadcrumb mb-1">
-              <li class="breadcrumb-item active text-uppercase fs-6">
-                <router-link class="nav-link d-inline" aria-current="page" to="/home"
-                  >Dashboard</router-link
-                >
-                / <span class="color-fonts">Availability</span>
-              </li>
-            </ol>
+    <div id="main" class="main d-flex bg-light">
+      <div class="container-fluid">
+        <div class="row">
+          <div>
+            <Navbar />
           </div>
-        </div>
-        <div class="row p-3">
-          <div class="full-page-calendar">
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="calendar-header w-100">
-                <!-- <span v-if="formattedStartDate && formattedEndDate" class="fw-bold">
-                  {{
-                    "Monday " + formattedStartDate + " to Sunday " + formattedEndDate
-                  }} </span
-                >&nbsp; &nbsp;
-                <input
-                  type="date"
-                  v-model="startDate"
-                  @change="updateDateRange"
-                  class="dateInput"
-                  value=""
-                /> -->
-                <div class="d-flex">
-                  <!-- <div class="d-flex align-items-center gap-2">
-                    <select
-                      class="form-control"
-                      v-model="currentView"
-                      @change="updateDateRange"
-                    >
-                      <option value="weekly">Weekly</option>
-                      <option value="monthly">Monthly</option>
-                    </select>
-                  </div> -->
 
-                  &nbsp;&nbsp;
-                  <div class="d-flex align-items-center">
-                    <span
-                      v-if="currentView === 'weekly' && startDate && endDate"
-                      class="fw-bold"
+          <div class="">
+            <div class="pagetitle d-flex justify-content-between px-2 mt-2">
+              <div class="py-3">
+                <ol class="breadcrumb mb-1">
+                  <li class="breadcrumb-item active">
+                    <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                      >All Staff</a
                     >
-                      {{
-                        "Monday " +
-                        formatDate(startDate) +
-                        " to Sunday " +
-                        formatDate(endDate)
-                      }}
-                    </span>
-                    <span
-                      v-else-if="currentView === 'monthly' && startDate && endDate"
-                      class="fw-bold"
-                    >
-                      {{ formatDate(startDate) + " to " + formatDate(endDate) }}
-                    </span>
-                  </div>
-                  &nbsp;&nbsp;
-                  <div class="d-flex align-items-center fs-4">
-                    <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
-                    <i class="bi bi-calendar2-check-fill"></i>
-                    <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
-                  </div>
-                </div>
+                    <p>
+                      All Staff /
+                      <router-link
+                        class="nav-link d-inline fw-bolder"
+                        style="color: #000000"
+                        aria-current="page"
+                        to="/availability"
+                        >Staff Availability</router-link
+                      >
+                    </p>
+                  </li>
+                </ol>
               </div>
-              <div>
+            </div>
+            <div class="row">
+              <div class="d-flex align-items-center justify-content-end pe-4 mb-3">
                 <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
                   <input
-                    class="form-control mr-sm-2"
+                    class="form-control form-control-lg mr-sm-2"
                     type="search"
                     placeholder="Search by Name"
                     aria-label="Search"
                     v-model="searchQuery"
                     @input="debounceSearch"
                   />
+                  <span
+                    class="position-absolute"
+                    style="transform: translate(1349%, -151%)"
+                  >
+                    <img
+                      src="../assets/Search.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                  /></span>
                 </form>
               </div>
             </div>
-            <!-- Modal -->
+            <div class="row p-3" style="background: #fff">
+              <div class="full-page-calendar">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="calendar-header w-100 d-flex justify-content-center">
+                    <div class="d-flex">
+                      &nbsp;&nbsp;
 
-            <div v-if="selectedDate !== null" class="modal">
-              <div class="modal-content">
-                <h4 class="text-capitalize" style="color: #ff5722; font-weight: bold">
-                  {{ getCandidateName() }}
-                </h4>
-
-                <Calendar
-                  :initialDate="selectedDate.toISOString()"
-                  :candidateId="selectedCandidateId.toString()"
-                  @closeModal="closeModal"
-                  :availabilityId="availability_id"
-                  :startDate="startDate"
-                  :availabilityStatus="statusForSelectedDate"
-                  @availability-updated="fetchCandidateList"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="table-wrapper" v-if="!searchQuery">
-            <table class="table candidateTable">
-              <thead>
-                <tr>
-                  <th scope="col">Name</th>
-                  <th scope="col">
-                    <div class="calendar-grid">
-                      <div v-for="day in daysOfWeek" :key="day" class="day-header">
-                        {{ day }}
-                      </div>
-                      <div v-for="date in selectedDateRow" :key="date" class="day-header">
-                        {{ formatDate(date) }}
+                      <div class="d-flex align-items-center justify-content-between">
+                        <i
+                          class="bi bi-caret-left-fill"
+                          @click="moveToPrevious"
+                          style="cursor: pointer"
+                        ></i>
+                        &nbsp;
+                        <img
+                          src="../assets/calender.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                        &nbsp;
+                        <span class="fw-bold fs-5">
+                          {{ formatMonthYear(currentDate) }}
+                        </span>
+                        &nbsp;
+                        <i
+                          class="bi bi-caret-right-fill"
+                          @click="moveToNext"
+                          style="cursor: pointer"
+                        ></i>
                       </div>
                     </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody v-if="paginateCandidates?.length > 0">
-                <tr v-for="data in paginateCandidates" :key="data.id">
-                  <td class="text-capitalize fw-bold" style="width: 21%">
-                    {{ data.candidate_name + " " }}
-                    <span
-                      v-if="data.job"
-                      style="background: rgb(209, 207, 207); padding: 3px"
-                    >
-                      {{ data.job }}
-                    </span>
-                    <!-- <span class="fs-6 text-muted fw-100"><br />{{ data.job }}</span> -->
-                  </td>
-                  <td>
-                    <div class="calendar-grid">
-                      <div
-                        v-for="day in selectedDateRow"
-                        :key="day"
-                        @click="openModal(data, day)"
-                        data-bs-toggle="modal"
-                        data-bs-target="#staticBackdrop"
-                        class="calendar-day"
-                        :class="{ 'calendar-day': true, clickable: day !== '' }"
-                      >
-                        <span v-for="avail in data.availability" :key="avail.id">
-                          <span v-if="avail.date === formattedDate(day)">
-                            <span
-                              v-if="
-                                avail.candidate_status &&
-                                avail.candidate_status.length > 0
-                              "
-                            >
-                              <span
-                                v-for="status in avail.candidate_status"
-                                :key="status"
-                                style="font-size: small; padding: 0px 5px"
-                                class="me-2"
-                                v-bind:class="{
-                                  'btn btn-warning': status === 'Late',
-                                  'btn btn-primary': status === 'U/A',
-                                  'btn btn-secondary': status === 'Night',
-                                  'btn btn-light': status === 'Early',
-                                }"
-                              >
-                                {{ status[0].toUpperCase() }}
+                  </div>
+                </div>
+                <!-- Modal -->
+
+                <div v-if="selectedDate !== null" class="modal">
+                  <div class="modal-content">
+                    <h4 class="text-capitalize" style="color: #ff5722; font-weight: bold">
+                      {{ getCandidateName() }}
+                    </h4>
+
+                    <Calendar
+                      :initialDate="selectedDate.toISOString()"
+                      :candidateId="selectedCandidateId.toString()"
+                      @closeModal="closeModal"
+                      :availabilityId="availability_id"
+                      :startDate="startDate"
+                      :availabilityStatus="statusForSelectedDate"
+                      @availability-updated="fetchCandidateList"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="table-wrapper" v-if="!searchQuery">
+                <table class="table candidateTable">
+                  <thead>
+                    <tr style="background: #ffeedb">
+                      <th scope="col">
+                        Name
+                        <img
+                          src="../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        <div class="calendar-grid">
+                          <div v-for="day in daysOfWeek" :key="day" class="day-header">
+                            {{ day }}
+                          </div>
+                          <div
+                            v-for="date in selectedDateRow"
+                            :key="date"
+                            class="day-header"
+                          >
+                            {{ formatDate(date) }}
+                            <img
+                              src="../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </div>
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody v-if="paginateCandidates?.length > 0">
+                    <tr v-for="data in paginateCandidates" :key="data.id">
+                      <td class="text-capitalize fw-bold" style="width: 21%">
+                        {{ data.candidate_name + " " }}
+                        <span
+                          v-if="data.job"
+                          style="background: rgb(209, 207, 207); padding: 3px"
+                        >
+                          {{ data.job }}
+                        </span>
+                        <!-- <span class="fs-6 text-muted fw-100"><br />{{ data.job }}</span> -->
+                      </td>
+                      <td>
+                        <div class="calendar-grid">
+                          <div
+                            v-for="day in selectedDateRow"
+                            :key="day"
+                            @click="openModal(data, day)"
+                            data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop"
+                            class="calendar-day"
+                            :class="{ 'calendar-day': true, clickable: day !== '' }"
+                          >
+                            <span v-for="avail in data.availability" :key="avail.id">
+                              <span v-if="avail.date === formattedDate(day)">
+                                <span
+                                  v-if="
+                                    avail.candidate_status &&
+                                    avail.candidate_status.length > 0
+                                  "
+                                >
+                                  <span
+                                    v-for="status in avail.candidate_status"
+                                    :key="status"
+                                    style="font-size: small; padding: 0px 5px"
+                                    class="me-2"
+                                    v-bind:class="{
+                                      'btn btn-warning': status === 'Late',
+                                      'btn btn-primary': status === 'U/A',
+                                      'btn btn-secondary': status === 'Night',
+                                      'btn btn-light': status === 'Early',
+                                    }"
+                                  >
+                                    {{ status[0].toUpperCase() }}
+                                  </span>
+                                </span>
                               </span>
                             </span>
-                          </span>
-                        </span>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-              <tbody v-else>
-                <tr>
-                  <td colspan="15" class="text-danger text-center">
-                    {{ "Data Not Found!" }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="table-wrapper" v-if="searchQuery">
-            <table class="table candidateTable">
-              <thead>
-                <tr>
-                  <th scope="col">Name</th>
-                  <th scope="col">
-                    <div class="calendar-grid">
-                      <div v-for="day in daysOfWeek" :key="day" class="day-header">
-                        {{ day }}
-                      </div>
-                      <div v-for="date in selectedDateRow" :key="date" class="day-header">
-                        {{ formatDate(date) }}
-                      </div>
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody v-if="searchResults?.length > 0">
-                <tr v-for="data in searchResults" :key="data.id">
-                  <td class="text-capitalize fw-bold" style="width: 21%">
-                    {{ data.candidate_name + " " }}
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="15" class="text-danger text-center">
+                        {{ "Data Not Found!" }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="table-wrapper" v-if="searchQuery">
+                <table class="table candidateTable">
+                  <thead>
+                    <tr>
+                      <th scope="col">Name</th>
+                      <th scope="col">
+                        <div class="calendar-grid">
+                          <div v-for="day in daysOfWeek" :key="day" class="day-header">
+                            {{ day }}
+                          </div>
+                          <div
+                            v-for="date in selectedDateRow"
+                            :key="date"
+                            class="day-header"
+                          >
+                            {{ formatDate(date) }}
+                          </div>
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody v-if="searchResults?.length > 0">
+                    <tr v-for="data in searchResults" :key="data.id">
+                      <td class="text-capitalize fw-bold" style="width: 21%">
+                        {{ data.candidate_name + " " }}
 
-                    <span class="fs-6 text-muted fw-100"><br />{{ data.job }}</span>
-                  </td>
-                  <td>
-                    <div class="calendar-grid">
-                      <div
-                        v-for="day in selectedDateRow"
-                        :key="day"
-                        @click="openModal(data, day)"
-                        data-bs-toggle="modal"
-                        data-bs-target="#staticBackdrop"
-                        class="calendar-day"
-                        :class="{ 'calendar-day': true, clickable: day !== '' }"
-                      >
-                        <span v-for="avail in data.availability" :key="avail.id">
-                          <span v-if="avail.date === formattedDate(day)">
-                            <span
-                              v-for="status in avail.candidate_status"
-                              :key="status"
-                              style="font-size: small; padding: 0px 5px"
-                              class="me-2"
-                              v-bind:class="{
-                                'btn btn-warning': status === 'Late',
-                                'btn btn-primary': status === 'U/A',
-                                'btn btn-secondary': status === 'Night',
-                                'btn btn-light': status === 'Early',
-                              }"
-                            >
-                              {{ status[0].toUpperCase() }}
+                        <span class="fs-6 text-muted fw-100"><br />{{ data.job }}</span>
+                      </td>
+                      <td>
+                        <div class="calendar-grid">
+                          <div
+                            v-for="day in selectedDateRow"
+                            :key="day"
+                            @click="openModal(data, day)"
+                            data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop"
+                            class="calendar-day"
+                            :class="{ 'calendar-day': true, clickable: day !== '' }"
+                          >
+                            <span v-for="avail in data.availability" :key="avail.id">
+                              <span v-if="avail.date === formattedDate(day)">
+                                <span
+                                  v-for="status in avail.candidate_status"
+                                  :key="status"
+                                  style="font-size: small; padding: 0px 5px"
+                                  class="me-2"
+                                  v-bind:class="{
+                                    'btn btn-warning': status === 'Late',
+                                    'btn btn-primary': status === 'U/A',
+                                    'btn btn-secondary': status === 'Night',
+                                    'btn btn-light': status === 'Early',
+                                  }"
+                                >
+                                  {{ status[0].toUpperCase() }}
+                                </span>
+                              </span>
                             </span>
-                          </span>
-                        </span>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-              <tbody v-else>
-                <tr>
-                  <td colspan="2" class="text-danger text-center">
-                    {{ errorMessage }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="2" class="text-danger text-center">
+                        {{ errorMessage }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -305,6 +333,8 @@
 import axios from "axios";
 import Calendar from "../components/modals/CandidatePage/CanderAvailableModal.vue";
 import Loader from "../components/Loader/Loader.vue";
+import Navbar from "../components/Navbar.vue";
+import dayjs from "dayjs";
 const axiosInstance = axios.create({
   headers: {
     "Cache-Control": "no-cache",
@@ -314,6 +344,7 @@ export default {
   data() {
     return {
       currentView: "weekly",
+      currentDate: new Date(),
       searchQuery: null,
       debounceTimeout: null,
       searchResults: [],
@@ -338,6 +369,7 @@ export default {
       isLoading: false,
     };
   },
+
   computed: {
     paginateCandidates() {
       if (this.candidateList) {
@@ -433,8 +465,32 @@ export default {
       );
     },
   },
-
+  components: {
+    Navbar,
+  },
+  watch: {
+    startDate(newVal) {
+      // Sync currentDate with the current week’s start date
+      this.currentDate = new Date(newVal);
+    },
+  },
   methods: {
+    moveToNext() {
+      this.currentDate = new Date(
+        this.currentDate.setMonth(this.currentDate.getMonth() + 1)
+      );
+    },
+    moveToPrevious() {
+      this.currentDate = new Date(
+        this.currentDate.setMonth(this.currentDate.getMonth() - 1)
+      );
+    },
+    formatMonthYear(date) {
+      return new Intl.DateTimeFormat("en-US", {
+        month: "long",
+        year: "numeric",
+      }).format(date);
+    },
     formatDate(dateString) {
       const parts = dateString.split("/");
 

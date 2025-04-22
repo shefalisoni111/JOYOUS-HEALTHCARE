@@ -2,8 +2,8 @@
   <div>
     <div id="main" class="main d-flex">
       <div class=""><Navbar /></div>
-      <div class="p-5">
-        <div>
+      <div class="container-fluid ps-5 pt-5 pb-5">
+        <div class="row">
           <div class="d-flex justify-content-between px-2">
             <div class="py-2">
               <!-- <ol class="breadcrumb mb-1">
@@ -50,306 +50,287 @@
             </div>
           </div>
 
-          <div class="container-fluid">
-            <div class="row">
-              <div class="">
-                <div>
-                  <div class="d-flex justify-content-between">
-                    <ul
-                      class="nav nav-pills mb-3 d-flex justify-content-between"
-                      id="pills-tab"
-                      role="tablist"
+          <div class="d-flex justify-content-between">
+            <ul
+              class="nav nav-pills mb-3 d-flex justify-content-between"
+              id="pills-tab"
+              role="tablist"
+            >
+              <div class="d-flex">
+                <li class="nav-item d-flex align-items-center gap-2" role="presentation">
+                  <button
+                    a
+                    class="nav-link"
+                    :class="{ active: activeTab === index }"
+                    aria-selected="true"
+                    type="button"
+                    role="tab"
+                    data-bs-toggle="pill"
+                    v-for="(tab, index) in tabs"
+                    :key="index"
+                    @click="selectTab(index)"
+                  >
+                    {{ tab.name }}
+                  </button>
+                </li>
+              </div>
+            </ul>
+            <div class="d-flex gap-2">
+              <div class="mt-2">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-danger text-nowrap"
+                  @click="toggleFilters"
+                >
+                  <i class="bi bi-funnel"></i>
+                  Show Filters
+                </button>
+                <input
+                  ref="fileInput"
+                  id="fileAll"
+                  type="file"
+                  accept=".csv"
+                  style="display: none"
+                  @change="handleFileUpload"
+                />
+                &nbsp;
+                <button
+                  class="nav-item dropdown btn btn-lg btn-outline-success text-nowrap dropdown-toggle"
+                  type="button"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Export
+
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li>
+                      <!-- Hide the default file input -->
+                      <label
+                        for="fileAll"
+                        class="custom-file-label dropdown-item"
+                        style="border-radius: 0px; cursor: pointer"
+                        @click="triggerFileInput"
+                      >
+                        Import
+                      </label>
+                    </li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li>
+                      <a class="dropdown-item" href="#" @click="exportOneFile('selected')"
+                        >Export</a
+                      >
+                    </li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li>
+                      <a class="dropdown-item" href="#" @click="exportOneFile('all')"
+                        >Export All</a
+                      >
+                    </li>
+                  </div>
+                </button>
+              </div>
+
+              <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
+                <div
+                  class="d-flex gap-2 flex-column position-absolute"
+                  style="
+                    transform: translate(150%, 21%);
+                    background: rgb(255, 255, 255);
+                    padding: 8px 13px 9px 13px;
+                    border-radius: 10px;
+                    box-shadow: 0px 4px 40px 0px #0000000d;
+                  "
+                >
+                  <div></div>
+
+                  <select v-model="selectedFilter" @change="filterData">
+                    <option value="" disabled>Status</option>
+                    <option value="true">Active</option>
+                    <option value="false">In-Active</option>
+                  </select>
+
+                  <select
+                    id="selectClients"
+                    v-model="selectedClientName"
+                    @change="filterData"
+                  >
+                    <option value="" disabled>Client Name</option>
+                    <option
+                      v-for="option in clientData"
+                      :key="option.id"
+                      :value="option.id"
+                      aria-placeholder="Select Client"
                     >
-                      <div class="d-flex">
-                        <li
-                          class="nav-item d-flex align-items-center gap-2"
-                          role="presentation"
-                        >
-                          <button
-                            a
-                            class="nav-link"
-                            :class="{ active: activeTab === index }"
-                            aria-selected="true"
-                            type="button"
-                            role="tab"
-                            data-bs-toggle="pill"
-                            v-for="(tab, index) in tabs"
-                            :key="index"
-                            @click="selectTab(index)"
-                          >
-                            {{ tab.name }}
-                          </button>
-                        </li>
-                      </div>
-                    </ul>
-                    <div class="d-flex gap-2">
-                      <div class="mt-2">
-                        <button
-                          type="button"
-                          class="btn btn-lg btn-danger text-nowrap"
-                          @click="toggleFilters"
-                        >
-                          <i class="bi bi-funnel"></i>
-                          Show Filters
-                        </button>
-                        <input
-                          ref="fileInput"
-                          id="fileAll"
-                          type="file"
-                          accept=".csv"
-                          style="display: none"
-                          @change="handleFileUpload"
-                        />
-                        &nbsp;
-                        <button
-                          class="nav-item dropdown btn btn-lg btn-outline-success text-nowrap dropdown-toggle"
-                          type="button"
-                          id="navbarDropdown"
-                          role="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          Export
+                      {{ option.client_name }}
+                    </option>
+                  </select>
 
-                          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li>
-                              <!-- Hide the default file input -->
-                              <label
-                                for="fileAll"
-                                class="custom-file-label dropdown-item"
-                                style="border-radius: 0px; cursor: pointer"
-                                @click="triggerFileInput"
-                              >
-                                Import
-                              </label>
-                            </li>
-                            <li><hr class="dropdown-divider" /></li>
-                            <li>
-                              <a
-                                class="dropdown-item"
-                                href="#"
-                                @click="exportOneFile('selected')"
-                                >Export</a
-                              >
-                            </li>
-                            <li><hr class="dropdown-divider" /></li>
-                            <li>
-                              <a
-                                class="dropdown-item"
-                                href="#"
-                                @click="exportOneFile('all')"
-                                >Export All</a
-                              >
-                            </li>
-                          </div>
-                        </button>
-                      </div>
+                  <select id="selectSite" v-model="selectedSiteName" @change="filterData">
+                    <option value="" disabled>Site Name</option>
+                    <option
+                      v-for="option in businessUnit"
+                      :key="option.id"
+                      :value="option.site_name"
+                      aria-placeholder="Select Site"
+                    >
+                      {{ option.site_name }}
+                    </option>
+                  </select>
 
-                      <div
-                        class="d-flex gap-2 mb-3 justify-content-between"
-                        v-if="showFilters"
-                      >
-                        <div class="d-flex gap-2 mt-3">
-                          <div></div>
-
-                          <select v-model="selectedFilter" @change="filterData">
-                            <option value="" disabled>Status</option>
-                            <option value="true">Active</option>
-                            <option value="false">In-Active</option>
-                          </select>
-
-                          <select
-                            id="selectClients"
-                            v-model="selectedClientName"
-                            @change="filterData"
-                          >
-                            <option value="" disabled>Client Name</option>
-                            <option
-                              v-for="option in clientData"
-                              :key="option.id"
-                              :value="option.id"
-                              aria-placeholder="Select Client"
-                            >
-                              {{ option.client_name }}
-                            </option>
-                          </select>
-
-                          <select
-                            id="selectSite"
-                            v-model="selectedSiteName"
-                            @change="filterData"
-                          >
-                            <option value="" disabled>Site Name</option>
-                            <option
-                              v-for="option in businessUnit"
-                              :key="option.id"
-                              :value="option.site_name"
-                              aria-placeholder="Select Site"
-                            >
-                              {{ option.site_name }}
-                            </option>
-                          </select>
-
-                          <select
-                            id="selectSitesAddress"
-                            v-model="selectedSiteAddress"
-                            @change="filterData"
-                          >
-                            <option value="" disabled>Site Address</option>
-                            <option
-                              v-for="option in businessUnit"
-                              :key="option.id"
-                              :value="option.address"
-                              aria-placeholder="Select Address"
-                            >
-                              {{ option.address }}
-                            </option>
-                          </select>
-                          <div class="searchbox position-relative">
-                            <input
-                              class="form-control"
-                              type="search"
-                              placeholder="Search Site..."
-                              aria-label="Search"
-                              v-model="localSearchQuery"
-                              @input="filterData"
-                            />
-                          </div>
-                        </div>
-                        <div>
-                          <button
-                            @click="resetFilter"
-                            class="btn btn-secondary"
-                            :disabled="
-                              !selectedFilter &&
-                              !selectedClientName &&
-                              !selectedSiteName &&
-                              !selectedSiteAddress &&
-                              !localSearchQuery
-                            "
-                          >
-                            Reset Filters
-                          </button>
-                        </div>
-                      </div>
-                      <div
-                        class="d-flex align-items-center gap-2 justify-content-between"
-                      >
-                        <div class="searchbox position-relative">
-                          <form @submit.prevent="search">
-                            <input
-                              class="form-control mr-sm-2"
-                              type="search"
-                              placeholder="Search..."
-                              aria-label="Search"
-                              v-model="searchQuery"
-                              @input="debounceSearch"
-                              style="height: 49px"
-                            />
-                          </form>
-                        </div>
-
-                        <!-- <button type="button" class="btn btn-outline-success text-nowrap">
-                        <i class="bi bi-funnel"></i>
-                        Show Filters
-                      </button> -->
-                      </div>
-                    </div>
+                  <select
+                    id="selectSitesAddress"
+                    v-model="selectedSiteAddress"
+                    @change="filterData"
+                  >
+                    <option value="" disabled>Site Address</option>
+                    <option
+                      v-for="option in businessUnit"
+                      :key="option.id"
+                      :value="option.address"
+                      aria-placeholder="Select Address"
+                    >
+                      {{ option.address }}
+                    </option>
+                  </select>
+                  <div class="searchbox position-relative">
+                    <input
+                      class="form-control"
+                      type="search"
+                      placeholder="Search Site..."
+                      aria-label="Search"
+                      v-model="localSearchQuery"
+                      @input="filterData"
+                    />
                   </div>
-
-                  <div v-if="!searchQuery">
-                    <component :is="activeComponent"></component>
-                  </div>
-                  <div v-if="searchQuery">
-                    <table class="table siteTable">
-                      <thead>
-                        <tr>
-                          <!-- <th></th> -->
-                          <th scope="col">ID</th>
-                          <th scope="col">#RefCode</th>
-                          <th scope="col">Site</th>
-                          <th scope="col">ClientName</th>
-                          <!-- <th scope="col">Jobs</th> -->
-                          <th scope="col">Address</th>
-                          <th scope="col">PhoneNumber</th>
-                          <th scope="col">Email</th>
-                          <th scope="col">Status</th>
-                          <th scope="col">Portal Access</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody v-if="paginateSearchResults?.length > 0">
-                        <tr v-for="data in paginateSearchResults" :key="data.id">
-                          <!-- <td>
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              :value="data.id"
-                              :id="data.id"
-                              v-model="checkedSites[data.id]"
-                              @change="handleCheckboxChange(data.id)"
-                            />
-                          </td> -->
-                          <td>{{ data.id }}</td>
-                          <td v-text="data.refer_code"></td>
-                          <td v-text="data.site_name"></td>
-                          <td>
-                            <router-link
-                              class="text-capitalize text-decoration-underline text-black"
-                              :to="{
-                                name: 'SingleClientProfile',
-                                params: { id: data.client_id },
-                              }"
-                              >{{ data.client_name }}</router-link
-                            >
-                          </td>
-                          <td>{{ data.address }}</td>
-                          <td>{{ data.phone_number }}</td>
-                          <td>{{ data.email }}</td>
-                          <td>{{ data.status }}</td>
-                          <td>{{ data.portal_access }}</td>
-                          <td class="cursor-pointer">
-                            <button
-                              type="button"
-                              class="btn btn-outline-success text-nowrap text-nowrap"
-                              data-bs-toggle="modal"
-                              data-bs-target="#editSite"
-                              data-bs-whatever="@mdo"
-                              @click="editsiteId(data.id)"
-                            >
-                              <i class="bi bi-pencil-square"></i>
-                            </button>
-                            &nbsp;&nbsp;
-                            <!-- <button class="btn btn-outline-success text-nowrap">
-                              <i
-                                class="bi bi-trash"
-                                v-on:click="clientsDeleteMethod(client.id)"
-                              ></i></button
-                            >&nbsp;&nbsp; -->
-                            <router-link
-                              :to="{
-                                name: 'SingleSiteprofile',
-                                params: { id: data.id },
-                              }"
-                              class="btn btn-outline-success text-nowrap"
-                            >
-                              <i class="bi bi-eye"></i>
-                            </router-link>
-                          </td>
-                        </tr>
-                      </tbody>
-                      <tbody v-else>
-                        <tr>
-                          <td colspan="10" class="text-danger text-center">
-                            {{ " No Site found for the specified criteria" }}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                  <div>
+                    <button
+                      @click="resetFilter"
+                      class="btn btn-secondary"
+                      :disabled="
+                        !selectedFilter &&
+                        !selectedClientName &&
+                        !selectedSiteName &&
+                        !selectedSiteAddress &&
+                        !localSearchQuery
+                      "
+                    >
+                      Reset Filters
+                    </button>
                   </div>
                 </div>
+                <!-- <div>
+                        <button
+                          @click="resetFilter"
+                          class="btn btn-secondary"
+                          :disabled="
+                            !selectedFilter &&
+                            !selectedClientName &&
+                            !selectedSiteName &&
+                            !selectedSiteAddress &&
+                            !localSearchQuery
+                          "
+                        >
+                          Reset Filters
+                        </button>
+                      </div> -->
+              </div>
+              <div class="d-flex align-items-center gap-2 justify-content-between">
+                <div class="searchbox position-relative"></div>
               </div>
             </div>
+          </div>
+
+          <div v-if="!searchQuery">
+            <component :is="activeComponent"></component>
+          </div>
+          <div v-if="searchQuery">
+            <table class="table siteTable">
+              <thead>
+                <tr>
+                  <!-- <th></th> -->
+                  <th scope="col">ID</th>
+                  <th scope="col">#RefCode</th>
+                  <th scope="col">Site</th>
+                  <th scope="col">ClientName</th>
+                  <!-- <th scope="col">Jobs</th> -->
+                  <th scope="col">Address</th>
+                  <th scope="col">PhoneNumber</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Portal Access</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody v-if="paginateSearchResults?.length > 0">
+                <tr v-for="data in paginateSearchResults" :key="data.id">
+                  <!-- <td>
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            :value="data.id"
+                            :id="data.id"
+                            v-model="checkedSites[data.id]"
+                            @change="handleCheckboxChange(data.id)"
+                          />
+                        </td> -->
+                  <td>{{ data.id }}</td>
+                  <td v-text="data.refer_code"></td>
+                  <td v-text="data.site_name"></td>
+                  <td>
+                    <router-link
+                      class="text-capitalize text-decoration-underline text-black"
+                      :to="{
+                        name: 'SingleClientProfile',
+                        params: { id: data.client_id },
+                      }"
+                      >{{ data.client_name }}</router-link
+                    >
+                  </td>
+                  <td>{{ data.address }}</td>
+                  <td>{{ data.phone_number }}</td>
+                  <td>{{ data.email }}</td>
+                  <td>{{ data.status }}</td>
+                  <td>{{ data.portal_access }}</td>
+                  <td class="cursor-pointer">
+                    <button
+                      type="button"
+                      class="btn btn-outline-success text-nowrap text-nowrap"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editSite"
+                      data-bs-whatever="@mdo"
+                      @click="editsiteId(data.id)"
+                    >
+                      <i class="bi bi-pencil-square"></i>
+                    </button>
+                    &nbsp;&nbsp;
+                    <!-- <button class="btn btn-outline-success text-nowrap">
+                            <i
+                              class="bi bi-trash"
+                              v-on:click="clientsDeleteMethod(client.id)"
+                            ></i></button
+                          >&nbsp;&nbsp; -->
+                    <router-link
+                      :to="{
+                        name: 'SingleSiteprofile',
+                        params: { id: data.id },
+                      }"
+                      class="btn btn-outline-success text-nowrap"
+                    >
+                      <i class="bi bi-eye"></i>
+                    </router-link>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody v-else>
+                <tr>
+                  <td colspan="10" class="text-danger text-center">
+                    {{ " No Site found for the specified criteria" }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -417,6 +398,9 @@ export default {
       selectedClientName: "",
       selectedSiteName: "",
       selectedSiteAddress: "",
+      totalPages: 1,
+      itemsPerPage: 10,
+      totalCount: 0,
       errorMessage: "",
       tabs: [
         { name: "All Site", component: "AllSite", routeName: "AllSite" },

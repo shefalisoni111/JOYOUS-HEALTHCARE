@@ -425,6 +425,22 @@ const router = createRouter({
       ],
     },
     {
+      path: "/notification",
+      name: "NotificationsAdmin",
+      component: () => import("@/components/Notifications/NotificationsAdmin.vue"),
+      meta: {
+        requiresAuth: true,requiresAdmin:true,
+      },
+    },
+    {
+      path: "/chat",
+      name: "Admin_Chat",
+      component: () => import("@/components/ChatBox/Admin_Chat.vue"),
+      meta: {
+        requiresAuth: true,requiresAdmin:true,
+      },
+    },
+    {
       path: "/schedule",
       name: "Schedule",
       component: () => import("@/views/ScheduleView.vue"),

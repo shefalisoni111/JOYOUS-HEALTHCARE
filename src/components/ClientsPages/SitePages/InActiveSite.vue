@@ -5,20 +5,92 @@
         <thead>
           <tr>
             <!-- <th scope="col">ID</th> -->
-            <th scope="col">#RefCode</th>
-            <th scope="col">Site</th>
-            <th scope="col">ClientName</th>
+            <th scope="col">
+              #RefCode
+              <img
+                src="../../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Site
+              <img
+                src="../../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              ClientName
+              <img
+                src="../../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
 
-            <th scope="col">Address</th>
-            <th scope="col">PhoneNumber</th>
-            <th scope="col" style="width: 10%">Email</th>
-            <th scope="col">Status</th>
-            <th scope="col">Portal Access</th>
-            <th scope="col">Action</th>
+            <th scope="col">
+              Address
+              <img
+                src="../../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              PhoneNumber
+              <img
+                src="../../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col" style="width: 10%">
+              Email
+              <img
+                src="../../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Status
+              <img
+                src="../../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Portal Access
+              <img
+                src="../../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th scope="col">
+              Action
+              <img
+                src="../../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
           </tr>
         </thead>
-        <tbody v-if="paginateSiteData?.length > 0">
-          <tr v-for="data in paginateSiteData" :key="data.id">
+        <tbody v-if="getSiteInactiveData?.length > 0">
+          <tr v-for="data in getSiteInactiveData" :key="data.id">
             <!-- <td>{{ data.id }}</td> -->
             <td v-text="data.refer_code"></td>
             <td v-text="data.site_name"></td>
@@ -104,22 +176,39 @@
           </li>
         </ul>
       </div>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="currentPage--"
-      >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getSiteInactiveData?.length"
-        @click="currentPage++"
-      >
-        Next
-      </button>
+      <div class="d-flex align-items-center">
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === 1"
+          @click="changePage(currentPage - 1)"
+        >
+          <i
+            class="bi bi-chevron-left"
+            :class="{ 'fw-bolder': currentPage !== totalPages }"
+          ></i>
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 fw-bolder"
+          style="background: #ffffff; color: #f9944b"
+        >
+          {{ currentPage }}
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === totalPages"
+          @click="changePage(currentPage + 1)"
+        >
+          <i
+            class="bi bi-chevron-right"
+            :class="{ 'fw-bolder': currentPage !== totalPages }"
+          ></i>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -159,6 +248,10 @@ export default {
       this.selectedsiteId = siteId;
       this.$refs.refSite.getClientMethod();
     },
+    changePage(page) {
+      this.currentPage = page;
+      this.getSiteInactiveMethod();
+    },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
@@ -166,15 +259,40 @@ export default {
     },
     async getSiteInactiveMethod() {
       this.isLoading = true;
+      const params = {
+        page: this.currentPage,
+        per_page: this.itemsPerPage,
+        "site[status]": false,
+      };
+
+      // if (this.selectedFilter) {
+      //   params["site[status]"] = this.selectedFilter;
+      // }
+
+      // if (this.selectedClientName) {
+      //   params["site[client_id]"] = this.selectedClientName;
+      // }
+
+      // if (this.selectedSiteName) {
+      //   params["site[site_name]"] = this.selectedSiteName;
+      // }
+
+      // if (this.selectedSiteAddress) {
+      //   params["site[address]"] = this.selectedSiteAddress;
+      // }
+
+      // if (this.localSearchQuery) {
+      //   params.search = this.localSearchQuery;
+      // }
+
       try {
-        const response = await axios.get(`${VITE_API_URL}/inactivated_site`, {
-          params: {
-            page: this.currentPage,
-            per_page: this.itemsPerPage,
-          },
+        const response = await axios.get(`${VITE_API_URL}/site_filter`, {
+          params,
         });
-        this.getSiteInactiveData = response.data.data;
+        this.getSiteInactiveData = response.data.data || [];
+        this.totalPages = Math.ceil(response.data.site_filter / this.itemsPerPage);
       } catch (error) {
+        // console.error("Error fetching filtered data:", error);
       } finally {
         this.isLoading = false;
       }

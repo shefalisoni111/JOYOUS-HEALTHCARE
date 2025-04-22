@@ -5,7 +5,7 @@
     <!-- <div id="main">
       <h6>TimeSheet Page in Progress.....</h6>
     </div> -->
-    <!-- <router-view /> -->
+    <router-view />
   </div>
 </template>
 <script>

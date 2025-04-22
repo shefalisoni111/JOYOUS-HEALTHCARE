@@ -1,209 +1,199 @@
 <template>
   <div>
-    <div class="container-fluid p-0">
-      <div id="main">
-        <div class="pagetitle bg-define d-flex justify-content-between px-2">
-          <div class="py-3">
-            <ol class="breadcrumb my-2">
-              <li class="breadcrumb-item active text-uppercase fs-6">
-                <router-link class="nav-link d-inline" aria-current="page" to="/home"
-                  >Dashboard</router-link
-                >
-                /
+    <div id="main" class="main d-flex bg-light">
+      <!-- Sidebar / Navbar -->
+      <Navbar />
 
-                <span class="color-fonts">{{ activeTabName }} Staff</span>
+      <!-- Main content wrapper -->
+      <div class="container-fluid p-5">
+        <!-- Page Title & Add Staff Button -->
+        <div class="row align-items-center mb-4">
+          <div class="col-md-6">
+            <ol class="breadcrumb mb-1">
+              <li class="breadcrumb-item active">
+                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                  >All Staff</a
+                >
+                <p>
+                  <router-link
+                    class="nav-link d-inline fw-bolder"
+                    style="color: #000000"
+                    aria-current="page"
+                    to="/staff-list"
+                    >All Staff</router-link
+                  >
+                  / Staff Availability
+                </p>
               </li>
             </ol>
           </div>
+          <div class="col-md-6 text-end">
+            <button
+              v-if="activeTab === 0"
+              type="button"
+              class="btn btn-lg text-white"
+              style="background-color: #f9944b"
+              data-bs-toggle="modal"
+              data-bs-target="#addCandidate"
+              @click="handleCandidateAdded"
+            >
+              <i class="bi bi-person-plus-fill"></i> Add Staff
+            </button>
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="container-fluid p-0" style="background-color: #fdce5e17">
-      <div class="row">
-        <div class="">
-          <div class="d-flex gap-2 justify-content-between bg-define">
-            <ul class="nav nav-pills my-3 p-2" role="tablist">
-              <li class="nav-item d-inline-flex gap-2" role="presentation">
-                <button
-                  class="nav-link text-nowrap"
-                  :class="{ active: activeTab === index }"
-                  :to="`/${tab.routeName}`"
-                  aria-selected="true"
-                  type="button"
-                  role="tab"
-                  data-bs-toggle="pill"
-                  v-for="(tab, index) in tabs"
-                  :key="index"
-                  @click="selectTab(index)"
-                >
-                  {{ tab.name }}
-                </button>
-              </li>
-            </ul>
-            <div class="d-flex align-items-center p-2">
-              <div class="d-flex align-items-center gap-2">
-                <div class="form-inline my-2 my-lg-0">
-                  <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
-                    <input
-                      class="form-control mr-sm-2"
-                      type="search"
-                      placeholder="Search..."
-                      aria-label="Search"
-                      v-model="searchQuery"
-                      @input="debounceSearch"
-                    />
-                  </form>
-                </div>
 
-                <div>
-                  <button
-                    v-if="activeTab === 0"
-                    type="button"
-                    class="btn btn-outline-success text-nowrap text-nowrap"
-                    data-bs-toggle="modal"
-                    data-bs-target="#addCandidate"
-                    data-bs-whatever="@mdo"
-                    @click="handleCandidateAdded"
+        <!-- Tabs and Search -->
+        <div
+          class="d-flex flex-wrap justify-content-between align-items-center bg-define py-2 mb-4 rounded"
+        >
+          <ul class="nav nav-pills" role="tablist">
+            <li
+              class="nav-item"
+              role="presentation"
+              v-for="(tab, index) in tabs"
+              :key="index"
+            >
+              <button
+                class="nav-link text-nowrap me-2"
+                :class="{ active: activeTab === index }"
+                type="button"
+                role="tab"
+                data-bs-toggle="pill"
+                @click="selectTab(index)"
+              >
+                {{ tab.name }}
+              </button>
+            </li>
+          </ul>
+
+          <form
+            @submit.prevent="search"
+            class="d-flex align-items-center position-relative"
+          >
+            <input
+              class="form-control form-control-lg"
+              type="search"
+              placeholder="Search..."
+              aria-label="Search"
+              v-model="searchQuery"
+              @input="debounceSearch"
+            />
+            <span
+              class="position-absolute"
+              style="right: 10px; top: 50%; transform: translateY(-50%)"
+            >
+              <img src="../../assets/Search.png" class="img-fluid pe-2" alt="Search" />
+            </span>
+          </form>
+        </div>
+
+        <!-- Dynamic Component or Search Results -->
+        <div v-if="!searchQuery">
+          <component :is="activeComponent" />
+        </div>
+
+        <div v-else>
+          <table class="table candidateTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Positions</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Status</th>
+                <th v-if="activeTab === 0 || activeTab === 1">Assign</th>
+                <th>Last Login</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody v-if="searchResults?.length > 0">
+              <tr v-for="data in searchResults" :key="data.id">
+                <td>{{ data.id }}</td>
+                <td>
+                  <router-link
+                    class="text-capitalize fw-bold"
+                    :to="{ name: 'Profile', params: { id: data.id } }"
                   >
-                    <i class="bi bi-person-plus-fill"></i>
-                    Add Staff
+                    {{ data.first_name }} {{ data.last_name }}
+                  </router-link>
+                </td>
+                <td>{{ data.position }}</td>
+                <td>{{ data.email }}</td>
+                <td>{{ data.phone_number }}</td>
+                <td>{{ data.status }}</td>
+                <td v-if="activeTab === 0 || activeTab === 1">
+                  <button
+                    class="btn"
+                    :class="[
+                      'btn-outline-success',
+                      {
+                        'btn-outline-danger':
+                          data.status === 'pending' ||
+                          data.status === 'rejected' ||
+                          !data.activated,
+                        'disabled-button':
+                          data.status === 'pending' ||
+                          data.status === 'rejected' ||
+                          !data.activated,
+                      },
+                    ]"
+                    data-bs-toggle="modal"
+                    data-bs-target="#assignDirectVacancy"
+                    @click="updateSelectedIds(data)"
+                    :disabled="
+                      data.status === 'pending' ||
+                      data.status === 'rejected' ||
+                      !data.activated
+                    "
+                  >
+                    <i class="bi bi-person-circle"></i>
                   </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div v-if="!searchQuery">
-            <component :is="activeComponent"></component>
-          </div>
-
-          <div v-if="searchQuery">
-            <table class="table candidateTable">
-              <thead>
-                <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Positions</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">Phone</th>
-                  <th scope="col">Status</th>
-                  <th scope="col" v-if="activeTab === 0 || activeTab === 1">Assign</th>
-
-                  <th scope="col">Last Login</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-              <tbody v-if="searchResults?.length > 0">
-                <tr v-for="data in searchResults" :key="data.id">
-                  <td>{{ data.id }}</td>
-                  <td>
-                    <router-link
-                      class="text-capitalize fw-bold"
-                      :to="{
-                        name: 'Profile',
-                        params: { id: data.id },
-                      }"
-                    >
-                      {{ data.first_name }}&nbsp; {{ data.last_name }}
-                    </router-link>
-                  </td>
-                  <td>{{ data.position }}</td>
-                  <td>{{ data.email }}</td>
-                  <td>{{ data.phone_number }}</td>
-                  <td>
-                    {{ data.status }}
-                  </td>
-                  <td v-if="activeTab === 0 || activeTab === 1">
-                    <button
-                      class="btn"
-                      :class="[
-                        'btn-outline-success',
-                        {
-                          'btn-outline-danger':
-                            data.status === 'pending' ||
-                            data.status === 'rejected' ||
-                            !data.activated,
-                        },
-                        {
-                          'disabled-button':
-                            data.status === 'pending' ||
-                            data.status === 'rejected' ||
-                            !data.activated,
-                        },
-                      ]"
-                      data-bs-toggle="modal"
-                      data-bs-target="#assignDirectVacancy"
-                      data-bs-whatever="@mdo"
-                      @click="updateSelectedIds(data)"
-                      :disabled="
-                        data.status === 'pending' ||
-                        data.status === 'rejected' ||
-                        !data.activated
-                      "
-                    >
-                      <i class="bi bi-person-circle"></i>
-                    </button>
-                  </td>
-                  <td>{{ data.last_login }}</td>
-                  <td>
-                    <button
-                      v-if="activeTab === 2"
-                      type="button"
-                      class="btn btn-success"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                      title="Tooltip on top"
-                      v-on:click="activeCandidateMethod(data.id)"
-                    >
-                      Re-Activate
-                    </button>
-                    &nbsp;&nbsp;
-                    <button
-                      v-if="activeTab === 1"
-                      type="button"
-                      class="btn btn-danger"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                      title="Tooltip on top"
-                      v-on:click="deleteCandidate(data.id)"
-                    >
-                      In-Activate
-                    </button>
-                    &nbsp;&nbsp;
-                    <button
-                      v-if="activeTab === 3"
-                      type="button"
-                      class="btn btn-success"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                      title="Tooltip on top"
-                      v-on:click="approvedCandidate(data.id)"
-                    >
-                      Approve</button
-                    >&nbsp;&nbsp;
-                    <router-link
-                      class="btn btn-outline-success text-nowrap"
-                      :to="{
-                        name: 'Profile',
-                        params: { id: data.id },
-                      }"
-                    >
-                      <i class="bi bi-eye"></i>
-                    </router-link>
-                  </td>
-                </tr>
-              </tbody>
-              <tbody v-else>
-                <tr>
-                  <td colspan="9" class="text-danger text-center">
-                    {{ errorMessage }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                </td>
+                <td>{{ data.last_login }}</td>
+                <td>
+                  <button
+                    v-if="activeTab === 2"
+                    class="btn btn-success"
+                    @click="activeCandidateMethod(data.id)"
+                  >
+                    Re-Activate
+                  </button>
+                  <button
+                    v-if="activeTab === 1"
+                    class="btn btn-danger"
+                    @click="deleteCandidate(data.id)"
+                  >
+                    In-Activate
+                  </button>
+                  <button
+                    v-if="activeTab === 3"
+                    class="btn btn-success"
+                    @click="approvedCandidate(data.id)"
+                  >
+                    Approve
+                  </button>
+                  <router-link
+                    class="btn btn-outline-success"
+                    :to="{ name: 'Profile', params: { id: data.id } }"
+                  >
+                    <i class="bi bi-eye"></i>
+                  </router-link>
+                </td>
+              </tr>
+            </tbody>
+            <tbody v-else>
+              <tr>
+                <td colspan="9" class="text-danger text-center">
+                  {{ errorMessage }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
+
     <ConfirmationAlert
       :show-modal="isModalVisible"
       :message="confirmMessage"
@@ -232,6 +222,7 @@ import Rejected from "../CandidatePages/Rejected.vue";
 import AssignDirectVacancy from "../modals/CandidatePage/AssignDirectVacancy.vue";
 // import RejectCandidate from "../CandidatePages/RejectCandidate.vue";
 import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
+import Navbar from "../Navbar.vue";
 import Swal from "sweetalert2";
 const axiosInstance = axios.create({
   headers: {
@@ -251,7 +242,7 @@ export default {
       errorMessage: "",
       tabs: [
         {
-          name: "All ",
+          name: "All Staff",
           component: "AllCandidateListsDisplay",
           routeName: "AllCandidateListsDisplay",
         },
@@ -281,6 +272,7 @@ export default {
     ActiveCandidate,
     InActiveCandidate,
     Rejected,
+    Navbar,
     ConfirmationAlert,
     // RejectCandidate,
     AllCandidateListsDisplay,
@@ -584,9 +576,7 @@ export default {
 
 <style scoped>
 #main {
-  transition: all 0.3s;
-  padding-top: 63px;
-  background-color: #fdce5e17;
+  background-color: #fff;
 }
 .main-content {
   transition: all 0.3s;
@@ -596,10 +586,7 @@ export default {
   color: #ff5f30;
   font-weight: bold;
 }
-.nav-pills .nav-link {
-  border: 2px solid #444444;
-  color: #6e7681;
-}
+
 .btn-primary {
   border: none;
   font-size: 13px;
@@ -611,16 +598,26 @@ a {
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  background-color: transparent;
-  border: 2px solid green !important;
-  border-radius: 22px;
-  color: green;
+  background: #000000;
+  width: 100;
+  height: 37;
+  color: #fff;
+  border-radius: 13px;
+  padding-top: 10px;
+  padding-right: 15px;
+  padding-bottom: 11px;
+  padding-left: 15px;
 }
-
-.nav-pills .nav-link {
-  background-color: transparent;
-  border: 1px solid #0d6efd;
-  border-radius: 22px;
+.nav-link,
+.nav-link:hover,
+.nav-link:focus {
+  color: #667085;
+}
+.nav-pills {
+  background: #fff;
+  padding: 10px;
+  border-radius: 20px;
+  border-width: 1px;
 }
 .form-check-input {
   border: 2px solid grey;
@@ -628,10 +625,6 @@ a {
 .border-left {
   border-left: 1px solid #ded9d9;
   height: 100vh;
-}
-
-.candidateTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
 }
 
 .btn-primary {
@@ -649,12 +642,18 @@ a:link {
   color: black;
   text-decoration: none;
 }
-.nav-pills .nav-link {
-  background-color: transparent;
-  border: 1px solid #ff5722 !important;
-  border-radius: 22px;
-  color: #ff5722;
+ul.nav-pills {
+  border-bottom: none !important;
+  height: auto !important;
+  margin-bottom: 0px !important;
 }
+.nav-pills {
+  background: #fff;
+  padding: 10px;
+  border-radius: 20px;
+  border-width: 1px;
+}
+
 .switch {
   width: 50px;
   height: 17px;
