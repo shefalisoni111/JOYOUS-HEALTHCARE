@@ -25,7 +25,7 @@
                       class="nav-link d-inline fw-bolder"
                       style="color: #000000"
                       aria-current="page"
-                      to="/WeeklyTimeSheet"
+                      to="/timesheet/weekly"
                       >Weekly Timesheet</router-link
                     >
                     / Custom Timesheet / Signed Timesheet
@@ -65,7 +65,7 @@
                 </div>
                 <button
                   type="button"
-                  class="btn btn-outline-success text-nowrap"
+                  class="btn btn-danger text-nowrap btn-lg"
                   @click="toggleFilters"
                 >
                   <i class="bi bi-funnel"></i>
@@ -218,14 +218,6 @@
                   <h4 class="text-capitalize">{{ getCandidateName() }}</h4>
                   <p>You clicked on {{ selectedDate }}</p>
                   <p>CandidateId: {{ selectedCandidateId }}</p>
-                  <!-- Pass initialDate to the Calendar component -->
-                  <!-- <WeekTimeSheetEdit
-                    :initialDate="selectedDate"
-                    :candidateId="selectedCandidateId"
-                    @closeModal="closeModal"
-                    :vacancyId="vacancyId"
-                    :paginatedTimesheets="paginatedTimesheets"
-                  /> -->
                 </div>
               </div>
             </div>
@@ -233,10 +225,42 @@
               <table class="table candidateTable">
                 <thead>
                   <tr>
-                    <th rowspan="3">ID</th>
-                    <th rowspan="3" style="width: 10%">Name</th>
-                    <th rowspan="3">Site</th>
-                    <th rowspan="3">Shift</th>
+                    <th rowspan="3">
+                      ID
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th rowspan="3" style="width: 10%">
+                      Name
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th rowspan="3">
+                      Site
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th rowspan="3">
+                      Shift
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
                     <th>
                       <div class="calendar-grid">
                         <div v-for="day in daysOfWeek" :key="day" class="day-header">
@@ -294,9 +318,33 @@
                       </div>
                     </th>
 
-                    <th rowspan="3">Total Hours</th>
-                    <th rowspan="3">Total Cost</th>
-                    <th rowspan="3">Approved By</th>
+                    <th rowspan="3">
+                      Total Hours
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th rowspan="3">
+                      Total Cost
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th rowspan="3">
+                      Approved By
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
                   </tr>
                 </thead>
 
@@ -542,49 +590,72 @@
             </div>
           </div>
         </div>
+        <div
+          class="mx-3 d-flex justify-content-between"
+          style="text-align: right"
+          v-if="mergedTimesheetsArray.length >= 10"
+        >
+          <div class="d-flex">
+            <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+            <button
+              class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+              style="color: #00000080"
+              type="button"
+              id="recordsPerPageDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              {{ itemsPerPage }} Records
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+              <li>
+                <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+                  >20 Records</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+                  >50 Records</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+                  >100 Records</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="d-flex align-items-center">
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+              style="background: #ffffff"
+              :disabled="currentPage === 1"
+              @click="changePage(currentPage - 1)"
+            >
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+              style="background: #ffffff"
+            >
+              {{ currentPage }}
+            </button>
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+              style="background: #ffffff"
+              :disabled="currentPage === totalPages"
+              @click="changePage(currentPage + 1)"
+            >
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="mergedTimesheetsArray.length >= 10">
-      <!-- <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
-      </button> -->
-      <button
-        class="btn btn-sm btn-primary dropdown-toggle"
-        type="button"
-        id="recordsPerPageDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        {{ itemsPerPage }} Records
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
-        </li>
-      </ul>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="currentPage--"
-      >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= mergedTimesheetsArray.length"
-        @click="currentPage++"
-      >
-        Next
-      </button>
-    </div>
+
     <!-- <AppointmentAdd /> -->
     <WeekTimeSheetEdit
       ref="editWeekly"
@@ -611,7 +682,7 @@ import Navbar from "../Navbar.vue";
 export default {
   data() {
     return {
-      // currentView: "weekly",
+      currentView: "weekly",
       startDate: new Date(),
 
       currentDate: new Date(),
@@ -768,16 +839,47 @@ export default {
 
   methods: {
     moveToNext() {
-      this.currentDate = new Date(
-        this.currentDate.setMonth(this.currentDate.getMonth() + 1)
-      );
-      // this.updateDateRange();
+      if (this.currentView === "weekly") {
+        const newStartDate = new Date(this.startDate);
+        newStartDate.setDate(newStartDate.getDate() + 7);
+
+        const newEndDate = new Date(this.endDate);
+        newEndDate.setDate(newEndDate.getDate() + 7);
+
+        const currentMonth = this.startDate.getMonth();
+        const nextMonth = newStartDate.getMonth();
+
+        if (currentMonth !== nextMonth) {
+          this.currentDate = new Date(newStartDate);
+        }
+
+        this.startDate = newStartDate;
+        this.endDate = newEndDate;
+        this.updateDateRange();
+        this.filterData();
+      }
     },
+
     moveToPrevious() {
-      this.currentDate = new Date(
-        this.currentDate.setMonth(this.currentDate.getMonth() - 1)
-      );
-      // this.updateDateRange();
+      if (this.currentView === "weekly") {
+        const newStartDate = new Date(this.startDate);
+        newStartDate.setDate(newStartDate.getDate() - 7);
+
+        const newEndDate = new Date(this.endDate);
+        newEndDate.setDate(newEndDate.getDate() - 7);
+
+        const currentMonth = this.startDate.getMonth();
+        const prevMonth = newStartDate.getMonth();
+
+        if (currentMonth !== prevMonth) {
+          this.currentDate = new Date(newStartDate);
+        }
+
+        this.startDate = newStartDate;
+        this.endDate = newEndDate;
+        this.updateDateRange();
+        this.filterData();
+      }
     },
     formatMonthYear(date) {
       return new Intl.DateTimeFormat("en-US", {
@@ -785,37 +887,7 @@ export default {
         year: "numeric",
       }).format(date);
     },
-    // moveToPrevious() {
-    //   if (this.currentView === "weekly") {
-    //     this.startDate.setDate(this.startDate.getDate() - 7);
-    //     this.endDate.setDate(this.endDate.getDate() - 7);
-    //     this.updateDateRange();
-    //     this.filterData();
-    //   } else if (this.currentView === "monthly") {
-    //     this.startDate.setMonth(this.startDate.getMonth() - 1);
-    //     this.endDate = new Date(
-    //       this.startDate.getFullYear(),
-    //       this.startDate.getMonth() + 1,
-    //       0
-    //     );
-    //   }
-    // this.filterData();
-    // },
-    // moveToNext() {
-    //   if (this.currentView === "weekly") {
-    //     this.startDate.setDate(this.startDate.getDate() + 7);
-    //     this.endDate.setDate(this.endDate.getDate() + 7);
-    //     this.updateDateRange();
-    //     this.filterData();
-    //   } else if (this.currentView === "monthly") {
-    //     this.startDate.setMonth(this.startDate.getMonth() + 1);
-    //     this.endDate = new Date(
-    //       this.startDate.getFullYear(),
-    //       this.startDate.getMonth() + 1,
-    //       0
-    //     );
-    //   }
-    // },
+
     updateDateRange() {
       if (this.currentView === "weekly") {
         const weekStart = new Date(this.startDate);
@@ -868,8 +940,6 @@ export default {
           data.status = isPending ? "Pending" : "Unapproved";
         }
       } catch (error) {
-        // Handle the error if needed
-        // console.error("Error approving timesheet:", error);
         data.status = isPending ? "Pending" : "Unapproved";
       }
     },
@@ -890,16 +960,10 @@ export default {
         if (response.data && response.data.data) {
           this.candidateLists = response.data.data;
         } else {
-          // console.warn("No approved candidates found.");
         }
       } catch (error) {
         if (error.response) {
-          // console.error(
-          //   "Error fetching candidate data:",
-          //   error.response.data.message || error
-          // );
         } else {
-          // console.error("Network or Server Error:", error.message);
         }
       }
     },
@@ -910,7 +974,6 @@ export default {
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
-            // alert(error.response.data.message);
           }
         }
       }
@@ -956,7 +1019,6 @@ export default {
       }
 
       if (isNaN(year) || isNaN(month) || isNaN(day)) {
-        // console.error("Parsed date components are No numbers:", [year, month, day]);
         return "";
       }
 
@@ -996,7 +1058,6 @@ export default {
     openModal(candidateId, day) {
       this.vacancyId = candidateId.id.toString() || "";
 
-      // this.$refs.editWeekly.fetchCustomTimeSheetData(this.vacancyId);
       try {
         if (this.dataCustomTimeSheet && this.dataCustomTimeSheet.length > 0) {
           const actualCandidateId = candidateId.id;
@@ -1126,35 +1187,10 @@ export default {
       const site = this.businessUnit.find((option) => option.id === site_id);
       return site ? site.site_name : "";
     },
-    // async makeFilterAPICall(filterType, filterValue) {
-    //   const token = localStorage.getItem("token");
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/filter_timesheets`, {
-    //       params: {
-    //         filter_type: filterType,
-    //         filter_value: filterValue,
-    //       },
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     });
-    //     const mergedTimeSheets = [
-    //       ...response.data.custom_timesheets,
-    //       ...response.data.sign_timesheets,
-    //     ];
-    //     this.candidateList = mergedTimeSheets;
-    //     this.mergedTimesheetsArray = this.candidateList || [];
-    //     this.errorMessageFilter = "";
-    //   } catch (error) {
-    //     if (error.response) {
-    //       this.errorMessageFilter = "Data Not Found!" || "Data Not Found!";
-    //     } else {
-    //       this.errorMessageFilter = "Data Not Found!";
-    //     }
-    //     this.mergedTimesheetsArray = [];
-    //   }
-    // },
+    async changePage(page) {
+      this.currentPage = page;
+      await this.filterData();
+    },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
@@ -1171,115 +1207,6 @@ export default {
       const date = new Date(dateStr);
       return date >= startDate && date <= endDate;
     },
-    // async filterData() {
-    //   this.isLoading = true;
-    //   try {
-    //     const { start, end } = this.getWeekRange(this.startDate);
-
-    //     // Unified parameters for both APIs
-    //     const filterParams = {
-    //       page: 1,
-    //       // "weekly_timesheet[date]": this.formatDates(start),
-    //       date: this.formatDate(start),
-    //     };
-
-    //     if (this.selectedSiteName) {
-    //       filterParams["weekly_timesheet[site_id]"] = this.selectedSiteName;
-    //     }
-
-    //     if (this.selectedCandidate) {
-    //       filterParams["weekly_timesheet[candidate_id]"] = this.selectedCandidate;
-
-    //       if (this.candidateList && this.candidateList.length > 0) {
-    //         const isCustomTimesheets = this.candidateList.some((item) =>
-    //           item.hasOwnProperty("custom_timesheets")
-    //         );
-
-    //         if (isCustomTimesheets) {
-    //           filterParams["weekly_timesheet[date]"] = this.formatDates(start);
-    //         }
-    //       }
-    //     } else {
-    //       filterParams["weekly_timesheet[shift_date]"] = this.formatDates(start);
-    //     }
-
-    //     // const requestData = {
-    //     //   date: this.formatDate(start),
-    //     //   //  end_date: this.formatDate(end),
-    //     // };
-
-    //     const response = await axios.get(`${VITE_API_URL}/filter_timesheets`, {
-    //       params: filterParams,
-    //       per_page: this.itemsPerPage,
-    //     });
-
-    //     this.dataCustomTimeSheet = response.data;
-
-    //     this.weeklyTimesheets = this.dataCustomTimeSheet.weekly_timesheets;
-
-    //     const mergedTimesheetsArray = [];
-    //     const candidateHoursMap = {};
-
-    //     this.weeklyTimesheets.forEach((candidateTimesheet) => {
-    //       const {
-    //         candidate_name,
-    //         candidate_id,
-    //         site_name,
-    //         shift,
-    //         job,
-    //         display_hours,
-    //         total_week_cost,
-    //         approved_by,
-    //         data,
-    //       } = candidateTimesheet;
-
-    //       const customTimesheets = Array.isArray(data) ? data : [];
-
-    //       customTimesheets.forEach((timesheet) => {
-    //         mergedTimesheetsArray.push({
-    //           candidate_name,
-    //           candidate_id,
-    //           site_name,
-    //           shift,
-    //           job,
-    //           display_hours,
-    //           total_week_cost,
-    //           approved_by,
-    //           ...timesheet,
-    //         });
-    //       });
-
-    //       if (display_hours !== undefined && display_hours !== null) {
-    //         candidateHoursMap[candidate_id] = display_hours;
-    //       }
-    //       // if (total_week_cost !== undefined && total_week_cost !== null) {
-    //       //   candidateCostsMap[candidate_id] = total_week_cost;
-    //       // }
-
-    //       // if (approved_by !== undefined && approved_by !== null) {
-    //       //   candidateApprovedByMap[candidate_id] = approved_by;
-    //       // }
-    //     });
-
-    //     this.mergedTimesheetsArray = mergedTimesheetsArray;
-
-    //     // this.candidateCostsMap = candidateCostsMap;
-    //     // this.candidateApprovedByMap = candidateApprovedByMap;
-
-    //     if (this.mergedTimesheetsArray.length === 0) {
-    //       this.errorMessage = "No Weekly timesheets found for the specified week.";
-    //     } else {
-    //       this.errorMessage = "";
-    //     }
-
-    //     // console.log(this.mergedTimesheetsArray);
-    //     // console.log(this.total_hourMain, this.candidateHoursMap);
-    //   } catch (error) {
-    //     // console.error("Error fetching week timesheets:", error);
-    //   } finally {
-    //     this.isLoading = false;
-    //   }
-    // },
   },
   components: {
     WeekTimeSheetEdit,
@@ -1312,6 +1239,7 @@ export default {
 
 <style scoped>
 #main {
+  background-color: #f9f9f9;
 }
 .disabled-edit {
   pointer-events: none;
@@ -1478,9 +1406,6 @@ td {
   color: black;
   text-decoration: none;
   cursor: pointer;
-}
-.candidateTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
 }
 
 @media (max-width: 1020px) {

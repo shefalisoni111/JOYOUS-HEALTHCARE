@@ -148,19 +148,6 @@
                         class="d-flex align-items-center gap-2 justify-content-between"
                       >
                         <div class="searchbox position-relative">
-                          <!-- <form
-                            @submit.prevent="search"
-                            v-if="activeTab === 1 || activeTab === 2"
-                          >
-                            <input
-                              class="form-control mr-sm-2"
-                              type="search"
-                              placeholder="Search..."
-                              aria-label="Search"
-                              v-model="searchQuery"
-                              @input="filterData"
-                            />
-                          </form> -->
                           <div class="mt-2 d-flex justify-content-between">
                             <button
                               type="button"

@@ -1,325 +1,407 @@
 <template>
   <div>
     <!-- <Navbar /> -->
-    <div id="main">
-      <div class="pagetitle d-flex justify-content-between px-2">
-        <div class="py-3">
-          <ol class="breadcrumb mb-1">
-            <li class="breadcrumb-item active text-uppercase fs-6">
-              <router-link class="nav-link d-inline" aria-current="page" to="/home"
-                >Dashboard</router-link
-              >
-              / <span class="color-fonts">Custom TimeSheet</span>
-            </li>
-          </ol>
-        </div>
-      </div>
-
-      <div class="container-fluid pt-3">
-        <div class="row">
-          <div class="col-12">
-            <div class="">
-              <div>
-                <div class="p-2">
-                  <div class="d-flex justify-content-between">
-                    <div class="d-flex">
-                      <div class="d-flex align-items-center gap-2">
-                        <!-- <select
-                          class="form-control"
-                          v-model="currentView"
-                          @change="updateDateRange"
-                        >
-                          <option value="weekly">Weekly</option>
-                          <option value="monthly">Monthly</option>
-                        </select> -->
-                      </div>
-
-                      &nbsp;&nbsp;
-                      <div class="d-flex align-items-center">
-                        <span
-                          v-if="currentView === 'weekly' && startDate && endDate"
-                          class="fw-bold"
-                        >
-                          {{
-                            "Monday " +
-                            formatDate(startDate) +
-                            " to Sunday " +
-                            formatDate(endDate)
-                          }}
-                        </span>
-                        <span
-                          v-else-if="currentView === 'monthly' && startDate && endDate"
-                          class="fw-bold"
-                        >
-                          {{ formatDate(startDate) + " to " + formatDate(endDate) }}
-                        </span>
-                      </div>
-                      &nbsp;&nbsp;
-                      <div class="d-flex align-items-center fs-4">
-                        <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
-                        <i class="bi bi-calendar2-check-fill"></i>
-                        <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
-                      </div>
-                    </div>
-
-                    <div class="d-flex gap-3 align-items-center">
-                      <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
-                        <input
-                          class="form-control mr-sm-2"
-                          type="search"
-                          placeholder="Search.."
-                          aria-label="Search"
-                          v-model="searchQuery"
-                          @input="debounceSearch"
-                        />
-                      </form>
-                      <button
-                        type="button"
-                        class="btn btn-outline-success text-nowrap"
-                        @click="toggleFilters"
-                      >
-                        <i class="bi bi-funnel"></i>
-                        Show Filters
-                      </button>
-                      <input
-                        ref="fileInput"
-                        id="fileAll"
-                        type="file"
-                        accept=".csv"
-                        style="display: none"
-                        @change="handleFileUpload"
-                      />
-
-                      <button
-                        class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
-                        type="button"
-                        id="navbarDropdown"
-                        role="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        Export
-
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                          <li>
-                            <!-- Hide the default file input -->
-                            <label
-                              for="fileAll"
-                              class="custom-file-label dropdown-item"
-                              style="border-radius: 0px; cursor: pointer"
-                              @click="triggerFileInput"
-                            >
-                              Import
-                            </label>
-                          </li>
-                          <li><hr class="dropdown-divider" /></li>
-                          <li>
-                            <a
-                              class="dropdown-item"
-                              href="#"
-                              @click="exportOneFile('selected')"
-                              >Export</a
-                            >
-                          </li>
-                          <li><hr class="dropdown-divider" /></li>
-                          <li>
-                            <a
-                              class="dropdown-item"
-                              href="#"
-                              @click="exportOneFile('all')"
-                              >Export All</a
-                            >
-                          </li>
-                        </div>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                   
-                  </ul> -->
-                <div v-if="currentView === 'weekly'">
-                  <div>
-                    <div v-for="(day, index) in daysOfWeek" :key="index"></div>
-                    <div v-for="(day, index) in getWeekDates" :key="index"></div>
-                  </div>
-                </div>
-
-                <div v-else-if="currentView === 'monthly'">
-                  <div>
-                    <div v-for="(day, index) in getMonthDates" :key="index"></div>
-                  </div>
-                </div>
-                <div class="d-flex gap-2">
-                  <div></div>
-                </div>
-                <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
-                  <div class="d-flex gap-2">
-                    <div></div>
-
-                    <select
-                      v-model="selectedSiteName"
-                      id="selectBusinessUnit"
-                      @change="filterData"
-                    >
-                      <option value="" disabled>All Site</option>
-                      <option
-                        v-for="option in businessUnit"
-                        :key="option.id"
-                        :value="option.site_name"
-                        placeholder="Select BusinessUnit"
-                      >
-                        {{ option.site_name }}
-                      </option>
-                    </select>
-
-                    <select
-                      v-model="selectedCandidate"
-                      id="selectCandidateList"
-                      @change="filterData"
-                    >
-                      <option value="" disabled>All Staff</option>
-                      <option
-                        v-for="option in candidateLists"
-                        :key="option.id"
-                        :value="`${option.full_name}`"
-                      >
-                        {{ option.full_name }}
-                      </option>
-                    </select>
-                    <input
-                      class="form-control"
-                      type="search"
-                      placeholder="Search CustomTimesheet..."
-                      aria-label="Search"
-                      v-model="localSearchQuery"
-                      @input="filterData"
-                    />
-                  </div>
-                  <div>
-                    <button
-                      @click="resetFilter"
-                      class="btn btn-secondary"
-                      :disabled="
-                        !selectedSiteName && !selectedCandidate && !localSearchQuery
-                      "
-                    >
-                      Reset Filters
-                    </button>
-                  </div>
-                </div>
-                <div class="tab-content mt-4" id="pills-tabContent" v-if="!searchQuery">
-                  <div
-                    class="tab-pane fade show active"
-                    id="pills-home"
-                    role="tabpanel"
-                    aria-labelledby="pills-home-tab"
+    <div id="main" class="main d-flex">
+      <div class=""><Navbar /></div>
+      <div class="col-10 ps-5 pt-5">
+        <div class="pagetitle d-flex justify-content-between px-2">
+          <div class="py-3">
+            <ol class="breadcrumb mb-1">
+              <li class="breadcrumb-item active">
+                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                  >Timesheet</a
+                >
+                <p>
+                  Weekly Timesheet /
+                  <router-link
+                    class="nav-link d-inline fw-bolder"
+                    style="color: #000000"
+                    aria-current="page"
+                    to="/timesheet/custom"
+                    >Custom Timesheet</router-link
                   >
-                    <div class="col-12 wrapper-timeSheet">
-                      <table class="table candidateTable">
-                        <thead>
-                          <tr>
-                            <th>
-                              <div class="form-check">
-                                <input
-                                  class="form-check-input"
-                                  type="checkbox"
-                                  value=""
-                                />
-                              </div>
-                            </th>
-                            <!-- <th scope="col">ID</th> -->
-                            <th scope="col">Ref Code</th>
-                            <th scope="col" style="width: 153px">Staff</th>
-                            <th scope="col">Client</th>
-                            <th scope="col">Site</th>
-                            <th scope="col">Job Position</th>
-                            <th scope="col">Shift</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Start Time</th>
-                            <th scope="col">End Time</th>
-                            <th scope="col">Break</th>
-                            <th scope="col">Total Hours</th>
-                            <!-- <th scope="col">Client Rate</th>
+                  / Signed Timesheet
+                </p>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="pt-3">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex align-items-center justify-content-between">
+              <i
+                class="bi bi-caret-left-fill"
+                @click="moveToPrevious"
+                style="cursor: pointer"
+              ></i>
+              &nbsp;
+              <img
+                src="../../assets/calender.png"
+                class="img-fluid pe-2"
+                alt="calender"
+                loading="eager"
+              />
+              &nbsp;
+              <span class="fw-bold fs-5">
+                {{ formatMonthYear(currentDate) }}
+              </span>
+              &nbsp;
+              <i
+                class="bi bi-caret-right-fill"
+                @click="moveToNext"
+                style="cursor: pointer"
+              ></i>
+            </div>
+
+            <div class="d-flex gap-3 align-items-center">
+              <button
+                type="button"
+                class="btn btn-danger text-nowrap btn-lg"
+                @click="toggleFilters"
+              >
+                <i class="bi bi-funnel"></i>
+                Show Filters
+              </button>
+              <input
+                ref="fileInput"
+                id="fileAll"
+                type="file"
+                accept=".csv"
+                style="display: none"
+                @change="handleFileUpload"
+              />
+
+              <button
+                class="nav-item dropdown btn btn-lg text-nowrap dropdown-toggle"
+                type="button"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                style="
+                  border-radius: 8px;
+                  background: rgb(249, 148, 75);
+                  color: rgb(255, 255, 255);
+                "
+              >
+                <!-- <i class="bi bi-download"></i>  -->
+                Export
+
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li>
+                    <!-- Hide the default file input -->
+                    <label
+                      for="fileAll"
+                      class="custom-file-label dropdown-item"
+                      style="border-radius: 0px; cursor: pointer"
+                      @click="triggerFileInput"
+                    >
+                      Import
+                    </label>
+                  </li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a class="dropdown-item" href="#" @click="exportOneFile('selected')"
+                      >Export</a
+                    >
+                  </li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a class="dropdown-item" href="#" @click="exportOneFile('all')"
+                      >Export All</a
+                    >
+                  </li>
+                </div>
+              </button>
+              <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
+                <input
+                  class="form-control form-control-lg mr-sm-2 position-relative"
+                  type="search"
+                  placeholder="Search.."
+                  aria-label="Search"
+                  v-model="searchQuery"
+                  @input="debounceSearch"
+                />
+                <span
+                  class="position-absolute"
+                  style="transform: translate(1329%, -154%)"
+                >
+                  <img
+                    src="../../assets/Search.png"
+                    class="img-fluid pe-2"
+                    alt="RecPal"
+                    loading="eager"
+                /></span>
+              </form>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
+            <div class="d-flex gap-2">
+              <div></div>
+
+              <select
+                v-model="selectedSiteName"
+                id="selectBusinessUnit"
+                @change="filterData"
+              >
+                <option value="" disabled>All Site</option>
+                <option
+                  v-for="option in businessUnit"
+                  :key="option.id"
+                  :value="option.site_name"
+                  placeholder="Select BusinessUnit"
+                >
+                  {{ option.site_name }}
+                </option>
+              </select>
+
+              <select
+                v-model="selectedCandidate"
+                id="selectCandidateList"
+                @change="filterData"
+              >
+                <option value="" disabled>All Staff</option>
+                <option
+                  v-for="option in candidateLists"
+                  :key="option.id"
+                  :value="`${option.full_name}`"
+                >
+                  {{ option.full_name }}
+                </option>
+              </select>
+              <input
+                class="form-control"
+                type="search"
+                placeholder="Search CustomTimesheet..."
+                aria-label="Search"
+                v-model="localSearchQuery"
+                @input="filterData"
+              />
+            </div>
+            <div>
+              <button
+                @click="resetFilter"
+                class="btn btn-secondary"
+                :disabled="!selectedSiteName && !selectedCandidate && !localSearchQuery"
+              >
+                Reset Filters
+              </button>
+            </div>
+          </div>
+          <div class="tab-content mt-4" id="pills-tabContent" v-if="!searchQuery">
+            <div
+              class="tab-pane fade show active"
+              id="pills-home"
+              role="tabpanel"
+              aria-labelledby="pills-home-tab"
+            >
+              <div class="col-12 wrapper-timeSheet">
+                <table class="table candidateTable">
+                  <thead>
+                    <tr>
+                      <th>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="" />
+                        </div>
+                      </th>
+                      <!-- <th scope="col">ID</th> -->
+                      <th scope="col">
+                        Ref Code
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col" style="width: 153px">
+                        Staff
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Client
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Site
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Job Position
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Shift
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Date
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Start Time
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        End Time
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Break
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Total Hours
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <!-- <th scope="col">Client Rate</th>
                             <th scope="col">Total Cost</th>
                             <th scope="col">Paper TimeSheet</th> -->
-                            <th scope="col">Status</th>
-                            <th scope="col">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody v-if="paginateGetCustomTimeSheet?.length > 0">
-                          <tr v-for="data in paginateGetCustomTimeSheet" :key="data.id">
-                            <td>
-                              <input
-                                class="form-check-input"
-                                type="checkbox"
-                                :value="data.id"
-                                :id="data.id"
-                                v-model="checkedSites[data.id]"
-                                @change="handleCheckboxChange(data.id)"
-                              />
-                            </td>
-                            <!-- <td scope="col">{{ data.id }}</td> -->
-                            <td scope="col">{{ data.code }}</td>
-                            <td scope="col">
-                              <router-link
-                                v-if="data && data.candidate_id"
-                                class="text-black text-decoration-none fw-bold"
-                                :to="{
-                                  name: 'Profile',
-                                  params: { id: data.candidate_id },
-                                }"
-                                >{{ data.name }}</router-link
-                              >
-                            </td>
-                            <td scope="col">
-                              <router-link
-                                v-if="data && data.site_id_and_client_id?.client_id"
-                                class="text-black text-decoration-none fw-bold"
-                                :to="{
-                                  name: 'SingleClientProfile',
-                                  params: { id: data.site_id_and_client_id.client_id },
-                                }"
-                                >{{
-                                  data.site_id_and_client_id?.client_name
-                                }}</router-link
-                              >
-                            </td>
-                            <td scope="col">
-                              <router-link
-                                v-if="data && data.site_id_and_client_id?.site_id"
-                                class="text-black text-decoration-none fw-bold"
-                                :to="{
-                                  name: 'SingleSiteprofile',
-                                  params: { id: data.site_id_and_client_id.site_id },
-                                }"
-                              >
-                                {{ data.site }}
-                              </router-link>
+                      <th scope="col">
+                        Status
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Action
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody v-if="paginateGetCustomTimeSheet?.length > 0">
+                    <tr
+                      v-for="(data, index) in paginateGetCustomTimeSheet"
+                      :key="index"
+                      @mouseenter="hoverRow = index"
+                      @mouseleave="hoverRow = null"
+                    >
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          :value="data.id"
+                          :id="data.id"
+                          v-model="checkedSites[data.id]"
+                          @change="handleCheckboxChange(data.id)"
+                        />
+                      </td>
+                      <!-- <td scope="col">{{ data.id }}</td> -->
+                      <td scope="col">{{ data.code }}</td>
+                      <td scope="col">
+                        <router-link
+                          v-if="data && data.candidate_id"
+                          class="text-black text-decoration-none fw-bold"
+                          :to="{
+                            name: 'Profile',
+                            params: { id: data.candidate_id },
+                          }"
+                          >{{ data.name }}</router-link
+                        >
+                      </td>
+                      <td scope="col">
+                        <router-link
+                          v-if="data && data.site_id_and_client_id?.client_id"
+                          class="text-black text-decoration-none fw-bold"
+                          :to="{
+                            name: 'SingleClientProfile',
+                            params: { id: data.site_id_and_client_id.client_id },
+                          }"
+                          >{{ data.site_id_and_client_id?.client_name }}</router-link
+                        >
+                      </td>
+                      <td scope="col">
+                        <router-link
+                          v-if="data && data.site_id_and_client_id?.site_id"
+                          class="text-black text-decoration-none fw-bold"
+                          :to="{
+                            name: 'SingleSiteprofile',
+                            params: { id: data.site_id_and_client_id.site_id },
+                          }"
+                        >
+                          {{ data.site }}
+                        </router-link>
 
-                              <span
-                                v-else
-                                class="text-black text-decoration-none fw-bold"
-                              >
-                                {{ data.site }}
-                              </span>
-                            </td>
-                            <td scope="col">{{ data.job }}</td>
-                            <td scope="col">{{ data.shift_name }}</td>
-                            <td scope="col">{{ data.shift_date }}</td>
-                            <td scope="col">
-                              {{ data.start_time }}
-                            </td>
-                            <td scope="col">
-                              {{ data.end_time }}
-                            </td>
-                            <td scope="col">
-                              {{ data.break }}
-                            </td>
-                            <td scope="col">
-                              {{ data.total_hours }}
-                            </td>
-                            <!-- <td scope="col">
+                        <span v-else class="text-black text-decoration-none fw-bold">
+                          {{ data.site }}
+                        </span>
+                      </td>
+                      <td scope="col">{{ data.job }}</td>
+                      <td scope="col">{{ data.shift_name }}</td>
+                      <td scope="col">{{ data.shift_date }}</td>
+                      <td scope="col">
+                        {{ data.start_time }}
+                      </td>
+                      <td scope="col">
+                        {{ data.end_time }}
+                      </td>
+                      <td scope="col">
+                        {{ data.break }}
+                      </td>
+                      <td scope="col">
+                        {{ data.total_hours }}
+                      </td>
+                      <!-- <td scope="col">
                               {{ data.client_rate }}
                             </td>
                             <td scope="col">
@@ -338,70 +420,86 @@
                               </div>
                               <div v-else>Null</div>
                             </td> -->
-                            <td scope="col">
-                              {{ data.status }}
-                            </td>
-                            <td scope="col">
-                              <button
-                                type="button"
-                                :class="[
-                                  'btn',
-                                  data.status === 'Approved'
-                                    ? 'btn-danger'
-                                    : 'btn-outline-success',
-                                  'text-nowrap',
-                                ]"
-                                :disabled="isSaveDisabled || data.status !== 'Approved'"
-                                @click="ApproveMethod(data.id)"
-                              >
-                                {{
-                                  data.status === "Approved" ? "Unapprove" : "Approve"
-                                }}</button
-                              >&nbsp;
-                              <button
-                                type="button"
-                                class="btn btn-outline-success text-nowrap text-nowrap"
-                                data-bs-toggle="modal"
-                                data-bs-target="#editCustomTimeSheet"
-                                data-bs-whatever="@mdo"
-                                @click="openEditModal(data.id)"
-                              >
-                                <i class="bi bi-pencil"></i>
-                              </button>
-                            </td>
-                          </tr>
-                        </tbody>
-                        <tbody v-else>
-                          <tr>
-                            <td colspan="15" class="text-danger text-center">
-                              {{ errorMessageCustom }}
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  <div
-                    class="tab-pane fade"
-                    id="pills-profile"
-                    role="tabpanel"
-                    aria-labelledby="pills-profile-tab"
-                  >
-                    ...
-                  </div>
-                </div>
-                <div class="tab-content mt-4" id="pills-tabContent" v-if="searchQuery">
-                  <div
-                    class="tab-pane fade show active"
-                    id="pills-home"
-                    role="tabpanel"
-                    aria-labelledby="pills-home-tab"
-                  >
-                    <div class="col-12 wrapper-timeSheet">
-                      <table class="table candidateTable">
-                        <thead>
-                          <tr>
-                            <!-- <th>
+                      <td scope="col">
+                        <button
+                          type="button"
+                          :class="['btn', 'text-nowrap']"
+                          :style="
+                            data.status === 'Approved'
+                              ? { backgroundColor: '#E9FAEF', color: '#24D164' }
+                              : { backgroundColor: 'rgb(255 227 234)', color: '#FF3B30' }
+                          "
+                          @click="ApproveMethod(data.id)"
+                        >
+                          {{ data.status === "Approved" ? "Approved" : "Unapprove" }}
+                        </button>
+                      </td>
+                      <td scope="col">
+                        <!-- <button
+                          type="button"
+                          :class="['btn', 'text-nowrap']"
+                          :style="
+                            data.status === 'Approved'
+                              ? { backgroundColor: '#E9FAEF', color: '#24D164' }
+                              : { backgroundColor: 'rgb(255 227 234)', color: '#FF3B30' }
+                          "
+                          :disabled="isSaveDisabled || data.status !== 'Approved'"
+                          @click="ApproveMethod(data.id)"
+                        >
+                          {{
+                            data.status === "Approved" ? "Unapprove" : "Approve"
+                          }}</button
+                        >&nbsp; -->
+                        <div class="action-wrapper">
+                          <i class="bi bi-three-dots dot-icon"></i>
+
+                          <div v-if="hoverRow === index" class="action-menu">
+                            <button
+                              type="button"
+                              class="btn btn-default text-nowrap border-0 shadow-soft"
+                              data-bs-toggle="modal"
+                              data-bs-target="#editCustomTimeSheet"
+                              @click="openEditModal(data.id)"
+                            >
+                              <i class="bi bi-pencil-square" style="color: #f9944b"></i>
+                              Edit
+                            </button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="15" class="text-danger text-center">
+                        {{ errorMessageCustom }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div
+              class="tab-pane fade"
+              id="pills-profile"
+              role="tabpanel"
+              aria-labelledby="pills-profile-tab"
+            >
+              ...
+            </div>
+          </div>
+          <div class="tab-content mt-4" id="pills-tabContent" v-if="searchQuery">
+            <div
+              class="tab-pane fade show active"
+              id="pills-home"
+              role="tabpanel"
+              aria-labelledby="pills-home-tab"
+            >
+              <div class="col-12 wrapper-timeSheet">
+                <table class="table candidateTable">
+                  <thead>
+                    <tr>
+                      <!-- <th>
                               <div class="form-check">
                                 <input
                                   class="form-check-input"
@@ -410,28 +508,132 @@
                                 />
                               </div>
                             </th> -->
-                            <!-- <th scope="col">ID</th> -->
-                            <th scope="col">Ref Code</th>
-                            <th scope="col" style="width: 153px">Staff</th>
-                            <th scope="col">Client</th>
-                            <th scope="col">Site</th>
-                            <th scope="col">Job Position</th>
-                            <th scope="col">Shift</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Start Time</th>
-                            <th scope="col">End Time</th>
-                            <th scope="col">Break</th>
-                            <th scope="col">Total Hours</th>
-                            <!-- <th scope="col">Client Rate</th>
+                      <!-- <th scope="col">ID</th> -->
+                      <th scope="col">
+                        Ref Code
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col" style="width: 153px">
+                        Staff
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Client
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Site
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Job Position
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Shift
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Date
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Start Time
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        End Time
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Break
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Total Hours
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <!-- <th scope="col">Client Rate</th>
                             <th scope="col">Total Cost</th>
                             <th scope="col">Paper TimeSheet</th> -->
-                            <th scope="col">Status</th>
-                            <th scope="col">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody v-if="paginateSearchResults?.length > 0">
-                          <tr v-for="data in paginateSearchResults" :key="data.id">
-                            <!-- <td>
+                      <th scope="col">
+                        Status
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Action
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody v-if="paginateSearchResults?.length > 0">
+                    <tr v-for="data in paginateSearchResults" :key="data.id">
+                      <!-- <td>
                               <input
                                 class="form-check-input"
                                 type="checkbox"
@@ -441,67 +643,62 @@
                                 @change="handleCheckboxChange(data.id)"
                               />
                             </td> -->
-                            <!-- <td scope="col">{{ data.id }}</td> -->
-                            <td scope="col">{{ data.code }}</td>
-                            <td scope="col">
-                              <router-link
-                                v-if="data && data.candidate_id"
-                                class="text-black text-decoration-none fw-bold"
-                                :to="{
-                                  name: 'Profile',
-                                  params: { id: data.candidate_id },
-                                }"
-                                >{{ data.name }}</router-link
-                              >
-                            </td>
-                            <td scope="col">
-                              <router-link
-                                v-if="data && data.site_id_and_client_id?.client_id"
-                                class="text-black text-decoration-none fw-bold"
-                                :to="{
-                                  name: 'SingleClientProfile',
-                                  params: { id: data.site_id_and_client_id.client_id },
-                                }"
-                                >{{
-                                  data.site_id_and_client_id?.client_name
-                                }}</router-link
-                              >
-                            </td>
-                            <td scope="col">
-                              <router-link
-                                v-if="data && data.site_id_and_client_id?.site_id"
-                                class="text-black text-decoration-none fw-bold"
-                                :to="{
-                                  name: 'SingleSiteprofile',
-                                  params: { id: data.site_id_and_client_id.site_id },
-                                }"
-                              >
-                                {{ data.site }}
-                              </router-link>
+                      <!-- <td scope="col">{{ data.id }}</td> -->
+                      <td scope="col">{{ data.code }}</td>
+                      <td scope="col">
+                        <router-link
+                          v-if="data && data.candidate_id"
+                          class="text-black text-decoration-none fw-bold"
+                          :to="{
+                            name: 'Profile',
+                            params: { id: data.candidate_id },
+                          }"
+                          >{{ data.name }}</router-link
+                        >
+                      </td>
+                      <td scope="col">
+                        <router-link
+                          v-if="data && data.site_id_and_client_id?.client_id"
+                          class="text-black text-decoration-none fw-bold"
+                          :to="{
+                            name: 'SingleClientProfile',
+                            params: { id: data.site_id_and_client_id.client_id },
+                          }"
+                          >{{ data.site_id_and_client_id?.client_name }}</router-link
+                        >
+                      </td>
+                      <td scope="col">
+                        <router-link
+                          v-if="data && data.site_id_and_client_id?.site_id"
+                          class="text-black text-decoration-none fw-bold"
+                          :to="{
+                            name: 'SingleSiteprofile',
+                            params: { id: data.site_id_and_client_id.site_id },
+                          }"
+                        >
+                          {{ data.site }}
+                        </router-link>
 
-                              <span
-                                v-else
-                                class="text-black text-decoration-none fw-bold"
-                              >
-                                {{ data.site }}
-                              </span>
-                            </td>
-                            <td scope="col">{{ data.job }}</td>
-                            <td scope="col">{{ data.shift_name }}</td>
-                            <td scope="col">{{ data.shift_date }}</td>
-                            <td scope="col">
-                              {{ data.start_time }}
-                            </td>
-                            <td scope="col">
-                              {{ data.end_time }}
-                            </td>
-                            <td scope="col">
-                              {{ data.break }}
-                            </td>
-                            <td scope="col">
-                              {{ data.total_hours }}
-                            </td>
-                            <!-- <td scope="col">
+                        <span v-else class="text-black text-decoration-none fw-bold">
+                          {{ data.site }}
+                        </span>
+                      </td>
+                      <td scope="col">{{ data.job }}</td>
+                      <td scope="col">{{ data.shift_name }}</td>
+                      <td scope="col">{{ data.shift_date }}</td>
+                      <td scope="col">
+                        {{ data.start_time }}
+                      </td>
+                      <td scope="col">
+                        {{ data.end_time }}
+                      </td>
+                      <td scope="col">
+                        {{ data.break }}
+                      </td>
+                      <td scope="col">
+                        {{ data.total_hours }}
+                      </td>
+                      <!-- <td scope="col">
                               {{ data.client_rate }}
                             </td>
                             <td scope="col">
@@ -519,161 +716,203 @@
                               </div>
                               <div v-else>Null</div>
                             </td> -->
-                            <td scope="col">
-                              {{ data.status }}
-                            </td>
-                            <td scope="col">
-                              <button
-                                type="button"
-                                :class="[
-                                  'btn',
-                                  data.status === 'Approved'
-                                    ? 'btn-danger'
-                                    : 'btn-outline-success',
-                                  'text-nowrap',
-                                ]"
-                                @click="ApproveMethod(data.id)"
-                              >
-                                {{
-                                  data.status === "Approved" ? "Approved" : "Approve"
-                                }}</button
-                              >&nbsp;
-                              <button
-                                type="button"
-                                class="btn btn-outline-success text-nowrap text-nowrap"
-                                data-bs-toggle="modal"
-                                data-bs-target="#editCustomTimeSheet"
-                                data-bs-whatever="@mdo"
-                                @click="openEditModal(data.id)"
-                              >
-                                <i class="bi bi-pencil"></i>
-                              </button>
-                            </td>
-                          </tr>
-                        </tbody>
-                        <tbody v-else>
-                          <tr>
-                            <td colspan="15" class="text-danger text-center">
-                              {{ errorMessage }}
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  <div
-                    class="tab-pane fade"
-                    id="pills-profile"
-                    role="tabpanel"
-                    aria-labelledby="pills-profile-tab"
-                  >
-                    ...
-                  </div>
-                </div>
+                      <td scope="col">
+                        <button
+                          type="button"
+                          :class="['btn', 'text-nowrap']"
+                          :style="
+                            data.status === 'Approved'
+                              ? { backgroundColor: '#E9FAEF', color: '#24D164' }
+                              : { backgroundColor: 'rgb(255 227 234)', color: '#FF3B30' }
+                          "
+                          @click="ApproveMethod(data.id)"
+                        >
+                          {{ data.status === "Approved" ? "Approved" : "Unapprove" }}
+                        </button>
+                      </td>
+                      <td scope="col">
+                        <!-- <button
+                          type="button"
+                          :class="['btn', 'text-nowrap']"
+                          :style="
+                            data.status === 'Approved'
+                              ? { backgroundColor: '#E9FAEF', color: '#24D164' }
+                              : { backgroundColor: 'rgb(255 227 234)', color: '#FF3B30' }
+                          "
+                          @click="ApproveMethod(data.id)"
+                        >
+                          {{
+                            data.status === "Approved" ? "Approved" : "Approve"
+                          }}</button
+                        >&nbsp; -->
+                        <div
+                          class="action-wrapper"
+                          @mouseenter="hover = true"
+                          @mouseleave="hover = false"
+                        >
+                          <i class="bi bi-three-dots dot-icon"></i>
+
+                          <div v-if="hover" class="action-menu">
+                            <button
+                              type="button"
+                              class="btn text-nowrap text-nowrap shadow-soft"
+                              data-bs-toggle="modal"
+                              data-bs-target="#editCustomTimeSheet"
+                              data-bs-whatever="@mdo"
+                              @click="openEditModal(data.id)"
+                            >
+                              <i class="bi bi-pencil-square" style="color: #f9944b"></i>
+                              Edit
+                            </button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="15" class="text-danger text-center">
+                        {{ errorMessage }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
+            </div>
+            <div
+              class="tab-pane fade"
+              id="pills-profile"
+              role="tabpanel"
+              aria-labelledby="pills-profile-tab"
+            >
+              ...
+            </div>
+          </div>
+          <div
+            class="mx-3 mb-2 d-flex justify-content-between"
+            v-if="getCustomTimeSheet?.length >= 10 && !searchResults.length"
+          >
+            <div class="d-flex">
+              <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+              <button
+                class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+                style="color: #00000080"
+                type="button"
+                id="recordsPerPageDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {{ itemsPerPage }} Records
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+                <li>
+                  <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+                    >20 Records</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+                    >50 Records</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+                    >100 Records</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="d-flex align-items-center">
+              &nbsp;&nbsp;
+              <button
+                class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+                style="background: #ffffff"
+                :disabled="currentPage === 1"
+                @click="changePage(currentPage - 1)"
+              >
+                <i class="bi bi-chevron-left"></i>
+              </button>
+              &nbsp;&nbsp;
+              <button
+                class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+                style="background: #ffffff"
+              >
+                {{ currentPage }}
+              </button>
+              &nbsp;&nbsp;
+              <button
+                class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+                style="background: #ffffff"
+                :disabled="currentPage === totalPages"
+                @click="changePage(currentPage + 1)"
+              >
+                <i class="bi bi-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+          <div
+            class="mx-3 mb-2 d-flex justify-content-between"
+            v-if="searchResults.length >= 10"
+          >
+            <div class="d-flex">
+              <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+              <button
+                class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+                style="color: #00000080"
+                type="button"
+                id="recordsPerPageDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {{ itemsPerPage }} Records
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+                <li>
+                  <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+                    >20 Records</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+                    >50 Records</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+                    >100 Records</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="d-flex align-items-center">
+              &nbsp;&nbsp;
+              <button
+                class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+                style="background: #ffffff"
+                :disabled="currentPage === 1"
+                @click="changePage(currentPage - 1)"
+              >
+                <i class="bi bi-chevron-left"></i>
+              </button>
+              &nbsp;&nbsp;
+              <button
+                class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+                style="background: #ffffff"
+              >
+                {{ currentPage }}
+              </button>
+              &nbsp;&nbsp;
+              <button
+                class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+                style="background: #ffffff"
+                :disabled="currentPage === totalPages"
+                @click="changePage(currentPage + 1)"
+              >
+                <i class="bi bi-chevron-right"></i>
+              </button>
             </div>
           </div>
         </div>
-      </div>
-      <div
-        class="mx-3 mb-2"
-        style="text-align: right"
-        v-if="getCustomTimeSheet?.length >= 10 && !searchResults.length"
-      >
-        <div class="dropdown d-inline-block">
-          <button
-            class="btn btn-sm btn-primary dropdown-toggle"
-            type="button"
-            id="recordsPerPageDropdown"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            {{ itemsPerPage }} Records
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-            <li>
-              <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(20)"
-                >20 Records</a
-              >
-            </li>
-            <li>
-              <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(50)"
-                >50 Records</a
-              >
-            </li>
-            <li>
-              <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(100)"
-                >100 Records</a
-              >
-            </li>
-          </ul>
-        </div>
-        &nbsp;&nbsp;
-        <button
-          class="btn btn-sm btn-primary mr-2"
-          :disabled="currentPage === 1"
-          @click="previousPage"
-        >
-          Previous
-        </button>
-        &nbsp;&nbsp;
-
-        <span>{{ currentPage }}</span>
-        &nbsp;&nbsp;
-
-        <button
-          class="btn btn-sm btn-primary ml-2"
-          :disabled="currentPage >= totalPages"
-          @click="nextPage"
-        >
-          Next
-        </button>
-      </div>
-      <div class="mx-3 mb-2" style="text-align: right" v-if="searchResults.length >= 10">
-        <div class="dropdown d-inline-block">
-          <button
-            class="btn btn-sm btn-primary dropdown-toggle"
-            type="button"
-            id="recordsPerPageDropdown"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            {{ itemsPerPage }} Records
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-            <li>
-              <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(20)"
-                >20 Records</a
-              >
-            </li>
-            <li>
-              <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(50)"
-                >50 Records</a
-              >
-            </li>
-            <li>
-              <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(100)"
-                >100 Records</a
-              >
-            </li>
-          </ul>
-        </div>
-        &nbsp;&nbsp;
-        <button
-          class="btn btn-sm btn-primary mr-2"
-          :disabled="currentPage === 1"
-          @click="currentPage--"
-        >
-          Previous</button
-        >&nbsp;&nbsp; <span>{{ currentPage }}</span
-        >&nbsp;&nbsp;
-        <button
-          class="btn btn-sm btn-primary ml-2"
-          :disabled="currentPage * itemsPerPage >= searchResults.length"
-          @click="currentPage++"
-        >
-          Next
-        </button>
       </div>
     </div>
     <CustomeTimeSheetEdit
@@ -687,7 +926,7 @@
 </template>
 <script>
 import axios from "axios";
-// import Navbar from "../Navbar.vue";
+import Navbar from "../Navbar.vue";
 import CustomeTimeSheetEdit from "../modals/TimeSheet/CustomeTimeSheetEdit.vue";
 import Loader from "../Loader/Loader.vue";
 import { reactive } from "vue";
@@ -706,8 +945,9 @@ export default {
       daysOfWeek: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
       startDate: new Date(),
       endDate: new Date(),
+      hoverRow: null,
       getCustomTimeSheet: [],
-
+      currentDate: new Date(),
       notes: "",
       start_time: "",
       end_time: "",
@@ -742,7 +982,7 @@ export default {
     });
   },
   components: {
-    // Navbar,
+    Navbar,
     CustomeTimeSheetEdit,
     Loader,
   },
@@ -1150,17 +1390,9 @@ export default {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     },
-    previousPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-        this.getCustomSheetMethod();
-      }
-    },
-    nextPage() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
-        this.getCustomSheetMethod();
-      }
+    async changePage(page) {
+      this.currentPage = page;
+      await this.getCustomSheetMethod();
     },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
@@ -1216,27 +1448,48 @@ export default {
         this.isLoading = false;
       }
     },
+    formatMonthYear(date) {
+      return new Intl.DateTimeFormat("en-US", {
+        month: "long",
+        year: "numeric",
+      }).format(date);
+    },
     moveToPrevious() {
-      if (this.currentView === "weekly") {
-      } else if (this.currentView === "monthly") {
-        this.startDate.setMonth(this.startDate.getMonth() - 1);
+      if (this.currentView === "monthly") {
+        this.startDate = new Date(
+          this.startDate.getFullYear(),
+          this.startDate.getMonth() - 1,
+          1
+        );
+
         this.endDate = new Date(
           this.startDate.getFullYear(),
           this.startDate.getMonth() + 1,
           0
         );
+
+        this.currentDate = new Date(this.startDate);
+
         this.getCustomSheetMethod();
       }
     },
+
     moveToNext() {
-      if (this.currentView === "weekly") {
-      } else if (this.currentView === "monthly") {
-        this.startDate.setMonth(this.startDate.getMonth() + 1);
+      if (this.currentView === "monthly") {
+        this.startDate = new Date(
+          this.startDate.getFullYear(),
+          this.startDate.getMonth() + 1,
+          1
+        );
+
         this.endDate = new Date(
           this.startDate.getFullYear(),
           this.startDate.getMonth() + 1,
           0
         );
+
+        this.currentDate = new Date(this.startDate);
+
         this.getCustomSheetMethod();
       }
     },
@@ -1280,9 +1533,7 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-  padding-bottom: 65px;
-  padding-top: 65px;
-  background-color: #fdce5e17;
+  background-color: #f9f9f9;
 }
 .main-content {
   transition: all 0.3s;
@@ -1318,9 +1569,7 @@ select {
 a[data-v-507f63b7] {
   text-decoration: none;
 }
-.candidateTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
+
 .btn-primary {
   border-radius: 4px;
 }
@@ -1345,7 +1594,29 @@ ul.nav-pills {
 table th {
   background-color: #ff5f30;
 }
+.action-wrapper {
+  position: relative;
+  display: inline-block;
+}
 
+.dot-icon {
+  font-size: 18px;
+  cursor: pointer;
+  color: #888;
+}
+
+.action-menu {
+  position: absolute;
+  top: 0;
+  left: 25px;
+
+  z-index: 100;
+}
+.shadow-soft {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  background-color: white;
+}
 button.nav-link > li.nav-item {
   border-bottom: 2px solid red;
   padding-bottom: 5px;

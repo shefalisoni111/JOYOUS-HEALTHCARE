@@ -1,69 +1,80 @@
 <template>
   <div>
     <!-- <Navbar /> -->
-    <div id="main">
-      <div class="pagetitle d-flex justify-content-between px-2">
-        <div class="py-3">
-          <ol class="breadcrumb mb-1">
-            <li class="breadcrumb-item active text-uppercase fs-6">
-              <router-link class="nav-link d-inline" aria-current="page" to="/home"
-                >Dashboard</router-link
-              >
-              / <span class="color-fonts">Staff Payroll</span>
-            </li>
-          </ol>
+    <div id="main" class="main d-flex">
+      <div class=""><Navbar /></div>
+      <div class="col-10 ps-5 pt-5">
+        <div class="pagetitle d-flex justify-content-between px-2">
+          <div class="py-3">
+            <ol class="breadcrumb mb-1">
+              <li class="breadcrumb-item active">
+                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                  >Invoice</a
+                >
+                <p>
+                  Client Invoice /
+                  <router-link
+                    class="nav-link d-inline fw-bolder"
+                    style="color: #000000"
+                    aria-current="page"
+                    to="/CandidateInvoice"
+                    >Staff Payroll</router-link
+                  >
+                </p>
+              </li>
+            </ol>
+          </div>
         </div>
-      </div>
 
-      <div class="container-fluid pt-3">
-        <div class="row">
-          <div class="col-12">
-            <div class="">
-              <div>
-                <div class="p-2">
-                  <div class="d-lg-flex justify-content-lg-between">
-                    <div class="d-flex">
-                      <div class="d-flex align-items-center gap-2">
-                        <select
-                          class="form-control"
-                          v-model="currentView"
-                          @change="updateDateRange"
-                        >
-                          <option value="weekly">Weekly</option>
-                          <option value="monthly">Monthly</option>
-                        </select>
+        <div class="container-fluid pt-3">
+          <div class="row">
+            <div class="col-12">
+              <div class="">
+                <div>
+                  <div class="p-2">
+                    <div class="d-lg-flex justify-content-lg-between">
+                      <div class="d-flex">
+                        <div class="d-flex align-items-center gap-2">
+                          <select
+                            class="form-control"
+                            v-model="currentView"
+                            @change="updateDateRange"
+                          >
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                          </select>
+                        </div>
+
+                        &nbsp;&nbsp;
+                        <div class="d-flex align-items-center">
+                          <span
+                            v-if="currentView === 'weekly' && startDate && endDate"
+                            class="fw-bold"
+                          >
+                            {{
+                              "Monday " +
+                              formatDate(startDate) +
+                              " to Sunday " +
+                              formatDate(endDate)
+                            }}
+                          </span>
+                          <span
+                            v-else-if="currentView === 'monthly' && startDate && endDate"
+                            class="fw-bold"
+                          >
+                            {{ formatDate(startDate) + " to " + formatDate(endDate) }}
+                          </span>
+                        </div>
+                        &nbsp;&nbsp;
+                        <div class="d-flex align-items-center fs-4">
+                          <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
+                          <i class="bi bi-calendar2-check-fill"></i>
+                          <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                        </div>
                       </div>
 
-                      &nbsp;&nbsp;
-                      <div class="d-flex align-items-center">
-                        <span
-                          v-if="currentView === 'weekly' && startDate && endDate"
-                          class="fw-bold"
-                        >
-                          {{
-                            "Monday " +
-                            formatDate(startDate) +
-                            " to Sunday " +
-                            formatDate(endDate)
-                          }}
-                        </span>
-                        <span
-                          v-else-if="currentView === 'monthly' && startDate && endDate"
-                          class="fw-bold"
-                        >
-                          {{ formatDate(startDate) + " to " + formatDate(endDate) }}
-                        </span>
-                      </div>
-                      &nbsp;&nbsp;
-                      <div class="d-flex align-items-center fs-4">
-                        <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
-                        <i class="bi bi-calendar2-check-fill"></i>
-                        <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
-                      </div>
-                    </div>
-
-                    <div class="d-flex gap-3 align-items-center">
-                      <!-- <form
+                      <div class="d-flex gap-3 align-items-center">
+                        <!-- <form
                         v-if="getStaffInvoiceDetail?.length != 0"
                         @submit.prevent="search"
                         class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
@@ -77,22 +88,43 @@
                           @input="debounceSearch"
                         />
                       </form> -->
-                      <button
-                        type="button"
-                        class="btn btn-outline-success text-nowrap text-nowrap text-capitalize"
-                        data-bs-toggle="modal"
-                        data-bs-target="#staffGenerateCsv"
-                        data-bs-whatever="@mdo"
-                      >
-                        + generate cSV
-                      </button>
+                        <button
+                          type="button"
+                          class="btn btn-lg text-nowrap text-nowrap text-capitalize"
+                          data-bs-toggle="modal"
+                          data-bs-target="#staffGenerateCsv"
+                          data-bs-whatever="@mdo"
+                          style="background: #fdb912; border-radius: 10px; color: #fff"
+                        >
+                          + generate cSV
+                        </button>
+                        <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
+                          <input
+                            class="form-control form-control-lg mr-sm-2 position-relative"
+                            type="search"
+                            placeholder="Search.."
+                            aria-label="Search"
+                            v-model="searchQuery"
+                            @input="debounceSearch"
+                          />
+                          <span
+                            class="position-absolute"
+                            style="transform: translate(1329%, -154%)"
+                          >
+                            <img
+                              src="../../assets/Search.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                          /></span>
+                        </form>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                  <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                    
                   </ul> -->
-                <!-- <div v-if="currentView === 'weekly'">
+                  <!-- <div v-if="currentView === 'weekly'">
                   <div>
                     <div v-for="(day, index) in daysOfWeek" :key="index"></div>
                     <div v-for="(day, index) in getWeekDates" :key="index"></div>
@@ -104,193 +136,274 @@
                     <div v-for="(day, index) in getMonthDates" :key="index"></div>
                   </div>
                 </div> -->
-                <div class="d-flex gap-2">
-                  <div></div>
-                </div>
-                <div class="tab-content mt-4" id="pills-tabContent">
-                  <div
-                    class="tab-pane fade show active table-wrapper"
-                    id="pills-home"
-                    role="tabpanel"
-                    aria-labelledby="pills-home-tab"
-                  >
-                    <table class="table candidateTable" v-if="!searchQuery">
-                      <thead>
-                        <tr>
-                          <th scope="col">#Number</th>
-                          <th scope="col">Staff</th>
-
-                          <th scope="col">From</th>
-                          <th scope="col">To</th>
-                          <th scope="col">Created On</th>
-                          <!-- <th scope="col">Due Date</th> -->
-                          <th scope="col" class="text-center">Total Amount</th>
-                          <!-- <th scope="col" class="text-center">Paid Amount</th> -->
-                          <!-- <th scope="col" class="text-center">Balance Amount</th> -->
-                          <!-- <th scope="col">Status</th> -->
-
-                          <th scope="col">Invoice Lock</th>
-                          <th scope="col">Generated By</th>
-                          <th scope="col">Email Status</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-
-                      <tbody v-if="paginateCandidates?.length > 0">
-                        <tr v-for="(data, index) in paginateCandidates" :key="index">
-                          <td scope="col">#{{ index + 1 }}</td>
-                          <td scope="col">{{ data.staff }}</td>
-
-                          <td scope="col">{{ data.start_date }}</td>
-                          <td scope="col">{{ data.end_date }}</td>
-                          <td scope="col">{{ data.created_on }}</td>
-                          <!-- <td scope="col">
-                            {{ data.due_date }}
-                          </td> -->
-                          <td scope="col" class="text-center">
-                            {{ "£" + data.total_amount }}
-                          </td>
-                          <!-- <td scope="col" class="text-center">{{ data.paid_amount }}</td> -->
-                          <!-- <td scope="col" class="text-center">
-                            {{ data.balance_amount }}
-                          </td> -->
-                          <!-- <td scope="col">{{ data.status }}</td> -->
-
-                          <td scope="col">
-                            <label class="switch">
-                              <input
-                                type="checkbox"
-                                :id="data.id"
-                                :checked="data.invoice_lock"
-                                @change="toggleInvoiceLock(data)"
-                                :class="{
-                                  locked: data.invoice_lock,
-                                  unlocked: !data.invoice_lock,
-                                }"
-                              />
-                              <div class="slider round"></div>
-                            </label>
-                          </td>
-                          <td scope="col">Auto Generated</td>
-                          <td scope="col">
-                            {{ data.email_status }}
-                          </td>
-                          <td>
-                            <router-link
-                              :to="{
-                                name: 'CandidateInvoiceView',
-                                params: { id: data.id },
-                              }"
-                              class="text-success"
-                              ><i class="bi bi-eye"></i
-                            ></router-link>
-                          </td>
-                        </tr>
-                      </tbody>
-                      <tbody v-else>
-                        <tr>
-                          <td
-                            colspan="14"
-                            v-if="!isLoading"
-                            class="text-danger text-center"
-                          >
-                            {{ errorMessage }}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <table class="table candidateTable" v-else>
-                      <thead>
-                        <tr>
-                          <th scope="col">#Number</th>
-                          <th scope="col">Staff</th>
-
-                          <th scope="col">From</th>
-                          <th scope="col">To</th>
-                          <th scope="col">Created On</th>
-                          <!-- <th scope="col">Due Date</th> -->
-                          <th scope="col" class="text-center">Total Amount</th>
-                          <!-- <th scope="col" class="text-center">Paid Amount</th>
-                          <th scope="col" class="text-center">Balance Amount</th> -->
-                          <!-- <th scope="col">Status</th> -->
-
-                          <th scope="col">Invoice Lock</th>
-                          <th scope="col">Generated By</th>
-                          <th scope="col">Email Status</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody v-if="searchResults?.length > 0">
-                        <tr v-for="data in searchResults" :key="data.id">
-                          <td scope="col">#{{ data.id }}</td>
-                          <td scope="col">{{ data.staff }}</td>
-
-                          <td scope="col">{{ data.start_date }}</td>
-                          <td scope="col">{{ data.end_date }}</td>
-                          <td scope="col">{{ data.created_on }}</td>
-                          <!-- <td scope="col">
-                            {{ data.due_date }}
-                          </td> -->
-                          <td scope="col" class="text-center">
-                            {{ "£" + data.total_amount }}
-                          </td>
-                          <!-- <td scope="col" class="text-center">{{ data.paid_amount }}</td> -->
-                          <!-- <td scope="col" class="text-center">
-                            {{ data.balance_amount }}
-                          </td> -->
-                          <!-- <td scope="col">{{ data.status }}</td> -->
-
-                          <td scope="col">
-                            <label class="switch">
-                              <input
-                                type="checkbox"
-                                :id="data.id"
-                                :checked="data.invoice_lock"
-                                @change="toggleInvoiceLock(data)"
-                                :class="{
-                                  locked: data.invoice_lock,
-                                  unlocked: !data.invoice_lock,
-                                }"
-                              />
-                              <div class="slider round"></div>
-                            </label>
-                          </td>
-                          <td scope="col">Auto Generated</td>
-                          <td scope="col">
-                            {{ data.email_status }}
-                          </td>
-                          <td>
-                            <router-link
-                              :to="{
-                                name: 'CandidateInvoiceView',
-                                params: { id: data.id },
-                              }"
-                              class="text-success"
-                              ><i class="bi bi-eye"></i
-                            ></router-link>
-                          </td>
-                        </tr>
-                      </tbody>
-                      <tbody v-else>
-                        <tr>
-                          <td
-                            colspan="14"
-                            v-if="!isLoading"
-                            class="text-danger text-center"
-                          >
-                            {{ "Data Not Found !" }}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                  <div class="d-flex gap-2">
+                    <div></div>
                   </div>
-                  <div
-                    class="tab-pane fade"
-                    id="pills-profile"
-                    role="tabpanel"
-                    aria-labelledby="pills-profile-tab"
-                  >
-                    ...
+                  <div class="tab-content mt-4" id="pills-tabContent">
+                    <div
+                      class="tab-pane fade show active table-wrapper"
+                      id="pills-home"
+                      role="tabpanel"
+                      aria-labelledby="pills-home-tab"
+                    >
+                      <table class="table candidateTable" v-if="!searchQuery">
+                        <thead>
+                          <tr>
+                            <th scope="col">
+                              #Number
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              Staff
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+
+                            <th scope="col">
+                              From
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              To
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              Created On
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <!-- <th scope="col">Due Date</th> -->
+                            <th scope="col" class="text-center">
+                              Total Amount
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <!-- <th scope="col" class="text-center">Paid Amount</th> -->
+                            <!-- <th scope="col" class="text-center">Balance Amount</th> -->
+                            <!-- <th scope="col">Status</th> -->
+
+                            <th scope="col">
+                              Invoice Lock
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              Generated By
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              Email Status
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              Action
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                          </tr>
+                        </thead>
+
+                        <tbody v-if="paginateCandidates?.length > 0">
+                          <tr v-for="(data, index) in paginateCandidates" :key="index">
+                            <td scope="col">#{{ index + 1 }}</td>
+                            <td scope="col">{{ data.staff }}</td>
+
+                            <td scope="col">{{ data.start_date }}</td>
+                            <td scope="col">{{ data.end_date }}</td>
+                            <td scope="col">{{ data.created_on }}</td>
+                            <!-- <td scope="col">
+                            {{ data.due_date }}
+                          </td> -->
+                            <td scope="col" class="text-center">
+                              {{ "£" + data.total_amount }}
+                            </td>
+                            <!-- <td scope="col" class="text-center">{{ data.paid_amount }}</td> -->
+                            <!-- <td scope="col" class="text-center">
+                            {{ data.balance_amount }}
+                          </td> -->
+                            <!-- <td scope="col">{{ data.status }}</td> -->
+
+                            <td scope="col">
+                              <label class="switch">
+                                <input
+                                  type="checkbox"
+                                  :id="data.id"
+                                  :checked="data.invoice_lock"
+                                  @change="toggleInvoiceLock(data)"
+                                  :class="{
+                                    locked: data.invoice_lock,
+                                    unlocked: !data.invoice_lock,
+                                  }"
+                                />
+                                <div class="slider round"></div>
+                              </label>
+                            </td>
+                            <td scope="col">Auto Generated</td>
+                            <td scope="col">
+                              {{ data.email_status }}
+                            </td>
+                            <td>
+                              <router-link
+                                :to="{
+                                  name: 'CandidateInvoiceView',
+                                  params: { id: data.id },
+                                }"
+                                class="text-success"
+                                ><i class="bi bi-eye"></i
+                              ></router-link>
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tbody v-else>
+                          <tr>
+                            <td
+                              colspan="14"
+                              v-if="!isLoading"
+                              class="text-danger text-center"
+                            >
+                              {{ errorMessage }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <table class="table candidateTable" v-else>
+                        <thead>
+                          <tr>
+                            <th scope="col">#Number</th>
+                            <th scope="col">Staff</th>
+
+                            <th scope="col">From</th>
+                            <th scope="col">To</th>
+                            <th scope="col">Created On</th>
+                            <!-- <th scope="col">Due Date</th> -->
+                            <th scope="col" class="text-center">Total Amount</th>
+                            <!-- <th scope="col" class="text-center">Paid Amount</th>
+                          <th scope="col" class="text-center">Balance Amount</th> -->
+                            <!-- <th scope="col">Status</th> -->
+
+                            <th scope="col">Invoice Lock</th>
+                            <th scope="col">Generated By</th>
+                            <th scope="col">Email Status</th>
+                            <th scope="col">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody v-if="searchResults?.length > 0">
+                          <tr v-for="data in searchResults" :key="data.id">
+                            <td scope="col">#{{ data.id }}</td>
+                            <td scope="col">{{ data.staff }}</td>
+
+                            <td scope="col">{{ data.start_date }}</td>
+                            <td scope="col">{{ data.end_date }}</td>
+                            <td scope="col">{{ data.created_on }}</td>
+                            <!-- <td scope="col">
+                            {{ data.due_date }}
+                          </td> -->
+                            <td scope="col" class="text-center">
+                              {{ "£" + data.total_amount }}
+                            </td>
+                            <!-- <td scope="col" class="text-center">{{ data.paid_amount }}</td> -->
+                            <!-- <td scope="col" class="text-center">
+                            {{ data.balance_amount }}
+                          </td> -->
+                            <!-- <td scope="col">{{ data.status }}</td> -->
+
+                            <td scope="col">
+                              <label class="switch">
+                                <input
+                                  type="checkbox"
+                                  :id="data.id"
+                                  :checked="data.invoice_lock"
+                                  @change="toggleInvoiceLock(data)"
+                                  :class="{
+                                    locked: data.invoice_lock,
+                                    unlocked: !data.invoice_lock,
+                                  }"
+                                />
+                                <div class="slider round"></div>
+                              </label>
+                            </td>
+                            <td scope="col">Auto Generated</td>
+                            <td scope="col">
+                              {{ data.email_status }}
+                            </td>
+                            <td>
+                              <router-link
+                                :to="{
+                                  name: 'CandidateInvoiceView',
+                                  params: { id: data.id },
+                                }"
+                                class="text-success"
+                                ><i class="bi bi-eye"></i
+                              ></router-link>
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tbody v-else>
+                          <tr>
+                            <td
+                              colspan="14"
+                              v-if="!isLoading"
+                              class="text-danger text-center"
+                            >
+                              {{ "Data Not Found !" }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div
+                      class="tab-pane fade"
+                      id="pills-profile"
+                      role="tabpanel"
+                      aria-labelledby="pills-profile-tab"
+                    >
+                      ...
+                    </div>
                   </div>
                 </div>
               </div>
@@ -357,6 +470,7 @@ import SuccessAlert from "../Alerts/SuccessAlert.vue";
 import StaffGenrateInvoice from "../modals/InvoicePagesModal/StaffGenrateInvoice.vue";
 import Loader from "../Loader/Loader.vue";
 import Swal from "sweetalert2";
+import Navbar from "../Navbar.vue";
 
 const axiosInstance = axios.create({
   headers: {
@@ -383,7 +497,7 @@ export default {
       totalCount: 0,
     };
   },
-  components: { Loader, StaffGenrateInvoice, SuccessAlert },
+  components: { Loader, StaffGenrateInvoice, SuccessAlert, Navbar },
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -639,8 +753,7 @@ export default {
 #main {
   transition: all 0.3s;
 
-  padding-top: 65px;
-  background-color: #fdce5e17;
+  background-color: #f9f9f9;
 }
 .main-content {
   transition: all 0.3s;
@@ -719,7 +832,7 @@ select {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
- font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {
@@ -748,9 +861,7 @@ select {
 a[data-v-507f63b7] {
   text-decoration: none;
 }
-.candidateTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
+
 .btn-primary {
   border-radius: 4px;
 }

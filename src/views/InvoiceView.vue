@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- <Navbar /> -->
-    <!-- <RouterView /> -->
+    <RouterView />
     <!-- <div id="main">
       <h6>Invoice Page in Progress.....</h6>
     </div> -->
