@@ -17,7 +17,7 @@
                     class="nav-link d-inline fw-bolder"
                     style="color: #000000"
                     aria-current="page"
-                    to="/CandidateInvoice"
+                    to="/invoice/staff-payroll"
                     >Staff Payroll</router-link
                   >
                 </p>
@@ -35,14 +35,32 @@
                     <div class="d-lg-flex justify-content-lg-between">
                       <div class="d-flex">
                         <div class="d-flex align-items-center gap-2">
-                          <select
-                            class="form-control"
-                            v-model="currentView"
-                            @change="updateDateRange"
-                          >
-                            <option value="weekly">Weekly</option>
-                            <option value="monthly">Monthly</option>
-                          </select>
+                          <div class="view-toggle">
+                            <button
+                              :class="[
+                                'toggle-btn',
+                                currentView === 'weekly' ? 'active' : '',
+                              ]"
+                              @click="
+                                currentView = 'weekly';
+                                updateDateRange();
+                              "
+                            >
+                              Weekly
+                            </button>
+                            <button
+                              :class="[
+                                'toggle-btn',
+                                currentView === 'monthly' ? 'active' : '',
+                              ]"
+                              @click="
+                                currentView = 'monthly';
+                                updateDateRange();
+                              "
+                            >
+                              Monthly
+                            </button>
+                          </div>
                         </div>
 
                         &nbsp;&nbsp;
@@ -248,8 +266,13 @@
                           </tr>
                         </thead>
 
-                        <tbody v-if="paginateCandidates?.length > 0">
-                          <tr v-for="(data, index) in paginateCandidates" :key="index">
+                        <tbody v-if="getStaffInvoiceDetail?.length > 0">
+                          <tr
+                            v-for="(data, index) in getStaffInvoiceDetail"
+                            :key="index"
+                            @mouseenter="hoverRow = index"
+                            @mouseleave="hoverRow = null"
+                          >
                             <td scope="col">#{{ index + 1 }}</td>
                             <td scope="col">{{ data.staff }}</td>
 
@@ -288,14 +311,30 @@
                               {{ data.email_status }}
                             </td>
                             <td>
-                              <router-link
+                              <div class="action-wrapper">
+                                <i class="bi bi-three-dots dot-icon"></i>
+
+                                <div v-if="hoverRow === index" class="action-menu">
+                                  <router-link
+                                    :to="{
+                                      name: 'CandidateInvoiceView',
+                                      params: { id: data.id },
+                                    }"
+                                    class="btn text-nowrap text-nowrap shadow-soft"
+                                  >
+                                    <i class="bi bi-eye" style="color: #f9944b"></i>
+                                    View
+                                  </router-link>
+                                </div>
+                              </div>
+                              <!-- <router-link
                                 :to="{
                                   name: 'CandidateInvoiceView',
                                   params: { id: data.id },
                                 }"
                                 class="text-success"
                                 ><i class="bi bi-eye"></i
-                              ></router-link>
+                              ></router-link> -->
                             </td>
                           </tr>
                         </tbody>
@@ -333,7 +372,12 @@
                           </tr>
                         </thead>
                         <tbody v-if="searchResults?.length > 0">
-                          <tr v-for="data in searchResults" :key="data.id">
+                          <tr
+                            v-for="(data, index) in searchResults"
+                            :key="index"
+                            @mouseenter="hoverRow = index"
+                            @mouseleave="hoverRow = null"
+                          >
                             <td scope="col">#{{ data.id }}</td>
                             <td scope="col">{{ data.staff }}</td>
 
@@ -372,14 +416,30 @@
                               {{ data.email_status }}
                             </td>
                             <td>
-                              <router-link
+                              <div class="action-wrapper">
+                                <i class="bi bi-three-dots dot-icon"></i>
+
+                                <div v-if="hoverRow === index" class="action-menu">
+                                  <router-link
+                                    class="btn text-nowrap text-nowrap shadow-soft"
+                                    :to="{
+                                      name: 'CandidateInvoiceView',
+                                      params: { id: data.id },
+                                    }"
+                                  >
+                                    <i class="bi bi-eye" style="color: #f9944b"></i>
+                                    View
+                                  </router-link>
+                                </div>
+                              </div>
+                              <!-- <router-link
                                 :to="{
                                   name: 'CandidateInvoiceView',
                                   params: { id: data.id },
                                 }"
                                 class="text-success"
                                 ><i class="bi bi-eye"></i
-                              ></router-link>
+                              ></router-link> -->
                             </td>
                           </tr>
                         </tbody>
@@ -410,54 +470,134 @@
             </div>
           </div>
         </div>
+
+        <div
+          class="mx-3 d-flex justify-content-between"
+          style="text-align: right"
+          v-if="getStaffInvoiceDetail?.length >= 10 && !searchResults.length"
+        >
+          <div class="d-flex">
+            <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+            <button
+              class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+              style="color: #00000080"
+              type="button"
+              id="recordsPerPageDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              {{ itemsPerPage }} Records
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+              <li>
+                <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+                  >20 Records</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+                  >50 Records</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+                  >100 Records</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="d-flex align-items-center">
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+              style="background: #ffffff"
+              :disabled="currentPage === 1"
+              @click="changePage(currentPage - 1)"
+            >
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+              style="background: #ffffff; color: #f9944b"
+            >
+              {{ currentPage }}
+            </button>
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+              style="background: #ffffff"
+              :disabled="currentPage === totalPages"
+              @click="changePage(currentPage + 1)"
+            >
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+        <div
+          class="mx-3 mb-2 d-flex justify-content-between"
+          style="text-align: right"
+          v-if="searchResults.length >= 10"
+        >
+          <div class="d-flex">
+            <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+            <button
+              class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+              style="color: #00000080"
+              type="button"
+              id="recordsPerPageDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              {{ itemsPerPage }} Records
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+              <li>
+                <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+                  >20 Records</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+                  >50 Records</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+                  >100 Records</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="d-flex align-items-center">
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+              style="background: #ffffff"
+              :disabled="currentPage === 1"
+              @click="changePage(currentPage - 1)"
+            >
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+              style="background: #ffffff; color: #f9944b"
+            >
+              {{ currentPage }}
+            </button>
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+              style="background: #ffffff"
+              :disabled="currentPage === totalPages"
+              @click="changePage(currentPage + 1)"
+            >
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
-    <div
-      class="mx-3"
-      style="text-align: right"
-      v-if="getStaffInvoiceDetail?.length >= 10"
-    >
-      <!-- <button class="btn btn-outline-dark btn-sm">
-        {{ getClientDetail.length }} Records Per Page
-      </button> -->
-      <button
-        class="btn btn-sm btn-primary dropdown-toggle"
-        type="button"
-        id="recordsPerPageDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        {{ itemsPerPage }} Records
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
-        </li>
-      </ul>
-      &nbsp;&nbsp;
-      <!-- <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="currentPage--"
-      >
-        Previous
-      </button>
-      &nbsp;&nbsp;
-      <span>{{ currentPage }} of {{ totalPages }}</span>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getStaffInvoiceDetail.length"
-        @click="currentPage++"
-      >
-        Next
-      </button> -->
     </div>
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
@@ -491,6 +631,7 @@ export default {
       searchResults: [],
       isLoading: false,
       errorMessage: "",
+      hoverRow: null,
       totalPages: 1,
       currentPage: 1,
       itemsPerPage: 10,
@@ -718,7 +859,10 @@ export default {
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
-
+    async changePage(page) {
+      this.currentPage = page;
+      await this.fetWeekTimeSheetData();
+    },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
@@ -755,6 +899,7 @@ export default {
 
   background-color: #f9f9f9;
 }
+
 .main-content {
   transition: all 0.3s;
 }
@@ -801,23 +946,24 @@ select {
   right: 0;
   left: 0;
   cursor: pointer;
-  background-color: #e7ecf1;
+  background-color: #f52b24;
   border-radius: 30px !important;
   border: 0;
   padding: 0;
   display: block;
   margin: 12px 10px;
-  min-height: 11px;
+  width: 45px;
+  height: 25px;
 }
 
 .switch .slider:before {
   position: absolute;
-  background-color: #aaa;
-  height: 15px;
-  width: 15px;
+  background-color: #fff;
+  height: 23px;
+  width: 23px;
   content: "";
-  left: 0px;
-  bottom: -2px;
+  left: 4px;
+  bottom: 1px;
   border-radius: 50%;
   transition: ease-in-out 0.5s;
 }
@@ -842,12 +988,15 @@ select {
 }
 
 .switch input:checked + .slider {
-  background-color: #d3d6d9;
+  background-color: #34c759;
+  padding: 0px;
+  width: 45px;
+  height: 25px;
 }
 
 .switch input:checked + .slider:before {
   transform: translateX(15px);
-  background-color: #ff9800;
+  background-color: #fff;
 }
 .rounded-circle {
   border: 1px solid #ff5f30;

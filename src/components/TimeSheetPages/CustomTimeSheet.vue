@@ -835,7 +835,7 @@
               &nbsp;&nbsp;
               <button
                 class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
-                style="background: #ffffff"
+                style="background: #ffffff; color: #f9944b"
               >
                 {{ currentPage }}
               </button>
@@ -897,7 +897,7 @@
               &nbsp;&nbsp;
               <button
                 class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
-                style="background: #ffffff"
+                style="background: #ffffff; color: #f9944b"
               >
                 {{ currentPage }}
               </button>

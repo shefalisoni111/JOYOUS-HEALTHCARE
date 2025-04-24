@@ -1,72 +1,98 @@
 <template>
   <div>
     <!-- <Navbar /> -->
-    <div id="main">
-      <div class="pagetitle d-flex justify-content-between px-2">
-        <div class="py-3">
-          <ol class="breadcrumb mb-1">
-            <li class="breadcrumb-item active text-uppercase fs-6">
-              <router-link class="nav-link d-inline" aria-current="page" to="/home"
-                >Dashboard</router-link
-              >
-              / <span class="color-fonts">Client Invoice</span>
-            </li>
-          </ol>
+    <div id="main" class="main d-flex">
+      <div class=""><Navbar /></div>
+      <div class="col-10 ps-5 pt-5">
+        <div class="pagetitle d-flex justify-content-between px-2">
+          <div class="py-3">
+            <ol class="breadcrumb mb-1">
+              <li class="breadcrumb-item active">
+                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                  >Invoice</a
+                >
+                <p>
+                  <router-link
+                    class="nav-link d-inline fw-bolder"
+                    style="color: #000000"
+                    aria-current="page"
+                    to="/invoice/client-invoice"
+                    >Client Invoice</router-link
+                  >
+                  / Staff Payroll
+                </p>
+              </li>
+            </ol>
+          </div>
         </div>
-      </div>
 
-      <div class="container-fluid pt-3">
-        <div class="row">
-          <div class="col-12">
-            <div class="">
-              <div>
-                <div class="p-2">
-                  <div class="d-lg-flex justify-content-lg-between">
-                    <div class="d-flex">
-                      <div class="d-flex align-items-center gap-2">
-                        <!-- <select>
-                          <option>By Created Date :</option>
-                        </select> -->
-                        <select
-                          class="form-control"
-                          v-model="currentView"
-                          @change="updateDateRange"
-                        >
-                          <option value="weekly">Weekly</option>
-                          <option value="monthly">Monthly</option>
-                        </select>
+        <div class="">
+          <div class="row">
+            <div class="col-12">
+              <div class="">
+                <div>
+                  <div class="p-2">
+                    <div class="d-lg-flex justify-content-lg-between">
+                      <div class="d-flex">
+                        <div class="d-flex align-items-center gap-2">
+                          <div class="view-toggle">
+                            <button
+                              :class="[
+                                'toggle-btn',
+                                currentView === 'weekly' ? 'active' : '',
+                              ]"
+                              @click="
+                                currentView = 'weekly';
+                                updateDateRange();
+                              "
+                            >
+                              Weekly
+                            </button>
+                            <button
+                              :class="[
+                                'toggle-btn',
+                                currentView === 'monthly' ? 'active' : '',
+                              ]"
+                              @click="
+                                currentView = 'monthly';
+                                updateDateRange();
+                              "
+                            >
+                              Monthly
+                            </button>
+                          </div>
+                        </div>
+
+                        &nbsp;&nbsp;
+                        <div class="d-flex align-items-center">
+                          <span
+                            v-if="currentView === 'weekly' && startDate && endDate"
+                            class="fw-bold"
+                          >
+                            {{
+                              "Monday " +
+                              formatDate(startDate) +
+                              " to Sunday " +
+                              formatDate(endDate)
+                            }}
+                          </span>
+                          <span
+                            v-else-if="currentView === 'monthly' && startDate && endDate"
+                            class="fw-bold"
+                          >
+                            {{ formatDate(startDate) + " to " + formatDate(endDate) }}
+                          </span>
+                        </div>
+                        &nbsp;&nbsp;
+                        <div class="d-flex align-items-center fs-4">
+                          <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
+                          <i class="bi bi-calendar2-check-fill"></i>
+                          <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                        </div>
                       </div>
 
-                      &nbsp;&nbsp;
-                      <div class="d-flex align-items-center">
-                        <span
-                          v-if="currentView === 'weekly' && startDate && endDate"
-                          class="fw-bold"
-                        >
-                          {{
-                            "Monday " +
-                            formatDate(startDate) +
-                            " to Sunday " +
-                            formatDate(endDate)
-                          }}
-                        </span>
-                        <span
-                          v-else-if="currentView === 'monthly' && startDate && endDate"
-                          class="fw-bold"
-                        >
-                          {{ formatDate(startDate) + " to " + formatDate(endDate) }}
-                        </span>
-                      </div>
-                      &nbsp;&nbsp;
-                      <div class="d-flex align-items-center fs-4">
-                        <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
-                        <i class="bi bi-calendar2-check-fill"></i>
-                        <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
-                      </div>
-                    </div>
-
-                    <div class="d-flex gap-3 align-items-center">
-                      <!-- <form
+                      <div class="d-flex gap-3 align-items-center">
+                        <!-- <form
                         v-if="getClientInvoiceDetail?.length != 0"
                         @submit.prevent="search"
                         class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
@@ -80,7 +106,7 @@
                           @input="debounceSearch"
                         />
                       </form> -->
-                      <!-- <router-link
+                        <!-- <router-link
                         type="button"
                         class="btn btn-primary text-nowrap fs-6 text-capitalize"
                         to="/invoice/Generate-invoice"
@@ -88,66 +114,87 @@
                         <i class="bi bi-file-earmark"></i>
                         generate invoice
                       </router-link> -->
-                      <div>
+                        <div>
+                          <button
+                            type="button"
+                            class="btn btn-lg text-nowrap text-nowrap text-capitalize"
+                            data-bs-toggle="modal"
+                            data-bs-target="#generateInvoice"
+                            data-bs-whatever="@mdo"
+                            style="background: #fdb912; border-radius: 10px; color: #fff"
+                          >
+                            + generate CSV
+                          </button>
+                        </div>
                         <button
+                          v-if="getClientInvoiceDetail?.length != 0"
                           type="button"
-                          class="btn btn-outline-success text-nowrap text-nowrap text-capitalize mb"
-                          data-bs-toggle="modal"
-                          data-bs-target="#generateInvoice"
-                          data-bs-whatever="@mdo"
+                          class="btn btn-danger btn btn-lg text-nowrap"
+                          @click="toggleFilters"
                         >
-                          + generate CSV
+                          <i class="bi bi-funnel"></i>
+                          Show Filters
                         </button>
+                        <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
+                          <input
+                            class="form-control form-control-lg mr-sm-2 position-relative"
+                            type="search"
+                            placeholder="Search.."
+                            aria-label="Search"
+                            v-model="searchQuery"
+                            @input="debounceSearch"
+                          />
+                          <span
+                            class="position-absolute"
+                            style="transform: translate(1329%, -154%)"
+                          >
+                            <img
+                              src="../../assets/Search.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                          /></span>
+                        </form>
                       </div>
-                      <button
-                        v-if="getClientInvoiceDetail?.length != 0"
-                        type="button"
-                        class="btn btn-outline-success text-nowrap"
-                        @click="toggleFilters"
-                      >
-                        <i class="bi bi-funnel"></i>
-                        Show Filters
-                      </button>
                     </div>
                   </div>
-                </div>
-                <div
-                  class="d-flex gap-2 mb-3 justify-content-between align-items-center"
-                  v-if="showFilters"
-                >
-                  <div class="d-flex gap-2">
-                    <select
-                      @change="filterData('site_id', $event.target.value)"
-                      v-model="site_id"
-                      id="selectBusinessUnit"
-                    >
-                      <option value="">All Site</option>
-                      <option
-                        v-for="option in businessUnit"
-                        :key="option.id"
-                        :value="option.id"
-                        placeholder="Select BusinessUnit"
+                  <div
+                    class="d-flex gap-2 mb-3 justify-content-between align-items-center"
+                    v-if="showFilters"
+                  >
+                    <div class="d-flex gap-2">
+                      <select
+                        @change="filterData('site_id', $event.target.value)"
+                        v-model="site_id"
+                        id="selectBusinessUnit"
                       >
-                        {{ option.site_name }}
-                      </option>
-                    </select>
-                    <select
-                      @change="filterData('client_id', $event.target.value)"
-                      v-model="client_id"
-                      id="selectClients"
-                    >
-                      <option value="">All Client</option>
-                      <option
-                        v-for="option in clientData"
-                        :key="option.id"
-                        :value="option.id"
-                        aria-placeholder="Select Job"
+                        <option value="">All Site</option>
+                        <option
+                          v-for="option in businessUnit"
+                          :key="option.id"
+                          :value="option.id"
+                          placeholder="Select BusinessUnit"
+                        >
+                          {{ option.site_name }}
+                        </option>
+                      </select>
+                      <select
+                        @change="filterData('client_id', $event.target.value)"
+                        v-model="client_id"
+                        id="selectClients"
                       >
-                        {{ option.client_name }}
-                      </option>
-                    </select>
+                        <option value="">All Client</option>
+                        <option
+                          v-for="option in clientData"
+                          :key="option.id"
+                          :value="option.id"
+                          aria-placeholder="Select Job"
+                        >
+                          {{ option.client_name }}
+                        </option>
+                      </select>
 
-                    <!-- <select
+                      <!-- <select
                       @change="filterData('staff', $event.target.value)"
                       v-model="id"
                       id="selectCandidateList"
@@ -162,281 +209,412 @@
                       </option>
                     </select> -->
 
-                    <button
-                      :disabled="!isFilterSelected"
-                      @click="resetFilters"
-                      class="btn btn-secondary text-nowrap"
-                    >
-                      Reset Filters
-                    </button>
+                      <button
+                        :disabled="!isFilterSelected"
+                        @click="resetFilters"
+                        class="btn btn-secondary text-nowrap"
+                      >
+                        Reset Filters
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                  <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                  
                 </ul> -->
-                <div v-if="currentView === 'weekly'">
-                  <div>
-                    <div v-for="(day, index) in daysOfWeek" :key="index"></div>
-                    <div v-for="(day, index) in getWeekDates" :key="index"></div>
+                  <div v-if="currentView === 'weekly'">
+                    <div>
+                      <div v-for="(day, index) in daysOfWeek" :key="index"></div>
+                      <div v-for="(day, index) in getWeekDates" :key="index"></div>
+                    </div>
                   </div>
-                </div>
 
-                <div v-else-if="currentView === 'monthly'">
-                  <div>
-                    <div v-for="(day, index) in getMonthDates" :key="index"></div>
+                  <div v-else-if="currentView === 'monthly'">
+                    <div>
+                      <div v-for="(day, index) in getMonthDates" :key="index"></div>
+                    </div>
                   </div>
-                </div>
 
-                <div class="tab-content mt-4" id="pills-tabContent">
-                  <div
-                    class="tab-pane fade show active table-wrapper"
-                    id="pills-home"
-                    role="tabpanel"
-                    aria-labelledby="pills-home-tab"
-                  >
-                    <table class="table candidateTable" v-if="!searchQuery">
-                      <thead>
-                        <tr>
-                          <th scope="col">#Number</th>
-                          <th scope="col">Vendor</th>
-                          <th scope="col">Site</th>
-                          <th scope="col">From</th>
-                          <th scope="col">To</th>
-                          <th scope="col">Created On</th>
-                          <!-- <th scope="col">Due Date</th> -->
-                          <th scope="col" class="text-center">Total Amount</th>
-                          <!-- <th scope="col" class="text-center">Paid Amount</th>
+                  <div class="tab-content mt-4" id="pills-tabContent">
+                    <div
+                      class="tab-pane fade show active table-wrapper"
+                      id="pills-home"
+                      role="tabpanel"
+                      aria-labelledby="pills-home-tab"
+                    >
+                      <table class="table candidateTable" v-if="!searchQuery">
+                        <thead>
+                          <tr>
+                            <th scope="col">#Number</th>
+                            <th scope="col">Vendor</th>
+                            <th scope="col">Site</th>
+                            <th scope="col">From</th>
+                            <th scope="col">To</th>
+                            <th scope="col">Created On</th>
+                            <!-- <th scope="col">Due Date</th> -->
+                            <th scope="col" class="text-center">Total Amount</th>
+                            <!-- <th scope="col" class="text-center">Paid Amount</th>
                           <th scope="col" class="text-center">Balance Amount</th>
                           <th scope="col">Status</th> -->
-                          <th scope="col" style="width: 7%">Invoice Creation Period</th>
-                          <th scope="col" style="width: 6%">Invoice Lock</th>
-                          <th scope="col" style="width: 6%">Generated By</th>
-                          <th scope="col">Email Status</th>
-                          <th scope="col">View</th>
-                        </tr>
-                      </thead>
-                      <tbody v-if="getClientInvoiceDetail?.length > 0">
-                        <tr v-for="data in getClientInvoiceDetail" :key="data.id">
-                          <td scope="col">{{ data.invoice_number }}</td>
-                          <td scope="col">{{ data.client }}</td>
-                          <td scope="col">{{ data.site }}</td>
-                          <td scope="col">{{ data.start_date }}</td>
-                          <td scope="col">{{ data.end_date }}</td>
-                          <td scope="col">{{ data.created_on }}</td>
-                          <!-- <td scope="col">
+                            <th scope="col" style="width: 7%">Invoice Creation Period</th>
+                            <th scope="col" style="width: 6%">Invoice Lock</th>
+                            <th scope="col" style="width: 6%">Generated By</th>
+                            <th scope="col">Email Status</th>
+                            <th scope="col" style="width: 7%">View</th>
+                          </tr>
+                        </thead>
+                        <tbody v-if="getClientInvoiceDetail?.length > 0">
+                          <tr
+                            v-for="(data, index) in getClientInvoiceDetail"
+                            :key="index"
+                            @mouseenter="hoverRow = index"
+                            @mouseleave="hoverRow = null"
+                          >
+                            <td scope="col">{{ data.invoice_number }}</td>
+                            <td scope="col">{{ data.client }}</td>
+                            <td scope="col">{{ data.site }}</td>
+                            <td scope="col">{{ data.start_date }}</td>
+                            <td scope="col">{{ data.end_date }}</td>
+                            <td scope="col">{{ data.created_on }}</td>
+                            <!-- <td scope="col">
                             {{ data.due_date }}
                           </td> -->
-                          <td scope="col" class="text-center">
-                            {{ "£" + data.total_amount }}
-                          </td>
-                          <!-- <td scope="col" class="text-center">
+                            <td scope="col" class="text-center">
+                              {{ "£" + data.total_amount }}
+                            </td>
+                            <!-- <td scope="col" class="text-center">
                             {{ "£" + data.paid_amount }}
                           </td>
                           <td scope="col" class="text-center">
                             {{ "£" + data.balance_amount }}
                           </td>
                           <td scope="col">{{ data.status }}</td> -->
-                          <td scope="col">
-                            {{ data.invoice_creation_period }}
-                          </td>
-                          <td scope="col">
-                            <!-- <i
+                            <td scope="col">
+                              {{ data.invoice_creation_period }}
+                            </td>
+                            <td scope="col">
+                              <!-- <i
                               :class="getIconClass(data.invoice_lock)"
                               style="font-size: x-large; cursor: pointer"
                               @click="toggleInvoiceLock(data)"
                             ></i> -->
-                            <!-- {{ data.invoice_lock }} -->
-                            <label class="switch">
-                              <input
-                                type="checkbox"
-                                :id="data.id"
-                                :checked="data.invoice_lock"
-                                @change="toggleInvoiceLock(data)"
-                                :class="{
-                                  locked: data.invoice_lock,
-                                  unlocked: !data.invoice_lock,
+                              <!-- {{ data.invoice_lock }} -->
+                              <label class="switch">
+                                <input
+                                  type="checkbox"
+                                  :id="data.id"
+                                  :checked="data.invoice_lock"
+                                  @change="toggleInvoiceLock(data)"
+                                  :class="{
+                                    locked: data.invoice_lock,
+                                    unlocked: !data.invoice_lock,
+                                  }"
+                                />
+                                <div class="slider round"></div>
+                              </label>
+                            </td>
+                            <td scope="col">Auto Generated</td>
+                            <td scope="col">
+                              {{ data.email_status }}
+                            </td>
+                            <td>
+                              <div class="action-wrapper">
+                                <i class="bi bi-three-dots dot-icon"></i>
+
+                                <div v-if="hoverRow === index" class="action-menu">
+                                  <router-link
+                                    class="btn text-nowrap text-nowrap shadow-soft"
+                                    :to="{
+                                      name: 'ClientInvoiceView',
+                                      params: { id: data.id },
+                                    }"
+                                  >
+                                    <i class="bi bi-eye" style="color: #f9944b"></i>
+                                    View
+                                  </router-link>
+                                </div>
+                              </div>
+                              <!-- <router-link
+                                :to="{
+                                  name: 'ClientInvoiceView',
+                                  params: { id: data.id },
                                 }"
-                              />
-                              <div class="slider round"></div>
-                            </label>
-                          </td>
-                          <td scope="col">Auto Generated</td>
-                          <td scope="col">
-                            {{ data.email_status }}
-                          </td>
-                          <td>
-                            <router-link
-                              :to="{ name: 'ClientInvoiceView', params: { id: data.id } }"
-                              class="text-success"
-                              ><i class="bi bi-eye"></i
-                            ></router-link>
-                          </td>
-                        </tr>
-                      </tbody>
-                      <tbody v-else>
-                        <tr v-if="errorMessageFilter">
-                          <td
-                            colspan="16"
-                            class="text-danger text-center"
-                            v-if="!isLoading"
-                          >
-                            {{ errorMessageFilter }}
-                          </td>
-                        </tr>
-                        <tr v-else>
-                          <td
-                            colspan="16"
-                            class="text-danger text-center"
-                            v-if="!isLoading"
-                          >
-                            {{ "Data Not Found !" }}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <table class="table candidateTable" v-else>
-                      <thead>
-                        <tr>
-                          <th scope="col">#Number</th>
-                          <th scope="col">Vendor</th>
-                          <th scope="col">Site</th>
-                          <th scope="col">From</th>
-                          <th scope="col">To</th>
-                          <th scope="col">Created On</th>
-                          <!-- <th scope="col">Due Date</th> -->
-                          <th scope="col" class="text-center">Total Amount</th>
-                          <!-- <th scope="col" class="text-center">Paid Amount</th>
+                                class="text-success"
+                                ><i class="bi bi-eye"></i
+                              ></router-link> -->
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tbody v-else>
+                          <tr v-if="errorMessageFilter">
+                            <td
+                              colspan="16"
+                              class="text-danger text-center"
+                              v-if="!isLoading"
+                            >
+                              {{ errorMessageFilter }}
+                            </td>
+                          </tr>
+                          <tr v-else>
+                            <td
+                              colspan="16"
+                              class="text-danger text-center"
+                              v-if="!isLoading"
+                            >
+                              {{ "Data Not Found !" }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <table class="table candidateTable" v-else>
+                        <thead>
+                          <tr>
+                            <th scope="col">#Number</th>
+                            <th scope="col">Vendor</th>
+                            <th scope="col">Site</th>
+                            <th scope="col">From</th>
+                            <th scope="col">To</th>
+                            <th scope="col">Created On</th>
+                            <!-- <th scope="col">Due Date</th> -->
+                            <th scope="col" class="text-center">Total Amount</th>
+                            <!-- <th scope="col" class="text-center">Paid Amount</th>
                           <th scope="col" class="text-center">Balance Amount</th>
                           <th scope="col">Status</th> -->
-                          <th scope="col">Invoice Creation Period</th>
-                          <th scope="col">Invoice Lock</th>
-                          <th scope="col">Generated By</th>
-                          <th scope="col">Email Status</th>
-                          <th scope="col">View</th>
-                        </tr>
-                      </thead>
-                      <tbody v-if="searchResults?.length > 0">
-                        <tr v-for="data in searchResults" :key="data.id">
-                          <td scope="col">{{ data.invoice_number }}</td>
-                          <td scope="col">{{ data.client }}</td>
-                          <td scope="col">{{ data.site }}</td>
-                          <td scope="col">{{ data.start_date }}</td>
-                          <td scope="col">{{ data.end_date }}</td>
-                          <td scope="col">{{ data.created_on }}</td>
-                          <!-- <td scope="col">
+                            <th scope="col">Invoice Creation Period</th>
+                            <th scope="col">Invoice Lock</th>
+                            <th scope="col">Generated By</th>
+                            <th scope="col">Email Status</th>
+                            <th scope="col" style="width: 7%">View</th>
+                          </tr>
+                        </thead>
+                        <tbody v-if="searchResults?.length > 0">
+                          <tr
+                            v-for="(data, index) in searchResults"
+                            :key="index"
+                            @mouseenter="hoverRow = index"
+                            @mouseleave="hoverRow = null"
+                          >
+                            <td scope="col">{{ data.invoice_number }}</td>
+                            <td scope="col">{{ data.client }}</td>
+                            <td scope="col">{{ data.site }}</td>
+                            <td scope="col">{{ data.start_date }}</td>
+                            <td scope="col">{{ data.end_date }}</td>
+                            <td scope="col">{{ data.created_on }}</td>
+                            <!-- <td scope="col">
                             {{ data.due_date }}
                           </td> -->
-                          <td scope="col" class="text-center">{{ data.total_amount }}</td>
-                          <!-- <td scope="col" class="text-center">{{ data.paid_amount }}</td>
+                            <td scope="col" class="text-center">
+                              {{ data.total_amount }}
+                            </td>
+                            <!-- <td scope="col" class="text-center">{{ data.paid_amount }}</td>
                           <td scope="col" class="text-center">
                             {{ data.balance_amount }}
                           </td>
                           <td scope="col">{{ data.status }}</td> -->
-                          <td scope="col">{{ data.invoice_creation_period }}</td>
-                          <td scope="col">{{ data.invoice_lock }}</td>
-                          <td scope="col">Auto Generated</td>
-                          <td scope="col">
-                            {{ data.email_status }}
-                          </td>
-                          <td>
-                            <router-link
-                              :to="{ name: 'ClientInvoiceView', params: { id: data.id } }"
-                              class="text-success"
-                              ><i class="bi bi-eye"></i
-                            ></router-link>
-                          </td>
-                        </tr>
-                      </tbody>
-                      <tbody v-else>
-                        <tr v-if="errorMessageFilter">
-                          <td
-                            colspan="16"
-                            class="text-danger text-center"
-                            v-if="!isLoading"
-                          >
-                            {{ errorMessageFilter }}
-                          </td>
-                        </tr>
-                        <tr v-else>
-                          <td
-                            colspan="16"
-                            class="text-danger text-center"
-                            v-if="!isLoading"
-                          >
-                            {{ "Data Not Found !" }}
-                          </td>
-                        </tr>
-                      </tbody>
-                      <!-- <tbody v-else>
+                            <td scope="col">{{ data.invoice_creation_period }}</td>
+                            <td scope="col">{{ data.invoice_lock }}</td>
+                            <td scope="col">Auto Generated</td>
+                            <td scope="col">
+                              {{ data.email_status }}
+                            </td>
+                            <td>
+                              <div class="action-wrapper">
+                                <i class="bi bi-three-dots dot-icon"></i>
+
+                                <div v-if="hoverRow === index" class="action-menu">
+                                  <router-link
+                                    class="btn text-nowrap text-nowrap shadow-soft"
+                                    :to="{
+                                      name: 'ClientInvoiceView',
+                                      params: { id: data.id },
+                                    }"
+                                  >
+                                    <i class="bi bi-eye" style="color: #f9944b"></i>
+                                    View
+                                  </router-link>
+                                </div>
+                              </div>
+                              <!-- <router-link
+                                :to="{
+                                  name: 'ClientInvoiceView',
+                                  params: { id: data.id },
+                                }"
+                                class="text-success"
+                                ><i class="bi bi-eye"></i
+                              ></router-link> -->
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tbody v-else>
+                          <tr v-if="errorMessageFilter">
+                            <td
+                              colspan="16"
+                              class="text-danger text-center"
+                              v-if="!isLoading"
+                            >
+                              {{ errorMessageFilter }}
+                            </td>
+                          </tr>
+                          <tr v-else>
+                            <td
+                              colspan="16"
+                              class="text-danger text-center"
+                              v-if="!isLoading"
+                            >
+                              {{ "Data Not Found !" }}
+                            </td>
+                          </tr>
+                        </tbody>
+                        <!-- <tbody v-else>
                         <tr>
                           <td colspan="16" class="text-danger text-center">
                             {{ "No Match Found !" }}
                           </td>
                         </tr>
                       </tbody> -->
-                    </table>
-                  </div>
-                  <div
-                    class="tab-pane fade"
-                    id="pills-profile"
-                    role="tabpanel"
-                    aria-labelledby="pills-profile-tab"
-                  >
-                    ...
+                      </table>
+                    </div>
+                    <div
+                      class="tab-pane fade"
+                      id="pills-profile"
+                      role="tabpanel"
+                      aria-labelledby="pills-profile-tab"
+                    >
+                      ...
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        <div
+          class="mx-3 d-flex justify-content-between"
+          style="text-align: right"
+          v-if="getClientInvoiceDetail?.length >= 10"
+        >
+          <div class="d-flex">
+            <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+            <button
+              class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+              style="color: #00000080"
+              type="button"
+              id="recordsPerPageDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              {{ itemsPerPage }} Records
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+              <li>
+                <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+                  >20 Records</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+                  >50 Records</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+                  >100 Records</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="d-flex align-items-center">
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+              style="background: #ffffff"
+              :disabled="currentPage === 1"
+              @click="changePage(currentPage - 1)"
+            >
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+              style="background: #ffffff; color: #f9944b"
+            >
+              {{ currentPage }}
+            </button>
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+              style="background: #ffffff"
+              :disabled="currentPage === totalPages"
+              @click="changePage(currentPage + 1)"
+            >
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+        <div
+          class="mx-3 mb-2 d-flex justify-content-between"
+          style="text-align: right"
+          v-if="searchResults.length >= 10"
+        >
+          <div class="d-flex">
+            <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+            <button
+              class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+              style="color: #00000080"
+              type="button"
+              id="recordsPerPageDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              {{ itemsPerPage }} Records
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+              <li>
+                <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+                  >20 Records</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+                  >50 Records</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+                  >100 Records</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="d-flex align-items-center">
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+              style="background: #ffffff"
+              :disabled="currentPage === 1"
+              @click="changePage(currentPage - 1)"
+            >
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+              style="background: #ffffff; color: #f9944b"
+            >
+              {{ currentPage }}
+            </button>
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+              style="background: #ffffff"
+              :disabled="currentPage === totalPages"
+              @click="changePage(currentPage + 1)"
+            >
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
-    <div
-      class="mx-3"
-      style="text-align: right"
-      v-if="getClientInvoiceDetail?.length >= 10"
-    >
-      <!-- <button class="btn btn-outline-dark btn-sm">
-        {{ getClientDetail.length }} Records Per Page
-      </button> -->
-      <button
-        class="btn btn-sm btn-primary dropdown-toggle"
-        type="button"
-        id="recordsPerPageDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        {{ itemsPerPage }} Records
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
-        </li>
-      </ul>
-      &nbsp;&nbsp;
-      <!-- <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="changePage(currentPage - 1)"
-      >
-        Previous
-      </button>
-      &nbsp;&nbsp;
-      <span>{{ currentPage }} of {{ totalPages }}</span>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage === totalPages"
-        @click="changePage(currentPage + 1)"
-      >
-        Next
-      </button> -->
     </div>
     <SuccessAlert ref="successAlert" />
     <loader :isLoading="isLoading"></loader>
@@ -445,7 +623,7 @@
 </template>
 <script>
 import axios from "axios";
-// import Navbar from "../Navbar.vue";
+import Navbar from "../Navbar.vue";
 
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
 import GenerateInvoiceAdd from "../modals/InvoicePagesModal/GenerateInvoiceAdd.vue";
@@ -471,6 +649,7 @@ export default {
       searchResults: [],
       showFilters: false,
       totalPages: 1,
+      hoverRow: null,
       currentPage: 1,
       itemsPerPage: 10,
       totalCount: 0,
@@ -487,7 +666,7 @@ export default {
       },
     };
   },
-  components: { SuccessAlert, Loader, GenerateInvoiceAdd },
+  components: { SuccessAlert, Loader, GenerateInvoiceAdd, Navbar },
   computed: {
     isFilterSelected() {
       return this.site_id || this.client_id;
@@ -799,6 +978,10 @@ export default {
     //     });
     //   // alert("Record Deleted ");
     // },
+    async changePage(page) {
+      this.currentPage = page;
+      await this.getClientInvoice();
+    },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
@@ -884,9 +1067,7 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-
-  padding-top: 65px;
-  background-color: #fdce5e17;
+  background-color: #f9f9f9;
 }
 .main-content {
   transition: all 0.3s;
@@ -934,23 +1115,24 @@ select {
   right: 0;
   left: 0;
   cursor: pointer;
-  background-color: #e7ecf1;
+  background-color: #f52b24;
   border-radius: 30px !important;
   border: 0;
   padding: 0;
   display: block;
   margin: 12px 10px;
-  min-height: 11px;
+  width: 45px;
+  height: 25px;
 }
 
 .switch .slider:before {
   position: absolute;
-  background-color: #aaa;
-  height: 15px;
-  width: 15px;
+  background-color: #fff;
+  height: 23px;
+  width: 23px;
   content: "";
-  left: 0px;
-  bottom: -2px;
+  left: 4px;
+  bottom: 1px;
   border-radius: 50%;
   transition: ease-in-out 0.5s;
 }
@@ -965,7 +1147,7 @@ select {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
- font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {
@@ -975,17 +1157,15 @@ select {
 }
 
 .switch input:checked + .slider {
-  background-color: #d3d6d9;
+  background-color: #34c759;
+  padding: 0px;
+  width: 45px;
+  height: 25px;
 }
 
 .switch input:checked + .slider:before {
   transform: translateX(15px);
-  background-color: #ff9800;
-}
-.rounded-circle {
-  border: 1px solid #ff5f30;
-  padding: 8px 11px;
-  cursor: pointer;
+  background-color: #fff;
 }
 .border-left {
   border-left: 1px solid #ded9d9;
@@ -994,9 +1174,7 @@ select {
 a[data-v-507f63b7] {
   text-decoration: none;
 }
-.candidateTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
+
 .btn-primary {
   border-radius: 4px;
 }
