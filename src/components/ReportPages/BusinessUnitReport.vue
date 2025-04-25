@@ -8,53 +8,40 @@
             <div class="">
               <div class="d-flex ms-2 justify-content-between">
                 <div class="d-flex gap-2">
-                  <select
-                    v-model="selectedSiteName"
-                    id="selectBusinessUnit"
-                    @change="filterData"
-                  >
-                    <option value="">All Site</option>
-                    <option
-                      v-for="option in businessUnit"
-                      :key="option.id"
-                      :value="option.site_name"
-                      placeholder="Select BusinessUnit"
+                  <div class="custom-select-wrapper">
+                    <select
+                      v-model="selectedSiteName"
+                      id="selectBusinessUnit"
+                      @change="filterData"
                     >
-                      {{ option.site_name }}
-                    </option>
-                  </select>
-
-                  <select
-                    v-model="selectedCandidate"
-                    @change="filterData"
-                    id="selectStaff"
-                  >
-                    <option value="">All Staff</option>
-                    <option
-                      v-for="option in candidateLists"
-                      :key="option.id"
-                      :value="`${option.full_name}`"
-                      placeholder="Select Staff"
+                      <option value="">All Site</option>
+                      <option
+                        v-for="option in businessUnit"
+                        :key="option.id"
+                        :value="option.site_name"
+                        placeholder="Select BusinessUnit"
+                      >
+                        {{ option.site_name }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="custom-select-wrapper">
+                    <select
+                      v-model="selectedCandidate"
+                      @change="filterData"
+                      id="selectStaff"
                     >
-                      {{ option.full_name }}
-                    </option>
-                  </select>
-                </div>
-
-                <div>
-                  <form
-                    @submit.prevent="search"
-                    class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
-                  >
-                    <input
-                      class="form-control mr-sm-2"
-                      type="search"
-                      placeholder="Search.."
-                      aria-label="Search"
-                      v-model="searchQuery"
-                      @input="debounceSearch"
-                    />
-                  </form>
+                      <option value="">All Staff</option>
+                      <option
+                        v-for="option in candidateLists"
+                        :key="option.id"
+                        :value="`${option.full_name}`"
+                        placeholder="Select Staff"
+                      >
+                        {{ option.full_name }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
               </div>
               <div>
@@ -64,14 +51,32 @@
                   >
                     <div class="d-flex">
                       <div class="d-flex align-items-center gap-2">
-                        <select
-                          class="form-control"
-                          v-model="currentView"
-                          @change="updateDateRange"
-                        >
-                          <option value="weekly">Weekly</option>
-                          <option value="monthly">Monthly</option>
-                        </select>
+                        <div class="view-toggle">
+                          <button
+                            :class="[
+                              'toggle-btn',
+                              currentView === 'weekly' ? 'active' : '',
+                            ]"
+                            @click="
+                              currentView = 'weekly';
+                              updateDateRange();
+                            "
+                          >
+                            Weekly
+                          </button>
+                          <button
+                            :class="[
+                              'toggle-btn',
+                              currentView === 'monthly' ? 'active' : '',
+                            ]"
+                            @click="
+                              currentView = 'monthly';
+                              updateDateRange();
+                            "
+                          >
+                            Monthly
+                          </button>
+                        </div>
                       </div>
 
                       &nbsp;&nbsp;
@@ -111,7 +116,7 @@
                       >
                         <button
                           type="button"
-                          class="btn btn-outline-success text-nowrap"
+                          class="btn btn-danger btn-lg text-nowrap"
                           @click="exportOneFile('all')"
                           :disabled="true"
                         >
@@ -121,13 +126,34 @@
                       <div v-else>
                         <button
                           type="button"
-                          class="btn btn-outline-success text-nowrap"
+                          class="btn btn-danger btn-lg text-nowrap"
                           @click="exportOneFile('all')"
                         >
                           <i class="bi bi-download"></i> Export CSV
                         </button>
                       </div>
-
+                      <div>
+                        <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
+                          <input
+                            class="form-control form-control-lg mr-sm-2 position-relative"
+                            type="search"
+                            placeholder="Search.."
+                            aria-label="Search"
+                            v-model="searchQuery"
+                            @input="debounceSearch"
+                          />
+                          <span
+                            class="position-absolute"
+                            style="transform: translate(1329%, -154%)"
+                          >
+                            <img
+                              src="../../assets/Search.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                          /></span>
+                        </form>
+                      </div>
                       <!-- <button type="button" class="btn btn-outline-success text-nowrap">
                         <i class="bi bi-eye"></i> Customize View
                       </button> -->
@@ -349,71 +375,123 @@
       </div>
     </div>
     <div
-      class="mx-3 mb-2"
+      class="mx-3 mb-2 d-flex justify-content-between"
       style="text-align: right"
       v-if="getSiteReportData?.length >= 10 && !searchResults.length"
     >
-      <!-- <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
-      </button> -->
-      <button
-        class="btn btn-sm btn-primary dropdown-toggle"
-        type="button"
-        id="recordsPerPageDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        {{ itemsPerPage }} Records
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
-        </li>
-      </ul>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="currentPage--"
-      >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getSiteReportData?.length"
-        @click="currentPage++"
-      >
-        Next
-      </button>
+      <div class="d-flex">
+        <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+        <button
+          class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+          style="color: #00000080"
+          type="button"
+          id="recordsPerPageDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ itemsPerPage }} Records
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+              >100 Records</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="d-flex align-items-center">
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === 1"
+          @click="changePage(currentPage - 1)"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+          style="background: #ffffff; color: #f9944b"
+        >
+          {{ currentPage }}
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === totalPages"
+          @click="changePage(currentPage + 1)"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
     </div>
-    <!-- <div class="mx-3 mb-2" style="text-align: right" v-if="searchResults.length >= 8">
-      <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
-      </button>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="currentPage--"
-      >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= searchResults.length"
-        @click="currentPage++"
-      >
-        Next
-      </button>
-    </div> -->
+    <div
+      class="mx-3 mb-2 d-flex justify-content-between"
+      style="text-align: right"
+      v-if="searchResults.length >= 8"
+    >
+      <div class="d-flex">
+        <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+        <button
+          class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+          style="color: #00000080"
+          type="button"
+          id="recordsPerPageDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ itemsPerPage }} Records
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+              >100 Records</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="d-flex align-items-center">
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === 1"
+          @click="changePage(currentPage - 1)"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+          style="background: #ffffff; color: #f9944b"
+        >
+          {{ currentPage }}
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === totalPages"
+          @click="changePage(currentPage + 1)"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+    </div>
     <loader :isLoading="isLoading"></loader>
   </div>
 </template>
@@ -607,6 +685,10 @@ export default {
           // console.error('Error fetching client data:', error);
         }
       }
+    },
+    async changePage(page) {
+      this.currentPage = page;
+      await this.filterData();
     },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
@@ -972,8 +1054,6 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-
-  background-color: #fdce5e17;
 }
 .main-content {
   transition: all 0.3s;
@@ -1009,9 +1089,7 @@ select {
 a[data-v-507f63b7] {
   text-decoration: none;
 }
-.reportTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
+
 .btn-primary {
   border-radius: 4px;
 }

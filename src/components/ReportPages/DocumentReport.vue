@@ -7,51 +7,59 @@
           <div class="col-12">
             <div class="">
               <div
-                class="gap-2 d-xs-grid d-sm-grid d-md-grid d-lg-flex ms-2"
+                class="gap-2 d-xs-grid d-sm-grid d-md-grid d-lg-flex"
                 v-if="activeTab === 0"
               >
-                <select v-model="selectedStaffStatus" @change="filterData">
-                  <option value="all">All Staff Status</option>
-                  <option value="approved">Active</option>
-                  <option value="rejected">Inactive</option>
-                  <option value="pending">Pending</option>
-                </select>
-
-                <select v-model="selectedStaff" @change="filterData">
-                  <option value="">All Staff</option>
-                  <option
-                    v-for="option in candidateLists"
-                    :key="option.id"
-                    :value="option.id"
+                <div class="custom-select-wrapper">
+                  <select v-model="selectedStaffStatus" @change="filterData">
+                    <option value="all">All Staff Status</option>
+                    <option value="approved">Active</option>
+                    <option value="rejected">Inactive</option>
+                    <option value="pending">Pending</option>
+                  </select>
+                </div>
+                <div class="custom-select-wrapper">
+                  <select v-model="selectedStaff" @change="filterData">
+                    <option value="">All Staff</option>
+                    <option
+                      v-for="option in candidateLists"
+                      :key="option.id"
+                      :value="option.id"
+                    >
+                      {{ option.first_name + " " + option.last_name }}
+                    </option>
+                  </select>
+                </div>
+                <div class="custom-select-wrapper">
+                  <select
+                    v-model="selectedDocumentCategory"
+                    @change="handleCategoryChange"
                   >
-                    {{ option.first_name + " " + option.last_name }}
-                  </option>
-                </select>
-
-                <select v-model="selectedDocumentCategory" @change="handleCategoryChange">
-                  <option value="">All Document Category</option>
-                  <option
-                    v-for="option in getCategoryData"
-                    :key="option.id"
-                    :value="option.id"
-                  >
-                    {{ option.category_name }}
-                  </option>
-                </select>
-
-                <select v-model="selectedDocumentType" @change="filterData">
-                  <option value="">All Document Type</option>
-                  <option
-                    v-for="option in documentNames"
-                    :key="option.id"
-                    :value="option.id"
-                  >
-                    {{ option.document_name }}
-                  </option>
-                </select>
+                    <option value="">All Document Category</option>
+                    <option
+                      v-for="option in getCategoryData"
+                      :key="option.id"
+                      :value="option.id"
+                    >
+                      {{ option.category_name }}
+                    </option>
+                  </select>
+                </div>
+                <div class="custom-select-wrapper">
+                  <select v-model="selectedDocumentType" @change="filterData">
+                    <option value="">All Document Type</option>
+                    <option
+                      v-for="option in documentNames"
+                      :key="option.id"
+                      :value="option.id"
+                    >
+                      {{ option.document_name }}
+                    </option>
+                  </select>
+                </div>
               </div>
               <div>
-                <div class="p-2">
+                <div class="py-2">
                   <div class="d-flex justify-content-between">
                     <div class="d-flex">
                       <ul
@@ -158,50 +166,63 @@
       </div>
     </div>
     <div
-      class="mx-3 mb-3"
+      class="mx-3 mb-3 d-flex justify-content-between"
       style="text-align: right"
       v-if="getDocumentReportData?.length >= 10 && activeTab === 0"
     >
-      <button
-        class="btn btn-sm btn-primary dropdown-toggle"
-        type="button"
-        id="recordsPerPageDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        {{ itemsPerPage }} Records
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
-        </li>
-      </ul>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="previousPage"
-      >
-        Previous
-      </button>
-      &nbsp;&nbsp;
-
-      <span>{{ currentPage }}</span>
-      &nbsp;&nbsp;
-
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage >= totalPages"
-        @click="nextPage"
-      >
-        Next
-      </button>
+      <div class="d-flex">
+        <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+        <button
+          class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+          style="color: #00000080"
+          type="button"
+          id="recordsPerPageDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ itemsPerPage }} Records
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+              >100 Records</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="d-flex align-items-center">
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === 1"
+          @click="changePage(currentPage - 1)"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+          style="background: #ffffff; color: #f9944b"
+        >
+          {{ currentPage }}
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === totalPages"
+          @click="changePage(currentPage + 1)"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
     </div>
 
     <loader :isLoading="isLoading"></loader>
@@ -500,17 +521,9 @@ export default {
         // console.error("Error fetching documents:", error);
       }
     },
-    previousPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-        this.filterData();
-      }
-    },
-    nextPage() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
-        this.filterData();
-      }
+    async changePage(page) {
+      this.currentPage = page;
+      await this.filterData();
     },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
@@ -619,8 +632,6 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-
-  background-color: #fdce5e17;
 }
 .main-content {
   transition: all 0.3s;
@@ -656,26 +667,32 @@ select {
 a {
   text-decoration: none;
 }
-.reportTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
+
 .btn-primary {
   border-radius: 4px;
 }
 
+ul.nav-pills {
+  border-bottom: none !important;
+  height: auto !important;
+  margin-bottom: 0px !important;
+}
+ul.nav-pills .nav-item {
+  background: #ffffff;
+  padding: 5px 10px 5px 10px;
+  border-radius: 50px;
+}
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  background-color: transparent;
-  border: 1px solid green;
-  border-radius: 22px;
-  color: green;
-}
-
-.nav-pills .nav-link {
-  background-color: transparent;
-  border: 1px solid #ff5f30;
-  border-radius: 22px;
-  color: #ff5f30;
+  background: #000000;
+  width: 100;
+  height: 37;
+  color: #fff;
+  border-radius: 13px;
+  padding-top: 10px;
+  padding-right: 15px;
+  padding-bottom: 11px;
+  padding-left: 15px;
 }
 
 table th {

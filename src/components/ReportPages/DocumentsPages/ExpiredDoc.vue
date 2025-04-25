@@ -300,9 +300,7 @@ select {
 a[data-v-507f63b7] {
   text-decoration: none;
 }
-.reportTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
+
 .btn-primary {
   border-radius: 4px;
 }

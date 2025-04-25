@@ -767,9 +767,7 @@ a:link {
   color: black;
   text-decoration: none;
 }
-.candidateTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
+
 .btn-primary {
   border-radius: 4px;
 }

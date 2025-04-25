@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div id="main" class="main d-flex bg-light">
+    <div id="main" class="main bg-light">
       <!-- Sidebar / Navbar -->
-      <Navbar />
+      <!-- <Navbar /> -->
 
       <!-- Main content wrapper -->
-      <div class="container-fluid p-5">
+      <div class="row p-5">
         <!-- Page Title & Add Staff Button -->
         <div class="row align-items-center mb-4">
           <div class="col-md-6">

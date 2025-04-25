@@ -1,16 +1,16 @@
 <template>
   <div>
     <!-- <Navbar /> -->
-    <div class="container-fluid p-0">
-      <div id="main">
-        <div class="pagetitle d-flex justify-content-between px-2 pt-3">
-          <div class="py-3">
-            <ol class="breadcrumb mb-1">
-              <li class="breadcrumb-item active text-uppercase fs-6">
-                <router-link class="nav-link d-inline" aria-current="page" to="/home"
-                  >Dashboard</router-link
+    <div id="main" class="main d-flex">
+      <div class=""><Navbar /></div>
+      <div class="col-10 ps-5 pt-3">
+        <div class="pagetitle d-flex justify-content-between pt-3">
+          <div class="">
+            <ol class="breadcrumb my-2">
+              <li class="breadcrumb-item active fs-6">
+                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                  >Schedule</a
                 >
-                / <span class="color-fonts">Schedule</span>
               </li>
             </ol>
           </div>
@@ -38,6 +38,142 @@
             >
               Publish
             </button> -->
+          </div>
+        </div>
+
+        <div>
+          <div class="sidebar-button" :class="{ 'slide-left': isOpen }">
+            <div class="d-flex justify-content-end">
+              <div class="mb-2">
+                <button @click="toggleSidebar" class="btn btn-danger text-nowrap btn-lg">
+                  <i class="bi bi-funnel-fill"></i> Show Filters
+                </button>
+                <!-- <span v-if="isOpen" class="text-danger fs-5 ps-2">Filter </span> -->
+              </div>
+              <!-- <div>
+                <i
+                  v-if="isOpen"
+                  class="bi bi-x float-end fs-2 d-flex cursor-pointer"
+                  @click="toggleSidebar"
+                ></i>
+              </div> -->
+            </div>
+            <div
+              v-show="isOpen"
+              class="pe-3 pb-3 mt-2 filters"
+              style="
+                background: #fff;
+
+                display: flex;
+                margin-bottom: 20px;
+                justify-content: end;
+                gap: 20px;
+                border-radius: 14px;
+              "
+            >
+              <div class="d-flex mt-2">
+                <div>
+                  <div class="filters" v-show="isOpen">
+                    <select
+                      v-model="availability_id"
+                      for="SelectAvailability"
+                      class="form-select"
+                      @change="filterData($event.target.value, 'availablity')"
+                    >
+                      <option value="" selected for="SelectAvailability" disabled>
+                        All Availability
+                      </option>
+                      <option id="SelectAvailability" value="Late">Late</option>
+                      <option id="SelectAvailability" value="Night">Night</option>
+                      <option id="SelectAvailability" value="Unavailable">
+                        Unavailable
+                      </option>
+                      <option id="SelectAvailability" value="Early">Early</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex mt-2">
+                <div>
+                  <div class="filters" v-show="isOpen">
+                    <select
+                      v-model="job_id"
+                      for="selectJobTitle"
+                      class="form-select"
+                      @change="filterData($event.target.value, 'job')"
+                    >
+                      <option value="" selected disabled>Select Jobs</option>
+                      <option
+                        id="selectJobTitle"
+                        v-for="option in options"
+                        :key="option.name"
+                        :value="option.name"
+                      >
+                        {{ option.name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex mt-2">
+                <div>
+                  <div class="filters" v-show="isOpen">
+                    <select
+                      v-model="site_shift_id"
+                      for="selectBusinessUnit"
+                      class="form-select"
+                      @change="filterData($event.target.value, 'site')"
+                    >
+                      <option value="" selected disabled>Select Site</option>
+                      <option
+                        id="selectBusinessUnit"
+                        v-for="option in businessUnit"
+                        :key="option.site_name"
+                        :value="option.site_name"
+                      >
+                        {{ option.site_name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex mt-2">
+                <div>
+                  <div class="filters" v-show="isOpen">
+                    <select
+                      v-model="site_id"
+                      for="selectShifts"
+                      class="form-select"
+                      @change="filterData($event.target.value, 'shift')"
+                    >
+                      <option value="" selected disabled>All Shift</option>
+                      <option
+                        v-for="option in shiftsTime"
+                        :key="option.shift_name"
+                        :value="option.shift_name"
+                        id="selectShifts"
+                      >
+                        {{
+                          option.shift_name ? option.shift_name.replace(/_/g, " ") : ""
+                        }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="filters" v-show="isOpen">
+                  <button
+                    :disabled="!isFilterSelected"
+                    @click="resetFilters"
+                    class="btn btn-secondary text-nowrap btn-lg"
+                  >
+                    Reset
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -70,131 +206,43 @@
               />
             </div>
           </div>
-          <div class="table-wrapper">
-            <div class="sidebar-container scheduleTable">
-              <div class="sidebar-button" :class="{ 'slide-left': isOpen }">
-                <div class="d-flex justify-content-between">
-                  <div>
-                    <button
-                      @click="toggleSidebar"
-                      class="btn btn-default border-0 pe-2 fs-5"
-                    >
-                      <i class="bi bi-funnel-fill"></i>
-                    </button>
-                    <span v-if="isOpen" class="text-danger fs-5 ps-2">Filter </span>
-                  </div>
-                  <div>
+          <div
+            class="table-wrapper"
+            style="background: #fff; padding: 20px; border-radius: 14px"
+          >
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="calendar-header w-100 d-flex justify-content-center">
+                <div class="d-flex">
+                  &nbsp;&nbsp;
+
+                  <div class="d-flex align-items-center justify-content-between">
                     <i
-                      v-if="isOpen"
-                      class="bi bi-x float-end fs-2 d-flex cursor-pointer"
-                      @click="toggleSidebar"
+                      class="bi bi-caret-left-fill"
+                      @click="moveToPrevious"
+                      style="cursor: pointer"
+                    ></i>
+                    &nbsp;
+                    <img
+                      src="../assets/calender.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
+                    &nbsp;
+                    <span class="fw-bold fs-5">
+                      {{ formatMonthYear(currentDate) }}
+                    </span>
+                    &nbsp;
+                    <i
+                      class="bi bi-caret-right-fill"
+                      @click="moveToNext"
+                      style="cursor: pointer"
                     ></i>
                   </div>
                 </div>
-                <div class="d-flex mt-2">
-                  <div>
-                    <div class="filters" v-show="isOpen">
-                      <select
-                        v-model="availability_id"
-                        for="SelectAvailability"
-                        class="form-select"
-                        @change="filterData($event.target.value, 'availablity')"
-                      >
-                        <option value="" selected for="SelectAvailability" disabled>
-                          All Availability
-                        </option>
-                        <option id="SelectAvailability" value="Late">Late</option>
-                        <option id="SelectAvailability" value="Night">Night</option>
-                        <option id="SelectAvailability" value="Unavailable">
-                          Unavailable
-                        </option>
-                        <option id="SelectAvailability" value="Early">Early</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="d-flex mt-2">
-                  <div>
-                    <div class="filters" v-show="isOpen">
-                      <select
-                        v-model="job_id"
-                        for="selectJobTitle"
-                        class="form-select"
-                        @change="filterData($event.target.value, 'job')"
-                      >
-                        <option value="" selected disabled>Select Jobs</option>
-                        <option
-                          id="selectJobTitle"
-                          v-for="option in options"
-                          :key="option.name"
-                          :value="option.name"
-                        >
-                          {{ option.name }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="d-flex mt-2">
-                  <div>
-                    <div class="filters" v-show="isOpen">
-                      <select
-                        v-model="site_shift_id"
-                        for="selectBusinessUnit"
-                        class="form-select"
-                        @change="filterData($event.target.value, 'site')"
-                      >
-                        <option value="" selected disabled>Select Site</option>
-                        <option
-                          id="selectBusinessUnit"
-                          v-for="option in businessUnit"
-                          :key="option.site_name"
-                          :value="option.site_name"
-                        >
-                          {{ option.site_name }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="d-flex mt-2">
-                  <div>
-                    <div class="filters" v-show="isOpen">
-                      <select
-                        v-model="site_id"
-                        for="selectShifts"
-                        class="form-select"
-                        @change="filterData($event.target.value, 'shift')"
-                      >
-                        <option value="" selected disabled>All Shift</option>
-                        <option
-                          v-for="option in shiftsTime"
-                          :key="option.shift_name"
-                          :value="option.shift_name"
-                          id="selectShifts"
-                        >
-                          {{
-                            option.shift_name ? option.shift_name.replace(/_/g, " ") : ""
-                          }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <div class="filters" v-show="isOpen">
-                    <button
-                      :disabled="!isFilterSelected"
-                      @click="resetFilters"
-                      class="btn btn-secondary"
-                    >
-                      Reset <i class="bi bi-funnel-fill"></i>
-                    </button>
-                  </div>
-                </div>
               </div>
-
+            </div>
+            <div class="sidebar-container scheduleTable">
               <div class="sidebar-content" :class="{ 'slide-left': isOpen }">
                 <div class="table-container">
                   <table class="table" v-if="!searchQuery">
@@ -203,7 +251,7 @@
                         <th style="width: 15%">
                           <div class="d-flex justify-content-between">
                             <div class="d-flex align-items-center">Shifts</div>
-                            &nbsp; &nbsp; &nbsp;&nbsp;
+                            <!-- &nbsp; &nbsp; &nbsp;&nbsp;
                             <div class="d-flex align-items-center fs-4">
                               <i
                                 class="bi bi-caret-left-fill"
@@ -211,7 +259,7 @@
                               ></i>
                               <i class="bi bi-calendar2-check-fill"></i>
                               <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
-                            </div>
+                            </div> -->
                           </div>
                         </th>
 
@@ -232,8 +280,8 @@
                       </tr>
                     </thead>
 
-                    <tbody v-if="candidateList?.length > 0">
-                      <tr class="sticky-header">
+                    <tbody v-if="candidateList?.length > 0" class="mt-2">
+                      <!-- <tr class="sticky-header">
                         <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
                         <td>
                           <div
@@ -290,12 +338,17 @@
                             </div>
                           </div>
                         </td>
-                      </tr>
+                      </tr> -->
 
                       <tr v-for="data in candidateList" :key="data.id">
                         <div
                           class="text-capitalize fw-bold"
-                          style="border-right: 1px solid rgb(209, 208, 208)"
+                          style="
+                            border: 1px solid rgb(209, 208, 208);
+                            height: 143px;
+                            width: 225px;
+                            border-radius: 10px;
+                          "
                         >
                           {{ data.candidate_name }}
 
@@ -476,45 +529,71 @@
             </div>
           </div>
         </div>
+
+        <div
+          class="mx-3 mb-3 d-flex justify-content-between mt-3 mb-4"
+          style="text-align: right"
+          v-if="candidateList?.length"
+        >
+          <div class="d-flex">
+            <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+            <button
+              class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+              style="color: #00000080"
+              type="button"
+              id="recordsPerPageDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              {{ itemsPerPage }} Records
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+              <li>
+                <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+                  >20 Records</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+                  >50 Records</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+                  >100 Records</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="d-flex align-items-center">
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+              style="background: #ffffff"
+              :disabled="currentPage === 1"
+              @click="changePage(currentPage - 1)"
+            >
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+              style="background: #ffffff; color: #f9944b"
+            >
+              {{ currentPage }}
+            </button>
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+              style="background: #ffffff"
+              :disabled="currentPage === totalPages"
+              @click="changePage(currentPage + 1)"
+            >
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="mx-3 mb-3" style="text-align: right" v-if="candidateList?.length">
-      <button
-        class="btn btn-sm btn-primary dropdown-toggle"
-        type="button"
-        id="recordsPerPageDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        {{ itemsPerPage }} Records
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
-        </li>
-      </ul>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="previousPage"
-      >
-        Previous
-      </button>
-      &nbsp;&nbsp; <span>{{ currentPage }}</span> &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage >= totalPages"
-        @click="nextPage"
-      >
-        Next
-      </button>
     </div>
   </div>
 </template>
@@ -523,7 +602,7 @@
 import axios from "axios";
 import EditAssignShceduleVaacncy from "../components/modals/Schedule/EditAssignShceduleVaacncy.vue";
 import ScheduleDirectAssignList from "../components/modals/Schedule/ScheduleDirectAssignList.vue";
-// import Navbar from "../components/Navbar.vue";
+import Navbar from "../components/Navbar.vue";
 // import SchedulePublishStaffList from "../components/modals/Schedule/SchedulePublishStaffList.vue";
 import SuccessAlert from "../components/Alerts/SuccessAlert.vue";
 import Loader from "../components/Loader/Loader.vue";
@@ -549,6 +628,7 @@ export default {
       isFetching: false,
       currentView: "weekly",
       startDate: new Date(),
+      currentDate: new Date(),
       endDate: new Date(),
       currentDate: new Date(),
       selectedDate: new Date(),
@@ -683,6 +763,9 @@ export default {
     },
   },
   watch: {
+    startDate(newVal) {
+      this.currentDate = new Date(newVal);
+    },
     columnDateMatch() {
       // this.filteredVacancies();
     },
@@ -850,7 +933,7 @@ export default {
       this.getJobTitleMethod();
       this.getTimeShift();
     },
-    moveToPrevious() {
+    oveToPrevious() {
       if (this.currentView === "weekly") {
         this.startDate.setDate(this.startDate.getDate() - 7);
         this.endDate.setDate(this.endDate.getDate() - 7);
@@ -863,11 +946,7 @@ export default {
           0
         );
       }
-      this.columnDateMatch = this.formattedStartDate;
-      this.fetchVacancyListMethod();
       this.fetchCandidateList();
-
-      this.fetchAssignList();
     },
     moveToNext() {
       if (this.currentView === "weekly") {
@@ -882,12 +961,15 @@ export default {
           0
         );
       }
-      this.columnDateMatch = this.formattedStartDate;
-      this.fetchVacancyListMethod();
       this.fetchCandidateList();
-
-      this.fetchAssignList();
     },
+    formatMonthYear(date) {
+      return new Intl.DateTimeFormat("en-US", {
+        month: "long",
+        year: "numeric",
+      }).format(date);
+    },
+
     updateDateRange() {
       if (this.currentView === "weekly") {
         const weekStart = new Date(this.startDate);
@@ -1244,23 +1326,27 @@ export default {
         }
       }
     },
+    async changePage(page) {
+      this.currentPage = page;
+      await this.fetchCandidateList();
+    },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
       this.fetchCandidateList();
     },
-    nextPage() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
-        this.fetchCandidateList();
-      }
-    },
-    previousPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-        this.fetchCandidateList();
-      }
-    },
+    // nextPage() {
+    //   if (this.currentPage < this.totalPages) {
+    //     this.currentPage++;
+    //     this.fetchCandidateList();
+    //   }
+    // },
+    // previousPage() {
+    //   if (this.currentPage > 1) {
+    //     this.currentPage--;
+    //     this.fetchCandidateList();
+    //   }
+    // },
     async fetchCandidateList() {
       if (!this.hasMore || this.isFetching) return;
 
@@ -1374,7 +1460,7 @@ export default {
   },
   components: {
     EditAssignShceduleVaacncy,
-    // Navbar,
+    Navbar,
     ScheduleDirectAssignList,
     // SchedulePublishStaffList,
     SuccessAlert,
@@ -1417,20 +1503,19 @@ export default {
     this.fetchCandidateList();
 
     this.fetchVacancyListMethod();
-    window.addEventListener("scroll", this.handleScroll);
-    document.documentElement.style.overflowY = "hidden";
+    // window.addEventListener("scroll", this.handleScroll);
+    // document.documentElement.style.overflowY = "hidden";
   },
-  beforeUnmount() {
-    document.documentElement.style.overflowY = "";
-    window.removeEventListener("scroll", this.handleScroll);
-  },
+  // beforeUnmount() {
+  //   document.documentElement.style.overflowY = "";
+  //   window.removeEventListener("scroll", this.handleScroll);
+  // },
 };
 </script>
 
 <style scoped>
 #main {
-  background-color: #fdce5e17;
-  padding-top: 65px;
+  background-color: #f9f9f9;
 }
 
 .sidebar-container {
@@ -1449,7 +1534,6 @@ export default {
 }
 
 .sidebar-button {
-  padding: 10px;
   background: #faf8f4;
 }
 
@@ -1531,18 +1615,25 @@ input.dateInput {
 }
 
 .calendar-day {
-  background-color: #eaeaea;
+  border: 1px solid #dee2e6;
+  width: 170px;
+  height: 143px;
+  border-radius: 10px;
   transition: background-color 0.3s ease;
   padding-bottom: 8px;
 }
-
+table thead th {
+  background: #ffeedb;
+}
 .calendar-day.clickable {
   cursor: crosshair;
   font-size: 10px;
   color: blue !important;
   font-weight: bold;
 }
-
+.table > :not(caption) > * > * {
+  border: none;
+}
 .modal {
   display: block;
   position: fixed;
@@ -1568,12 +1659,12 @@ table {
 thead {
   position: sticky;
   top: 0;
-  background-color: white;
+  background: #ffeedb;
+
   z-index: 100;
 }
 
-th,
-td {
+th {
   padding: 10px;
   text-align: left;
   border-bottom: 1px solid #dee2e6;
@@ -1584,6 +1675,9 @@ td {
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
+}
+td {
+  padding-top: 0px;
 }
 
 .close {
@@ -1606,19 +1700,5 @@ td {
   color: black;
   text-decoration: none;
   cursor: pointer;
-}
-@media (max-width: 1900px) {
-  .table-container {
-    max-height: 590px;
-  }
-}
-@media (max-width: 1120px) {
-  .scheduleTable {
-    width: 1090px;
-  }
-
-  .table-wrapper {
-    overflow-x: scroll;
-  }
 }
 </style>

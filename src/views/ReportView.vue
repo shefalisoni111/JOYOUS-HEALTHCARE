@@ -1,63 +1,67 @@
 <template>
   <div>
     <!-- <Navbar /> -->
-    <div class="container-fluid p-0">
-      <div id="main">
+
+    <div id="main" class="main d-flex">
+      <div class=""><Navbar /></div>
+      <div class="col-10 ps-5 pt-3">
         <div class="pagetitle d-flex justify-content-between px-2">
           <div class="py-3">
             <ol class="breadcrumb my-2">
-              <li class="breadcrumb-item active text-uppercase fs-6">
-                <router-link class="nav-link d-inline" aria-current="page" to="/home"
-                  >Dashboard</router-link
+              <li class="breadcrumb-item active fs-6">
+                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                  >Report</a
                 >
-                /
 
-                <span class="color-fonts">{{ activeTabName }}</span>
+                <!-- <span class="color-fonts">{{ activeTabName }}</span> -->
               </li>
             </ol>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="container-fluid p-0">
-      <div class="row">
-        <div class="">
-          <div class="d-flex gap-2 justify-content-between bg-define">
-            <ul class="nav nav-pills my-3 p-2" role="tablist">
-              <li
-                class="nav-item d-sm-contents d-lg-inline-flex d-md-inline-flex gap-2"
-                role="presentation"
-              >
-                <button
-                  class="nav-link text-nowrap"
-                  :class="{ active: activeTab === index }"
-                  :to="`/${tab.routeName}`"
-                  aria-selected="true"
-                  type="button"
-                  role="tab"
-                  data-bs-toggle="pill"
-                  v-for="(tab, index) in tabs"
-                  :key="index"
-                  @click="selectTab(index)"
-                >
-                  {{ tab.name }}
-                </button>
-              </li>
-            </ul>
-            <div class="d-flex align-items-center p-2">
-              <div class="d-flex justify-content-between gap-2">
-                <div
-                  class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
-                ></div>
 
-                <div class="d-flex justify-content-between gap-2"></div>
+        <div class="row">
+          <div class="col-12">
+            <div class="d-flex gap-2 justify-content-between bg-define position-relative">
+              <ul class="nav nav-pills py-0 px-0" role="tablist">
+                <li
+                  class="nav-item d-sm-contents d-lg-inline-flex d-md-inline-flex gap-2"
+                  role="presentation"
+                >
+                  <button
+                    class="nav-link text-nowrap"
+                    :class="{ active: activeTab === index }"
+                    :to="`/${tab.routeName}`"
+                    aria-selected="true"
+                    type="button"
+                    role="tab"
+                    data-bs-toggle="pill"
+                    v-for="(tab, index) in tabs"
+                    :key="index"
+                    @click="selectTab(index)"
+                  >
+                    <img
+                      v-if="tab.icon"
+                      :src="tab.icon"
+                      alt="icon"
+                      style="width: 18px; height: 18px; margin-right: 5px"
+                    />
+                    {{ tab.name }}
+                  </button>
+                </li>
+              </ul>
+              <div class="d-flex align-items-center p-2">
+                <div class="d-flex justify-content-between gap-2">
+                  <div
+                    class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
+                  ></div>
+
+                  <div class="d-flex justify-content-between gap-2"></div>
+                </div>
               </div>
             </div>
-          </div>
-          <div>
-            <keep-alive>
-              <!-- <component :is="activeComponent"></component> -->
-            </keep-alive>
+            <div>
+              <component :is="activeComponent"></component>
+            </div>
           </div>
         </div>
       </div>
@@ -73,7 +77,12 @@ import BusinessUnitReport from "../components/ReportPages/BusinessUnitReport.vue
 import InvoiceReport from "../components/ReportPages/InvoiceReport.vue";
 import DocumentReport from "../components/ReportPages/DocumentReport.vue";
 import RateCardReport from "../components/ReportPages/RateCardReport.vue";
-// import Navbar from "../components/Navbar.vue";
+import Navbar from "../components/Navbar.vue";
+import staffIcon from "@/assets/staff_report.png";
+import clientIcon from "@/assets/client_report.png";
+import siteICon from "@/assets/site_report.png";
+import invoiceIcon from "@/assets/invoice_report.png";
+import rateCardIcon from "@/assets/ratecard_report.png";
 // import EmailReport from "../components/ReportPages/EmailReport.vue";
 
 export default {
@@ -86,31 +95,41 @@ export default {
         //   component: "PayrollReport",
         //   routeName: "PayrollReport",
         // },
-        { name: "Staff Report ", component: "StaffReport", routeName: "StaffReport" },
+        {
+          name: "Staff Report ",
+          component: "StaffReport",
+          routeName: "StaffReport",
+          icon: staffIcon,
+        },
         {
           name: "Client Report ",
           component: "ClientReport",
           routeName: "ClientReport",
+          icon: clientIcon,
         },
         {
           name: "Site Report",
           component: "BusinessUnitReport",
           routeName: "BusinessUnitReport",
+          icon: siteICon,
         },
         {
           name: "Invoice Report",
           component: "InvoiceReport",
           routeName: "InvoiceReport",
+          icon: invoiceIcon,
         },
         {
           name: "Document Report",
           component: "DocumentReport",
           routeName: "DocumentReport",
+          icon: invoiceIcon,
         },
         {
           name: "RateCard",
           component: "RateCardReport",
           routeName: "RateCardReport",
+          icon: rateCardIcon,
         },
         // {
         //   name: "EmailReport",
@@ -128,7 +147,7 @@ export default {
     },
   },
   components: {
-    // Navbar,
+    Navbar,
     // PayrollReport,
     StaffReport,
     ClientReport,
@@ -188,18 +207,39 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 #main {
   transition: all 0.3s;
-  padding-top: 60px;
-  background-color: #fdce5e17;
+
+  background-color: #f9f9f9;
 }
 .main-content {
   transition: all 0.3s;
 }
-.bg-define {
-  background-color: #fdce5e17;
-  border-bottom: 1px solid #ded9d9;
+select {
+  background: #f9944b14;
+}
+.view-toggle {
+  display: inline-flex;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #f6f6f6;
+  line-height: 37px;
+  gap: 5px;
+}
+.toggle-btn {
+  padding: 6px 16px;
+  border: none;
+  background: #fff;
+  color: #5a5560;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+
+.toggle-btn.active {
+  background-color: #f9944b;
+  color: white;
 }
 .color-fonts {
   color: #ff5f30;
@@ -214,6 +254,34 @@ export default {
   font-size: 13px;
   font-weight: 700;
 }
+.custom-select-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 220px;
+}
+
+.custom-select-wrapper select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 2rem;
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  height: 50px;
+  padding: 6px 12px;
+}
+
+.custom-select-wrapper::after {
+  content: "▼";
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 12px;
+  color: #999;
+}
 a {
   color: black;
 }
@@ -221,15 +289,16 @@ a {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   background-color: transparent;
-  border: 2px solid green;
-  border-radius: 22px;
-  color: green;
+  border-bottom: 2px solid #f9944b;
+  padding: 0;
+  color: #f9944b;
+
+  border-radius: 0px;
 }
 
 .nav-pills .nav-link {
   background-color: transparent;
-  border: 1px solid #0d6efd;
-  border-radius: 22px;
+  border: transparent;
 }
 .form-check-input {
   border: 2px solid grey;
@@ -237,10 +306,6 @@ a {
 .border-left {
   border-left: 1px solid #ded9d9;
   height: 100vh;
-}
-
-.candidateTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
 }
 
 .btn-primary {
@@ -260,9 +325,8 @@ a:link {
 }
 .nav-pills .nav-link {
   background-color: transparent;
-  border: 1px solid #ff5722;
-  border-radius: 22px;
-  color: #ff5722;
+
+  color: #000;
 }
 .switch {
   width: 50px;

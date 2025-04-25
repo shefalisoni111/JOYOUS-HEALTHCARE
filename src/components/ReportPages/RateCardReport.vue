@@ -10,38 +10,41 @@
                 <div class="p-2">
                   <div class="d-flex ms-2 justify-content-between">
                     <div class="d-flex gap-2">
-                      <select
-                        v-model="client_id"
-                        id="selectClients"
-                        @change="handleClientChange"
-                      >
-                        <option value="">All Client</option>
-                        <option
-                          v-for="option in clientData"
-                          :key="option.id"
-                          :value="option.id"
-                          aria-placeholder="Select Job"
+                      <div class="custom-select-wrapper">
+                        <select
+                          v-model="client_id"
+                          id="selectClients"
+                          @change="handleClientChange"
                         >
-                          {{ option.client_name }}
-                        </option>
-                      </select>
-                      <select
-                        v-model="site_id"
-                        id="selectBusinessUnit"
-                        @change="filterData"
-                        :disabled="!businessUnit.length"
-                      >
-                        <option value="">All Site</option>
-                        <option
-                          v-for="option in businessUnit"
-                          :key="option.id"
-                          :value="option.id"
-                          placeholder="Select BusinessUnit"
+                          <option value="">All Client</option>
+                          <option
+                            v-for="option in clientData"
+                            :key="option.id"
+                            :value="option.id"
+                            aria-placeholder="Select Job"
+                          >
+                            {{ option.client_name }}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="custom-select-wrapper">
+                        <select
+                          v-model="site_id"
+                          id="selectBusinessUnit"
+                          @change="filterData"
+                          :disabled="!businessUnit.length"
                         >
-                          {{ option.site_name }}
-                        </option>
-                      </select>
-
+                          <option value="">All Site</option>
+                          <option
+                            v-for="option in businessUnit"
+                            :key="option.id"
+                            :value="option.id"
+                            placeholder="Select BusinessUnit"
+                          >
+                            {{ option.site_name }}
+                          </option>
+                        </select>
+                      </div>
                       <!-- <select v-model="id" @change="filterData">
                         <option value="">All Staff</option>
                         <option
@@ -72,7 +75,7 @@
                     </div>
                     <div class="d-flex gap-2">
                       <div
-                        class="d-md-flex d-lg-flex justify-content-md-between justify-content-lg-between"
+                        class="d-md-flex d-lg-flex justify-content-md-between justify-content-lg-between align-items-center"
                       >
                         <div class="d-flex gap-3 align-items-center mt-lg-0 mt-3">
                           <div
@@ -83,7 +86,7 @@
                           >
                             <button
                               type="button"
-                              class="btn btn-outline-success text-nowrap mt-3"
+                              class="btn btn-danger btn-lg text-nowrap mt-3"
                               @click="exportOneFile('all')"
                               :disabled="true"
                             >
@@ -93,7 +96,7 @@
                           <div v-else>
                             <button
                               type="button"
-                              class="btn btn-outline-success text-nowrap mt-3"
+                              class="btn btn-danger btn-lg text-nowrap mt-3"
                               @click="exportOneFile('all')"
                             >
                               <i class="bi bi-download"></i> Export CSV
@@ -1400,8 +1403,6 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-  min-height: 40vw;
-  background-color: #fdce5e17;
 }
 .main-content {
   transition: all 0.3s;

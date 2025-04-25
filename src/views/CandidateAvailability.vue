@@ -1,329 +1,329 @@
 <template>
   <div>
-    <div id="main" class="main d-flex bg-light">
-      <div class="container-fluid">
-        <div class="row">
-          <div>
-            <Navbar />
-          </div>
-
+    <div id="main" class="main p-5">
+      <div class="row px-4">
+        <div class="pagetitle d-flex justify-content-between p-0">
           <div class="">
-            <div class="pagetitle d-flex justify-content-between px-2 mt-2">
-              <div class="py-3">
-                <ol class="breadcrumb mb-1">
-                  <li class="breadcrumb-item active">
-                    <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
-                      >All Staff</a
-                    >
-                    <p>
-                      All Staff /
-                      <router-link
-                        class="nav-link d-inline fw-bolder"
-                        style="color: #000000"
-                        aria-current="page"
-                        to="/availability"
-                        >Staff Availability</router-link
-                      >
-                    </p>
-                  </li>
-                </ol>
-              </div>
-            </div>
-            <div class="row">
-              <div class="d-flex align-items-center justify-content-end pe-4 mb-3">
-                <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
-                  <input
-                    class="form-control form-control-lg mr-sm-2"
-                    type="search"
-                    placeholder="Search by Name"
-                    aria-label="Search"
-                    v-model="searchQuery"
-                    @input="debounceSearch"
-                  />
-                  <span
-                    class="position-absolute"
-                    style="transform: translate(1349%, -151%)"
+            <ol class="breadcrumb mb-1">
+              <li class="breadcrumb-item active">
+                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                  >All Staff</a
+                >
+                <p>
+                  All Staff /
+                  <router-link
+                    class="nav-link d-inline fw-bolder"
+                    style="color: #000000"
+                    aria-current="page"
+                    to="/availability"
+                    >Staff Availability</router-link
                   >
+                </p>
+              </li>
+            </ol>
+          </div>
+        </div>
+        <div class="row p-0">
+          <div class="d-flex align-items-center justify-content-end mb-3 p-0">
+            <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
+              <input
+                class="form-control form-control-lg mr-sm-2"
+                type="search"
+                placeholder="Search by Name"
+                aria-label="Search"
+                v-model="searchQuery"
+                @input="debounceSearch"
+              />
+              <span class="position-absolute" style="transform: translate(1349%, -151%)">
+                <img
+                  src="../assets/Search.png"
+                  class="img-fluid pe-2"
+                  alt="RecPal"
+                  loading="eager"
+              /></span>
+            </form>
+          </div>
+        </div>
+        <div class="row p-3" style="background: #fff; border-radius: 14px">
+          <div class="full-page-calendar">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="calendar-header w-100 d-flex justify-content-center">
+                <div class="d-flex">
+                  &nbsp;&nbsp;
+
+                  <div class="d-flex align-items-center justify-content-between">
+                    <i
+                      class="bi bi-caret-left-fill"
+                      @click="moveToPrevious"
+                      style="cursor: pointer"
+                    ></i>
+                    &nbsp;
                     <img
-                      src="../assets/Search.png"
+                      src="../assets/calender.png"
                       class="img-fluid pe-2"
                       alt="RecPal"
                       loading="eager"
-                  /></span>
-                </form>
+                    />
+                    &nbsp;
+                    <span class="fw-bold fs-5">
+                      {{ formatMonthYear(currentDate) }}
+                    </span>
+                    &nbsp;
+                    <i
+                      class="bi bi-caret-right-fill"
+                      @click="moveToNext"
+                      style="cursor: pointer"
+                    ></i>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="row p-3" style="background: #fff">
-              <div class="full-page-calendar">
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="calendar-header w-100 d-flex justify-content-center">
-                    <div class="d-flex">
-                      &nbsp;&nbsp;
+            <!-- Modal -->
 
-                      <div class="d-flex align-items-center justify-content-between">
-                        <i
-                          class="bi bi-caret-left-fill"
-                          @click="moveToPrevious"
-                          style="cursor: pointer"
-                        ></i>
-                        &nbsp;
-                        <img
-                          src="../assets/calender.png"
-                          class="img-fluid pe-2"
-                          alt="RecPal"
-                          loading="eager"
-                        />
-                        &nbsp;
-                        <span class="fw-bold fs-5">
-                          {{ formatMonthYear(currentDate) }}
-                        </span>
-                        &nbsp;
-                        <i
-                          class="bi bi-caret-right-fill"
-                          @click="moveToNext"
-                          style="cursor: pointer"
-                        ></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Modal -->
+            <div v-if="selectedDate !== null" class="modal">
+              <div class="modal-content">
+                <h4 class="text-capitalize" style="color: #ff5722; font-weight: bold">
+                  {{ getCandidateName() }}
+                </h4>
 
-                <div v-if="selectedDate !== null" class="modal">
-                  <div class="modal-content">
-                    <h4 class="text-capitalize" style="color: #ff5722; font-weight: bold">
-                      {{ getCandidateName() }}
-                    </h4>
-
-                    <Calendar
-                      :initialDate="selectedDate.toISOString()"
-                      :candidateId="selectedCandidateId.toString()"
-                      @closeModal="closeModal"
-                      :availabilityId="availability_id"
-                      :startDate="startDate"
-                      :availabilityStatus="statusForSelectedDate"
-                      @availability-updated="fetchCandidateList"
-                    />
-                  </div>
-                </div>
+                <Calendar
+                  :initialDate="selectedDate.toISOString()"
+                  :candidateId="selectedCandidateId.toString()"
+                  @closeModal="closeModal"
+                  :availabilityId="availability_id"
+                  :startDate="startDate"
+                  :availabilityStatus="statusForSelectedDate"
+                  @availability-updated="fetchCandidateList"
+                />
               </div>
-              <div class="table-wrapper" v-if="!searchQuery">
-                <table class="table candidateTable">
-                  <thead>
-                    <tr style="background: #ffeedb">
-                      <th scope="col">
-                        Name
+            </div>
+          </div>
+          <div class="table-wrapper" v-if="!searchQuery">
+            <table class="table candidateTable">
+              <thead>
+                <tr style="background: #ffeedb">
+                  <th scope="col">
+                    Name
+                    <img
+                      src="../assets/ArrowDown.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
+                  </th>
+                  <th scope="col">
+                    <div class="calendar-grid">
+                      <div v-for="day in daysOfWeek" :key="day" class="day-header">
+                        {{ day }}
+                      </div>
+                      <div v-for="date in selectedDateRow" :key="date" class="day-header">
+                        {{ formatDate(date) }}
                         <img
                           src="../assets/ArrowDown.png"
                           class="img-fluid pe-2"
                           alt="RecPal"
                           loading="eager"
                         />
-                      </th>
-                      <th scope="col">
-                        <div class="calendar-grid">
-                          <div v-for="day in daysOfWeek" :key="day" class="day-header">
-                            {{ day }}
-                          </div>
-                          <div
-                            v-for="date in selectedDateRow"
-                            :key="date"
-                            class="day-header"
-                          >
-                            {{ formatDate(date) }}
-                            <img
-                              src="../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </div>
-                        </div>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody v-if="paginateCandidates?.length > 0">
-                    <tr v-for="data in paginateCandidates" :key="data.id">
-                      <td class="text-capitalize fw-bold" style="width: 21%">
-                        {{ data.candidate_name + " " }}
-                        <span
-                          v-if="data.job"
-                          style="background: rgb(209, 207, 207); padding: 3px"
-                        >
-                          {{ data.job }}
+                      </div>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody v-if="paginateCandidates?.length > 0">
+                <tr v-for="data in paginateCandidates" :key="data.id">
+                  <td class="text-capitalize fw-bold" style="width: 21%">
+                    {{ data.candidate_name + " " }}
+                    <span
+                      v-if="data.job"
+                      style="background: rgb(209, 207, 207); padding: 3px"
+                    >
+                      {{ data.job }}
+                    </span>
+                    <!-- <span class="fs-6 text-muted fw-100"><br />{{ data.job }}</span> -->
+                  </td>
+                  <td>
+                    <div class="calendar-grid">
+                      <div
+                        v-for="day in selectedDateRow"
+                        :key="day"
+                        @click="openModal(data, day)"
+                        data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop"
+                        class="calendar-day"
+                        :class="{ 'calendar-day': true, clickable: day !== '' }"
+                      >
+                        <span v-for="avail in data.availability" :key="avail.id">
+                          <span v-if="avail.date === formattedDate(day)">
+                            <span
+                              v-if="
+                                avail.candidate_status &&
+                                avail.candidate_status.length > 0
+                              "
+                            >
+                              <span
+                                v-for="status in avail.candidate_status"
+                                :key="status"
+                                style="font-size: small; padding: 0px 5px"
+                                class="me-2"
+                                v-bind:class="{
+                                  'btn btn-warning': status === 'Late',
+                                  'btn btn-primary': status === 'U/A',
+                                  'btn btn-secondary': status === 'Night',
+                                  'btn btn-light': status === 'Early',
+                                }"
+                              >
+                                {{ status[0].toUpperCase() }}
+                              </span>
+                            </span>
+                          </span>
                         </span>
-                        <!-- <span class="fs-6 text-muted fw-100"><br />{{ data.job }}</span> -->
-                      </td>
-                      <td>
-                        <div class="calendar-grid">
-                          <div
-                            v-for="day in selectedDateRow"
-                            :key="day"
-                            @click="openModal(data, day)"
-                            data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop"
-                            class="calendar-day"
-                            :class="{ 'calendar-day': true, clickable: day !== '' }"
-                          >
-                            <span v-for="avail in data.availability" :key="avail.id">
-                              <span v-if="avail.date === formattedDate(day)">
-                                <span
-                                  v-if="
-                                    avail.candidate_status &&
-                                    avail.candidate_status.length > 0
-                                  "
-                                >
-                                  <span
-                                    v-for="status in avail.candidate_status"
-                                    :key="status"
-                                    style="font-size: small; padding: 0px 5px"
-                                    class="me-2"
-                                    v-bind:class="{
-                                      'btn btn-warning': status === 'Late',
-                                      'btn btn-primary': status === 'U/A',
-                                      'btn btn-secondary': status === 'Night',
-                                      'btn btn-light': status === 'Early',
-                                    }"
-                                  >
-                                    {{ status[0].toUpperCase() }}
-                                  </span>
-                                </span>
-                              </span>
-                            </span>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                  <tbody v-else>
-                    <tr>
-                      <td colspan="15" class="text-danger text-center">
-                        {{ "Data Not Found!" }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="table-wrapper" v-if="searchQuery">
-                <table class="table candidateTable">
-                  <thead>
-                    <tr>
-                      <th scope="col">Name</th>
-                      <th scope="col">
-                        <div class="calendar-grid">
-                          <div v-for="day in daysOfWeek" :key="day" class="day-header">
-                            {{ day }}
-                          </div>
-                          <div
-                            v-for="date in selectedDateRow"
-                            :key="date"
-                            class="day-header"
-                          >
-                            {{ formatDate(date) }}
-                          </div>
-                        </div>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody v-if="searchResults?.length > 0">
-                    <tr v-for="data in searchResults" :key="data.id">
-                      <td class="text-capitalize fw-bold" style="width: 21%">
-                        {{ data.candidate_name + " " }}
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody v-else>
+                <tr>
+                  <td colspan="15" class="text-danger text-center">
+                    {{ "Data Not Found!" }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-wrapper" v-if="searchQuery">
+            <table class="table candidateTable">
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">
+                    <div class="calendar-grid">
+                      <div v-for="day in daysOfWeek" :key="day" class="day-header">
+                        {{ day }}
+                      </div>
+                      <div v-for="date in selectedDateRow" :key="date" class="day-header">
+                        {{ formatDate(date) }}
+                      </div>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody v-if="searchResults?.length > 0">
+                <tr v-for="data in searchResults" :key="data.id">
+                  <td class="text-capitalize fw-bold" style="width: 21%">
+                    {{ data.candidate_name + " " }}
 
-                        <span class="fs-6 text-muted fw-100"><br />{{ data.job }}</span>
-                      </td>
-                      <td>
-                        <div class="calendar-grid">
-                          <div
-                            v-for="day in selectedDateRow"
-                            :key="day"
-                            @click="openModal(data, day)"
-                            data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop"
-                            class="calendar-day"
-                            :class="{ 'calendar-day': true, clickable: day !== '' }"
-                          >
-                            <span v-for="avail in data.availability" :key="avail.id">
-                              <span v-if="avail.date === formattedDate(day)">
-                                <span
-                                  v-for="status in avail.candidate_status"
-                                  :key="status"
-                                  style="font-size: small; padding: 0px 5px"
-                                  class="me-2"
-                                  v-bind:class="{
-                                    'btn btn-warning': status === 'Late',
-                                    'btn btn-primary': status === 'U/A',
-                                    'btn btn-secondary': status === 'Night',
-                                    'btn btn-light': status === 'Early',
-                                  }"
-                                >
-                                  {{ status[0].toUpperCase() }}
-                                </span>
-                              </span>
+                    <span class="fs-6 text-muted fw-100"><br />{{ data.job }}</span>
+                  </td>
+                  <td>
+                    <div class="calendar-grid">
+                      <div
+                        v-for="day in selectedDateRow"
+                        :key="day"
+                        @click="openModal(data, day)"
+                        data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop"
+                        class="calendar-day"
+                        :class="{ 'calendar-day': true, clickable: day !== '' }"
+                      >
+                        <span v-for="avail in data.availability" :key="avail.id">
+                          <span v-if="avail.date === formattedDate(day)">
+                            <span
+                              v-for="status in avail.candidate_status"
+                              :key="status"
+                              style="font-size: small; padding: 0px 5px"
+                              class="me-2"
+                              v-bind:class="{
+                                'btn btn-warning': status === 'Late',
+                                'btn btn-primary': status === 'U/A',
+                                'btn btn-secondary': status === 'Night',
+                                'btn btn-light': status === 'Early',
+                              }"
+                            >
+                              {{ status[0].toUpperCase() }}
                             </span>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                  <tbody v-else>
-                    <tr>
-                      <td colspan="2" class="text-danger text-center">
-                        {{ errorMessage }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody v-else>
+                <tr>
+                  <td colspan="2" class="text-danger text-center">
+                    {{ errorMessage }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div
+          class="mt-3 mb-3 d-flex justify-content-between"
+          style="text-align: right"
+          v-if="candidateList && candidateList.length >= 10"
+        >
+          <div class="d-flex">
+            <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+            <button
+              class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+              style="color: #00000080"
+              type="button"
+              id="recordsPerPageDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              {{ itemsPerPage }} Records
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+              <li>
+                <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+                  >20 Records</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+                  >50 Records</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+                  >100 Records</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="d-flex align-items-center">
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+              style="background: #ffffff"
+              :disabled="currentPage === 1"
+              @click="changePage(currentPage - 1)"
+            >
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+              style="background: #ffffff; color: #f9944b"
+            >
+              {{ currentPage }}
+            </button>
+            &nbsp;&nbsp;
+            <button
+              class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+              style="background: #ffffff"
+              :disabled="currentPage === totalPages"
+              @click="changePage(currentPage + 1)"
+            >
+              <i class="bi bi-chevron-right"></i>
+            </button>
           </div>
         </div>
       </div>
-    </div>
-    <div
-      class="mx-3 mb-3"
-      style="text-align: right"
-      v-if="candidateList && candidateList.length >= 10"
-    >
-      <!-- <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
-      </button> -->
-      <button
-        class="btn btn-sm btn-primary dropdown-toggle"
-        type="button"
-        id="recordsPerPageDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        {{ itemsPerPage }} Records
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
-        </li>
-      </ul>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="currentPage--"
-      >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= candidateList.length"
-        @click="currentPage++"
-      >
-        Next
-      </button>
     </div>
     <loader :isLoading="isLoading"></loader>
   </div>
@@ -333,7 +333,7 @@
 import axios from "axios";
 import Calendar from "../components/modals/CandidatePage/CanderAvailableModal.vue";
 import Loader from "../components/Loader/Loader.vue";
-import Navbar from "../components/Navbar.vue";
+import Navbar from "@/components/Navbar.vue";
 import dayjs from "dayjs";
 const axiosInstance = axios.create({
   headers: {
@@ -470,21 +470,10 @@ export default {
   },
   watch: {
     startDate(newVal) {
-      // Sync currentDate with the current week’s start date
       this.currentDate = new Date(newVal);
     },
   },
   methods: {
-    moveToNext() {
-      this.currentDate = new Date(
-        this.currentDate.setMonth(this.currentDate.getMonth() + 1)
-      );
-    },
-    moveToPrevious() {
-      this.currentDate = new Date(
-        this.currentDate.setMonth(this.currentDate.getMonth() - 1)
-      );
-    },
     formatMonthYear(date) {
       return new Intl.DateTimeFormat("en-US", {
         month: "long",
@@ -737,7 +726,10 @@ export default {
         this.availability_id = null;
       }
     },
-
+    async changePage(page) {
+      this.currentPage = page;
+      await this.fetchCandidateList();
+    },
     closeModal() {
       this.selectedDate = null;
 
@@ -823,8 +815,7 @@ export default {
 
 <style scoped>
 #main {
-  background-color: #fdce5e17;
-  padding-top: 62px;
+  background-color: #f9f9f9;
 }
 .full-page-calendar {
   padding: 20px;
@@ -879,9 +870,12 @@ input.dateInput:focus-visible {
 }
 
 .calendar-day {
-  background-color: #eaeaea;
+  border: 1px solid #dee2e6;
+  width: 170px;
+  height: 143px;
+  border-radius: 10px;
   transition: background-color 0.3s ease;
-  padding: 17px 20px;
+  padding-bottom: 8px;
 }
 
 .calendar-day.clickable {
@@ -918,6 +912,9 @@ input.dateInput:focus-visible {
   float: right;
   font-size: 28px;
   font-weight: bold;
+}
+table thead th {
+  background: #ffeedb;
 }
 
 .close:hover,

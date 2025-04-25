@@ -8,38 +8,41 @@
             <div class="">
               <div class="d-flex ms-2 justify-content-between">
                 <div class="d-flex gap-2">
-                  <select
-                    v-model="client_id"
-                    id="selectClients"
-                    @change="handleClientChange"
-                  >
-                    <option value="">All Client</option>
-                    <option
-                      v-for="option in clientData"
-                      :key="option.id"
-                      :value="option.id"
-                      aria-placeholder="Select Job"
+                  <div class="custom-select-wrapper">
+                    <select
+                      v-model="client_id"
+                      id="selectClients"
+                      @change="handleClientChange"
                     >
-                      {{ option.client_name }}
-                    </option>
-                  </select>
-                  <select
-                    v-model="site_id"
-                    id="selectBusinessUnit"
-                    @change="filterData"
-                    :disabled="!businessUnit.length"
-                  >
-                    <option value="">All Site</option>
-                    <option
-                      v-for="option in businessUnit"
-                      :key="option.id"
-                      :value="option.id"
-                      placeholder="Select BusinessUnit"
+                      <option value="">All Client</option>
+                      <option
+                        v-for="option in clientData"
+                        :key="option.id"
+                        :value="option.id"
+                        aria-placeholder="Select Job"
+                      >
+                        {{ option.client_name }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="custom-select-wrapper">
+                    <select
+                      v-model="site_id"
+                      id="selectBusinessUnit"
+                      @change="filterData"
+                      :disabled="!businessUnit.length"
                     >
-                      {{ option.site_name }}
-                    </option>
-                  </select>
-
+                      <option value="">All Site</option>
+                      <option
+                        v-for="option in businessUnit"
+                        :key="option.id"
+                        :value="option.id"
+                        placeholder="Select BusinessUnit"
+                      >
+                        {{ option.site_name }}
+                      </option>
+                    </select>
+                  </div>
                   <!-- <select v-model="id" @change="filterData">
                     <option value="">All Staff</option>
                     <option
@@ -52,22 +55,6 @@
                     </option>
                   </select> -->
                 </div>
-
-                <div>
-                  <form
-                    @submit.prevent="search"
-                    class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
-                  >
-                    <input
-                      class="form-control mr-sm-2"
-                      type="search"
-                      placeholder="Search.."
-                      aria-label="Search"
-                      v-model="searchQuery"
-                      @input="debounceSearch"
-                    />
-                  </form>
-                </div>
               </div>
               <div>
                 <div class="p-2">
@@ -76,19 +63,37 @@
                   >
                     <div class="d-flex">
                       <div class="d-flex align-items-center gap-2">
-                        <select
-                          class="form-control"
-                          v-model="currentView"
-                          @change="updateDateRange"
-                        >
-                          <!-- <option value="weekly">Weekly</option> -->
-                          <option value="monthly">Monthly</option>
-                        </select>
+                        <div class="view-toggle">
+                          <button
+                            :class="[
+                              'toggle-btn',
+                              currentView === 'weekly' ? 'active' : '',
+                            ]"
+                            @click="
+                              currentView = 'weekly';
+                              updateDateRange();
+                            "
+                          >
+                            Weekly
+                          </button>
+                          <button
+                            :class="[
+                              'toggle-btn',
+                              currentView === 'monthly' ? 'active' : '',
+                            ]"
+                            @click="
+                              currentView = 'monthly';
+                              updateDateRange();
+                            "
+                          >
+                            Monthly
+                          </button>
+                        </div>
                       </div>
 
                       &nbsp;&nbsp;
                       <div class="d-flex align-items-center">
-                        <!-- <span
+                        <span
                           v-if="currentView === 'weekly' && startDate && endDate"
                           class="fw-bold"
                         >
@@ -98,16 +103,12 @@
                             " to Sunday " +
                             formatDate(endDate)
                           }}
-                        </span> -->
+                        </span>
                         <span
-                          v-if="currentView === 'monthly' && startDate && endDate"
+                          v-else-if="currentView === 'monthly' && startDate && endDate"
                           class="fw-bold"
                         >
-                          {{
-                            formatDate(getMonthStartDate(this.startDate)) +
-                            " to " +
-                            formatDate(endDate)
-                          }}
+                          {{ formatDate(startDate) + " to " + formatDate(endDate) }}
                         </span>
                       </div>
                       &nbsp;&nbsp;
@@ -127,7 +128,7 @@
                       >
                         <button
                           type="button"
-                          class="btn btn-outline-success text-nowrap"
+                          class="btn btn-danger btn-lg text-nowrap"
                           @click="exportOneFile('all')"
                           :disabled="true"
                         >
@@ -137,13 +138,34 @@
                       <div v-else>
                         <button
                           type="button"
-                          class="btn btn-outline-success text-nowrap"
+                          class="btn btn-danger btn-lg text-nowrap"
                           @click="exportOneFile('all')"
                         >
                           <i class="bi bi-download"></i> Export CSV
                         </button>
                       </div>
-
+                      <div>
+                        <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
+                          <input
+                            class="form-control form-control-lg mr-sm-2 position-relative"
+                            type="search"
+                            placeholder="Search.."
+                            aria-label="Search"
+                            v-model="searchQuery"
+                            @input="debounceSearch"
+                          />
+                          <span
+                            class="position-absolute"
+                            style="transform: translate(1329%, -154%)"
+                          >
+                            <img
+                              src="../../assets/Search.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                          /></span>
+                        </form>
+                      </div>
                       <!-- <button type="button" class="btn btn-outline-success text-nowrap">
                         <i class="bi bi-eye"></i> Customize View
                       </button> -->
@@ -236,13 +258,29 @@
                           </td>
                           <!-- <td scope="col">{{ data.status }}</td> -->
                           <td scope="col">{{ data.invoice_creation_period }}</td>
-
+                          <td scope="col">
+                            <!-- {{ data.status ? "Approved" : "No Approved" }} -->
+                            <button
+                              type="button"
+                              :class="['btn', 'text-nowrap']"
+                              :style="
+                                data.status === 'Approved'
+                                  ? { backgroundColor: '#E9FAEF', color: '#24D164' }
+                                  : {
+                                      backgroundColor: 'rgb(255 227 234)',
+                                      color: '#FF3B30',
+                                    }
+                              "
+                            >
+                              {{ data.status === "Approved" ? "Approved " : "Unapprove" }}
+                            </button>
+                          </td>
                           <!-- <td><button class="btn btn-success">Approved</button></td> -->
                         </tr>
                       </tbody>
                       <tbody v-else>
                         <tr v-if="errorMessageFilter">
-                          <td colspan="8" class="text-danger text-center">
+                          <td colspan="9" class="text-danger text-center">
                             {{ errorMessageFilter }}
                           </td>
                         </tr>
@@ -334,13 +372,29 @@
                           </td>
                           <!-- <td scope="col">{{ data.status }}</td> -->
                           <td scope="col">{{ data.invoice_creation_period }}</td>
-
+                          <td scope="col">
+                            <!-- {{ data.status ? "Approved" : "No Approved" }} -->
+                            <button
+                              type="button"
+                              :class="['btn', 'text-nowrap']"
+                              :style="
+                                data.status === 'Approved'
+                                  ? { backgroundColor: '#E9FAEF', color: '#24D164' }
+                                  : {
+                                      backgroundColor: 'rgb(255 227 234)',
+                                      color: '#FF3B30',
+                                    }
+                              "
+                            >
+                              {{ data.status === "Approved" ? "Approved " : "Unapprove" }}
+                            </button>
+                          </td>
                           <!-- <td><button class="btn btn-success">Approved</button></td> -->
                         </tr>
                       </tbody>
                       <tbody v-else>
                         <tr>
-                          <td colspan="8" class="text-danger text-center">
+                          <td colspan="9" class="text-danger text-center">
                             {{ errorMessage }}
                           </td>
                         </tr>
@@ -363,88 +417,123 @@
       </div>
     </div>
     <div
-      class="mx-3 mb-2"
+      class="mx-3 mb-2 d-flex justify-content-between"
       style="text-align: right"
       v-if="getClientInvoiceDetail?.length >= 10 && !searchResults.length"
     >
-      <!-- <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
-      </button> -->
-      <button
-        class="btn btn-sm btn-primary dropdown-toggle"
-        type="button"
-        id="recordsPerPageDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        {{ itemsPerPage }} Records
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
-        </li>
-      </ul>
-      &nbsp;&nbsp;
-      <!-- <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="currentPage--"
-      >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getClientInvoiceDetail?.length"
-        @click="currentPage++"
-      >
-        Next
-      </button> -->
+      <div class="d-flex">
+        <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+        <button
+          class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+          style="color: #00000080"
+          type="button"
+          id="recordsPerPageDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ itemsPerPage }} Records
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+              >100 Records</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="d-flex align-items-center">
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === 1"
+          @click="changePage(currentPage - 1)"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+          style="background: #ffffff; color: #f9944b"
+        >
+          {{ currentPage }}
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === totalPages"
+          @click="changePage(currentPage + 1)"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
     </div>
 
-    <div class="mx-3 mb-2" style="text-align: right" v-if="searchResults.length >= 10">
-      <button
-        class="btn btn-sm btn-primary dropdown-toggle"
-        type="button"
-        id="recordsPerPageDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        {{ itemsPerPage }} Records
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
-        </li>
-      </ul>
-      &nbsp;&nbsp;
-      <!-- <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="currentPage--"
-      >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= searchResults.length"
-        @click="currentPage++"
-      >
-        Next
-      </button> -->
+    <div
+      class="mx-3 mb-2 d-flex justify-content-between"
+      style="text-align: right"
+      v-if="searchResults.length >= 10"
+    >
+      <div class="d-flex">
+        <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+        <button
+          class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+          style="color: #00000080"
+          type="button"
+          id="recordsPerPageDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ itemsPerPage }} Records
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+              >100 Records</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="d-flex align-items-center">
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === 1"
+          @click="changePage(currentPage - 1)"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+          style="background: #ffffff; color: #f9944b"
+        >
+          {{ currentPage }}
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === totalPages"
+          @click="changePage(currentPage + 1)"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
     </div>
     <loader :isLoading="isLoading"></loader>
   </div>
@@ -584,6 +673,10 @@ export default {
     getMonthStartDate(date) {
       const selectedDate = new Date(date);
       return new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+    },
+    async changePage(page) {
+      this.currentPage = page;
+      await this.filterData();
     },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
@@ -933,8 +1026,7 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-
-  background-color: #fdce5e17;
+  background-color: #f9f9f9;
 }
 .main-content {
   transition: all 0.3s;
@@ -970,9 +1062,7 @@ select {
 a[data-v-507f63b7] {
   text-decoration: none;
 }
-.reportTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
+
 .btn-primary {
   border-radius: 4px;
 }
