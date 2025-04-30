@@ -184,10 +184,14 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+              >20 Records</a
+            >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+              >50 Records</a
+            >
           </li>
           <li>
             <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
@@ -271,7 +275,11 @@ export default {
           component: "ActiveDocument",
           routeName: "ActiveDocument",
         },
-        { name: "Due30days Expired ", component: "DueDoc", routeName: "DueDoc" },
+        {
+          name: "Due30days Expired ",
+          component: "DueDoc",
+          routeName: "DueDoc",
+        },
         { name: "Expired ", component: "ExpiredDoc", routeName: "ExpiredDoc" },
         {
           name: "Due60Days Expired  ",
@@ -379,10 +387,16 @@ export default {
       const candidateApiUrl = `${VITE_API_URL}/candidates`;
       const apiUrl = `${VITE_API_URL}/candidate_documents`;
 
-      let candidateParams = { page: this.currentPage, per_page: this.itemsPerPage };
+      let candidateParams = {
+        page: this.currentPage,
+        per_page: this.itemsPerPage,
+      };
 
       if (this.selectedStaffStatus === "all") {
-        candidateParams = { page: this.currentPage, per_page: this.itemsPerPage };
+        candidateParams = {
+          page: this.currentPage,
+          per_page: this.itemsPerPage,
+        };
       } else if (this.selectedStaffStatus === "approved") {
         candidateParams.activated_value = true;
         candidateParams.status_value = "approved";
@@ -459,7 +473,9 @@ export default {
       await this.filterData();
     },
     getStaffFullName(staffId) {
-      const staff = this.candidateLists.find((candidate) => candidate.id === staffId);
+      const staff = this.candidateLists.find(
+        (candidate) => candidate.id === staffId
+      );
       return staff ? `${staff.first_name} ${staff.last_name}` : "";
     },
     getCategoryIdByName(categoryName) {
@@ -533,11 +549,14 @@ export default {
     async getDocumentReport() {
       this.isLoading = true;
       try {
-        const response = await axios.get(`${VITE_API_URL}/candidate_documents`, {
-          document_status: "all",
-          page: this.currentPage,
-          per_page: this.itemsPerPage,
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/candidate_documents`,
+          {
+            document_status: "all",
+            page: this.currentPage,
+            per_page: this.itemsPerPage,
+          }
+        );
         this.getDocumentReportData = response.data.data;
         if (this.getDocumentReportData.length === 0) {
           this.errorMessageFilter = "Report Not Found!";
@@ -588,7 +607,9 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
+      const matchingTabIndex = vm.tabs.findIndex(
+        (tab) => tab.routeName === to.name
+      );
       if (matchingTabIndex !== -1) {
         vm.activeTab = matchingTabIndex;
         vm.activeTabName = vm.tabs[matchingTabIndex].name;
@@ -596,7 +617,9 @@ export default {
     });
   },
   beforeRouteUpdate(to, from, next) {
-    const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
+    const matchingTabIndex = this.tabs.findIndex(
+      (tab) => tab.routeName === to.name
+    );
     if (matchingTabIndex !== -1) {
       this.activeTab = matchingTabIndex;
       this.activeTabName = this.tabs[matchingTabIndex].name;
@@ -693,10 +716,6 @@ ul.nav-pills .nav-item {
   padding-right: 15px;
   padding-bottom: 11px;
   padding-left: 15px;
-}
-
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

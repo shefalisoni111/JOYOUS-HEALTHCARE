@@ -77,7 +77,9 @@
                       &nbsp;&nbsp;
                       <div class="d-flex align-items-center">
                         <span
-                          v-if="currentView === 'weekly' && startDate && endDate"
+                          v-if="
+                            currentView === 'weekly' && startDate && endDate
+                          "
                           class="fw-bold"
                         >
                           {{
@@ -88,22 +90,35 @@
                           }}
                         </span>
                         <span
-                          v-else-if="currentView === 'monthly' && startDate && endDate"
+                          v-else-if="
+                            currentView === 'monthly' && startDate && endDate
+                          "
                           class="fw-bold"
                         >
-                          {{ formatDate(startDate) + " to " + formatDate(endDate) }}
+                          {{
+                            formatDate(startDate) + " to " + formatDate(endDate)
+                          }}
                         </span>
                       </div>
                       &nbsp;&nbsp;
                       <div class="d-flex align-items-center fs-4">
-                        <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
+                        <i
+                          class="bi bi-caret-left-fill"
+                          @click="moveToPrevious"
+                        ></i>
                         <i class="bi bi-calendar2-check-fill"></i>
-                        <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                        <i
+                          class="bi bi-caret-right-fill"
+                          @click="moveToNext"
+                        ></i>
                       </div>
                     </div>
 
                     <div class="d-flex gap-3 align-items-center mt-lg-0 mt-3">
-                      <button type="button" class="btn btn-outline-success text-nowrap">
+                      <button
+                        type="button"
+                        class="btn btn-outline-success text-nowrap"
+                      >
                         <i class="bi bi-download"></i> Export CSV
                       </button>
 
@@ -117,13 +132,19 @@
                 <div v-if="currentView === 'weekly'">
                   <div>
                     <div v-for="(day, index) in daysOfWeek" :key="index"></div>
-                    <div v-for="(day, index) in getWeekDates" :key="index"></div>
+                    <div
+                      v-for="(day, index) in getWeekDates"
+                      :key="index"
+                    ></div>
                   </div>
                 </div>
 
                 <div v-else-if="currentView === 'monthly'">
                   <div>
-                    <div v-for="(day, index) in getMonthDates" :key="index"></div>
+                    <div
+                      v-for="(day, index) in getMonthDates"
+                      :key="index"
+                    ></div>
                   </div>
                 </div>
                 <div class="d-flex gap-2">
@@ -211,7 +232,9 @@ export default {
   components: { Navbar },
   computed: {
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
     selectedOptionText() {
@@ -219,7 +242,9 @@ export default {
       return job_id ? job_id.name : "";
     },
     selectClients() {
-      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      const client_id = this.clientData.find(
+        (option) => option.id === this.client_id
+      );
       return client_id ? client_id.client_name : "";
     },
     selectEmployeeType() {
@@ -384,8 +409,16 @@ export default {
         this.endDate = endOfWeek;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        this.startDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+        this.endDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        );
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());
@@ -531,9 +564,6 @@ a[data-v-507f63b7] {
 ul.nav-pills {
   height: 53px;
   border-bottom: 1px solid #b8b1b1;
-}
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

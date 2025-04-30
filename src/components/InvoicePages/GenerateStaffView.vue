@@ -5,7 +5,10 @@
         <div class="py-3">
           <ol class="breadcrumb mb-1">
             <li class="breadcrumb-item active text-uppercase fs-6">
-              <router-link class="nav-link d-inline" aria-current="page" to="/home"
+              <router-link
+                class="nav-link d-inline"
+                aria-current="page"
+                to="/home"
                 >Dashboard</router-link
               >/
               <router-link
@@ -49,7 +52,10 @@
                 <td v-text="'£' + data.total_amount"></td>
                 <td>
                   <router-link
-                    :to="{ name: 'GenerateSingleStaffView', params: { id: index } }"
+                    :to="{
+                      name: 'GenerateSingleStaffView',
+                      params: { id: index },
+                    }"
                     class="text-success"
                   >
                     <i class="bi bi-eye"></i>
@@ -105,7 +111,8 @@ export default {
     },
     getClientID(site_details) {
       const validCandidate = site_details.find(
-        (candidate) => candidate.client_name && candidate.client_name.trim() !== ""
+        (candidate) =>
+          candidate.client_name && candidate.client_name.trim() !== ""
       );
       return validCandidate ? validCandidate.client_name : "";
     },
@@ -206,7 +213,7 @@ select {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
- font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {
@@ -258,9 +265,6 @@ a[data-v-507f63b7] {
 ul.nav-pills {
   height: 53px;
   border-bottom: 1px solid #b8b1b1;
-}
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

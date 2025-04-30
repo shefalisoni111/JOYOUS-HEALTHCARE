@@ -174,7 +174,9 @@
               <span v-for="(date, index) in getdata.dates" :key="index">
                 {{ date }}
 
-                <template v-if="index !== getdata.dates.length - 1">, </template>
+                <template v-if="index !== getdata.dates.length - 1"
+                  >,
+                </template>
               </span>
             </td>
 
@@ -292,7 +294,9 @@
             </td>
             <td>
               {{
-                getdata.create_by_and_time ? getdata.create_by_and_time.split(" ")[0] : ""
+                getdata.create_by_and_time
+                  ? getdata.create_by_and_time.split(" ")[0]
+                  : ""
               }}
             </td>
 
@@ -363,10 +367,14 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+              >20 Records</a
+            >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+              >50 Records</a
+            >
           </li>
           <li>
             <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
@@ -444,11 +452,15 @@ export default {
   computed: {
     getdata() {
       return (
-        this.vacancies.find((v) => v.id === this.$store.state.selectedPublishItemId) || {}
+        this.vacancies.find(
+          (v) => v.id === this.$store.state.selectedPublishItemId
+        ) || {}
       );
     },
     getIconClass() {
-      return this.getdata.publish === "true" ? "bi bi-check-circle-fill" : "bi bi-bell";
+      return this.getdata.publish === "true"
+        ? "bi bi-check-circle-fill"
+        : "bi bi-bell";
     },
 
     paginatedVacancies() {
@@ -586,7 +598,10 @@ export default {
         if (this.currentPage === 1) {
           this.getVacancyDetail = response.data.data;
         } else {
-          this.getVacancyDetail = [...this.getVacancyDetail, ...response.data.data];
+          this.getVacancyDetail = [
+            ...this.getVacancyDetail,
+            ...response.data.data,
+          ];
         }
         this.totalCount = response.data.total_count;
         this.totalPages = response.data.total_pages;
@@ -600,11 +615,14 @@ export default {
     },
     async publishListShowMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}candidate_list_of_vacancy`, {
-          params: {
-            vacancy_id: id,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}candidate_list_of_vacancy`,
+          {
+            params: {
+              vacancy_id: id,
+            },
+          }
+        );
         console.log(response.data.candidates_data);
       } catch (error) {
         // console.error("Error fetching vacancies:", error);
@@ -687,10 +705,6 @@ a[data-v-507f63b7] {
   background-color: transparent;
   border: 1px solid #0d6efd;
   border-radius: 22px;
-}
-
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

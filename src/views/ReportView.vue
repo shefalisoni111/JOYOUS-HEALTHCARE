@@ -9,7 +9,9 @@
           <div class="py-3">
             <ol class="breadcrumb my-2">
               <li class="breadcrumb-item active fs-6">
-                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                <a
+                  class="nav-link d-inline fs-4 fw-bolder"
+                  style="color: #000000"
                   >Report</a
                 >
 
@@ -21,7 +23,9 @@
 
         <div class="row">
           <div class="col-12">
-            <div class="d-flex gap-2 justify-content-between bg-define position-relative">
+            <div
+              class="d-flex gap-2 justify-content-between bg-define position-relative"
+            >
               <ul class="nav nav-pills py-0 px-0" role="tablist">
                 <li
                   class="nav-item d-sm-contents d-lg-inline-flex d-md-inline-flex gap-2"
@@ -186,7 +190,9 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
+      const matchingTabIndex = vm.tabs.findIndex(
+        (tab) => tab.routeName === to.name
+      );
 
       if (matchingTabIndex !== -1) {
         vm.activeTab = matchingTabIndex;
@@ -195,7 +201,9 @@ export default {
     });
   },
   beforeRouteUpdate(to, from, next) {
-    const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
+    const matchingTabIndex = this.tabs.findIndex(
+      (tab) => tab.routeName === to.name
+    );
 
     if (matchingTabIndex !== -1) {
       this.activeTab = matchingTabIndex;
@@ -311,9 +319,7 @@ a {
 .btn-primary {
   border-radius: 4px;
 }
-table th {
-  background-color: #ff5f30;
-}
+
 .badge {
   background: #ff572247;
 

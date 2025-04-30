@@ -6,11 +6,16 @@
         <div class="py-3">
           <ol class="breadcrumb mb-1">
             <li class="breadcrumb-item active text-uppercase fs-6">
-              <router-link class="nav-link d-inline" aria-current="page" to="/home"
+              <router-link
+                class="nav-link d-inline"
+                aria-current="page"
+                to="/home"
                 >Dashboard</router-link
               >
               /
-              <router-link to="/invoice/client-invoice" class="text-decoration-none"
+              <router-link
+                to="/invoice/client-invoice"
+                class="text-decoration-none"
                 ><span class="color-fonts">Client Invoice</span></router-link
               >
               /
@@ -97,7 +102,9 @@
                     <div v-for="(day, index) in getMonthDates" :key="index"></div>
                   </div>
                 </div> -->
-                <div class="d-flex justify-content-between align-items-baseline">
+                <div
+                  class="d-flex justify-content-between align-items-baseline"
+                >
                   <ul class="nav mt-3 gap-2" id="pills-tab" role="tablist">
                     <li
                       class="nav-item d-inline-flex align-items-baseline gap-2"
@@ -297,7 +304,9 @@ export default {
       return this.tabs[this.activeTab].component;
     },
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
   },
@@ -383,8 +392,16 @@ export default {
         this.endDate = endOfWeek;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        this.startDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+        this.endDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        );
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());
@@ -416,7 +433,9 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
+      const matchingTabIndex = vm.tabs.findIndex(
+        (tab) => tab.routeName === to.name
+      );
       if (matchingTabIndex !== -1) {
         vm.activeTab = matchingTabIndex;
         vm.activeTabName = vm.tabs[matchingTabIndex].name;
@@ -424,7 +443,9 @@ export default {
     });
   },
   beforeRouteUpdate(to, from, next) {
-    const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
+    const matchingTabIndex = this.tabs.findIndex(
+      (tab) => tab.routeName === to.name
+    );
     if (matchingTabIndex !== -1) {
       this.activeTab = matchingTabIndex;
       this.activeTabName = this.tabs[matchingTabIndex].name;
@@ -509,9 +530,6 @@ a[data-v-507f63b7] {
 }
 ul.nav-pills {
   height: 53px;
-}
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

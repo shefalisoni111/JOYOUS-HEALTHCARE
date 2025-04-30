@@ -1,168 +1,217 @@
 <template>
   <div>
-    <div class="container-fluid p-0 mt-3" v-if="getClientDatas">
-      <div id="main" class="bg-orange-light">
-        <div class="pagetitle d-flex justify-content-between">
-          <div class="">
-            <ol class="breadcrumb mb-1">
-              <li class="breadcrumb-item active text-uppercase fs-6">
-                <router-link class="nav-link d-inline" aria-current="page" to="/home"
-                  >Dashboard</router-link
-                >
-                /
-                <router-link
-                  class="text-capitalize text-decoration-underline"
-                  style="color: #595b5b"
-                  :to="{
-                    name: 'AllClient',
-                  }"
-                  >CLIENT</router-link
-                >
-                /
-                <span class="color-fonts">{{ getClientDatas.client_name }}</span>
-              </li>
-            </ol>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="">
-      <div id="main">
-        <div class="row">
-          <div class="col-12 pb-3 pt-1">
-            <div class="float-start">
-              <button
-                type="button"
-                class="btn btn-outline-success"
-                @click="previousTab"
-                v-show="hasPreviousTab"
-              >
-                <i class="bi bi-caret-left-fill"></i>Previous
-              </button>
-            </div>
-            <div class="float-end">
-              <button
-                type="button"
-                class="btn btn-outline-success"
-                @click="nextTab"
-                v-show="hasNextTab"
-              >
-                Next <i class="bi bi-caret-right-fill"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-3">
-            <div class="card profile position-relative">
-              <h6
-                class="position-absolute p-2 z-1 text-white text-capitalize tag"
-                style="background: #68a325; margin-left: -7px"
-              >
-                {{ getClientDatas?.activated ? "Active" : "In-Active" }}
-              </h6>
-              <img
-                src="./location.jpg"
-                class="card-img-top position-relative"
-                height="317"
-                alt="..."
-                loading="eager"
-              />
-
-              <!-- <div class="ribbon"><span>Active</span></div> -->
-
-              <div class="card-body">
-                <div class="mt-3 d-flex justify-content-between align-items-center">
-                  <div>
-                    <h6 class="card-title text-nowrap fw-bold text-capitalize">
-                      {{ getClientDatas?.client_name }}
-                    </h6>
-                    <span class="text-lowercase"> {{ getClientDatas?.email }}</span>
-                  </div>
-
-                  <div>
-                    <button
-                      type="button"
-                      class="btn btn btn-primary text-nowrap text-nowrap"
-                      data-bs-toggle="modal"
-                      data-bs-target="#editClientEmail"
-                      data-bs-whatever="@mdo"
-                      @click="editClient(getClientDatas?.id)"
+    <div id="main" class="main d-flex">
+      <div class=""><Navbar /></div>
+      <div class="col-12 p-4">
+        <div class="container-fluid p-0 mt-3" v-if="getClientDatas">
+          <div id="main" class="bg-orange-light">
+            <div class="pagetitle d-flex justify-content-between">
+              <div class="">
+                <!-- <ol class="breadcrumb mb-1">
+                  <li class="breadcrumb-item active text-uppercase fs-6">
+                    <router-link
+                      class="nav-link d-inline"
+                      aria-current="page"
+                      to="/home"
+                      >Dashboard</router-link
                     >
-                      Edit
-                    </button>
-                  </div>
-                </div>
-                <hr />
-                <div class="mt-3">
-                  <div class="d-flex justify-content-between">
-                    <div>
-                      <h6 class="card-title text-uppercase fs-smaller text-nowrap">
-                        contact information
-                      </h6>
-                    </div>
-
-                    <!-- <div class="d-flex justify-content-between">
-                      <h6 class="fs-smaller text-nowrap">Profile View</h6>
-                      <label class="switch">
-                        <input type="checkbox" id="togBtn" title="check" checked />
-                        <div class="slider round"></div>
-                      </label>
-                    </div> -->
-                  </div>
-
-                  <div class="d-flex justify-content-between mt-3">
-                    <div class="d-flex align-items-center">
-                      <span
-                        ><i class="bi bi-telephone"></i>
-                        {{ getClientDatas?.phone_number }}</span
+                    /
+                    <router-link
+                      class="text-capitalize text-decoration-underline"
+                      style="color: #595b5b"
+                      :to="{
+                        name: 'AllClient',
+                      }"
+                      >CLIENT</router-link
+                    >
+                    /
+                    <span class="color-fonts">{{
+                      getClientDatas.client_name
+                    }}</span>
+                  </li>
+                </ol> -->
+                <ol class="breadcrumb mb-1">
+                  <li class="breadcrumb-item active">
+                    <a
+                      class="nav-link d-inline fs-4 fw-bolder"
+                      style="color: #000000"
+                      >All Clients</a
+                    >
+                    <p>
+                      <router-link
+                        class="nav-link d-inline fw-bolder"
+                        style="color: #000000"
+                        aria-current="page"
+                        to="/ClientsLists"
+                        >Client</router-link
                       >
-                    </div>
-                    <button
-                      type="button"
-                      class="btn btn btn-primary text-nowrap text-nowrap"
-                      data-bs-toggle="modal"
-                      data-bs-target="#editClientContact"
-                      data-bs-whatever="@mdo"
-                      @click="editClientEmail(getClientDatas?.id)"
-                    >
-                      Edit
-                    </button>
-                  </div>
-                </div>
-                <hr />
-                <div class="mt-3 d-flex justify-content-between align-items-center">
-                  <div>
-                    <h6 class="card-title text-nowrap fw-bold text-capitalize">
-                      Visit Us at:
-                    </h6>
-                    Address:
-                    <span class="text-lowercase">{{ getClientDatas?.address }}</span>
-                  </div>
-                </div>
+                      / Site / Rated and rules
+                    </p>
+                  </li>
+                </ol>
               </div>
             </div>
           </div>
-          <div class="col-md-9 bg-white">
-            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-              <li class="nav-item d-inline-flex gap-2" role="presentation">
-                <button
-                  class="nav-link"
-                  :class="{ active: activeTab === index }"
-                  aria-selected="true"
-                  type="button"
-                  role="tab"
-                  data-bs-toggle="pill"
-                  v-for="(tab, index) in tabs"
-                  :key="index"
-                  @click="selectTab(index)"
-                >
-                  {{ tab.name }}
-                </button>
-              </li>
-            </ul>
-            <div class="tab-content">
-              <component :is="activeComponent" :options="options"></component>
+        </div>
+        <div class="">
+          <div id="main">
+            <div class="row">
+              <div class="col-12 pb-3 pt-1">
+                <div class="float-start">
+                  <button
+                    type="button"
+                    class="btn btn-outline-success"
+                    @click="previousTab"
+                    v-show="hasPreviousTab"
+                  >
+                    <i class="bi bi-caret-left-fill"></i>Previous
+                  </button>
+                </div>
+                <div class="float-end">
+                  <button
+                    type="button"
+                    class="btn btn-outline-success"
+                    @click="nextTab"
+                    v-show="hasNextTab"
+                  >
+                    Next <i class="bi bi-caret-right-fill"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-7">
+                <div class="card profile position-relative">
+                  <h6
+                    class="position-absolute p-2 z-1 text-white text-capitalize tag"
+                    style="background: #68a325; margin-left: -7px"
+                  >
+                    {{ getClientDatas?.activated ? "Active" : "In-Active" }}
+                  </h6>
+                  <img
+                    src="./location.jpg"
+                    class="card-img-top position-relative"
+                    height="317"
+                    alt="..."
+                    loading="eager"
+                  />
+
+                  <!-- <div class="ribbon"><span>Active</span></div> -->
+
+                  <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li
+                      class="nav-item d-inline-flex gap-2"
+                      role="presentation"
+                    >
+                      <button
+                        class="nav-link"
+                        :class="{ active: activeTab === index }"
+                        aria-selected="true"
+                        type="button"
+                        role="tab"
+                        data-bs-toggle="pill"
+                        v-for="(tab, index) in tabs"
+                        :key="index"
+                        @click="selectTab(index)"
+                      >
+                        {{ tab.name }}
+                      </button>
+                    </li>
+                  </ul>
+                  <div class="tab-content">
+                    <component
+                      :is="activeComponent"
+                      :options="options"
+                    ></component>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 bg-white">
+                <div class="card-body">
+                  <div
+                    class="mt-3 d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <h6
+                        class="card-title text-nowrap fw-bold text-capitalize"
+                      >
+                        {{ getClientDatas?.client_name }}
+                      </h6>
+                      <span class="text-lowercase">
+                        {{ getClientDatas?.email }}</span
+                      >
+                    </div>
+
+                    <div>
+                      <button
+                        type="button"
+                        class="btn btn btn-primary text-nowrap text-nowrap"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editClientEmail"
+                        data-bs-whatever="@mdo"
+                        @click="editClient(getClientDatas?.id)"
+                      >
+                        Edit
+                      </button>
+                    </div>
+                  </div>
+                  <hr />
+                  <div class="mt-3">
+                    <div class="d-flex justify-content-between">
+                      <div>
+                        <h6
+                          class="card-title text-uppercase fs-smaller text-nowrap"
+                        >
+                          contact information
+                        </h6>
+                      </div>
+
+                      <!-- <div class="d-flex justify-content-between">
+                    <h6 class="fs-smaller text-nowrap">Profile View</h6>
+                    <label class="switch">
+                      <input type="checkbox" id="togBtn" title="check" checked />
+                      <div class="slider round"></div>
+                    </label>
+                  </div> -->
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-3">
+                      <div class="d-flex align-items-center">
+                        <span
+                          ><i class="bi bi-telephone"></i>
+                          {{ getClientDatas?.phone_number }}</span
+                        >
+                      </div>
+                      <button
+                        type="button"
+                        class="btn btn btn-primary text-nowrap text-nowrap"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editClientContact"
+                        data-bs-whatever="@mdo"
+                        @click="editClientEmail(getClientDatas?.id)"
+                      >
+                        Edit
+                      </button>
+                    </div>
+                  </div>
+                  <hr />
+                  <div
+                    class="mt-3 d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <h6
+                        class="card-title text-nowrap fw-bold text-capitalize"
+                      >
+                        Visit Us at:
+                      </h6>
+                      Address:
+                      <span class="text-lowercase">{{
+                        getClientDatas?.address
+                      }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -193,6 +242,7 @@ import ClientSetting from "../ClientsPages/ClientProfileDetails/ClientSetting.vu
 import ClientUser from "../ClientsPages/ClientProfileDetails/ClientUser.vue";
 import EditSingleClientEmail from "../modals/Clients/EditSingleClientEmail.vue";
 import EditSingleClientContact from "../modals/Clients/EditSingleClientContact.vue";
+import Navbar from "../Navbar.vue";
 
 export default {
   name: "SingleClientProfile",
@@ -220,6 +270,7 @@ export default {
     ClientWTR,
     ClientNotes,
     ClientSetting,
+    Navbar,
     ClientUser,
     EditSingleClientContact,
     EditSingleClientEmail,
@@ -350,7 +401,7 @@ h6.tag:after {
 }
 #main {
   transition: all 0.3s;
-  padding: 10px;
+
   transition: all 0.3s;
 }
 
@@ -446,7 +497,7 @@ table th {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
- font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {

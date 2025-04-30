@@ -6,11 +6,16 @@
         <div class="py-3">
           <ol class="breadcrumb mb-1">
             <li class="breadcrumb-item active text-uppercase fs-6">
-              <router-link class="nav-link d-inline" aria-current="page" to="/home"
+              <router-link
+                class="nav-link d-inline"
+                aria-current="page"
+                to="/home"
                 >Dashboard</router-link
               >
               /
-              <router-link to="/invoice/client-invoice" class="text-decoration-none"
+              <router-link
+                to="/invoice/client-invoice"
+                class="text-decoration-none"
                 ><span class="color-fonts"
                   >Client Invoices / Generate View</span
                 ></router-link
@@ -26,7 +31,10 @@
             <!-- <component :is="selectedTemplate"></component> -->
             <div
               class="text-muted bg-white p-3"
-              style="border: 1px solid #f8f8f8; box-shadow: 2px 2px 7px 2px #e7d7d7"
+              style="
+                border: 1px solid #f8f8f8;
+                box-shadow: 2px 2px 7px 2px #e7d7d7;
+              "
             >
               <div class="">
                 <div class="col-12">
@@ -35,7 +43,9 @@
                       <h6 class="text-muted">BILLED FROM</h6>
                       <h5 class="fw-bold">{{ invoiceData.merchant_name }}</h5>
 
-                      <p class="mb-0">Mob No:{{ invoiceData.merchant_phone }}</p>
+                      <p class="mb-0">
+                        Mob No:{{ invoiceData.merchant_phone }}
+                      </p>
                       <p class="mb-0">Email:{{ invoiceData.merchant_email }}</p>
                     </div>
                     <div class="col-4"></div>
@@ -53,21 +63,29 @@
                     <div class="col-4">
                       <h6 class="text-muted">SUPPLIER</h6>
                       <h5 class="fw-bold">{{ invoiceData.client_name }}</h5>
-                      <p class="mb-0">Mob No: {{ invoiceData.client_phone_number }}</p>
+                      <p class="mb-0">
+                        Mob No: {{ invoiceData.client_phone_number }}
+                      </p>
                       <p class="mb-0">Email: {{ invoiceData.client_email }}</p>
                     </div>
                     <div class="col-4">
                       <!-- <p>{{ invoiceData.number }}</p> -->
                       <h6 class="text-muted">SHIP To</h6>
                       <h5 class="fw-bold">{{ invoiceData.site_name }}</h5>
-                      <p class="mb-0">Mob No: {{ invoiceData.site_phone_number }}</p>
+                      <p class="mb-0">
+                        Mob No: {{ invoiceData.site_phone_number }}
+                      </p>
                       <p class="mb-0">Email: {{ invoiceData.site_email }}</p>
                     </div>
                     <div class="col-4">
                       <div class="pe-3 float-end">
                         <h6 class="text-muted">INVOICE INFORMATION</h6>
-                        <h5>FROM: {{ this.formatDate(invoiceData.start_date) }}</h5>
-                        <h5>TO : {{ this.formatDate(invoiceData.end_date) }}</h5>
+                        <h5>
+                          FROM: {{ this.formatDate(invoiceData.start_date) }}
+                        </h5>
+                        <h5>
+                          TO : {{ this.formatDate(invoiceData.end_date) }}
+                        </h5>
                       </div>
                     </div>
                   </div>
@@ -98,7 +116,9 @@
                         :key="candidateIndex"
                       >
                         <tr
-                          v-for="(timesheet, timesheetIndex) in candidate.can_timesheets"
+                          v-for="(
+                            timesheet, timesheetIndex
+                          ) in candidate.can_timesheets"
                           :key="timesheetIndex"
                         >
                           <td scope="col">
@@ -117,15 +137,23 @@
                             {{ candidate.candidate_id }}
                           </td>
 
-                          <td scope="col">{{ timesheet?.job_position || "" }}</td>
-                          <td scope="col">{{ candidate?.can_total_units || "" }}</td>
-                          <td scope="col">{{ "£" + timesheet?.client_rate || "" }}</td>
+                          <td scope="col">
+                            {{ timesheet?.job_position || "" }}
+                          </td>
+                          <td scope="col">
+                            {{ candidate?.can_total_units || "" }}
+                          </td>
+                          <td scope="col">
+                            {{ "£" + timesheet?.client_rate || "" }}
+                          </td>
                           <td scope="col">{{ timesheet?.hours || "" }}</td>
                           <td scope="col">{{ "£" + timesheet?.cost || "" }}</td>
                         </tr>
                       </template>
                       <tr>
-                        <td colspan="9" class="text-start fw-bold">Total Cost</td>
+                        <td colspan="9" class="text-start fw-bold">
+                          Total Cost
+                        </td>
                         <td colspan="9" class="font-weight-bold">
                           {{ "£" + invoiceData?.total_amount || "" }}
                         </td>
@@ -244,7 +272,10 @@
           <div class="col-sm-12 col-md-5 mt-4 mt-lg-0 mt-md-0">
             <div
               class="text-muted bg-white p-3"
-              style="border: 1px solid #f8f8f8; box-shadow: 2px 2px 7px 2px #e7d7d7"
+              style="
+                border: 1px solid #f8f8f8;
+                box-shadow: 2px 2px 7px 2px #e7d7d7;
+              "
             >
               <div class="row mt-4">
                 <div class="d-flex gap-2">
@@ -442,9 +473,6 @@ a[data-v-507f63b7] {
 ul.nav-pills {
   height: 53px;
   border-bottom: 1px solid #b8b1b1;
-}
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

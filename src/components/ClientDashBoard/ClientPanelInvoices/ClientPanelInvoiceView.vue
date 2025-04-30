@@ -6,11 +6,16 @@
         <div class="py-3">
           <ol class="breadcrumb mb-1">
             <li class="breadcrumb-item active text-uppercase fs-6">
-              <router-link class="nav-link d-inline" aria-current="page" to="/home"
+              <router-link
+                class="nav-link d-inline"
+                aria-current="page"
+                to="/home"
                 >Dashboard</router-link
               >
               /
-              <router-link to="/invoice/client-invoice" class="text-decoration-none"
+              <router-link
+                to="/invoice/client-invoice"
+                class="text-decoration-none"
                 ><span class="color-fonts">
                   Invoices / {{ getClientInvoiceDetail.number }}</span
                 ></router-link
@@ -29,7 +34,10 @@
           <div class="col-sm-12 col-md-5 mt-4 mt-lg-0 mt-md-0">
             <div
               class="text-muted bg-white p-3"
-              style="border: 1px solid #f8f8f8; box-shadow: 2px 2px 7px 2px #e7d7d7"
+              style="
+                border: 1px solid #f8f8f8;
+                box-shadow: 2px 2px 7px 2px #e7d7d7;
+              "
             >
               <!-- <div class="row">
                 <div class="d-flex gap-4">
@@ -90,8 +98,10 @@
                       </div>
 
                       <div class="ps-2">
-                        Invoice created for £{{ getClientInvoiceDetail.grand_total }} by
-                        <b>{{ getClientInvoiceDetail?.client_name }}</b
+                        Invoice created for £{{
+                          getClientInvoiceDetail.grand_total
+                        }}
+                        by <b>{{ getClientInvoiceDetail?.client_name }}</b
                         ><br />
                         {{ this.formatDate(getClientInvoiceDetail.created_on) }}
                       </div>
@@ -331,9 +341,6 @@ a[data-v-507f63b7] {
 ul.nav-pills {
   height: 53px;
   border-bottom: 1px solid #b8b1b1;
-}
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

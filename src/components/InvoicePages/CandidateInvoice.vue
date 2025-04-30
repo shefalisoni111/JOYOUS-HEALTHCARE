@@ -8,7 +8,9 @@
           <div class="py-3">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active">
-                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                <a
+                  class="nav-link d-inline fs-4 fw-bolder"
+                  style="color: #000000"
                   >Invoice</a
                 >
                 <p>
@@ -66,7 +68,9 @@
                         &nbsp;&nbsp;
                         <div class="d-flex align-items-center">
                           <span
-                            v-if="currentView === 'weekly' && startDate && endDate"
+                            v-if="
+                              currentView === 'weekly' && startDate && endDate
+                            "
                             class="fw-bold"
                           >
                             {{
@@ -77,17 +81,29 @@
                             }}
                           </span>
                           <span
-                            v-else-if="currentView === 'monthly' && startDate && endDate"
+                            v-else-if="
+                              currentView === 'monthly' && startDate && endDate
+                            "
                             class="fw-bold"
                           >
-                            {{ formatDate(startDate) + " to " + formatDate(endDate) }}
+                            {{
+                              formatDate(startDate) +
+                              " to " +
+                              formatDate(endDate)
+                            }}
                           </span>
                         </div>
                         &nbsp;&nbsp;
                         <div class="d-flex align-items-center fs-4">
-                          <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
+                          <i
+                            class="bi bi-caret-left-fill"
+                            @click="moveToPrevious"
+                          ></i>
                           <i class="bi bi-calendar2-check-fill"></i>
-                          <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                          <i
+                            class="bi bi-caret-right-fill"
+                            @click="moveToNext"
+                          ></i>
                         </div>
                       </div>
 
@@ -112,11 +128,18 @@
                           data-bs-toggle="modal"
                           data-bs-target="#staffGenerateCsv"
                           data-bs-whatever="@mdo"
-                          style="background: #fdb912; border-radius: 10px; color: #fff"
+                          style="
+                            background: #fdb912;
+                            border-radius: 10px;
+                            color: #fff;
+                          "
                         >
                           + generate cSV
                         </button>
-                        <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
+                        <form
+                          @submit.prevent="search"
+                          class="form-inline my-2 my-lg-0"
+                        >
                           <input
                             class="form-control form-control-lg mr-sm-2 position-relative"
                             type="search"
@@ -314,7 +337,10 @@
                               <div class="action-wrapper">
                                 <i class="bi bi-three-dots dot-icon"></i>
 
-                                <div v-if="hoverRow === index" class="action-menu">
+                                <div
+                                  v-if="hoverRow === index"
+                                  class="action-menu"
+                                >
                                   <router-link
                                     :to="{
                                       name: 'CandidateInvoiceView',
@@ -322,7 +348,10 @@
                                     }"
                                     class="btn text-nowrap text-nowrap shadow-soft"
                                   >
-                                    <i class="bi bi-eye" style="color: #f9944b"></i>
+                                    <i
+                                      class="bi bi-eye"
+                                      style="color: #f9944b"
+                                    ></i>
                                     View
                                   </router-link>
                                 </div>
@@ -360,7 +389,9 @@
                             <th scope="col">To</th>
                             <th scope="col">Created On</th>
                             <!-- <th scope="col">Due Date</th> -->
-                            <th scope="col" class="text-center">Total Amount</th>
+                            <th scope="col" class="text-center">
+                              Total Amount
+                            </th>
                             <!-- <th scope="col" class="text-center">Paid Amount</th>
                           <th scope="col" class="text-center">Balance Amount</th> -->
                             <!-- <th scope="col">Status</th> -->
@@ -419,7 +450,10 @@
                               <div class="action-wrapper">
                                 <i class="bi bi-three-dots dot-icon"></i>
 
-                                <div v-if="hoverRow === index" class="action-menu">
+                                <div
+                                  v-if="hoverRow === index"
+                                  class="action-menu"
+                                >
                                   <router-link
                                     class="btn text-nowrap text-nowrap shadow-soft"
                                     :to="{
@@ -427,7 +461,10 @@
                                       params: { id: data.id },
                                     }"
                                   >
-                                    <i class="bi bi-eye" style="color: #f9944b"></i>
+                                    <i
+                                      class="bi bi-eye"
+                                      style="color: #f9944b"
+                                    ></i>
                                     View
                                   </router-link>
                                 </div>
@@ -749,7 +786,8 @@ export default {
         this.getStaffInvoiceDetail = response.data.data;
 
         if (this.getStaffInvoiceDetail.length === 0) {
-          this.errorMessage = "No Staff Payroll found for the specified criteria.";
+          this.errorMessage =
+            "No Staff Payroll found for the specified criteria.";
         } else {
           this.errorMessage = "";
         }
@@ -828,7 +866,9 @@ export default {
     updateDateRange() {
       if (this.currentView === "weekly") {
         const weekStart = new Date(this.startDate);
-        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
+        weekStart.setDate(
+          this.startDate.getDate() - this.startDate.getDay() + 1
+        );
         this.startDate = weekStart;
 
         const weekEnd = new Date(this.startDate);
@@ -836,8 +876,16 @@ export default {
         this.endDate = weekEnd;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        this.startDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+        this.endDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        );
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());
@@ -1031,9 +1079,6 @@ a[data-v-507f63b7] {
 ul.nav-pills {
   height: 53px;
   border-bottom: 1px solid #b8b1b1;
-}
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

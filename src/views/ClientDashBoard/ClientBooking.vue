@@ -40,7 +40,9 @@
                       &nbsp;&nbsp;
                       <div class="d-flex align-items-center">
                         <span
-                          v-if="currentView === 'weekly' && startDate && endDate"
+                          v-if="
+                            currentView === 'weekly' && startDate && endDate
+                          "
                           class="fw-bold"
                         >
                           {{
@@ -51,17 +53,27 @@
                           }}
                         </span>
                         <span
-                          v-else-if="currentView === 'monthly' && startDate && endDate"
+                          v-else-if="
+                            currentView === 'monthly' && startDate && endDate
+                          "
                           class="fw-bold"
                         >
-                          {{ formatDate(startDate) + " to " + formatDate(endDate) }}
+                          {{
+                            formatDate(startDate) + " to " + formatDate(endDate)
+                          }}
                         </span>
                       </div>
                       &nbsp;&nbsp;
                       <div class="d-flex align-items-center fs-4">
-                        <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
+                        <i
+                          class="bi bi-caret-left-fill"
+                          @click="moveToPrevious"
+                        ></i>
                         <i class="bi bi-calendar2-check-fill"></i>
-                        <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                        <i
+                          class="bi bi-caret-right-fill"
+                          @click="moveToNext"
+                        ></i>
                       </div>
                     </div>
 
@@ -74,19 +86,29 @@
                 <div v-if="currentView === 'weekly'">
                   <div>
                     <div v-for="(day, index) in daysOfWeek" :key="index"></div>
-                    <div v-for="(day, index) in getWeekDates" :key="index"></div>
+                    <div
+                      v-for="(day, index) in getWeekDates"
+                      :key="index"
+                    ></div>
                   </div>
                 </div>
 
                 <div v-else-if="currentView === 'monthly'">
                   <div>
-                    <div v-for="(day, index) in getMonthDates" :key="index"></div>
+                    <div
+                      v-for="(day, index) in getMonthDates"
+                      :key="index"
+                    ></div>
                   </div>
                 </div>
                 <div class="d-flex gap-2 mb-3 justify-content-between">
                   <div class="d-flex gap-2">
                     <div></div>
-                    <select v-model="job_id" id="selectedOptionText" @change="filterData">
+                    <select
+                      v-model="job_id"
+                      id="selectedOptionText"
+                      @change="filterData"
+                    >
                       <option value="">Job Title</option>
                       <option
                         v-for="option in options"
@@ -113,7 +135,11 @@
                       </option>
                     </select>
 
-                    <select v-model="id" @change="filterData" id="selectCandidateList">
+                    <select
+                      v-model="id"
+                      @change="filterData"
+                      id="selectCandidateList"
+                    >
                       <option value="">All Staff</option>
                       <option
                         v-for="option in candidateLists"
@@ -125,13 +151,20 @@
                       </option>
                     </select>
                   </div>
-                  <button type="button" class="btn btn-outline-success text-nowrap">
+                  <button
+                    type="button"
+                    class="btn btn-outline-success text-nowrap"
+                  >
                     <i class="bi bi-filetype-csv"></i> Export CSV
                   </button>
                 </div>
               </div>
 
-              <ul class="nav nav-pills my-2 gap-2" id="pills-tab" role="tablist">
+              <ul
+                class="nav nav-pills my-2 gap-2"
+                id="pills-tab"
+                role="tablist"
+              >
                 <li class="nav-item" role="presentation">
                   <button
                     class="nav-link active"
@@ -211,10 +244,14 @@
                         <td scope="col">{{ data.site }}</td>
                         <td scope="col">{{ data.job_title }}</td>
                         <td>
-                          <span v-for="(date, index) in data.shift_dates" :key="index">
+                          <span
+                            v-for="(date, index) in data.shift_dates"
+                            :key="index"
+                          >
                             {{ date }}
 
-                            <template v-if="index !== data.shift_dates.length - 1"
+                            <template
+                              v-if="index !== data.shift_dates.length - 1"
                               >,
                             </template>
                           </span>
@@ -380,7 +417,9 @@ export default {
     updateDateRange() {
       if (this.currentView === "weekly") {
         const weekStart = new Date(this.startDate);
-        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
+        weekStart.setDate(
+          this.startDate.getDate() - this.startDate.getDay() + 1
+        );
         this.startDate = weekStart;
 
         const weekEnd = new Date(this.startDate);
@@ -388,8 +427,16 @@ export default {
         this.endDate = weekEnd;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        this.startDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+        this.endDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        );
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());
@@ -520,9 +567,6 @@ a[data-v-507f63b7] {
 ul.nav-pills {
   height: 53px;
   border-bottom: 1px solid #b8b1b1;
-}
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

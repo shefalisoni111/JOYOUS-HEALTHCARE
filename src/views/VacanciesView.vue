@@ -54,10 +54,6 @@ export default {
   border-radius: 4px;
 }
 
-table th {
-  background-color: #ff5f30;
-}
-
 button.nav-link > li.nav-item {
   border-bottom: 2px solid red; /* Replace with your desired border color */
   padding-bottom: 5px; /* Optional: Add padding for spacing */

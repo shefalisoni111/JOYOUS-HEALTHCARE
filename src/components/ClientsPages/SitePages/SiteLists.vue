@@ -17,7 +17,9 @@
               </ol> -->
               <ol class="breadcrumb mb-1">
                 <li class="breadcrumb-item active">
-                  <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                  <a
+                    class="nav-link d-inline fs-4 fw-bolder"
+                    style="color: #000000"
                     >All Clients</a
                   >
                   <p>
@@ -57,7 +59,10 @@
               role="tablist"
             >
               <div class="d-flex">
-                <li class="nav-item d-flex align-items-center gap-2" role="presentation">
+                <li
+                  class="nav-item d-flex align-items-center gap-2"
+                  role="presentation"
+                >
                   <button
                     a
                     class="nav-link"
@@ -118,13 +123,19 @@
                     </li>
                     <li><hr class="dropdown-divider" /></li>
                     <li>
-                      <a class="dropdown-item" href="#" @click="exportOneFile('selected')"
+                      <a
+                        class="dropdown-item"
+                        href="#"
+                        @click="exportOneFile('selected')"
                         >Export</a
                       >
                     </li>
                     <li><hr class="dropdown-divider" /></li>
                     <li>
-                      <a class="dropdown-item" href="#" @click="exportOneFile('all')"
+                      <a
+                        class="dropdown-item"
+                        href="#"
+                        @click="exportOneFile('all')"
                         >Export All</a
                       >
                     </li>
@@ -132,7 +143,10 @@
                 </button>
               </div>
 
-              <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
+              <div
+                class="d-flex gap-2 mb-3 justify-content-between"
+                v-if="showFilters"
+              >
                 <div
                   class="d-flex gap-2 flex-column position-absolute"
                   style="
@@ -167,7 +181,11 @@
                     </option>
                   </select>
 
-                  <select id="selectSite" v-model="selectedSiteName" @change="filterData">
+                  <select
+                    id="selectSite"
+                    v-model="selectedSiteName"
+                    @change="filterData"
+                  >
                     <option value="" disabled>Site Name</option>
                     <option
                       v-for="option in businessUnit"
@@ -236,7 +254,9 @@
                         </button>
                       </div> -->
               </div>
-              <div class="d-flex align-items-center gap-2 justify-content-between">
+              <div
+                class="d-flex align-items-center gap-2 justify-content-between"
+              >
                 <div class="searchbox position-relative"></div>
               </div>
             </div>
@@ -334,7 +354,11 @@
           </div>
         </div>
       </div>
-      <div class="mx-3" style="text-align: right" v-if="searchResults.length >= 9">
+      <div
+        class="mx-3"
+        style="text-align: right"
+        v-if="searchResults.length >= 9"
+      >
         <button class="btn btn-outline-dark btn-sm">
           {{ totalRecordsOnPage }} Records Per Page
         </button>
@@ -406,7 +430,11 @@ export default {
         { name: "All Site", component: "AllSite", routeName: "AllSite" },
 
         { name: "Active ", component: "ActiveSite", routeName: "ActiveSite" },
-        { name: "InActive ", component: "InActiveSite", routeName: "InActiveSite" },
+        {
+          name: "InActive ",
+          component: "InActiveSite",
+          routeName: "InActiveSite",
+        },
       ],
       activeTab: 0,
       activeTabName: "",
@@ -634,7 +662,9 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
+      const matchingTabIndex = vm.tabs.findIndex(
+        (tab) => tab.routeName === to.name
+      );
 
       if (matchingTabIndex !== -1) {
         vm.activeTab = matchingTabIndex;
@@ -643,7 +673,9 @@ export default {
     });
   },
   beforeRouteUpdate(to, from, next) {
-    const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
+    const matchingTabIndex = this.tabs.findIndex(
+      (tab) => tab.routeName === to.name
+    );
 
     if (matchingTabIndex !== -1) {
       this.activeTab = matchingTabIndex;
@@ -737,9 +769,6 @@ table {
   padding: 10px;
   border-radius: 20px;
   border-width: 1px;
-}
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

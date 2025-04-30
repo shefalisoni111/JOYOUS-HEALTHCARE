@@ -8,7 +8,9 @@
           <div class="py-3">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active">
-                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                <a
+                  class="nav-link d-inline fs-4 fw-bolder"
+                  style="color: #000000"
                   >Timesheet</a
                 >
                 <p>
@@ -31,7 +33,9 @@
             <div class="col-12">
               <div class="">
                 <div class="d-flex justify-content-between">
-                  <div class="d-flex align-items-center justify-content-between">
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                  >
                     <i
                       class="bi bi-caret-left-fill"
                       @click="moveToPrevious"
@@ -57,7 +61,10 @@
                   </div>
 
                   <div class="d-flex gap-3 align-items-center">
-                    <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
+                    <form
+                      @submit.prevent="search"
+                      class="form-inline my-2 my-lg-0"
+                    >
                       <input
                         class="form-control form-control-lg mr-sm-2 position-relative"
                         type="search"
@@ -84,7 +91,11 @@
                      
                     </ul> -->
 
-              <div class="tab-content mt-3" id="pills-tabContent" v-if="!searchQuery">
+              <div
+                class="tab-content mt-3"
+                id="pills-tabContent"
+                v-if="!searchQuery"
+              >
                 <div
                   class="tab-pane fade show active"
                   id="pills-pendingSigned"
@@ -97,7 +108,11 @@
                         <tr>
                           <th>
                             <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" />
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value=""
+                              />
                             </div>
                           </th>
                           <!-- <th scope="col">ID</th> -->
@@ -222,7 +237,11 @@
                         >
                           <td>
                             <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" />
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value=""
+                              />
                             </div>
                           </td>
                           <!-- <td scope="col">{{ data.id }}</td> -->
@@ -271,7 +290,9 @@
                               class="text-black text-decoration-none fw-bold"
                               :to="{
                                 name: 'SingleSiteprofile',
-                                params: { id: data?.site_id_and_client_id?.site_id },
+                                params: {
+                                  id: data?.site_id_and_client_id?.site_id,
+                                },
                               }"
                               >{{ data.site }}</router-link
                             >
@@ -305,7 +326,10 @@
                               :class="['btn', 'text-nowrap']"
                               :style="
                                 data.status === 'Approved'
-                                  ? { backgroundColor: '#E9FAEF', color: '#24D164' }
+                                  ? {
+                                      backgroundColor: '#E9FAEF',
+                                      color: '#24D164',
+                                    }
                                   : {
                                       backgroundColor: 'rgb(255 227 234)',
                                       color: '#FF3B30',
@@ -313,14 +337,21 @@
                               "
                               @click="ApproveMethod(data.id)"
                             >
-                              {{ data.status === "Approved" ? "Unapprove" : "Approve" }}
+                              {{
+                                data.status === "Approved"
+                                  ? "Unapprove"
+                                  : "Approve"
+                              }}
                             </button>
                           </td>
                           <td scope="col">
                             <div class="action-wrapper">
                               <i class="bi bi-three-dots dot-icon"></i>
 
-                              <div v-if="hoverRow === index" class="action-menu">
+                              <div
+                                v-if="hoverRow === index"
+                                class="action-menu"
+                              >
                                 <button
                                   type="button"
                                   class="btn text-nowrap text-nowrap shadow-soft"
@@ -329,7 +360,10 @@
                                   data-bs-whatever="@mdo"
                                   @click="openSignedView(data.id)"
                                 >
-                                  <i class="bi bi-eye" style="color: #f9944b"></i>
+                                  <i
+                                    class="bi bi-eye"
+                                    style="color: #f9944b"
+                                  ></i>
                                   View
                                 </button>
                               </div>
@@ -371,7 +405,11 @@
                   </div>
                 </div>
               </div>
-              <div class="tab-content mt-3" id="pills-tabContent" v-if="searchQuery">
+              <div
+                class="tab-content mt-3"
+                id="pills-tabContent"
+                v-if="searchQuery"
+              >
                 <div
                   class="tab-pane fade show active"
                   id="pills-pendingSigned"
@@ -384,7 +422,11 @@
                         <tr>
                           <th>
                             <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" />
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value=""
+                              />
                             </div>
                           </th>
                           <!-- <th scope="col">ID</th> -->
@@ -414,7 +456,11 @@
                         >
                           <td>
                             <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" />
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value=""
+                              />
                             </div>
                           </td>
                           <!-- <td scope="col">{{ data.id }}</td> -->
@@ -463,7 +509,9 @@
                               class="text-black text-decoration-none fw-bold"
                               :to="{
                                 name: 'SingleSiteprofile',
-                                params: { id: data?.site_id_and_client_id?.site_id },
+                                params: {
+                                  id: data?.site_id_and_client_id?.site_id,
+                                },
                               }"
                               >{{ data.site }}</router-link
                             >
@@ -496,7 +544,10 @@
                               :class="['btn', 'text-nowrap']"
                               :style="
                                 data.status === 'Approved'
-                                  ? { backgroundColor: '#E9FAEF', color: '#24D164' }
+                                  ? {
+                                      backgroundColor: '#E9FAEF',
+                                      color: '#24D164',
+                                    }
                                   : {
                                       backgroundColor: 'rgb(255 227 234)',
                                       color: '#FF3B30',
@@ -504,7 +555,11 @@
                               "
                               @click="ApproveMethod(data.id)"
                             >
-                              {{ data.status === "Approved" ? "Unapprove" : "Approve" }}
+                              {{
+                                data.status === "Approved"
+                                  ? "Unapprove"
+                                  : "Approve"
+                              }}
                             </button>
                           </td>
                           <!-- <td scope="col"></td> -->
@@ -512,7 +567,10 @@
                             <div class="action-wrapper">
                               <i class="bi bi-three-dots dot-icon"></i>
 
-                              <div v-if="hoverRow === index" class="action-menu">
+                              <div
+                                v-if="hoverRow === index"
+                                class="action-menu"
+                              >
                                 <button
                                   type="button"
                                   class="btn text-nowrap text-nowrap shadow-soft"
@@ -521,7 +579,10 @@
                                   data-bs-whatever="@mdo"
                                   @click="openSignedView(data.id)"
                                 >
-                                  <i class="bi bi-eye" style="color: #f9944b"></i>
+                                  <i
+                                    class="bi bi-eye"
+                                    style="color: #f9944b"
+                                  ></i>
                                   View
                                 </button>
                               </div>
@@ -780,12 +841,16 @@ export default {
       return monthDates;
     },
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
 
     selectClients() {
-      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      const client_id = this.clientData.find(
+        (option) => option.id === this.client_id
+      );
       return client_id ? client_id.client_name : "";
     },
 
@@ -903,8 +968,16 @@ export default {
         this.endDate.setDate(this.endDate.getDate() + 6);
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        this.startDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+        this.endDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        );
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());
@@ -1139,9 +1212,6 @@ a[data-v-507f63b7] {
 ul.nav-pills {
   height: 53px;
   border-bottom: 1px solid #b8b1b1;
-}
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

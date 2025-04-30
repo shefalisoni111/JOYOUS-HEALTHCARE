@@ -2,10 +2,14 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
-.fs-5{ font-size: 18px !important;}
-.fs-6{ font-size: 14px !important;}
+.fs-5 {
+  font-size: 18px !important;
+}
+.fs-6 {
+  font-size: 14px !important;
+}
 html {
   scroll-behavior: smooth;
   margin: 0px !important;
@@ -15,43 +19,37 @@ html {
   overflow-x: hidden;
 }
 .form-check-input:checked {
-  background-color: #FF5722 !important;}
+  background-color: #ff5722 !important;
+}
 
 body {
-
   overflow-x: hidden !important;
   overflow-y: hidden !important;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 #main {
   transition: all 0.3s;
-
 }
 @font-face {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: normal;
   font-style: normal;
 }
-
 
 .cursor-pointer {
   cursor: pointer;
 }
 
-
 @media (max-width: 1690px) {
-  html {font-size: small;}
-
- 
+  html {
+    font-size: small;
+  }
 }
 @media (max-width: 1390px) {
-  html {font-size: x-small;}
-  
- 
-  
+  html {
+    font-size: x-small;
+  }
 }
-
-
 
 ul li a:hover {
   color: #ff5722;
@@ -88,10 +86,9 @@ ul.breadcrumb li span {
   background: #f6851d;
 }
 
-table thead th{
- 
+table thead th {
   color: #667085 !important;
-  font-family: 'Inter', sans-serif !important;
+  font-family: "Inter", sans-serif !important;
   font-weight: 500;
 }
 
@@ -109,7 +106,6 @@ table thead th{
   position: inherit;
   top: -8px;
   left: 3rem;
-  /* text-align: center; */
   font-weight: 600;
   letter-spacing: 1px;
   color: #fff;

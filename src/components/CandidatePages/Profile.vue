@@ -7,7 +7,10 @@
             <div class="">
               <ol class="breadcrumb mb-1">
                 <li class="breadcrumb-item active text-uppercase fs-6">
-                  <router-link class="nav-link d-inline" aria-current="page" to="/home"
+                  <router-link
+                    class="nav-link d-inline"
+                    aria-current="page"
+                    to="/home"
                     >Dashboard</router-link
                   >
                   /
@@ -65,7 +68,9 @@
                   style="background: #68a325; margin-left: -7px"
                 >
                   {{
-                    getCandidates.status === "approved" ? "Active" : getCandidates.status
+                    getCandidates.status === "approved"
+                      ? "Active"
+                      : getCandidates.status
                   }}
                 </h6>
                 <img
@@ -93,12 +98,20 @@
                 <!-- <div class="ribbon"><span>Active</span></div> -->
 
                 <div class="card-body">
-                  <div class="mt-3 d-flex justify-content-between align-items-center">
+                  <div
+                    class="mt-3 d-flex justify-content-between align-items-center"
+                  >
                     <div>
-                      <h6 class="card-title text-nowrap fw-bold text-capitalize">
-                        {{ getCandidates.first_name }}&nbsp;{{ getCandidates.last_name }}
+                      <h6
+                        class="card-title text-nowrap fw-bold text-capitalize"
+                      >
+                        {{ getCandidates.first_name }}&nbsp;{{
+                          getCandidates.last_name
+                        }}
                       </h6>
-                      <span class="text-lowercase"> {{ getCandidates.email }}</span>
+                      <span class="text-lowercase">
+                        {{ getCandidates.email }}</span
+                      >
                     </div>
 
                     <div>
@@ -111,7 +124,9 @@
                   <div class="mt-3">
                     <div class="d-flex justify-content-between">
                       <div>
-                        <h6 class="card-title text-uppercase fs-smaller text-nowrap">
+                        <h6
+                          class="card-title text-uppercase fs-smaller text-nowrap"
+                        >
                           contact information
                         </h6>
                       </div>
@@ -158,7 +173,10 @@
             </div>
             <div class="col-md-9 bg-white">
               <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                <li class="nav-item d-lg-inline-flex gap-2 d-in" role="presentation">
+                <li
+                  class="nav-item d-lg-inline-flex gap-2 d-in"
+                  role="presentation"
+                >
                   <button
                     class="btn-css"
                     :to="`/${tab.routeName}`"
@@ -233,8 +251,16 @@ export default {
       tabs: [
         { name: "Overview ", component: "Overview", routeName: "Overview" },
         { name: "Documents ", component: "Document", routeName: "Document" },
-        { name: "Profile ", component: "ProfileTabs", routeName: "ProfileTabs" },
-        { name: "Restricted", component: "Restricted", routeName: "Restricted" },
+        {
+          name: "Profile ",
+          component: "ProfileTabs",
+          routeName: "ProfileTabs",
+        },
+        {
+          name: "Restricted",
+          component: "Restricted",
+          routeName: "Restricted",
+        },
         { name: "Rate Card", component: "RateCard", routeName: "RateCard" },
         { name: "Notes", component: "Notes", routeName: "Notes" },
         { name: "Staff ID", component: "StaffId", routeName: "StaffId" },
@@ -472,8 +498,6 @@ ul li a {
   transition: all 0.3s;
   padding: 10px;
   transition: all 0.3s;
-  padding-top: 65px;
-  background-color: #fdce5e17;
 }
 .bg-white {
   border-left: 1px solid #dedede;

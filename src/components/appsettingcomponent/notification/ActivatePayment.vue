@@ -58,10 +58,14 @@
                 <div class="row">
                   <div class="col-12">
                     <div class="bg-white">
-                      <div class="pagetitle d-flex justify-content-between py-3">
+                      <div
+                        class="pagetitle d-flex justify-content-between py-3"
+                      >
                         <div class="d-flex align-items-center">
                           <ol class="breadcrumb mb-1">
-                            <li class="breadcrumb-item active text-capitalize fw-bold">
+                            <li
+                              class="breadcrumb-item active text-capitalize fw-bold"
+                            >
                               SMS Integration
                             </li>
                           </ol>
@@ -113,10 +117,11 @@
                           aria-labelledby="credit-debit"
                         >
                           <p class="p-4">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-                            dolore quasi architecto magni aperiam totam. Quibusdam magnam
-                            eaque possimus ipsum. Necessitatibus molestias rerum
-                            architecto ipsam quis labore quod quo sint?
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Eaque dolore quasi architecto magni aperiam
+                            totam. Quibusdam magnam eaque possimus ipsum.
+                            Necessitatibus molestias rerum architecto ipsam quis
+                            labore quod quo sint?
                           </p>
                         </div>
                         <div
@@ -243,7 +248,6 @@ ol.breadcrumb li span {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   color: #ff5722;
-  border-bottom: 2px solid #ff5722;
   border-radius: 0;
   background-color: transparent;
   font-weight: bold;

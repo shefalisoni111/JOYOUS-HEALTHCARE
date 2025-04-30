@@ -25,7 +25,9 @@
                 {{ data.document_category.document_category }}
               </td>
               <td scope="col">{{ data.document_name }}</td>
-              <td scope="col">{{ new Date(data.updated_at).toLocaleString() }}</td>
+              <td scope="col">
+                {{ new Date(data.updated_at).toLocaleString() }}
+              </td>
               <td scope="col">
                 {{ data.issue_date ? data.issue_date : "null" }}
               </td>
@@ -48,7 +50,11 @@
             </tr>
           </tbody>
         </table>
-        <div class="mx-3" style="text-align: right" v-if="getCategoryData.length >= 10">
+        <div
+          class="mx-3"
+          style="text-align: right"
+          v-if="getCategoryData.length >= 10"
+        >
           <!-- <button class="btn btn-outline-dark btn-sm">
               {{ totalRecordsOnPage }} Records Per Page
             </button> -->
@@ -207,9 +213,12 @@ export default {
           page: this.currentPage,
           per_page: this.itemsPerPage,
         };
-        const response = await axios.get(`${VITE_API_URL}/candidate_documents`, {
-          params,
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/candidate_documents`,
+          {
+            params,
+          }
+        );
 
         this.getCategoryData = response.data.data;
         this.totalRecords = response.data.can_document_filter || 0;
@@ -239,7 +248,9 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
+      const matchingTabIndex = vm.tabs.findIndex(
+        (tab) => tab.routeName === to.name
+      );
 
       if (matchingTabIndex !== -1) {
         vm.activeTab = matchingTabIndex;
@@ -248,7 +259,9 @@ export default {
     });
   },
   beforeRouteUpdate(to, from, next) {
-    const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
+    const matchingTabIndex = this.tabs.findIndex(
+      (tab) => tab.routeName === to.name
+    );
 
     if (matchingTabIndex !== -1) {
       this.activeTab = matchingTabIndex;
@@ -328,9 +341,6 @@ a[data-v-507f63b7] {
 ul.nav-pills {
   height: 53px;
   border-bottom: 1px solid #b8b1b1;
-}
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

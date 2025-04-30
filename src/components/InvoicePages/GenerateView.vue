@@ -5,7 +5,10 @@
         <div class="py-3">
           <ol class="breadcrumb mb-1">
             <li class="breadcrumb-item active text-uppercase fs-6">
-              <router-link class="nav-link d-inline" aria-current="page" to="/home"
+              <router-link
+                class="nav-link d-inline"
+                aria-current="page"
+                to="/home"
                 >Dashboard</router-link
               >/
               <router-link
@@ -103,13 +106,15 @@ export default {
       // }
       // return candidateDetails.map((candidate) => candidate.candidate_id || "").join(", ");
       const validCandidate = candidateDetails.find(
-        (candidate) => candidate.candidate_id && candidate.candidate_id.trim() !== ""
+        (candidate) =>
+          candidate.candidate_id && candidate.candidate_id.trim() !== ""
       );
       return validCandidate ? validCandidate.candidate_id : "";
     },
     getJobPosition(candidateDetails) {
       const validCandidate = candidateDetails.find(
-        (candidate) => candidate.job_position && candidate.job_position.trim() !== ""
+        (candidate) =>
+          candidate.job_position && candidate.job_position.trim() !== ""
       );
       return validCandidate ? validCandidate.job_position : "";
     },
@@ -204,7 +209,7 @@ select {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
- font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {
@@ -256,9 +261,6 @@ a[data-v-507f63b7] {
 ul.nav-pills {
   height: 53px;
   border-bottom: 1px solid #b8b1b1;
-}
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

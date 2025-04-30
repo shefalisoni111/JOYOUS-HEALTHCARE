@@ -6,11 +6,16 @@
         <div class="py-3">
           <ol class="breadcrumb mb-1">
             <li class="breadcrumb-item active text-uppercase fs-6">
-              <router-link class="nav-link d-inline" aria-current="page" to="/home"
+              <router-link
+                class="nav-link d-inline"
+                aria-current="page"
+                to="/home"
                 >Dashboard</router-link
               >
               /
-              <router-link to="/invoice/staff-payroll" class="text-decoration-none"
+              <router-link
+                to="/invoice/staff-payroll"
+                class="text-decoration-none"
                 ><span class="color-fonts">Staff Invoices</span> /
                 <span class="color-fonts">{{
                   getClientInvoiceDetail.invoice_number
@@ -27,7 +32,10 @@
             <div
               class="text-muted bg-white p-3"
               ref="invoiceContent"
-              style="border: 1px solid #f8f8f8; box-shadow: 2px 2px 7px 2px #e7d7d7"
+              style="
+                border: 1px solid #f8f8f8;
+                box-shadow: 2px 2px 7px 2px #e7d7d7;
+              "
             >
               <div class="">
                 <div class="col-12">
@@ -38,13 +46,16 @@
                         {{ getClientInvoiceDetail?.merchant_data?.merc_name }}
                       </h5>
                       <p class="mb-0">
-                        Mob No: {{ getClientInvoiceDetail?.merchant_data?.mer_phone }}
+                        Mob No:
+                        {{ getClientInvoiceDetail?.merchant_data?.mer_phone }}
                       </p>
                       <p class="mb-0">
-                        Email: {{ getClientInvoiceDetail?.merchant_data?.mer_email }}
+                        Email:
+                        {{ getClientInvoiceDetail?.merchant_data?.mer_email }}
                       </p>
                       <p class="mb-0">
-                        Address: {{ getClientInvoiceDetail?.merchant_data?.mer_address }}
+                        Address:
+                        {{ getClientInvoiceDetail?.merchant_data?.mer_address }}
                       </p>
                     </div>
                     <div class="col-4"></div>
@@ -66,10 +77,14 @@
                         {{ getClientInvoiceDetail?.candidate_data?.can_name }}
                       </h5>
                       <p class="mb-0">
-                        Add: {{ getClientInvoiceDetail?.candidate_data?.can_address }}
+                        Add:
+                        {{
+                          getClientInvoiceDetail?.candidate_data?.can_address
+                        }}
                       </p>
                       <p class="mb-0">
-                        Email: {{ getClientInvoiceDetail?.candidate_data?.can_email }}
+                        Email:
+                        {{ getClientInvoiceDetail?.candidate_data?.can_email }}
                       </p>
                     </div>
                     <div class="col-3">
@@ -93,8 +108,12 @@
                           {{ getClientInvoiceDetail.start_date }}
                         </p>
                         <!-- <p class="mb-0">Due Date:19-07-2023</p> -->
-                        <p class="mb-0">From: {{ getClientInvoiceDetail.end_date }}</p>
-                        <p class="mb-0">To: {{ getClientInvoiceDetail.end_date }}</p>
+                        <p class="mb-0">
+                          From: {{ getClientInvoiceDetail.end_date }}
+                        </p>
+                        <p class="mb-0">
+                          To: {{ getClientInvoiceDetail.end_date }}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -120,7 +139,9 @@
                     </thead>
                     <tbody>
                       <tr
-                        v-for="(candidate, index) in getClientInvoiceDetail.site_data"
+                        v-for="(
+                          candidate, index
+                        ) in getClientInvoiceDetail.site_data"
                         :key="index"
                       >
                         <td scope="col">
@@ -132,20 +153,32 @@
                           {{ getClientInvoiceDetail?.candidate_data?.can_name }}
                         </td>
                         <td scope="col">
-                          {{ getClientInvoiceDetail?.candidate_data?.job || "" }}
+                          {{
+                            getClientInvoiceDetail?.candidate_data?.job || ""
+                          }}
                         </td>
                         <td scope="col">{{ candidate.client_name || "" }}</td>
                         <!-- <td scope="col">{{ getClientInvoiceDetail.unit || "" }}</td> -->
                         <td scope="col">
-                          {{ candidate.staff_rate ? "£" + candidate.staff_rate : "" }}
+                          {{
+                            candidate.staff_rate
+                              ? "£" + candidate.staff_rate
+                              : ""
+                          }}
                         </td>
                         <td scope="col">
-                          {{ candidate.total_cost ? "£" + candidate.total_cost : "" }}
+                          {{
+                            candidate.total_cost
+                              ? "£" + candidate.total_cost
+                              : ""
+                          }}
                         </td>
                       </tr>
 
                       <tr>
-                        <td colspan="7" class="text-start fw-bold">Total Cost</td>
+                        <td colspan="7" class="text-start fw-bold">
+                          Total Cost
+                        </td>
                         <td colspan="2" class="font-weight-bold">
                           {{
                             getClientInvoiceDetail?.total_amount !== undefined
@@ -155,7 +188,9 @@
                         </td>
                       </tr>
                       <tr>
-                        <td colspan="7" class="text-start fw-bold">Rate Per Mile</td>
+                        <td colspan="7" class="text-start fw-bold">
+                          Rate Per Mile
+                        </td>
                         <td colspan="2" class="font-weight-bold">
                           {{
                             getClientInvoiceDetail?.rate_per_mile !== undefined
@@ -165,10 +200,13 @@
                         </td>
                       </tr>
                       <tr>
-                        <td colspan="7" class="text-start fw-bold">Grand Total</td>
+                        <td colspan="7" class="text-start fw-bold">
+                          Grand Total
+                        </td>
                         <td colspan="2" class="font-weight-bold">
                           {{
-                            getClientInvoiceDetail?.grand_total_amount !== undefined
+                            getClientInvoiceDetail?.grand_total_amount !==
+                            undefined
                               ? "£" + getClientInvoiceDetail?.grand_total_amount
                               : ""
                           }}
@@ -184,8 +222,9 @@
                       <div class="col-12">
                         <h6>
                           Addition Rate Per Mile
-                          {{ "£" + getClientInvoiceDetail.rate_per_mile }} and Total Cost
-                          to be paid {{ "£" + getClientInvoiceDetail.grand_total_amount }}
+                          {{ "£" + getClientInvoiceDetail.rate_per_mile }} and
+                          Total Cost to be paid
+                          {{ "£" + getClientInvoiceDetail.grand_total_amount }}
                         </h6>
                       </div>
                     </div>
@@ -209,7 +248,10 @@
           <div class="col-sm-12 col-md-5 mt-4 mt-lg-0 mt-md-0">
             <div
               class="text-muted bg-white p-3"
-              style="border: 1px solid #f8f8f8; box-shadow: 2px 2px 7px 2px #e7d7d7"
+              style="
+                border: 1px solid #f8f8f8;
+                box-shadow: 2px 2px 7px 2px #e7d7d7;
+              "
             >
               <div class="row">
                 <div class="d-flex gap-4">
@@ -231,7 +273,9 @@
                       },
                     }"
                     class="btn btn-outline-success text-nowrap"
-                    :class="{ 'disabled-link': getClientInvoiceDetail.invoice_lock }"
+                    :class="{
+                      'disabled-link': getClientInvoiceDetail.invoice_lock,
+                    }"
                     @click.prevent="handleEditClick"
                   >
                     <i class="bi bi-pencil-fill"></i> Edit
@@ -265,7 +309,9 @@
 
                       <div class="ps-2">
                         Invoice created by
-                        <b>{{ getClientInvoiceDetail?.merchant_data?.merc_name }}</b
+                        <b>{{
+                          getClientInvoiceDetail?.merchant_data?.merc_name
+                        }}</b
                         ><br />
                         {{ getClientInvoiceDetail.created_on }}
                       </div>
@@ -385,11 +431,14 @@ export default {
       }
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(`${VITE_API_URL}/staff_invoices/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/staff_invoices/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const clientInvoice = response.data.staff_invoice;
         // console.log(response.data.staff_invoice);
         this.getClientInvoiceDetail = clientInvoice;
@@ -494,9 +543,6 @@ a[data-v-507f63b7] {
 ul.nav-pills {
   height: 53px;
   border-bottom: 1px solid #b8b1b1;
-}
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

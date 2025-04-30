@@ -89,9 +89,6 @@ ul.nav-pills {
   height: 53px;
   border-bottom: 1px solid #b8b1b1;
 }
-table th {
-  background-color: #ff5f30;
-}
 
 button.nav-link > li.nav-item {
   border-bottom: 2px solid red;

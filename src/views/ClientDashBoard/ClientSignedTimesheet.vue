@@ -40,7 +40,9 @@
                       &nbsp;&nbsp;
                       <div class="d-flex align-items-center">
                         <span
-                          v-if="currentView === 'weekly' && startDate && endDate"
+                          v-if="
+                            currentView === 'weekly' && startDate && endDate
+                          "
                           class="fw-bold"
                         >
                           {{
@@ -51,17 +53,27 @@
                           }}
                         </span>
                         <span
-                          v-else-if="currentView === 'monthly' && startDate && endDate"
+                          v-else-if="
+                            currentView === 'monthly' && startDate && endDate
+                          "
                           class="fw-bold"
                         >
-                          {{ formatDate(startDate) + " to " + formatDate(endDate) }}
+                          {{
+                            formatDate(startDate) + " to " + formatDate(endDate)
+                          }}
                         </span>
                       </div>
                       &nbsp;&nbsp;
                       <div class="d-flex align-items-center fs-4">
-                        <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
+                        <i
+                          class="bi bi-caret-left-fill"
+                          @click="moveToPrevious"
+                        ></i>
                         <i class="bi bi-calendar2-check-fill"></i>
-                        <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                        <i
+                          class="bi bi-caret-right-fill"
+                          @click="moveToNext"
+                        ></i>
                       </div>
                     </div>
 
@@ -74,13 +86,19 @@
                 <div v-if="currentView === 'weekly'">
                   <div>
                     <div v-for="(day, index) in daysOfWeek" :key="index"></div>
-                    <div v-for="(day, index) in getWeekDates" :key="index"></div>
+                    <div
+                      v-for="(day, index) in getWeekDates"
+                      :key="index"
+                    ></div>
                   </div>
                 </div>
 
                 <div v-else-if="currentView === 'monthly'">
                   <div>
-                    <div v-for="(day, index) in getMonthDates" :key="index"></div>
+                    <div
+                      v-for="(day, index) in getMonthDates"
+                      :key="index"
+                    ></div>
                   </div>
                 </div>
                 <div class="d-flex gap-2 mb-3 justify-content-between">
@@ -430,7 +448,8 @@ export default {
       } catch (error) {
         if (error.response && error.response.status === 404) {
           this.candidateLists = [];
-          this.errorMessageFilter = error.response.data.error || "Report Not Found!";
+          this.errorMessageFilter =
+            error.response.data.error || "Report Not Found!";
           Swal("Error", errorMessageFilter, "error");
         } else {
           this.errorMessageFilter = "Report Not Found!";
@@ -443,7 +462,9 @@ export default {
     updateDateRange() {
       if (this.currentView === "weekly") {
         const weekStart = new Date(this.startDate);
-        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
+        weekStart.setDate(
+          this.startDate.getDate() - this.startDate.getDay() + 1
+        );
         this.startDate = weekStart;
 
         const weekEnd = new Date(this.startDate);
@@ -452,8 +473,16 @@ export default {
         // this.queryParams.range = "week";
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        this.startDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+        this.endDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        );
         // this.queryParams.range = "month";
       }
 
@@ -595,9 +624,6 @@ a[data-v-507f63b7] {
 ul.nav-pills {
   height: 53px;
   border-bottom: 1px solid #b8b1b1;
-}
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

@@ -51,7 +51,9 @@
                       }}
                     </span>
                     <span
-                      v-else-if="currentView === 'monthly' && startDate && endDate"
+                      v-else-if="
+                        currentView === 'monthly' && startDate && endDate
+                      "
                       class="fw-bold"
                     >
                       {{ formatDate(startDate) + " to " + formatDate(endDate) }}
@@ -59,7 +61,10 @@
                   </div>
                   &nbsp;&nbsp;
                   <div class="d-flex align-items-center fs-4">
-                    <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
+                    <i
+                      class="bi bi-caret-left-fill"
+                      @click="moveToPrevious"
+                    ></i>
                     <i class="bi bi-calendar2-check-fill"></i>
                     <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
                   </div>
@@ -126,7 +131,11 @@
         </div>
       </div>
     </div>
-    <div class="mt-3" style="text-align: right" v-if="getVacancyDetail?.length > 8">
+    <div
+      class="mt-3"
+      style="text-align: right"
+      v-if="getVacancyDetail?.length > 8"
+    >
       <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button>
@@ -173,9 +182,21 @@ export default {
       endDate: new Date(),
       tabs: [
         { name: "Open", component: "OpenShift", routeName: "OpenShift" },
-        { name: "Assigned ", component: "AssignedShift", routeName: "AssignedShift" },
-        { name: "ClosedShift", component: "ClosedShift", routeName: "ClosedShift" },
-        { name: "DeletedShift", component: "DeletedShift", routeName: "DeletedShift" },
+        {
+          name: "Assigned ",
+          component: "AssignedShift",
+          routeName: "AssignedShift",
+        },
+        {
+          name: "ClosedShift",
+          component: "ClosedShift",
+          routeName: "ClosedShift",
+        },
+        {
+          name: "DeletedShift",
+          component: "DeletedShift",
+          routeName: "DeletedShift",
+        },
       ],
       activeTab: 0,
 
@@ -259,7 +280,10 @@ export default {
           .then((response) => {
             this.getVacancyDetail = response.data.data;
 
-            localStorage.setItem("vacancies", JSON.stringify(this.getVacancyDetail));
+            localStorage.setItem(
+              "vacancies",
+              JSON.stringify(this.getVacancyDetail)
+            );
           })
           .finally(() => {
             this.isLoading = false;
@@ -302,7 +326,9 @@ export default {
     updateDateRange() {
       if (this.currentView === "weekly") {
         const weekStart = new Date(this.startDate);
-        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
+        weekStart.setDate(
+          this.startDate.getDate() - this.startDate.getDay() + 1
+        );
         this.startDate = weekStart;
 
         const weekEnd = new Date(this.startDate);
@@ -310,8 +336,16 @@ export default {
         this.endDate = weekEnd;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        this.startDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+        this.endDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        );
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());
@@ -405,7 +439,9 @@ export default {
 
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
+      const matchingTabIndex = vm.tabs.findIndex(
+        (tab) => tab.routeName === to.name
+      );
       if (matchingTabIndex !== -1) {
         vm.activeTab = matchingTabIndex;
         vm.activeTabName = vm.tabs[matchingTabIndex].name;
@@ -413,7 +449,9 @@ export default {
     });
   },
   beforeRouteUpdate(to, from, next) {
-    const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
+    const matchingTabIndex = this.tabs.findIndex(
+      (tab) => tab.routeName === to.name
+    );
     if (matchingTabIndex !== -1) {
       this.activeTab = matchingTabIndex;
       this.activeTabName = this.tabs[matchingTabIndex].name;
@@ -488,9 +526,6 @@ a[data-v-507f63b7] {
   border-radius: 22px;
 }
 
-table th {
-  background-color: #ff5f30;
-}
 .nav-pills .nav-link {
   background-color: transparent;
   border: 1px solid #ff5722;

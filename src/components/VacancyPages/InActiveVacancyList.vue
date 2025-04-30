@@ -205,10 +205,14 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+              >20 Records</a
+            >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+              >50 Records</a
+            >
           </li>
           <li>
             <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
@@ -415,12 +419,15 @@ export default {
     async getInactiveVacancyMethod() {
       this.isLoading = true;
       try {
-        const response = await axios.get(`${VITE_API_URL}/inactive_vacancy_list`, {
-          params: {
-            page: this.currentPage,
-            per_page: this.itemsPerPage,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/inactive_vacancy_list`,
+          {
+            params: {
+              page: this.currentPage,
+              per_page: this.itemsPerPage,
+            },
+          }
+        );
 
         this.getInactiveData = response.data.vacancies;
         this.totalCount = response.data.total_vacancy;
@@ -514,9 +521,6 @@ a[data-v-507f63b7] {
 ul.nav-pills {
   height: 53px;
   border-bottom: 1px solid #b8b1b1;
-}
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

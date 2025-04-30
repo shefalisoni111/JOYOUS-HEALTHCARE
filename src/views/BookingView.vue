@@ -6,7 +6,10 @@
         <div class="py-3">
           <ol class="breadcrumb mb-1">
             <li class="breadcrumb-item active text-uppercase fs-6">
-              <router-link class="nav-link d-inline" aria-current="page" to="/home"
+              <router-link
+                class="nav-link d-inline"
+                aria-current="page"
+                to="/home"
                 >Dashboard</router-link
               >
               / <span class="color-fonts">Booking</span>
@@ -37,7 +40,9 @@
                       &nbsp;&nbsp;
                       <div class="d-flex align-items-center">
                         <span
-                          v-if="currentView === 'weekly' && startDate && endDate"
+                          v-if="
+                            currentView === 'weekly' && startDate && endDate
+                          "
                           class="fw-bold"
                         >
                           {{
@@ -48,17 +53,27 @@
                           }}
                         </span>
                         <span
-                          v-else-if="currentView === 'monthly' && startDate && endDate"
+                          v-else-if="
+                            currentView === 'monthly' && startDate && endDate
+                          "
                           class="fw-bold"
                         >
-                          {{ formatDate(startDate) + " to " + formatDate(endDate) }}
+                          {{
+                            formatDate(startDate) + " to " + formatDate(endDate)
+                          }}
                         </span>
                       </div>
                       &nbsp;&nbsp;
                       <div class="d-flex align-items-center fs-4">
-                        <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
+                        <i
+                          class="bi bi-caret-left-fill"
+                          @click="moveToPrevious"
+                        ></i>
                         <i class="bi bi-calendar2-check-fill"></i>
-                        <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                        <i
+                          class="bi bi-caret-right-fill"
+                          @click="moveToNext"
+                        ></i>
                       </div>
                     </div>
 
@@ -71,18 +86,26 @@
                 <div v-if="currentView === 'weekly'">
                   <div>
                     <div v-for="(day, index) in daysOfWeek" :key="index"></div>
-                    <div v-for="(day, index) in getWeekDates" :key="index"></div>
+                    <div
+                      v-for="(day, index) in getWeekDates"
+                      :key="index"
+                    ></div>
                   </div>
                 </div>
 
                 <div v-else-if="currentView === 'monthly'">
                   <div>
-                    <div v-for="(day, index) in getMonthDates" :key="index"></div>
+                    <div
+                      v-for="(day, index) in getMonthDates"
+                      :key="index"
+                    ></div>
                   </div>
                 </div>
                 <div class="d-flex gap-2">
                   <div class="d-flex justify-content-end align-items-center">
-                    <div class="d-flex align-items-center gap-2 justify-content-between">
+                    <div
+                      class="d-flex align-items-center gap-2 justify-content-between"
+                    >
                       <div class="searchbox position-relative">
                         <form
                           @submit.prevent="search"
@@ -126,7 +149,10 @@
                       >
                         :
 
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <ul
+                          class="dropdown-menu"
+                          aria-labelledby="navbarDropdown"
+                        >
                           <li>
                             <label
                               for="fileAll"
@@ -161,10 +187,17 @@
                   </div>
                 </div>
               </div>
-              <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
+              <div
+                class="d-flex gap-2 mb-3 justify-content-between"
+                v-if="showFilters"
+              >
                 <div class="d-flex gap-2">
                   <div></div>
-                  <select v-model="job_id" id="selectedOptionText" @change="filterData">
+                  <select
+                    v-model="job_id"
+                    id="selectedOptionText"
+                    @change="filterData"
+                  >
                     <option value="">Job Title</option>
                     <option
                       v-for="option in options"
@@ -175,7 +208,11 @@
                     </option>
                   </select>
 
-                  <select v-model="site_id" id="selectBusinessUnit" @change="filterData">
+                  <select
+                    v-model="site_id"
+                    id="selectBusinessUnit"
+                    @change="filterData"
+                  >
                     <option value="">All Site</option>
                     <option
                       v-for="option in businessUnit"
@@ -187,7 +224,11 @@
                     </option>
                   </select>
 
-                  <select v-model="id" @change="filterData" id="selectCandidateList">
+                  <select
+                    v-model="id"
+                    @change="filterData"
+                    id="selectCandidateList"
+                  >
                     <option value="" disabled selected>All Staff</option>
                     <option
                       v-for="option in candidateLists"
@@ -220,7 +261,11 @@
                   </button>
                 </div>
               </div>
-              <ul class="nav nav-pills my-2 gap-2" id="pills-tab" role="tablist">
+              <ul
+                class="nav nav-pills my-2 gap-2"
+                id="pills-tab"
+                role="tablist"
+              >
                 <li class="nav-item" role="presentation">
                   <button
                     class="nav-link active"
@@ -251,7 +296,11 @@
                   </button>
                 </li>
               </ul>
-              <div class="tab-content mt-2" id="pills-tabContent" v-if="!searchQuery">
+              <div
+                class="tab-content mt-2"
+                id="pills-tabContent"
+                v-if="!searchQuery"
+              >
                 <div
                   class="tab-pane fade show active table-wrapper AllBooking"
                   id="pills-AllBooking"
@@ -298,10 +347,14 @@
                         <td scope="col">{{ data.site }}</td>
                         <td scope="col">{{ data.job_title }}</td>
                         <td>
-                          <span v-for="(date, index) in data.shift_dates" :key="index">
+                          <span
+                            v-for="(date, index) in data.shift_dates"
+                            :key="index"
+                          >
                             {{ date }}
 
-                            <template v-if="index !== data.shift_dates.length - 1"
+                            <template
+                              v-if="index !== data.shift_dates.length - 1"
                               >,
                             </template>
                           </span>
@@ -369,7 +422,9 @@
                         <!-- <th scope="col">Action</th> -->
                       </tr>
                     </thead>
-                    <tbody v-if="deleteBookingData?.length > 0 && deleteBookingData">
+                    <tbody
+                      v-if="deleteBookingData?.length > 0 && deleteBookingData"
+                    >
                       <tr v-for="data in deleteBookingData" :key="data.id">
                         <td scope="col">{{ data.id }}</td>
                         <td>
@@ -387,10 +442,14 @@
                         <td scope="col">{{ data.site }}</td>
                         <td scope="col">{{ data.job_title }}</td>
                         <td>
-                          <span v-for="(date, index) in data.shift_dates" :key="index">
+                          <span
+                            v-for="(date, index) in data.shift_dates"
+                            :key="index"
+                          >
                             {{ date }}
 
-                            <template v-if="index !== data.shift_dates.length - 1"
+                            <template
+                              v-if="index !== data.shift_dates.length - 1"
                               >,
                             </template>
                           </span>
@@ -430,7 +489,11 @@
                   </table>
                 </div>
               </div>
-              <div class="tab-content mt-4" id="pills-tabContent" v-if="searchQuery">
+              <div
+                class="tab-content mt-4"
+                id="pills-tabContent"
+                v-if="searchQuery"
+              >
                 <div
                   class="tab-pane fade show active table-wrapper"
                   id="pills-home"
@@ -466,10 +529,14 @@
                         <td scope="col">{{ data.site }}</td>
                         <td scope="col">{{ data.job_title }}</td>
                         <td>
-                          <span v-for="(date, index) in data.shift_dates" :key="index">
+                          <span
+                            v-for="(date, index) in data.shift_dates"
+                            :key="index"
+                          >
                             {{ date }}
 
-                            <template v-if="index !== data.shift_dates.length - 1"
+                            <template
+                              v-if="index !== data.shift_dates.length - 1"
                               >,
                             </template>
                           </span>
@@ -644,7 +711,11 @@
       @confirm="confirmCallback"
       @cancel="canceled"
     />
-    <ShowDetailsMessage v-if="showModal" :message="alertMessage" @close="closeModal" />
+    <ShowDetailsMessage
+      v-if="showModal"
+      :message="alertMessage"
+      @close="closeModal"
+    />
   </div>
 </template>
 <script>
@@ -711,7 +782,13 @@ export default {
       this.$set(this.checkedSites, data.id, false);
     });
   },
-  components: { Navbar, Loader, SuccessAlert, ConfirmationAlert, ShowDetailsMessage },
+  components: {
+    Navbar,
+    Loader,
+    SuccessAlert,
+    ConfirmationAlert,
+    ShowDetailsMessage,
+  },
   computed: {
     getWeekDates() {
       const currentDate = new Date();
@@ -764,7 +841,9 @@ export default {
     //   return this.paginateDeleteResults.length;
     // },
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
 
@@ -958,9 +1037,12 @@ export default {
         date: formattedStartDate,
       };
       try {
-        const response = await axios.get(`${VITE_API_URL}/find_deleted_bookings`, {
-          params: requestData,
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/find_deleted_bookings`,
+          {
+            params: requestData,
+          }
+        );
 
         this.deleteBookingData = response.data.booking_data;
         if (response.status === 200) {
@@ -1250,7 +1332,9 @@ export default {
     updateDateRange() {
       if (this.currentView === "weekly") {
         const weekStart = new Date(this.startDate);
-        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
+        weekStart.setDate(
+          this.startDate.getDate() - this.startDate.getDay() + 1
+        );
         this.startDate = weekStart;
 
         const weekEnd = new Date(this.startDate);
@@ -1258,8 +1342,16 @@ export default {
         this.endDate = weekEnd;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        this.startDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+        this.endDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        );
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());
@@ -1317,7 +1409,8 @@ export default {
         this.getBookingData = response.data.booking_data;
 
         if (this.getBookingData.length === 0) {
-          this.errorMessageBooking = "No Booking found for the specified Criteria";
+          this.errorMessageBooking =
+            "No Booking found for the specified Criteria";
         } else {
           this.errorMessageBooking = "";
         }
@@ -1439,9 +1532,6 @@ a[data-v-507f63b7] {
 ul.nav-pills {
   height: 53px;
   border-bottom: 1px solid #b8b1b1;
-}
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

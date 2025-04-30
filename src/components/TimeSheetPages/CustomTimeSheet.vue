@@ -8,7 +8,9 @@
           <div class="py-3">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active">
-                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                <a
+                  class="nav-link d-inline fs-4 fw-bolder"
+                  style="color: #000000"
                   >Timesheet</a
                 >
                 <p>
@@ -102,13 +104,19 @@
                   </li>
                   <li><hr class="dropdown-divider" /></li>
                   <li>
-                    <a class="dropdown-item" href="#" @click="exportOneFile('selected')"
+                    <a
+                      class="dropdown-item"
+                      href="#"
+                      @click="exportOneFile('selected')"
                       >Export</a
                     >
                   </li>
                   <li><hr class="dropdown-divider" /></li>
                   <li>
-                    <a class="dropdown-item" href="#" @click="exportOneFile('all')"
+                    <a
+                      class="dropdown-item"
+                      href="#"
+                      @click="exportOneFile('all')"
                       >Export All</a
                     >
                   </li>
@@ -137,7 +145,10 @@
             </div>
           </div>
 
-          <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
+          <div
+            class="d-flex gap-2 mb-3 justify-content-between"
+            v-if="showFilters"
+          >
             <div class="d-flex gap-2">
               <div></div>
 
@@ -184,13 +195,19 @@
               <button
                 @click="resetFilter"
                 class="btn btn-secondary"
-                :disabled="!selectedSiteName && !selectedCandidate && !localSearchQuery"
+                :disabled="
+                  !selectedSiteName && !selectedCandidate && !localSearchQuery
+                "
               >
                 Reset Filters
               </button>
             </div>
           </div>
-          <div class="tab-content mt-4" id="pills-tabContent" v-if="!searchQuery">
+          <div
+            class="tab-content mt-4"
+            id="pills-tabContent"
+            v-if="!searchQuery"
+          >
             <div
               class="tab-pane fade show active"
               id="pills-home"
@@ -203,7 +220,11 @@
                     <tr>
                       <th>
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="" />
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                          />
                         </div>
                       </th>
                       <!-- <th scope="col">ID</th> -->
@@ -365,9 +386,13 @@
                           class="text-black text-decoration-none fw-bold"
                           :to="{
                             name: 'SingleClientProfile',
-                            params: { id: data.site_id_and_client_id.client_id },
+                            params: {
+                              id: data.site_id_and_client_id.client_id,
+                            },
                           }"
-                          >{{ data.site_id_and_client_id?.client_name }}</router-link
+                          >{{
+                            data.site_id_and_client_id?.client_name
+                          }}</router-link
                         >
                       </td>
                       <td scope="col">
@@ -382,7 +407,10 @@
                           {{ data.site }}
                         </router-link>
 
-                        <span v-else class="text-black text-decoration-none fw-bold">
+                        <span
+                          v-else
+                          class="text-black text-decoration-none fw-bold"
+                        >
                           {{ data.site }}
                         </span>
                       </td>
@@ -427,11 +455,18 @@
                           :style="
                             data.status === 'Approved'
                               ? { backgroundColor: '#E9FAEF', color: '#24D164' }
-                              : { backgroundColor: 'rgb(255 227 234)', color: '#FF3B30' }
+                              : {
+                                  backgroundColor: 'rgb(255 227 234)',
+                                  color: '#FF3B30',
+                                }
                           "
                           @click="ApproveMethod(data.id)"
                         >
-                          {{ data.status === "Approved" ? "Approved" : "Unapprove" }}
+                          {{
+                            data.status === "Approved"
+                              ? "Approved"
+                              : "Unapprove"
+                          }}
                         </button>
                       </td>
                       <td scope="col">
@@ -461,7 +496,10 @@
                               data-bs-target="#editCustomTimeSheet"
                               @click="openEditModal(data.id)"
                             >
-                              <i class="bi bi-pencil-square" style="color: #f9944b"></i>
+                              <i
+                                class="bi bi-pencil-square"
+                                style="color: #f9944b"
+                              ></i>
                               Edit
                             </button>
                           </div>
@@ -488,7 +526,11 @@
               ...
             </div>
           </div>
-          <div class="tab-content mt-4" id="pills-tabContent" v-if="searchQuery">
+          <div
+            class="tab-content mt-4"
+            id="pills-tabContent"
+            v-if="searchQuery"
+          >
             <div
               class="tab-pane fade show active"
               id="pills-home"
@@ -662,9 +704,13 @@
                           class="text-black text-decoration-none fw-bold"
                           :to="{
                             name: 'SingleClientProfile',
-                            params: { id: data.site_id_and_client_id.client_id },
+                            params: {
+                              id: data.site_id_and_client_id.client_id,
+                            },
                           }"
-                          >{{ data.site_id_and_client_id?.client_name }}</router-link
+                          >{{
+                            data.site_id_and_client_id?.client_name
+                          }}</router-link
                         >
                       </td>
                       <td scope="col">
@@ -679,7 +725,10 @@
                           {{ data.site }}
                         </router-link>
 
-                        <span v-else class="text-black text-decoration-none fw-bold">
+                        <span
+                          v-else
+                          class="text-black text-decoration-none fw-bold"
+                        >
                           {{ data.site }}
                         </span>
                       </td>
@@ -723,11 +772,18 @@
                           :style="
                             data.status === 'Approved'
                               ? { backgroundColor: '#E9FAEF', color: '#24D164' }
-                              : { backgroundColor: 'rgb(255 227 234)', color: '#FF3B30' }
+                              : {
+                                  backgroundColor: 'rgb(255 227 234)',
+                                  color: '#FF3B30',
+                                }
                           "
                           @click="ApproveMethod(data.id)"
                         >
-                          {{ data.status === "Approved" ? "Approved" : "Unapprove" }}
+                          {{
+                            data.status === "Approved"
+                              ? "Approved"
+                              : "Unapprove"
+                          }}
                         </button>
                       </td>
                       <td scope="col">
@@ -761,7 +817,10 @@
                               data-bs-whatever="@mdo"
                               @click="openEditModal(data.id)"
                             >
-                              <i class="bi bi-pencil-square" style="color: #f9944b"></i>
+                              <i
+                                class="bi bi-pencil-square"
+                                style="color: #f9944b"
+                              ></i>
                               Edit
                             </button>
                           </div>
@@ -804,7 +863,10 @@
               >
                 {{ itemsPerPage }} Records
               </button>
-              <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+              <ul
+                class="dropdown-menu"
+                aria-labelledby="recordsPerPageDropdown"
+              >
                 <li>
                   <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
                     >20 Records</a
@@ -816,7 +878,10 @@
                   >
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    @click="setItemsPerPage(100)"
                     >100 Records</a
                   >
                 </li>
@@ -866,7 +931,10 @@
               >
                 {{ itemsPerPage }} Records
               </button>
-              <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+              <ul
+                class="dropdown-menu"
+                aria-labelledby="recordsPerPageDropdown"
+              >
                 <li>
                   <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
                     >20 Records</a
@@ -878,7 +946,10 @@
                   >
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    @click="setItemsPerPage(100)"
                     >100 Records</a
                   >
                 </li>
@@ -988,7 +1059,12 @@ export default {
   },
   computed: {
     isSaveDisabled() {
-      return !this.notes || !this.paper_timesheet || !this.start_time || !this.end_time;
+      return (
+        !this.notes ||
+        !this.paper_timesheet ||
+        !this.start_time ||
+        !this.end_time
+      );
     },
     fullPaperTimeSheetUrl() {
       return (paper_timesheet) => {
@@ -1033,12 +1109,16 @@ export default {
       return monthDates;
     },
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
 
     selectCandidateList() {
-      const candidate = this.candidateLists.find((option) => option.id === this.id);
+      const candidate = this.candidateLists.find(
+        (option) => option.id === this.id
+      );
       return candidate ? `${candidate.full_name}` : "";
     },
   },
@@ -1172,8 +1252,16 @@ export default {
         this.endDate.setDate(this.endDate.getDate() + 6);
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        this.startDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+        this.endDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        );
       }
       // Save the values to localStorage
       localStorage.setItem("startDate", this.startDate.toISOString());
@@ -1221,9 +1309,12 @@ export default {
       }
 
       try {
-        const response = await axios.get(`${VITE_API_URL}/filter_custom_timesheet`, {
-          params,
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/filter_custom_timesheet`,
+          {
+            params,
+          }
+        );
         this.getCustomTimeSheet = response.data.custom_timesheets || [];
       } catch (error) {
         // console.error("Error fetching filtered data:", error);
@@ -1438,9 +1529,11 @@ export default {
         this.totalRecords = response.data.total_record || 0;
         this.totalPages = Math.ceil(this.totalRecords / this.itemsPerPage);
         if (this.getCustomTimeSheet.length === 0) {
-          this.errorMessageCustom = "No Custom timesheets found for the specified month";
+          this.errorMessageCustom =
+            "No Custom timesheets found for the specified month";
         } else {
-          this.errorMessageCustom = "No Custom timesheets found for the specified month";
+          this.errorMessageCustom =
+            "No Custom timesheets found for the specified month";
         }
       } catch (error) {
         // console.error("Error fetching custom timesheets:", error);
@@ -1591,9 +1684,7 @@ ul.nav-pills {
   height: 53px;
   border-bottom: 1px solid #b8b1b1;
 }
-table th {
-  background-color: #ff5f30;
-}
+
 .action-wrapper {
   position: relative;
   display: inline-block;

@@ -6,11 +6,16 @@
         <div class="py-3">
           <ol class="breadcrumb mb-1">
             <li class="breadcrumb-item active text-uppercase fs-6">
-              <router-link class="nav-link d-inline" aria-current="page" to="/home"
+              <router-link
+                class="nav-link d-inline"
+                aria-current="page"
+                to="/home"
                 >Dashboard</router-link
               >
               /
-              <router-link to="/invoice/client-invoice" class="text-decoration-none"
+              <router-link
+                to="/invoice/client-invoice"
+                class="text-decoration-none"
                 ><span class="color-fonts">Client Invoices</span> /
                 <span class="color-fonts">{{
                   getClientInvoiceDetail.invoice_number
@@ -26,7 +31,10 @@
           <div class="col-sm-12 col-md-7">
             <div
               class="text-muted bg-white p-3"
-              style="border: 1px solid #f8f8f8; box-shadow: 2px 2px 7px 2px #e7d7d7"
+              style="
+                border: 1px solid #f8f8f8;
+                box-shadow: 2px 2px 7px 2px #e7d7d7;
+              "
             >
               <div class="row">
                 <div class="col-12">
@@ -37,13 +45,16 @@
                         {{ getClientInvoiceDetail?.merchant_data?.merc_name }}
                       </h5>
                       <p class="mb-0">
-                        Mob No: {{ getClientInvoiceDetail?.merchant_data?.mer_phone }}
+                        Mob No:
+                        {{ getClientInvoiceDetail?.merchant_data?.mer_phone }}
                       </p>
                       <p class="mb-0">
-                        Email: {{ getClientInvoiceDetail?.merchant_data?.mer_email }}
+                        Email:
+                        {{ getClientInvoiceDetail?.merchant_data?.mer_email }}
                       </p>
                       <p class="mb-0">
-                        Address: {{ getClientInvoiceDetail?.merchant_data?.mer_address }}
+                        Address:
+                        {{ getClientInvoiceDetail?.merchant_data?.mer_address }}
                       </p>
                     </div>
                     <div class="col-4">
@@ -54,7 +65,9 @@
                     <div class="col-4">
                       <div class="float-end">
                         <h6 class="text-muted">INVOICE NUMBER</h6>
-                        <h1 class="mb-0">{{ getClientInvoiceDetail.number }}</h1>
+                        <h1 class="mb-0">
+                          {{ getClientInvoiceDetail.number }}
+                        </h1>
                       </div>
                     </div>
                   </div>
@@ -80,10 +93,16 @@
                       <div class="float-end">
                         <h6 class="text-muted">SHIP To</h6>
 
-                        <h5 class="fw-bold">{{ getClientInvoiceDetail.site }}</h5>
+                        <h5 class="fw-bold">
+                          {{ getClientInvoiceDetail.site }}
+                        </h5>
 
-                        <p class="mb-0">Mob No: {{ siteData?.contact_person_number }}</p>
-                        <p class="mb-0">Email: {{ siteData?.contact_person_email }}</p>
+                        <p class="mb-0">
+                          Mob No: {{ siteData?.contact_person_number }}
+                        </p>
+                        <p class="mb-0">
+                          Email: {{ siteData?.contact_person_email }}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -94,7 +113,8 @@
                   <div class="row">
                     <div class="col-4">
                       <h5>
-                        DATE: {{ this.formatDate(getClientInvoiceDetail.start_date) }}
+                        DATE:
+                        {{ this.formatDate(getClientInvoiceDetail.start_date) }}
                       </h5>
                       <!-- <h5>DUE DATE: {{ getClientInvoiceDetail.due_date }}</h5> -->
                     </div>
@@ -108,10 +128,14 @@
                         </p> -->
                         <!-- <p class="mb-0">Due Date:19-07-2023</p> -->
                         <p class="mb-0">
-                          From: {{ this.formatDate(getClientInvoiceDetail.start_date) }}
+                          From:
+                          {{
+                            this.formatDate(getClientInvoiceDetail.start_date)
+                          }}
                         </p>
                         <p class="mb-0">
-                          To: {{ this.formatDate(getClientInvoiceDetail.end_date) }}
+                          To:
+                          {{ this.formatDate(getClientInvoiceDetail.end_date) }}
                         </p>
                       </div>
                     </div>
@@ -149,17 +173,25 @@
                         <td scope="col">{{ candidate.end_time || "N/A" }}</td>
                         <td scope="col">{{ candidate.can_name || "N/A" }}</td>
                         <td scope="col">{{ candidate.job || "N/A" }}</td>
-                        <td scope="col">{{ getClientInvoiceDetail.unit || "N/A" }}</td>
+                        <td scope="col">
+                          {{ getClientInvoiceDetail.unit || "N/A" }}
+                        </td>
                         <td scope="col">
                           {{ candidate.rate ? "£" + candidate.rate : "N/A" }}
                         </td>
                         <td scope="col">
-                          {{ candidate.total_cost ? "£" + candidate.total_cost : "N/A" }}
+                          {{
+                            candidate.total_cost
+                              ? "£" + candidate.total_cost
+                              : "N/A"
+                          }}
                         </td>
                       </tr>
 
                       <tr>
-                        <td colspan="7" class="text-start fw-bold">Total Cost</td>
+                        <td colspan="7" class="text-start fw-bold">
+                          Total Cost
+                        </td>
                         <td colspan="2" class="font-weight-bold">
                           {{
                             getClientInvoiceDetail?.total_amount !== undefined
@@ -169,7 +201,9 @@
                         </td>
                       </tr>
                       <tr>
-                        <td colspan="7" class="text-start fw-bold">Rate Per Mile</td>
+                        <td colspan="7" class="text-start fw-bold">
+                          Rate Per Mile
+                        </td>
                         <td colspan="2" class="font-weight-bold">
                           {{
                             getClientInvoiceDetail?.rate_per_mile !== undefined
@@ -179,7 +213,9 @@
                         </td>
                       </tr>
                       <tr>
-                        <td colspan="7" class="text-start fw-bold">Grand Total</td>
+                        <td colspan="7" class="text-start fw-bold">
+                          Grand Total
+                        </td>
                         <td colspan="2" class="font-weight-bold">
                           {{
                             getClientInvoiceDetail?.grand_total !== undefined
@@ -222,7 +258,10 @@
           <div class="col-sm-12 col-md-5 mt-4 mt-lg-0 mt-md-0">
             <div
               class="text-muted bg-white p-3"
-              style="border: 1px solid #f8f8f8; box-shadow: 2px 2px 7px 2px #e7d7d7"
+              style="
+                border: 1px solid #f8f8f8;
+                box-shadow: 2px 2px 7px 2px #e7d7d7;
+              "
             >
               <div class="row">
                 <div class="d-flex">
@@ -331,18 +370,15 @@ export default {
       return `${day}-${month}-${year}`;
     },
     validateInput() {
-      this.fetchCustomSheetData.rate_per_mile = this.fetchCustomSheetData.rate_per_mile.replace(
-        /[^0-9.]/g,
-        ""
-      );
+      this.fetchCustomSheetData.rate_per_mile =
+        this.fetchCustomSheetData.rate_per_mile.replace(/[^0-9.]/g, "");
 
-      const decimalCount = (this.fetchCustomSheetData.rate_per_mile.match(/\./g) || [])
-        .length;
+      const decimalCount = (
+        this.fetchCustomSheetData.rate_per_mile.match(/\./g) || []
+      ).length;
       if (decimalCount > 1) {
-        this.fetchCustomSheetData.rate_per_mile = this.fetchCustomSheetData.rate_per_mile.slice(
-          0,
-          -1
-        );
+        this.fetchCustomSheetData.rate_per_mile =
+          this.fetchCustomSheetData.rate_per_mile.slice(0, -1);
       }
     },
     cancelButtonClicked() {
@@ -404,11 +440,14 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(`${VITE_API_URL}/client_invoices/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/client_invoices/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const clientInvoice = response.data.client_invoice;
 
         this.getClientInvoiceDetail = clientInvoice;
@@ -568,9 +607,6 @@ a[data-v-507f63b7] {
 ul.nav-pills {
   height: 53px;
   border-bottom: 1px solid #b8b1b1;
-}
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

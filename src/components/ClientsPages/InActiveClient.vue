@@ -113,7 +113,8 @@
               >
                 {{ getJobName(job) }}
 
-                <template v-if="index !== client.job_ids.length - 1"> </template>
+                <template v-if="index !== client.job_ids.length - 1">
+                </template>
               </span>
             </td>
             <td v-text="client.address"></td>
@@ -128,7 +129,9 @@
                   type="checkbox"
                   id="togBtn"
                   v-model="client.activated"
-                  @change="clientStatusChangeMethod(client.id, client.activated)"
+                  @change="
+                    clientStatusChangeMethod(client.id, client.activated)
+                  "
                   :checked="client.activated"
                 />
                 <div class="slider round"></div>
@@ -185,7 +188,11 @@
         </tbody>
       </table>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="getClientDetail?.length >= 10">
+    <div
+      class="mx-3"
+      style="text-align: right"
+      v-if="getClientDetail?.length >= 10"
+    >
       <!-- <button class="btn btn-outline-dark btn-sm">
         {{ getClientDetail.length }} Records Per Page
       </button> -->
@@ -203,10 +210,14 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+              >20 Records</a
+            >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+              >50 Records</a
+            >
           </li>
           <li>
             <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
@@ -352,7 +363,9 @@ export default {
           const message = "Client re-activated successfully!";
           this.$refs.successAlert.showSuccess(message);
           // this.inactiveCandidateData = response.data;
-          const updatedClient = this.getClientDetail.find((client) => client.id === id);
+          const updatedClient = this.getClientDetail.find(
+            (client) => client.id === id
+          );
           if (updatedClient) {
             updatedClient.activated = activated;
           }
@@ -368,9 +381,13 @@ export default {
           "client[activated]": false,
           per_page: this.itemsPerPage,
         };
-        const response = await axios.get(`${VITE_API_URL}/client_filter`, { params });
+        const response = await axios.get(`${VITE_API_URL}/client_filter`, {
+          params,
+        });
         this.getClientDetail = response.data.data;
-        this.totalPages = Math.ceil(response.data.client_filter / this.itemsPerPage);
+        this.totalPages = Math.ceil(
+          response.data.client_filter / this.itemsPerPage
+        );
         // this.currentPage = response.data.current_page;
         // this.totalPages = response.data.total_pages;
         // this.totalCount = response.data.clients_count;
@@ -470,9 +487,6 @@ input.form-check-input {
 ul.nav-pills {
   height: 53px;
   border-bottom: 1px solid #b8b1b1;
-}
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

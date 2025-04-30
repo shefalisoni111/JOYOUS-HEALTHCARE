@@ -3,7 +3,10 @@
     <!-- Sidebar -->
     <nav id="sidebar">
       <div class="sidebar-header">
-        <a class="navbar-brand ps-3" href="/home" style="outline: none; box-shadow: none"
+        <a
+          class="navbar-brand ps-3"
+          href="/home"
+          style="outline: none; box-shadow: none"
           ><img
             src="../assets/logo.png"
             class="img-fluid"
@@ -30,14 +33,17 @@
           </router-link>
         </li>
 
-        <li>
+        <li :class="{ active: isClientActive }">
           <a
             href="#clientMenu"
             data-bs-toggle="collapse"
             aria-expanded="true"
             class="d-flex justify-content-between"
           >
-            <span><i class="bi bi-people"></i> <span class="ms-2">Client</span></span>
+            <span
+              ><i class="bi bi-people"></i>
+              <span class="ms-2">Client</span></span
+            >
             <img
               src="../assets/ArrowDown.png"
               class="img-fluid pe-2"
@@ -48,17 +54,21 @@
           <ul class="collapse list-unstyled" id="clientMenu">
             <li><router-link to="/client-list">Client List</router-link></li>
             <li><router-link to="/site">Site</router-link></li>
-            <li><router-link to="/rates_and_rules">Rates & Rules</router-link></li>
+            <li>
+              <router-link to="/rates_and_rules">Rates & Rules</router-link>
+            </li>
           </ul>
         </li>
 
-        <li>
+        <li :class="{ active: isStaffMenuActive }">
           <a
             href="#staffMenu"
             data-bs-toggle="collapse"
             class="d-flex justify-content-between"
           >
-            <span> <i class="bi bi-person"></i> <span class="ms-2">Staff</span> </span>
+            <span>
+              <i class="bi bi-person"></i> <span class="ms-2">Staff</span>
+            </span>
             <img
               src="../assets/ArrowDown.png"
               class="img-fluid pe-2"
@@ -68,7 +78,9 @@
           </a>
           <ul class="collapse list-unstyled" id="staffMenu">
             <li><router-link to="/staff-list">Staff List</router-link></li>
-            <li><router-link to="/availability">Staff Availability</router-link></li>
+            <li>
+              <router-link to="/availability">Staff Availability</router-link>
+            </li>
           </ul>
         </li>
 
@@ -79,17 +91,20 @@
         </li>
 
         <li>
-          <router-link to="/schedule"> <i class="bi bi-clock"></i> Schedule </router-link>
+          <router-link to="/schedule">
+            <i class="bi bi-clock"></i> Schedule
+          </router-link>
         </li>
 
-        <li>
+        <li :class="{ active: isTimesheetMenuActive }">
           <a
             href="#timesheetMenu"
             data-bs-toggle="collapse"
             class="d-flex justify-content-between"
           >
             <span>
-              <i class="bi bi-file-earmark-text"></i><span class="ms-2">Timesheet</span>
+              <i class="bi bi-file-earmark-text"></i
+              ><span class="ms-2">Timesheet</span>
             </span>
 
             <img
@@ -101,19 +116,27 @@
           </a>
 
           <ul class="collapse list-unstyled" id="timesheetMenu">
-            <li><router-link to="/timesheet/weekly">Weekly Timesheet</router-link></li>
-            <li><router-link to="/timesheet/custom">Custom Timesheet</router-link></li>
-            <li><router-link to="/timesheet/signed">Signed Timesheet</router-link></li>
+            <li>
+              <router-link to="/timesheet/weekly">Weekly Timesheet</router-link>
+            </li>
+            <li>
+              <router-link to="/timesheet/custom">Custom Timesheet</router-link>
+            </li>
+            <li>
+              <router-link to="/timesheet/signed">Signed Timesheet</router-link>
+            </li>
           </ul>
         </li>
 
-        <li>
+        <li :class="{ active: isInvoiceMenuActive }">
           <a
             href="#invoiceMenu"
             data-bs-toggle="collapse"
             class="d-flex justify-content-between"
           >
-            <span><i class="bi bi-receipt"></i><span class="ms-2">Invoice</span> </span>
+            <span
+              ><i class="bi bi-receipt"></i><span class="ms-2">Invoice</span>
+            </span>
 
             <img
               src="../assets/ArrowDown.png"
@@ -124,9 +147,15 @@
           </a>
           <ul class="collapse list-unstyled" id="invoiceMenu">
             <li>
-              <router-link to="/invoice/client-invoice">Client Invoice</router-link>
+              <router-link to="/invoice/client-invoice"
+                >Client Invoice</router-link
+              >
             </li>
-            <li><router-link to="/invoice/staff-payroll">Staff Payroll</router-link></li>
+            <li>
+              <router-link to="/invoice/staff-payroll"
+                >Staff Payroll</router-link
+              >
+            </li>
           </ul>
         </li>
 
@@ -158,7 +187,10 @@
               @click.prevent="handleNotificationClick"
             >
               <i class="bi bi-bell"></i>
-              <span v-if="unread_count > 0" class="badge bg-primary badge-number">
+              <span
+                v-if="unread_count > 0"
+                class="badge bg-primary badge-number"
+              >
                 {{ unread_count }}
               </span>
               Notification
@@ -222,7 +254,9 @@
             >
               <li>
                 <a class="dropdown-item text-capitalize">
-                  <h5 class="d-block mb-0 fw-bold">{{ getAdminData.first_name }}</h5>
+                  <h5 class="d-block mb-0 fw-bold">
+                    {{ getAdminData.first_name }}
+                  </h5>
                   <!-- <span class="d-block">Admin</span> -->
                 </a>
               </li>
@@ -261,7 +295,8 @@
                 <router-link
                   class="dropdown-item text-capitalize d-flex align-items-center"
                   :to="adminLink"
-                  ><i class="bi bi-gear-wide pe-2"></i><span>Personal Settings</span>
+                  ><i class="bi bi-gear-wide pe-2"></i
+                  ><span>Personal Settings</span>
                 </router-link>
               </li>
 
@@ -270,7 +305,10 @@
               </li>
 
               <li class="cursor-pointer">
-                <a class="dropdown-item d-flex align-items-center" v-on:click="confirmed">
+                <a
+                  class="dropdown-item d-flex align-items-center"
+                  v-on:click="confirmed"
+                >
                   <i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp;
                   <span>Sign Out</span>
                 </a>
@@ -355,6 +393,26 @@ export default {
 
   components: {},
   computed: {
+    isClientActive() {
+      return ["/client-list", "/site/siteLists", "/rates_and_rules"].includes(
+        this.$route.path
+      );
+    },
+    isStaffMenuActive() {
+      return ["/staff-list", "/availability"].includes(this.$route.path);
+    },
+    isTimesheetMenuActive() {
+      return [
+        "/timesheet/weekly",
+        "/timesheet/custom",
+        "/timesheet/signed",
+      ].includes(this.$route.path);
+    },
+    isInvoiceMenuActive() {
+      return ["/invoice/client-invoice", "/invoice/staff-payroll"].includes(
+        this.$route.path
+      );
+    },
     visibleNotifications() {
       return this.showAll ? this.notifications : this.notifications.slice(0, 2);
     },
@@ -476,12 +534,15 @@ export default {
       const token = localStorage.getItem("token");
       const merchantId = localStorage.getItem("merchant_id");
       try {
-        const response = await axios.get(`${VITE_API_URL}/merchants/${merchantId}`, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/merchants/${merchantId}`,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const imagePath = response.data.data.profile_photo;
         this.localProfileImage = `${VITE_API_URL}${imagePath}`;
         // console.log(this.localProfileImage)
@@ -519,11 +580,14 @@ export default {
         this.errorMessage = "";
         this.searchResults = [];
 
-        const response = await axiosInstance.get(`${VITE_API_URL}/search_candidate`, {
-          params: {
-            candidate_query: this.searchQuery.trim(),
-          },
-        });
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/search_candidate`,
+          {
+            params: {
+              candidate_query: this.searchQuery.trim(),
+            },
+          }
+        );
 
         // this.searchResults = response.data.candidate|| [];
         if (response.data.candidate && response.data.candidate.length > 0) {
@@ -538,7 +602,8 @@ export default {
         ) {
           this.errorMessage = "Not Staff found for the specified criteria";
         } else {
-          this.errorMessage = "An unexpected error occurred. Please try again later.";
+          this.errorMessage =
+            "An unexpected error occurred. Please try again later.";
         }
         // if (
         //   (error.response && error.response.status === 404) ||
@@ -645,18 +710,21 @@ export default {
 
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch(`${VITE_API_URL}/chats/send_message_to_channel`, {
-          method: "POST",
-          body: JSON.stringify({
-            channel_sid: this.channelSid,
-            message: tempMessage,
-          }),
-          headers: {
-            "Access-Control-Allow-Headers": "Content-Type",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `${VITE_API_URL}/chats/send_message_to_channel`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              channel_sid: this.channelSid,
+              message: tempMessage,
+            }),
+            headers: {
+              "Access-Control-Allow-Headers": "Content-Type",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         const data = await response.json();
 
@@ -670,7 +738,8 @@ export default {
         } else {
           Swal.fire({
             title: "Error!",
-            text: data.message || "Failed to send the message. Please try again.",
+            text:
+              data.message || "Failed to send the message. Please try again.",
             icon: "error",
             confirmButtonText: "OK",
           });
@@ -682,8 +751,7 @@ export default {
       } catch (error) {
         Swal.fire({
           title: "Error!",
-          text:
-            "An unexpected error occurred while sending the message. Please try again.",
+          text: "An unexpected error occurred while sending the message. Please try again.",
           icon: "error",
           confirmButtonText: "OK",
         });
@@ -698,16 +766,19 @@ export default {
 
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(`${VITE_API_URL}/chats/fetch_messages`, {
-          params: {
-            channel_sid: channelSid,
-          },
-          headers: {
-            "Access-Control-Allow-Headers": "Content-Type",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/chats/fetch_messages`,
+          {
+            params: {
+              channel_sid: channelSid,
+            },
+            headers: {
+              "Access-Control-Allow-Headers": "Content-Type",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         this.selectedCandidateMessages = response.data.messages || [];
       } catch (error) {
@@ -762,7 +833,8 @@ export default {
       // User scroll detection
       const isAtTop = chatMessages.scrollTop === 0;
       const isAtBottom =
-        chatMessages.scrollTop + chatMessages.clientHeight >= chatMessages.scrollHeight;
+        chatMessages.scrollTop + chatMessages.clientHeight >=
+        chatMessages.scrollHeight;
 
       if (isAtTop) {
         // this.fetchMessages(this.channelSid);
@@ -843,17 +915,20 @@ export default {
       this.isLoading = true;
 
       try {
-        const response = await axios.get(`${VITE_API_URL}/agency_notifications`, {
-          params: {
-            page: this.currentPage,
-            per_page: this.itemsPerPage,
-          },
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/agency_notifications`,
+          {
+            params: {
+              page: this.currentPage,
+              per_page: this.itemsPerPage,
+            },
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (response.status === 200) {
           // this.notifications = response.data.notifications || [];
@@ -948,7 +1023,17 @@ export default {
   align-items: center;
   padding: 15px;
 }
-
+ul.components li a:hover,
+ul.components li.active > a,
+ul.components li.router-link-active,
+ul.components li a.router-link-active {
+  background: #1b59f81a;
+  color: #1b59f8;
+  width: 193px;
+  height: 38px;
+  padding-left: 5px;
+  border-radius: 10px;
+}
 .sidebar-header h3 {
   font-size: 1.2rem;
   margin-bottom: 0;
@@ -983,18 +1068,6 @@ ul.components li a {
   padding-left: 5px;
 }
 
-ul.components li a:hover,
-ul.components li a:active {
-  background: #1b59f81a;
-  color: #1b59f8;
-  width: 193px;
-  height: 38px;
-
-  padding-left: 5px;
-  border-radius: 10px;
-}
-
-/* Dropdown menu styles */
 ul.list-unstyled {
   padding-left: 15px;
 }

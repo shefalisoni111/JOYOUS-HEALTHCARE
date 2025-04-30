@@ -77,9 +77,14 @@
                       <div
                         class="d-md-flex d-lg-flex justify-content-md-between justify-content-lg-between align-items-center"
                       >
-                        <div class="d-flex gap-3 align-items-center mt-lg-0 mt-3">
+                        <div
+                          class="d-flex gap-3 align-items-center mt-lg-0 mt-3"
+                        >
                           <div
-                            v-if="!paginateCandidates || paginateCandidates.length === 0"
+                            v-if="
+                              !paginateCandidates ||
+                              paginateCandidates.length === 0
+                            "
                             class="tooltip-wrapper"
                             data-bs-toggle="tooltip"
                             title="No data available to export"
@@ -108,7 +113,10 @@
                               @click="resetFilter"
                               class="btn btn-secondary"
                               :disabled="
-                                !client_id && !site_id && !job_id && !localSearchQuery
+                                !client_id &&
+                                !site_id &&
+                                !job_id &&
+                                !localSearchQuery
                               "
                             >
                               Reset Filters
@@ -122,11 +130,18 @@
                 <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                    
                   </ul> -->
-                <div class="d-flex gap-2 mb-3 justify-content-center" v-if="showFilters">
+                <div
+                  class="d-flex gap-2 mb-3 justify-content-center"
+                  v-if="showFilters"
+                >
                   <div class="d-flex gap-2 mt-3">
                     <div></div>
 
-                    <select v-model="client_id" id="selectClients" @change="filterData">
+                    <select
+                      v-model="client_id"
+                      id="selectClients"
+                      @change="filterData"
+                    >
                       <option value="" disabled>All Client</option>
                       <option
                         v-for="option in clientData"
@@ -152,7 +167,11 @@
                         {{ option.site_name }}
                       </option>
                     </select>
-                    <select v-model="job_id" id="selectOption" @change="filterData">
+                    <select
+                      v-model="job_id"
+                      id="selectOption"
+                      @change="filterData"
+                    >
                       <option value="" disabled>All Position</option>
                       <option
                         v-for="option in options"
@@ -177,7 +196,9 @@
                     <button
                       @click="resetFilter"
                       class="btn btn-secondary"
-                      :disabled="!client_id && !site_id && !job_id && !localSearchQuery"
+                      :disabled="
+                        !client_id && !site_id && !job_id && !localSearchQuery
+                      "
                     >
                       Reset Filters
                     </button>
@@ -216,7 +237,9 @@
                           <th scope="col">Self Employed</th>
                           <th scope="col">Umbrella</th>
                           <th scope="col">PAYE</th>
-                          <th scope="col" style="width: 10%">Created By and Time</th>
+                          <th scope="col" style="width: 10%">
+                            Created By and Time
+                          </th>
                           <th scope="col">Last Update</th>
                           <th scope="col">Action</th>
                         </tr>
@@ -467,8 +490,14 @@
                           <td>{{ rate.job }}</td>
                           <td class="text-capitalize">
                             <span
-                              style="background: orange; padding: 3px; border-radius: 4px"
-                              >{{ rate.day === "all_day" ? "weekly" : rate.day }}</span
+                              style="
+                                background: orange;
+                                padding: 3px;
+                                border-radius: 4px;
+                              "
+                              >{{
+                                rate.day === "all_day" ? "weekly" : rate.day
+                              }}</span
                             >
                           </td>
                           <td>
@@ -536,7 +565,9 @@
                           <th scope="col">Self Employed</th>
                           <th scope="col">Umbrella</th>
                           <th scope="col">PAYE</th>
-                          <th scope="col" style="width: 10%">Created By and Time</th>
+                          <th scope="col" style="width: 10%">
+                            Created By and Time
+                          </th>
                           <th scope="col">Last Update</th>
                           <th scope="col">Action</th>
                         </tr>
@@ -550,7 +581,11 @@
                         <tr>
                           <td>
                             <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" />
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value=""
+                              />
                             </div>
                           </td>
                           <td>{{ data.client }}</td>
@@ -608,7 +643,11 @@
                         >
                           <td>
                             <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" />
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value=""
+                              />
                             </div>
                           </td>
                           <td>{{ rate.client }}</td>
@@ -616,7 +655,11 @@
                           <td>{{ rate.job }}</td>
                           <td class="text-capitalize">
                             <span
-                              style="background: orange; padding: 3px; border-radius: 4px"
+                              style="
+                                background: orange;
+                                padding: 3px;
+                                border-radius: 4px;
+                              "
                               >{{ rate.day }}</span
                             >
                           </td>
@@ -815,14 +858,16 @@ export default {
       return uniqueEntries.slice(startIndex, endIndex);
     },
     paginateCandidates() {
-      if (!this.getRateRulesData || this.getRateRulesData.length === 0) return [];
+      if (!this.getRateRulesData || this.getRateRulesData.length === 0)
+        return [];
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.getRateRulesData.slice(startIndex, endIndex);
     },
 
     totalRecordsOnPage() {
-      if (!this.getRateRulesData || this.getRateRulesData.length === 0) return 1;
+      if (!this.getRateRulesData || this.getRateRulesData.length === 0)
+        return 1;
       return Math.ceil(this.getRateRulesData.length / this.itemsPerPage);
     },
     groupedRateRulesData() {
@@ -849,7 +894,9 @@ export default {
       return Object.values(groupedData);
     },
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
     selectedOptionText() {
@@ -857,7 +904,9 @@ export default {
       return job_id ? job_id.name : "";
     },
     selectClients() {
-      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      const client_id = this.clientData.find(
+        (option) => option.id === this.client_id
+      );
       return client_id ? client_id.first_name : "";
     },
   },
@@ -917,7 +966,9 @@ export default {
       return `${merchantName} ${formattedDate} ${time}`;
     },
     getFilteredData(siteId) {
-      return this.filteredRateRulesData.find((rate) => rate.site_id === siteId) || {};
+      return (
+        this.filteredRateRulesData.find((rate) => rate.site_id === siteId) || {}
+      );
     },
     AddRateRules() {
       this.$refs.add_rate_rules.getTimeShift();
@@ -942,9 +993,12 @@ export default {
       }
 
       try {
-        const response = await axios.get(`${VITE_API_URL}/rate_and_rule_filter`, {
-          params,
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/rate_and_rule_filter`,
+          {
+            params,
+          }
+        );
         this.getRateRulesData = response.data.data || [];
         if (this.getRateRulesData.length === 0) {
           this.errorMessageFilter = "Report Not Found!";
@@ -1191,7 +1245,9 @@ export default {
     },
 
     handleCheckboxChange(dataId) {
-      const selectedData = this.getRateRulesData.find((data) => data.id === dataId);
+      const selectedData = this.getRateRulesData.find(
+        (data) => data.id === dataId
+      );
 
       if (!selectedData) {
         return;
@@ -1200,7 +1256,11 @@ export default {
       const { job_id, job, client_id } = selectedData;
 
       this.getRateRulesData.forEach((data) => {
-        if (data.job_id === job_id && data.job === job && data.client_id === client_id) {
+        if (
+          data.job_id === job_id &&
+          data.job === job &&
+          data.client_id === client_id
+        ) {
           this.checkedClient[data.id] = this.checkedClient[dataId];
 
           if (this.checkedClient[dataId]) {
@@ -1253,11 +1313,14 @@ export default {
       const token = localStorage.getItem("token");
 
       try {
-        const response = await axios.delete(`${VITE_API_URL}/rate_and_rules/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.delete(
+          `${VITE_API_URL}/rate_and_rules/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         // Handle the success response if needed
         // console.log("Delete successful:", response.data);
@@ -1366,7 +1429,8 @@ export default {
       // this.activeSiteId = this.activeSiteId === index ? null : index;
 
       this.filteredRateRulesData = this.getRateRulesData.filter(
-        (rate) => rate.site_id === siteId && rate.client === client && rate.job === job
+        (rate) =>
+          rate.site_id === siteId && rate.client === client && rate.job === job
       );
     },
     formatTime(time) {
@@ -1461,9 +1525,6 @@ a[data-v-507f63b7] {
 ul.nav-pills {
   height: 53px;
   border-bottom: 1px solid #b8b1b1;
-}
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

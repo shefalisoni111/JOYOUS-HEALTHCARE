@@ -46,7 +46,11 @@
         </tbody>
         <tbody v-else>
           <tr>
-            <td colspan="3" class="text-danger text-center mt-2" v-if="!isLoading">
+            <td
+              colspan="3"
+              class="text-danger text-center mt-2"
+              v-if="!isLoading"
+            >
               {{ "Data Not Found!" }}
             </td>
           </tr>
@@ -119,18 +123,25 @@ export default {
       if (result.isConfirmed) {
         try {
           const token = localStorage.getItem("token");
-          const response = await axios.delete(`${VITE_API_URL}/client_users/${userId}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          const response = await axios.delete(
+            `${VITE_API_URL}/client_users/${userId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
 
           if (response.status === 200 || response.status === 204) {
             Swal.fire("Deleted!", "User has been deleted.", "success");
 
             this.createdClientUser();
           } else {
-            Swal.fire("Error", "There was an issue deleting the user.", "error");
+            Swal.fire(
+              "Error",
+              "There was an issue deleting the user.",
+              "error"
+            );
           }
         } catch (error) {
           Swal.fire("Error", "There was an issue deleting the user.", "error");
@@ -257,9 +268,6 @@ a:link {
 ul.nav-pills {
   height: 53px;
   border-bottom: 1px solid #b8b1b1;
-}
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

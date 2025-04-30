@@ -6,11 +6,16 @@
         <div class="py-3">
           <ol class="breadcrumb mb-1">
             <li class="breadcrumb-item active text-uppercase fs-6">
-              <router-link class="nav-link d-inline" aria-current="page" to="/home"
+              <router-link
+                class="nav-link d-inline"
+                aria-current="page"
+                to="/home"
                 >Dashboard</router-link
               >
               /
-              <router-link to="/invoice/staff-payroll" class="text-decoration-none"
+              <router-link
+                to="/invoice/staff-payroll"
+                class="text-decoration-none"
                 ><span class="color-fonts"
                   >Staff Invoices / Generate Staff View</span
                 ></router-link
@@ -26,7 +31,10 @@
             <!-- <component :is="selectedTemplate"></component> -->
             <div
               class="text-muted bg-white p-3"
-              style="border: 1px solid #f8f8f8; box-shadow: 2px 2px 7px 2px #e7d7d7"
+              style="
+                border: 1px solid #f8f8f8;
+                box-shadow: 2px 2px 7px 2px #e7d7d7;
+              "
             >
               <div class="">
                 <div class="col-12">
@@ -35,8 +43,12 @@
                       <h6 class="text-muted">BILLED FROM</h6>
                       <h5 class="fw-bold">{{ invoiceData?.merchant_name }}</h5>
 
-                      <p class="mb-0">Mob No:{{ invoiceData?.merchant_phone }}</p>
-                      <p class="mb-0">Email:{{ invoiceData?.merchant_email }}</p>
+                      <p class="mb-0">
+                        Mob No:{{ invoiceData?.merchant_phone }}
+                      </p>
+                      <p class="mb-0">
+                        Email:{{ invoiceData?.merchant_email }}
+                      </p>
                     </div>
                     <div class="col-4"></div>
                     <div class="col-4">
@@ -56,7 +68,9 @@
                       <p class="mb-0">
                         Mob No: {{ invoiceData?.candidate_phone_number }}
                       </p>
-                      <p class="mb-0">Email: {{ invoiceData?.candidate_email }}</p>
+                      <p class="mb-0">
+                        Email: {{ invoiceData?.candidate_email }}
+                      </p>
                     </div>
                     <div class="col-4">
                       <!-- <p>{{ invoiceData?.number }}</p> -->
@@ -68,8 +82,12 @@
                     <div class="col-4">
                       <div class="pe-3 float-end">
                         <h6 class="text-muted">INVOICE INFORMATION</h6>
-                        <h5>FROM: {{ this.formatDate(invoiceData?.start_date) }}</h5>
-                        <h5>TO : {{ this.formatDate(invoiceData?.end_date) }}</h5>
+                        <h5>
+                          FROM: {{ this.formatDate(invoiceData?.start_date) }}
+                        </h5>
+                        <h5>
+                          TO : {{ this.formatDate(invoiceData?.end_date) }}
+                        </h5>
                       </div>
                     </div>
                   </div>
@@ -95,11 +113,15 @@
                     <tbody>
                       <!-- Loop through site details and timesheets -->
                       <template
-                        v-for="(candidate, candidateIndex) in invoiceData?.site_details"
+                        v-for="(
+                          candidate, candidateIndex
+                        ) in invoiceData?.site_details"
                         :key="candidateIndex"
                       >
                         <tr
-                          v-for="(timesheet, timesheetIndex) in candidate.site_timesheets"
+                          v-for="(
+                            timesheet, timesheetIndex
+                          ) in candidate.site_timesheets"
                           :key="timesheetIndex"
                         >
                           <td scope="col">
@@ -117,9 +139,13 @@
                           <td scope="col" class="text-capitalize">
                             {{ invoiceData?.candidate_name }}
                           </td>
-                          <td scope="col">{{ invoiceData?.job_position || "" }}</td>
+                          <td scope="col">
+                            {{ invoiceData?.job_position || "" }}
+                          </td>
                           <td scope="col">{{ invoiceData?.unit || "" }}</td>
-                          <td scope="col">{{ "£" + timesheet?.staff_rate || "" }}</td>
+                          <td scope="col">
+                            {{ "£" + timesheet?.staff_rate || "" }}
+                          </td>
                           <td scope="col">{{ timesheet?.hours || "" }}</td>
                         </tr>
                       </template>
@@ -154,7 +180,10 @@
           <div class="col-sm-12 col-md-5 mt-4 mt-lg-0 mt-md-0">
             <div
               class="text-muted bg-white p-3"
-              style="border: 1px solid #f8f8f8; box-shadow: 2px 2px 7px 2px #e7d7d7"
+              style="
+                border: 1px solid #f8f8f8;
+                box-shadow: 2px 2px 7px 2px #e7d7d7;
+              "
             >
               <div class="row mt-4">
                 <div class="d-flex gap-2">
@@ -352,9 +381,6 @@ a[data-v-507f63b7] {
 ul.nav-pills {
   height: 53px;
   border-bottom: 1px solid #b8b1b1;
-}
-table th {
-  background-color: #ff5f30;
 }
 
 button.nav-link > li.nav-item {

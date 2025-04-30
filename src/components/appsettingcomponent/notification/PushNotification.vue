@@ -399,7 +399,6 @@ ol.breadcrumb li span {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   color: #ff5722;
-  border-bottom: 2px solid #ff5722;
   border-radius: 0;
   background-color: transparent;
   font-weight: bold;

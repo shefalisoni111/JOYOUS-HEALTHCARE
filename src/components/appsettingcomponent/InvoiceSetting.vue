@@ -9,7 +9,9 @@
           <div class="leftside">
             <div class="heading mb-3 position-relative">
               <p class="bforeline"></p>
-              <p class="mb-0 text-uppercase fw-bold genSetting">invoice Settings</p>
+              <p class="mb-0 text-uppercase fw-bold genSetting">
+                invoice Settings
+              </p>
               <p class="afterline"></p>
             </div>
             <div>
@@ -22,7 +24,9 @@
                   >
                     <div class="job ms-2">
                       <h6 class="mb-0 text-capitalize">invoice setting</h6>
-                      <p class="text-capitalize mb-0">check invoice dues date</p>
+                      <p class="text-capitalize mb-0">
+                        check invoice dues date
+                      </p>
                     </div>
                   </router-link>
                 </li>
@@ -36,7 +40,8 @@
               <div class="d-flex align-items-center">
                 <ol class="breadcrumb mb-1 p-3">
                   <li class="breadcrumb-item active text-uppercase fw-bold">
-                    invoice setting / <span class="clr">rate And invoice setting</span>
+                    invoice setting /
+                    <span class="clr">rate And invoice setting</span>
                   </li>
                 </ol>
               </div>
@@ -65,14 +70,16 @@
                 <div class="col-12">
                   <div class="d-flex my-3">
                     <div class="card p-2 alert alert-warning">
-                      <b>Warning!</b> Changes you made on split rate, will affect the
-                      entire site accordingly.
+                      <b>Warning!</b> Changes you made on split rate, will
+                      affect the entire site accordingly.
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col-12">
-                <div class="d-flex justify-content-between align-content-center">
+                <div
+                  class="d-flex justify-content-between align-content-center"
+                >
                   <h6 class="fw-bold">INVOICE SETTINGS DETAILS</h6>
                   <button
                     class="btn btn-primary me-3"
@@ -134,11 +141,11 @@
               <div class="col-9">
                 <div class="d-flex my-3">
                   <div class="card p-2 alert alert-primary">
-                    If the cutoff day is chosen, each invoice created prior to the cutoff
-                    day will be placed in the previous/corresponding week, depending on
-                    the date.<br />
-                    After the cutoff day, any invoice created will be for the current
-                    week. Only applicable to weekly invoices.
+                    If the cutoff day is chosen, each invoice created prior to
+                    the cutoff day will be placed in the previous/corresponding
+                    week, depending on the date.<br />
+                    After the cutoff day, any invoice created will be for the
+                    current week. Only applicable to weekly invoices.
                   </div>
                 </div>
               </div>
@@ -196,7 +203,9 @@
                       <input
                         type="checkbox"
                         id="togBtn"
-                        v-model="fetchInvoiceSetting.enable_site_name_in_invoice"
+                        v-model="
+                          fetchInvoiceSetting.enable_site_name_in_invoice
+                        "
                         @input="handleInputChange"
                       />
                       <div class="slider round"></div>
@@ -255,7 +264,10 @@
                 </div>
               </div>
               <div class="col-9">
-                <div class="d-flex my-3 justify-content-between" style="gap: 12.55%">
+                <div
+                  class="d-flex my-3 justify-content-between"
+                  style="gap: 12.55%"
+                >
                   <div>Client Invoice Template:</div>
                   <div class="w-100">
                     <select
@@ -268,7 +280,10 @@
                     </select>
                   </div>
                 </div>
-                <div class="d-flex my-3 justify-content-between" style="gap: 13%">
+                <div
+                  class="d-flex my-3 justify-content-between"
+                  style="gap: 13%"
+                >
                   <div>Staff Invoice Template:</div>
                   <div class="w-100">
                     <select
@@ -418,8 +433,9 @@
                 <div class="col-12">
                   <div class="d-flex my-3">
                     <div class="card p-2 alert alert-warning">
-                      <b>Warning!</b> Changes you made on enable booking code, will affect
-                      the entire client invoice and signed timesheet accordingly.
+                      <b>Warning!</b> Changes you made on enable booking code,
+                      will affect the entire client invoice and signed timesheet
+                      accordingly.
                     </div>
                   </div>
                 </div>
@@ -440,8 +456,9 @@
                 <div class="col-12">
                   <div class="d-flex my-3">
                     <div class="card p-2 alert alert-warning">
-                      <b>Warning!</b> Changes you made on enable Exclude VAT on mileage or
-                      new row, will affect the entire site accordingly.
+                      <b>Warning!</b> Changes you made on enable Exclude VAT on
+                      mileage or new row, will affect the entire site
+                      accordingly.
                     </div>
                   </div>
                 </div>
@@ -579,10 +596,11 @@ export default {
     },
     updateInvoiceNumberFormat() {
       this.isModified = true;
-      this.fetchInvoiceSetting.invoice_number_format = this.validationNumberString(
-        this.fetchInvoiceSetting.invoice_number_format,
-        10
-      );
+      this.fetchInvoiceSetting.invoice_number_format =
+        this.validationNumberString(
+          this.fetchInvoiceSetting.invoice_number_format,
+          10
+        );
     },
     validationNumberString(value, maxLength) {
       if (!value) return "";
@@ -605,17 +623,14 @@ export default {
       const regex = /^[A-Za-z\s]*$/;
 
       if (this.fetchInvoiceSetting.pdf_name_format.length > 10) {
-        this.pdfNameFormatError = "PDF Name Format must Not exceed 10 characters.";
-        this.fetchInvoiceSetting.pdf_name_format = this.fetchInvoiceSetting.pdf_name_format.slice(
-          0,
-          10
-        );
+        this.pdfNameFormatError =
+          "PDF Name Format must Not exceed 10 characters.";
+        this.fetchInvoiceSetting.pdf_name_format =
+          this.fetchInvoiceSetting.pdf_name_format.slice(0, 10);
       } else if (!regex.test(this.fetchInvoiceSetting.pdf_name_format)) {
         this.pdfNameFormatError = "PDF Name Format can only contain letters.";
-        this.fetchInvoiceSetting.pdf_name_format = this.fetchInvoiceSetting.pdf_name_format.replace(
-          /[^A-Za-z\s]/g,
-          ""
-        );
+        this.fetchInvoiceSetting.pdf_name_format =
+          this.fetchInvoiceSetting.pdf_name_format.replace(/[^A-Za-z\s]/g, "");
       }
       this.handleInputChange();
     },
@@ -626,17 +641,20 @@ export default {
       const regex = /^[A-Za-z\s]*$/;
 
       if (this.fetchInvoiceSetting.staff_invoice_table_head.length > 10) {
-        this.invoiceTableHeadError = "Invoice Table Head must Not exceed 10 characters.";
-        this.fetchInvoiceSetting.staff_invoice_table_head = this.fetchInvoiceSetting.staff_invoice_table_head.slice(
-          0,
-          10
-        );
-      } else if (!regex.test(this.fetchInvoiceSetting.staff_invoice_table_head)) {
-        this.invoiceTableHeadError = "Invoice Table Head can only contain letters.";
-        this.fetchInvoiceSetting.staff_invoice_table_head = this.fetchInvoiceSetting.staff_invoice_table_head.replace(
-          /[^A-Za-z\s]/g,
-          ""
-        );
+        this.invoiceTableHeadError =
+          "Invoice Table Head must Not exceed 10 characters.";
+        this.fetchInvoiceSetting.staff_invoice_table_head =
+          this.fetchInvoiceSetting.staff_invoice_table_head.slice(0, 10);
+      } else if (
+        !regex.test(this.fetchInvoiceSetting.staff_invoice_table_head)
+      ) {
+        this.invoiceTableHeadError =
+          "Invoice Table Head can only contain letters.";
+        this.fetchInvoiceSetting.staff_invoice_table_head =
+          this.fetchInvoiceSetting.staff_invoice_table_head.replace(
+            /[^A-Za-z\s]/g,
+            ""
+          );
       }
       this.handleInputChange();
     },
@@ -733,7 +751,6 @@ ul.generalsetting li i.rounded-circle a.router-link-active:active {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   color: #ff5722;
-  border-bottom: 2px solid #ff5722;
   border-radius: 0;
   background-color: transparent;
   font-weight: bold;

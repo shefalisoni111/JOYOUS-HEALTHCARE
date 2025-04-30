@@ -191,10 +191,10 @@
                 aria-labelledby="candidate"
               >
                 <p class="p-4">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque dolore
-                  quasi architecto magni aperiam totam. Quibusdam magnam eaque possimus
-                  ipsum. Necessitatibus molestias rerum architecto ipsam quis labore quod
-                  quo sint?
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
+                  dolore quasi architecto magni aperiam totam. Quibusdam magnam
+                  eaque possimus ipsum. Necessitatibus molestias rerum
+                  architecto ipsam quis labore quod quo sint?
                 </p>
               </div>
               <div
@@ -204,10 +204,10 @@
                 aria-labelledby="business-unit"
               >
                 <p class="p-4">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque dolore
-                  quasi architecto magni aperiam totam. Quibusdam magnam eaque possimus
-                  ipsum. Necessitatibus molestias rerum architecto ipsam quis labore quod
-                  quo sint?
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
+                  dolore quasi architecto magni aperiam totam. Quibusdam magnam
+                  eaque possimus ipsum. Necessitatibus molestias rerum
+                  architecto ipsam quis labore quod quo sint?
                 </p>
               </div>
               <div
@@ -217,10 +217,10 @@
                 aria-labelledby=" reminders"
               >
                 <p class="p-4">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque dolore
-                  quasi architecto magni aperiam totam. Quibusdam magnam eaque possimus
-                  ipsum. Necessitatibus molestias rerum architecto ipsam quis labore quod
-                  quo sint?
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
+                  dolore quasi architecto magni aperiam totam. Quibusdam magnam
+                  eaque possimus ipsum. Necessitatibus molestias rerum
+                  architecto ipsam quis labore quod quo sint?
                 </p>
               </div>
             </div>
@@ -269,7 +269,6 @@ ol.breadcrumb li span {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   color: #ff5722;
-  border-bottom: 2px solid #ff5722;
   border-radius: 0;
   background-color: transparent;
   font-weight: bold;

@@ -233,7 +233,8 @@
               >
                 {{ getJobName(job) }}
 
-                <template v-if="index !== client.job_ids.length - 1"> </template>
+                <template v-if="index !== client.job_ids.length - 1">
+                </template>
               </span>
             </td>
 
@@ -249,7 +250,9 @@
                   type="checkbox"
                   id="togBtn"
                   v-model="client.activated"
-                  v-on:click="clientStatusChangeMethod(client.id, client.activated)"
+                  v-on:click="
+                    clientStatusChangeMethod(client.id, client.activated)
+                  "
                   :checked="client.activated"
                 />
                 <div class="slider round"></div>
@@ -313,7 +316,10 @@
         </tbody>
       </table>
     </div>
-    <div class="mx-3 d-flex justify-content-between" v-if="getClientDetail?.length >= 10">
+    <div
+      class="mx-3 d-flex justify-content-between"
+      v-if="getClientDetail?.length"
+    >
       <div class="d-flex">
         <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
         <button
@@ -328,10 +334,14 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+              >20 Records</a
+            >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+              >50 Records</a
+            >
           </li>
           <li>
             <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
@@ -452,7 +462,13 @@ export default {
       required: true,
     },
   },
-  components: { EditClientModal, AddClients, SuccessAlert, Loader, ConfirmationAlert },
+  components: {
+    EditClientModal,
+    AddClients,
+    SuccessAlert,
+    Loader,
+    ConfirmationAlert,
+  },
   computed: {
     paginateCandidates() {
       return this.getClientDetail;
@@ -462,7 +478,9 @@ export default {
       return this.client.activated ? "Active" : "No Account";
     },
     selectClients() {
-      const client = this.clientData.find((option) => option.id === this.client_id);
+      const client = this.clientData.find(
+        (option) => option.id === this.client_id
+      );
       return client ? client.client_name : "";
     },
     // selectJobTitle() {
@@ -470,7 +488,9 @@ export default {
     //   return job ? job.name : "";
     // },
     selectClientsAddress() {
-      const client = this.clientData.find((option) => option.id === this.client_id);
+      const client = this.clientData.find(
+        (option) => option.id === this.client_id
+      );
       return client ? client.address : "";
     },
   },
@@ -781,7 +801,8 @@ export default {
       const file = event.target.files[0];
       if (!file) return;
 
-      const isValidFileType = file.type === "text/csv" || file.name.endsWith(".csv");
+      const isValidFileType =
+        file.type === "text/csv" || file.name.endsWith(".csv");
       if (!isValidFileType) {
         Swal.fire({
           icon: "info",
@@ -833,7 +854,8 @@ export default {
             Swal.fire({
               icon: "error",
               title: "Import Failed",
-              text: response.data.errors || "No valid rows found in the CSV file.",
+              text:
+                response.data.errors || "No valid rows found in the CSV file.",
             });
           } else {
             Swal.fire({
@@ -934,7 +956,9 @@ export default {
           params,
         });
         this.getClientDetail = response.data.data;
-        this.totalPages = Math.ceil(response.data.client_filter / this.itemsPerPage);
+        this.totalPages = Math.ceil(
+          response.data.client_filter / this.itemsPerPage
+        );
         if (this.getClientDetail?.length === 0) {
           this.errorMessageFilter = "Data Not Found!";
         }
