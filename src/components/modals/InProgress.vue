@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div class="modal fade" id="inprogress" aria-labelledby="inprogress" tabindex="-1">
+    <div class="modal fade" id="inprogress" aria-labelledby="inprogress">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header"></div>
@@ -15,7 +15,7 @@
           </div>
           <!-- <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+               class="btn btn-dark btn-cancel"
               data-bs-target="#inprogress"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"

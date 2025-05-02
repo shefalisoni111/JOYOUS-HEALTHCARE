@@ -5,7 +5,6 @@
       class="modal fade"
       id="addClientUser"
       aria-labelledby="addClientUserPages"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -34,7 +33,9 @@
 
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectBusinessUnit">Site Name</label>
+                    <label class="form-label" for="selectBusinessUnit"
+                      >Site Name</label
+                    >
                   </div>
                   <div class="col-10">
                     <div
@@ -49,7 +50,10 @@
                         :value="option.site_id"
                         v-model="site_ids"
                       />
-                      <label class="form-check-label" :for="'site-' + option.site_id">
+                      <label
+                        class="form-check-label"
+                        :for="'site-' + option.site_id"
+                      >
                         {{ option.site_name }}
                       </label>
                     </div>
@@ -97,7 +101,9 @@
                     <span v-if="email && emailInUse" class="text-danger"
                       >Email already in use</span
                     >
-                    <span v-if="email && !validateEmailFormat(email)" class="text-danger"
+                    <span
+                      v-if="email && !validateEmailFormat(email)"
+                      class="text-danger"
                       >Invalid Email</span
                     >
                   </div>
@@ -116,9 +122,12 @@
                       ref="password"
                       autocomplete="new-password"
                     />
-                    <span v-if="password && !isPasswordValid" class="text-danger">
-                      Password must be at least 8 characters long and include uppercase,
-                      lowercase, numeric, and special characters.
+                    <span
+                      v-if="password && !isPasswordValid"
+                      class="text-danger"
+                    >
+                      Password must be at least 8 characters long and include
+                      uppercase, lowercase, numeric, and special characters.
                     </span>
                   </div>
                 </div>
@@ -134,7 +143,10 @@
                       @input="validatePasswordMatch"
                       @change="detectAutofill"
                     />
-                    <span v-if="confirm_password && !passwordsMatch" class="text-danger">
+                    <span
+                      v-if="confirm_password && !passwordsMatch"
+                      class="text-danger"
+                    >
                       Passwords do No match.
                     </span>
                   </div>
@@ -144,7 +156,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#addClientUser"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -208,7 +220,9 @@ export default {
     },
 
     selectClients() {
-      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      const client_id = this.clientData.find(
+        (option) => option.id === this.client_id
+      );
       return client_id ? client_id.client_name : "";
     },
   },
@@ -265,7 +279,8 @@ export default {
     },
     async addClientSiteMethod() {
       const token = localStorage.getItem("token");
-      this.passwordsMatch = this.password.trim() === this.confirm_password.trim();
+      this.passwordsMatch =
+        this.password.trim() === this.confirm_password.trim();
 
       // Frontend Validation
       if (!this.email) {
@@ -309,12 +324,16 @@ export default {
       };
 
       try {
-        const response = await axios.post(`${VITE_API_URL}/client_users`, data, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.post(
+          `${VITE_API_URL}/client_users`,
+          data,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (response.status === 200 || response.status === 201) {
           this.$emit("addUser");
@@ -342,7 +361,8 @@ export default {
     },
 
     validateEmailFormat(email) {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
+      const emailRegex =
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
       return emailRegex.test(email);
     },
 
@@ -416,9 +436,6 @@ export default {
 .modal-body {
   border-radius: 5px;
   background: #dbdbdb;
-}
-.modal-header {
-  border-bottom: 0px;
 }
 
 select {

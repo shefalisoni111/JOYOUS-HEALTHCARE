@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div class="modal fade" id="addDoc" aria-labelledby="addDoc" tabindex="-1">
+    <div class="modal fade" id="addDoc" aria-labelledby="addDoc">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -15,7 +15,11 @@
                     <label class="form-label">DOCUMENT NAME</label>
                   </div>
                   <div class="mt-1">
-                    <input type="text" class="form-control" v-model="document_name" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="document_name"
+                    />
                   </div>
                 </div>
 
@@ -27,7 +31,11 @@
                         <td>MANDATORY</td>
                         <td>
                           <label class="switch">
-                            <input type="checkbox" id="togBtn" v-model="mandatory" />
+                            <input
+                              type="checkbox"
+                              id="togBtn"
+                              v-model="mandatory"
+                            />
                             <div class="slider round"></div>
                           </label>
                         </td>
@@ -36,7 +44,11 @@
                         <td>HIDE</td>
                         <td>
                           <label class="switch">
-                            <input type="checkbox" id="togBtn" v-model="hide_document" />
+                            <input
+                              type="checkbox"
+                              id="togBtn"
+                              v-model="hide_document"
+                            />
                             <div class="slider round"></div>
                           </label>
                         </td>
@@ -45,7 +57,11 @@
                         <td>PROFILE VIEW</td>
                         <td>
                           <label class="switch">
-                            <input type="checkbox" id="togBtn" v-model="profile_view" />
+                            <input
+                              type="checkbox"
+                              id="togBtn"
+                              v-model="profile_view"
+                            />
                             <div class="slider round"></div>
                           </label>
                         </td>
@@ -68,7 +84,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#addDoc"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -189,9 +205,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .modal-footer {
   border-top: 0px;
 }
@@ -263,7 +277,7 @@ input:checked + .slider:before {
   top: 50%;
   left: 50%;
   font-size: 10px;
- font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 input:checked + .slider:after {

@@ -1,26 +1,28 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="editRateCard"
-      aria-labelledby="editRateCard"
-      tabindex="-1"
-    >
+    <div class="modal fade" id="editRateCard" aria-labelledby="editRateCard">
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title text-center" id="editRateCard">Edit Rate Card</h5>
+            <h5 class="modal-title text-center" id="editRateCard">
+              Edit Rate Card
+            </h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
               <form>
                 <div class="mb-3">
                   <div class="col-12">
-                    <label class="form-label" for="selectBusinessUnitIds">Site</label>
+                    <label class="form-label" for="selectBusinessUnitIds"
+                      >Site</label
+                    >
                   </div>
                   <div class="col-12 mt-1">
-                    <select v-model="fetchRateCard.site_id" id="selectBusinessUnitIds">
+                    <select
+                      v-model="fetchRateCard.site_id"
+                      id="selectBusinessUnitIds"
+                    >
                       <option
                         v-for="option in businessUnit"
                         :key="option.id"
@@ -33,10 +35,15 @@
                 </div>
                 <div class="mb-3">
                   <div class="col-12">
-                    <label class="form-label" for="selectRatCardJob">Position</label>
+                    <label class="form-label" for="selectRatCardJob"
+                      >Position</label
+                    >
                   </div>
                   <div class="col-12 mt-1">
-                    <select v-model="fetchRateCard.job_id" id="selectRatCardJob">
+                    <select
+                      v-model="fetchRateCard.job_id"
+                      id="selectRatCardJob"
+                    >
                       <option
                         v-for="option in options"
                         :key="option.id"
@@ -92,11 +99,16 @@
                 </div>
                 <div class="mb-3">
                   <div class="col-12">
-                    <label class="form-label" for="selectShiftsIds">Shift Type</label>
+                    <label class="form-label" for="selectShiftsIds"
+                      >Shift Type</label
+                    >
                   </div>
 
                   <div class="col-12 mt-1">
-                    <select v-model="fetchRateCard.site_shift_id" id="selectShiftsIds">
+                    <select
+                      v-model="fetchRateCard.site_shift_id"
+                      id="selectShiftsIds"
+                    >
                       <option
                         v-for="option in shiftsTime"
                         :key="option.id"
@@ -126,7 +138,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editRateCard"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -253,7 +265,9 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(`${VITE_API_URL}/site_shift/${site_id}`);
+        const response = await axios.get(
+          `${VITE_API_URL}/site_shift/${site_id}`
+        );
 
         this.shiftsTime =
           response.data.site_shift_data.map((shift) => ({
@@ -361,9 +375,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .modal-footer {
   border-top: 0px;
 }
@@ -451,7 +463,7 @@ select {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
- font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {

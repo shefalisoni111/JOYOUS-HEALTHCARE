@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div class="modal fade" id="editSite" aria-labelledby="editSite" tabindex="-1">
+    <div class="modal fade" id="editSite" aria-labelledby="editSite">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -12,7 +12,9 @@
               <form>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label for="selectClients" class="form-label">Client Name</label>
+                    <label for="selectClients" class="form-label"
+                      >Client Name</label
+                    >
                   </div>
                   <div class="col-10">
                     <select
@@ -70,7 +72,9 @@
                       autocomplete="new-email"
                     />
                     <span
-                      v-if="fetchSite.contact_person_email && !isEmailContactValid"
+                      v-if="
+                        fetchSite.contact_person_email && !isEmailContactValid
+                      "
                       class="text-danger"
                     >
                       Invalid Email format
@@ -97,7 +101,9 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectBusinessUnit">Site Name</label>
+                    <label class="form-label" for="selectBusinessUnit"
+                      >Site Name</label
+                    >
                   </div>
 
                   <div class="col-10">
@@ -115,7 +121,9 @@
 
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectJobTitle">Address</label>
+                    <label class="form-label" for="selectJobTitle"
+                      >Address</label
+                    >
                   </div>
                   <div class="col-10">
                     <input
@@ -215,7 +223,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editSite"
               @click="resetChanges"
               data-bs-dismiss="modal"
@@ -318,9 +326,12 @@ export default {
   },
   methods: {
     validateEmailFormat() {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
+      const emailRegex =
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
       this.emailValid = emailRegex.test(this.fetchSite.email);
-      this.emailContactValid = emailRegex.test(this.fetchSite.contact_person_email);
+      this.emailContactValid = emailRegex.test(
+        this.fetchSite.contact_person_email
+      );
     },
 
     cleanPhoneNumber() {
@@ -329,7 +340,9 @@ export default {
       const phoneRegexWithCountryCode = /^91\d{10}$/;
       const numericRegex = /^[0-9]*$/;
 
-      const isNumericPhoneNumber = numericRegex.test(this.fetchSite.phone_number);
+      const isNumericPhoneNumber = numericRegex.test(
+        this.fetchSite.phone_number
+      );
       const isNumericContactPhoneNumber = numericRegex.test(
         this.fetchSite.contact_person_number
       );
@@ -381,9 +394,12 @@ export default {
         this.fetchSite.split_rate = response.data.data.split_rate;
         this.fetchSite.status = response.data.data.status;
         this.fetchSite.portal_access = response.data.data.portal_access;
-        this.fetchSite.contact_person_name = response.data.data.contact_person_name;
-        this.fetchSite.contact_person_email = response.data.data.contact_person_email;
-        this.fetchSite.contact_person_number = response.data.data.contact_person_number;
+        this.fetchSite.contact_person_name =
+          response.data.data.contact_person_name;
+        this.fetchSite.contact_person_email =
+          response.data.data.contact_person_email;
+        this.fetchSite.contact_person_number =
+          response.data.data.contact_person_number;
 
         this.originalData = { ...this.fetchSite };
       } catch (error) {}

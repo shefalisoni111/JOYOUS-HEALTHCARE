@@ -4,12 +4,13 @@
       class="modal fade"
       id="AddGenrateInvoiceFile"
       aria-labelledby="invoicePage"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="AddGenrateInvoiceFile">Create Invoice</h5>
+            <h5 class="modal-title" id="AddGenrateInvoiceFile">
+              Create Invoice
+            </h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -75,7 +76,12 @@
                     <label class="form-label">End Date</label>
                   </div>
                   <div class="col-8">
-                    <input type="date" class="form-control" v-model="end_date" readonly />
+                    <input
+                      type="date"
+                      class="form-control"
+                      v-model="end_date"
+                      readonly
+                    />
                   </div>
                 </div>
               </form>
@@ -83,7 +89,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-dismiss="modal"
               @click="clearFieldsData"
             >
@@ -136,10 +142,18 @@ export default {
   },
   computed: {
     isFieldEmpty() {
-      return !this.invoice_creation_period || !this.agency_setting_id || !this.start_date;
+      return (
+        !this.invoice_creation_period ||
+        !this.agency_setting_id ||
+        !this.start_date
+      );
     },
     isValidForm() {
-      return this.invoice_creation_period && this.agency_setting_id && this.start_date;
+      return (
+        this.invoice_creation_period &&
+        this.agency_setting_id &&
+        this.start_date
+      );
     },
   },
   methods: {
@@ -160,12 +174,16 @@ export default {
         id: this.selectedId,
       };
       try {
-        const response = await axios.post(`${VITE_API_URL}/create_client_invoice`, data, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.post(
+          `${VITE_API_URL}/create_client_invoice`,
+          data,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         if (response.data.error) {
           this.$refs.dangerAlert.showSuccess(response.data.error);
         } else {
@@ -240,9 +258,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .modal-footer {
   border-top: 0px;
 }
@@ -317,7 +333,7 @@ label.form-label {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
- font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {

@@ -5,7 +5,6 @@
       class="modal fade"
       id="editBankDetailsOverview"
       aria-labelledby="editBanktDetails"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
@@ -70,7 +69,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editBankDetailsOverview"
               @click="resetChanges"
               data-bs-dismiss="modal"
@@ -80,7 +79,9 @@
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              :disabled="!isBankNumberValid || !isBankNameValid || !isIfscCodeValid"
+              :disabled="
+                !isBankNumberValid || !isBankNameValid || !isIfscCodeValid
+              "
               @click.prevent="updateCandidateMethod()"
             >
               Save
@@ -164,7 +165,11 @@ export default {
     },
 
     async updateCandidateMethod() {
-      if (!this.isBankNumberValid || !this.isBankNameValid || !this.isIfscCodeValid)
+      if (
+        !this.isBankNumberValid ||
+        !this.isBankNameValid ||
+        !this.isIfscCodeValid
+      )
         return;
       try {
         await axios.put(
@@ -201,9 +206,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .modal-footer {
   border-top: 0px;
 }
@@ -291,7 +294,7 @@ select {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
- font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {

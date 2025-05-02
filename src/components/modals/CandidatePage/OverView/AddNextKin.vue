@@ -1,11 +1,13 @@
 <template>
   <div>
     <!-- Modal -->
-    <div class="modal fade" id="addNextToKin" aria-labelledby="addNextKin" tabindex="-1">
+    <div class="modal fade" id="addNextToKin" aria-labelledby="addNextKin">
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title text-center" id="addNextToKin">Add Next to Kin</h5>
+            <h5 class="modal-title text-center" id="addNextToKin">
+              Add Next to Kin
+            </h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
@@ -43,13 +45,16 @@
                       pattern="[0-9]*"
                     />
                     <span
-                      v-if="touched.phone_number && !cleanAndValidatePhoneNumber()"
+                      v-if="
+                        touched.phone_number && !cleanAndValidatePhoneNumber()
+                      "
                       class="text-danger"
                       >Required Phone Number</span
                     >
                     <span
                       v-if="
-                        touched.phone_number && cleanAndValidatePhoneNumber() === false
+                        touched.phone_number &&
+                        cleanAndValidatePhoneNumber() === false
                       "
                       class="text-danger"
                       >Invalid Phone Number</span
@@ -69,7 +74,9 @@
                       @focus="touched.relation = true"
                       @blur="touched.relation = true"
                     />
-                    <span v-if="touched.relation && !relation" class="text-danger"
+                    <span
+                      v-if="touched.relation && !relation"
+                      class="text-danger"
                       >Relation is required</span
                     >
                   </div>
@@ -148,15 +155,23 @@
                     />
                     <span v-if="touched.postcode">
                       <span
-                        v-if="!validatePostcode(postcode) && !isNumeric(postcode)"
+                        v-if="
+                          !validatePostcode(postcode) && !isNumeric(postcode)
+                        "
                         class="text-danger"
                       >
                         Invalid Postcode and must be a number
                       </span>
-                      <span v-else-if="!validatePostcode(postcode)" class="text-danger">
+                      <span
+                        v-else-if="!validatePostcode(postcode)"
+                        class="text-danger"
+                      >
                         Invalid Postcode
                       </span>
-                      <span v-else-if="!isNumeric(postcode)" class="text-danger">
+                      <span
+                        v-else-if="!isNumeric(postcode)"
+                        class="text-danger"
+                      >
                         Postcode must be a number
                       </span>
                     </span>
@@ -167,7 +182,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#addNextToKin"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -253,7 +268,8 @@ export default {
       if (!this.address_line_2.trim())
         this.addressLine2Error = "Address Line 2 is required";
       if (!this.city.trim()) this.cityError = "City is required";
-      if (!this.validatePostcode(this.postcode)) this.postcodeError = "Invalid Postcode";
+      if (!this.validatePostcode(this.postcode))
+        this.postcodeError = "Invalid Postcode";
 
       return (
         this.nameError ||
@@ -276,7 +292,11 @@ export default {
     },
     validatePostcode(postcode) {
       const numericRegex = /^[0-9]+$/;
-      return numericRegex.test(postcode) && postcode.length >= 5 && postcode.length <= 10;
+      return (
+        numericRegex.test(postcode) &&
+        postcode.length >= 5 &&
+        postcode.length <= 10
+      );
     },
     cleanAndValidatePhoneNumber() {
       const cleanedPhoneNumber = this.phone_number.replace(/\D/g, "");
@@ -341,9 +361,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .modal-footer {
   border-top: 0px;
 }
@@ -431,7 +449,7 @@ select {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
- font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {

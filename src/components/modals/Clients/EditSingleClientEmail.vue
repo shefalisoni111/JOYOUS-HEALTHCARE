@@ -5,7 +5,6 @@
       class="modal fade"
       id="editClientEmail"
       aria-labelledby="editClientEmail"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -27,7 +26,10 @@
                       @input="validateEmailFormat"
                       @change="detectAutofill"
                     />
-                    <span v-if="fetchClients.email && !isEmailValid" class="text-danger">
+                    <span
+                      v-if="fetchClients.email && !isEmailValid"
+                      class="text-danger"
+                    >
                       Please enter a valid email address.
                     </span>
                   </div>
@@ -37,7 +39,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editClientEmail"
               @click="resetChanges"
               data-bs-dismiss="modal"
@@ -106,7 +108,8 @@ export default {
       this.fetchClients = { ...this.originalData };
     },
     validateEmailFormat() {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
+      const emailRegex =
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
       this.emailValid = emailRegex.test(this.fetchClients.email);
     },
     async fetchClientsMethod(id) {

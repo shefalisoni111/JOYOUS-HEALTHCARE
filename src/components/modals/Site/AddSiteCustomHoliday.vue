@@ -5,7 +5,6 @@
       class="modal fade"
       id="siteCustomHoliday"
       aria-labelledby="siteCustomHoliday"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -81,7 +80,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#siteCustomHoliday"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -126,7 +125,8 @@ export default {
   computed: {
     isButtonDisabled() {
       return (
-        Object.values(this.errors).some((error) => error !== null) || this.isEmptyField()
+        Object.values(this.errors).some((error) => error !== null) ||
+        this.isEmptyField()
       );
     },
   },
@@ -169,7 +169,11 @@ export default {
           this.date = selectedDate.toISOString().split("T")[0];
         } else {
           this.validationDateType = false;
-          this.$set(this.errors, "date", "Please choose a date from today onwards.");
+          this.$set(
+            this.errors,
+            "date",
+            "Please choose a date from today onwards."
+          );
         }
       } else {
         this.validationDateType = false;
@@ -193,7 +197,11 @@ export default {
       if (!this.date.trim()) {
         this.$set(this.errors, "date", "Holiday Date is required.");
       } else if (!this.validationDateType) {
-        this.$set(this.errors, "date", "Please choose a date from today onwards.");
+        this.$set(
+          this.errors,
+          "date",
+          "Please choose a date from today onwards."
+        );
       }
 
       if (!this.holiday_type.trim()) {
@@ -215,7 +223,10 @@ export default {
         site_id: this.$route.params.id,
       };
       try {
-        const response = await axios.post(`${VITE_API_URL}/custom_holidays`, data);
+        const response = await axios.post(
+          `${VITE_API_URL}/custom_holidays`,
+          data
+        );
         if (response.status === 200) {
           this.$emit("addCustomHoliday");
           const message = "Holiday Add Successful";
@@ -242,9 +253,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .modal-footer {
   border-top: 0px;
 }

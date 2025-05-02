@@ -5,12 +5,13 @@
       class="modal fade"
       id="AddSitRestrictedStaff"
       aria-labelledby="AddSitRestrictedStaff"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="AddSitRestrictedStaff">Add Staff Location</h5>
+            <h5 class="modal-title" id="AddSitRestrictedStaff">
+              Add Staff Location
+            </h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -93,7 +94,7 @@
             </div>
             <div class="modal-footer">
               <button
-                class="btn btn-secondary rounded-1"
+                class="btn btn-dark btn-cancel"
                 data-bs-target="#AddSitRestrictedStaff"
                 data-bs-toggle="modal"
                 data-bs-dismiss="modal"
@@ -158,12 +159,16 @@ export default {
     //   return this.validationBusinessUnit && this.validationSelectedClient;
     // },
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
 
     selectClients() {
-      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      const client_id = this.clientData.find(
+        (option) => option.id === this.client_id
+      );
       return this.client_id;
     },
     selectedStaff() {
@@ -246,13 +251,16 @@ export default {
         client_id: this.client_id,
       };
       try {
-        const response = await fetch(`${VITE_API_URL}/restricted_business_units`, {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
+        const response = await fetch(
+          `${VITE_API_URL}/restricted_business_units`,
+          {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
         if (response.ok) {
           const responseData = await response.json();
           const newCandidateId = responseData.candidate_id;

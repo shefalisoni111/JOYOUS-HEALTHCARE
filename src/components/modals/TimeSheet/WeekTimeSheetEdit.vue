@@ -151,7 +151,11 @@
                           <div>
                             <div
                               v-if="!showValueCustom"
-                              style="display: flex; gap: 8px; align-items: center"
+                              style="
+                                display: flex;
+                                gap: 8px;
+                                align-items: center;
+                              "
                             >
                               <select
                                 id="selectCustomHourStart"
@@ -160,7 +164,11 @@
                                 @change="updateStartTime"
                                 style="width: 80px"
                               >
-                                <option v-for="hour in 24" :key="hour" :value="hour">
+                                <option
+                                  v-for="hour in 24"
+                                  :key="hour"
+                                  :value="hour"
+                                >
                                   {{ formatTime(hour) }}
                                   <!-- Only the time portion -->
                                 </option>
@@ -178,7 +186,11 @@
                                   :key="minute"
                                   :value="minute - 1"
                                 >
-                                  {{ minute - 1 < 10 ? "0" + (minute - 1) : minute - 1 }}
+                                  {{
+                                    minute - 1 < 10
+                                      ? "0" + (minute - 1)
+                                      : minute - 1
+                                  }}
                                 </option>
                               </select>
                               <!-- AM/PM Dropdown -->
@@ -204,7 +216,11 @@
 
                             <div
                               v-else
-                              style="display: flex; gap: 8px; align-items: center"
+                              style="
+                                display: flex;
+                                gap: 8px;
+                                align-items: center;
+                              "
                             >
                               <!-- Hour Dropdown -->
                               <select
@@ -214,7 +230,11 @@
                                 @change="calculateTotalHours"
                                 style="width: 80px"
                               >
-                                <option v-for="hour in 24" :key="hour" :value="hour">
+                                <option
+                                  v-for="hour in 24"
+                                  :key="hour"
+                                  :value="hour"
+                                >
                                   {{ formatTime(hour) }}
                                   <!-- Only the time portion -->
                                 </option>
@@ -232,7 +252,11 @@
                                   :key="minute"
                                   :value="minute - 1"
                                 >
-                                  {{ minute - 1 < 10 ? "0" + (minute - 1) : minute - 1 }}
+                                  {{
+                                    minute - 1 < 10
+                                      ? "0" + (minute - 1)
+                                      : minute - 1
+                                  }}
                                 </option>
                               </select>
                               <!-- AM/PM Dropdown -->
@@ -303,7 +327,11 @@
                             /> -->
                             <div
                               v-if="!showValueCustom"
-                              style="display: flex; gap: 8px; align-items: center"
+                              style="
+                                display: flex;
+                                gap: 8px;
+                                align-items: center;
+                              "
                             >
                               <select
                                 id="selectCustomHour"
@@ -312,7 +340,11 @@
                                 @change="updateEndTime"
                                 style="width: 80px"
                               >
-                                <option v-for="hour in 24" :key="hour" :value="hour">
+                                <option
+                                  v-for="hour in 24"
+                                  :key="hour"
+                                  :value="hour"
+                                >
                                   {{ formatTime(hour) }}
                                   <!-- Only the time portion -->
                                 </option>
@@ -330,7 +362,11 @@
                                   :key="minute"
                                   :value="minute - 1"
                                 >
-                                  {{ minute - 1 < 10 ? "0" + (minute - 1) : minute - 1 }}
+                                  {{
+                                    minute - 1 < 10
+                                      ? "0" + (minute - 1)
+                                      : minute - 1
+                                  }}
                                 </option>
                               </select>
                               <!-- AM/PM Dropdown -->
@@ -347,7 +383,11 @@
                             </div>
                             <div
                               v-else
-                              style="display: flex; gap: 8px; align-items: center"
+                              style="
+                                display: flex;
+                                gap: 8px;
+                                align-items: center;
+                              "
                             >
                               <!-- Hour Dropdown -->
                               <select
@@ -357,7 +397,11 @@
                                 @change="calculateTotalHours"
                                 style="width: 80px"
                               >
-                                <option v-for="hour in 24" :key="hour" :value="hour">
+                                <option
+                                  v-for="hour in 24"
+                                  :key="hour"
+                                  :value="hour"
+                                >
                                   {{ formatTime(hour) }}
                                   <!-- Only the time portion -->
                                 </option>
@@ -375,7 +419,11 @@
                                   :key="minute"
                                   :value="minute - 1"
                                 >
-                                  {{ minute - 1 < 10 ? "0" + (minute - 1) : minute - 1 }}
+                                  {{
+                                    minute - 1 < 10
+                                      ? "0" + (minute - 1)
+                                      : minute - 1
+                                  }}
                                 </option>
                               </select>
                               <!-- AM/PM Dropdown -->
@@ -532,7 +580,11 @@
                         </div>
                         <div class="col-12 mt-1">
                           <img
-                            :src="getFullImageUrl(fetchCustomTimeShetData.signature_url)"
+                            :src="
+                              getFullImageUrl(
+                                fetchCustomTimeShetData.signature_url
+                              )
+                            "
                             alt="Administrator Signature"
                             height="100"
                             class="remove-white-background d-block m-auto"
@@ -542,7 +594,9 @@
                       </div>
                       <div class="mb-3" v-if="!showValueCustom">
                         <div class="col-12">
-                          <label class="form-label">Administrator Signature</label>
+                          <label class="form-label"
+                            >Administrator Signature</label
+                          >
                         </div>
                         <div class="col-12 mt-1">
                           <img
@@ -648,7 +702,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editWeeklyTs"
               data-bs-dismiss="modal"
               @click="resetChanges"
@@ -756,7 +810,8 @@ export default {
   computed: {
     isModified() {
       return (
-        JSON.stringify(this.fetchCustomTimeShetData) !== JSON.stringify(this.originalData)
+        JSON.stringify(this.fetchCustomTimeShetData) !==
+        JSON.stringify(this.originalData)
       );
     },
     getCandidatesData() {
@@ -785,14 +840,16 @@ export default {
     },
     updateStartTime() {
       const { hour, minute, period } = this.startTime;
-      const hour24 = period === "PM" ? (hour < 12 ? hour + 12 : hour) : hour % 12;
+      const hour24 =
+        period === "PM" ? (hour < 12 ? hour + 12 : hour) : hour % 12;
       const formattedMinute = minute < 10 ? `0${minute}` : minute;
 
       this.fetchCustomTimeShetData.start_time = `${hour24}:${formattedMinute} ${period}`;
     },
     updateEndTime() {
       const { hour, minute, period } = this.endTime;
-      const hour24 = period === "PM" ? (hour < 12 ? hour + 12 : hour) : hour % 12;
+      const hour24 =
+        period === "PM" ? (hour < 12 ? hour + 12 : hour) : hour % 12;
       const formattedMinute = minute < 10 ? `0${minute}` : minute;
 
       this.fetchCustomTimeShetData.end_time = `${hour24}:${formattedMinute} ${period}`;
@@ -801,16 +858,23 @@ export default {
       const startTime = `${this.formatTime(this.startTime.hour)}:${
         this.startTime.minute
       } ${this.startTime.period}`;
-      const endTime = `${this.formatTime(this.endTime.hour)}:${this.endTime.minute} ${
-        this.endTime.period
-      }`;
+      const endTime = `${this.formatTime(this.endTime.hour)}:${
+        this.endTime.minute
+      } ${this.endTime.period}`;
       if (!startTime || !endTime || !this.vacancyId) {
         return;
       }
       try {
-        const response = await axios.get(`${VITE_API_URL}/calculate_total_hour`, {
-          params: { start_time: startTime, end_time: endTime, id: this.vacancyId },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/calculate_total_hour`,
+          {
+            params: {
+              start_time: startTime,
+              end_time: endTime,
+              id: this.vacancyId,
+            },
+          }
+        );
 
         this.fetchCustomTimeShetData.total_hours = response.data.total_hours;
       } catch (error) {
@@ -879,7 +943,9 @@ export default {
           };
           reader.readAsDataURL(file);
         } else {
-          this.$refs.successAlert.showError("Please upload a valid image file.");
+          this.$refs.successAlert.showError(
+            "Please upload a valid image file."
+          );
         }
         this.validatePaperTimeSheet();
       } else {
@@ -888,7 +954,8 @@ export default {
       }
     },
     validatePaperTimeSheet() {
-      this.validationPaperTimeSheet = !this.fetchCustomTimeShetData.paper_timesheet;
+      this.validationPaperTimeSheet =
+        !this.fetchCustomTimeShetData.paper_timesheet;
     },
 
     async handleApproveAndSave() {
@@ -950,7 +1017,11 @@ export default {
 
       const token = localStorage.getItem("token");
 
-      if (this.paginatedTimesheets.some((ts) => ts.sheet_type === "CustomTimeSheet")) {
+      if (
+        this.paginatedTimesheets.some(
+          (ts) => ts.sheet_type === "CustomTimeSheet"
+        )
+      ) {
         try {
           const response = await axios.get(
             `${VITE_API_URL}/custom_timesheets/${this.vacancyId}`,
@@ -968,7 +1039,12 @@ export default {
             const startPeriod = startHour >= 12 ? "PM" : "AM";
 
             this.startTime = {
-              hour: startHour > 12 ? startHour - 12 : startHour === 0 ? 12 : startHour,
+              hour:
+                startHour > 12
+                  ? startHour - 12
+                  : startHour === 0
+                  ? 12
+                  : startHour,
               minute: parseInt(startMinute, 10),
               period: startPeriod,
             };
@@ -987,7 +1063,9 @@ export default {
             };
           }
           if (response.data.custom_sheets.start_time) {
-            this.startTime = this.parseTime(response.data.custom_sheets.start_time);
+            this.startTime = this.parseTime(
+              response.data.custom_sheets.start_time
+            );
           }
 
           if (response.data.custom_sheets.end_time) {
@@ -1024,7 +1102,10 @@ export default {
               }
             });
 
-            if (paperTimesheet instanceof File || paperTimesheet instanceof Blob) {
+            if (
+              paperTimesheet instanceof File ||
+              paperTimesheet instanceof Blob
+            ) {
               formData.append("custom_timesheet[custom_image]", paperTimesheet);
             } else if (typeof paperTimesheet === "string") {
               formData.append("custom_timesheet[custom_image]", paperTimesheet);
@@ -1047,7 +1128,9 @@ export default {
           // console.error("Error fetching custom timesheets:", error);
         }
       }
-      if (this.paginatedTimesheets.some((ts) => ts.sheet_type === "SignTimeSheet")) {
+      if (
+        this.paginatedTimesheets.some((ts) => ts.sheet_type === "SignTimeSheet")
+      ) {
         try {
           const fallbackResponse = await axios.get(
             `${VITE_API_URL}/sign_timesheets/${this.vacancyId}`,
@@ -1070,7 +1153,12 @@ export default {
             const startPeriod = startHour >= 12 ? "PM" : "AM";
 
             this.startTime = {
-              hour: startHour > 12 ? startHour - 12 : startHour === 0 ? 12 : startHour,
+              hour:
+                startHour > 12
+                  ? startHour - 12
+                  : startHour === 0
+                  ? 12
+                  : startHour,
               minute: parseInt(startMinute, 10),
               period: startPeriod,
             };
@@ -1215,7 +1303,10 @@ export default {
             }
           });
 
-          if (paperTimesheet instanceof File || paperTimesheet instanceof Blob) {
+          if (
+            paperTimesheet instanceof File ||
+            paperTimesheet instanceof Blob
+          ) {
             formData.append("custom_timesheet[custom_image]", paperTimesheet);
           } else if (typeof paperTimesheet === "string") {
             formData.append("custom_timesheet[custom_image]", paperTimesheet);

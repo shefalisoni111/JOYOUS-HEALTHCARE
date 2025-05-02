@@ -14,7 +14,12 @@
         </tr>
       </thead>
       <tbody v-if="paginateCandidates?.length > 0">
-        <tr v-for="pending in paginateCandidates" :key="pending.id">
+        <tr
+          v-for="(pending, index) in paginateCandidates"
+          :key="index"
+          @mouseenter="hoverRow = index"
+          @mouseleave="hoverRow = null"
+        >
           <td v-text="pending.id"></td>
           <td class="text-capitalize">
             <router-link
@@ -24,40 +29,63 @@
                 params: { id: pending && pending.id },
               }"
             >
-              {{ pending.first_name }}&nbsp;&nbsp;{{ pending.last_name }}</router-link
+              {{ pending.first_name }}&nbsp;&nbsp;{{
+                pending.last_name
+              }}</router-link
             >
           </td>
           <td class="text-capitalize" v-text="pending.possition"></td>
           <td v-text="pending.email"></td>
           <td v-text="pending.phone_number"></td>
-          <td class="text-capitalize" v-text="pending.status"></td>
+          <td class="text-capitalize">
+            <button
+              type="button"
+              :class="['btn', 'text-nowrap']"
+              :style="
+                {
+                  approved: { backgroundColor: '#E9FAEF', color: '#24D164' },
+                  pending: {
+                    backgroundColor: 'rgb(255 227 234)',
+                    color: '#FF3B30',
+                  },
+                  rejected: { backgroundColor: '#FFEFE7', color: '#FF9F0A' },
+                }[pending.status]
+              "
+            >
+              {{
+                pending.status.charAt(0).toUpperCase() + pending.status.slice(1)
+              }}
+            </button>
+          </td>
           <td>
-            <button
-              type="button"
-              class="btn btn-success"
-              data-bs-toggle="tooltip"
-              data-bs-placement="top"
-              title="Tooltip on top"
-              v-on:click="confirmed(pending.id)"
-            >
-              Approve</button
-            >&nbsp;&nbsp;
-            <button
-              type="button"
-              class="btn btn-danger"
-              data-bs-toggle="tooltip"
-              data-bs-placement="top"
-              title="Tooltip on top"
-              v-on:click="confirmedReject(pending.id)"
-            >
-              Reject</button
-            >&nbsp;&nbsp;
-            <router-link
-              class="btn btn-outline-success text-nowrap"
-              :to="{ name: 'Profile', params: { id: pending.id } }"
-            >
-              <i class="bi bi-eye"></i>
-            </router-link>
+            <div class="action-wrapper">
+              <i class="bi bi-three-dots dot-icon"></i>
+
+              <div v-if="hoverRow === index" class="action-menu">
+                <button
+                  type="button"
+                  class="btn text-nowrap border-0"
+                  v-on:click="confirmed(pending.id)"
+                >
+                  <i class="bi bi-check2-square" style="color: #f9944b"></i>
+                  Approve
+                </button>
+                <button
+                  type="button"
+                  class="btn text-nowrap border-0"
+                  v-on:click="confirmedReject(pending.id)"
+                >
+                  <i class="bi bi-ban" style="color: #f9944b"></i> Reject
+                </button>
+                <router-link
+                  class="btn text-nowrap border-0"
+                  :to="{ name: 'Profile', params: { id: pending.id } }"
+                >
+                  <i class="bi bi-eye" style="color: #f9944b"></i>
+                  View
+                </router-link>
+              </div>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -88,10 +116,14 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+              >20 Records</a
+            >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+              >50 Records</a
+            >
           </li>
           <li>
             <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
@@ -156,6 +188,7 @@ export default {
       isLoading: false,
       isModalVisible: false,
       confirmMessage: "",
+      hoverRow: null,
       confirmCallback: null,
     };
   },
@@ -183,7 +216,9 @@ export default {
           page: page,
           per_page: this.itemsPerPage,
         };
-        const response = await axios.get(`${VITE_API_URL}/candidates`, { params });
+        const response = await axios.get(`${VITE_API_URL}/candidates`, {
+          params,
+        });
 
         this.getPendingCandidatesData = response.data.data;
         this.totalPages = response.data.total_pages;

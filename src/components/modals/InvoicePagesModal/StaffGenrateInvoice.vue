@@ -9,10 +9,12 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="staffGenerateCsvLabel">Generate Invoice</h5>
+            <h5 class="modal-title" id="staffGenerateCsvLabel">
+              Generate Invoice
+            </h5>
             <button
               type="button"
-              class="btn-close"
+              class="custom-close"
               data-bs-dismiss="modal"
               aria-label="Close"
             ></button>
@@ -22,7 +24,12 @@
             <div class="mb-3">
               <label class="form-label">Staff</label>
 
-              <select v-model="selectedCandidate" @change="fetchJobs()" id="selectStaff">
+              <select
+                v-model="selectedCandidate"
+                class="form-select w-50"
+                @change="fetchJobs()"
+                id="selectStaff"
+              >
                 <option value="">All Staff</option>
 
                 <option
@@ -41,21 +48,25 @@
 
             <!-- Custom Date Picker -->
             <div v-if="selectedDateOption === 'custom'" class="mb-3">
-              <label for="customDateRange" class="form-label">Custom Date</label>
-              <input
-                type="date"
-                class="form-control mb-2"
-                v-model="customStartDate"
-                placeholder="Start Date"
-                @change="fetchJobs()"
-              />
-              <input
-                type="date"
-                class="form-control"
-                v-model="customEndDate"
-                placeholder="End Date"
-                @change="fetchJobs()"
-              />
+              <label for="customDateRange" class="form-label"
+                >Custom Date</label
+              >
+              <div class="d-flex justify-content-center gap-3">
+                <input
+                  type="date"
+                  class="form-control"
+                  v-model="customStartDate"
+                  placeholder="Start Date"
+                  @change="fetchJobs()"
+                />
+                <input
+                  type="date"
+                  class="form-control"
+                  v-model="customEndDate"
+                  placeholder="End Date"
+                  @change="fetchJobs()"
+                />
+              </div>
             </div>
             <!-- Job Position Selection -->
             <div class="mb-3" v-if="jobData.length > 0">
@@ -69,7 +80,10 @@
                     :value="job.id"
                     v-model="selectedJobs"
                   />
-                  <label :for="'job-' + job.id" class="form-check-label text-capitalize">
+                  <label
+                    :for="'job-' + job.id"
+                    class="form-check-label text-capitalize"
+                  >
                     &nbsp;{{ job.name }}&nbsp;
                   </label>
                 </div>
@@ -79,7 +93,7 @@
           <div class="modal-footer">
             <button
               type="button"
-              class="btn btn-secondary"
+              class="btn btn-dark btn-cancel"
               data-bs-dismiss="modal"
               @click="resetFields"
             >
@@ -131,7 +145,9 @@ export default {
   },
   computed: {
     isFormValid() {
-      return this.selectedCandidate && this.customStartDate && this.customEndDate;
+      return (
+        this.selectedCandidate && this.customStartDate && this.customEndDate
+      );
     },
     selectStaff() {
       const id = this.candidateLists.find((option) => option.id === this.id);
@@ -147,7 +163,9 @@ export default {
       return `${month}/${day}/${year}`;
     },
     getCandidateName(id) {
-      const candidate = this.candidateLists.find((candidate) => candidate.id === id);
+      const candidate = this.candidateLists.find(
+        (candidate) => candidate.id === id
+      );
       return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
     },
     async fetchJobs() {
@@ -157,13 +175,16 @@ export default {
       }
 
       try {
-        const response = await axios.get(`${VITE_API_URL}/find_candidates_jobs`, {
-          params: {
-            candidate_id: this.selectedCandidate,
-            start_date: this.customStartDate,
-            end_date: this.customEndDate,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/find_candidates_jobs`,
+          {
+            params: {
+              candidate_id: this.selectedCandidate,
+              start_date: this.customStartDate,
+              end_date: this.customEndDate,
+            },
+          }
+        );
         this.jobData = response.data;
       } catch (error) {
         // console.error("Error fetching job positions:", error);
@@ -237,7 +258,9 @@ export default {
     },
     async getTimeShift(siteId) {
       try {
-        const response = await axios.get(`${VITE_API_URL}/site_shift/${siteId}`);
+        const response = await axios.get(
+          `${VITE_API_URL}/site_shift/${siteId}`
+        );
         this.shiftsTime = response.data.site_shift_data;
       } catch (error) {
         // console.error("Error fetching shifts:", error);
@@ -372,9 +395,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .modal-footer {
   border-top: 0px;
 }

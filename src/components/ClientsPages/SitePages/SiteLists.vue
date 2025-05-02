@@ -712,9 +712,7 @@ ul.nav-pills {
   border-left: 1px solid #ded9d9;
   height: 100vh;
 }
-.table-wrapper {
-  overflow-x: auto;
-}
+
 .color-fonts {
   color: #ff5f30;
   font-weight: bold;
@@ -772,8 +770,8 @@ table {
 }
 
 button.nav-link > li.nav-item {
-  border-bottom: 2px solid red; /* Replace with your desired border color */
-  padding-bottom: 5px; /* Optional: Add padding for spacing */
+  border-bottom: 2px solid red;
+  padding-bottom: 5px;
 }
 
 .searchbox {

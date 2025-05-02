@@ -198,7 +198,12 @@
           </tr>
         </thead>
         <tbody v-if="getClientDetail?.length > 0">
-          <tr v-for="client in getClientDetail" :key="client.id">
+          <tr
+            v-for="(client, index) in getClientDetail"
+            :key="index"
+            @mouseenter="hoverRow = index"
+            @mouseleave="hoverRow = null"
+          >
             <td>
               <input
                 class="form-check-input"
@@ -245,7 +250,22 @@
             <td v-text="client.email"></td>
 
             <td>
-              <label class="switch">
+              <button
+                type="button"
+                :class="['btn', 'text-nowrap']"
+                :style="
+                  client.activated === true
+                    ? { backgroundColor: '#E9FAEF', color: '#24D164' }
+                    : {
+                        backgroundColor: 'rgb(255 227 234)',
+                        color: '#FF3B30',
+                      }
+                "
+                @click="clientStatusChangeMethod(client.id, client.activated)"
+              >
+                {{ client.activated === true ? "Approved" : "Unapprove" }}
+              </button>
+              <!-- <label class="switch">
                 <input
                   type="checkbox"
                   id="togBtn"
@@ -256,49 +276,61 @@
                   :checked="client.activated"
                 />
                 <div class="slider round"></div>
-              </label>
+              </label> -->
             </td>
             <!-- <td v-text="client.portal_access"></td> -->
             <td>
               <span
-                class="text-white p-1 rounded-1"
-                style="font-size: 13px"
-                :class="{
-                  'bg-success': client.activated,
-                  'bg-danger': !client.activated,
-                }"
+                class="text-white p-2 rounded-3 btn-lg"
+                :style="
+                  client.activated === true
+                    ? { backgroundColor: '#4dd04d', color: '#24D164' }
+                    : {
+                        backgroundColor: '#FF8F6B',
+                        color: '#FF3B30',
+                      }
+                "
+                :class="['btn', 'text-nowrap']"
                 >{{ client.activated ? "Active" : "No Account" }}</span
               >
             </td>
             <td class="cursor-pointer">
-              <button
-                type="button"
-                class="btn btn-outline-success text-nowrap text-nowrap"
-                data-bs-toggle="modal"
-                data-bs-target="#editClient"
-                data-bs-whatever="@mdo"
-                @click="editClient(client.id)"
-              >
-                <i class="bi bi-pencil-square"></i>
-              </button>
-              &nbsp;&nbsp;
+              <div class="action-wrapper">
+                <i class="bi bi-three-dots dot-icon"></i>
 
-              <router-link
-                :to="{
-                  name: 'SingleClientProfile',
-                  params: { id: client.id },
-                }"
-                class="btn btn-outline-success text-nowrap"
-              >
-                <i class="bi bi-eye"></i>
-              </router-link>
-              &nbsp;&nbsp;
-              <button
-                class="btn btn-outline-danger text-nowrap"
-                v-on:click="deleteClientDataMethod(client.id)"
-              >
-                <i class="bi bi-trash"></i>
-              </button>
+                <div v-if="hoverRow === index" class="action-menu">
+                  <button
+                    type="button"
+                    class="btn text-nowrap border-0"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editClient"
+                    data-bs-whatever="@mdo"
+                    @click="editClient(client.id)"
+                  >
+                    <i class="bi bi-pencil-square" style="color: #f9944b"></i>
+                    Edit
+                  </button>
+
+                  <router-link
+                    :to="{
+                      name: 'SingleClientProfile',
+                      params: { id: client.id },
+                    }"
+                    class="btn text-nowrap border-0"
+                  >
+                    <i class="bi bi-eye" style="color: #f9944b"></i>
+                    View
+                  </router-link>
+
+                  <button
+                    class="btn text-nowrap border-0"
+                    v-on:click="deleteClientDataMethod(client.id)"
+                  >
+                    <i class="bi bi-trash" style="color: #f9944b"></i>
+                    Delete
+                  </button>
+                </div>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -419,6 +451,7 @@ export default {
       activated: false,
       showFilters: false,
       isLoading: false,
+      hoverRow: null,
       checkedClient: reactive({}),
       errorMessageFilter: "",
       selectedFilter: "",
@@ -1003,7 +1036,9 @@ select {
   border: 0px;
   border: 1px solid rgb(202, 198, 198);
 }
-ul.nav-pills {
+ul.nav-pills,
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
   border-bottom: none !important;
   height: auto !important;
   margin-bottom: 0px !important;

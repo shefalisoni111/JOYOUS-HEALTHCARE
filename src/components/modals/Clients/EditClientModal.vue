@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div class="modal fade" id="editClient" aria-labelledby="editClient" tabindex="-1">
+    <div class="modal fade" id="editClient" aria-labelledby="editClient">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -37,7 +37,9 @@
                         v-model="option.checked"
                         @change="toggleJobsSelection"
                       />
-                      <label class="text-capitalize">&nbsp;{{ option.name }}</label>
+                      <label class="text-capitalize"
+                        >&nbsp;{{ option.name }}</label
+                      >
                     </div>
                   </div>
                 </div>
@@ -123,7 +125,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editClient"
               @click="resetChanges"
               data-bs-dismiss="modal"
@@ -190,7 +192,8 @@ export default {
     },
 
     isEmailValid() {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
+      const emailRegex =
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
       return emailRegex.test(this.fetchClients.email);
     },
     isPasswordMatch() {

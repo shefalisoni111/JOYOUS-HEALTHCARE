@@ -1,19 +1,14 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="addRateRules"
-      aria-labelledby="addRateRules"
-      tabindex="-1"
-    >
+    <div class="modal fade" id="addRateRules" aria-labelledby="addRateRules">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addRateRules">Add Rate</h5>
             <button
               type="button"
-              class="btn-close"
+              class="custom-close"
               data-bs-dismiss="modal"
               aria-label="Close"
             ></button>
@@ -43,9 +38,15 @@
                   </div>
 
                   <div class="col-4">
-                    <label class="form-label" for="selectBusinessUnit">Site</label>
+                    <label class="form-label" for="selectBusinessUnit"
+                      >Site</label
+                    >
 
-                    <select id="siteSelect" v-model="site_id" @change="onSiteSelect">
+                    <select
+                      id="siteSelect"
+                      v-model="site_id"
+                      @change="onSiteSelect"
+                    >
                       <option
                         v-for="site in businessUnit"
                         :key="site.site_id"
@@ -76,14 +77,20 @@
                 </div>
 
                 <div v-if="this.splitRate" class="mt-4" style="">
-                  <div class="accordion accordion-flush" id="accordionFlushExample">
+                  <div
+                    class="accordion accordion-flush"
+                    id="accordionFlushExample"
+                  >
                     <div
                       v-for="(day, index) in days"
                       :key="index"
                       class="accordion-item mt-4"
                     >
                       <div class="accordion-item">
-                        <h2 class="accordion-header" :id="`accordion-header-${index}`">
+                        <h2
+                          class="accordion-header"
+                          :id="`accordion-header-${index}`"
+                        >
                           <button
                             class="accordion-button collapsed"
                             type="button"
@@ -103,7 +110,9 @@
                         >
                           <div class="accordion-body p-4">
                             <template v-if="day">
-                              <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                              <div
+                                class="mb-3 d-flex justify-content-between gap-1 me-3"
+                              >
                                 <div class="col-3 d-flex gap-2">
                                   <div class="col-4">
                                     <label class="form-label">Shift Name</label>
@@ -152,7 +161,9 @@
                                     <label class="form-label">Rate Type</label>
 
                                     <select
-                                      v-model="this.selectedRateType[`${day}-early`]"
+                                      v-model="
+                                        this.selectedRateType[`${day}-early`]
+                                      "
                                       class="form-select w-25"
                                     >
                                       <option value="Hourly">Hourly</option>
@@ -161,12 +172,16 @@
                                   </div>
 
                                   <div class="col-4">
-                                    <label class="form-label">Client Rate</label>
+                                    <label class="form-label"
+                                      >Client Rate</label
+                                    >
 
                                     <input
                                       type="text"
                                       class="form-control w-100"
-                                      v-model="selectedClientRate[`${day}-early`]"
+                                      v-model="
+                                        selectedClientRate[`${day}-early`]
+                                      "
                                       @input="
                                         handleInput(
                                           `clientRate-${day}-early`,
@@ -178,12 +193,16 @@
                                   </div>
 
                                   <div class="col-4">
-                                    <label class="form-label">Private Limited</label>
+                                    <label class="form-label"
+                                      >Private Limited</label
+                                    >
 
                                     <input
                                       type="text"
                                       class="form-control w-100"
-                                      v-model="selectedPrivateLimited[`${day}-early`]"
+                                      v-model="
+                                        selectedPrivateLimited[`${day}-early`]
+                                      "
                                       @input="
                                         handleInput(
                                           `privateLimited-${day}-early`,
@@ -196,12 +215,16 @@
                                 </div>
                                 <div class="col-4 d-flex gap-2">
                                   <div class="col-4">
-                                    <label class="form-label">Self Employed</label>
+                                    <label class="form-label"
+                                      >Self Employed</label
+                                    >
 
                                     <input
                                       type="text"
                                       class="form-control w-100"
-                                      v-model="selectedSelfEmployee[`${day}-early`]"
+                                      v-model="
+                                        selectedSelfEmployee[`${day}-early`]
+                                      "
                                       @input="
                                         handleInput(
                                           `selfEmployee-${day}-early`,
@@ -247,14 +270,18 @@
                                   </div>
                                 </div>
                               </div>
-                              <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                              <div
+                                class="mb-3 d-flex justify-content-between gap-1 me-3"
+                              >
                                 <div class="col-3 d-flex gap-2">
                                   <div class="col-4">
                                     <label class="form-label">Shift Name</label>
                                     <input
                                       type="text"
                                       :v-model="
-                                        shiftsTime.length > 0 ? shiftsTime[1].id : ''
+                                        shiftsTime.length > 0
+                                          ? shiftsTime[1].id
+                                          : ''
                                       "
                                       class="form-control"
                                       :value="
@@ -308,12 +335,16 @@
                                   </div>
 
                                   <div class="col-4">
-                                    <label class="form-label">Client Rate</label>
+                                    <label class="form-label"
+                                      >Client Rate</label
+                                    >
 
                                     <input
                                       type="text"
                                       class="form-control w-100"
-                                      v-model="selectedClientRate[`${day}-late`]"
+                                      v-model="
+                                        selectedClientRate[`${day}-late`]
+                                      "
                                       @input="
                                         handleInput(
                                           `clientRate-${day}-late`,
@@ -325,12 +356,16 @@
                                   </div>
 
                                   <div class="col-4">
-                                    <label class="form-label">Private Limited</label>
+                                    <label class="form-label"
+                                      >Private Limited</label
+                                    >
 
                                     <input
                                       type="text"
                                       class="form-control w-100"
-                                      v-model="selectedPrivateLimited[`${day}-late`]"
+                                      v-model="
+                                        selectedPrivateLimited[`${day}-late`]
+                                      "
                                       @input="
                                         handleInput(
                                           `privateLimited-${day}-late`,
@@ -343,12 +378,16 @@
                                 </div>
                                 <div class="col-4 d-flex gap-2">
                                   <div class="col-4">
-                                    <label class="form-label">Self Employed</label>
+                                    <label class="form-label"
+                                      >Self Employed</label
+                                    >
 
                                     <input
                                       type="text"
                                       class="form-control w-100"
-                                      v-model="selectedSelfEmployee[`${day}-late`]"
+                                      v-model="
+                                        selectedSelfEmployee[`${day}-late`]
+                                      "
                                       @input="
                                         handleInput(
                                           `selfEmployee-${day}-late`,
@@ -394,14 +433,18 @@
                                   </div>
                                 </div>
                               </div>
-                              <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                              <div
+                                class="mb-3 d-flex justify-content-between gap-1 me-3"
+                              >
                                 <div class="col-3 d-flex gap-2">
                                   <div class="col-4">
                                     <label class="form-label">Shift Name</label>
                                     <input
                                       type="text"
                                       :v-model="
-                                        shiftsTime.length > 0 ? shiftsTime[2].id : ''
+                                        shiftsTime.length > 0
+                                          ? shiftsTime[2].id
+                                          : ''
                                       "
                                       class="form-control"
                                       :value="
@@ -455,12 +498,16 @@
                                   </div>
 
                                   <div class="col-4">
-                                    <label class="form-label">Client Rate</label>
+                                    <label class="form-label"
+                                      >Client Rate</label
+                                    >
 
                                     <input
                                       type="text"
                                       class="form-control w-100"
-                                      v-model="selectedClientRate[`${day}-night`]"
+                                      v-model="
+                                        selectedClientRate[`${day}-night`]
+                                      "
                                       @input="
                                         handleInput(
                                           `clientRate-${day}-night`,
@@ -472,12 +519,16 @@
                                   </div>
 
                                   <div class="col-4">
-                                    <label class="form-label">Private Limited</label>
+                                    <label class="form-label"
+                                      >Private Limited</label
+                                    >
 
                                     <input
                                       type="text"
                                       class="form-control w-100"
-                                      v-model="selectedPrivateLimited[`${day}-night`]"
+                                      v-model="
+                                        selectedPrivateLimited[`${day}-night`]
+                                      "
                                       @input="
                                         handleInput(
                                           `privateLimited-${day}-night`,
@@ -490,12 +541,16 @@
                                 </div>
                                 <div class="col-4 d-flex gap-2">
                                   <div class="col-4">
-                                    <label class="form-label">Self Employed</label>
+                                    <label class="form-label"
+                                      >Self Employed</label
+                                    >
 
                                     <input
                                       type="text"
                                       class="form-control w-100"
-                                      v-model="selectedSelfEmployee[`${day}-night`]"
+                                      v-model="
+                                        selectedSelfEmployee[`${day}-night`]
+                                      "
                                       @input="
                                         handleInput(
                                           `selfEmployee-${day}-night`,
@@ -541,14 +596,18 @@
                                   </div>
                                 </div>
                               </div>
-                              <div class="mb-3 d-flex justify-content-between gap-1 me-3">
+                              <div
+                                class="mb-3 d-flex justify-content-between gap-1 me-3"
+                              >
                                 <div class="col-3 d-flex gap-2">
                                   <div class="col-4">
                                     <label class="form-label">Shift Name</label>
                                     <input
                                       type="text"
                                       :v-model="
-                                        shiftsTime.length > 0 ? shiftsTime[3].id : ''
+                                        shiftsTime.length > 0
+                                          ? shiftsTime[3].id
+                                          : ''
                                       "
                                       class="form-control"
                                       :value="
@@ -593,7 +652,9 @@
                                     <label class="form-label">Rate Type</label>
 
                                     <select
-                                      v-model="selectedRateType[`${day}-long day`]"
+                                      v-model="
+                                        selectedRateType[`${day}-long day`]
+                                      "
                                       class="form-select w-25"
                                     >
                                       <option value="Hourly">Hourly</option>
@@ -602,12 +663,16 @@
                                   </div>
 
                                   <div class="col-4">
-                                    <label class="form-label">Client Rate</label>
+                                    <label class="form-label"
+                                      >Client Rate</label
+                                    >
 
                                     <input
                                       type="text"
                                       class="form-control w-100"
-                                      v-model="selectedClientRate[`${day}-long day`]"
+                                      v-model="
+                                        selectedClientRate[`${day}-long day`]
+                                      "
                                       @input="
                                         handleInput(
                                           `clientRate-${day}-long day`,
@@ -619,16 +684,24 @@
                                   </div>
 
                                   <div class="col-4">
-                                    <label class="form-label">Private Limited</label>
+                                    <label class="form-label"
+                                      >Private Limited</label
+                                    >
 
                                     <input
                                       type="text"
                                       class="form-control w-100"
-                                      v-model="selectedPrivateLimited[`${day}-long day`]"
+                                      v-model="
+                                        selectedPrivateLimited[
+                                          `${day}-long day`
+                                        ]
+                                      "
                                       @input="
                                         handleInput(
                                           `privateLimited-${day}-long day`,
-                                          selectedPrivateLimited[`${day}-long day`]
+                                          selectedPrivateLimited[
+                                            `${day}-long day`
+                                          ]
                                         )
                                       "
                                       maxlength="3"
@@ -637,16 +710,22 @@
                                 </div>
                                 <div class="col-4 d-flex gap-2">
                                   <div class="col-4">
-                                    <label class="form-label">Self Employed</label>
+                                    <label class="form-label"
+                                      >Self Employed</label
+                                    >
 
                                     <input
                                       type="text"
                                       class="form-control w-100"
-                                      v-model="selectedSelfEmployee[`${day}-long day`]"
+                                      v-model="
+                                        selectedSelfEmployee[`${day}-long day`]
+                                      "
                                       @input="
                                         handleInput(
                                           `selfEmployee-${day}-long day`,
-                                          selectedSelfEmployee[`${day}-long day`]
+                                          selectedSelfEmployee[
+                                            `${day}-long day`
+                                          ]
                                         )
                                       "
                                       maxlength="3"
@@ -659,7 +738,9 @@
                                     <input
                                       type="text"
                                       class="form-control w-100"
-                                      v-model="selectedUmbrella[`${day}-long day`]"
+                                      v-model="
+                                        selectedUmbrella[`${day}-long day`]
+                                      "
                                       @input="
                                         handleInput(
                                           `umbrella-${day}-long day`,
@@ -704,7 +785,11 @@
                         <input
                           type="text"
                           class="form-control"
-                          :value="shiftsTime.length > 0 ? shiftsTime[0].shift_name : ''"
+                          :value="
+                            shiftsTime.length > 0
+                              ? shiftsTime[0].shift_name
+                              : ''
+                          "
                           disabled
                         />
                       </div>
@@ -714,7 +799,11 @@
                         <input
                           type="text"
                           class="form-control"
-                          :value="shiftsTime.length > 0 ? shiftsTime[0].start_time : ''"
+                          :value="
+                            shiftsTime.length > 0
+                              ? shiftsTime[0].start_time
+                              : ''
+                          "
                           disabled
                         />
                       </div>
@@ -724,7 +813,9 @@
                         <input
                           type="text"
                           class="form-control"
-                          :value="shiftsTime.length > 0 ? shiftsTime[0].end_time : ''"
+                          :value="
+                            shiftsTime.length > 0 ? shiftsTime[0].end_time : ''
+                          "
                           disabled
                         />
                       </div>
@@ -802,7 +893,10 @@
                           class="form-control w-100"
                           v-model="selectedUmbrella[`early`]"
                           @input="
-                            handleInputSingle(`umbrella-early`, selectedUmbrella[`early`])
+                            handleInputSingle(
+                              `umbrella-early`,
+                              selectedUmbrella[`early`]
+                            )
                           "
                           maxlength="3"
                         />
@@ -815,7 +909,12 @@
                           type="text"
                           class="form-control w-100"
                           v-model="selectedPaye[`early`]"
-                          @input="handleInputSingle(`paye-early`, selectedPaye[`early`])"
+                          @input="
+                            handleInputSingle(
+                              `paye-early`,
+                              selectedPaye[`early`]
+                            )
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -827,9 +926,15 @@
                         <label class="form-label">Shift Name</label>
                         <input
                           type="text"
-                          :v-model="shiftsTime.length > 0 ? shiftsTime[1].id : ''"
+                          :v-model="
+                            shiftsTime.length > 0 ? shiftsTime[1].id : ''
+                          "
                           class="form-control"
-                          :value="shiftsTime.length > 0 ? shiftsTime[1].shift_name : ''"
+                          :value="
+                            shiftsTime.length > 0
+                              ? shiftsTime[1].shift_name
+                              : ''
+                          "
                           disabled
                         />
                       </div>
@@ -839,7 +944,11 @@
                         <input
                           type="text"
                           class="form-control"
-                          :value="shiftsTime.length > 0 ? shiftsTime[1].start_time : ''"
+                          :value="
+                            shiftsTime.length > 0
+                              ? shiftsTime[1].start_time
+                              : ''
+                          "
                           disabled
                         />
                       </div>
@@ -849,7 +958,9 @@
                         <input
                           type="text"
                           class="form-control"
-                          :value="shiftsTime.length > 0 ? shiftsTime[1].end_time : ''"
+                          :value="
+                            shiftsTime.length > 0 ? shiftsTime[1].end_time : ''
+                          "
                           disabled
                         />
                       </div>
@@ -927,7 +1038,10 @@
                           class="form-control w-100"
                           v-model="selectedUmbrella[`late`]"
                           @input="
-                            handleInputSingle(`umbrella-late`, selectedUmbrella[`late`])
+                            handleInputSingle(
+                              `umbrella-late`,
+                              selectedUmbrella[`late`]
+                            )
                           "
                           maxlength="3"
                         />
@@ -940,7 +1054,9 @@
                           type="text"
                           class="form-control w-100"
                           v-model="selectedPaye[`late`]"
-                          @input="handleInputSingle(`paye-late`, selectedPaye[`late`])"
+                          @input="
+                            handleInputSingle(`paye-late`, selectedPaye[`late`])
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -952,9 +1068,15 @@
                         <label class="form-label">Shift Name</label>
                         <input
                           type="text"
-                          :v-model="shiftsTime.length > 0 ? shiftsTime[2].id : ''"
+                          :v-model="
+                            shiftsTime.length > 0 ? shiftsTime[2].id : ''
+                          "
                           class="form-control"
-                          :value="shiftsTime.length > 0 ? shiftsTime[2].shift_name : ''"
+                          :value="
+                            shiftsTime.length > 0
+                              ? shiftsTime[2].shift_name
+                              : ''
+                          "
                           disabled
                         />
                       </div>
@@ -964,7 +1086,11 @@
                         <input
                           type="text"
                           class="form-control"
-                          :value="shiftsTime.length > 0 ? shiftsTime[2].start_time : ''"
+                          :value="
+                            shiftsTime.length > 0
+                              ? shiftsTime[2].start_time
+                              : ''
+                          "
                           disabled
                         />
                       </div>
@@ -974,7 +1100,9 @@
                         <input
                           type="text"
                           class="form-control"
-                          :value="shiftsTime.length > 0 ? shiftsTime[2].end_time : ''"
+                          :value="
+                            shiftsTime.length > 0 ? shiftsTime[2].end_time : ''
+                          "
                           disabled
                         />
                       </div>
@@ -1052,7 +1180,10 @@
                           class="form-control w-100"
                           v-model="selectedUmbrella[`night`]"
                           @input="
-                            handleInputSingle(`umbrella-night`, selectedUmbrella[`night`])
+                            handleInputSingle(
+                              `umbrella-night`,
+                              selectedUmbrella[`night`]
+                            )
                           "
                           maxlength="3"
                         />
@@ -1065,7 +1196,12 @@
                           type="text"
                           class="form-control w-100"
                           v-model="selectedPaye[`night`]"
-                          @input="handleInputSingle(`paye-night`, selectedPaye[`night`])"
+                          @input="
+                            handleInputSingle(
+                              `paye-night`,
+                              selectedPaye[`night`]
+                            )
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -1077,9 +1213,15 @@
                         <label class="form-label">Shift Name</label>
                         <input
                           type="text"
-                          :v-model="shiftsTime.length > 0 ? shiftsTime[3].id : ''"
+                          :v-model="
+                            shiftsTime.length > 0 ? shiftsTime[3].id : ''
+                          "
                           class="form-control"
-                          :value="shiftsTime.length > 0 ? shiftsTime[3].shift_name : ''"
+                          :value="
+                            shiftsTime.length > 0
+                              ? shiftsTime[3].shift_name
+                              : ''
+                          "
                           disabled
                         />
                       </div>
@@ -1089,7 +1231,11 @@
                         <input
                           type="text"
                           class="form-control"
-                          :value="shiftsTime.length > 0 ? shiftsTime[3].start_time : ''"
+                          :value="
+                            shiftsTime.length > 0
+                              ? shiftsTime[3].start_time
+                              : ''
+                          "
                           disabled
                         />
                       </div>
@@ -1099,7 +1245,9 @@
                         <input
                           type="text"
                           class="form-control"
-                          :value="shiftsTime.length > 0 ? shiftsTime[3].end_time : ''"
+                          :value="
+                            shiftsTime.length > 0 ? shiftsTime[3].end_time : ''
+                          "
                           disabled
                         />
                       </div>
@@ -1123,11 +1271,17 @@
                         <input
                           type="text"
                           class="form-control w-100"
-                          v-model="selectedClientRate[`${day ? day + '-' : ''}long day`]"
+                          v-model="
+                            selectedClientRate[
+                              `${day ? day + '-' : ''}long day`
+                            ]
+                          "
                           @input="
                             handleInputSingle(
                               `clientRate-${day ? day + '-' : ''}long day`,
-                              selectedClientRate[`${day ? day + '-' : ''}long day`]
+                              selectedClientRate[
+                                `${day ? day + '-' : ''}long day`
+                              ]
                             )
                           "
                           maxlength="3"
@@ -1141,12 +1295,16 @@
                           type="text"
                           class="form-control w-100"
                           v-model="
-                            selectedPrivateLimited[`${day ? day + '-' : ''}long day`]
+                            selectedPrivateLimited[
+                              `${day ? day + '-' : ''}long day`
+                            ]
                           "
                           @input="
                             handleInputSingle(
                               `privateLimited-${day ? day + '-' : ''}long day`,
-                              selectedPrivateLimited[`${day ? day + '-' : ''}long day`]
+                              selectedPrivateLimited[
+                                `${day ? day + '-' : ''}long day`
+                              ]
                             )
                           "
                           maxlength="3"
@@ -1196,7 +1354,10 @@
                           class="form-control w-100"
                           v-model="selectedPaye[`long day`]"
                           @input="
-                            handleInputSingle(`paye-long day`, selectedPaye[`long day`])
+                            handleInputSingle(
+                              `paye-long day`,
+                              selectedPaye[`long day`]
+                            )
                           "
                           maxlength="3"
                         />
@@ -1209,7 +1370,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#addRateRules"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -1330,12 +1491,16 @@ export default {
   components: { SuccessAlert, NotSuccessAlertVue },
   computed: {
     selectClients() {
-      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      const client_id = this.clientData.find(
+        (option) => option.id === this.client_id
+      );
       return this.client_id;
     },
 
     selectShifts() {
-      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
+      const shifts_id = this.shiftsTime.find(
+        (option) => option.id === this.shifts_id
+      );
       return shifts_id ? shifts_id.shift_name : "";
     },
   },
@@ -1371,13 +1536,23 @@ export default {
       if (filteredValue.length > 0) {
         const numericValue = parseInt(filteredValue, 10);
 
-        if (filteredValue.length > 0 && numericValue >= 1 && numericValue <= 999) {
-          this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = true;
+        if (
+          filteredValue.length > 0 &&
+          numericValue >= 1 &&
+          numericValue <= 999
+        ) {
+          this[
+            `validation${field.charAt(0).toUpperCase() + field.slice(1)}`
+          ] = true;
         } else {
-          this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = false;
+          this[
+            `validation${field.charAt(0).toUpperCase() + field.slice(1)}`
+          ] = false;
         }
       } else {
-        this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = false;
+        this[
+          `validation${field.charAt(0).toUpperCase() + field.slice(1)}`
+        ] = false;
       }
     },
     handleInputSingle(field, value) {
@@ -1404,13 +1579,23 @@ export default {
       if (filteredValue.length > 0) {
         const numericValue = parseInt(filteredValue, 10);
 
-        if (filteredValue.length > 0 && numericValue >= 1 && numericValue <= 999) {
-          this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = true;
+        if (
+          filteredValue.length > 0 &&
+          numericValue >= 1 &&
+          numericValue <= 999
+        ) {
+          this[
+            `validation${field.charAt(0).toUpperCase() + field.slice(1)}`
+          ] = true;
         } else {
-          this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = false;
+          this[
+            `validation${field.charAt(0).toUpperCase() + field.slice(1)}`
+          ] = false;
         }
       } else {
-        this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = false;
+        this[
+          `validation${field.charAt(0).toUpperCase() + field.slice(1)}`
+        ] = false;
       }
     },
     isFormValidTrue() {
@@ -1455,7 +1640,9 @@ export default {
         })
       );
 
-      return site_id_valid && job_id_valid && client_id_valid && allShiftDataValid;
+      return (
+        site_id_valid && job_id_valid && client_id_valid && allShiftDataValid
+      );
     },
 
     validateStartTime(newValue) {
@@ -1654,7 +1841,9 @@ export default {
         // this.selectedSiteId = this.businessUnit[0].site_id;
         this.options = response.data.jobs;
         if (siteId) {
-          const selectedSite = this.businessUnit.find((site) => site.site_id === siteId);
+          const selectedSite = this.businessUnit.find(
+            (site) => site.site_id === siteId
+          );
 
           if (selectedSite) {
             this.selectedSiteId = selectedSite.site_id;
@@ -1682,7 +1871,9 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(`${VITE_API_URL}/site_shift/${selectedSiteId}`);
+        const response = await axios.get(
+          `${VITE_API_URL}/site_shift/${selectedSiteId}`
+        );
         this.splitRate = response.data.split_rate || false;
         this.shiftsTime =
           response.data.site_shift_data.map((shift) => ({
@@ -1769,11 +1960,8 @@ export default {
 <style scoped>
 .modal-body {
   border-radius: 5px;
-  background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .modal-dialog {
   max-width: 1460px;
 }
@@ -1787,12 +1975,10 @@ label.form-label {
   text-transform: capitalize;
 }
 .form-control {
-  background-color: #fff;
   padding: 0.6rem 0.75rem;
+  background: #fffaf6;
 }
-.form-control:disabled {
-  background-color: #e9ecef;
-}
+
 .modal-footer {
   border-top: 0px;
 }

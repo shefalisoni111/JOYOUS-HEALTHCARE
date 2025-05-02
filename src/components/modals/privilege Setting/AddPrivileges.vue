@@ -1,12 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="AddPrivileges"
-      aria-labelledby="AddPrivilegess"
-      tabindex="-1"
-    >
+    <div class="modal fade" id="AddPrivileges" aria-labelledby="AddPrivilegess">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -27,7 +22,9 @@
                       @input="clearError"
                       @change="detectAutofill"
                     />
-                    <span v-if="!validateCandidateName && !autofilled" class="text-danger"
+                    <span
+                      v-if="!validateCandidateName && !autofilled"
+                      class="text-danger"
                       >Staff First Name Required</span
                     >
                   </div>
@@ -57,7 +54,11 @@
                   </div>
                   <div class="col-8">
                     <select v-model="user_role_id" @change="clearError">
-                      <option v-for="option in roles" :key="option.id" :value="option.id">
+                      <option
+                        v-for="option in roles"
+                        :key="option.id"
+                        :value="option.id"
+                      >
                         {{ option.name.split("_").join(" ") }}
                       </option>
                     </select>
@@ -150,7 +151,9 @@
                         >Required Phone Number</span
                       > -->
                     <span
-                      v-if="phone_number && !validatePhoneNumberFormat(phone_number)"
+                      v-if="
+                        phone_number && !validatePhoneNumberFormat(phone_number)
+                      "
                       class="text-danger"
                       >Invalid Phone Number</span
                     >
@@ -178,7 +181,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#AddPrivileges"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -193,7 +196,9 @@
                 disabled: !isValidForm || isFieldEmpty(),
               }"
               v-on:click="AddPrivileges"
-              v-bind:data-bs-dismiss="!isFieldEmpty() && isValidForm ? 'modal' : null"
+              v-bind:data-bs-dismiss="
+                !isFieldEmpty() && isValidForm ? 'modal' : null
+              "
             >
               Add
             </button>
@@ -256,7 +261,9 @@ export default {
       );
     },
     selectedOptionText() {
-      const user_role_id = this.roles.find((option) => option.id === this.user_role_id);
+      const user_role_id = this.roles.find(
+        (option) => option.id === this.user_role_id
+      );
       return user_role_id ? user_role_id.name : "";
     },
   },
@@ -305,10 +312,12 @@ export default {
     detectAutofill() {
       const isPhoneNumberFilled = this.phone_number.trim() !== "";
       const isPositionSelected = !!this.user_role_id;
-      const isPhoneNumberFocused = document.activeElement === this.$refs.phone_number;
+      const isPhoneNumberFocused =
+        document.activeElement === this.$refs.phone_number;
 
       if (!isPositionSelected) {
-        this.showPhoneNumberValidation = !isPhoneNumberFocused && !isPhoneNumberFilled;
+        this.showPhoneNumberValidation =
+          !isPhoneNumberFocused && !isPhoneNumberFilled;
       } else {
         this.showPhoneNumberValidation = false;
       }
@@ -318,7 +327,9 @@ export default {
       this.validateCandidateName = this.validateNameFormat(this.first_name);
       this.validateCandidateLName = this.validateLNameFormat(this.last_name);
       this.validateEmail = this.validateEmailFormat(this.email);
-      this.validatePhoneNumber = this.validatePhoneNumberFormat(this.phone_number);
+      this.validatePhoneNumber = this.validatePhoneNumberFormat(
+        this.phone_number
+      );
 
       this.validatePasswordMatch();
       if (this.isFormValid) {
@@ -384,14 +395,16 @@ export default {
       }
     },
     validatePassword(password) {
-      const nameRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      const nameRegex =
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
       return nameRegex.test(password);
     },
     validatePasswordMatch() {
       this.passwordsMatch = this.password === this.confirm_password;
     },
     validateEmailFormat(email) {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
+      const emailRegex =
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
       return emailRegex.test(email);
     },
 
@@ -472,9 +485,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .modal-footer {
   border-top: 0px;
 }
@@ -549,7 +560,7 @@ label.form-label {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
- font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {

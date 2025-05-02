@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div class="modal fade" id="rateCards" aria-labelledby="ratePAge" tabindex="-1">
+    <div class="modal fade" id="rateCards" aria-labelledby="ratePAge">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -37,7 +37,9 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectBusinessUnit">Site</label>
+                    <label class="form-label" for="selectBusinessUnit"
+                      >Site</label
+                    >
                   </div>
                   <div class="col-10">
                     <select
@@ -98,16 +100,24 @@
                       <option value="saturday">Saturday</option>
                       <option value="sunday">Sunday</option>
                     </select>
-                    <span v-if="!validationDay" class="text-danger">Day Required</span>
+                    <span v-if="!validationDay" class="text-danger"
+                      >Day Required</span
+                    >
                   </div>
                 </div>
 
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="employeeData">Employment Type</label>
+                    <label class="form-label" for="employeeData"
+                      >Employment Type</label
+                    >
                   </div>
                   <div class="col-10">
-                    <select v-model="employment_type_id" id="selectEmployee" disabled>
+                    <select
+                      v-model="employment_type_id"
+                      id="selectEmployee"
+                      disabled
+                    >
                       <option
                         v-for="option in employeeData"
                         :key="option.id"
@@ -125,7 +135,9 @@
 
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectShifts">Shift Time</label>
+                    <label class="form-label" for="selectShifts"
+                      >Shift Time</label
+                    >
                   </div>
 
                   <div class="col-10">
@@ -173,7 +185,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#rateCards"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -256,7 +268,9 @@ export default {
     },
 
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return this.site_id;
     },
 
@@ -347,7 +361,8 @@ export default {
     },
 
     validateStaffRate() {
-      this.validationStaffRate = this.staff_rate !== "" && !isNaN(this.staff_rate);
+      this.validationStaffRate =
+        this.staff_rate !== "" && !isNaN(this.staff_rate);
     },
     onlyNumber(event) {
       const char = String.fromCharCode(event.which);
@@ -456,7 +471,9 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(`${VITE_API_URL}/site_shift/${site_id}`);
+        const response = await axios.get(
+          `${VITE_API_URL}/site_shift/${site_id}`
+        );
         this.shiftsTime =
           response.data.site_shift_data.map((shift) => ({
             ...shift,
@@ -552,9 +569,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .modal-footer {
   border-top: 0px;
 }

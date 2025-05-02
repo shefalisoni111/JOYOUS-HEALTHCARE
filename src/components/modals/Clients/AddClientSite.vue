@@ -1,12 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="addClientSite"
-      aria-labelledby="addClientSites"
-      tabindex="-1"
-    >
+    <div class="modal fade" id="addClientSite" aria-labelledby="addClientSites">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -17,7 +12,9 @@
               <form>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label for="selectClients" class="form-label">Client Name</label>
+                    <label for="selectClients" class="form-label"
+                      >Client Name</label
+                    >
                   </div>
                   <div class="col-10">
                     <input
@@ -119,7 +116,9 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectBusinessUnit">Site Name</label>
+                    <label class="form-label" for="selectBusinessUnit"
+                      >Site Name</label
+                    >
                   </div>
 
                   <div class="col-10">
@@ -141,7 +140,9 @@
 
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectJobTitle">Address</label>
+                    <label class="form-label" for="selectJobTitle"
+                      >Address</label
+                    >
                   </div>
                   <div class="col-10">
                     <input
@@ -192,7 +193,9 @@
                       @change="detectAutofill"
                     />
                     <span
-                      v-if="phone_number && !validatePhoneNumberFormat(phone_number)"
+                      v-if="
+                        phone_number && !validatePhoneNumberFormat(phone_number)
+                      "
                       class="text-danger"
                       >Invalid Phone Number</span
                     >
@@ -226,7 +229,10 @@
                     <label class="form-label">Portal Access</label>
                   </div>
                   <div class="col-10">
-                    <select id="selectOptionPortalAccess" v-model="portal_access">
+                    <select
+                      id="selectOptionPortalAccess"
+                      v-model="portal_access"
+                    >
                       <option value="true">True</option>
                       <option value="false">False</option>
                     </select>
@@ -237,7 +243,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#addClientSite"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -316,7 +322,9 @@ export default {
     },
 
     selectClients() {
-      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      const client_id = this.clientData.find(
+        (option) => option.id === this.client_id
+      );
       return client_id ? client_id.client_name : "";
     },
   },
@@ -371,10 +379,12 @@ export default {
     detectAutofill() {
       const isPhoneNumberFilled = this.phone_number.trim() !== "";
       const isPositionSelected = !!this.job_id;
-      const isPhoneNumberFocused = document.activeElement === this.$refs.phone_number;
+      const isPhoneNumberFocused =
+        document.activeElement === this.$refs.phone_number;
 
       if (!isPositionSelected) {
-        this.showPhoneNumberValidation = !isPhoneNumberFocused && !isPhoneNumberFilled;
+        this.showPhoneNumberValidation =
+          !isPhoneNumberFocused && !isPhoneNumberFilled;
       } else {
         this.showPhoneNumberValidation = false;
       }
@@ -387,7 +397,9 @@ export default {
     async addClientSiteMethod() {
       this.validateEmail = this.validateEmailFormat(this.email);
       this.validationSelectedClient = this.ValidationClient(this.client_id);
-      this.validatePhoneNumber = this.validatePhoneNumberFormat(this.phone_number);
+      this.validatePhoneNumber = this.validatePhoneNumberFormat(
+        this.phone_number
+      );
       this.validateAddress = this.validateAddressFormat(this.address);
       this.validateSiteName = this.validateSiteNameFormate(this.first_name);
 
@@ -455,7 +467,8 @@ export default {
     },
 
     validateEmailFormat(email) {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
+      const emailRegex =
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
       return emailRegex.test(email);
     },
     ValidationClient(newValue) {
@@ -548,9 +561,6 @@ export default {
 .modal-body {
   border-radius: 5px;
   background: #dbdbdb;
-}
-.modal-header {
-  border-bottom: 0px;
 }
 
 select {

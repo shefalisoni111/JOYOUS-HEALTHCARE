@@ -1,16 +1,13 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="editNextToKin"
-      aria-labelledby="editNextKin"
-      tabindex="-1"
-    >
+    <div class="modal fade" id="editNextToKin" aria-labelledby="editNextKin">
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title text-center" id="editNextToKin">Edit Details</h5>
+            <h5 class="modal-title text-center" id="editNextToKin">
+              Edit Details
+            </h5>
           </div>
           <div class="modal-body mx-3" v-if="fetchNExtToKinData">
             <div class="row align-items-center">
@@ -109,7 +106,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editNextToKin"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -174,18 +171,15 @@ export default {
   },
   methods: {
     cleanAndValidatePhoneNumber() {
-      this.fetchNExtToKinData.phone_number = this.fetchNExtToKinData.phone_number.replace(
-        /\D/g,
-        ""
-      );
+      this.fetchNExtToKinData.phone_number =
+        this.fetchNExtToKinData.phone_number.replace(/\D/g, "");
 
-      this.validatePhoneNumber = this.fetchNExtToKinData.phone_number.length === 10;
+      this.validatePhoneNumber =
+        this.fetchNExtToKinData.phone_number.length === 10;
     },
     cleanAndValidatePostcode() {
-      this.fetchNExtToKinData.postcode = this.fetchNExtToKinData.postcode.replace(
-        /\D/g,
-        ""
-      );
+      this.fetchNExtToKinData.postcode =
+        this.fetchNExtToKinData.postcode.replace(/\D/g, "");
 
       this.validatePhoneNumber = this.fetchNExtToKinData.postcode.length === 6;
     },
@@ -239,9 +233,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .modal-footer {
   border-top: 0px;
 }
@@ -329,7 +321,7 @@ select {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
- font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {

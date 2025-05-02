@@ -5,7 +5,6 @@
       class="modal fade"
       id="editClientNotes"
       aria-labelledby="editClientNotes"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -31,7 +30,7 @@
             </div>
             <div class="modal-footer">
               <button
-                class="btn btn-secondary rounded-1"
+                class="btn btn-dark btn-cancel"
                 data-bs-target="#editClientNotes"
                 data-bs-toggle="modal"
                 data-bs-dismiss="modal"
@@ -97,7 +96,9 @@ export default {
     },
 
     selectClients() {
-      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      const client_id = this.clientData.find(
+        (option) => option.id === this.client_id
+      );
       return this.client_id;
     },
   },

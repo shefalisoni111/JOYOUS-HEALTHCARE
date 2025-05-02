@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div class="modal fade" id="addShift" aria-labelledby="addShift" tabindex="-1">
+    <div class="modal fade" id="addShift" aria-labelledby="addShift">
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
@@ -62,7 +62,9 @@
                           :name="'start-time-' + shift.id"
                           class="form-select"
                           v-model="shift.start_time"
-                          @change="updateTime(shift, 'start_time', $event.target.value)"
+                          @change="
+                            updateTime(shift, 'start_time', $event.target.value)
+                          "
                         >
                           <option
                             v-for="hour in 24"
@@ -82,7 +84,9 @@
                           :name="'end-time-' + shift.id"
                           class="form-select"
                           v-model="shift.end_time"
-                          @change="updateTime(shift, 'end_time', $event.target.value)"
+                          @change="
+                            updateTime(shift, 'end_time', $event.target.value)
+                          "
                         >
                           <option
                             v-for="hour in 24"
@@ -100,7 +104,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-secondary rounded-1" data-bs-dismiss="modal">
+            <button class="btn btn-dark btn-cancel" data-bs-dismiss="modal">
               Cancel
             </button>
             <button
@@ -155,10 +159,13 @@ export default {
       try {
         updatedShifts = await Promise.all(
           shifts.value.map(async (shift) => {
-            const response = await axios.put(`${VITE_API_URL}/shifts/${shift.id}`, {
-              start_time: shift.start_time,
-              end_time: shift.end_time,
-            });
+            const response = await axios.put(
+              `${VITE_API_URL}/shifts/${shift.id}`,
+              {
+                start_time: shift.start_time,
+                end_time: shift.end_time,
+              }
+            );
             return {
               ...response.data,
               start_time: response.data.start_time,

@@ -5,7 +5,6 @@
       class="modal fade"
       id="editCustomTimeSheet"
       aria-labelledby="editCustomTimeSheet"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
@@ -133,7 +132,11 @@
                               @change="calculateTotalHours"
                               style="width: 80px"
                             >
-                              <option v-for="hour in 24" :key="hour" :value="hour">
+                              <option
+                                v-for="hour in 24"
+                                :key="hour"
+                                :value="hour"
+                              >
                                 {{ formatTime(hour) }}
                                 <!-- Only the time portion -->
                               </option>
@@ -151,7 +154,11 @@
                                 :key="minute"
                                 :value="minute - 1"
                               >
-                                {{ minute - 1 < 10 ? "0" + (minute - 1) : minute - 1 }}
+                                {{
+                                  minute - 1 < 10
+                                    ? "0" + (minute - 1)
+                                    : minute - 1
+                                }}
                               </option>
                             </select>
                             <!-- AM/PM Dropdown -->
@@ -184,7 +191,11 @@
                               class="form-control custom-disabled"
                               disabled
                             >
-                              <option v-for="hour in 24" :key="hour" :value="hour">
+                              <option
+                                v-for="hour in 24"
+                                :key="hour"
+                                :value="hour"
+                              >
                                 {{ formatTime(hour) }}
                                 <!-- Only the time portion -->
                               </option>
@@ -199,7 +210,11 @@
                                 :key="minute"
                                 :value="minute - 1"
                               >
-                                {{ minute - 1 < 10 ? "0" + (minute - 1) : minute - 1 }}
+                                {{
+                                  minute - 1 < 10
+                                    ? "0" + (minute - 1)
+                                    : minute - 1
+                                }}
                               </option>
                             </select>
                             <select
@@ -243,7 +258,11 @@
                             />
                             <div
                               v-else
-                              style="display: flex; gap: 8px; align-items: center"
+                              style="
+                                display: flex;
+                                gap: 8px;
+                                align-items: center;
+                              "
                             >
                               <!-- Hour Dropdown -->
                               <select
@@ -253,7 +272,11 @@
                                 @change="calculateTotalHours"
                                 style="width: 80px"
                               >
-                                <option v-for="hour in 24" :key="hour" :value="hour">
+                                <option
+                                  v-for="hour in 24"
+                                  :key="hour"
+                                  :value="hour"
+                                >
                                   {{ formatTime(hour) }}
                                   <!-- Only the time portion -->
                                 </option>
@@ -271,7 +294,11 @@
                                   :key="minute"
                                   :value="minute - 1"
                                 >
-                                  {{ minute - 1 < 10 ? "0" + (minute - 1) : minute - 1 }}
+                                  {{
+                                    minute - 1 < 10
+                                      ? "0" + (minute - 1)
+                                      : minute - 1
+                                  }}
                                 </option>
                               </select>
                               <!-- AM/PM Dropdown -->
@@ -297,14 +324,22 @@
                             />
                             <div
                               v-else
-                              style="display: flex; gap: 8px; align-items: center"
+                              style="
+                                display: flex;
+                                gap: 8px;
+                                align-items: center;
+                              "
                             >
                               <select
                                 id="selectCustomHour"
                                 class="form-control custom-disabled"
                                 disabled
                               >
-                                <option v-for="hour in 24" :key="hour" :value="hour">
+                                <option
+                                  v-for="hour in 24"
+                                  :key="hour"
+                                  :value="hour"
+                                >
                                   {{ formatTime(hour) }}
                                   <!-- Only the time portion -->
                                 </option>
@@ -319,7 +354,11 @@
                                   :key="minute"
                                   :value="minute - 1"
                                 >
-                                  {{ minute - 1 < 10 ? "0" + (minute - 1) : minute - 1 }}
+                                  {{
+                                    minute - 1 < 10
+                                      ? "0" + (minute - 1)
+                                      : minute - 1
+                                  }}
                                 </option>
                               </select>
                               <select
@@ -507,7 +546,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editCustomTimeSheet"
               data-bs-dismiss="modal"
               @click="resetChanges"
@@ -636,14 +675,21 @@ export default {
       const startTime = `${this.formatTime(this.startTime.hour)}:${
         this.startTime.minute
       } ${this.startTime.period}`;
-      const endTime = `${this.formatTime(this.endTime.hour)}:${this.endTime.minute} ${
-        this.endTime.period
-      }`;
+      const endTime = `${this.formatTime(this.endTime.hour)}:${
+        this.endTime.minute
+      } ${this.endTime.period}`;
 
       try {
-        const response = await axios.get(`${VITE_API_URL}/calculate_total_hour`, {
-          params: { start_time: startTime, end_time: endTime, id: this.customDataId },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/calculate_total_hour`,
+          {
+            params: {
+              start_time: startTime,
+              end_time: endTime,
+              id: this.customDataId,
+            },
+          }
+        );
 
         this.fetchCustomSheetData.total_hours = response.data.total_hours;
       } catch (error) {
@@ -652,14 +698,16 @@ export default {
     },
     updateStartTime() {
       const { hour, minute, period } = this.startTime;
-      const hour24 = period === "PM" ? (hour < 12 ? hour + 12 : hour) : hour % 12;
+      const hour24 =
+        period === "PM" ? (hour < 12 ? hour + 12 : hour) : hour % 12;
       const formattedMinute = minute < 10 ? `0${minute}` : minute;
 
       this.fetchCustomSheetData.start_time = `${hour24}:${formattedMinute} ${period}`;
     },
     updateEndTime() {
       const { hour, minute, period } = this.endTime;
-      const hour24 = period === "PM" ? (hour < 12 ? hour + 12 : hour) : hour % 12;
+      const hour24 =
+        period === "PM" ? (hour < 12 ? hour + 12 : hour) : hour % 12;
       const formattedMinute = minute < 10 ? `0${minute}` : minute;
 
       this.fetchCustomSheetData.end_time = `${hour24}:${formattedMinute} ${period}`;
@@ -718,7 +766,9 @@ export default {
           };
           reader.readAsDataURL(file);
         } else {
-          this.$refs.successAlert.showError("Please upload a valid image file.");
+          this.$refs.successAlert.showError(
+            "Please upload a valid image file."
+          );
         }
         this.validatePaperTimeSheet();
       } else {
@@ -727,7 +777,8 @@ export default {
       }
     },
     validatePaperTimeSheet() {
-      this.validationPaperTimeSheet = !this.fetchCustomSheetData.paper_timesheet;
+      this.validationPaperTimeSheet =
+        !this.fetchCustomSheetData.paper_timesheet;
     },
     formatTime(hour) {
       // if (hour === 0 || hour === 24) {
@@ -791,7 +842,12 @@ export default {
             const startPeriod = startHour >= 12 ? "PM" : "AM";
 
             this.startTime = {
-              hour: startHour > 12 ? startHour - 12 : startHour === 0 ? 12 : startHour,
+              hour:
+                startHour > 12
+                  ? startHour - 12
+                  : startHour === 0
+                  ? 12
+                  : startHour,
               minute: parseInt(startMinute, 10),
               period: startPeriod,
             };
@@ -876,7 +932,10 @@ export default {
             }
           });
 
-          if (paperTimesheet instanceof File || paperTimesheet instanceof Blob) {
+          if (
+            paperTimesheet instanceof File ||
+            paperTimesheet instanceof Blob
+          ) {
             formData.append("custom_timesheet[custom_image]", paperTimesheet);
           } else if (typeof paperTimesheet === "string") {
             formData.append("custom_timesheet[custom_image]", paperTimesheet);
@@ -965,9 +1024,7 @@ export default {
 .modal-body {
   border-radius: 5px;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .custom-disabled {
   cursor: not-allowed;
 }

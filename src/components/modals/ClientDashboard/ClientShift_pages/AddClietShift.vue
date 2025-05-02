@@ -5,7 +5,6 @@
       class="modal fade"
       id="addShiftClient"
       aria-labelledby="addShiftClientData"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -41,7 +40,9 @@
                 </div> -->
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectBusinessUnit">Site</label>
+                    <label class="form-label" for="selectBusinessUnit"
+                      >Site</label
+                    >
                   </div>
 
                   <div class="col-10">
@@ -67,10 +68,16 @@
 
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectJobTitle">Job Title</label>
+                    <label class="form-label" for="selectJobTitle"
+                      >Job Title</label
+                    >
                   </div>
                   <div class="col-10">
-                    <select v-model="job_id" id="selectJobTitle" @change="onJobSelect">
+                    <select
+                      v-model="job_id"
+                      id="selectJobTitle"
+                      @change="onJobSelect"
+                    >
                       <option
                         v-for="option in options"
                         :key="option.id"
@@ -147,7 +154,9 @@
                 <div>
                   <div class="mb-3 d-flex justify-content-between">
                     <div class="col-2">
-                      <label class="form-label" for="selectShiftStart">Start Time</label>
+                      <label class="form-label" for="selectShiftStart"
+                        >Start Time</label
+                      >
                     </div>
                     <div class="col-10">
                       <select
@@ -164,7 +173,11 @@
                         >
                           {{ shift.start_time }}
                         </option>
-                        <option v-for="hour in 24" :key="hour" :value="formatTime(hour)">
+                        <option
+                          v-for="hour in 24"
+                          :key="hour"
+                          :value="formatTime(hour)"
+                        >
                           {{ formatTime(hour) }}
                         </option>
                       </select>
@@ -175,7 +188,9 @@
                   </div>
                   <div class="mb-3 d-flex justify-content-between">
                     <div class="col-2">
-                      <label class="form-label" for="selectShiftEnd">End Time</label>
+                      <label class="form-label" for="selectShiftEnd"
+                        >End Time</label
+                      >
                     </div>
                     <div class="col-10">
                       <select
@@ -193,7 +208,11 @@
                         >
                           {{ shift.end_time }}
                         </option>
-                        <option v-for="hour in 24" :key="hour" :value="formatTime(hour)">
+                        <option
+                          v-for="hour in 24"
+                          :key="hour"
+                          :value="formatTime(hour)"
+                        >
                           {{ formatTime(hour) }}
                         </option>
                       </select>
@@ -206,7 +225,9 @@
 
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectShiftsBreak">Break Time</label>
+                    <label class="form-label" for="selectShiftsBreak"
+                      >Break Time</label
+                    >
                   </div>
                   <div class="col-10">
                     <select
@@ -231,7 +252,9 @@
 
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectShifts">Staff Required</label>
+                    <label class="form-label" for="selectShifts"
+                      >Staff Required</label
+                    >
                   </div>
                   <div class="col-10">
                     <input
@@ -248,7 +271,9 @@
                       Staff Required positive number only
                     </span>
                     <span
-                      v-else-if="!validationStaffRequired && staff_required === 0"
+                      v-else-if="
+                        !validationStaffRequired && staff_required === 0
+                      "
                       class="text-danger"
                     >
                       Staff Required invalid
@@ -277,7 +302,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#addShiftClient"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -395,17 +420,23 @@ export default {
     },
 
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
 
     selectClients() {
-      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      const client_id = this.clientData.find(
+        (option) => option.id === this.client_id
+      );
       return this.client_id;
     },
 
     selectShifts() {
-      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
+      const shifts_id = this.shiftsTime.find(
+        (option) => option.id === this.shifts_id
+      );
       return shifts_id ? shifts_id.shift_name : "";
     },
   },
@@ -419,10 +450,12 @@ export default {
     notes: "validationNotesText",
 
     job_id: function (newValue) {
-      this.validationSelectedOptionText = this.validationSelectedFormate(newValue);
+      this.validationSelectedOptionText =
+        this.validationSelectedFormate(newValue);
     },
     site_id: function (newValue) {
-      this.validationSelectedBusinessUnit = this.ValidationBusinessUnit(newValue);
+      this.validationSelectedBusinessUnit =
+        this.ValidationBusinessUnit(newValue);
     },
     client_id: function (newValue) {
       this.validationSelectedClient = this.ValidationClient(newValue);
@@ -473,7 +506,8 @@ export default {
       const filteredValue = value.replace(/[^0-9]/g, "");
       this[field] = filteredValue;
 
-      const isValidNumber = filteredValue.length > 0 && /^[0-9]+$/.test(filteredValue);
+      const isValidNumber =
+        filteredValue.length > 0 && /^[0-9]+$/.test(filteredValue);
 
       if (this.site_id) {
         this.validateRate(field, filteredValue);
@@ -497,7 +531,9 @@ export default {
 
     validateRate(field, value) {
       if (value === null || value === undefined) {
-        this[`validation${field.charAt(0).toUpperCase() + field.slice(1)}`] = false;
+        this[
+          `validation${field.charAt(0).toUpperCase() + field.slice(1)}`
+        ] = false;
         return;
       }
 
@@ -685,7 +721,10 @@ export default {
         const currentDate = new Date();
         const selectedDate = new Date(this.selectedDate);
 
-        if (selectedDate > currentDate || this.isToday(selectedDate, currentDate)) {
+        if (
+          selectedDate > currentDate ||
+          this.isToday(selectedDate, currentDate)
+        ) {
           const formattedDate = selectedDate.toLocaleDateString("en-GB");
 
           this.dates = [formattedDate];
@@ -731,7 +770,9 @@ export default {
       }
 
       if (endHour >= 12) {
-        const currentDate = new Date(this.dates[0].split("/").reverse().join("-"));
+        const currentDate = new Date(
+          this.dates[0].split("/").reverse().join("-")
+        );
         currentDate.setDate(currentDate.getDate() + 1);
         this.end_date = this.formatDate(currentDate);
       } else {
@@ -760,12 +801,18 @@ export default {
     },
 
     async addVacancyMethod() {
-      this.validationSelectedOptionText = this.validationSelectedFormate(this.job_id);
-      this.validationSelectedBusinessUnit = this.ValidationBusinessUnit(this.site_id);
+      this.validationSelectedOptionText = this.validationSelectedFormate(
+        this.job_id
+      );
+      this.validationSelectedBusinessUnit = this.ValidationBusinessUnit(
+        this.site_id
+      );
       this.validationSelectedClient = this.ValidationClient(this.client_id);
       this.validationNotesText = this.ValidationNotes(this.notes);
       this.validationShift = this.ValidationShift(this.site_shift_id);
-      this.validationStaffRequired = this.ValidationStaffRequired(this.staff_required);
+      this.validationStaffRequired = this.ValidationStaffRequired(
+        this.staff_required
+      );
       this.validationDateType = this.ValidationDate(this.dates);
 
       if (
@@ -825,7 +872,8 @@ export default {
                 // Show the specific error message from the response
                 Swal.fire(
                   "Error",
-                  errorData.error || "Rate cards are missing. Please contact the agency.",
+                  errorData.error ||
+                    "Rate cards are missing. Please contact the agency.",
                   "error"
                 );
               } else {
@@ -1094,9 +1142,6 @@ export default {
 .modal-body {
   border-radius: 5px;
   background: #dbdbdb;
-}
-.modal-header {
-  border-bottom: 0px;
 }
 
 select {

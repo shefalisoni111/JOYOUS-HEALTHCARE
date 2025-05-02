@@ -1,12 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="addStaffJobs"
-      aria-labelledby="addStaffJobs"
-      tabindex="-1"
-    >
+    <div class="modal fade" id="addStaffJobs" aria-labelledby="addStaffJobs">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -39,7 +34,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#addStaffJobs"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -99,7 +94,10 @@ export default {
 
         const jobIds = response.data.candidate.job_ids || [];
 
-        this.fetchStaffJobs = { ...this.fetchStaffJobs, ...response.data.candidate };
+        this.fetchStaffJobs = {
+          ...this.fetchStaffJobs,
+          ...response.data.candidate,
+        };
 
         this.options.forEach((option) => {
           option.checked = jobIds.includes(option.id);
@@ -115,7 +113,8 @@ export default {
         const response = await axios.get(
           `${VITE_API_URL}/candidates/${this.$route.params.id}/jobs`
         );
-        this.existingJobs = response.data.candidate.jobs.map((job) => job.id) || [];
+        this.existingJobs =
+          response.data.candidate.jobs.map((job) => job.id) || [];
         this.resetChanges();
       } catch (error) {
         // Handle error
@@ -164,9 +163,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .modal-footer {
   border-top: 0px;
 }

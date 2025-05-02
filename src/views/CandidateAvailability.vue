@@ -6,7 +6,9 @@
           <div class="">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active">
-                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                <a
+                  class="nav-link d-inline fs-4 fw-bolder"
+                  style="color: #000000"
                   >All Staff</a
                 >
                 <p>
@@ -34,7 +36,10 @@
                 v-model="searchQuery"
                 @input="debounceSearch"
               />
-              <span class="position-absolute" style="transform: translate(1349%, -151%)">
+              <span
+                class="position-absolute"
+                style="transform: translate(1349%, -151%)"
+              >
                 <img
                   src="../assets/Search.png"
                   class="img-fluid pe-2"
@@ -51,7 +56,9 @@
                 <div class="d-flex">
                   &nbsp;&nbsp;
 
-                  <div class="d-flex align-items-center justify-content-between">
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                  >
                     <i
                       class="bi bi-caret-left-fill"
                       @click="moveToPrevious"
@@ -82,9 +89,18 @@
 
             <div v-if="selectedDate !== null" class="modal">
               <div class="modal-content">
-                <h4 class="text-capitalize" style="color: #ff5722; font-weight: bold">
-                  {{ getCandidateName() }}
-                </h4>
+                <div class="d-flex justify-content-between">
+                  <h4 class="text-capitalize" style="font-weight: bold">
+                    {{ getCandidateName() }}
+                  </h4>
+                  <button
+                    type="button"
+                    class="custom-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    @click="closeModal"
+                  ></button>
+                </div>
 
                 <Calendar
                   :initialDate="selectedDate.toISOString()"
@@ -113,10 +129,18 @@
                   </th>
                   <th scope="col">
                     <div class="calendar-grid">
-                      <div v-for="day in daysOfWeek" :key="day" class="day-header">
+                      <div
+                        v-for="day in daysOfWeek"
+                        :key="day"
+                        class="day-header"
+                      >
                         {{ day }}
                       </div>
-                      <div v-for="date in selectedDateRow" :key="date" class="day-header">
+                      <div
+                        v-for="date in selectedDateRow"
+                        :key="date"
+                        class="day-header"
+                      >
                         {{ formatDate(date) }}
                         <img
                           src="../assets/ArrowDown.png"
@@ -152,7 +176,10 @@
                         class="calendar-day"
                         :class="{ 'calendar-day': true, clickable: day !== '' }"
                       >
-                        <span v-for="avail in data.availability" :key="avail.id">
+                        <span
+                          v-for="avail in data.availability"
+                          :key="avail.id"
+                        >
                           <span v-if="avail.date === formattedDate(day)">
                             <span
                               v-if="
@@ -198,10 +225,18 @@
                   <th scope="col">Name</th>
                   <th scope="col">
                     <div class="calendar-grid">
-                      <div v-for="day in daysOfWeek" :key="day" class="day-header">
+                      <div
+                        v-for="day in daysOfWeek"
+                        :key="day"
+                        class="day-header"
+                      >
                         {{ day }}
                       </div>
-                      <div v-for="date in selectedDateRow" :key="date" class="day-header">
+                      <div
+                        v-for="date in selectedDateRow"
+                        :key="date"
+                        class="day-header"
+                      >
                         {{ formatDate(date) }}
                       </div>
                     </div>
@@ -213,7 +248,9 @@
                   <td class="text-capitalize fw-bold" style="width: 21%">
                     {{ data.candidate_name + " " }}
 
-                    <span class="fs-6 text-muted fw-100"><br />{{ data.job }}</span>
+                    <span class="fs-6 text-muted fw-100"
+                      ><br />{{ data.job }}</span
+                    >
                   </td>
                   <td>
                     <div class="calendar-grid">
@@ -226,7 +263,10 @@
                         class="calendar-day"
                         :class="{ 'calendar-day': true, clickable: day !== '' }"
                       >
-                        <span v-for="avail in data.availability" :key="avail.id">
+                        <span
+                          v-for="avail in data.availability"
+                          :key="avail.id"
+                        >
                           <span v-if="avail.date === formattedDate(day)">
                             <span
                               v-for="status in avail.candidate_status"
@@ -428,7 +468,9 @@ export default {
       return selectedDateRow;
     },
     candidateName() {
-      return this.selectedCandidate ? this.selectedCandidate.candidate_name : "";
+      return this.selectedCandidate
+        ? this.selectedCandidate.candidate_name
+        : "";
     },
 
     formattedDates() {
@@ -444,7 +486,9 @@ export default {
       const mondayIndex = 1;
       const dayOfWeek = startDate.getDay();
       const daysToAdd =
-        dayOfWeek < mondayIndex ? mondayIndex - dayOfWeek - 7 : mondayIndex - dayOfWeek;
+        dayOfWeek < mondayIndex
+          ? mondayIndex - dayOfWeek - 7
+          : mondayIndex - dayOfWeek;
       startDate.setDate(startDate.getDate() + daysToAdd);
       return `${startDate.getDate()}/${
         startDate.getMonth() + 1
@@ -455,9 +499,13 @@ export default {
       const sundayIndex = 0;
       const dayOfWeek = endDate.getDay();
       const daysToAdd =
-        dayOfWeek < sundayIndex ? sundayIndex - dayOfWeek : sundayIndex - dayOfWeek + 7;
+        dayOfWeek < sundayIndex
+          ? sundayIndex - dayOfWeek
+          : sundayIndex - dayOfWeek + 7;
       endDate.setDate(endDate.getDate() + daysToAdd);
-      return `${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()}`;
+      return `${endDate.getDate()}/${
+        endDate.getMonth() + 1
+      }/${endDate.getFullYear()}`;
     },
     computedSelectedCandidate() {
       return this.candidateList.find(
@@ -548,7 +596,9 @@ export default {
     updateDateRange() {
       if (this.currentView === "weekly") {
         const weekStart = new Date(this.startDate);
-        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
+        weekStart.setDate(
+          this.startDate.getDate() - this.startDate.getDay() + 1
+        );
         this.startDate = weekStart;
 
         const weekEnd = new Date(this.startDate);
@@ -556,8 +606,16 @@ export default {
         this.endDate = weekEnd;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        this.startDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+        this.endDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        );
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());
@@ -598,7 +656,9 @@ export default {
         );
 
         if (availabilityEntry) {
-          return [{ id: availabilityEntry.id, status: availabilityEntry.status }];
+          return [
+            { id: availabilityEntry.id, status: availabilityEntry.status },
+          ];
         }
       }
 
@@ -682,7 +742,11 @@ export default {
       try {
         const actualCandidateId = candidateId.candidate_id;
 
-        const selectedDate = new Date(day.getFullYear(), day.getMonth(), day.getDate());
+        const selectedDate = new Date(
+          day.getFullYear(),
+          day.getMonth(),
+          day.getDate()
+        );
 
         this.selectedDate = selectedDate;
 
@@ -789,7 +853,7 @@ export default {
     this.intervalId = setInterval(() => {
       this.fetchCandidateList(this.formattedStartDate);
     }, 2000);
-    this.fetchCandidateList(this.formattedStartDate);
+    this.fetchCandidateList();
     // window.addEventListener("beforeunload", this.saveToLocalStorage);
   },
   beforeUnmount() {
@@ -904,7 +968,7 @@ input.dateInput:focus-visible {
   margin: 16% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 90%;
+  width: 56%;
 }
 
 .close {

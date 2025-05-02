@@ -5,12 +5,13 @@
       class="modal fade"
       id="editCustomHoliday"
       aria-labelledby="editCustomHoliday"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="editCustomHoliday">Edit Custom Holiday</h5>
+            <h5 class="modal-title" id="editCustomHoliday">
+              Edit Custom Holiday
+            </h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
@@ -20,7 +21,11 @@
                     <label class="form-label">Title</label>
                   </div>
                   <div class="col-12 mt-1">
-                    <input type="text" class="form-control" v-model="fetchSite.title" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="fetchSite.title"
+                    />
                   </div>
                 </div>
                 <div class="mb-3">
@@ -28,7 +33,11 @@
                     <label class="form-label">Date</label>
                   </div>
                   <div class="col-12 mt-1">
-                    <input type="date" class="form-control" v-model="fetchSite.date" />
+                    <input
+                      type="date"
+                      class="form-control"
+                      v-model="fetchSite.date"
+                    />
                   </div>
                 </div>
                 <div class="mb-3">
@@ -48,7 +57,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editCustomHoliday"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -108,7 +117,10 @@ export default {
   components: { SuccessAlert },
   methods: {
     cleanPhoneNumber() {
-      this.fetchSite.phone_number = this.fetchSite.phone_number.replace(/\D/g, "");
+      this.fetchSite.phone_number = this.fetchSite.phone_number.replace(
+        /\D/g,
+        ""
+      );
     },
 
     validatePhoneNumber(phoneNumber) {

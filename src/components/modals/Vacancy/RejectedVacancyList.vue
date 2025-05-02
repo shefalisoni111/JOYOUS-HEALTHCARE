@@ -5,7 +5,6 @@
       class="modal fade"
       id="rejectedVacancyList"
       aria-labelledby="rejectedVacancyList"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
@@ -14,7 +13,9 @@
           </div>
           <div class="modal-body mx-3 overflow-x-auto">
             <div class="row g-3 align-items-center">
-              <ul class="list-unstyled d-lg-flex gap-3 mb-0 publish-ul d-sm-grid">
+              <ul
+                class="list-unstyled d-lg-flex gap-3 mb-0 publish-ul d-sm-grid"
+              >
                 <li>Code:{{ vacancyDetails.ref_code }}</li>
                 <li>Site:{{ vacancyDetails.business_unit }}</li>
                 <li>Job: {{ vacancyDetails.job_title }}</li>
@@ -34,7 +35,9 @@
                 >
                   <div></div>
 
-                  <div class="d-flex align-items-center justify-content-between">
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                  >
                     <div class="d-flex align-items-center gap-2">
                       <div class="searchbox position-relative">
                         <form @submit.prevent="search">
@@ -169,7 +172,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#rejectedVacancyList"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -284,9 +287,6 @@ export default {
 .modal-body {
   border-radius: 5px;
   background: #dbdbdb;
-}
-.modal-header {
-  border-bottom: 0px;
 }
 
 select {

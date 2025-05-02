@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div class="modal fade" id="addClients" aria-labelledby="addClients" tabindex="-1">
+    <div class="modal fade" id="addClients" aria-labelledby="addClients">
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -68,32 +68,45 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-12 d-flex gap-2">
+                <div class="col-12">
                   <div class="mb-3">
                     <div class="col-12">
                       <label class="form-label" for="selectOption">Jobs</label>
                     </div>
 
-                    <div class="col-12 d-flex">
+                    <!-- Stack checkboxes vertically -->
+                    <div class="row">
                       <div
+                        class="col-md-4"
                         v-for="option in options"
                         :key="option.id"
-                        class="d-flex align-items-center"
                       >
-                        <input
-                          type="checkbox"
-                          :value="option.id"
-                          v-model="job_ids"
-                          @change="toggleJobsSelection"
-                        />
-                        <label class="text-capitalize">&nbsp;{{ option.name }}</label>
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            :value="option.id"
+                            v-model="job_ids"
+                            @change="toggleJobsSelection"
+                            :id="`job-${option.id}`"
+                          />
+                          <label
+                            class="form-check-label text-capitalize"
+                            :for="`job-${option.id}`"
+                          >
+                            {{ option.name }}
+                          </label>
+                        </div>
                       </div>
-                      <div v-if="getError('job_id')" class="text-danger">
-                        {{ getError("job_id") }}
-                      </div>
+                    </div>
+
+                    <!-- Error message below the checkboxes -->
+                    <div v-if="getError('job_id')" class="text-danger mt-2">
+                      {{ getError("job_id") }}
                     </div>
                   </div>
                 </div>
+
                 <div class="col-12 d-flex gap-2">
                   <div class="col-6">
                     <div class="mb-3">
@@ -112,7 +125,10 @@
                         >Invalid Phone Number</span
                       > -->
                         <span
-                          v-if="phone_number && !validatePhoneNumberFormat(phone_number)"
+                          v-if="
+                            phone_number &&
+                            !validatePhoneNumberFormat(phone_number)
+                          "
                           class="text-danger"
                           >Invalid Phone Number</span
                         >
@@ -134,9 +150,13 @@
                           ref="password"
                           autocomplete="new-password"
                         />
-                        <span v-if="password && !isPasswordValid" class="text-danger">
-                          Password must be at least 8 characters long and include
-                          uppercase, lowercase, numeric, and special characters.
+                        <span
+                          v-if="password && !isPasswordValid"
+                          class="text-danger"
+                        >
+                          Password must be at least 8 characters long and
+                          include uppercase, lowercase, numeric, and special
+                          characters.
                         </span>
                       </div>
                     </div>
@@ -168,7 +188,9 @@
                   <div class="col-6">
                     <div class="mb-3">
                       <div class="col-12">
-                        <label class="form-label" for="selectOption">address</label>
+                        <label class="form-label" for="selectOption"
+                          >address</label
+                        >
                       </div>
                       <div class="col-12">
                         <input
@@ -190,7 +212,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#addClients"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -381,7 +403,9 @@ export default {
 
       this.validatePassword = !!this.password.trim();
       this.passwordsMatch = this.password === this.confirm_password;
-      this.validatePhoneNumber = this.validatePhoneNumberFormat(this.phone_number);
+      this.validatePhoneNumber = this.validatePhoneNumberFormat(
+        this.phone_number
+      );
 
       if (
         this.validateEmail &&
@@ -438,7 +462,8 @@ export default {
       }
     },
     validateEmailFormat(email) {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
+      const emailRegex =
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
       return emailRegex.test(email);
     },
     validateNameFormat(client_name) {

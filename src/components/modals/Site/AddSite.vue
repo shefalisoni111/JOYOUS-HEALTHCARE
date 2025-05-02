@@ -1,28 +1,30 @@
 <template>
   <div>
     <!-- Modal -->
-    <div class="modal fade" id="addSite" aria-labelledby="addSite" tabindex="-1">
+    <div class="modal fade" id="addSite" aria-labelledby="addSite">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addSite">Add Site</h5>
             <button
               type="button"
-              class="btn-close"
+              class="custom-close"
               data-bs-dismiss="modal"
               aria-label="Close"
             ></button>
           </div>
           <div class="modal-body mx-3">
-            <div class="row g-3 align-items-center">
+            <div class="row">
               <form>
-                <div class="col-12 d-flex">
+                <div class="col-12 d-flex gap-3 justify-content-center">
                   <div class="col-6">
-                    <div class="mb-3 d-flex justify-content-between">
-                      <div class="col-2">
-                        <label for="selectClients" class="form-label">Client Name</label>
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label for="selectClients" class="form-label"
+                          >Client Name</label
+                        >
                       </div>
-                      <div class="col-10">
+                      <div class="col-12">
                         <select
                           v-model="client_id"
                           id="selectClients"
@@ -38,19 +40,22 @@
                             {{ option.client_name }}
                           </option>
                         </select>
-                        <span v-if="!validationSelectedClient" class="text-danger"
+                        <span
+                          v-if="!validationSelectedClient"
+                          class="text-danger"
                           >Client Required</span
                         >
                       </div>
                     </div>
-                    <div class="col-6"></div>
-                    <div class="mb-3 d-flex justify-content-between">
-                      <div class="col-2">
+                  </div>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
                         <label class="form-label" for="selectJobTitle"
                           >Contact Person Name</label
                         >
                       </div>
-                      <div class="col-10">
+                      <div class="col-12">
                         <input
                           type="text"
                           class="form-control"
@@ -59,7 +64,9 @@
                           @change="detectAutofill"
                           style="padding-right: 1px"
                         />
-                        <span v-if="!validateSiteNameFormate" class="text-danger"
+                        <span
+                          v-if="!validateSiteNameFormate"
+                          class="text-danger"
                           >Contact Person Name Required</span
                         >
                       </div>
@@ -67,180 +74,211 @@
                   </div>
                 </div>
 
-                <div class="col-12 d-flex">
-                  <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
-                      <label class="form-label">Contact Person Email</label>
-                    </div>
-                    <div class="col-10">
-                      <input
-                        type="email"
-                        class="form-control"
-                        v-model="contact_person_email"
-                        @input="validateEmailFormat"
-                        @change="detectAutofill"
-                        ref="email"
-                        autocomplete="new-email"
-                      />
-                      <span
-                        v-if="
-                          contact_person_email &&
-                          !validateEmailFormat(contact_person_email) &&
-                          !autofilled
-                        "
-                        class="text-danger"
-                        >Invalid Email</span
-                      >
-                      <span
-                        v-if="contact_person_email && !isEmailUnique && !autofilled"
-                        class="text-danger"
-                        >Email already in use</span
-                      >
+                <div class="col-12 d-flex gap-3 justify-content-center">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Contact Person Email</label>
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="email"
+                          class="form-control"
+                          v-model="contact_person_email"
+                          @input="validateEmailFormat"
+                          @change="detectAutofill"
+                          ref="email"
+                          autocomplete="new-email"
+                        />
+                        <span
+                          v-if="
+                            contact_person_email &&
+                            !validateEmailFormat(contact_person_email) &&
+                            !autofilled
+                          "
+                          class="text-danger"
+                          >Invalid Email</span
+                        >
+                        <span
+                          v-if="
+                            contact_person_email &&
+                            !isEmailUnique &&
+                            !autofilled
+                          "
+                          class="text-danger"
+                          >Email already in use</span
+                        >
+                      </div>
                     </div>
                   </div>
-                  <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
-                      <label class="form-label">Contact Person phone</label>
-                    </div>
-                    <div class="col-10">
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="contact_person_number"
-                        @input="cleanPhoneNumber"
-                        @change="detectAutofill"
-                      />
-                      <span
-                        v-if="
-                          contact_person_number &&
-                          !validatePhoneNumberFormat(contact_person_number)
-                        "
-                        class="text-danger"
-                        >Invalid Phone Number</span
-                      >
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Contact Person phone</label>
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="contact_person_number"
+                          @input="cleanPhoneNumber"
+                          @change="detectAutofill"
+                        />
+                        <span
+                          v-if="
+                            contact_person_number &&
+                            !validatePhoneNumberFormat(contact_person_number)
+                          "
+                          class="text-danger"
+                          >Invalid Phone Number</span
+                        >
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="col-12 d-flex">
-                  <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
-                      <label class="form-label" for="selectBusinessUnit">Site Name</label>
-                    </div>
+                <div class="col-12 d-flex gap-3 justify-content-center">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label" for="selectBusinessUnit"
+                          >Site Name</label
+                        >
+                      </div>
 
-                    <div class="col-10">
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="site_name"
-                        style="padding-right: 1px"
-                        @input="clearError"
-                        @change="detectAutofill"
-                      />
-                      <span
-                        v-if="!validateCandidateLName && !autofilled"
-                        class="text-danger"
-                        >Site Name Required</span
-                      >
+                      <div class="col-12">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="site_name"
+                          style="padding-right: 1px"
+                          @input="clearError"
+                          @change="detectAutofill"
+                        />
+                        <span
+                          v-if="!validateCandidateLName && !autofilled"
+                          class="text-danger"
+                          >Site Name Required</span
+                        >
+                      </div>
                     </div>
                   </div>
-
-                  <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
-                      <label class="form-label" for="selectJobTitle">Address</label>
-                    </div>
-                    <div class="col-10">
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="address"
-                        @input="clearError"
-                        @change="detectAutofill"
-                        style="padding-right: 1px"
-                      />
-                      <span v-if="!validateAddress" class="text-danger"
-                        >Address Required</span
-                      >
-                    </div>
-                  </div>
-                </div>
-                <div class="col-12 d-flex">
-                  <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
-                      <label class="form-label">email</label>
-                    </div>
-                    <div class="col-10">
-                      <input
-                        type="email"
-                        class="form-control"
-                        v-model="email"
-                        @input="validateEmailFormat"
-                        @change="detectAutofill"
-                        ref="email"
-                        autocomplete="new-email"
-                      />
-                      <span
-                        v-if="email && !validateEmailFormat(email) && !autofilled"
-                        class="text-danger"
-                        >Invalid Email</span
-                      >
-                      <span
-                        v-if="email && !isEmailUnique && !autofilled"
-                        class="text-danger"
-                        >Email already in use</span
-                      >
-                    </div>
-                  </div>
-                  <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
-                      <label class="form-label">phone number</label>
-                    </div>
-                    <div class="col-10">
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="phone_number"
-                        @input="cleanPhoneNumber"
-                        @change="detectAutofill"
-                      />
-                      <span
-                        v-if="phone_number && !validatePhoneNumberFormat(phone_number)"
-                        class="text-danger"
-                        >Invalid Phone Number</span
-                      >
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label" for="selectJobTitle"
+                          >Address</label
+                        >
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="address"
+                          @input="clearError"
+                          @change="detectAutofill"
+                          style="padding-right: 1px"
+                        />
+                        <span v-if="!validateAddress" class="text-danger"
+                          >Address Required</span
+                        >
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="col-12 d-flex">
-                  <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
-                      <label class="form-label">Split Rate</label>
-                    </div>
-                    <div class="col-10">
-                      <select id="selectOptionSplitRate" v-model="split_rate">
-                        <option value="true">True</option>
-                        <option value="false">False</option>
-                      </select>
+                <div class="col-12 d-flex gap-3 justify-content-center">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">email</label>
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="email"
+                          class="form-control"
+                          v-model="email"
+                          @input="validateEmailFormat"
+                          @change="detectAutofill"
+                          ref="email"
+                          autocomplete="new-email"
+                        />
+                        <span
+                          v-if="
+                            email && !validateEmailFormat(email) && !autofilled
+                          "
+                          class="text-danger"
+                          >Invalid Email</span
+                        >
+                        <span
+                          v-if="email && !isEmailUnique && !autofilled"
+                          class="text-danger"
+                          >Email already in use</span
+                        >
+                      </div>
                     </div>
                   </div>
-                  <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
-                      <label class="form-label">Status</label>
-                    </div>
-                    <div class="col-10">
-                      <select id="selectOptionStatus" v-model="status">
-                        <option value="true">Active</option>
-                        <option value="false">In-active</option>
-                      </select>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">phone number</label>
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="phone_number"
+                          @input="cleanPhoneNumber"
+                          @change="detectAutofill"
+                        />
+                        <span
+                          v-if="
+                            phone_number &&
+                            !validatePhoneNumberFormat(phone_number)
+                          "
+                          class="text-danger"
+                          >Invalid Phone Number</span
+                        >
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="col-12 d-flex">
-                  <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
+                <div class="col-12 d-flex gap-3 justify-content-center">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Split Rate</label>
+                      </div>
+                      <div class="col-12">
+                        <select id="selectOptionSplitRate" v-model="split_rate">
+                          <option value="true">True</option>
+                          <option value="false">False</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Status</label>
+                      </div>
+                      <div class="col-12">
+                        <select id="selectOptionStatus" v-model="status">
+                          <option value="true">Active</option>
+                          <option value="false">In-active</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="mb-3">
+                    <div class="col-12">
                       <label class="form-label">Portal Access</label>
                     </div>
-                    <div class="col-10">
-                      <select id="selectOptionPortalAccess" v-model="portal_access">
+                    <div class="col-12">
+                      <select
+                        id="selectOptionPortalAccess"
+                        v-model="portal_access"
+                      >
                         <option value="true">True</option>
                         <option value="false">False</option>
                       </select>
@@ -252,7 +290,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#addSite"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -457,7 +495,8 @@ export default {
     },
 
     validateEmailFormat(email) {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
+      const emailRegex =
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
       return emailRegex.test(email);
     },
     ValidationClient(newValue) {
@@ -536,14 +575,13 @@ export default {
 <style scoped>
 .modal-body {
   border-radius: 5px;
-  background: #dbdbdb;
 }
 
 select {
   width: 100%;
-  padding: 10px;
+  padding: 7px;
   border-radius: 4px;
-  border: 0px;
+  border: 1px solid #dee2e6;
 }
 label.form-label {
   text-transform: capitalize;

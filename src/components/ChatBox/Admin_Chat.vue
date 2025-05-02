@@ -85,7 +85,11 @@
                       />
                       <span
                         class="position-absolute"
-                        style="right: 10px; top: 50%; transform: translateY(-50%)"
+                        style="
+                          right: 10px;
+                          top: 50%;
+                          transform: translateY(-50%);
+                        "
                       >
                         <img
                           src="../../assets/Search.png"
@@ -97,7 +101,9 @@
                     <ul class="ps-0 list-ul">
                       <li
                         class="notification-item p-2 d-flex gap-1 divide_sec cursor-pointer ps-3 mt-3"
-                        :class="{ 'active-chat': selectedCandidate?.id === candidate.id }"
+                        :class="{
+                          'active-chat': selectedCandidate?.id === candidate.id,
+                        }"
                         v-for="candidate in getCandidatesData"
                         :key="candidate.id"
                         style=""
@@ -110,7 +116,11 @@
                             class="img-fluid"
                             alt="Profile Photo"
                             loading="eager"
-                            style="border-radius: 50%; width: 50px; height: 50px"
+                            style="
+                              border-radius: 50%;
+                              width: 50px;
+                              height: 50px;
+                            "
                           />
                           <div
                             class="else_profile"
@@ -129,9 +139,11 @@
                             {{ candidate.first_name }} {{ candidate.last_name }}
                           </h6>
 
-                          <span class="text-capitalize" style="color: #f6851d">{{
-                            candidate.possition
-                          }}</span>
+                          <span
+                            class="text-capitalize"
+                            style="color: #f6851d"
+                            >{{ candidate.possition }}</span
+                          >
                         </div>
                         <hr class="" />
                       </li>
@@ -144,8 +156,15 @@
                       <div class="chat-header">
                         <div class="divide_sec d-flex">
                           <img
-                            v-if="selectedCandidate && selectedCandidate.profile_photo"
-                            :src="getProfilePhotoUrl(selectedCandidate.profile_photo)"
+                            v-if="
+                              selectedCandidate &&
+                              selectedCandidate.profile_photo
+                            "
+                            :src="
+                              getProfilePhotoUrl(
+                                selectedCandidate.profile_photo
+                              )
+                            "
                             class="img-fluid"
                             alt="Profile Photo"
                             loading="eager"
@@ -161,7 +180,9 @@
                             v-else
                             v-html="
                               getProfilePhotoUrl(
-                                selectedCandidate ? selectedCandidate.profile_photo : ''
+                                selectedCandidate
+                                  ? selectedCandidate.profile_photo
+                                  : ''
                               )
                             "
                             style="
@@ -201,11 +222,17 @@
                           v-for="message in selectedCandidateMessages"
                           :key="message.id"
                           :class="{
-                            'chat-message-left': message.sender?.type === 'Candidate',
-                            'chat-message-right': message.sender?.type === 'Merchant',
+                            'chat-message-left':
+                              message.sender?.type === 'Candidate',
+                            'chat-message-right':
+                              message.sender?.type === 'Merchant',
                           }"
                         >
-                          <div v-if="message.sender?.name && message?.is_read === true">
+                          <div
+                            v-if="
+                              message.sender?.name && message?.is_read === true
+                            "
+                          >
                             <strong>{{
                               message.sender?.name || "Unknown Receiver"
                             }}</strong>
@@ -214,7 +241,11 @@
                             </div>
                           </div>
 
-                          <div v-if="message.sender?.name && message?.is_read === false">
+                          <div
+                            v-if="
+                              message.sender?.name && message?.is_read === false
+                            "
+                          >
                             <!--gh <strong>{{ message.sender?.name === message.sender?.name ? 'You' : message.sender?.name || 'Unknown Sender' }}</strong> -->
                             <strong>
                               {{
@@ -232,16 +263,24 @@
 
                         <div
                           v-else-if="
-                            selectedCandidateMessages?.length === 0 && !isLoading
+                            selectedCandidateMessages?.length === 0 &&
+                            !isLoading
                           "
                         >
-                          <div class="text-danger text-center">No Chat Found!</div>
+                          <div class="text-danger text-center">
+                            No Chat Found!
+                          </div>
                         </div>
 
                         <div
-                          v-else-if="selectedCandidateMessages?.length === 0 && isLoading"
+                          v-else-if="
+                            selectedCandidateMessages?.length === 0 && isLoading
+                          "
                         >
-                          <div class="spinner-border d-block m-auto" role="status">
+                          <div
+                            class="spinner-border d-block m-auto"
+                            role="status"
+                          >
                             <span class="visually-hidden">Loading...</span>
                           </div>
                         </div>
@@ -282,7 +321,11 @@
                         :disabled="!newMessage.trim() || sending"
                         class="btn btn-primary flex-end"
                       >
-                        Send <i class="bi bi-send-fill ms-1" style="font-size: 11px"></i>
+                        Send
+                        <i
+                          class="bi bi-send-fill ms-1"
+                          style="font-size: 11px"
+                        ></i>
                       </button>
                     </div>
                   </div>
@@ -458,11 +501,14 @@ export default {
         this.errorMessage = "";
         this.searchResults = [];
 
-        const response = await axiosInstance.get(`${VITE_API_URL}/search_candidate`, {
-          params: {
-            candidate_query: this.searchQuery.trim(),
-          },
-        });
+        const response = await axiosInstance.get(
+          `${VITE_API_URL}/search_candidate`,
+          {
+            params: {
+              candidate_query: this.searchQuery.trim(),
+            },
+          }
+        );
 
         // this.searchResults = response.data.candidate|| [];
         if (response.data.candidate && response.data.candidate.length > 0) {
@@ -477,7 +523,8 @@ export default {
         ) {
           this.errorMessage = "Not Staff found for the specified criteria";
         } else {
-          this.errorMessage = "An unexpected error occurred. Please try again later.";
+          this.errorMessage =
+            "An unexpected error occurred. Please try again later.";
         }
         // if (
         //   (error.response && error.response.status === 404) ||
@@ -584,18 +631,21 @@ export default {
 
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch(`${VITE_API_URL}/chats/send_message_to_channel`, {
-          method: "POST",
-          body: JSON.stringify({
-            channel_sid: this.channelSid,
-            message: tempMessage,
-          }),
-          headers: {
-            "Access-Control-Allow-Headers": "Content-Type",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `${VITE_API_URL}/chats/send_message_to_channel`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              channel_sid: this.channelSid,
+              message: tempMessage,
+            }),
+            headers: {
+              "Access-Control-Allow-Headers": "Content-Type",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         const data = await response.json();
 
@@ -609,7 +659,8 @@ export default {
         } else {
           Swal.fire({
             title: "Error!",
-            text: data.message || "Failed to send the message. Please try again.",
+            text:
+              data.message || "Failed to send the message. Please try again.",
             icon: "error",
             confirmButtonText: "OK",
           });
@@ -621,8 +672,7 @@ export default {
       } catch (error) {
         Swal.fire({
           title: "Error!",
-          text:
-            "An unexpected error occurred while sending the message. Please try again.",
+          text: "An unexpected error occurred while sending the message. Please try again.",
           icon: "error",
           confirmButtonText: "OK",
         });
@@ -637,16 +687,19 @@ export default {
 
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(`${VITE_API_URL}/chats/fetch_messages`, {
-          params: {
-            channel_sid: channelSid,
-          },
-          headers: {
-            "Access-Control-Allow-Headers": "Content-Type",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/chats/fetch_messages`,
+          {
+            params: {
+              channel_sid: channelSid,
+            },
+            headers: {
+              "Access-Control-Allow-Headers": "Content-Type",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         this.selectedCandidateMessages = response.data.messages || [];
       } catch (error) {
@@ -701,7 +754,8 @@ export default {
       // User scroll detection
       const isAtTop = chatMessages.scrollTop === 0;
       const isAtBottom =
-        chatMessages.scrollTop + chatMessages.clientHeight >= chatMessages.scrollHeight;
+        chatMessages.scrollTop + chatMessages.clientHeight >=
+        chatMessages.scrollHeight;
 
       if (isAtTop) {
         // this.fetchMessages(this.channelSid);
@@ -752,12 +806,15 @@ export default {
       const token = localStorage.getItem("token");
       const merchantId = localStorage.getItem("merchant_id");
       try {
-        const response = await axios.get(`${VITE_API_URL}/merchants/${merchantId}`, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/merchants/${merchantId}`,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const imagePath = response.data.data.profile_photo;
         this.localProfileImage = `${VITE_API_URL}${imagePath}`;
         // console.log(this.localProfileImage)
@@ -803,7 +860,6 @@ export default {
   background-color: #f9944b;
 }
 .nav-pills .nav-link {
-  background: #f9944b14;
   color: #000;
 }
 

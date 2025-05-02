@@ -5,12 +5,13 @@
       class="modal fade"
       id="schedulePublishStaffList"
       aria-labelledby="schedulePublishStaffList"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header d-inline-flex gap-3">
-            <h5 class="modal-title" id="schedulePublishStaffList">Publish Staff Shift</h5>
+            <h5 class="modal-title" id="schedulePublishStaffList">
+              Publish Staff Shift
+            </h5>
             <!-- <ul
                 class="list-unstyled d-flex gap-3 mb-0 publish-ul"
                 v-for="data in vacancyData"
@@ -43,7 +44,9 @@
 
                   <div></div>
 
-                  <div class="d-flex align-items-center justify-content-between">
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                  >
                     <div class="d-flex align-items-center gap-2">
                       <div class="searchbox position-relative">
                         <!-- <form @submit.prevent="search">
@@ -77,7 +80,11 @@
                       <th scope="col" class="text-center">Job Title</th>
                     </tr>
                   </thead>
-                  <tbody v-if="fetchStaffAndVacancy && fetchStaffAndVacancy?.length > 0">
+                  <tbody
+                    v-if="
+                      fetchStaffAndVacancy && fetchStaffAndVacancy?.length > 0
+                    "
+                  >
                     <template
                       v-for="candidate in fetchStaffAndVacancy"
                       :key="candidate.id"
@@ -104,10 +111,16 @@
                           </td>
                         </template> -->
 
-                        <td class="text-center">{{ candidate.candidate_name }}</td>
+                        <td class="text-center">
+                          {{ candidate.candidate_name }}
+                        </td>
 
-                        <td class="text-center">{{ candidate.vacancies.client }}</td>
-                        <td class="text-center">{{ candidate.vacancies.site }}</td>
+                        <td class="text-center">
+                          {{ candidate.vacancies.client }}
+                        </td>
+                        <td class="text-center">
+                          {{ candidate.vacancies.site }}
+                        </td>
                         <td class="text-center">
                           <span
                             v-for="(date, index) in candidate.vacancies.dates"
@@ -116,13 +129,19 @@
                             {{ date }}
 
                             <template
-                              v-if="index !== candidate.vacancies.dates.length - 1"
+                              v-if="
+                                index !== candidate.vacancies.dates.length - 1
+                              "
                               >,
                             </template>
                           </span>
                         </td>
-                        <td class="text-center">{{ candidate.vacancies.site_shift }}</td>
-                        <td class="text-center">{{ candidate.vacancies.job_title }}</td>
+                        <td class="text-center">
+                          {{ candidate.vacancies.site_shift }}
+                        </td>
+                        <td class="text-center">
+                          {{ candidate.vacancies.job_title }}
+                        </td>
                       </tr>
                     </template>
                     <!-- <template v-else>
@@ -301,7 +320,8 @@ export default {
         );
         if (response.status === 200) {
           // alert("Staff Shift Publish Successfully");
-          const message = response.data.message || "Staff Shift Publish Successfully";
+          const message =
+            response.data.message || "Staff Shift Publish Successfully";
           this.$refs.successAlert.showSuccess(message);
 
           await this.getPublishStaffListMethod();
@@ -336,7 +356,9 @@ export default {
 
     async getPublishStaffListMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/find_unpublish_vacancy`);
+        const response = await axios.get(
+          `${VITE_API_URL}/find_unpublish_vacancy`
+        );
         this.fetchStaffAndVacancy = response.data;
         // if (response.status === 200) {
         //   const message = "Staff Shift Publish Successfully";
@@ -371,9 +393,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .publish-ul li {
   background: #ff57223d;
   padding: 5px;

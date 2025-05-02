@@ -91,7 +91,12 @@
           </tr>
         </thead>
         <tbody v-if="getSiteAllData?.length > 0">
-          <tr v-for="data in getSiteAllData" :key="data.id">
+          <tr
+            v-for="(data, index) in getSiteAllData"
+            :key="index"
+            @mouseenter="hoverRow = index"
+            @mouseleave="hoverRow = null"
+          >
             <td>
               <input
                 class="form-check-input"
@@ -107,41 +112,81 @@
             <td>
               <router-link
                 class="text-capitalize text-decoration-underline text-black fw-bold"
-                :to="{ name: 'SingleClientProfile', params: { id: data.client_id } }"
+                :to="{
+                  name: 'SingleClientProfile',
+                  params: { id: data.client_id },
+                }"
                 >{{ data.client_name }}</router-link
               >
             </td>
             <td>{{ data.address }}</td>
             <td>{{ data.phone_number }}</td>
             <td>{{ data.email }}</td>
-            <td>{{ data.status ? "Active" : "Inactive" }}</td>
-            <td>{{ data.portal_access }}</td>
-            <td class="cursor-pointer">
+            <td>
+              <!-- {{ data.status ? "Active" : "Inactive" }} -->
               <button
                 type="button"
-                class="btn btn-outline-success text-nowrap text-nowrap"
-                data-bs-toggle="modal"
-                data-bs-target="#editSite"
-                data-bs-whatever="@mdo"
-                @click="editsiteId(data.id)"
+                :class="['btn', 'text-nowrap']"
+                :style="
+                  data.status === true
+                    ? { backgroundColor: '#E9FAEF', color: '#24D164' }
+                    : {
+                        backgroundColor: 'rgb(255 227 234)',
+                        color: '#FF3B30',
+                      }
+                "
               >
-                <i class="bi bi-pencil-square"></i>
+                {{ data.status === true ? "Active" : "Inactive" }}
               </button>
-              &nbsp;&nbsp;
+            </td>
+            <td>
+              <!-- {{ data.portal_access }} -->
+              <span
+                class="text-white p-2 rounded-3 btn-lg"
+                :style="
+                  data.portal_access === true
+                    ? { backgroundColor: '#4dd04d', color: '#24D164' }
+                    : {
+                        backgroundColor: '#FF8F6B',
+                        color: '#FF3B30',
+                      }
+                "
+                :class="['btn', 'text-nowrap']"
+                >{{ data.portal_access ? "Active" : "No Account" }}</span
+              >
+            </td>
+            <td class="cursor-pointer">
+              <div class="action-wrapper">
+                <i class="bi bi-three-dots dot-icon"></i>
 
-              <router-link
-                :to="{ name: 'SingleSiteprofile', params: { id: data.id } }"
-                class="btn btn-outline-success text-nowrap"
-              >
-                <i class="bi bi-eye"></i>
-              </router-link>
-              &nbsp;&nbsp;
-              <button
-                class="btn btn-outline-danger text-nowrap"
-                v-on:click="deleteSiteMethod(data.id)"
-              >
-                <i class="bi bi-trash"></i>
-              </button>
+                <div v-if="hoverRow === index" class="action-menu">
+                  <button
+                    type="button"
+                    class="btn text-nowrap border-0"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editSite"
+                    data-bs-whatever="@mdo"
+                    @click="editsiteId(data.id)"
+                  >
+                    <i class="bi bi-pencil-square" style="color: #f9944b"></i>
+                    Edit
+                  </button>
+
+                  <router-link
+                    :to="{ name: 'SingleSiteprofile', params: { id: data.id } }"
+                    class="btn text-nowrap border-0"
+                  >
+                    <i class="bi bi-eye" style="color: #f9944b"></i>View
+                  </router-link>
+
+                  <button
+                    class="btn text-nowrap border-0"
+                    v-on:click="deleteSiteMethod(data.id)"
+                  >
+                    <i class="bi bi-trash" style="color: #f9944b"></i>Delete
+                  </button>
+                </div>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -179,17 +224,26 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(20)"
+            <a
+              class="dropdown-item"
+              href="#"
+              @click.prevent="setItemsPerPage(20)"
               >20 Records</a
             >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(50)"
+            <a
+              class="dropdown-item"
+              href="#"
+              @click.prevent="setItemsPerPage(50)"
               >50 Records</a
             >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(100)"
+            <a
+              class="dropdown-item"
+              href="#"
+              @click.prevent="setItemsPerPage(100)"
               >100 Records</a
             >
           </li>
@@ -230,7 +284,11 @@
       </div>
     </div>
     <AddSite @addSite="filterData" />
-    <EditSite :siteId="selectedsiteId || 0" @editSite="filterData" ref="refSite" />
+    <EditSite
+      :siteId="selectedsiteId || 0"
+      @editSite="filterData"
+      ref="refSite"
+    />
     <ConfirmationAlert
       :show-modal="isModalVisible"
       :message="confirmMessage"
@@ -257,6 +315,7 @@ export default {
       selectedsiteId: 0,
       showFilters: false,
       getSiteDetail: [],
+      hoverRow: null,
       currentPage: 1,
       totalRecords: 0,
       itemsPerPage: 10,
@@ -303,7 +362,9 @@ export default {
       return this.paginateSiteData.length;
     },
     selectClients() {
-      const client = this.clientData.find((option) => option.id === this.client_id);
+      const client = this.clientData.find(
+        (option) => option.id === this.client_id
+      );
       return client ? client.first_name : "";
     },
     // selectSite() {
@@ -338,7 +399,8 @@ export default {
       this.isModalVisible = false;
     },
     deleteSiteMethod(id) {
-      this.confirmMessage = "Are you sure you want to completely delete this site?";
+      this.confirmMessage =
+        "Are you sure you want to completely delete this site?";
       this.isModalVisible = true;
       this.confirmCallback = async () => {
         axios.delete(`${VITE_API_URL}/sites/` + id).then((response) => {
@@ -415,7 +477,9 @@ export default {
           params,
         });
         this.getSiteAllData = response.data.data || [];
-        this.totalPages = Math.ceil(response.data.site_filter / this.itemsPerPage);
+        this.totalPages = Math.ceil(
+          response.data.site_filter / this.itemsPerPage
+        );
       } catch (error) {
         // console.error("Error fetching filtered data:", error);
       }
@@ -432,7 +496,8 @@ export default {
       const file = event.target.files[0];
       if (!file) return;
 
-      const isValidFileType = file.type === "text/csv" || file.name.endsWith(".csv");
+      const isValidFileType =
+        file.type === "text/csv" || file.name.endsWith(".csv");
       if (!isValidFileType) {
         Swal.fire({
           icon: "info",
@@ -475,7 +540,8 @@ export default {
             Swal.fire({
               icon: "error",
               title: "Import Failed",
-              text: response.data.errors || "No valid rows found in the CSV file.",
+              text:
+                response.data.errors || "No valid rows found in the CSV file.",
             });
           } else {
             Swal.fire({

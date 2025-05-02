@@ -255,7 +255,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editAssignScheduleVacancy"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -444,12 +444,16 @@ export default {
             formData.append("id", this.bookingID);
             formData.append("cancelled_by", "admin");
             const token = localStorage.getItem("token");
-            const response = await axios.put(`${VITE_API_URL}/cancel_booking`, formData, {
-              headers: {
-                "Content-Type": "multipart/form-data",
-                Authorization: `Bearer ${token}`,
-              },
-            });
+            const response = await axios.put(
+              `${VITE_API_URL}/cancel_booking`,
+              formData,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
             if (response.status === 200) {
               Swal.fire(
                 "Cancelled!",

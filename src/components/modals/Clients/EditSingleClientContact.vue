@@ -5,12 +5,13 @@
       class="modal fade"
       id="editClientContact"
       aria-labelledby="editClientContact"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="editClientContact">Edit Client Contact</h5>
+            <h5 class="modal-title" id="editClientContact">
+              Edit Client Contact
+            </h5>
           </div>
           <div class="modal-body mx-3" style="background: #dbdbdb">
             <div class="row align-items-center">
@@ -35,7 +36,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editClientContact"
               @click="resetChanges"
               data-bs-dismiss="modal"
@@ -96,7 +97,10 @@ export default {
       this.fetchClients = { ...this.originalData };
     },
     cleanPhoneNumber() {
-      this.fetchClients.phone_number = this.fetchClients.phone_number.replace(/\D/g, "");
+      this.fetchClients.phone_number = this.fetchClients.phone_number.replace(
+        /\D/g,
+        ""
+      );
     },
 
     async fetchClientsMethod(id) {

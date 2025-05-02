@@ -5,19 +5,22 @@
       class="modal fade"
       id="editSiteProfileDetails"
       aria-labelledby="editSiteProfileDetails"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="editSiteProfileDetails">Edit Site Profile</h5>
+            <h5 class="modal-title" id="editSiteProfileDetails">
+              Edit Site Profile
+            </h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
               <form>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectJobTitle">Address</label>
+                    <label class="form-label" for="selectJobTitle"
+                      >Address</label
+                    >
                   </div>
                   <div class="col-10">
                     <input
@@ -138,7 +141,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editSiteProfileDetails"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -218,7 +221,8 @@ export default {
     },
 
     isEmailValid() {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
+      const emailRegex =
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
       return emailRegex.test(this.fetchSite.email);
     },
 
@@ -250,9 +254,12 @@ export default {
         this.fetchSite.address = response.data.data.address;
         this.fetchSite.phone_number = response.data.data.phone_number;
         this.fetchSite.email = response.data.data.email;
-        this.fetchSite.contact_person_name = response.data.data.contact_person_name;
-        this.fetchSite.contact_person_email = response.data.data.contact_person_email;
-        this.fetchSite.contact_person_number = response.data.data.contact_person_number;
+        this.fetchSite.contact_person_name =
+          response.data.data.contact_person_name;
+        this.fetchSite.contact_person_email =
+          response.data.data.contact_person_email;
+        this.fetchSite.contact_person_number =
+          response.data.data.contact_person_number;
         this.fetchSite.booking_email = response.data.data.booking_email;
       } catch (error) {}
     },

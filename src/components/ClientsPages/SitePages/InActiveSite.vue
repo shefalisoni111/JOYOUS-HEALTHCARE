@@ -90,46 +90,90 @@
           </tr>
         </thead>
         <tbody v-if="getSiteInactiveData?.length > 0">
-          <tr v-for="data in getSiteInactiveData" :key="data.id">
+          <tr
+            v-for="(data, index) in getSiteInactiveData"
+            :key="index"
+            @mouseenter="hoverRow = index"
+            @mouseleave="hoverRow = null"
+          >
             <!-- <td>{{ data.id }}</td> -->
             <td v-text="data.refer_code"></td>
             <td v-text="data.site_name"></td>
             <td>
               <router-link
                 class="text-capitalize text-decoration-underline text-black fw-bold"
-                :to="{ name: 'SingleClientProfile', params: { id: data.client_id } }"
+                :to="{
+                  name: 'SingleClientProfile',
+                  params: { id: data.client_id },
+                }"
                 >{{ data.client_name }}</router-link
               >
             </td>
             <td>{{ data.address }}</td>
             <td>{{ data.phone_number }}</td>
             <td>{{ data.email }}</td>
-            <td>{{ data.status ? "Active" : "Inactive" }}</td>
-            <td>{{ data.portal_access }}</td>
-            <td class="cursor-pointer">
+            <td>
               <button
                 type="button"
-                class="btn btn-outline-success text-nowrap text-nowrap"
-                data-bs-toggle="modal"
-                data-bs-target="#editSite"
-                data-bs-whatever="@mdo"
-                @click="editsiteId(data.id)"
+                :class="['btn', 'text-nowrap']"
+                :style="
+                  data.status === true
+                    ? { backgroundColor: '#E9FAEF', color: '#24D164' }
+                    : {
+                        backgroundColor: 'rgb(255 227 234)',
+                        color: '#FF3B30',
+                      }
+                "
               >
-                <i class="bi bi-pencil-square"></i>
+                {{ data.status === true ? "Active" : "Inactive" }}
               </button>
-              &nbsp;&nbsp;
-              <!-- <button class="btn btn-outline-success text-nowrap">
+            </td>
+            <td>
+              <span
+                class="text-white p-2 rounded-3 btn-lg"
+                :style="
+                  data.portal_access === true
+                    ? { backgroundColor: '#4dd04d', color: '#24D164' }
+                    : {
+                        backgroundColor: '#FF8F6B',
+                        color: '#FF3B30',
+                      }
+                "
+                :class="['btn', 'text-nowrap']"
+                >{{ data.portal_access ? "Active" : "No Account" }}</span
+              >
+            </td>
+            <td class="cursor-pointer">
+              <div class="action-wrapper">
+                <i class="bi bi-three-dots dot-icon"></i>
+
+                <div v-if="hoverRow === index" class="action-menu">
+                  <button
+                    type="button"
+                    class="btn text-nowrap border-0"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editSite"
+                    data-bs-whatever="@mdo"
+                    @click="editsiteId(data.id)"
+                  >
+                    <i class="bi bi-pencil-square" style="color: #f9944b"></i
+                    >Edit
+                  </button>
+
+                  <!-- <button class="btn btn-outline-success text-nowrap">
                 <i
                   class="bi bi-trash"
                   v-on:click="clientsDeleteMethod(client.id)"
                 ></i></button
               >&nbsp;&nbsp; -->
-              <router-link
-                :to="{ name: 'SingleSiteprofile', params: { id: data.id } }"
-                class="btn btn-outline-success text-nowrap"
-              >
-                <i class="bi bi-eye"></i>
-              </router-link>
+                  <router-link
+                    :to="{ name: 'SingleSiteprofile', params: { id: data.id } }"
+                    class="btn text-nowrap border-0"
+                  >
+                    <i class="bi bi-eye" style="color: #f9944b"></i>View
+                  </router-link>
+                </div>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -144,7 +188,11 @@
     </div>
     <EditSite :siteId="selectedsiteId || 0" ref="refSite" />
     <loader :isLoading="isLoading"></loader>
-    <div class="mx-3" style="text-align: right" v-if="getSiteInactiveData?.length >= 10">
+    <div
+      class="mx-3"
+      style="text-align: right"
+      v-if="getSiteInactiveData?.length >= 10"
+    >
       <!-- <button class="btn btn-outline-dark btn-sm">
         {{ totalRecordsOnPage }} Records Per Page
       </button> -->
@@ -160,17 +208,26 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(20)"
+            <a
+              class="dropdown-item"
+              href="#"
+              @click.prevent="setItemsPerPage(20)"
               >20 Records</a
             >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(50)"
+            <a
+              class="dropdown-item"
+              href="#"
+              @click.prevent="setItemsPerPage(50)"
               >50 Records</a
             >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(100)"
+            <a
+              class="dropdown-item"
+              href="#"
+              @click.prevent="setItemsPerPage(100)"
               >100 Records</a
             >
           </li>
@@ -223,6 +280,7 @@ export default {
       getSiteInactiveData: [],
       selectedsiteId: 0,
       isLoading: false,
+      hoverRow: null,
       currentPage: 1,
       totalRecords: 0,
       itemsPerPage: 10,
@@ -290,7 +348,9 @@ export default {
           params,
         });
         this.getSiteInactiveData = response.data.data || [];
-        this.totalPages = Math.ceil(response.data.site_filter / this.itemsPerPage);
+        this.totalPages = Math.ceil(
+          response.data.site_filter / this.itemsPerPage
+        );
       } catch (error) {
         // console.error("Error fetching filtered data:", error);
       } finally {

@@ -5,7 +5,6 @@
       class="modal fade"
       id="assignDirectVacancy"
       aria-labelledby="assignDirectVacancy"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
@@ -32,7 +31,9 @@
 
                   <div></div>
 
-                  <div class="d-flex align-items-center justify-content-between">
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                  >
                     <div class="d-flex align-items-center gap-2">
                       <div class="searchbox position-relative">
                         <form @submit.prevent="search">
@@ -52,7 +53,10 @@
               </div>
             </div>
             <div class="row g-3 align-items-center" v-if="!searchQuery">
-              <table class="table candidateTable" v-if="selectedCandidateItemId">
+              <table
+                class="table candidateTable"
+                v-if="selectedCandidateItemId"
+              >
                 <thead>
                   <tr>
                     <th scope="col"></th>
@@ -101,7 +105,9 @@
                       <span v-for="(date, index) in getdata.dates" :key="index">
                         {{ date }}
 
-                        <template v-if="index !== getdata.dates.length - 1">, </template>
+                        <template v-if="index !== getdata.dates.length - 1"
+                          >,
+                        </template>
                       </span>
                     </td>
 
@@ -115,7 +121,10 @@
               </table>
             </div>
             <div class="row g-3 align-items-center" v-if="searchQuery">
-              <table class="table candidateTable" v-if="selectedCandidateItemId">
+              <table
+                class="table candidateTable"
+                v-if="selectedCandidateItemId"
+              >
                 <thead>
                   <tr>
                     <th scope="col"></th>
@@ -159,7 +168,9 @@
                       <span v-for="(date, index) in getdata.dates" :key="index">
                         {{ date }}
 
-                        <template v-if="index !== getdata.dates.length - 1">, </template>
+                        <template v-if="index !== getdata.dates.length - 1"
+                          >,
+                        </template>
                       </span>
                     </td>
 
@@ -389,9 +400,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .widthDefine {
   width: 18%;
 }

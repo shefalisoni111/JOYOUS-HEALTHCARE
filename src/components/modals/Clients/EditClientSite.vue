@@ -5,7 +5,6 @@
       class="modal fade"
       id="editClientSite"
       aria-labelledby="editClientSite"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -17,7 +16,9 @@
               <form>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectJobTitle">Address</label>
+                    <label class="form-label" for="selectJobTitle"
+                      >Address</label
+                    >
                   </div>
                   <div class="col-10">
                     <input
@@ -47,7 +48,10 @@
                       autocomplete="new-email"
                     />
 
-                    <span v-if="fetchSite.email && !isEmailValid" class="text-danger">
+                    <span
+                      v-if="fetchSite.email && !isEmailValid"
+                      class="text-danger"
+                    >
                       Please enter a valid email address.
                     </span>
                     <!-- <span
@@ -86,7 +90,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editClientSite"
               @click="resetChanges"
               data-bs-dismiss="modal"
@@ -176,14 +180,18 @@ export default {
       this.fetchSite = { ...this.originalData };
     },
     validateEmailFormat() {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
+      const emailRegex =
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
       this.emailValid = emailRegex.test(this.fetchSite.email);
     },
     removeDate(index) {
       this.fetchSite.dates.splice(index, 1);
     },
     cleanPhoneNumber() {
-      this.fetchSite.phone_number = this.fetchSite.phone_number.replace(/\D/g, "");
+      this.fetchSite.phone_number = this.fetchSite.phone_number.replace(
+        /\D/g,
+        ""
+      );
     },
     formatDate(date) {
       const [day, month, year] = date.split("-");

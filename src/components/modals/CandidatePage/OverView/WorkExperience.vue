@@ -5,12 +5,13 @@
       class="modal fade"
       id="addWorkExperience"
       aria-labelledby="addWorkExperience"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addWorkExperience">Add Work Experience</h5>
+            <h5 class="modal-title" id="addWorkExperience">
+              Add Work Experience
+            </h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -102,7 +103,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#addWorkExperience"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -146,7 +147,8 @@ export default {
   computed: {
     isButtonDisabled() {
       return (
-        Object.values(this.errors).some((error) => error !== null) || this.isEmptyField()
+        Object.values(this.errors).some((error) => error !== null) ||
+        this.isEmptyField()
       );
     },
   },
@@ -236,9 +238,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .modal-footer {
   border-top: 0px;
 }

@@ -5,12 +5,13 @@
       class="modal fade"
       id="editRestrictedLocation"
       aria-labelledby="editRestrictedLocation"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="editRestrictedLocation">Edit Location</h5>
+            <h5 class="modal-title" id="editRestrictedLocation">
+              Edit Location
+            </h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -40,7 +41,9 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectBusinessUnit">Site</label>
+                    <label class="form-label" for="selectBusinessUnit"
+                      >Site</label
+                    >
                   </div>
 
                   <div class="col-10">
@@ -65,7 +68,7 @@
             </div>
             <div class="modal-footer">
               <button
-                class="btn btn-secondary rounded-1"
+                class="btn btn-dark btn-cancel"
                 data-bs-target="#editRestrictedLocation"
                 data-bs-toggle="modal"
                 data-bs-dismiss="modal"
@@ -138,12 +141,16 @@ export default {
     //   return this.validationBusinessUnit && this.validationSelectedClient;
     // },
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
 
     selectClients() {
-      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      const client_id = this.clientData.find(
+        (option) => option.id === this.client_id
+      );
       return this.client_id;
     },
   },
@@ -198,7 +205,9 @@ export default {
         if (response.data.data) {
           this.fetchRestrictedStaff.site_id = response.data.data.site_id;
           this.fetchRestrictedStaff.client_id = response.data.data.client_id;
-          await this.getSiteAccordingClientMethod(this.fetchRestrictedStaff.client_id);
+          await this.getSiteAccordingClientMethod(
+            this.fetchRestrictedStaff.client_id
+          );
         }
       } catch (error) {
         // console.error("Error fetching restricted shifts:", error);

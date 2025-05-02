@@ -153,7 +153,12 @@
         </thead>
 
         <tbody v-if="paginatedVacancies?.length > 0">
-          <tr v-for="getdata in paginatedVacancies" :key="getdata.id">
+          <tr
+            v-for="(getdata, index) in paginatedVacancies"
+            :key="index"
+            @mouseenter="hoverRow = index"
+            @mouseleave="hoverRow = null"
+          >
             <td v-text="getdata.id"></td>
             <td v-text="getdata.ref_code"></td>
             <td>
@@ -233,12 +238,9 @@
                 data-bs-whatever="@mdo"
                 @click="openAllApplied(getdata.id)"
                 :disabled="!getdata.activated"
+                style="color: orange; background: #f9944b14"
               >
-                <span
-                  :style="{ padding: getPadding(getdata.all_candidate) }"
-                  class="rounded-circle"
-                  >{{ getdata.all_candidate }}</span
-                >
+                <span>{{ getdata.all_candidate }}</span>
               </button>
             </td>
             <td>
@@ -250,12 +252,9 @@
                 data-bs-whatever="@mdo"
                 @click="openPopup(getdata.id)"
                 :disabled="!getdata.activated"
+                style="color: orange; background: #f9944b14"
               >
-                <span
-                  :style="{ padding: getPadding(getdata.applied) }"
-                  class="rounded-circle"
-                  >{{ getdata.applied }}</span
-                >
+                <span>{{ getdata.applied }}</span>
               </button>
             </td>
             <td>
@@ -267,12 +266,9 @@
                 data-bs-whatever="@mdo"
                 @click="openAssigned(getdata.id)"
                 :disabled="!getdata.activated"
+                style="color: orange; background: #f9944b14"
               >
-                <span
-                  :style="{ padding: getPadding(getdata.assigned) }"
-                  class="rounded-circle"
-                  >{{ getdata.assigned }}</span
-                >
+                <span>{{ getdata.assigned }}</span>
               </button>
             </td>
             <td>
@@ -284,12 +280,9 @@
                 data-bs-whatever="@mdo"
                 @click="openRejected(getdata.id)"
                 :disabled="!getdata.activated"
+                style="color: orange; background: #f9944b14"
               >
-                <span
-                  :style="{ padding: getPadding(getdata.rejected) }"
-                  class="rounded-circle"
-                  >{{ getdata.rejected }}</span
-                >
+                <span>{{ getdata.rejected }}</span>
               </button>
             </td>
             <td>
@@ -301,13 +294,30 @@
             </td>
 
             <td class="cursor-pointer">
-              <i
+              <div class="action-wrapper">
+                <i class="bi bi-three-dots dot-icon"></i>
+
+                <div v-if="hoverRow === index" class="action-menu">
+                  <button
+                    type="button"
+                    class="btn text-nowrap text-nowrap shadow-soft"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editVacancy"
+                    data-bs-whatever="@mdo"
+                    @click="editVacancyId(getdata.id)"
+                  >
+                    <i class="bi bi-pencil-square" style="color: #f9944b"></i>
+                    Edit
+                  </button>
+                </div>
+              </div>
+              <!-- <i
                 class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
                 data-bs-toggle="modal"
                 data-bs-target="#editVacancy"
                 data-bs-whatever="@mdo"
                 @click="editVacancyId(getdata.id)"
-              ></i>
+              ></i> -->
               &nbsp;&nbsp;
               <!-- <button
                   v-if="getdata.activated"
@@ -431,6 +441,7 @@ export default {
     return {
       getVacancyDetail: [],
       selectedVacancyId: 0,
+      hoverRow: null,
       totalCount: 0,
       totalPages: 0,
       currentPage: 1,
@@ -484,15 +495,6 @@ export default {
       this.itemsPerPage = value;
       this.currentPage = 1;
       this.createVacancy();
-    },
-
-    getPadding(value) {
-      if (value == null) {
-        return "8px 8px";
-      }
-
-      const digitCount = value.toString().length;
-      return digitCount === 1 ? "7px 11px" : "8px 8px";
     },
 
     editVacancyId(vacancyId) {

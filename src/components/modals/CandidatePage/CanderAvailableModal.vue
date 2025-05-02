@@ -3,7 +3,7 @@
     <div class="nested-calendar-content">
       <div class="calendar-header d-flex justify-content-between my-3">
         <div class="d-flex"></div>
-        <div>
+        <!-- <div>
           <ul class="list-inline">
             <li class="list-inline-item">E- Early</li>
             &nbsp;
@@ -13,20 +13,27 @@
             &nbsp;
             <li class="list-inline-item">U- Unavailable</li>
           </ul>
-        </div>
+        </div> -->
       </div>
       <div class="calendar-grid table-wrapper">
-        <div v-for="day in daysOfWeek" :key="day" class="day-header">
+        <!-- <div v-for="day in daysOfWeek" :key="day" class="day-header">
           {{ day }}
-        </div>
+        </div> -->
         <div
-          v-for="date in selectedDateRow"
-          :key="date"
-          class="day-header candidateTable"
+          v-for="(date, index) in selectedDateRow"
+          :key="index"
+          class="candidateTable"
         >
-          {{ formatDate(date) }}
+          <div class="day-header">
+            {{ getDayName(date) }}
+          </div>
+          <div class="date mt-1" style="color: rgb(253 119 30)">
+            {{ formatDate(date) }}
+          </div>
 
-          <div class="shift-checkboxes d-flex flex-column">
+          <div
+            class="shift-checkboxes d-flex flex-column align-items-baseline px-4 mb-3 fw-lighter"
+          >
             <div>
               <input
                 type="checkbox"
@@ -37,9 +44,11 @@
                 @click="updateDate(date, 'Early')"
                 :checked="getCheckedStatus(date, 'Early')"
                 :disabled="isShiftDisabled(date)"
+                class="custom-checkbox"
               />
-              <label :for="'early-' + date" class="ps-1">E</label>
-              &nbsp;
+              <label :for="'early-' + date" class="ps-1">Early</label>
+            </div>
+            <div>
               <input
                 type="checkbox"
                 :id="'late-' + date"
@@ -50,7 +59,7 @@
                 :checked="getCheckedStatus(date, 'Late')"
                 :disabled="isShiftDisabled(date)"
               />
-              <label :for="'late-' + date" class="ps-1">L</label>
+              <label :for="'late-' + date" class="ps-1">Late</label>
             </div>
             <div>
               <input
@@ -63,8 +72,10 @@
                 :checked="getCheckedStatus(date, 'Night')"
                 :disabled="isShiftDisabled(date)"
               />
-              <label :for="'night-' + date" class="ps-1">N</label>
-              &nbsp;
+              <label :for="'night-' + date" class="ps-1">Night</label>
+            </div>
+
+            <div>
               <input
                 type="checkbox"
                 :id="'unavailable-' + date"
@@ -75,7 +86,9 @@
                 :checked="getCheckedStatus(date, 'U/A')"
                 :disabled="isShiftDisabled(date)"
               />
-              <label :for="'unavailable-' + date" class="ps-1">U</label>
+              <label :for="'unavailable-' + date" class="ps-1"
+                >Unavailable</label
+              >
             </div>
           </div>
         </div>
@@ -83,8 +96,12 @@
     </div>
 
     <div class="mt-3 float-end">
-      <button class="btn btn-primary" @click="closeNestedCalendar">Cancel</button>&nbsp;
-      <button class="btn btn-primary" @click="handleButtonClick">Add Availability</button>
+      <button class="btn btn-dark btn-cancel" @click="closeNestedCalendar">
+        Cancel</button
+      >&nbsp;
+      <button class="btn btn-primary" @click="handleButtonClick">
+        Add Availability
+      </button>
     </div>
 
     <NotSuccessAlertVue ref="dangerAlert" />
@@ -201,7 +218,9 @@ export default {
       return selectedDateRow;
     },
     candidateName() {
-      return this.selectedCandidate ? this.selectedCandidate.candidate_name : "";
+      return this.selectedCandidate
+        ? this.selectedCandidate.candidate_name
+        : "";
     },
 
     formattedDates() {
@@ -216,7 +235,9 @@ export default {
       return this.formatDate(this.selectedDateRow[0]);
     },
     formattedEndDate() {
-      return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
+      return this.formatDate(
+        this.selectedDateRow[this.selectedDateRow.length - 1]
+      );
     },
     computedSelectedCandidate() {
       return this.candidateList.find(
@@ -233,6 +254,10 @@ export default {
     },
   },
   methods: {
+    getDayName(date) {
+      const dayIndex = new Date(date).getDay();
+      return this.daysOfWeek[(dayIndex + 6) % 7];
+    },
     getCheckedStatus(date, shift) {
       const formattedDate = this.formatDate(date);
 
@@ -271,7 +296,9 @@ export default {
     },
 
     isShiftDisabled(selectedDate) {
-      const dayData = this.calendarData.find((data) => data.date === selectedDate);
+      const dayData = this.calendarData.find(
+        (data) => data.date === selectedDate
+      );
       return (
         dayData &&
         selectedDate !== this.selectedDate &&
@@ -298,11 +325,23 @@ export default {
         ? new Date(this.initialDate)
         : this.currentDate;
 
-      const firstDay = new Date(initialDate.getFullYear(), initialDate.getMonth(), 1);
-      const lastDay = new Date(initialDate.getFullYear(), initialDate.getMonth() + 1, 0);
+      const firstDay = new Date(
+        initialDate.getFullYear(),
+        initialDate.getMonth(),
+        1
+      );
+      const lastDay = new Date(
+        initialDate.getFullYear(),
+        initialDate.getMonth() + 1,
+        0
+      );
 
       this.calendarData = Array.from({ length: lastDay.getDate() }, (_, i) => {
-        const date = new Date(initialDate.getFullYear(), initialDate.getMonth(), i + 1);
+        const date = new Date(
+          initialDate.getFullYear(),
+          initialDate.getMonth(),
+          i + 1
+        );
         return {
           date,
           day: i + 1,
@@ -329,7 +368,8 @@ export default {
       } else {
         this.availability_id = null;
       }
-      this.selectedShifts[selectedDate] = this.selectedShifts[selectedDate] || [];
+      this.selectedShifts[selectedDate] =
+        this.selectedShifts[selectedDate] || [];
 
       if (shift === "U/A") {
         if (!this.selectedShifts[selectedDate].includes("U/A")) {
@@ -338,7 +378,8 @@ export default {
           this.selectedShifts[selectedDate] = [];
         }
       } else {
-        const unavailableIndex = this.selectedShifts[selectedDate].indexOf("U/A");
+        const unavailableIndex =
+          this.selectedShifts[selectedDate].indexOf("U/A");
         if (unavailableIndex !== -1) {
           this.selectedShifts[selectedDate].splice(unavailableIndex, 1);
         }
@@ -395,7 +436,9 @@ export default {
           if (!result.isConfirmed) {
             return;
           }
-          for (const [date, candidate_status] of Object.entries(this.selectedShifts)) {
+          for (const [date, candidate_status] of Object.entries(
+            this.selectedShifts
+          )) {
             const formattedDate = this.formatDate(date);
             const availability = this.availabilityIds.find(
               (item) => item.date === formattedDate
@@ -441,7 +484,9 @@ export default {
           if (Object.keys(this.selectedShifts).length === 0) {
             availabilities = [];
           } else {
-            for (const [date, candidate_status] of Object.entries(this.selectedShifts)) {
+            for (const [date, candidate_status] of Object.entries(
+              this.selectedShifts
+            )) {
               const formattedDate = this.formatDate(date);
               const availability = this.availabilityIds.find(
                 (item) => item.date === formattedDate
@@ -477,7 +522,8 @@ export default {
             if (postResponse.status === 201) {
               availabilities.forEach((availability) => {
                 const candidate = this.updatedStatusData.find(
-                  (candidate) => candidate.candidate_id === availability.candidate_id
+                  (candidate) =>
+                    candidate.candidate_id === availability.candidate_id
                 );
                 if (candidate) {
                   candidate.availability = {
@@ -590,7 +636,9 @@ export default {
         this.availabilityIds = this.updatedStatusData.reduce(
           (formattedData, candidate) => {
             if (candidate.availability) {
-              const formattedDate = this.formatDate(candidate.availability.date);
+              const formattedDate = this.formatDate(
+                candidate.availability.date
+              );
               formattedData.push({
                 date: formattedDate,
                 candidate_status: candidate.availability.candidate_status || [],
@@ -665,22 +713,32 @@ export default {
 }
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+
   gap: 5px;
 }
 .day-header {
-  background: #9e9e9e2b;
-}
-.day-header,
-.empty-day,
-.calendar-day {
+  background: #f9944b14;
   padding: 10px;
   text-align: center;
   cursor: pointer;
 }
-
+.candidateTable,
+.empty-day,
+.calendar-day {
+  text-align: center;
+  cursor: pointer;
+}
+.candidateTable {
+  border: 1px solid #f0efef;
+  border-radius: 8px;
+  margin: 10px;
+}
 .day-header {
   font-weight: bold;
+}
+.candidateTable {
+  font-weight: normal;
 }
 
 .empty-day {
@@ -695,8 +753,8 @@ export default {
 .calendar-day:hover {
   background-color: #dcdcdc;
 }
-input[type="radio"]:checked {
-  background-color: #ca5507;
+input.custom-checkbox:checked + .checkbox-label {
+  background-color: #ca5507 !important;
 }
 .calendar-day {
   display: flex;

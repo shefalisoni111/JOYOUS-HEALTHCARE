@@ -13,7 +13,12 @@
         </tr>
       </thead>
       <tbody v-if="getCandidatesData?.length > 0">
-        <tr v-for="datas in paginateCandidates" :key="datas">
+        <tr
+          v-for="(datas, index) in paginateCandidates"
+          :key="index"
+          @mouseenter="hoverRow = index"
+          @mouseleave="hoverRow = null"
+        >
           <td v-text="datas.id"></td>
           <td class="text-capitalize">
             <router-link
@@ -23,24 +28,46 @@
                 params: { id: datas && datas.id },
               }"
             >
-              {{ datas.first_name }}&nbsp;&nbsp;{{ datas.last_name }}</router-link
+              {{ datas.first_name }}&nbsp;&nbsp;{{
+                datas.last_name
+              }}</router-link
             >
           </td>
           <td class="text-capitalize" v-text="datas.possition"></td>
           <td v-text="datas.email"></td>
           <td v-text="datas.phone_number"></td>
-          <td class="text-capitalize" v-text="datas.status"></td>
-          <td>
+          <td class="text-capitalize">
             <button
               type="button"
-              class="btn btn-success"
-              data-bs-toggle="tooltip"
-              data-bs-placement="top"
-              title="Tooltip on top"
-              v-on:click="confirmed(datas.id)"
+              :class="['btn', 'text-nowrap']"
+              :style="
+                {
+                  approved: { backgroundColor: '#E9FAEF', color: '#24D164' },
+                  pending: {
+                    backgroundColor: 'rgb(255 227 234)',
+                    color: '#FF3B30',
+                  },
+                  rejected: { backgroundColor: '#FFEFE7', color: '#FF9F0A' },
+                }[datas.status]
+              "
             >
-              Re-Activate
+              {{ datas.status.charAt(0).toUpperCase() + datas.status.slice(1) }}
             </button>
+          </td>
+          <td>
+            <div class="action-wrapper">
+              <i class="bi bi-three-dots dot-icon"></i>
+
+              <div v-if="hoverRow === index" class="action-menu">
+                <button
+                  type="button"
+                  class="btn text-nowrap border-0"
+                  v-on:click="confirmed(datas.id)"
+                >
+                  Re-Activate
+                </button>
+              </div>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -71,10 +98,14 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+              >20 Records</a
+            >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+              >50 Records</a
+            >
           </li>
           <li>
             <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
@@ -144,6 +175,7 @@ export default {
       totalCount: 0,
       isLoading: false,
       isModalVisible: false,
+      hoverRow: null,
       confirmMessage: "",
       confirmCallback: null,
     };
@@ -178,7 +210,9 @@ export default {
           activated_value: "false",
           per_page: this.itemsPerPage,
         };
-        const response = await axios.get(`${VITE_API_URL}/candidates`, { params });
+        const response = await axios.get(`${VITE_API_URL}/candidates`, {
+          params,
+        });
 
         this.getCandidatesData = response.data.data;
       } catch (error) {

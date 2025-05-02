@@ -28,7 +28,9 @@
                 </div>
                 <div class="mb-3">
                   <div class="col-12">
-                    <label class="form-label" for="selectOption">Position</label>
+                    <label class="form-label" for="selectOption"
+                      >Position</label
+                    >
                   </div>
                   <div class="col-12">
                     <div v-for="option in options" :key="option.id">
@@ -53,7 +55,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#addCategories"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -154,7 +156,8 @@ export default {
     },
     shouldDisableButton() {
       return (
-        this.isEmptyField() || Object.values(this.errors).some((error) => error !== null)
+        this.isEmptyField() ||
+        Object.values(this.errors).some((error) => error !== null)
       );
     },
     clearError(fieldName) {
@@ -204,9 +207,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 select {
   width: 100%;
   padding: 10px;

@@ -5,16 +5,19 @@
       class="modal fade"
       id="allCandidateVacancyList"
       aria-labelledby="allCandidateVacancyList"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="allCandidateVacancyList">All Staff List</h5>
+            <h5 class="modal-title" id="allCandidateVacancyList">
+              All Staff List
+            </h5>
           </div>
           <div class="modal-body overflow-x-auto">
             <div class="row g-3 align-items-center">
-              <ul class="list-unstyled d-lg-flex gap-3 mb-0 publish-ul d-sm-grid">
+              <ul
+                class="list-unstyled d-lg-flex gap-3 mb-0 publish-ul d-sm-grid"
+              >
                 <li>Code:{{ vacancyDetails.ref_code }}</li>
                 <li>Site:{{ vacancyDetails.business_unit }}</li>
                 <li>Job: {{ vacancyDetails.job_title }}</li>
@@ -44,7 +47,9 @@
 
                   <div></div>
 
-                  <div class="d-flex align-items-center justify-content-between">
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                  >
                     <div class="d-flex align-items-center gap-2">
                       <div class="searchbox position-relative">
                         <form @submit.prevent="search">
@@ -191,7 +196,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-primary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#allCandidateVacancyList"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -331,14 +336,17 @@ export default {
 
       if (id) {
         try {
-          const response = await fetch(`${VITE_API_URL}/assign_vacancy_to_candidates`, {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          });
+          const response = await fetch(
+            `${VITE_API_URL}/assign_vacancy_to_candidates`,
+            {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            }
+          );
 
           if (response.ok) {
             // alert("Candidates assigned successfully!");
@@ -394,9 +402,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .modal-dialog {
   margin-right: inherit;
 }

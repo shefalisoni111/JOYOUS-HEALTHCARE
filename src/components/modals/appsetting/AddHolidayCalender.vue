@@ -1,7 +1,11 @@
 <template>
   <div>
     <!-- Modal -->
-    <div class="modal fade" id="addHolidayCalender" aria-labelledby="addHolidayCalender">
+    <div
+      class="modal fade"
+      id="addHolidayCalender"
+      aria-labelledby="addHolidayCalender"
+    >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -75,7 +79,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#addHolidayCalender"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -118,7 +122,8 @@ export default {
   computed: {
     isButtonDisabled() {
       return (
-        Object.values(this.errors).some((error) => error !== null) || this.isEmptyField()
+        Object.values(this.errors).some((error) => error !== null) ||
+        this.isEmptyField()
       );
     },
     today() {
@@ -148,7 +153,9 @@ export default {
       return this.errors[fieldName];
     },
     isEmptyField() {
-      return !this.title.trim() || !this.holiday_date.trim() || !this.percentage;
+      return (
+        !this.title.trim() || !this.holiday_date.trim() || !this.percentage
+      );
     },
     validateAndAddJob() {
       this.errors = {};
@@ -175,7 +182,10 @@ export default {
         percentage: String(this.percentage),
       };
       try {
-        const response = await axios.post(`${VITE_API_URL}/holiday_calenders`, data);
+        const response = await axios.post(
+          `${VITE_API_URL}/holiday_calenders`,
+          data
+        );
         if (response.data) {
           this.$emit("updateListHoliday");
           const message = "Holiday Add Successful";
@@ -203,9 +213,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .modal-footer {
   border-top: 0px;
 }

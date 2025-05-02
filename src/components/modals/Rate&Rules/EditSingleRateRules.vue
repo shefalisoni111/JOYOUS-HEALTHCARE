@@ -5,12 +5,13 @@
       class="modal fade"
       id="editSingleRateRules"
       aria-labelledby="editSingleRateRules"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="editSingleRateRules">Edit Rate and Rules</h5>
+            <h5 class="modal-title" id="editSingleRateRules">
+              Edit Rate and Rules
+            </h5>
           </div>
           <div class="modal-body mx-3">
             <!-- {{ console.log(fetchRateRulesData) }} -->
@@ -40,7 +41,9 @@
                   </div>
 
                   <div class="col-4">
-                    <label class="form-label" for="selectBusinessUnit">Site</label>
+                    <label class="form-label" for="selectBusinessUnit"
+                      >Site</label
+                    >
 
                     <select
                       v-model="fetchRateRulesData.site_id"
@@ -89,7 +92,9 @@
                     border-radius: 3px;
                   "
                 >
-                  <h5 class="fw-bold text-capitalize">{{ fetchRateRulesData.day }}</h5>
+                  <h5 class="fw-bold text-capitalize">
+                    {{ fetchRateRulesData.day }}
+                  </h5>
 
                   <div class="mb-3 d-flex justify-content-between gap-1 me-3">
                     <div class="col-3 d-flex gap-2">
@@ -154,7 +159,9 @@
                       </div>
 
                       <div class="col-4">
-                        <label class="form-label" for="selectShiftEnd">End Time</label>
+                        <label class="form-label" for="selectShiftEnd"
+                          >End Time</label
+                        >
 
                         <select
                           id="selectShiftEnd"
@@ -204,7 +211,10 @@
                           class="form-control w-100"
                           v-model="fetchRateRulesData.client_rate"
                           @input="
-                            handleInput(`clientRate`, fetchRateRulesData.client_rate)
+                            handleInput(
+                              `clientRate`,
+                              fetchRateRulesData.client_rate
+                            )
                           "
                           maxlength="3"
                         />
@@ -256,7 +266,10 @@
                           class="form-control w-100"
                           v-model="fetchRateRulesData.self_employed"
                           @input="
-                            handleInput(`selfEmployee`, fetchRateRulesData.self_employed)
+                            handleInput(
+                              `selfEmployee`,
+                              fetchRateRulesData.self_employed
+                            )
                           "
                           maxlength="3"
                         />
@@ -278,7 +291,9 @@
                           type="text"
                           class="form-control w-100"
                           v-model="fetchRateRulesData.umbrella"
-                          @input="handleInput(`umbrella`, fetchRateRulesData.umbrella)"
+                          @input="
+                            handleInput(`umbrella`, fetchRateRulesData.umbrella)
+                          "
                           maxlength="3"
                         />
                       </div>
@@ -311,7 +326,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editSingleRateRules"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -509,12 +524,15 @@ export default {
     async fetchRateRulesDataMethod(id) {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(`${VITE_API_URL}/rate_and_rules/${id}`, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: "bearer " + token,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/rate_and_rules/${id}`,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: "bearer " + token,
+            },
+          }
+        );
         // console.log(response.data.rate_and_rules);
         const rateAndRules = response.data.rate_and_rules;
 
@@ -646,7 +664,9 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(`${VITE_API_URL}/site_shift/${siteId}`);
+        const response = await axios.get(
+          `${VITE_API_URL}/site_shift/${siteId}`
+        );
 
         this.shiftsTime =
           response.data.site_shift_data.map((shift) => ({
@@ -679,7 +699,10 @@ export default {
       const amPm = hours >= 12 ? "PM" : "AM";
       const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
       const formattedMinutes = String(minutes).padStart(2, "0");
-      return `${String(formattedHours).padStart(2, "0")}:${formattedMinutes} ${amPm}`;
+      return `${String(formattedHours).padStart(
+        2,
+        "0"
+      )}:${formattedMinutes} ${amPm}`;
     },
     async getJobTitleMethod() {
       try {

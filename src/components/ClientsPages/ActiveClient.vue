@@ -89,7 +89,12 @@
           </tr>
         </thead>
         <tbody v-if="paginateCandidates?.length > 0">
-          <tr v-for="client in paginateCandidates" :key="client.id">
+          <tr
+            v-for="(client, index) in paginateCandidates"
+            :key="index"
+            @mouseenter="hoverRow = index"
+            @mouseleave="hoverRow = null"
+          >
             <!-- <td v-text="client.id"></td> -->
             <td v-text="client.ref_code"></td>
             <td>
@@ -132,58 +137,72 @@
                 <input type="checkbox" id="togBtn" />
                 <div class="slider round"></div>
               </label> -->
-              <label class="switch">
-                <input
-                  type="checkbox"
-                  id="togBtn"
-                  v-model="client.activated"
-                  @change="
-                    clientStatusChangeMethod(client.id, client.activated)
-                  "
-                  :checked="client.activated"
-                />
-                <div class="slider round"></div>
-              </label>
+              <button
+                type="button"
+                :class="['btn', 'text-nowrap']"
+                :style="
+                  client.activated === true
+                    ? { backgroundColor: '#E9FAEF', color: '#24D164' }
+                    : {
+                        backgroundColor: 'rgb(255 227 234)',
+                        color: '#FF3B30',
+                      }
+                "
+                @click="clientStatusChangeMethod(client.id, client.activated)"
+              >
+                {{ client.activated === true ? "Approved" : "Unapprove" }}
+              </button>
             </td>
             <!-- <td v-text="client.portal_access"></td> -->
             <td>
               <span
-                class="text-white p-1 rounded-1"
-                style="font-size: 13px"
-                :class="{
-                  'bg-success': client.activated,
-                  'bg-danger': !client.activated,
-                }"
+                class="text-white p-2 rounded-3 btn-lg"
+                :style="
+                  client.activated === true
+                    ? { backgroundColor: '#4dd04d', color: '#24D164' }
+                    : {
+                        backgroundColor: '#FF8F6B',
+                        color: '#FF3B30',
+                      }
+                "
+                :class="['btn', 'text-nowrap']"
                 >{{ client.activated ? "Active" : "No Account" }}</span
               >
             </td>
             <td class="cursor-pointer">
-              <button
-                type="button"
-                class="btn btn-outline-success text-nowrap text-nowrap"
-                data-bs-toggle="modal"
-                data-bs-target="#editClient"
-                data-bs-whatever="@mdo"
-                @click="editClient(client.id)"
-              >
-                <i class="bi bi-pencil-square"></i>
-              </button>
-              &nbsp;&nbsp;
-              <!-- <button class="btn btn-outline-success text-nowrap">
+              <div class="action-wrapper">
+                <i class="bi bi-three-dots dot-icon"></i>
+
+                <div v-if="hoverRow === index" class="action-menu">
+                  <button
+                    type="button"
+                    class="btn text-nowrap border-0"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editClient"
+                    data-bs-whatever="@mdo"
+                    @click="editClient(client.id)"
+                  >
+                    <i class="bi bi-pencil-square" style="color: #f9944b"></i
+                    >Edit
+                  </button>
+
+                  <!-- <button class="btn btn-outline-success text-nowrap">
                 <i
                   class="bi bi-trash"
                   v-on:click="clientsDeleteMethod(client.id)"
                 ></i></button
               >&nbsp;&nbsp; -->
-              <router-link
-                :to="{
-                  name: 'SingleClientProfile',
-                  params: { id: client.id },
-                }"
-                class="btn btn-outline-success text-nowrap"
-              >
-                <i class="bi bi-eye"></i>
-              </router-link>
+                  <router-link
+                    :to="{
+                      name: 'SingleClientProfile',
+                      params: { id: client.id },
+                    }"
+                    class="btn text-nowrap border-0"
+                  >
+                    <i class="bi bi-eye" style="color: #f9944b"></i>View
+                  </router-link>
+                </div>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -294,6 +313,7 @@ export default {
       totalCount: 0,
       // options: [],
       isLoading: false,
+      hoverRow: null,
       client: {
         job_name: ["Job1", "Job2", "Job3", "Job4", "Job5", "Job6"],
       },
@@ -471,9 +491,7 @@ a:link {
   color: black;
   text-decoration: none;
 }
-.clientTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
+
 .btn-primary {
   border-radius: 4px;
 }

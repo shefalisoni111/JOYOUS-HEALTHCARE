@@ -107,7 +107,12 @@
           </tr>
         </thead>
         <tbody v-if="getInactiveData?.length > 0">
-          <tr v-for="data in getInactiveData" :key="data.id">
+          <tr
+            v-for="(data, index) in getInactiveData"
+            :key="index"
+            @mouseenter="hoverRow = index"
+            @mouseleave="hoverRow = null"
+          >
             <td v-text="data.id"></td>
             <td v-text="data.ref_code"></td>
             <td>
@@ -142,7 +147,46 @@
             <td class="widthDefineNotes" v-text="data.notes"></td>
             <td v-text="data.status"></td>
             <td>
-              <button
+              <div class="action-wrapper">
+                <i class="bi bi-three-dots dot-icon"></i>
+
+                <div v-if="hoverRow === index" class="action-menu">
+                  <template v-if="isEditAllowed(data.dates)">
+                    <button
+                      type="button"
+                      class="btn text-nowrap shadow-soft"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editVacancy"
+                      data-bs-whatever="@mdo"
+                      @click="editAndReactivate(data.id)"
+                    >
+                      <i class="bi bi-pencil-square" style="color: #f9944b"></i>
+                      Edit
+                    </button>
+                  </template>
+
+                  <template v-else>
+                    <button
+                      type="button"
+                      class="btn btn-success text-nowrap shadow-soft"
+                      @click="editAndReactivates(data.id)"
+                    >
+                      Re-activate
+                    </button>
+                  </template>
+
+                  <button
+                    type="button"
+                    class="btn text-nowrap shadow-soft border-0"
+                    @click="confirmed(data.id)"
+                  >
+                    <i class="bi bi-trash" style="color: #f9944b"></i>
+                    Delete
+                  </button>
+                </div>
+              </div>
+
+              <!-- <button
                 v-if="isEditAllowed(data.dates)"
                 class="btn btn-outline-success text-nowrap"
                 data-bs-toggle="modal"
@@ -158,7 +202,7 @@
                 @click="editAndReactivates(data.id)"
               >
                 Re-activate
-              </button>
+              </button> -->
               <!-- <i
                   class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
                   data-bs-toggle="modal"
@@ -166,13 +210,13 @@
                   data-bs-whatever="@mdo"
                   @click="editVacancyId(data.id)"
                 ></i> -->
-              &nbsp;&nbsp;
+              <!-- &nbsp;&nbsp;
               <button
                 class="btn btn-outline-danger text-nowrap"
                 v-on:click="confirmed(data.id)"
               >
                 <i class="bi bi-trash"></i>
-              </button>
+              </button> -->
             </td>
           </tr>
         </tbody>
@@ -284,6 +328,7 @@ export default {
       totalCount: 0,
       totalPages: 1,
       isLoading: false,
+      hoverRow: null,
       today: new Date(),
       isModalVisible: false,
       confirmMessage: "",

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div class="modal fade" id="addEmployee" aria-labelledby="addEmployee" tabindex="-1">
+    <div class="modal fade" id="addEmployee" aria-labelledby="addEmployee">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -49,7 +49,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#addEmployee"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -91,7 +91,8 @@ export default {
   computed: {
     isButtonDisabled() {
       return (
-        Object.values(this.errors).some((error) => error !== null) || this.isEmptyField()
+        Object.values(this.errors).some((error) => error !== null) ||
+        this.isEmptyField()
       );
     },
   },
@@ -130,7 +131,10 @@ export default {
         description: this.description,
       };
       try {
-        const response = await axios.post(`${VITE_API_URL}/employment_types`, data);
+        const response = await axios.post(
+          `${VITE_API_URL}/employment_types`,
+          data
+        );
         if (response.data) {
           this.$emit("updateList");
           const message = "Employee type Add Successful";
@@ -157,9 +161,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .modal-footer {
   border-top: 0px;
 }

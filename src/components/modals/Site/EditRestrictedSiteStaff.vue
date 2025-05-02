@@ -5,7 +5,6 @@
       class="modal fade"
       id="editRestrictedSiteLocation"
       aria-labelledby="editRestrictedSiteLocation"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -39,7 +38,7 @@
             </div>
             <div class="modal-footer">
               <button
-                class="btn btn-secondary rounded-1"
+                class="btn btn-dark btn-cancel"
                 data-bs-target="#editRestrictedSiteLocation"
                 data-bs-toggle="modal"
                 data-bs-dismiss="modal"
@@ -111,7 +110,9 @@ export default {
     },
 
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
   },

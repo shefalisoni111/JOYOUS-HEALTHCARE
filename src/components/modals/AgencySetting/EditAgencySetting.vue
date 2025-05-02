@@ -5,7 +5,6 @@
       class="modal fade"
       id="editAgencyData"
       aria-labelledby="editAgencyData"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -48,7 +47,9 @@
 
                 <div class="mb-3">
                   <div class="col-12">
-                    <label class="form-label" for="selectJobTitle">Address</label>
+                    <label class="form-label" for="selectJobTitle"
+                      >Address</label
+                    >
                   </div>
                   <div class="col-12">
                     <input
@@ -109,7 +110,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editAgencyData"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -178,12 +179,15 @@ export default {
       }
 
       try {
-        const response = await axios.get(`${VITE_API_URL}/merchants/${merchantId}`, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/merchants/${merchantId}`,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
 
         const data = response.data.data;
 
@@ -220,7 +224,9 @@ export default {
           Swal.fire({
             icon: "error",
             title: "Error",
-            text: emailError ? `Email ${emailError}` : "Email has already been taken",
+            text: emailError
+              ? `Email ${emailError}`
+              : "Email has already been taken",
           });
         } else {
           const message = "Admin updated successfully";

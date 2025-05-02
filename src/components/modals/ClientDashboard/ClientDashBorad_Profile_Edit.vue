@@ -5,7 +5,6 @@
       class="modal fade"
       id="editClientDashboardProfile"
       aria-labelledby="editClientDashboardProfile"
-      tabindex="-1"
     >
       <!-- jkj -->
       <div class="modal-dialog modal-dialog-centered">
@@ -46,7 +45,10 @@
                       ref="email"
                     />
                     <span
-                      v-if="fetchClient.email && !validateEmailFormat(fetchClient.email)"
+                      v-if="
+                        fetchClient.email &&
+                        !validateEmailFormat(fetchClient.email)
+                      "
                       class="text-danger"
                       >Invalid Email</span
                     >
@@ -92,7 +94,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editClientDashboardProfile"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -141,7 +143,8 @@ export default {
   },
   methods: {
     validateEmailFormat(email) {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
+      const emailRegex =
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
       return emailRegex.test(email);
     },
     validatePhoneNumberFormat(phone_number) {

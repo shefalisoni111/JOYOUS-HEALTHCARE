@@ -5,12 +5,13 @@
       class="modal fade"
       id="editInvoiceFirstTemplate"
       aria-labelledby="editInvoiceFirstTemplate"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="editInvoiceFirstTemplate">Edit Invoice</h5>
+            <h5 class="modal-title" id="editInvoiceFirstTemplate">
+              Edit Invoice
+            </h5>
           </div>
           <div class="modal-body mx-3">
             <form>
@@ -75,7 +76,10 @@
                     @keydown.prevent
                   />
                   <span
-                    v-if="!validationClientRate && fetchCustomSheetData.client_rate <= 0"
+                    v-if="
+                      !validationClientRate &&
+                      fetchCustomSheetData.client_rate <= 0
+                    "
                     class="text-danger"
                   >
                     Client Rate must be a positive number
@@ -86,7 +90,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editInvoiceFirstTemplate"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -179,7 +183,9 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(`${VITE_API_URL}/client_invoices/${id}`);
+        const response = await axios.get(
+          `${VITE_API_URL}/client_invoices/${id}`
+        );
         this.fetchCustomSheetData = {
           id: response.data.client_invoice.id,
           shift_date: response.data.client_invoice.start_date,
@@ -244,9 +250,6 @@ export default {
 .modal-body {
   border-radius: 5px;
   background: #dbdbdb;
-}
-.modal-header {
-  border-bottom: 0px;
 }
 
 select {

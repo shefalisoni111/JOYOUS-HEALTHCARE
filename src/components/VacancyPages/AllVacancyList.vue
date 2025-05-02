@@ -152,7 +152,12 @@
           </tr>
         </thead>
         <tbody v-if="getVacancyDetail?.length > 0">
-          <tr v-for="getdata in getVacancyDetail" :key="getdata.id">
+          <tr
+            v-for="(getdata, index) in getVacancyDetail"
+            :key="index"
+            @mouseenter="hoverRow = index"
+            @mouseleave="hoverRow = null"
+          >
             <td v-text="getdata.id"></td>
             <td v-text="getdata.ref_code"></td>
             <td>
@@ -292,7 +297,33 @@
             </td>
 
             <td class="cursor-pointer">
-              <i
+              <div class="action-wrapper">
+                <i class="bi bi-three-dots dot-icon"></i>
+
+                <div v-if="hoverRow === index" class="action-menu">
+                  <button
+                    type="button"
+                    class="btn text-nowrap text-nowrap shadow-soft"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editVacancy"
+                    data-bs-whatever="@mdo"
+                    @click="editVacancyId(getdata.id)"
+                  >
+                    <i class="bi bi-pencil-square" style="color: #f9944b"></i>
+                    Edit
+                  </button>
+
+                  <button
+                    type="button"
+                    class="btn text-nowrap text-nowrap shadow-soft"
+                    v-on:click="confirmed(getdata.id)"
+                  >
+                    <i class="bi bi-pencil-square" style="color: #f9944b"></i>
+                    In-Active
+                  </button>
+                </div>
+              </div>
+              <!-- <i
                 class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
                 data-bs-toggle="modal"
                 data-bs-target="#editVacancy"
@@ -305,7 +336,7 @@
                 v-on:click="confirmed(getdata.id)"
               >
                 In-Active
-              </button>
+              </button> -->
             </td>
           </tr>
         </tbody>
@@ -425,6 +456,7 @@ export default {
       totalCount: 0,
       totalPages: 1,
       isLoading: false,
+      hoverRow: null,
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,

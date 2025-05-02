@@ -18,7 +18,12 @@
             </tr>
           </thead>
           <tbody v-if="paginateCandidates?.length > 0">
-            <tr v-for="candidate in paginateCandidates" :key="candidate.id">
+            <tr
+              v-for="(candidate, index) in paginateCandidates"
+              :key="index"
+              @mouseenter="hoverRow = index"
+              @mouseleave="hoverRow = null"
+            >
               <td v-text="candidate.id"></td>
               <td>
                 <router-link
@@ -38,7 +43,31 @@
                 {{ candidate.phone_number }}
               </td>
               <td class="text-capitalize">
-                {{ candidate.status }}
+                <button
+                  type="button"
+                  :class="['btn', 'text-nowrap']"
+                  :style="
+                    {
+                      approved: {
+                        backgroundColor: '#E9FAEF',
+                        color: '#24D164',
+                      },
+                      pending: {
+                        backgroundColor: 'rgb(255 227 234)',
+                        color: '#FF3B30',
+                      },
+                      rejected: {
+                        backgroundColor: '#FFEFE7',
+                        color: '#FF9F0A',
+                      },
+                    }[candidate.status]
+                  "
+                >
+                  {{
+                    candidate.status.charAt(0).toUpperCase() +
+                    candidate.status.slice(1)
+                  }}
+                </button>
               </td>
 
               <!-- <td>
@@ -61,20 +90,19 @@
               </td>
               <td>{{ formatDateFORUpdate(candidate.last_login) }}</td>
               <td class="cursor-pointer">
-                <button
-                  type="button"
-                  class="btn btn-danger"
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="top"
-                  title="Tooltip on top"
-                  v-on:click="confirmed(candidate.id)"
-                >
-                  In-Activate
-                </button>
+                <div class="action-wrapper">
+                  <i class="bi bi-three-dots dot-icon"></i>
 
-                &nbsp;&nbsp;
+                  <div v-if="hoverRow === index" class="action-menu">
+                    <button
+                      type="button"
+                      class="btn text-nowrap border-0"
+                      v-on:click="confirmed(candidate.id)"
+                    >
+                      InActivate
+                    </button>
 
-                <!-- <router-link
+                    <!-- <router-link
                   :to="{
                     name: 'EditCandidate',
                     params: { id: candidate.id },
@@ -84,23 +112,26 @@
                   </router-link
                 > -->
 
-                <!-- <i
+                    <!-- <i
                   class="bi bi-pencil-square btn btn-outline-success text-nowrap text-nowrap"
                   data-bs-toggle="modal"
                   data-bs-target="#editCandidate"
                   data-bs-whatever="@mdo"
                   @click="editCandidate(candidate.id)"
                 ></i> -->
-                &nbsp;&nbsp;
-                <router-link
-                  class="btn btn-outline-success text-nowrap"
-                  :to="{
-                    name: 'Profile',
-                    params: { id: candidate.id },
-                  }"
-                >
-                  <i class="bi bi-eye"></i>
-                </router-link>
+
+                    <router-link
+                      class="btn text-nowrap border-0"
+                      :to="{
+                        name: 'Profile',
+                        params: { id: candidate.id },
+                      }"
+                    >
+                      <i class="bi bi-eye" style="color: #f9944b"></i>
+                      View
+                    </router-link>
+                  </div>
+                </div>
                 <!-- <router-link
                   :to="{
                     name: 'ProfileView',
@@ -150,10 +181,14 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+              >20 Records</a
+            >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+              >50 Records</a
+            >
           </li>
           <li>
             <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
@@ -219,6 +254,7 @@ export default {
       totalPages: 1,
       totalCount: 0,
       isLoading: false,
+      hoverRow: null,
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,
@@ -322,7 +358,9 @@ export default {
           page: this.currentPage,
           per_page: this.itemsPerPage,
         };
-        const response = await axios.get(`${VITE_API_URL}/candidates`, { params });
+        const response = await axios.get(`${VITE_API_URL}/candidates`, {
+          params,
+        });
         this.getCandidatesData = response.data.data;
         this.totalPages = response.data.total_pages;
         this.currentPage = response.data.current_page;

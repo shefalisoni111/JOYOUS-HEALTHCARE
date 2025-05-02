@@ -5,7 +5,6 @@
       class="modal fade"
       id="addRestrictedLocation"
       aria-labelledby="addRestrictedLocation"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -42,7 +41,9 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectBusinessUnit">Site</label>
+                    <label class="form-label" for="selectBusinessUnit"
+                      >Site</label
+                    >
                   </div>
 
                   <div class="col-10">
@@ -65,7 +66,7 @@
             </div>
             <div class="modal-footer">
               <button
-                class="btn btn-secondary rounded-1"
+                class="btn btn-dark btn-cancel"
                 data-bs-target="#addRestrictedLocation"
                 data-bs-toggle="modal"
                 data-bs-dismiss="modal"
@@ -128,12 +129,16 @@ export default {
     //   return this.validationBusinessUnit && this.validationSelectedClient;
     // },
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
 
     selectClients() {
-      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      const client_id = this.clientData.find(
+        (option) => option.id === this.client_id
+      );
       return this.client_id;
     },
   },
@@ -201,13 +206,16 @@ export default {
         client_id: this.client_id,
       };
       try {
-        const response = await fetch(`${VITE_API_URL}/restricted_business_units`, {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
+        const response = await fetch(
+          `${VITE_API_URL}/restricted_business_units`,
+          {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
         if (response.ok) {
           this.$emit("getLocationAdded");
           this.site_id = "";

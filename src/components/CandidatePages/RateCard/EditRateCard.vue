@@ -114,7 +114,10 @@ export default {
     },
     async updateCandidateMethod() {
       try {
-        await axios.put(`${VITE_API_URL}/rate_cards/${this.fetchCandidate.id}`, {});
+        await axios.put(
+          `${VITE_API_URL}/rate_cards/${this.fetchCandidate.id}`,
+          {}
+        );
 
         // alert("Candidate updated successfully");
         Swal.fire({
@@ -139,9 +142,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .modal-footer {
   border-top: 0px;
 }

@@ -5,7 +5,6 @@
       class="modal fade"
       id="editClientUser"
       aria-labelledby="editClientUserPages"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -89,7 +88,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editClientUser"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -142,7 +141,9 @@ export default {
   components: { SuccessAlert },
   computed: {
     selectClients() {
-      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      const client_id = this.clientData.find(
+        (option) => option.id === this.client_id
+      );
       return client_id ? client_id.client_name : "";
     },
   },
@@ -168,14 +169,18 @@ export default {
       }
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(`${VITE_API_URL}/client_users/${ClientUserId}`, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/client_users/${ClientUserId}`,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         if (response.data.data) {
-          const { id, client_id, email, password, confirm_password } = response.data.data;
+          const { id, client_id, email, password, confirm_password } =
+            response.data.data;
           this.fetchSite.id = id;
           this.fetchSite.client_id = client_id;
           this.fetchSite.email = email;
@@ -231,7 +236,8 @@ export default {
             errorMessage = `Error ${error.response.status}: ${error.response.statusText}`;
           }
         } else if (error.request) {
-          errorMessage = "No response from the server. Please check your connection.";
+          errorMessage =
+            "No response from the server. Please check your connection.";
         } else {
           errorMessage = `Unexpected error: ${error.message}`;
         }
@@ -307,9 +313,6 @@ export default {
 .modal-body {
   border-radius: 5px;
   background: #dbdbdb;
-}
-.modal-header {
-  border-bottom: 0px;
 }
 
 select {

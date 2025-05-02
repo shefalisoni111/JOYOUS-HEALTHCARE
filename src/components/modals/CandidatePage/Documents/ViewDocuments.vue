@@ -5,7 +5,6 @@
       class="modal fade"
       id="viewDocCandidate"
       aria-labelledby="addNextToKin"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
@@ -23,13 +22,24 @@
                       </tr>
                     </thead>
                     <tbody v-for="group in documentDetails" :key="group.id">
-                      <tr v-for="documentData in group.documents" :key="documentData.id">
-                        <td v-if="documentId === documentData.candidate_document?.id">
+                      <tr
+                        v-for="documentData in group.documents"
+                        :key="documentData.id"
+                      >
+                        <td
+                          v-if="
+                            documentId === documentData.candidate_document?.id
+                          "
+                        >
                           {{ documentData.candidate_document?.document_name }}
                           <br />
                           <img
                             v-if="documentData.candidate_document?.url"
-                            :src="completeImageUrl(documentData.candidate_document?.url)"
+                            :src="
+                              completeImageUrl(
+                                documentData.candidate_document?.url
+                              )
+                            "
                             alt="Document Image"
                             style="
                               height: 310px;
@@ -49,7 +59,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#viewDocCandidate"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -133,9 +143,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .modal-footer {
   border-top: 0px;
 }
@@ -210,7 +218,7 @@ label.form-label {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
- font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {

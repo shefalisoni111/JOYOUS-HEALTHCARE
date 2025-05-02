@@ -5,7 +5,6 @@
       class="modal fade"
       id="editContactProfile"
       aria-labelledby="editContactProfile"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -38,7 +37,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editContactProfile"
               @click="resetChanges"
               data-bs-dismiss="modal"
@@ -108,10 +107,8 @@ export default {
       this.fetchCandidate = { ...this.originalData };
     },
     cleanPhoneNumber() {
-      this.fetchCandidate.phone_number = this.fetchCandidate.phone_number.replace(
-        /\D/g,
-        ""
-      );
+      this.fetchCandidate.phone_number =
+        this.fetchCandidate.phone_number.replace(/\D/g, "");
     },
     validatePhoneNumber(phoneNumber) {
       const phoneRegex = /^[789]\d{9}$/;
@@ -121,7 +118,10 @@ export default {
       if (!id) return;
       try {
         const response = await axios.get(`${VITE_API_URL}/candidates/${id}`);
-        this.fetchCandidate = { ...this.fetchCandidate, ...response.data.candidate };
+        this.fetchCandidate = {
+          ...this.fetchCandidate,
+          ...response.data.candidate,
+        };
         this.originalData = { ...this.fetchCandidate };
       } catch (error) {}
     },

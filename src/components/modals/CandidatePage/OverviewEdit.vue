@@ -1,16 +1,13 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="editOverview"
-      aria-labelledby="overviewEdit"
-      tabindex="-1"
-    >
+    <div class="modal fade" id="editOverview" aria-labelledby="overviewEdit">
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title text-center" id="editOverview">Add Details</h5>
+            <h5 class="modal-title text-center" id="editOverview">
+              Add Details
+            </h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
@@ -189,7 +186,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editOverview"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -256,18 +253,22 @@ export default {
   },
   methods: {
     cleanAndValidateDBSPVGNo() {
-      this.fetchCandidate.DBS_PVG_no = this.fetchCandidate.DBS_PVG_no.replace(/\D/g, "");
-    },
-
-    cleanAndValidatePin() {
-      this.fetchCandidate.NMC_NISCC_SSSC_pin = this.fetchCandidate.NMC_NISCC_SSSC_pin.replace(
+      this.fetchCandidate.DBS_PVG_no = this.fetchCandidate.DBS_PVG_no.replace(
         /\D/g,
         ""
       );
     },
+
+    cleanAndValidatePin() {
+      this.fetchCandidate.NMC_NISCC_SSSC_pin =
+        this.fetchCandidate.NMC_NISCC_SSSC_pin.replace(/\D/g, "");
+    },
     cleanAndValidatePin(field) {
       if (this.fetchCandidate[field]) {
-        this.fetchCandidate[field] = this.fetchCandidate[field].replace(/\D/g, "");
+        this.fetchCandidate[field] = this.fetchCandidate[field].replace(
+          /\D/g,
+          ""
+        );
       }
     },
 
@@ -338,9 +339,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .modal-footer {
   border-top: 0px;
 }
@@ -428,7 +427,7 @@ select {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
- font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {

@@ -6,195 +6,249 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addCandidate">Add Staff</h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body mx-3">
-            <div class="row g-3 align-items-center">
+            <div class="row">
               <form>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-4">
-                    <label class="form-label">First Name</label>
-                  </div>
-                  <div class="col-8">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="first_name"
-                      @input="clearError"
-                      @change="detectAutofill"
-                    />
-                    <span v-if="!validateCandidateName && !autofilled" class="text-danger"
-                      >Staff First Name Required</span
-                    >
-                  </div>
-                </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-4">
-                    <label class="form-label">Last Name</label>
-                  </div>
-                  <div class="col-8">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="last_name"
-                      @input="clearError"
-                      @change="detectAutofill"
-                    />
-                    <span
-                      v-if="!validateCandidateLName && !autofilled"
-                      class="text-danger"
-                      >Staff Last Name Required</span
-                    >
-                  </div>
-                </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-4">
-                    <label class="form-label">position</label>
-                  </div>
-                  <div class="col-8">
-                    <select v-model="job_id" @change="clearError">
-                      <option
-                        v-for="option in options"
-                        :key="option.id"
-                        :value="option.id"
-                      >
-                        {{ option.name }}
-                      </option>
-                    </select>
-                    <span
-                      v-if="!validationSelectedOptionText && !autofilled"
-                      class="text-danger"
-                      >Position Required</span
-                    >
-                  </div>
-                </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-4">
-                    <label class="form-label" for="selectOptionEmployee">Job Type</label>
+                <div class="col-12 d-flex justify-content-center gap-3">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">First Name</label>
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="first_name"
+                          @input="clearError"
+                          @change="detectAutofill"
+                        />
+                        <span
+                          v-if="!validateCandidateName && !autofilled"
+                          class="text-danger"
+                          >Staff First Name Required</span
+                        >
+                      </div>
+                    </div>
                   </div>
 
-                  <div class="col-8">
-                    <select
-                      v-model="employ_type"
-                      id="selectOptionEmployee"
-                      @change="clearError"
-                    >
-                      <option value="Self_employed">Self Employed</option>
-                      <option value="Private_limited">Private limited</option>
-                      <option value="umbrella">Umbrella</option>
-                      <option value="paye">Paye</option>
-                    </select>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Last Name</label>
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="last_name"
+                          @input="clearError"
+                          @change="detectAutofill"
+                        />
+                        <span
+                          v-if="!validateCandidateLName && !autofilled"
+                          class="text-danger"
+                          >Staff Last Name Required</span
+                        >
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-4">
-                    <label class="form-label" for="selectEmployeeType"
-                      >Employment Type</label
-                    >
+                <div class="col-12 d-flex justify-content-center gap-3">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">position</label>
+                      </div>
+                      <div class="col-12">
+                        <select v-model="job_id" @change="clearError">
+                          <option
+                            v-for="option in options"
+                            :key="option.id"
+                            :value="option.id"
+                          >
+                            {{ option.name }}
+                          </option>
+                        </select>
+                        <span
+                          v-if="!validationSelectedOptionText && !autofilled"
+                          class="text-danger"
+                          >Position Required</span
+                        >
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-8 mt-1">
-                    <select
-                      v-model="employment_type_id"
-                      id="selectEmployeeType"
-                      @change="clearError"
-                    >
-                      <option
-                        v-for="option in employeeData"
-                        :key="option.id"
-                        :value="option.id"
-                        aria-placeholder="Select Job"
-                      >
-                        {{ option.title }}
-                      </option>
-                    </select>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label" for="selectOptionEmployee"
+                          >Job Type</label
+                        >
+                      </div>
+
+                      <div class="col-12">
+                        <select
+                          v-model="employ_type"
+                          id="selectOptionEmployee"
+                          @change="clearError"
+                        >
+                          <option value="Self_employed">Self Employed</option>
+                          <option value="Private_limited">
+                            Private limited
+                          </option>
+                          <option value="umbrella">Umbrella</option>
+                          <option value="paye">Paye</option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-4">
-                    <label class="form-label">email</label>
+                <div class="col-12 d-flex justify-content-center gap-3">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label" for="selectEmployeeType"
+                          >Employment Type</label
+                        >
+                      </div>
+                      <div class="col-12 mt-1">
+                        <select
+                          v-model="employment_type_id"
+                          id="selectEmployeeType"
+                          @change="clearError"
+                        >
+                          <option
+                            v-for="option in employeeData"
+                            :key="option.id"
+                            :value="option.id"
+                            aria-placeholder="Select Job"
+                          >
+                            {{ option.title }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-8">
-                    <input
-                      type="email"
-                      class="form-control"
-                      v-model="email"
-                      @input="validateEmailFormat(email)"
-                      ref="email"
-                      @change="checkEmailUniqueness"
-                      autocomplete="new-email"
-                    />
-                    <span
-                      v-if="email && !validateEmailFormat(email) && !autofilled"
-                      class="text-danger"
-                      >Invalid Email</span
-                    >
-                    <span v-if="emailInUse" class="text-danger">
-                      Email is already in use.
-                    </span>
-                    <span v-if="emailError && !emailInUse" class="text-danger">
-                      {{ emailError }}
-                    </span>
-                    <!-- <span v-if="emailInUse" class="text-danger">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">email</label>
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="email"
+                          class="form-control"
+                          v-model="email"
+                          @input="validateEmailFormat(email)"
+                          ref="email"
+                          @change="checkEmailUniqueness"
+                          autocomplete="new-email"
+                        />
+                        <span
+                          v-if="
+                            email && !validateEmailFormat(email) && !autofilled
+                          "
+                          class="text-danger"
+                          >Invalid Email</span
+                        >
+                        <span v-if="emailInUse" class="text-danger">
+                          Email is already in use.
+                        </span>
+                        <span
+                          v-if="emailError && !emailInUse"
+                          class="text-danger"
+                        >
+                          {{ emailError }}
+                        </span>
+                        <!-- <span v-if="emailInUse" class="text-danger">
                       {{  "This email is already in use." }}
                     </span> -->
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-4">
-                    <label class="form-label">password</label>
+                <div class="col-12 d-flex justify-content-center gap-3">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">password</label>
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="password"
+                          class="form-control"
+                          v-model="password"
+                          @input="validatePasswordCriteria"
+                          @change="detectAutofill"
+                          ref="password"
+                          autocomplete="new-password"
+                        />
+                        <span
+                          v-if="password && !isPasswordValid"
+                          class="text-danger"
+                        >
+                          Password must be at least 8 characters long and
+                          include uppercase, lowercase, numeric, and special
+                          characters.
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-8">
-                    <input
-                      type="password"
-                      class="form-control"
-                      v-model="password"
-                      @input="validatePasswordCriteria"
-                      @change="detectAutofill"
-                      ref="password"
-                      autocomplete="new-password"
-                    />
-                    <span v-if="password && !isPasswordValid" class="text-danger">
-                      Password must be at least 8 characters long and include uppercase,
-                      lowercase, numeric, and special characters.
-                    </span>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">confirm password</label>
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="password"
+                          class="form-control"
+                          v-model="confirm_password"
+                          @input="validatePasswordMatch"
+                          @change="detectAutofill"
+                        />
+                        <span
+                          v-if="confirm_password && !passwordsMatch"
+                          class="text-danger"
+                        >
+                          Passwords do No match.
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-4">
-                    <label class="form-label">confirm password</label>
-                  </div>
-                  <div class="col-8">
-                    <input
-                      type="password"
-                      class="form-control"
-                      v-model="confirm_password"
-                      @input="validatePasswordMatch"
-                      @change="detectAutofill"
-                    />
-                    <span v-if="confirm_password && !passwordsMatch" class="text-danger">
-                      Passwords do No match.
-                    </span>
-                  </div>
-                </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-4">
-                    <label class="form-label">phone number</label>
-                  </div>
-                  <div class="col-8">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="phone_number"
-                      @input="cleanPhoneNumber"
-                      @change="detectAutofill"
-                    />
-                    <!-- <span v-if="!validatePhoneNumber" class="text-danger"
+                <div class="col-12">
+                  <div class="mb-3">
+                    <div class="col-12">
+                      <label class="form-label">phone number</label>
+                    </div>
+                    <div class="col-12">
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="phone_number"
+                        @input="cleanPhoneNumber"
+                        @change="detectAutofill"
+                      />
+                      <!-- <span v-if="!validatePhoneNumber" class="text-danger"
                       >Invalid Phone Number</span
                     > -->
-                    <span
-                      v-if="phone_number && !validatePhoneNumberFormat(phone_number)"
-                      class="text-danger"
-                      >Invalid Phone Number</span
-                    >
+                      <span
+                        v-if="
+                          phone_number &&
+                          !validatePhoneNumberFormat(phone_number)
+                        "
+                        class="text-danger"
+                        >Invalid Phone Number</span
+                      >
+                    </div>
                   </div>
                 </div>
               </form>
@@ -202,7 +256,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#addCandidate"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -213,11 +267,13 @@
             <button
               :disabled="!isValidForm || isFieldEmpty() || emailInUse"
               :class="{
-                'btn btn-primary rounded-1 text-capitalize fw-medium': true,
+                'btn btn-primary text-capitalize fw-medium': true,
                 disabled: !isValidForm || isFieldEmpty(),
               }"
               v-on:click="addCandidate"
-              v-bind:data-bs-dismiss="!isFieldEmpty() && isValidForm ? 'modal' : null"
+              v-bind:data-bs-dismiss="
+                !isFieldEmpty() && isValidForm ? 'modal' : null
+              "
             >
               Add
             </button>
@@ -347,10 +403,12 @@ export default {
     detectAutofill() {
       const isPhoneNumberFilled = this.phone_number.trim() !== "";
       const isPositionSelected = !!this.job_id;
-      const isPhoneNumberFocused = document.activeElement === this.$refs.phone_number;
+      const isPhoneNumberFocused =
+        document.activeElement === this.$refs.phone_number;
 
       if (!isPositionSelected) {
-        this.showPhoneNumberValidation = !isPhoneNumberFocused && !isPhoneNumberFilled;
+        this.showPhoneNumberValidation =
+          !isPhoneNumberFocused && !isPhoneNumberFilled;
       } else {
         this.showPhoneNumberValidation = false;
       }
@@ -398,7 +456,9 @@ export default {
       this.validateCandidateName = this.validateNameFormat(this.first_name);
       this.validateCandidateLName = this.validateLNameFormat(this.last_name);
       this.validateEmail = this.validateEmailFormat(this.email);
-      this.validatePhoneNumber = this.validatePhoneNumberFormat(this.phone_number);
+      this.validatePhoneNumber = this.validatePhoneNumberFormat(
+        this.phone_number
+      );
       this.validatePassword = !!this.password.trim();
       this.passwordsMatch = this.password === this.confirm_password;
 
@@ -465,7 +525,8 @@ export default {
       this.passwordsMatch = this.password === this.confirm_password;
     },
     validateEmailFormat(email) {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
+      const emailRegex =
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
       return emailRegex.test(email);
     },
 
@@ -564,11 +625,11 @@ export default {
 <style scoped>
 .modal-body {
   border-radius: 5px;
-  background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
+.modal {
+  --bs-modal-width: 881px;
 }
+
 .modal-footer {
   border-top: 0px;
 }
@@ -578,19 +639,6 @@ export default {
   height: 40px;
 }
 
-select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 4px;
-  border: 0px;
-}
-.btn-primary {
-  background-color: #ff5f30 !important;
-  font-weight: bold;
-  border: none;
-  border-radius: 4px;
-  outline: none;
-}
 label.form-label {
   text-transform: capitalize;
 }
@@ -643,7 +691,7 @@ label.form-label {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
- font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {

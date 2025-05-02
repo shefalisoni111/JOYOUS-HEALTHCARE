@@ -1,12 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="candidateMail"
-      aria-labelledby="candidatePage"
-      tabindex="-1"
-    >
+    <div class="modal fade" id="candidateMail" aria-labelledby="candidatePage">
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
@@ -18,7 +13,9 @@
                 <div>
                   <div class="row align-items-center mt-3">
                     <div class="col-2">
-                      <label for="mailto" class="col-form-label">MAIL TO:</label>
+                      <label for="mailto" class="col-form-label"
+                        >MAIL TO:</label
+                      >
                     </div>
                     <div class="col-10">
                       <input
@@ -28,14 +25,19 @@
                         v-model="email"
                         :class="{ 'is-invalid': email && !isValidEmail(email) }"
                       />
-                      <div v-if="email && !isValidEmail(email)" class="text-danger">
+                      <div
+                        v-if="email && !isValidEmail(email)"
+                        class="text-danger"
+                      >
                         Please enter a valid email address.
                       </div>
                     </div>
                   </div>
                   <div class="row align-items-center mt-3">
                     <div class="col-2">
-                      <label for="subject" class="col-form-label">SUBJECT:</label>
+                      <label for="subject" class="col-form-label"
+                        >SUBJECT:</label
+                      >
                     </div>
                     <div class="col-10">
                       <input
@@ -64,7 +66,9 @@
                   </div>
                   <div class="row align-items-center mt-3">
                     <div class="col-2">
-                      <label for="attachments" class="col-form-label">ATTACHMENTS:</label>
+                      <label for="attachments" class="col-form-label"
+                        >ATTACHMENTS:</label
+                      >
                     </div>
                     <div class="col-10">
                       <input
@@ -80,7 +84,7 @@
                 </div>
                 <div class="modal-footer">
                   <button
-                    class="btn btn-secondary rounded-1"
+                    class="btn btn-dark btn-cancel"
                     data-bs-target="#candidateMail"
                     data-bs-toggle="modal"
                     data-bs-dismiss="modal"
@@ -141,7 +145,8 @@ export default {
   },
   methods: {
     isValidEmail(email) {
-      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
+      const emailPattern =
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
       return emailPattern.test(email);
     },
     handleFileUpload(event) {
@@ -205,9 +210,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .modal-footer {
   border-top: 0px;
 }
@@ -282,7 +285,7 @@ label.form-label {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
- font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Modal -->
-    <div class="modal fade" id="editJob" aria-labelledby="editJob" tabindex="-1">
+    <div class="modal fade" id="editJob" aria-labelledby="editJob">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -16,7 +16,11 @@
                       <label class="form-label">Name</label>
                     </div>
                     <div class="col-12 mt-1">
-                      <input type="text" class="form-control" v-model="fetchJobs.name" />
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="fetchJobs.name"
+                      />
                     </div>
                   </div>
                 </div>
@@ -40,7 +44,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editJob"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"

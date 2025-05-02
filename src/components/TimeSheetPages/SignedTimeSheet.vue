@@ -1156,24 +1156,7 @@ select {
   border: 0px;
   border: 1px solid rgb(202, 198, 198);
 }
-.action-wrapper {
-  position: relative;
-  display: inline-block;
-}
 
-.dot-icon {
-  font-size: 18px;
-  cursor: pointer;
-  color: #888;
-}
-
-.action-menu {
-  position: absolute;
-  top: 0;
-  left: 25px;
-
-  z-index: 100;
-}
 .shadow-soft {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   border-radius: 12px;

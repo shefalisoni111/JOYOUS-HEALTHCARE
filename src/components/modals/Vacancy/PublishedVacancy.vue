@@ -5,7 +5,6 @@
       class="modal fade"
       id="publishVacancy"
       aria-labelledby="publishVacancy"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
@@ -112,7 +111,9 @@
 
                   <div></div>
 
-                  <div class="d-flex align-items-center justify-content-between">
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                  >
                     <div class="d-flex align-items-center gap-2">
                       <div class="searchbox position-relative">
                         <form @submit.prevent="search">
@@ -135,7 +136,10 @@
               <div class="col-md-12">
                 <h6>Shifts List</h6>
                 <div class="wrapper-vacancy">
-                  <table class="table vacancyTable w-100" v-if="selectedPublishItemId">
+                  <table
+                    class="table vacancyTable w-100"
+                    v-if="selectedPublishItemId"
+                  >
                     <thead>
                       <tr>
                         <th></th>
@@ -150,7 +154,10 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="candidate in getCandidatesData" :key="candidate.id">
+                      <tr
+                        v-for="candidate in getCandidatesData"
+                        :key="candidate.id"
+                      >
                         <td>
                           <input
                             class="form-check-input"
@@ -184,7 +191,10 @@
               <div class="col-md-12">
                 <h6>Shifts List</h6>
                 <div class="wrapper-vacancy">
-                  <table class="table vacancyTable w-100" v-if="selectedPublishItemId">
+                  <table
+                    class="table vacancyTable w-100"
+                    v-if="selectedPublishItemId"
+                  >
                     <thead>
                       <tr>
                         <th></th>
@@ -199,7 +209,10 @@
                       </tr>
                     </thead>
                     <tbody v-if="searchResults.length > 0">
-                      <tr v-for="candidate in searchResults" :key="candidate.id">
+                      <tr
+                        v-for="candidate in searchResults"
+                        :key="candidate.id"
+                      >
                         <td>
                           <input
                             class="form-check-input"
@@ -278,7 +291,7 @@
                 </div>
                 <div class="d-flex gap-3">
                   <button
-                    class="btn btn-danger rounded-1"
+                    class="btn btn-dark btn-cancel"
                     data-bs-target="#publishVacancy"
                     data-bs-toggle="modal"
                     data-bs-dismiss="modal"
@@ -427,7 +440,10 @@ export default {
 
           const response = await axios.put(
             `${VITE_API_URL}/send_notification/${this.$store.state.selectedPublishItemId}`,
-            { notification_type: notificationType, candidate_ids: checkedCandidateIds },
+            {
+              notification_type: notificationType,
+              candidate_ids: checkedCandidateIds,
+            },
             {
               headers: {
                 "content-type": "application/json",
@@ -463,22 +479,26 @@ export default {
             // Handle unexpected response status
           }
         } catch (error) {
-          let errorMessage = "An error occurred while sending the notification.";
+          let errorMessage =
+            "An error occurred while sending the notification.";
 
           if (error.response) {
             if (error.response.data && error.response.data.message) {
               errorMessage = error.response.data.message;
             } else if (error.response.status === 400) {
-              errorMessage = "Invalid request. Please check the data and try again.";
+              errorMessage =
+                "Invalid request. Please check the data and try again.";
             } else if (error.response.status === 401) {
               errorMessage = "Unauthorized. Please log in again.";
             } else if (error.response.status === 403) {
-              errorMessage = "You don't have permission to perform this action.";
+              errorMessage =
+                "You don't have permission to perform this action.";
             } else if (error.response.status === 500) {
               errorMessage = "Internal server error. Please try again later.";
             }
           } else if (error.request) {
-            errorMessage = "No response from the server. Please check your network.";
+            errorMessage =
+              "No response from the server. Please check your network.";
           } else {
             errorMessage = error.message;
           }
@@ -565,11 +585,14 @@ export default {
     },
     async publishListShowMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}candidate_list_of_vacancy`, {
-          params: {
-            vacancy_id: id,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}candidate_list_of_vacancy`,
+          {
+            params: {
+              vacancy_id: id,
+            },
+          }
+        );
         // console.log(response.data.candidates_data);
       } catch (error) {
         // console.error("Error fetching vacancies:", error);
@@ -579,7 +602,9 @@ export default {
 
   async mounted() {
     // await this.getVacancyDataMethod();
-    await this.getAllCandidateListMethod(this.$store.state.selectedPublishItemId);
+    await this.getAllCandidateListMethod(
+      this.$store.state.selectedPublishItemId
+    );
   },
 };
 </script>
@@ -589,9 +614,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .publish-ul li {
   background: #ff57223d;
   padding: 5px;

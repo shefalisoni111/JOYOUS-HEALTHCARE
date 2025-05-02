@@ -17,7 +17,12 @@
             </tr>
           </thead>
           <tbody v-if="getCandidatesData?.length > 0">
-            <tr v-for="candidate in getCandidatesData" :key="candidate.id">
+            <tr
+              v-for="(candidate, index) in getCandidatesData"
+              :key="index"
+              @mouseenter="hoverRow = index"
+              @mouseleave="hoverRow = null"
+            >
               <td v-text="candidate.id"></td>
               <td>
                 <router-link
@@ -30,7 +35,34 @@
               <td class="text-capitalize" v-text="candidate.possition"></td>
               <td>{{ candidate.email }}</td>
               <td>{{ candidate.phone_number }}</td>
-              <td class="text-capitalize">{{ candidate.status }}</td>
+              <td class="text-capitalize">
+                <!-- {{ candidate.status }} -->
+                <button
+                  type="button"
+                  :class="['btn', 'text-nowrap']"
+                  :style="
+                    {
+                      approved: {
+                        backgroundColor: '#E9FAEF',
+                        color: '#24D164',
+                      },
+                      pending: {
+                        backgroundColor: 'rgb(255 227 234)',
+                        color: '#FF3B30',
+                      },
+                      rejected: {
+                        backgroundColor: '#FFEFE7',
+                        color: '#FF9F0A',
+                      },
+                    }[candidate.status]
+                  "
+                >
+                  {{
+                    candidate.status.charAt(0).toUpperCase() +
+                    candidate.status.slice(1)
+                  }}
+                </button>
+              </td>
               <td>
                 <button
                   class="btn"
@@ -62,21 +94,33 @@
                   <i class="bi bi-person-circle"></i>
                 </button>
               </td>
-              <td>{{ formatDate(candidate.last_login ? candidate.last_login : " ") }}</td>
+              <td>
+                {{
+                  formatDate(candidate.last_login ? candidate.last_login : " ")
+                }}
+              </td>
               <td class="cursor-pointer">
-                <router-link
-                  class="btn btn-outline-success text-nowrap"
-                  :to="{ name: 'Profile', params: { id: candidate.id } }"
-                >
-                  <i class="bi bi-eye"></i>
-                </router-link>
-                &nbsp;&nbsp;
-                <button
-                  class="btn btn-outline-danger text-nowrap"
-                  v-on:click="deleteStaffMethod(candidate.id)"
-                >
-                  <i class="bi bi-trash"></i>
-                </button>
+                <div class="action-wrapper">
+                  <i class="bi bi-three-dots dot-icon"></i>
+
+                  <div v-if="hoverRow === index" class="action-menu">
+                    <router-link
+                      class="btn text-nowrap border-0"
+                      :to="{ name: 'Profile', params: { id: candidate.id } }"
+                    >
+                      <i class="bi bi-eye" style="color: #f9944b"></i>
+                      View
+                    </router-link>
+
+                    <button
+                      class="btn text-nowrap border-0"
+                      v-on:click="deleteStaffMethod(candidate.id)"
+                    >
+                      <i class="bi bi-trash" style="color: #f9944b"></i>
+                      Delete
+                    </button>
+                  </div>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -115,10 +159,14 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+              >20 Records</a
+            >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+              >50 Records</a
+            >
           </li>
           <li>
             <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
@@ -185,6 +233,7 @@ export default {
       totalCount: 0,
       totalPages: 1,
       isLoading: false,
+      hoverRow: null,
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,
@@ -200,7 +249,10 @@ export default {
   computed: {
     paginateCandidates() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      return this.getCandidatesData.slice(startIndex, startIndex + this.itemsPerPage);
+      return this.getCandidatesData.slice(
+        startIndex,
+        startIndex + this.itemsPerPage
+      );
     },
     // totalRecordsOnPage() {
     //   return this.paginateCandidates.length;

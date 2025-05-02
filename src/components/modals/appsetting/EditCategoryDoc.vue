@@ -5,7 +5,6 @@
       class="modal fade"
       id="editDocCategory"
       aria-labelledby="editDocCategory"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -31,7 +30,9 @@
                 </div>
                 <div class="mb-3">
                   <div class="col-12">
-                    <label class="form-label" for="selectJobTitle">Position</label>
+                    <label class="form-label" for="selectJobTitle"
+                      >Position</label
+                    >
                   </div>
                   <div class="col-12">
                     <div v-for="option in options" :key="option.id">
@@ -52,7 +53,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editDocCategory"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -106,7 +107,9 @@ export default {
     async fetchCategoryMethod(id) {
       if (!id) return;
       try {
-        const response = await axios.get(`${VITE_API_URL}/document_categories/${id}`);
+        const response = await axios.get(
+          `${VITE_API_URL}/document_categories/${id}`
+        );
         const categoryData = response.data.category;
 
         this.fetchCategory = {

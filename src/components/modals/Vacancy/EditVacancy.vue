@@ -142,7 +142,11 @@
                         v-model="fetchVacancy.start_time"
                         @change="validateStartTime"
                       >
-                        <option v-for="hour in 24" :key="hour" :value="formatTime(hour)">
+                        <option
+                          v-for="hour in 24"
+                          :key="hour"
+                          :value="formatTime(hour)"
+                        >
                           {{ formatTime(hour) }}
                         </option>
                       </select>
@@ -150,7 +154,9 @@
                   </div>
                   <div class="mb-3 d-flex justify-content-between">
                     <div class="col-2">
-                      <label class="form-label" for="selectCustomEndTime">End Time</label>
+                      <label class="form-label" for="selectCustomEndTime"
+                        >End Time</label
+                      >
                     </div>
                     <div class="col-10">
                       <select
@@ -159,7 +165,11 @@
                         v-model="fetchVacancy.end_time"
                         @change="validateEndTime"
                       >
-                        <option v-for="hour in 24" :key="hour" :value="formatTime(hour)">
+                        <option
+                          v-for="hour in 24"
+                          :key="hour"
+                          :value="formatTime(hour)"
+                        >
                           {{ formatTime(hour) }}
                         </option>
                       </select>
@@ -167,7 +177,9 @@
                   </div>
                   <div class="mb-3 d-flex justify-content-between">
                     <div class="col-2">
-                      <label class="form-label" for="selectShiftsBreak">Break Time</label>
+                      <label class="form-label" for="selectShiftsBreak"
+                        >Break Time</label
+                      >
                     </div>
                     <div class="col-10">
                       <select
@@ -188,7 +200,9 @@
                   </div>
                   <div class="mb-3 d-flex justify-content-between">
                     <div class="col-2">
-                      <label class="form-label" for="clientRate">Client Rate</label>
+                      <label class="form-label" for="clientRate"
+                        >Client Rate</label
+                      >
                     </div>
                     <div class="col-10">
                       <div class="input-container">
@@ -197,7 +211,9 @@
                           type="text"
                           class="form-control w-25"
                           v-model="fetchVacancy.client_rate"
-                          @input="handleInput('client_rate', $event.target.value)"
+                          @input="
+                            handleInput('client_rate', $event.target.value)
+                          "
                           maxlength="3"
                           @keydown="allowNumbersOnly($event)"
                         />
@@ -212,18 +228,24 @@
                   </div>
                   <div class="mb-3 d-flex justify-content-between">
                     <div class="col-2">
-                      <label class="form-label" for="clientRate">Staff Rate</label>
+                      <label class="form-label" for="clientRate"
+                        >Staff Rate</label
+                      >
                     </div>
                     <div class="col-10 d-flex gap-2">
                       <div>
-                        <label class="form-label" for="staffRate">Self Employee</label>
+                        <label class="form-label" for="staffRate"
+                          >Self Employee</label
+                        >
                         <div class="input-container">
                           <span class="currency-symbol">£</span>
                           <input
                             type="text"
                             class="form-control w-100"
                             v-model="fetchVacancy.staff_rate"
-                            @input="handleInput('staff_rate', $event.target.value)"
+                            @input="
+                              handleInput('staff_rate', $event.target.value)
+                            "
                             @keydown="allowNumbersOnly($event)"
                           />
                         </div>
@@ -236,14 +258,18 @@
                       </div>
 
                       <div>
-                        <label class="form-label" for="umbrella">Umbrella</label>
+                        <label class="form-label" for="umbrella"
+                          >Umbrella</label
+                        >
                         <div class="input-container">
                           <span class="currency-symbol">£</span>
                           <input
                             type="text"
                             class="form-control w-100"
                             v-model="fetchVacancy.umbrella"
-                            @input="handleInput('umbrella', $event.target.value)"
+                            @input="
+                              handleInput('umbrella', $event.target.value)
+                            "
                             maxlength="3"
                             @keydown="allowNumbersOnly($event)"
                           />
@@ -287,13 +313,21 @@
                             type="text"
                             class="form-control w-100"
                             v-model="fetchVacancy.private_limited"
-                            @input="handleInput('private_limited', $event.target.value)"
+                            @input="
+                              handleInput(
+                                'private_limited',
+                                $event.target.value
+                              )
+                            "
                             maxlength="3"
                             @keydown="allowNumbersOnly($event)"
                           />
                         </div>
                         <span
-                          v-if="!validationPrivateLimited && fetchVacancy.private_limited"
+                          v-if="
+                            !validationPrivateLimited &&
+                            fetchVacancy.private_limited
+                          "
                           class="text-danger"
                         >
                           Private Limited must be greater than 0
@@ -306,7 +340,10 @@
                       <label class="form-label"> Bank Holiday Rate</label>
                     </div>
                     <div class="col-10 mt-1">
-                      <select class="form-control" v-model="fetchVacancy.percentage">
+                      <select
+                        class="form-control"
+                        v-model="fetchVacancy.percentage"
+                      >
                         <option value="" disabled>Select Percentage</option>
                         <option
                           v-for="value in [0, 25, 50, 75, 100]"
@@ -341,7 +378,11 @@
                     <label class="form-label">Notes</label>
                   </div>
                   <div class="col-10">
-                    <input type="text" class="form-select" v-model="fetchVacancy.notes" />
+                    <input
+                      type="text"
+                      class="form-select"
+                      v-model="fetchVacancy.notes"
+                    />
                   </div>
                 </div>
               </form>
@@ -349,7 +390,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#editVacancy"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -482,24 +523,28 @@ export default {
   },
   methods: {
     validateStaffRequired() {
-      this.fetchVacancy.staff_required = this.fetchVacancy.staff_required.replace(
-        /[^0-9]/g,
-        ""
+      this.fetchVacancy.staff_required =
+        this.fetchVacancy.staff_required.replace(/[^0-9]/g, "");
+
+      this.fetchVacancy.staff_required = Number(
+        this.fetchVacancy.staff_required
       );
 
-      this.fetchVacancy.staff_required = Number(this.fetchVacancy.staff_required);
-
-      this.fetchVacancy.staff_required = this.fetchVacancy.staff_required.replace(
-        /[^0-9]/g,
-        ""
-      );
+      this.fetchVacancy.staff_required =
+        this.fetchVacancy.staff_required.replace(/[^0-9]/g, "");
       if (this.fetchVacancy.staff_required <= 0) {
         this.fetchVacancy.staff_required = null;
       } else {
       }
     },
     allowNumbersOnly(event) {
-      const allowedKeys = ["Backspace", "ArrowLeft", "ArrowRight", "Tab", "Delete"];
+      const allowedKeys = [
+        "Backspace",
+        "ArrowLeft",
+        "ArrowRight",
+        "Tab",
+        "Delete",
+      ];
       const isNumberKey = /^[0-9]$/.test(event.key);
 
       if (!isNumberKey && !allowedKeys.includes(event.key)) {
@@ -600,7 +645,9 @@ export default {
       return formattedDate >= today;
     },
     removeDate(index) {
-      const updatedDates = this.fetchVacancy.dates.filter((_, i) => i !== index);
+      const updatedDates = this.fetchVacancy.dates.filter(
+        (_, i) => i !== index
+      );
 
       this.fetchVacancy.dates = updatedDates;
     },
@@ -651,11 +698,14 @@ export default {
         }
 
         this.fetchVacancy.staff_rate =
-          data.staff_rate !== null ? String(data.staff_rate).replace(/£/g, "") : "";
+          data.staff_rate !== null
+            ? String(data.staff_rate).replace(/£/g, "")
+            : "";
         this.fetchVacancy.client_rate =
           data.client_rate !== null ? String(data.client_rate) : "";
         this.fetchVacancy.paye = data.paye !== null ? String(data.paye) : "";
-        this.fetchVacancy.umbrella = data.umbrella !== null ? String(data.umbrella) : "";
+        this.fetchVacancy.umbrella =
+          data.umbrella !== null ? String(data.umbrella) : "";
         this.fetchVacancy.private_limited =
           data.private_limited !== null ? String(data.private_limited) : "";
 
@@ -693,8 +743,12 @@ export default {
 
         // this.fetchVacancy.notes = response.data.notes;
         // this.fetchVacancy.site_shift_id = response.data.site_shift_id;
-        this.fetchVacancy.start_time = this.convertTimeFormat(response.data.start_time);
-        this.fetchVacancy.end_time = this.convertTimeFormat(response.data.end_time);
+        this.fetchVacancy.start_time = this.convertTimeFormat(
+          response.data.start_time
+        );
+        this.fetchVacancy.end_time = this.convertTimeFormat(
+          response.data.end_time
+        );
         // this.fetchVacancy.break = response.data.break;
         // if (response.data.staff_rate) {
         //   this.fetchVacancy.staff_rate = response.data.staff_rate.replace(/£/g, "");
@@ -730,7 +784,8 @@ export default {
           const selectedDate = new Date(date);
 
           return (
-            selectedDate < today || selectedDate.toDateString() === today.toDateString()
+            selectedDate < today ||
+            selectedDate.toDateString() === today.toDateString()
           );
         });
 
@@ -838,7 +893,9 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(`${VITE_API_URL}/site_shift/${siteId}`);
+        const response = await axios.get(
+          `${VITE_API_URL}/site_shift/${siteId}`
+        );
 
         this.shiftsTime =
           response.data.site_shift_data.map((shift) => ({

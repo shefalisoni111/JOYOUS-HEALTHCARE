@@ -5,12 +5,13 @@
       class="modal fade"
       id="ClientInvoiceTemplateView"
       aria-labelledby="candidatePage"
-      tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="ClientInvoiceTemplateView">Select a Template</h5>
+            <h5 class="modal-title" id="ClientInvoiceTemplateView">
+              Select a Template
+            </h5>
           </div>
           <div class="modal-body mx-3">
             <div class="row">
@@ -36,7 +37,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#ClientInvoiceTemplateView"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
@@ -71,9 +72,7 @@ export default {
   border-radius: 5px;
   background: #dbdbdb;
 }
-.modal-header {
-  border-bottom: 0px;
-}
+
 .modal-footer {
   border-top: 0px;
 }
@@ -148,7 +147,7 @@ label.form-label {
   left: 70%;
   transition: all 0.5s;
   font-size: 10px;
- font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .switch input:checked + .slider:after {
