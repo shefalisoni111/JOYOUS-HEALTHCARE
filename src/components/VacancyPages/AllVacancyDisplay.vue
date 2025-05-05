@@ -205,13 +205,16 @@
                 v-if="getdata.publish === 'true'"
                 :class="{
                   btn: true,
-                  'btn-success': getdata.publish === 'true',
                   bi: true,
-                  'bi-check-circle-fill': getdata.publish === 'true',
+                  'bi-check-lg': getdata.publish === 'true',
                   'bi-bell': getdata.publish !== 'true',
                   disabled: !getdata.activated,
-                  'bg-danger': !getdata.activated,
                 }"
+                :style="
+                  getdata.publish !== 'true'
+                    ? { backgroundColor: '#0d6efd', color: 'white' }
+                    : { backgroundColor: '#1bbe1b', color: 'white' }
+                "
                 @click="getdata.activated && openPublished(getdata.id)"
               ></i>
               <i
@@ -226,6 +229,11 @@
                   'btn-success': getdata.publish === 'true',
                   'bg-danger': !getdata.activated,
                 }"
+                :style="
+                  getdata.publish !== 'true'
+                    ? { backgroundColor: '#0d6efd', color: 'white' }
+                    : { backgroundColor: '#1bbe1b', color: 'white' }
+                "
               ></i>
             </td>
 
@@ -286,11 +294,26 @@
               </button>
             </td>
             <td>
-              {{
-                getdata.create_by_and_time
-                  ? getdata.create_by_and_time.split(" ")[0]
-                  : ""
-              }}
+              <span
+                class="p-2 border-2"
+                style="border-radius: 6px"
+                :style="{
+                  backgroundColor:
+                    getdata.create_by_and_time?.split(' ')[0] === 'Agencyy'
+                      ? '#ffd1d5'
+                      : '#dfecff',
+                  color:
+                    getdata.create_by_and_time?.split(' ')[0] === 'Agencyy'
+                      ? '#dc3545'
+                      : '#0d6efd',
+                }"
+              >
+                {{
+                  getdata.create_by_and_time
+                    ? getdata.create_by_and_time.split(" ")[0]
+                    : ""
+                }}
+              </span>
             </td>
 
             <td class="cursor-pointer">

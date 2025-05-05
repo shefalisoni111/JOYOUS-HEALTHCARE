@@ -206,13 +206,19 @@
                 data-bs-target="#publishVacancy"
                 data-bs-whatever="@mdo"
                 v-if="getdata.publish === 'true'"
-                class="btn btn-success bi bi-check-circle-fill"
                 :class="{
-                  'btn-success': getdata.publish === 'true',
-                  'bi-check-circle-fill': getdata.publish === 'true',
+                  btn: true,
+                  bi: true,
+                  'bi-check-lg': getdata.publish === 'true',
                   'bi-bell': getdata.publish !== 'true',
+                  disabled: !getdata.activated,
                 }"
-                @click="openPublished(getdata.id)"
+                :style="
+                  getdata.publish !== 'true'
+                    ? { backgroundColor: '#0d6efd', color: 'white' }
+                    : { backgroundColor: '#1bbe1b', color: 'white' }
+                "
+                @click="getdata.activated && openPublished(getdata.id)"
               ></i>
               <i
                 data-bs-toggle="modal"
@@ -221,6 +227,16 @@
                 @click="openPublished(getdata.id)"
                 v-else
                 class="btn btn-success bi bi-bell"
+                :class="{
+                  disabled: !getdata.activated,
+                  'btn-success': getdata.publish === 'true',
+                  'bg-danger': !getdata.activated,
+                }"
+                :style="
+                  getdata.publish !== 'true'
+                    ? { backgroundColor: '#0d6efd', color: 'white' }
+                    : { backgroundColor: '#1bbe1b', color: 'white' }
+                "
               ></i>
             </td>
 
@@ -289,11 +305,26 @@
               </button>
             </td>
             <td>
-              {{
-                getdata.create_by_and_time
-                  ? getdata.create_by_and_time.split(" ")[0]
-                  : ""
-              }}
+              <span
+                class="p-2 border-2"
+                style="border-radius: 6px"
+                :style="{
+                  backgroundColor:
+                    getdata.create_by_and_time?.split(' ')[0] === 'Agencyy'
+                      ? '#ffd1d5'
+                      : '#dfecff',
+                  color:
+                    getdata.create_by_and_time?.split(' ')[0] === 'Agencyy'
+                      ? '#dc3545'
+                      : '#0d6efd',
+                }"
+              >
+                {{
+                  getdata.create_by_and_time
+                    ? getdata.create_by_and_time.split(" ")[0]
+                    : ""
+                }}
+              </span>
             </td>
 
             <td class="cursor-pointer">

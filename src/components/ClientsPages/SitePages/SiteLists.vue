@@ -150,11 +150,13 @@
                 <div
                   class="d-flex gap-2 flex-column position-absolute"
                   style="
-                    transform: translate(150%, 21%);
+                    transform: translate(-120%, 19%);
                     background: rgb(255, 255, 255);
                     padding: 8px 13px 9px 13px;
                     border-radius: 10px;
                     box-shadow: 0px 4px 40px 0px #0000000d;
+                    width: 14%;
+                    z-index: 1;
                   "
                 >
                   <div></div>
@@ -426,6 +428,8 @@ export default {
       itemsPerPage: 10,
       totalCount: 0,
       errorMessage: "",
+      clientData: [],
+      businessUnit: [],
       tabs: [
         { name: "All Site", component: "AllSite", routeName: "AllSite" },
 
@@ -453,6 +457,18 @@ export default {
     },
     totalRecordsOnPage() {
       return this.paginateSearchResults.length;
+    },
+    selectSite() {
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
+      return site_id ? site_id.site_name : "";
+    },
+    selectSitesAddress() {
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
+      return site_id ? site_id.address : "";
     },
   },
 
@@ -712,7 +728,13 @@ ul.nav-pills {
   border-left: 1px solid #ded9d9;
   height: 100vh;
 }
-
+select {
+  padding: 10px;
+  border-radius: 4px;
+  border: 0px;
+  border: 1px solid rgb(202 198 198 / 0%);
+  background: #fff4f5;
+}
 .color-fonts {
   color: #ff5f30;
   font-weight: bold;

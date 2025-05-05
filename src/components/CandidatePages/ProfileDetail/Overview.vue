@@ -23,13 +23,13 @@
                 </router-link> -->
                 <button
                   type="button"
-                  class="btn btn-primary rounded-1 fw-medium mb-3"
+                  class="btn fw-medium mb-3 border-0 bg-transparent"
                   data-bs-toggle="modal"
                   data-bs-target="#editOverview"
                   data-bs-whatever="@mdo"
                   @click="handleOverViewEdit()"
                 >
-                  Edit
+                  <i class="bi bi-pencil-fill"></i>
                 </button>
               </div>
             </div>
@@ -39,7 +39,10 @@
                 <thead>
                   <tr class=""></tr>
                 </thead>
-                <tbody class="text-capitalize" v-if="getCandidatesDataInOverview">
+                <tbody
+                  class="text-capitalize"
+                  v-if="getCandidatesDataInOverview"
+                >
                   <tr>
                     <td>Staff ID</td>
                     <td>:</td>
@@ -137,13 +140,13 @@
 
                 <div>
                   <button
-                    class="btn btn-primary rounded-1 fw-medium mb-0"
+                    class="fw-medium mb-0 border-0 bg-transparent"
                     data-bs-toggle="modal"
                     data-bs-target="#editBankDetailsOverview"
                     data-bs-whatever="@mdo"
                     type="button"
                   >
-                    Edit
+                    <i class="bi bi-pencil-fill"></i>
                   </button>
                 </div>
                 <div class="d-flex align-items-center">
@@ -152,7 +155,7 @@
                     <input type="checkbox" id="togBtn" checked />
                     <div class="slider round"></div>
                   </label> -->
-                  <label class="switch">
+                  <label class="switch mt-2">
                     <input
                       type="checkbox"
                       id="togBtn"
@@ -208,17 +211,19 @@
                 </button>
                 <button type="button" class="btn btn-primary btn-sm">HCA</button> -->
                 <div class="gap-2 d-flex" v-for="jobId in getJobs" :key="jobId">
-                  <span class="btn btn-primary">{{ getJobName(jobId) }}</span>
+                  <i class="bi bi-person-circle"></i>
+                  <span class="btn">{{ getJobName(jobId) }}</span>
                   <!-- <span class="btn btn-primary">{{ jobId }}</span> -->
                 </div>
               </div>
               <div>
                 <button
                   type="button"
-                  class="btn btn-outline-success text-nowrap"
+                  class="btn text-nowrap"
                   data-bs-toggle="modal"
                   data-bs-target="#addStaffJobs"
                   data-bs-whatever="@mdo"
+                  style="background: #f9944b; color: #fff"
                 >
                   + Add
                 </button>
@@ -282,7 +287,7 @@
               <div class="d-flex justify-content-between">
                 <div class="d-flex align-items-center">
                   <div class="d-flex fs-smaller text-nowrap">Profile View</div>
-                  <label class="switch">
+                  <label class="switch mt-2">
                     <input type="checkbox" id="togBtn" checked />
                     <div class="slider round"></div>
                   </label>
@@ -323,10 +328,11 @@
 
                 <button
                   type="button"
-                  class="btn btn-primary text-nowrap text-nowrap mb-3"
+                  class="btn text-nowrap text-nowrap mb-3"
                   data-bs-toggle="modal"
                   data-bs-target="#addNextToKin"
                   data-bs-whatever="@mdo"
+                  style="background: #f9944b; color: #fff"
                 >
                   + Add
                 </button>
@@ -334,16 +340,80 @@
             </div>
             <div class="card-body">
               <table class="table">
-                <thead class="table-light">
+                <thead class="">
                   <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Phone</th>
-                    <th scope="col">Relation</th>
-                    <th scope="col">Address Line 1</th>
-                    <th scope="col">Address Line 2</th>
-                    <th scope="col">City</th>
-                    <th scope="col">Post Code</th>
-                    <th scope="col">Action</th>
+                    <th scope="col">
+                      Name
+                      <img
+                        src="../../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Phone
+                      <img
+                        src="../../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Relation
+                      <img
+                        src="../../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Address Line 1
+                      <img
+                        src="../../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Address Line 2
+                      <img
+                        src="../../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      City
+                      <img
+                        src="../../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Post Code
+                      <img
+                        src="../../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Action
+                      <img
+                        src="../../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
                   </tr>
                 </thead>
                 <tbody v-if="getNextToKin?.length > 0">
@@ -398,11 +468,12 @@
                   Work experience
                 </h5>
                 <button
-                  class="btn btn-primary rounded-1 text-capitalize fw-medium mb-3"
+                  class="btn rounded-1 text-capitalize fw-medium mb-3"
                   data-bs-toggle="modal"
                   data-bs-target="#addWorkExperience"
                   data-bs-whatever="@mdo"
                   type="button"
+                  style="background: #f9944b; color: #fff"
                 >
                   + Add
                 </button>
@@ -410,14 +481,62 @@
             </div>
             <div class="card-body">
               <table class="table">
-                <thead class="table-light">
+                <thead class="">
                   <tr>
-                    <th>ID</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Company Name</th>
-                    <th scope="col">Experience</th>
-                    <th scope="col">Position</th>
-                    <th scope="col">Description</th>
+                    <th>
+                      ID
+                      <img
+                        src="../../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Title
+                      <img
+                        src="../../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Company Name
+                      <img
+                        src="../../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Experience
+                      <img
+                        src="../../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Position
+                      <img
+                        src="../../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Description
+                      <img
+                        src="../../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
                   </tr>
                 </thead>
                 <tbody v-if="getWorkExpData?.length > 0">
@@ -455,11 +574,12 @@
                   Education
                 </h5>
                 <button
-                  class="btn btn-primary rounded-1 text-capitalize fw-medium mb-3"
+                  class="btn rounded-1 text-capitalize fw-medium mb-3"
                   data-bs-toggle="modal"
                   data-bs-target="#addEducation"
                   data-bs-whatever="@mdo"
                   type="button"
+                  style="background: #f9944b; color: #fff"
                 >
                   + Add
                 </button>
@@ -467,10 +587,26 @@
             </div>
             <div class="card-body">
               <table class="table">
-                <thead class="table-light">
+                <thead class="">
                   <tr>
-                    <th scope="col">Title</th>
-                    <th scope="col">Description</th>
+                    <th scope="col">
+                      Title
+                      <img
+                        src="../../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Description
+                      <img
+                        src="../../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
                   </tr>
                 </thead>
                 <tbody v-if="getEducationExpData?.length > 0">
@@ -495,7 +631,10 @@
     <WorkExperience @AddExperienceData="getCandidateWorkExperienceMethod" />
     <EducationAdd @AddEducation="getCandidateEducationMethod" />
     <AddNextKin @AddNextKin="getCandidateNextToKineMethod" />
-    <EditBankDetails @bankDetailAdded="getCandidateMethod" ref="editBankDetail" />
+    <EditBankDetails
+      @bankDetailAdded="getCandidateMethod"
+      ref="editBankDetail"
+    />
     <NextToKinEdit
       @nextToKinAdded="getCandidateNextToKineMethod"
       :nextKinID="selectedNextKinId"
@@ -583,7 +722,10 @@ export default {
       try {
         const formData = new FormData();
 
-        formData.append("bank_detail", this.bankDetailChecked ? "true" : "false");
+        formData.append(
+          "bank_detail",
+          this.bankDetailChecked ? "true" : "false"
+        );
         formData.append("candidate_id", this.$route.params.id);
         const response = await axios.put(
           `${VITE_API_URL}/update_bank_details_contact_information`,
@@ -605,7 +747,10 @@ export default {
         this.getCandidatesDataInOverview = response.data.candidate;
         this.getJobs = response.data.candidate.job_ids || [];
         this.bankDetailChecked = this.getCandidatesDataInOverview.bank_detail;
-        if (this.getCandidatesDataInOverview && this.getCandidatesDataInOverview.id) {
+        if (
+          this.getCandidatesDataInOverview &&
+          this.getCandidatesDataInOverview.id
+        ) {
           const candidateId = this.getCandidatesDataInOverview?.id;
         } else {
         }
@@ -689,7 +834,8 @@ export default {
       const token = localStorage.getItem("token");
       await axios
         .delete(
-          `${VITE_API_URL}/candidates/${this.$route.params.id}/next_of_kins/` + id,
+          `${VITE_API_URL}/candidates/${this.$route.params.id}/next_of_kins/` +
+            id,
           {
             headers: {
               "content-type": "application/json",
@@ -793,95 +939,12 @@ table th {
   padding: 12px;
   border-radius: 4px;
 }
-.card .round {
-  background: #ff572266;
-  border-radius: 50%;
-  padding: 10px 7px;
-  margin-right: 8px;
-}
 
-.card .hround {
-  background: #ff572266;
-  border-radius: 50%;
-  padding: 10px 11px;
-  margin-right: 8px;
-}
-.card .dround {
-  background: #ff572266;
-  border-radius: 50%;
-  padding: 12px 17px;
-  margin-right: 8px;
-}
-.switch {
-  width: 50px;
-  height: 17px;
-  position: relative;
-  display: inline-block;
-}
-
-.switch input {
-  display: none;
-}
 .form-check-input {
   border: 2px solid grey;
 }
 .btn-primary {
   border: none;
-}
-.switch .slider {
-  position: absolute;
-  top: -3;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  cursor: pointer;
-  background-color: #e7ecf1;
-  border-radius: 30px !important;
-  border: 0;
-  padding: 0;
-  display: block;
-  margin: 3px 10px;
-  min-height: 11px;
-}
-
-.switch .slider:before {
-  position: absolute;
-  background-color: #aaa;
-  height: 15px;
-  width: 15px;
-  content: "";
-  left: 0px;
-  bottom: -2px;
-  border-radius: 50%;
-  transition: ease-in-out 0.5s;
-}
-
-.switch .slider:after {
-  content: "";
-  color: white;
-  display: block;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 70%;
-  transition: all 0.5s;
-  font-size: 10px;
-  font-family: "Inter", sans-serif;
-}
-
-.switch input:checked + .slider:after {
-  transition: all 0.5s;
-  left: 30%;
-  content: "";
-}
-
-.switch input:checked + .slider {
-  background-color: #d3d6d9;
-}
-
-.switch input:checked + .slider:before {
-  transform: translateX(15px);
-  background-color: #ff9800;
 }
 
 .nav-pills .nav-link.active,

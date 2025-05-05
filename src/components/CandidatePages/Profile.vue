@@ -1,42 +1,41 @@
 <template>
   <div>
-    <div id="main">
-      <div class="container-fluid p-0 mt-3">
-        <div class="main">
-          <div class="pagetitle d-flex justify-content-between p-2">
-            <div class="">
-              <ol class="breadcrumb mb-1">
-                <li class="breadcrumb-item active text-uppercase fs-6">
+    <div id="main" class="main">
+      <div class="row p-5">
+        <div class="pagetitle d-flex justify-content-between">
+          <div class="">
+            <ol class="breadcrumb mb-1">
+              <li class="breadcrumb-item active">
+                <a
+                  class="nav-link d-inline fs-4 fw-bolder"
+                  style="color: #000000"
+                  >All Staff</a
+                >
+                <p>
                   <router-link
-                    class="nav-link d-inline"
+                    class="nav-link d-inline fw-bolder"
+                    style="color: #000000"
                     aria-current="page"
-                    to="/home"
-                    >Dashboard</router-link
+                    to="/staff-list"
+                    >All Staff</router-link
                   >
-                  /
-                  <router-link
-                    class="text-capitalize text-decoration-underline"
-                    style="color: #595b5b"
-                    :to="{
-                      name: 'AllCandidateListsDisplay',
-                    }"
-                    >STAFF</router-link
-                  >
-                  /
-                  <span class="color-fonts"
-                    >{{ getCandidates.first_name }}&nbsp;{{
-                      getCandidates.last_name
-                    }}</span
-                  >
-                </li>
-              </ol>
-            </div>
+                  / Staff Availability
+                </p>
+              </li>
+            </ol>
           </div>
         </div>
-      </div>
-      <div class="">
-        <div>
-          <div class="row">
+
+        <div class="row mb-3 ps-3">
+          <router-link
+            class="nav-link d-inline text-muted"
+            style="color: #000000"
+            aria-current="page"
+            to="/staff-list"
+            ><i class="bi bi-arrow-left"></i> Back to list</router-link
+          >
+        </div>
+        <!-- <div class="row">
             <div class="col-12 borderbottom pb-3 pt-1">
               <div class="float-start">
                 <button
@@ -59,120 +58,163 @@
                 </button>
               </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-3">
-              <div class="card profile position-relative">
-                <h6
-                  class="position-absolute p-2 z-1 text-white text-capitalize tag"
-                  style="background: #68a325; margin-left: -7px"
+          </div> -->
+        <div class="row mb-3">
+          <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li
+              class="nav-item d-lg-inline-flex gap-2 d-in"
+              role="presentation"
+            >
+              <button
+                class="btn-css"
+                :to="`/${tab.routeName}`"
+                aria-selected="true"
+                type="button"
+                role="tab"
+                data-bs-toggle="pill"
+                v-for="(tab, index) in tabs"
+                :key="index"
+                @click="selectTab(index)"
+              >
+                <router-link
+                  class="nav-link"
+                  :class="{ active: activeTab === index }"
+                  :to="getTabLink(tab)"
                 >
-                  {{
-                    getCandidates.status === "approved"
-                      ? "Active"
-                      : getCandidates.status
-                  }}
-                </h6>
-                <img
-                  v-if="getCandidates && getCandidates.profile_photo"
-                  :src="completeImageUrl"
-                  class="card-img-top position-relative"
-                  height="400px"
-                  alt="profile"
-                  loading="eager"
-                  :style="{ visibility: isImageLoaded ? 'visible' : 'hidden' }"
-                  @load="onImageLoad"
-                />
-                <img
-                  v-else
-                  src="./userprofile.png"
-                  class="card-img-top position-relative"
-                  style="border: 1px solid #8080801a"
-                  height="400px"
-                  alt="Default profile"
-                  loading="eager"
-                  :style="{ visibility: isImageLoaded ? 'visible' : 'hidden' }"
-                  @load="onImageLoad"
-                />
+                  <!-- <span class="badge bg-success">{{
+                      index === 5 ? getCandidates.candidate_notes_count : ""
+                    }}</span> -->
+                  <span class="badge bg-success"></span>
+                  {{ tab.name }}</router-link
+                >
+              </button>
+            </li>
+          </ul>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="card profile position-relative">
+              <h6
+                class="position-absolute p-2 z-1 text-white text-capitalize tag"
+                style="background: #68a325; margin-left: -7px"
+              >
+                {{
+                  getCandidates.status === "approved"
+                    ? "Active"
+                    : getCandidates.status
+                }}
+              </h6>
+              <img
+                v-if="getCandidates && getCandidates.profile_photo"
+                :src="completeImageUrl"
+                class="card-img-top position-relative"
+                height="400px"
+                alt="profile"
+                loading="eager"
+                :style="{ visibility: isImageLoaded ? 'visible' : 'hidden' }"
+                @load="onImageLoad"
+              />
+              <img
+                v-else
+                src="./userprofile.png"
+                class="card-img-top position-relative"
+                style="border: 1px solid #8080801a"
+                height="400px"
+                alt="Default profile"
+                loading="eager"
+                :style="{ visibility: isImageLoaded ? 'visible' : 'hidden' }"
+                @load="onImageLoad"
+              />
 
-                <!-- <div class="ribbon"><span>Active</span></div> -->
+              <!-- <div class="ribbon"><span>Active</span></div> -->
 
-                <div class="card-body">
-                  <div
-                    class="mt-3 d-flex justify-content-between align-items-center"
-                  >
-                    <div>
+              <div class="card-body">
+                <div
+                  class="mt-3 d-flex justify-content-between align-items-center"
+                >
+                  <div class="col-12 mt-4">
+                    <div class="d-flex justify-content-between">
                       <h6
-                        class="card-title text-nowrap fw-bold text-capitalize"
+                        class="card-title text-nowrap fw-bold text-capitalize mb-0 my-2"
                       >
                         {{ getCandidates.first_name }}&nbsp;{{
                           getCandidates.last_name
                         }}
                       </h6>
-                      <span class="text-lowercase">
-                        {{ getCandidates.email }}</span
-                      >
+                      <div class="">
+                        <button
+                          type="button"
+                          class="btn text-nowrap"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editContactProfile"
+                          data-bs-whatever="@mdo"
+                          @click="editCandidate(getCandidates.id)"
+                        >
+                          <i class="bi bi-pencil-fill"></i>
+                        </button>
+                      </div>
                     </div>
 
-                    <div>
-                      <!-- <button type="button" class="btn btn-outline-primary">
+                    <span class="text-lowercase">
+                      <i
+                        class="bi bi-envelope-fill"
+                        style="color: rgb(249 148 75)"
+                      ></i>
+                      &nbsp; {{ getCandidates.email }}</span
+                    >
+                    &nbsp; |&nbsp;
+
+                    <span
+                      ><i
+                        class="bi bi-telephone-fill"
+                        style="color: rgb(249 148 75)"
+                      ></i>
+                      &nbsp; {{ getCandidates.phone_number }}</span
+                    >
+                  </div>
+
+                  <div>
+                    <!-- <button type="button" class="btn btn-outline-primary">
                           Edit
                         </button> -->
-                    </div>
                   </div>
-                  <hr />
-                  <div class="mt-3">
-                    <div class="d-flex justify-content-between">
-                      <div>
-                        <h6
-                          class="card-title text-uppercase fs-smaller text-nowrap"
-                        >
-                          contact information
-                        </h6>
-                      </div>
+                </div>
 
-                      <div class="d-flex justify-content-between">
-                        <h6 class="fs-smaller text-nowrap">Profile View</h6>
-                        <!-- <label class="switch">
+                <div class="mt-3">
+                  <div class="d-flex justify-content-between">
+                    <!-- <div>
+                      <h6
+                        class="card-title text-uppercase fs-smaller text-nowrap"
+                      >
+                        contact information
+                      </h6>
+                    </div> -->
+
+                    <div class="d-flex justify-content-between mt-2">
+                      <h6 class="fs-smaller text-nowrap fw-bold">
+                        Profile View
+                      </h6>
+                      <!-- <label class="switch">
                           <input type="checkbox" id="togBtn" title="check" checked />
                           <div class="slider round"></div>
                         </label> -->
-                        <label class="switch">
-                          <input
-                            type="checkbox"
-                            id="togBtn"
-                            v-model="contactDetailChecked"
-                            @change="updateProfileView"
-                          />
-                          <div class="slider round"></div>
-                        </label>
-                      </div>
-                    </div>
-
-                    <div class="d-flex justify-content-between mt-3">
-                      <div class="d-flex align-items-center">
-                        <span
-                          ><i class="bi bi-telephone"></i>
-                          {{ getCandidates.phone_number }}</span
-                        >
-                      </div>
-                      <button
-                        type="button"
-                        class="btn btn-primary text-nowrap text-nowrap"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editContactProfile"
-                        data-bs-whatever="@mdo"
-                        @click="editCandidate(getCandidates.id)"
-                      >
-                        Edit
-                      </button>
+                      <label class="switch mt-1">
+                        <input
+                          type="checkbox"
+                          id="togBtn"
+                          v-model="contactDetailChecked"
+                          @change="updateProfileView"
+                        />
+                        <div class="slider round"></div>
+                      </label>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-md-9 bg-white">
-              <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+          </div>
+          <div class="col-12 bg-white">
+            <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li
                   class="nav-item d-lg-inline-flex gap-2 d-in"
                   role="presentation"
@@ -193,29 +235,26 @@
                       :class="{ active: activeTab === index }"
                       :to="getTabLink(tab)"
                     >
-                      <!-- <span class="badge bg-success">{{
-                        index === 5 ? getCandidates.candidate_notes_count : ""
-                      }}</span> -->
+                      
                       <span class="badge bg-success"></span>
                       {{ tab.name }}</router-link
                     >
                   </button>
                 </li>
-              </ul>
-              <div class="tab-content">
-                <component :is="activeComponent"></component>
-              </div>
+              </ul> -->
+            <div class="tab-content">
+              <component :is="activeComponent"></component>
             </div>
           </div>
         </div>
+
+        <EditProfileContact
+          :candidateId="selectedCandidateId || 0"
+          @contactAdded="getCandidate"
+        />
+
+        <!-- <ProfileTabs @getContactDetail="getCandidate" /> -->
       </div>
-
-      <EditProfileContact
-        :candidateId="selectedCandidateId || 0"
-        @contactAdded="getCandidate"
-      />
-
-      <!-- <ProfileTabs @getContactDetail="getCandidate" /> -->
     </div>
   </div>
 </template>
@@ -496,7 +535,7 @@ ul li a {
 }
 #main {
   transition: all 0.3s;
-  padding: 10px;
+
   transition: all 0.3s;
 }
 .bg-white {
@@ -522,98 +561,10 @@ table th {
   padding: 12px;
   border-radius: 4px;
 }
-.card .round {
-  background: #ff572266;
-  border-radius: 50%;
-  padding: 10px 7px;
-  margin-right: 8px;
-}
 
-.card .hround {
-  background: #ff572266;
-  border-radius: 50%;
-  padding: 10px 11px;
-  margin-right: 8px;
-}
-.card .dround {
-  background: #ff572266;
-  border-radius: 50%;
-  padding: 12px 17px;
-  margin-right: 8px;
-}
-.switch {
-  width: 50px;
-  height: 17px;
-  position: relative;
-  display: inline-block;
-}
 .color-fonts {
   color: #ff5f30;
   font-weight: bold;
-}
-.switch input {
-  display: none;
-}
-.form-check-input {
-  border: 2px solid grey;
-}
-.btn-primary {
-  border: none;
-}
-.switch .slider {
-  position: absolute;
-  top: -3;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  cursor: pointer;
-  background-color: #e7ecf1;
-  border-radius: 30px !important;
-  border: 0;
-  padding: 0;
-  display: block;
-  margin: 3px 10px;
-  min-height: 11px;
-}
-
-.switch .slider:before {
-  position: absolute;
-  background-color: #aaa;
-  height: 15px;
-  width: 15px;
-  content: "";
-  left: 0px;
-  bottom: -2px;
-  border-radius: 50%;
-  transition: ease-in-out 0.5s;
-}
-
-.switch .slider:after {
-  content: "";
-  color: white;
-  display: block;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 70%;
-  transition: all 0.5s;
-  font-size: 10px;
-  font-family: "Inter", sans-serif;
-}
-
-.switch input:checked + .slider:after {
-  transition: all 0.5s;
-  left: 30%;
-  content: "";
-}
-
-.switch input:checked + .slider {
-  background-color: #d3d6d9;
-}
-
-.switch input:checked + .slider:before {
-  transform: translateX(15px);
-  background-color: #ff9800;
 }
 
 .nav-pills .nav-link.active,
@@ -625,7 +576,7 @@ table th {
   background-color: transparent;
 }
 .nav-pills .nav-link {
-  color: grey;
+  color: #000;
 }
 ul.nav-pills {
   border-bottom: 1px solid grey;
@@ -638,7 +589,9 @@ ul.nav-pills {
 .accordion-item {
   margin-bottom: 8px;
 }
-
+.form-check-input {
+  border: 2px solid grey;
+}
 .accordion-header {
   padding: 8px;
   cursor: pointer;
