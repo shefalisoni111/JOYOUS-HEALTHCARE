@@ -2,7 +2,16 @@
   <div>
     <!-- <Navbar /> -->
     <div id="main" class="d-flex">
-      <div class=""><Navbar /></div>
+      <div
+        class=""
+        style="
+          background: #fff;
+
+          border-radius: 20px;
+        "
+      >
+        <Navbar />
+      </div>
       <div class="container-fluid ps-5 pt-5 pb-5">
         <div class="row pagetitle d-flex justify-content-between px-2">
           <div class="col-12">
@@ -10,7 +19,9 @@
               <div class="py-3">
                 <ol class="breadcrumb mb-1">
                   <li class="breadcrumb-item active">
-                    <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                    <a
+                      class="nav-link d-inline fs-4 fw-bolder"
+                      style="color: #000000"
                       >All Clients</a
                     >
                     <p>
@@ -84,7 +95,10 @@
                         >
                           Export
 
-                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <ul
+                            class="dropdown-menu"
+                            aria-labelledby="navbarDropdown"
+                          >
                             <li>
                               <a
                                 class="dropdown-item"
@@ -177,7 +191,11 @@
                             {{ option.site_name }}
                           </option>
                         </select>
-                        <select v-model="job_id" id="selectOption" @change="filterData">
+                        <select
+                          v-model="job_id"
+                          id="selectOption"
+                          @change="filterData"
+                        >
                           <option value="" disabled>All Position</option>
                           <option
                             v-for="option in options"
@@ -203,7 +221,10 @@
                           @click="resetFilter"
                           class="btn btn-secondary"
                           :disabled="
-                            !client_id && !site_id && !job_id && !localSearchQuery
+                            !client_id &&
+                            !site_id &&
+                            !job_id &&
+                            !localSearchQuery
                           "
                         >
                           Reset Filters
@@ -359,7 +380,9 @@
                           v-for="(data, index) in uniquePaginateCandidates"
                           :key="data.id + '-' + index"
                         >
-                          <tr :class="{ 'table-active': activeSiteId === index }">
+                          <tr
+                            :class="{ 'table-active': activeSiteId === index }"
+                          >
                             <td>
                               <div class="form-check">
                                 <input
@@ -601,7 +624,9 @@
                                   padding: 3px;
                                   border-radius: 4px;
                                 "
-                                >{{ rate.day === "all_day" ? "weekly" : rate.day }}</span
+                                >{{
+                                  rate.day === "all_day" ? "weekly" : rate.day
+                                }}</span
                               >
                             </td>
                             <td>
@@ -1091,14 +1116,16 @@ export default {
       return uniqueEntries.slice(startIndex, endIndex);
     },
     paginateCandidates() {
-      if (!this.getRateRulesData || this.getRateRulesData.length === 0) return [];
+      if (!this.getRateRulesData || this.getRateRulesData.length === 0)
+        return [];
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.getRateRulesData.slice(startIndex, endIndex);
     },
 
     totalRecordsOnPage() {
-      if (!this.getRateRulesData || this.getRateRulesData.length === 0) return 1;
+      if (!this.getRateRulesData || this.getRateRulesData.length === 0)
+        return 1;
       return Math.ceil(this.getRateRulesData.length / this.itemsPerPage);
     },
     groupedRateRulesData() {
@@ -1125,7 +1152,9 @@ export default {
       return Object.values(groupedData);
     },
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
     selectedOptionText() {
@@ -1133,13 +1162,17 @@ export default {
       return job_id ? job_id.name : "";
     },
     selectClients() {
-      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      const client_id = this.clientData.find(
+        (option) => option.id === this.client_id
+      );
       return client_id ? client_id.first_name : "";
     },
   },
   methods: {
     getFilteredData(siteId) {
-      return this.filteredRateRulesData.find((rate) => rate.site_id === siteId) || {};
+      return (
+        this.filteredRateRulesData.find((rate) => rate.site_id === siteId) || {}
+      );
     },
     AddRateRules() {
       this.$refs.add_rate_rules.getTimeShift();
@@ -1172,9 +1205,12 @@ export default {
       }
 
       try {
-        const response = await axios.get(`${VITE_API_URL}/rate_and_rule_filter`, {
-          params,
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/rate_and_rule_filter`,
+          {
+            params,
+          }
+        );
         this.getRateRulesData = response.data.data || [];
         if (this.getRateRulesData.length === 0) {
           this.errorMessageFilter = "Report Not Found!";
@@ -1409,7 +1445,9 @@ export default {
     },
 
     handleCheckboxChange(dataId) {
-      const selectedData = this.getRateRulesData.find((data) => data.id === dataId);
+      const selectedData = this.getRateRulesData.find(
+        (data) => data.id === dataId
+      );
 
       if (!selectedData) {
         return;
@@ -1418,7 +1456,11 @@ export default {
       const { job_id, job, client_id } = selectedData;
 
       this.getRateRulesData.forEach((data) => {
-        if (data.job_id === job_id && data.job === job && data.client_id === client_id) {
+        if (
+          data.job_id === job_id &&
+          data.job === job &&
+          data.client_id === client_id
+        ) {
           this.checkedClient[data.id] = this.checkedClient[dataId];
 
           if (this.checkedClient[dataId]) {
@@ -1467,11 +1509,14 @@ export default {
       const token = localStorage.getItem("token");
 
       try {
-        const response = await axios.delete(`${VITE_API_URL}/rate_and_rules/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.delete(
+          `${VITE_API_URL}/rate_and_rules/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
       } catch (error) {
       } finally {
       }
@@ -1572,7 +1617,8 @@ export default {
       // this.activeSiteId = this.activeSiteId === index ? null : index;
 
       this.filteredRateRulesData = this.getRateRulesData.filter(
-        (rate) => rate.site_id === siteId && rate.client === client && rate.job === job
+        (rate) =>
+          rate.site_id === siteId && rate.client === client && rate.job === job
       );
     },
     formatTime(time) {

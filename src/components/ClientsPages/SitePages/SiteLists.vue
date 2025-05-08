@@ -1,7 +1,16 @@
 <template>
   <div>
     <div id="main" class="main d-flex">
-      <div class=""><Navbar /></div>
+      <div
+        class=""
+        style="
+          background: #fff;
+
+          border-radius: 20px;
+        "
+      >
+        <Navbar />
+      </div>
       <div class="container-fluid ps-5 pt-5 pb-5">
         <div class="row">
           <div class="d-flex justify-content-between px-2">

@@ -3,9 +3,18 @@
     <!-- <Navbar /> -->
     <div class="">
       <div id="main" class="main d-flex">
-        <div class=""><Navbar /></div>
-        <div class="p-3">
-          <div class="pagetitle d-flex justify-content-between px-2">
+        <div
+          class=""
+          style="
+            background: #fff;
+
+            border-radius: 20px;
+          "
+        >
+          <Navbar />
+        </div>
+        <div class="p-3 container-fluid">
+          <div class="row pagetitle d-flex justify-content-between px-2">
             <div class="py-3">
               <!-- <ol class="breadcrumb mb-1">
                 <li class="breadcrumb-item active text-uppercase fs-6">
@@ -17,7 +26,9 @@
               </ol> -->
               <ol class="breadcrumb mb-1">
                 <li class="breadcrumb-item active">
-                  <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                  <a
+                    class="nav-link d-inline fs-4 fw-bolder"
+                    style="color: #000000"
                     >Timesheet</a
                   >
                   <p>
@@ -38,7 +49,9 @@
             <div class="full-page-calendar pt-1 pb-0">
               <div class="d-flex justify-content-between mb-3">
                 <div class="calendar-header align-items-center">
-                  <div class="d-flex align-items-center justify-content-between">
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                  >
                     <i
                       class="bi bi-caret-left-fill"
                       @click="moveToPrevious"
@@ -72,7 +85,10 @@
                   Show Filters
                 </button>
               </div>
-              <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
+              <div
+                class="d-flex gap-2 mb-3 justify-content-between"
+                v-if="showFilters"
+              >
                 <div class="d-flex gap-2">
                   <div></div>
 
@@ -123,11 +139,15 @@
                     <div class="row g-0">
                       <div class="d-flex">
                         <div class="d-flex align-items-center">
-                          <i class="bi bi-check-circle-fill text-success fs-1"></i>
+                          <i
+                            class="bi bi-check-circle-fill text-success fs-1"
+                          ></i>
                         </div>
                         <div class="">
                           <div class="card-body">
-                            <h5 class="card-title fw-bold">#Approved Timesheets</h5>
+                            <h5 class="card-title fw-bold">
+                              #Approved Timesheets
+                            </h5>
                             <!-- <p class="card-text fw-bold">
                               <span class="text-success">Hours</span> 24.00
                               <span class="text-info">Amount</span> £324.00
@@ -143,11 +163,15 @@
                     <div class="row g-0">
                       <div class="d-flex">
                         <div class="d-flex align-items-center">
-                          <i class="bi bi-file-spreadsheet text-success fs-1"></i>
+                          <i
+                            class="bi bi-file-spreadsheet text-success fs-1"
+                          ></i>
                         </div>
                         <div class="">
                           <div class="card-body">
-                            <h5 class="card-title fw-bold">#Invoiced Timesheets</h5>
+                            <h5 class="card-title fw-bold">
+                              #Invoiced Timesheets
+                            </h5>
                             <!-- <p class="card-text fw-bold">
                               <span class="text-success">Hours</span> 0.00
                               <span class="text-info">Amount</span> £0.00
@@ -169,7 +193,9 @@
                         </div>
                         <div class="">
                           <div class="card-body">
-                            <h5 class="card-title fw-bold">#Pending Timesheets</h5>
+                            <h5 class="card-title fw-bold">
+                              #Pending Timesheets
+                            </h5>
                             <!-- <p class="card-text fw-bold">
                               <span class="text-success">Hours</span> 11.50
                               <span class="text-info">Amount</span> £126.50
@@ -212,7 +238,9 @@
                     <h3 class="d-flex align-items-center mb-0">
                       Edit Assigned Shift -BOOKING CODE
                     </h3>
-                    <span class="close text-white" @click="closeModal">&times;</span>
+                    <span class="close text-white" @click="closeModal"
+                      >&times;</span
+                    >
                   </div>
 
                   <h4 class="text-capitalize">{{ getCandidateName() }}</h4>
@@ -263,7 +291,11 @@
                     </th>
                     <th>
                       <div class="calendar-grid">
-                        <div v-for="day in daysOfWeek" :key="day" class="day-header">
+                        <div
+                          v-for="day in daysOfWeek"
+                          :key="day"
+                          class="day-header"
+                        >
                           {{ day }}
                         </div>
                         <div
@@ -309,7 +341,10 @@
                               >
                                 End
                               </th>
-                              <th class="additional-header" style="padding-left: 5px">
+                              <th
+                                class="additional-header"
+                                style="padding-left: 5px"
+                              >
                                 Total
                               </th>
                             </tr>
@@ -348,7 +383,9 @@
                   </tr>
                 </thead>
 
-                <tbody v-if="paginateCandidates && paginateCandidates?.length > 0">
+                <tbody
+                  v-if="paginateCandidates && paginateCandidates?.length > 0"
+                >
                   <!-- <tr v-if="errorMessageFilter">
                     <td colspan="9" class="text-danger text-center">
                       {{ errorMessageFilter || "Data not Found!" }}
@@ -359,11 +396,15 @@
                     <td>{{ data.id }}</td>
                     <td class="text-capitalize fw-bold">
                       {{
-                        data.candidate_name ? data.candidate_name + " " : data.name + " "
+                        data.candidate_name
+                          ? data.candidate_name + " "
+                          : data.name + " "
                       }}
                       <span class="fs-6 text-muted fw-100">
                         <br />
-                        <span style="background: rgb(209, 207, 207); padding: 3px">
+                        <span
+                          style="background: rgb(209, 207, 207); padding: 3px"
+                        >
                           {{ data.job ? data.job : "Null" }}
                         </span>
                       </span>
@@ -381,7 +422,8 @@
                             mergedTimesheetsArray &&
                             (data.date
                               ? formatDate(day) === formatDateFormate(data.date)
-                              : formatDate(day) === formatDateFormate(data.shift_date))
+                              : formatDate(day) ===
+                                formatDateFormate(data.shift_date))
                               ? 'modal'
                               : ''
                           "
@@ -389,22 +431,27 @@
                             mergedTimesheetsArray &&
                             (data.date
                               ? formatDate(day) === formatDateFormate(data.date)
-                              : formatDate(day) === formatDateFormate(data.shift_date))
+                              : formatDate(day) ===
+                                formatDateFormate(data.shift_date))
                               ? '#editWeeklyTs'
                               : ''
                           "
-                          :data-bs-whatever="mergedTimesheetsArray ? '@mdo' : ''"
+                          :data-bs-whatever="
+                            mergedTimesheetsArray ? '@mdo' : ''
+                          "
                           @click="
                             mergedTimesheetsArray &&
                             (data.date
                               ? formatDate(day) === formatDateFormate(data.date)
-                              : formatDate(day) === formatDateFormate(data.shift_date))
+                              : formatDate(day) ===
+                                formatDateFormate(data.shift_date))
                               ? openModal(data, formatDate(day))
                               : null
                           "
                           :class="{
                             'calendar-day': true,
-                            clickable: day !== '' && mergedTimesheetsArray !== null,
+                            clickable:
+                              day !== '' && mergedTimesheetsArray !== null,
                             'disabled-edit': mergedTimesheetsArray === null,
                           }"
                           class="d-flex justify-content-between gap-2"
@@ -412,8 +459,10 @@
                           <div
                             v-if="
                               data.date
-                                ? formatDate(day) === formatDateFormate(data.date)
-                                : formatDate(day) === formatDateFormate(data.shift_date)
+                                ? formatDate(day) ===
+                                  formatDateFormate(data.date)
+                                : formatDate(day) ===
+                                  formatDateFormate(data.shift_date)
                             "
                             class="d-flex flex-column gap-2"
                           >
@@ -541,7 +590,9 @@
                             <span
                               class="text-center"
                               :class="
-                                data.status === 'Approved' ? 'btn-success' : 'btn-danger'
+                                data.status === 'Approved'
+                                  ? 'btn-success'
+                                  : 'btn-danger'
                               "
                             >
                               {{ data.status }}
@@ -562,7 +613,11 @@
                       {{ data.display_hours ? data.display_hours : "0.00" }}
                     </td>
                     <td>
-                      {{ "£" + data.total_week_cost ? data.total_week_cost : "0.00" }}
+                      {{
+                        "£" + data.total_week_cost
+                          ? data.total_week_cost
+                          : "0.00"
+                      }}
                     </td>
                     <td>{{ data.approved_by ? data.approved_by : "Null" }}</td>
                   </tr>
@@ -581,7 +636,11 @@
                     </td>
                   </tr>
                   <tr v-else>
-                    <td colspan="9" v-if="!isLoading" class="text-danger text-center">
+                    <td
+                      colspan="9"
+                      v-if="!isLoading"
+                      class="text-danger text-center"
+                    >
                       {{ errorMessage }}
                     </td>
                   </tr>
@@ -771,7 +830,9 @@ export default {
       return this.formatDate(this.selectedDateRow[0]);
     },
     formattedEndDate() {
-      return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
+      return this.formatDate(
+        this.selectedDateRow[this.selectedDateRow.length - 1]
+      );
     },
     selectedDateRow() {
       const selectedDate = new Date(this.startDate);
@@ -802,7 +863,9 @@ export default {
       return selectedDateRow;
     },
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
 
@@ -811,7 +874,9 @@ export default {
     //   return id ? id.first_name : "";
     // },
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.name : "";
     },
 
@@ -891,7 +956,9 @@ export default {
     updateDateRange() {
       if (this.currentView === "weekly") {
         const weekStart = new Date(this.startDate);
-        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
+        weekStart.setDate(
+          this.startDate.getDate() - this.startDate.getDay() + 1
+        );
         this.startDate = weekStart;
 
         const weekEnd = new Date(this.startDate);
@@ -899,8 +966,16 @@ export default {
         this.endDate = weekEnd;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        this.startDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+        this.endDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        );
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());
@@ -1036,7 +1111,10 @@ export default {
           candidate_id: candidateId,
         };
 
-        const response = await axios.post(`${VITE_API_URL}/assign_vacancy`, payload);
+        const response = await axios.post(
+          `${VITE_API_URL}/assign_vacancy`,
+          payload
+        );
       } catch (error) {
       } finally {
         this.vacancyBeingDragged = null;
@@ -1052,7 +1130,9 @@ export default {
       return selectedDate.toISOString().split("T")[0];
     },
     getCandidateName() {
-      return this.selectedCandidate ? this.selectedCandidate.full_name : "Default Name";
+      return this.selectedCandidate
+        ? this.selectedCandidate.full_name
+        : "Default Name";
     },
 
     openModal(candidateId, day) {
@@ -1121,7 +1201,8 @@ export default {
         this.weeklyTimesheets = response.data.weekly_timesheets || [];
 
         if (!this.weeklyTimesheets.length) {
-          this.errorMessageFilter = "No Weekly timesheets found for the specified week.";
+          this.errorMessageFilter =
+            "No Weekly timesheets found for the specified week.";
         } else {
           this.errorMessageFilter = "";
         }
@@ -1174,7 +1255,8 @@ export default {
 
         this.mergedTimesheetsArray = mergedTimesheetsArray;
       } catch (error) {
-        this.errorMessageFilter = "No Weekly timesheets found for the specified week.";
+        this.errorMessageFilter =
+          "No Weekly timesheets found for the specified week.";
       }
     },
     resetFilter() {

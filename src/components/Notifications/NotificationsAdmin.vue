@@ -1,12 +1,19 @@
 <template>
   <div>
-    <div class="container-fluid p-0">
+    <div class="">
       <div id="main" class="d-flex" style="background: #f8f8ff">
-        <div>
+        <div
+          class=""
+          style="
+            background: #fff;
+
+            border-radius: 20px;
+          "
+        >
           <Navbar />
         </div>
 
-        <div class="pt-3 px-5 flex-grow-1 overflow-auto">
+        <div class="container-fluid pt-3 px-5 flex-grow-1 overflow-auto">
           <div class="row">
             <div class="p-0">
               <div class="py-3">
@@ -54,7 +61,7 @@
                     v-if="unread_count >= 0"
                     class="badge rounded-circle bg-danger text-white unread-badge"
                   >
-                    {{ unread_count }}{{ console.log(unread_count) }}
+                    {{ unread_count }}
                   </span>
                 </button>
               </li>
@@ -85,13 +92,19 @@
                           text-align: center;
                         "
                       >
-                        <img src="../../assets/bell.png" alt="icon" class="marker-icon" />
+                        <img
+                          src="../../assets/bell.png"
+                          alt="icon"
+                          class="marker-icon"
+                        />
                       </span>
 
                       <div class="notification-content">
                         <h5>{{ notification.title }}</h5>
                         <p>{{ notification.message }}</p>
-                        <p class="text-sm text-gray-500">{{ notification.time }}</p>
+                        <p class="text-sm text-gray-500">
+                          {{ notification.time }}
+                        </p>
                       </div>
                     </li>
                   </ul>
@@ -112,7 +125,11 @@
                     :key="notification.id"
                     class="notification-item"
                   >
-                    <img src="../../assets/bell.png" alt="icon" class="marker-icon" />
+                    <img
+                      src="../../assets/bell.png"
+                      alt="icon"
+                      class="marker-icon"
+                    />
                     <div class="notification-content">
                       <h4>{{ notification.title }}</h4>
                       <p>{{ notification.message }}</p>
@@ -219,6 +236,13 @@ export default {
     },
   },
   methods: {
+    formatDate(date) {
+      const d = new Date(date);
+      const day = String(d.getDate()).padStart(2, "0");
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const year = d.getFullYear();
+      return `${day}/${month}/${year}`;
+    },
     async loadMore() {
       this.currentPage++;
       await this.fetchNotifications();
@@ -266,17 +290,20 @@ export default {
       this.isLoading = true;
 
       try {
-        const response = await axios.get(`${VITE_API_URL}/agency_notifications`, {
-          params: {
-            page: this.currentPage,
-            per_page: this.itemsPerPage,
-          },
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/agency_notifications`,
+          {
+            params: {
+              page: this.currentPage,
+              per_page: this.itemsPerPage,
+            },
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (response.status === 200) {
           // this.notifications = response.data.notifications || [];
@@ -320,6 +347,9 @@ export default {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   background-color: #f9944b;
+  color: #fff;
+  padding: 6px 15px;
+  border-radius: 5px;
 }
 .nav-link {
   color: #000;

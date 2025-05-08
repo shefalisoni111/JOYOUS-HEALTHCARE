@@ -467,7 +467,7 @@ export default {
 
             if (putResponse.status === 200) {
               this.errorMessage = "";
-              await this.fetchCandidateList(this.startDate);
+              // await this.fetchCandidateList(this.startDate);
               Swal.fire({
                 icon: "success",
                 title: "Success!",
@@ -590,38 +590,39 @@ export default {
         }
       }
     },
-    async fetchCandidateList(startDate) {
-      try {
-        const response = await axios.get(
-          `${VITE_API_URL}/candidates_weekly_availability`,
-          {
-            params: { date: startDate },
-          }
-        );
-        this.candidateList = response.data.data;
-        this.availabilityIds = this.candidateList.flatMap((candidate) =>
-          candidate.availability.map((availabilityItem) => ({
-            date: this.formatDate(availabilityItem.date),
-            availability_id: availabilityItem.availability_id,
-          }))
-        );
+    // async fetchCandidateList(startDate) {
+    //   try {
+    //     const response = await axios.get(
+    //       `${VITE_API_URL}/candidates_weekly_availability`,
+    //       {
+    //         params: { date: startDate },
+    //       }
+    //     );
+    //     this.candidateList = response.data.data;
+    //     console.log(this.candidateList);
+    //     this.availabilityIds = this.candidateList.flatMap((candidate) =>
+    //       candidate.availability.map((availabilityItem) => ({
+    //         date: this.formatDate(availabilityItem.date),
+    //         availability_id: availabilityItem.availability_id,
+    //       }))
+    //     );
 
-        // this.candidateList.forEach((candidate) => {
-        //   candidate.availabilityByDate = {};
-        //   candidate.availability.forEach((avail) => {
-        //     candidate.availabilityByDate[avail.date] = avail.status;
-        //   });
-        // });
+    //     // this.candidateList.forEach((candidate) => {
+    //     //   candidate.availabilityByDate = {};
+    //     //   candidate.availability.forEach((avail) => {
+    //     //     candidate.availabilityByDate[avail.date] = avail.status;
+    //     //   });
+    //     // });
 
-        // this.availabilityIds = this.candidateList.map((candidate) => {
-        //   return candidate.availability.map(
-        //     (availabilityItem) => availabilityItem.availability_id
-        //   );
-        // });
+    //     // this.availabilityIds = this.candidateList.map((candidate) => {
+    //     //   return candidate.availability.map(
+    //     //     (availabilityItem) => availabilityItem.availability_id
+    //     //   );
+    //     // });
 
-        // this.availability_id = this.availabilityIds[0].availability_id;
-      } catch (error) {}
-    },
+    //     // this.availability_id = this.availabilityIds[0].availability_id;
+    //   } catch (error) {}
+    // },
     async fetchAvailabilityStatusMethod() {
       if (!this.candidateId || !this.startDate) {
         // console.error("Candidate ID or start date is undefined.");
@@ -632,7 +633,7 @@ export default {
           `${VITE_API_URL}/weekly_availability_for_candidate?candidate_id=${this.candidateId}&date=${this.startDate}`
         );
         this.updatedStatusData = response.data.data;
-
+        // console.log(this.updatedStatusData);
         this.availabilityIds = this.updatedStatusData.reduce(
           (formattedData, candidate) => {
             if (candidate.availability) {

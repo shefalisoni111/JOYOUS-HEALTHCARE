@@ -1,11 +1,20 @@
 <template>
   <div>
     <div id="main" class="main d-flex">
-      <Navbar />
+      <div
+        style="
+          background: #fff;
+
+          border-radius: 20px;
+        "
+      >
+        <Navbar />
+      </div>
 
       <!-- <CandidateAdd /> -->
-
-      <router-view />
+      <div class="container-fluid">
+        <router-view />
+      </div>
     </div>
   </div>
 </template>

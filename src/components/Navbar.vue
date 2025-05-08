@@ -2,287 +2,293 @@
   <div class="">
     <!-- Sidebar -->
     <nav id="sidebar">
-      <div class="sidebar-header">
-        <a
-          class="navbar-brand ps-3"
-          href="/home"
-          style="outline: none; box-shadow: none"
-          ><img
-            src="../assets/logo.png"
-            class="img-fluid"
-            alt="RecPal"
-            width="138"
-            height="31"
-            loading="eager"
-        /></a>
-        <!-- <button class="btn btn-toggle" @click="toggleSidebar">
-          <i class="bi bi-list"></i>
-        </button> -->
-      </div>
-
-      <ul class="list-unstyled components">
-        <li>
-          <router-link to="/home" class="ps-2">
-            <img
-              src="../assets/Vector.png"
-              class="img-fluid pe-2"
-              alt="RecPal"
-              loading="eager"
-            />
-            Dashboard
-          </router-link>
-        </li>
-
-        <li :class="{ active: isClientActive }">
+      <aside v-if="isSidebarVisible" class="sidebar">
+        <div class="sidebar-header">
           <a
-            href="#clientMenu"
-            data-bs-toggle="collapse"
-            aria-expanded="true"
-            class="d-flex justify-content-between"
-          >
-            <span
-              ><i class="bi bi-people"></i>
-              <span class="ms-2">Client</span></span
-            >
-            <img
-              src="../assets/ArrowDown.png"
-              class="img-fluid pe-2"
+            class="navbar-brand ps-3"
+            href="/home"
+            style="outline: none; box-shadow: none"
+            ><img
+              src="../assets/logo.png"
+              class="img-fluid"
               alt="RecPal"
+              width="138"
+              height="31"
               loading="eager"
-            />
-          </a>
-          <ul class="collapse list-unstyled" id="clientMenu">
-            <li><router-link to="/client-list">Client List</router-link></li>
-            <li><router-link to="/site">Site</router-link></li>
-            <li>
-              <router-link to="/rates_and_rules">Rates & Rules</router-link>
-            </li>
-          </ul>
-        </li>
-
-        <li :class="{ active: isStaffMenuActive }">
-          <a
-            href="#staffMenu"
-            data-bs-toggle="collapse"
-            class="d-flex justify-content-between"
-          >
-            <span>
-              <i class="bi bi-person"></i> <span class="ms-2">Staff</span>
-            </span>
-            <img
-              src="../assets/ArrowDown.png"
-              class="img-fluid pe-2"
-              alt="RecPal"
-              loading="eager"
-            />
-          </a>
-          <ul class="collapse list-unstyled" id="staffMenu">
-            <li><router-link to="/staff-list">Staff List</router-link></li>
-            <li>
-              <router-link to="/availability">Staff Availability</router-link>
-            </li>
-          </ul>
-        </li>
-
-        <li>
-          <router-link to="/shift-list">
-            <i class="bi bi-calendar"></i> Shifts
-          </router-link>
-        </li>
-
-        <li>
-          <router-link to="/schedule">
-            <i class="bi bi-clock"></i> Schedule
-          </router-link>
-        </li>
-
-        <li :class="{ active: isTimesheetMenuActive }">
-          <a
-            href="#timesheetMenu"
-            data-bs-toggle="collapse"
-            class="d-flex justify-content-between"
-          >
-            <span>
-              <i class="bi bi-file-earmark-text"></i
-              ><span class="ms-2">Timesheet</span>
-            </span>
-
-            <img
-              src="../assets/ArrowDown.png"
-              class="img-fluid pe-2"
-              alt="RecPal"
-              loading="eager"
-            />
-          </a>
-
-          <ul class="collapse list-unstyled" id="timesheetMenu">
-            <li>
-              <router-link to="/timesheet/weekly">Weekly Timesheet</router-link>
-            </li>
-            <li>
-              <router-link to="/timesheet/custom">Custom Timesheet</router-link>
-            </li>
-            <li>
-              <router-link to="/timesheet/signed">Signed Timesheet</router-link>
-            </li>
-          </ul>
-        </li>
-
-        <li :class="{ active: isInvoiceMenuActive }">
-          <a
-            href="#invoiceMenu"
-            data-bs-toggle="collapse"
-            class="d-flex justify-content-between"
-          >
-            <span
-              ><i class="bi bi-receipt"></i><span class="ms-2">Invoice</span>
-            </span>
-
-            <img
-              src="../assets/ArrowDown.png"
-              class="img-fluid pe-2"
-              alt="RecPal"
-              loading="eager"
-            />
-          </a>
-          <ul class="collapse list-unstyled" id="invoiceMenu">
-            <li>
-              <router-link to="/invoice/client-invoice"
-                >Client Invoice</router-link
-              >
-            </li>
-            <li>
-              <router-link to="/invoice/staff-payroll"
-                >Staff Payroll</router-link
-              >
-            </li>
-          </ul>
-        </li>
-
-        <li>
-          <router-link to="/report">
-            <i class="bi bi-bar-chart"></i> Reports
-          </router-link>
-        </li>
-
-        <li class="fw-bold text-muted mt-2">Support</li>
-
-        <ul class="navbar-nav m-0 mb-2 mb-lg-0 inline-nav">
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link nav-icon"
-              href="#"
-              data-bs-toggle="dropdown"
-              @click.prevent="handleChatClick"
-            >
-              <i class="bi bi-chat-left-dots"></i>Message</a
-            >
-          </li>
-
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link nav-icon"
-              href="#"
-              data-bs-toggle="dropdown"
-              @click.prevent="handleNotificationClick"
-            >
-              <i class="bi bi-bell"></i>
-              <span
-                v-if="unread_count > 0"
-                class="badge bg-primary badge-number"
-              >
-                {{ unread_count }}
-              </span>
-              Notification
-            </a>
-          </li>
-
-          <!-- End Notification Nav -->
-
-          <li class="cursor-pointer">
-            <a
-              class="dropdown-item d-flex align-items-center"
-              href="https://recpal.co.uk/support/"
-            >
-              <i class="bi bi-brightness-low pe-2"></i><span>Support</span>
-            </a>
-          </li>
+          /></a>
+          <button class="btn btn-toggle" @click="toggleSidebar">
+            <i class="bi bi-list"></i>
+          </button>
+        </div>
+        <ul class="list-unstyled components">
           <li>
-            <router-link
-              class="dropdown-item d-flex align-items-center"
-              aria-current="page"
-              to="/appsetting"
-            >
-              <i class="bi bi-gear pe-2"></i><span> Settings</span>
+            <router-link to="/home" class="ps-2">
+              <img
+                src="../assets/Vector.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+              Dashboard
             </router-link>
           </li>
-          <br /><br />
-          <li>
-            <hr class="" />
-          </li>
-          <li class="nav-item dropdown">
+
+          <li :class="{ active: isClientActive }">
             <a
-              class="nav-link nav-icon nav-profile d-flex align-items-center pe-0"
-              href="#"
-              data-bs-toggle="dropdown"
-              aria-label="profile detail"
+              href="#clientMenu"
+              data-bs-toggle="collapse"
+              aria-expanded="true"
+              class="d-flex justify-content-between"
             >
+              <span
+                ><i class="bi bi-people"></i>
+                <span class="ms-2">Client</span></span
+              >
               <img
-                v-if="computedProfileImage !== './profile.png'"
-                :src="computedProfileImage"
-                alt="USer"
-                class="rounded-circle profileAdminImg"
-                width="40"
-                height="40"
+                src="../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
                 loading="eager"
               />
-              <img
-                v-else
-                src="./profile.png"
-                alt="USer"
-                class="rounded-circle profileAdminImg"
-                width="40"
-                loading="eager"
-              />
-              <span class="d-block">Admin</span>
             </a>
-            <!-- End Profile Image Icon -->
-
-            <ul
-              class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
-              style="width: 220px"
-            >
+            <ul class="collapse list-unstyled" id="clientMenu">
+              <li><router-link to="/client-list">Client List</router-link></li>
+              <li><router-link to="/site">Site</router-link></li>
               <li>
-                <a class="dropdown-item text-capitalize">
-                  <h5 class="d-block mb-0 fw-bold">
-                    {{ getAdminData.first_name }}
-                  </h5>
-                  <!-- <span class="d-block">Admin</span> -->
-                </a>
+                <router-link to="/rates_and_rules">Rates & Rules</router-link>
               </li>
+            </ul>
+          </li>
 
-              <!-- 
+          <li :class="{ active: isStaffMenuActive }">
+            <a
+              href="#staffMenu"
+              data-bs-toggle="collapse"
+              class="d-flex justify-content-between"
+            >
+              <span>
+                <i class="bi bi-person"></i> <span class="ms-2">Staff</span>
+              </span>
+              <img
+                src="../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </a>
+            <ul class="collapse list-unstyled" id="staffMenu">
+              <li><router-link to="/staff-list">Staff List</router-link></li>
+              <li>
+                <router-link to="/availability">Staff Availability</router-link>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <router-link to="/shift-list">
+              <i class="bi bi-calendar"></i> Shifts
+            </router-link>
+          </li>
+
+          <li>
+            <router-link to="/schedule">
+              <i class="bi bi-clock"></i> Schedule
+            </router-link>
+          </li>
+
+          <li :class="{ active: isTimesheetMenuActive }">
+            <a
+              href="#timesheetMenu"
+              data-bs-toggle="collapse"
+              class="d-flex justify-content-between"
+            >
+              <span>
+                <i class="bi bi-file-earmark-text"></i
+                ><span class="ms-2">Timesheet</span>
+              </span>
+
+              <img
+                src="../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </a>
+
+            <ul class="collapse list-unstyled" id="timesheetMenu">
+              <li>
+                <router-link to="/timesheet/weekly"
+                  >Weekly Timesheet</router-link
+                >
+              </li>
+              <li>
+                <router-link to="/timesheet/custom"
+                  >Custom Timesheet</router-link
+                >
+              </li>
+              <li>
+                <router-link to="/timesheet/signed"
+                  >Signed Timesheet</router-link
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li :class="{ active: isInvoiceMenuActive }">
+            <a
+              href="#invoiceMenu"
+              data-bs-toggle="collapse"
+              class="d-flex justify-content-between"
+            >
+              <span
+                ><i class="bi bi-receipt"></i><span class="ms-2">Invoice</span>
+              </span>
+
+              <img
+                src="../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </a>
+            <ul class="collapse list-unstyled" id="invoiceMenu">
+              <li>
+                <router-link to="/invoice/client-invoice"
+                  >Client Invoice</router-link
+                >
+              </li>
+              <li>
+                <router-link to="/invoice/staff-payroll"
+                  >Staff Payroll</router-link
+                >
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <router-link to="/report">
+              <i class="bi bi-bar-chart"></i> Reports
+            </router-link>
+          </li>
+
+          <li class="fw-bold text-muted mt-2">Support</li>
+
+          <ul class="navbar-nav m-0 mb-2 mb-lg-0 inline-nav">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link nav-icon"
+                href="#"
+                data-bs-toggle="dropdown"
+                @click.prevent="handleChatClick"
+              >
+                <i class="bi bi-chat-left-dots"></i>Message</a
+              >
+            </li>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link nav-icon"
+                href="#"
+                data-bs-toggle="dropdown"
+                @click.prevent="handleNotificationClick"
+              >
+                <i class="bi bi-bell"></i>
+                <span
+                  v-if="unread_count > 0"
+                  class="badge bg-primary badge-number"
+                >
+                  {{ unread_count }}
+                </span>
+                Notification
+              </a>
+            </li>
+
+            <!-- End Notification Nav -->
+
+            <li class="cursor-pointer">
+              <a
+                class="dropdown-item d-flex align-items-center"
+                href="https://recpal.co.uk/support/"
+              >
+                <i class="bi bi-brightness-low pe-2"></i><span>Support</span>
+              </a>
+            </li>
+            <li>
+              <router-link
+                class="dropdown-item d-flex align-items-center"
+                aria-current="page"
+                to="/appsetting"
+              >
+                <i class="bi bi-gear pe-2"></i><span> Settings</span>
+              </router-link>
+            </li>
+            <br /><br />
+            <li>
+              <hr class="" />
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link nav-icon nav-profile d-flex align-items-center pe-0"
+                href="#"
+                data-bs-toggle="dropdown"
+                aria-label="profile detail"
+              >
+                <img
+                  v-if="computedProfileImage !== './profile.png'"
+                  :src="computedProfileImage"
+                  alt="USer"
+                  class="rounded-circle profileAdminImg"
+                  width="40"
+                  height="40"
+                  loading="eager"
+                />
+                <img
+                  v-else
+                  src="./profile.png"
+                  alt="USer"
+                  class="rounded-circle profileAdminImg"
+                  width="40"
+                  loading="eager"
+                />
+                <span class="d-block">Admin</span>
+              </a>
+              <!-- End Profile Image Icon -->
+
+              <ul
+                class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
+                style="width: 220px"
+              >
+                <li>
+                  <a class="dropdown-item text-capitalize">
+                    <h5 class="d-block mb-0 fw-bold">
+                      {{ getAdminData.first_name }}
+                    </h5>
+                    <!-- <span class="d-block">Admin</span> -->
+                  </a>
+                </li>
+
+                <!-- 
               <li class="cursor-pointer my-1">
                 <a class="dropdown-item d-flex align-items-center">
                   <i class="bi bi-asterisk pe-2"></i><span>Activity Log</span></a
                 >
               </li> -->
 
-              <!-- <li class="cursor-pointer my-1">
+                <!-- <li class="cursor-pointer my-1">
                 <router-link class="dropdown-item d-flex align-items-center" to="/recruitment"
                   ><i class="bi bi-ban-fill pe-2"></i><span>Recruitment</span></router-link
                 >
               </li> -->
 
-              <li class="cursor-pointer my-1">
-                <router-link
-                  class="dropdown-item d-flex align-items-center"
-                  to="/dairy_notes"
-                  ><i class="bi bi-ban-fill pe-2"></i
-                  ><span>Diary Notes</span></router-link
-                >
-              </li>
-              <!-- 
+                <li class="cursor-pointer my-1">
+                  <router-link
+                    class="dropdown-item d-flex align-items-center"
+                    to="/dairy_notes"
+                    ><i class="bi bi-ban-fill pe-2"></i
+                    ><span>Diary Notes</span></router-link
+                  >
+                </li>
+                <!-- 
               <li class="cursor-pointer my-1">
                 <router-link
                   class="dropdown-item text-capitalize d-flex align-items-center"
@@ -291,40 +297,41 @@
                 </router-link>
               </li> -->
 
-              <li class="cursor-pointer my-1">
-                <router-link
-                  class="dropdown-item text-capitalize d-flex align-items-center"
-                  :to="adminLink"
-                  ><i class="bi bi-gear-wide pe-2"></i
-                  ><span>Personal Settings</span>
-                </router-link>
-              </li>
+                <li class="cursor-pointer my-1">
+                  <router-link
+                    class="dropdown-item text-capitalize d-flex align-items-center"
+                    :to="adminLink"
+                    ><i class="bi bi-gear-wide pe-2"></i
+                    ><span>Personal Settings</span>
+                  </router-link>
+                </li>
 
-              <li>
-                <hr class="" />
-              </li>
+                <li>
+                  <hr class="" />
+                </li>
 
-              <li class="cursor-pointer">
-                <a
-                  class="dropdown-item d-flex align-items-center"
-                  v-on:click="confirmed"
-                >
-                  <i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp;
-                  <span>Sign Out</span>
-                </a>
-              </li>
-              <!-- <li class="cursor-pointer">
+                <li class="cursor-pointer">
+                  <a
+                    class="dropdown-item d-flex align-items-center"
+                    v-on:click="confirmed"
+                  >
+                    <i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp;
+                    <span>Sign Out</span>
+                  </a>
+                </li>
+                <!-- <li class="cursor-pointer">
                 <a class="dropdown-item d-flex align-items-center" >
                   <i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp;
                   <span>Sign Out</span>
                 </a>
               </li> -->
-            </ul>
-            <!-- End Profile Dropdown Items -->
-          </li>
-          <!-- End Profile Nav -->
+              </ul>
+              <!-- End Profile Dropdown Items -->
+            </li>
+            <!-- End Profile Nav -->
+          </ul>
         </ul>
-      </ul>
+      </aside>
     </nav>
   </div>
 </template>
@@ -352,6 +359,7 @@ export default {
     return {
       adminLink: "/admin/",
       getAdminData: [],
+      isSidebarVisible: true,
       isUserScrolling: false,
       showChatBox: false,
       getAdminProfile: [],
@@ -497,6 +505,9 @@ export default {
     //   }
   },
   methods: {
+    toggleSidebar() {
+      this.isSidebarVisible = !this.isSidebarVisible;
+    },
     handleChatClick() {
       this.$router.push("/chat");
     },
@@ -997,20 +1008,17 @@ export default {
 
 <style scoped>
 /* Sidebar styles */
-#sidebar {
-  position: inherit;
+.sidebar {
   top: 0;
   left: 0;
-  height: 100vh;
-  width: 246px;
+
   overflow-y: auto;
   background: #ffffff;
-  border: 1px solid #eff0f6;
-  box-shadow: 0px 5px 20px 0px #0000000d;
-  border-radius: 20px;
+
   color: #000000;
   padding-top: 12px;
-  transition: 0.3s;
+  transition: all 0.3s ease;
+  z-index: 1000;
 }
 
 #sidebar.active {

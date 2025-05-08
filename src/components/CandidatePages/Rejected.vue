@@ -194,12 +194,19 @@ export default {
   },
   components: { Loader, ConfirmationAlert },
   computed: {
+    // paginateCandidates() {
+    //   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    //   return this.getPendingCandidatesData.slice(
+    //     startIndex,
+    //     startIndex + this.itemsPerPage
+    //   );
+    // },
     paginateCandidates() {
       return this.getPendingCandidatesData;
     },
-    totalRecordsOnPage() {
-      return this.paginateCandidates.length;
-    },
+    // totalRecordsOnPage() {
+    //   return this.paginateCandidates.length;
+    // },
   },
   methods: {
     setItemsPerPage(value) {
@@ -207,13 +214,13 @@ export default {
       this.currentPage = 1;
       this.fetchPendingCandidates();
     },
-    async fetchPendingCandidates(page = 1) {
+    async fetchPendingCandidates() {
       this.isLoading = true;
       try {
         const params = {
           status_value: "pending",
           activated_value: "true",
-          page: page,
+          page: this.currentPage,
           per_page: this.itemsPerPage,
         };
         const response = await axios.get(`${VITE_API_URL}/candidates`, {

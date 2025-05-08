@@ -1,12 +1,23 @@
 <template>
   <div>
     <div id="main" class="main d-flex">
-      <div class=""><Navbar /></div>
-      <div class="">
-        <div class="pagetitle mx-4 mt-4" style="margin-top: 30px">
+      <div
+        class=""
+        style="
+          background: #fff;
+
+          border-radius: 20px;
+        "
+      >
+        <Navbar />
+      </div>
+      <div class="container-fluid">
+        <div class="row pagetitle mt-4 mx-2" style="margin-top: 31px">
           <div class="d-flex justify-content-between">
             <div class="">
-              <h3 class="fs-4 fw-bolder" style="color: #000000">Welcome to Recpal</h3>
+              <h3 class="fs-4 fw-bolder" style="color: #000000">
+                Welcome to Recpal
+              </h3>
             </div>
             <!-- End Page Title -->
             <div class="d-flex align-items-center">
@@ -28,15 +39,17 @@
           </div>
         </div>
         <div v-if="getRecords">
-          <section class="section dashboard mt-5">
-            <div class="row gx-5 mx-3">
+          <section class="section dashboard px-4 mt-5">
+            <div class="row">
               <!-- Left side columns -->
               <div class="col-lg-6 mb-3">
                 <div class="row d-flex">
                   <!-- Sales Card -->
 
                   <div class="col-12 mb-3 pb-2">
-                    <div class="card h-100 info-card sales-card border-left-blue py-4">
+                    <div
+                      class="card h-100 info-card sales-card border-left-blue py-4"
+                    >
                       <h5 class="card-title fw-bold d-flex fs-6 m-2 ps-3">
                         Client Overview
                       </h5>
@@ -148,7 +161,9 @@
                   <!-- Sales Card -->
 
                   <div class="col-12 mb-3 pb-2">
-                    <div class="card h-100 info-card sales-card border-left-blue py-4">
+                    <div
+                      class="card h-100 info-card sales-card border-left-blue py-4"
+                    >
                       <h5 class="card-title fw-bold d-flex fs-6 m-2 ps-3">
                         Staff Overview
                       </h5>
@@ -256,7 +271,9 @@
                   <!-- Sales Card -->
 
                   <div class="col-12 mb-3 pb-2">
-                    <div class="card h-100 info-card sales-card border-left-blue py-4">
+                    <div
+                      class="card h-100 info-card sales-card border-left-blue py-4"
+                    >
                       <h5 class="card-title fw-bold d-flex fs-6 m-2 ps-3">
                         Site Overview
                       </h5>
@@ -365,7 +382,9 @@
                   <!-- Sales Card -->
 
                   <div class="col-12 mb-3 pb-2">
-                    <div class="card h-100 info-card sales-card border-left-blue py-4">
+                    <div
+                      class="card h-100 info-card sales-card border-left-blue py-4"
+                    >
                       <div class="d-flex justify-content-between">
                         <h5 class="card-title fw-bold d-flex fs-6 m-2 ps-3">
                           Training Insight
@@ -397,9 +416,14 @@
                               class="text-capitalize text-decoration-none text-muted"
                               :to="{
                                 name: 'DocumentReport',
-                                query: { tabIndex: 4, redirectTo: 'DueDoc60Days' },
+                                query: {
+                                  tabIndex: 4,
+                                  redirectTo: 'DueDoc60Days',
+                                },
                               }"
-                              >Expiring in 60 days({{ getRecords.expiring_in_60_days }})
+                              >Expiring in 60 days({{
+                                getRecords.expiring_in_60_days
+                              }})
                             </router-link>
                           </div>
                         </div>
@@ -448,10 +472,15 @@
                               class="text-capitalize text-decoration-none text-muted"
                               :to="{
                                 name: 'DocumentReport',
-                                query: { tabIndex: 3, redirectTo: 'ExpiredDoc' },
+                                query: {
+                                  tabIndex: 3,
+                                  redirectTo: 'ExpiredDoc',
+                                },
                               }"
                             >
-                              Expired ({{ getRecords.compliance_insight }})</router-link
+                              Expired ({{
+                                getRecords.compliance_insight
+                              }})</router-link
                             >
                           </div>
                         </div>
@@ -469,7 +498,7 @@
           </section>
 
           <section class="section dashboard mt-4 mb-4">
-            <div class="row gx-5 mx-3">
+            <div class="row gx-2 mx-4">
               <!-- Left side columns -->
               <div class="col-sm-12 col-lg-8">
                 <TimeSheet />
@@ -478,8 +507,8 @@
               <!-- Left side columns end -->
 
               <!-- right side columns -->
-              <div class="col-sm-12 col-lg-4">
-                <div class="card h-100 card-border">
+              <div class="col-sm-12 col-lg-4 px-3">
+                <div class="card h-100 card-border" style="border-radius: 20px">
                   <div class="col-8 p-3">
                     <h5 class="fs-6 p-2 mb-0 fw-bold">Shifts</h5>
                   </div>
@@ -495,7 +524,9 @@
                             <div class="d-flex justify-content-between gap-4">
                               <div class="d-flex align-items-center">
                                 <span class="box-icon"></span>
-                                <span class="d-flex ms-2 fw-bold">Open Shifts</span>
+                                <span class="d-flex ms-2 fw-bold"
+                                  >Open Shifts</span
+                                >
                               </div>
 
                               <div class="d-flex">
@@ -509,7 +540,9 @@
                             <div class="d-flex justify-content-between gap-4">
                               <div class="d-flex align-items-center">
                                 <span class="box-icon2"></span>
-                                <span class="d-flex ms-2 fw-bold">Applied Shifts</span>
+                                <span class="d-flex ms-2 fw-bold"
+                                  >Applied Shifts</span
+                                >
                               </div>
 
                               <div class="d-flex">
@@ -523,7 +556,9 @@
                             <div class="d-flex justify-content-between gap-4">
                               <div class="d-flex align-items-center">
                                 <span class="box-icon3"></span>
-                                <span class="d-flex ms-2 fw-bold">Assigned Shifts</span>
+                                <span class="d-flex ms-2 fw-bold"
+                                  >Assigned Shifts</span
+                                >
                               </div>
                               <div class="d-flex">
                                 <span class="fs-6 ps-2 fw-bold">{{
@@ -536,7 +571,9 @@
                             <div class="d-flex justify-content-between gap-4">
                               <div class="d-flex align-items-center">
                                 <span class="box-icon4"></span>
-                                <span class="d-flex ms-2 fw-bold">Inactive Shifts</span>
+                                <span class="d-flex ms-2 fw-bold"
+                                  >Inactive Shifts</span
+                                >
                               </div>
                               <div class="d-flex">
                                 <span class="fs-6 ps-2 fw-bold">{{

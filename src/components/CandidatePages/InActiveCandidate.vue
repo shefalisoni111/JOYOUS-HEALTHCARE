@@ -12,7 +12,7 @@
           <th scope="col">Action</th>
         </tr>
       </thead>
-      <tbody v-if="getCandidatesData?.length > 0">
+      <tbody v-if="paginateCandidates?.length > 0">
         <tr
           v-for="(datas, index) in paginateCandidates"
           :key="index"
@@ -82,7 +82,7 @@
     <div
       class="mx-3 d-flex justify-content-between"
       style="text-align: right"
-      v-if="getCandidatesData?.length"
+      v-if="getCandidatesData?.length >= 10"
     >
       <div class="d-flex">
         <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
@@ -182,14 +182,19 @@ export default {
   },
   components: { Loader, ConfirmationAlert },
   computed: {
+    // paginateCandidates() {
+    //   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    //   return this.getCandidatesData.slice(
+    //     startIndex,
+    //     startIndex + this.itemsPerPage
+    //   );
+    // },
     paginateCandidates() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.getCandidatesData.slice(startIndex, endIndex);
+      return this.getCandidatesData;
     },
-    totalRecordsOnPage() {
-      return this.paginateCandidates.length;
-    },
+    // totalRecordsOnPage() {
+    //   return this.paginateCandidates.length;
+    // },
   },
   methods: {
     async changePage(newPage) {
@@ -208,6 +213,7 @@ export default {
         const params = {
           // status_value: "approved",
           activated_value: "false",
+          page: this.currentPage,
           per_page: this.itemsPerPage,
         };
         const response = await axios.get(`${VITE_API_URL}/candidates`, {
@@ -215,6 +221,9 @@ export default {
         });
 
         this.getCandidatesData = response.data.data;
+        this.totalPages = response.data.total_pages;
+        this.currentPage = response.data.current_page;
+        this.totalCount = response.data.total_count;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {

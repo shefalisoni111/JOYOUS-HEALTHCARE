@@ -858,6 +858,9 @@ export default {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   background-color: #f9944b;
+  color: #fff;
+  padding: 6px 15px;
+  border-radius: 5px;
 }
 .nav-pills .nav-link {
   color: #000;

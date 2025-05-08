@@ -2,13 +2,24 @@
   <div>
     <!-- <Navbar /> -->
     <div id="main" class="main d-flex">
-      <div class=""><Navbar /></div>
-      <div class="col-10 ps-5 pt-3">
-        <div class="pagetitle d-flex justify-content-between pt-3">
+      <div
+        class=""
+        style="
+          background: #fff;
+
+          border-radius: 20px;
+        "
+      >
+        <Navbar />
+      </div>
+      <div class="container-fluid px-5 pt-3">
+        <div class="row pagetitle d-flex justify-content-between pt-3 px-1">
           <div class="">
             <ol class="breadcrumb my-2">
               <li class="breadcrumb-item active fs-6">
-                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                <a
+                  class="nav-link d-inline fs-4 fw-bolder"
+                  style="color: #000000"
                   >Schedule</a
                 >
               </li>
@@ -18,26 +29,26 @@
           <div class="d-flex align-items-center gap-2">
             <div>
               <!-- <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
-                <input
-                  class="form-control mr-sm-2"
-                  type="search"
-                  placeholder="Search..."
-                  aria-label="Search"
-                  v-model="searchQuery"
-                  @input="debounceSearch"
-                />
-              </form> -->
+            <input
+              class="form-control mr-sm-2"
+              type="search"
+              placeholder="Search..."
+              aria-label="Search"
+              v-model="searchQuery"
+              @input="debounceSearch"
+            />
+          </form> -->
             </div>
             <!-- <button
-              type="button"
-              class="btn btn-primary text-nowrap border-0"
-              data-bs-toggle="modal"
-              data-bs-target="#schedulePublishStaffList"
-              data-bs-whatever="@mdo"
-              @click="handleShiftPublishStaffList"
-            >
-              Publish
-            </button> -->
+          type="button"
+          class="btn btn-primary text-nowrap border-0"
+          data-bs-toggle="modal"
+          data-bs-target="#schedulePublishStaffList"
+          data-bs-whatever="@mdo"
+          @click="handleShiftPublishStaffList"
+        >
+          Publish
+        </button> -->
           </div>
         </div>
 
@@ -45,18 +56,21 @@
           <div class="sidebar-button" :class="{ 'slide-left': isOpen }">
             <div class="d-flex justify-content-end">
               <div class="mb-2">
-                <button @click="toggleSidebar" class="btn btn-danger text-nowrap btn-lg">
+                <button
+                  @click="toggleSidebar"
+                  class="btn btn-danger text-nowrap btn-lg"
+                >
                   <i class="bi bi-funnel-fill"></i> Show Filters
                 </button>
                 <!-- <span v-if="isOpen" class="text-danger fs-5 ps-2">Filter </span> -->
               </div>
               <!-- <div>
-                <i
-                  v-if="isOpen"
-                  class="bi bi-x float-end fs-2 d-flex cursor-pointer"
-                  @click="toggleSidebar"
-                ></i>
-              </div> -->
+            <i
+              v-if="isOpen"
+              class="bi bi-x float-end fs-2 d-flex cursor-pointer"
+              @click="toggleSidebar"
+            ></i>
+          </div> -->
             </div>
             <div
               v-show="isOpen"
@@ -80,15 +94,24 @@
                       class="form-select"
                       @change="filterData($event.target.value, 'availablity')"
                     >
-                      <option value="" selected for="SelectAvailability" disabled>
+                      <option
+                        value=""
+                        selected
+                        for="SelectAvailability"
+                        disabled
+                      >
                         All Availability
                       </option>
                       <option id="SelectAvailability" value="Late">Late</option>
-                      <option id="SelectAvailability" value="Night">Night</option>
+                      <option id="SelectAvailability" value="Night">
+                        Night
+                      </option>
                       <option id="SelectAvailability" value="Unavailable">
                         Unavailable
                       </option>
-                      <option id="SelectAvailability" value="Early">Early</option>
+                      <option id="SelectAvailability" value="Early">
+                        Early
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -154,7 +177,9 @@
                         id="selectShifts"
                       >
                         {{
-                          option.shift_name ? option.shift_name.replace(/_/g, " ") : ""
+                          option.shift_name
+                            ? option.shift_name.replace(/_/g, " ")
+                            : ""
                         }}
                       </option>
                     </select>
@@ -180,9 +205,9 @@
         <div class="row">
           <div class="full-page-calendar">
             <!-- <SchedulePublishStaffList
-              @updated-assignPublish="fetchAssignList"
-              ref="shiftPublishStaff"
-            /> -->
+          @updated-assignPublish="fetchAssignList"
+          ref="shiftPublishStaff"
+        /> -->
 
             <SuccessAlert ref="successAlert" />
             <div>
@@ -215,7 +240,9 @@
                 <div class="d-flex">
                   &nbsp;&nbsp;
 
-                  <div class="d-flex align-items-center justify-content-between">
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                  >
                     <i
                       class="bi bi-caret-left-fill"
                       @click="moveToPrevious"
@@ -252,20 +279,24 @@
                           <div class="d-flex justify-content-between">
                             <div class="d-flex align-items-center">Shifts</div>
                             <!-- &nbsp; &nbsp; &nbsp;&nbsp;
-                            <div class="d-flex align-items-center fs-4">
-                              <i
-                                class="bi bi-caret-left-fill"
-                                @click="moveToPrevious"
-                              ></i>
-                              <i class="bi bi-calendar2-check-fill"></i>
-                              <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
-                            </div> -->
+                        <div class="d-flex align-items-center fs-4">
+                          <i
+                            class="bi bi-caret-left-fill"
+                            @click="moveToPrevious"
+                          ></i>
+                          <i class="bi bi-calendar2-check-fill"></i>
+                          <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                        </div> -->
                           </div>
                         </th>
 
                         <th>
                           <div class="calendar-grid" v-if="!searchQuery">
-                            <div v-for="day in daysOfWeek" :key="day" class="day-header">
+                            <div
+                              v-for="day in daysOfWeek"
+                              :key="day"
+                              class="day-header"
+                            >
                               {{ day }}
                             </div>
                             <div
@@ -282,63 +313,63 @@
 
                     <tbody v-if="candidateList?.length > 0" class="mt-2">
                       <!-- <tr class="sticky-header">
-                        <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
-                        <td>
-                          <div
-                            class="calendar-grid"
-                            style="
-                              max-height: 240px;
-                              overflow-y: auto;
-                              overflow-x: hidden;
+                    <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
+                    <td>
+                      <div
+                        class="calendar-grid"
+                        style="
+                          max-height: 240px;
+                          overflow-y: auto;
+                          overflow-x: hidden;
+                        "
+                      >
+                        <div
+                          v-for="day in selectedDateRow"
+                          :key="day"
+                          class="text-center"
+                        >
+                          <ul
+                            class="list-unstyled mb-0"
+                            v-if="
+                              vacancyList.some(
+                                (data) => data.day === formattedDate(day)
+                              )
                             "
                           >
-                            <div
-                              v-for="day in selectedDateRow"
-                              :key="day"
-                              class="text-center"
+                            <li
+                              class="position-relative"
+                              v-for="(vacancy, liIndex) in vacancyList.find(
+                                (data) => data.day === formattedDate(day)
+                              )?.vacancies || []"
+                              :key="vacancy.id"
+                              :draggable="true"
+                              @dragstart="handleDragStart(vacancy)"
+                              @drop="handleRevertDrop(vacancy.id, $event)"
+                              @dragover.prevent="handleDragOver"
+                              :class="{
+                                'bg-info': liIndex === 0,
+                                'bg-warning': liIndex === 1,
+                                'bg-success': liIndex === 2,
+                                'bg-primary': liIndex >= 3,
+                              }"
                             >
-                              <ul
-                                class="list-unstyled mb-0"
-                                v-if="
-                                  vacancyList.some(
-                                    (data) => data.day === formattedDate(day)
-                                  )
-                                "
-                              >
-                                <li
-                                  class="position-relative"
-                                  v-for="(vacancy, liIndex) in vacancyList.find(
-                                    (data) => data.day === formattedDate(day)
-                                  )?.vacancies || []"
-                                  :key="vacancy.id"
-                                  :draggable="true"
-                                  @dragstart="handleDragStart(vacancy)"
-                                  @drop="handleRevertDrop(vacancy.id, $event)"
-                                  @dragover.prevent="handleDragOver"
-                                  :class="{
-                                    'bg-info': liIndex === 0,
-                                    'bg-warning': liIndex === 1,
-                                    'bg-success': liIndex === 2,
-                                    'bg-primary': liIndex >= 3,
-                                  }"
+                              <span class="d-flex flex-column align-items-baseline">
+                                <span class="text-capitalize"
+                                  >{{ vacancy.site }}, {{ vacancy.job_title }}</span
                                 >
-                                  <span class="d-flex flex-column align-items-baseline">
-                                    <span class="text-capitalize"
-                                      >{{ vacancy.site }}, {{ vacancy.job_title }}</span
-                                    >
-                                    <span>{{
-                                      vacancy.site_shift.replace(/_/g, " ")
-                                    }}</span>
-                                  </span>
-                                  <span class="staff-count-round text-white">{{
-                                    vacancy.staff_required
-                                  }}</span>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </td>
-                      </tr> -->
+                                <span>{{
+                                  vacancy.site_shift.replace(/_/g, " ")
+                                }}</span>
+                              </span>
+                              <span class="staff-count-round text-white">{{
+                                vacancy.staff_required
+                              }}</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </td>
+                  </tr> -->
 
                       <tr v-for="data in candidateList" :key="data.id">
                         <div
@@ -354,7 +385,10 @@
 
                           <span class="fs-6 text-muted fw-100"
                             ><br /><span
-                              style="background: rgb(209, 207, 207); padding: 3px"
+                              style="
+                                background: rgb(209, 207, 207);
+                                padding: 3px;
+                              "
                               >{{ data.job }}</span
                             ></span
                           >
@@ -362,7 +396,10 @@
 
                         <td>
                           <div>
-                            <div class="calendar-grid" @dragover.prevent="handleDragOver">
+                            <div
+                              class="calendar-grid"
+                              @dragover.prevent="handleDragOver"
+                            >
                               <div
                                 v-for="day in selectedDateRow"
                                 :key="day"
@@ -377,18 +414,29 @@
                                 }"
                                 @drop="handleDrop(data, formattedDate(day))"
                               >
-                                <span v-for="avail in data.availability" :key="avail.id">
-                                  <span v-if="avail.date === formattedDate(day)">
+                                <span
+                                  v-for="avail in data.availability"
+                                  :key="avail.id"
+                                >
+                                  <span
+                                    v-if="avail.date === formattedDate(day)"
+                                  >
                                     <span>
                                       <span
                                         v-if="avail.status"
-                                        style="font-size: small; padding: 0px 5px"
+                                        style="
+                                          font-size: small;
+                                          padding: 0px 5px;
+                                        "
                                         v-bind:class="{
-                                          'btn btn-warning ': avail.status === 'Late',
+                                          'btn btn-warning ':
+                                            avail.status === 'Late',
                                           'btn btn-primary ':
                                             avail.status === 'Unavailable',
-                                          'btn btn-secondary ': avail.status === 'Night',
-                                          'btn btn-light ': avail.status === 'Early',
+                                          'btn btn-secondary ':
+                                            avail.status === 'Night',
+                                          'btn btn-light ':
+                                            avail.status === 'Early',
                                         }"
                                       >
                                         {{
@@ -406,11 +454,24 @@
                                   v-for="assign in assignStaffDisplay"
                                   :key="assign.id"
                                 >
-                                  <span v-if="data.candidate_id === assign.candidate_id">
-                                    <span v-for="data in assign.vacancies" :key="data.id">
-                                      <span v-for="date in data.dates" :key="date">
+                                  <span
+                                    v-if="
+                                      data.candidate_id === assign.candidate_id
+                                    "
+                                  >
+                                    <span
+                                      v-for="data in assign.vacancies"
+                                      :key="data.id"
+                                    >
+                                      <span
+                                        v-for="date in data.dates"
+                                        :key="date"
+                                      >
                                         <span
-                                          v-if="formatDates(date) === formattedDate(day)"
+                                          v-if="
+                                            formatDates(date) ===
+                                            formattedDate(day)
+                                          "
                                         >
                                           <span
                                             :draggable="
@@ -436,10 +497,11 @@
                                               data-bs-whatever="@mdo"
                                               @click="
                                                 () => {
-                                                  const status = getBookingStatus(
-                                                    data,
-                                                    formattedDate(day)
-                                                  );
+                                                  const status =
+                                                    getBookingStatus(
+                                                      data,
+                                                      formattedDate(day)
+                                                    );
                                                   openModalEdit(
                                                     data,
                                                     formattedDate(day),
@@ -458,10 +520,14 @@
                                               >
                                                 {{ data.site }},
                                                 <!-- {{ extractTimeRange(data.site_shift)
-                                              }} -->
+                                          }} -->
                                                 <br />
-                                                {{ data.site_shift?.replace(/_/g, " ") }},
-                                                {{ data.job_title }} &nbsp;
+                                                {{
+                                                  data.site_shift?.replace(
+                                                    /_/g,
+                                                    " "
+                                                  )
+                                                }}, {{ data.job_title }} &nbsp;
 
                                                 <br />
                                               </span>
@@ -499,7 +565,10 @@
                                 </span>
 
                                 <div
-                                  v-if="dropCandidateId === data.id && dropDay === day"
+                                  v-if="
+                                    dropCandidateId === data.id &&
+                                    dropDay === day
+                                  "
                                   class="drop-zone"
                                 >
                                   {{ droppedContent }}
@@ -517,10 +586,10 @@
                         </td>
                       </tr>
                       <!-- <tr v-else>
-                      <td colspan="8" class="text-danger text-center">
-                        {{ errorMessageCustom }}
-                      </td>
-                    </tr> -->
+                  <td colspan="8" class="text-danger text-center">
+                    {{ errorMessageCustom }}
+                  </td>
+                </tr> -->
                     </tbody>
                   </table>
                   <loader :isLoading="isLoading"></loader>
@@ -678,7 +747,9 @@ export default {
       return Math.ceil(this.totalCandidateCount / this.itemsPerPage);
     },
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
     selectJobTitle() {
@@ -687,7 +758,9 @@ export default {
     },
 
     selectShifts() {
-      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
+      const shifts_id = this.shiftsTime.find(
+        (option) => option.id === this.shifts_id
+      );
       return shifts_id ? shifts_id.shift_name : "";
     },
 
@@ -743,7 +816,9 @@ export default {
       return this.formatDate(this.selectedDateRow[0]);
     },
     formattedEndDate() {
-      return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
+      return this.formatDate(
+        this.selectedDateRow[this.selectedDateRow.length - 1]
+      );
     },
     filteredAssignStaff() {
       return function (candidateId) {
@@ -906,9 +981,13 @@ export default {
     extractTimeRange(shift) {
       if (shift && shift.includes("Holiday")) {
         if (shift && shift.includes("Day Shift")) {
-          return shift.replace("Holiday Day Shift", "Holiday Night Shift").split(" ")[3];
+          return shift
+            .replace("Holiday Day Shift", "Holiday Night Shift")
+            .split(" ")[3];
         } else if (shift && shift.includes("Night Shift")) {
-          return shift.replace("Holiday Night Shift", "Holiday Day Shift").split(" ")[3];
+          return shift
+            .replace("Holiday Night Shift", "Holiday Day Shift")
+            .split(" ")[3];
         }
       } else if (shift && shift.includes("Day Shift")) {
         return shift.split(" ")[2];
@@ -973,7 +1052,9 @@ export default {
     updateDateRange() {
       if (this.currentView === "weekly") {
         const weekStart = new Date(this.startDate);
-        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
+        weekStart.setDate(
+          this.startDate.getDate() - this.startDate.getDay() + 1
+        );
         this.startDate = weekStart;
 
         const weekEnd = new Date(this.startDate);
@@ -981,8 +1062,16 @@ export default {
         this.endDate = weekEnd;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        this.startDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+        this.endDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        );
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());
@@ -1125,7 +1214,10 @@ export default {
 
     getCandidateName() {
       if (this.selectedCandidate) {
-        if (this.selectedCandidate.first_name && this.selectedCandidate.last_name) {
+        if (
+          this.selectedCandidate.first_name &&
+          this.selectedCandidate.last_name
+        ) {
           return `${this.selectedCandidate.first_name} ${this.selectedCandidate.last_name}`;
         } else {
           return (
@@ -1163,7 +1255,11 @@ export default {
         return;
       }
 
-      if (candidateId && candidateId.job !== undefined && candidateId.job !== null) {
+      if (
+        candidateId &&
+        candidateId.job !== undefined &&
+        candidateId.job !== null
+      ) {
         this.candidateJob = candidateId.job.toString();
       } else {
         this.candidateJob = "";
@@ -1242,7 +1338,11 @@ export default {
         return;
       }
 
-      if (candidateId && candidateId.job !== undefined && candidateId.job !== null) {
+      if (
+        candidateId &&
+        candidateId.job !== undefined &&
+        candidateId.job !== null
+      ) {
         this.candidateJob = candidateId.job.toString();
       } else {
         this.candidateJob = "";
@@ -1449,7 +1549,8 @@ export default {
       }
     },
     handleScroll() {
-      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollableHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
       const scrolled = window.scrollY;
 
       if (scrolled >= scrollableHeight - 100) {
@@ -1518,9 +1619,6 @@ export default {
   background-color: #f9f9f9;
 }
 
-.sidebar-container {
-  display: flex;
-}
 .staff-count-round {
   position: absolute;
   width: 20px;

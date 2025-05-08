@@ -3,9 +3,18 @@
     <!-- <Navbar /> -->
 
     <div id="main" class="main d-flex">
-      <div class=""><Navbar /></div>
-      <div class="col-10 ps-5 pt-3">
-        <div class="pagetitle d-flex justify-content-between px-2">
+      <div
+        class=""
+        style="
+          background: #fff;
+
+          border-radius: 20px;
+        "
+      >
+        <Navbar />
+      </div>
+      <div class="container-fluid ps-5 pt-3">
+        <div class="row pagetitle d-flex justify-content-between px-2">
           <div class="py-3">
             <ol class="breadcrumb my-2">
               <li class="breadcrumb-item active fs-6">

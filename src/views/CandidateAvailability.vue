@@ -405,6 +405,7 @@ export default {
       selectedCandidateStatusForDate: [],
       statusForSelectedDate: null,
       currentPage: 1,
+      totalPages: 1,
       itemsPerPage: 10,
       isLoading: false,
     };
@@ -420,9 +421,12 @@ export default {
         return [];
       }
     },
-    totalRecordsOnPage() {
-      return this.paginateCandidates.length;
-    },
+    // paginateCandidates() {
+    //   return this.candidateList;
+    // },
+    // totalRecordsOnPage() {
+    //   return this.paginateCandidates.length;
+    // },
     daysOfWeek() {
       return [
         "Monday",
@@ -790,8 +794,9 @@ export default {
         this.availability_id = null;
       }
     },
-    async changePage(page) {
-      this.currentPage = page;
+    async changePage(newPage) {
+      // if (newPage < 1 || newPage > this.totalPages) return;
+      this.currentPage = newPage;
       await this.fetchCandidateList();
     },
     closeModal() {
@@ -811,6 +816,7 @@ export default {
           {
             params: { date: startDate },
             per_page: this.itemsPerPage,
+            page: this.currentPage,
           }
         );
         this.candidateList = response.data.data;

@@ -196,37 +196,43 @@
         <div class="col-6">
           <div class="card">
             <div class="card-body">
-              <div class="border-bottom d-flex justify-content-between">
+              <div class="border-bottom d-flex justify-content-between pb-3">
                 <h5
                   class="card-title text-uppercase fw-bold small d-flex align-items-center"
                 >
                   Jobs
                 </h5>
+                <div>
+                  <button
+                    type="button"
+                    class="btn text-nowrap"
+                    data-bs-toggle="modal"
+                    data-bs-target="#addStaffJobs"
+                    data-bs-whatever="@mdo"
+                    style="background: #f9944b; color: #fff"
+                  >
+                    + Add
+                  </button>
+                </div>
               </div>
             </div>
             <div class="card-body d-flex justify-content-between">
-              <div class="d-flex gap-2 flex-wrap">
+              <div class="d-flex gap-2 flex-wrap w-100">
                 <!-- <button type="button" class="btn btn-primary btn-sm">
                   Assistance Number
                 </button>
                 <button type="button" class="btn btn-primary btn-sm">HCA</button> -->
-                <div class="gap-2 d-flex" v-for="jobId in getJobs" :key="jobId">
-                  <i class="bi bi-person-circle"></i>
-                  <span class="btn">{{ getJobName(jobId) }}</span>
+                <div
+                  class="gap-2 d-flex flex-column rounded-2 w-25"
+                  v-for="(jobId, index) in getJobs"
+                  :key="jobId"
+                  :style="getBgStyle(index)"
+                  style="flex: 0 0 14%"
+                >
+                  <i class="bi bi-person-circle text-center text-wrap"></i>
+                  <span class="btn py-0 border-0">{{ getJobName(jobId) }}</span>
                   <!-- <span class="btn btn-primary">{{ jobId }}</span> -->
                 </div>
-              </div>
-              <div>
-                <button
-                  type="button"
-                  class="btn text-nowrap"
-                  data-bs-toggle="modal"
-                  data-bs-target="#addStaffJobs"
-                  data-bs-whatever="@mdo"
-                  style="background: #f9944b; color: #fff"
-                >
-                  + Add
-                </button>
               </div>
             </div>
           </div>
@@ -699,6 +705,30 @@ export default {
     AddStaffJobs,
   },
   methods: {
+    getBgStyle(index) {
+      const colors = [
+        " #F9944B14", // index 0
+        "#34C7591A", // index 1
+        "#FF2D551A", // index 2 background: #FF2D551A;
+
+        "#32ADE61A", // index 3 background: #32ADE61A;
+
+        "#32ADE613", // index 4 background: #32ADE614;
+
+        "#007AFF14", // index 5 background: #007AFF14;
+        "#5856D614", // index 5 background: #5856D614;
+
+        "#AF52DE1A", // index 5 background: #background: #AF52DE1A;
+
+        "#A2845E14", // index 5 background: #A2845E14;
+        "#30B0C714", // index 5 background: #30B0C714;
+        "#FF3B3014", // index 5 background: #FF3B3014;
+
+        // add more colors as needed
+      ];
+      const bgColor = colors[index % colors.length]; // loop colors if more items
+      return { backgroundColor: bgColor };
+    },
     getJobName(jobId) {
       const job = this.options.find((job) => job.id === jobId);
       return job ? job.name : "";

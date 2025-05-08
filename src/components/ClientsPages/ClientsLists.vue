@@ -1,9 +1,18 @@
 <template>
   <div>
     <div id="main" class="main d-flex">
-      <div class=""><Navbar /></div>
-      <div class="container-fluid px-5 pt-5 pb-5">
-        <div class="row">
+      <div
+        class=""
+        style="
+          background: #fff;
+
+          border-radius: 20px;
+        "
+      >
+        <Navbar />
+      </div>
+      <div class="container-fluid">
+        <div class="row px-5 pt-5 pb-5">
           <div class="d-flex justify-content-between px-2">
             <div class="">
               <ol class="breadcrumb mb-1">
@@ -88,6 +97,7 @@
                             padding: 8px 13px 9px 13px;
                             border-radius: 10px;
                             box-shadow: 0px 4px 40px 0px #0000000d;
+                            z-index: 1;
                           "
                         >
                           <div></div>
@@ -322,11 +332,11 @@
                               </button>
                               &nbsp;&nbsp;
                               <!-- <button class="btn btn-outline-success text-nowrap">
-                              <i
-                                class="bi bi-trash"
-                                v-on:click="clientsDeleteMethod(client.id)"
-                              ></i></button
-                            >&nbsp;&nbsp; -->
+                                <i
+                                  class="bi bi-trash"
+                                  v-on:click="clientsDeleteMethod(client.id)"
+                                ></i></button
+                              >&nbsp;&nbsp; -->
                               <router-link
                                 :to="{
                                   name: 'SingleClientProfile',
