@@ -312,64 +312,69 @@
                     </thead>
 
                     <tbody v-if="candidateList?.length > 0" class="mt-2">
-                      <!-- <tr class="sticky-header">
-                    <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
-                    <td>
-                      <div
-                        class="calendar-grid"
-                        style="
-                          max-height: 240px;
-                          overflow-y: auto;
-                          overflow-x: hidden;
-                        "
-                      >
-                        <div
-                          v-for="day in selectedDateRow"
-                          :key="day"
-                          class="text-center"
-                        >
-                          <ul
-                            class="list-unstyled mb-0"
-                            v-if="
-                              vacancyList.some(
-                                (data) => data.day === formattedDate(day)
-                              )
+                      <tr class="sticky-header">
+                        <td
+                          style="border-right: 1px solid rgb(209, 208, 208)"
+                        ></td>
+                        <td>
+                          <div
+                            class="calendar-grid"
+                            style="
+                              max-height: 240px;
+                              overflow-y: auto;
+                              overflow-x: hidden;
                             "
                           >
-                            <li
-                              class="position-relative"
-                              v-for="(vacancy, liIndex) in vacancyList.find(
-                                (data) => data.day === formattedDate(day)
-                              )?.vacancies || []"
-                              :key="vacancy.id"
-                              :draggable="true"
-                              @dragstart="handleDragStart(vacancy)"
-                              @drop="handleRevertDrop(vacancy.id, $event)"
-                              @dragover.prevent="handleDragOver"
-                              :class="{
-                                'bg-info': liIndex === 0,
-                                'bg-warning': liIndex === 1,
-                                'bg-success': liIndex === 2,
-                                'bg-primary': liIndex >= 3,
-                              }"
+                            <div
+                              v-for="day in selectedDateRow"
+                              :key="day"
+                              class="text-center"
                             >
-                              <span class="d-flex flex-column align-items-baseline">
-                                <span class="text-capitalize"
-                                  >{{ vacancy.site }}, {{ vacancy.job_title }}</span
+                              <ul
+                                class="list-unstyled mb-0"
+                                v-if="
+                                  vacancyList.some(
+                                    (data) => data.day === formattedDate(day)
+                                  )
+                                "
+                              >
+                                <li
+                                  class="position-relative"
+                                  v-for="(vacancy, liIndex) in vacancyList.find(
+                                    (data) => data.day === formattedDate(day)
+                                  )?.vacancies || []"
+                                  :key="vacancy.id"
+                                  :draggable="true"
+                                  @dragstart="handleDragStart(vacancy)"
+                                  @drop="handleRevertDrop(vacancy.id, $event)"
+                                  @dragover.prevent="handleDragOver"
+                                  :class="{
+                                    'bg-info': liIndex === 0,
+                                    'bg-warning': liIndex === 1,
+                                    'bg-success': liIndex === 2,
+                                    'bg-primary': liIndex >= 3,
+                                  }"
                                 >
-                                <span>{{
-                                  vacancy.site_shift.replace(/_/g, " ")
-                                }}</span>
-                              </span>
-                              <span class="staff-count-round text-white">{{
-                                vacancy.staff_required
-                              }}</span>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </td>
-                  </tr> -->
+                                  <span
+                                    class="d-flex flex-column align-items-baseline"
+                                  >
+                                    <span class="text-capitalize"
+                                      >{{ vacancy.site }},
+                                      {{ vacancy.job_title }}</span
+                                    >
+                                    <span>{{
+                                      vacancy.site_shift.replace(/_/g, " ")
+                                    }}</span>
+                                  </span>
+                                  <span class="staff-count-round text-white">{{
+                                    vacancy.staff_required
+                                  }}</span>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
 
                       <tr v-for="data in candidateList" :key="data.id">
                         <div
@@ -1012,7 +1017,7 @@ export default {
       this.getJobTitleMethod();
       this.getTimeShift();
     },
-    oveToPrevious() {
+    moveToPrevious() {
       if (this.currentView === "weekly") {
         this.startDate.setDate(this.startDate.getDate() - 7);
         this.endDate.setDate(this.endDate.getDate() - 7);
@@ -1236,7 +1241,7 @@ export default {
       if (this.$refs.editAssignScheduleShift) {
         await this.$refs.editAssignScheduleShift.fetchVacancyIdMethod();
         await this.$refs.editAssignScheduleShift.getJobTitleMethod();
-        await this.$refs.editAssignScheduleShift.fetchVacancyListMethod();
+        // await this.$refs.editAssignScheduleShift.fetchVacancyListMethod();
         await this.$refs.editAssignScheduleShift.fetchAssignList();
       }
 
@@ -1322,7 +1327,7 @@ export default {
       //   return;
       // }
 
-      this.$refs.directAssignShiftList.fetchVacancyListMethod();
+      // this.$refs.directAssignShiftList.fetchVacancyListMethod();
 
       if (!candidateId || !candidateId.candidate_id) {
         return;
@@ -1603,7 +1608,7 @@ export default {
 
     this.fetchCandidateList();
 
-    this.fetchVacancyListMethod();
+    // this.fetchVacancyListMethod();
     // window.addEventListener("scroll", this.handleScroll);
     // document.documentElement.style.overflowY = "hidden";
   },

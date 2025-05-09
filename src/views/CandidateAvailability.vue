@@ -412,18 +412,19 @@ export default {
   },
 
   computed: {
-    paginateCandidates() {
-      if (this.candidateList) {
-        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-        const endIndex = startIndex + this.itemsPerPage;
-        return this.candidateList.slice(startIndex, endIndex);
-      } else {
-        return [];
-      }
-    },
     // paginateCandidates() {
-    //   return this.candidateList;
+    //   if (this.candidateList) {
+    //     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    //     const endIndex = startIndex + this.itemsPerPage;
+    //     return this.candidateList.slice(startIndex, endIndex);
+    //   } else {
+    //     return [];
+    //   }
     // },
+
+    paginateCandidates() {
+      return this.candidateList;
+    },
     // totalRecordsOnPage() {
     //   return this.paginateCandidates.length;
     // },
@@ -795,9 +796,9 @@ export default {
       }
     },
     async changePage(newPage) {
-      // if (newPage < 1 || newPage > this.totalPages) return;
+      if (newPage < 1 || newPage > this.totalPages) return;
       this.currentPage = newPage;
-      await this.fetchCandidateList();
+      await this.fetchCandidateList(this.formattedStartDate);
     },
     closeModal() {
       this.selectedDate = null;
@@ -807,19 +808,24 @@ export default {
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
-      this.fetchCandidateList();
+      this.fetchCandidateList(this.formattedStartDate);
     },
     async fetchCandidateList(startDate) {
       try {
         const response = await axios.get(
           `${VITE_API_URL}/candidates_weekly_availability`,
           {
-            params: { date: startDate },
-            per_page: this.itemsPerPage,
-            page: this.currentPage,
+            params: {
+              date: this.formattedStartDate,
+              per_page: this.itemsPerPage,
+              page: this.currentPage,
+            },
           }
         );
         this.candidateList = response.data.data;
+        this.totalPages = response.data.total_pages;
+        this.currentPage = response.data.current_page;
+        this.totalCount = response.data.total_count;
 
         // this.candidateList.forEach((candidate) => {
         //   candidate.availabilityByDate = {};
@@ -856,10 +862,10 @@ export default {
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(endOfWeek.getDate() + 6);
     this.endDate = endOfWeek;
-    this.intervalId = setInterval(() => {
-      this.fetchCandidateList(this.formattedStartDate);
-    }, 2000);
-    this.fetchCandidateList();
+    // this.intervalId = setInterval(() => {
+    //   this.fetchCandidateList(this.formattedStartDate);
+    // }, 2000);
+    this.fetchCandidateList(this.formattedStartDate);
     // window.addEventListener("beforeunload", this.saveToLocalStorage);
   },
   beforeUnmount() {
