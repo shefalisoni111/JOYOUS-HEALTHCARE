@@ -92,7 +92,7 @@
                         <div
                           class="d-flex gap-2 flex-column position-absolute"
                           style="
-                            transform: translate(150%, 21%);
+                            transform: translate(338%, 0%);
                             background: rgb(255, 255, 255);
                             padding: 8px 13px 9px 13px;
                             border-radius: 10px;

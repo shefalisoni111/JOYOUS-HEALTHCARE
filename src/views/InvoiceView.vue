@@ -46,13 +46,6 @@ ul.generalsetting h6 {
   color: #888;
 }
 
-.action-menu {
-  position: absolute;
-  top: 0;
-  left: 5px;
-
-  z-index: 100;
-}
 .shadow-soft {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   border-radius: 12px;

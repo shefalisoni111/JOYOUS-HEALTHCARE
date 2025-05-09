@@ -158,7 +158,17 @@
             class="d-flex gap-2 mb-3 justify-content-between"
             v-if="showFilters"
           >
-            <div class="d-flex gap-2">
+            <div
+              class="d-flex gap-2 flex-column position-absolute"
+              style="
+                transform: translate(150%, 21%);
+                background: rgb(255, 255, 255);
+                padding: 8px 13px 9px 13px;
+                border-radius: 10px;
+                box-shadow: 0px 4px 40px 0px #0000000d;
+                z-index: 1;
+              "
+            >
               <div></div>
 
               <select
@@ -199,17 +209,17 @@
                 v-model="localSearchQuery"
                 @input="filterData"
               />
-            </div>
-            <div>
-              <button
-                @click="resetFilter"
-                class="btn btn-secondary"
-                :disabled="
-                  !selectedSiteName && !selectedCandidate && !localSearchQuery
-                "
-              >
-                Reset Filters
-              </button>
+              <div>
+                <button
+                  @click="resetFilter"
+                  class="btn btn-secondary"
+                  :disabled="
+                    !selectedSiteName && !selectedCandidate && !localSearchQuery
+                  "
+                >
+                  Reset Filters
+                </button>
+              </div>
             </div>
           </div>
           <div
@@ -1705,13 +1715,6 @@ ul.nav-pills {
   color: #888;
 }
 
-.action-menu {
-  position: absolute;
-  top: 0;
-  left: 25px;
-
-  z-index: 100;
-}
 .shadow-soft {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   border-radius: 12px;
