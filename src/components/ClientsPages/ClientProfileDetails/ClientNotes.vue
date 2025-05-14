@@ -3,9 +3,9 @@
   <div>
     <div class="row">
       <div class="col-12">
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between px-3">
           <div>
-            <h5 class="mb-2 d-flex align-items-center">Notes</h5>
+            <h5 class="mb-2 d-flex align-items-center px-3">Notes</h5>
           </div>
           <div>
             <!-- <button
@@ -19,31 +19,43 @@
             </button> -->
           </div>
         </div>
-        <hr />
-        <div class="d-flex w-25 mt-3">
-          <form @submit.prevent="submitForm">
+
+        <div class="mt-3">
+          <form @submit.prevent="submitForm" class="d-flex px-3">
             <input
-              class="form-control"
+              class="form-control w-75"
               type="text"
               placeholder="Add Note"
               v-model="notes"
             />
+            &nbsp;
+            <button
+              class="btn btn-primary"
+              :disabled="!isValidForm"
+              @click="submitForm"
+            >
+              + Add
+            </button>
           </form>
-          &nbsp;
+
           <!-- <span v-if="!isValidForm" class="text-danger">Notes Required</span> -->
-          <button class="btn btn-primary" :disabled="!isValidForm" @click="submitForm">
-            Add
-          </button>
         </div>
         <br />
-        <div class="d-flex flex-column" v-if="getNotes?.length > 0">
+        <div class="d-flex flex-column px-3" v-if="getNotes?.length > 0">
           <div v-for="data in getNotes" :key="data.id">
             <div class="d-flex gap-2">
               <div>
-                <i class="bi bi-journal-album fs-1"></i>
+                <i
+                  class="bi bi-journal-album mt-n2"
+                  style="
+                    border-radius: 50%;
+                    background: #f9944b14;
+                    padding: 10px 13px;
+                  "
+                ></i>
               </div>
 
-              <div class="mt-2">
+              <div class="">
                 <h6
                   class="mb-0 text-capitalize"
                   style="width: 600px; word-wrap: break-word"
@@ -54,16 +66,18 @@
               </div>
               <div>
                 <i
-                  class="bi bi-pencil-square cursor-pointer btn btn-outline-success text-nowrap"
+                  class="bi bi-pencil-fill cursor-pointer text-nowrap"
                   type="button"
                   data-bs-toggle="modal"
                   data-bs-target="#editClientNotes"
                   data-bs-whatever="@mdo"
                   @click="editRestricted(data.id)"
+                  style="color: #f9944b"
                 ></i>
                 &nbsp;&nbsp;
                 <i
-                  class="bi bi-trash cursor-pointer btn btn-outline-danger text-nowrap"
+                  class="bi bi-trash cursor-pointer danger text-nowrap"
+                  style="color: #f9944b"
                   @click="deleteClientNote(data.id)"
                 ></i>
               </div>

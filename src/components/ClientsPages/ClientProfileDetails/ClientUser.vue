@@ -1,22 +1,54 @@
 <template>
   <div>
-    <button
-      type="button"
-      class="btn btn-outline-success text-nowrap"
-      data-bs-toggle="modal"
-      data-bs-target="#addClientUser"
-      data-bs-whatever="@mdo"
-      @click="openAddUser"
-    >
-      + Add Client User
-    </button>
+    <div class="d-flex justify-content-between px-3">
+      <div>
+        <h5 class="mb-2 d-flex align-items-center px-3">User</h5>
+      </div>
+      <div>
+        <button
+          type="button"
+          class="btn btn-primary text-nowrap"
+          data-bs-toggle="modal"
+          data-bs-target="#addClientUser"
+          data-bs-whatever="@mdo"
+          @click="openAddUser"
+        >
+          + Add Client User
+        </button>
+      </div>
+    </div>
+
     <div class="table-wrapper mt-3">
       <table class="table">
         <thead>
           <tr>
-            <th>Email</th>
-            <th>Password</th>
-            <th>Actions</th>
+            <th>
+              Email
+              <img
+                src="../../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th>
+              Password
+              <img
+                src="../../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
+            <th>
+              Actions
+              <img
+                src="../../../assets/ArrowDown.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
+            </th>
           </tr>
         </thead>
         <tbody v-if="getClientUser?.length > 0">

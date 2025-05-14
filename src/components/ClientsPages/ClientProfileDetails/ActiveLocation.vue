@@ -2,11 +2,11 @@
   <div>
     <div class="row">
       <div class="col-12">
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between px-3">
           <h5 class="mb-2 d-flex align-items-center">Site</h5>
           <button
             type="button"
-            class="btn btn-outline-success text-nowrap"
+            class="btn btn-primary text-nowrap"
             data-bs-toggle="modal"
             data-bs-target="#addClientSite"
             data-bs-whatever="@mdo"
@@ -15,29 +15,30 @@
             + Add Site
           </button>
         </div>
-        <div v-if="paginateCandidates?.length > 0">
-          <div class="card mt-2" v-for="data in paginateCandidates" :key="data.id">
-            <div class="card-header">
-              <!-- <router-link
-              :to="{ name: 'SingleSiteprofile' }"
-              class="text-decoration-none text-black"
-              >Hospital 1</router-link
-            > -->
-            </div>
-            <div class="card-body">
-              <h5 class="card-title"></h5>
+        <div v-if="paginateCandidates?.length > 0" class="col-3">
+          <div
+            class="card mt-2 mx-3"
+            v-for="data in paginateCandidates"
+            :key="data.id"
+          >
+            <div
+              class="card-body d-flex align-items-start justify-content-evenly"
+            >
               <div class="card-text d-flex gap-3">
                 <div class="mt-3">
                   <router-link
                     :to="{ name: 'SingleSiteprofile', params: { id: data.id } }"
                   >
-                    <span class="rounded-circle p-3 text-decoration-none text-black">{{
-                      getFirstCharAndNumber(data.site_name)
-                    }}</span></router-link
+                    <span
+                      class="rounded-circle p-3 text-decoration-none text-black"
+                      >{{ getFirstCharAndNumber(data.site_name) }}</span
+                    ></router-link
                   >
                 </div>
                 <div class="">
-                  <span class="fw-bold text-capitalize">{{ data.site_name }}</span
+                  <span class="fw-bold text-capitalize">{{
+                    data.site_name
+                  }}</span
                   ><br />
                   <span>{{ data.email }}</span
                   ><br />
@@ -49,13 +50,13 @@
               </div>
               <button
                 type="button"
-                class="btn btn-primary mt-3 text-nowrap text-nowrap"
+                class="btn border-0"
                 data-bs-toggle="modal"
                 data-bs-target="#editClientSite"
                 data-bs-whatever="@mdo"
                 @click="editsiteId(data.id)"
               >
-                Edit
+                <i class="bi bi-pencil-fill" style="color: #f9944b"></i>
               </button>
             </div>
           </div>
@@ -67,7 +68,11 @@
         </div>
       </div>
     </div>
-    <div class="mx-3 mt-3" style="text-align: right" v-if="getClientDatas?.length >= 3">
+    <div
+      class="mx-3 mt-3"
+      style="text-align: right"
+      v-if="getClientDatas?.length >= 3"
+    >
       <button class="btn btn-outline-dark btn-sm">
         {{ itemsPerPage }} Records Per Page
       </button>
@@ -209,6 +214,7 @@ export default {
 .card .rounded-circle {
   border: 1px solid #000;
   padding: 19px 12px;
+  background: #fff2eb;
 }
 .btn-primary {
   border: none;

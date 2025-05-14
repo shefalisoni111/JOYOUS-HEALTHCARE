@@ -10,6 +10,12 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addClientUser">Add Client User</h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -83,72 +89,80 @@
                       >Site Name Required</span
                     > -->
                 </div>
-
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label">email</label>
-                  </div>
-                  <div class="col-10">
-                    <input
-                      type="email"
-                      class="form-control"
-                      v-model="email"
-                      @input="validateEmailFormat"
-                      @change="detectAutofill"
-                      ref="email"
-                      autocomplete="new-email"
-                    />
-                    <span v-if="email && emailInUse" class="text-danger"
-                      >Email already in use</span
-                    >
-                    <span
-                      v-if="email && !validateEmailFormat(email)"
-                      class="text-danger"
-                      >Invalid Email</span
-                    >
-                  </div>
-                </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label">Password</label>
-                  </div>
-                  <div class="col-10">
-                    <input
-                      type="password"
-                      class="form-control"
-                      v-model="password"
-                      @input="validatePasswordCriteria"
-                      @change="detectAutofill"
-                      ref="password"
-                      autocomplete="new-password"
-                    />
-                    <span
-                      v-if="password && !isPasswordValid"
-                      class="text-danger"
-                    >
-                      Password must be at least 8 characters long and include
-                      uppercase, lowercase, numeric, and special characters.
-                    </span>
+                <div class="col-6">
+                  <div class="mb-3">
+                    <div class="col-12">
+                      <label class="form-label">email</label>
+                    </div>
+                    <div class="col-12">
+                      <input
+                        type="email"
+                        class="form-control"
+                        v-model="email"
+                        @input="validateEmailFormat"
+                        @change="detectAutofill"
+                        ref="email"
+                        autocomplete="new-email"
+                      />
+                      <span v-if="email && emailInUse" class="text-danger"
+                        >Email already in use</span
+                      >
+                      <span
+                        v-if="email && !validateEmailFormat(email)"
+                        class="text-danger"
+                        >Invalid Email</span
+                      >
+                    </div>
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label">Confirm Password</label>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Password</label>
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="password"
+                          class="form-control"
+                          v-model="password"
+                          @input="validatePasswordCriteria"
+                          @change="detectAutofill"
+                          ref="password"
+                          autocomplete="new-password"
+                        />
+                        <span
+                          v-if="password && !isPasswordValid"
+                          class="text-danger"
+                        >
+                          Password must be at least 8 characters long and
+                          include uppercase, lowercase, numeric, and special
+                          characters.
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-10">
-                    <input
-                      type="password"
-                      class="form-control"
-                      v-model="confirm_password"
-                      @input="validatePasswordMatch"
-                      @change="detectAutofill"
-                    />
-                    <span
-                      v-if="confirm_password && !passwordsMatch"
-                      class="text-danger"
-                    >
-                      Passwords do No match.
-                    </span>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Confirm Password</label>
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="password"
+                          class="form-control"
+                          v-model="confirm_password"
+                          @input="validatePasswordMatch"
+                          @change="detectAutofill"
+                        />
+                        <span
+                          v-if="confirm_password && !passwordsMatch"
+                          class="text-danger"
+                        >
+                          Passwords do No match.
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </form>
@@ -427,7 +441,7 @@ export default {
   },
   mounted() {
     this.client_id = this.$route.params.id;
-    // this.getClientFetchSiteMethod();
+    this.getClientFetchSiteMethod(this.client_id);
   },
 };
 </script>
@@ -435,14 +449,12 @@ export default {
 <style scoped>
 .modal-body {
   border-radius: 5px;
-  background: #dbdbdb;
 }
 
 select {
   width: 100%;
   padding: 10px;
   border-radius: 4px;
-  border: 0px;
 }
 label.form-label {
   text-transform: capitalize;

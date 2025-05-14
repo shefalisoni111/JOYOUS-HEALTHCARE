@@ -1,19 +1,13 @@
 <template>
   <div class="row">
     <div class="col-12">
-      <div class="">
-        <div class="card mt-2">
-          <div class="card-header">Manage Client Jobs here</div>
-          <div class="card-body">
-            <h5 class="card-title"></h5>
-            <div class="card-text d-flex gap-2 mb-3">
-              <div class="gap-2 d-flex" v-for="jobId in getJobs" :key="jobId">
-                <span class="btn btn-primary">{{ getJobName(jobId) }}</span>
-              </div>
-            </div>
+      <div class="px-3">
+        <div class="col-12 mt-2">
+          <div class="d-flex justify-content-between">
+            <div class="">Manage Client Jobs here</div>
             <button
               type="button"
-              class="btn btn-outline-success text-nowrap"
+              class="btn btn-primary text-nowrap"
               data-bs-toggle="modal"
               data-bs-target="#AddClientJobs"
               data-bs-whatever="@mdo"
@@ -22,6 +16,30 @@
             </button>
           </div>
         </div>
+        <dic class="">
+          <div class="card-body">
+            <div class="d-flex gap-3 flex-wrap">
+              <div
+                class="job-card text-center p-3 rounded-3"
+                v-for="(jobId, index) in getJobs"
+                :key="jobId"
+                :style="getBgStyle(index)"
+              >
+                <div
+                  class="job-icon d-flex align-items-center justify-content-center mx-auto mb-2 rounded-circle"
+                  :style="getIconStyle(index)"
+                >
+                  <img
+                    src="../../../assets/jobname.png"
+                    alt="icon"
+                    class="icon-img"
+                  />
+                </div>
+                <span class="fw-medium">{{ getJobName(jobId) }}</span>
+              </div>
+            </div>
+          </div>
+        </dic>
       </div>
     </div>
     <AddClientJob @jobClientAdded="getClientJobData" :options="options" />
@@ -51,6 +69,45 @@ export default {
     },
   },
   methods: {
+    getBgStyle(index) {
+      const bgColors = [
+        "#F9944B14", // 0 - light orange
+        "#34C7591A", // 1 - light green
+        "#FF2D551A", // 2 - light red
+        "#32ADE61A", // 3 - light teal
+        "#007AFF14", // 4 - light blue
+        "#5856D614", // 5 - light purple
+        "#AF52DE1A", // 6 - light violet
+        "#A2845E14", // 7 - light brown
+        "#30B0C714", // 8 - light cyan
+        "#FF3B3014", // 9 - light coral
+        "#FFD60A14", // 10 - light yellow
+      ];
+
+      return {
+        backgroundColor: bgColors[index % bgColors.length],
+      };
+    },
+
+    getIconStyle(index) {
+      const iconColors = [
+        "#F9944B", // 0 - orange
+        "#34C759", // 1 - green
+        "#FF2D55", // 2 - red
+        "#32ADE6", // 3 - teal
+        "#007AFF", // 4 - blue
+        "#5856D6", // 5 - purple
+        "#AF52DE", // 6 - violet
+        "#A2845E", // 7 - brown
+        "#30B0C7", // 8 - cyan
+        "#FF3B30", // 9 - coral
+        "#FFD60A", // 10 - yellow
+      ];
+
+      return {
+        backgroundColor: iconColors[index % iconColors.length],
+      };
+    },
     async getClientJobData() {
       this.isLoading = true;
       try {
@@ -89,3 +146,21 @@ export default {
   },
 };
 </script>
+<style scoped>
+.job-card {
+  width: 120px;
+  height: 130px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.job-icon {
+  width: 48px;
+  height: 48px;
+  background-color: #f9944b;
+}
+
+.icon-img {
+  width: 24px;
+  height: 24px;
+}
+</style>

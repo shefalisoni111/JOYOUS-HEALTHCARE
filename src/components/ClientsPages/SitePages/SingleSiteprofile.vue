@@ -1,8 +1,17 @@
 <template>
   <div>
     <div id="main" class="main d-flex">
-      <div class=""><Navbar /></div>
-      <div class="col-12 p-4">
+      <div
+        class=""
+        style="
+          background: #fff;
+
+          border-radius: 20px;
+        "
+      >
+        <Navbar />
+      </div>
+      <div class="container-fluid">
         <div class="container-fluid p-0 mt-3">
           <div id="main" class="bg-orange-light">
             <div class="pagetitle d-flex justify-content-between">
@@ -44,7 +53,7 @@
                         class="nav-link d-inline fw-bolder"
                         style="color: #000000"
                         aria-current="page"
-                        to="/SiteLists"
+                        to="/site/siteLists"
                         >Site</router-link
                       >
                       / Rated and rules
@@ -55,9 +64,18 @@
             </div>
           </div>
         </div>
+        <div class="row mb-3 ps-3">
+          <router-link
+            class="nav-link d-inline text-muted"
+            style="color: #000000"
+            aria-current="page"
+            to="/site/siteLists"
+            ><i class="bi bi-arrow-left"></i> Back to list</router-link
+          >
+        </div>
         <div class="">
           <div id="main">
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-12 pb-3 pt-1">
                 <div class="float-start">
                   <button
@@ -80,130 +98,181 @@
                   </button>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-md-7">
-                <div class="card profile position-relative">
-                  <h6
-                    class="position-absolute p-2 z-1 text-white text-capitalize tag"
-                    style="background: #68a325; margin-left: -7px"
-                  >
-                    {{ getSiteDatas.status ? "Active" : "In-Active" }}
-                  </h6>
-                  <img
-                    src="../location.jpg"
-                    class="card-img-top position-relative"
-                    height="317"
-                    alt="..."
-                    loading="eager"
-                  />
-
-                  <!-- <div class="ribbon"><span>Active</span></div> -->
-                  <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                    <li
-                      class="nav-item d-inline-flex gap-2"
-                      role="presentation"
+            </div> -->
+            <div class="row px-5">
+              <div class="d-flex gap-4 justify-content-center">
+                <div class="col-md-7">
+                  <div class="card profile position-relative">
+                    <h6
+                      class="position-absolute p-2 z-1 text-white text-capitalize tag"
+                      style="background: #68a325; margin-left: -7px"
                     >
-                      <button
-                        class="nav-link"
-                        :class="{ active: activeTab === index }"
-                        aria-selected="true"
-                        type="button"
-                        role="tab"
-                        data-bs-toggle="pill"
-                        v-for="(tab, index) in tabs"
-                        :key="index"
-                        @click="selectTab(index)"
+                      {{ getSiteDatas.status ? "Active" : "In-Active" }}
+                    </h6>
+                    <img
+                      src="../location.jpg"
+                      class="card-img-top position-relative"
+                      height="317"
+                      alt="..."
+                      loading="eager"
+                    />
+
+                    <!-- <div class="ribbon"><span>Active</span></div> -->
+                    <ul
+                      class="nav nav-pills mb-3"
+                      id="pills-tab"
+                      role="tablist"
+                    >
+                      <li
+                        class="nav-item d-inline-flex gap-2"
+                        role="presentation"
                       >
-                        {{ tab.name }}
-                      </button>
-                    </li>
-                  </ul>
-                  <div class="tab-content">
-                    <component :is="activeComponent"></component>
+                        <button
+                          class="nav-link"
+                          :class="{ active: activeTab === index }"
+                          aria-selected="true"
+                          type="button"
+                          role="tab"
+                          data-bs-toggle="pill"
+                          v-for="(tab, index) in tabs"
+                          :key="index"
+                          @click="selectTab(index)"
+                        >
+                          {{ tab.name }}
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-md-5 bg-white px-3" style="border-radius: 12px">
+                  <div class="card-body">
+                    <div class="mt-3">
+                      <h6 class="text-muted fw-semibold mb-3 mt-4">Details</h6>
+                      <div>
+                        <h6>Reference Code : {{ getSiteDatas.refer_code }}</h6>
+                        <!-- <h4>{{ getSiteDatas.site_name }}</h4>
+                        <h6>Email : {{ getSiteDatas.email }}</h6>
+                        <h6>Address : {{ getSiteDatas.address }}</h6> -->
+                        <!-- Name -->
+                        <div class="detail-row">
+                          <div class="icon-box">
+                            <i class="bi bi-person-fill"></i>
+                          </div>
+                          <div class="flex-grow-1">
+                            {{ getSiteDatas?.client_name }}
+                          </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="detail-row">
+                          <div class="icon-box">
+                            <i class="bi bi-envelope-fill"></i>
+                          </div>
+                          <div class="flex-grow-1">
+                            {{ getSiteDatas?.email }}
+                          </div>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="detail-row">
+                          <div class="icon-box">
+                            <i class="bi bi-telephone-fill"></i>
+                          </div>
+                          <div class="flex-grow-1">
+                            {{ getSiteDatas?.phone_number }}
+                          </div>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="detail-row">
+                          <div class="icon-box">
+                            <i class="bi bi-geo-alt-fill"></i>
+                          </div>
+                          <div class="flex-grow-1">
+                            {{ getSiteDatas?.address }}
+                          </div>
+                        </div>
+                        <h6>Mobile : {{ getSiteDatas.phone_number }}</h6>
+                        <h6 class="text-capitalize">
+                          Contact person's name:
+                          {{
+                            getSiteDatas.contact_person_name
+                              ? getSiteDatas.contact_person_name
+                              : "Null"
+                          }}
+                        </h6>
+                        <h6>
+                          Contact person's email:
+                          {{
+                            getSiteDatas.contact_person_email
+                              ? getSiteDatas.contact_person_email
+                              : "Null"
+                          }}
+                        </h6>
+                        <h6>
+                          Contact person's number:
+                          {{
+                            getSiteDatas.contact_person_number
+                              ? getSiteDatas.contact_person_number
+                              : "Null"
+                          }}
+                        </h6>
+                        <h6>
+                          Bookings email:
+                          {{
+                            getSiteDatas.booking_email
+                              ? getSiteDatas.booking_email
+                              : "Null"
+                          }}
+                        </h6>
+                      </div>
+                      <div>
+                        <!-- <h6 class="card-title text-nowrap fw-bold text-capitalize">
+                      {{ getSiteDatas.site_name }}
+                    </h6> -->
+                        <span class="text-lowercase"> </span>
+                      </div>
+                      <div>
+                        <button
+                          type="button"
+                          class="btn text-nowrap text-nowrap border-0"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editSiteProfileDetails"
+                          data-bs-whatever="@mdo"
+                          @click="editSite(getSiteDatas.id)"
+                        >
+                          <i
+                            class="bi bi-pencil-fill"
+                            style="color: rgb(249 148 75)"
+                          ></i>
+                        </button>
+                      </div>
+                    </div>
+                    <hr />
+
+                    <div
+                      class="mt-3 d-flex justify-content-between align-items-center"
+                    >
+                      <div>
+                        <h6
+                          class="card-title text-nowrap fw-bold text-capitalize"
+                        >
+                          Visit Us at:
+                        </h6>
+                        Address:
+                        <span class="text-lowercase">{{
+                          getSiteDatas.address
+                        }}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="col-md-3 bg-white">
-                <div class="card-body">
-                  <div
-                    class="mt-3 d-flex justify-content-between align-items-top"
-                  >
-                    <div>
-                      <h6>Reference Code : {{ getSiteDatas.refer_code }}</h6>
-                      <h4>{{ getSiteDatas.site_name }}</h4>
-                      <h6>Email : {{ getSiteDatas.email }}</h6>
-                      <h6>Address : {{ getSiteDatas.address }}</h6>
-                      <h6>Mobile : {{ getSiteDatas.phone_number }}</h6>
-                      <h6 class="text-capitalize">
-                        Contact person's name:
-                        {{
-                          getSiteDatas.contact_person_name
-                            ? getSiteDatas.contact_person_name
-                            : "Null"
-                        }}
-                      </h6>
-                      <h6>
-                        Contact person's email:
-                        {{
-                          getSiteDatas.contact_person_email
-                            ? getSiteDatas.contact_person_email
-                            : "Null"
-                        }}
-                      </h6>
-                      <h6>
-                        Contact person's number:
-                        {{
-                          getSiteDatas.contact_person_number
-                            ? getSiteDatas.contact_person_number
-                            : "Null"
-                        }}
-                      </h6>
-                      <h6>
-                        Bookings email:
-                        {{
-                          getSiteDatas.booking_email
-                            ? getSiteDatas.booking_email
-                            : "Null"
-                        }}
-                      </h6>
-                    </div>
-                    <div>
-                      <!-- <h6 class="card-title text-nowrap fw-bold text-capitalize">
-                    {{ getSiteDatas.site_name }}
-                  </h6> -->
-                      <span class="text-lowercase"> </span>
-                    </div>
-                    <div>
-                      <button
-                        type="button"
-                        class="btn btn btn-primary text-nowrap text-nowrap"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editSiteProfileDetails"
-                        data-bs-whatever="@mdo"
-                        @click="editSite(getSiteDatas.id)"
-                      >
-                        Edit
-                      </button>
-                    </div>
-                  </div>
-                  <hr />
-
-                  <div
-                    class="mt-3 d-flex justify-content-between align-items-center"
-                  >
-                    <div>
-                      <h6
-                        class="card-title text-nowrap fw-bold text-capitalize"
-                      >
-                        Visit Us at:
-                      </h6>
-                      Address:
-                      <span class="text-lowercase">{{
-                        getSiteDatas.address
-                      }}</span>
-                    </div>
-                  </div>
+            </div>
+            <div class="row mt-3 px-5">
+              <div class="col-12 bg-white pt-4" style="border-radius: 12px">
+                <div class="tab-content ps-3">
+                  <component :is="activeComponent"></component>
                 </div>
               </div>
             </div>

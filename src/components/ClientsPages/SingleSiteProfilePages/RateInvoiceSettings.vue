@@ -399,11 +399,13 @@ export default {
           maxLength
         );
       } else if (!regex.test(this.fetchInvoiceSetting[field])) {
-        this[`error${field}`] = `${field.replace(/_/g, " ")} can only contain numbers.`;
-        this.fetchInvoiceSetting[field] = this.fetchInvoiceSetting[field].replace(
-          /[^0-9]/g,
-          ""
-        );
+        this[`error${field}`] = `${field.replace(
+          /_/g,
+          " "
+        )} can only contain numbers.`;
+        this.fetchInvoiceSetting[field] = this.fetchInvoiceSetting[
+          field
+        ].replace(/[^0-9]/g, "");
       }
       this.handleInputChange();
     },
@@ -421,17 +423,14 @@ export default {
       const regex = /^[A-Za-z\s]*$/;
 
       if (this.fetchInvoiceSetting.site_name.length > 10) {
-        this.errorSiteUnitName = "Invoice site name must No exceed 10 characters.";
-        this.fetchInvoiceSetting.site_name = this.fetchInvoiceSetting.site_name.slice(
-          0,
-          10
-        );
+        this.errorSiteUnitName =
+          "Invoice site name must No exceed 10 characters.";
+        this.fetchInvoiceSetting.site_name =
+          this.fetchInvoiceSetting.site_name.slice(0, 10);
       } else if (!regex.test(this.fetchInvoiceSetting.site_name)) {
         this.errorSiteUnitName = "Invoice site name can only contain letters.";
-        this.fetchInvoiceSetting.site_name = this.fetchInvoiceSetting.site_name.replace(
-          /[^A-Za-z\s]/g,
-          ""
-        );
+        this.fetchInvoiceSetting.site_name =
+          this.fetchInvoiceSetting.site_name.replace(/[^A-Za-z\s]/g, "");
       }
       this.handleInputChange();
     },
@@ -476,71 +475,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.switch {
-  width: 50px;
-  height: 17px;
-  position: relative;
-  display: inline-block;
-}
-
-.switch input {
-  display: none;
-}
-
-.switch .slider {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  cursor: pointer;
-  background-color: #e7ecf1;
-  border-radius: 30px !important;
-  border: 0;
-  padding: 0;
-  display: block;
-  margin: 7px 10px;
-  min-height: 11px;
-}
-
-.switch .slider:before {
-  position: absolute;
-  background-color: #aaa;
-  height: 15px;
-  width: 15px;
-  content: "";
-  left: 0px;
-  bottom: -2px;
-  border-radius: 50%;
-  transition: ease-in-out 0.5s;
-}
-
-.switch .slider:after {
-  content: "";
-  color: rgb(189, 84, 15);
-  display: block;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 70%;
-  transition: all 0.5s;
-  font-size: 10px;
- font-family: 'Inter', sans-serif;
-}
-
-.switch input:checked + .slider:after {
-  transition: all 0.5s;
-  left: 30%;
-  content: "";
-}
-
-.switch input:checked + .slider {
-  background-color: #d3d6d9;
-}
-
-.switch input:checked + .slider:before {
-  transform: translateX(15px);
-  background-color: #ff9800;
-}
-</style>
+<style scoped></style>

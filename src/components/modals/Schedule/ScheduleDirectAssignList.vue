@@ -195,7 +195,7 @@
           </div>
           <div class="modal-footer">
             <button
-              class="btn btn-primary rounded-1"
+              class="btn btn-dark btn-cancel"
               data-bs-target="#scheduleDirectAssignList"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"

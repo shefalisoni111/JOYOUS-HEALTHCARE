@@ -218,20 +218,23 @@
             </div>
             <div class="card-body d-flex justify-content-between">
               <div class="d-flex gap-2 flex-wrap w-100">
-                <!-- <button type="button" class="btn btn-primary btn-sm">
-                  Assistance Number
-                </button>
-                <button type="button" class="btn btn-primary btn-sm">HCA</button> -->
                 <div
-                  class="gap-2 d-flex flex-column rounded-2 w-25"
+                  class="job-card text-center p-3 rounded-3"
                   v-for="(jobId, index) in getJobs"
                   :key="jobId"
                   :style="getBgStyle(index)"
-                  style="flex: 0 0 14%"
                 >
-                  <i class="bi bi-person-circle text-center text-wrap"></i>
-                  <span class="btn py-0 border-0">{{ getJobName(jobId) }}</span>
-                  <!-- <span class="btn btn-primary">{{ jobId }}</span> -->
+                  <div
+                    class="job-icon d-flex align-items-center justify-content-center mx-auto mb-2 rounded-circle"
+                    :style="getIconStyle(index)"
+                  >
+                    <img
+                      src="../../../assets/jobname.png"
+                      alt="icon"
+                      class="icon-img"
+                    />
+                  </div>
+                  <span class="fw-medium">{{ getJobName(jobId) }}</span>
                 </div>
               </div>
             </div>
@@ -706,28 +709,43 @@ export default {
   },
   methods: {
     getBgStyle(index) {
-      const colors = [
-        " #F9944B14", // index 0
-        "#34C7591A", // index 1
-        "#FF2D551A", // index 2 background: #FF2D551A;
-
-        "#32ADE61A", // index 3 background: #32ADE61A;
-
-        "#32ADE613", // index 4 background: #32ADE614;
-
-        "#007AFF14", // index 5 background: #007AFF14;
-        "#5856D614", // index 5 background: #5856D614;
-
-        "#AF52DE1A", // index 5 background: #background: #AF52DE1A;
-
-        "#A2845E14", // index 5 background: #A2845E14;
-        "#30B0C714", // index 5 background: #30B0C714;
-        "#FF3B3014", // index 5 background: #FF3B3014;
-
-        // add more colors as needed
+      const bgColors = [
+        "#F9944B14", // 0 - light orange
+        "#34C7591A", // 1 - light green
+        "#FF2D551A", // 2 - light red
+        "#32ADE61A", // 3 - light teal
+        "#007AFF14", // 4 - light blue
+        "#5856D614", // 5 - light purple
+        "#AF52DE1A", // 6 - light violet
+        "#A2845E14", // 7 - light brown
+        "#30B0C714", // 8 - light cyan
+        "#FF3B3014", // 9 - light coral
+        "#FFD60A14", // 10 - light yellow
       ];
-      const bgColor = colors[index % colors.length]; // loop colors if more items
-      return { backgroundColor: bgColor };
+
+      return {
+        backgroundColor: bgColors[index % bgColors.length],
+      };
+    },
+
+    getIconStyle(index) {
+      const iconColors = [
+        "#F9944B", // 0 - orange
+        "#34C759", // 1 - green
+        "#FF2D55", // 2 - red
+        "#32ADE6", // 3 - teal
+        "#007AFF", // 4 - blue
+        "#5856D6", // 5 - purple
+        "#AF52DE", // 6 - violet
+        "#A2845E", // 7 - brown
+        "#30B0C7", // 8 - cyan
+        "#FF3B30", // 9 - coral
+        "#FFD60A", // 10 - yellow
+      ];
+
+      return {
+        backgroundColor: iconColors[index % iconColors.length],
+      };
     },
     getJobName(jobId) {
       const job = this.options.find((job) => job.id === jobId);
@@ -936,6 +954,22 @@ export default {
   border: none;
   background: transparent;
   box-shadow: none;
+}
+.job-card {
+  width: 120px;
+  height: 130px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.job-icon {
+  width: 48px;
+  height: 48px;
+  background-color: #f9944b;
+}
+
+.icon-img {
+  width: 24px;
+  height: 24px;
 }
 .profile {
   border-radius: 0px;

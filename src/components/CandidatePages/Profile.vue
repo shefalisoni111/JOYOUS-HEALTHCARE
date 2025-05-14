@@ -62,10 +62,31 @@
         <div class="row mb-3">
           <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
             <li
-              class="nav-item d-lg-inline-flex gap-2 d-in"
+              class="nav-item d-lg-inline-flex gap-4 d-in"
               role="presentation"
+              style="border-bottom: 1px solid #ddd"
             >
               <button
+                class="nav-link px-0 btn-css"
+                :to="`/${tab.routeName}`"
+                aria-selected="true"
+                type="button"
+                role="tab"
+                data-bs-toggle="pill"
+                v-for="(tab, index) in tabs"
+                :key="index"
+                @click="selectTab(index)"
+              >
+                <router-link
+                  class="nav-link p-0"
+                  :class="{ active: activeTab === index }"
+                  :to="getTabLink(tab)"
+                >
+                  <img :src="tab.image" class="" />
+                  {{ tab.name }}
+                </router-link>
+              </button>
+              <!-- <button
                 class="btn-css"
                 :to="`/${tab.routeName}`"
                 aria-selected="true"
@@ -81,13 +102,11 @@
                   :class="{ active: activeTab === index }"
                   :to="getTabLink(tab)"
                 >
-                  <!-- <span class="badge bg-success">{{
-                      index === 5 ? getCandidates.candidate_notes_count : ""
-                    }}</span> -->
+               
                   <span class="badge bg-success"></span>
                   {{ tab.name }}</router-link
                 >
-              </button>
+              </button> -->
             </li>
           </ul>
         </div>
@@ -272,7 +291,9 @@ import StaffId from "../CandidatePages/ProfileDetail/StaffId.vue";
 import CandidateHistory from "../CandidatePages/ProfileDetail/CandidateHistory.vue";
 import CandidateReference from "./ProfileDetail/CandidateReference.vue";
 import AddNotes from "../modals/CandidatePage/AddNotes.vue";
-
+import activeLocations from "../../assets/activelocation.png";
+import settings from "../../assets/setting.png";
+import jobs from "../../assets/jobs.png";
 import EditProfileContact from "../modals/CandidatePage/EditProfileContact.vue";
 
 export default {
@@ -288,30 +309,59 @@ export default {
       selectedCandidateId: null,
       contactDetailChecked: false,
       tabs: [
-        { name: "Overview ", component: "Overview", routeName: "Overview" },
-        { name: "Documents ", component: "Document", routeName: "Document" },
+        {
+          name: "Overview ",
+          component: "Overview",
+          routeName: "Overview",
+          image: activeLocations,
+        },
+        {
+          name: "Documents ",
+          component: "Document",
+          routeName: "Document",
+          image: jobs,
+        },
         {
           name: "Profile ",
           component: "ProfileTabs",
           routeName: "ProfileTabs",
+          image: activeLocations,
         },
         {
           name: "Restricted",
           component: "Restricted",
           routeName: "Restricted",
+          image: settings,
         },
-        { name: "Rate Card", component: "RateCard", routeName: "RateCard" },
-        { name: "Notes", component: "Notes", routeName: "Notes" },
-        { name: "Staff ID", component: "StaffId", routeName: "StaffId" },
+        {
+          name: "Rate Card",
+          component: "RateCard",
+          routeName: "RateCard",
+          image: activeLocations,
+        },
+        {
+          name: "Notes",
+          component: "Notes",
+          routeName: "Notes",
+          image: activeLocations,
+        },
+        {
+          name: "Staff ID",
+          component: "StaffId",
+          routeName: "StaffId",
+          image: activeLocations,
+        },
         {
           name: "Staff History",
           component: "CandidateHistory",
           routeName: "CandidateHistory",
+          image: activeLocations,
         },
         {
           name: "Referrals",
           component: "CandidateReference",
           routeName: "CandidateReference",
+          image: activeLocations,
         },
       ],
       activeTab: 0,
@@ -578,9 +628,7 @@ table th {
 .nav-pills .nav-link {
   color: #000;
 }
-ul.nav-pills {
-  border-bottom: 1px solid grey;
-}
+
 .nav-pills .nav-link {
   border-radius: 0px;
   padding: 5px 13px;
