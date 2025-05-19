@@ -13,7 +13,7 @@
       </div>
       <div class="container-fluid">
         <div class="container-fluid p-0 mt-3">
-          <div id="main" class="bg-orange-light">
+          <div id="main" class="bg-orange-light px-4">
             <div class="pagetitle d-flex justify-content-between">
               <div class="">
                 <!-- <ol class="breadcrumb mb-1">
@@ -66,7 +66,7 @@
         </div>
         <div class="row mb-3 ps-3">
           <router-link
-            class="nav-link d-inline text-muted"
+            class="nav-link d-inline text-muted px-4"
             style="color: #000000"
             aria-current="page"
             to="/site/siteLists"
@@ -117,18 +117,37 @@
                       loading="eager"
                     />
 
-                    <!-- <div class="ribbon"><span>Active</span></div> -->
+                    <div>
+                      <div class="">
+                        <div class="col-12 p-3">
+                          <h4
+                            class="card-title text-nowrap fw-bold text-capitalize"
+                          >
+                            {{ getSiteDatas?.client_name }}
+                          </h4>
+                          <span>
+                            <img
+                              src="../../../assets/location.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                            {{ getSiteDatas?.address }}</span
+                          >
+                        </div>
+                      </div>
+                    </div>
                     <ul
-                      class="nav nav-pills mb-3"
+                      class="nav nav-pills mb-3 ps-3 mt-4"
                       id="pills-tab"
                       role="tablist"
                     >
                       <li
-                        class="nav-item d-inline-flex gap-2"
+                        class="nav-item d-inline-flex gap-4"
                         role="presentation"
                       >
                         <button
-                          class="nav-link"
+                          class="nav-link p-0"
                           :class="{ active: activeTab === index }"
                           aria-selected="true"
                           type="button"
@@ -147,7 +166,27 @@
                 <div class="col-md-5 bg-white px-3" style="border-radius: 12px">
                   <div class="card-body">
                     <div class="mt-3">
-                      <h6 class="text-muted fw-semibold mb-3 mt-4">Details</h6>
+                      <div class="d-flex justify-content-between">
+                        <h6 class="text-muted fw-semibold mb-3 mt-1">
+                          Details
+                        </h6>
+                        <div>
+                          <button
+                            type="button"
+                            class="btn text-nowrap text-nowrap border-0 pe-0 pt-0"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editSiteProfileDetails"
+                            data-bs-whatever="@mdo"
+                            @click="editSite(getSiteDatas.id)"
+                          >
+                            <i
+                              class="bi bi-pencil-fill"
+                              style="color: rgb(249 148 75)"
+                            ></i>
+                          </button>
+                        </div>
+                      </div>
+
                       <div>
                         <h6>Reference Code : {{ getSiteDatas.refer_code }}</h6>
                         <!-- <h4>{{ getSiteDatas.site_name }}</h4>
@@ -192,7 +231,7 @@
                             {{ getSiteDatas?.address }}
                           </div>
                         </div>
-                        <h6>Mobile : {{ getSiteDatas.phone_number }}</h6>
+                        <!-- <h6>Mobile : {{ getSiteDatas.phone_number }}</h6> -->
                         <h6 class="text-capitalize">
                           Contact person's name:
                           {{
@@ -232,21 +271,6 @@
                     </h6> -->
                         <span class="text-lowercase"> </span>
                       </div>
-                      <div>
-                        <button
-                          type="button"
-                          class="btn text-nowrap text-nowrap border-0"
-                          data-bs-toggle="modal"
-                          data-bs-target="#editSiteProfileDetails"
-                          data-bs-whatever="@mdo"
-                          @click="editSite(getSiteDatas.id)"
-                        >
-                          <i
-                            class="bi bi-pencil-fill"
-                            style="color: rgb(249 148 75)"
-                          ></i>
-                        </button>
-                      </div>
                     </div>
                     <hr />
 
@@ -256,6 +280,7 @@
                       <div>
                         <h6
                           class="card-title text-nowrap fw-bold text-capitalize"
+                          style="color: rgb(249 148 75)"
                         >
                           Visit Us at:
                         </h6>
@@ -584,9 +609,7 @@ table th {
 .nav-pills .nav-link {
   color: grey;
 }
-ul.nav-pills {
-  border-bottom: 1px solid grey;
-}
+
 .nav-pills .nav-link {
   border-radius: 0px;
   padding: 5px 13px;

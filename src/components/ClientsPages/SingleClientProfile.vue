@@ -74,7 +74,7 @@
         </div>
         <div class="">
           <div id="main">
-            <div class="row px-5">
+            <!-- <div class="row px-5">
               <div class="col-12 pb-3 pt-1">
                 <div class="float-start">
                   <button
@@ -97,7 +97,7 @@
                   </button>
                 </div>
               </div>
-            </div>
+            </div> -->
             <div class="row px-5">
               <div class="d-flex gap-4 justify-content-between">
                 <div class="col-md-7" style="border-radius: 12px">
@@ -158,7 +158,7 @@
                           :key="index"
                           @click="selectTab(index)"
                         >
-                          <img :src="tab.image" class="me-2" />
+                          <img :src="tab.image" class="" />
                           {{ tab.name }}
                         </button>
                       </li>
@@ -457,7 +457,9 @@ h6.tag:after {
 
   transition: all 0.3s;
 }
-
+.detail-row {
+  padding: 20px 0;
+}
 .card ul li {
   display: inline-block;
 }
@@ -503,24 +505,6 @@ table th {
 }
 .btn-primary {
   border: none;
-}
-
-.accordion-item {
-  margin-bottom: 8px;
-}
-
-.accordion-header {
-  padding: 8px;
-  cursor: pointer;
-  background-color: #f1f1f1;
-  border-bottom: 1px solid #ccc;
-  display: flex;
-  justify-content: space-between;
-}
-
-.accordion-icon {
-  font-size: 16px;
-  transition: transform 0.3s;
 }
 
 .expanded {

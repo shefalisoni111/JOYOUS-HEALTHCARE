@@ -191,7 +191,7 @@
                       &nbsp; {{ getCandidates.phone_number }}</span
                     >
                   </div>
-
+                  <!-- <div></div> -->
                   <div>
                     <!-- <button type="button" class="btn btn-outline-primary">
                           Edit
