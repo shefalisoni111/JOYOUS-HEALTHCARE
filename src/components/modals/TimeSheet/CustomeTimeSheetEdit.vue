@@ -8,10 +8,16 @@
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-          <div class="modal-header" style="background-color: #f9944b">
+          <div class="modal-header">
             <h5 class="modal-title" id="editCustomTimeSheet">
-              Edit Custom Shift {{ customDataId }}
+              Edit Custom Shift
             </h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
@@ -92,168 +98,25 @@
                     </div>
                   </div>
                   <div class="col-12">
-                    <label class="form-label">Rate Cards</label>
-                    <div class="d-flex gap-2 justify-content-between">
-                      <!-- <div class="mb-3">
-                        <div class="col-12">
-                          <label class="form-label">Start Time</label>
-                        </div>
-                        <div class="col-12 mt-1">
-                          <input
-                            type="email"
-                            class="form-control"
-                            v-model="fetchCustomSheetData.start_time"
-                          />
-                        </div>
-                      </div> -->
-                      <div class="mb-3">
-                        <div class="col-12">
-                          <label class="form-label" for="selectCustomStartTime"
-                            >Start Time</label
-                          >
-                        </div>
-                        <div class="col-12" v-if="showSaveButton">
-                          <input
-                            v-if="apiResponse"
-                            type="text"
-                            class="form-control custom-disabled"
-                            v-model="fetchCustomSheetData.start_time"
-                            disabled
-                          />
-                          <div
-                            v-else
-                            style="display: flex; gap: 8px; align-items: center"
-                          >
-                            <!-- Hour Dropdown -->
-                            <select
-                              id="selectCustomHourStart"
-                              class="form-control"
-                              v-model="startTime.hour"
-                              @change="calculateTotalHours"
-                              style="width: 80px"
-                            >
-                              <option
-                                v-for="hour in 24"
-                                :key="hour"
-                                :value="hour"
-                              >
-                                {{ formatTime(hour) }}
-                                <!-- Only the time portion -->
-                              </option>
-                            </select>
-                            <!-- Minute Dropdown -->
-                            <select
-                              id="selectCustomMinuteStart"
-                              class="form-control"
-                              v-model="startTime.minute"
-                              @change="calculateTotalHours"
-                              style="width: 80px"
-                            >
-                              <option
-                                v-for="minute in 60"
-                                :key="minute"
-                                :value="minute - 1"
-                              >
-                                {{
-                                  minute - 1 < 10
-                                    ? "0" + (minute - 1)
-                                    : minute - 1
-                                }}
-                              </option>
-                            </select>
-                            <!-- AM/PM Dropdown -->
-                            <select
-                              id="selectCustomPeriodStart"
-                              class="form-control"
-                              v-model="startTime.period"
-                              @change="calculateTotalHours"
-                              style="width: 80px"
-                            >
-                              <option value="AM">AM</option>
-                              <option value="PM">PM</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-12" v-else>
-                          <input
-                            v-if="apiResponse"
-                            type="text"
-                            class="form-control custom-disabled"
-                            v-model="fetchCustomSheetData.start_time"
-                            disabled
-                          />
-                          <div
-                            v-else
-                            style="display: flex; gap: 8px; align-items: center"
-                          >
-                            <select
-                              id="selectCustomHourStart"
-                              class="form-control custom-disabled"
-                              disabled
-                            >
-                              <option
-                                v-for="hour in 24"
-                                :key="hour"
-                                :value="hour"
-                              >
-                                {{ formatTime(hour) }}
-                                <!-- Only the time portion -->
-                              </option>
-                            </select>
-                            <select
-                              id="selectCustomMinuteStart"
-                              class="form-control custom-disabled"
-                              disabled
-                            >
-                              <option
-                                v-for="minute in 60"
-                                :key="minute"
-                                :value="minute - 1"
-                              >
-                                {{
-                                  minute - 1 < 10
-                                    ? "0" + (minute - 1)
-                                    : minute - 1
-                                }}
-                              </option>
-                            </select>
-                            <select
-                              id="selectCustomPeriodStart"
-                              class="form-control custom-disabled"
-                              disabled
-                            >
-                              <option value="AM">AM</option>
-                              <option value="PM">PM</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- <div class="mb-3">
-                        <div class="col-12">
-                          <label class="form-label">End Time</label>
-                        </div>
-                        <div class="col-12 mt-1">
-                          <input
-                            type="email"
-                            class="form-control"
-                            v-model="fetchCustomSheetData.end_time"
-                          />
-                        </div>
-                      </div> -->
-                      <div class="mb-3">
+                    <label class="form-label" style="color: #f9944b"
+                      >Rate Cards</label
+                    >
+                    <div class="row">
+                      <div class="col-4 p-2">
                         <div class="mb-3">
                           <div class="col-12">
-                            <label class="form-label" for="selectCustomEndTime"
-                              >End Time</label
+                            <label
+                              class="form-label"
+                              for="selectCustomStartTime"
+                              >Start Time</label
                             >
                           </div>
                           <div class="col-12" v-if="showSaveButton">
                             <input
-                              v-if="apiResponse_EndTime"
+                              v-if="apiResponse"
                               type="text"
-                              class="form-control"
-                              v-model="fetchCustomSheetData.end_time"
+                              class="form-control custom-disabled"
+                              v-model="fetchCustomSheetData.start_time"
                               disabled
                             />
                             <div
@@ -266,11 +129,10 @@
                             >
                               <!-- Hour Dropdown -->
                               <select
-                                id="selectCustomHour"
+                                id="selectCustomHourStart"
                                 class="form-control"
-                                v-model="endTime.hour"
+                                v-model="startTime.hour"
                                 @change="calculateTotalHours"
-                                style="width: 80px"
                               >
                                 <option
                                   v-for="hour in 24"
@@ -283,11 +145,10 @@
                               </select>
                               <!-- Minute Dropdown -->
                               <select
-                                id="selectCustomMinute"
+                                id="selectCustomMinuteStart"
                                 class="form-control"
-                                v-model="endTime.minute"
+                                v-model="startTime.minute"
                                 @change="calculateTotalHours"
-                                style="width: 80px"
                               >
                                 <option
                                   v-for="minute in 60"
@@ -303,11 +164,10 @@
                               </select>
                               <!-- AM/PM Dropdown -->
                               <select
-                                id="selectCustomPeriod"
+                                id="selectCustomPeriodStart"
                                 class="form-control"
-                                v-model="endTime.period"
+                                v-model="startTime.period"
                                 @change="calculateTotalHours"
-                                style="width: 80px"
                               >
                                 <option value="AM">AM</option>
                                 <option value="PM">PM</option>
@@ -316,22 +176,22 @@
                           </div>
                           <div class="col-12" v-else>
                             <input
-                              v-if="apiResponse_EndTime"
+                              v-if="apiResponse"
                               type="text"
                               class="form-control custom-disabled"
-                              v-model="fetchCustomSheetData.end_time"
+                              v-model="fetchCustomSheetData.start_time"
                               disabled
                             />
                             <div
                               v-else
                               style="
                                 display: flex;
-                                gap: 8px;
+                                gap: 12px;
                                 align-items: center;
                               "
                             >
                               <select
-                                id="selectCustomHour"
+                                id="selectCustomHourStart"
                                 class="form-control custom-disabled"
                                 disabled
                               >
@@ -345,7 +205,7 @@
                                 </option>
                               </select>
                               <select
-                                id="selectCustomMinute"
+                                id="selectCustomMinuteStart"
                                 class="form-control custom-disabled"
                                 disabled
                               >
@@ -362,7 +222,7 @@
                                 </option>
                               </select>
                               <select
-                                id="selectCustomPeriod"
+                                id="selectCustomPeriodStart"
                                 class="form-control custom-disabled"
                                 disabled
                               >
@@ -373,124 +233,251 @@
                           </div>
                         </div>
                       </div>
-                      <!-- <div class="mb-3">
-                        <div class="col-12">
-                          <label class="form-label">Break</label>
+                      <div class="col-4 p-2">
+                        <div class="mb-3">
+                          <div class="mb-3">
+                            <div class="col-12">
+                              <label
+                                class="form-label"
+                                for="selectCustomEndTime"
+                                >End Time</label
+                              >
+                            </div>
+                            <div class="col-12" v-if="showSaveButton">
+                              <input
+                                v-if="apiResponse_EndTime"
+                                type="text"
+                                class="form-control"
+                                v-model="fetchCustomSheetData.end_time"
+                                disabled
+                              />
+                              <div
+                                v-else
+                                style="
+                                  display: flex;
+                                  gap: 8px;
+                                  align-items: center;
+                                "
+                              >
+                                <!-- Hour Dropdown -->
+                                <select
+                                  id="selectCustomHour"
+                                  class="form-control w-100"
+                                  v-model="endTime.hour"
+                                  @change="calculateTotalHours"
+                                >
+                                  <option
+                                    v-for="hour in 24"
+                                    :key="hour"
+                                    :value="hour"
+                                  >
+                                    {{ formatTime(hour) }}
+                                    <!-- Only the time portion -->
+                                  </option>
+                                </select>
+                                <!-- Minute Dropdown -->
+                                <select
+                                  id="selectCustomMinute"
+                                  class="form-control w-100"
+                                  v-model="endTime.minute"
+                                  @change="calculateTotalHours"
+                                >
+                                  <option
+                                    v-for="minute in 60"
+                                    :key="minute"
+                                    :value="minute - 1"
+                                  >
+                                    {{
+                                      minute - 1 < 10
+                                        ? "0" + (minute - 1)
+                                        : minute - 1
+                                    }}
+                                  </option>
+                                </select>
+                                <!-- AM/PM Dropdown -->
+                                <select
+                                  id="selectCustomPeriod"
+                                  class="form-control w-100"
+                                  v-model="endTime.period"
+                                  @change="calculateTotalHours"
+                                >
+                                  <option value="AM">AM</option>
+                                  <option value="PM">PM</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="col-12" v-else>
+                              <input
+                                v-if="apiResponse_EndTime"
+                                type="text"
+                                class="form-control custom-disabled"
+                                v-model="fetchCustomSheetData.end_time"
+                                disabled
+                              />
+                              <div
+                                v-else
+                                style="
+                                  display: flex;
+                                  gap: 8px;
+                                  align-items: center;
+                                "
+                              >
+                                <select
+                                  id="selectCustomHour"
+                                  class="form-control custom-disabled"
+                                  disabled
+                                >
+                                  <option
+                                    v-for="hour in 24"
+                                    :key="hour"
+                                    :value="hour"
+                                  >
+                                    {{ formatTime(hour) }}
+                                    <!-- Only the time portion -->
+                                  </option>
+                                </select>
+                                <select
+                                  id="selectCustomMinute"
+                                  class="form-control custom-disabled"
+                                  disabled
+                                >
+                                  <option
+                                    v-for="minute in 60"
+                                    :key="minute"
+                                    :value="minute - 1"
+                                  >
+                                    {{
+                                      minute - 1 < 10
+                                        ? "0" + (minute - 1)
+                                        : minute - 1
+                                    }}
+                                  </option>
+                                </select>
+                                <select
+                                  id="selectCustomPeriod"
+                                  class="form-control custom-disabled"
+                                  disabled
+                                >
+                                  <option value="AM">AM</option>
+                                  <option value="PM">PM</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                        <div class="col-12 mt-1">
-                          <input
-                            type="email"
-                            class="form-control"
-                            v-model="fetchCustomSheetData.break"
-                          />
-                        </div>
-                      </div> -->
-                      <div class="mb-3">
-                        <div class="col-12">
-                          <label class="form-label" for="selectShiftsBreak"
-                            >Break Time</label
-                          >
-                        </div>
-                        <div class="col-12" v-if="showSaveButton">
-                          <!-- <input
-                            type="email"
-                            class="form-control p-2 custom-disabled"
-                            v-model="fetchCustomSheetData.break"
-                          /> -->
-                          <select
-                            id="selectShiftsBreak"
-                            class="form-control"
-                            v-model="fetchCustomSheetData.break"
-                            @change="validateBreak"
-                            style="width: 240px"
-                          >
-                            <option
-                              v-for="minute in [15, 30, 45, 60, 75, 90]"
-                              :key="minute"
-                              :value="minute + ' minutes'"
-                            >
-                              {{ formatBreakTime(minute) }}
-                            </option>
-                          </select>
-                        </div>
-                        <!-- <div class="col-12" v-else>
-                          <select
-                            id="selectShiftsBreak"
-                            class="form-control"
-                            v-model="fetchCustomSheetData.break"
-                            @change="validateBreak"
-                            style="width: 240px"
-                            disabled
-                          >
-                            <option
-                              v-for="minute in [15, 30, 45, 60, 75, 90]"
-                              :key="minute"
-                              :value="minute"
-                            >
-                              {{ formatBreakTime(minute) }}
-                            </option>
-                          </select>
-                        </div> -->
                       </div>
-                      <div class="mb-3">
-                        <div class="col-12">
-                          <label class="form-label">Total Hours</label>
-                        </div>
-                        <div class="col-12 mt-1">
-                          <input
-                            type="email"
-                            class="form-control"
-                            v-model="fetchCustomSheetData.total_hours"
-                          />
+                      <div class="col-4 p-2">
+                        <div class="mb-3">
+                          <div class="col-12">
+                            <label class="form-label" for="selectShiftsBreak"
+                              >Break Time</label
+                            >
+                          </div>
+                          <div class="col-12" v-if="showSaveButton">
+                            <!-- <input
+                              type="email"
+                              class="form-control p-2 custom-disabled"
+                              v-model="fetchCustomSheetData.break"
+                            /> -->
+                            <select
+                              id="selectShiftsBreak"
+                              class="form-control w-100"
+                              v-model="fetchCustomSheetData.break"
+                              @change="validateBreak"
+                            >
+                              <option
+                                v-for="minute in [15, 30, 45, 60, 75, 90]"
+                                :key="minute"
+                                :value="minute + ' minutes'"
+                              >
+                                {{ formatBreakTime(minute) }}
+                              </option>
+                            </select>
+                          </div>
+                          <!-- <div class="col-12" v-else>
+                            <select
+                              id="selectShiftsBreak"
+                              class="form-control"
+                              v-model="fetchCustomSheetData.break"
+                              @change="validateBreak"
+                              style="width: 240px"
+                              disabled
+                            >
+                              <option
+                                v-for="minute in [15, 30, 45, 60, 75, 90]"
+                                :key="minute"
+                                :value="minute"
+                              >
+                                {{ formatBreakTime(minute) }}
+                              </option>
+                            </select>
+                          </div> -->
                         </div>
                       </div>
                     </div>
-                    <div class="d-flex gap-5 ms-2">
-                      <div class="mb-3">
-                        <div class="col-12">
-                          <label class="form-label">Client Rate</label>
-                        </div>
-                        <div class="col-12 mt-1" v-if="showSaveButton">
-                          <input
-                            type="text"
-                            class="form-control custom-disabled"
-                            v-model="fetchCustomSheetData.client_rate"
-                            @input="validateNumber('client_rate')"
-                            disabled
-                          />
-                        </div>
-                        <div class="col-12 mt-1" v-else>
-                          <input
-                            type="text"
-                            class="form-control custom-disabled"
-                            v-model="fetchCustomSheetData.client_rate"
-                            @input="validateNumber('client_rate')"
-                            disabled
-                          />
+                    <div class="row">
+                      <div class="col-4 p-2">
+                        <div class="mb-3">
+                          <div class="col-12">
+                            <label class="form-label">Total Hours</label>
+                          </div>
+                          <div class="col-12 mt-1">
+                            <input
+                              type="email"
+                              class="form-control"
+                              v-model="fetchCustomSheetData.total_hours"
+                            />
+                          </div>
                         </div>
                       </div>
-
-                      <div class="mb-3">
-                        <div class="col-12">
-                          <label class="form-label">Staff Rate</label>
+                      <div class="col-4 p-2">
+                        <div class="mb-3">
+                          <div class="col-12">
+                            <label class="form-label">Client Rate</label>
+                          </div>
+                          <div class="col-12 mt-1" v-if="showSaveButton">
+                            <input
+                              type="text"
+                              class="form-control custom-disabled"
+                              v-model="fetchCustomSheetData.client_rate"
+                              @input="validateNumber('client_rate')"
+                              disabled
+                            />
+                          </div>
+                          <div class="col-12 mt-1" v-else>
+                            <input
+                              type="text"
+                              class="form-control custom-disabled"
+                              v-model="fetchCustomSheetData.client_rate"
+                              @input="validateNumber('client_rate')"
+                              disabled
+                            />
+                          </div>
                         </div>
-                        <div class="col-12 mt-1" v-if="showSaveButton">
-                          <input
-                            type="text"
-                            class="form-control custom-disabled"
-                            v-model="fetchCustomSheetData.staff_rate"
-                            @input="validateNumber('staff_rate')"
-                            disabled
-                          />
-                        </div>
-                        <div class="col-12 mt-1" v-else>
-                          <input
-                            type="text"
-                            class="form-control custom-disabled"
-                            v-model="fetchCustomSheetData.staff_rate"
-                            @input="validateNumber('staff_rate')"
-                            disabled
-                          />
+                      </div>
+                      <div class="col-4 p-2">
+                        <div class="mb-3">
+                          <div class="col-12">
+                            <label class="form-label">Staff Rate</label>
+                          </div>
+                          <div class="col-12 mt-1" v-if="showSaveButton">
+                            <input
+                              type="text"
+                              class="form-control custom-disabled"
+                              v-model="fetchCustomSheetData.staff_rate"
+                              @input="validateNumber('staff_rate')"
+                              disabled
+                            />
+                          </div>
+                          <div class="col-12 mt-1" v-else>
+                            <input
+                              type="text"
+                              class="form-control custom-disabled"
+                              v-model="fetchCustomSheetData.staff_rate"
+                              @input="validateNumber('staff_rate')"
+                              disabled
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>

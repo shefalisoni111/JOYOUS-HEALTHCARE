@@ -1,90 +1,3 @@
-<!-- <template>
-  <div>
-    
-    <div
-      class="modal fade"
-      id="signedTimeSheetView"
-      aria-labelledby="candidatePage"
-      
-    >
-      <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="signedTimeSheetView">Staff Signed View</h5>
-          </div>
-          <div class="modal-body mx-3">
-            <div class="row">
-              <div class="col-12">
-                <table class="table candidateTable">
-                  <thead>
-                    <tr>
-                      <th scope="col">ID</th>
-                      <th scope="col">Date</th>
-                      <th scope="col">Start</th>
-                      <th scope="col">Finish</th>
-
-                      <th scope="col">Break</th>
-                      <th scope="col">Total</th>
-                      <th scope="col">Authorized Signature</th>
-                      <th scope="col">Authorized Name</th>
-                      <th scope="col">Staff Signature</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td scope="col">{{ getSignedStaffView.id }}</td>
-                      <td scope="col">{{ getSignedStaffView.date }}</td>
-
-                      <td scope="col">{{ getSignedStaffView.start_time }}</td>
-
-                      <td scope="col">{{ getSignedStaffView.end_time }}</td>
-                      <td scope="col">{{ getSignedStaffView.break }}</td>
-                      <td scope="col">{{ getSignedStaffView.total_hours }}</td>
-
-                      <td scope="col">
-                        <img
-                          :src="
-                            getFullImageUrl(
-                              getSignedStaffView.administrator_signature_url
-                            )
-                          "
-                          alt="Administrator Signature"
-                          height="100px"
-                          class="remove-white-background d-block m-auto"
-                          loading="eager"
-                        />
-                      </td>
-                      <td scope="col">{{ getSignedStaffView.author_name }}</td>
-                      <td scope="col">
-                        <img
-                          :src="getFullImageUrl(getSignedStaffView.signature_url)"
-                          alt="Administrator Signature"
-                          height="100px"
-                          class="remove-white-background d-block m-auto"
-                          loading="eager"
-                        />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-               class="btn btn-dark btn-cancel"
-              data-bs-target="#signedTimeSheetView"
-              data-bs-toggle="modal"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template> -->
 <template>
   <div>
     <!-- Modal -->
@@ -95,10 +8,16 @@
     >
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-          <div class="modal-header" style="background-color: #f9944b">
+          <div class="modal-header">
             <h5 class="modal-title" id="signedTimeSheetView">
               Signed Timesheet
             </h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">

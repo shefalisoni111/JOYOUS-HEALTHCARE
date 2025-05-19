@@ -6,378 +6,415 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="editVacancy">Edit Shift</h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
               <form>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label" for="selectClients">Client</label>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label" for="selectClients"
+                          >Client</label
+                        >
+                      </div>
+                      <div class="col-12">
+                        <select
+                          v-model="fetchVacancy.client_id"
+                          id="selectClients"
+                          @change="onClientSelect"
+                        >
+                          <option
+                            v-for="option in clientData"
+                            :key="option.id"
+                            :value="option.id"
+                            aria-placeholder="Select Job"
+                            style="display: none"
+                          >
+                            {{ option.client_name }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-10">
-                    <select
-                      v-model="fetchVacancy.client_id"
-                      id="selectClients"
-                      @change="onClientSelect"
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Site </label>
+                      </div>
+                      <div class="col-12">
+                        <select
+                          v-model="fetchVacancy.site_id"
+                          id="selectBusinessUnit"
+                          @change="onSiteSelect"
+                        >
+                          <option
+                            v-for="option in businessUnit"
+                            :key="option.id"
+                            :value="option.id"
+                            placeholder="Select BusinessUnit"
+                            style="display: none"
+                          >
+                            {{ option.site_name }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Job Title </label>
+                      </div>
+                      <div class="col-12">
+                        <select
+                          v-model="fetchVacancy.job_id"
+                          id="selectJobTitle"
+                        >
+                          <option
+                            v-for="option in options"
+                            :key="option.id"
+                            :value="option.id"
+                            aria-placeholder="Select Job"
+                            style="display: none"
+                          >
+                            {{ option.name }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Date</label>
+                      </div>
+
+                      <div
+                        v-for="(date, index) in fetchVacancy.dates"
+                        :key="index"
+                      >
+                        <div class="col-12 position-relative">
+                          <input
+                            type="date"
+                            class="form-select w-100"
+                            v-model="fetchVacancy.dates[index]"
+                          />
+                          <span v-if="!isDateValid(date)" class="text-danger">
+                            Please choose a date from today onwards!
+                          </span>
+                          <button
+                            v-if="fetchVacancy.dates.length > 1"
+                            style="
+                              position: absolute;
+                              bottom: 96px;
+                              right: -7px;
+                              border-radius: 50%;
+                              padding: 0px 5px;
+                              font-size: small;
+                            "
+                            class="btn btn-danger btn-sm mt-2"
+                            @click.prevent="removeDate(index)"
+                          >
+                            x
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label" for="selectShifts"
+                          >Shift</label
+                        >
+                      </div>
+                      <div class="col-12">
+                        <select
+                          v-model="fetchVacancy.site_shift_id"
+                          id="selectShifts"
+                          @change="onShiftSelect"
+                        >
+                          <option
+                            v-for="option in shiftsTime"
+                            :key="option.id"
+                            :value="option.id"
+                            aria-placeholder="Select Job"
+                          >
+                            {{ option.shift_name.replace(/_/g, " ") }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-4">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label" for="selectCustomStartTime"
+                          >Start Time
+                        </label>
+                      </div>
+                      <div class="col-12">
+                        <select
+                          id="selectCustomStartTime"
+                          class="form-select w-100"
+                          v-model="fetchVacancy.start_time"
+                          @change="validateStartTime"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label" for="selectCustomEndTime"
+                          >End Time</label
+                        >
+                      </div>
+                      <div class="col-12">
+                        <select
+                          id="selectCustomEndTime"
+                          class="form-select w-100"
+                          v-model="fetchVacancy.end_time"
+                          @change="validateEndTime"
+                        >
+                          <option
+                            v-for="hour in 24"
+                            :key="hour"
+                            :value="formatTime(hour)"
+                          >
+                            {{ formatTime(hour) }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-4">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label" for="selectShiftsBreak"
+                          >Break Time</label
+                        >
+                      </div>
+                      <div class="col-12">
+                        <select
+                          id="selectShiftsBreak"
+                          class="form-select w-100"
+                          v-model="fetchVacancy.break"
+                          @change="validateBreak"
+                        >
+                          <option
+                            v-for="minute in [15, 30, 45, 60, 75, 90]"
+                            :key="minute"
+                            :value="minute"
+                          >
+                            {{ formatBreakTime(minute) }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="col-12">
+                    <label class="form-label" for="clientRate"
+                      >Client Rate</label
                     >
-                      <option
-                        v-for="option in clientData"
-                        :key="option.id"
-                        :value="option.id"
-                        aria-placeholder="Select Job"
-                        style="display: none"
-                      >
-                        {{ option.client_name }}
-                      </option>
-                    </select>
                   </div>
-                </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label">Site </label>
-                  </div>
-                  <div class="col-10">
-                    <select
-                      v-model="fetchVacancy.site_id"
-                      id="selectBusinessUnit"
-                      @change="onSiteSelect"
-                    >
-                      <option
-                        v-for="option in businessUnit"
-                        :key="option.id"
-                        :value="option.id"
-                        placeholder="Select BusinessUnit"
-                        style="display: none"
-                      >
-                        {{ option.site_name }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label">Job Title </label>
-                  </div>
-                  <div class="col-10">
-                    <select v-model="fetchVacancy.job_id" id="selectJobTitle">
-                      <option
-                        v-for="option in options"
-                        :key="option.id"
-                        :value="option.id"
-                        aria-placeholder="Select Job"
-                        style="display: none"
-                      >
-                        {{ option.name }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="mb-3 d-flex">
-                  <div class="col-2">
-                    <label class="form-label">Date</label>
-                  </div>
-
-                  <div v-for="(date, index) in fetchVacancy.dates" :key="index">
-                    <div class="col-10 position-relative">
+                  <div class="col-12">
+                    <div class="input-container">
+                      <span class="currency-symbol">£</span>
                       <input
-                        type="date"
-                        class="form-select w-100"
-                        v-model="fetchVacancy.dates[index]"
+                        type="text"
+                        class="form-control w-50"
+                        v-model="fetchVacancy.client_rate"
+                        @input="handleInput('client_rate', $event.target.value)"
+                        maxlength="3"
+                        @keydown="allowNumbersOnly($event)"
                       />
-                      <span v-if="!isDateValid(date)" class="text-danger">
-                        Please choose a date from today onwards!
-                      </span>
-                      <button
-                        v-if="fetchVacancy.dates.length > 1"
-                        style="
-                          position: absolute;
-                          bottom: 96px;
-                          right: -7px;
-                          border-radius: 50%;
-                          padding: 0px 5px;
-                          font-size: small;
-                        "
-                        class="btn btn-danger btn-sm mt-2"
-                        @click.prevent="removeDate(index)"
-                      >
-                        x
-                      </button>
                     </div>
+                    <span
+                      v-if="!validationClientRate && fetchVacancy.client_rate"
+                      class="text-danger"
+                    >
+                      Client Rate must be greater than 0
+                    </span>
                   </div>
                 </div>
                 <div class="mb-3 d-flex justify-content-between">
                   <div class="col-2">
-                    <label class="form-label" for="selectShifts">Shift</label>
-                  </div>
-                  <div class="col-10">
-                    <select
-                      v-model="fetchVacancy.site_shift_id"
-                      id="selectShifts"
-                      @change="onShiftSelect"
+                    <label class="form-label" for="clientRate"
+                      >Staff Rate</label
                     >
-                      <option
-                        v-for="option in shiftsTime"
-                        :key="option.id"
-                        :value="option.id"
-                        aria-placeholder="Select Job"
-                      >
-                        {{ option.shift_name.replace(/_/g, " ") }}
-                      </option>
-                    </select>
                   </div>
-                </div>
-                <div>
-                  <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
-                      <label class="form-label" for="selectCustomStartTime"
-                        >Start Time
-                      </label>
-                    </div>
-                    <div class="col-10">
-                      <select
-                        id="selectCustomStartTime"
-                        class="form-select w-25"
-                        v-model="fetchVacancy.start_time"
-                        @change="validateStartTime"
+                  <div class="col-10 d-flex gap-2">
+                    <div>
+                      <label class="form-label" for="staffRate"
+                        >Self Employee</label
                       >
-                        <option
-                          v-for="hour in 24"
-                          :key="hour"
-                          :value="formatTime(hour)"
-                        >
-                          {{ formatTime(hour) }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
-                      <label class="form-label" for="selectCustomEndTime"
-                        >End Time</label
-                      >
-                    </div>
-                    <div class="col-10">
-                      <select
-                        id="selectCustomEndTime"
-                        class="form-select w-25"
-                        v-model="fetchVacancy.end_time"
-                        @change="validateEndTime"
-                      >
-                        <option
-                          v-for="hour in 24"
-                          :key="hour"
-                          :value="formatTime(hour)"
-                        >
-                          {{ formatTime(hour) }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
-                      <label class="form-label" for="selectShiftsBreak"
-                        >Break Time</label
-                      >
-                    </div>
-                    <div class="col-10">
-                      <select
-                        id="selectShiftsBreak"
-                        class="form-select w-25"
-                        v-model="fetchVacancy.break"
-                        @change="validateBreak"
-                      >
-                        <option
-                          v-for="minute in [15, 30, 45, 60, 75, 90]"
-                          :key="minute"
-                          :value="minute"
-                        >
-                          {{ formatBreakTime(minute) }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
-                      <label class="form-label" for="clientRate"
-                        >Client Rate</label
-                      >
-                    </div>
-                    <div class="col-10">
                       <div class="input-container">
                         <span class="currency-symbol">£</span>
                         <input
                           type="text"
-                          class="form-control w-25"
-                          v-model="fetchVacancy.client_rate"
+                          class="form-control w-100"
+                          v-model="fetchVacancy.staff_rate"
                           @input="
-                            handleInput('client_rate', $event.target.value)
+                            handleInput('staff_rate', $event.target.value)
+                          "
+                          @keydown="allowNumbersOnly($event)"
+                        />
+                      </div>
+                      <span
+                        v-if="!validationStaffRate && fetchVacancy.staff_rate"
+                        class="text-danger"
+                      >
+                        Staff Rate must be greater than 0
+                      </span>
+                    </div>
+
+                    <div>
+                      <label class="form-label" for="umbrella">Umbrella</label>
+                      <div class="input-container">
+                        <span class="currency-symbol">£</span>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="fetchVacancy.umbrella"
+                          @input="handleInput('umbrella', $event.target.value)"
+                          maxlength="3"
+                          @keydown="allowNumbersOnly($event)"
+                        />
+                      </div>
+                      <span
+                        v-if="!validationUmbrella && fetchVacancy.umbrella"
+                        class="text-danger"
+                      >
+                        Umbrella must be greater than 0
+                      </span>
+                    </div>
+
+                    <div>
+                      <label class="form-label" for="paye">Paye</label>
+                      <div class="input-container">
+                        <span class="currency-symbol">£</span>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="fetchVacancy.paye"
+                          @input="handleInput('paye', $event.target.value)"
+                          maxlength="3"
+                          @keydown="allowNumbersOnly($event)"
+                        />
+                      </div>
+                      <span
+                        v-if="!validationPaye && fetchVacancy.paye"
+                        class="text-danger"
+                      >
+                        Paye must be greater than 0
+                      </span>
+                    </div>
+
+                    <div>
+                      <label class="form-label" for="privateLimited"
+                        >Private Limited</label
+                      >
+                      <div class="input-container">
+                        <span class="currency-symbol">£</span>
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="fetchVacancy.private_limited"
+                          @input="
+                            handleInput('private_limited', $event.target.value)
                           "
                           maxlength="3"
                           @keydown="allowNumbersOnly($event)"
                         />
                       </div>
                       <span
-                        v-if="!validationClientRate && fetchVacancy.client_rate"
+                        v-if="
+                          !validationPrivateLimited &&
+                          fetchVacancy.private_limited
+                        "
                         class="text-danger"
                       >
-                        Client Rate must be greater than 0
+                        Private Limited must be greater than 0
                       </span>
                     </div>
                   </div>
-                  <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
-                      <label class="form-label" for="clientRate"
-                        >Staff Rate</label
-                      >
-                    </div>
-                    <div class="col-10 d-flex gap-2">
-                      <div>
-                        <label class="form-label" for="staffRate"
-                          >Self Employee</label
-                        >
-                        <div class="input-container">
-                          <span class="currency-symbol">£</span>
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="fetchVacancy.staff_rate"
-                            @input="
-                              handleInput('staff_rate', $event.target.value)
-                            "
-                            @keydown="allowNumbersOnly($event)"
-                          />
-                        </div>
-                        <span
-                          v-if="!validationStaffRate && fetchVacancy.staff_rate"
-                          class="text-danger"
-                        >
-                          Staff Rate must be greater than 0
-                        </span>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label"> Bank Holiday Rate</label>
                       </div>
-
-                      <div>
-                        <label class="form-label" for="umbrella"
-                          >Umbrella</label
+                      <div class="col-12 mt-1">
+                        <select
+                          class="form-control"
+                          v-model="fetchVacancy.percentage"
                         >
-                        <div class="input-container">
-                          <span class="currency-symbol">£</span>
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="fetchVacancy.umbrella"
-                            @input="
-                              handleInput('umbrella', $event.target.value)
-                            "
-                            maxlength="3"
-                            @keydown="allowNumbersOnly($event)"
-                          />
-                        </div>
-                        <span
-                          v-if="!validationUmbrella && fetchVacancy.umbrella"
-                          class="text-danger"
-                        >
-                          Umbrella must be greater than 0
-                        </span>
-                      </div>
-
-                      <div>
-                        <label class="form-label" for="paye">Paye</label>
-                        <div class="input-container">
-                          <span class="currency-symbol">£</span>
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="fetchVacancy.paye"
-                            @input="handleInput('paye', $event.target.value)"
-                            maxlength="3"
-                            @keydown="allowNumbersOnly($event)"
-                          />
-                        </div>
-                        <span
-                          v-if="!validationPaye && fetchVacancy.paye"
-                          class="text-danger"
-                        >
-                          Paye must be greater than 0
-                        </span>
-                      </div>
-
-                      <div>
-                        <label class="form-label" for="privateLimited"
-                          >Private Limited</label
-                        >
-                        <div class="input-container">
-                          <span class="currency-symbol">£</span>
-                          <input
-                            type="text"
-                            class="form-control w-100"
-                            v-model="fetchVacancy.private_limited"
-                            @input="
-                              handleInput(
-                                'private_limited',
-                                $event.target.value
-                              )
-                            "
-                            maxlength="3"
-                            @keydown="allowNumbersOnly($event)"
-                          />
-                        </div>
-                        <span
-                          v-if="
-                            !validationPrivateLimited &&
-                            fetchVacancy.private_limited
-                          "
-                          class="text-danger"
-                        >
-                          Private Limited must be greater than 0
-                        </span>
+                          <option value="" disabled>Select Percentage</option>
+                          <option
+                            v-for="value in [0, 25, 50, 75, 100]"
+                            :key="value"
+                            :value="value"
+                          >
+                            {{ value }}%
+                          </option>
+                        </select>
+                        <!-- <div v-if="getError('percentage')" class="text-danger">
+                          {{ getError("percentage") }}
+                        </div> -->
                       </div>
                     </div>
                   </div>
-                  <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
-                      <label class="form-label"> Bank Holiday Rate</label>
-                    </div>
-                    <div class="col-10 mt-1">
-                      <select
-                        class="form-control"
-                        v-model="fetchVacancy.percentage"
-                      >
-                        <option value="" disabled>Select Percentage</option>
-                        <option
-                          v-for="value in [0, 25, 50, 75, 100]"
-                          :key="value"
-                          :value="value"
-                        >
-                          {{ value }}%
-                        </option>
-                      </select>
-                      <!-- <div v-if="getError('percentage')" class="text-danger">
-                        {{ getError("percentage") }}
-                      </div> -->
-                    </div>
-                  </div>
-                  <div class="mb-3 d-flex justify-content-between">
-                    <div class="col-2">
-                      <label class="form-label">Staff Required</label>
-                    </div>
-                    <div class="col-10">
-                      <input
-                        type="text"
-                        class="form-select w-25"
-                        v-model="fetchVacancy.staff_required"
-                        @input="validateStaffRequired"
-                        maxlength="2"
-                      />
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Staff Required</label>
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="text"
+                          class="form-select w-100"
+                          v-model="fetchVacancy.staff_required"
+                          @input="validateStaffRequired"
+                          maxlength="2"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
+
+                <div class="mb-3">
+                  <div class="col-12">
                     <label class="form-label">Notes</label>
                   </div>
-                  <div class="col-10">
+                  <div class="col-12">
                     <input
                       type="text"
                       class="form-select"
@@ -1011,6 +1048,5 @@ input.form-control {
 }
 .modal-body {
   border-radius: 5px;
-  background: #dbdbdb;
 }
 </style>

@@ -10,6 +10,12 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="assignDirectVacancy">Shift</h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body overflow-x-auto">
             <div class="row m-3">

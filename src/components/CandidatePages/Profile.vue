@@ -621,7 +621,7 @@ table th {
 .nav-pills .show > .nav-link {
   color: #ff5722;
 
-  border-bottom: 3px solid #ff5722;
+  border-bottom: 2px solid #ff5722;
   border-radius: 0px;
   background-color: transparent;
 }

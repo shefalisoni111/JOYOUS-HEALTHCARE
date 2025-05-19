@@ -16,208 +16,243 @@
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
               <form>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label for="selectClients" class="form-label"
-                      >Client Name</label
-                    >
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label for="selectClients" class="form-label"
+                          >Client Name</label
+                        >
+                      </div>
+                      <div class="col-12">
+                        <select
+                          v-model="fetchSite.client_id"
+                          id="selectClients"
+                          @change="onClientSelect"
+                        >
+                          <option
+                            v-for="option in clientData"
+                            :key="option.id"
+                            :value="option.id"
+                            aria-placeholder="Select Job"
+                          >
+                            {{ option.client_name }}
+                          </option>
+                        </select>
+                        <!-- <span v-if="!validationSelectedClient" class="text-danger"
+                              >Client Required</span
+                            > -->
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-10">
-                    <select
-                      v-model="fetchSite.client_id"
-                      id="selectClients"
-                      @change="onClientSelect"
-                    >
-                      <option
-                        v-for="option in clientData"
-                        :key="option.id"
-                        :value="option.id"
-                        aria-placeholder="Select Job"
-                      >
-                        {{ option.client_name }}
-                      </option>
-                    </select>
-                    <!-- <span v-if="!validationSelectedClient" class="text-danger"
-                          >Client Required</span
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label" for="selectJobTitle"
+                          >Contact Person Name</label
+                        >
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="fetchSite.contact_person_name"
+                          @input="clearError"
+                          @change="detectAutofill"
+                          style="padding-right: 1px"
+                        />
+                        <!-- <span v-if="!validateSiteNameFormate" class="text-danger"
+                          >Contact Person Name Required</span
                         > -->
-                  </div>
-                </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label" for="selectJobTitle"
-                      >Contact Person Name</label
-                    >
-                  </div>
-                  <div class="col-10">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchSite.contact_person_name"
-                      @input="clearError"
-                      @change="detectAutofill"
-                      style="padding-right: 1px"
-                    />
-                    <!-- <span v-if="!validateSiteNameFormate" class="text-danger"
-                      >Contact Person Name Required</span
-                    > -->
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label">Contact Person Email</label>
-                  </div>
-                  <div class="col-10">
-                    <input
-                      type="email"
-                      class="form-control"
-                      v-model="fetchSite.contact_person_email"
-                      @input="validateEmailFormat"
-                      @change="detectAutofill"
-                      ref="email"
-                      autocomplete="new-email"
-                    />
-                    <span
-                      v-if="
-                        fetchSite.contact_person_email && !isEmailContactValid
-                      "
-                      class="text-danger"
-                    >
-                      Invalid Email format
-                    </span>
-                  </div>
-                </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label">Contact Person phone</label>
-                  </div>
-                  <div class="col-10">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchSite.contact_person_number"
-                      @input="cleanPhoneNumber"
-                      inputmode="numeric"
-                      pattern="[0-9]*"
-                    />
-                    <span v-if="!contactPhoneNumberValid" class="text-danger">
-                      Invalid Phone Number
-                    </span>
-                  </div>
-                </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label" for="selectBusinessUnit"
-                      >Site Name</label
-                    >
-                  </div>
-
-                  <div class="col-10">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchSite.site_name"
-                      style="padding-right: 1px"
-                    />
-                    <!-- <span v-if="!validationSelectedBusinessUnit" class="text-danger"
-                          >Site Required</span
-                        > -->
-                  </div>
-                </div>
-
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label" for="selectJobTitle"
-                      >Address</label
-                    >
-                  </div>
-                  <div class="col-10">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchSite.address"
-                      style="padding-right: 1px"
-                    />
-                    <!-- <span v-if="!validationSelectedOptionText" class="text-danger"
-                          >Position Required</span
-                        > -->
-                  </div>
-                </div>
-
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label">email</label>
-                  </div>
-                  <div class="col-10">
-                    <input
-                      type="email"
-                      class="form-control"
-                      v-model="fetchSite.email"
-                      @input="validateEmailFormat"
-                      ref="email"
-                      autocomplete="new-email"
-                    />
-                    <span v-if="!emailValid" class="text-danger">
-                      Invalid Email format
-                    </span>
-                    <!-- <span
-                            v-if="email && !validateEmailFormat(email)"
-                            class="text-danger"
-                            >Invalid Email format</span
-                          > -->
-                  </div>
-                </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label">phone number</label>
-                  </div>
-                  <div class="col-10">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchSite.phone_number"
-                      @input="cleanPhoneNumber"
-                      inputmode="numeric"
-                      pattern="[0-9]*"
-                    />
-                    <span v-if="!phoneNumberValid" class="text-danger">
-                      Invalid Phone Number
-                    </span>
-                    <!-- <span
-                          v-if="phone_number && !validatePhoneNumberFormat(phone_number)"
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Contact Person Email</label>
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="email"
+                          class="form-control"
+                          v-model="fetchSite.contact_person_email"
+                          @input="validateEmailFormat"
+                          @change="detectAutofill"
+                          ref="email"
+                          autocomplete="new-email"
+                        />
+                        <span
+                          v-if="
+                            fetchSite.contact_person_email &&
+                            !isEmailContactValid
+                          "
                           class="text-danger"
-                          >Invalid Phone Number</span
-                        >-->
+                        >
+                          Invalid Email format
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label">Split Rate</label>
-                  </div>
-                  <div class="col-10">
-                    <select id="selectOption" v-model="selectedSplitRate">
-                      <option value="true">True</option>
-                      <option value="false">False</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label">Status</label>
-                  </div>
-                  <div class="col-10">
-                    <select id="selectOption" v-model="fetchSite.status">
-                      <option value="true">Active</option>
-                      <option value="false">In-active</option>
-                    </select>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Contact Person phone</label>
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="fetchSite.contact_person_number"
+                          @input="cleanPhoneNumber"
+                          inputmode="numeric"
+                          pattern="[0-9]*"
+                        />
+                        <span
+                          v-if="!contactPhoneNumberValid"
+                          class="text-danger"
+                        >
+                          Invalid Phone Number
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label" for="selectBusinessUnit"
+                          >Site Name</label
+                        >
+                      </div>
+
+                      <div class="col-12">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="fetchSite.site_name"
+                          style="padding-right: 1px"
+                        />
+                        <!-- <span v-if="!validationSelectedBusinessUnit" class="text-danger"
+                              >Site Required</span
+                            > -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label" for="selectJobTitle"
+                          >Address</label
+                        >
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="fetchSite.address"
+                          style="padding-right: 1px"
+                        />
+                        <!-- <span v-if="!validationSelectedOptionText" class="text-danger"
+                              >Position Required</span
+                            > -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">email</label>
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="email"
+                          class="form-control"
+                          v-model="fetchSite.email"
+                          @input="validateEmailFormat"
+                          ref="email"
+                          autocomplete="new-email"
+                        />
+                        <span v-if="!emailValid" class="text-danger">
+                          Invalid Email format
+                        </span>
+                        <!-- <span
+                                v-if="email && !validateEmailFormat(email)"
+                                class="text-danger"
+                                >Invalid Email format</span
+                              > -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">phone number</label>
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="fetchSite.phone_number"
+                          @input="cleanPhoneNumber"
+                          inputmode="numeric"
+                          pattern="[0-9]*"
+                        />
+                        <span v-if="!phoneNumberValid" class="text-danger">
+                          Invalid Phone Number
+                        </span>
+                        <!-- <span
+                              v-if="phone_number && !validatePhoneNumberFormat(phone_number)"
+                              class="text-danger"
+                              >Invalid Phone Number</span
+                            >-->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Split Rate</label>
+                      </div>
+                      <div class="col-12">
+                        <select id="selectOption" v-model="selectedSplitRate">
+                          <option value="true">True</option>
+                          <option value="false">False</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Status</label>
+                      </div>
+                      <div class="col-12">
+                        <select id="selectOption" v-model="fetchSite.status">
+                          <option value="true">Active</option>
+                          <option value="false">In-active</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <div class="col-12">
                     <label class="form-label">Portal Access</label>
                   </div>
-                  <div class="col-10">
+                  <div class="col-12">
                     <select id="selectOption" v-model="fetchSite.portal_access">
                       <option value="true">True</option>
                       <option value="false">False</option>

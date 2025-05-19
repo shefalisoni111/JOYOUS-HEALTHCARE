@@ -2,113 +2,179 @@
   <div>
     <!-- <Navbar /> -->
 
-    <div id="main" class="main px-sm-2">
-      <div class="row">
-        <div class="col-md-1"><Sidebar /></div>
-        <div class="col-md-3 p-3 p-0 bg-white borderight">
-          <div class="leftside">
-            <!-- <div class="heading mb-3 position-relative">
-              <p class="bforeline"></p>
-              <p class="mb-0 text-uppercase fw-bold genSetting ms-3 ms-lg-0">
-                General Settings
-              </p>
-              <p class="afterline"></p>
-            </div> -->
-            <div>
-              <ul class="list-unstyled text-capitalize generalsetting px-3">
-                <!-- <li class="list-items d-flex">
-                  <i class="bi bi-suitcase-lg rounded-circle"></i>
-                  <router-link to="/addjobdetail" class="text-decoration-none">
-                    <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize">jobs</h6>
-                      <p class="text-capitalize mb-0">Add jobs, positions & roles</p>
-                    </div>
-                  </router-link>
-                </li> -->
-                <!-- <li class="list-items d-flex mt-3">
-                  <i class="bi bi-check-lg rounded-circle"></i>
-                  <router-link to="/staff-status" class="text-decoration-none">
-                    <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize">Staff status</h6>
-                      <p class="text-capitalize mb-0">view & modify</p>
-                    </div>
-                  </router-link>
-                </li> -->
-                <!-- <li class="list-items d-flex mt-3">
-                  <i class="bi bi-person-square rounded-circle"></i>
-                  <router-link to="/employmenttypedetail" class="text-decoration-none">
-                    <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize">employment types</h6>
-                      <p class="text-capitalize mb-0">Add & modify</p>
-                    </div>
-                  </router-link>
-                </li>
-                <li class="list-items d-flex mt-3">
-                  <i class="bi bi-clock rounded-circle"></i>
-                  <router-link to="/shift" class="text-decoration-none">
-                    <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize">shift</h6>
-                      <p class="text-capitalize mb-0">shift times</p>
-                    </div>
-                  </router-link>
-                </li>
-                <li class="list-items d-flex mt-3">
-                  <i class="bi bi-calendar2-range-fill rounded-circle"></i>
-                  <router-link to="/holidaycalender" class="text-decoration-none">
-                    <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize">Holiday Calendar</h6>
-                      <p class="text-capitalize mb-0">Add & Modify holidays</p>
-                    </div>
-                  </router-link>
-                </li>
-                <li class="list-items d-flex mt-3">
-                  <i class="bi bi-credit-card rounded-circle"></i>
-                  <router-link to="/staff-deduction" class="text-decoration-none">
-                    <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize">Staff Deduction</h6>
-                      <p class="text-capitalize mb-0">Add & modify Deduction</p>
-                    </div>
-                  </router-link>
-                </li> -->
-                <!-- <li class="list-items d-flex mt-3">
-                  <i class="bi bi-person-vcard rounded-circle"></i>
-                  <router-link to="/staff-profiles" class="text-decoration-none">
-                    <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize">Staff profile</h6>
-                      <p class="text-capitalize mb-0">Add mandatory fields</p>
-                    </div>
-                  </router-link>
-                </li>
-                <li class="list-items d-flex mt-3">
-                  <i class="bi bi-card-list rounded-circle"></i>
-                  <router-link to="/staff-detail-field" class="text-decoration-none">
-                    <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize">Staff Detail Section Field</h6>
-                      <p class="text-capitalize mb-0">Add Staff Detail Section Field</p>
-                    </div>
-                  </router-link>
-                </li> -->
-                <!-- <div class="heading my-3 position-relative px-sm-2">
-                  <p class="bforeline"></p>
-                  <p class="mb-0 text-uppercase fw-bold docSetting">Documents Setting</p>
-                  <p class="afterlines"></p>
-                </div>
-                <li class="list-items d-flex">
-                  <i class="bi bi-file-earmark-medical rounded-circle"></i>
-                  <router-link to="/documentcategories" class="text-decoration-none">
-                    <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize">documents categories</h6>
-                      <p class="text-capitalize mb-0">create & update categories</p>
-                    </div>
-                  </router-link>
-                </li> -->
-              </ul>
-            </div>
+    <div id="main" class="main d-flex">
+      <div
+        class=""
+        style="
+          background: #fff;
+
+          border-radius: 20px;
+        "
+      >
+        <Navbar />
+      </div>
+
+      <div class="container-fluid" style="background: #71616105">
+        <div class="col-10 pt-4 pt-1">
+          <div class="col-12">
+            <ol class="breadcrumb mb-1">
+              <li class="breadcrumb-item active">
+                <a
+                  class="nav-link d-inline fs-4 fw-bolder"
+                  style="color: #000000"
+                  >App Settings</a
+                >
+              </li>
+            </ol>
           </div>
         </div>
-        <div class="col-md-8">
-          <div class="col-12 bg-white p-4">
-            <!-- <RouterView /> -->
+        <div class="d-flex">
+          <div class="col-1"><Sidebar /></div>
+          <div class="col-3 p-3 p-0 bg-white borderight">
+            <div class="leftside">
+              <div class="heading mb-3 position-relative">
+                <p class="bforeline"></p>
+                <p class="mb-0 text-uppercase fw-bold genSetting ms-3 ms-lg-0">
+                  General Settings
+                </p>
+                <p class="afterline"></p>
+              </div>
+              <div>
+                <ul class="list-unstyled text-capitalize generalsetting px-3">
+                  <li class="list-items d-flex">
+                    <i class="bi bi-suitcase-lg rounded-circle"></i>
+                    <router-link
+                      to="/addjobdetail"
+                      class="text-decoration-none"
+                    >
+                      <div class="job ms-2">
+                        <h6 class="mb-0 text-capitalize">jobs</h6>
+                        <p class="text-capitalize mb-0">
+                          Add jobs, positions & roles
+                        </p>
+                      </div>
+                    </router-link>
+                  </li>
+                  <li class="list-items d-flex mt-3">
+                    <i class="bi bi-check-lg rounded-circle"></i>
+                    <router-link
+                      to="/staff-status"
+                      class="text-decoration-none"
+                    >
+                      <div class="job ms-2">
+                        <h6 class="mb-0 text-capitalize">Staff status</h6>
+                        <p class="text-capitalize mb-0">view & modify</p>
+                      </div>
+                    </router-link>
+                  </li>
+                  <li class="list-items d-flex mt-3">
+                    <i class="bi bi-person-square rounded-circle"></i>
+                    <router-link
+                      to="/employmenttypedetail"
+                      class="text-decoration-none"
+                    >
+                      <div class="job ms-2">
+                        <h6 class="mb-0 text-capitalize">employment types</h6>
+                        <p class="text-capitalize mb-0">Add & modify</p>
+                      </div>
+                    </router-link>
+                  </li>
+                  <li class="list-items d-flex mt-3">
+                    <i class="bi bi-clock rounded-circle"></i>
+                    <router-link to="/shift" class="text-decoration-none">
+                      <div class="job ms-2">
+                        <h6 class="mb-0 text-capitalize">shift</h6>
+                        <p class="text-capitalize mb-0">shift times</p>
+                      </div>
+                    </router-link>
+                  </li>
+                  <li class="list-items d-flex mt-3">
+                    <i class="bi bi-calendar2-range-fill rounded-circle"></i>
+                    <router-link
+                      to="/holidaycalender"
+                      class="text-decoration-none"
+                    >
+                      <div class="job ms-2">
+                        <h6 class="mb-0 text-capitalize">Holiday Calendar</h6>
+                        <p class="text-capitalize mb-0">
+                          Add & Modify holidays
+                        </p>
+                      </div>
+                    </router-link>
+                  </li>
+                  <li class="list-items d-flex mt-3">
+                    <i class="bi bi-credit-card rounded-circle"></i>
+                    <router-link
+                      to="/staff-deduction"
+                      class="text-decoration-none"
+                    >
+                      <div class="job ms-2">
+                        <h6 class="mb-0 text-capitalize">Staff Deduction</h6>
+                        <p class="text-capitalize mb-0">
+                          Add & modify Deduction
+                        </p>
+                      </div>
+                    </router-link>
+                  </li>
+                  <!-- <li class="list-items d-flex mt-3">
+                    <i class="bi bi-person-vcard rounded-circle"></i>
+                    <router-link
+                      to="/staff-profiles"
+                      class="text-decoration-none"
+                    >
+                      <div class="job ms-2">
+                        <h6 class="mb-0 text-capitalize">Staff profile</h6>
+                        <p class="text-capitalize mb-0">Add mandatory fields</p>
+                      </div>
+                    </router-link>
+                  </li>
+                  <li class="list-items d-flex mt-3">
+                    <i class="bi bi-card-list rounded-circle"></i>
+                    <router-link
+                      to="/staff-detail-field"
+                      class="text-decoration-none"
+                    >
+                      <div class="job ms-2">
+                        <h6 class="mb-0 text-capitalize">
+                          Staff Detail Section Field
+                        </h6>
+                        <p class="text-capitalize mb-0">
+                          Add Staff Detail Section Field
+                        </p>
+                      </div>
+                    </router-link>
+                  </li> -->
+                  <div class="heading my-3 position-relative px-sm-2">
+                    <p class="bforeline"></p>
+                    <p class="mb-0 text-uppercase fw-bold docSetting">
+                      Documents Setting
+                    </p>
+                    <p class="afterlines"></p>
+                  </div>
+                  <li class="list-items d-flex">
+                    <i class="bi bi-file-earmark-medical rounded-circle"></i>
+                    <router-link
+                      to="/documentcategories"
+                      class="text-decoration-none"
+                    >
+                      <div class="job ms-2">
+                        <h6 class="mb-0 text-capitalize">
+                          documents categories
+                        </h6>
+                        <p class="text-capitalize mb-0">
+                          create & update categories
+                        </p>
+                      </div>
+                    </router-link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-8">
+            <div class="col-12 bg-white p-4">
+              <RouterView />
+            </div>
           </div>
         </div>
       </div>
@@ -116,7 +182,7 @@
   </div>
 </template>
 <script>
-// import Navbar from "../components/Navbar.vue";
+import Navbar from "../components/Navbar.vue";
 import Sidebar from "../components/Sidebar.vue";
 // import AppJobDetail from "../components/appsettingcomponent/AppJobDetail.vue";
 
@@ -126,7 +192,7 @@ import Sidebar from "../components/Sidebar.vue";
 
 export default {
   components: {
-    // Navbar,
+    Navbar,
     Sidebar,
     // AppJobDetail,
     // CandidateStatus,
@@ -142,9 +208,6 @@ export default {
 </script>
 
 <style scoped>
-#main {
-  padding-top: 65px;
-}
 .docSetting {
   margin-left: -16px;
   color: #ff5722;

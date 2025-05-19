@@ -6,65 +6,88 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="editCandidate">Edit Staff</h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
               <form>
-                <div class="mb-3">
-                  <div class="">
-                    <div class="col-12">
-                      <label class="form-label">Name</label>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="">
+                        <div class="col-12">
+                          <label class="form-label">Name</label>
+                        </div>
+                        <div class="col-12 mt-1">
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="fetchCandidate.first_name"
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-12 mt-1">
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="fetchCandidate.first_name"
-                      />
+                  </div>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Position</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <select
+                          v-model="fetchCandidate.job_id"
+                          id="selectJobTitle"
+                        >
+                          <option
+                            v-for="option in options"
+                            :key="option.id"
+                            :value="option.id"
+                            aria-placeholder="Select Job"
+                          >
+                            {{ option.name }}
+                          </option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Position</label>
+
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Email</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="email"
+                          class="form-control"
+                          v-model="fetchCandidate.email"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-12 mt-1">
-                    <select v-model="fetchCandidate.job_id" id="selectJobTitle">
-                      <option
-                        v-for="option in options"
-                        :key="option.id"
-                        :value="option.id"
-                        aria-placeholder="Select Job"
-                      >
-                        {{ option.name }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Email</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="email"
-                      class="form-control"
-                      v-model="fetchCandidate.email"
-                    />
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Phone Number</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="number"
-                      class="form-control"
-                      v-model="fetchCandidate.phone_number"
-                    />
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Phone Number</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="number"
+                          class="form-control"
+                          v-model="fetchCandidate.phone_number"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
+
                 <div class="mb-3">
                   <div class="col-12">
                     <label class="form-label">Status</label>

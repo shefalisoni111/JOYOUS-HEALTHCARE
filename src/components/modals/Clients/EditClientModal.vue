@@ -2,34 +2,82 @@
   <div>
     <!-- Modal -->
     <div class="modal fade" id="editClient" aria-labelledby="editClient">
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="editClient">Edit Client</h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
-          <div class="modal-body mx-3" style="background: #dbdbdb">
+          <div class="modal-body">
             <div class="row align-items-center">
               <form>
-                <div class="mb-3">
-                  <div class="">
-                    <div class="col-12">
-                      <label class="form-label">Name</label>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="">
+                        <div class="col-12">
+                          <label class="form-label">Client Name</label>
+                        </div>
+                        <div class="col-12 mt-1">
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="fetchClients.client_name"
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-12 mt-1">
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="fetchClients.client_name"
-                      />
+                  </div>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Email</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="email"
+                          class="form-control"
+                          v-model="fetchClients.email"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label" for="selectJobTitle">Jobs</label>
-                  </div>
+                <div class="col-12">
+                  <div class="mb-3">
+                    <div class="col-12">
+                      <label class="form-label" for="selectJobTitle"
+                        >Jobs</label
+                      >
+                    </div>
 
-                  <div class="col-12">
+                    <div class="row">
+                      <div
+                        class="col-md-4"
+                        v-for="option in options"
+                        :key="option.id"
+                      >
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            :value="option.id"
+                            v-model="option.checked"
+                            @change="toggleJobsSelection"
+                          />
+                          <label class="text-capitalize"
+                            >&nbsp;{{ option.name }}</label
+                          >
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- <div class="col-12">
                     <div v-for="option in options" :key="option.id">
                       <input
                         type="checkbox"
@@ -41,74 +89,77 @@
                         >&nbsp;{{ option.name }}</label
                       >
                     </div>
+                  </div> -->
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Email</label>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Phone Number</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="fetchClients.phone_number"
+                          @input="cleanPhoneNumber"
+                          inputmode="numeric"
+                          pattern="[0-9]*"
+                        />
+                        <!-- <div v-if="!isPhoneNumberValid" class="text-danger">
+                          Phone number must be exactly 11 digits.
+                        </div> -->
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="email"
-                      class="form-control"
-                      v-model="fetchClients.email"
-                    />
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Phone Number</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchClients.phone_number"
-                      @input="cleanPhoneNumber"
-                      inputmode="numeric"
-                      pattern="[0-9]*"
-                    />
-                    <!-- <div v-if="!isPhoneNumberValid" class="text-danger">
-                      Phone number must be exactly 11 digits.
-                    </div> -->
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Password</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="password"
-                      class="form-control"
-                      v-model="fetchClients.password"
-                    />
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Password</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="password"
+                          class="form-control"
+                          v-model="fetchClients.password"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Confirm Password</label>
+
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Confirm Password</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="password"
+                          class="form-control"
+                          v-model="fetchClients.confirm_password"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="password"
-                      class="form-control"
-                      v-model="fetchClients.confirm_password"
-                    />
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Address</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="fetchClients.address"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Address</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchClients.address"
-                    />
-                  </div>
-                </div>
+
                 <div class="mb-3">
                   <div class="col-12">
                     <label class="form-label">Status</label>

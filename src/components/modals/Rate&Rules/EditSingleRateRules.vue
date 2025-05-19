@@ -12,6 +12,12 @@
             <h5 class="modal-title" id="editSingleRateRules">
               Edit Rate and Rules
             </h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body mx-3">
             <!-- {{ console.log(fetchRateRulesData) }} -->
@@ -84,14 +90,7 @@
                   </div>
                 </div>
 
-                <div
-                  class="mt-2"
-                  style="
-                    background-color: rgb(203 203 203);
-                    padding: 10px;
-                    border-radius: 3px;
-                  "
-                >
+                <div class="mt-2" style="padding: 10px; border-radius: 3px">
                   <h5 class="fw-bold text-capitalize">
                     {{ fetchRateRulesData.day }}
                   </h5>
@@ -767,14 +766,12 @@ select {
   width: 100% !important;
   padding: 10px !important;
   border-radius: 4px;
-  border: 0px;
 }
 .form-control {
-  background-color: #fff;
+  background: #fffaf6;
   padding: 0.6rem 0.75rem;
 }
 .modal-body {
   border-radius: 5px;
-  background: #dbdbdb;
 }
 </style>

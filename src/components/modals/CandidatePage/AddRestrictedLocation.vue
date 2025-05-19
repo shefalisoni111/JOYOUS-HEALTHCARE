@@ -10,15 +10,21 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addRestrictedLocation">Add Location</h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
               <form @submit.prevent="addRestrictedLocationMethod">
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
+                <div class="mb-3">
+                  <div class="col-12">
                     <label for="selectClients" class="form-label">Client</label>
                   </div>
-                  <div class="col-10">
+                  <div class="col-12">
                     <select
                       v-model="client_id"
                       id="selectClients"
@@ -39,14 +45,14 @@
                     > -->
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
+                <div class="mb-3">
+                  <div class="col-12">
                     <label class="form-label" for="selectBusinessUnit"
                       >Site</label
                     >
                   </div>
 
-                  <div class="col-10">
+                  <div class="col-12">
                     <select v-model="site_id" id="selectBusinessUnit">
                       <option
                         v-for="option in businessUnit"
