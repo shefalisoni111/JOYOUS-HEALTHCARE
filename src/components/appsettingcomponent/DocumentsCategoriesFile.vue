@@ -87,18 +87,61 @@
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th scope="col">Document</th>
-                      <th scope="col">Mandatory</th>
-                      <th scope="col">Expiry Date</th>
-                      <th scope="col">Profile View</th>
-                      <th scope="col">Action</th>
+                      <th scope="col">
+                        Document
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Mandatory
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Expiry Date
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Profile View
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
+                      <th scope="col">
+                        Action
+                        <img
+                          src="../../assets/ArrowDown.png"
+                          class="img-fluid pe-2"
+                          alt="RecPal"
+                          loading="eager"
+                        />
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="getDocs in getCate.documents" :key="getDocs.id">
                       <td>{{ getDocs.display_name }}</td>
                       <td>
-                        <label class="switch" :class="{ checked: getDocs.mandatory }">
+                        <label
+                          class="switch"
+                          :class="{ checked: getDocs.mandatory }"
+                        >
                           <input
                             type="checkbox"
                             :id="'togBtn-' + getDocs.id"
@@ -109,29 +152,42 @@
                         </label>
                       </td>
                       <td>
-                        <label class="switch" :class="{ checked: getDocs.hide_document }">
+                        <label
+                          class="switch"
+                          :class="{ checked: getDocs.hide_document }"
+                        >
                           <input
                             type="checkbox"
                             :id="'togBtn-' + getDocs.id"
                             :checked="getDocs.hide_document"
-                            :disabled="isCheckboxDisabled(getDocs, 'hide_document')"
+                            :disabled="
+                              isCheckboxDisabled(getDocs, 'hide_document')
+                            "
                           />
                           <div class="slider round"></div>
                         </label>
                       </td>
                       <td>
-                        <label class="switch" :class="{ checked: getDocs.profile_view }">
+                        <label
+                          class="switch"
+                          :class="{ checked: getDocs.profile_view }"
+                        >
                           <input
                             type="checkbox"
                             :id="'togBtn-' + getDocs.id"
                             :checked="getDocs.profile_view"
-                            :disabled="isCheckboxDisabled(getDocs, 'profile_view')"
+                            :disabled="
+                              isCheckboxDisabled(getDocs, 'profile_view')
+                            "
                           />
                           <div class="slider round"></div>
                         </label>
                       </td>
                       <td>
-                        <i class="bi bi-trash" @click="confirmed(getDocs.id)"></i>
+                        <i
+                          class="bi bi-trash"
+                          @click="confirmed(getDocs.id)"
+                        ></i>
                       </td>
                     </tr>
                   </tbody>
@@ -147,7 +203,11 @@
         </div>
       </div>
     </div>
-    <div class="mx-3 mt-3" style="text-align: right" v-if="getCategory?.length >= 10">
+    <div
+      class="mx-3 mt-3"
+      style="text-align: right"
+      v-if="getCategory?.length >= 10"
+    >
       <button
         class="btn btn-sm btn-primary dropdown-toggle"
         type="button"
@@ -159,13 +219,19 @@
       </button>
       <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+            >20 Records</a
+          >
         </li>
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+            >50 Records</a
+          >
         </li>
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+            >100 Records</a
+          >
         </li>
       </ul>
 
@@ -346,9 +412,12 @@ export default {
     async getDocCAtegories() {
       this.isLoading = true;
       try {
-        const response = await axios.get(`${VITE_API_URL}/document_categories`, {
-          per_page: this.itemsPerPage,
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/document_categories`,
+          {
+            per_page: this.itemsPerPage,
+          }
+        );
 
         this.getCategory = response.data;
       } catch (error) {
@@ -399,76 +468,7 @@ ul li i {
   background: transparent;
   box-shadow: none;
 }
-.switch {
-  width: 50px;
-  height: 17px;
-  position: relative;
-  display: inline-block;
-}
 
-.switch input {
-  display: none;
-}
-
-.switch .slider {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  cursor: pointer;
-  background-color: #e7ecf1;
-  border-radius: 30px !important;
-  border: 0;
-  padding: 0;
-  display: block;
-  margin: 12px 10px;
-  min-height: 11px;
-}
-
-.switch .slider:before {
-  position: absolute;
-  background-color: #aaa;
-  height: 15px;
-  width: 15px;
-  content: "";
-  left: 0px;
-  bottom: -2px;
-  border-radius: 50%;
-  transition: ease-in-out 0.5s;
-}
-
-.switch .slider:after {
-  content: "";
-  color: rgb(189, 84, 15);
-  display: block;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 70%;
-  transition: all 0.5s;
-  font-size: 10px;
-  font-family: "Inter", sans-serif;
-}
-
-.switch input:checked + .slider:after {
-  transition: all 0.5s;
-  left: 30%;
-  content: "";
-}
-
-.switch input:checked + .slider {
-  background-color: #d3d6d9;
-}
-
-.switch input:checked + .slider:before {
-  transform: translateX(15px);
-  background-color: #ff9800;
-}
-
-table thead th {
-  background-color: #f9944b !important;
-}
 .accordion-header {
   cursor: pointer;
   padding: 10px;
@@ -500,9 +500,5 @@ table thead th {
 
 .btn-primary {
   border: none;
-}
-.switch input:disabled + .slider {
-  background-color: #e0e0e0;
-  cursor: not-allowed;
 }
 </style>

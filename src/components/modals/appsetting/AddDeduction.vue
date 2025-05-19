@@ -6,23 +6,29 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addDeduct">Add Candidate Deduction</h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
               <form>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-4">
-                    <label class="form-label">TITLE</label>
+                <div class="mb-3">
+                  <div class="col-12">
+                    <label class="form-label">Title</label>
                   </div>
-                  <div class="col-8">
+                  <div class="col-12">
                     <input type="text" class="form-control" v-model="title" />
                   </div>
                 </div>
-                <!-- <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-4">
+                <!-- <div class="mb-3 ">
+                  <div class="col-12">
                     <label class="form-label" for="selectAddDeduction">JOB</label>
                   </div>
-                  <div class="col-8 mt-1">
+                  <div class="col-12 mt-1">
                     <select v-model="jobs_id" id="selectAddDeduction">
                       <option
                         v-for="option in options"
@@ -34,11 +40,11 @@
                     </select>
                   </div>
                 </div> -->
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-4">
-                    <label class="form-label">AMOUNT</label>
+                <div class="mb-3">
+                  <div class="col-12">
+                    <label class="form-label">Amount</label>
                   </div>
-                  <div class="col-8 mt-1">
+                  <div class="col-12 mt-1">
                     <input
                       type="text"
                       class="form-control"
@@ -47,11 +53,11 @@
                     />
                   </div>
                 </div>
-                <!-- <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-4">
+                <!-- <div class="mb-3 ">
+                  <div class="col-12">
                     <label class="form-label">FREQUENCY</label>
                   </div>
-                  <div class="col-8 mt-1">
+                  <div class="col-12 mt-1">
                     <input type="text" class="form-control" v-model="frequency" />
                     
                   </div>
@@ -176,7 +182,6 @@ export default {
 <style scoped>
 .modal-body {
   border-radius: 5px;
-  background: #dbdbdb;
 }
 
 .modal-footer {

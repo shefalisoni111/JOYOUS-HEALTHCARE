@@ -2,67 +2,95 @@
   <div>
     <!-- <Navbar /> -->
 
-    <div id="main" class="main">
-      <div class="row">
-        <div class="col-md-1"><Sidebar /></div>
-        <div class="col-md-3 p-3 bg-white borderight">
-          <div class="leftside">
-            <div class="heading mb-3 position-relative">
-              <p class="bforeline"></p>
-              <p class="mb-0 text-uppercase fw-bold genSetting">agency Settings</p>
-              <p class="afterline"></p>
-            </div>
-            <div>
-              <ul class="list-unstyled text-capitalize generalsetting px-3">
-                <li class="list-items d-flex">
-                  <i class="bi bi-person rounded-circle"></i>
-                  <router-link
-                    to="/appsetting/agencysetting"
-                    class="text-decoration-none"
-                  >
-                    <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize clr">profile</h6>
-                      <p class="text-capitalize mb-0">
-                        view & update agency profiles & logos
-                      </p>
-                    </div>
-                  </router-link>
-                </li>
-              </ul>
-            </div>
+    <div id="main" class="main d-flex">
+      <div
+        class=""
+        style="
+          background: #fff;
+
+          border-radius: 20px;
+        "
+      >
+        <Navbar />
+      </div>
+      <div class="container-fluid" style="background: #71616105">
+        <div class="col-10 pt-4 pt-3">
+          <div class="col-12">
+            <ol class="breadcrumb mb-1">
+              <li class="breadcrumb-item active">
+                <a
+                  class="nav-link d-inline fs-4 fw-bolder"
+                  style="color: #000000"
+                  >App Settings</a
+                >
+              </li>
+            </ol>
           </div>
         </div>
-        <div class="col-md-8 p-0">
-          <div class="settingsdetails">
-            <div class="pagetitle d-flex justify-content-between">
-              <div class="d-flex align-items-center">
-                <ol class="breadcrumb mb-1 p-3">
-                  <li class="breadcrumb-item active text-uppercase fw-bold">
-                    agency setting / <span class="clr">profile</span>
-                  </li>
-                </ol>
+        <div class="d-flex">
+          <div class="col-md-1"><Sidebar /></div>
+          <div class="col-md-3 p-3 bg-white borderight">
+            <div class="leftside">
+              <div class="heading mb-3 position-relative">
+                <p class="bforeline"></p>
+                <p class="mb-0 text-uppercase fw-bold genSetting">
+                  agency Settings
+                </p>
+                <p class="afterline"></p>
               </div>
-              <!-- End Page Title -->
+              <div>
+                <ul class="list-unstyled text-capitalize generalsetting px-3">
+                  <li class="list-items d-flex">
+                    <i class="bi bi-person rounded-circle"></i>
+                    <router-link
+                      to="/appsetting/agencysetting"
+                      class="text-decoration-none"
+                    >
+                      <div class="job ms-2">
+                        <h6 class="mb-0 text-capitalize clr">profile</h6>
+                        <p class="text-capitalize mb-0">
+                          view & update agency profiles & logos
+                        </p>
+                      </div>
+                    </router-link>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
-          <div class="col-12 bg-white"></div>
-          <div class="row">
-            <div class="col-12">
-              <div class="bg-white">
-                <div class="col-5">
-                  <div class="d-flex justify-content-between align-items-center px-4">
-                    <div class="position-relative">
-                      <div>
-                        <div v-if="filteredLogo">
-                          <img
-                            :src="filteredLogo.logo_url"
-                            class=""
-                            alt="Agency Logo"
-                            width="220"
-                            height="220"
-                            loading="eager"
-                          />
-                          <!-- <input
+          <div class="col-md-8 p-0">
+            <div class="settingsdetails">
+              <div class="pagetitle d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                  <ol class="breadcrumb mb-1 p-3">
+                    <li class="breadcrumb-item active text-uppercase fw-bold">
+                      agency setting / <span class="clr">profile</span>
+                    </li>
+                  </ol>
+                </div>
+                <!-- End Page Title -->
+              </div>
+            </div>
+            <div class="col-12 bg-white"></div>
+            <div class="row">
+              <div class="col-12">
+                <div class="bg-white">
+                  <div class="col-5">
+                    <div
+                      class="d-flex justify-content-between align-items-center px-4"
+                    >
+                      <div class="position-relative">
+                        <div>
+                          <div v-if="filteredLogo">
+                            <img
+                              :src="filteredLogo.logo_url"
+                              class=""
+                              alt="Agency Logo"
+                              width="220"
+                              height="220"
+                              loading="eager"
+                            />
+                            <!-- <input
                             type="file"
                             id="agencyMainInput"
                             style="display: none"
@@ -75,64 +103,68 @@
                             style="border-radius: 0px; background-color: #57bd8e"
                             >+</label
                           > -->
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div class="d-flex flex-column text-capitalize">
-                      <h5 class="mb-0">
-                        {{ getAgencyData.first_name + " " + getAgencyData.last_name }}
-                      </h5>
-                      <!-- <p class="mb-0">recruitment</p>
+                      <div class="d-flex flex-column text-capitalize">
+                        <h5 class="mb-0">
+                          {{
+                            getAgencyData.first_name +
+                            " " +
+                            getAgencyData.last_name
+                          }}
+                        </h5>
+                        <!-- <p class="mb-0">recruitment</p>
                       <span>Description</span> -->
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="showdata p-4">
-                  <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                      <button
-                        class="nav-link active ms-0"
-                        id="about"
-                        data-bs-toggle="tab"
-                        data-bs-target="#home"
-                        type="button"
-                        role="tab"
-                        aria-controls="home"
-                        aria-selected="true"
-                      >
-                        About
-                      </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                      <button
-                        class="nav-link"
-                        id="additional"
-                        data-bs-toggle="tab"
-                        data-bs-target="#profile"
-                        type="button"
-                        role="tab"
-                        aria-controls="profile"
-                        aria-selected="false"
-                      >
-                        Additional
-                      </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                      <button
-                        class="nav-link"
-                        id="RecPal"
-                        data-bs-toggle="tab"
-                        data-bs-target="#contact"
-                        type="button"
-                        role="tab"
-                        aria-controls="contact"
-                        aria-selected="false"
-                      >
-                        Favicon & Logo
-                      </button>
-                    </li>
-                    <!-- <li class="nav-item" role="presentation">
+                  <div class="showdata p-4">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <button
+                          class="nav-link active ms-0"
+                          id="about"
+                          data-bs-toggle="tab"
+                          data-bs-target="#home"
+                          type="button"
+                          role="tab"
+                          aria-controls="home"
+                          aria-selected="true"
+                        >
+                          About
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button
+                          class="nav-link"
+                          id="additional"
+                          data-bs-toggle="tab"
+                          data-bs-target="#profile"
+                          type="button"
+                          role="tab"
+                          aria-controls="profile"
+                          aria-selected="false"
+                        >
+                          Additional
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button
+                          class="nav-link"
+                          id="RecPal"
+                          data-bs-toggle="tab"
+                          data-bs-target="#contact"
+                          type="button"
+                          role="tab"
+                          aria-controls="contact"
+                          aria-selected="false"
+                        >
+                          Favicon & Logo
+                        </button>
+                      </li>
+                      <!-- <li class="nav-item" role="presentation">
                       <button
                         class="nav-link"
                         id="customUrl"
@@ -146,150 +178,166 @@
                         Custom Url
                       </button>
                     </li> -->
-                  </ul>
-                  <div class="tab-content" id="myTabContent">
-                    <div
-                      class="tab-pane fade show active"
-                      id="home"
-                      role="tabpanel"
-                      aria-labelledby="about"
-                    >
-                      <div class="p-2 float-end">
-                        <button
-                          type="button"
-                          class="btn btn-outline-success text-nowrap text-nowrap"
-                          data-bs-toggle="modal"
-                          data-bs-target="#editAgencyData"
-                          data-bs-whatever="@mdo"
-                          @click="editagencyId(getAgencyData.id)"
-                        >
-                          <i class="bi bi-pencil"></i> Edit
-                        </button>
-                      </div>
-                      <div class="p-4 table-wrapper">
-                        <table class="table table-borderless" v-if="getAgencyData">
-                          <thead></thead>
-                          <tbody v-if="getAgencyData">
-                            <tr>
-                              <th scope="col">First Name</th>
-                              <td scope="col">
-                                {{ getAgencyData.first_name }}
-                              </td>
-                            </tr>
-                            <tr>
-                              <th scope="row">Last Name</th>
-                              <td>
-                                {{ getAgencyData.last_name }}
-                              </td>
-                            </tr>
-                            <tr>
-                              <th scope="row">Email</th>
-                              <td>{{ getAgencyData.email }}</td>
-                            </tr>
-                            <tr>
-                              <th scope="row">Address</th>
-                              <td colspan="2">{{ getAgencyData.address }}</td>
-                            </tr>
-                            <tr>
-                              <th scope="row">Phone Number</th>
-                              <td colspan="2">{{ getAgencyData.phone_number }}</td>
-                            </tr>
-                            <!-- <tr>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                      <div
+                        class="tab-pane fade show active"
+                        id="home"
+                        role="tabpanel"
+                        aria-labelledby="about"
+                      >
+                        <div class="p-2 float-end">
+                          <button
+                            type="button"
+                            class="btn btn-outline-success text-nowrap text-nowrap"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editAgencyData"
+                            data-bs-whatever="@mdo"
+                            @click="editagencyId(getAgencyData.id)"
+                          >
+                            <i class="bi bi-pencil"></i> Edit
+                          </button>
+                        </div>
+                        <div class="p-4 table-wrapper">
+                          <table
+                            class="table table-borderless"
+                            v-if="getAgencyData"
+                          >
+                            <thead></thead>
+                            <tbody v-if="getAgencyData">
+                              <tr>
+                                <th scope="col">First Name</th>
+                                <td scope="col">
+                                  {{ getAgencyData.first_name }}
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Last Name</th>
+                                <td>
+                                  {{ getAgencyData.last_name }}
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Email</th>
+                                <td>{{ getAgencyData.email }}</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Address</th>
+                                <td colspan="2">{{ getAgencyData.address }}</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Phone Number</th>
+                                <td colspan="2">
+                                  {{ getAgencyData.phone_number }}
+                                </td>
+                              </tr>
+                              <!-- <tr>
                               <th scope="row">phone number</th>
                               <td colspan="2">{{ getAgencyData.phone_number }}</td>
                             </tr> -->
-                          </tbody>
-                          <tbody v-else>
-                            <tr>
-                              <td colspan="6" class="text-center text-danger">
-                                {{ "Data Not Found!" }}
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
+                            </tbody>
+                            <tbody v-else>
+                              <tr>
+                                <td colspan="6" class="text-center text-danger">
+                                  {{ "Data Not Found!" }}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
-                    </div>
-                    <div
-                      class="tab-pane fade"
-                      id="profile"
-                      role="tabpanel"
-                      aria-labelledby="additional"
-                    >
-                      <p class="p-4">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-                        dolore quasi architecto magni aperiam totam. Quibusdam magnam
-                        eaque possimus ipsum. Necessitatibus molestias rerum architecto
-                        ipsam quis labore quod quo sint?
-                      </p>
-                    </div>
-                    <div
-                      class="tab-pane fade p-3 d-flex"
-                      id="contact"
-                      role="tabpanel"
-                      aria-labelledby="RecPal"
-                    >
                       <div
-                        class="col-4 d-flex gap-1 justify-content-between"
-                        v-for="agencyLogoList in agencyLogoList"
-                        :key="agencyLogoList.id"
+                        class="tab-pane fade"
+                        id="profile"
+                        role="tabpanel"
+                        aria-labelledby="additional"
                       >
-                        <div>
-                          <loader :isLoading="isLoading"></loader>
-                          <h6>
-                            <span class="ps-1 fs-6 fw-bold text-capitalize">{{
-                              agencyLogoList.logo_type.replace(/_/g, " ")
-                            }}</span
-                            >&nbsp;
-                            <!-- <span class="text-muted">(dimension 32px * 32px)</span> -->
-                          </h6>
-                          <div class="col-4 w-100">
-                            <div class="card">
-                              <div class="card-body">
-                                <img
-                                  v-if="!agencyLogoList.logo_url"
-                                  src="./pic-image.jpg"
-                                  class="img-fluid"
-                                  loading="eager"
-                                  width="300"
-                                  style="height: 300px"
-                                  height="300"
-                                />
-                                <img
-                                  v-else
-                                  :src="agencyLogoList.logo_url"
-                                  class="img-fluid m-auto d-block"
-                                  loading="eager"
-                                  width="300"
-                                  style="height: 300px"
-                                  height="300"
-                                />
-                                <input
-                                  type="file"
-                                  :id="'faviconInput-' + agencyLogoList.id"
-                                  style="display: none"
-                                  accept="image/*"
-                                  @change="previewAgencyLogo($event, agencyLogoList.id)"
-                                />
-                                <label
-                                  :for="'faviconInput-' + agencyLogoList.id"
-                                  class="btn btn-primary w-100 position-absolute bottom-0 end-0 text-capitalize"
-                                  style="border-radius: 0px"
-                                  >Upload
-                                  {{ agencyLogoList.logo_type.replace(/_/g, " ") }}</label
-                                >
-                                <!-- <a
+                        <p class="p-4">
+                          Lorem ipsum dolor sit amet consectetur adipisicing
+                          elit. Eaque dolore quasi architecto magni aperiam
+                          totam. Quibusdam magnam eaque possimus ipsum.
+                          Necessitatibus molestias rerum architecto ipsam quis
+                          labore quod quo sint?
+                        </p>
+                      </div>
+                      <div
+                        class="tab-pane fade p-3 d-flex"
+                        id="contact"
+                        role="tabpanel"
+                        aria-labelledby="RecPal"
+                      >
+                        <div
+                          class="col-4 d-flex gap-1 justify-content-between"
+                          v-for="agencyLogoList in agencyLogoList"
+                          :key="agencyLogoList.id"
+                        >
+                          <div>
+                            <loader :isLoading="isLoading"></loader>
+                            <h6>
+                              <span class="ps-1 fs-6 fw-bold text-capitalize">{{
+                                agencyLogoList.logo_type.replace(/_/g, " ")
+                              }}</span
+                              >&nbsp;
+                              <!-- <span class="text-muted">(dimension 32px * 32px)</span> -->
+                            </h6>
+                            <div class="col-4 w-100">
+                              <div class="card">
+                                <div class="card-body">
+                                  <img
+                                    v-if="!agencyLogoList.logo_url"
+                                    src="./pic-image.jpg"
+                                    class="img-fluid"
+                                    loading="eager"
+                                    width="300"
+                                    style="height: 300px"
+                                    height="300"
+                                  />
+                                  <img
+                                    v-else
+                                    :src="agencyLogoList.logo_url"
+                                    class="img-fluid m-auto d-block"
+                                    loading="eager"
+                                    width="300"
+                                    style="height: 300px"
+                                    height="300"
+                                  />
+                                  <input
+                                    type="file"
+                                    :id="'faviconInput-' + agencyLogoList.id"
+                                    style="display: none"
+                                    accept="image/*"
+                                    @change="
+                                      previewAgencyLogo(
+                                        $event,
+                                        agencyLogoList.id
+                                      )
+                                    "
+                                  />
+                                  <label
+                                    :for="'faviconInput-' + agencyLogoList.id"
+                                    class="btn btn-primary w-100 position-absolute bottom-0 end-0 text-capitalize"
+                                    style="border-radius: 0px"
+                                    >Upload
+                                    {{
+                                      agencyLogoList.logo_type.replace(
+                                        /_/g,
+                                        " "
+                                      )
+                                    }}</label
+                                  >
+                                  <!-- <a
                                   href="#"
                                   class="btn btn-primary w-100"
                                   style="border-radius: 0px"
                                   >Upload Favicon</a
                                 > -->
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <!-- <div
+                      <!-- <div
                       class="tab-pane fade"
                       id="contacts"
                       role="tabpanel"
@@ -302,6 +350,7 @@
                         ipsam quis labore quod quo sint?
                       </p>
                     </div> -->
+                    </div>
                   </div>
                 </div>
               </div>
@@ -325,7 +374,7 @@
 </template>
 <script>
 import axios from "axios";
-// import Navbar from "../Navbar.vue";
+import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
 import EditAgencySetting from "../modals/AgencySetting/EditAgencySetting.vue";
 import Loader from "../Loader/Loader.vue";
@@ -347,7 +396,7 @@ export default {
     };
   },
   components: {
-    // Navbar,
+    Navbar,
     Sidebar,
     EditAgencySetting,
     Loader,
@@ -428,11 +477,14 @@ export default {
       }
 
       try {
-        const response = await axios.get(`${VITE_API_URL}/merchants/${merchantId}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/merchants/${merchantId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         this.getAgencyData = response.data.data;
       } catch (error) {
         if (error.response) {
@@ -500,12 +552,6 @@ export default {
 </script>
 
 <style scoped>
-/*--------------------------------------------------------------
-  # Page Title
-  --------------------------------------------------------------*/
-#main {
-  padding-top: 65px;
-}
 table th,
 .pagetitle {
   margin-bottom: 10px;

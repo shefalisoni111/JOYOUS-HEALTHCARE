@@ -12,15 +12,21 @@
             <h5 class="modal-title" id="addCandidateStatus">
               Add Candidate Status
             </h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
               <form>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
+                <div class="mb-3">
+                  <div class="col-12">
                     <label class="form-label">Title</label>
                   </div>
-                  <div class="col-10 mt-1">
+                  <div class="col-12 mt-1">
                     <input
                       type="text"
                       class="form-control"
@@ -33,11 +39,11 @@
                   </div>
                 </div>
 
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
+                <div class="mb-3">
+                  <div class="col-12">
                     <label class="form-label">Desc</label>
                   </div>
-                  <div class="col-10 mt-1">
+                  <div class="col-12 mt-1">
                     <textarea
                       type="text"
                       class="form-control"
@@ -191,7 +197,6 @@ export default {
 
 .modal-body {
   border-radius: 5px;
-  background: #dbdbdb;
 }
 
 .modal-footer {

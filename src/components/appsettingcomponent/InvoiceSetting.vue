@@ -2,497 +2,379 @@
   <div>
     <!-- <Navbar /> -->
 
-    <div id="main" class="main">
-      <div class="row">
-        <div class="col-md-1"><Sidebar /></div>
-        <div class="col-md-3 p-3 bg-white borderight">
-          <div class="leftside">
-            <div class="heading mb-3 position-relative">
-              <p class="bforeline"></p>
-              <p class="mb-0 text-uppercase fw-bold genSetting">
-                invoice Settings
-              </p>
-              <p class="afterline"></p>
-            </div>
-            <div>
-              <ul class="list-unstyled text-capitalize generalsetting px-3">
-                <li class="list-items d-flex">
-                  <i class="bi bi-file-earmark-text rounded-circle"></i>
-                  <router-link
-                    to="/appsetting/invoicesetting"
-                    class="text-decoration-none"
-                  >
-                    <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize">invoice setting</h6>
-                      <p class="text-capitalize mb-0">
-                        check invoice dues date
-                      </p>
-                    </div>
-                  </router-link>
-                </li>
-              </ul>
-            </div>
+    <div id="main" class="main d-flex">
+      <div
+        class=""
+        style="
+          background: #fff;
+
+          border-radius: 20px;
+        "
+      >
+        <Navbar />
+      </div>
+      <div class="container-fluid" style="background: #71616105">
+        <div class="col-10 pt-4 pt-3">
+          <div class="col-12">
+            <ol class="breadcrumb mb-1">
+              <li class="breadcrumb-item active">
+                <a
+                  class="nav-link d-inline fs-4 fw-bolder"
+                  style="color: #000000"
+                  >App Settings</a
+                >
+              </li>
+            </ol>
           </div>
         </div>
-        <div class="col-md-8">
-          <div class="col-12 bg-white">
-            <div class="pagetitle d-flex justify-content-between">
-              <div class="d-flex align-items-center">
-                <ol class="breadcrumb mb-1 p-3">
-                  <li class="breadcrumb-item active text-uppercase fw-bold">
-                    invoice setting /
-                    <span class="clr">rate And invoice setting</span>
-                  </li>
-                </ol>
+        <div class="d-flex">
+          <div class="col-md-1"><Sidebar /></div>
+          <div class="col-md-3 p-3 bg-white borderight">
+            <div class="leftside">
+              <div class="heading mb-3 position-relative">
+                <p class="bforeline"></p>
+                <p class="mb-0 text-uppercase fw-bold genSetting">
+                  invoice Settings
+                </p>
+                <p class="afterline"></p>
               </div>
-              <!-- End Page Title -->
-              <div class="d-flex align-items-center"></div>
+              <div>
+                <ul class="list-unstyled text-capitalize generalsetting px-3">
+                  <li class="list-items d-flex">
+                    <i class="bi bi-file-earmark-text rounded-circle"></i>
+                    <router-link
+                      to="/appsetting/invoicesetting"
+                      class="text-decoration-none"
+                    >
+                      <div class="job ms-2">
+                        <h6 class="mb-0 text-capitalize">invoice setting</h6>
+                        <p class="text-capitalize mb-0">
+                          check invoice dues date
+                        </p>
+                      </div>
+                    </router-link>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-12">
-              <h6 class="fw-bold">RATE SETTINGS DETAILS</h6>
-              <div class="col-6">
-                <div class="d-flex justify-content-between my-3">
-                  <div>Split rate:</div>
-                  <div>
-                    <label class="switch">
-                      <input
-                        type="checkbox"
-                        id="togBtn"
-                        v-model="fetchInvoiceSetting.split_rate"
-                        @input="handleInputChange"
-                      />
-                      <div class="slider round"></div>
-                    </label>
-                  </div>
+          <div class="col-md-8">
+            <div class="col-12 bg-white">
+              <div class="pagetitle d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                  <ol class="breadcrumb mb-1 p-3">
+                    <li class="breadcrumb-item active text-uppercase fw-bold">
+                      invoice setting /
+                      <span class="clr">rate And invoice setting</span>
+                    </li>
+                  </ol>
                 </div>
-                <div class="col-12">
-                  <div class="d-flex my-3">
-                    <div class="card p-2 alert alert-warning">
-                      <b>Warning!</b> Changes you made on split rate, will
-                      affect the entire site accordingly.
-                    </div>
-                  </div>
-                </div>
+                <!-- End Page Title -->
+                <div class="d-flex align-items-center"></div>
               </div>
+            </div>
+            <div class="row">
               <div class="col-12">
-                <div
-                  class="d-flex justify-content-between align-content-center"
-                >
-                  <h6 class="fw-bold">INVOICE SETTINGS DETAILS</h6>
-                  <button
-                    class="btn btn-primary me-3"
-                    @click.prevent="updateInvoiceMethod()"
-                    :disabled="!isModified"
-                  >
-                    <i class="bi bi-save2-fill"></i> Save
-                  </button>
-                </div>
-
-                <!-- <div class="col-6">
+                <h6 class="fw-bold">RATE SETTINGS DETAILS</h6>
+                <div class="col-6">
                   <div class="d-flex justify-content-between my-3">
-                    <div>Rate per mile in client invoice:</div>
+                    <div>Split rate:</div>
                     <div>
                       <label class="switch">
                         <input
                           type="checkbox"
                           id="togBtn"
-                          v-model="fetchInvoiceSetting.rate_per_mile_in_client"
+                          v-model="fetchInvoiceSetting.split_rate"
                           @input="handleInputChange"
                         />
                         <div class="slider round"></div>
                       </label>
                     </div>
                   </div>
-                </div> -->
-              </div>
-              <!-- <div class="d-flex my-3" style="gap: 29.6%">
-                <div>Rate per mile in Staff invoice:</div>
-                <div>
-                  <label class="switch">
-                    <input
-                      type="checkbox"
-                      id="togBtn"
-                      v-model="fetchInvoiceSetting.rate_per_mile_in_staff"
-                      @input="handleInputChange"
-                    />
-                    <div class="slider round"></div>
-                  </label>
+                  <div class="col-12">
+                    <div class="d-flex my-3">
+                      <div class="card p-2 alert alert-warning">
+                        <b>Warning!</b> Changes you made on split rate, will
+                        affect the entire site accordingly.
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div> -->
-              <div class="d-flex my-3" style="gap: 3.3%">
-                <div class="">
-                  <div>Invoice cut off day (Weekly):</div>
-                </div>
-
-                <div style="width: 56%">
-                  <select
-                    class="form-control"
-                    v-model="fetchInvoiceSetting.invoice_cut_off_day"
-                    @change="handleInputChange"
+                <div class="col-12">
+                  <div
+                    class="d-flex justify-content-between align-content-center"
                   >
-                    <option v-for="day in weekDays" :key="day" :value="day">
-                      {{ day }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-9">
-                <div class="d-flex my-3">
-                  <div class="card p-2 alert alert-primary">
-                    If the cutoff day is chosen, each invoice created prior to
-                    the cutoff day will be placed in the previous/corresponding
-                    week, depending on the date.<br />
-                    After the cutoff day, any invoice created will be for the
-                    current week. Only applicable to weekly invoices.
+                    <h6 class="fw-bold">INVOICE SETTINGS DETAILS</h6>
+                    <button
+                      class="btn btn-primary me-3"
+                      @click.prevent="updateInvoiceMethod()"
+                      :disabled="!isModified"
+                    >
+                      <i class="bi bi-save2-fill"></i> Save
+                    </button>
                   </div>
                 </div>
-              </div>
-              <div class="col-9">
-                <div class="d-flex justify-content-between my-3">
-                  <div class="col-3">
-                    <div>Invoice creation period:</div>
+
+                <div class="d-flex my-3" style="gap: 3.3%">
+                  <div class="">
+                    <div>Invoice cut off day (Weekly):</div>
                   </div>
 
-                  <div class="col-9">
+                  <div style="width: 56%">
                     <select
                       class="form-control"
-                      v-model="fetchInvoiceSetting.invoice_creation_period"
+                      v-model="fetchInvoiceSetting.invoice_cut_off_day"
                       @change="handleInputChange"
                     >
-                      <option v-for="day in creation" :key="day" :value="day">
+                      <option v-for="day in weekDays" :key="day" :value="day">
                         {{ day }}
                       </option>
                     </select>
                   </div>
                 </div>
-              </div>
-              <div class="col-9">
-                <div class="d-flex my-3" style="">
-                  <div>Invoice Table Head (Staff/Description):</div>
-                  <div class="w-75">
-                    <input
-                      class="form-control w-100"
-                      v-model="fetchInvoiceSetting.staff_invoice_table_head"
-                      @input="validateInvoiceTableHead"
-                    />
-                    <div v-if="invoiceTableHeadError" class="text-danger">
-                      {{ invoiceTableHeadError }}
+                <div class="col-9">
+                  <div class="d-flex my-3">
+                    <div class="card p-2 alert alert-primary">
+                      If the cutoff day is chosen, each invoice created prior to
+                      the cutoff day will be placed in the
+                      previous/corresponding week, depending on the date.<br />
+                      After the cutoff day, any invoice created will be for the
+                      current week. Only applicable to weekly invoices.
                     </div>
                   </div>
                 </div>
-                <div class="d-flex my-3" style="gap: 56.3%">
-                  <div>Hash (#):</div>
-                  <div>
-                    <label class="switch">
-                      <input
-                        type="checkbox"
-                        id="togBtn"
-                        v-model="fetchInvoiceSetting.invoice_hash"
-                        @input="handleInputChange"
-                      />
-                      <div class="slider round"></div>
-                    </label>
-                  </div>
-                </div>
-                <div class="d-flex my-3" style="gap: 25.8%">
-                  <div>Enable Site name in the invoice number:</div>
-                  <div>
-                    <label class="switch">
-                      <input
-                        type="checkbox"
-                        id="togBtn"
-                        v-model="
-                          fetchInvoiceSetting.enable_site_name_in_invoice
-                        "
-                        @input="handleInputChange"
-                      />
-                      <div class="slider round"></div>
-                    </label>
-                  </div>
-                </div>
+                <div class="col-9">
+                  <div class="d-flex justify-content-between my-3">
+                    <div class="col-3">
+                      <div>Invoice creation period:</div>
+                    </div>
 
-                <div class="d-flex my-3" style="gap: 0.3%">
-                  <div class="col-3">
-                    <div>PDF Name Format (which should be shown first?):</div>
-                  </div>
-
-                  <div class="col-9">
-                    <input
-                      type="text"
-                      class="form-control ps-2"
-                      aria-label="Specify invoice number formal"
-                      aria-describedby="basic-addon2"
-                      v-model="fetchInvoiceSetting.pdf_name_format"
-                      @input="validatePDFNameFormat"
-                    />
-                    <div v-if="pdfNameFormatError" class="text-danger">
-                      {{ pdfNameFormatError }}
+                    <div class="col-9">
+                      <select
+                        class="form-control"
+                        v-model="fetchInvoiceSetting.invoice_creation_period"
+                        @change="handleInputChange"
+                      >
+                        <option v-for="day in creation" :key="day" :value="day">
+                          {{ day }}
+                        </option>
+                      </select>
                     </div>
                   </div>
                 </div>
-                <div class="d-flex my-3" style="gap: 8%">
-                  <div>Invoice Number format:</div>
-                  <div class="input-group mb-3" style="width: 75%">
-                    <span
-                      v-if="!fetchInvoiceSetting.invoice_number_format"
-                      class="input-group-text"
-                      id="basic-addon2"
-                      >INV-</span
-                    >
-                    <input
-                      type="text"
-                      class="form-control ps-2"
-                      aria-label="Specify invoice number formal"
-                      aria-describedby="basic-addon2"
-                      v-model="fetchInvoiceSetting.invoice_number_format"
-                      @input="updateInvoiceNumberFormat"
-                    />
-                    <!-- <span class="input-group-text" id="basic-addon2">1234</span> -->
-                  </div>
-                </div>
-                <div class="d-flex my-3" style="gap: 13.55%">
-                  <div>Invoice Start number:</div>
-                  <div class="w-100">
-                    <input
-                      class="form-control"
-                      v-model="fetchInvoiceSetting.invoice_start_number"
-                      @input="updateInvoiceStartNumber"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="col-9">
-                <div
-                  class="d-flex my-3 justify-content-between"
-                  style="gap: 12.55%"
-                >
-                  <div>Client Invoice Template:</div>
-                  <div class="w-100">
-                    <select
-                      v-model="fetchInvoiceSetting.client_invoice_template"
-                      @change="updateTemplateClient"
-                      class="form-control"
-                    >
-                      <option value="TemplateOneClient">Template One</option>
-                      <option value="TemplateTwoClient">Template Two</option>
-                    </select>
-                  </div>
-                </div>
-                <div
-                  class="d-flex my-3 justify-content-between"
-                  style="gap: 13%"
-                >
-                  <div>Staff Invoice Template:</div>
-                  <div class="w-100">
-                    <select
-                      v-model="fetchInvoiceSetting.staff_invoice_template"
-                      @change="updateTemplateStaff"
-                      class="form-control"
-                    >
-                      <option value="TemplateOneStaff">Template One</option>
-                      <option value="TemplateTwoStaff">Template Two</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-8">
-                <!-- <div class="d-flex my-3" style="gap: 57.3%">
-                  <div>Reference Code:</div>
-                  <div>
-                    <label class="switch">
+                <div class="col-9">
+                  <div class="d-flex my-3" style="">
+                    <div>Invoice Table Head (Staff/Description):</div>
+                    <div class="w-75">
                       <input
-                        type="checkbox"
-                        id="togBtn"
-                        v-model="fetchInvoiceSetting.reference_code"
-                        @input="handleInputChange"
+                        class="form-control w-100"
+                        v-model="fetchInvoiceSetting.staff_invoice_table_head"
+                        @input="validateInvoiceTableHead"
                       />
-                      <div class="slider round"></div>
-                    </label>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <div class="d-flex my-3">
-                    <div class="card p-2 alert alert-warning">
-                      To enable or disable the reference code in the client invoice.
+                      <div v-if="invoiceTableHeadError" class="text-danger">
+                        {{ invoiceTableHeadError }}
+                      </div>
                     </div>
                   </div>
-                </div> -->
-                <div class="d-flex my-3" style="gap: 42%">
-                  <!-- <div>Enable NI Number in Client Invoice:</div>
-                  <div>
-                    <label class="switch">
-                      <input
-                        type="checkbox"
-                        id="togBtn"
-                        v-model="fetchInvoiceSetting.NI_number_for_client"
-                        @input="handleInputChange"
-                      />
-                      <div class="slider round"></div>
-                    </label>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <div class="d-flex my-3">
-                    <div class="card p-2 alert alert-warning">
-                      <b>Warning!</b> Changes you made on Client Invoice NI Number, will
-                      affect the entire site accordingly.
-                    </div>
-                  </div>
-                </div> -->
-                  <!-- <div class="d-flex my-3" style="gap: 38.4%">
-                  <div>Enable NI Number in Staff Invoice:</div>
-                  <div>
-                    <label class="switch">
-                      <input
-                        type="checkbox"
-                        id="togBtn"
-                        v-model="fetchInvoiceSetting.NI_number_for_staff"
-                        @input="handleInputChange"
-                      />
-                      <div class="slider round"></div>
-                    </label>
-                  </div>
-                </div> -->
-                  <!-- <div class="col-12">
-                  <div class="d-flex my-3">
-                    <div class="card p-2 alert alert-warning">
-                      <b>Warning!</b> Changes you made on staff Invoice NI Number, will
-                      affect the entire staff invoice accordingly.
-                    </div>
-                  </div>
-                </div> -->
-                  <!-- <div class="d-flex my-3" style="gap: 55.6%">
-                  <div>Enable Vat Number:</div>
-                  <div>
-                    <label class="switch">
-                      <input
-                        type="checkbox"
-                        id="togBtn"
-                        v-model="fetchInvoiceSetting.vat_number"
-                        @input="handleInputChange"
-                      />
-                      <div class="slider round"></div>
-                    </label>
-                  </div>-->
-                </div>
-                <!-- <div class="col-12">
-                  <div class="d-flex my-3">
-                    <div class="card p-2 alert alert-warning">
-                      <b>Warning:</b> Changes you made on enable vat number, will affect
-                      the entire site accordingly.
-                    </div>
-                  </div>
-                </div> -->
-                <div class="d-flex my-3" style="gap: 30.6%">
-                  <!-- <div class="d-flex justify-content-between gap-3">
-                    <div>Exclude VAT:</div>
+                  <div class="d-flex my-3" style="gap: 56.3%">
+                    <div>Hash (#):</div>
                     <div>
-                      <div>
-                        Mileage:
-                        <label class="switch">
-                          <input type="checkbox" id="togBtn" />
-                          <div class="slider round"></div>
-                        </label>
-                      </div>
-
-                      <div>
-                        New row:
-                        <label class="switch">
-                          <input type="checkbox" id="togBtn" />
-                          <div class="slider round"></div>
-                        </label>
-                      </div>
-                    </div>
-                  </div> -->
-                </div>
-                <!-- <div class="col-12">
-                  <div class="d-flex my-3">
-                    <div class="card p-2 alert alert-warning">
-                      <b>Warning!</b> Changes you made on enable Exclude VAT on mileage or
-                      new row, will affect the entire site accordingly.
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          id="togBtn"
+                          v-model="fetchInvoiceSetting.invoice_hash"
+                          @input="handleInputChange"
+                        />
+                        <div class="slider round"></div>
+                      </label>
                     </div>
                   </div>
-                </div> -->
-                <div class="d-flex my-3" style="gap: 54.6%">
-                  <div>Enable Booking Code:</div>
-                  <div>
-                    <label class="switch">
+                  <div class="d-flex my-3" style="gap: 25.8%">
+                    <div>Enable Site name in the invoice number:</div>
+                    <div>
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          id="togBtn"
+                          v-model="
+                            fetchInvoiceSetting.enable_site_name_in_invoice
+                          "
+                          @input="handleInputChange"
+                        />
+                        <div class="slider round"></div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="d-flex my-3" style="gap: 0.3%">
+                    <div class="col-3">
+                      <div>PDF Name Format (which should be shown first?):</div>
+                    </div>
+
+                    <div class="col-9">
                       <input
-                        type="checkbox"
-                        id="togBtn"
-                        v-model="fetchInvoiceSetting.enable_booking_code"
-                        @input="handleInputChange"
+                        type="text"
+                        class="form-control ps-2"
+                        aria-label="Specify invoice number formal"
+                        aria-describedby="basic-addon2"
+                        v-model="fetchInvoiceSetting.pdf_name_format"
+                        @input="validatePDFNameFormat"
                       />
-                      <div class="slider round"></div>
-                    </label>
+                      <div v-if="pdfNameFormatError" class="text-danger">
+                        {{ pdfNameFormatError }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-flex my-3" style="gap: 8%">
+                    <div>Invoice Number format:</div>
+                    <div class="input-group mb-3" style="width: 75%">
+                      <span
+                        v-if="!fetchInvoiceSetting.invoice_number_format"
+                        class="input-group-text"
+                        id="basic-addon2"
+                        >INV-</span
+                      >
+                      <input
+                        type="text"
+                        class="form-control ps-2"
+                        aria-label="Specify invoice number formal"
+                        aria-describedby="basic-addon2"
+                        v-model="fetchInvoiceSetting.invoice_number_format"
+                        @input="updateInvoiceNumberFormat"
+                      />
+                      <!-- <span class="input-group-text" id="basic-addon2">1234</span> -->
+                    </div>
+                  </div>
+                  <div class="d-flex my-3" style="gap: 13.55%">
+                    <div>Invoice Start number:</div>
+                    <div class="w-100">
+                      <input
+                        class="form-control"
+                        v-model="fetchInvoiceSetting.invoice_start_number"
+                        @input="updateInvoiceStartNumber"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-9">
+                  <div
+                    class="d-flex my-3 justify-content-between"
+                    style="gap: 12.55%"
+                  >
+                    <div>Client Invoice Template:</div>
+                    <div class="w-100">
+                      <select
+                        v-model="fetchInvoiceSetting.client_invoice_template"
+                        @change="updateTemplateClient"
+                        class="form-control"
+                      >
+                        <option value="TemplateOneClient">Template One</option>
+                        <option value="TemplateTwoClient">Template Two</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div
+                    class="d-flex my-3 justify-content-between"
+                    style="gap: 13%"
+                  >
+                    <div>Staff Invoice Template:</div>
+                    <div class="w-100">
+                      <select
+                        v-model="fetchInvoiceSetting.staff_invoice_template"
+                        @change="updateTemplateStaff"
+                        class="form-control"
+                      >
+                        <option value="TemplateOneStaff">Template One</option>
+                        <option value="TemplateTwoStaff">Template Two</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-8">
+                  <div class="d-flex my-3" style="gap: 42%"></div>
+
+                  <div class="d-flex my-3" style="gap: 30.6%"></div>
+
+                  <div class="d-flex my-3" style="gap: 54.6%">
+                    <div>Enable Booking Code:</div>
+                    <div>
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          id="togBtn"
+                          v-model="fetchInvoiceSetting.enable_booking_code"
+                          @input="handleInputChange"
+                        />
+                        <div class="slider round"></div>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="d-flex my-3">
+                      <div class="card p-2 alert alert-warning">
+                        <b>Warning!</b> Changes you made on enable booking code,
+                        will affect the entire client invoice and signed
+                        timesheet accordingly.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-flex my-3" style="gap: 57%">
+                    <div>Enable Break Time:</div>
+                    <div>
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          id="togBtn"
+                          v-model="fetchInvoiceSetting.break_time"
+                          @input="handleInputChange"
+                        />
+                        <div class="slider round"></div>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="d-flex my-3">
+                      <div class="card p-2 alert alert-warning">
+                        <b>Warning!</b> Changes you made on enable Exclude VAT
+                        on mileage or new row, will affect the entire site
+                        accordingly.
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="col-12">
-                  <div class="d-flex my-3">
-                    <div class="card p-2 alert alert-warning">
-                      <b>Warning!</b> Changes you made on enable booking code,
-                      will affect the entire client invoice and signed timesheet
-                      accordingly.
-                    </div>
-                  </div>
-                </div>
-                <div class="d-flex my-3" style="gap: 57%">
-                  <div>Enable Break Time:</div>
-                  <div>
-                    <label class="switch">
-                      <input
-                        type="checkbox"
-                        id="togBtn"
-                        v-model="fetchInvoiceSetting.break_time"
-                        @input="handleInputChange"
-                      />
-                      <div class="slider round"></div>
-                    </label>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <div class="d-flex my-3">
-                    <div class="card p-2 alert alert-warning">
-                      <b>Warning!</b> Changes you made on enable Exclude VAT on
-                      mileage or new row, will affect the entire site
-                      accordingly.
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="d-flex my-3" style="gap: 10%">
-                  <div>Client Invoice Footer Note:</div>
-                  <div style="width: 50%">
-                    <!-- <TextFormator
+                  <div class="d-flex my-3" style="gap: 10%">
+                    <div>Client Invoice Footer Note:</div>
+                    <div style="width: 50%">
+                      <!-- <TextFormator
                       v-model="fetchInvoiceSetting.client_invoice_footer_note"
                     /> -->
 
-                    <textarea
-                      class="form-control"
-                      v-model="fetchInvoiceSetting.client_invoice_footer_note"
-                      @input="handleInputChange"
-                      rows="3"
-                    ></textarea>
+                      <textarea
+                        class="form-control"
+                        v-model="fetchInvoiceSetting.client_invoice_footer_note"
+                        @input="handleInputChange"
+                        rows="3"
+                      ></textarea>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-12 mb-3">
-                <div class="d-flex my-3" style="gap: 10%">
-                  <div>Staff Invoice Footer Note:</div>
-                  <div style="width: 50%">
-                    <!-- <TextFormator
+                <div class="col-12 mb-3">
+                  <div class="d-flex my-3" style="gap: 10%">
+                    <div>Staff Invoice Footer Note:</div>
+                    <div style="width: 50%">
+                      <!-- <TextFormator
                       v-model="fetchInvoiceSetting.staff_invoice_footer_note"
                     /> -->
-                    <textarea
-                      class="form-control"
-                      v-model="fetchInvoiceSetting.staff_invoice_footer_note"
-                      @input="handleInputChange"
-                      rows="3"
-                    ></textarea>
+                      <textarea
+                        class="form-control"
+                        v-model="fetchInvoiceSetting.staff_invoice_footer_note"
+                        @input="handleInputChange"
+                        rows="3"
+                      ></textarea>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -510,7 +392,7 @@
 <script>
 import axios from "axios";
 import ClientInvoiceTemplatesVue from "../modals/appsetting/InvoiceSetting/ClientInvoiceTemplates.vue";
-// import Navbar from "../Navbar.vue";
+import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
 import TextFormator from "../textformator/TextFormator.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
@@ -559,7 +441,7 @@ export default {
     };
   },
   components: {
-    // Navbar,
+    Navbar,
     Sidebar,
     TextFormator,
     SuccessAlert,
@@ -700,9 +582,6 @@ export default {
 </script>
 
 <style scoped>
-#main {
-  padding-top: 65px;
-}
 #logo {
   width: 119px;
 

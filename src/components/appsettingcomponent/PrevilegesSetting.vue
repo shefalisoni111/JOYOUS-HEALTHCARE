@@ -2,211 +2,268 @@
   <div>
     <!-- <Navbar /> -->
 
-    <div id="main" class="main">
-      <div class="row">
-        <div class="col-md-1"><Sidebar /></div>
-        <div class="col-md-3 p-3 bg-white borderight">
-          <div class="leftside">
-            <div class="heading mb-3 position-relative">
-              <p class="bforeline"></p>
-              <p class="mb-0 text-uppercase fw-bold genSetting">previleges Settings</p>
-              <p class="afterline"></p>
-            </div>
-            <div>
-              <ul class="list-unstyled text-capitalize generalsetting px-3">
-                <li class="list-items d-flex">
-                  <i class="bi bi-file-earmark-text rounded-circle"></i>
-                  <router-link
-                    to="/appsetting/previlegesetting"
-                    class="text-decoration-none"
-                  >
-                    <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize">user & privileges</h6>
-                      <p class="text-capitalize mb-0">Add & Modify</p>
-                    </div>
-                  </router-link>
-                </li>
-              </ul>
-            </div>
+    <div id="main" class="main d-flex">
+      <div
+        class=""
+        style="
+          background: #fff;
+
+          border-radius: 20px;
+        "
+      >
+        <Navbar />
+      </div>
+      <div class="container-fluid" style="background: #71616105">
+        <div class="col-10 pt-4 pt-3">
+          <div class="col-12">
+            <ol class="breadcrumb mb-1">
+              <li class="breadcrumb-item active">
+                <a
+                  class="nav-link d-inline fs-4 fw-bolder"
+                  style="color: #000000"
+                  >App Settings</a
+                >
+              </li>
+            </ol>
           </div>
         </div>
-        <div class="col-md-8">
-          <div class="col-12 bg-white">
-            <div class="pagetitle d-flex justify-content-between">
-              <div class="d-flex align-items-center">
-                <ol class="breadcrumb pt-4 mb-0">
-                  <li class="breadcrumb-item active text-uppercase fw-bold">
-                    privileges setting / <span class="clr">user privileges</span>
-                  </li>
-                </ol>
+        <div class="d-flex">
+          <div class="col-md-1"><Sidebar /></div>
+          <div class="col-md-3 p-3 bg-white borderight">
+            <div class="leftside">
+              <div class="heading mb-3 position-relative">
+                <p class="bforeline"></p>
+                <p class="mb-0 text-uppercase fw-bold genSetting">
+                  previleges Settings
+                </p>
+                <p class="afterline"></p>
               </div>
-              <!-- End Page Title -->
-              <div class="d-flex align-items-center"></div>
-            </div>
-          </div>
-          <div class="settingsdetails">
-            <div class="pagetitle d-flex justify-content-between align-items-center mb-0">
-              <div class="d-flex">
-                <ol class="breadcrumb mb-0">
-                  <li class="breadcrumb-item active text-capitalize fw-bold">
-                    user roles
-                  </li>
-                </ol>
-              </div>
-              <!-- End Page Title -->
-              <div class="d-flex align-items-center">
-                <button
-                  class="btn btn-primary rounded-1 text-uppercase fw-medium"
-                  data-bs-toggle="modal"
-                  data-bs-target="#AddPrivileges"
-                  data-bs-whatever="@mdo"
-                  type="button"
-                  @click="handlePrivilegesAdd"
-                >
-                  <i class="bi bi-person-plus-fill"></i> Create user
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-12">
-              <div class="bg-white p-2">
-                <div class="showdata">
-                  <ul class="nav nav-pills" id="pills-tab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                      <button
-                        class="nav-link active text-capitalize ps-0 text-nowrap"
-                        id="active"
-                        data-bs-toggle="pill"
-                        data-bs-target="#pills-home"
-                        type="button"
-                        role="tab"
-                        aria-controls="pills-home"
-                        aria-selected="true"
-                        @click="setActiveTab('active')"
-                      >
-                        Active Users
-                        <span class="badge bg-success">{{ totalActiveUserCount }}</span>
-                      </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                      <button
-                        class="nav-link text-capitalize text-nowrap"
-                        id="inactive"
-                        data-bs-toggle="pill"
-                        data-bs-target="#pills-profile"
-                        type="button"
-                        role="tab"
-                        aria-controls="pills-profile"
-                        aria-selected="false"
-                        :class="{ active: activeTab === 'inactive' }"
-                        @click="setActiveTab('inactive')"
-                      >
-                        Inactive Users
-                        <span class="badge bg-danger">{{ totalInActiveUserCount }}</span>
-                      </button>
-                    </li>
-                  </ul>
-                  <div class="tab-content" id="pills-tabContent">
-                    <div
-                      class="tab-pane fade show active"
-                      id="pills-home"
-                      role="tabpanel"
-                      aria-labelledby="active"
-                      tabindex="0"
+              <div>
+                <ul class="list-unstyled text-capitalize generalsetting px-3">
+                  <li class="list-items d-flex">
+                    <i class="bi bi-file-earmark-text rounded-circle"></i>
+                    <router-link
+                      to="/appsetting/previlegesetting"
+                      class="text-decoration-none"
                     >
-                      <div class="mt-4 table-wrapper">
-                        <table class="table table table-hover addjobtable">
-                          <thead>
-                            <tr>
-                              <th scope="col" class="bg-primary text-white">Id</th>
-                              <th scope="col" class="bg-primary text-white">User</th>
-                              <th scope="col" class="bg-primary text-white">Email</th>
-                              <th scope="col" class="bg-primary text-white">
-                                Mobile No:
-                              </th>
-                              <th scope="col" class="bg-primary text-white">Role</th>
-
-                              <th scope="col" class="bg-primary text-white">Action</th>
-                            </tr>
-                          </thead>
-                          <tbody v-if="rolesActive?.length > 0">
-                            <tr v-for="data in rolesActive" :key="data.id">
-                              <td>{{ data.id }}</td>
-                              <td scope="row">
-                                {{ data.first_name + " " + data.last_name }}
-                              </td>
-                              <td>{{ data.email }}</td>
-                              <td>{{ data.phone_number }}</td>
-                              <td>{{ data.user_role.split("_").join(" ") }}</td>
-                              <!-- <td><i class="bi bi-trash text-danger"></i></td> -->
-
-                              <td>
-                                <i
-                                  class="bi bi-trash text-danger text-nowrap cursor-pointer"
-                                  v-on:click="confirmed(data.id, false)"
-                                >
-                                </i>
-                              </td>
-                            </tr>
-                          </tbody>
-                          <tbody v-else>
-                            <tr>
-                              <td colspan="6" class="text-danger">
-                                {{ "Inactive users Not found!" }}
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
+                      <div class="job ms-2">
+                        <h6 class="mb-0 text-capitalize">user & privileges</h6>
+                        <p class="text-capitalize mb-0">Add & Modify</p>
                       </div>
-                    </div>
-                    <div
-                      class="tab-pane fade"
-                      id="pills-profile"
-                      role="tabpanel"
-                      aria-labelledby="inactive"
-                      tabindex="1"
-                    >
-                      <div class="mt-4 table-wrapper">
-                        <table class="table table table-hover addjobtable">
-                          <thead>
-                            <tr>
-                              <th scope="col" class="bg-primary text-white">Id</th>
-                              <th scope="col" class="bg-primary text-white">User</th>
-                              <th scope="col" class="bg-primary text-white">Email</th>
-                              <th scope="col" class="bg-primary text-white">
-                                Mobile No:
-                              </th>
-                              <th scope="col" class="bg-primary text-white">Role</th>
+                    </router-link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="col-12 bg-white">
+              <div class="pagetitle d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                  <ol class="breadcrumb pt-4 mb-0">
+                    <li class="breadcrumb-item active text-uppercase fw-bold">
+                      privileges setting /
+                      <span class="clr">user privileges</span>
+                    </li>
+                  </ol>
+                </div>
+                <!-- End Page Title -->
+                <div class="d-flex align-items-center"></div>
+              </div>
+            </div>
+            <div class="settingsdetails">
+              <div
+                class="pagetitle d-flex justify-content-between align-items-center mb-0"
+              >
+                <div class="d-flex">
+                  <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item active text-capitalize fw-bold">
+                      user roles
+                    </li>
+                  </ol>
+                </div>
+                <!-- End Page Title -->
+                <div class="d-flex align-items-center">
+                  <button
+                    class="btn btn-primary rounded-1 text-uppercase fw-medium"
+                    data-bs-toggle="modal"
+                    data-bs-target="#AddPrivileges"
+                    data-bs-whatever="@mdo"
+                    type="button"
+                    @click="handlePrivilegesAdd"
+                  >
+                    <i class="bi bi-person-plus-fill"></i> Create user
+                  </button>
+                </div>
+              </div>
+            </div>
 
-                              <th scope="col" class="bg-primary text-white">Action</th>
-                            </tr>
-                          </thead>
-                          <tbody v-if="rolesInActive?.length > 0">
-                            <tr v-for="data in rolesInActive" :key="data.id">
-                              <td>{{ data.id }}</td>
-                              <td scope="row">
-                                {{ data.first_name + " " + data.last_name }}
-                              </td>
-                              <td>{{ data.email }}</td>
-                              <td>{{ data.phone_number }}</td>
-                              <td>{{ data.user_role.split("_").join(" ") }}</td>
-                              <td>
-                                <i
-                                  class="bi bi-trash text-danger cursor-pointer"
-                                  v-on:click="rolesDeleteMethod(data.id)"
-                                ></i
-                                >&nbsp;
-                                <button
-                                  class="btn btn-primary btn-sm text-nowrap"
-                                  v-on:click="confirmed(data.id, true)"
-                                >
-                                  Re-Activate
-                                </button>
-                              </td>
+            <div class="row">
+              <div class="col-12">
+                <div class="bg-white p-2">
+                  <div class="showdata">
+                    <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <button
+                          class="nav-link active text-capitalize ps-0 text-nowrap"
+                          id="active"
+                          data-bs-toggle="pill"
+                          data-bs-target="#pills-home"
+                          type="button"
+                          role="tab"
+                          aria-controls="pills-home"
+                          aria-selected="true"
+                          @click="setActiveTab('active')"
+                        >
+                          Active Users
+                          <span class="badge bg-success">{{
+                            totalActiveUserCount
+                          }}</span>
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button
+                          class="nav-link text-capitalize text-nowrap"
+                          id="inactive"
+                          data-bs-toggle="pill"
+                          data-bs-target="#pills-profile"
+                          type="button"
+                          role="tab"
+                          aria-controls="pills-profile"
+                          aria-selected="false"
+                          :class="{ active: activeTab === 'inactive' }"
+                          @click="setActiveTab('inactive')"
+                        >
+                          Inactive Users
+                          <span class="badge bg-danger">{{
+                            totalInActiveUserCount
+                          }}</span>
+                        </button>
+                      </li>
+                    </ul>
+                    <div class="tab-content" id="pills-tabContent">
+                      <div
+                        class="tab-pane fade show active"
+                        id="pills-home"
+                        role="tabpanel"
+                        aria-labelledby="active"
+                        tabindex="0"
+                      >
+                        <div class="mt-4 table-wrapper">
+                          <table class="table table table-hover addjobtable">
+                            <thead>
+                              <tr>
+                                <th scope="col" class="bg-primary text-white">
+                                  Id
+                                </th>
+                                <th scope="col" class="bg-primary text-white">
+                                  User
+                                </th>
+                                <th scope="col" class="bg-primary text-white">
+                                  Email
+                                </th>
+                                <th scope="col" class="bg-primary text-white">
+                                  Mobile No:
+                                </th>
+                                <th scope="col" class="bg-primary text-white">
+                                  Role
+                                </th>
 
-                              <!-- <td>
+                                <th scope="col" class="bg-primary text-white">
+                                  Action
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody v-if="rolesActive?.length > 0">
+                              <tr v-for="data in rolesActive" :key="data.id">
+                                <td>{{ data.id }}</td>
+                                <td scope="row">
+                                  {{ data.first_name + " " + data.last_name }}
+                                </td>
+                                <td>{{ data.email }}</td>
+                                <td>{{ data.phone_number }}</td>
+                                <td>
+                                  {{ data.user_role.split("_").join(" ") }}
+                                </td>
+                                <!-- <td><i class="bi bi-trash text-danger"></i></td> -->
+
+                                <td>
+                                  <i
+                                    class="bi bi-trash text-danger text-nowrap cursor-pointer"
+                                    v-on:click="confirmed(data.id, false)"
+                                  >
+                                  </i>
+                                </td>
+                              </tr>
+                            </tbody>
+                            <tbody v-else>
+                              <tr>
+                                <td colspan="6" class="text-danger">
+                                  {{ "Inactive users Not found!" }}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <div
+                        class="tab-pane fade"
+                        id="pills-profile"
+                        role="tabpanel"
+                        aria-labelledby="inactive"
+                        tabindex="1"
+                      >
+                        <div class="mt-4 table-wrapper">
+                          <table class="table table table-hover addjobtable">
+                            <thead>
+                              <tr>
+                                <th scope="col" class="bg-primary text-white">
+                                  Id
+                                </th>
+                                <th scope="col" class="bg-primary text-white">
+                                  User
+                                </th>
+                                <th scope="col" class="bg-primary text-white">
+                                  Email
+                                </th>
+                                <th scope="col" class="bg-primary text-white">
+                                  Mobile No:
+                                </th>
+                                <th scope="col" class="bg-primary text-white">
+                                  Role
+                                </th>
+
+                                <th scope="col" class="bg-primary text-white">
+                                  Action
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody v-if="rolesInActive?.length > 0">
+                              <tr v-for="data in rolesInActive" :key="data.id">
+                                <td>{{ data.id }}</td>
+                                <td scope="row">
+                                  {{ data.first_name + " " + data.last_name }}
+                                </td>
+                                <td>{{ data.email }}</td>
+                                <td>{{ data.phone_number }}</td>
+                                <td>
+                                  {{ data.user_role.split("_").join(" ") }}
+                                </td>
+                                <td>
+                                  <i
+                                    class="bi bi-trash text-danger cursor-pointer"
+                                    v-on:click="rolesDeleteMethod(data.id)"
+                                  ></i
+                                  >&nbsp;
+                                  <button
+                                    class="btn btn-primary btn-sm text-nowrap"
+                                    v-on:click="confirmed(data.id, true)"
+                                  >
+                                    Re-Activate
+                                  </button>
+                                </td>
+
+                                <!-- <td>
                                 <button
                                 class="bi bi-pencil btn-sm btn btn-primary rounded-1 text-uppercase fw-medium"
                                 data-bs-toggle="modal"
@@ -224,19 +281,22 @@
                                   Re-Activate
                                 </button>
                               </td> -->
-                            </tr>
-                          </tbody>
-                          <tbody v-else>
-                            <tr>
-                              <td colspan="6" class="text-danger">
-                                {{ "Inactive users Not found!" || errorMessage }}
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
+                              </tr>
+                            </tbody>
+                            <tbody v-else>
+                              <tr>
+                                <td colspan="6" class="text-danger">
+                                  {{
+                                    "Inactive users Not found!" || errorMessage
+                                  }}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
+                      <Loader :isLoading="isLoading"></Loader>
                     </div>
-                    <Loader :isLoading="isLoading"></Loader>
                   </div>
                 </div>
               </div>
@@ -258,7 +318,7 @@
 
 <script>
 import axios from "axios";
-// import Navbar from "../Navbar.vue";
+import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
 import AddPrivileges from "../modals/privilege Setting/AddPrivileges.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
@@ -281,7 +341,7 @@ export default {
     };
   },
   components: {
-    // Navbar,
+    Navbar,
     Sidebar,
     AddPrivileges,
     SuccessAlert,
@@ -317,14 +377,17 @@ export default {
       this.isLoading = true;
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(`${VITE_API_URL}/find_active_inactive_users`, {
-          headers: {
-            Authorization: "bearer " + token,
-          },
-          params: {
-            activated_filter_value: true,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/find_active_inactive_users`,
+          {
+            headers: {
+              Authorization: "bearer " + token,
+            },
+            params: {
+              activated_filter_value: true,
+            },
+          }
+        );
         this.totalActiveUserCount = response.data.total_user;
         this.rolesActive = response.data.users;
       } catch (error) {
@@ -344,14 +407,17 @@ export default {
       this.isLoading = true;
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(`${VITE_API_URL}/find_active_inactive_users`, {
-          headers: {
-            Authorization: "bearer " + token,
-          },
-          params: {
-            activated_filter_value: false,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/find_active_inactive_users`,
+          {
+            headers: {
+              Authorization: "bearer " + token,
+            },
+            params: {
+              activated_filter_value: false,
+            },
+          }
+        );
         this.totalInActiveUserCount = response.data.total_user;
         this.rolesInActive = response.data.users;
       } catch (error) {
@@ -371,14 +437,17 @@ export default {
       this.isLoading = true;
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(`${VITE_API_URL}/find_active_inactive_users`, {
-          headers: {
-            Authorization: "bearer " + token,
-          },
-          params: {
-            activated_filter_value: activatedFilterValue,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/find_active_inactive_users`,
+          {
+            headers: {
+              Authorization: "bearer " + token,
+            },
+            params: {
+              activated_filter_value: activatedFilterValue,
+            },
+          }
+        );
 
         if (activatedFilterValue) {
           this.totalActiveUserCount = response.data.total_user;
@@ -463,11 +532,14 @@ export default {
         const token = localStorage.getItem("token");
 
         try {
-          const response = await axios.delete(`${VITE_API_URL}/merchants/${id}`, {
-            headers: {
-              Authorization: "bearer " + token,
-            },
-          });
+          const response = await axios.delete(
+            `${VITE_API_URL}/merchants/${id}`,
+            {
+              headers: {
+                Authorization: "bearer " + token,
+              },
+            }
+          );
 
           if (response.status === 200) {
             const message =
@@ -505,9 +577,6 @@ export default {
 };
 </script>
 <style scoped>
-#main {
-  padding-top: 65px;
-}
 .pagetitle {
   margin-bottom: 10px;
   background-color: #fff;

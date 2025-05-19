@@ -10,15 +10,21 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addHolidayCalender">Add Holidays</h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
               <form>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-3">
+                <div class="mb-3">
+                  <div class="col-12">
                     <label class="form-label">Title</label>
                   </div>
-                  <div class="col-9 mt-1">
+                  <div class="col-12 mt-1">
                     <input
                       type="text"
                       class="form-control"
@@ -31,11 +37,11 @@
                   </div>
                 </div>
 
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-3">
+                <div class="mb-3">
+                  <div class="col-12">
                     <label class="form-label"> Date</label>
                   </div>
-                  <div class="col-9 mt-1">
+                  <div class="col-12 mt-1">
                     <input
                       type="date"
                       class="form-control"
@@ -50,11 +56,11 @@
                   </div>
                 </div>
 
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-3">
+                <div class="mb-3">
+                  <div class="col-12">
                     <label class="form-label"> Percentage</label>
                   </div>
-                  <div class="col-9 mt-1">
+                  <div class="col-12 mt-1">
                     <select
                       class="form-control"
                       v-model="percentage"
@@ -211,7 +217,6 @@ export default {
 
 .modal-body {
   border-radius: 5px;
-  background: #dbdbdb;
 }
 
 .modal-footer {

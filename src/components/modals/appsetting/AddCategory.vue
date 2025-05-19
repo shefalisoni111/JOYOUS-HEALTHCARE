@@ -6,6 +6,12 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addCategories">Add New Category</h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -205,7 +211,6 @@ export default {
 
 .modal-body {
   border-radius: 5px;
-  background: #dbdbdb;
 }
 
 select {
