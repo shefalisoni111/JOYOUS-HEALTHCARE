@@ -8,167 +8,214 @@
             <h5 class="modal-title text-center" id="editOverview">
               Add Details
             </h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
               <form>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Employment Type</label>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Employment Type</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <select
+                          v-model="fetchCandidate.employment_type_id"
+                          id="selectEmployeeType"
+                        >
+                          <option
+                            v-for="option in employeeData"
+                            :key="option.id"
+                            :value="option.id"
+                            aria-placeholder="Select Job"
+                          >
+                            {{ option.title }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-12 mt-1">
-                    <select
-                      v-model="fetchCandidate.employment_type_id"
-                      id="selectEmployeeType"
-                    >
-                      <option
-                        v-for="option in employeeData"
-                        :key="option.id"
-                        :value="option.id"
-                        aria-placeholder="Select Job"
-                      >
-                        {{ option.title }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">DBS/PVG No</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchCandidate.DBS_PVG_no"
-                      @input="cleanAndValidateDBSPVGNo"
-                    />
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">DBS/PVG Issue Date</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="date"
-                      class="form-control"
-                      v-model="fetchCandidate.DBS_PVG_issue_date"
-                    />
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">DBS/PVG No</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="fetchCandidate.DBS_PVG_no"
+                          @input="cleanAndValidateDBSPVGNo"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Enhanced DBS Issues</label>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">DBS/PVG Issue Date</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="date"
+                          class="form-control"
+                          v-model="fetchCandidate.DBS_PVG_issue_date"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchCandidate.enhanced_dbs_issues"
-                      @input="cleanAndValidatePin('enhanced_dbs_issues')"
-                    />
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Enhanced DBS Number</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchCandidate.enhanced_dbs_number"
-                      @input="cleanAndValidatePin('enhanced_dbs_number')"
-                    />
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Deby</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchCandidate.deby"
-                      @input="cleanAndValidatePin('deby')"
-                    />
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Enhanced DBS Issues</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="fetchCandidate.enhanced_dbs_issues"
+                          @input="cleanAndValidatePin('enhanced_dbs_issues')"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">DBS/PVG Expiry Date</label>
+
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Enhanced DBS Number</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="fetchCandidate.enhanced_dbs_number"
+                          @input="cleanAndValidatePin('enhanced_dbs_number')"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="date"
-                      class="form-control"
-                      v-model="fetchCandidate.DBS_PVG_expiry_date"
-                    />
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Next Check Date</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="date"
-                      class="form-control"
-                      v-model="fetchCandidate.next_check_date"
-                    />
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">NMC/NISCC/SSSC Pin</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchCandidate.NMC_NISCC_SSSC_pin"
-                      @input="cleanAndValidatePin"
-                    />
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Deby</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="fetchCandidate.deby"
+                          @input="cleanAndValidatePin('deby')"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Nationality</label>
+
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">DBS/PVG Expiry Date</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="date"
+                          class="form-control"
+                          v-model="fetchCandidate.DBS_PVG_expiry_date"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchCandidate.nationality"
-                    />
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Date Of Birth</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="date"
-                      class="form-control"
-                      v-model="fetchCandidate.date_of_birth"
-                    />
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Place Of Birth</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchCandidate.place_of_birth"
-                    />
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Next Check Date</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="date"
+                          class="form-control"
+                          v-model="fetchCandidate.next_check_date"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
+
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">NMC/NISCC/SSSC Pin</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="fetchCandidate.NMC_NISCC_SSSC_pin"
+                          @input="cleanAndValidatePin"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Nationality</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="fetchCandidate.nationality"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Date Of Birth</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="date"
+                          class="form-control"
+                          v-model="fetchCandidate.date_of_birth"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Place Of Birth</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="fetchCandidate.place_of_birth"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="mb-3">
                   <div class="col-12">
                     <label class="form-label">Gender</label>
@@ -337,7 +384,6 @@ export default {
 <style scoped>
 .modal-body {
   border-radius: 5px;
-  background: #dbdbdb;
 }
 
 .modal-footer {
@@ -346,7 +392,7 @@ export default {
 
 select {
   width: 100%;
-  border: none;
+
   padding: 9px;
   border-radius: 4px;
 }

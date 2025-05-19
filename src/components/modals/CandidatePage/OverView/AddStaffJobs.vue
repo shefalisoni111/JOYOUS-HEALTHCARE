@@ -6,6 +6,12 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addStaffJobs">Add Jobs</h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -123,7 +129,11 @@ export default {
     async getPositionMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/active_job_list`);
-        this.options = response.data.data || [];
+        // this.options = response.data.data || [];
+        this.options = response.data.data.map((job) => ({
+          ...job,
+          checked: false,
+        }));
         this.resetChanges();
       } catch (error) {
         // Handle error
@@ -151,9 +161,9 @@ export default {
       }
     },
   },
-  mounted() {
-    this.getPositionMethod();
-    this.fetchStaffJobsMethod(this.$route.params.id);
+  async mounted() {
+    await this.getPositionMethod();
+    await this.fetchStaffJobsMethod(this.$route.params.id);
   },
 };
 </script>
@@ -161,7 +171,6 @@ export default {
 <style scoped>
 .modal-body {
   border-radius: 5px;
-  background: #dbdbdb;
 }
 
 .modal-footer {

@@ -3,13 +3,13 @@
     <!-- Modal -->
     <div
       class="modal fade"
-      id="editClientEmail"
-      aria-labelledby="editClientEmail"
+      id="editClientName"
+      aria-labelledby="editClientName"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="editClientEmail">Edit Client Email</h5>
+            <h5 class="modal-title" id="editClientName">Edit Client Name</h5>
             <button
               type="button"
               class="custom-close"
@@ -22,22 +22,15 @@
               <form>
                 <div class="mb-3">
                   <div class="col-12">
-                    <label class="form-label">Email</label>
+                    <label class="form-label">Client Name</label>
                   </div>
                   <div class="col-12 mt-1">
                     <input
-                      type="email"
+                      type="text"
                       class="form-control"
-                      v-model="fetchClients.email"
-                      @input="validateEmailFormat"
-                      @change="detectAutofill"
+                      v-model="fetchClients.client_name"
+                      @input="validateClientName"
                     />
-                    <span
-                      v-if="fetchClients.email && !isEmailValid"
-                      class="text-danger"
-                    >
-                      Please enter a valid email address.
-                    </span>
                   </div>
                 </div>
               </form>
@@ -46,7 +39,7 @@
           <div class="modal-footer">
             <button
               class="btn btn-dark btn-cancel"
-              data-bs-target="#editClientEmail"
+              data-bs-target="#editClientName"
               @click="resetChanges"
               data-bs-dismiss="modal"
             >
@@ -55,7 +48,7 @@
             <button
               class="btn btn-primary rounded-1 text-capitalize fw-medium"
               data-bs-dismiss="modal"
-              @click.prevent="updateClientMethod()"
+              @click.prevent="updateClientMethod"
               :disabled="isSaveDisabled"
             >
               Save
@@ -72,16 +65,18 @@ import axios from "axios";
 import SuccessAlert from "../../Alerts/SuccessAlert.vue";
 
 export default {
-  name: "EditSingleClientEmail",
+  name: "EditSingleClientName",
   data() {
     return {
       fetchClients: {
         id: "",
 
-        email: "",
+        client_name: "",
+
+        error: [],
       },
       originalData: null,
-      emailValid: true,
+      isClientNameValid: true,
     };
   },
   props: {
@@ -91,39 +86,34 @@ export default {
     },
   },
   computed: {
-    isEmailValid() {
-      return this.emailValid;
+    validateClientName() {
+      // Regex allows letters, numbers, spaces, and common name punctuation
+      const pattern = /^[a-zA-Z0-9\s&.,'-]*$/;
+      this.isClientNameValid = pattern.test(this.fetchClients.client_name);
     },
     isSaveDisabled() {
-      return !this.emailValid;
+      return !this.isClientNameValid;
     },
   },
   components: { SuccessAlert },
   methods: {
-    detectAutofill() {
-      setTimeout(() => {
-        const isAutofilled = this.fetchClients.email !== "";
-        this.emailValid = isAutofilled
-          ? /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/.test(
-              this.fetchClients.email
-            )
-          : false;
-      }, 100);
-    },
     resetChanges() {
       this.fetchClients = { ...this.originalData };
     },
-    validateEmailFormat() {
-      const emailRegex =
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|co\.uk|org|edu|care|net|jp)$/;
-      this.emailValid = emailRegex.test(this.fetchClients.email);
+    cleanPhoneNumber() {
+      this.fetchClients.client_name = this.fetchClients.client_name.replace(
+        /\D/g,
+        ""
+      );
     },
+
     async fetchClientsMethod(id) {
       if (!id) return;
       try {
         const response = await axios.get(`${VITE_API_URL}/clients/${id}`);
 
         this.fetchClients = { ...this.fetchClients, ...response.data };
+        console.log(this.fetchClients);
         this.originalData = { ...this.fetchClients };
       } catch (error) {
         // console.error("Error fetching todo:", error);
@@ -135,16 +125,13 @@ export default {
           `${VITE_API_URL}/clients/${this.fetchClients.id}`,
           this.fetchClients
         );
-        this.$emit("client-updatedEmail");
+        this.$emit("client-updatedName");
         // alert("Client updated successfully");
-        const message = "Client Email Successfully";
+        const message = "Client Name Updated Successfully";
         this.$refs.successAlert.showSuccess(message);
       } catch (error) {
         // console.error("Error updating candidate:", error);
       }
-    },
-    validatePhoneNumberFormat(phone_number) {
-      return /^\d{11}$/.test(phone_number);
     },
   },
   watch: {
@@ -155,16 +142,15 @@ export default {
       },
     },
   },
-  // async beforeRouteEnter(to, from, next) {
-  //   next((vm) => {
-  //     vm.fetchClientsMethod(vm.$route.params.id);
-  //   });
-  // },
-  // async beforeRouteUpdate(to, from, next) {
-  //   await this.fetchClientsMethod(this.$route.params.id);
-  //   next();
-  // },
-
+  //   async beforeRouteEnter(to, from, next) {
+  //     next((vm) => {
+  //       vm.fetchClientsMethod(this.$route.params.id);
+  //     });
+  //   },
+  //   async beforeRouteUpdate(to, from, next) {
+  //     await this.fetchClientsMethod(this.$route.params.id);
+  //     next();
+  //   },
   // async mounted() {
   //   await this.fetchClientsMethod(this.$route.params.id);
   // },

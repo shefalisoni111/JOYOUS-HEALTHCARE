@@ -102,7 +102,10 @@
             <div class="row px-5">
               <div class="d-flex gap-4 justify-content-center">
                 <div class="col-md-7">
-                  <div class="card profile position-relative">
+                  <div
+                    class="card profile position-relative"
+                    style="border-radius: 20px"
+                  >
                     <h6
                       class="position-absolute p-2 z-1 text-white text-capitalize tag"
                       style="background: #68a325; margin-left: -7px"
@@ -118,7 +121,7 @@
                     />
 
                     <div>
-                      <div class="">
+                      <div class="mt-1">
                         <div class="col-12 p-3">
                           <h4
                             class="card-title text-nowrap fw-bold text-capitalize"
@@ -138,7 +141,7 @@
                       </div>
                     </div>
                     <ul
-                      class="nav nav-pills mb-3 ps-3 mt-4"
+                      class="nav nav-pills ps-3 mt-4"
                       id="pills-tab"
                       role="tablist"
                     >
@@ -147,7 +150,7 @@
                         role="presentation"
                       >
                         <button
-                          class="nav-link p-0"
+                          class="nav-link py-2 px-0"
                           :class="{ active: activeTab === index }"
                           aria-selected="true"
                           type="button"
@@ -598,14 +601,6 @@ table th {
   background-color: #ff9800;
 }
 
-.nav-pills .nav-link.active,
-.nav-pills .show > .nav-link {
-  color: #ff5722;
-
-  border-bottom: 3px solid #ff5722;
-  border-radius: 0px;
-  background-color: transparent;
-}
 .nav-pills .nav-link {
   color: grey;
 }

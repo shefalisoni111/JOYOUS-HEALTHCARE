@@ -63,7 +63,7 @@
           </div>
         </div>
 
-        <div class="row mb-3 ps-3">
+        <div class="row mb-3 ps-3 ms-4">
           <router-link
             class="nav-link d-inline text-muted"
             style="color: #000000"
@@ -101,7 +101,10 @@
             <div class="row px-5">
               <div class="d-flex gap-4 justify-content-between">
                 <div class="col-md-7" style="border-radius: 12px">
-                  <div class="card profile position-relative">
+                  <div
+                    class="card profile position-relative"
+                    style="border-radius: 20px"
+                  >
                     <h6
                       class="position-absolute p-2 z-1 text-white text-capitalize tag"
                       style="background: #68a325; margin-left: -7px"
@@ -179,6 +182,9 @@
                       </div>
                       <button
                         class="edit-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editClientName"
+                        data-bs-whatever="@mdo"
                         @click="editClient(getClientDatas?.id)"
                       >
                         <i class="bi bi-pencil-fill"></i>
@@ -193,7 +199,10 @@
                       <div class="flex-grow-1">{{ getClientDatas?.email }}</div>
                       <button
                         class="edit-btn"
-                        @click="editClient(getClientDatas?.id)"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editClientEmail"
+                        data-bs-whatever="@mdo"
+                        @click="editClientEmail(getClientDatas?.id)"
                       >
                         <i class="bi bi-pencil-fill"></i>
                       </button>
@@ -209,7 +218,10 @@
                       </div>
                       <button
                         class="edit-btn"
-                        @click="editClientEmail(getClientDatas?.id)"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editClientContact"
+                        data-bs-whatever="@mdo"
+                        @click="editClientContact(getClientDatas?.id)"
                       >
                         <i class="bi bi-pencil-fill"></i>
                       </button>
@@ -256,6 +268,11 @@
       ref="emailClientContact"
       @client-updatedContact="getClientMethod"
     />
+    <EditSingleClientName
+      :clientID="selectedClientID || 0"
+      ref="UpdateClientName"
+      @client-updatedName="getClientMethod"
+    />
   </div>
 </template>
 
@@ -271,6 +288,7 @@ import ClientSetting from "../ClientsPages/ClientProfileDetails/ClientSetting.vu
 import ClientUser from "../ClientsPages/ClientProfileDetails/ClientUser.vue";
 import EditSingleClientEmail from "../modals/Clients/EditSingleClientEmail.vue";
 import EditSingleClientContact from "../modals/Clients/EditSingleClientContact.vue";
+import EditSingleClientName from "../../components/modals/Clients/EditSingleClientName.vue";
 import Navbar from "../Navbar.vue";
 import activeLocations from "../../assets/activelocation.png";
 import jobs from "../../assets/jobs.png";
@@ -320,6 +338,7 @@ export default {
     ActiveLocation,
     activeLocations,
     PassiveLocation,
+    EditSingleClientName,
     ClientJobs,
     ClientWTR,
     ClientNotes,
@@ -364,13 +383,16 @@ export default {
       }
     },
     editClient(clientID) {
-      this.selectedClientID = clientID;
-
-      this.$refs.emailClientContact.fetchClientsMethod(clientID);
+      this.$refs.UpdateClientName.fetchClientsMethod(clientID);
     },
     editClientEmail(clientID) {
-      this.selectedClientID = clientID;
+      // this.selectedClientID = clientID;
       this.$refs.emailClientEmail.fetchClientsMethod(clientID);
+    },
+    editClientContact(clientID) {
+      // this.selectedClientID = clientID;
+
+      this.$refs.emailClientContact.fetchClientsMethod(clientID);
     },
     getTabLink(tab) {
       return { name: tab.component, params: { id: this.$route.params.id } };

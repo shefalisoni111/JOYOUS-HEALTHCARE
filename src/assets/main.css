@@ -190,22 +190,18 @@ table thead th {
   display: flex;
   justify-content: space-between;
 }
-.nav-pills .nav-link.active,
-.nav-pills .show > .nav-link {
-  background-color: #ff5722;
-  color: #fff;
-}
+
 .accordion-icon {
   font-size: 16px;
   transition: transform 0.3s;
 }
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  color: #ff5722;
+  color: #000 !important;
 
-  border-bottom: 3px solid #ff5722;
+  border-bottom: 3px solid #f9944b;
   border-radius: 0px;
-  background-color: transparent;
+  background-color: transparent !important;
 }
 .nav-pills .nav-link {
   color: grey;

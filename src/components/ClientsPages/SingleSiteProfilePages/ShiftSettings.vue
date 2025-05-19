@@ -28,7 +28,11 @@
                     v-model="shift.start_time"
                     @change="setShiftIdToUpdate(shift.id)"
                   >
-                    <option v-for="hour in 24" :key="hour" :value="formatTime(hour)">
+                    <option
+                      v-for="hour in 24"
+                      :key="hour"
+                      :value="formatTime(hour)"
+                    >
                       {{ formatTime(hour) }}
                     </option>
                   </select>
@@ -45,7 +49,11 @@
                     v-model="shift.end_time"
                     @change="setShiftIdToUpdate(shift.id)"
                   >
-                    <option v-for="hour in 24" :key="hour" :value="formatTime(hour)">
+                    <option
+                      v-for="hour in 24"
+                      :key="hour"
+                      :value="formatTime(hour)"
+                    >
                       {{ formatTime(hour) }}
                     </option>
                   </select>
@@ -55,7 +63,9 @@
             <div class="row mt-4">
               <div class="mb-3 d-flex justify-content-between p-0">
                 <div class="col-2">
-                  <label class="form-label" for="break_duration">Break Time</label>
+                  <label class="form-label" for="break_duration"
+                    >Break Time</label
+                  >
                 </div>
                 <div class="col-10 ms-3">
                   <select
@@ -81,10 +91,16 @@
 
         <div class="row mt-3">
           <div>
-            <button class="btn btn-primary text-nowrap" v-on:click="updateShiftTimes()">
+            <button
+              class="btn text-nowrap"
+              style="background-color: #f9944b !important; color: #fff"
+              v-on:click="updateShiftTimes()"
+            >
               Update</button
             >&nbsp;&nbsp;
-            <button class="btn btn-secondary text-nowrap">Reset to Default</button>
+            <button class="btn btn-secondary text-nowrap">
+              Reset to Default
+            </button>
           </div>
         </div>
       </div>
@@ -126,7 +142,8 @@ export default {
             ...shift,
             start_time: shift.start_time,
             end_time: shift.end_time,
-            break_duration: shift.break_duration !== null ? shift.break_duration : 0,
+            break_duration:
+              shift.break_duration !== null ? shift.break_duration : 0,
           })) || [];
       } catch (error) {
         // console.error("Error fetching shifts:", error);

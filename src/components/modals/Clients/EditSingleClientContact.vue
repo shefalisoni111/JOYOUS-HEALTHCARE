@@ -12,8 +12,14 @@
             <h5 class="modal-title" id="editClientContact">
               Edit Client Contact
             </h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
-          <div class="modal-body mx-3" style="background: #dbdbdb">
+          <div class="modal-body mx-3">
             <div class="row align-items-center">
               <form>
                 <div class="mb-3">
@@ -140,15 +146,15 @@ export default {
       },
     },
   },
-  async beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      vm.fetchClientsMethod(this.$route.params.id);
-    });
-  },
-  async beforeRouteUpdate(to, from, next) {
-    await this.fetchClientsMethod(this.$route.params.id);
-    next();
-  },
+  // async beforeRouteEnter(to, from, next) {
+  //   next((vm) => {
+  //     vm.fetchClientsMethod(this.$route.params.id);
+  //   });
+  // },
+  // async beforeRouteUpdate(to, from, next) {
+  //   await this.fetchClientsMethod(this.$route.params.id);
+  //   next();
+  // },
   // async mounted() {
   //   await this.fetchClientsMethod(this.$route.params.id);
   // },

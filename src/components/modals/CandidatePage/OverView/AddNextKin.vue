@@ -8,135 +8,161 @@
             <h5 class="modal-title text-center" id="addNextToKin">
               Add Next to Kin
             </h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
               <form>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Name</label>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Name</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="name"
+                          @focus="touched.name = true"
+                          @blur="touched.name = true"
+                          required
+                        />
+                        <span v-if="touched.name && !name" class="text-danger"
+                          >Name is required</span
+                        >
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="name"
-                      @focus="touched.name = true"
-                      @blur="touched.name = true"
-                      required
-                    />
-                    <span v-if="touched.name && !name" class="text-danger"
-                      >Name is required</span
-                    >
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Phone Number</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="phone_number"
-                      @input="cleanAndValidatePhoneNumber"
-                      @focus="touched.phone_number = true"
-                      @blur="touched.phone_number = true"
-                      pattern="[0-9]*"
-                    />
-                    <span
-                      v-if="
-                        touched.phone_number && !cleanAndValidatePhoneNumber()
-                      "
-                      class="text-danger"
-                      >Required Phone Number</span
-                    >
-                    <span
-                      v-if="
-                        touched.phone_number &&
-                        cleanAndValidatePhoneNumber() === false
-                      "
-                      class="text-danger"
-                      >Invalid Phone Number</span
-                    >
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Relation</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="relation"
-                      required
-                      @focus="touched.relation = true"
-                      @blur="touched.relation = true"
-                    />
-                    <span
-                      v-if="touched.relation && !relation"
-                      class="text-danger"
-                      >Relation is required</span
-                    >
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Phone Number</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="phone_number"
+                          @input="cleanAndValidatePhoneNumber"
+                          @focus="touched.phone_number = true"
+                          @blur="touched.phone_number = true"
+                          pattern="[0-9]*"
+                        />
+                        <span
+                          v-if="
+                            touched.phone_number &&
+                            !cleanAndValidatePhoneNumber()
+                          "
+                          class="text-danger"
+                          >Required Phone Number</span
+                        >
+                        <span
+                          v-if="
+                            touched.phone_number &&
+                            cleanAndValidatePhoneNumber() === false
+                          "
+                          class="text-danger"
+                          >Invalid Phone Number</span
+                        >
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Address Line 1</label>
+
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Relation</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="relation"
+                          required
+                          @focus="touched.relation = true"
+                          @blur="touched.relation = true"
+                        />
+                        <span
+                          v-if="touched.relation && !relation"
+                          class="text-danger"
+                          >Relation is required</span
+                        >
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="address_line_1"
-                      required
-                      @focus="touched.address_line_1 = true"
-                      @blur="touched.address_line_1 = true"
-                    />
-                    <span
-                      v-if="touched.address_line_1 && !address_line_1"
-                      class="text-danger"
-                      >Address Line 1 is required</span
-                    >
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Address Line 1</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="address_line_1"
+                          required
+                          @focus="touched.address_line_1 = true"
+                          @blur="touched.address_line_1 = true"
+                        />
+                        <span
+                          v-if="touched.address_line_1 && !address_line_1"
+                          class="text-danger"
+                          >Address Line 1 is required</span
+                        >
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Address Line 2</label>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Address Line 2</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="address_line_2"
+                          required
+                          @focus="touched.address_line_2 = true"
+                          @blur="touched.address_line_2 = true"
+                        />
+                        <span
+                          v-if="touched.address_line_2 && !address_line_2"
+                          class="text-danger"
+                          >Address Line 2 is required</span
+                        >
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="address_line_2"
-                      required
-                      @focus="touched.address_line_2 = true"
-                      @blur="touched.address_line_2 = true"
-                    />
-                    <span
-                      v-if="touched.address_line_2 && !address_line_2"
-                      class="text-danger"
-                      >Address Line 2 is required</span
-                    >
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">City</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="city"
-                      @focus="touched.city = true"
-                      @blur="touched.city = true"
-                      required
-                    />
-                    <span v-if="touched.city && !city" class="text-danger"
-                      >City is required</span
-                    >
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">City</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="city"
+                          @focus="touched.city = true"
+                          @blur="touched.city = true"
+                          required
+                        />
+                        <span v-if="touched.city && !city" class="text-danger"
+                          >City is required</span
+                        >
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="mb-3">
@@ -359,7 +385,6 @@ export default {
 <style scoped>
 .modal-body {
   border-radius: 5px;
-  background: #dbdbdb;
 }
 
 .modal-footer {

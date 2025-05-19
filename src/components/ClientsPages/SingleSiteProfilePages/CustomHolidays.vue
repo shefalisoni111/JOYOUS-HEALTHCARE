@@ -23,11 +23,51 @@
           <table class="table clientTable">
             <thead>
               <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Title</th>
-                <th scope="col">Date</th>
-                <th scope="col">Type</th>
-                <th scope="col">Actions</th>
+                <th scope="col">
+                  Id
+                  <img
+                    src="../../../assets/ArrowDown.png"
+                    class="img-fluid pe-2"
+                    alt="RecPal"
+                    loading="eager"
+                  />
+                </th>
+                <th scope="col">
+                  Title
+                  <img
+                    src="../../../assets/ArrowDown.png"
+                    class="img-fluid pe-2"
+                    alt="RecPal"
+                    loading="eager"
+                  />
+                </th>
+                <th scope="col">
+                  Date
+                  <img
+                    src="../../../assets/ArrowDown.png"
+                    class="img-fluid pe-2"
+                    alt="RecPal"
+                    loading="eager"
+                  />
+                </th>
+                <th scope="col">
+                  Type
+                  <img
+                    src="../../../assets/ArrowDown.png"
+                    class="img-fluid pe-2"
+                    alt="RecPal"
+                    loading="eager"
+                  />
+                </th>
+                <th scope="col">
+                  Actions
+                  <img
+                    src="../../../assets/ArrowDown.png"
+                    class="img-fluid pe-2"
+                    alt="RecPal"
+                    loading="eager"
+                  />
+                </th>
 
                 <!-- <th scope="col">Portal Access</th> -->
               </tr>

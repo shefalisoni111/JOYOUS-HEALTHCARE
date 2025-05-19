@@ -12,89 +12,108 @@
             <h5 class="modal-title" id="addWorkExperience">
               Add Work Experience
             </h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
               <form>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label">Name</label>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Name</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="title"
+                          @input="clearError('title')"
+                        />
+                        <div v-if="getError('title')" class="text-danger">
+                          {{ getError("title") }}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-10 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="title"
-                      @input="clearError('title')"
-                    />
-                    <div v-if="getError('title')" class="text-danger">
-                      {{ getError("title") }}
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Company Name</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="company_name"
+                          @input="clearError('company_name')"
+                        />
+                        <div v-if="getError('title')" class="text-danger">
+                          {{ getError("title") }}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label">Company Name</label>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Experience</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="experience"
+                          @input="clearError('experience')"
+                        />
+                        <div v-if="getError('title')" class="text-danger">
+                          {{ getError("title") }}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-10 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="company_name"
-                      @input="clearError('company_name')"
-                    />
-                    <div v-if="getError('title')" class="text-danger">
-                      {{ getError("title") }}
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Position</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="position"
+                          @input="clearError('position')"
+                        />
+                        <div v-if="getError('title')" class="text-danger">
+                          {{ getError("title") }}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label">Experience</label>
-                  </div>
-                  <div class="col-10 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="experience"
-                      @input="clearError('experience')"
-                    />
-                    <div v-if="getError('title')" class="text-danger">
-                      {{ getError("title") }}
+                <div class="row">
+                  <div class="mb-3">
+                    <div class="col-12">
+                      <label class="form-label">Description</label>
                     </div>
-                  </div>
-                </div>
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label">Position</label>
-                  </div>
-                  <div class="col-10 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="position"
-                      @input="clearError('position')"
-                    />
-                    <div v-if="getError('title')" class="text-danger">
-                      {{ getError("title") }}
-                    </div>
-                  </div>
-                </div>
-
-                <div class="mb-3 d-flex justify-content-between">
-                  <div class="col-2">
-                    <label class="form-label">Description</label>
-                  </div>
-                  <div class="col-10 mt-1">
-                    <textarea
-                      type="text"
-                      class="form-control"
-                      v-model="description"
-                      rows="3"
-                      @input="clearError('description')"
-                    ></textarea>
-                    <div v-if="getError('description')" class="text-danger">
-                      {{ getError("description") }}
+                    <div class="col-12 mt-1">
+                      <textarea
+                        type="text"
+                        class="form-control"
+                        v-model="description"
+                        rows="3"
+                        @input="clearError('description')"
+                      ></textarea>
+                      <div v-if="getError('description')" class="text-danger">
+                        {{ getError("description") }}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -236,7 +255,6 @@ export default {
 
 .modal-body {
   border-radius: 5px;
-  background: #dbdbdb;
 }
 
 .modal-footer {
