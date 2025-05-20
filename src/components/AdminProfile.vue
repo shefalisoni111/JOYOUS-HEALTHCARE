@@ -1,42 +1,78 @@
 <template>
   <div>
-    <Navbar :profileImage="profileImage" />
-    <div class="container">
-      <div class="main-body" id="main">
-        <h3
-          class="text-center fw-bold p-2 m-auto rounded-3 mainheading"
-          style="width: 100%"
-        >
-          Admin Profile
-        </h3>
+    <div class="main-body d-flex" id="main">
+      <div
+        style="
+          background: #fff;
+
+          border-radius: 20px;
+        "
+      >
+        <Navbar :profileImage="profileImage" />
+      </div>
+      <div
+        class="container-fluid px-5 pt-4"
+        style="background: rgb(82 74 74 / 6%); height: 100vh"
+      >
+        <div class="p-0">
+          <div class="">
+            <ol class="breadcrumb my-2">
+              <li class="breadcrumb-item active fs-6">
+                <a
+                  class="nav-link d-inline fs-4 fw-bolder"
+                  style="color: #000000; background: none !important"
+                >
+                  Admin Profile</a
+                >
+              </li>
+            </ol>
+          </div>
+        </div>
+
         <div class="row gutters-sm mt-3">
-          <div class="col-md-4">
-            <div class="card h-100">
-              <div class="card-body">
-                <div class="d-flex flex-column align-items-center text-center">
-                  <div class="img-div position-relative">
-                    <router-view to="/home">
-                      <img
-                        v-if="!profileImage"
-                        src="./profile.png"
-                        width="150"
-                        height="150"
-                        @click="openFileInput"
-                        style=""
-                        loading="eager"
-                      />
-                      <img
-                        v-else
-                        :src="displayedProfileImage"
-                        width="150"
-                        height="150"
-                        @click="openFileInput"
-                        style=""
-                        loading="eager"
-                      />
-                    </router-view>
-                    <label for="profilePicInput">
-                      <i class="bi bi-camera-fill"></i>
+          <div class="col-12">
+            <div class="card h-100" style="border-radius: 25px">
+              <div class="card-body p-0" style="height: 450px">
+                <div class="position-relative">
+                  <img
+                    src="../assets/profile_bg.png"
+                    class="img-fluid w-100"
+                    alt="RecPal"
+                    loading="eager"
+                    style="width: 200px; height: 200px"
+                  />
+                </div>
+                <div
+                  class="d-flex flex-column align-items-center text-center float-start position-absolute ps-5"
+                  style="top: 30%"
+                >
+                  <div class="img-div position-relative bg-white">
+                    <div class="profile-border">
+                      <router-view to="/home">
+                        <img
+                          v-if="!profileImage"
+                          src="./profile.png"
+                          width="150"
+                          height="150"
+                          @click="openFileInput"
+                          class="profile-img"
+                          style=""
+                          loading="eager"
+                        />
+                        <img
+                          v-else
+                          :src="displayedProfileImage"
+                          width="150"
+                          height="150"
+                          @click="openFileInput"
+                          class="profile-img"
+                          style=""
+                          loading="eager"
+                        />
+                      </router-view>
+                    </div>
+                    <label for="profilePicInput" class="camera-icon">
+                      <i class="bi bi-camera"></i>
                     </label>
                   </div>
 
@@ -57,69 +93,116 @@
                     </p>
                     <!-- <p class="text-muted font-size-sm">Developer</p> -->
                   </div>
-                  <div>
-                    <button
-                      type="button"
-                      class="btn btn-primary text-nowrap text-nowrap"
-                      data-bs-toggle="modal"
-                      data-bs-target="#editAdmin"
-                      data-bs-whatever="@mdo"
-                    >
-                      Edit
-                    </button>
-                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-md-8">
-            <div class="card h-100">
+          <div class="col-12">
+            <div class="card h-100 mt-3" style="border-radius: 25px">
               <div class="card-body">
-                <div class="row">
-                  <div class="col-sm-3">
-                    <h6 class="mb-0">Full Name</h6>
-                  </div>
-                  <div class="col-sm-9 text-secondary text-capitalize">
-                    {{ getAdmin.first_name + " " + getAdmin.last_name }}
-                  </div>
-                </div>
-                <hr />
-                <div class="row">
-                  <div class="col-sm-3">
-                    <h6 class="mb-0">Email</h6>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    {{ getAdmin.email }}
-                  </div>
-                </div>
+                <ul class="list-unstyled">
+                  <li
+                    class="d-flex justify-content-between align-items-center mb-4 mt-3"
+                  >
+                    <div class="d-flex">
+                      <i
+                        class="bi bi-person-fill fs-4 me-3"
+                        style="
+                          color: #f9944b !important;
+                          border-radius: 50%;
+                          background: #f9944b14;
 
-                <hr />
-                <div class="row">
-                  <div class="col-sm-3">
-                    <h6 class="mb-0">Mobile</h6>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    {{ getAdmin.phone_number }}
-                  </div>
-                </div>
-                <hr />
-                <div class="row">
-                  <div class="col-sm-3">
-                    <h6 class="mb-0">Address</h6>
-                  </div>
-                  <div class="col-sm-9 text-secondary text-capitalize">
-                    {{ getAdmin.address }}
-                  </div>
-                </div>
+                          padding: 5px 11px;
+                        "
+                      ></i>
+
+                      <div class="d-flex gap-4 align-items-center">
+                        <div class="fw-semibold">Full Name</div>
+                        <div class="text-secondary text-capitalize text-black">
+                          {{ getAdmin.first_name + " " + getAdmin.last_name }}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <button
+                        class="text-nowrap text-nowrap border-0 bg-transparent"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editAdmin"
+                        data-bs-whatever="@mdo"
+                      >
+                        <i
+                          class="bi bi-pencil-fill"
+                          style="color: #f9944b !important"
+                        ></i>
+                      </button>
+                    </div>
+                  </li>
+                  <li class="d-flex align-items-center mb-4">
+                    <i
+                      class="bi bi-envelope-fill fs-4 me-3"
+                      style="
+                        color: #f9944b !important;
+                        border-radius: 50%;
+                        background: #f9944b14;
+
+                        padding: 5px 11px;
+                      "
+                    ></i>
+                    <div class="d-flex gap-4">
+                      <div class="fw-semibold">Email</div>
+                      <div class="text-secondary text-black">
+                        {{ getAdmin.email }}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="d-flex align-items-center mb-4">
+                    <i
+                      class="bi bi-telephone-fill fs-4 me-3"
+                      style="
+                        color: #f9944b !important;
+                        border-radius: 50%;
+                        background: #f9944b14;
+
+                        padding: 5px 11px;
+                      "
+                    ></i>
+                    <div class="d-flex gap-4">
+                      <div class="fw-semibold">Mobile</div>
+                      <div class="text-secondary text-black">
+                        {{ getAdmin.phone_number }}
+                      </div>
+                    </div>
+                  </li>
+                  <li class="d-flex align-items-center">
+                    <i
+                      class="bi bi-geo-alt-fill fs-4 me-3"
+                      style="
+                        color: #f9944b !important;
+                        border-radius: 50%;
+                        background: #f9944b14;
+
+                        padding: 5px 11px;
+                      "
+                    ></i>
+                    <div class="d-flex gap-4">
+                      <div class="fw-semibold">Address</div>
+                      <div class="text-secondary text-capitalize text-black">
+                        {{ getAdmin.address }}
+                      </div>
+                    </div>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div v-if="errorMessage" class="alert alert-danger" role="alert">
-        {{ errorMessage }}
-      </div>
     </div>
+    <div v-if="errorMessage" class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+
     <EditAdmin @admin-updated="handleAdminUpdated" />
     <SuccessAlert ref="successAlert" />
   </div>
@@ -196,12 +279,15 @@ export default {
       const merchantId = localStorage.getItem("merchant_id");
 
       try {
-        const response = await axios.get(`${VITE_API_URL}/merchants/${merchantId}`, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: "bearer " + token,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/merchants/${merchantId}`,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: "bearer " + token,
+            },
+          }
+        );
 
         this.getAdmin = response.data.data;
         if (this.getAdmin.profile_photo) {
@@ -237,15 +323,11 @@ export default {
 .img-div img,
 .img-div {
   border-radius: 50%;
-  border: 1px solid grey;
-  box-shadow: 5px 6px 25px -10px;
 }
 .card {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
-#main {
-  margin-top: 85px;
-}
+
 .card {
   position: relative;
   display: flex;
@@ -300,6 +382,35 @@ ul.profile .dropdown-item:focus {
 }
 .h-100 {
   height: 100% !important;
+}
+.profile-border {
+  width: 190px; /* Image size + border */
+  height: 190px;
+  border: 20px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background: white;
+}
+
+.profile-img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.camera-icon {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: black;
+  color: white;
+  border-radius: 50%;
+  padding: 5px;
 }
 .shadow-none {
   box-shadow: none !important;
