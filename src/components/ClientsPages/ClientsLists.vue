@@ -333,7 +333,7 @@
                               &nbsp;&nbsp;
                               <!-- <button class="btn btn-outline-success text-nowrap">
                                 <i
-                                  class="bi bi-trash"
+                                  class="bi bi-trash border-0 border-0"
                                   v-on:click="clientsDeleteMethod(client.id)"
                                 ></i></button
                               >&nbsp;&nbsp; -->
@@ -852,8 +852,8 @@ table th {
 }
 
 button.nav-link > li.nav-item {
-  border-bottom: 2px solid red; /* Replace with your desired border color */
-  padding-bottom: 5px; /* Optional: Add padding for spacing */
+  border-bottom: 2px solid red;
+  padding-bottom: 5px;
 }
 
 input.form-control,
@@ -863,80 +863,16 @@ input.form-control:focus {
   background: #fff4f5;
 }
 
-.switch {
-  width: 50px;
-  height: 17px;
-  position: relative;
-  display: inline-block;
-}
 a {
   color: black;
   text-decoration: none;
 }
 
-.switch input {
-  display: none;
-}
-
-.switch .slider {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  cursor: pointer;
-  background-color: #e7ecf1;
-  border-radius: 30px !important;
-  border: 0;
-  padding: 0;
-  display: block;
-  margin: 12px 10px;
-  min-height: 11px;
-}
 select {
   padding: 10px;
   border-radius: 4px;
   border: 0px;
   border: 1px solid rgb(202 198 198 / 0%);
   background: #fff4f5;
-}
-.switch .slider:before {
-  position: absolute;
-  background-color: #aaa;
-  height: 15px;
-  width: 15px;
-  content: "";
-  left: 0px;
-  bottom: -2px;
-  border-radius: 50%;
-  transition: ease-in-out 0.5s;
-}
-
-.switch .slider:after {
-  content: "";
-  color: white;
-  display: block;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 70%;
-  transition: all 0.5s;
-  font-size: 10px;
-  font-family: "Inter", sans-serif;
-}
-
-.switch input:checked + .slider:after {
-  transition: all 0.5s;
-  left: 30%;
-  content: "";
-}
-
-.switch input:checked + .slider {
-  background-color: #d3d6d9;
-}
-
-.switch input:checked + .slider:before {
-  transform: translateX(15px);
-  background-color: #ff9800;
 }
 </style>

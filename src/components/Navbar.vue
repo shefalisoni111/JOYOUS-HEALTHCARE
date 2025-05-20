@@ -206,12 +206,12 @@
             <!-- End Notification Nav -->
 
             <li class="cursor-pointer">
-              <a
+              <router-link
                 class="dropdown-item d-flex align-items-center"
-                href="https://recpal.co.uk/support/"
+                to="/support"
               >
                 <i class="bi bi-brightness-low pe-2"></i><span>Support</span>
-              </a>
+              </router-link>
             </li>
             <li>
               <router-link

@@ -10,6 +10,23 @@
 .fs-6 {
   font-size: 14px !important;
 }
+.genSetting {
+  color: #6c757d;
+}
+ul.generalsetting li a {
+  display: flex;
+
+  width: 100%;
+  padding: 3px;
+}
+ul.generalsetting li i.rounded-circle {
+  width: 48px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  font-size: larger;
+  color: #0d6efd;
+}
 html {
   scroll-behavior: smooth;
   margin: 0px !important;
@@ -49,11 +66,6 @@ body {
   html {
     font-size: x-small;
   }
-}
-
-ul li a:hover {
-  color: #ff5722;
-  background-color: #fdce5e17;
 }
 
 .btn-primary {
@@ -191,11 +203,7 @@ ul.navbar-nav li a span.badge {
 }
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  color: #000 !important;
-
-  border-bottom: 3px solid #f9944b;
   border-radius: 0px;
-  background-color: transparent !important;
 }
 .nav-pills .nav-link {
   color: grey;
@@ -303,7 +311,9 @@ select {
   font-size: 10px;
   font-family: "Inter", sans-serif;
 }
-
+.clr {
+  color: #6c757dcf;
+}
 .switch input:checked + .slider:after {
   transition: all 0.5s;
   left: 30%;

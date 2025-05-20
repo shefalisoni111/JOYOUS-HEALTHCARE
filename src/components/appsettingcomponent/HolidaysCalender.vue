@@ -76,7 +76,7 @@
                       title="Edit Holiday"
                     ></i>
                     <i
-                      class="bi bi-trash text-white mx-2 cursor-pointer"
+                      class="bi bi-trash border-0 border-0 text-white mx-2 cursor-pointer"
                       @click="deleteHoliday(date.id)"
                       title="Delete Holiday"
                     ></i>

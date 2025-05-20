@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="main" class="d-flex" style="background: #f8f8ff">
+    <div id="main" class="d-flex">
       <div
         style="
           background: #fff;
@@ -10,7 +10,10 @@
       >
         <Navbar />
       </div>
-      <div class="container-fluid px-5 my-4">
+      <div
+        class="container-fluid px-5 pt-4"
+        style="background: rgb(82 74 74 / 6%); height: 100vh"
+      >
         <div class="p-0">
           <div class="">
             <ol class="breadcrumb my-2">
@@ -27,51 +30,51 @@
         <!-- <h1 class="text-center mb-4">Diary Notes</h1> -->
 
         <!-- Add Note Section -->
-        <div class="card mb-4 mt-5">
-          <div
-            class="card-header text-white"
-            style="background-color: rgb(255 127 89)"
-          >
-            Add Dairy Note
-          </div>
-          <div class="card-body">
-            <form @submit.prevent="addNote">
-              <div class="mb-3">
-                <label for="noteTitle" class="form-label">Title</label>
-                <input
-                  type="text"
-                  id="noteTitle"
-                  class="form-control"
-                  v-model="newNote.title"
-                  placeholder="Enter title"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label for="noteContent" class="form-label">Content</label>
-                <textarea
-                  id="noteContent"
-                  class="form-control"
-                  v-model="newNote.description"
-                  rows="3"
-                  placeholder="Enter note description"
-                  required
-                ></textarea>
-              </div>
-              <button type="submit" class="btn btn-success">Add Note</button>
-            </form>
+        <div class="card mb-4 mt-5" style="border-radius: 15px">
+          <div class="card-header text-black text-center">Add Dairy Note</div>
+          <div class="card-body d-flex my-3">
+            <div class="col-2"></div>
+            <div class="col-8">
+              <form @submit.prevent="addNote">
+                <div class="mb-3">
+                  <label for="noteTitle" class="form-label">Title</label>
+                  <input
+                    type="text"
+                    id="noteTitle"
+                    class="form-control"
+                    v-model="newNote.title"
+                    placeholder="Enter title"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="noteContent" class="form-label">Content</label>
+                  <textarea
+                    id="noteContent"
+                    class="form-control"
+                    v-model="newNote.description"
+                    rows="3"
+                    placeholder="Enter note description"
+                    required
+                  ></textarea>
+                </div>
+                <button
+                  type="submit"
+                  class="btn"
+                  style="background: #f9944b; color: #fff"
+                >
+                  Add Note
+                </button>
+              </form>
+            </div>
+            <div class="col-2"></div>
           </div>
         </div>
 
         <!-- Notes List Section -->
-        <div class="card">
-          <div
-            class="card-header text-white"
-            style="background-color: rgb(255 127 89); color: #fff"
-          >
-            Notes List
-          </div>
-          <div class="card-body">
+        <div class="card" style="border-radius: 15px">
+          <div class="card-header text-black text-center">Notes List</div>
+          <div class="card-body my-3">
             <div v-if="notes.length === 0" class="text-center text-muted">
               No notes added yet.
             </div>
@@ -79,14 +82,43 @@
               <table class="table">
                 <thead>
                   <tr>
-                    <th scope="col">Title</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col">
+                      Title
+                      <img
+                        src="../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Description
+                      <img
+                        src="../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
+                    <th scope="col">
+                      Actions
+                      <img
+                        src="../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   <!-- Loop through notes to display them in rows -->
-                  <tr v-for="note in notes" :key="note.id">
+                  <tr
+                    v-for="(note, index) in notes"
+                    :key="index"
+                    @mouseenter="hoverRow = index"
+                    @mouseleave="hoverRow = null"
+                  >
                     <td>
                       <div v-if="note.isEditing">
                         <!-- Edit input for the title -->
@@ -115,36 +147,61 @@
                       </div>
                     </td>
                     <td>
-                      <div class="d-flex">
-                        <!-- Conditionally render buttons for Edit/Save/Cancel -->
-                        <button
-                          v-if="note.isEditing"
-                          class="btn btn-primary me-2"
-                          @click="updateNote(note)"
+                      <div class="d-flex align-items-center position-relative">
+                        <!-- Show Save/Cancel buttons during editing -->
+                        <div v-if="note.isEditing" class="d-flex">
+                          <button
+                            class="btn btn-primary me-2"
+                            @click="updateNote(note)"
+                          >
+                            Save
+                          </button>
+                          <button
+                            class="btn btn-sm btn-secondary"
+                            @click="cancelEdit(note)"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+
+                        <!-- Show action menu if not editing -->
+                        <div
+                          v-else
+                          class="action-wrapper position-relative"
+                          @mouseenter="hoverRow = note.id"
+                          @mouseleave="hoverRow = null"
                         >
-                          Save
-                        </button>
-                        <button
-                          v-if="note.isEditing"
-                          class="btn btn-sm btn-secondary"
-                          @click="cancelEdit(note)"
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          v-if="!note.isEditing"
-                          class="btn btn-primary me-2"
-                          @click="editNote(note)"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          class="btn btn-danger"
-                          @click="deleteNote(note.id)"
-                          v-if="!note.isEditing"
-                        >
-                          Delete
-                        </button>
+                          <i
+                            class="bi bi-three-dots dot-icon"
+                            style="cursor: pointer"
+                          ></i>
+
+                          <div
+                            v-if="hoverRow === note.id"
+                            class="action-menu position-absolute bg-white shadow rounded p-2"
+                            style="right: 0; z-index: 100; width: 100px"
+                          >
+                            <button
+                              type="button"
+                              class="btn text-nowrap border-0 w-100 text-start"
+                              @click="editNote(note)"
+                            >
+                              <i
+                                class="bi bi-pencil-square"
+                                style="color: #f9944b"
+                              ></i>
+                              Edit
+                            </button>
+
+                            <button
+                              class="btn text-nowrap border-0 w-100 text-start"
+                              @click="deleteNote(note.id)"
+                            >
+                              <i class="bi bi-trash" style="color: #f9944b"></i>
+                              Delete
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </td>
                   </tr>
@@ -171,6 +228,7 @@ export default {
         title: "",
         description: "",
       },
+      hoverRow: null,
       editingNote: null,
     };
   },
@@ -326,7 +384,12 @@ export default {
 <style scoped>
 .card-header {
   font-size: 1.2rem;
-  font-weight: bold;
+  font-weight: 500;
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid #8080801f;
+  padding: 18px 0px;
+  margin: 0px 33px;
 }
 .list-group-item h5 {
   font-size: 1.1rem;

@@ -28,7 +28,7 @@
       <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
           <button
-            class="nav-link active text-capitalize ps-0 text-nowrap"
+            class="nav-link active text-capitalize px-0 text-nowrap"
             id="active"
             data-bs-toggle="pill"
             data-bs-target="#pills-home"

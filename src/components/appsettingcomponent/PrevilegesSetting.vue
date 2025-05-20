@@ -13,7 +13,7 @@
       >
         <Navbar />
       </div>
-      <div class="container-fluid" style="background: #71616105">
+      <div class="container-fluid px-5" style="background: rgb(82 74 74 / 6%)">
         <div class="col-10 pt-4 pt-3">
           <div class="col-12">
             <ol class="breadcrumb mb-1">
@@ -27,13 +27,16 @@
             </ol>
           </div>
         </div>
-        <div class="d-flex">
-          <div class="col-md-1"><Sidebar /></div>
-          <div class="col-md-3 p-3 bg-white borderight">
+        <div class="d-flex gap-3 mt-4">
+          <div class=""><Sidebar /></div>
+          <div
+            class="col-3 p-3 bg-white borderight"
+            style="border-radius: 30px !important"
+          >
             <div class="leftside">
               <div class="heading mb-3 position-relative">
                 <p class="bforeline"></p>
-                <p class="mb-0 text-uppercase fw-bold genSetting">
+                <p class="mb-0 text-capitalize fw-bold genSetting">
                   previleges Settings
                 </p>
                 <p class="afterline"></p>
@@ -41,14 +44,18 @@
               <div>
                 <ul class="list-unstyled text-capitalize generalsetting px-3">
                   <li class="list-items d-flex">
-                    <i class="bi bi-file-earmark-text rounded-circle"></i>
                     <router-link
                       to="/appsetting/previlegesetting"
                       class="text-decoration-none"
                     >
-                      <div class="job ms-2">
-                        <h6 class="mb-0 text-capitalize">user & privileges</h6>
-                        <p class="text-capitalize mb-0">Add & Modify</p>
+                      <div class="job ms-2 d-flex">
+                        <i class="bi bi-file-earmark-text rounded-circle"></i>
+                        <div>
+                          <h6 class="mb-0 text-capitalize">
+                            user & privileges
+                          </h6>
+                          <p class="text-capitalize mb-0">Add & Modify</p>
+                        </div>
                       </div>
                     </router-link>
                   </li>
@@ -56,12 +63,15 @@
               </div>
             </div>
           </div>
-          <div class="col-md-8">
-            <div class="col-12 bg-white">
+          <div
+            class="col-8 bg-white px-3"
+            style="border-radius: 30px !important"
+          >
+            <div class="col-12">
               <div class="pagetitle d-flex justify-content-between">
                 <div class="d-flex align-items-center">
                   <ol class="breadcrumb pt-4 mb-0">
-                    <li class="breadcrumb-item active text-uppercase fw-bold">
+                    <li class="breadcrumb-item active text-capitalize fw-bold">
                       privileges setting /
                       <span class="clr">user privileges</span>
                     </li>
@@ -85,7 +95,7 @@
                 <!-- End Page Title -->
                 <div class="d-flex align-items-center">
                   <button
-                    class="btn btn-primary rounded-1 text-uppercase fw-medium"
+                    class="btn btn-primary rounded-1 text-c fw-medium"
                     data-bs-toggle="modal"
                     data-bs-target="#AddPrivileges"
                     data-bs-whatever="@mdo"
@@ -265,7 +275,7 @@
 
                                 <!-- <td>
                                 <button
-                                class="bi bi-pencil btn-sm btn btn-primary rounded-1 text-uppercase fw-medium"
+                                class="bi bi-pencil btn-sm btn btn-primary rounded-1 text-c fw-medium"
                                 data-bs-toggle="modal"
                                 data-bs-target="#editJob"
                                 data-bs-whatever="@mdo"
@@ -588,11 +598,8 @@ export default {
   font-weight: 600;
   color: #ff5722;
 }
-.clr {
-  color: #ff5722;
-}
+
 ul.generalsetting li i.rounded-circle {
-  background: #fff4de;
   width: 48px;
   height: 40px;
   text-align: center;
@@ -601,6 +608,23 @@ ul.generalsetting li i.rounded-circle {
 }
 .nav-pills .nav-link {
   color: #464444;
+}
+.router-link-active,
+.router-link-exact-active {
+  background-color: #e6f0ff !important;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.router-link-active h6,
+.router-link-active p,
+.router-link-active i,
+.router-link-exact-active h6,
+.router-link-exact-active p,
+.router-link-exact-active i {
+  color: #0d6efd !important;
 }
 .cursor-pointer {
   cursor: pointer;
@@ -616,15 +640,7 @@ ul.generalsetting h6 {
   font-size: 14px;
   font-weight: bold;
 }
-ul.generalsetting li a {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding: 3px;
-}
-a.router-link-active {
-  background-color: #fff4de;
-}
+
 ul.generalsetting li i.rounded-circle a.router-link-active:active {
   border-top-left-radius: 22px !important;
   border-bottom-left-radius: 22px !important;
@@ -632,9 +648,7 @@ ul.generalsetting li i.rounded-circle a.router-link-active:active {
 a.router-link-active {
   color: #ff5722;
 }
-.genSetting {
-  color: #ff5722;
-}
+
 .nav-pills .nav-link.active {
   color: #ff5722;
   border-bottom: 2px solid #ff5722;
@@ -646,13 +660,6 @@ a.router-link-active {
   border-bottom: 1px solid grey;
 }
 
-a.router-link-active::after {
-  content: "\F285";
-  font-family: "Inter", sans-serif;
-  display: flex;
-  align-items: center;
-  color: #ff5722;
-}
 ul.generalsetting h6 {
   font-size: 14px;
 }

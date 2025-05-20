@@ -30,7 +30,7 @@
         </div>
         <div class="d-flex gap-3 mt-4">
           <div class=""><Sidebar /></div>
-          <div class="p-3 p-0 bg-white" style="border-radius: 30px">
+          <div class="col-3 p-3 p-0 bg-white" style="border-radius: 30px">
             <div class="leftside">
               <div class="heading mb-3 position-relative">
                 <p class="bforeline"></p>
@@ -45,10 +45,9 @@
                     <router-link
                       to="/addjobdetail"
                       class="text-decoration-none"
-                      active-class="active-link"
                     >
                       <i class="bi bi-suitcase-lg rounded-circle"></i>
-                      <div class="job ms-2">
+                      <div class="job">
                         <h6 class="mb-0 text-capitalize">jobs</h6>
                         <p class="text-capitalize mb-0">
                           Add jobs, positions & roles
@@ -62,7 +61,7 @@
                       class="text-decoration-none"
                     >
                       <i class="bi bi-check-lg rounded-circle"></i>
-                      <div class="job ms-2">
+                      <div class="job">
                         <h6 class="mb-0 text-capitalize">Staff status</h6>
                         <p class="text-capitalize mb-0">view & modify</p>
                       </div>
@@ -74,7 +73,7 @@
                       class="text-decoration-none"
                     >
                       <i class="bi bi-person-square rounded-circle"></i>
-                      <div class="job ms-2">
+                      <div class="job">
                         <h6 class="mb-0 text-capitalize">employment types</h6>
                         <p class="text-capitalize mb-0">Add & modify</p>
                       </div>
@@ -83,7 +82,7 @@
                   <li class="list-items d-flex mt-3">
                     <router-link to="/shift" class="text-decoration-none">
                       <i class="bi bi-clock rounded-circle"></i>
-                      <div class="job ms-2">
+                      <div class="job">
                         <h6 class="mb-0 text-capitalize">shift</h6>
                         <p class="text-capitalize mb-0">shift times</p>
                       </div>
@@ -95,7 +94,7 @@
                       class="text-decoration-none"
                     >
                       <i class="bi bi-calendar2-range-fill rounded-circle"></i>
-                      <div class="job ms-2">
+                      <div class="job">
                         <h6 class="mb-0 text-capitalize">Holiday Calendar</h6>
                         <p class="text-capitalize mb-0">
                           Add & Modify holidays
@@ -109,7 +108,7 @@
                       class="text-decoration-none"
                     >
                       <i class="bi bi-credit-card rounded-circle"></i>
-                      <div class="job ms-2">
+                      <div class="job">
                         <h6 class="mb-0 text-capitalize">Staff Deduction</h6>
                         <p class="text-capitalize mb-0">
                           Add & modify Deduction
@@ -123,7 +122,7 @@
                       to="/staff-profiles"
                       class="text-decoration-none"
                     >
-                      <div class="job ms-2">
+                      <div class="job">
                         <h6 class="mb-0 text-capitalize">Staff profile</h6>
                         <p class="text-capitalize mb-0">Add mandatory fields</p>
                       </div>
@@ -135,7 +134,7 @@
                       to="/staff-detail-field"
                       class="text-decoration-none"
                     >
-                      <div class="job ms-2">
+                      <div class="job">
                         <h6 class="mb-0 text-capitalize">
                           Staff Detail Section Field
                         </h6>
@@ -158,7 +157,7 @@
                       to="/documentcategories"
                       class="text-decoration-none"
                     >
-                      <div class="job ms-2">
+                      <div class="job">
                         <h6 class="mb-0 text-capitalize">
                           documents categories
                         </h6>
@@ -172,7 +171,7 @@
               </div>
             </div>
           </div>
-          <div class="col-9">
+          <div class="col-8">
             <div class="col-12 bg-white p-4" style="border-radius: 30px">
               <RouterView />
             </div>
@@ -214,24 +213,12 @@ export default {
   color: #6c757d;
 }
 
-.genSetting {
-  color: #6c757d;
-}
-
 .pagetitle {
   margin-bottom: 10px;
   background-color: #fff;
   padding: 10px;
 }
 
-ul.generalsetting li i.rounded-circle {
-  width: 48px;
-  height: 40px;
-  text-align: center;
-  line-height: 40px;
-  font-size: larger;
-  color: #0d6efd;
-}
 ul.generalsetting li a .job p {
   font-size: 12px;
 }
@@ -240,11 +227,7 @@ ul.generalsetting h6 {
   font-size: 14px;
   font-weight: bold;
 }
-ul.generalsetting li:hover,
-.router-link-active:active {
-  color: #0d6efd !important;
-  background: #1b59f81a;
-}
+
 .heading p.gs {
   transform: translateX(18px);
 }
@@ -253,7 +236,10 @@ ul.generalsetting li:hover,
   border-bottom: 1px solid rgb(196, 196, 196);
   width: 100%;
 }
-
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  color: #f9944b !important;
+}
 ul.generalsetting li a {
   display: flex;
 
@@ -264,7 +250,23 @@ ul.generalsetting li a {
 ul.generalsetting li i.rounded-circle {
   border-radius: 50%;
 }
+.router-link-active,
+.router-link-exact-active {
+  background-color: #e6f0ff !important;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
 
+.router-link-active h6,
+.router-link-active p,
+.router-link-active i,
+.router-link-exact-active h6,
+.router-link-exact-active p,
+.router-link-exact-active i {
+  color: #0d6efd !important;
+}
 ul.generalsetting li i.rounded-circle a.router-link-active:active {
   border-top-left-radius: 22px !important;
   border-bottom-left-radius: 22px !important;

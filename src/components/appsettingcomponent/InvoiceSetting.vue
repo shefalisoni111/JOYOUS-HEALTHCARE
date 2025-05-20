@@ -13,7 +13,7 @@
       >
         <Navbar />
       </div>
-      <div class="container-fluid" style="background: #71616105">
+      <div class="container-fluid px-5" style="background: rgb(82 74 74 / 6%)">
         <div class="col-10 pt-4 pt-3">
           <div class="col-12">
             <ol class="breadcrumb mb-1">
@@ -27,13 +27,16 @@
             </ol>
           </div>
         </div>
-        <div class="d-flex">
-          <div class="col-md-1"><Sidebar /></div>
-          <div class="col-md-3 p-3 bg-white borderight">
+        <div class="d-flex gap-3 mt-4">
+          <div class=""><Sidebar /></div>
+          <div
+            class="col-3 p-3 bg-white borderight"
+            style="border-radius: 30px"
+          >
             <div class="leftside">
               <div class="heading mb-3 position-relative">
                 <p class="bforeline"></p>
-                <p class="mb-0 text-uppercase fw-bold genSetting">
+                <p class="mb-0 text-capitalize fw-bold genSetting">
                   invoice Settings
                 </p>
                 <p class="afterline"></p>
@@ -41,16 +44,18 @@
               <div>
                 <ul class="list-unstyled text-capitalize generalsetting px-3">
                   <li class="list-items d-flex">
-                    <i class="bi bi-file-earmark-text rounded-circle"></i>
                     <router-link
                       to="/appsetting/invoicesetting"
                       class="text-decoration-none"
                     >
-                      <div class="job ms-2">
-                        <h6 class="mb-0 text-capitalize">invoice setting</h6>
-                        <p class="text-capitalize mb-0">
-                          check invoice dues date
-                        </p>
+                      <div class="job d-flex">
+                        <i class="bi bi-file-earmark-text rounded-circle"></i>
+                        <div>
+                          <h6 class="mb-0 text-capitalize">invoice setting</h6>
+                          <p class="text-capitalize mb-0">
+                            check invoice dues date
+                          </p>
+                        </div>
                       </div>
                     </router-link>
                   </li>
@@ -58,12 +63,12 @@
               </div>
             </div>
           </div>
-          <div class="col-md-8">
-            <div class="col-12 bg-white">
+          <div class="col-8 px-3 bg-white" style="border-radius: 30px">
+            <div class="col-12">
               <div class="pagetitle d-flex justify-content-between">
                 <div class="d-flex align-items-center">
                   <ol class="breadcrumb mb-1 p-3">
-                    <li class="breadcrumb-item active text-uppercase fw-bold">
+                    <li class="breadcrumb-item active text-capitalize fw-bold">
                       invoice setting /
                       <span class="clr">rate And invoice setting</span>
                     </li>
@@ -73,7 +78,7 @@
                 <div class="d-flex align-items-center"></div>
               </div>
             </div>
-            <div class="row">
+            <div class="row ps-4">
               <div class="col-12">
                 <h6 class="fw-bold">RATE SETTINGS DETAILS</h6>
                 <div class="col-6">
@@ -613,18 +618,27 @@ select {
   background: none;
   margin-left: 4px;
 }
-.clr {
-  color: #ff5722;
+.router-link-active,
+.router-link-exact-active {
+  background-color: #e6f0ff !important;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
 }
-a.router-link-active {
-  background-color: #fff4de;
+
+.router-link-active h6,
+.router-link-active p,
+.router-link-active i,
+.router-link-exact-active h6,
+.router-link-exact-active p,
+.router-link-exact-active i {
+  color: #0d6efd !important;
 }
+
 ul.generalsetting li i.rounded-circle a.router-link-active:active {
   border-top-left-radius: 22px !important;
   border-bottom-left-radius: 22px !important;
-}
-.genSetting {
-  color: #ff5722;
 }
 
 .nav-pills .nav-link.active,
@@ -638,14 +652,6 @@ ul.generalsetting li i.rounded-circle a.router-link-active:active {
   border-bottom: 1px solid #ddd6d6;
 }
 
-ul.generalsetting li i.rounded-circle {
-  background: #fff4de;
-  width: 48px;
-  height: 40px;
-  text-align: center;
-  line-height: 40px;
-  color: #ff5722;
-}
 ul.generalsetting li a .job p {
   font-size: 12px;
 }
@@ -670,14 +676,6 @@ ul.generalsetting li a {
 }
 a.router-link-active {
   color: #0d6efd;
-}
-
-a.router-link-active::after {
-  content: "\F285";
-  font-family: "Inter", sans-serif;
-  display: flex;
-  align-items: center;
-  color: #ff5722;
 }
 
 .heading p.gs {
@@ -705,71 +703,5 @@ table thead th {
 }
 .btn-primary {
   border: none;
-}
-.switch {
-  width: 50px;
-  height: 17px;
-  position: relative;
-  display: inline-block;
-}
-
-.switch input {
-  display: none;
-}
-
-.switch .slider {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  cursor: pointer;
-  background-color: #e7ecf1;
-  border-radius: 30px !important;
-  border: 0;
-  padding: 0;
-  display: block;
-  margin: 7px 10px;
-  min-height: 11px;
-}
-
-.switch .slider:before {
-  position: absolute;
-  background-color: #aaa;
-  height: 15px;
-  width: 15px;
-  content: "";
-  left: 0px;
-  bottom: -2px;
-  border-radius: 50%;
-  transition: ease-in-out 0.5s;
-}
-
-.switch .slider:after {
-  content: "";
-  color: rgb(189, 84, 15);
-  display: block;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 70%;
-  transition: all 0.5s;
-  font-size: 10px;
-  font-family: "Inter", sans-serif;
-}
-
-.switch input:checked + .slider:after {
-  transition: all 0.5s;
-  left: 30%;
-  content: "";
-}
-
-.switch input:checked + .slider {
-  background-color: #d3d6d9;
-}
-
-.switch input:checked + .slider:before {
-  transform: translateX(15px);
-  background-color: #ff9800;
 }
 </style>
