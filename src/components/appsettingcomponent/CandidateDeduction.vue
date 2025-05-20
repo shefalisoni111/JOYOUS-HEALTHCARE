@@ -3,15 +3,16 @@
     <div class="pagetitle d-flex justify-content-between">
       <div class="d-flex align-items-center">
         <ul class="breadcrumb mb-1">
-          <li class="breadcrumb-item active text-uppercase fw-bold">
-            General settings / <span class="clr">Staff deductions</span>
+          <li class="breadcrumb-item active text-capitalize fw-bold">
+            General settings /
+            <span class="clr" style="color: #000000">Staff deductions</span>
           </li>
         </ul>
       </div>
       <!-- End Page Title -->
       <div class="d-flex align-items-center">
         <button
-          class="btn btn-primary rounded-1 text-uppercase fw-medium"
+          class="btn btn-primary rounded-1 text-capitalize fw-medium"
           data-bs-toggle="modal"
           data-bs-target="#addDeduct"
           data-bs-whatever="@mdo"
@@ -69,15 +70,23 @@
                     <table class="table table table-hover addjobtable">
                       <thead>
                         <tr>
-                          <th scope="col" class="col-2 bg-primary text-white">ID</th>
-                          <th scope="col" class="col-2 bg-primary text-white">Title</th>
+                          <th scope="col" class="col-2 bg-primary text-white">
+                            ID
+                          </th>
+                          <th scope="col" class="col-2 bg-primary text-white">
+                            Title
+                          </th>
                           <!-- <th scope="col" class="col-2 bg-primary text-white">Job</th> -->
-                          <th scope="col" class="col-2 bg-primary text-white">Amount</th>
+                          <th scope="col" class="col-2 bg-primary text-white">
+                            Amount
+                          </th>
 
                           <!--  <th scope="col" class="col-1 bg-primary text-white">
                             Frequency
                           </th> -->
-                          <th scope="col" class="col-1 bg-primary text-white">Action</th>
+                          <th scope="col" class="col-1 bg-primary text-white">
+                            Action
+                          </th>
                         </tr>
                       </thead>
                       <tbody v-if="getCandidateDeduction?.length > 0">
@@ -181,9 +190,11 @@ export default {
       this.confirmMessage = "Are you sure want to delete?";
       this.isModalVisible = true;
       this.confirmCallback = async () => {
-        axios.delete(`${VITE_API_URL}/candidate_deductions/` + id).then((response) => {
-          this.fetchCandidateDeductions();
-        });
+        axios
+          .delete(`${VITE_API_URL}/candidate_deductions/` + id)
+          .then((response) => {
+            this.fetchCandidateDeductions();
+          });
         this.isModalVisible = false;
       };
     },
@@ -236,9 +247,6 @@ table th {
 }
 .nav-pills {
   border-bottom: 1px solid #ddd6d6;
-}
-table thead th {
-  background-color: #f9944b !important;
 }
 
 .btn-primary {

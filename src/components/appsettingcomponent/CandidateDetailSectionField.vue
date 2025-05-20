@@ -255,9 +255,6 @@ table th {
   border-bottom: 1px solid #ddd6d6;
 }
 
-table thead th {
-  background-color: #f9944b !important;
-}
 .btn-primary {
   border: none;
 }

@@ -3,15 +3,16 @@
     <div class="pagetitle d-flex justify-content-between">
       <div class="d-flex align-items-center">
         <ul class="breadcrumb mb-1">
-          <li class="breadcrumb-item active text-uppercase fw-bold">
-            General settings / <span class="clr">HOLIDAY CALENDAR</span>
+          <li class="breadcrumb-item active text-capitalize fw-bold">
+            General settings /
+            <span class="clr" style="color: #000000">HOLIDAY CALENDAR</span>
           </li>
         </ul>
       </div>
       <!-- End Page Title -->
       <div class="d-flex align-items-center">
         <button
-          class="btn btn-primary rounded-1 text-uppercase fw-medium"
+          class="btn btn-primary rounded-1 text-capitalize fw-medium"
           data-bs-toggle="modal"
           data-bs-target="#addHolidayCalender"
           data-bs-whatever="@mdo"
@@ -40,7 +41,9 @@
             </button>
           </div>
           <div class="weekdays">
-            <div class="weekday" v-for="day in daysOfWeek" :key="day">{{ day }}</div>
+            <div class="weekday" v-for="day in daysOfWeek" :key="day">
+              {{ day }}
+            </div>
           </div>
 
           <div class="days overflow-x-auto">
@@ -55,7 +58,10 @@
               }}</span>
 
               <div v-for="date in getHolidayData" :key="date.id" class="mt-3">
-                <span v-if="date.holiday_date === formatDate(day)" class="event-data">
+                <span
+                  v-if="date.holiday_date === formatDate(day)"
+                  class="event-data"
+                >
                   <span class="fw-bold text-white text-capitalize mt-2">{{
                     date.title
                   }}</span>
@@ -157,7 +163,9 @@ export default {
       const firstDayOfWeek = new Date(year, month, 1).getDay();
 
       // Create an array with empty slots for the days before the 1st of the month
-      const emptyDays = Array((firstDayOfWeek === 0 ? 7 : firstDayOfWeek) - 1).fill(null);
+      const emptyDays = Array(
+        (firstDayOfWeek === 0 ? 7 : firstDayOfWeek) - 1
+      ).fill(null);
 
       // Create an array for the actual days of the month
       const monthDays = Array.from({ length: daysInMonth }, (_, i) => i + 1);
@@ -220,8 +228,9 @@ export default {
   grid-template-columns: repeat(7, 1fr);
   gap: 5px;
   margin-bottom: 5px;
-  background-color: #f9944b;
+  background-color: transparent;
   font-weight: bold;
+  color: #667085;
 }
 .weekday {
   text-align: center;
@@ -283,7 +292,8 @@ td i.bi-trash {
   pointer-events: none;
 }
 table thead th {
-  background-color: #f9944b !important;
+  background-color: transparent !important;
+  color: #000;
 }
 table {
   border-collapse: separate;

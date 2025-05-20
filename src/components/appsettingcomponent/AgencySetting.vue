@@ -33,7 +33,7 @@
             <div class="leftside">
               <div class="heading mb-3 position-relative">
                 <p class="bforeline"></p>
-                <p class="mb-0 text-uppercase fw-bold genSetting">
+                <p class="mb-0 text-capitalize fw-bold genSetting">
                   agency Settings
                 </p>
                 <p class="afterline"></p>
@@ -63,7 +63,7 @@
               <div class="pagetitle d-flex justify-content-between">
                 <div class="d-flex align-items-center">
                   <ol class="breadcrumb mb-1 p-3">
-                    <li class="breadcrumb-item active text-uppercase fw-bold">
+                    <li class="breadcrumb-item active text-capitalize fw-bold">
                       agency setting / <span class="clr">profile</span>
                     </li>
                   </ol>

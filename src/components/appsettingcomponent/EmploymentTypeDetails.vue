@@ -3,15 +3,16 @@
     <div class="pagetitle d-flex justify-content-between">
       <div class="d-flex align-items-center">
         <ul class="breadcrumb mb-1">
-          <li class="breadcrumb-item active text-uppercase fw-bold">
-            employment types details / <span>employment types</span>
+          <li class="breadcrumb-item active text-capitalize fw-bold">
+            employment types details /
+            <span style="color: #000000">employment types</span>
           </li>
         </ul>
       </div>
       <!-- End Page Title -->
       <div class="d-flex align-items-center">
         <button
-          class="btn btn-primary rounded-1 text-uppercase fw-medium"
+          class="btn btn-primary rounded-1 text-capitalize fw-medium"
           data-bs-toggle="modal"
           data-bs-target="#addEmployee"
           data-bs-whatever="@mdo"
@@ -67,12 +68,19 @@
                 <tr>
                   <th scope="col" class="col-5 text-white">ID</th>
                   <th scope="col" class="col-5 text-white">Employment Type</th>
-                  <th scope="col" class="col-5 text-white jusfycenter">Description</th>
-                  <th scope="col" class="col-2 text-white jusfycenter">Action</th>
+                  <th scope="col" class="col-5 text-white jusfycenter">
+                    Description
+                  </th>
+                  <th scope="col" class="col-2 text-white jusfycenter">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody v-if="getEmployeeStatus?.length > 0">
-                <tr v-for="getEmployee in getEmployeeStatus" :key="getEmployee.id">
+                <tr
+                  v-for="getEmployee in getEmployeeStatus"
+                  :key="getEmployee.id"
+                >
                   <td :v-text="getEmployee.id">{{ getEmployee.id }}</td>
                   <td :v-text="getEmployee.title">{{ getEmployee.title }}</td>
                   <td :v-text="getEmployee.description">
@@ -88,7 +96,11 @@
               </tbody>
               <tbody v-else>
                 <tr>
-                  <td colspan="4" class="text-center text-danger" v-if="!isLoading">
+                  <td
+                    colspan="4"
+                    class="text-center text-danger"
+                    v-if="!isLoading"
+                  >
                     {{ "Data Not Found!" }}
                   </td>
                 </tr>
@@ -155,18 +167,19 @@ export default {
       this.confirmMessage = "Are you sure want to delete?";
       this.isModalVisible = true;
       this.confirmCallback = async () => {
-        axios.delete(`${VITE_API_URL}/employment_types/` + id).then((response) => {
-          if (response.data.error === "record could Not deleted !") {
-            Swal.fire({
-              icon: "warning",
-              title: "Warning",
-              text:
-                "Cannot delete Employee Type: This record is associated with candidate employee type records.",
-            });
-          } else {
-            this.getEmployeeDAta();
-          }
-        });
+        axios
+          .delete(`${VITE_API_URL}/employment_types/` + id)
+          .then((response) => {
+            if (response.data.error === "record could Not deleted !") {
+              Swal.fire({
+                icon: "warning",
+                title: "Warning",
+                text: "Cannot delete Employee Type: This record is associated with candidate employee type records.",
+              });
+            } else {
+              this.getEmployeeDAta();
+            }
+          });
         this.isModalVisible = false;
       };
     },
@@ -208,9 +221,6 @@ export default {
 }
 .nav-pills {
   border-bottom: 1px solid #ddd6d6;
-}
-table thead th {
-  background-color: #f9944b !important;
 }
 
 .btn-primary {

@@ -53,11 +53,13 @@
   bottom: 0;
   z-index: 996;
   transition: all 0.3s;
-
+  border-radius: 30px;
+  width: 90px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #aab7cf transparent;
-  background-color: #fff;
+  background-color: #f9944b;
+
   height: 100dvh;
   border-right: 1px solid #f1e7e7;
 }
@@ -86,8 +88,8 @@
 }
 
 .sidebar .sidebar-nav a.router-link-active {
-  color: #f6f9ff;
-  background: #ff5f30;
+  color: #fff;
+  font-weight: 600;
 }
 
 .sidebar-nav li {
@@ -112,7 +114,7 @@
 .sidebar-nav .nav-link {
   text-align: center;
   font-size: 20px;
-
+  color: #f1e8e8;
   padding: 10px 20px;
   transition: 0.3;
   border-radius: 4px;
@@ -132,7 +134,6 @@
 
 .sidebar-nav .nav-link:hover {
   color: #fff;
-  background: #ff5f30;
 }
 
 .sidebar-nav .nav-link .bi-chevron-down {

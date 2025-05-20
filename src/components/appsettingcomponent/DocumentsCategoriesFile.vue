@@ -4,8 +4,9 @@
       <div class="pagetitle d-flex justify-content-between">
         <div class="d-flex align-items-center">
           <ul class="breadcrumb mb-1 py-2">
-            <li class="breadcrumb-item active text-uppercase fw-bold">
-              General setting / <span>Document Categories</span>
+            <li class="breadcrumb-item active text-capitalize fw-bold">
+              General setting /
+              <span style="color: #000000">Document Categories</span>
             </li>
           </ul>
         </div>
@@ -13,12 +14,12 @@
       </div>
     </div>
     <div class="col-12 d-flex justify-content-between align-items-center my-4">
-      <div class="text-uppercase">
+      <div class="text-capitalize">
         <h6 class="fw-bold">Document Categories</h6>
       </div>
       <div class="">
         <button
-          class="btn btn-primary rounded-1 text-uppercase fw-bold"
+          class="btn btn-primary rounded-1 text-capitalize fw-bold"
           data-bs-toggle="modal"
           data-bs-target="#addCategories"
           data-bs-whatever="@mdo"

@@ -3,8 +3,9 @@
     <div class="pagetitle d-flex justify-content-between">
       <div class="d-flex align-items-center">
         <ul class="breadcrumb mb-1">
-          <li class="breadcrumb-item active text-uppercase fw-bold">
-            General settings / <span class="clr">jobs</span>
+          <li class="breadcrumb-item active text-capitalize fw-bold">
+            General settings /
+            <span class="clr" style="color: #6c757dcf">jobs</span>
           </li>
         </ul>
       </div>
@@ -12,7 +13,7 @@
       <div class="d-flex align-items-center">
         <button
           v-if="activeTab === 'active'"
-          class="btn btn-primary rounded-1 text-uppercase fw-medium"
+          class="btn btn-primary rounded-1 fw-medium text-capitalize"
           data-bs-toggle="modal"
           data-bs-target="#myModal"
           data-bs-whatever="@mdo"
@@ -72,9 +73,15 @@
                   <th scope="col" class="bg-primary text-white">Colour</th>
                   <th scope="col" class="bg-primary text-white">Name</th>
                   <th scope="col" class="bg-primary text-white">Job Code</th>
-                  <th scope="col" class="bg-primary text-white">No. of Clients</th>
-                  <th scope="col" class="bg-primary text-white">No. of Staff</th>
-                  <th scope="col" class="bg-primary text-white">No. of Documents</th>
+                  <th scope="col" class="bg-primary text-white">
+                    No. of Clients
+                  </th>
+                  <th scope="col" class="bg-primary text-white">
+                    No. of Staff
+                  </th>
+                  <th scope="col" class="bg-primary text-white">
+                    No. of Documents
+                  </th>
                   <th scope="col" class="bg-primary text-white">Action</th>
                 </tr>
               </thead>
@@ -82,7 +89,10 @@
                 <tr v-for="jobs in paginateSiteData" :key="jobs.id">
                   <td v-text="jobs.id"></td>
                   <td scope="row">
-                    <i class="bi bi-square-fill" :style="{ color: jobs.color }"></i>
+                    <i
+                      class="bi bi-square-fill"
+                      :style="{ color: jobs.color }"
+                    ></i>
                   </td>
                   <td class="text-capitalize" v-text="jobs.name"></td>
                   <td v-text="jobs.job_code"></td>
@@ -101,7 +111,11 @@
               </tbody>
               <tbody v-else>
                 <tr>
-                  <td colspan="8" class="text-center text-danger" v-if="!isLoading">
+                  <td
+                    colspan="8"
+                    class="text-center text-danger"
+                    v-if="!isLoading"
+                  >
                     {{ "Data Not Found!" }}
                   </td>
                 </tr>
@@ -125,7 +139,9 @@
                 <th scope="col" class="bg-primary text-white">Job Code</th>
                 <th scope="col" class="bg-primary text-white">No. of Vendor</th>
                 <th scope="col" class="bg-primary text-white">No. of Staff</th>
-                <th scope="col" class="bg-primary text-white">No. of Documents</th>
+                <th scope="col" class="bg-primary text-white">
+                  No. of Documents
+                </th>
                 <th scope="col" class="bg-primary text-white">Action</th>
               </tr>
             </thead>
@@ -133,7 +149,10 @@
               <tr v-for="jobs in getInActiveJobs" :key="jobs.id">
                 <td v-text="jobs.id"></td>
                 <td scope="row">
-                  <i class="bi bi-square-fill" :style="{ color: jobs.color }"></i>
+                  <i
+                    class="bi bi-square-fill"
+                    :style="{ color: jobs.color }"
+                  ></i>
                 </td>
                 <td class="text-capitalize" v-text="jobs.name"></td>
                 <td v-text="jobs.job_code"></td>
@@ -162,7 +181,11 @@
             </tbody>
             <tbody v-else>
               <tr>
-                <td colspan="8" class="text-center text-danger" v-if="!isLoading">
+                <td
+                  colspan="8"
+                  class="text-center text-danger"
+                  v-if="!isLoading"
+                >
                   {{ "Data Not Found!" }}
                 </td>
               </tr>
@@ -186,13 +209,19 @@
       </button>
       <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+            >20 Records</a
+          >
         </li>
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+            >50 Records</a
+          >
         </li>
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+            >100 Records</a
+          >
         </li>
       </ul>
       &nbsp;&nbsp;
@@ -319,7 +348,9 @@ export default {
 
       this.confirmCallback = async () => {
         try {
-          const response = await axios.put(`${VITE_API_URL}/inactivate_job/` + id);
+          const response = await axios.put(
+            `${VITE_API_URL}/inactivate_job/` + id
+          );
           this.getJobData();
           this.getInactiveJobData();
 
@@ -423,7 +454,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 td i.bi-trash {
   border: 1px solid #9e9e9e;
   padding: 3px 15px;
@@ -453,10 +484,10 @@ td i.bi-trash {
 .btn-primary {
   border: none;
 }
-
-table thead th {
-  background-color: #f9944b !important;
+.breadcrumb-item.active {
+  color: #373b3e;
 }
+
 table {
   border-collapse: separate;
 }

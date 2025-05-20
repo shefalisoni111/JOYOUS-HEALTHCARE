@@ -32,8 +32,12 @@
             <th scope="col" class="col-5 bg-primary text-white jusfycenter">
               Description
             </th>
-            <th scope="col" class="col-4 bg-primary text-white">No. of Staff</th>
-            <th scope="col" class="col-2 bg-primary text-white jusfycenter">Action</th>
+            <th scope="col" class="col-4 bg-primary text-white">
+              No. of Staff
+            </th>
+            <th scope="col" class="col-2 bg-primary text-white jusfycenter">
+              Action
+            </th>
           </tr>
         </thead>
         <tbody v-if="getCandidateStatus?.length > 0">
@@ -54,7 +58,9 @@
         </tbody>
         <tbody v-else>
           <tr>
-            <td colspan="5" class="text-danger text-center">{{ "Data Not Found!" }}</td>
+            <td colspan="5" class="text-danger text-center">
+              {{ "Data Not Found!" }}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -115,9 +121,11 @@ export default {
       this.confirmMessage = "Are you sure want to delete?";
       this.isModalVisible = true;
       this.confirmCallback = async () => {
-        axios.delete(`${VITE_API_URL}/candidate_statuses/` + id).then((response) => {
-          this.getCandidateData();
-        });
+        axios
+          .delete(`${VITE_API_URL}/candidate_statuses/` + id)
+          .then((response) => {
+            this.getCandidateData();
+          });
         this.isModalVisible = false;
       };
     },
@@ -161,9 +169,7 @@ td i.bi-trash {
 .cursor-pointer {
   cursor: pointer;
 }
-table thead th {
-  background-color: #f9944b !important;
-}
+
 .btn-primary {
   border: none;
 }
