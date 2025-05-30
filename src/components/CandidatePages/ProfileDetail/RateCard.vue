@@ -69,7 +69,7 @@
                   <td>{{ getrate.last_updated || "Null" }}</td>
                   <td class="cursor-pointer d-flex">
                     <i
-                      class="bi bi-trash3 cursor-pointer btn btn-outline-success text-nowrap"
+                      class="bi bi-trash border-0 border-03 cursor-pointer btn btn-outline-success text-nowrap"
                       v-on:click="rateCardDelete(getrate.id)"
                     ></i>
                     &nbsp;&nbsp;

@@ -116,7 +116,7 @@
                       class="btn text-nowrap border-0"
                       v-on:click="deleteStaffMethod(candidate.id)"
                     >
-                      <i class="bi bi-trash" style="color: #f9944b"></i>
+                      <i class="bi bi-trash border-0 border-0" style="color: #f9944b"></i>
                       Delete
                     </button>
                   </div>

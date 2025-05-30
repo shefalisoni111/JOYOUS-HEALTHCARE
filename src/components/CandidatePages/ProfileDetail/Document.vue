@@ -180,7 +180,7 @@
                                   ></button>
                                   <button class="btn border-primary-subtle" v-else>
                                     <i
-                                      class="bi bi-trash"
+                                      class="bi bi-trash border-0 border-0"
                                       v-on:click="
                                         confirmed(getDocs.candidate_document.id, $event)
                                       "
