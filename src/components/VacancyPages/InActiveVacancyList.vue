@@ -180,7 +180,10 @@
                     class="btn text-nowrap shadow-soft border-0"
                     @click="confirmed(data.id)"
                   >
-                    <i class="bi bi-trash border-0 border-0" style="color: #f9944b"></i>
+                    <i
+                      class="bi bi-trash border-0 border-0"
+                      style="color: #f9944b"
+                    ></i>
                     Delete
                   </button>
                 </div>
@@ -305,6 +308,7 @@
       @cancel="canceled"
     />
     <loader :isLoading="isLoading"></loader>
+    <!-- ghfgh -->
   </div>
 </template>
 
