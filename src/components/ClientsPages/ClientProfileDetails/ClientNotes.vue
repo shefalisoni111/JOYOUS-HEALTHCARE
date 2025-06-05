@@ -76,7 +76,7 @@
                 ></i>
                 &nbsp;&nbsp;
                 <i
-                  class="bi bi-trash cursor-pointer danger text-nowrap"
+                  class="bi bi-trash border-0 border-0 cursor-pointer danger text-nowrap"
                   style="color: #f9944b"
                   @click="deleteClientNote(data.id)"
                 ></i>

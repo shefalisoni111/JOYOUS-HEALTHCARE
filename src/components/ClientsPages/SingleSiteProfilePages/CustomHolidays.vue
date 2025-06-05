@@ -93,7 +93,7 @@
                   &nbsp;&nbsp;
                   <button class="btn btn-outline-success text-nowrap">
                     <i
-                      class="bi bi-trash"
+                      class="bi bi-trash border-0 border-0"
                       v-on:click="customHolidayDeleteMethod(data.id)"
                     ></i></button
                   >&nbsp;&nbsp;

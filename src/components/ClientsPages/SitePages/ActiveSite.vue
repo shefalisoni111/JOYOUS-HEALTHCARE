@@ -162,7 +162,7 @@
 
                   <!-- <button class="btn btn-outline-success text-nowrap">
                 <i
-                  class="bi bi-trash"
+                  class="bi bi-trash border-0 border-0"
                   v-on:click="clientsDeleteMethod(client.id)"
                 ></i></button
               >&nbsp;&nbsp; -->

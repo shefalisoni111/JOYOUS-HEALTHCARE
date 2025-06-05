@@ -37,7 +37,7 @@
             ></i>
             &nbsp;&nbsp;
             <i
-              class="bi bi-trash cursor-pointer btn btn-outline-danger text-nowrap"
+              class="bi bi-trash border-0 border-0 cursor-pointer btn btn-outline-danger text-nowrap"
               @click="deleteSiteNote(data.id)"
             ></i>
             <!-- <button

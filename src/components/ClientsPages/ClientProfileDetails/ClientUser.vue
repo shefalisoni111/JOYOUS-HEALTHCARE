@@ -71,7 +71,7 @@
                 class="btn btn-outline-danger text-nowrap"
                 v-on:click="deleteUser(data.id)"
               >
-                <i class="bi bi-trash"></i>
+                <i class="bi bi-trash border-0 border-0"></i>
               </button>
             </td>
           </tr>
