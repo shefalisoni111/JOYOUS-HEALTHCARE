@@ -180,7 +180,7 @@
                     class="btn text-nowrap shadow-soft border-0"
                     @click="confirmed(data.id)"
                   >
-                    <i class="bi bi-trash" style="color: #f9944b"></i>
+                    <i class="bi bi-trash border-0 border-0" style="color: #f9944b"></i>
                     Delete
                   </button>
                 </div>
@@ -215,7 +215,7 @@
                 class="btn btn-outline-danger text-nowrap"
                 v-on:click="confirmed(data.id)"
               >
-                <i class="bi bi-trash"></i>
+                <i class="bi bi-trash border-0 border-0"></i>
               </button> -->
             </td>
           </tr>
