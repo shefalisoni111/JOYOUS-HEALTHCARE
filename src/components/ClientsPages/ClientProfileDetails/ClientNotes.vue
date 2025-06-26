@@ -32,7 +32,7 @@
             <button
               class="btn btn-primary"
               :disabled="!isValidForm"
-              @click="submitForm"
+              type="submit"
             >
               + Add
             </button>

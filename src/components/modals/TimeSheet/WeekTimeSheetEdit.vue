@@ -8,6 +8,13 @@
             <h5 class="modal-title" id="editWeeklyTs">
               Edit Assign Shift {{ vacancyId }}
             </h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              @click="blurActiveElement"
+            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
@@ -835,6 +842,11 @@ export default {
     },
   },
   methods: {
+    blurActiveElement() {
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+    },
     getFullImageUrl(relativeUrl) {
       return `${VITE_API_URL}${relativeUrl}`;
     },

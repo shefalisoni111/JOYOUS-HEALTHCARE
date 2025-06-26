@@ -193,7 +193,7 @@
                         </select>
                         <select
                           v-model="job_id"
-                          id="selectOption"
+                          id="selectedOptionText"
                           @change="onJobTitleChange"
                         >
                           <option value="" disabled>All Position</option>
@@ -202,7 +202,7 @@
                             :key="option.job_id"
                             :value="option.job_id"
                           >
-                            {{ option.name }}
+                            {{ option.job_name }}
                           </option>
                         </select>
                         <div class="searchbox position-relative">
@@ -1197,9 +1197,10 @@ export default {
       );
       return site_id ? site_id.site_name : "";
     },
+
     selectedOptionText() {
       const job_id = this.options.find((option) => option.id === this.job_id);
-      return job_id ? job_id.name : "";
+      return job_id ? job_id.job_name : "";
     },
     selectClients() {
       const client_id = this.clientData.find(
@@ -1216,18 +1217,20 @@ export default {
       this.filterData();
     },
     async onJobTitleChange() {
-      const selectedJob = this.options.find(
-        (option) => option.job_id === this.selectedJobId
-      );
+      // const selectedJob = this.options.find(
+      //   (option) => option.job_id === this.selectedJobId
+      // );
 
-      if (selectedJob) {
-        this.job_id = selectedJob.job_id;
-      }
+      // if (selectedJob) {
+      //   this.job_id = selectedJob.job_id;
+      // }
+      this.selectedJob = this.job_id;
       this.filterData();
     },
 
     async onSiteSelect() {
       this.selectedSiteId = this.site_id;
+
       this.filterData();
     },
     getFilteredData(siteId) {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="mt-2"
+      class="mt-2 float-end"
       style="
         display: flex;
         justify-content: end;
@@ -179,7 +179,7 @@
         </div>
       </div>
     </div>
-    <div class="table-wrapper" style="margin-top: -30px">
+    <div class="table-wrapper w-100" style="margin-top: -30px">
       <table class="table clientTable">
         <thead>
           <tr>
@@ -623,6 +623,7 @@ export default {
       this.confirmMessage =
         "Are you sure you want to completely delete this client? Please ensure all the shifts, bookings and payments are cleared.";
       this.isModalVisible = true;
+      this.confirmButtonClass = "btn text-nowrap border-0";
       this.confirmCallback = async () => {
         axios.delete(`${VITE_API_URL}/clients/` + id).then((response) => {
           this.createdClient();

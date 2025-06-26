@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="mt-2"
+      class="mt-2 float-end"
       style="
         display: flex;
         justify-content: end;
@@ -148,7 +148,7 @@
         </div>
       </div>
     </div>
-    <div class="table-wrapper" style="margin-top: -30px">
+    <div class="table-wrapper w-100" style="margin-top: -30px">
       <table class="table siteTable">
         <thead>
           <tr>

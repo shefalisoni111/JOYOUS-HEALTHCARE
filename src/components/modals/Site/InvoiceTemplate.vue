@@ -12,6 +12,13 @@
             <h5 class="modal-title" id="SiteInvoiceTemplate">
               Select a Template
             </h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              @click="blurActiveElement"
+            ></button>
           </div>
           <div class="modal-body">
             <ul class="list-group">
@@ -59,6 +66,11 @@ export default {
     };
   },
   methods: {
+    blurActiveElement() {
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+    },
     selectTemplate(template) {
       this.selectedTemplate = template;
       console.log("Selected template:", template);

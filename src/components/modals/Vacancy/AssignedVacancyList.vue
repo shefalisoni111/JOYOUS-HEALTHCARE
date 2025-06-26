@@ -10,6 +10,13 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="assignedVacancyList">Assign Shift</h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              @click="blurActiveElement"
+            ></button>
           </div>
           <div class="modal-body mx-3 overflow-x-auto">
             <div class="row g-3 align-items-center">
@@ -220,6 +227,11 @@ export default {
   },
 
   methods: {
+    blurActiveElement() {
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+    },
     async getAssignedVacancyList(id) {
       if (!id) return;
       const token = localStorage.getItem("token");

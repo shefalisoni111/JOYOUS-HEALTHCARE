@@ -10,6 +10,13 @@
         <div class="modal-content">
           <div class="modal-header d-inline-flex gap-3">
             <h5 class="modal-title" id="publishVacancy">Publish Shift</h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              @click="blurActiveElement"
+            ></button>
             <!-- <ul
               class="list-unstyled d-flex gap-3 mb-0 publish-ul"
               v-for="data in vacancyData"
@@ -377,6 +384,11 @@ export default {
     },
   },
   methods: {
+    blurActiveElement() {
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+    },
     clearFieldsData() {
       setTimeout(() => {
         this.checkedCandidates = Object.fromEntries(

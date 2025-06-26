@@ -12,6 +12,13 @@
             <h5 class="modal-title" id="editCustomHoliday">
               Edit Custom Holiday
             </h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              @click="blurActiveElement"
+            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
@@ -116,6 +123,11 @@ export default {
   },
   components: { SuccessAlert },
   methods: {
+    blurActiveElement() {
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+    },
     cleanPhoneNumber() {
       this.fetchSite.phone_number = this.fetchSite.phone_number.replace(
         /\D/g,

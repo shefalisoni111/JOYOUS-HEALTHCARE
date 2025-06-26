@@ -10,6 +10,13 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="viewPaperTimeSheet">PaperTimeSheet</h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              @click="blurActiveElement"
+            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
@@ -91,6 +98,11 @@ export default {
     },
   },
   methods: {
+    blurActiveElement() {
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+    },
     completeImageUrl(url) {
       if (url) {
         const completeUrl = `${VITE_API_URL}${url}`;

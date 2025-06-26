@@ -11,6 +11,7 @@
               class="custom-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              @click="blurActiveElement"
             ></button>
           </div>
           <div class="modal-body mx-3 mt-3">
@@ -319,9 +320,11 @@ export default {
   },
   components: { SuccessAlert },
   methods: {
-    // validatePassword() {
-    //   this.showPasswordRequiredMessage = this.password === "";
-    // },
+    blurActiveElement() {
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+    },
     async checkEmailUniqueness() {
       try {
         const response = await axios.get(`${VITE_API_URL}/clients`, {

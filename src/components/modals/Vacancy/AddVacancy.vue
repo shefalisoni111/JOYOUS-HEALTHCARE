@@ -11,6 +11,7 @@
               class="custom-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              @click="blurActiveElement"
             ></button>
           </div>
           <div class="modal-body mx-3">
@@ -687,9 +688,11 @@ export default {
     },
   },
   methods: {
-    // getError(fieldName) {
-    //   return this.errors[fieldName];
-    // },
+    blurActiveElement() {
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+    },
     getTodayDate() {
       const today = new Date();
       const year = today.getFullYear();
