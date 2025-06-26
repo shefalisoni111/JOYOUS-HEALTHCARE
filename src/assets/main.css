@@ -204,6 +204,13 @@ ul.navbar-nav li a span.badge {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   border-radius: 0px;
+  color: #f9944b !important;
+  background-color: transparent !important;
+  border-bottom: 3px solid #f9944b;
+}
+.nav-link:hover,
+.nav-link:focus {
+  color: grey !important;
 }
 .nav-pills .nav-link {
   color: grey;
