@@ -98,9 +98,12 @@
                   </div>
                   <div class="col-12">
                     <div class="d-flex my-3">
-                      <div class="card p-2 alert alert-warning">
-                        <b>Warning!</b> Changes you made on split rate, will
-                        affect the entire site accordingly.
+                      <div
+                        class="card p-2 alert alert-warning"
+                        style="color: #ff3b30; background: #fff3f4"
+                      >
+                        <b style="color: #ff3b30">Warning!</b> Changes you made
+                        on split rate, will affect the entire site accordingly.
                       </div>
                     </div>
                   </div>
@@ -316,12 +319,15 @@
                       </label>
                     </div>
                   </div>
-                  <div class="col-12">
+                  <div class="col-9">
                     <div class="d-flex my-3">
-                      <div class="card p-2 alert alert-warning">
-                        <b>Warning!</b> Changes you made on enable booking code,
-                        will affect the entire client invoice and signed
-                        timesheet accordingly.
+                      <div
+                        class="card p-2 alert alert-warning"
+                        style="color: #ff3b30; background: #fff3f4"
+                      >
+                        <b style="color: #ff3b30">Warning!</b> Changes you made
+                        on enable booking code, will affect the entire client
+                        invoice and signed timesheet accordingly.
                       </div>
                     </div>
                   </div>
@@ -339,12 +345,15 @@
                       </label>
                     </div>
                   </div>
-                  <div class="col-12">
+                  <div class="col-9">
                     <div class="d-flex my-3">
-                      <div class="card p-2 alert alert-warning">
-                        <b>Warning!</b> Changes you made on enable Exclude VAT
-                        on mileage or new row, will affect the entire site
-                        accordingly.
+                      <div
+                        class="card p-2 alert alert-warning"
+                        style="color: #ff3b30; background: #fff3f4"
+                      >
+                        <b style="color: #ff3b30">Warning!</b> Changes you made
+                        on enable Exclude VAT on mileage or new row, will affect
+                        the entire site accordingly.
                       </div>
                     </div>
                   </div>

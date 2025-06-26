@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="mt-4 table-wrapper">
-      <table class="table table table-hover" :v-if="getCandidateStatus">
+      <table class="table table" :v-if="getCandidateStatus">
         <thead>
           <tr>
             <th scope="col" class="col-4 bg-primary text-white">ID</th>
@@ -50,7 +50,7 @@
             <td></td>
             <td>
               <i
-                class="bi bi-trash cursor-pointer"
+                class="bi bi-trash border-0 border-0 cursor-pointer"
                 v-on:click="confirmed(getCandidate.id)"
               ></i>
             </td>
@@ -64,6 +64,69 @@
           </tr>
         </tbody>
       </table>
+    </div>
+    <div
+      class="mx-3 d-flex justify-content-between"
+      style="text-align: right"
+      v-if="getCandidateStatus?.length >= 10"
+    >
+      <div class="d-flex">
+        <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+        <button
+          class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+          style="color: #00000080"
+          type="button"
+          id="recordsPerPageDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ itemsPerPage }} Records
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+              >20 Records</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+              >50 Records</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+              >100 Records</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="d-flex align-items-center">
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === 1"
+          @click="changePage(currentPage - 1)"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+          style="background: #ffffff; color: #f9944b"
+        >
+          {{ currentPage }}
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === totalPages"
+          @click="changePage(currentPage + 1)"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
     </div>
     <ConfirmationAlert
       :show-modal="isModalVisible"
@@ -91,6 +154,9 @@ export default {
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,
+      currentPage: 1,
+      itemsPerPage: 10,
+      totalPages: 0,
     };
   },
   components: {
@@ -129,7 +195,15 @@ export default {
         this.isModalVisible = false;
       };
     },
-
+    changePage(page) {
+      this.currentPage = page;
+      this.getCandidateData();
+    },
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.getCandidateData();
+    },
     getCandidateData() {
       this.isLoading = true;
       axios

@@ -55,7 +55,7 @@
                       </div>
                     </router-link>
                   </li>
-                  <li class="list-items d-flex mt-3">
+                  <!-- <li class="list-items d-flex mt-3">
                     <router-link
                       to="/staff-status"
                       class="text-decoration-none"
@@ -66,7 +66,7 @@
                         <p class="text-capitalize mb-0">view & modify</p>
                       </div>
                     </router-link>
-                  </li>
+                  </li> -->
                   <li class="list-items d-flex mt-3">
                     <router-link
                       to="/employmenttypedetail"
@@ -127,8 +127,8 @@
                         <p class="text-capitalize mb-0">Add mandatory fields</p>
                       </div>
                     </router-link>
-                  </li>
-                  <li class="list-items d-flex mt-3">
+                  </li>-->
+                  <!-- <li class="list-items d-flex mt-3">
                     <i class="bi bi-card-list rounded-circle"></i>
                     <router-link
                       to="/staff-detail-field"
@@ -242,9 +242,13 @@ ul.generalsetting h6 {
 }
 ul.generalsetting li a {
   display: flex;
+  color: #4d4d4d;
 
   width: 100%;
   padding: 3px;
+}
+ul.generalsetting li i.rounded-circle {
+  color: #4d4d4d;
 }
 
 ul.generalsetting li i.rounded-circle {

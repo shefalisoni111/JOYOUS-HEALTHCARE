@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="main" class="main d-flex">
+    <div id="main" class="main d-flex sidebar">
       <div
         class=""
         style="

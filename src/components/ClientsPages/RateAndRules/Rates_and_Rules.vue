@@ -121,7 +121,7 @@
                         <div class="searchbox position-relative pe-2">
                           <form @submit.prevent="search">
                             <input
-                              class="form-control form-control-lg mr-sm-2 position-relative"
+                              class="form-control form-control-lg mr-sm-2 position-relative bg-white"
                               type="search"
                               placeholder="Search..."
                               aria-label="Search"
@@ -151,7 +151,7 @@
                     <div
                       class="d-flex gap-2 flex-column position-absolute"
                       style="
-                        transform: translate(317%, -2%);
+                        transform: translate(332%, -8%);
                         background: rgb(255, 255, 255);
                         padding: 8px 13px 9px 13px;
                         border-radius: 10px;
@@ -164,7 +164,7 @@
                         <select
                           v-model="client_id"
                           id="selectClients"
-                          @change="filterData"
+                          @change="onClientChange"
                         >
                           <option value="" disabled>All Client</option>
                           <option
@@ -179,13 +179,13 @@
                         <select
                           v-model="site_id"
                           id="selectBusinessUnit"
-                          @change="filterData"
+                          @change="onSiteSelect"
                         >
                           <option value="" disabled>All Site</option>
                           <option
                             v-for="option in businessUnit"
-                            :key="option.id"
-                            :value="option.id"
+                            :key="option.site_id"
+                            :value="option.site_id"
                             placeholder="Select BusinessUnit"
                           >
                             {{ option.site_name }}
@@ -194,13 +194,13 @@
                         <select
                           v-model="job_id"
                           id="selectOption"
-                          @change="filterData"
+                          @change="onJobTitleChange"
                         >
                           <option value="" disabled>All Position</option>
                           <option
                             v-for="option in options"
-                            :key="option.id"
-                            :value="option.id"
+                            :key="option.job_id"
+                            :value="option.job_id"
                           >
                             {{ option.name }}
                           </option>
@@ -243,7 +243,7 @@
                       <table class="table candidateTable" v-if="!searchQuery">
                         <thead>
                           <tr>
-                            <th></th>
+                            <th scope="col" style="width: 2%"></th>
 
                             <th scope="col">
                               Client
@@ -272,69 +272,97 @@
                                 loading="eager"
                               />
                             </th>
-                            <th scope="col" style="width: 6%">
-                              Day
+                            <th scope="col">
+                              <div
+                                class="d-flex justify-content-center align-items-center gap-1"
+                              >
+                                Day
 
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col">
-                              Shift Type<br />Start-End Time
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col">
-                              Rate Type
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col">
-                              Client Rate
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col">
-                              Private Limited
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col">
-                              Self Employed
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
+                                <img
+                                  src="../../../assets/ArrowDown.png"
+                                  class="img-fluid pe-2"
+                                  alt="RecPal"
+                                  loading="eager"
+                                />
+                              </div>
                             </th>
                             <th scope="col" style="width: 7%">
-                              Umbrella
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
+                              <div
+                                class="d-flex justify-content-center align-items-center gap-1"
+                              >
+                                Shift Type<br />Start-End Time
+                                <img
+                                  src="../../../assets/ArrowDown.png"
+                                  class="img-fluid pe-2"
+                                  alt="RecPal"
+                                  loading="eager"
+                                />
+                              </div>
+                            </th>
+                            <th scope="col">
+                              <div
+                                class="d-flex justify-content-center align-items-center gap-1"
+                              >
+                                Rate Type
+                                <img
+                                  src="../../../assets/ArrowDown.png"
+                                  class="img-fluid pe-2"
+                                  alt="RecPal"
+                                  loading="eager"
+                                />
+                              </div>
+                            </th>
+                            <th scope="col">
+                              <div
+                                class="d-flex justify-content-center align-items-center gap-1"
+                              >
+                                Client Rate
+                                <img
+                                  src="../../../assets/ArrowDown.png"
+                                  class="img-fluid pe-2"
+                                  alt="RecPal"
+                                  loading="eager"
+                                />
+                              </div>
+                            </th>
+                            <th scope="col">
+                              <div
+                                class="d-flex justify-content-center align-items-center gap-1"
+                              >
+                                Private Limited
+                                <img
+                                  src="../../../assets/ArrowDown.png"
+                                  class="img-fluid pe-2"
+                                  alt="RecPal"
+                                  loading="eager"
+                                />
+                              </div>
+                            </th>
+                            <th scope="col">
+                              <div
+                                class="d-flex justify-content-center align-items-center gap-1"
+                              >
+                                Self Employed
+                                <img
+                                  src="../../../assets/ArrowDown.png"
+                                  class="img-fluid pe-2"
+                                  alt="RecPal"
+                                  loading="eager"
+                                />
+                              </div>
+                            </th>
+                            <th scope="col" style="width: 7%">
+                              <div
+                                class="d-flex justify-content-center align-items-center gap-1"
+                              >
+                                Umbrella
+                                <img
+                                  src="../../../assets/ArrowDown.png"
+                                  class="img-fluid pe-2"
+                                  alt="RecPal"
+                                  loading="eager"
+                                />
+                              </div>
                             </th>
                             <th scope="col" style="width: 6%">
                               PAYE
@@ -346,31 +374,43 @@
                               />
                             </th>
                             <th scope="col" style="width: 10%">
-                              Created By and Time
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
+                              <div
+                                class="d-flex justify-content-center align-items-center gap-1"
+                              >
+                                Created By and Time
+                                <img
+                                  src="../../../assets/ArrowDown.png"
+                                  class="img-fluid pe-2"
+                                  alt="RecPal"
+                                  loading="eager"
+                                />
+                              </div>
                             </th>
                             <th scope="col">
-                              Last Update
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
+                              <div
+                                class="d-flex justify-content-center align-items-center gap-1"
+                              >
+                                Last Update
+                                <img
+                                  src="../../../assets/ArrowDown.png"
+                                  class="img-fluid pe-2"
+                                  alt="RecPal"
+                                  loading="eager"
+                                />
+                              </div>
                             </th>
                             <th scope="col" style="width: 7%">
-                              Action
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
+                              <div
+                                class="d-flex justify-content-center align-items-center gap-1"
+                              >
+                                Action
+                                <img
+                                  src="../../../assets/ArrowDown.png"
+                                  class="img-fluid pe-2"
+                                  alt="RecPal"
+                                  loading="eager"
+                                />
+                              </div>
                             </th>
                           </tr>
                         </thead>
@@ -1169,6 +1209,27 @@ export default {
     },
   },
   methods: {
+    async onClientChange() {
+      this.site_id = "";
+
+      await this.getClientFetchSiteMethod();
+      this.filterData();
+    },
+    async onJobTitleChange() {
+      const selectedJob = this.options.find(
+        (option) => option.job_id === this.selectedJobId
+      );
+
+      if (selectedJob) {
+        this.job_id = selectedJob.job_id;
+      }
+      this.filterData();
+    },
+
+    async onSiteSelect() {
+      this.selectedSiteId = this.site_id;
+      this.filterData();
+    },
     getFilteredData(siteId) {
       return (
         this.filteredRateRulesData.find((rate) => rate.site_id === siteId) || {}
@@ -1432,17 +1493,17 @@ export default {
         }
       }
     },
-    async getBusinessUnitMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/activated_site`);
-        this.businessUnit = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-          }
-        }
-      }
-    },
+    // async getBusinessUnitMethod() {
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/activated_site`);
+    //     this.businessUnit = response.data.data;
+    //   } catch (error) {
+    //     if (error.response) {
+    //       if (error.response.status == 404) {
+    //       }
+    //     }
+    //   }
+    // },
 
     handleCheckboxChange(dataId) {
       const selectedData = this.getRateRulesData.find(
@@ -1494,17 +1555,17 @@ export default {
         this.$refs.multipleEdit_rate_rules.getJobTitleMethod();
       }, 300);
     },
-    async getJobTitleMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
-        this.options = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-          }
-        }
-      }
-    },
+    // async getJobTitleMethod() {
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+    //     this.options = response.data.data;
+    //   } catch (error) {
+    //     if (error.response) {
+    //       if (error.response.status == 404) {
+    //       }
+    //     }
+    //   }
+    // },
     async deleteSelectedStaffs(id) {
       const token = localStorage.getItem("token");
 
@@ -1637,8 +1698,8 @@ export default {
   },
   mounted() {
     this.getRateRulesDataMethod();
-    this.getBusinessUnitMethod();
-    this.getJobTitleMethod();
+    // this.getBusinessUnitMethod();
+    // this.getJobTitleMethod();
     this.getClientMethod();
     this.getClientFetchSiteMethod();
   },
@@ -1646,7 +1707,9 @@ export default {
 </script>
 
 <style scoped>
-select {
+select,
+input.form-control,
+input.form-control:focus {
   padding: 10px;
   border-radius: 4px;
   border: 0px;

@@ -26,21 +26,22 @@
       <div class="mt-5">
         <div class="calendar candidateTable">
           <div class="header gap-3 mb-3">
-            <button
-              @click="prevMonth"
-              class="btn btn-outline-success rounded-circle fw-bold"
-            >
-              <i class="bi bi-arrow-left"></i>
+            <button @click="prevMonth" class="btn fw-bold">
+              <i class="bi bi-caret-left-fill"></i>
             </button>
-            <span class="fw-bold">{{ currentMonth }}</span>
-            <button
-              @click="nextMonth"
-              class="btn btn-outline-success rounded-circle fw-bold"
+            <span class="fw-bold"
+              ><i class="bi bi-calendar2-check-fill"></i> &nbsp;
+              {{ currentMonth }}</span
             >
-              <i class="bi bi-arrow-right"></i>
+            <!-- <i class="bi bi-calendar2-check-fill"></i> -->
+            <button @click="nextMonth" class="btn fw-bold">
+              <i class="bi bi-caret-right-fill"></i>
             </button>
           </div>
-          <div class="weekdays">
+          <div
+            class="weekdays"
+            style="background: #ffeedb; padding: 10px; border-radius: 10px"
+          >
             <div class="weekday" v-for="day in daysOfWeek" :key="day">
               {{ day }}
             </div>

@@ -85,164 +85,11 @@
                           </li>
                         </div>
                       </ul>
-                      <div
-                        class="d-flex gap-2 mb-3 justify-content-between"
-                        v-if="showFilters"
-                      >
-                        <div
-                          class="d-flex gap-2 flex-column position-absolute"
-                          style="
-                            transform: translate(338%, 0%);
-                            background: rgb(255, 255, 255);
-                            padding: 8px 13px 9px 13px;
-                            border-radius: 10px;
-                            box-shadow: 0px 4px 40px 0px #0000000d;
-                            z-index: 1;
-                          "
-                        >
-                          <div></div>
-
-                          <select
-                            v-model="selectedClientExport"
-                            @change="filterData"
-                          >
-                            <option value="" disabled>Status</option>
-                            <option value="true">Active</option>
-                            <option value="false">In-Active</option>
-                          </select>
-
-                          <select v-model="selectedClient" @change="filterData">
-                            <option value="" disabled>Select Client</option>
-                            <option
-                              v-for="option in clientData"
-                              :key="option.id"
-                              :value="option.client_name"
-                            >
-                              {{ option.client_name }}
-                            </option>
-                          </select>
-
-                          <select
-                            v-model="selectedJobTitle"
-                            @change="filterData"
-                          >
-                            <option value="" disabled>Select Job</option>
-                            <option
-                              v-for="option in options"
-                              :key="option.id"
-                              :value="option.id"
-                            >
-                              {{ option.name }}
-                            </option>
-                          </select>
-                          <div class="searchbox position-relative">
-                            <input
-                              class="form-control"
-                              type="search"
-                              placeholder="Search clients..."
-                              aria-label="Search"
-                              v-model="localSearchQuery"
-                              @input="filterData"
-                            />
-                          </div>
-                          <div>
-                            <button
-                              :disabled="
-                                !selectedClientExport &&
-                                !selectedClient &&
-                                !selectedJobTitle &&
-                                !localSearchQuery
-                              "
-                              @click="resetFilters"
-                              class="btn-sm bg-dark text-white px-4 py-1"
-                              style="border-radius: 4px"
-                            >
-                              Reset
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        class="d-flex justify-content-end align-items-center"
-                      >
-                        <div
-                          class="d-flex align-items-center gap-2 justify-content-between"
-                        >
-                          <div class="searchbox position-relative">
-                            <div class="mt-2 d-flex justify-content-between">
-                              <button
-                                type="button"
-                                class="btn btn-danger text-nowrap btn-lg"
-                                @click="toggleFilters"
-                              >
-                                <i class="bi bi-funnel"></i>
-                                Show Filters
-                              </button>
-                              <input
-                                ref="fileInput"
-                                id="fileAll"
-                                type="file"
-                                accept=".csv"
-                                style="display: none"
-                                @change="handleFileUpload"
-                              />
-                              &nbsp;
-                              <button
-                                class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
-                                type="button"
-                                id="navbarDropdown"
-                                role="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                              >
-                                Export
-
-                                <ul
-                                  class="dropdown-menu"
-                                  aria-labelledby="navbarDropdown"
-                                >
-                                  <li>
-                                    <label
-                                      for="fileAll"
-                                      class="custom-file-label dropdown-item"
-                                      style="
-                                        border-radius: 0px;
-                                        cursor: pointer;
-                                      "
-                                      @click="triggerFileInput"
-                                    >
-                                      Import
-                                    </label>
-                                  </li>
-                                  <li><hr class="dropdown-divider" /></li>
-                                  <li>
-                                    <a
-                                      class="dropdown-item"
-                                      href="#"
-                                      @click="exportOneFile('selected')"
-                                      >Export</a
-                                    >
-                                  </li>
-                                  <li><hr class="dropdown-divider" /></li>
-                                  <li>
-                                    <a
-                                      class="dropdown-item"
-                                      href="#"
-                                      @click="exportOneFile('all')"
-                                      >Export All</a
-                                    >
-                                  </li>
-                                </ul>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                     </div>
 
                     <div v-if="!searchQuery">
                       <component
-                        :is="activeComponent"
+                        :is="tabs[activeTab].component"
                         :errorMessageFilter="errorMessageFilter"
                         :clientData="clientData"
                         :options="options"
@@ -369,14 +216,6 @@
       </div>
     </div>
     <div class="mx-3" style="text-align: right" v-if="totalCount > 0">
-      <!-- <button class="btn btn-outline-dark btn-sm">
-        {{ getClientDetail.length }} Records Per Page
-      </button>
-      <div class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-        <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
-        <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
-        <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
-      </div> -->
       &nbsp;&nbsp;
       <button
         class="btn btn-sm btn-primary mr-2"
@@ -396,7 +235,7 @@
         <i class="bi bi-chevron-right"></i>
       </button>
     </div>
-    <!-- <AddClients ref="addClient" @client-updated="createdClient" /> -->
+
     <EditClientModal
       :clientID="selectedClientID || 0"
       @client-updated="createdClient"
@@ -431,14 +270,9 @@ export default {
       debounceTimeout: null,
       searchResults: [],
       errorMessageFilter: "",
-      selectedFilter: "",
-      selectedClientExport: "",
-      selectedClient: "",
-      selectedJobTitle: "",
-      showFilters: false,
-      selectedFilter: "true",
+
       errorMessage: "",
-      localSearchQuery: this.searchQuery,
+
       tabs: [
         { name: "All Clients", component: "AllClient", routeName: "AllClient" },
 
@@ -508,59 +342,17 @@ export default {
         if (error.response) {
           if (error.response.status === 404) {
           } else {
-            // console.error("Error fetching client data:", error.response.data.message);
           }
         } else {
-          // console.error("Error fetching client data:", error);
         }
       }
     },
     toggleFilters() {
       this.showFilters = !this.showFilters;
     },
-    // filterData(value) {
-    //   let client_type = "activated";
-    //   let client_value;
 
-    //   if (value === "all") {
-    //     client_value = null;
-    //   } else {
-    //     client_value = value === "true" ? "true" : "false";
-    //   }
-
-    //   this.makeFilterAPICall(client_type, client_value);
-    // },
-    // async makeFilterAPICall(client_type, client_value) {
-    //   try {
-    //     const params = { client_type };
-    //     if (client_value !== null) {
-    //       params.client_value = client_value;
-    //     }
-
-    //     const response = await axios.get(`${VITE_API_URL}/client_filter`, { params });
-
-    //     this.getClientDetail = response.data.data;
-    //   } catch (error) {
-    //     if (error.response && error.response.status === 404) {
-    //       const errorMessages = error.response.data.error;
-    //       if (errorMessages === "No records found for the given filter") {
-    //         // alert("No records found for the given filter");
-    //         errorMessages === "No records found for the given filter";
-    //       } else {
-    //         alert(errorMessages);
-    //       }
-    //     } else {
-    //       // Handle other errors
-    //     }
-    //   }
-    // },
-    handleAddClient() {
-      // this.$refs.addClient.getPositionMethod();
-      // this.$refs.addClient.createdClient();
-    },
     editClient(clientID) {
       this.selectedClientID = clientID;
-      // this.$refs.editClientModalList.getJobTitleMethod();
     },
     getColor(index) {
       return this.colors[index % this.colors.length];
@@ -577,115 +369,11 @@ export default {
         }
       }
     },
-    // exportAll() {
-    //   const params = {};
-    //   if (this.selectedFilter !== "all") {
-    //     params.filter_type = this.selectedFilter;
-    //   }
 
-    //   axios
-    //     .get(`${VITE_API_URL}/export_all_csv.csv`, { params })
-    //     .then((response) => {
-    //       this.downloadCSV(response.data, "filename.csv");
-    //     })
-    //     .catch((error) => {
-    //       // console.error("Error:", error);
-    //     });
-    // },
-    // downloadCSV(csvData, filename) {
-    //   const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
-    //   const url = window.URL.createObjectURL(blob);
-    //   const a = document.createElement("a");
-    //   a.href = url;
-    //   a.download = filename;
-    //   document.body.appendChild(a);
-    //   a.click();
-    //   window.URL.revokeObjectURL(url);
-    //   document.body.removeChild(a);
-    // },
-    debounceSearch() {
-      clearTimeout(this.debounceTimeout);
-
-      this.debounceTimeout = setTimeout(() => {
-        this.search();
-      }, 300);
-    },
-    //search api start
-    async search() {
-      await this.filterData();
-    },
-    async filterData() {
-      const params = {
-        page: 1,
-      };
-
-      if (this.selectedClientExport) {
-        params["client[activated]"] = this.selectedClientExport;
-      }
-
-      if (this.selectedClient) {
-        params["client[client_name]"] = this.selectedClient;
-      }
-
-      if (this.selectedJobTitle) {
-        params["client[job_ids]"] = this.selectedJobTitle;
-      }
-
-      if (this.localSearchQuery) {
-        params.search = this.localSearchQuery;
-      }
-
-      try {
-        const response = await axios.get(`${VITE_API_URL}/client_filter`, {
-          params,
-        });
-        this.getClientDetail = response.data.data;
-        if (this.getClientDetail?.length === 0) {
-          this.errorMessageFilter = "Data Not Found!";
-        }
-      } catch (error) {
-        // console.error("Error fetching filtered data:", error);
-      }
-    },
     changePage(page) {
       this.currentPage = page;
       this.filterData();
     },
-    // async search() {
-    //   try {
-    //     this.searchResults = [];
-    //     const modifiedSearchQuery = this.searchQuery.replace(/ /g, "_");
-    //     let apiUrl = "";
-
-    //     if (this.activeTab === 0) {
-    //       apiUrl = `${VITE_API_URL}/search_api`;
-    //     } else if (this.activeTab === 1) {
-    //       apiUrl = `${VITE_API_URL}/active_search_api`;
-    //     } else if (this.activeTab === 2) {
-    //       apiUrl = `${VITE_API_URL}/inactive_search_api`;
-    //     } else {
-    //       return;
-    //     }
-
-    //     const response = await axiosInstance.get(apiUrl, {
-    //       params: {
-    //         query: modifiedSearchQuery,
-    //       },
-    //     });
-
-    //     this.searchResults = response.data.data;
-    //     // if (this.searchResults.length > 0) {
-    //     //   this.errorMessage = "No candidates found for the specified criteria";
-    //     // }
-    //   } catch (error) {
-    //     if (
-    //       (error.response && error.response.status === 404) ||
-    //       error.response.status === 400
-    //     ) {
-    //       this.errorMessage = "No candidates found for the specified criteria";
-    //     }
-    //   }
-    // },
 
     setActiveTabFromRoute() {
       const currentRouteName = this.$route.name;
@@ -697,14 +385,7 @@ export default {
         this.selectTab(matchingTabIndex);
       }
     },
-    resetFilters() {
-      this.selectedClientExport = null;
-      this.selectedClient = null;
-      this.selectedJobTitle = null;
-      this.localSearchQuery = "";
 
-      this.filterData();
-    },
     setActiveTabNameOnLoad() {
       this.activeTabName = this.tabs[this.activeTab].name;
     },
@@ -824,15 +505,16 @@ a:link {
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  background: #000000;
+  background: #000000 !important;
   width: 100;
   height: 37;
-  color: #fff;
+  color: #fff !important;
   border-radius: 13px;
   padding-top: 10px;
   padding-right: 15px;
   padding-bottom: 11px;
   padding-left: 15px;
+  border-bottom: none !important;
 }
 
 .nav-link,

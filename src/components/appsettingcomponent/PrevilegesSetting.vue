@@ -126,9 +126,7 @@
                           @click="setActiveTab('active')"
                         >
                           Active Users
-                          <span class="badge bg-success">{{
-                            totalActiveUserCount
-                          }}</span>
+                          <span>{{ totalActiveUserCount }}</span>
                         </button>
                       </li>
                       <li class="nav-item" role="presentation">
@@ -145,9 +143,7 @@
                           @click="setActiveTab('inactive')"
                         >
                           Inactive Users
-                          <span class="badge bg-danger">{{
-                            totalInActiveUserCount
-                          }}</span>
+                          <span>{{ totalInActiveUserCount }}</span>
                         </button>
                       </li>
                     </ul>
@@ -160,27 +156,63 @@
                         tabindex="0"
                       >
                         <div class="mt-4 table-wrapper">
-                          <table class="table table table-hover addjobtable">
+                          <table class="table table addjobtable">
                             <thead>
                               <tr>
                                 <th scope="col" class="bg-primary text-white">
                                   Id
+                                  <img
+                                    src="../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
                                 </th>
                                 <th scope="col" class="bg-primary text-white">
                                   User
+                                  <img
+                                    src="../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
                                 </th>
                                 <th scope="col" class="bg-primary text-white">
                                   Email
+                                  <img
+                                    src="../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
                                 </th>
                                 <th scope="col" class="bg-primary text-white">
-                                  Mobile No:
+                                  Mobile No
+                                  <img
+                                    src="../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
                                 </th>
                                 <th scope="col" class="bg-primary text-white">
                                   Role
+                                  <img
+                                    src="../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
                                 </th>
 
                                 <th scope="col" class="bg-primary text-white">
                                   Action
+                                  <img
+                                    src="../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
                                 </th>
                               </tr>
                             </thead>
@@ -195,11 +227,11 @@
                                 <td>
                                   {{ data.user_role.split("_").join(" ") }}
                                 </td>
-                                <!-- <td><i class="bi bi-trash text-danger"></i></td> -->
+                                <!-- <td><i class="bi bi-trash border-0 border-0 text-danger"></i></td> -->
 
                                 <td>
                                   <i
-                                    class="bi bi-trash text-danger text-nowrap cursor-pointer"
+                                    class="bi bi-trash border-0 border-0 text-danger text-nowrap cursor-pointer"
                                     v-on:click="confirmed(data.id, false)"
                                   >
                                   </i>
@@ -224,32 +256,73 @@
                         tabindex="1"
                       >
                         <div class="mt-4 table-wrapper">
-                          <table class="table table table-hover addjobtable">
+                          <table class="table table addjobtable">
                             <thead>
                               <tr>
                                 <th scope="col" class="bg-primary text-white">
                                   Id
+                                  <img
+                                    src="../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
                                 </th>
                                 <th scope="col" class="bg-primary text-white">
                                   User
+                                  <img
+                                    src="../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
                                 </th>
                                 <th scope="col" class="bg-primary text-white">
                                   Email
+                                  <img
+                                    src="../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
                                 </th>
                                 <th scope="col" class="bg-primary text-white">
-                                  Mobile No:
+                                  Mobile No
+                                  <img
+                                    src="../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
                                 </th>
                                 <th scope="col" class="bg-primary text-white">
                                   Role
+                                  <img
+                                    src="../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
                                 </th>
 
                                 <th scope="col" class="bg-primary text-white">
                                   Action
+                                  <img
+                                    src="../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
                                 </th>
                               </tr>
                             </thead>
                             <tbody v-if="rolesInActive?.length > 0">
-                              <tr v-for="data in rolesInActive" :key="data.id">
+                              <tr
+                                v-for="(data, index) in rolesInActive"
+                                :key="data.id"
+                                @mouseenter="hoverRow = index"
+                                @mouseleave="hoverRow = null"
+                              >
                                 <td>{{ data.id }}</td>
                                 <td scope="row">
                                   {{ data.first_name + " " + data.last_name }}
@@ -260,13 +333,26 @@
                                   {{ data.user_role.split("_").join(" ") }}
                                 </td>
                                 <td>
-                                  <i
-                                    class="bi bi-trash text-danger cursor-pointer"
-                                    v-on:click="rolesDeleteMethod(data.id)"
-                                  ></i
-                                  >&nbsp;
+                                  <div class="action-wrapper">
+                                    <i class="bi bi-three-dots dot-icon"></i>
+
+                                    <div
+                                      v-if="hoverRow === index"
+                                      class="action-menu d-flex"
+                                    >
+                                      <i
+                                        class="bi bi-trash border-0 border-0 text-danger cursor-pointer"
+                                        v-on:click="rolesDeleteMethod(data.id)"
+                                      ></i>
+                                      Delete
+                                    </div>
+                                  </div>
                                   <button
-                                    class="btn btn-primary btn-sm text-nowrap"
+                                    class="btn text-nowrap rounded-3"
+                                    style="
+                                      background: rgb(255 227 234);
+                                      color: #ff3b30;
+                                    "
                                     v-on:click="confirmed(data.id, true)"
                                   >
                                     Re-Activate
@@ -348,6 +434,7 @@ export default {
       confirmMessage: "",
       errorMessage: "",
       confirmCallback: null,
+      hoverRow: null,
     };
   },
   components: {
@@ -687,9 +774,7 @@ ul.generalsetting h6 {
   bottom: 5px;
   border-bottom: 3px solid #ff5722;
 }
-table thead th {
-  background-color: #f9944b !important;
-}
+
 table {
   border-collapse: separate;
 }

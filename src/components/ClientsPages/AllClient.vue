@@ -1,9 +1,16 @@
 <template>
   <div>
-    <!-- <div class="mt-2">
+    <div
+      class="mt-2"
+      style="
+        display: flex;
+        justify-content: end;
+        transform: translate(0%, -112%);
+      "
+    >
       <button
         type="button"
-        class="btn btn-outline-success text-nowrap"
+        class="btn btn-danger text-nowrap btn-lg"
         @click="toggleFilters"
       >
         <i class="bi bi-funnel"></i>
@@ -47,11 +54,13 @@
           </li>
           <li><hr class="dropdown-divider" /></li>
           <li>
-            <a class="dropdown-item" href="#" @click="exportOneFile('all')">Export All</a>
+            <a class="dropdown-item" href="#" @click="exportOneFile('all')"
+              >Export All</a
+            >
           </li>
         </ul>
       </button>
-    </div> -->
+    </div>
 
     <!-- <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
       <div class="d-flex gap-2 mt-3">
@@ -90,8 +99,6 @@
             @input="filterData"
           />
         </div>
-
-        
       </div>
       <div>
         <button
@@ -108,8 +115,71 @@
         </button>
       </div>
     </div> -->
+    <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
+      <div
+        class="d-flex gap-2 flex-column position-absolute"
+        style="
+          transform: translate(448%, -20%);
+          background: rgb(255, 255, 255);
+          padding: 8px 13px 9px 13px;
+          border-radius: 10px;
+          box-shadow: 0px 4px 40px 0px #0000000d;
+          z-index: 1;
+        "
+      >
+        <div></div>
 
-    <div class="table-wrapper mt-3">
+        <select v-model="selectedClientExport" @change="filterData">
+          <option value="" disabled>Status</option>
+          <option value="true">Active</option>
+          <option value="false">In-Active</option>
+        </select>
+
+        <select v-model="selectedClient" @change="filterData">
+          <option value="" disabled>Select Client</option>
+          <option
+            v-for="option in clientData"
+            :key="option.id"
+            :value="option.client_name"
+          >
+            {{ option.client_name }}
+          </option>
+        </select>
+
+        <select v-model="selectedJobTitle" @change="filterData">
+          <option value="" disabled>Select Job</option>
+          <option v-for="option in options" :key="option.id" :value="option.id">
+            {{ option.name }}
+          </option>
+        </select>
+        <div class="searchbox position-relative">
+          <input
+            class="form-control"
+            type="search"
+            placeholder="Search clients..."
+            aria-label="Search"
+            v-model="localSearchQuery"
+            @input="filterData"
+          />
+        </div>
+        <div>
+          <button
+            :disabled="
+              !selectedClientExport &&
+              !selectedClient &&
+              !selectedJobTitle &&
+              !localSearchQuery
+            "
+            @click="resetFilters"
+            class="btn-sm bg-dark text-white px-4 py-1"
+            style="border-radius: 4px"
+          >
+            Reset
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="table-wrapper" style="margin-top: -30px">
       <table class="table clientTable">
         <thead>
           <tr>
@@ -461,8 +531,7 @@ export default {
       selectedClientExport: "",
       selectedClient: "",
       selectedJobTitle: "",
-      // clientData: [],
-      // options: [],
+
       clientId: [],
       isModalVisible: false,
       confirmMessage: "",
@@ -606,36 +675,36 @@ export default {
     //     }
     //   }
     // },
-    // async filterData() {
-    //   const params = {
-    //     page: 1,
-    //   };
+    async filterData() {
+      const params = {
+        page: 1,
+      };
 
-    //   if (this.selectedClientExport) {
-    //     params["client[activated]"] = this.selectedClientExport;
-    //   }
+      if (this.selectedClientExport) {
+        params["client[activated]"] = this.selectedClientExport;
+      }
 
-    //   if (this.selectedClient) {
-    //     params["client[client_name]"] = this.selectedClient;
-    //   }
+      if (this.selectedClient) {
+        params["client[client_name]"] = this.selectedClient;
+      }
 
-    //   if (this.selectedJobTitle) {
-    //     params["client[job_ids]"] = this.selectedJobTitle;
-    //   }
+      if (this.selectedJobTitle) {
+        params["client[job_ids]"] = this.selectedJobTitle;
+      }
 
-    //   if (this.localSearchQuery) {
-    //     params.search = this.localSearchQuery;
-    //   }
+      if (this.localSearchQuery) {
+        params.search = this.localSearchQuery;
+      }
 
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/client_filter`, {
-    //       params,
-    //     });
-    //     this.getClientDetail = response.data.data;
-    //   } catch (error) {
-    //     // console.error("Error fetching filtered data:", error);
-    //   }
-    // },
+      try {
+        const response = await axios.get(`${VITE_API_URL}/client_filter`, {
+          params,
+        });
+        this.getClientDetail = response.data.data;
+      } catch (error) {
+        // console.error("Error fetching filtered data:", error);
+      }
+    },
 
     getColor(index) {
       return this.colors[index % this.colors.length];
@@ -1152,7 +1221,19 @@ a {
   margin: 12px 10px;
   min-height: 11px;
 }
-
+input.form-control,
+input.form-control:focus {
+  width: 100%;
+  border: 1px solid rgb(202 198 198 / 0%);
+  background: #fff4f5;
+}
+select {
+  padding: 10px;
+  border-radius: 4px;
+  border: 0px;
+  border: 1px solid rgb(202 198 198 / 0%);
+  background: #fff4f5;
+}
 .switch .slider:before {
   position: absolute;
   background-color: #aaa;

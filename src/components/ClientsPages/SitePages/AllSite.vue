@@ -1,6 +1,154 @@
 <template>
   <div>
-    <div class="table-wrapper mt-3">
+    <div
+      class="mt-2"
+      style="
+        display: flex;
+        justify-content: end;
+        transform: translate(0%, -136%);
+      "
+    >
+      <button
+        type="button"
+        class="btn btn-danger text-nowrap btn-lg"
+        @click="toggleFilters"
+      >
+        <i class="bi bi-funnel"></i>
+        Show Filters
+      </button>
+      <input
+        ref="fileInput"
+        id="fileAll"
+        type="file"
+        accept=".csv"
+        style="display: none"
+        @change="handleFileUpload"
+      />
+      &nbsp;
+      <button
+        class="nav-item dropdown btn btn-outline-success text-nowrap dropdown-toggle"
+        type="button"
+        id="navbarDropdown"
+        role="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        Export
+
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <li>
+            <label
+              for="fileAll"
+              class="custom-file-label dropdown-item"
+              style="border-radius: 0px; cursor: pointer"
+              @click="triggerFileInput"
+            >
+              Import
+            </label>
+          </li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <a class="dropdown-item" href="#" @click="exportOneFile('selected')"
+              >Export</a
+            >
+          </li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <a class="dropdown-item" href="#" @click="exportOneFile('all')"
+              >Export All</a
+            >
+          </li>
+        </div>
+      </button>
+    </div>
+
+    <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
+      <div
+        class="d-flex gap-2 flex-column position-absolute"
+        style="
+          transform: translate(448%, -20%);
+          background: rgb(255, 255, 255);
+          padding: 8px 13px 9px 13px;
+          border-radius: 10px;
+          box-shadow: 0px 4px 40px 0px #0000000d;
+          z-index: 1;
+        "
+      >
+        <div></div>
+
+        <select v-model="selectedFilter" @change="filterData">
+          <option value="" disabled>Status</option>
+          <option value="true">Active</option>
+          <option value="false">In-Active</option>
+        </select>
+
+        <select id="selectClients" v-model="client_id" @change="onClientChange">
+          <option value="" disabled>Client Name</option>
+          <option
+            v-for="option in clientData"
+            :key="option.id"
+            :value="option.id"
+            aria-placeholder="Select Client"
+          >
+            {{ option.client_name }}
+          </option>
+        </select>
+
+        <select id="selectSite" v-model="site_id" @change="filterData">
+          <option value="" disabled>Site Name</option>
+
+          <option
+            v-for="option in businessUnit"
+            :key="option.site_id"
+            :value="option.site_name"
+            aria-placeholder="Select Site"
+          >
+            {{ option.site_name }}
+          </option>
+        </select>
+
+        <!-- <select
+          id="selectSitesAddress"
+          v-model="selectedSiteAddress"
+          @change="filterData"
+        >
+          <option value="" disabled>Site Address</option>
+          <option
+            v-for="option in businessUnit"
+            :key="option.id"
+            :value="option.id"
+            aria-placeholder="Select Address"
+          >
+            {{ option.address }}
+          </option>
+        </select> -->
+        <div class="searchbox position-relative">
+          <input
+            class="form-control"
+            type="search"
+            placeholder="Search Site..."
+            aria-label="Search"
+            v-model="localSearchQuery"
+            @input="filterData"
+          />
+        </div>
+        <div>
+          <button
+            @click="resetFilter"
+            class="btn btn-secondary"
+            :disabled="
+              !selectedFilter &&
+              !selectedClientName &&
+              !selectedSiteName &&
+              !localSearchQuery
+            "
+          >
+            Reset Filters
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="table-wrapper" style="margin-top: -30px">
       <table class="table siteTable">
         <thead>
           <tr>
@@ -323,6 +471,7 @@ export default {
       currentPage: 1,
       totalRecords: 0,
       itemsPerPage: 10,
+      site_id: null,
       site_ids: [],
       client_id: null,
       localSearchQuery: this.searchQuery,
@@ -337,11 +486,10 @@ export default {
       totalPages: 1,
 
       totalCount: 0,
-      selectedFilter: "",
-      selectedFilter: "",
       selectedClientName: "",
       selectedSiteName: "",
       selectedSiteAddress: "",
+      selectedFilter: "",
     };
   },
   created() {
@@ -366,29 +514,47 @@ export default {
       return this.paginateSiteData.length;
     },
     selectClients() {
+      const site = this.businessUnit.find((site) => site.id === this.site_id);
+      if (!site) return "";
       const client = this.clientData.find(
-        (option) => option.id === this.client_id
+        (client) => client.id === site.client_id
       );
-      return client ? client.first_name : "";
+      return client ? client.client_name : "";
     },
-    // selectSite() {
-    //   const site_id = this.businessUnit.find((option) => option.id === this.site_id);
-    //   return site_id ? site_id.site_name : "";
-    // },
-    // selectSitesAddress() {
-    //   const site_id = this.businessUnit.find((option) => option.id === this.site_id);
-    //   return site_id ? site_id.address : "";
-    // },
+
+    selectSite() {
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
+      return site_id ? site_id.site_name : "";
+    },
+    selectSitesAddress() {
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
+      return site_id ? site_id.address : "";
+    },
   },
+
   methods: {
+    toggleFilters() {
+      this.showFilters = !this.showFilters;
+    },
+
+    async onClientChange() {
+      this.site_id = "";
+
+      await this.getSiteAllDataMethod();
+      this.filterData();
+    },
     changePage(page) {
       this.currentPage = page;
       this.filterData();
     },
     resetFilter() {
       this.selectedFilter = null;
-      this.selectedClientName = null;
-      this.selectedSiteName = null;
+      this.client_id = null;
+      this.site_id = null;
       this.selectedSiteAddress = null;
       this.localSearchQuery = "";
 
@@ -432,24 +598,22 @@ export default {
     },
     async getBusinessUnitMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/sites`, {
-          params: {
-            page: this.currentPage,
-            per_page: this.itemsPerPage,
-          },
-        });
+        const params = {
+          page: this.currentPage,
+          per_page: this.itemsPerPage,
+        };
+
+        const response = await axios.get(`${VITE_API_URL}/sites`, { params });
+
         this.businessUnit = response.data.data;
+        console.log(this.businessUnit);
       } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
+        if (error.response?.status === 404) {
+          // Handle 404
         }
       }
     },
-    toggleFilters() {
-      this.showFilters = !this.showFilters;
-    },
+
     async filterData() {
       const params = {
         page: this.currentPage,
@@ -460,16 +624,15 @@ export default {
         params["site[status]"] = this.selectedFilter;
       }
 
-      if (this.selectedClientName) {
-        params["site[client_id]"] = this.selectedClientName;
+      if (this.client_id) {
+        params["site[client_id]"] = this.client_id;
       }
 
-      if (this.selectedSiteName) {
-        params["site[site_name]"] = this.selectedSiteName;
+      if (this.site_id) {
+        params["site[site_name]"] = this.site_id;
       }
-
       if (this.selectedSiteAddress) {
-        params["site[address]"] = this.selectedSiteAddress;
+        params["site[address]"] = this.getAddressById(this.selectedSiteAddress);
       }
 
       if (this.localSearchQuery) {
@@ -488,7 +651,14 @@ export default {
         // console.error("Error fetching filtered data:", error);
       }
     },
-
+    getSiteNameById(id) {
+      const site = this.businessUnit.find((site) => site.id === id);
+      return site ? site.site_name : "";
+    },
+    getAddressById(id) {
+      const site = this.businessUnit.find((site) => site.id === id);
+      return site ? site.address : "";
+    },
     editsiteId(siteId) {
       this.selectedsiteId = siteId;
       this.$refs.refSite.getClientMethod();
@@ -601,14 +771,15 @@ export default {
     async getSiteAllDataMethod() {
       this.isLoading = true;
       try {
-        const response = await axios.get(`${VITE_API_URL}/sites`, {
-          params: {
-            page: this.currentPage,
-            per_page: this.itemsPerPage,
-          },
-        });
-        this.getSiteAllData = response.data.data;
-        this.totalRecords = response.data.total;
+        const response = await axios.get(
+          `${VITE_API_URL}/fetch_site_by_client_id/${this.client_id}`
+        );
+
+        this.businessUnit = response.data.sites;
+        // this.getSiteAllData = response.data.data;
+        // this.totalRecords = response.data.total;
+        // this.businessUnit = response.data.data;
+        console.log(this.businessUnit, this.client_id);
       } catch (error) {
         // console.error("Error fetching data:", error);
       } finally {
@@ -741,10 +912,11 @@ export default {
       document.body.removeChild(a);
     },
   },
-  async mounted() {
-    // await this.getSiteAllDataMethod();
-    // this.getBusinessUnitMethod();
+  mounted() {
     this.getClientMethod();
+    // this.getSiteAllDataMethod();
+    // this.getBusinessUnitMethod();
+
     this.filterData();
   },
 };
@@ -759,10 +931,13 @@ ul.generalsetting h6 {
   font-weight: bold;
 }
 
+input.form-control,
+input.form-control:focus,
 select {
   padding: 10px;
   border-radius: 4px;
   border: 0px;
   border: 1px solid rgb(202, 198, 198);
+  background: #fff4f5;
 }
 </style>

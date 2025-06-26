@@ -13,7 +13,7 @@
       <div class="d-flex align-items-center">
         <button
           v-if="activeTab === 'active'"
-          class="btn btn-primary rounded-1 fw-medium text-capitalize"
+          class="btn btn-primary rounded-4 fw-medium text-capitalize"
           data-bs-toggle="modal"
           data-bs-target="#myModal"
           data-bs-whatever="@mdo"
@@ -66,23 +66,98 @@
           tabindex="0"
         >
           <div class="mt-4 table-wrapper">
-            <table class="table table table-hover addjobtable">
+            <table class="table table addjobtable">
               <thead>
                 <tr>
-                  <th scope="col" class="bg-primary text-white">Id</th>
-                  <th scope="col" class="bg-primary text-white">Colour</th>
-                  <th scope="col" class="bg-primary text-white">Name</th>
-                  <th scope="col" class="bg-primary text-white">Job Code</th>
                   <th scope="col" class="bg-primary text-white">
-                    No. of Clients
+                    Id
+                    <img
+                      src="../../assets/ArrowDown.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
                   </th>
                   <th scope="col" class="bg-primary text-white">
-                    No. of Staff
+                    Colour
+                    <img
+                      src="../../assets/ArrowDown.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
                   </th>
                   <th scope="col" class="bg-primary text-white">
-                    No. of Documents
+                    Name
+                    <img
+                      src="../../assets/ArrowDown.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
                   </th>
-                  <th scope="col" class="bg-primary text-white">Action</th>
+                  <th scope="col" class="bg-primary text-white">
+                    <div
+                      class="d-flex justify-content-center align-items-center gap-1"
+                    >
+                      Job Code
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </div>
+                  </th>
+                  <th scope="col" class="bg-primary text-white">
+                    <div
+                      class="d-flex justify-content-center align-items-center gap-1"
+                    >
+                      No. of Clients
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </div>
+                  </th>
+                  <th scope="col" class="bg-primary text-white text-center">
+                    <div
+                      class="d-flex justify-content-center align-items-center gap-1"
+                    >
+                      <span>No. of Staff</span>
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid"
+                        alt="RecPal"
+                        loading="eager"
+                        style="height: 7px"
+                      />
+                    </div>
+                  </th>
+                  <th scope="col" class="bg-primary text-white">
+                    <div
+                      class="d-flex justify-content-center align-items-center gap-1"
+                    >
+                      No. of Documents
+                      <img
+                        src="../../assets/ArrowDown.png"
+                        class="img-fluid pe-2"
+                        alt="RecPal"
+                        loading="eager"
+                      />
+                    </div>
+                  </th>
+                  <th scope="col" class="bg-primary text-white">
+                    Action
+                    <img
+                      src="../../assets/ArrowDown.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
+                  </th>
                 </tr>
               </thead>
               <tbody v-if="paginateSiteData?.length > 0">
@@ -101,7 +176,11 @@
                   <td>2</td>
                   <td>
                     <button
-                      class="btn btn-primary text-nowrap"
+                      class="btn text-nowrap"
+                      style="
+                        background-color: rgb(255, 227, 234);
+                        color: rgb(255, 59, 48);
+                      "
                       v-on:click="confirmed(jobs.id)"
                     >
                       In-Active
@@ -130,23 +209,103 @@
           aria-labelledby="inactive"
           tabindex="1"
         >
-          <table class="table table table-hover addjobtable">
+          <table class="table table addjobtable">
             <thead>
               <tr>
-                <th scope="col" class="bg-primary text-white">Id</th>
-                <th scope="col" class="bg-primary text-white">Colour</th>
-                <th scope="col" class="bg-primary text-white">Name</th>
-                <th scope="col" class="bg-primary text-white">Job Code</th>
-                <th scope="col" class="bg-primary text-white">No. of Vendor</th>
-                <th scope="col" class="bg-primary text-white">No. of Staff</th>
                 <th scope="col" class="bg-primary text-white">
-                  No. of Documents
+                  Id
+                  <img
+                    src="../../assets/ArrowDown.png"
+                    class="img-fluid pe-2"
+                    alt="RecPal"
+                    loading="eager"
+                  />
                 </th>
-                <th scope="col" class="bg-primary text-white">Action</th>
+                <th scope="col" class="bg-primary text-white">
+                  Colour
+                  <img
+                    src="../../assets/ArrowDown.png"
+                    class="img-fluid pe-2"
+                    alt="RecPal"
+                    loading="eager"
+                  />
+                </th>
+                <th scope="col" class="bg-primary text-white">
+                  Name
+                  <img
+                    src="../../assets/ArrowDown.png"
+                    class="img-fluid pe-2"
+                    alt="RecPal"
+                    loading="eager"
+                  />
+                </th>
+                <th scope="col" class="bg-primary text-white">
+                  Job Code
+                  <img
+                    src="../../assets/ArrowDown.png"
+                    class="img-fluid pe-2"
+                    alt="RecPal"
+                    loading="eager"
+                  />
+                </th>
+                <th scope="col" class="bg-primary text-white">
+                  <div
+                    class="d-flex justify-content-center align-items-center gap-1"
+                  >
+                    No. of Vendor
+                    <img
+                      src="../../assets/ArrowDown.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
+                  </div>
+                </th>
+                <th scope="col" class="bg-primary text-white">
+                  <div
+                    class="d-flex justify-content-center align-items-center gap-1"
+                  >
+                    No. of Staff
+
+                    <img
+                      src="../../assets/ArrowDown.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
+                  </div>
+                </th>
+                <th scope="col" class="bg-primary text-white">
+                  <div
+                    class="d-flex justify-content-center align-items-center gap-1"
+                  >
+                    No. of Documents
+                    <img
+                      src="../../assets/ArrowDown.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
+                  </div>
+                </th>
+                <th scope="col" class="bg-primary text-white">
+                  Action
+                  <img
+                    src="../../assets/ArrowDown.png"
+                    class="img-fluid pe-2"
+                    alt="RecPal"
+                    loading="eager"
+                  />
+                </th>
               </tr>
             </thead>
             <tbody v-if="getInActiveJobs?.length > 0">
-              <tr v-for="jobs in getInActiveJobs" :key="jobs.id">
+              <tr
+                v-for="(jobs, index) in getInActiveJobs"
+                :key="index"
+                @mouseenter="hoverRow = index"
+                @mouseleave="hoverRow = null"
+              >
                 <td v-text="jobs.id"></td>
                 <td scope="row">
                   <i
@@ -160,8 +319,8 @@
                 <td v-text="jobs.no_of_candidates"></td>
                 <td>2</td>
                 <td>
-                  <button
-                    class="bi bi-pencil btn-sm btn btn-primary rounded-1 text-uppercase fw-medium"
+                  <!-- <button
+                    class="bi bi-pencil rounded-1 text-uppercase fw-medium"
                     data-bs-toggle="modal"
                     data-bs-target="#editJob"
                     data-bs-whatever="@mdo"
@@ -171,11 +330,46 @@
 
                   <span>&nbsp;</span>
                   <button
-                    class="btn btn-primary btn-sm text-nowrap"
+                    class="btn text-nowrap"
+                    style="
+                      background-color: rgb(233, 250, 239);
+                      color: rgb(36, 209, 100);
+                    "
                     v-on:click="jobActive(jobs.id)"
                   >
                     Re-Activate
-                  </button>
+                  </button> -->
+
+                  <div class="action-wrapper">
+                    <i class="bi bi-three-dots dot-icon"></i>
+
+                    <div v-if="hoverRow === index" class="action-menu">
+                      <button
+                        type="button"
+                        class="btn text-nowrap border-0"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editJob"
+                        data-bs-whatever="@mdo"
+                        v-on:click="jobsEdit(jobs.id)"
+                      >
+                        <i
+                          class="bi bi-pencil-square"
+                          style="color: #f9944b"
+                        ></i>
+                        Edit
+                      </button>
+                      <button
+                        class="btn text-nowrap"
+                        style="
+                          background-color: rgb(233, 250, 239);
+                          color: rgb(36, 209, 100);
+                        "
+                        v-on:click="jobActive(jobs.id)"
+                      >
+                        Re-Activate
+                      </button>
+                    </div>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -194,52 +388,68 @@
         </div>
       </div>
     </div>
-    <div class="mx-3" style="text-align: right" v-if="shouldShowPagination">
-      <!-- <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
-      </button> -->
-      <button
-        class="btn btn-sm btn-primary dropdown-toggle"
-        type="button"
-        id="recordsPerPageDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        {{ itemsPerPage }} Records
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
-            >20 Records</a
-          >
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
-            >50 Records</a
-          >
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
-            >100 Records</a
-          >
-        </li>
-      </ul>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="currentPage--"
-      >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getJobs?.length"
-        @click="currentPage++"
-      >
-        Next
-      </button>
+    <div
+      class="mx-3 d-flex justify-content-between"
+      style="text-align: right"
+      v-if="shouldShowPagination?.length >= 10"
+    >
+      <div class="d-flex">
+        <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+        <button
+          class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+          style="color: #00000080"
+          type="button"
+          id="recordsPerPageDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ itemsPerPage }} Records
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+              >20 Records</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+              >50 Records</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+              >100 Records</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="d-flex align-items-center">
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === 1"
+          @click="changePage(currentPage - 1)"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+          style="background: #ffffff; color: #f9944b"
+        >
+          {{ currentPage }}
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === totalPages"
+          @click="changePage(currentPage + 1)"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
     </div>
     <ConfirmationAlert
       :show-modal="isModalVisible"
@@ -277,6 +487,7 @@ export default {
       getInActiveJobs: [],
       activeTab: "active",
       selectedjobID: null,
+      hoverRow: null,
       isLoading: false,
       isModalVisible: false,
       confirmMessage: "",
@@ -316,6 +527,10 @@ export default {
       this.isModalVisible = false;
 
       this.jobsInActive(id);
+    },
+    changePage(page) {
+      this.currentPage = page;
+      this.getJobData();
     },
     canceled() {
       this.isModalVisible = false;

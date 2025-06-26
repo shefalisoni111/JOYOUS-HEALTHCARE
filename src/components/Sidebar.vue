@@ -60,7 +60,7 @@
   scrollbar-color: #aab7cf transparent;
   background-color: #f9944b;
 
-  height: 100dvh;
+  height: 100vh;
   border-right: 1px solid #f1e7e7;
 }
 

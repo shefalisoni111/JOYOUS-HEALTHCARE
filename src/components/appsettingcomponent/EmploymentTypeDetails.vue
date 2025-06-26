@@ -12,21 +12,21 @@
       <!-- End Page Title -->
       <div class="d-flex align-items-center">
         <button
-          class="btn btn-primary rounded-1 text-capitalize fw-medium"
+          class="btn btn-primary rounded-4 text-capitalize fw-medium"
           data-bs-toggle="modal"
           data-bs-target="#addEmployee"
           data-bs-whatever="@mdo"
           type="button"
           @click="showPopups"
         >
-          Add employment type
+          + Add employment type
         </button>
       </div>
     </div>
     <div class="mt-4 table-wrapper">
       <div class="showdata">
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-          <li class="nav-item" role="presentation">
+          <!-- <li class="nav-item" role="presentation">
             <button
               class="nav-link active text-capitalize ps-0"
               id="employymentType"
@@ -39,7 +39,7 @@
             >
               Employment Types
             </button>
-          </li>
+          </li> -->
           <!-- <li class="nav-item" role="presentation">
             <button
               class="nav-link text-capitalize"
@@ -63,16 +63,44 @@
             aria-labelledby="employymentType"
             tabindex="0"
           >
-            <table class="table table table-hover" :v-if="getEmployeeStatus">
+            <table class="table table" :v-if="getEmployeeStatus">
               <thead>
                 <tr>
-                  <th scope="col" class="col-5 text-white">ID</th>
-                  <th scope="col" class="col-5 text-white">Employment Type</th>
+                  <th scope="col" class="col-5 text-white">
+                    ID
+                    <img
+                      src="../../assets/ArrowDown.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
+                  </th>
+                  <th scope="col" class="col-5 text-white">
+                    Employment Type
+                    <img
+                      src="../../assets/ArrowDown.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
+                  </th>
                   <th scope="col" class="col-5 text-white jusfycenter">
                     Description
+                    <img
+                      src="../../assets/ArrowDown.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
                   </th>
                   <th scope="col" class="col-2 text-white jusfycenter">
                     Action
+                    <img
+                      src="../../assets/ArrowDown.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
                   </th>
                 </tr>
               </thead>
@@ -88,7 +116,7 @@
                   </td>
                   <td>
                     <i
-                      class="bi bi-trash cursor-pointer"
+                      class="bi bi-trash border-0 border-0 cursor-pointer text-danger"
                       v-on:click="confirmed(getEmployee.id)"
                     ></i>
                   </td>
@@ -119,6 +147,69 @@
         </div>
       </div>
     </div>
+    <div
+      class="mx-3 d-flex justify-content-between"
+      style="text-align: right"
+      v-if="getEmployeeStatus?.length >= 10"
+    >
+      <div class="d-flex">
+        <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+        <button
+          class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+          style="color: #00000080"
+          type="button"
+          id="recordsPerPageDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ itemsPerPage }} Records
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+              >20 Records</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+              >50 Records</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+              >100 Records</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="d-flex align-items-center">
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === 1"
+          @click="changePage(currentPage - 1)"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+          style="background: #ffffff; color: #f9944b"
+        >
+          {{ currentPage }}
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === totalPages"
+          @click="changePage(currentPage + 1)"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+    </div>
     <ConfirmationAlert
       :show-modal="isModalVisible"
       :message="confirmMessage"
@@ -136,6 +227,8 @@ import Loader from "../Loader/Loader.vue";
 import AddEmployee from "../modals/appsetting/AddEmployee.vue";
 import ConfirmationAlert from "../Alerts/ConfirmationAlert.vue";
 import Swal from "sweetalert2";
+import icon from "../../assets/delete.png";
+
 export default {
   name: "EmploymentTypeDetails",
   data() {
@@ -146,6 +239,9 @@ export default {
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,
+      currentPage: 1,
+      itemsPerPage: 10,
+      totalPages: 0,
     };
   },
   components: {
@@ -164,26 +260,73 @@ export default {
       this.isModalVisible = false;
     },
     employeeDelete(id) {
-      this.confirmMessage = "Are you sure want to delete?";
-      this.isModalVisible = true;
-      this.confirmCallback = async () => {
-        axios
-          .delete(`${VITE_API_URL}/employment_types/` + id)
-          .then((response) => {
-            if (response.data.error === "record could Not deleted !") {
-              Swal.fire({
-                icon: "warning",
-                title: "Warning",
-                text: "Cannot delete Employee Type: This record is associated with candidate employee type records.",
-              });
-            } else {
-              this.getEmployeeDAta();
-            }
-          });
-        this.isModalVisible = false;
-      };
-    },
+      Swal.fire({
+        width: "300px",
+        text: "Are you sure want to delete this?",
 
+        html: `
+    <div style="
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+    ">
+      <div style="
+        height: 50px;
+        width: 50px;
+        background: #ffe3e8;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      ">
+        <img src="${icon}" alt="Delete Warning" style="height: 30px; width: 30px;" />
+      </div>
+    </div>
+    <div>Are you sure want to delete this?</div>
+  `,
+        showCancelButton: true,
+        confirmButtonColor: "#f9944b",
+        cancelButtonColor: "#000",
+
+        cancelButtonText: "Cancel",
+        confirmButtonText: "Ok",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .delete(`${VITE_API_URL}/employment_types/` + id)
+            .then((response) => {
+              if (
+                response.data.error &&
+                response.data.error.toLowerCase().includes("could not deleted")
+              ) {
+                Swal.fire({
+                  icon: "warning",
+                  title: "Warning",
+                  text:
+                    response.data.error ||
+                    "Cannot delete Employee Type: This record is associated with candidate employee type records.",
+                });
+              } else {
+                this.getEmployeeDAta();
+                Swal.fire(
+                  "Deleted!",
+                  "Employee Type has been deleted.",
+                  "success"
+                );
+              }
+            });
+        }
+      });
+    },
+    changePage(page) {
+      this.currentPage = page;
+      this.getEmployeeDAta();
+    },
+    setItemsPerPage(value) {
+      this.itemsPerPage = value;
+      this.currentPage = 1;
+      this.getEmployeeDAta();
+    },
     getEmployeeDAta() {
       this.isLoading = true;
       axios
@@ -218,9 +361,6 @@ export default {
   border-radius: 0;
   background-color: transparent;
   font-weight: bold;
-}
-.nav-pills {
-  border-bottom: 1px solid #ddd6d6;
 }
 
 .btn-primary {

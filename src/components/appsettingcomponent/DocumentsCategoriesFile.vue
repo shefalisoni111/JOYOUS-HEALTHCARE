@@ -26,174 +26,152 @@
           type="button"
           @click="handleAddCategory()"
         >
-          Add categories
+          + Add categories
         </button>
       </div>
     </div>
     <div class="col-12">
       <div class="" v-if="paginateSiteData?.length > 0">
-        <div
-          class="accordion mt-3"
-          v-for="(getCate, index) in paginateSiteData"
-          :key="index"
-        >
-          <div class="accordion-item">
-            <h2
-              class="accordion-header d-flex justify-content-between align-items-center"
-              @click="toggleAccordion(index)"
-            >
-              <button
-                class="accordion-button"
-                type="button"
-                :class="{ collapsed: !getCate.isOpen }"
+        <div class="row">
+          <div class="col-md-12">
+            <div class="d-flex flex-wrap gap-2">
+              <div
+                class="accordion-item mb-2"
+                v-for="(getCate, index) in paginateSiteData"
+                :key="index"
+                style="flex: 1 1 150px"
               >
-                {{ getCate.category_name }}
-              </button>
-
-              <ul class="list-unstyled d-inline-flex align-items-center mb-0">
-                <li class="p-3">
+                <h2
+                  class="accordion-header d-flex justify-content-between align-items-center px-3 py-2 rounded"
+                  style="
+                    cursor: pointer;
+                    background: none !important;
+                    border: none;
+                  "
+                  @click="toggleAccordion(index)"
+                >
                   <button
-                    class="btn btn-outline-success text-nowrap text-nowrap"
+                    class="accordion-button bg-white border-0 p-0 w-100 d-flex flex-column text-center"
+                    type="button"
+                    :class="{ collapsed: activeIndex !== index }"
+                  >
+                    <img
+                      src="../../assets/file.png"
+                      class="img-fluid pe-2"
+                      alt="file"
+                      loading="eager"
+                    />
+                    {{ getCate.category_name }}
+                  </button>
+                </h2>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12 mt-3">
+            <div
+              v-if="activeIndex !== null && paginateSiteData[activeIndex]"
+              class="accordion-body rounded"
+            >
+              <div
+                class="d-flex justify-content-between align-items-center border p-3"
+              >
+                <h4 class="mb-3">
+                  {{ paginateSiteData[activeIndex].category_name }}
+                </h4>
+
+                <div class="mb-3 d-flex justify-content-end gap-2">
+                  <button
+                    class="btn btn-lg border-0"
                     data-bs-toggle="modal"
                     data-bs-target="#editDocCategory"
-                    data-bs-whatever="@mdo"
-                    @click="editCategory($event, getCate.id)"
+                    @click="
+                      editCategory($event, paginateSiteData[activeIndex].id)
+                    "
                   >
-                    <li class="bi bi-pen"></li>
+                    <i class="bi bi-pen-fill" style="color: #ffc107"></i> Edit
                   </button>
-                </li>
-                <li class="p-3">
-                  <i
-                    class="bi bi-trash btn btn-outline-success text-nowrap text-nowrap cursor-pointer"
-                    v-on:click="confirmedCat(getCate.id)"
-                  ></i>
-                </li>
-                <li class="p-3">
+
                   <button
-                    class="btn border-primary-subtle rounded-1 text-capitalize fw-bold"
+                    class="btn text-danger btn-lg border-0"
+                    @click="confirmedCat(paginateSiteData[activeIndex].id)"
+                  >
+                    <i class="bi bi-trash-fill" style="color: #ffc107"></i>
+                    Delete
+                  </button>
+
+                  <button
+                    class="btn btn-primary rounded-1 text-capitalize fw-bold"
                     data-bs-toggle="modal"
                     data-bs-target="#addDoc"
-                    data-bs-whatever="@mdo"
-                    type="button"
-                    @click="selectCategory(getCate.id)"
+                    @click="selectCategory(paginateSiteData[activeIndex].id)"
                   >
                     + Add Document
                   </button>
-                </li>
-              </ul>
-            </h2>
-
-            <div class="">
-              <div class="accordion-body" v-if="getCate.isOpen">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th scope="col">
-                        Document
-                        <img
-                          src="../../assets/ArrowDown.png"
-                          class="img-fluid pe-2"
-                          alt="RecPal"
-                          loading="eager"
-                        />
-                      </th>
-                      <th scope="col">
-                        Mandatory
-                        <img
-                          src="../../assets/ArrowDown.png"
-                          class="img-fluid pe-2"
-                          alt="RecPal"
-                          loading="eager"
-                        />
-                      </th>
-                      <th scope="col">
-                        Expiry Date
-                        <img
-                          src="../../assets/ArrowDown.png"
-                          class="img-fluid pe-2"
-                          alt="RecPal"
-                          loading="eager"
-                        />
-                      </th>
-                      <th scope="col">
-                        Profile View
-                        <img
-                          src="../../assets/ArrowDown.png"
-                          class="img-fluid pe-2"
-                          alt="RecPal"
-                          loading="eager"
-                        />
-                      </th>
-                      <th scope="col">
-                        Action
-                        <img
-                          src="../../assets/ArrowDown.png"
-                          class="img-fluid pe-2"
-                          alt="RecPal"
-                          loading="eager"
-                        />
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="getDocs in getCate.documents" :key="getDocs.id">
-                      <td>{{ getDocs.display_name }}</td>
-                      <td>
-                        <label
-                          class="switch"
-                          :class="{ checked: getDocs.mandatory }"
-                        >
-                          <input
-                            type="checkbox"
-                            :id="'togBtn-' + getDocs.id"
-                            :checked="getDocs.mandatory"
-                            :disabled="isCheckboxDisabled(getDocs, 'mandatory')"
-                          />
-                          <div class="slider round"></div>
-                        </label>
-                      </td>
-                      <td>
-                        <label
-                          class="switch"
-                          :class="{ checked: getDocs.hide_document }"
-                        >
-                          <input
-                            type="checkbox"
-                            :id="'togBtn-' + getDocs.id"
-                            :checked="getDocs.hide_document"
-                            :disabled="
-                              isCheckboxDisabled(getDocs, 'hide_document')
-                            "
-                          />
-                          <div class="slider round"></div>
-                        </label>
-                      </td>
-                      <td>
-                        <label
-                          class="switch"
-                          :class="{ checked: getDocs.profile_view }"
-                        >
-                          <input
-                            type="checkbox"
-                            :id="'togBtn-' + getDocs.id"
-                            :checked="getDocs.profile_view"
-                            :disabled="
-                              isCheckboxDisabled(getDocs, 'profile_view')
-                            "
-                          />
-                          <div class="slider round"></div>
-                        </label>
-                      </td>
-                      <td>
-                        <i
-                          class="bi bi-trash"
-                          @click="confirmed(getDocs.id)"
-                        ></i>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                </div>
               </div>
+
+              <table class="table">
+                <thead>
+                  <tr class="text-center">
+                    <th>Document</th>
+                    <th>Mandatory</th>
+                    <th>Expiry Date</th>
+                    <th>Profile View</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="getDocs in paginateSiteData[activeIndex].documents"
+                    :key="getDocs.id"
+                    class="text-center"
+                  >
+                    <td>{{ getDocs.display_name }}</td>
+                    <td>
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          :checked="getDocs.mandatory"
+                          :disabled="isCheckboxDisabled(getDocs, 'mandatory')"
+                        />
+                        <span class="slider round"></span>
+                      </label>
+                    </td>
+                    <td>
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          :checked="getDocs.hide_document"
+                          :disabled="
+                            isCheckboxDisabled(getDocs, 'hide_document')
+                          "
+                        />
+                        <span class="slider round"></span>
+                      </label>
+                    </td>
+                    <td>
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          :checked="getDocs.profile_view"
+                          :disabled="
+                            isCheckboxDisabled(getDocs, 'profile_view')
+                          "
+                        />
+                        <span class="slider round"></span>
+                      </label>
+                    </td>
+                    <td>
+                      <i
+                        class="bi bi-trash-fill text-danger"
+                        @click="confirmed(getDocs.id)"
+                        style="cursor: pointer"
+                      ></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -205,53 +183,67 @@
       </div>
     </div>
     <div
-      class="mx-3 mt-3"
+      class="mx-3 mt-3 d-flex justify-content-between"
       style="text-align: right"
       v-if="getCategory?.length >= 10"
     >
-      <button
-        class="btn btn-sm btn-primary dropdown-toggle"
-        type="button"
-        id="recordsPerPageDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        {{ itemsPerPage }} Records
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
-            >20 Records</a
-          >
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
-            >50 Records</a
-          >
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
-            >100 Records</a
-          >
-        </li>
-      </ul>
-
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="currentPage--"
-      >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= getCategory?.length"
-        @click="currentPage++"
-      >
-        Next
-      </button>
+      <div class="d-flex">
+        <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
+        <button
+          class="btn btn-sm dropdown-toggle rounded-[12px] border border-[1px] p-3 border"
+          style="color: #00000080"
+          type="button"
+          id="recordsPerPageDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ itemsPerPage }} Records
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+              >20 Records</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+              >50 Records</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+              >100 Records</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="d-flex align-items-center">
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === 1"
+          @click="changePage(currentPage - 1)"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm mr-2 rounded-[12px] border border-[1px] p-3 border px-4 cursor-none fw-bolder"
+          style="background: #ffffff; color: #f9944b"
+        >
+          {{ currentPage }}
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm ml-2 rounded-[12px] border border-[1px] p-3 border px-4"
+          style="background: #ffffff"
+          :disabled="currentPage === totalPages"
+          @click="changePage(currentPage + 1)"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
     </div>
     <ConfirmationAlert
       :show-modal="isModalVisible"
@@ -294,12 +286,14 @@ export default {
       getCategory: [],
       getDocument: [],
       selectedCategoryId: null,
+      activeIndex: null,
       isLoading: false,
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,
       currentPage: 1,
       itemsPerPage: 10,
+      totalPages: 0,
     };
   },
   components: {
@@ -308,6 +302,16 @@ export default {
     EditCategoryDoc,
     Loader,
     ConfirmationAlert,
+  },
+  watch: {
+    paginateSiteData(newVal) {
+      if (
+        this.activeIndex !== null &&
+        (this.activeIndex < 0 || this.activeIndex >= newVal.length)
+      ) {
+        this.activeIndex = null;
+      }
+    },
   },
   computed: {
     paginateSiteData() {
@@ -337,13 +341,7 @@ export default {
       this.$refs.editCategory.fetchCategoryMethod(categoryId);
     },
     toggleAccordion(index) {
-      this.getCategory.forEach((getCate, i) => {
-        if (i !== index) {
-          getCate.isOpen = false;
-        }
-      });
-
-      this.getCategory[index].isOpen = !this.getCategory[index].isOpen;
+      this.activeIndex = this.activeIndex === index ? null : index;
     },
     onDocumentAdded() {
       this.getDocCAtegories();
@@ -410,6 +408,10 @@ export default {
       this.currentPage = 1;
       this.getDocCAtegories();
     },
+    changePage(page) {
+      this.currentPage = page;
+      this.filterData();
+    },
     async getDocCAtegories() {
       this.isLoading = true;
       try {
@@ -464,6 +466,9 @@ ul li i {
 .accordion-button {
   background-color: transparent !important;
 }
+.accordion-button:after {
+  display: none;
+}
 .accordion-button:not(.collapsed) {
   border: none;
   background: transparent;
@@ -474,10 +479,16 @@ ul li i {
   cursor: pointer;
   padding: 10px;
   background-color: #f1f1f1;
-  border: 1px solid #ddd;
+
   position: relative;
 }
-
+.accordion-item {
+  border: 1px solid #ffc107;
+  transition: 0.3s ease-in-out;
+}
+.accordion-item:hover {
+  transform: scale(1.02);
+}
 .arrow-up,
 .arrow-down {
   position: absolute;
@@ -487,13 +498,12 @@ ul li i {
 }
 
 .arrow-up::before {
-  content: "\F235"; /* Unicode character for up arrow */
+  content: "\F235";
 }
 
 .arrow-down::before {
-  content: " \F229"; /* Unicode character for down arrow */
+  content: " \F229";
 }
-
 .accordion-content {
   padding: 10px;
   border-top: 1px solid #ddd;

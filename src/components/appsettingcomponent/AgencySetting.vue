@@ -91,8 +91,8 @@
                               :src="filteredLogo.logo_url"
                               class=""
                               alt="Agency Logo"
-                              width="220"
-                              height="220"
+                              width="160"
+                              height="160"
                               loading="eager"
                             />
                             <!-- <input
@@ -104,7 +104,7 @@
                           />
                           <label
                             for="agencyMainInput"
-                            class="fs-3 fw-bold w-25 position-absolute end-0 top-0 text-center"
+                            class="fs-3 fw-bold w-20 position-absolute end-0 top-0 text-center"
                             style="border-radius: 0px; background-color: #57bd8e"
                             >+</label
                           > -->
@@ -126,7 +126,12 @@
                     </div>
                   </div>
                   <div class="showdata p-4">
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <ul
+                      class="nav nav-pills"
+                      id="myTab"
+                      role="tablist"
+                      style="border-bottom: 1px solid #ddd"
+                    >
                       <li class="nav-item" role="presentation">
                         <button
                           class="nav-link active ms-0"
@@ -138,6 +143,12 @@
                           aria-controls="home"
                           aria-selected="true"
                         >
+                          <img
+                            src="../../assets/about.png"
+                            class="img-fluid pe-2"
+                            alt="RecPal"
+                            loading="eager"
+                          />
                           About
                         </button>
                       </li>
@@ -152,6 +163,12 @@
                           aria-controls="profile"
                           aria-selected="false"
                         >
+                          <img
+                            src="../../assets/additioal.png"
+                            class="img-fluid pe-2"
+                            alt="RecPal"
+                            loading="eager"
+                          />
                           Additional
                         </button>
                       </li>
@@ -166,6 +183,10 @@
                           aria-controls="contact"
                           aria-selected="false"
                         >
+                          <i
+                            class="bi bi-house-door-fill"
+                            style="color: #f9944b"
+                          ></i>
                           Favicon & Logo
                         </button>
                       </li>
@@ -184,7 +205,7 @@
                       </button>
                     </li> -->
                     </ul>
-                    <div class="tab-content" id="myTabContent">
+                    <div class="tab-content border-0" id="myTabContent">
                       <div
                         class="tab-pane fade show active"
                         id="home"
@@ -204,34 +225,100 @@
                           </button>
                         </div>
                         <div class="p-4 table-wrapper">
-                          <table
-                            class="table table-borderless"
-                            v-if="getAgencyData"
-                          >
+                          <table class="table" v-if="getAgencyData">
                             <thead></thead>
                             <tbody v-if="getAgencyData">
                               <tr>
-                                <th scope="col">First Name</th>
-                                <td scope="col">
+                                <th scope="row">
+                                  <i
+                                    class="bi bi-person-fill"
+                                    style="
+                                      font-size: 20px;
+                                      color: #f9944b;
+                                      background: #ffdbc2;
+                                      border-radius: 50%;
+                                      padding: 8px 10px;
+                                    "
+                                  ></i>
+                                  &nbsp; First Name
+                                </th>
+
+                                <td scope="row">
                                   {{ getAgencyData.first_name }}
                                 </td>
                               </tr>
                               <tr>
-                                <th scope="row">Last Name</th>
+                                <th scope="row">
+                                  <i
+                                    class="bi bi-person-fill"
+                                    style="
+                                      font-size: 20px;
+                                      color: #f9944b;
+                                      background: #ffdbc2;
+                                      border-radius: 50%;
+                                      padding: 8px 10px;
+                                      width: 20px;
+                                      height: 20px;
+                                    "
+                                  ></i>
+                                  &nbsp; Last Name
+                                </th>
                                 <td>
                                   {{ getAgencyData.last_name }}
                                 </td>
                               </tr>
                               <tr>
-                                <th scope="row">Email</th>
+                                <th scope="row">
+                                  <i
+                                    class="bi bi-envelope-fill"
+                                    style="
+                                      font-size: 20px;
+                                      color: #f9944b;
+                                      background: #ffdbc2;
+                                      border-radius: 50%;
+                                      padding: 8px 10px;
+                                      width: 20px;
+                                      height: 20px;
+                                    "
+                                  ></i>
+                                  &nbsp; Email
+                                </th>
                                 <td>{{ getAgencyData.email }}</td>
                               </tr>
                               <tr>
-                                <th scope="row">Address</th>
+                                <th scope="row">
+                                  <i
+                                    class="bi bi-geo-alt-fill"
+                                    style="
+                                      font-size: 20px;
+                                      color: #f9944b;
+                                      background: #ffdbc2;
+                                      border-radius: 50%;
+                                      padding: 8px 10px;
+                                      width: 20px;
+                                      height: 20px;
+                                    "
+                                  ></i>
+                                  &nbsp; Address
+                                </th>
                                 <td colspan="2">{{ getAgencyData.address }}</td>
                               </tr>
                               <tr>
-                                <th scope="row">Phone Number</th>
+                                <th scope="row">
+                                  <i
+                                    class="bi bi-telephone-fill"
+                                    style="
+                                      font-size: 20px;
+                                      color: #f9944b;
+                                      background: #ffdbc2;
+                                      border-radius: 50%;
+                                      padding: 8px 10px;
+                                      width: 20px;
+                                      height: 20px;
+                                    "
+                                  ></i>
+                                  &nbsp; Phone Number
+                                </th>
                                 <td colspan="2">
                                   {{ getAgencyData.phone_number }}
                                 </td>
@@ -632,7 +719,6 @@ ul.generalsetting li i.rounded-circle a.router-link-active:active {
 }
 
 .showdata .tab-content > .active {
-  border: 1px solid #e5e0e0;
   border-top: none;
 }
 
@@ -641,6 +727,7 @@ ul.generalsetting li i.rounded-circle a.router-link-active:active {
 }
 .showdata .nav-link.active {
   margin-left: 4px;
+  color: #ff5722;
 }
 .nav-pills .nav-link.active {
   color: #ff5722;

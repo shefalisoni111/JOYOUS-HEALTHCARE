@@ -1,8 +1,15 @@
 <template>
   <div class="">
+    <button
+      class="btn btn-outline-primary d-lg-none position-fixed top-0 start-0 m-3 z-1030 ms-4"
+      style="background: orange; color: #fff; border: 1px solid #fff"
+      @click="toggleSidebar"
+    >
+      <i class="bi bi-list"></i>
+    </button>
     <!-- Sidebar -->
     <nav id="sidebar">
-      <aside v-if="isSidebarVisible" class="sidebar">
+      <aside :class="['sidebar', { show: isSidebarVisible }]" class="sidebar">
         <div class="sidebar-header">
           <a
             class="navbar-brand ps-3"
@@ -16,7 +23,11 @@
               height="31"
               loading="eager"
           /></a>
-          <button class="btn btn-toggle" @click="toggleSidebar">
+          <button
+            class="btn btn-outline-primary d-lg-none"
+            @click="toggleSidebar"
+            style="background: orange; color: #fff; border: 1px solid #fff"
+          >
             <i class="bi bi-list"></i>
           </button>
         </div>
@@ -175,21 +186,14 @@
 
           <ul class="navbar-nav m-0 mb-2 mb-lg-0 inline-nav">
             <li class="nav-item dropdown">
-              <a
-                class="nav-link nav-icon"
-                href="#"
-                data-bs-toggle="dropdown"
-                @click.prevent="handleChatClick"
-              >
-                <i class="bi bi-chat-left-dots"></i>Message</a
+              <router-link to="/chat">
+                <i class="bi bi-chat-left-dots"></i>Message</router-link
               >
             </li>
 
             <li class="nav-item dropdown">
-              <a
-                class="nav-link nav-icon"
-                href="#"
-                data-bs-toggle="dropdown"
+              <router-link
+                to="/notification"
                 @click.prevent="handleNotificationClick"
               >
                 <i class="bi bi-bell"></i>
@@ -200,22 +204,19 @@
                   {{ unread_count }}
                 </span>
                 Notification
-              </a>
+              </router-link>
             </li>
 
             <!-- End Notification Nav -->
 
             <li class="cursor-pointer">
-              <router-link
-                class="dropdown-item d-flex align-items-center"
-                to="/support"
-              >
+              <router-link class="d-flex align-items-center" to="/support">
                 <i class="bi bi-brightness-low pe-2"></i><span>Support</span>
               </router-link>
             </li>
             <li>
               <router-link
-                class="dropdown-item d-flex align-items-center"
+                class="d-flex align-items-center"
                 aria-current="page"
                 to="/appsetting"
               >
@@ -507,13 +508,18 @@ export default {
   methods: {
     toggleSidebar() {
       this.isSidebarVisible = !this.isSidebarVisible;
+      const sidebar = document.getElementById("sidebar");
+      if (sidebar) {
+        sidebar.classList.toggle("show");
+      }
     },
-    handleChatClick() {
-      this.$router.push("/chat");
-    },
+
+    // handleChatClick() {
+    //   this.$router.push("/chat");
+    // },
     handleNotificationClick() {
       this.markAllAsRead();
-      this.$router.push("/notification");
+      // this.$router.push("/notification");
     },
     async loadMore() {
       this.currentPage++;
@@ -1007,7 +1013,6 @@ export default {
 </script>
 
 <style scoped>
-/* Sidebar styles */
 .sidebar {
   top: 0;
   left: 0;
@@ -1032,7 +1037,7 @@ export default {
   padding: 15px;
 }
 ul.components li a:hover,
-ul.components li.active > a,
+ul.components li a img:hover ul.components li.active > a,
 ul.components li.router-link-active,
 ul.components li a.router-link-active {
   background: #1b59f81a;
@@ -1089,8 +1094,43 @@ ul.list-unstyled {
 #content.active {
   margin-left: 70px;
 }
+.sidebar {
+  width: 250px;
+  transition: all 0.3s ease;
+}
+sidebar.collapsed {
+  width: 70px;
+  overflow-x: hidden;
+}
 
-/* Responsive */
+.sidebar.collapsed .menu-text {
+  display: none;
+}
+
+.sidebar.collapsed .submenu {
+  display: none;
+}
+@media (max-width: 992px) {
+  .sidebar {
+    display: none;
+    position: absolute;
+    z-index: 999;
+    background-color: white;
+    height: 100%;
+    left: 0;
+    top: 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebar.show {
+    display: block;
+  }
+
+  .main.d-flex {
+    flex-direction: column;
+  }
+}
+
 @media (max-width: 768px) {
   #sidebar {
     width: 70px;
