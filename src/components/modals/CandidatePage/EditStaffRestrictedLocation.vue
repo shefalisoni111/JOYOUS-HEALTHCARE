@@ -17,6 +17,7 @@
               class="custom-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              @click="blurActiveElement"
             ></button>
           </div>
           <div class="modal-body mx-3">
@@ -161,6 +162,11 @@ export default {
     },
   },
   methods: {
+    blurActiveElement() {
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+    },
     async getClientMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/get_client_id_name`);

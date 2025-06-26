@@ -68,13 +68,17 @@
               />
             </th>
             <th scope="col" class="withShow">
-              Staff required
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
+              <div
+                class="d-flex justify-content-center align-items-center gap-1"
+              >
+                Staff required
+                <img
+                  src="../../assets/ArrowDown.png"
+                  class="img-fluid pe-2"
+                  alt="RecPal"
+                  loading="eager"
+                />
+              </div>
             </th>
             <!-- <th scope="col">Client Rate</th> -->
             <th scope="col" class="widthDefineNotes">

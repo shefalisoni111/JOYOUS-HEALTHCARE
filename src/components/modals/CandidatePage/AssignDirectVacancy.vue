@@ -15,6 +15,7 @@
               class="custom-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              @click="blurActiveElement"
             ></button>
           </div>
           <div class="modal-body overflow-x-auto">
@@ -268,6 +269,11 @@ export default {
     },
   },
   methods: {
+    blurActiveElement() {
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+    },
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
 

@@ -14,13 +14,17 @@
               />
             </th>
             <th scope="col" style="width: 7%">
-              #RefCode
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
+              <div
+                class="d-flex justify-content-center align-items-center gap-1"
+              >
+                #RefCode
+                <img
+                  src="../../assets/ArrowDown.png"
+                  class="img-fluid pe-2"
+                  alt="RecPal"
+                  loading="eager"
+                />
+              </div>
             </th>
             <th scope="col" style="width: 4%">
               Client
@@ -41,13 +45,17 @@
               />
             </th>
             <th scope="col" style="width: 5%">
-              Job Title
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
+              <div
+                class="d-flex justify-content-center align-items-center gap-1"
+              >
+                Job Title
+                <img
+                  src="../../assets/ArrowDown.png"
+                  class="img-fluid pe-2"
+                  alt="RecPal"
+                  loading="eager"
+                />
+              </div>
             </th>
             <th scope="col" style="width: 4%">
               Date
@@ -68,13 +76,17 @@
               />
             </th>
             <th scope="col" class="withShow">
-              Staff Required
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
+              <div
+                class="d-flex justify-content-center align-items-center gap-1"
+              >
+                Staff Required
+                <img
+                  src="../../assets/ArrowDown.png"
+                  class="img-fluid pe-2"
+                  alt="RecPal"
+                  loading="eager"
+                />
+              </div>
             </th>
             <!-- <th scope="col">Client Rate</th> -->
             <th scope="col" class="widthDefineNotes">
@@ -96,13 +108,17 @@
               />
             </th>
             <th scope="col" class="text-center withShow">
-              All Staff
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
+              <div
+                class="d-flex justify-content-center align-items-center gap-1"
+              >
+                All Staff
+                <img
+                  src="../../assets/ArrowDown.png"
+                  class="img-fluid pe-2"
+                  alt="RecPal"
+                  loading="eager"
+                />
+              </div>
             </th>
             <th scope="col">
               Applied

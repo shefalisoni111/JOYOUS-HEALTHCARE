@@ -911,15 +911,16 @@ a[data-v-507f63b7] {
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  background: #000000;
+  background: #000000 !important;
   width: 100;
   height: 37;
-  color: #fff;
+  color: #fff !important;
   border-radius: 13px;
   padding-top: 10px;
   padding-right: 15px;
   padding-bottom: 11px;
   padding-left: 15px;
+  border-bottom: none !important;
 }
 
 .nav-link,

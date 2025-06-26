@@ -11,6 +11,7 @@
               class="custom-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              @click="blurActiveElement"
             ></button>
           </div>
           <div class="modal-body mx-3">
@@ -82,6 +83,11 @@ export default {
   components: { SuccessAlert },
   computed: {},
   methods: {
+    blurActiveElement() {
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+    },
     resetChanges() {
       this.options.forEach((option) => {
         option.checked = this.fetchStaffJobs.job_ids.includes(option.id);

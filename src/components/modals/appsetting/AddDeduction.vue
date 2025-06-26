@@ -2,7 +2,7 @@
   <div>
     <!-- Modal -->
     <div class="modal fade" id="addDeduct" aria-labelledby="addDeductPage">
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addDeduct">Add Candidate Deduction</h5>
@@ -16,15 +16,22 @@
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
               <form>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Title</label>
+                <div class="col-12 d-flex justify-content-center gap-3">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Title</label>
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="title"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-12">
-                    <input type="text" class="form-control" v-model="title" />
-                  </div>
-                </div>
-                <!-- <div class="mb-3 ">
+                  <!-- <div class="mb-3 ">
                   <div class="col-12">
                     <label class="form-label" for="selectAddDeduction">JOB</label>
                   </div>
@@ -40,19 +47,23 @@
                     </select>
                   </div>
                 </div> -->
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Amount</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="amount"
-                      v-on:input="handleAmountInput($event)"
-                    />
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Amount</label>
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="text"
+                          class="form-control w-100"
+                          v-model="amount"
+                          v-on:input="handleAmountInput($event)"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
+
                 <!-- <div class="mb-3 ">
                   <div class="col-12">
                     <label class="form-label">FREQUENCY</label>

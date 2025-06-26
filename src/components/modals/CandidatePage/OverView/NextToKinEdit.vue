@@ -13,6 +13,7 @@
               class="custom-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              @click="blurActiveElement"
             ></button>
           </div>
           <div class="modal-body mx-3" v-if="fetchNExtToKinData">
@@ -176,6 +177,11 @@ export default {
     },
   },
   methods: {
+    blurActiveElement() {
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+    },
     cleanAndValidatePhoneNumber() {
       this.fetchNExtToKinData.phone_number =
         this.fetchNExtToKinData.phone_number.replace(/\D/g, "");

@@ -15,6 +15,7 @@
               class="custom-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              @click="blurActiveElement"
             ></button>
           </div>
           <div class="modal-body mx-3">
@@ -109,6 +110,11 @@ export default {
   },
   components: { SuccessAlert },
   methods: {
+    blurActiveElement() {
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+    },
     resetChanges() {
       this.fetchCandidate = { ...this.originalData };
     },

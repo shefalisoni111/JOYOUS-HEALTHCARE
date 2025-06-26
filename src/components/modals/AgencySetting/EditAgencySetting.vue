@@ -10,73 +10,91 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="editAgencyData">Edit Agency Setting</h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              @click="blurActiveElement"
+            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row g-3 align-items-center">
               <form>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">First Name</label>
-                  </div>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">First Name</label>
+                      </div>
 
-                  <div class="col-12">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchAgencySetting.first_name"
-                      placeholder="Last Name"
-                      style="padding-right: 1px"
-                    />
+                      <div class="col-12">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="fetchAgencySetting.first_name"
+                          placeholder="Last Name"
+                          style="padding-right: 1px"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label"> Last Name</label>
+                      </div>
+
+                      <div class="col-12">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="fetchAgencySetting.last_name"
+                          placeholder="Last Name"
+                          style="padding-right: 1px"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label"> Last Name</label>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label" for="selectJobTitle"
+                          >Address</label
+                        >
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="fetchAgencySetting.address"
+                          style="padding-right: 1px"
+                        />
+                      </div>
+                    </div>
                   </div>
-
-                  <div class="col-12">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchAgencySetting.last_name"
-                      placeholder="Last Name"
-                      style="padding-right: 1px"
-                    />
-                  </div>
-                </div>
-
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label" for="selectJobTitle"
-                      >Address</label
-                    >
-                  </div>
-                  <div class="col-12">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchAgencySetting.address"
-                      style="padding-right: 1px"
-                    />
-                  </div>
-                </div>
-
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Email</label>
-                  </div>
-                  <div class="col-12">
-                    <input
-                      type="email"
-                      class="form-control"
-                      v-model="fetchAgencySetting.email"
-                      @input="validateEmailFormat(email)"
-                      @change="detectAutofill"
-                      ref="email"
-                      autocomplete="new-email"
-                    />
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Email</label>
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="email"
+                          class="form-control"
+                          v-model="fetchAgencySetting.email"
+                          @input="validateEmailFormat(email)"
+                          @change="detectAutofill"
+                          ref="email"
+                          autocomplete="new-email"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
+
                 <div class="mb-3">
                   <div class="col-12">
                     <label class="form-label">Phone Number</label>
@@ -171,6 +189,11 @@ export default {
     },
   },
   methods: {
+    blurActiveElement() {
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+    },
     async fetchAgencySettingMethod(id) {
       const merchantId = localStorage.getItem("merchant_id");
       if (!merchantId) {

@@ -254,6 +254,11 @@ export default {
     },
   },
   methods: {
+    blurActiveElement() {
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+    },
     getDayName(date) {
       const dayIndex = new Date(date).getDay();
       return this.daysOfWeek[(dayIndex + 6) % 7];
