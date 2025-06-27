@@ -48,7 +48,7 @@
             <a
               href="#clientMenu"
               data-bs-toggle="collapse"
-              aria-expanded="true"
+              :aria-expanded="isClientActive"
               class="d-flex justify-content-between"
             >
               <span
@@ -62,11 +62,23 @@
                 loading="eager"
               />
             </a>
-            <ul class="collapse list-unstyled" id="clientMenu">
-              <li><router-link to="/client-list">Client List</router-link></li>
-              <li><router-link to="/site">Site</router-link></li>
+            <ul
+              class="collapse list-unstyled"
+              id="clientMenu"
+              :class="{ show: isClientActive }"
+            >
               <li>
-                <router-link to="/rates_and_rules">Rates & Rules</router-link>
+                <router-link to="/client-list" active-class="active"
+                  >Client List</router-link
+                >
+              </li>
+              <li>
+                <router-link to="/site" active-class="active">Site</router-link>
+              </li>
+              <li>
+                <router-link to="/rates_and_rules" active-class="active"
+                  >Rates & Rules</router-link
+                >
               </li>
             </ul>
           </li>
@@ -75,6 +87,7 @@
             <a
               href="#staffMenu"
               data-bs-toggle="collapse"
+              :aria-expanded="isStaffMenuActive"
               class="d-flex justify-content-between"
             >
               <span>
@@ -87,10 +100,20 @@
                 loading="eager"
               />
             </a>
-            <ul class="collapse list-unstyled" id="staffMenu">
-              <li><router-link to="/staff-list">Staff List</router-link></li>
+            <ul
+              class="collapse list-unstyled"
+              id="staffMenu"
+              :class="{ show: isStaffMenuActive }"
+            >
               <li>
-                <router-link to="/availability">Staff Availability</router-link>
+                <router-link to="/staff-list" active-class="active"
+                  >Staff List</router-link
+                >
+              </li>
+              <li>
+                <router-link to="/availability" active-class="active"
+                  >Staff Availability</router-link
+                >
               </li>
             </ul>
           </li>
@@ -111,6 +134,7 @@
             <a
               href="#timesheetMenu"
               data-bs-toggle="collapse"
+              :aria-expanded="isTimesheetMenuActive"
               class="d-flex justify-content-between"
             >
               <span>
@@ -126,19 +150,23 @@
               />
             </a>
 
-            <ul class="collapse list-unstyled" id="timesheetMenu">
+            <ul
+              class="collapse list-unstyled"
+              id="timesheetMenu"
+              :class="{ show: isTimesheetMenuActive }"
+            >
               <li>
-                <router-link to="/timesheet/weekly"
+                <router-link to="/timesheet/weekly" active-class="active"
                   >Weekly Timesheet</router-link
                 >
               </li>
               <li>
-                <router-link to="/timesheet/custom"
+                <router-link to="/timesheet/custom" active-class="active"
                   >Custom Timesheet</router-link
                 >
               </li>
               <li>
-                <router-link to="/timesheet/signed"
+                <router-link to="/timesheet/signed" active-class="active"
                   >Signed Timesheet</router-link
                 >
               </li>
@@ -149,6 +177,7 @@
             <a
               href="#invoiceMenu"
               data-bs-toggle="collapse"
+              :aria-expanded="isInvoiceMenuActive"
               class="d-flex justify-content-between"
             >
               <span
@@ -162,14 +191,18 @@
                 loading="eager"
               />
             </a>
-            <ul class="collapse list-unstyled" id="invoiceMenu">
+            <ul
+              class="collapse list-unstyled"
+              id="invoiceMenu"
+              :class="{ show: isInvoiceMenuActive }"
+            >
               <li>
-                <router-link to="/invoice/client-invoice"
+                <router-link to="/invoice/client-invoice" active-class="active"
                   >Client Invoice</router-link
                 >
               </li>
               <li>
-                <router-link to="/invoice/staff-payroll"
+                <router-link to="/invoice/staff-payroll" active-class="active"
                   >Staff Payroll</router-link
                 >
               </li>
@@ -1039,7 +1072,8 @@ export default {
 ul.components li a:hover,
 ul.components li a img:hover ul.components li.active > a,
 ul.components li.router-link-active,
-ul.components li a.router-link-active {
+ul.components li a.router-link-active,
+ul.components li a.active {
   background: #1b59f81a;
   color: #1b59f8;
   width: 193px;

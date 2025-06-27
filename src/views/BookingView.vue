@@ -373,7 +373,7 @@
                         <td scope="col">
                           <button class="btn btn-danger">
                             <i
-                              class="bi bi-trash text-white"
+                              class="bi bi-trash border-0 border-0 text-white"
                               @click="confirmed(data.id)"
                             ></i>
                           </button>
@@ -468,7 +468,7 @@
                         <!-- <td scope="col">
                           <button class="btn btn-danger">
                             <i
-                              class="bi bi-trash text-white"
+                              class="bi bi-trash border-0 border-0 text-white"
                               @click="bookingDeleteMethod(data.id)"
                             ></i>
                           </button>
@@ -555,7 +555,7 @@
                         <td scope="col">
                           <button class="btn btn-danger">
                             <i
-                              class="bi bi-trash text-white"
+                              class="bi bi-trash border-0 border-0 text-white"
                               @click="bookingDeleteMethod(data.id)"
                             ></i>
                           </button>

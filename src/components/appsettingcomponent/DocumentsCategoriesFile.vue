@@ -97,7 +97,7 @@
                     @click="confirmedCat(paginateSiteData[activeIndex].id)"
                   >
                     <i class="bi bi-trash-fill" style="color: #ffc107"></i>
-                    Delete
+                    <span style="color: #ffc107">Delete</span>
                   </button>
 
                   <button
@@ -185,7 +185,7 @@
     <div
       class="mx-3 mt-3 d-flex justify-content-between"
       style="text-align: right"
-      v-if="getCategory?.length >= 10"
+      v-if="getCategory?.length > 10"
     >
       <div class="d-flex">
         <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
@@ -304,14 +304,14 @@ export default {
     ConfirmationAlert,
   },
   watch: {
-    paginateSiteData(newVal) {
-      if (
-        this.activeIndex !== null &&
-        (this.activeIndex < 0 || this.activeIndex >= newVal.length)
-      ) {
-        this.activeIndex = null;
-      }
-    },
+    // paginateSiteData(newVal) {
+    //   if (
+    //     this.activeIndex !== null &&
+    //     (this.activeIndex < 0 || this.activeIndex >= newVal.length)
+    //   ) {
+    //     this.activeIndex = null;
+    //   }
+    // },
   },
   computed: {
     paginateSiteData() {
@@ -410,7 +410,7 @@ export default {
     },
     changePage(page) {
       this.currentPage = page;
-      this.filterData();
+      this.getDocCAtegories();
     },
     async getDocCAtegories() {
       this.isLoading = true;
@@ -418,11 +418,14 @@ export default {
         const response = await axios.get(
           `${VITE_API_URL}/document_categories`,
           {
+            page: this.currentPage,
             per_page: this.itemsPerPage,
           }
         );
 
         this.getCategory = response.data;
+        this.totalPages = response.data.total_pages || 1;
+        this.totalCount = response.data.total_count || this.getCategory.length;
       } catch (error) {
         // console.error("Error fetching document categories:", error);
       } finally {

@@ -133,7 +133,7 @@
 }
 
 .sidebar-nav .nav-link:hover {
-  color: #fff;
+  color: #fff !important;
 }
 
 .sidebar-nav .nav-link .bi-chevron-down {

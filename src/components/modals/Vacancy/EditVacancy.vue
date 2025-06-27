@@ -6,13 +6,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="editVacancy">Edit Shift</h5>
-            <button
-              type="button"
-              class="custom-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-              @click="blurActiveElement"
-            ></button>
+
             <button
               type="button"
               class="custom-close"
@@ -115,6 +109,7 @@
                           <input
                             type="date"
                             class="form-select w-100"
+                            @focus="forceOpenCalendar"
                             v-model="fetchVacancy.dates[index]"
                           />
                           <span v-if="!isDateValid(date)" class="text-danger">
@@ -567,6 +562,9 @@ export default {
     // },
   },
   methods: {
+    forceOpenCalendar(event) {
+      event.target.showPicker?.();
+    },
     blurActiveElement() {
       if (document.activeElement) {
         document.activeElement.blur();

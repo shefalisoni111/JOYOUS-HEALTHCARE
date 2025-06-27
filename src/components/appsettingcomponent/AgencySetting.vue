@@ -739,4 +739,8 @@ ul.generalsetting li i.rounded-circle a.router-link-active:active {
 .btn-primary {
   border: none;
 }
+.table th,
+.table td {
+  text-align: left;
+}
 </style>

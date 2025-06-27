@@ -647,8 +647,12 @@ export default {
       const token = localStorage.getItem("token");
       this.isLoading = true;
       axios
-        .get(`${VITE_API_URL}/activate_vacancy_list`, {
-          params: { page: this.currentPage, per_page: this.itemsPerPage },
+        .get(`${VITE_API_URL}/vacancies`, {
+          params: {
+            page: this.currentPage,
+            per_page: this.itemsPerPage,
+            status: true,
+          },
           headers: {
             "content-type": "application/json",
             Authorization: "bearer " + token,
@@ -656,7 +660,7 @@ export default {
         })
 
         .then((response) => {
-          this.getVacancyDetail = response.data.vacancies;
+          this.getVacancyDetail = response.data.data;
           this.totalCount = response.data.total_vacancy;
           this.totalPages = response.data.total_pages;
           this.currentPage = response.data.current_page;

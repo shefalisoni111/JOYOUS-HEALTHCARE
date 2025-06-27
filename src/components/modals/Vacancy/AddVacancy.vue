@@ -119,6 +119,7 @@
                           v-model="selectedDate"
                           @change="addDate"
                           :min="minDate"
+                          @focus="forceOpenCalendar"
                           style="padding-right: 1px"
                         />
                         <span v-if="!validationDateType" class="text-danger"
@@ -688,6 +689,9 @@ export default {
     },
   },
   methods: {
+    forceOpenCalendar(event) {
+      event.target.showPicker?.();
+    },
     blurActiveElement() {
       if (document.activeElement) {
         document.activeElement.blur();
@@ -862,24 +866,11 @@ export default {
       this.selectedClientId = this.client_id;
       await this.getSiteAccordingClientMethod();
       await this.getJobTitleMethod();
-      // this.getSiteAccordingClientMethod(selectedClientId);
-      // this.getClientAccordingRatePayFetchMethod(
-      //   this.client_id,
-      //   this.site_id,
-      //   this.job_id
-      // );
     },
     async onSiteSelect() {
       this.selectedDate = this.selectedDate;
       this.selectedSiteId = this.site_id;
       await this.getTimeShift(this.selectedSiteId);
-      // const siteShiftId = await this.getTimeShift(selectedSiteId);
-      // this.getTimeShift(this.selectedSiteId);
-      // this.getClientAccordingRatePayFetchMethod(
-      //   this.client_id,
-      //   selectedSiteId,
-      //   this.job_id
-      // );
     },
     async onJobSelect() {
       // this.getClientAccordingRatePayFetchMethod(
@@ -919,24 +910,6 @@ export default {
       }, 10);
     },
 
-    // addDate() {
-    //   if (this.selectedDate) {
-    //     const currentDate = new Date();
-    //     const selectedDate = new Date(this.selectedDate);
-
-    //     if (selectedDate > currentDate || this.isToday(selectedDate, currentDate)) {
-    //       const formattedDate = selectedDate.toLocaleDateString("en-GB");
-    //       if (!this.dates.includes(formattedDate)) {
-    //         this.dates.push(formattedDate);
-    //       }
-    //       this.selectedDate = "";
-    //       this.clearError();
-    //       this.validationDateType = true;
-    //     } else {
-    //       this.validationDateType = false;
-    //     }
-    //   }
-    // },
     addDate() {
       if (this.selectedDate) {
         const currentDate = new Date();
