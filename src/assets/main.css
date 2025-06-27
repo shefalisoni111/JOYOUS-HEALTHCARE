@@ -224,7 +224,7 @@ ul.navbar-nav li a span.badge {
   position: absolute;
   top: 17px;
   left: -25px;
-
+  z-index: 1;
   background-color: #fff;
 }
 .action-menu .btn:hover {

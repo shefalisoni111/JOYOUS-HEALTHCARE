@@ -150,7 +150,7 @@
               </td> -->
             <td class="widthDefineNotes" v-text="data.notes"></td>
             <td v-text="data.status"></td>
-            <td>
+            <td style="width: 10%">
               <div class="action-wrapper">
                 <i class="bi bi-three-dots dot-icon"></i>
 

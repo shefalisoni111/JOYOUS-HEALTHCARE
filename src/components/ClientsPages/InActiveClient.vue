@@ -161,7 +161,7 @@
                 >{{ client.activated ? "Active" : "No Account" }}</span
               >
             </td>
-            <td class="cursor-pointer">
+            <td class="cursor-pointer" style="width: 10%">
               <div class="action-wrapper">
                 <i class="bi bi-three-dots dot-icon"></i>
 
