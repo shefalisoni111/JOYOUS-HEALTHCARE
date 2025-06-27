@@ -7,7 +7,13 @@
         </div>
         <div class="modal-footer">
           <button @click="cancel" class="btn btn-secondary">Cancel</button>
-          <button @click="confirm" class="btn btn-primary">Ok</button>
+          <button
+            @click="confirm"
+            class="btn btn-md"
+            style="background-color: #f9944b; color: #fff"
+          >
+            Ok
+          </button>
         </div>
       </div>
     </div>
