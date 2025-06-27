@@ -38,7 +38,7 @@
                 </button>
               </li>
               &nbsp;&nbsp;
-              <li class="nav-item" role="presentation">
+              <!-- <li class="nav-item" role="presentation">
                 <button
                   class="nav-link position-relative"
                   id="pills-unread-tab"
@@ -51,7 +51,7 @@
                 >
                   Unread
                 </button>
-              </li>
+              </li> -->
             </ul>
             <div class="tab-content pt-2 ps-0" id="pills-tabContent ">
               <div

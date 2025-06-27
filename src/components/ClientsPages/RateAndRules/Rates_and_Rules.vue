@@ -290,7 +290,7 @@
                               <div
                                 class="d-flex justify-content-center align-items-center gap-1"
                               >
-                                Shift Type<br />Start-End Time
+                                Shift Time
                                 <img
                                   src="../../../assets/ArrowDown.png"
                                   class="img-fluid pe-2"
@@ -756,7 +756,7 @@
                               />
                             </th>
                             <th scope="col">
-                              Shift Type<br />Start-End Time
+                              Shift Time
                               <img
                                 src="../../../assets/ArrowDown.png"
                                 class="img-fluid pe-2"

@@ -235,7 +235,7 @@
                           </div>
                         </div>
                         <!-- <h6>Mobile : {{ getSiteDatas.phone_number }}</h6> -->
-                        <h6 class="text-capitalize">
+                        <h6 class="text-capitalize mt-3">
                           Contact person's name:
                           {{
                             getSiteDatas.contact_person_name
