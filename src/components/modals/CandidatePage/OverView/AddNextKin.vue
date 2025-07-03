@@ -53,16 +53,16 @@
                           @input="cleanAndValidatePhoneNumber"
                           @focus="touched.phone_number = true"
                           @blur="touched.phone_number = true"
-                          pattern="[0-9]*"
+                          pattern="[0-11]*"
                         />
-                        <span
+                        <!-- <span
                           v-if="
                             touched.phone_number &&
                             !cleanAndValidatePhoneNumber()
                           "
                           class="text-danger"
                           >Required Phone Number</span
-                        >
+                        > -->
                         <span
                           v-if="
                             touched.phone_number &&
@@ -213,6 +213,7 @@
               data-bs-target="#addNextToKin"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
+              v-on:click="clearFieldsData"
             >
               Cancel
             </button>
@@ -274,6 +275,20 @@ export default {
     },
   },
   methods: {
+    clearFieldsData() {
+      setTimeout(() => {
+        this.name = "";
+        this.phone_number = "";
+        this.relation = "";
+        this.address_line_1 = "";
+        this.address_line_2 = "";
+        this.city = "";
+        this.validateForm();
+      }, 10);
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+    },
     blurActiveElement() {
       if (document.activeElement) {
         document.activeElement.blur();

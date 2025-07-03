@@ -360,22 +360,41 @@ export default {
     },
 
     async rejectCandidateMethod(id) {
-      this.confirmMessage = "Are you sure want to Reject this Staff?";
-      this.isModalVisible = true;
-      this.confirmCallback = async () => {
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to reject this staff?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, reject it!",
+        cancelButtonText: "Cancel",
+      });
+
+      if (result.isConfirmed) {
         try {
           const response = await axios.put(
             `${VITE_API_URL}/candidate/reject_candidate/${id}`
           );
-          // console.log("Response after approval:", response);
 
-          this.fetchPendingCandidates();
-          // alert("reject staff successful");
+          await this.fetchPendingCandidates();
+
+          await Swal.fire({
+            title: "Rejected!",
+            text: response?.data?.message,
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false,
+          });
         } catch (error) {
-          // console.error("Error approving candidate:", error);
+          await Swal.fire({
+            title: "Error",
+            text:
+              error.response?.data?.message || "Failed to reject the staff.",
+            icon: "error",
+          });
         }
-        this.isModalVisible = false;
-      };
+      }
     },
   },
   created() {

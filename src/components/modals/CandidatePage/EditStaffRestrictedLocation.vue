@@ -79,6 +79,7 @@
                 data-bs-target="#editRestrictedLocation"
                 data-bs-toggle="modal"
                 data-bs-dismiss="modal"
+                @click="clearFieldsData"
               >
                 Cancel
               </button>
@@ -166,6 +167,14 @@ export default {
       if (document.activeElement) {
         document.activeElement.blur();
       }
+    },
+    clearFieldsData() {
+      setTimeout(() => {
+        this.site_id = "";
+
+        this.client_id = "";
+      }, 3);
+      this.blurActiveElement();
     },
     async getClientMethod() {
       try {

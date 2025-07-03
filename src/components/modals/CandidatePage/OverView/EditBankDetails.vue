@@ -120,17 +120,23 @@ export default {
   components: { SuccessAlert },
   computed: {
     isBankNumberValid() {
-      const bankNumberLength = this.fetchCandidate.bank_number.length;
-      return bankNumberLength >= 8 && bankNumberLength <= 15;
+      const bankNumberLength = this.fetchCandidate.bank_number;
+      return (
+        bankNumberLength &&
+        bankNumberLength.length >= 8 &&
+        bankNumberLength.length <= 15
+      );
     },
     isBankNameValid() {
       const bankName = this.fetchCandidate.bank_name;
+      if (!bankName) return false;
       const isAlphabetic = /^[A-Za-z\s]*$/.test(bankName);
       const isLengthValid = bankName.length <= 50;
       return isAlphabetic && isLengthValid;
     },
     isIfscCodeValid() {
       const ifscCode = this.fetchCandidate.ifsc_code;
+      if (!ifscCode) return false;
       const isLengthValid = ifscCode.length <= 15;
       const isAlphanumeric = /^[A-Za-z0-9]*$/.test(ifscCode);
       return isLengthValid && isAlphanumeric;
@@ -144,6 +150,7 @@ export default {
     },
     resetChanges() {
       this.fetchCandidate = { ...this.originalData };
+      this.blurActiveElement();
     },
     cleanAndValidateBankNumber() {
       this.fetchCandidate.bank_number = this.fetchCandidate.bank_number.replace(

@@ -729,6 +729,9 @@ export default {
   text-align: center;
   cursor: pointer;
 }
+.bg-orange {
+  background-color: orange !important;
+}
 .candidateTable,
 .empty-day,
 .calendar-day {

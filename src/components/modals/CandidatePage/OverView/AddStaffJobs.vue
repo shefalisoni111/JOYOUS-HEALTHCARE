@@ -93,6 +93,7 @@ export default {
         option.checked = this.fetchStaffJobs.job_ids.includes(option.id);
       });
       this.job_ids = [...this.fetchStaffJobs.job_ids];
+      this.blurActiveElement();
     },
     toggleJobsSelection() {
       this.job_ids = this.options

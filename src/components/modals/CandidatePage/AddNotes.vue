@@ -83,6 +83,7 @@ export default {
       setTimeout(() => {
         this.notes = "";
       }, 10);
+      this.blurActiveElement();
     },
     submitForm() {
       if (this.isValidForm) {

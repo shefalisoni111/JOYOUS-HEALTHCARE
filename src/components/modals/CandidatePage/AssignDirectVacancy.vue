@@ -204,6 +204,7 @@
               data-bs-target="#assignDirectVacancy"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
+              @click="clearFieldsData"
             >
               Close
             </button>
@@ -273,6 +274,9 @@ export default {
       if (document.activeElement) {
         document.activeElement.blur();
       }
+    },
+    clearFieldsData() {
+      this.blurActiveElement();
     },
     debounceSearch() {
       clearTimeout(this.debounceTimeout);

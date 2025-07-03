@@ -117,6 +117,7 @@
               data-bs-target="#editNextToKin"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
+              v-on:click="clearFieldsData"
             >
               Cancel
             </button>
@@ -181,6 +182,18 @@ export default {
       if (document.activeElement) {
         document.activeElement.blur();
       }
+    },
+    clearFieldsData() {
+      setTimeout(() => {
+        this.name = "";
+        this.phone_number = "";
+        this.relation = "";
+        this.address_line_1 = "";
+        this.address_line_2 = "";
+        this.city = "";
+        this.postcode = "";
+      }, 10);
+      this.blurActiveElement();
     },
     cleanAndValidatePhoneNumber() {
       this.fetchNExtToKinData.phone_number =

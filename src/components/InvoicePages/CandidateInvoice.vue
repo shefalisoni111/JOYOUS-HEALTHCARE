@@ -138,7 +138,7 @@
                           data-bs-target="#staffGenerateCsv"
                           data-bs-whatever="@mdo"
                           style="
-                            background: #fdb912;
+                            background: #f9944b;
                             border-radius: 10px;
                             color: #fff;
                           "
@@ -335,7 +335,10 @@
                                     unlocked: !data.invoice_lock,
                                   }"
                                 />
-                                <div class="slider round"></div>
+                                <div
+                                  class="slider round"
+                                  style="margin-top: 0px"
+                                ></div>
                               </label>
                             </td>
                             <td scope="col">Auto Generated</td>

@@ -90,7 +90,8 @@
                         v-model="email"
                         @input="validateEmailFormat"
                         @change="detectAutofill"
-                        autocomplete="new-email"
+                        autocomplete="off"
+                        name="email"
                       />
                       <span
                         v-if="

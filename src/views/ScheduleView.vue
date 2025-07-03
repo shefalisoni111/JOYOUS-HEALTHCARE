@@ -271,7 +271,7 @@
             </div>
             <div class="sidebar-container scheduleTable">
               <div class="sidebar-content" :class="{ 'slide-left': isOpen }">
-                <div class="table-container">
+                <div class="table-container table-responsive">
                   <table class="table" v-if="!searchQuery">
                     <thead>
                       <tr>

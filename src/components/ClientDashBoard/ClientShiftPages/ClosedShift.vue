@@ -109,7 +109,7 @@
               <td scope="col">{{ data.assigned }}</td>
               <td scope="col">
                 <i
-                  class="bi bi-trash cursor-pointer btn btn-outline-danger text-nowrap"
+                  class="bi bi-trash border-0 border-0 cursor-pointer btn btn-outline-danger text-nowrap"
                   v-on:click="confirmed(data.id)"
                 ></i>
               </td>

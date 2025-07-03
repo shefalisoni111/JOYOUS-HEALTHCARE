@@ -145,6 +145,7 @@
                     data-bs-target="#editBankDetailsOverview"
                     data-bs-whatever="@mdo"
                     type="button"
+                    @click="handleBankDetailEdit()"
                   >
                     <i class="bi bi-pencil-fill"></i>
                   </button>
@@ -710,17 +711,17 @@ export default {
   methods: {
     getBgStyle(index) {
       const bgColors = [
-        "#F9944B14", // 0 - light orange
-        "#34C7591A", // 1 - light green
-        "#FF2D551A", // 2 - light red
-        "#32ADE61A", // 3 - light teal
-        "#007AFF14", // 4 - light blue
-        "#5856D614", // 5 - light purple
-        "#AF52DE1A", // 6 - light violet
-        "#A2845E14", // 7 - light brown
-        "#30B0C714", // 8 - light cyan
-        "#FF3B3014", // 9 - light coral
-        "#FFD60A14", // 10 - light yellow
+        "#F9944B14",
+        "#34C7591A",
+        "#FF2D551A",
+        "#32ADE61A",
+        "#007AFF14",
+        "#5856D614",
+        "#AF52DE1A",
+        "#A2845E14",
+        "#30B0C714",
+        "#FF3B3014",
+        "#FFD60A14",
       ];
 
       return {
@@ -730,17 +731,17 @@ export default {
 
     getIconStyle(index) {
       const iconColors = [
-        "#F9944B", // 0 - orange
-        "#34C759", // 1 - green
-        "#FF2D55", // 2 - red
-        "#32ADE6", // 3 - teal
-        "#007AFF", // 4 - blue
-        "#5856D6", // 5 - purple
-        "#AF52DE", // 6 - violet
-        "#A2845E", // 7 - brown
-        "#30B0C7", // 8 - cyan
-        "#FF3B30", // 9 - coral
-        "#FFD60A", // 10 - yellow
+        "#F9944B",
+        "#34C759",
+        "#FF2D55",
+        "#32ADE6",
+        "#007AFF",
+        "#5856D6",
+        "#AF52DE",
+        "#A2845E",
+        "#30B0C7",
+        "#FF3B30",
+        "#FFD60A",
       ];
 
       return {
@@ -760,9 +761,9 @@ export default {
     handleOverViewEdit() {
       this.$refs.overviewEdit.getEmployeeTypeData();
     },
-    // handleBankDetailEdit(){
-    //   this.$refs.editBankDetail.getEmployeeTypeData();
-    // },
+    handleBankDetailEdit() {
+      this.$refs.editBankDetail.fetchCandidateOverviewMethod();
+    },
     nextKinEdit(nextKinID) {
       this.selectedNextKinId = nextKinID;
     },
@@ -864,8 +865,9 @@ export default {
         //   this.getNextToKin = response.data;
         // } else {
         // }
-        if (response.data && response.data.length > 0) {
-          this.getNextToKin = response.data;
+        if (response.status === 200) {
+          this.getNextToKin = [response.data.data];
+
           this.noDataMessage = "";
         } else {
           this.getNextToKin = [];
@@ -898,11 +900,11 @@ export default {
   },
 
   async beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      vm.this.getCandidateMethod();
-      vm.this.getCandidateWorkExperienceMethod();
-      vm.this.getCandidateEducationMethod();
-      vm.this.getCandidateNextToKineMethod();
+    next(async (vm) => {
+      await vm.this.getCandidateMethod();
+      await vm.this.getCandidateWorkExperienceMethod();
+      await vm.this.getCandidateEducationMethod();
+      await vm.this.getCandidateNextToKineMethod();
     });
   },
   async beforeRouteUpdate(to, from, next) {
@@ -1011,14 +1013,6 @@ table th {
   border: none;
 }
 
-.nav-pills .nav-link.active,
-.nav-pills .show > .nav-link {
-  color: #ff5722;
-
-  border-bottom: 3px solid #ff5722;
-  border-radius: 0px;
-  background-color: transparent;
-}
 .nav-pills .nav-link {
   color: grey;
 }

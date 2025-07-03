@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="container-fluid p-0 bg-define">
-      <div class="pagetitle d-flex justify-content-between align-items-center p-2">
+      <div
+        class="pagetitle d-flex justify-content-between align-items-center p-2"
+      >
         <div class="d-flex justify-content-around gap-2"></div>
 
         <div></div>
@@ -35,58 +37,155 @@
             <table class="table candidateTable">
               <thead>
                 <tr>
-                  <th scope="col">S.No</th>
-                  <th scope="col">Site</th>
-                  <th scope="col">Position</th>
-                  <th scope="col">Day</th>
-                  <th scope="col">Employment Type</th>
-                  <th scope="col" style="width: 180px">Shift Type</th>
-                  <th scope="col">Staff Rate</th>
-                  <th scope="col">Last Update</th>
-                  <th scope="col">Action</th>
+                  <th scope="col">
+                    S.No
+                    <img
+                      src="../../../assets/ArrowDown.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
+                  </th>
+                  <th scope="col">
+                    Site
+                    <img
+                      src="../../../assets/ArrowDown.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
+                  </th>
+                  <th scope="col">
+                    Position
+                    <img
+                      src="../../../assets/ArrowDown.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
+                  </th>
+                  <th scope="col">
+                    Day
+                    <img
+                      src="../../../assets/ArrowDown.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
+                  </th>
+                  <th scope="col">
+                    Employment Type
+                    <img
+                      src="../../../assets/ArrowDown.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
+                  </th>
+                  <th scope="col" style="width: 180px">
+                    Shift Type
+                    <img
+                      src="../../../assets/ArrowDown.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
+                  </th>
+                  <th scope="col">
+                    Staff Rate
+                    <img
+                      src="../../../assets/ArrowDown.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
+                  </th>
+                  <th scope="col">
+                    Last Update
+                    <img
+                      src="../../../assets/ArrowDown.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
+                  </th>
+                  <th scope="col">
+                    Action
+                    <img
+                      src="../../../assets/ArrowDown.png"
+                      class="img-fluid pe-2"
+                      alt="RecPal"
+                      loading="eager"
+                    />
+                  </th>
                 </tr>
               </thead>
               <tbody v-if="getRateCard?.length > 0">
-                <tr v-for="(getrate, index) in getRateCard" :key="index">
+                <tr
+                  v-for="(getrate, index) in getRateCard"
+                  :key="index"
+                  @mouseenter="hoverRow = index"
+                  @mouseleave="hoverRow = null"
+                >
                   <td scope="row">
                     <div class="form-check">
                       {{ index + 1 }}
-                      <input
+                      <!-- <input
                         class="form-check-input"
                         type="checkbox"
                         value=""
                         id="flexCheckDefault"
-                      />
+                      /> -->
                     </div>
                   </td>
 
                   <td>{{ getrate.site?.name || "Null" }}</td>
                   <td>{{ getrate.position?.name }}</td>
-                  <td class="text-capitalize">{{ getrate.weekname || "Null" }}</td>
+                  <td class="text-capitalize">
+                    {{ getrate.weekname || "Null" }}
+                  </td>
                   <td>{{ getrate.employment_type?.title || "Null" }}</td>
                   <td>{{ getrate.site_shift?.shift || "Null" }}</td>
                   <td>{{ getrate.staff_rate || "Null" }}</td>
                   <td>{{ getrate.last_updated || "Null" }}</td>
                   <td class="cursor-pointer d-flex">
-                    <i
-                      class="bi bi-trash border-0 border-03 cursor-pointer btn btn-outline-success text-nowrap"
-                      v-on:click="rateCardDelete(getrate.id)"
-                    ></i>
-                    &nbsp;&nbsp;
-                    <i
-                      class="bi bi-pencil-square cursor-pointer btn btn-outline-success text-nowrap"
-                      type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#editRateCard"
-                      data-bs-whatever="@mdo"
-                      @click="editRateCard(getrate.id)"
-                    ></i>
+                    <div class="action-wrapper">
+                      <i class="bi bi-three-dots dot-icon"></i>
+
+                      <div v-if="hoverRow === index" class="action-menu">
+                        <div class="d-flex">
+                          <i
+                            class="bi bi-trash border-0 border-03 cursor-pointer text-nowrap"
+                            v-on:click="rateCardDelete(getrate.id)"
+                            style="color: #f9944b"
+                          ></i>
+                          &nbsp; <span>Delete</span>
+                        </div>
+
+                        <div class="d-flex">
+                          <i
+                            class="bi bi-pencil cursor-pointer text-nowrap"
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editRateCard"
+                            data-bs-whatever="@mdo"
+                            style="color: #f9944b"
+                            @click="editRateCard(getrate.id)"
+                          ></i>
+                          &nbsp; Edit
+                        </div>
+                      </div>
+                    </div>
                   </td>
                 </tr>
               </tbody>
               <tbody v-else>
                 <tr>
-                  <td colspan="9" class="text-center text-danger" v-if="!isLoading">
+                  <td
+                    colspan="9"
+                    class="text-center text-danger"
+                    v-if="!isLoading"
+                  >
                     {{ "Data Not Found!" }}
                   </td>
                 </tr>
@@ -135,10 +234,17 @@ export default {
       isModalVisible: false,
       confirmMessage: "",
       confirmCallback: null,
+      hoverRow: null,
       getCandidates: [],
     };
   },
-  components: { AddRateCard, EditRateCard, Loader, ConfirmationAlert, SuccessAlert },
+  components: {
+    AddRateCard,
+    EditRateCard,
+    Loader,
+    ConfirmationAlert,
+    SuccessAlert,
+  },
   watch: {
     selectedRateCardId(newValue, oldValue) {
       if (newValue !== oldValue) {
@@ -167,9 +273,9 @@ export default {
 
     handleRateCardAdded() {
       this.$refs.addRateCard.getEmployeeTypeData();
-      setTimeout(() => {
-        this.$refs.addRateCard.getJobTitleMethod();
-      }, 100);
+      // setTimeout(() => {
+      //   this.$refs.addRateCard.getJobTitleMethod();
+      // }, 100);
 
       setTimeout(() => {
         this.$refs.addRateCard.getClientMethod();
@@ -219,7 +325,9 @@ export default {
     async showRateCardMethod() {
       this.isLoading = true;
       await axios
-        .get(`${VITE_API_URL}/candidate_rate_card_list/${this.$route.params.id}`)
+        .get(
+          `${VITE_API_URL}/candidate_rate_card_list/${this.$route.params.id}`
+        )
         .then((response) => (this.getRateCard = response.data))
         .catch((error) => {
           if (error.response) {

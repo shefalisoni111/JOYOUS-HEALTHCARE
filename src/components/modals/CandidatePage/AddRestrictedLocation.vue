@@ -161,6 +161,7 @@ export default {
       setTimeout(() => {
         this.clearError();
       }, 10);
+      this.blurActiveElement();
     },
     async getClientMethod() {
       try {

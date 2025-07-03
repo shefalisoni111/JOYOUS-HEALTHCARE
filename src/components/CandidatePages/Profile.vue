@@ -64,7 +64,9 @@
             <li
               class="nav-item d-lg-inline-flex gap-4 d-in"
               role="presentation"
-              style="border-bottom: 1px solid #ddd"
+              :style="{
+                borderBottom: activeTab === index ? 'none' : '1px solid #ddd',
+              }"
             >
               <button
                 class="nav-link px-0 btn-css"
@@ -115,7 +117,17 @@
             <div class="card profile position-relative">
               <h6
                 class="position-absolute p-2 z-1 text-white text-capitalize tag"
-                style="background: #68a325; margin-left: -7px"
+                :style="{
+                  background:
+                    getCandidates.status === 'approved'
+                      ? '#68a325'
+                      : getCandidates.status === 'rejected'
+                      ? '#dc3545'
+                      : getCandidates.status === 'pending'
+                      ? '#ffc107'
+                      : '#6c757d',
+                  marginLeft: '-7px',
+                }"
               >
                 {{
                   getCandidates.status === "approved"
@@ -533,7 +545,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 h6.tag:after {
   content: " ";
   position: absolute;
@@ -620,8 +632,7 @@ table th {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   color: #ff5722;
-
-  border-bottom: 2px solid #ff5722;
+  border: none;
   border-radius: 0px;
   background-color: transparent;
 }

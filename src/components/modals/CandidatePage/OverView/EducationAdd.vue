@@ -60,6 +60,7 @@
               data-bs-target="#addEducation"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
+              v-on:click="clearFieldsData"
             >
               Cancel
             </button>
@@ -107,6 +108,14 @@ export default {
       if (document.activeElement) {
         document.activeElement.blur();
       }
+    },
+    clearFieldsData() {
+      setTimeout(() => {
+        this.title = "";
+
+        this.description = "";
+      }, 10);
+      this.blurActiveElement();
     },
     clearError(fieldName) {
       this.$set(this.errors, fieldName, null);

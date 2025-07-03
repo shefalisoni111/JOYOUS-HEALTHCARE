@@ -110,6 +110,7 @@
               data-bs-target="#editCandidate"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
+              @click="clearFieldsData"
             >
               Cancel
             </button>
@@ -195,6 +196,23 @@ export default {
         document.activeElement.blur();
       }
     },
+    clearFieldsData() {
+      setTimeout(() => {
+        this.id = "";
+        this.first_name = "";
+        this.last_name = "";
+        this.password = "";
+        this.confirm_password = "";
+        this.address = "";
+        this.job_id = 1;
+        this.phone_number = "";
+        this.email = "";
+        this.activated = "";
+        this.employment_type_id = "";
+      }, 3);
+      this.blurActiveElement();
+    },
+
     async getJobTitleMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/active_job_list`);

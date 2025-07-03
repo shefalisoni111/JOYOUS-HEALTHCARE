@@ -19,125 +19,143 @@
           <div class="modal-body mx-3">
             <div class="row align-items-center">
               <form>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label" for="selectBusinessUnitIds"
-                      >Site</label
-                    >
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label" for="selectBusinessUnitIds"
+                          >Site</label
+                        >
+                      </div>
+                      <div class="col-12 mt-1">
+                        <select
+                          v-model="fetchRateCard.site_id"
+                          id="selectBusinessUnitIds"
+                        >
+                          <option
+                            v-for="option in businessUnit"
+                            :key="option.id"
+                            :value="option.id"
+                          >
+                            {{ option.site_name }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-12 mt-1">
-                    <select
-                      v-model="fetchRateCard.site_id"
-                      id="selectBusinessUnitIds"
-                    >
-                      <option
-                        v-for="option in businessUnit"
-                        :key="option.id"
-                        :value="option.id"
-                      >
-                        {{ option.site_name }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label" for="selectRatCardJob"
-                      >Position</label
-                    >
-                  </div>
-                  <div class="col-12 mt-1">
-                    <select
-                      v-model="fetchRateCard.job_id"
-                      id="selectRatCardJob"
-                    >
-                      <option
-                        v-for="option in options"
-                        :key="option.id"
-                        :value="option.id"
-                      >
-                        {{ option.name }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Day</label>
-                  </div>
-                  <div class="col-12 mt-1">
-                    <select
-                      class="form-select"
-                      aria-label="Default select example"
-                      v-model="fetchRateCard.weekname"
-                    >
-                      <option
-                        v-for="day in daysOfWeek"
-                        :key="day"
-                        :value="day"
-                        :selected="fetchRateCard.weekname == day"
-                      >
-                        {{ day }}
-                      </option>
-                    </select>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label" for="selectRatCardJob"
+                          >Position</label
+                        >
+                      </div>
+                      <div class="col-12 mt-1">
+                        <select
+                          v-model="fetchRateCard.job_id"
+                          id="selectRatCardJob"
+                        >
+                          <option
+                            v-for="option in options"
+                            :key="option.id"
+                            :value="option.id"
+                          >
+                            {{ option.name }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label" for="selectEmployeeType"
-                      >Employment Type</label
-                    >
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Day</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <select
+                          class="form-select"
+                          aria-label="Default select example"
+                          v-model="fetchRateCard.weekname"
+                        >
+                          <option
+                            v-for="day in daysOfWeek"
+                            :key="day"
+                            :value="day"
+                            :selected="fetchRateCard.weekname == day"
+                          >
+                            {{ day }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-12 mt-1">
-                    <select
-                      v-model="fetchRateCard.employment_type_id"
-                      id="selectEmployeeType"
-                    >
-                      <option
-                        v-for="option in employeeData"
-                        :key="option.id"
-                        :value="option.id"
-                        aria-placeholder="Select Job"
-                      >
-                        {{ option.title }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label" for="selectShiftsIds"
-                      >Shift Type</label
-                    >
-                  </div>
-
-                  <div class="col-12 mt-1">
-                    <select
-                      v-model="fetchRateCard.site_shift_id"
-                      id="selectShiftsIds"
-                    >
-                      <option
-                        v-for="option in shiftsTime"
-                        :key="option.id"
-                        :value="option.id"
-                        aria-placeholder="Select Job"
-                      >
-                        {{ option.shift_name }}
-                      </option>
-                    </select>
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label" for="selectEmployeeType"
+                          >Employment Type</label
+                        >
+                      </div>
+                      <div class="col-12 mt-1">
+                        <select
+                          v-model="fetchRateCard.employment_type_id"
+                          id="selectEmployeeType"
+                        >
+                          <option
+                            v-for="option in employeeData"
+                            :key="option.id"
+                            :value="option.id"
+                            aria-placeholder="Select Job"
+                          >
+                            {{ option.title }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div class="mb-3">
-                  <div class="col-12">
-                    <label class="form-label">Staff Rate</label>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label" for="selectShiftsIds"
+                          >Shift Type</label
+                        >
+                      </div>
+
+                      <div class="col-12 mt-1">
+                        <select
+                          v-model="fetchRateCard.site_shift_id"
+                          id="selectShiftsIds"
+                        >
+                          <option
+                            v-for="option in shiftsTime"
+                            :key="option.id"
+                            :value="option.id"
+                            aria-placeholder="Select Job"
+                          >
+                            {{ option.shift_name }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-12 mt-1">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="fetchRateCard.staff_rate"
-                    />
+                  <div class="col-6">
+                    <div class="mb-3">
+                      <div class="col-12">
+                        <label class="form-label">Staff Rate</label>
+                      </div>
+                      <div class="col-12 mt-1">
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="fetchRateCard.staff_rate"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </form>
@@ -396,6 +414,7 @@ select {
   border: none;
   padding: 9px;
   border-radius: 4px;
+  border: 1px solid #ddd !important;
 }
 
 #head {

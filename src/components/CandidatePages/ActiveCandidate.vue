@@ -171,7 +171,7 @@
                       class="btn text-nowrap border-0"
                       v-on:click="confirmed(candidate.id)"
                     >
-                      InActivate
+                      InActive
                     </button>
 
                     <!-- <router-link

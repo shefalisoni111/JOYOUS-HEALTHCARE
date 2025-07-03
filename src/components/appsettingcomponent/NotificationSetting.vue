@@ -2,73 +2,106 @@
   <div>
     <!-- <Navbar /> -->
 
-    <div id="main" class="main">
-      <div class="row">
-        <div class="col-md-1"><Sidebar /></div>
-        <div class="col-md-3 p-3 bg-white borderight">
-          <div class="leftside">
-            <div class="heading mb-3 position-relative">
-              <p class="bforeline"></p>
-              <p class="mb-0 text-uppercase fw-bold genSetting">notifications Settings</p>
-              <p class="afterline"></p>
-            </div>
-            <div>
-              <ul class="list-unstyled text-capitalize generalsetting px-3">
-                <li class="list-items d-flex mt-2">
-                  <i class="bi bi-envelope rounded-circle"></i>
-                  <router-link to="/email" class="text-decoration-none">
-                    <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize">Email</h6>
-                      <p class="text-capitalize mb-0">modify email integeration</p>
-                    </div>
-                  </router-link>
-                </li>
-                <li class="list-items d-flex mt-2">
-                  <i class="bi bi-chat-dots rounded-circle"></i>
-                  <router-link
-                    to="/appsetting/notificationsetting/sms"
-                    class="text-decoration-none"
-                  >
-                    <div class="job ms-2">
-                      <h6 class="mb-0 text-uppercase">sms</h6>
-                      <p class="text-capitalize mb-0">
-                        modify & integeration SMS messages
-                      </p>
-                    </div>
-                  </router-link>
-                </li>
-                <li class="list-items d-flex mt-2">
-                  <i class="bi bi-phone rounded-circle"></i>
-                  <router-link
-                    to="/appsetting/notificationsetting/pushnotification"
-                    class="text-decoration-none"
-                  >
-                    <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize">push notification</h6>
-                      <p class="text-capitalize mb-0">add & edit push</p>
-                    </div>
-                  </router-link>
-                </li>
-                <li class="list-items d-flex mt-2">
-                  <i class="bi bi-stopwatch rounded-circle"></i>
-                  <router-link
-                    to="/appsetting/notificationsetting/notificationalert"
-                    class="text-decoration-none"
-                  >
-                    <div class="job ms-2">
-                      <h6 class="mb-0 text-capitalize">notification alerts</h6>
-                      <p class="text-capitalize mb-0">modify shift & vacancy alerts</p>
-                    </div>
-                  </router-link>
-                </li>
-              </ul>
-            </div>
+    <div id="main" class="main d-flex">
+      <div
+        class=""
+        style="
+          background: #fff;
+
+          border-radius: 20px;
+        "
+      >
+        <Navbar />
+      </div>
+      <div class="container-fluid px-5" style="background: rgb(82 74 74 / 6%)">
+        <div class="col-10 pt-4">
+          <div class="col-12">
+            <ol class="breadcrumb mb-1 mt-2">
+              <li class="breadcrumb-item active">
+                <a
+                  class="nav-link d-inline fs-4 fw-bolder"
+                  style="color: #000000"
+                  >App Settings</a
+                >
+              </li>
+            </ol>
           </div>
         </div>
-        <div class="col-md-8 mt-3">
-          <div class="col-12 bg-white"></div>
+        <div class="row mt-4">
+          <div class="col-md-1"><Sidebar /></div>
+          <div class="col-md-3 p-3 bg-white borderight">
+            <div class="leftside">
+              <div class="heading mb-3 position-relative">
+                <p class="bforeline"></p>
+                <p class="mb-0 text-uppercase fw-bold genSetting">
+                  notifications Settings
+                </p>
+                <p class="afterline"></p>
+              </div>
+              <div>
+                <ul class="list-unstyled text-capitalize generalsetting px-3">
+                  <li class="list-items d-flex mt-2">
+                    <i class="bi bi-envelope rounded-circle"></i>
+                    <router-link to="/email" class="text-decoration-none">
+                      <div class="job ms-2">
+                        <h6 class="mb-0 text-capitalize">Email</h6>
+                        <p class="text-capitalize mb-0">
+                          modify email integeration
+                        </p>
+                      </div>
+                    </router-link>
+                  </li>
+                  <li class="list-items d-flex mt-2">
+                    <i class="bi bi-chat-dots rounded-circle"></i>
+                    <router-link
+                      to="/appsetting/notificationsetting/sms"
+                      class="text-decoration-none"
+                    >
+                      <div class="job ms-2">
+                        <h6 class="mb-0 text-uppercase">sms</h6>
+                        <p class="text-capitalize mb-0">
+                          modify & integeration SMS messages
+                        </p>
+                      </div>
+                    </router-link>
+                  </li>
+                  <li class="list-items d-flex mt-2">
+                    <i class="bi bi-phone rounded-circle"></i>
+                    <router-link
+                      to="/appsetting/notificationsetting/pushnotification"
+                      class="text-decoration-none"
+                    >
+                      <div class="job ms-2">
+                        <h6 class="mb-0 text-capitalize">push notification</h6>
+                        <p class="text-capitalize mb-0">add & edit push</p>
+                      </div>
+                    </router-link>
+                  </li>
+                  <li class="list-items d-flex mt-2">
+                    <i class="bi bi-stopwatch rounded-circle"></i>
+                    <router-link
+                      to="/appsetting/notificationsetting/notificationalert"
+                      class="text-decoration-none"
+                    >
+                      <div class="job ms-2">
+                        <h6 class="mb-0 text-capitalize">
+                          notification alerts
+                        </h6>
+                        <p class="text-capitalize mb-0">
+                          modify shift & vacancy alerts
+                        </p>
+                      </div>
+                    </router-link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-8 mt-3">
+            <div class="col-12 bg-white"></div>
 
-          <router-view />
+            <router-view />
+          </div>
         </div>
       </div>
     </div>
@@ -76,20 +109,17 @@
 </template>
 
 <script>
-// import Navbar from "../Navbar.vue";
+import Navbar from "../Navbar.vue";
 import Sidebar from "../Sidebar.vue";
 
 export default {
   components: {
-    // Navbar,
+    Navbar,
     Sidebar,
   },
 };
 </script>
 <style scoped>
-#main {
-  padding-top: 65px;
-}
 .pagetitle {
   margin-bottom: 10px;
   background-color: #fff;

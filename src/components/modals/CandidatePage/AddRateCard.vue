@@ -21,9 +21,7 @@
                   <div class="col-6">
                     <div class="mb-3">
                       <div class="col-12">
-                        <label for="selectClients" class="form-label"
-                          >Client</label
-                        >
+                        <label for="selectClients" class="form-label">Client</label>
                       </div>
                       <div class="col-12">
                         <select
@@ -41,9 +39,7 @@
                             {{ option.client_name }}
                           </option>
                         </select>
-                        <span
-                          v-if="!validationSelectedClient"
-                          class="text-danger"
+                        <span v-if="!validationSelectedClient" class="text-danger"
                           >Client Required</span
                         >
                       </div>
@@ -52,9 +48,7 @@
                   <div class="col-6">
                     <div class="mb-3">
                       <div class="col-12">
-                        <label class="form-label" for="selectBusinessUnit"
-                          >Site</label
-                        >
+                        <label class="form-label" for="selectBusinessUnit">Site</label>
                       </div>
                       <div class="col-12">
                         <select
@@ -64,8 +58,9 @@
                         >
                           <option
                             v-for="option in businessUnit"
-                            :key="option.id"
-                            :value="option.id"
+                            :key="option.site_id"
+                            :value="option.site_id"
+                            :id="option.site_id"
                             placeholder="Select BusinessUnit"
                           >
                             {{ option.site_name }}
@@ -85,13 +80,14 @@
                         <label class="form-label">Position</label>
                       </div>
                       <div class="col-12">
-                        <select v-model="job_id">
+                        <select v-model="job_id" @change="onJobTitleChange">
                           <option
-                            v-for="option in selectedJobNames"
-                            :key="option.id"
-                            :value="option.id"
+                            v-for="option in options"
+                            :key="option.job_id"
+                            :value="option.job_id"
+                            :id="option.job_id"
                           >
-                            {{ option.name }}
+                            {{ option.job_name }}
                           </option>
                         </select>
                         <span v-if="!validationPosition" class="text-danger"
@@ -135,11 +131,7 @@
                         >
                       </div>
                       <div class="col-12">
-                        <select
-                          v-model="employment_type_id"
-                          id="selectEmployee"
-                          disabled
-                        >
+                        <select v-model="employment_type_id" id="selectEmployee" disabled>
                           <option
                             v-for="option in employeeData"
                             :key="option.id"
@@ -158,21 +150,20 @@
                   <div class="col-6">
                     <div class="mb-3">
                       <div class="col-12">
-                        <label class="form-label" for="selectShifts"
-                          >Shift Time</label
-                        >
+                        <label class="form-label" for="selectShifts">Shift Time</label>
                       </div>
 
                       <div class="col-12">
                         <select
                           v-model="site_shift_id"
                           id="selectShifts"
-                          @change="onSiteShiftSelect"
+                          @change="selectShiftsMethod"
                         >
                           <option
                             v-for="option in shiftsTime"
                             :key="option.id"
                             :value="option.id"
+                            :id="option.id"
                             aria-placeholder="Select Job"
                           >
                             {{ option.shift_name.replace(/_/g, " ") }}
@@ -282,20 +273,24 @@ export default {
         this.validationSelectedClient
       );
     },
-    selectedJobNames() {
-      const jobIdsArray = [].concat(this.job_ids || []);
-      return jobIdsArray
-        .map((jobId) => {
-          const job = this.options.find((option) => option.id === jobId);
-          return job ? { id: jobId, name: job.name } : null;
-        })
-        .filter((job) => job !== null);
+    selectShifts() {
+      const site_shift_id = this.shiftsTime.find(
+        (option) => option.id === this.site_shift_id
+      );
+      return site_shift_id ? site_shift_id.shift_name : "";
     },
+    // selectedJobNames() {
+    //   const jobIdsArray = [].concat(this.job_ids || []);
+    //   return jobIdsArray
+    //     .map((jobId) => {
+    //       const job = this.options.find((option) => option.id === jobId);
+    //       return job ? { id: jobId, name: job.name } : null;
+    //     })
+    //     .filter((job) => job !== null);
+    // },
 
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find(
-        (option) => option.id === this.site_id
-      );
+      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return this.site_id;
     },
 
@@ -319,14 +314,28 @@ export default {
         document.activeElement.blur();
       }
     },
+    selectShiftsMethod() {
+      const selectedShift = this.shiftsTime.find(
+        (option) => option.id === this.site_shift_id
+      );
+      if (selectedShift) {
+        this.site_shift = selectedShift.shift_name;
+      }
+    },
+    async onJobTitleChange() {
+      // await this.getClientFetchSiteMethod();
+      const selectedJob = this.options.find(
+        (option) => option.job_id === this.selectedJobId
+      );
+
+      if (selectedJob) {
+        this.job_id = selectedJob.job_id;
+      }
+    },
     async getClientMethod() {
       try {
-        const response = await axios.get(`${VITE_API_URL}/clients`);
-        const allClients = response.data.data;
-
-        this.clientData = allClients.filter((client) =>
-          client.job_ids.some((jobId) => this.job_ids.includes(jobId))
-        );
+        const response = await axios.get(`${VITE_API_URL}/get_client_id_name`);
+        this.clientData = response.data.data;
       } catch (error) {
         if (error.response && error.response.status === 404) {
           // Handle 404 error
@@ -336,10 +345,10 @@ export default {
         }
       }
     },
-    onClientSelect() {
+    async onClientSelect() {
       const selectedClientId = this.client_id;
 
-      this.getSiteAccordingClientMethod(selectedClientId);
+      await this.getSiteAccordingClientMethod(selectedClientId);
     },
     async getSiteAccordingClientMethod() {
       if (!this.client_id) {
@@ -347,9 +356,10 @@ export default {
       }
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/site_according_client/${this.client_id}`
+          `${VITE_API_URL}/fetch_site_by_client_id/${this.client_id}`
         );
-        this.businessUnit = response.data.site;
+        this.businessUnit = response.data.sites;
+        this.options = response.data.jobs;
       } catch (error) {
         if (error.response) {
           if (error.response.status == 404) {
@@ -384,15 +394,14 @@ export default {
         }
       }
     },
-    onSiteSelect() {
+    async onSiteSelect() {
       const selectedSiteId = this.site_id;
 
-      this.getTimeShift(selectedSiteId);
+      await this.getTimeShift(selectedSiteId);
     },
 
     validateStaffRate() {
-      this.validationStaffRate =
-        this.staff_rate !== "" && !isNaN(this.staff_rate);
+      this.validationStaffRate = this.staff_rate !== "" && !isNaN(this.staff_rate);
     },
     onlyNumber(event) {
       const char = String.fromCharCode(event.which);
@@ -405,6 +414,7 @@ export default {
         this.resetForm();
         this.clearError();
       }, 3);
+      this.blurActiveElement();
     },
 
     isFieldEmpty() {
@@ -470,18 +480,18 @@ export default {
     async sendRateCardData() {
       await this.addRateCardMethod();
     },
-    async getJobTitleMethod() {
-      try {
-        const response = await axios.get(`${VITE_API_URL}/active_job_list`);
-        this.options = response.data.data;
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status == 404) {
-            // alert(error.response.data.message);
-          }
-        }
-      }
-    },
+    // async getJobTitleMethod() {
+    //   try {
+    //     const response = await axios.get(`${VITE_API_URL}/active_job_list`);
+    //     this.options = response.data.data;
+    //   } catch (error) {
+    //     if (error.response) {
+    //       if (error.response.status == 404) {
+    //         // alert(error.response.data.message);
+    //       }
+    //     }
+    //   }
+    // },
 
     async getEmployeeTypeData() {
       try {
@@ -501,9 +511,7 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/site_shift/${site_id}`
-        );
+        const response = await axios.get(`${VITE_API_URL}/site_shift/${site_id}`);
         this.shiftsTime =
           response.data.site_shift_data.map((shift) => ({
             ...shift,
@@ -568,17 +576,17 @@ export default {
   async beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.this.addRateCardMethod();
-      vm.this.getJobTitleMethod();
+      // vm.this.getJobTitleMethod();
       vm.this.getClientMethod();
-      vm.this.getTimeShift();
+      // vm.this.getTimeShift();
       vm.this.getEmployeeTypeData();
     });
   },
   async beforeRouteUpdate(to, from, next) {
     this.addRateCardMethod();
-    this.getJobTitleMethod();
+    // this.getJobTitleMethod();
     this.getClientMethod();
-    this.getTimeShift();
+    // this.getTimeShift();
     this.getEmployeeTypeData();
     next();
   },

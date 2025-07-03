@@ -25,7 +25,34 @@
             </ol>
           </div>
         </div>
-        <div class="row p-0">
+        <div class="row p-0 float-end">
+          <div class="col-12 d-flex justify-content-end mb-3">
+            <form @submit.prevent="search" class="w-md-auto position-relative">
+              <input
+                class="form-control form-control-lg pe-5"
+                type="search"
+                placeholder="Search by Name"
+                aria-label="Search"
+                v-model="searchQuery"
+                @input="debounceSearch"
+              />
+              <!-- Search icon inside input -->
+              <span
+                class="position-absolute top-50 end-0 translate-middle-y pe-3"
+              >
+                <img
+                  src="../assets/Search.png"
+                  class="img-fluid"
+                  alt="Search"
+                  width="20"
+                  height="20"
+                />
+              </span>
+            </form>
+          </div>
+        </div>
+
+        <!-- <div class="row p-0">
           <div class="d-flex align-items-center justify-content-end mb-3 p-0">
             <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
               <input
@@ -48,7 +75,7 @@
               /></span>
             </form>
           </div>
-        </div>
+        </div> -->
         <div class="row p-3" style="background: #fff; border-radius: 14px">
           <div class="full-page-calendar">
             <div class="d-flex justify-content-between align-items-center">
@@ -114,7 +141,7 @@
               </div>
             </div>
           </div>
-          <div class="table-wrapper" v-if="!searchQuery">
+          <div class="table-wrapper table-responsive" v-if="!searchQuery">
             <table class="table candidateTable">
               <thead>
                 <tr style="background: #ffeedb">
@@ -218,7 +245,7 @@
               </tbody>
             </table>
           </div>
-          <div class="table-wrapper" v-if="searchQuery">
+          <div class="table-wrapper table-responsive" v-if="searchQuery">
             <table class="table candidateTable">
               <thead>
                 <tr>
@@ -862,10 +889,10 @@ export default {
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(endOfWeek.getDate() + 6);
     this.endDate = endOfWeek;
-    // this.intervalId = setInterval(() => {
-    //   this.fetchCandidateList(this.formattedStartDate);
-    // }, 2000);
-    this.fetchCandidateList(this.formattedStartDate);
+    this.intervalId = setInterval(() => {
+      this.fetchCandidateList(this.formattedStartDate);
+    }, 2000);
+    // this.fetchCandidateList(this.formattedStartDate);
     // window.addEventListener("beforeunload", this.saveToLocalStorage);
   },
   beforeUnmount() {
@@ -1007,7 +1034,6 @@ table thead th {
 }
 @media (max-width: 1120px) {
   .candidateTable {
-    width: 1090px;
   }
   .table-wrapper {
     overflow-x: scroll;
@@ -1018,6 +1044,12 @@ table thead th {
     width: 3%;
   }
 }
+@media (max-width: 768px) {
+  input[type="search"] {
+    font-size: 1rem;
+  }
+}
+
 @media (max-width: 560px) {
   input.dateInput {
     width: 4%;

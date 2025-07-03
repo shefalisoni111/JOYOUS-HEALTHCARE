@@ -115,8 +115,10 @@ export default {
         document.activeElement.blur();
       }
     },
+
     resetChanges() {
       this.fetchCandidate = { ...this.originalData };
+      this.blurActiveElement();
     },
     cleanPhoneNumber() {
       this.fetchCandidate.phone_number =

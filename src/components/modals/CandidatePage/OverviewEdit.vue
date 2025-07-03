@@ -238,6 +238,7 @@
               data-bs-target="#editOverview"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
+              @click="clearFieldsData"
             >
               Cancel
             </button>
@@ -305,6 +306,22 @@ export default {
         document.activeElement.blur();
       }
     },
+    clearFieldsData() {
+      setTimeout(() => {
+        this.employment_type_id = null;
+        this.DBS_PVG_no = "";
+        this.DBS_PVG_issue_date = "";
+        this.DBS_PVG_expiry_date = "";
+        this.next_check_date = "";
+        this.NMC_NISCC_SSSC_pin = "";
+        this.nationality = "";
+        this.date_of_birth = "";
+        this.place_of_birth = "";
+        this.gender = "";
+      }, 3);
+      this.blurActiveElement();
+    },
+
     cleanAndValidateDBSPVGNo() {
       this.fetchCandidate.DBS_PVG_no = this.fetchCandidate.DBS_PVG_no.replace(
         /\D/g,
@@ -338,6 +355,9 @@ export default {
       }
     },
     async fetchCandidateOverviewMethod() {
+      if (!this.$route.params.id) {
+        return;
+      }
       try {
         const response = await axios.get(
           `${VITE_API_URL}/candidates/${this.$route.params.id}`

@@ -26,7 +26,11 @@
       </li> -->
 
       <!-- <li class="nav-item">
-        <router-link class="nav-link" to="/appsetting/notificationsetting" exact>
+        <router-link
+          class="nav-link"
+          to="/appsetting/notificationsetting"
+          exact
+        >
           <i class="bi bi-bell"></i>
         </router-link>
       </li> -->

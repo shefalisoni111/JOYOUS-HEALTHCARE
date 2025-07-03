@@ -377,6 +377,7 @@ export default {
       setTimeout(() => {
         this.resetForm();
       }, 10);
+      this.blurActiveElement();
     },
     isFieldEmpty() {
       return (

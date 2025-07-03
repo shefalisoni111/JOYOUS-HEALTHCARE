@@ -126,7 +126,7 @@
                           @click="setActiveTab('active')"
                         >
                           Active Users
-                          <span>{{ totalActiveUserCount }}</span>
+                          <!-- <span>{{ totalActiveUserCount }}</span> -->
                         </button>
                       </li>
                       <li class="nav-item" role="presentation">
@@ -143,7 +143,7 @@
                           @click="setActiveTab('inactive')"
                         >
                           Inactive Users
-                          <span>{{ totalInActiveUserCount }}</span>
+                          <!-- <span>{{ totalInActiveUserCount }}</span> -->
                         </button>
                       </li>
                     </ul>
@@ -339,6 +339,10 @@
                                     <div
                                       v-if="hoverRow === index"
                                       class="action-menu d-flex"
+                                      style="
+                                        left: -85px !important;
+                                        background: #ff8f6b1a;
+                                      "
                                     >
                                       <i
                                         class="bi bi-trash border-0 border-0 text-danger cursor-pointer"

@@ -12,7 +12,7 @@
       </div>
 
       <!-- <CandidateAdd /> -->
-      <div class="container-fluid">
+      <div class="container-fluid col-10">
         <router-view />
       </div>
     </div>

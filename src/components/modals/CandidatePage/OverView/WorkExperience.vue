@@ -127,6 +127,7 @@
               data-bs-target="#addWorkExperience"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
+              v-on:click="clearFieldsData"
             >
               Cancel
             </button>
@@ -177,6 +178,17 @@ export default {
       if (document.activeElement) {
         document.activeElement.blur();
       }
+    },
+    clearFieldsData() {
+      setTimeout(() => {
+        this.title = "";
+
+        this.company_name = "";
+        this.experience = "";
+        this.position = "";
+        this.description = "";
+      }, 10);
+      this.blurActiveElement();
     },
     clearError(fieldName) {
       this.errors[fieldName] = null;
