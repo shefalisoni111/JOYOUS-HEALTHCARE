@@ -196,9 +196,9 @@
                 <option
                   v-for="option in candidateLists"
                   :key="option.id"
-                  :value="`${option.full_name}`"
+                  :value="option.id"
                 >
-                  {{ option.full_name }}
+                  {{ option.first_name }} {{ option.last_name }}
                 </option>
               </select>
               <input
@@ -974,6 +974,7 @@
                 </li>
               </ul>
             </div>
+            {{ console.log(getCandidatesData) }}
             <div class="d-flex align-items-center">
               &nbsp;&nbsp;
               <button
@@ -1020,6 +1021,7 @@ import Navbar from "../Navbar.vue";
 import CustomeTimeSheetEdit from "../modals/TimeSheet/CustomeTimeSheetEdit.vue";
 import Loader from "../Loader/Loader.vue";
 import { reactive } from "vue";
+
 // import PaperTimeSheetViewVue from "../modals/TimeSheet/PaperTimeSheetView.vue";
 import Swal from "sweetalert2";
 const axiosInstance = axios.create({
@@ -1136,9 +1138,9 @@ export default {
 
     selectCandidateList() {
       const candidate = this.candidateLists.find(
-        (option) => option.id === this.id
+        (option) => option.id === this.selectedCandidate
       );
-      return candidate ? `${candidate.full_name}` : "";
+      return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
     },
   },
   // watch: {
@@ -1217,32 +1219,75 @@ export default {
       }
     },
     async getCandidateListMethod() {
-      this.candidateLists = [];
-
       try {
-        const response = await axios.get(`${VITE_API_URL}/candidate_list`, {
-          params: {
-            "candidate[activated]": true,
-            "candidate[status]": "approved",
-          },
-        });
+        let candidateLists = [];
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let totalPages = 1;
 
-        if (response.data && response.data.data) {
-          this.candidateLists = response.data.data;
-        } else {
-          // console.warn("No approved candidates found.");
-        }
+        do {
+          const response = await axios.get(`${VITE_API_URL}/candidates`, {
+            params: {
+              page: currentPage,
+              per_page: itemsPerPage,
+              status_value: "approved",
+              activated_value: true,
+            },
+          });
+
+          candidateLists = [...candidateLists, ...response.data.data];
+
+          totalPages = response.data.total_pages;
+
+          currentPage++;
+        } while (currentPage <= totalPages);
+
+        this.candidateLists = candidateLists;
       } catch (error) {
         if (error.response) {
-          // console.error(
-          //   "Error fetching candidate data:",
-          //   error.response.data.message || error
-          // );
+          if (error.response.status == 404) {
+          }
         } else {
-          // console.error("Network or Server Error:", error.message);
+          // console.error("Error fetching candidates:", error);
         }
       }
     },
+    // async getCandidateListMethod() {
+    //   try {
+    //     let candidateLists = [];
+    //     let currentPage = 1;
+    //     const itemsPerPage = 10;
+    //     let totalPages = 1;
+
+    //     do {
+    //       const response = await axios.get(`${VITE_API_URL}/candidates`, {
+    //         params: {
+    //           page: currentPage,
+    //           per_page: itemsPerPage,
+    //           status_value: "approved",
+    //           activated_value: true,
+    //         },
+    //       });
+
+    //       candidateLists = [...candidateLists, ...response.data.data];
+    //       console.log(candidateLists);
+    //       totalPages = response.data.total_pages;
+
+    //       currentPage++;
+    //     } while (currentPage <= totalPages);
+
+    //     this.getCandidatesData = candidateLists;
+    //   } catch (error) {
+    //     if (error.response) {
+    //       // console.error(
+    //       //   "Error fetching candidate data:",
+    //       //   error.response.data.message || error
+    //       // );
+    //     } else {
+    //       // console.error("Network or Server Error:", error.message);
+    //     }
+    //   }
+    // },
     async getBusinessUnitMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/activated_site`);
@@ -1628,7 +1673,7 @@ export default {
     this.getCustomSheetMethod();
     this.getBusinessUnitMethod();
 
-    // this.getCandidateListMethod();
+    this.getCandidateListMethod();
     // this.loadDateRangeFromLocalStorage();
     // const currentDate = new Date();
     // const startOfWeek = new Date(currentDate);

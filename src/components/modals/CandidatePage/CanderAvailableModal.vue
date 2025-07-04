@@ -401,19 +401,21 @@ export default {
         }
       }
     },
+    isPastDate(dateStr) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
 
+      const inputDate = new Date(dateStr);
+      inputDate.setHours(0, 0, 0, 0);
+
+      return inputDate < today;
+    },
     async addCandidateStatus() {
       try {
         const parsedDate = new Date(this.date);
         if (isNaN(parsedDate)) {
           return;
         }
-
-        // const formattedDate = parsedDate.toLocaleDateString("en-CA", {
-        //   year: "numeric",
-        //   month: "2-digit",
-        //   day: "2-digit",
-        // });
 
         let availabilities = [];
 
@@ -448,6 +450,16 @@ export default {
             const availability = this.availabilityIds.find(
               (item) => item.date === formattedDate
             );
+
+            if (this.isPastDate(formattedDate)) {
+              Swal.fire({
+                icon: "error",
+                title: "Invalid Date",
+                text: "Cannot add availability for past dates.",
+                confirmButtonColor: "rgb(255 112 8)",
+              });
+              return;
+            }
             if (availability && availability.id !== null) {
               availabilities.push({
                 id: availability.id,
@@ -496,6 +508,16 @@ export default {
               const availability = this.availabilityIds.find(
                 (item) => item.date === formattedDate
               );
+
+              if (this.isPastDate(formattedDate)) {
+                Swal.fire({
+                  icon: "error",
+                  title: "Invalid Date",
+                  text: "Cannot add availability for past dates.",
+                  confirmButtonColor: "rgb(255 112 8)",
+                });
+                return;
+              }
               if (
                 availability &&
                 availability.id === null &&
@@ -595,39 +617,7 @@ export default {
         }
       }
     },
-    // async fetchCandidateList(startDate) {
-    //   try {
-    //     const response = await axios.get(
-    //       `${VITE_API_URL}/candidates_weekly_availability`,
-    //       {
-    //         params: { date: startDate },
-    //       }
-    //     );
-    //     this.candidateList = response.data.data;
-    //     console.log(this.candidateList);
-    //     this.availabilityIds = this.candidateList.flatMap((candidate) =>
-    //       candidate.availability.map((availabilityItem) => ({
-    //         date: this.formatDate(availabilityItem.date),
-    //         availability_id: availabilityItem.availability_id,
-    //       }))
-    //     );
 
-    //     // this.candidateList.forEach((candidate) => {
-    //     //   candidate.availabilityByDate = {};
-    //     //   candidate.availability.forEach((avail) => {
-    //     //     candidate.availabilityByDate[avail.date] = avail.status;
-    //     //   });
-    //     // });
-
-    //     // this.availabilityIds = this.candidateList.map((candidate) => {
-    //     //   return candidate.availability.map(
-    //     //     (availabilityItem) => availabilityItem.availability_id
-    //     //   );
-    //     // });
-
-    //     // this.availability_id = this.availabilityIds[0].availability_id;
-    //   } catch (error) {}
-    // },
     async fetchAvailabilityStatusMethod() {
       if (!this.candidateId || !this.startDate) {
         // console.error("Candidate ID or start date is undefined.");
@@ -657,26 +647,6 @@ export default {
           },
           []
         );
-
-        // this.availabilityIds.forEach((availability) => {
-        //   const { date, candidate_status } = availability;
-        //   this.selectedShifts[date] = candidate_status;
-        // });
-
-        // this.availabilityByDate = this.updatedStatusData.reduce(
-        //   (formattedData, candidate) => {
-        //     if (candidate.availability) {
-        //       const formattedDate = this.formatDate(candidate.availability.date);
-        //       formattedData.push({
-        //         date: formattedDate,
-        //         candidate_status: candidate.availability.candidate_status,
-        //         id: candidate.availability.availability_id,
-        //       });
-        //     }
-        //     return formattedData;
-        //   },
-        //   []
-        // );
       } catch (error) {
         // console.error("Error fetching availability:", error);
       }
@@ -700,7 +670,9 @@ export default {
   align-items: center;
   padding: 20px;
 }
-
+.modal {
+  overflow: hidden;
+}
 .calendar-header {
   display: flex;
   align-items: center;

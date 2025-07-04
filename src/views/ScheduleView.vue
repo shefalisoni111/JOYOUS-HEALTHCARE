@@ -458,12 +458,8 @@
                                 <span
                                   v-for="assign in assignStaffDisplay"
                                   :key="assign.id"
-                                >
-                                  <span
-                                    v-if="
-                                      data.candidate_id === assign.candidate_id
-                                    "
-                                  >
+                                  >{{ console.log(avail) }}
+                                  <span v-if="avail.date === assign.day">
                                     <span
                                       v-for="data in assign.vacancies"
                                       :key="data.id"
@@ -1292,7 +1288,7 @@ export default {
         );
 
         const vacancy = this.vacancyList.find(
-          (vacancy) => vacancy.date === this.columnDateMatch
+          (vacancy) => vacancy.day === this.columnDateMatch
         );
 
         if (selectedCandidate) {
@@ -1375,7 +1371,7 @@ export default {
       );
 
       const vacancy = this.vacancyList.find(
-        (vacancy) => vacancy.date === this.columnDateMatch
+        (vacancy) => vacancy.day === this.columnDateMatch
       );
 
       if (selectedCandidate) {
@@ -1476,6 +1472,7 @@ export default {
         // this.totalPages = Math.ceil(this.totalCandidateCount / this.itemsPerPage);
 
         this.searchResults = response.data.data;
+        this.assignStaffDisplay = response.data.vacancies;
         this.vacancyList = response.data.vacancies;
         this.totalCandidateCount = response.data.total_count;
         this.ColumnDateMatchDates = this.candidateList.map((candidate) =>

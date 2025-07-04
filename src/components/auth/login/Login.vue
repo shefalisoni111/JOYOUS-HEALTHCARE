@@ -1,10 +1,11 @@
 <template>
   <div class="container-fluid p-0">
     <div
-      class="d-flex align-items-center justify-content-center whole-bg"
-      :style="backgroundStyle"
+      class="d-flex align-items-center justify-content-center whole-bg bg-image"
     >
-      <div class="row no-gutter d-flex justify-content-center align-items-center w-100">
+      <div
+        class="row no-gutter d-flex justify-content-center align-items-center w-100"
+      >
         <div class="col-4 d-flex wrapper-div p-0">
           <!-- <div class="col-md-6 d-none d-md-flex bg-image"></div>g -->
           <!-- <div class="col-md-6 d-none d-md-flex bg-image"></div> -->
@@ -44,7 +45,9 @@
                     </div>
                     <div class="mb-4">
                       <h4 class="mb-2 fw-bold">
-                        {{ loginType === "admin" ? "Admin Login" : "Client Login" }}
+                        {{
+                          loginType === "admin" ? "Admin Login" : "Client Login"
+                        }}
                       </h4>
                       <span>Welcome Back! Login to Access your Account</span>
                     </div>
@@ -177,11 +180,15 @@ export default {
         password: this.password,
       };
       try {
-        const response = await axios.post(`${VITE_API_URL}/client_login`, data, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await axios.post(
+          `${VITE_API_URL}/client_login`,
+          data,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         const jsonData = response.data;
 
@@ -214,11 +221,15 @@ export default {
         password: this.password,
       };
       try {
-        const response = await axios.post(`${VITE_API_URL}/merchant_login`, data, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await axios.post(
+          `${VITE_API_URL}/merchant_login`,
+          data,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         const jsonData = response.data;
 
@@ -288,9 +299,9 @@ export default {
     //   this.email = email;
     //   this.password = password;
     // }
-    this.backgroundStyle = {
-      backgroundImage: "url('src/assets/loginbggg12.png')",
-    };
+    // this.backgroundStyle = {
+    //   backgroundImage: "url('src/assets/loginbggg12.png')",
+    // };
   },
 };
 </script>

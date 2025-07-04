@@ -376,7 +376,7 @@ import axios from "axios";
 
 import Swal from "sweetalert2";
 import logo from "../assets/logo.png";
-
+import { mapMutations } from "vuex";
 import { nextTick } from "vue";
 import LoaderVue from "./Loader/Loader.vue";
 
@@ -517,26 +517,6 @@ export default {
         // this.fetchMessages(this.channelSid);
       }
     },
-    //   newMessage(newValue) {
-    //   if (newValue && this.channelSid) {
-    //     const lastMessage = this.selectedCandidateMessages.at(-1);
-    //     const isCandidateMessage = lastMessage?.sender?.type === "Candidate";
-
-    //     if (isCandidateMessage) {
-
-    //       this.fetchMessages(this.channelSid);
-    //     } else {
-
-    //     }
-    //   }
-    // },
-
-    // channelSid(newChannelSid) {
-    //     if (newChannelSid) {
-    //       // console.log('Channel SID changed:', newChannelSid);
-    //       this.fetchMessages(newChannelSid);
-    //     }
-    //   }
   },
   methods: {
     toggleSidebar() {
@@ -897,6 +877,7 @@ export default {
         }, 2000);
       }
     },
+
     async getCandidateMethods() {
       try {
         let allCandidates = [];

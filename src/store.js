@@ -1,5 +1,5 @@
 // store.js
-import { createStore } from 'vuex';
+import { createStore } from "vuex";
 import axios from "axios";
 export default createStore({
   state: {
@@ -7,28 +7,28 @@ export default createStore({
     selectedAppliedItemId: null,
     selectedCandidateItemId: null,
     selectedAssignedItemId: null,
-    selectedRejectItemId:null,
-    selectedAllItemId:null,
-    selectedPublishItemId:null,
-    selectedJobItemId:null,
+    selectedRejectItemId: null,
+    selectedAllItemId: null,
+    selectedPublishItemId: null,
+    selectedJobItemId: null,
     candidates: [],
-    vacancies:[],
+    vacancies: [],
     getCategory: [],
-     adminData: {},
-     noteCount: 0,
-     vacancy_id: null,
-     selectedSignedTimesheetId: null,
-     selectedCustomTimesheetId: null,
-     selectedTemplate: localStorage.getItem('selectedTemplate') || 'TemplateOne',
-     getCandidatesData:[],
-     invoiceData: [],
-     invoiceStaffData: [],
-     role: null,
+    adminData: {},
+    noteCount: 0,
+    vacancy_id: null,
+    selectedSignedTimesheetId: null,
+    selectedCustomTimesheetId: null,
+    selectedTemplate: localStorage.getItem("selectedTemplate") || "TemplateOne",
+    getCandidatesData: [],
+    invoiceData: [],
+    invoiceStaffData: [],
+    role: null,
     //  client_id: null,
   },
   mutations: {
     setUser(state, user) {
-      state.role = user.role; 
+      state.role = user.role;
     },
     clearUser(state) {
       // state.token = null;
@@ -46,7 +46,7 @@ export default createStore({
       state.getCandidatesData = data;
     },
     setChannelSid(state, channelSid) {
-      state.channelSid = channelSid; 
+      state.channelSid = channelSid;
     },
     setSelectedTemplateClient(state, template) {
       state.selectedTemplateClient = template;
@@ -56,7 +56,7 @@ export default createStore({
     },
     setSelectedTemplate(state, template) {
       state.selectedTemplate = template;
-      localStorage.setItem('selectedTemplate', template);
+      localStorage.setItem("selectedTemplate", template);
     },
     setSelectedSignedTimesheetId(state, itemId) {
       state.selectedSignedTimesheetId = itemId;
@@ -81,17 +81,16 @@ export default createStore({
     },
 
     updateCandidate(state, { id, newData }) {
-
-      const index = state.candidates.findIndex(candidate => candidate.id === id);
+      const index = state.candidates.findIndex(
+        (candidate) => candidate.id === id
+      );
       if (index !== -1) {
-
         state.candidates.splice(index, 1, newData);
       }
     },
     updateVacancy(state, { id, newData }) {
-      const index = state.vacancies.findIndex(v => v.id === id);
+      const index = state.vacancies.findIndex((v) => v.id === id);
       if (index !== -1) {
-
         state.vacancies[index] = newData;
       }
     },
@@ -99,7 +98,10 @@ export default createStore({
       const { id, newData } = payload;
       const categoryIndex = state.getCategory.findIndex((cat) => cat.id === id);
       if (categoryIndex !== -1) {
-        state.getCategory[categoryIndex] = { ...state.getCategory[categoryIndex], ...newData };
+        state.getCategory[categoryIndex] = {
+          ...state.getCategory[categoryIndex],
+          ...newData,
+        };
       }
     },
     SET_NOTE_COUNT(state, count) {
@@ -114,7 +116,6 @@ export default createStore({
     setVacancyId(state, vacancyId) {
       state.vacancy_id = vacancyId;
     },
-  
   },
   actions: {
     // setUser({ commit }, userData) {
@@ -128,18 +129,21 @@ export default createStore({
     },
     async login({ commit, dispatch }, credentials) {
       try {
-        const response = await axios.post(`${VITE_API_URL}/client_login`, credentials);
+        const response = await axios.post(
+          `${VITE_API_URL}/client_login`,
+          credentials
+        );
         commit("setUser", response.data);
-        dispatch("fetchUser"); 
+        dispatch("fetchUser");
       } catch (error) {
         // console.error("Login failed:", error);
       }
     },
-  
+
     async fetchUser({ commit }) {
       try {
-        const response = await axios.get(`${VITE_API_URL}/client_login`); 
-        commit("setUser", response.data); 
+        const response = await axios.get(`${VITE_API_URL}/client_login`);
+        commit("setUser", response.data);
       } catch (error) {
         // console.error("Failed to fetch user:", error);
       }
@@ -158,25 +162,27 @@ export default createStore({
       commit("setNavData", response.data.data);
     },
     updateChannelSid({ commit }, channelSid) {
-      commit('setChannelSid', channelSid);
-     
+      commit("setChannelSid", channelSid);
     },
     updateSelectedTemplate({ commit }, template) {
-      commit('setSelectedTemplate', template);
+      commit("setSelectedTemplate", template);
     },
     async fetchSignedTimesheetData({ commit, state }) {
-      if(!state.selectedSignedTimesheetId){
-        return
+      if (!state.selectedSignedTimesheetId) {
+        return;
       }
       try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(`${VITE_API_URL}/sign_timesheets/${state.selectedSignedTimesheetId}`, {
-          headers: {
-            'content-type': 'application/json',
-            Authorization: 'bearer ' + token,
-          },
-        });
-        commit('setSelectedSignedTimesheetData', response.data.sign_timesheets);
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          `${VITE_API_URL}/sign_timesheets/${state.selectedSignedTimesheetId}`,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: "bearer " + token,
+            },
+          }
+        );
+        commit("setSelectedSignedTimesheetData", response.data.sign_timesheets);
       } catch (error) {
         // console.error('Error fetching signed timesheet data:', error);
       }
@@ -184,24 +190,24 @@ export default createStore({
     async updateNoteCount({ commit }) {
       try {
         const response = await fetch(`${VITE_API_URL}/get_note_count`);
-        
+
         if (!response.ok) {
           if (response.status === 404) {
-           
           } else {
-            throw new Error(`Failed to fetch note count (HTTP ${response.status})`);
+            throw new Error(
+              `Failed to fetch note count (HTTP ${response.status})`
+            );
           }
         } else {
           const data = await response.json();
-          commit('SET_NOTE_COUNT', data.count);
+          commit("SET_NOTE_COUNT", data.count);
         }
       } catch (error) {
         // console.error('Error updating note count:', error.message);
       }
     },
-    
   },
-   getters: {
+  getters: {
     // isAuthenticated: (state) => !!state.token,
     userRole: (state) => state.role,
     // clientId: (state) => state.client_id,
@@ -210,5 +216,4 @@ export default createStore({
     getSelectedTemplate: (state) => state.selectedTemplate,
     getChannelSid: (state) => state.channelSid,
   },
- 
 });

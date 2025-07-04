@@ -217,14 +217,27 @@
                               <span
                                 v-for="status in avail.candidate_status"
                                 :key="status"
-                                style="font-size: small; padding: 0px 5px"
+                                style="
+                                  font-size: small;
+                                  padding: 0px 5px;
+                                  margin-top: 10px;
+                                "
                                 class="me-2"
                                 v-bind:class="{
                                   'btn btn-warning': status === 'Late',
-                                  'btn btn-primary': status === 'U/A',
+                                  btn: status === 'U/A',
                                   'btn btn-secondary': status === 'Night',
                                   'btn btn-light': status === 'Early',
                                 }"
+                                :style="
+                                  status === 'U/A'
+                                    ? {
+                                        background: '#ffdddd',
+                                        marginTop: '10px',
+                                        fontSize: 'small',
+                                      }
+                                    : {}
+                                "
                               >
                                 {{ status[0].toUpperCase() }}
                               </span>
@@ -298,14 +311,27 @@
                             <span
                               v-for="status in avail.candidate_status"
                               :key="status"
-                              style="font-size: small; padding: 0px 5px"
+                              style="
+                                font-size: small;
+                                padding: 0px 5px;
+                                margintop: 10px;
+                              "
                               class="me-2"
                               v-bind:class="{
                                 'btn btn-warning': status === 'Late',
-                                'btn btn-primary': status === 'U/A',
+                                btn: status === 'U/A',
                                 'btn btn-secondary': status === 'Night',
                                 'btn btn-light': status === 'Early',
                               }"
+                              :style="
+                                status === 'U/A'
+                                  ? {
+                                      background: '#ffdddd',
+                                      marginTop: '10px',
+                                      fontSize: 'small',
+                                    }
+                                  : {}
+                              "
                             >
                               {{ status[0].toUpperCase() }}
                             </span>
@@ -570,33 +596,7 @@ export default {
 
       return dateString;
     },
-    // async fetchAvailabilityStatusMethod() {
-    //   this.isLoading = true;
-    //   try {
-    //     const response = await axios.get(
-    //       `${VITE_API_URL}/weekly_availability_for_candidate?candidate_id=${this.candidateId}&date=${this.startDate}`
-    //     );
-    //     this.updatedStatusData = response.data.data;
 
-    //     this.availabilityByDate = this.updatedStatusData.reduce(
-    //       (formattedData, candidate) => {
-    //         if (candidate.availability) {
-    //           const formattedDate = this.formatDate(candidate.availability.date);
-    //           formattedData.push({
-    //             date: formattedDate,
-    //             candidate_status: candidate.availability.candidate_status || [],
-    //           });
-    //         }
-    //         return formattedData;
-    //       },
-    //       []
-    //     );
-    //   } catch (error) {
-    //     // console.error("Error fetching availability:", error);
-    //   } finally {
-    //     this.isLoading = false;
-    //   }
-    // },
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
 

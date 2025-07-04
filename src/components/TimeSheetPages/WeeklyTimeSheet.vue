@@ -119,7 +119,7 @@
                       :key="option.id"
                       :value="option.id"
                     >
-                      {{ option.full_name }}
+                      {{ option.first_name }} {{ option.last_name }}
                     </option>
                   </select>
                 </div>
@@ -884,7 +884,7 @@ export default {
       const candidate = this.candidateLists.find(
         (option) => option.full_name === this.selectedCandidate
       );
-      return candidate ? `${candidate.full_name}` : "";
+      return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
     },
   },
   watch: {
@@ -1022,23 +1022,36 @@ export default {
       this.showFilters = !this.showFilters;
     },
     async getCandidateListMethod() {
-      this.candidateLists = [];
-
       try {
-        const response = await axios.get(`${VITE_API_URL}/candidate_list`, {
-          params: {
-            "candidate[activated]": true,
-            "candidate[status]": "approved",
-          },
-        });
+        let candidateLists = [];
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let totalPages = 1;
 
-        if (response.data && response.data.data) {
-          this.candidateLists = response.data.data;
-        } else {
-        }
+        do {
+          const response = await axios.get(`${VITE_API_URL}/candidates`, {
+            params: {
+              page: currentPage,
+              per_page: itemsPerPage,
+              status_value: "approved",
+              activated_value: true,
+            },
+          });
+
+          candidateLists = [...candidateLists, ...response.data.data];
+
+          totalPages = response.data.total_pages;
+
+          currentPage++;
+        } while (currentPage <= totalPages);
+
+        this.candidateLists = candidateLists;
       } catch (error) {
         if (error.response) {
+          if (error.response.status == 404) {
+          }
         } else {
+          // console.error("Error fetching candidates:", error);
         }
       }
     },

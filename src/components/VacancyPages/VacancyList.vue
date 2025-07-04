@@ -378,7 +378,7 @@
                 </tbody>
                 <tbody v-else>
                   <tr>
-                    <td colspan="15" class="text-danger text-center">
+                    <td colspan="16" class="text-danger text-center">
                       No Match Found !!
                     </td>
                   </tr>
@@ -513,7 +513,7 @@ export default {
     paginationVacancySearch() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
-      return this.searchResults.slice(startIndex, endIndex);
+      return (this.searchResults || []).slice(startIndex, endIndex);
     },
     totalRecordsOnPage() {
       return this.paginationVacancySearch.length;
@@ -587,22 +587,22 @@ export default {
         } else {
           activatedStatus = this.activeTab === 1 ? true : false;
         }
-        const response = await axiosInstance.get(
-          `${VITE_API_URL}/vacancy_searching_active_and_inactive`,
-          {
-            params: {
-              vacancy_query: modifiedSearchQuery,
-              activated: activatedStatus,
-              tab: this.activeTabName.toLowerCase(),
-            },
-            headers: {
-              "content-type": "application/json",
-              Authorization: "bearer " + token,
-            },
-          }
-        );
+        // const response = await axiosInstance.get(
+        //   `${VITE_API_URL}/vacancy_searching_active_and_inactive`,
+        //   {
+        //     params: {
+        //       vacancy_query: modifiedSearchQuery,
+        //       activated: activatedStatus,
+        //       tab: this.activeTabName.toLowerCase(),
+        //     },
+        //     headers: {
+        //       "content-type": "application/json",
+        //       Authorization: "bearer " + token,
+        //     },
+        //   }
+        // );
 
-        this.searchResults = response.data;
+        // this.searchResults = response.data;
       } catch (error) {
         if (
           (error.response && error.response.status === 400) ||
