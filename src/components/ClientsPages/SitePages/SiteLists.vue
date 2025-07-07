@@ -26,9 +26,7 @@
               </ol> -->
               <ol class="breadcrumb mb-1">
                 <li class="breadcrumb-item active">
-                  <a
-                    class="nav-link d-inline fs-4 fw-bolder"
-                    style="color: #000000"
+                  <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
                     >All Clients</a
                   >
                   <p>
@@ -68,10 +66,7 @@
               role="tablist"
             >
               <div class="d-flex">
-                <li
-                  class="nav-item d-flex align-items-center gap-2"
-                  role="presentation"
-                >
+                <li class="nav-item d-flex align-items-center gap-2" role="presentation">
                   <button
                     a
                     class="nav-link"
@@ -89,174 +84,6 @@
                 </li>
               </div>
             </ul>
-            <!-- <div class="d-flex gap-2">
-              <div class="mt-2">
-                <button
-                  type="button"
-                  class="btn btn-lg btn-danger text-nowrap"
-                  @click="toggleFilters"
-                >
-                  <i class="bi bi-funnel"></i>
-                  Show Filters
-                </button>
-                <input
-                  ref="fileInput"
-                  id="fileAll"
-                  type="file"
-                  accept=".csv"
-                  style="display: none"
-                  @change="handleFileUpload"
-                />
-                &nbsp;
-                <button
-                  class="nav-item dropdown btn btn-lg btn-outline-success text-nowrap dropdown-toggle"
-                  type="button"
-                  id="navbarDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Export
-
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li>
-                   
-                      <label
-                        for="fileAll"
-                        class="custom-file-label dropdown-item"
-                        style="border-radius: 0px; cursor: pointer"
-                        @click="triggerFileInput"
-                      >
-                        Import
-                      </label>
-                    </li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li>
-                      <a
-                        class="dropdown-item"
-                        href="#"
-                        @click="exportOneFile('selected')"
-                        >Export</a
-                      >
-                    </li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li>
-                      <a
-                        class="dropdown-item"
-                        href="#"
-                        @click="exportOneFile('all')"
-                        >Export All</a
-                      >
-                    </li>
-                  </div>
-                </button>
-              </div>
-
-              <div
-                class="d-flex gap-2 mb-3 justify-content-between"
-                v-if="showFilters"
-              >
-                <div
-                  class="d-flex gap-2 flex-column position-absolute"
-                  style="
-                    transform: translate(-120%, 19%);
-                    background: rgb(255, 255, 255);
-                    padding: 8px 13px 9px 13px;
-                    border-radius: 10px;
-                    box-shadow: 0px 4px 40px 0px #0000000d;
-                    width: 14%;
-                    z-index: 1;
-                  "
-                >
-                  <div></div>
-
-                  <select v-model="selectedFilter" @change="filterData">
-                    <option value="" disabled>Status</option>
-                    <option value="true">Active</option>
-                    <option value="false">In-Active</option>
-                  </select>
-
-                  <select
-                    id="selectClients"
-                    v-model="selectedClientName"
-                    @change="filterData"
-                  >
-                    <option value="" disabled>Client Name</option>
-                    <option
-                      v-for="option in clientData"
-                      :key="option.id"
-                      :value="option.id"
-                      aria-placeholder="Select Client"
-                    >
-                      {{ option.client_name }}
-                    </option>
-                  </select>
-
-                  <select
-                    id="selectSite"
-                    v-model="selectedSiteName"
-                    @change="filterData"
-                  >
-                    <option value="" disabled>Site Name</option>
-                    <option
-                      v-for="option in businessUnit"
-                      :key="option.id"
-                      :value="option.site_name"
-                      aria-placeholder="Select Site"
-                    >
-                      {{ option.site_name }}
-                    </option>
-                  </select>
-
-                  <select
-                    id="selectSitesAddress"
-                    v-model="selectedSiteAddress"
-                    @change="filterData"
-                  >
-                    <option value="" disabled>Site Address</option>
-                    <option
-                      v-for="option in businessUnit"
-                      :key="option.id"
-                      :value="option.address"
-                      aria-placeholder="Select Address"
-                    >
-                      {{ option.address }}
-                    </option>
-                  </select>
-                  <div class="ddddddddbox position-relative">
-                    <input
-                      class="form-control"
-                      type="dddddddd"
-                      placeholder="dddddddd Site..."
-                      aria-label="dddddddd"
-                      v-model="localddddddddQuery"
-                      @input="filterData"
-                    />
-                  </div>
-                  <div>
-                    <button
-                      @click="resetFilter"
-                      class="btn btn-secondary"
-                      :disabled="
-                        !selectedFilter &&
-                        !selectedClientName &&
-                        !selectedSiteName &&
-                        !selectedSiteAddress &&
-                        !localddddddddQuery
-                      "
-                    >
-                      Reset Filters
-                    </button>
-                  </div>
-                </div>
-          
-              </div>
-              <div
-                class="d-flex align-items-center gap-2 justify-content-between"
-              >
-                <div class="ddddddddbox position-relative"></div>
-              </div>
-            </div> -->
           </div>
 
           <div v-if="!ddddddddQuery">
@@ -351,11 +178,7 @@
           </div>
         </div>
       </div>
-      <div
-        class="mx-3"
-        style="text-align: right"
-        v-if="ddddddddResults.length >= 9"
-      >
+      <div class="mx-3" style="text-align: right" v-if="ddddddddResults.length >= 9">
         <button class="btn btn-outline-dark btn-sm">
           {{ totalRecordsOnPage }} Records Per Page
         </button>
@@ -398,11 +221,7 @@ import EditSite from "../../modals/Site/EditSite.vue";
 import AddSiteNotes from "../../modals/Site/AddSiteNotes.vue";
 import Navbar from "../../Navbar.vue";
 import Swal from "sweetalert2";
-const axiosInstance = axios.create({
-  headers: {
-    "Cache-Control": "no-cache",
-  },
-});
+
 export default {
   data() {
     return {
@@ -445,24 +264,16 @@ export default {
     activeComponent() {
       return this.tabs[this.activeTab].component;
     },
-    paginateddddddddResults() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.ddddddddResults.slice(startIndex, endIndex);
-    },
+
     totalRecordsOnPage() {
-      return this.paginateddddddddResults.length;
+      return this.paginatedResults.length;
     },
     selectSite() {
-      const site_id = this.businessUnit.find(
-        (option) => option.id === this.site_id
-      );
+      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return site_id ? site_id.site_name : "";
     },
     selectSitesAddress() {
-      const site_id = this.businessUnit.find(
-        (option) => option.id === this.site_id
-      );
+      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return site_id ? site_id.address : "";
     },
   },
@@ -508,13 +319,6 @@ export default {
       this.$router.push({ name: this.tabs[index].routeName });
     },
 
-    debouncedddddddd() {
-      clearTimeout(this.debounceTimeout);
-      this.debounceTimeout = setTimeout(() => {
-        this.dddddddd();
-      }, 100);
-    },
-
     async getSiteAllDataMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/sites`);
@@ -529,9 +333,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      const matchingTabIndex = vm.tabs.findIndex(
-        (tab) => tab.routeName === to.name
-      );
+      const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
 
       if (matchingTabIndex !== -1) {
         vm.activeTab = matchingTabIndex;
@@ -540,9 +342,7 @@ export default {
     });
   },
   beforeRouteUpdate(to, from, next) {
-    const matchingTabIndex = this.tabs.findIndex(
-      (tab) => tab.routeName === to.name
-    );
+    const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
 
     if (matchingTabIndex !== -1) {
       this.activeTab = matchingTabIndex;

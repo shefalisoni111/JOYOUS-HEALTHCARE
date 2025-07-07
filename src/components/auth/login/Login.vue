@@ -1,7 +1,8 @@
 <template>
   <div class="container-fluid p-0">
     <div
-      class="d-flex align-items-center justify-content-center whole-bg bg-image"
+      class="d-flex align-items-center justify-content-center whole-bg"
+      :style="backgroundStyle"
     >
       <div
         class="row no-gutter d-flex justify-content-center align-items-center w-100"
@@ -129,6 +130,7 @@
 <script>
 import axios from "axios";
 import Loader from "../../Loader/Loader.vue";
+import loginBg from "@/assets/loginbggg12.png";
 
 export default {
   data() {
@@ -299,9 +301,11 @@ export default {
     //   this.email = email;
     //   this.password = password;
     // }
-    // this.backgroundStyle = {
-    //   backgroundImage: "url('src/assets/loginbggg12.png')",
-    // };
+    this.backgroundStyle = {
+      backgroundImage: `url(${loginBg})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center center",
+    };
   },
 };
 </script>

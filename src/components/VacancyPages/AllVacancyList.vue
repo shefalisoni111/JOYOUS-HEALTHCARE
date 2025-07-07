@@ -41,9 +41,7 @@
               />
             </th>
             <th scope="col">
-              <div
-                class="d-flex justify-content-center align-items-center gap-1"
-              >
+              <div class="d-flex justify-content-center align-items-center gap-1">
                 Job Title
                 <img
                   src="../../assets/ArrowDown.png"
@@ -72,9 +70,7 @@
               />
             </th>
             <th scope="col" class="withShow">
-              <div
-                class="d-flex justify-content-center align-items-center gap-1"
-              >
+              <div class="d-flex justify-content-center align-items-center gap-1">
                 Staff Required
                 <img
                   src="../../assets/ArrowDown.png"
@@ -104,9 +100,7 @@
               />
             </th>
             <th scope="col" class="text-center withShow">
-              <div
-                class="d-flex justify-content-center align-items-center gap-1"
-              >
+              <div class="d-flex justify-content-center align-items-center gap-1">
                 All Staff
                 <img
                   src="../../assets/ArrowDown.png"
@@ -194,16 +188,12 @@
               <span v-for="(date, index) in getdata.dates" :key="index">
                 {{ date }}
 
-                <template v-if="index !== getdata.dates.length - 1"
-                  >,
-                </template>
+                <template v-if="index !== getdata.dates.length - 1">, </template>
               </span>
             </td>
             <!-- <td v-for="(date, index) in getdata.dates" :key="index" v-text="date"></td> -->
 
-            <td
-              v-text="getdata.shift ? getdata.shift.replace(/_/g, ' ') : ' '"
-            ></td>
+            <td v-text="getdata.shift ? getdata.shift.replace(/_/g, ' ') : ' '"></td>
             <td class="withShow text-center">
               {{ getdata.staff_required === null ? 0 : getdata.staff_required }}
             </td>
@@ -423,14 +413,10 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
-              >20 Records</a
-            >
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
-              >50 Records</a
-            >
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
           </li>
           <li>
             <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
@@ -522,10 +508,7 @@ export default {
       // const endIndex = startIndex + this.itemsPerPage;
       // return this.getVacancyDetail.slice(startIndex, endIndex);
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      return this.getVacancyDetail.slice(
-        startIndex,
-        startIndex + this.itemsPerPage
-      );
+      return this.getVacancyDetail.slice(startIndex, startIndex + this.itemsPerPage);
     },
     getIconClass() {
       return this.publish ? "bi bi-bell" : "bi bi-check-circle-fill";
@@ -651,7 +634,7 @@ export default {
           params: {
             page: this.currentPage,
             per_page: this.itemsPerPage,
-            status: true,
+            activated: true,
           },
           headers: {
             "content-type": "application/json",

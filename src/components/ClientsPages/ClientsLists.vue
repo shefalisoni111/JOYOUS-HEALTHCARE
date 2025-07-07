@@ -17,9 +17,7 @@
             <div class="">
               <ol class="breadcrumb mb-1">
                 <li class="breadcrumb-item active">
-                  <a
-                    class="nav-link d-inline fs-4 fw-bolder"
-                    style="color: #000000"
+                  <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
                     >All Clients</a
                   >
                   <p>
@@ -113,10 +111,7 @@
                           </tr>
                         </thead>
                         <tbody v-if="paginateSearchResults?.length > 0">
-                          <tr
-                            v-for="client in paginateSearchResults"
-                            :key="client.id"
-                          >
+                          <tr v-for="client in paginateSearchResults" :key="client.id">
                             <td v-text="client.id"></td>
                             <td v-text="client.ref_code"></td>
                             <td>
@@ -140,9 +135,7 @@
                               >
                                 {{ job.job_name }}
 
-                                <template
-                                  v-if="index !== client.jobs.length - 1"
-                                >
+                                <template v-if="index !== client.jobs.length - 1">
                                 </template>
                               </span>
                             </td>
@@ -153,10 +146,7 @@
                             <td v-text="client.email"></td>
 
                             <td>
-                              <label
-                                class="switch"
-                                v-if="client.activated == true"
-                              >
+                              <label class="switch" v-if="client.activated == true">
                                 <input type="checkbox" id="togBtn" checked />
                                 <div class="slider round"></div>
                               </label>
@@ -199,9 +189,7 @@
                         <tbody v-else>
                           <tr>
                             <td colspan="10" class="text-danger text-center">
-                              {{
-                                " No candidates found for the specified criteria"
-                              }}
+                              {{ " No candidates found for the specified criteria" }}
                             </td>
                           </tr>
                         </tbody>
@@ -251,12 +239,6 @@ import InActiveClient from "../ClientsPages/InActiveClient.vue";
 import ActiveClient from "./ActiveClient.vue";
 import EditClientModal from "../modals/Clients/EditClientModal.vue";
 import Navbar from "../Navbar.vue";
-
-const axiosInstance = axios.create({
-  headers: {
-    "Cache-Control": "no-cache",
-  },
-});
 
 export default {
   data() {
@@ -310,12 +292,7 @@ export default {
     activeComponent() {
       return this.tabs[this.activeTab].component;
     },
-    paginateSearchResults() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.searchResults.slice(startIndex, endIndex);
-      // return this.getClientDetail;
-    },
+
     selectJobTitle() {
       const job = this.options.find((option) => option.id === this.job_id);
       return job ? job.name : "";
@@ -419,9 +396,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      const matchingTabIndex = vm.tabs.findIndex(
-        (tab) => tab.routeName === to.name
-      );
+      const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
 
       if (matchingTabIndex !== -1) {
         vm.activeTab = matchingTabIndex;
@@ -430,9 +405,7 @@ export default {
     });
   },
   beforeRouteUpdate(to, from, next) {
-    const matchingTabIndex = this.tabs.findIndex(
-      (tab) => tab.routeName === to.name
-    );
+    const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
 
     if (matchingTabIndex !== -1) {
       this.activeTab = matchingTabIndex;

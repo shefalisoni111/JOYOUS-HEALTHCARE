@@ -2,11 +2,7 @@
   <div>
     <div
       class="mt-2 float-end"
-      style="
-        display: flex;
-        justify-content: end;
-        transform: translate(0%, -136%);
-      "
+      style="display: flex; justify-content: end; transform: translate(0%, -66%)"
     >
       <button
         type="button"
@@ -54,9 +50,7 @@
           </li>
           <li><hr class="dropdown-divider" /></li>
           <li>
-            <a class="dropdown-item" href="#" @click="exportOneFile('all')"
-              >Export All</a
-            >
+            <a class="dropdown-item" href="#" @click="exportOneFile('all')">Export All</a>
           </li>
         </div>
       </button>
@@ -66,7 +60,7 @@
       <div
         class="d-flex gap-2 flex-column position-absolute"
         style="
-          transform: translate(448%, -20%);
+          transform: translate(411%, -3%);
           background: rgb(255, 255, 255);
           padding: 8px 13px 9px 13px;
           border-radius: 10px;
@@ -77,13 +71,13 @@
         <div></div>
 
         <select v-model="selectedFilter" @change="filterData">
-          <option value="" disabled>Status</option>
+          <option value="" disabled selected>Status</option>
           <option value="true">Active</option>
           <option value="false">In-Active</option>
         </select>
 
         <select id="selectClients" v-model="client_id" @change="onClientChange">
-          <option value="" disabled>Client Name</option>
+          <option value="" disabled selected>Client Name</option>
           <option
             v-for="option in clientData"
             :key="option.id"
@@ -95,7 +89,7 @@
         </select>
 
         <select id="selectSite" v-model="site_id" @change="filterData">
-          <option value="" disabled>Site Name</option>
+          <option value="" disabled selected>Site Name</option>
 
           <option
             v-for="option in businessUnit"
@@ -331,10 +325,7 @@
                     class="btn text-nowrap border-0"
                     v-on:click="deleteSiteMethod(data.id)"
                   >
-                    <i
-                      class="bi bi-trash border-0 border-0"
-                      style="color: #f9944b"
-                    ></i
+                    <i class="bi bi-trash border-0 border-0" style="color: #f9944b"></i
                     >Delete
                   </button>
                 </div>
@@ -376,26 +367,17 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a
-              class="dropdown-item"
-              href="#"
-              @click.prevent="setItemsPerPage(20)"
+            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(20)"
               >20 Records</a
             >
           </li>
           <li>
-            <a
-              class="dropdown-item"
-              href="#"
-              @click.prevent="setItemsPerPage(50)"
+            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(50)"
               >50 Records</a
             >
           </li>
           <li>
-            <a
-              class="dropdown-item"
-              href="#"
-              @click.prevent="setItemsPerPage(100)"
+            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(100)"
               >100 Records</a
             >
           </li>
@@ -436,11 +418,7 @@
       </div>
     </div>
     <AddSite @addSite="filterData" />
-    <EditSite
-      :siteId="selectedsiteId || 0"
-      @editSite="filterData"
-      ref="refSite"
-    />
+    <EditSite :siteId="selectedsiteId || 0" @editSite="filterData" ref="refSite" />
     <ConfirmationAlert
       :show-modal="isModalVisible"
       :message="confirmMessage"
@@ -516,22 +494,16 @@ export default {
     selectClients() {
       const site = this.businessUnit.find((site) => site.id === this.site_id);
       if (!site) return "";
-      const client = this.clientData.find(
-        (client) => client.id === site.client_id
-      );
+      const client = this.clientData.find((client) => client.id === site.client_id);
       return client ? client.client_name : "";
     },
 
     selectSite() {
-      const site_id = this.businessUnit.find(
-        (option) => option.id === this.site_id
-      );
+      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return site_id ? site_id.site_name : "";
     },
     selectSitesAddress() {
-      const site_id = this.businessUnit.find(
-        (option) => option.id === this.site_id
-      );
+      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return site_id ? site_id.address : "";
     },
   },
@@ -552,10 +524,10 @@ export default {
       this.filterData();
     },
     resetFilter() {
-      this.selectedFilter = null;
-      this.client_id = null;
-      this.site_id = null;
-      this.selectedSiteAddress = null;
+      this.selectedFilter = "";
+      this.client_id = "";
+      this.site_id = "";
+      this.selectedSiteAddress = "";
       this.localSearchQuery = "";
 
       this.filterData();
@@ -569,8 +541,7 @@ export default {
       this.isModalVisible = false;
     },
     deleteSiteMethod(id) {
-      this.confirmMessage =
-        "Are you sure you want to completely delete this site?";
+      this.confirmMessage = "Are you sure you want to completely delete this site?";
       this.isModalVisible = true;
       this.confirmCallback = async () => {
         axios.delete(`${VITE_API_URL}/sites/` + id).then((response) => {
@@ -644,9 +615,7 @@ export default {
           params,
         });
         this.getSiteAllData = response.data.data || [];
-        this.totalPages = Math.ceil(
-          response.data.site_filter / this.itemsPerPage
-        );
+        this.totalPages = Math.ceil(response.data.site_filter / this.itemsPerPage);
       } catch (error) {
         // console.error("Error fetching filtered data:", error);
       }
@@ -670,8 +639,7 @@ export default {
       const file = event.target.files[0];
       if (!file) return;
 
-      const isValidFileType =
-        file.type === "text/csv" || file.name.endsWith(".csv");
+      const isValidFileType = file.type === "text/csv" || file.name.endsWith(".csv");
       if (!isValidFileType) {
         Swal.fire({
           icon: "info",
@@ -714,8 +682,7 @@ export default {
             Swal.fire({
               icon: "error",
               title: "Import Failed",
-              text:
-                response.data.errors || "No valid rows found in the CSV file.",
+              text: response.data.errors || "No valid rows found in the CSV file.",
             });
           } else {
             Swal.fire({

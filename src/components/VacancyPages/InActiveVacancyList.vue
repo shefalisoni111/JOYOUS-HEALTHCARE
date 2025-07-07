@@ -68,9 +68,7 @@
               />
             </th>
             <th scope="col" class="withShow">
-              <div
-                class="d-flex justify-content-center align-items-center gap-1"
-              >
+              <div class="d-flex justify-content-center align-items-center gap-1">
                 Staff required
                 <img
                   src="../../assets/ArrowDown.png"
@@ -184,10 +182,7 @@
                     class="btn text-nowrap shadow-soft border-0"
                     @click="confirmed(data.id)"
                   >
-                    <i
-                      class="bi bi-trash border-0 border-0"
-                      style="color: #f9944b"
-                    ></i>
+                    <i class="bi bi-trash border-0 border-0" style="color: #f9944b"></i>
                     Delete
                   </button>
                 </div>
@@ -256,14 +251,10 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
-              >20 Records</a
-            >
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
-              >50 Records</a
-            >
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
           </li>
           <li>
             <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
@@ -470,19 +461,22 @@ export default {
       // }, 500);
     },
     async getInactiveVacancyMethod() {
+      const token = localStorage.getItem("token");
       this.isLoading = true;
       try {
-        const response = await axios.get(
-          `${VITE_API_URL}/inactive_vacancy_list`,
-          {
-            params: {
-              page: this.currentPage,
-              per_page: this.itemsPerPage,
-            },
-          }
-        );
+        const response = await axios.get(`${VITE_API_URL}/vacancies`, {
+          params: {
+            page: this.currentPage,
+            per_page: this.itemsPerPage,
+            activated: false,
+          },
+          headers: {
+            "content-type": "application/json",
+            Authorization: "bearer " + token,
+          },
+        });
 
-        this.getInactiveData = response.data.vacancies;
+        this.getInactiveData = response.data.data;
         this.totalCount = response.data.total_vacancy;
         this.totalPages = response.data.total_pages;
         this.currentPage = response.data.current_page;

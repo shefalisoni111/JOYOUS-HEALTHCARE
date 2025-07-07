@@ -17,9 +17,7 @@
           <div class="">
             <ol class="breadcrumb my-2">
               <li class="breadcrumb-item active fs-6">
-                <a
-                  class="nav-link d-inline fs-4 fw-bolder"
-                  style="color: #000000"
+                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
                   >Schedule</a
                 >
               </li>
@@ -56,10 +54,7 @@
           <div class="sidebar-button" :class="{ 'slide-left': isOpen }">
             <div class="d-flex justify-content-end">
               <div class="mb-2">
-                <button
-                  @click="toggleSidebar"
-                  class="btn btn-danger text-nowrap btn-lg"
-                >
+                <button @click="toggleSidebar" class="btn btn-danger text-nowrap btn-lg">
                   <i class="bi bi-funnel-fill"></i> Show Filters
                 </button>
                 <!-- <span v-if="isOpen" class="text-danger fs-5 ps-2">Filter </span> -->
@@ -94,24 +89,15 @@
                       class="form-select"
                       @change="filterData($event.target.value, 'availablity')"
                     >
-                      <option
-                        value=""
-                        selected
-                        for="SelectAvailability"
-                        disabled
-                      >
+                      <option value="" selected for="SelectAvailability" disabled>
                         All Availability
                       </option>
                       <option id="SelectAvailability" value="Late">Late</option>
-                      <option id="SelectAvailability" value="Night">
-                        Night
-                      </option>
+                      <option id="SelectAvailability" value="Night">Night</option>
                       <option id="SelectAvailability" value="Unavailable">
                         Unavailable
                       </option>
-                      <option id="SelectAvailability" value="Early">
-                        Early
-                      </option>
+                      <option id="SelectAvailability" value="Early">Early</option>
                     </select>
                   </div>
                 </div>
@@ -177,9 +163,7 @@
                         id="selectShifts"
                       >
                         {{
-                          option.shift_name
-                            ? option.shift_name.replace(/_/g, " ")
-                            : ""
+                          option.shift_name ? option.shift_name.replace(/_/g, " ") : ""
                         }}
                       </option>
                     </select>
@@ -240,9 +224,7 @@
                 <div class="d-flex">
                   &nbsp;&nbsp;
 
-                  <div
-                    class="d-flex align-items-center justify-content-between"
-                  >
+                  <div class="d-flex align-items-center justify-content-between">
                     <i
                       class="bi bi-caret-left-fill"
                       @click="moveToPrevious"
@@ -292,11 +274,7 @@
 
                         <th>
                           <div class="calendar-grid" v-if="!searchQuery">
-                            <div
-                              v-for="day in daysOfWeek"
-                              :key="day"
-                              class="day-header"
-                            >
+                            <div v-for="day in daysOfWeek" :key="day" class="day-header">
                               {{ day }}
                             </div>
                             <div
@@ -313,9 +291,7 @@
 
                     <tbody v-if="candidateList?.length > 0" class="mt-2">
                       <tr class="sticky-header">
-                        <td
-                          style="border-right: 1px solid rgb(209, 208, 208)"
-                        ></td>
+                        <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
                         <td>
                           <div
                             class="calendar-grid"
@@ -355,12 +331,9 @@
                                     'bg-primary': liIndex >= 3,
                                   }"
                                 >
-                                  <span
-                                    class="d-flex flex-column align-items-baseline"
-                                  >
+                                  <span class="d-flex flex-column align-items-baseline">
                                     <span class="text-capitalize"
-                                      >{{ vacancy.site }},
-                                      {{ vacancy.job_title }}</span
+                                      >{{ vacancy.site }}, {{ vacancy.job_title }}</span
                                     >
                                     <span>{{
                                       vacancy.site_shift.replace(/_/g, " ")
@@ -390,10 +363,7 @@
 
                           <span class="fs-6 text-muted fw-100"
                             ><br /><span
-                              style="
-                                background: rgb(209, 207, 207);
-                                padding: 3px;
-                              "
+                              style="background: rgb(209, 207, 207); padding: 3px"
                               >{{ data.job }}</span
                             ></span
                           >
@@ -401,10 +371,7 @@
 
                         <td>
                           <div>
-                            <div
-                              class="calendar-grid"
-                              @dragover.prevent="handleDragOver"
-                            >
+                            <div class="calendar-grid" @dragover.prevent="handleDragOver">
                               <div
                                 v-for="day in selectedDateRow"
                                 :key="day"
@@ -419,29 +386,18 @@
                                 }"
                                 @drop="handleDrop(data, formattedDate(day))"
                               >
-                                <span
-                                  v-for="avail in data.availability"
-                                  :key="avail.id"
-                                >
-                                  <span
-                                    v-if="avail.date === formattedDate(day)"
-                                  >
+                                <span v-for="avail in data.availability" :key="avail.id">
+                                  <span v-if="avail.date === formattedDate(day)">
                                     <span>
                                       <span
                                         v-if="avail.status"
-                                        style="
-                                          font-size: small;
-                                          padding: 0px 5px;
-                                        "
+                                        style="font-size: small; padding: 0px 5px"
                                         v-bind:class="{
-                                          'btn btn-warning ':
-                                            avail.status === 'Late',
+                                          'btn btn-warning ': avail.status === 'Late',
                                           'btn btn-primary ':
                                             avail.status === 'Unavailable',
-                                          'btn btn-secondary ':
-                                            avail.status === 'Night',
-                                          'btn btn-light ':
-                                            avail.status === 'Early',
+                                          'btn btn-secondary ': avail.status === 'Night',
+                                          'btn btn-light ': avail.status === 'Early',
                                         }"
                                       >
                                         {{
@@ -456,23 +412,15 @@
                                 &nbsp;&nbsp;
 
                                 <span
-                                  v-for="assign in assignStaffDisplay"
+                                  v-for="assign in this.assignStaffDisplay"
                                   :key="assign.id"
-                                  >{{ console.log(avail) }}
-                                  <span v-if="avail.date === assign.day">
-                                    <span
-                                      v-for="data in assign.vacancies"
-                                      :key="data.id"
-                                    >
-                                      <span
-                                        v-for="date in data.dates"
-                                        :key="date"
-                                      >
+                                >
+                                  <span v-for="datas in assign" :key="datas.id">
+                                    <span v-if="datas.date === formattedDate(day)">
+                                      <span>
                                         <span
-                                          v-if="
-                                            formatDates(date) ===
-                                            formattedDate(day)
-                                          "
+                                          v-for="vacancy in datas.vacancies"
+                                          :key="vacancy.id"
                                         >
                                           <span
                                             :draggable="
@@ -483,13 +431,10 @@
                                             "
                                             @dragstart="
                                               getBookingStatus(
-                                                data,
+                                                vacancy,
                                                 formattedDate(day)
                                               ) !== 'Booked' &&
-                                                handleDragRevert(
-                                                  data,
-                                                  assign.candidate_id
-                                                )
+                                                handleDragRevert(data, data.candidate_id)
                                             "
                                           >
                                             <div
@@ -498,13 +443,12 @@
                                               data-bs-whatever="@mdo"
                                               @click="
                                                 () => {
-                                                  const status =
-                                                    getBookingStatus(
-                                                      data,
-                                                      formattedDate(day)
-                                                    );
+                                                  const status = getBookingStatus(
+                                                    vacancy,
+                                                    formattedDate(day)
+                                                  );
                                                   openModalEdit(
-                                                    data,
+                                                    vacancy,
                                                     formattedDate(day),
                                                     status
                                                   );
@@ -519,16 +463,13 @@
                                               <span
                                                 class="assignVacancyDesign mt-1 text-capitalize d-flex justify-content-center"
                                               >
-                                                {{ data.site }},
+                                                {{ vacancy.site }},
                                                 <!-- {{ extractTimeRange(data.site_shift)
                                           }} -->
                                                 <br />
                                                 {{
-                                                  data.site_shift?.replace(
-                                                    /_/g,
-                                                    " "
-                                                  )
-                                                }}, {{ data.job_title }} &nbsp;
+                                                  vacancy.site_shift?.replace(/_/g, " ")
+                                                }}, {{ vacancy.job_title }} &nbsp;
 
                                                 <br />
                                               </span>
@@ -566,10 +507,7 @@
                                 </span>
 
                                 <div
-                                  v-if="
-                                    dropCandidateId === data.id &&
-                                    dropDay === day
-                                  "
+                                  v-if="dropCandidateId === data.id && dropDay === day"
                                   class="drop-zone"
                                 >
                                   {{ droppedContent }}
@@ -748,9 +686,7 @@ export default {
       return Math.ceil(this.totalCandidateCount / this.itemsPerPage);
     },
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find(
-        (option) => option.id === this.site_id
-      );
+      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
       return site_id ? site_id.site_name : "";
     },
     selectJobTitle() {
@@ -759,9 +695,7 @@ export default {
     },
 
     selectShifts() {
-      const shifts_id = this.shiftsTime.find(
-        (option) => option.id === this.shifts_id
-      );
+      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
       return shifts_id ? shifts_id.shift_name : "";
     },
 
@@ -817,17 +751,15 @@ export default {
       return this.formatDate(this.selectedDateRow[0]);
     },
     formattedEndDate() {
-      return this.formatDate(
-        this.selectedDateRow[this.selectedDateRow.length - 1]
-      );
+      return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
     },
-    filteredAssignStaff() {
-      return function (candidateId) {
-        return this.assignStaffDisplay.filter(
-          (assign) => assign.candidate_id === candidateId
-        );
-      };
-    },
+    // filteredAssignStaff() {
+    //   return function (candidateId) {
+    //     return this.assignStaffDisplay.filter(
+    //       (assign) => assign.candidate_id === candidateId
+    //     );
+    //   };
+    // },
     isFilterSelected() {
       return (
         this.filters.availablity !== "" ||
@@ -982,13 +914,9 @@ export default {
     extractTimeRange(shift) {
       if (shift && shift.includes("Holiday")) {
         if (shift && shift.includes("Day Shift")) {
-          return shift
-            .replace("Holiday Day Shift", "Holiday Night Shift")
-            .split(" ")[3];
+          return shift.replace("Holiday Day Shift", "Holiday Night Shift").split(" ")[3];
         } else if (shift && shift.includes("Night Shift")) {
-          return shift
-            .replace("Holiday Night Shift", "Holiday Day Shift")
-            .split(" ")[3];
+          return shift.replace("Holiday Night Shift", "Holiday Day Shift").split(" ")[3];
         }
       } else if (shift && shift.includes("Day Shift")) {
         return shift.split(" ")[2];
@@ -1027,6 +955,7 @@ export default {
         );
       }
       this.fetchCandidateList();
+      this.fetchVacancyListMethod();
     },
     moveToNext() {
       if (this.currentView === "weekly") {
@@ -1042,6 +971,7 @@ export default {
         );
       }
       this.fetchCandidateList();
+      this.fetchVacancyListMethod();
     },
     formatMonthYear(date) {
       return new Intl.DateTimeFormat("en-US", {
@@ -1053,9 +983,7 @@ export default {
     updateDateRange() {
       if (this.currentView === "weekly") {
         const weekStart = new Date(this.startDate);
-        weekStart.setDate(
-          this.startDate.getDate() - this.startDate.getDay() + 1
-        );
+        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
         this.startDate = weekStart;
 
         const weekEnd = new Date(this.startDate);
@@ -1063,16 +991,8 @@ export default {
         this.endDate = weekEnd;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
-        this.startDate = new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth(),
-          1
-        );
-        this.endDate = new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth() + 1,
-          0
-        );
+        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());
@@ -1170,7 +1090,8 @@ export default {
           const message = "Staff Assigned Shift Successfully";
           this.$refs.successAlert.showSuccess(message);
           this.fetchCandidateList();
-          this.fetchAssignList();
+          this.fetchVacancyListMethod();
+          // this.fetchAssignList(candidateId.candidate_id);
         }
       } catch (error) {
         let errorMessage;
@@ -1215,10 +1136,7 @@ export default {
 
     getCandidateName() {
       if (this.selectedCandidate) {
-        if (
-          this.selectedCandidate.first_name &&
-          this.selectedCandidate.last_name
-        ) {
+        if (this.selectedCandidate.first_name && this.selectedCandidate.last_name) {
           return `${this.selectedCandidate.first_name} ${this.selectedCandidate.last_name}`;
         } else {
           return (
@@ -1256,11 +1174,7 @@ export default {
         return;
       }
 
-      if (
-        candidateId &&
-        candidateId.job !== undefined &&
-        candidateId.job !== null
-      ) {
+      if (candidateId && candidateId.job !== undefined && candidateId.job !== null) {
         this.candidateJob = candidateId.job.toString();
       } else {
         this.candidateJob = "";
@@ -1339,11 +1253,7 @@ export default {
         return;
       }
 
-      if (
-        candidateId &&
-        candidateId.job !== undefined &&
-        candidateId.job !== null
-      ) {
+      if (candidateId && candidateId.job !== undefined && candidateId.job !== null) {
         this.candidateJob = candidateId.job.toString();
       } else {
         this.candidateJob = "";
@@ -1398,19 +1308,25 @@ export default {
       this.statusForSelectedDate = null;
       this.isModalOpen = false;
     },
-    async fetchAssignList() {
+    async fetchAssignList(candidateId) {
+      console.log(candidateId);
       try {
         const response = await axios.get(
-          `${VITE_API_URL}/find_assign_vacancies_and_candidates`
+          `${VITE_API_URL}/find_assign_vacancies_and_candidates`,
+          {
+            params: {
+              candidate_id: candidateId,
+            },
+          }
         );
         if (response.data.error) {
           // console.error(response.data.error);
 
-          this.assignStaffDisplay = [];
+          // this.assignStaffDisplay = [];
           this.flattenedAssignVacancies = [];
           return;
         }
-        this.assignStaffDisplay = response.data.vacancies;
+        // this.assignStaffDisplay = response.data.vacancies;
 
         // const vacanciesInsideVacancies = response.data.vacancies.map((item) => {
         //   return item.vacancies;
@@ -1430,11 +1346,13 @@ export default {
     async changePage(page) {
       this.currentPage = page;
       await this.fetchCandidateList();
+      await this.fetchVacancyListMethod();
     },
     setItemsPerPage(value) {
       this.itemsPerPage = value;
       this.currentPage = 1;
       this.fetchCandidateList();
+      this.fetchVacancyListMethod();
     },
     // nextPage() {
     //   if (this.currentPage < this.totalPages) {
@@ -1472,13 +1390,18 @@ export default {
         // this.totalPages = Math.ceil(this.totalCandidateCount / this.itemsPerPage);
 
         this.searchResults = response.data.data;
-        this.assignStaffDisplay = response.data.vacancies;
+        // this.assignStaffDisplay = response.data.vacancies;
         this.vacancyList = response.data.vacancies;
         this.totalCandidateCount = response.data.total_count;
         this.ColumnDateMatchDates = this.candidateList.map((candidate) =>
           candidate.availability.map((avail) => avail.date)
         );
-
+        this.candidateIds = this.candidateList
+          .filter((candidate) =>
+            candidate.availability.some((avail) => avail.date === selectedDate)
+          )
+          .map((candidate) => candidate.candidate_id);
+        console.log(this.candidateIds);
         this.availabilityIds = this.candidateList.map((candidate) => {
           return candidate.availability.map(
             (availabilityItem) => availabilityItem.availability_id
@@ -1495,7 +1418,7 @@ export default {
         } else {
           this.currentPage += 1;
         }
-        // this.fetchAssignList();
+        this.fetchAssignList(this.candidateIds);
         // this.currentPage += 1;
       } catch (error) {
       } finally {
@@ -1504,12 +1427,12 @@ export default {
       }
     },
     async fetchVacancyListMethod() {
-      if (this.isFetching) return;
+      // if (this.isFetching) return;
       this.isFetching = true;
       try {
         const requestData = {
           date: this.formattedStartDate,
-          single_date: true,
+          // single_date: true,
         };
         const response = await axios.get(
           `${VITE_API_URL}/vacancies_and_candidates_availability`,
@@ -1517,7 +1440,8 @@ export default {
             params: requestData,
           }
         );
-
+        // console.log(response.data);
+        this.assignStaffDisplay = response.data;
         // this.fetchCandidateList();
         // await this.fetchAssignList();
         // this.fetchAssignVacancyStaffList();
@@ -1551,8 +1475,7 @@ export default {
       }
     },
     handleScroll() {
-      const scrollableHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
+      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
       const scrolled = window.scrollY;
 
       if (scrolled >= scrollableHeight - 100) {
