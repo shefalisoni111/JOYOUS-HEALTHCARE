@@ -631,6 +631,7 @@ export default {
       clientData: [],
       currentPage: 1,
       itemsPerPage: 10,
+      weekOffset: 0,
       searchQuery: null,
       debounceTimeout: null,
       errorMessage: "",
@@ -1010,8 +1011,7 @@ export default {
     // },
     moveToPrevious() {
       if (this.currentView === "weekly") {
-        this.startDate.setDate(this.startDate.getDate() - 7);
-        this.endDate.setDate(this.endDate.getDate() - 7);
+        this.weekOffset -= 1;
         this.updateDateRange();
       } else if (this.currentView === "monthly") {
         this.startDate.setMonth(this.startDate.getMonth() - 1);
@@ -1025,8 +1025,7 @@ export default {
     },
     moveToNext() {
       if (this.currentView === "weekly") {
-        this.startDate.setDate(this.startDate.getDate() + 7);
-        this.endDate.setDate(this.endDate.getDate() + 7);
+        this.weekOffset += 1;
         this.updateDateRange();
       } else if (this.currentView === "monthly") {
         this.startDate.setMonth(this.startDate.getMonth() + 1);

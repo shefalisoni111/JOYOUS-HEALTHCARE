@@ -19,7 +19,9 @@
               <div class="py-3">
                 <ol class="breadcrumb mb-1">
                   <li class="breadcrumb-item active">
-                    <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                    <a
+                      class="nav-link d-inline fs-4 fw-bolder"
+                      style="color: #000000"
                       >All Clients</a
                     >
                     <p>
@@ -65,14 +67,101 @@
                       </div>
 
                       <div class="d-flex gap-3 align-items-center">
-                        <button
-                          type="button"
-                          class="btn btn-lg btn-danger text-nowrap"
-                          @click="toggleFilters"
-                        >
-                          <i class="bi bi-funnel"></i>
-                          Show Filters
-                        </button>
+                        <div class="dropdown">
+                          <button
+                            class="btn btn-danger text-nowrap btn-lg dropdown-toggle"
+                            type="button"
+                            id="dropdownMenuFilters"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            <i class="bi bi-funnel"></i>
+                            Show Filters
+                          </button>
+
+                          <ul
+                            class="dropdown-menu p-3 shadow rounded-3"
+                            aria-labelledby="dropdownMenuFilters"
+                            style="min-width: 300px"
+                          >
+                            <li class="mb-2">
+                              <select
+                                class="form-select"
+                                v-model="client_id"
+                                @change="onClientChange"
+                              >
+                                <option value="" disabled>All Client</option>
+                                <option
+                                  v-for="option in clientData"
+                                  :key="option.id"
+                                  :value="option.id"
+                                >
+                                  {{ option.client_name }}
+                                </option>
+                              </select>
+                            </li>
+
+                            <li class="mb-2">
+                              <select
+                                class="form-select"
+                                v-model="site_id"
+                                @change="onSiteSelect"
+                              >
+                                <option value="" disabled>All Site</option>
+                                <option
+                                  v-for="option in businessUnit"
+                                  :key="option.site_id"
+                                  :value="option.site_id"
+                                >
+                                  {{ option.site_name }}
+                                </option>
+                              </select>
+                            </li>
+
+                            <li class="mb-2">
+                              <select
+                                class="form-select"
+                                v-model="job_id"
+                                @change="onJobTitleChange"
+                              >
+                                <option value="" disabled>All Position</option>
+                                <option
+                                  v-for="option in options"
+                                  :key="option.job_id"
+                                  :value="option.job_id"
+                                >
+                                  {{ option.job_name }}
+                                </option>
+                              </select>
+                            </li>
+
+                            <li class="mb-2">
+                              <input
+                                class="form-control"
+                                type="search"
+                                placeholder="Search Rate and Rules..."
+                                v-model="localSearchQuery"
+                                @input="filterData"
+                              />
+                            </li>
+
+                            <li>
+                              <button
+                                class="btn btn-secondary w-100"
+                                @click="resetFilter"
+                                :disabled="
+                                  !client_id &&
+                                  !site_id &&
+                                  !job_id &&
+                                  !localSearchQuery
+                                "
+                              >
+                                Reset Filters
+                              </button>
+                            </li>
+                          </ul>
+                        </div>
+
                         <input
                           ref="fileInput"
                           id="fileAll"
@@ -93,7 +182,10 @@
                         >
                           Export
 
-                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <ul
+                            class="dropdown-menu"
+                            aria-labelledby="navbarDropdown"
+                          >
                             <li>
                               <a
                                 class="dropdown-item"
@@ -139,91 +231,6 @@
                     </div>
                   </div>
 
-                  <div
-                    class="d-flex gap-2 mb-3 justify-content-between"
-                    v-if="showFilters"
-                  >
-                    <div
-                      class="d-flex gap-2 flex-column position-absolute"
-                      style="
-                        transform: translate(332%, -8%);
-                        background: rgb(255, 255, 255);
-                        padding: 8px 13px 9px 13px;
-                        border-radius: 10px;
-                        box-shadow: 0px 4px 40px 0px #0000000d;
-                      "
-                    >
-                      <div class="d-flex gap-2 mt-3 flex-column">
-                        <div></div>
-
-                        <select
-                          v-model="client_id"
-                          id="selectClients"
-                          @change="onClientChange"
-                        >
-                          <option value="" disabled>All Client</option>
-                          <option
-                            v-for="option in clientData"
-                            :key="option.id"
-                            :value="option.id"
-                            aria-placeholder="Select Job"
-                          >
-                            {{ option.client_name }}
-                          </option>
-                        </select>
-                        <select
-                          v-model="site_id"
-                          id="selectBusinessUnit"
-                          @change="onSiteSelect"
-                        >
-                          <option value="" disabled>All Site</option>
-                          <option
-                            v-for="option in businessUnit"
-                            :key="option.site_id"
-                            :value="option.site_id"
-                            placeholder="Select BusinessUnit"
-                          >
-                            {{ option.site_name }}
-                          </option>
-                        </select>
-                        <select
-                          v-model="job_id"
-                          id="selectedOptionText"
-                          @change="onJobTitleChange"
-                        >
-                          <option value="" disabled>All Position</option>
-                          <option
-                            v-for="option in options"
-                            :key="option.job_id"
-                            :value="option.job_id"
-                          >
-                            {{ option.job_name }}
-                          </option>
-                        </select>
-                        <div class="searchbox position-relative">
-                          <input
-                            class="form-control"
-                            type="search"
-                            placeholder="Search Rate and Rules..."
-                            aria-label="Search"
-                            v-model="localSearchQuery"
-                            @input="filterData"
-                          />
-                        </div>
-                      </div>
-                      <div class="mt-3">
-                        <button
-                          @click="resetFilter"
-                          class="btn btn-secondary"
-                          :disabled="
-                            !client_id && !site_id && !job_id && !localSearchQuery
-                          "
-                        >
-                          Reset Filters
-                        </button>
-                      </div>
-                    </div>
-                  </div>
                   <div class="d-flex gap-2"></div>
                   <div class="tab-content pe-3" id="pills-tabContent">
                     <div
@@ -412,7 +419,9 @@
                           v-for="(data, index) in uniquePaginateCandidates"
                           :key="data.id + '-' + index"
                         >
-                          <tr :class="{ 'table-active': activeSiteId === index }">
+                          <tr
+                            :class="{ 'table-active': activeSiteId === index }"
+                          >
                             <td>
                               <div class="form-check">
                                 <input
@@ -654,7 +663,9 @@
                                   padding: 3px;
                                   border-radius: 4px;
                                 "
-                                >{{ rate.day === "all_day" ? "weekly" : rate.day }}</span
+                                >{{
+                                  rate.day === "all_day" ? "weekly" : rate.day
+                                }}</span
                               >
                             </td>
                             <td>
@@ -1095,7 +1106,7 @@ export default {
       currentPage: 1,
       itemsPerPage: 10,
       totalRecords: 0,
-      showFilters: false,
+
       localSearchQuery: this.searchQuery,
       activeSiteId: null,
       detailsShow: false,
@@ -1144,14 +1155,16 @@ export default {
       return uniqueEntries.slice(startIndex, endIndex);
     },
     paginateCandidates() {
-      if (!this.getRateRulesData || this.getRateRulesData.length === 0) return [];
+      if (!this.getRateRulesData || this.getRateRulesData.length === 0)
+        return [];
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.getRateRulesData.slice(startIndex, endIndex);
     },
 
     totalRecordsOnPage() {
-      if (!this.getRateRulesData || this.getRateRulesData.length === 0) return 1;
+      if (!this.getRateRulesData || this.getRateRulesData.length === 0)
+        return 1;
       return Math.ceil(this.getRateRulesData.length / this.itemsPerPage);
     },
     groupedRateRulesData() {
@@ -1178,7 +1191,9 @@ export default {
       return Object.values(groupedData);
     },
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
 
@@ -1187,7 +1202,9 @@ export default {
       return job_id ? job_id.job_name : "";
     },
     selectClients() {
-      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      const client_id = this.clientData.find(
+        (option) => option.id === this.client_id
+      );
       return client_id ? client_id.first_name : "";
     },
   },
@@ -1216,7 +1233,9 @@ export default {
       this.filterData();
     },
     getFilteredData(siteId) {
-      return this.filteredRateRulesData.find((rate) => rate.site_id === siteId) || {};
+      return (
+        this.filteredRateRulesData.find((rate) => rate.site_id === siteId) || {}
+      );
     },
     AddRateRules() {
       this.$refs.add_rate_rules.getTimeShift();
@@ -1224,9 +1243,7 @@ export default {
         this.$refs.add_rate_rules.getClientMethod();
       }, 100);
     },
-    toggleFilters() {
-      this.showFilters = !this.showFilters;
-    },
+
     async filterData() {
       const params = {
         page: 1,
@@ -1249,9 +1266,12 @@ export default {
       }
 
       try {
-        const response = await axios.get(`${VITE_API_URL}/rate_and_rule_filter`, {
-          params,
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/rate_and_rule_filter`,
+          {
+            params,
+          }
+        );
         this.getRateRulesData = response.data.data || [];
         if (this.getRateRulesData.length === 0) {
           this.errorMessageFilter = "Report Not Found!";
@@ -1486,7 +1506,9 @@ export default {
     // },
 
     handleCheckboxChange(dataId) {
-      const selectedData = this.getRateRulesData.find((data) => data.id === dataId);
+      const selectedData = this.getRateRulesData.find(
+        (data) => data.id === dataId
+      );
 
       if (!selectedData) {
         return;
@@ -1495,7 +1517,11 @@ export default {
       const { job_id, job, client_id } = selectedData;
 
       this.getRateRulesData.forEach((data) => {
-        if (data.job_id === job_id && data.job === job && data.client_id === client_id) {
+        if (
+          data.job_id === job_id &&
+          data.job === job &&
+          data.client_id === client_id
+        ) {
           this.checkedClient[data.id] = this.checkedClient[dataId];
 
           if (this.checkedClient[dataId]) {
@@ -1544,11 +1570,14 @@ export default {
       const token = localStorage.getItem("token");
 
       try {
-        const response = await axios.delete(`${VITE_API_URL}/rate_and_rules/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.delete(
+          `${VITE_API_URL}/rate_and_rules/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
       } catch (error) {
       } finally {
       }
@@ -1649,7 +1678,8 @@ export default {
       // this.activeSiteId = this.activeSiteId === index ? null : index;
 
       this.filteredRateRulesData = this.getRateRulesData.filter(
-        (rate) => rate.site_id === siteId && rate.client === client && rate.job === job
+        (rate) =>
+          rate.site_id === siteId && rate.client === client && rate.job === job
       );
     },
     formatTime(time) {

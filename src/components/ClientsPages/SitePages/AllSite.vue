@@ -2,16 +2,94 @@
   <div>
     <div
       class="mt-2 float-end"
-      style="display: flex; justify-content: end; transform: translate(0%, -66%)"
+      style="
+        display: flex;
+        justify-content: end;
+        transform: translate(0%, -66%);
+      "
     >
-      <button
-        type="button"
-        class="btn btn-danger text-nowrap btn-lg"
-        @click="toggleFilters"
-      >
-        <i class="bi bi-funnel"></i>
-        Show Filters
-      </button>
+      <div class="dropdown">
+        <button
+          class="btn btn-danger text-nowrap btn-lg dropdown-toggle"
+          type="button"
+          id="dropdownMenuButtonFilters"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <i class="bi bi-funnel"></i>
+          Show Filters
+        </button>
+
+        <ul
+          class="dropdown-menu p-3 shadow-sm rounded-3"
+          aria-labelledby="dropdownMenuButtonFilters"
+          style="min-width: 300px"
+        >
+          <li class="mb-2">
+            <select
+              class="form-select"
+              v-model="selectedFilter"
+              @change="filterData"
+            >
+              <option value="" disabled>Status</option>
+              <option value="true">Active</option>
+              <option value="false">In-Active</option>
+            </select>
+          </li>
+
+          <li class="mb-2">
+            <select
+              class="form-select"
+              v-model="client_id"
+              @change="onClientChange"
+            >
+              <option value="" disabled>Client Name</option>
+              <option
+                v-for="option in clientData"
+                :key="option.id"
+                :value="option.id"
+              >
+                {{ option.client_name }}
+              </option>
+            </select>
+          </li>
+
+          <li class="mb-2">
+            <select class="form-select" v-model="site_id" @change="filterData">
+              <option value="" disabled>Site Name</option>
+              <option
+                v-for="option in businessUnit"
+                :key="option.site_id"
+                :value="option.site_name"
+              >
+                {{ option.site_name }}
+              </option>
+            </select>
+          </li>
+
+          <li class="mb-2">
+            <input
+              class="form-control"
+              type="search"
+              placeholder="Search Site..."
+              v-model="localSearchQuery"
+              @input="filterData"
+            />
+          </li>
+
+          <li>
+            <button
+              class="btn btn-secondary w-100"
+              @click="resetFilter"
+              :disabled="
+                !selectedFilter && !client_id && !site_id && !localSearchQuery
+              "
+            >
+              Reset Filters
+            </button>
+          </li>
+        </ul>
+      </div>
       <input
         ref="fileInput"
         id="fileAll"
@@ -50,98 +128,14 @@
           </li>
           <li><hr class="dropdown-divider" /></li>
           <li>
-            <a class="dropdown-item" href="#" @click="exportOneFile('all')">Export All</a>
+            <a class="dropdown-item" href="#" @click="exportOneFile('all')"
+              >Export All</a
+            >
           </li>
         </div>
       </button>
     </div>
 
-    <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
-      <div
-        class="d-flex gap-2 flex-column position-absolute"
-        style="
-          transform: translate(411%, -3%);
-          background: rgb(255, 255, 255);
-          padding: 8px 13px 9px 13px;
-          border-radius: 10px;
-          box-shadow: 0px 4px 40px 0px #0000000d;
-          z-index: 1;
-        "
-      >
-        <div></div>
-
-        <select v-model="selectedFilter" @change="filterData">
-          <option value="" disabled selected>Status</option>
-          <option value="true">Active</option>
-          <option value="false">In-Active</option>
-        </select>
-
-        <select id="selectClients" v-model="client_id" @change="onClientChange">
-          <option value="" disabled selected>Client Name</option>
-          <option
-            v-for="option in clientData"
-            :key="option.id"
-            :value="option.id"
-            aria-placeholder="Select Client"
-          >
-            {{ option.client_name }}
-          </option>
-        </select>
-
-        <select id="selectSite" v-model="site_id" @change="filterData">
-          <option value="" disabled selected>Site Name</option>
-
-          <option
-            v-for="option in businessUnit"
-            :key="option.site_id"
-            :value="option.site_name"
-            aria-placeholder="Select Site"
-          >
-            {{ option.site_name }}
-          </option>
-        </select>
-
-        <!-- <select
-          id="selectSitesAddress"
-          v-model="selectedSiteAddress"
-          @change="filterData"
-        >
-          <option value="" disabled>Site Address</option>
-          <option
-            v-for="option in businessUnit"
-            :key="option.id"
-            :value="option.id"
-            aria-placeholder="Select Address"
-          >
-            {{ option.address }}
-          </option>
-        </select> -->
-        <div class="searchbox position-relative">
-          <input
-            class="form-control"
-            type="search"
-            placeholder="Search Site..."
-            aria-label="Search"
-            v-model="localSearchQuery"
-            @input="filterData"
-          />
-        </div>
-        <div>
-          <button
-            @click="resetFilter"
-            class="btn btn-secondary"
-            :disabled="
-              !selectedFilter &&
-              !selectedClientName &&
-              !selectedSiteName &&
-              !localSearchQuery
-            "
-          >
-            Reset Filters
-          </button>
-        </div>
-      </div>
-    </div>
     <div class="table-wrapper w-100" style="margin-top: -30px">
       <table class="table siteTable">
         <thead>
@@ -325,7 +319,10 @@
                     class="btn text-nowrap border-0"
                     v-on:click="deleteSiteMethod(data.id)"
                   >
-                    <i class="bi bi-trash border-0 border-0" style="color: #f9944b"></i
+                    <i
+                      class="bi bi-trash border-0 border-0"
+                      style="color: #f9944b"
+                    ></i
                     >Delete
                   </button>
                 </div>
@@ -367,17 +364,26 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(20)"
+            <a
+              class="dropdown-item"
+              href="#"
+              @click.prevent="setItemsPerPage(20)"
               >20 Records</a
             >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(50)"
+            <a
+              class="dropdown-item"
+              href="#"
+              @click.prevent="setItemsPerPage(50)"
               >50 Records</a
             >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click.prevent="setItemsPerPage(100)"
+            <a
+              class="dropdown-item"
+              href="#"
+              @click.prevent="setItemsPerPage(100)"
               >100 Records</a
             >
           </li>
@@ -418,7 +424,11 @@
       </div>
     </div>
     <AddSite @addSite="filterData" />
-    <EditSite :siteId="selectedsiteId || 0" @editSite="filterData" ref="refSite" />
+    <EditSite
+      :siteId="selectedsiteId || 0"
+      @editSite="filterData"
+      ref="refSite"
+    />
     <ConfirmationAlert
       :show-modal="isModalVisible"
       :message="confirmMessage"
@@ -443,7 +453,7 @@ export default {
     return {
       getSiteAllData: [],
       selectedsiteId: 0,
-      showFilters: false,
+
       getSiteDetail: [],
       hoverRow: null,
       currentPage: 1,
@@ -494,28 +504,28 @@ export default {
     selectClients() {
       const site = this.businessUnit.find((site) => site.id === this.site_id);
       if (!site) return "";
-      const client = this.clientData.find((client) => client.id === site.client_id);
+      const client = this.clientData.find(
+        (client) => client.id === site.client_id
+      );
       return client ? client.client_name : "";
     },
 
     selectSite() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
     selectSitesAddress() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.address : "";
     },
   },
 
   methods: {
-    toggleFilters() {
-      this.showFilters = !this.showFilters;
-    },
-
     async onClientChange() {
-      this.site_id = "";
-
       await this.getSiteAllDataMethod();
       this.filterData();
     },
@@ -525,8 +535,8 @@ export default {
     },
     resetFilter() {
       this.selectedFilter = "";
-      this.client_id = "";
-      this.site_id = "";
+      this.client_id = null;
+      this.site_id = null;
       this.selectedSiteAddress = "";
       this.localSearchQuery = "";
 
@@ -541,7 +551,8 @@ export default {
       this.isModalVisible = false;
     },
     deleteSiteMethod(id) {
-      this.confirmMessage = "Are you sure you want to completely delete this site?";
+      this.confirmMessage =
+        "Are you sure you want to completely delete this site?";
       this.isModalVisible = true;
       this.confirmCallback = async () => {
         axios.delete(`${VITE_API_URL}/sites/` + id).then((response) => {
@@ -615,7 +626,9 @@ export default {
           params,
         });
         this.getSiteAllData = response.data.data || [];
-        this.totalPages = Math.ceil(response.data.site_filter / this.itemsPerPage);
+        this.totalPages = Math.ceil(
+          response.data.site_filter / this.itemsPerPage
+        );
       } catch (error) {
         // console.error("Error fetching filtered data:", error);
       }
@@ -639,7 +652,8 @@ export default {
       const file = event.target.files[0];
       if (!file) return;
 
-      const isValidFileType = file.type === "text/csv" || file.name.endsWith(".csv");
+      const isValidFileType =
+        file.type === "text/csv" || file.name.endsWith(".csv");
       if (!isValidFileType) {
         Swal.fire({
           icon: "info",
@@ -682,7 +696,8 @@ export default {
             Swal.fire({
               icon: "error",
               title: "Import Failed",
-              text: response.data.errors || "No valid rows found in the CSV file.",
+              text:
+                response.data.errors || "No valid rows found in the CSV file.",
             });
           } else {
             Swal.fire({

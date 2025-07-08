@@ -17,7 +17,9 @@
           <div class="py-3">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active">
-                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                <a
+                  class="nav-link d-inline fs-4 fw-bolder"
+                  style="color: #000000"
                   >Invoice</a
                 >
                 <p>
@@ -75,7 +77,9 @@
                         &nbsp;&nbsp;
                         <div class="d-flex align-items-center">
                           <span
-                            v-if="currentView === 'weekly' && startDate && endDate"
+                            v-if="
+                              currentView === 'weekly' && startDate && endDate
+                            "
                             class="fw-bold"
                           >
                             {{
@@ -86,17 +90,29 @@
                             }}
                           </span>
                           <span
-                            v-else-if="currentView === 'monthly' && startDate && endDate"
+                            v-else-if="
+                              currentView === 'monthly' && startDate && endDate
+                            "
                             class="fw-bold"
                           >
-                            {{ formatDate(startDate) + " to " + formatDate(endDate) }}
+                            {{
+                              formatDate(startDate) +
+                              " to " +
+                              formatDate(endDate)
+                            }}
                           </span>
                         </div>
                         &nbsp;&nbsp;
                         <div class="d-flex align-items-center fs-4">
-                          <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
+                          <i
+                            class="bi bi-caret-left-fill"
+                            @click="moveToPrevious"
+                          ></i>
                           <i class="bi bi-calendar2-check-fill"></i>
-                          <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                          <i
+                            class="bi bi-caret-right-fill"
+                            @click="moveToNext"
+                          ></i>
                         </div>
                       </div>
 
@@ -121,11 +137,18 @@
                           data-bs-toggle="modal"
                           data-bs-target="#staffGenerateCsv"
                           data-bs-whatever="@mdo"
-                          style="background: #f9944b; border-radius: 10px; color: #fff"
+                          style="
+                            background: #f9944b;
+                            border-radius: 10px;
+                            color: #fff;
+                          "
                         >
                           + generate cSV
                         </button>
-                        <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
+                        <form
+                          @submit.prevent="search"
+                          class="form-inline my-2 my-lg-0"
+                        >
                           <input
                             class="form-control form-control-lg mr-sm-2 position-relative"
                             type="search"
@@ -312,7 +335,10 @@
                                     unlocked: !data.invoice_lock,
                                   }"
                                 />
-                                <div class="slider round" style="margin-top: 0px"></div>
+                                <div
+                                  class="slider round"
+                                  style="margin-top: 0px"
+                                ></div>
                               </label>
                             </td>
                             <td scope="col">Auto Generated</td>
@@ -323,7 +349,10 @@
                               <div class="action-wrapper">
                                 <i class="bi bi-three-dots dot-icon"></i>
 
-                                <div v-if="hoverRow === index" class="action-menu">
+                                <div
+                                  v-if="hoverRow === index"
+                                  class="action-menu"
+                                >
                                   <router-link
                                     :to="{
                                       name: 'CandidateInvoiceView',
@@ -331,7 +360,10 @@
                                     }"
                                     class="btn text-nowrap text-nowrap shadow-soft"
                                   >
-                                    <i class="bi bi-eye" style="color: #f9944b"></i>
+                                    <i
+                                      class="bi bi-eye"
+                                      style="color: #f9944b"
+                                    ></i>
                                     View
                                   </router-link>
                                 </div>
@@ -369,7 +401,9 @@
                             <th scope="col">To</th>
                             <th scope="col">Created On</th>
                             <!-- <th scope="col">Due Date</th> -->
-                            <th scope="col" class="text-center">Total Amount</th>
+                            <th scope="col" class="text-center">
+                              Total Amount
+                            </th>
                             <!-- <th scope="col" class="text-center">Paid Amount</th>
                           <th scope="col" class="text-center">Balance Amount</th> -->
                             <!-- <th scope="col">Status</th> -->
@@ -428,7 +462,10 @@
                               <div class="action-wrapper">
                                 <i class="bi bi-three-dots dot-icon"></i>
 
-                                <div v-if="hoverRow === index" class="action-menu">
+                                <div
+                                  v-if="hoverRow === index"
+                                  class="action-menu"
+                                >
                                   <router-link
                                     class="btn text-nowrap text-nowrap shadow-soft"
                                     :to="{
@@ -436,7 +473,10 @@
                                       params: { id: data.id },
                                     }"
                                   >
-                                    <i class="bi bi-eye" style="color: #f9944b"></i>
+                                    <i
+                                      class="bi bi-eye"
+                                      style="color: #f9944b"
+                                    ></i>
                                     View
                                   </router-link>
                                 </div>
@@ -634,6 +674,7 @@ export default {
       daysOfWeek: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
       startDate: new Date(),
       endDate: new Date(),
+      weekOffset: 0,
       getStaffInvoiceDetail: [],
       searchQuery: null,
       debounceTimeout: null,
@@ -758,7 +799,8 @@ export default {
         this.getStaffInvoiceDetail = response.data.data;
 
         if (this.getStaffInvoiceDetail.length === 0) {
-          this.errorMessage = "No Staff Payroll found for the specified criteria.";
+          this.errorMessage =
+            "No Staff Payroll found for the specified criteria.";
         } else {
           this.errorMessage = "";
         }
@@ -806,8 +848,7 @@ export default {
     },
     moveToPrevious() {
       if (this.currentView === "weekly") {
-        this.startDate.setDate(this.startDate.getDate() - 7);
-        this.endDate.setDate(this.endDate.getDate() - 7);
+        this.weekOffset -= 1;
         this.updateDateRange();
       } else if (this.currentView === "monthly") {
         this.startDate.setMonth(this.startDate.getMonth() - 1);
@@ -821,8 +862,7 @@ export default {
     },
     moveToNext() {
       if (this.currentView === "weekly") {
-        this.startDate.setDate(this.startDate.getDate() + 7);
-        this.endDate.setDate(this.endDate.getDate() + 7);
+        this.weekOffset += 1;
         this.updateDateRange();
       } else if (this.currentView === "monthly") {
         this.startDate.setMonth(this.startDate.getMonth() + 1);
@@ -836,17 +876,29 @@ export default {
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
-        const weekStart = new Date(this.startDate);
-        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
+        const today = new Date();
+        const baseDate = new Date(today);
+        baseDate.setDate(today.getDate() + this.weekOffset * 7);
+
+        const weekStart = new Date(baseDate);
+        weekStart.setDate(baseDate.getDate() - baseDate.getDay() + 1);
         this.startDate = weekStart;
 
-        const weekEnd = new Date(this.startDate);
-        weekEnd.setDate(weekEnd.getDate() + 6);
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekStart.getDate() + 6);
         this.endDate = weekEnd;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        this.startDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+        this.endDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        );
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());

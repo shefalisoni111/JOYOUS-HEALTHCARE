@@ -2,16 +2,110 @@
   <div>
     <div
       class="mt-2 float-end"
-      style="display: flex; justify-content: end; transform: translate(0%, -112%)"
+      style="
+        display: flex;
+        justify-content: end;
+        transform: translate(0%, -112%);
+      "
     >
-      <button
-        type="button"
-        class="btn btn-danger text-nowrap btn-lg"
-        @click="toggleFilters"
-      >
-        <i class="bi bi-funnel"></i>
-        Show Filters
-      </button>
+      <div class="dropdown">
+        <button
+          class="btn btn-danger text-nowrap btn-lg dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton1"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <i class="bi bi-funnel"></i>
+          Show Filters
+        </button>
+
+        <ul
+          class="dropdown-menu p-3 shadow-sm rounded-3 z-1"
+          aria-labelledby="dropdownMenuButton1"
+          style="min-width: 300px"
+        >
+          <li>
+            <div class="mb-2">
+              <select
+                class="form-select"
+                v-model="selectedClientExport"
+                @change="filterData"
+              >
+                <option value="" disabled>Status</option>
+                <option value="true">Active</option>
+                <option value="false">In-Active</option>
+              </select>
+            </div>
+          </li>
+
+          <li>
+            <div class="mb-2">
+              <select
+                class="form-select"
+                v-model="selectedClient"
+                @change="filterData"
+              >
+                <option value="" disabled>Select Client</option>
+                <option
+                  v-for="option in clientData"
+                  :key="option.id"
+                  :value="option.client_name"
+                >
+                  {{ option.client_name }}
+                </option>
+              </select>
+            </div>
+          </li>
+
+          <li>
+            <div class="mb-2">
+              <select
+                class="form-select"
+                v-model="selectedJobTitle"
+                @change="filterData"
+              >
+                <option value="" disabled>Select Job</option>
+                <option
+                  v-for="option in options"
+                  :key="option.id"
+                  :value="option.id"
+                >
+                  {{ option.name }}
+                </option>
+              </select>
+            </div>
+          </li>
+
+          <li>
+            <div class="mb-2">
+              <input
+                class="form-control"
+                type="search"
+                placeholder="Search clients..."
+                v-model="localSearchQuery"
+                @input="filterData"
+              />
+            </div>
+          </li>
+
+          <li>
+            <button
+              :disabled="
+                !selectedClientExport &&
+                !selectedClient &&
+                !selectedJobTitle &&
+                !localSearchQuery
+              "
+              @click="resetFilters"
+              class="btn btn-sm btn-dark w-100"
+            >
+              Reset
+            </button>
+          </li>
+        </ul>
+      </div>
+
       <input
         ref="fileInput"
         id="fileAll"
@@ -50,129 +144,14 @@
           </li>
           <li><hr class="dropdown-divider" /></li>
           <li>
-            <a class="dropdown-item" href="#" @click="exportOneFile('all')">Export All</a>
+            <a class="dropdown-item" href="#" @click="exportOneFile('all')"
+              >Export All</a
+            >
           </li>
         </ul>
       </button>
     </div>
 
-    <!-- <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
-      <div class="d-flex gap-2 mt-3">
-        <div></div>
-
-        <select v-model="selectedClientExport" @change="filterData">
-          <option value="" disabled>Status</option>
-          <option value="true">Active</option>
-          <option value="false">In-Active</option>
-        </select>
-
-        <select v-model="selectedClient" @change="filterData">
-          <option value="" disabled>Select Client</option>
-          <option
-            v-for="option in clientData"
-            :key="option.id"
-            :value="option.client_name"
-          >
-            {{ option.client_name }}
-          </option>
-        </select>
-
-        <select v-model="selectedJobTitle" @change="filterData">
-          <option value="" disabled>Select Job</option>
-          <option v-for="option in options" :key="option.id" :value="option.id">
-            {{ option.name }}
-          </option>
-        </select>
-        <div class="searchbox position-relative">
-          <input
-            class="form-control"
-            type="search"
-            placeholder="Search clients..."
-            aria-label="Search"
-            v-model="localSearchQuery"
-            @input="filterData"
-          />
-        </div>
-      </div>
-      <div>
-        <button
-          :disabled="
-            !selectedClientExport &&
-            !selectedClient &&
-            !selectedJobTitle &&
-            !localSearchQuery
-          "
-          @click="resetFilters"
-          class="btn btn-secondary"
-        >
-          Reset Filters
-        </button>
-      </div>
-    </div> -->
-    <div class="d-flex gap-2 mb-3 justify-content-between" v-if="showFilters">
-      <div
-        class="d-flex gap-2 flex-column position-absolute"
-        style="
-          transform: translate(411%, -3%);
-          background: rgb(255, 255, 255);
-          padding: 8px 13px 9px 13px;
-          border-radius: 10px;
-          box-shadow: 0px 4px 40px 0px #0000000d;
-          z-index: 1;
-        "
-      >
-        <div></div>
-
-        <select v-model="selectedClientExport" @change="filterData">
-          <option value="" disabled selected>Status</option>
-          <option value="true">Active</option>
-          <option value="false">In-Active</option>
-        </select>
-
-        <select v-model="selectedClient" @change="filterData">
-          <option value="" disabled selected>Select Client</option>
-          <option
-            v-for="option in clientData"
-            :key="option.id"
-            :value="option.client_name"
-          >
-            {{ option.client_name }}
-          </option>
-        </select>
-
-        <select v-model="selectedJobTitle" @change="filterData">
-          <option value="" disabled selected>Select Job</option>
-          <option v-for="option in options" :key="option.id" :value="option.id">
-            {{ option.name }}
-          </option>
-        </select>
-        <div class="searchbox position-relative">
-          <input
-            class="form-control"
-            type="search"
-            placeholder="Search clients..."
-            aria-label="Search"
-            v-model="localSearchQuery"
-            @input="filterData"
-          />
-        </div>
-        <div>
-          <button
-            :disabled="
-              !selectedClientExport &&
-              !selectedClient &&
-              !selectedJobTitle &&
-              !localSearchQuery
-            "
-            @click="resetFilters"
-            class="btn-sm bg-dark text-white px-4 py-1"
-            style="border-radius: 4px"
-          >
-            Reset
-          </button>
-        </div>
-      </div>
-    </div>
     <div class="table-wrapper w-100" style="margin-top: -30px">
       <table class="table clientTable">
         <thead>
@@ -302,7 +281,8 @@
               >
                 {{ getJobName(job) }}
 
-                <template v-if="index !== client.job_ids.length - 1"> </template>
+                <template v-if="index !== client.job_ids.length - 1">
+                </template>
               </span>
             </td>
 
@@ -389,7 +369,10 @@
                     class="btn text-nowrap border-0"
                     v-on:click="deleteClientDataMethod(client.id)"
                   >
-                    <i class="bi bi-trash border-0 border-0" style="color: #f9944b"></i>
+                    <i
+                      class="bi bi-trash border-0 border-0"
+                      style="color: #f9944b"
+                    ></i>
                     Delete
                   </button>
                 </div>
@@ -411,7 +394,10 @@
         </tbody>
       </table>
     </div>
-    <div class="mx-3 d-flex justify-content-between" v-if="getClientDetail?.length">
+    <div
+      class="mx-3 d-flex justify-content-between"
+      v-if="getClientDetail?.length"
+    >
       <div class="d-flex">
         <h6 class="d-flex align-items-center">Show: &nbsp;</h6>
         <button
@@ -426,10 +412,14 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+              >20 Records</a
+            >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+              >50 Records</a
+            >
           </li>
           <li>
             <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
@@ -505,7 +495,7 @@ export default {
       itemsPerPage: 10,
       totalCount: 0,
       activated: false,
-      showFilters: false,
+
       isLoading: false,
       hoverRow: null,
       checkedClient: reactive({}),
@@ -566,7 +556,9 @@ export default {
       return this.client.activated ? "Active" : "No Account";
     },
     selectClients() {
-      const client = this.clientData.find((option) => option.id === this.client_id);
+      const client = this.clientData.find(
+        (option) => option.id === this.client_id
+      );
       return client ? client.client_name : "";
     },
     // selectJobTitle() {
@@ -574,7 +566,9 @@ export default {
     //   return job ? job.name : "";
     // },
     selectClientsAddress() {
-      const client = this.clientData.find((option) => option.id === this.client_id);
+      const client = this.clientData.find(
+        (option) => option.id === this.client_id
+      );
       return client ? client.address : "";
     },
   },
@@ -620,41 +614,11 @@ export default {
       this.createdClient();
     },
 
-    // async getPositionMethod() {
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/active_job_list`);
-    //     this.options = response.data.data;
-    //   } catch (error) {
-    //     if (error.response) {
-    //       if (error.response.status == 404) {
-    //         // alert(error.response.data.message);
-    //       }
-    //     }
-    //   }
-    // },
     async changePage(page) {
       this.currentPage = page;
       await this.createdClient();
     },
 
-    toggleFilters() {
-      this.showFilters = !this.showFilters;
-    },
-    // async getClientMethod() {
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/get_client_id_name`);
-    //     this.clientData = response.data.data;
-    //   } catch (error) {
-    //     if (error.response) {
-    //       if (error.response.status === 404) {
-    //       } else {
-    //         // console.error("Error fetching client data:", error.response.data.message);
-    //       }
-    //     } else {
-    //       // console.error("Error fetching client data:", error);
-    //     }
-    //   }
-    // },
     async filterData() {
       const params = {
         page: 1,
@@ -886,7 +850,8 @@ export default {
       const file = event.target.files[0];
       if (!file) return;
 
-      const isValidFileType = file.type === "text/csv" || file.name.endsWith(".csv");
+      const isValidFileType =
+        file.type === "text/csv" || file.name.endsWith(".csv");
       if (!isValidFileType) {
         Swal.fire({
           icon: "info",
@@ -938,7 +903,8 @@ export default {
             Swal.fire({
               icon: "error",
               title: "Import Failed",
-              text: response.data.errors || "No valid rows found in the CSV file.",
+              text:
+                response.data.errors || "No valid rows found in the CSV file.",
             });
           } else {
             Swal.fire({
@@ -1039,7 +1005,9 @@ export default {
           params,
         });
         this.getClientDetail = response.data.data;
-        this.totalPages = Math.ceil(response.data.client_filter / this.itemsPerPage);
+        this.totalPages = Math.ceil(
+          response.data.client_filter / this.itemsPerPage
+        );
         if (this.getClientDetail?.length === 0) {
           this.errorMessageFilter = "Data Not Found!";
         }
@@ -1248,6 +1216,12 @@ select {
 .switch input:checked + .slider:before {
   transform: translateX(15px);
   background-color: #ff9800;
+}
+@media (max-width: 576px) {
+  .dropdown-menu {
+    position: static !important;
+    width: 100% !important;
+  }
 }
 @media (max-width: 1120px) {
   .clientTable {

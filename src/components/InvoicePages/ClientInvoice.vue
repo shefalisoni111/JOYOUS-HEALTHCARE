@@ -17,7 +17,9 @@
           <div class="py-3">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active">
-                <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                <a
+                  class="nav-link d-inline fs-4 fw-bolder"
+                  style="color: #000000"
                   >Invoice</a
                 >
                 <p>
@@ -65,6 +67,7 @@
                               ]"
                               @click="
                                 currentView = 'monthly';
+
                                 updateDateRange();
                               "
                             >
@@ -76,7 +79,9 @@
                         &nbsp;&nbsp;
                         <div class="d-flex align-items-center">
                           <span
-                            v-if="currentView === 'weekly' && startDate && endDate"
+                            v-if="
+                              currentView === 'weekly' && startDate && endDate
+                            "
                             class="fw-bold"
                           >
                             {{
@@ -87,43 +92,33 @@
                             }}
                           </span>
                           <span
-                            v-else-if="currentView === 'monthly' && startDate && endDate"
+                            v-else-if="
+                              currentView === 'monthly' && startDate && endDate
+                            "
                             class="fw-bold"
                           >
-                            {{ formatDate(startDate) + " to " + formatDate(endDate) }}
+                            {{
+                              formatDate(startDate) +
+                              " to " +
+                              formatDate(endDate)
+                            }}
                           </span>
                         </div>
                         &nbsp;&nbsp;
                         <div class="d-flex align-items-center fs-4">
-                          <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
+                          <i
+                            class="bi bi-caret-left-fill"
+                            @click="moveToPrevious"
+                          ></i>
                           <i class="bi bi-calendar2-check-fill"></i>
-                          <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                          <i
+                            class="bi bi-caret-right-fill"
+                            @click="moveToNext"
+                          ></i>
                         </div>
                       </div>
 
                       <div class="d-flex gap-3 align-items-center">
-                        <!-- <form
-                        v-if="getClientInvoiceDetail?.length != 0"
-                        @submit.prevent="search"
-                        class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
-                      >
-                        <input
-                          class="form-control mr-sm-2"
-                          type="search"
-                          placeholder="Search..."
-                          aria-label="Search"
-                          v-model="searchQuery"
-                          @input="debounceSearch"
-                        />
-                      </form> -->
-                        <!-- <router-link
-                        type="button"
-                        class="btn btn-primary text-nowrap fs-6 text-capitalize"
-                        to="/invoice/Generate-invoice"
-                      >
-                        <i class="bi bi-file-earmark"></i>
-                        generate invoice
-                      </router-link> -->
                         <div>
                           <button
                             type="button"
@@ -131,7 +126,11 @@
                             data-bs-toggle="modal"
                             data-bs-target="#generateInvoice"
                             data-bs-whatever="@mdo"
-                            style="background: #f9944b; border-radius: 10px; color: #fff"
+                            style="
+                              background: #f9944b;
+                              border-radius: 10px;
+                              color: #fff;
+                            "
                           >
                             + generate CSV
                           </button>
@@ -145,7 +144,10 @@
                           <i class="bi bi-funnel"></i>
                           Show Filters
                         </button>
-                        <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
+                        <form
+                          @submit.prevent="search"
+                          class="form-inline my-2 my-lg-0"
+                        >
                           <input
                             class="form-control form-control-lg mr-sm-2 position-relative"
                             type="search"
@@ -204,21 +206,6 @@
                         </option>
                       </select>
 
-                      <!-- <select
-                      @change="filterData('staff', $event.target.value)"
-                      v-model="id"
-                      id="selectCandidateList"
-                    >
-                      <option value="">All Staff</option>
-                      <option
-                        v-for="option in candidateLists"
-                        :key="option.id"
-                        :value="option.id"
-                      >
-                        {{ option.first_name }}
-                      </option>
-                    </select> -->
-
                       <button
                         :disabled="!isFilterSelected"
                         @click="resetFilters"
@@ -228,19 +215,26 @@
                       </button>
                     </div>
                   </div>
-                  <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                 
-                </ul> -->
+
                   <div v-if="currentView === 'weekly'">
                     <div>
-                      <div v-for="(day, index) in daysOfWeek" :key="index"></div>
-                      <div v-for="(day, index) in getWeekDates" :key="index"></div>
+                      <div
+                        v-for="(day, index) in daysOfWeek"
+                        :key="index"
+                      ></div>
+                      <div
+                        v-for="(day, index) in getWeekDates"
+                        :key="index"
+                      ></div>
                     </div>
                   </div>
 
                   <div v-else-if="currentView === 'monthly'">
                     <div>
-                      <div v-for="(day, index) in getMonthDates" :key="index"></div>
+                      <div
+                        v-for="(day, index) in getMonthDates"
+                        :key="index"
+                      ></div>
                     </div>
                   </div>
 
@@ -261,11 +255,13 @@
                             <th scope="col">To</th>
                             <th scope="col">Created On</th>
                             <!-- <th scope="col">Due Date</th> -->
-                            <th scope="col" class="text-center">Total Amount</th>
-                            <!-- <th scope="col" class="text-center">Paid Amount</th>
-                          <th scope="col" class="text-center">Balance Amount</th>
-                          <th scope="col">Status</th> -->
-                            <th scope="col" style="width: 7%">Invoice Creation Period</th>
+                            <th scope="col" class="text-center">
+                              Total Amount
+                            </th>
+
+                            <th scope="col" style="width: 7%">
+                              Invoice Creation Period
+                            </th>
                             <th scope="col" style="width: 6%">Invoice Lock</th>
                             <th scope="col" style="width: 6%">Generated By</th>
                             <th scope="col">Email Status</th>
@@ -285,29 +281,15 @@
                             <td scope="col">{{ data.start_date }}</td>
                             <td scope="col">{{ data.end_date }}</td>
                             <td scope="col">{{ data.created_on }}</td>
-                            <!-- <td scope="col">
-                            {{ data.due_date }}
-                          </td> -->
+
                             <td scope="col" class="text-center">
                               {{ "£" + data.total_amount }}
                             </td>
-                            <!-- <td scope="col" class="text-center">
-                            {{ "£" + data.paid_amount }}
-                          </td>
-                          <td scope="col" class="text-center">
-                            {{ "£" + data.balance_amount }}
-                          </td>
-                          <td scope="col">{{ data.status }}</td> -->
+
                             <td scope="col">
                               {{ data.invoice_creation_period }}
                             </td>
                             <td scope="col">
-                              <!-- <i
-                              :class="getIconClass(data.invoice_lock)"
-                              style="font-size: x-large; cursor: pointer"
-                              @click="toggleInvoiceLock(data)"
-                            ></i> -->
-                              <!-- {{ data.invoice_lock }} -->
                               <label class="switch">
                                 <input
                                   type="checkbox"
@@ -319,7 +301,10 @@
                                     unlocked: !data.invoice_lock,
                                   }"
                                 />
-                                <div class="slider round" style="margin-top: 0px"></div>
+                                <div
+                                  class="slider round"
+                                  style="margin-top: 0px"
+                                ></div>
                               </label>
                             </td>
                             <td scope="col">Auto Generated</td>
@@ -330,7 +315,10 @@
                               <div class="action-wrapper">
                                 <i class="bi bi-three-dots dot-icon"></i>
 
-                                <div v-if="hoverRow === index" class="action-menu">
+                                <div
+                                  v-if="hoverRow === index"
+                                  class="action-menu"
+                                >
                                   <router-link
                                     class="btn text-nowrap text-nowrap shadow-soft"
                                     :to="{
@@ -338,19 +326,14 @@
                                       params: { id: data.id },
                                     }"
                                   >
-                                    <i class="bi bi-eye" style="color: #f9944b"></i>
+                                    <i
+                                      class="bi bi-eye"
+                                      style="color: #f9944b"
+                                    ></i>
                                     View
                                   </router-link>
                                 </div>
                               </div>
-                              <!-- <router-link
-                                :to="{
-                                  name: 'ClientInvoiceView',
-                                  params: { id: data.id },
-                                }"
-                                class="text-success"
-                                ><i class="bi bi-eye"></i
-                              ></router-link> -->
                             </td>
                           </tr>
                         </tbody>
@@ -385,10 +368,10 @@
                             <th scope="col">To</th>
                             <th scope="col">Created On</th>
                             <!-- <th scope="col">Due Date</th> -->
-                            <th scope="col" class="text-center">Total Amount</th>
-                            <!-- <th scope="col" class="text-center">Paid Amount</th>
-                          <th scope="col" class="text-center">Balance Amount</th>
-                          <th scope="col">Status</th> -->
+                            <th scope="col" class="text-center">
+                              Total Amount
+                            </th>
+
                             <th scope="col">Invoice Creation Period</th>
                             <th scope="col">Invoice Lock</th>
                             <th scope="col">Generated By</th>
@@ -432,7 +415,10 @@
                               <div class="action-wrapper">
                                 <i class="bi bi-three-dots dot-icon"></i>
 
-                                <div v-if="hoverRow === index" class="action-menu">
+                                <div
+                                  v-if="hoverRow === index"
+                                  class="action-menu"
+                                >
                                   <router-link
                                     class="btn text-nowrap text-nowrap shadow-soft"
                                     :to="{
@@ -440,7 +426,10 @@
                                       params: { id: data.id },
                                     }"
                                   >
-                                    <i class="bi bi-eye" style="color: #f9944b"></i>
+                                    <i
+                                      class="bi bi-eye"
+                                      style="color: #f9944b"
+                                    ></i>
                                     View
                                   </router-link>
                                 </div>
@@ -655,6 +644,7 @@ export default {
       startDate: new Date(),
       endDate: new Date(),
       getClientInvoiceDetail: [],
+      weekOffset: 0,
       searchQuery: null,
       errorMessageFilter: "",
       debounceTimeout: null,
@@ -684,11 +674,15 @@ export default {
       return this.site_id || this.client_id;
     },
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
     selectClients() {
-      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      const client_id = this.clientData.find(
+        (option) => option.id === this.client_id
+      );
       return client_id ? client_id.client_name : "";
     },
     selectCandidateList() {
@@ -835,8 +829,7 @@ export default {
     },
     moveToPrevious() {
       if (this.currentView === "weekly") {
-        this.startDate.setDate(this.startDate.getDate() - 7);
-        this.endDate.setDate(this.endDate.getDate() - 7);
+        this.weekOffset -= 1;
         this.updateDateRange();
       } else if (this.currentView === "monthly") {
         this.startDate.setMonth(this.startDate.getMonth() - 1);
@@ -850,8 +843,7 @@ export default {
     },
     moveToNext() {
       if (this.currentView === "weekly") {
-        this.startDate.setDate(this.startDate.getDate() + 7);
-        this.endDate.setDate(this.endDate.getDate() + 7);
+        this.weekOffset += 1;
         this.updateDateRange();
       } else if (this.currentView === "monthly") {
         this.startDate.setMonth(this.startDate.getMonth() + 1);
@@ -941,14 +933,29 @@ export default {
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
-        const currentDate = new Date();
+        const today = new Date();
+        const baseDate = new Date(today);
+        baseDate.setDate(today.getDate() + this.weekOffset * 7);
 
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getDate(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getDate() + 1, 0);
+        const weekStart = new Date(baseDate);
+        weekStart.setDate(baseDate.getDate() - baseDate.getDay() + 1);
+        this.startDate = weekStart;
+
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekStart.getDate() + 6);
+        this.endDate = weekEnd;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        this.startDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+        this.endDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        );
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());
@@ -970,23 +977,7 @@ export default {
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
-    // async vacancyDeleteMethod(id) {
-    //   if (!window.confirm("Are you Sure ?")) {
-    //     return;
-    //   }
-    //   const token = localStorage.getItem("token");
-    //   await axios
-    //     .delete(`${VITE_API_URL}/vacancies/` + id, {
-    //       headers: {
-    //         "content-type": "application/json",
-    //         Authorization: "bearer " + token,
-    //       },
-    //     })
-    //     .then((response) => {
-    //       this.getClientInvoice();
-    //     });
-    //   // alert("Record Deleted ");
-    // },
+
     async changePage(page) {
       this.currentPage = page;
       await this.getClientInvoice();
@@ -1031,7 +1022,8 @@ export default {
         this.getClientInvoiceDetail = response.data.data;
 
         if (this.getClientInvoiceDetail.length === 0) {
-          this.errorMessage = "No client invoices found for the specified criteria.";
+          this.errorMessage =
+            "No client invoices found for the specified criteria.";
         } else {
           this.errorMessage = "";
         }

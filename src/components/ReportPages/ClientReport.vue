@@ -615,6 +615,7 @@ export default {
       endDate: new Date(),
       currentPage: 1,
       itemsPerPage: 10,
+      weekOffset: 0,
       errorMessageCustom: "",
       errorMessage: "",
       searchQuery: null,
@@ -1013,8 +1014,7 @@ export default {
     },
     moveToPrevious() {
       if (this.currentView === "weekly") {
-        this.startDate.setDate(this.startDate.getDate() - 7);
-        this.endDate.setDate(this.endDate.getDate() - 7);
+        this.weekOffset -= 1;
         this.updateDateRange();
       } else if (this.currentView === "monthly") {
         this.startDate.setMonth(this.startDate.getMonth() - 1);
@@ -1029,8 +1029,7 @@ export default {
     },
     moveToNext() {
       if (this.currentView === "weekly") {
-        this.startDate.setDate(this.startDate.getDate() + 7);
-        this.endDate.setDate(this.endDate.getDate() + 7);
+        this.weekOffset += 1;
         this.updateDateRange();
       } else if (this.currentView === "monthly") {
         this.startDate.setMonth(this.startDate.getMonth() + 1);
@@ -1045,14 +1044,16 @@ export default {
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
-        const weekStart = new Date(this.startDate);
-        weekStart.setDate(
-          this.startDate.getDate() - this.startDate.getDay() + 1
-        );
+        const today = new Date();
+        const baseDate = new Date(today);
+        baseDate.setDate(today.getDate() + this.weekOffset * 7);
+
+        const weekStart = new Date(baseDate);
+        weekStart.setDate(baseDate.getDate() - baseDate.getDay() + 1);
         this.startDate = weekStart;
 
-        const weekEnd = new Date(this.startDate);
-        weekEnd.setDate(weekEnd.getDate() + 6);
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekStart.getDate() + 6);
         this.endDate = weekEnd;
         this.queryParams.range = "week";
       } else if (this.currentView === "monthly") {
@@ -1087,7 +1088,7 @@ export default {
       const day = date.getDate();
       const month = date.getMonth() + 1;
       const year = date.getFullYear();
-      return `${month}/${day}/${year}`;
+      return `${day}/${month}/${year}`;
     },
     formatDateView(date) {
       const day = date.getDate();
