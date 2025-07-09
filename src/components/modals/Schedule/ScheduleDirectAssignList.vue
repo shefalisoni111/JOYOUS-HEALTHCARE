@@ -10,6 +10,13 @@
         <div class="modal-content" style="overflow-y: auto">
           <div class="modal-header">
             <h5 class="modal-title" id="scheduleDirectAssignList">Shift List</h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              @click="blurActiveElement"
+            ></button>
           </div>
           <div class="modal-body overflow-x-auto">
             <div class="row m-3">
@@ -278,6 +285,11 @@ export default {
   },
 
   methods: {
+    blurActiveElement() {
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+    },
     isDateBeforeToday(state) {
       const today = new Date();
       const stateDate = new Date(state);
@@ -511,7 +523,6 @@ export default {
 <style scoped>
 .modal-body {
   border-radius: 5px;
-  background: #dbdbdb;
 }
 
 .widthDefine {
@@ -545,8 +556,5 @@ label.form-label {
 
 table th {
   text-transform: capitalize;
-}
-.candidateTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
 }
 </style>

@@ -8,6 +8,13 @@
             <h5 class="modal-title" id="editAssignScheduleVacancy">
               Edit Assign Shift {{ vacancyId }} {{ candidateId }}
             </h5>
+            <button
+              type="button"
+              class="custom-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              @click="blurActiveElement"
+            ></button>
           </div>
           <div class="modal-body mx-3">
             <div class="row align-items-center">
@@ -389,6 +396,11 @@ export default {
     },
   },
   methods: {
+    blurActiveElement() {
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+    },
     async fetchAssignList() {
       try {
         const response = await axios.get(
@@ -444,16 +456,12 @@ export default {
             formData.append("id", this.bookingID);
             formData.append("cancelled_by", "admin");
             const token = localStorage.getItem("token");
-            const response = await axios.put(
-              `${VITE_API_URL}/cancel_booking`,
-              formData,
-              {
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
+            const response = await axios.put(`${VITE_API_URL}/cancel_booking`, formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`,
+              },
+            });
             if (response.status === 200) {
               Swal.fire(
                 "Cancelled!",
@@ -463,7 +471,7 @@ export default {
             } else {
               Swal.fire("Error!", response.data.data.message, "error");
             }
-            this.fetchAssignList();
+            // this.fetchAssignList();
           } catch (error) {
             if (error.response) {
               if (error.response.status === 401) {
