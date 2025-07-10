@@ -413,7 +413,9 @@ export default {
       this.fetchData();
     },
     moveToPrevious() {
-      this.startDate = new Date(this.startDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+      this.startDate = new Date(
+        this.startDate.getTime() - 7 * 24 * 60 * 60 * 1000
+      );
       this.endDate = new Date(this.endDate.getTime() - 7 * 24 * 60 * 60 * 1000);
       this.fetchData();
     },
@@ -470,16 +472,15 @@ export default {
 }
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  background: #000000;
+  background: #000000 !important;
   width: 100;
   height: 37;
-  color: #fff;
+  color: #fff !important;
   border-radius: 13px;
-  padding-top: 10px;
-  padding-right: 15px;
-  padding-bottom: 11px;
-  padding-left: 15px;
+
+  border-bottom: none !important;
 }
+
 .nav-link,
 .nav-link:hover,
 .nav-link:focus {

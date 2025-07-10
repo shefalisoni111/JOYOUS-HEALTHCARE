@@ -1125,7 +1125,7 @@ sidebar.collapsed {
 .sidebar.collapsed .submenu {
   display: none;
 }
-@media (max-width: 1300px) {
+@media (max-width: 1100px) {
   .sidebar {
     display: none;
     position: absolute;
@@ -1146,7 +1146,7 @@ sidebar.collapsed {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
   #sidebar {
     width: 70px;
   }

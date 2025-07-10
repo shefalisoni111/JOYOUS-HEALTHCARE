@@ -1,13 +1,6 @@
 <template>
   <div>
-    <div
-      class="mt-2 float-end"
-      style="
-        display: flex;
-        justify-content: end;
-        transform: translate(0%, -66%);
-      "
-    >
+    <div class="mt-2 d-flex d-sm-flex justify-content-sm-end responsive-float">
       <div class="dropdown">
         <button
           class="btn btn-danger text-nowrap btn-lg dropdown-toggle"
@@ -137,7 +130,7 @@
     </div>
 
     <div class="table-wrapper w-100" style="margin-top: -30px">
-      <table class="table siteTable">
+      <table class="table siteTable table-responsive">
         <thead>
           <tr>
             <th></th>
@@ -921,5 +914,14 @@ select {
   border: 0px;
   border: 1px solid rgb(202, 198, 198);
   background: #fff4f5;
+}
+
+@media (max-width: 1120px) {
+  .siteTable {
+    width: 1090px;
+  }
+  .table-wrapper {
+    overflow-x: scroll;
+  }
 }
 </style>

@@ -498,16 +498,18 @@
           </section>
 
           <section class="section dashboard mt-4 mb-4">
-            <div class="row gx-2 mx-4">
+            <div class="row gx-2 mx-4 align-items-stretch">
               <!-- Left side columns -->
-              <div class="col-sm-12 col-lg-8">
-                <TimeSheet />
+              <div class="col-sm-12 col-lg-8 h-100">
+                <div class="h-100">
+                  <TimeSheet />
+                </div>
               </div>
 
               <!-- Left side columns end -->
 
               <!-- right side columns -->
-              <div class="col-sm-12 col-lg-4 px-3">
+              <div class="col-sm-12 col-lg-4 px-3 h-100">
                 <div class="card h-100 card-border" style="border-radius: 20px">
                   <div class="col-8 p-3">
                     <h5 class="fs-6 p-2 mb-0 fw-bold">Shifts</h5>
@@ -769,34 +771,14 @@ table.sizefix {
 .card.expireindays-card {
   background: #e14349;
 }
-ul.leftsidecol li {
-  margin-top: 15px;
-  font-size: 15px;
-}
 
-ul.leftsidecol li span.rounded-circle {
-  font-size: 13px;
-  width: 33px;
-  height: 30px;
-  text-align: center;
-  padding-top: 5px;
-}
-ul.leftsidecol > li:nth-child(1) span.rounded-circle {
-  background: #57e3b4;
-}
-
-ul.leftsidecol > li:nth-child(2) span.rounded-circle {
-  background: #e66e65;
-}
 .btn-primary {
   border: none;
 }
 .card-header {
   background: transparent;
 }
-ul.leftsidecol > li:nth-child(3) span.rounded-circle {
-  background: #22cbe0;
-}
+
 table td,
 table th {
   padding: 8px;

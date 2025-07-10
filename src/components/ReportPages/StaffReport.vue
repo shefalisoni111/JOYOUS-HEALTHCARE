@@ -9,7 +9,7 @@
           <div class="col-12">
             <div class="">
               <div class="d-flex justify-content-end">
-                <div class="d-flex gap-2">
+                <div class="d-flex flex-wrap gap-2">
                   <div class="custom-select-wrapper">
                     <select
                       id="selectBusinessUnit"

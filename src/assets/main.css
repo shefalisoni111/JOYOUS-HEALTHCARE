@@ -340,6 +340,7 @@ select {
   background-color: #fff;
   left: 7px;
 }
+
 @media (max-width: 600px) {
   .ribbon {
     line-height: 1.143em;
@@ -349,5 +350,26 @@ select {
   .ribbon:before,
   .ribbon:after {
     font-size: 0.714em;
+  }
+}
+
+.responsive-float {
+  transform: translate(0%, -112%);
+  float: right;
+}
+
+@media (max-width: 500px) {
+  .responsive-float {
+    transform: none !important;
+    float: left !important;
+    justify-content: flex-start !important;
+  }
+}
+@media (max-width: 1120px) {
+  .candidateTable {
+    width: 1090px;
+  }
+  .table-wrapper {
+    overflow-x: scroll;
   }
 }

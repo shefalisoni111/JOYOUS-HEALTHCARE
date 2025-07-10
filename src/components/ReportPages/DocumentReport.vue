@@ -61,7 +61,7 @@
               <div>
                 <div class="py-2">
                   <div class="d-flex justify-content-between">
-                    <div class="d-flex">
+                    <div class="d-flex flex-wrap">
                       <ul
                         class="nav nav-pills mt-2 gap-2 mb-2"
                         id="pills-tab"
@@ -102,7 +102,9 @@
                   <component :is="activeComponent"></component>
                 </div>
                 <div v-if="activeTab === 0">
-                  <table class="table reportTable">
+                  <table
+                    class="table reportTable table-responsive table-wrapper"
+                  >
                     <thead>
                       <tr>
                         <th scope="col">

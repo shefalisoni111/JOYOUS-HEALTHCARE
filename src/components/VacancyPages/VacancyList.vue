@@ -12,7 +12,9 @@
           <Navbar />
         </div>
         <div class="container-fluid pt-3 px-5">
-          <div class="pagetitle d-flex justify-content-between px-2">
+          <div
+            class="row d-flex justify-content-center col-11 col-sm-11 col-md-11 col-lg-11 col-xl-12 col-xxl-12 px-2"
+          >
             <div class="py-3">
               <ol class="breadcrumb my-2">
                 <li class="breadcrumb-item active fs-6">

@@ -12,12 +12,16 @@
         <Navbar />
       </div>
       <div class="container-fluid">
-        <div class="row px-5 pt-5 pb-5">
+        <div
+          class="row px-5 pt-5 pb-5 justify-content-center col-11 col-sm-11 col-md-11 col-lg-11 col-xl-12 col-xxl-12"
+        >
           <div class="d-flex justify-content-between px-2">
             <div class="">
               <ol class="breadcrumb mb-1">
                 <li class="breadcrumb-item active">
-                  <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                  <a
+                    class="nav-link d-inline fs-4 fw-bolder"
+                    style="color: #000000"
                     >All Clients</a
                   >
                   <p>
@@ -111,7 +115,10 @@
                           </tr>
                         </thead>
                         <tbody v-if="paginateSearchResults?.length > 0">
-                          <tr v-for="client in paginateSearchResults" :key="client.id">
+                          <tr
+                            v-for="client in paginateSearchResults"
+                            :key="client.id"
+                          >
                             <td v-text="client.id"></td>
                             <td v-text="client.ref_code"></td>
                             <td>
@@ -135,7 +142,9 @@
                               >
                                 {{ job.job_name }}
 
-                                <template v-if="index !== client.jobs.length - 1">
+                                <template
+                                  v-if="index !== client.jobs.length - 1"
+                                >
                                 </template>
                               </span>
                             </td>
@@ -146,7 +155,10 @@
                             <td v-text="client.email"></td>
 
                             <td>
-                              <label class="switch" v-if="client.activated == true">
+                              <label
+                                class="switch"
+                                v-if="client.activated == true"
+                              >
                                 <input type="checkbox" id="togBtn" checked />
                                 <div class="slider round"></div>
                               </label>
@@ -189,7 +201,9 @@
                         <tbody v-else>
                           <tr>
                             <td colspan="10" class="text-danger text-center">
-                              {{ " No candidates found for the specified criteria" }}
+                              {{
+                                " No candidates found for the specified criteria"
+                              }}
                             </td>
                           </tr>
                         </tbody>
@@ -396,7 +410,9 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
+      const matchingTabIndex = vm.tabs.findIndex(
+        (tab) => tab.routeName === to.name
+      );
 
       if (matchingTabIndex !== -1) {
         vm.activeTab = matchingTabIndex;
@@ -405,7 +421,9 @@ export default {
     });
   },
   beforeRouteUpdate(to, from, next) {
-    const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
+    const matchingTabIndex = this.tabs.findIndex(
+      (tab) => tab.routeName === to.name
+    );
 
     if (matchingTabIndex !== -1) {
       this.activeTab = matchingTabIndex;

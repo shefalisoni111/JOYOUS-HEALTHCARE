@@ -13,7 +13,9 @@
         <Navbar />
       </div>
       <div class="container-fluid ps-5 pt-5 pb-5">
-        <div class="row pagetitle d-flex justify-content-between px-2">
+        <div
+          class="row pagetitle justify-content-center col-11 col-sm-11 col-md-11 col-lg-11 col-xl-12 col-xxl-12 px-2"
+        >
           <div class="col-12">
             <div class="d-flex justify-content-between px-2">
               <div class="py-3">
@@ -56,7 +58,9 @@
 
         <div class="container-fluid">
           <div class="row">
-            <div class="col-12">
+            <div
+              class="justify-content-center col-11 col-sm-11 col-md-11 col-lg-11 col-xl-12 col-xxl-12"
+            >
               <div class="">
                 <div>
                   <div class="p-2">
@@ -66,7 +70,7 @@
                         <div class="d-flex align-items-center"></div>
                       </div>
 
-                      <div class="d-flex gap-3 align-items-center">
+                      <div class="d-flex flex-wrap gap-3 align-items-center">
                         <div class="dropdown">
                           <button
                             class="btn btn-danger text-nowrap btn-lg dropdown-toggle"
@@ -241,56 +245,529 @@
                       role="tabpanel"
                       aria-labelledby="pills-home-tab"
                     >
-                      <table class="table candidateTable" v-if="!searchQuery">
-                        <thead>
-                          <tr>
-                            <th scope="col" style="width: 2%"></th>
+                      <div class="table-wrapper candidateTable">
+                        <table
+                          class="table candidateTable table-responsive"
+                          v-if="!searchQuery"
+                        >
+                          <thead>
+                            <tr>
+                              <th scope="col" style="width: 2%"></th>
 
-                            <th scope="col">
-                              Client
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col">
-                              Site
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col">
-                              Job
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col">
-                              <div
-                                class="d-flex justify-content-center align-items-center gap-1"
-                              >
-                                Day
-
+                              <th scope="col">
+                                Client
                                 <img
                                   src="../../../assets/ArrowDown.png"
                                   class="img-fluid pe-2"
                                   alt="RecPal"
                                   loading="eager"
                                 />
-                              </div>
-                            </th>
-                            <th scope="col" style="width: 7%">
-                              <div
-                                class="d-flex justify-content-center align-items-center gap-1"
+                              </th>
+                              <th scope="col">
+                                Site
+                                <img
+                                  src="../../../assets/ArrowDown.png"
+                                  class="img-fluid pe-2"
+                                  alt="RecPal"
+                                  loading="eager"
+                                />
+                              </th>
+                              <th scope="col">
+                                Job
+                                <img
+                                  src="../../../assets/ArrowDown.png"
+                                  class="img-fluid pe-2"
+                                  alt="RecPal"
+                                  loading="eager"
+                                />
+                              </th>
+                              <th scope="col">
+                                <div
+                                  class="d-flex justify-content-center align-items-center gap-1"
+                                >
+                                  Day
+
+                                  <img
+                                    src="../../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
+                                </div>
+                              </th>
+                              <th scope="col" style="width: 7%">
+                                <div
+                                  class="d-flex justify-content-center align-items-center gap-1"
+                                >
+                                  Shift Time
+                                  <img
+                                    src="../../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
+                                </div>
+                              </th>
+                              <th scope="col">
+                                <div
+                                  class="d-flex justify-content-center align-items-center gap-1"
+                                >
+                                  Rate Type
+                                  <img
+                                    src="../../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
+                                </div>
+                              </th>
+                              <th scope="col">
+                                <div
+                                  class="d-flex justify-content-center align-items-center gap-1"
+                                >
+                                  Client Rate
+                                  <img
+                                    src="../../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
+                                </div>
+                              </th>
+                              <th scope="col">
+                                <div
+                                  class="d-flex justify-content-center align-items-center gap-1"
+                                >
+                                  Private Limited
+                                  <img
+                                    src="../../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
+                                </div>
+                              </th>
+                              <th scope="col">
+                                <div
+                                  class="d-flex justify-content-center align-items-center gap-1"
+                                >
+                                  Self Employed
+                                  <img
+                                    src="../../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
+                                </div>
+                              </th>
+                              <th scope="col" style="width: 7%">
+                                <div
+                                  class="d-flex justify-content-center align-items-center gap-1"
+                                >
+                                  Umbrella
+                                  <img
+                                    src="../../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
+                                </div>
+                              </th>
+                              <th scope="col" style="width: 6%">
+                                PAYE
+                                <img
+                                  src="../../../assets/ArrowDown.png"
+                                  class="img-fluid pe-2"
+                                  alt="RecPal"
+                                  loading="eager"
+                                />
+                              </th>
+                              <th scope="col" style="width: 10%">
+                                <div
+                                  class="d-flex justify-content-center align-items-center gap-1"
+                                >
+                                  Created By and Time
+                                  <img
+                                    src="../../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
+                                </div>
+                              </th>
+                              <th scope="col">
+                                <div
+                                  class="d-flex justify-content-center align-items-center gap-1"
+                                >
+                                  Last Update
+                                  <img
+                                    src="../../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
+                                </div>
+                              </th>
+                              <th scope="col" style="width: 7%">
+                                <div
+                                  class="d-flex justify-content-center align-items-center gap-1"
+                                >
+                                  Action
+                                  <img
+                                    src="../../../assets/ArrowDown.png"
+                                    class="img-fluid pe-2"
+                                    alt="RecPal"
+                                    loading="eager"
+                                  />
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+
+                          <tbody
+                            v-if="uniquePaginateCandidates?.length > 0"
+                            v-for="(data, index) in uniquePaginateCandidates"
+                            :key="data.id + '-' + index"
+                          >
+                            <tr
+                              :class="{
+                                'table-active': activeSiteId === index,
+                              }"
+                            >
+                              <td>
+                                <div class="form-check">
+                                  <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    :id="'checkbox-' + data.id"
+                                    v-model="checkedClient[data.id]"
+                                    @change="handleCheckboxChange(data.id)"
+                                  />
+                                </div>
+                              </td>
+
+                              <td>
+                                <router-link
+                                  class="text-capitalize text-decoration-underline text-black fw-bold"
+                                  :to="{
+                                    name: 'SingleClientProfile',
+                                    params: { id: data.client_id },
+                                  }"
+                                  >{{ data.client }}</router-link
+                                >
+                              </td>
+                              <td
+                                class="fw-bold cursor-pointer"
+                                @click="
+                                  toggleDetails(
+                                    index,
+                                    data.site_id,
+                                    data.client,
+                                    data.job,
+                                    data.job_id
+                                  )
+                                "
+                                style="cursor: pointer"
                               >
+                                {{ data.site }}
+                              </td>
+                              <td
+                                @click="
+                                  toggleDetails(
+                                    index,
+                                    data.site_id,
+                                    data.client,
+                                    data.job,
+                                    data.job_id
+                                  )
+                                "
+                                style="cursor: pointer"
+                              >
+                                {{ data.job }}
+                              </td>
+                              <td
+                                @click="
+                                  toggleDetails(
+                                    index,
+                                    data.site_id,
+                                    data.client,
+                                    data.job,
+                                    data.job_id
+                                  )
+                                "
+                                style="cursor: pointer"
+                              >
+                                &nbsp;
+                              </td>
+                              <td
+                                @click="
+                                  toggleDetails(
+                                    index,
+                                    data.site_id,
+                                    data.client,
+                                    data.job,
+                                    data.job_id
+                                  )
+                                "
+                                style="cursor: pointer"
+                              >
+                                &nbsp;
+                              </td>
+                              <td
+                                @click="
+                                  toggleDetails(
+                                    index,
+                                    data.site_id,
+                                    data.client,
+                                    data.job,
+                                    data.job_id
+                                  )
+                                "
+                                style="cursor: pointer"
+                              >
+                                &nbsp;
+                              </td>
+                              <td
+                                @click="
+                                  toggleDetails(
+                                    index,
+                                    data.site_id,
+                                    data.client,
+                                    data.job,
+                                    data.job_id
+                                  )
+                                "
+                                style="cursor: pointer"
+                              >
+                                &nbsp;
+                              </td>
+                              <td
+                                @click="
+                                  toggleDetails(
+                                    index,
+                                    data.site_id,
+                                    data.client,
+                                    data.job,
+                                    data.job_id
+                                  )
+                                "
+                                style="cursor: pointer"
+                              >
+                                &nbsp;
+                              </td>
+                              <td
+                                @click="
+                                  toggleDetails(
+                                    index,
+                                    data.site_id,
+                                    data.client,
+                                    data.job,
+                                    data.job_id
+                                  )
+                                "
+                                style="cursor: pointer"
+                              >
+                                &nbsp;
+                              </td>
+                              <td
+                                @click="
+                                  toggleDetails(
+                                    index,
+                                    data.site_id,
+                                    data.client,
+                                    data.job,
+                                    data.job_id
+                                  )
+                                "
+                                style="cursor: pointer"
+                              >
+                                &nbsp;
+                              </td>
+                              <td
+                                @click="
+                                  toggleDetails(
+                                    index,
+                                    data.site_id,
+                                    data.client,
+                                    data.job,
+                                    data.job_id
+                                  )
+                                "
+                                style="cursor: pointer"
+                              >
+                                &nbsp;
+                              </td>
+                              <td
+                                @click="
+                                  toggleDetails(
+                                    index,
+                                    data.site_id,
+                                    data.client,
+                                    data.job,
+                                    data.job_id
+                                  )
+                                "
+                                style="cursor: pointer"
+                              >
+                                &nbsp;
+                              </td>
+                              <td
+                                @click="
+                                  toggleDetails(
+                                    index,
+                                    data.site_id,
+                                    data.client,
+                                    data.job,
+                                    data.job_id
+                                  )
+                                "
+                                style="cursor: pointer"
+                              >
+                                &nbsp;
+                              </td>
+                              <td v-if="this.splitRate">
+                                <button
+                                  type="button"
+                                  class="btn btn-outline-success text-nowrap"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#EditMultipleRateRules"
+                                  data-bs-whatever="@mdo"
+                                  @click="
+                                    editRateRulesMultiId(
+                                      data.id,
+                                      data.site_id,
+                                      data.job_id,
+                                      data.job,
+                                      data.client_id
+                                    )
+                                  "
+                                >
+                                  <i class="bi bi-pencil"></i>
+                                </button>
+                              </td>
+                              <td v-else></td>
+                            </tr>
+
+                            <tr
+                              v-if="activeSiteId === index"
+                              v-for="(rate, rateIndex) in filteredRateRulesData"
+                              :key="rate.id"
+                            >
+                              <td>
+                                <div class="form-check">
+                                  <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    :value="rate.id"
+                                    :id="'rate-' + rate.id"
+                                    v-model="checkedClient[rate.id]"
+                                    @change="handleCheckboxChange(rate.id)"
+                                  />
+                                </div>
+                              </td>
+                              <td>{{ rate.client }}</td>
+                              <td>{{ rate.site }}</td>
+                              <td>{{ rate.job }}</td>
+                              <td class="text-capitalize">
+                                <span
+                                  style="
+                                    background: orange;
+                                    padding: 3px;
+                                    border-radius: 4px;
+                                  "
+                                  >{{
+                                    rate.day === "all_day" ? "weekly" : rate.day
+                                  }}</span
+                                >
+                              </td>
+                              <td>
+                                {{ rate.shift_type.replace(/_/g, " ") }}<br />{{
+                                  formatTime(rate.start_time)
+                                }}-{{ formatTime(rate.end_time) }}
+                              </td>
+                              <td>
+                                {{ rate.rate_type ? rate.rate_type : "Null" }}
+                              </td>
+                              <td>{{ rate.client_rate }}</td>
+                              <td>
+                                {{ rate.private_limited }}
+                              </td>
+                              <td>{{ rate.self_employed }}</td>
+                              <td>
+                                {{ rate.umbrella ? rate.umbrella : "Null" }}
+                              </td>
+                              <td>
+                                {{ rate.paye ? rate.paye : "Null" }}
+                              </td>
+                              <td>
+                                {{ rate.created_by_and_time }}
+                              </td>
+                              <td>{{ rate.last_update }}</td>
+                              <td>
+                                <button
+                                  type="button"
+                                  class="btn btn-outline-success text-nowrap"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#editSingleRateRules"
+                                  data-bs-whatever="@mdo"
+                                  @click="editRateRulesId(rate.id)"
+                                >
+                                  <i class="bi bi-pencil"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                          <tbody v-else>
+                            <tr v-if="errorMessageFilter">
+                              <td colspan="15" class="text-danger text-center">
+                                {{ errorMessageFilter }}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="table-wrapper">
+                        <table class="table candidateTable" v-if="searchQuery">
+                          <thead>
+                            <tr>
+                              <th></th>
+                              <th scope="col">
+                                Client
+                                <img
+                                  src="../../../assets/ArrowDown.png"
+                                  class="img-fluid pe-2"
+                                  alt="RecPal"
+                                  loading="eager"
+                                />
+                              </th>
+                              <th scope="col">
+                                Site
+                                <img
+                                  src="../../../assets/ArrowDown.png"
+                                  class="img-fluid pe-2"
+                                  alt="RecPal"
+                                  loading="eager"
+                                />
+                              </th>
+                              <th scope="col">
+                                Job
+                                <img
+                                  src="../../../assets/ArrowDown.png"
+                                  class="img-fluid pe-2"
+                                  alt="RecPal"
+                                  loading="eager"
+                                />
+                              </th>
+                              <th scope="col">
+                                Day
+                                <img
+                                  src="../../../assets/ArrowDown.png"
+                                  class="img-fluid pe-2"
+                                  alt="RecPal"
+                                  loading="eager"
+                                />
+                              </th>
+                              <th scope="col">
                                 Shift Time
                                 <img
                                   src="../../../assets/ArrowDown.png"
@@ -298,12 +775,8 @@
                                   alt="RecPal"
                                   loading="eager"
                                 />
-                              </div>
-                            </th>
-                            <th scope="col">
-                              <div
-                                class="d-flex justify-content-center align-items-center gap-1"
-                              >
+                              </th>
+                              <th scope="col">
                                 Rate Type
                                 <img
                                   src="../../../assets/ArrowDown.png"
@@ -311,12 +784,8 @@
                                   alt="RecPal"
                                   loading="eager"
                                 />
-                              </div>
-                            </th>
-                            <th scope="col">
-                              <div
-                                class="d-flex justify-content-center align-items-center gap-1"
-                              >
+                              </th>
+                              <th scope="col">
                                 Client Rate
                                 <img
                                   src="../../../assets/ArrowDown.png"
@@ -324,12 +793,8 @@
                                   alt="RecPal"
                                   loading="eager"
                                 />
-                              </div>
-                            </th>
-                            <th scope="col">
-                              <div
-                                class="d-flex justify-content-center align-items-center gap-1"
-                              >
+                              </th>
+                              <th scope="col">
                                 Private Limited
                                 <img
                                   src="../../../assets/ArrowDown.png"
@@ -337,12 +802,8 @@
                                   alt="RecPal"
                                   loading="eager"
                                 />
-                              </div>
-                            </th>
-                            <th scope="col">
-                              <div
-                                class="d-flex justify-content-center align-items-center gap-1"
-                              >
+                              </th>
+                              <th scope="col">
                                 Self Employed
                                 <img
                                   src="../../../assets/ArrowDown.png"
@@ -350,12 +811,8 @@
                                   alt="RecPal"
                                   loading="eager"
                                 />
-                              </div>
-                            </th>
-                            <th scope="col" style="width: 7%">
-                              <div
-                                class="d-flex justify-content-center align-items-center gap-1"
-                              >
+                              </th>
+                              <th scope="col">
                                 Umbrella
                                 <img
                                   src="../../../assets/ArrowDown.png"
@@ -363,21 +820,17 @@
                                   alt="RecPal"
                                   loading="eager"
                                 />
-                              </div>
-                            </th>
-                            <th scope="col" style="width: 6%">
-                              PAYE
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col" style="width: 10%">
-                              <div
-                                class="d-flex justify-content-center align-items-center gap-1"
-                              >
+                              </th>
+                              <th scope="col">
+                                PAYE
+                                <img
+                                  src="../../../assets/ArrowDown.png"
+                                  class="img-fluid pe-2"
+                                  alt="RecPal"
+                                  loading="eager"
+                                />
+                              </th>
+                              <th scope="col" style="width: 10%">
                                 Created By and Time
                                 <img
                                   src="../../../assets/ArrowDown.png"
@@ -385,12 +838,8 @@
                                   alt="RecPal"
                                   loading="eager"
                                 />
-                              </div>
-                            </th>
-                            <th scope="col">
-                              <div
-                                class="d-flex justify-content-center align-items-center gap-1"
-                              >
+                              </th>
+                              <th scope="col">
                                 Last Update
                                 <img
                                   src="../../../assets/ArrowDown.png"
@@ -398,12 +847,8 @@
                                   alt="RecPal"
                                   loading="eager"
                                 />
-                              </div>
-                            </th>
-                            <th scope="col" style="width: 7%">
-                              <div
-                                class="d-flex justify-content-center align-items-center gap-1"
-                              >
+                              </th>
+                              <th scope="col">
                                 Action
                                 <img
                                   src="../../../assets/ArrowDown.png"
@@ -411,579 +856,146 @@
                                   alt="RecPal"
                                   loading="eager"
                                 />
-                              </div>
-                            </th>
-                          </tr>
-                        </thead>
+                              </th>
+                            </tr>
+                          </thead>
 
-                        <tbody
-                          v-if="uniquePaginateCandidates?.length > 0"
-                          v-for="(data, index) in uniquePaginateCandidates"
-                          :key="data.id + '-' + index"
-                        >
-                          <tr
-                            :class="{ 'table-active': activeSiteId === index }"
+                          <tbody
+                            v-if="searchResults?.length > 0"
+                            v-for="(data, index) in groupedRateRulesData"
+                            :key="index"
                           >
-                            <td>
-                              <div class="form-check">
-                                <input
-                                  class="form-check-input"
-                                  type="checkbox"
-                                  :id="'checkbox-' + data.id"
-                                  v-model="checkedClient[data.id]"
-                                  @change="handleCheckboxChange(data.id)"
-                                />
-                              </div>
-                            </td>
-
-                            <td>
-                              <router-link
-                                class="text-capitalize text-decoration-underline text-black fw-bold"
-                                :to="{
-                                  name: 'SingleClientProfile',
-                                  params: { id: data.client_id },
-                                }"
-                                >{{ data.client }}</router-link
-                              >
-                            </td>
-                            <td
-                              class="fw-bold cursor-pointer"
-                              @click="
-                                toggleDetails(
-                                  index,
-                                  data.site_id,
-                                  data.client,
-                                  data.job,
-                                  data.job_id
-                                )
-                              "
-                              style="cursor: pointer"
-                            >
-                              {{ data.site }}
-                            </td>
-                            <td
-                              @click="
-                                toggleDetails(
-                                  index,
-                                  data.site_id,
-                                  data.client,
-                                  data.job,
-                                  data.job_id
-                                )
-                              "
-                              style="cursor: pointer"
-                            >
-                              {{ data.job }}
-                            </td>
-                            <td
-                              @click="
-                                toggleDetails(
-                                  index,
-                                  data.site_id,
-                                  data.client,
-                                  data.job,
-                                  data.job_id
-                                )
-                              "
-                              style="cursor: pointer"
-                            >
-                              &nbsp;
-                            </td>
-                            <td
-                              @click="
-                                toggleDetails(
-                                  index,
-                                  data.site_id,
-                                  data.client,
-                                  data.job,
-                                  data.job_id
-                                )
-                              "
-                              style="cursor: pointer"
-                            >
-                              &nbsp;
-                            </td>
-                            <td
-                              @click="
-                                toggleDetails(
-                                  index,
-                                  data.site_id,
-                                  data.client,
-                                  data.job,
-                                  data.job_id
-                                )
-                              "
-                              style="cursor: pointer"
-                            >
-                              &nbsp;
-                            </td>
-                            <td
-                              @click="
-                                toggleDetails(
-                                  index,
-                                  data.site_id,
-                                  data.client,
-                                  data.job,
-                                  data.job_id
-                                )
-                              "
-                              style="cursor: pointer"
-                            >
-                              &nbsp;
-                            </td>
-                            <td
-                              @click="
-                                toggleDetails(
-                                  index,
-                                  data.site_id,
-                                  data.client,
-                                  data.job,
-                                  data.job_id
-                                )
-                              "
-                              style="cursor: pointer"
-                            >
-                              &nbsp;
-                            </td>
-                            <td
-                              @click="
-                                toggleDetails(
-                                  index,
-                                  data.site_id,
-                                  data.client,
-                                  data.job,
-                                  data.job_id
-                                )
-                              "
-                              style="cursor: pointer"
-                            >
-                              &nbsp;
-                            </td>
-                            <td
-                              @click="
-                                toggleDetails(
-                                  index,
-                                  data.site_id,
-                                  data.client,
-                                  data.job,
-                                  data.job_id
-                                )
-                              "
-                              style="cursor: pointer"
-                            >
-                              &nbsp;
-                            </td>
-                            <td
-                              @click="
-                                toggleDetails(
-                                  index,
-                                  data.site_id,
-                                  data.client,
-                                  data.job,
-                                  data.job_id
-                                )
-                              "
-                              style="cursor: pointer"
-                            >
-                              &nbsp;
-                            </td>
-                            <td
-                              @click="
-                                toggleDetails(
-                                  index,
-                                  data.site_id,
-                                  data.client,
-                                  data.job,
-                                  data.job_id
-                                )
-                              "
-                              style="cursor: pointer"
-                            >
-                              &nbsp;
-                            </td>
-                            <td
-                              @click="
-                                toggleDetails(
-                                  index,
-                                  data.site_id,
-                                  data.client,
-                                  data.job,
-                                  data.job_id
-                                )
-                              "
-                              style="cursor: pointer"
-                            >
-                              &nbsp;
-                            </td>
-                            <td v-if="this.splitRate">
-                              <button
-                                type="button"
-                                class="btn btn-outline-success text-nowrap"
-                                data-bs-toggle="modal"
-                                data-bs-target="#EditMultipleRateRules"
-                                data-bs-whatever="@mdo"
+                            <tr>
+                              <td>
+                                <div class="form-check">
+                                  <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    value=""
+                                  />
+                                </div>
+                              </td>
+                              <td>{{ data.client }}</td>
+                              <td
+                                class="fw-bold cursor-pointer"
                                 @click="
-                                  editRateRulesMultiId(
-                                    data.id,
+                                  toggleDetails(
+                                    index,
                                     data.site_id,
-                                    data.job_id,
+                                    data.client,
                                     data.job,
-                                    data.client_id
+                                    data.job_id
                                   )
                                 "
                               >
-                                <i class="bi bi-pencil"></i>
-                              </button>
-                            </td>
-                            <td v-else></td>
-                          </tr>
-
-                          <tr
-                            v-if="activeSiteId === index"
-                            v-for="(rate, rateIndex) in filteredRateRulesData"
-                            :key="rate.id"
-                          >
-                            <td>
-                              <div class="form-check">
-                                <input
-                                  class="form-check-input"
-                                  type="checkbox"
-                                  :value="rate.id"
-                                  :id="'rate-' + rate.id"
-                                  v-model="checkedClient[rate.id]"
-                                  @change="handleCheckboxChange(rate.id)"
-                                />
-                              </div>
-                            </td>
-                            <td>{{ rate.client }}</td>
-                            <td>{{ rate.site }}</td>
-                            <td>{{ rate.job }}</td>
-                            <td class="text-capitalize">
-                              <span
-                                style="
-                                  background: orange;
-                                  padding: 3px;
-                                  border-radius: 4px;
-                                "
-                                >{{
-                                  rate.day === "all_day" ? "weekly" : rate.day
-                                }}</span
-                              >
-                            </td>
-                            <td>
-                              {{ rate.shift_type.replace(/_/g, " ") }}<br />{{
-                                formatTime(rate.start_time)
-                              }}-{{ formatTime(rate.end_time) }}
-                            </td>
-                            <td>
-                              {{ rate.rate_type ? rate.rate_type : "Null" }}
-                            </td>
-                            <td>{{ rate.client_rate }}</td>
-                            <td>
-                              {{ rate.private_limited }}
-                            </td>
-                            <td>{{ rate.self_employed }}</td>
-                            <td>
-                              {{ rate.umbrella ? rate.umbrella : "Null" }}
-                            </td>
-                            <td>
-                              {{ rate.paye ? rate.paye : "Null" }}
-                            </td>
-                            <td>
-                              {{ rate.created_by_and_time }}
-                            </td>
-                            <td>{{ rate.last_update }}</td>
-                            <td>
-                              <button
-                                type="button"
-                                class="btn btn-outline-success text-nowrap"
-                                data-bs-toggle="modal"
-                                data-bs-target="#editSingleRateRules"
-                                data-bs-whatever="@mdo"
-                                @click="editRateRulesId(rate.id)"
-                              >
-                                <i class="bi bi-pencil"></i>
-                              </button>
-                            </td>
-                          </tr>
-                        </tbody>
-                        <tbody v-else>
-                          <tr v-if="errorMessageFilter">
-                            <td colspan="15" class="text-danger text-center">
-                              {{ errorMessageFilter }}
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-
-                      <table class="table candidateTable" v-if="searchQuery">
-                        <thead>
-                          <tr>
-                            <th></th>
-                            <th scope="col">
-                              Client
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col">
-                              Site
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col">
-                              Job
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col">
-                              Day
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col">
-                              Shift Time
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col">
-                              Rate Type
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col">
-                              Client Rate
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col">
-                              Private Limited
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col">
-                              Self Employed
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col">
-                              Umbrella
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col">
-                              PAYE
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col" style="width: 10%">
-                              Created By and Time
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col">
-                              Last Update
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                            <th scope="col">
-                              Action
-                              <img
-                                src="../../../assets/ArrowDown.png"
-                                class="img-fluid pe-2"
-                                alt="RecPal"
-                                loading="eager"
-                              />
-                            </th>
-                          </tr>
-                        </thead>
-
-                        <tbody
-                          v-if="searchResults?.length > 0"
-                          v-for="(data, index) in groupedRateRulesData"
-                          :key="index"
-                        >
-                          <tr>
-                            <td>
-                              <div class="form-check">
-                                <input
-                                  class="form-check-input"
-                                  type="checkbox"
-                                  value=""
-                                />
-                              </div>
-                            </td>
-                            <td>{{ data.client }}</td>
-                            <td
-                              class="fw-bold cursor-pointer"
-                              @click="
-                                toggleDetails(
-                                  index,
-                                  data.site_id,
-                                  data.client,
-                                  data.job,
-                                  data.job_id
-                                )
-                              "
+                                {{ data.site }}
+                              </td>
+                              <td>{{ data.job }}</td>
+                              <td>&nbsp;</td>
+                              <td>&nbsp;</td>
+                              <td>&nbsp;</td>
+                              <td>&nbsp;</td>
+                              <td>&nbsp;</td>
+                              <td>&nbsp;</td>
+                              <td>&nbsp;</td>
+                              <td>&nbsp;</td>
+                              <td>&nbsp;</td>
+                              <td>&nbsp;</td>
+                              <td v-if="this.splitRate">
+                                <button
+                                  type="button"
+                                  class="btn btn-outline-success text-nowrap"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#EditMultipleRateRules"
+                                  data-bs-whatever="@mdo"
+                                  @click="
+                                    editRateRulesMultiId(
+                                      data.id,
+                                      data.site_id,
+                                      data.job_id,
+                                      data.job,
+                                      data.client_id
+                                    )
+                                  "
+                                >
+                                  <i class="bi bi-pencil"></i>
+                                </button>
+                              </td>
+                              <td v-else></td>
+                            </tr>
+                            <tr
+                              v-if="activeSiteId === index"
+                              v-for="(rate, indx) in searchResults"
+                              :key="rate.rate_and_rule_id"
                             >
-                              {{ data.site }}
-                            </td>
-                            <td>{{ data.job }}</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td v-if="this.splitRate">
-                              <button
-                                type="button"
-                                class="btn btn-outline-success text-nowrap"
-                                data-bs-toggle="modal"
-                                data-bs-target="#EditMultipleRateRules"
-                                data-bs-whatever="@mdo"
-                                @click="
-                                  editRateRulesMultiId(
-                                    data.id,
-                                    data.site_id,
-                                    data.job_id,
-                                    data.job,
-                                    data.client_id
-                                  )
-                                "
-                              >
-                                <i class="bi bi-pencil"></i>
-                              </button>
-                            </td>
-                            <td v-else></td>
-                          </tr>
-                          <tr
-                            v-if="activeSiteId === index"
-                            v-for="(rate, indx) in searchResults"
-                            :key="rate.rate_and_rule_id"
-                          >
-                            <td>
-                              <div class="form-check">
-                                <input
-                                  class="form-check-input"
-                                  type="checkbox"
-                                  value=""
-                                />
-                              </div>
-                            </td>
-                            <td>{{ rate.client }}</td>
-                            <td>{{ rate.site }}</td>
-                            <td>{{ rate.job }}</td>
-                            <td class="text-capitalize">
-                              <span
-                                style="
-                                  background: orange;
-                                  padding: 3px;
-                                  border-radius: 4px;
-                                "
-                                >{{ rate.day }}</span
-                              >
-                            </td>
-                            <td>
-                              {{ rate.shift_type.replace(/_/g, " ") }}<br />{{
-                                formatTime(rate.start_time)
-                              }}-{{ formatTime(rate.end_time) }}
-                            </td>
-                            <td>
-                              {{ rate.rate_type ? rate.rate_type : "Null" }}
-                            </td>
-                            <td>{{ rate.client_rate }}</td>
-                            <td>
-                              {{ rate.private_limited }}
-                            </td>
-                            <td>{{ rate.self_employed }}</td>
-                            <td>
-                              {{ rate.umbrella ? rate.umbrella : "Null" }}
-                            </td>
-                            <td>
-                              {{ rate.paye ? rate.paye : "Null" }}
-                            </td>
-                            <td>
-                              {{ rate.created_by_and_time }}
-                            </td>
-                            <td>{{ rate.last_update }}</td>
-                            <td>
-                              <button
-                                type="button"
-                                class="btn btn-outline-success text-nowrap"
-                                data-bs-toggle="modal"
-                                data-bs-target="#editSingleRateRules"
-                                data-bs-whatever="@mdo"
-                                @click="editRateRulesId(rate.id)"
-                              >
-                                <i class="bi bi-pencil"></i>
-                              </button>
-                            </td>
-                          </tr>
-                        </tbody>
-                        <tbody v-else>
-                          <tr>
-                            <td colspan="14" class="text-danger text-center">
-                              No Match Found !!
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                              <td>
+                                <div class="form-check">
+                                  <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    value=""
+                                  />
+                                </div>
+                              </td>
+                              <td>{{ rate.client }}</td>
+                              <td>{{ rate.site }}</td>
+                              <td>{{ rate.job }}</td>
+                              <td class="text-capitalize">
+                                <span
+                                  style="
+                                    background: orange;
+                                    padding: 3px;
+                                    border-radius: 4px;
+                                  "
+                                  >{{ rate.day }}</span
+                                >
+                              </td>
+                              <td>
+                                {{ rate.shift_type.replace(/_/g, " ") }}<br />{{
+                                  formatTime(rate.start_time)
+                                }}-{{ formatTime(rate.end_time) }}
+                              </td>
+                              <td>
+                                {{ rate.rate_type ? rate.rate_type : "Null" }}
+                              </td>
+                              <td>{{ rate.client_rate }}</td>
+                              <td>
+                                {{ rate.private_limited }}
+                              </td>
+                              <td>{{ rate.self_employed }}</td>
+                              <td>
+                                {{ rate.umbrella ? rate.umbrella : "Null" }}
+                              </td>
+                              <td>
+                                {{ rate.paye ? rate.paye : "Null" }}
+                              </td>
+                              <td>
+                                {{ rate.created_by_and_time }}
+                              </td>
+                              <td>{{ rate.last_update }}</td>
+                              <td>
+                                <button
+                                  type="button"
+                                  class="btn btn-outline-success text-nowrap"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#editSingleRateRules"
+                                  data-bs-whatever="@mdo"
+                                  @click="editRateRulesId(rate.id)"
+                                >
+                                  <i class="bi bi-pencil"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                          <tbody v-else>
+                            <tr>
+                              <td colspan="14" class="text-danger text-center">
+                                No Match Found !!
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                     <div
                       class="tab-pane fade"

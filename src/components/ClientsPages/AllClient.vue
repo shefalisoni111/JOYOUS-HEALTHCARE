@@ -1,13 +1,6 @@
 <template>
   <div>
-    <div
-      class="mt-2 float-end"
-      style="
-        display: flex;
-        justify-content: end;
-        transform: translate(0%, -112%);
-      "
-    >
+    <div class="mt-2 d-flex d-sm-flex justify-content-sm-end responsive-float">
       <div class="dropdown">
         <button
           class="btn btn-danger text-nowrap btn-lg dropdown-toggle"
@@ -153,7 +146,7 @@
     </div>
 
     <div class="table-wrapper w-100" style="margin-top: -30px">
-      <table class="table clientTable">
+      <table class="table clientTable table-responsive">
         <thead>
           <tr>
             <th scope="col"></th>
@@ -1073,6 +1066,7 @@ ul.nav-pills,
   color: #ff5f30;
   font-weight: bold;
 }
+
 .job-background-even {
   background-color: lightblue;
 }
@@ -1223,6 +1217,7 @@ select {
     width: 100% !important;
   }
 }
+
 @media (max-width: 1120px) {
   .clientTable {
     width: 1090px;

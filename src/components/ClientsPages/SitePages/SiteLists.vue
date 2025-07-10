@@ -11,8 +11,10 @@
       >
         <Navbar />
       </div>
-      <div class="container-fluid ps-5 pt-5 pb-5">
-        <div class="row">
+      <div class="container-fluid">
+        <div
+          class="row ps-5 pt-5 pb-5 justify-content-center col-10 col-sm-11 col-md-11 col-lg-11 col-xl-12 col-xxl-12"
+        >
           <div class="d-flex justify-content-between px-2">
             <div class="py-2">
               <!-- <ol class="breadcrumb mb-1">
@@ -26,7 +28,9 @@
               </ol> -->
               <ol class="breadcrumb mb-1">
                 <li class="breadcrumb-item active">
-                  <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                  <a
+                    class="nav-link d-inline fs-4 fw-bolder"
+                    style="color: #000000"
                     >All Clients</a
                   >
                   <p>
@@ -66,7 +70,10 @@
               role="tablist"
             >
               <div class="d-flex">
-                <li class="nav-item d-flex align-items-center gap-2" role="presentation">
+                <li
+                  class="nav-item d-flex align-items-center gap-2"
+                  role="presentation"
+                >
                   <button
                     a
                     class="nav-link"
@@ -178,7 +185,11 @@
           </div>
         </div>
       </div>
-      <div class="mx-3" style="text-align: right" v-if="ddddddddResults.length >= 9">
+      <div
+        class="mx-3"
+        style="text-align: right"
+        v-if="ddddddddResults.length >= 9"
+      >
         <button class="btn btn-outline-dark btn-sm">
           {{ totalRecordsOnPage }} Records Per Page
         </button>
@@ -269,11 +280,15 @@ export default {
       return this.paginatedResults.length;
     },
     selectSite() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
     selectSitesAddress() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.address : "";
     },
   },
@@ -333,7 +348,9 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      const matchingTabIndex = vm.tabs.findIndex((tab) => tab.routeName === to.name);
+      const matchingTabIndex = vm.tabs.findIndex(
+        (tab) => tab.routeName === to.name
+      );
 
       if (matchingTabIndex !== -1) {
         vm.activeTab = matchingTabIndex;
@@ -342,7 +359,9 @@ export default {
     });
   },
   beforeRouteUpdate(to, from, next) {
-    const matchingTabIndex = this.tabs.findIndex((tab) => tab.routeName === to.name);
+    const matchingTabIndex = this.tabs.findIndex(
+      (tab) => tab.routeName === to.name
+    );
 
     if (matchingTabIndex !== -1) {
       this.activeTab = matchingTabIndex;
