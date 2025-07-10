@@ -146,10 +146,10 @@
                         </button>
                         <form
                           @submit.prevent="search"
-                          class="form-inline my-2 my-lg-0"
+                          class="w-md-auto position-relative"
                         >
                           <input
-                            class="form-control form-control-lg mr-sm-2 position-relative"
+                            class="form-control form-control-lg mr-sm-2 bg-white"
                             type="search"
                             placeholder="Search.."
                             aria-label="Search"
@@ -157,8 +157,7 @@
                             @input="debounceSearch"
                           />
                           <span
-                            class="position-absolute"
-                            style="transform: translate(1329%, -154%)"
+                            class="position-absolute top-50 end-0 translate-middle-y pe-3"
                           >
                             <img
                               src="../../assets/Search.png"
@@ -248,24 +247,120 @@
                       <table class="table candidateTable" v-if="!searchQuery">
                         <thead>
                           <tr>
-                            <th scope="col">#Number</th>
-                            <th scope="col">Vendor</th>
-                            <th scope="col">Site</th>
-                            <th scope="col">From</th>
-                            <th scope="col">To</th>
-                            <th scope="col">Created On</th>
+                            <th scope="col">
+                              #Number
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              Vendor
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              Site
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              From
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              To
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              Created On
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
                             <!-- <th scope="col">Due Date</th> -->
                             <th scope="col" class="text-center">
                               Total Amount
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
                             </th>
 
                             <th scope="col" style="width: 7%">
-                              Invoice Creation Period
+                              <div
+                                class="d-flex justify-content-center align-items-center gap-1"
+                              >
+                                Invoice Creation Period
+                                <img
+                                  src="../../assets/ArrowDown.png"
+                                  class="img-fluid pe-2"
+                                  alt="RecPal"
+                                  loading="eager"
+                                />
+                              </div>
                             </th>
-                            <th scope="col" style="width: 6%">Invoice Lock</th>
-                            <th scope="col" style="width: 6%">Generated By</th>
-                            <th scope="col">Email Status</th>
-                            <th scope="col" style="width: 7%">View</th>
+                            <th scope="col" style="width: 6%">
+                              Invoice Lock
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col" style="width: 6%">
+                              Generated By
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              Email Status
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col" style="width: 7%">
+                              View
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
                           </tr>
                         </thead>
                         <tbody v-if="getClientInvoiceDetail?.length > 0">
@@ -361,22 +456,120 @@
                       <table class="table candidateTable" v-else>
                         <thead>
                           <tr>
-                            <th scope="col">#Number</th>
-                            <th scope="col">Vendor</th>
-                            <th scope="col">Site</th>
-                            <th scope="col">From</th>
-                            <th scope="col">To</th>
-                            <th scope="col">Created On</th>
+                            <th scope="col">
+                              #Number
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              Vendor
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              Site
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              From
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              To
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              Created On
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
                             <!-- <th scope="col">Due Date</th> -->
                             <th scope="col" class="text-center">
                               Total Amount
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
                             </th>
 
-                            <th scope="col">Invoice Creation Period</th>
-                            <th scope="col">Invoice Lock</th>
-                            <th scope="col">Generated By</th>
-                            <th scope="col">Email Status</th>
-                            <th scope="col" style="width: 7%">View</th>
+                            <th scope="col">
+                              <div
+                                class="d-flex justify-content-center align-items-center gap-1"
+                              >
+                                Invoice Creation Period
+                                <img
+                                  src="../../assets/ArrowDown.png"
+                                  class="img-fluid pe-2"
+                                  alt="RecPal"
+                                  loading="eager"
+                                />
+                              </div>
+                            </th>
+                            <th scope="col">
+                              Invoice Lock
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              Generated By
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              Email Status
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col" style="width: 7%">
+                              View
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
                           </tr>
                         </thead>
                         <tbody v-if="searchResults?.length > 0">
@@ -434,14 +627,6 @@
                                   </router-link>
                                 </div>
                               </div>
-                              <!-- <router-link
-                                :to="{
-                                  name: 'ClientInvoiceView',
-                                  params: { id: data.id },
-                                }"
-                                class="text-success"
-                                ><i class="bi bi-eye"></i
-                              ></router-link> -->
                             </td>
                           </tr>
                         </tbody>
@@ -465,13 +650,6 @@
                             </td>
                           </tr>
                         </tbody>
-                        <!-- <tbody v-else>
-                        <tr>
-                          <td colspan="16" class="text-danger text-center">
-                            {{ "No Match Found !" }}
-                          </td>
-                        </tr>
-                      </tbody> -->
                       </table>
                     </div>
                     <div
@@ -615,10 +793,11 @@
             </button>
           </div>
         </div>
+        <loader :isLoading="isLoading"></loader>
       </div>
     </div>
     <SuccessAlert ref="successAlert" />
-    <loader :isLoading="isLoading"></loader>
+
     <GenerateInvoiceAdd />
   </div>
 </template>

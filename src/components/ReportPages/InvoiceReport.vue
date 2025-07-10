@@ -43,17 +43,6 @@
                       </option>
                     </select>
                   </div>
-                  <!-- <select v-model="id" @change="filterData">
-                    <option value="">All Staff</option>
-                    <option
-                      v-for="option in candidateLists"
-                      :key="option.id"
-                      :value="option.id"
-                      placeholder="Select Staff"
-                    >
-                      {{ option.first_name + " " + option.last_name }}
-                    </option>
-                  </select> -->
                 </div>
               </div>
               <div>
@@ -162,10 +151,10 @@
                       <div>
                         <form
                           @submit.prevent="search"
-                          class="form-inline my-2 my-lg-0"
+                          class="w-md-auto position-relative"
                         >
                           <input
-                            class="form-control form-control-lg mr-sm-2 position-relative"
+                            class="form-control form-control-lg mr-sm-2 bg-white"
                             type="search"
                             placeholder="Search.."
                             aria-label="Search"
@@ -173,8 +162,7 @@
                             @input="debounceSearch"
                           />
                           <span
-                            class="position-absolute"
-                            style="transform: translate(1329%, -154%)"
+                            class="position-absolute top-50 end-0 translate-middle-y pe-3"
                           >
                             <img
                               src="../../assets/Search.png"
@@ -184,19 +172,9 @@
                           /></span>
                         </form>
                       </div>
-                      <!-- <button type="button" class="btn btn-outline-success text-nowrap">
-                        <i class="bi bi-eye"></i> Customize View
-                      </button> -->
                     </div>
                   </div>
                 </div>
-
-                <!-- <div v-if="currentView === 'weekly'">
-                  <div>
-                    <div v-for="(day, index) in daysOfWeek" :key="index"></div>
-                    <div v-for="(day, index) in getWeekDates" :key="index"></div>
-                  </div>
-                </div> -->
 
                 <div v-if="currentView === 'monthly'">
                   <div>
@@ -220,47 +198,84 @@
                     role="tabpanel"
                     aria-labelledby="pills-home-tab"
                   >
-                    <!-- <table class="table reportTable">
-                      <thead>
-                        <tr>
-                          <th scope="col">Sender</th>
-
-                          <th scope="col">Recipient</th>
-                          <th scope="col">Status</th>
-                          <th scope="col">Subject</th>
-                          <th scope="col">Recipient Domain</th>
-                          <th scope="col">Date Time</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td scope="col">Aniket</td>
-
-                          <td scope="col">Prabhu</td>
-                          <td scope="col">Active</td>
-                          <td scope="col">Site Report</td>
-                          <td scope="col">Recipient Domain</td>
-                          <td scope="col">23/2/2024</td>
-                        </tr>
-                      </tbody>
-                    </table> -->
                     <table class="table reportTable">
                       <thead>
                         <tr>
-                          <th scope="col">Sl No</th>
-                          <th scope="col">Client</th>
-                          <th scope="col">Site</th>
-                          <!-- <th scope="col">Employee Name</th>
-                          <th scope="col">Job</th> -->
-                          <!-- <th scope="col">Shift Date</th> -->
-                          <!-- <th scope="col">Payment Ref</th> -->
-                          <th scope="col">Time From</th>
-                          <th scope="col">Time To</th>
-                          <th scope="col">Hours</th>
-                          <!-- <th scope="col">Charge Rate</th> -->
-                          <th scope="col">Total Charge</th>
+                          <th scope="col">
+                            Sl No
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Client
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Site
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
 
-                          <th scope="col">Status</th>
+                          <th scope="col">
+                            Time From
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Time To
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Hours
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <!-- <th scope="col">Charge Rate</th> -->
+                          <th scope="col">
+                            Total Charge
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+
+                          <th scope="col">
+                            Status
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
                         </tr>
                       </thead>
                       <tbody v-if="paginateClientReport?.length > 0">
@@ -271,11 +286,7 @@
                           <td scope="col">{{ index + 1 }}</td>
                           <td scope="col">{{ data.client }}</td>
                           <td scope="col">{{ data.site }}</td>
-                          <!-- <td scope="col">
-                            {{ data.candidate_data?.[index]?.can_name }}
-                          </td>
-                          <td scope="col">{{ data.candidate_data?.[0]?.job }}</td> -->
-                          <!-- <td scope="col">{{ data.start_date }}</td> -->
+
                           <td scope="col">{{ data.start_date }}</td>
                           <td scope="col">{{ data.end_date }}</td>
                           <td scope="col">
@@ -317,13 +328,22 @@
                           <!-- <td><button class="btn btn-success">Approved</button></td> -->
                         </tr>
                       </tbody>
-                      <tbody v-else>
-                        <tr v-if="errorMessageFilter">
+                      <tbody v-if="isLoading">
+                        <tr>
+                          <td colspan="9" class="text-center"></td>
+                        </tr>
+                      </tbody>
+
+                      <tbody v-else-if="errorMessageFilter">
+                        <tr>
                           <td colspan="9" class="text-danger text-center">
                             {{ errorMessageFilter }}
                           </td>
                         </tr>
-                        <tr v-else>
+                      </tbody>
+
+                      <tbody v-else-if="errorMessageCustom">
+                        <tr>
                           <td colspan="8" class="text-danger text-center">
                             {{ errorMessageCustom }}
                           </td>
@@ -351,47 +371,91 @@
                     role="tabpanel"
                     aria-labelledby="pills-home-tab"
                   >
-                    <!-- <table class="table reportTable">
-                      <thead>
-                        <tr>
-                          <th scope="col">Sender</th>
-
-                          <th scope="col">Recipient</th>
-                          <th scope="col">Status</th>
-                          <th scope="col">Subject</th>
-                          <th scope="col">Recipient Domain</th>
-                          <th scope="col">Date Time</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td scope="col">Aniket</td>
-
-                          <td scope="col">Prabhu</td>
-                          <td scope="col">Active</td>
-                          <td scope="col">Site Report</td>
-                          <td scope="col">Recipient Domain</td>
-                          <td scope="col">23/2/2024</td>
-                        </tr>
-                      </tbody>
-                    </table> -->
                     <table class="table reportTable">
                       <thead>
                         <tr>
-                          <th scope="col">Sl No</th>
-                          <th scope="col">Client</th>
-                          <th scope="col">Site</th>
-                          <!-- <th scope="col">Employee Name</th> -->
-                          <!-- <th scope="col">Job</th> -->
-                          <!-- <th scope="col">Shift Date</th> -->
-                          <!-- <th scope="col">Payment Ref</th> -->
-                          <th scope="col">Time From</th>
-                          <th scope="col">Time To</th>
-                          <th scope="col">Hours</th>
-                          <th scope="col">Charge Rate</th>
-                          <th scope="col">Total Charge</th>
-                          <th scope="col">Status</th>
-                          <!-- <th scope="col">Action</th> -->
+                          <th scope="col">
+                            Sl No
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Client
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Site
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+
+                          <th scope="col">
+                            Time From
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Time To
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Hours
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Charge Rate
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Total Charge
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Status
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
                         </tr>
                       </thead>
                       <tbody v-if="paginateSearchResults?.length > 0">
@@ -402,11 +466,7 @@
                           <td scope="col">{{ index + 1 }}</td>
                           <td scope="col">{{ data.client }}</td>
                           <td scope="col">{{ data.site }}</td>
-                          <!-- <td scope="col">
-                            {{ data.candidate_data?.[index]?.can_name }}
-                          </td>
-                          <td scope="col">{{ data.candidate_data?.[0]?.job }}</td> -->
-                          <!-- <td scope="col">{{ data.start_date }}</td> -->
+
                           <td scope="col">{{ data.start_date }}</td>
                           <td scope="col">{{ data.end_date }}</td>
                           <td scope="col">
@@ -416,7 +476,6 @@
                             {{
                               data.total_amount ? "£" + data.total_amount : ""
                             }}
-                            <!-- {{ data.total_amount ? "£" + data.total_amount : "" }} -->
                           </td>
                           <!-- <td scope="col">{{ data.status }}</td> -->
                           <td scope="col">
@@ -450,7 +509,7 @@
                         </tr>
                       </tbody>
                       <tbody v-else>
-                        <tr>
+                        <tr v-if="!isLoading">
                           <td colspan="9" class="text-danger text-center">
                             {{ errorMessage }}
                           </td>
@@ -761,10 +820,7 @@ export default {
 
       return `${day}/${month}/${year}`;
     },
-    // getCandidateName(id) {
-    //   const candidate = this.candidateLists.find((candidate) => candidate.id === id);
-    //   return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
-    // },
+
     getWeekRange(date) {
       const start = new Date(date);
       const end = new Date(date);
@@ -799,7 +855,7 @@ export default {
         // params["client_invoice[shift_date]"] = formattedStartOfMonth;
       }
       params.range = this.currentView === "weekly" ? "week" : "Monthly";
-
+      this.isLoading = true;
       try {
         const response = await axios.get(`${VITE_API_URL}/client_invoices`, {
           params,
@@ -824,6 +880,8 @@ export default {
         } else {
           this.errorMessageFilter = "Report Not Found!";
         }
+      } finally {
+        this.isLoading = false;
       }
     },
     async getClientMethod() {
@@ -997,18 +1055,7 @@ export default {
         }
       }
     },
-    // async getBusinessUnitMethod() {
-    //   try {
-    //     const response = await axios.get(`${VITE_API_URL}/activated_site`);
-    //     this.businessUnit = response.data.data;
-    //   } catch (error) {
-    //     if (error.response) {
-    //       if (error.response.status == 404) {
-    //         // alert(error.response.data.message);
-    //       }
-    //     }
-    //   }
-    // },
+
     moveToPrevious() {
       if (this.currentView === "weekly") {
         this.weekOffset -= 1;

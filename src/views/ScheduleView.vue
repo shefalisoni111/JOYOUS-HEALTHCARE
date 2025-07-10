@@ -138,7 +138,7 @@
                   </div>
                 </div>
               </div>
-              <div class="d-flex mt-2">
+              <!-- <div class="d-flex mt-2">
                 <div>
                   <div class="filters" v-show="isOpen">
                     <select
@@ -185,7 +185,7 @@
                     </select>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
               <div>
                 <div class="filters" v-show="isOpen">
@@ -694,9 +694,9 @@ export default {
       filters: {
         availablity: "",
         job: "",
-        site: "",
-        shift: "",
-        status: "",
+        // site: "",
+        // shift: "",
+        // status: "",
       },
       isOpen: false,
       isFetching: false,
@@ -834,11 +834,10 @@ export default {
     // },
     isFilterSelected() {
       return (
-        this.filters.availablity !== "" ||
-        this.filters.job !== "" ||
-        this.filters.site !== "" ||
-        this.filters.shift !== "" ||
-        this.filters.status !== ""
+        this.filters.availablity !== "" || this.filters.job !== ""
+        // this.filters.site !== "" ||
+        // this.filters.shift !== "" ||
+        // this.filters.status !== ""
       );
     },
   },
@@ -860,15 +859,13 @@ export default {
   },
   methods: {
     resetFilters() {
-      this.filters.availablity = "";
-      this.availability_id = "";
-      this.site_id = "";
-      this.site_shift_id = "";
-      this.job_id = "";
-      this.filters.job = "";
-      this.filters.site = "";
-      this.filters.shift = "";
-      this.filters.status = "";
+      this.filters = {
+        availablity: "",
+        job: "",
+        // site: "",
+        // shift: "",
+        // status: "",
+      };
 
       // this.currentPage = 1;
       this.makeFilterAPICall();
@@ -916,9 +913,9 @@ export default {
       const requestData = {
         availablity: this.filters.availablity,
         job: this.filters.job,
-        site: this.filters.site,
-        shift: this.filters.shift,
-        status: this.filters.status,
+        // site: this.filters.site,
+        // shift: this.filters.shift,
+        // status: this.filters.status,
         date: this.formattedStartDate,
         page: this.currentPage,
         per_page: this.itemsPerPage,
@@ -940,7 +937,7 @@ export default {
         // this.totalPages = Math.ceil(this.totalCandidateCount / this.itemsPerPage);
         // this.currentPage = response.data.current_page;
         this.searchResults = response.data.data;
-        this.vacancyList = response.data.vacancies;
+        // this.vacancyList = response.data.vacancies;
       } catch (error) {
         if (error.response && error.response.status === 404) {
           const errorMessages = error.response.data.error;
@@ -1013,9 +1010,9 @@ export default {
     toggleSidebar() {
       this.isOpen = !this.isOpen;
       // this.fetchAssignList();
-      this.getBusinessUnitMethod();
+      // this.getBusinessUnitMethod();
       this.getJobTitleMethod();
-      this.getTimeShift();
+      // this.getTimeShift();
     },
     moveToPrevious() {
       if (this.currentView === "weekly") {

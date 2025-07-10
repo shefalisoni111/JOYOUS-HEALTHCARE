@@ -84,7 +84,9 @@
                       &nbsp;&nbsp;
                       <div class="d-flex align-items-center">
                         <span
-                          v-if="currentView === 'weekly' && startDate && endDate"
+                          v-if="
+                            currentView === 'weekly' && startDate && endDate
+                          "
                           class="fw-bold"
                         >
                           {{
@@ -95,32 +97,35 @@
                           }}
                         </span>
                         <span
-                          v-else-if="currentView === 'monthly' && startDate && endDate"
+                          v-else-if="
+                            currentView === 'monthly' && startDate && endDate
+                          "
                           class="fw-bold"
                         >
-                          {{ formatDate(startDate) + " to " + formatDate(endDate) }}
+                          {{
+                            formatDate(startDate) + " to " + formatDate(endDate)
+                          }}
                         </span>
                       </div>
                       &nbsp;&nbsp;
                       <div class="d-flex align-items-center fs-4">
-                        <i class="bi bi-caret-left-fill" @click="moveToPrevious"></i>
+                        <i
+                          class="bi bi-caret-left-fill"
+                          @click="moveToPrevious"
+                        ></i>
                         <i class="bi bi-calendar2-check-fill"></i>
-                        <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                        <i
+                          class="bi bi-caret-right-fill"
+                          @click="moveToNext"
+                        ></i>
                       </div>
                     </div>
 
                     <div class="d-flex gap-3 align-items-center mt-lg-0 mt-3">
-                      <!-- <button
-                        type="button"
-                        class="btn btn-outline-success text-nowrap"
-                        @click="exportAll"
-                        :disabled="!paginateCandidates || paginateCandidates.length === 0"
-                      >
-                        <i class="bi bi-download"></i> Export CSV
-                      </button> -->
-
                       <div
-                        v-if="!paginateCandidates || paginateCandidates.length === 0"
+                        v-if="
+                          !paginateCandidates || paginateCandidates.length === 0
+                        "
                         class="tooltip-wrapper"
                         data-bs-toggle="tooltip"
                         title="No data available to export"
@@ -144,13 +149,13 @@
                         </button>
                       </div>
 
-                      <!-- <button type="button" class="btn btn-outline-success text-nowrap">
-                        <i class="bi bi-eye"></i> Customize View
-                      </button> -->
                       <div>
-                        <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
+                        <form
+                          @submit.prevent="search"
+                          class="w-md-auto position-relative"
+                        >
                           <input
-                            class="form-control form-control-lg mr-sm-2 position-relative"
+                            class="form-control form-control-lg mr-sm-2 bg-white"
                             type="search"
                             placeholder="Search.."
                             aria-label="Search"
@@ -158,8 +163,7 @@
                             @input="debounceSearch"
                           />
                           <span
-                            class="position-absolute"
-                            style="transform: translate(1329%, -154%)"
+                            class="position-absolute top-50 end-0 translate-middle-y pe-3"
                           >
                             <img
                               src="../../assets/Search.png"
@@ -176,19 +180,29 @@
                 <div v-if="currentView === 'weekly'">
                   <div>
                     <div v-for="(day, index) in daysOfWeek" :key="index"></div>
-                    <div v-for="(day, index) in getWeekDates" :key="index"></div>
+                    <div
+                      v-for="(day, index) in getWeekDates"
+                      :key="index"
+                    ></div>
                   </div>
                 </div>
 
                 <div v-else-if="currentView === 'monthly'">
                   <div>
-                    <div v-for="(day, index) in getMonthDates" :key="index"></div>
+                    <div
+                      v-for="(day, index) in getMonthDates"
+                      :key="index"
+                    ></div>
                   </div>
                 </div>
                 <div class="d-flex gap-2">
                   <div></div>
                 </div>
-                <div class="tab-content mt-4" id="pills-tabContent" v-if="!searchQuery">
+                <div
+                  class="tab-content mt-4"
+                  id="pills-tabContent"
+                  v-if="!searchQuery"
+                >
                   <div
                     class="tab-pane fade show active table-wrapper"
                     id="pills-home"
@@ -199,24 +213,120 @@
                       <thead>
                         <tr>
                           <!-- <th scope="col">SI No</th> -->
-                          <th scope="col">ID</th>
+                          <th scope="col">
+                            ID
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
 
-                          <th scope="col" style="width: 153px">Employee Name</th>
-                          <th scope="col">Position</th>
-                          <th scope="col">Site</th>
+                          <th scope="col" style="width: 153px">
+                            Employee Name
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Position
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Site
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
 
-                          <th scope="col">Shift Date</th>
+                          <th scope="col">
+                            Shift Date
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
 
-                          <th scope="col">Time From</th>
-                          <th scope="col">Time To</th>
-                          <th scope="col">Hours</th>
+                          <th scope="col">
+                            Time From
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Time To
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Hours
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
 
-                          <th scope="col">Pay Rate</th>
-                          <th scope="col">Total Charge</th>
-                          <th scope="col">Status</th>
+                          <th scope="col">
+                            Pay Rate
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Total Charge
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
+                          </th>
+                          <th scope="col">
+                            Status
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
                         </tr>
                       </thead>
-                      <tbody v-if="paginateCandidates && paginateCandidates?.length > 0">
+                      <tbody
+                        v-if="
+                          paginateCandidates && paginateCandidates?.length > 0
+                        "
+                      >
                         <tr v-for="data in paginateCandidates" :key="data.id">
                           <!-- <td>
                             <div class="form-check">
@@ -268,13 +378,17 @@
                                     }
                               "
                             >
-                              {{ data.status === "Approved" ? "Approved " : "Unapprove" }}
+                              {{
+                                data.status === "Approved"
+                                  ? "Approved "
+                                  : "Unapprove"
+                              }}
                             </button>
                           </td>
                         </tr>
                       </tbody>
                       <tbody v-else>
-                        <tr>
+                        <tr v-if="!isLoading">
                           <td colspan="15" class="text-danger text-center">
                             {{ errorMessageFilter || errorMessageCustom }}
                           </td>
@@ -292,7 +406,11 @@
                   </div>
                 </div>
 
-                <div class="tab-content mt-4" id="pills-tabContent" v-if="searchQuery">
+                <div
+                  class="tab-content mt-4"
+                  id="pills-tabContent"
+                  v-if="searchQuery"
+                >
                   <div
                     class="tab-pane fade show active table-wrapper"
                     id="pills-home"
@@ -302,31 +420,138 @@
                     <table class="table reportTable">
                       <thead>
                         <tr>
-                          <th>
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" />
+                          <th scope="col">
+                            ID
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Code
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col" style="width: 153px">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Name
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
                             </div>
                           </th>
-                          <th scope="col">ID</th>
-                          <th scope="col">Code</th>
-                          <th scope="col" style="width: 153px">Name</th>
-                          <th scope="col">Site</th>
-                          <th scope="col">Job</th>
-                          <th scope="col">Shift Date</th>
-                          <th scope="col">Start Time</th>
-                          <th scope="col">End Time</th>
-                          <th scope="col">Total Hours</th>
-                          <th scope="col">Client Rate</th>
-                          <th scope="col">Total Cost</th>
+                          <th scope="col">
+                            Site
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Job
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Shift Date
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Start Time
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            End Time
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Total Hours
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Client Rate
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Total Cost
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
+                          </th>
 
-                          <th scope="col">Approved</th>
+                          <th scope="col">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Approved
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
+                          </th>
                         </tr>
                       </thead>
                       <tbody v-if="searchResults && searchResults?.length > 0">
                         <tr v-for="data in searchResults" :key="data.id">
                           <td>
                             <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" />
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value=""
+                              />
                             </div>
                           </td>
                           <td scope="col">{{ data.id }}</td>
@@ -370,13 +595,17 @@
                                     }
                               "
                             >
-                              {{ data.status === "Approved" ? "Unapprove" : "Approve" }}
+                              {{
+                                data.status === "Approved"
+                                  ? "Unapprove"
+                                  : "Approve"
+                              }}
                             </button>
                           </td>
                         </tr>
                       </tbody>
                       <tbody v-else>
-                        <tr>
+                        <tr v-if="!isLoading">
                           <td colspan="15" class="text-danger text-center">
                             {{ errorMessage }}
                           </td>
@@ -418,10 +647,14 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+              >20 Records</a
+            >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+              >50 Records</a
+            >
           </li>
           <li>
             <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
@@ -477,10 +710,14 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+              >20 Records</a
+            >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+              >50 Records</a
+            >
           </li>
           <li>
             <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
@@ -550,6 +787,7 @@ export default {
       endDate: new Date(),
       currentPage: 1,
       itemsPerPage: 10,
+      totalPages: 1,
       errorMessageFilter: "",
       errorMessageCustom: "",
       searchQuery: "",
@@ -575,7 +813,9 @@ export default {
   components: { Loader },
   computed: {
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
     selectedOptionText() {
@@ -588,7 +828,10 @@ export default {
     },
 
     paginateCandidates() {
-      if (!Array.isArray(this.getSiteReportData) || this.getSiteReportData.length === 0) {
+      if (
+        !Array.isArray(this.getSiteReportData) ||
+        this.getSiteReportData.length === 0
+      ) {
         return [];
       }
 
@@ -642,18 +885,6 @@ export default {
 
       if (this.currentView === "weekly") {
         const { start, end } = this.getWeekRange(this.startDate);
-        // const formattedStartOfWeek = this.formatDate(this.startDate);
-        // const startOfWeek = new Date(this.startDate);
-        // const dayOfWeek = startOfWeek.getDay();
-        // const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-        // startOfWeek.setDate(startOfWeek.getDate() + diff);
-
-        // const formattedStartOfWeek = `${(startOfWeek.getMonth() + 1)
-        //   .toString()
-        //   .padStart(2, "0")}/${startOfWeek
-        //   .getDate()
-        //   .toString()
-        //   .padStart(2, "0")}/${startOfWeek.getFullYear()}`;
 
         params["report[date]"] = this.formatDates(start);
         params["report[shift_date]"] = this.formatDates(start);
@@ -676,7 +907,7 @@ export default {
         params["report[candidate_name]"] = this.selectedCandidate;
       }
       params.range = this.currentView === "weekly" ? "week" : "month";
-
+      this.isLoading = true;
       try {
         const response = await axios.get(
           `${VITE_API_URL}/report_section_timesheet_filter`,
@@ -694,15 +925,20 @@ export default {
       } catch (error) {
         if (error.response && error.response.status === 404) {
           this.getSiteReportData = [];
-          this.errorMessageFilter = error.response.data.error || "Report Not Found!";
+          this.errorMessageFilter =
+            error.response.data.error || "Report Not Found!";
         } else {
           this.errorMessageFilter = "Report Not Found!";
         }
+      } finally {
+        this.isLoading = false;
       }
       // this.filterData();
     },
     getCandidateName(id) {
-      const candidate = this.candidateLists.find((candidate) => candidate.id === id);
+      const candidate = this.candidateLists.find(
+        (candidate) => candidate.id === id
+      );
       return candidate ? `${candidate.full_name}` : "";
     },
     exportOneFile(exportType) {
@@ -840,7 +1076,10 @@ export default {
           }
         );
 
-        if (response.data.timesheets && typeof response.data.timesheets === "string") {
+        if (
+          response.data.timesheets &&
+          typeof response.data.timesheets === "string"
+        ) {
           this.errorMessage = response.data.timesheets;
           this.searchResults = [];
         } else {
@@ -954,8 +1193,16 @@ export default {
         this.queryParams.range = "week";
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        this.startDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+        this.endDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        );
         this.queryParams.range = "month";
       }
 

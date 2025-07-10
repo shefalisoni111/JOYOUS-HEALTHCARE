@@ -72,10 +72,10 @@
                   <div class="d-flex gap-3 align-items-center">
                     <form
                       @submit.prevent="search"
-                      class="form-inline my-2 my-lg-0"
+                      class="w-md-auto position-relative"
                     >
                       <input
-                        class="form-control form-control-lg mr-sm-2 position-relative"
+                        class="form-control form-control-lg mr-sm-2 bg-white"
                         type="search"
                         placeholder="Search.."
                         aria-label="Search"
@@ -83,8 +83,7 @@
                         @input="debounceSearch"
                       />
                       <span
-                        class="position-absolute"
-                        style="transform: translate(1329%, -154%)"
+                        class="position-absolute top-50 end-0 translate-middle-y pe-3"
                       >
                         <img
                           src="../../assets/Search.png"
@@ -377,34 +376,11 @@
                                 </button>
                               </div>
                             </div>
-                            <!-- <button
-                              type="button"
-                              class="btn btn-outline-success text-nowrap text-nowrap"
-                              data-bs-toggle="modal"
-                              data-bs-target="#signedTimeSheetView"
-                              data-bs-whatever="@mdo"
-                              @click="openSignedView(data.id)"
-                            >
-                              <i class="bi bi-eye"></i></button
-                            >&nbsp;
-                            <button
-                              type="button"
-                              :class="[
-                                'btn',
-                                data.status === 'Approved'
-                                  ? 'btn-danger'
-                                  : 'btn-outline-success',
-                                'text-nowrap',
-                              ]"
-                              @click="ApproveMethod(data.id)"
-                            >
-                              {{ data.status === "Approved" ? "Unapprove" : "Approve" }}
-                            </button> -->
                           </td>
                         </tr>
                       </tbody>
                       <tbody v-else>
-                        <tr>
+                        <tr v-if="!isLoading">
                           <td colspan="14" class="text-danger text-center">
                             {{ errorMessageSigned || errorMessageFilter }}
                           </td>
@@ -613,7 +589,7 @@
                         </tr>
                       </tbody>
                       <tbody v-else>
-                        <tr>
+                        <tr v-if="!isLoading">
                           <td colspan="14" class="text-danger text-center">
                             {{ errorMessage }}
                           </td>
@@ -752,13 +728,14 @@
             </button>
           </div>
         </div>
+        <loader :isLoading="isLoading"></loader>
       </div>
     </div>
     <SignedTimesheetViewVue
       :id="selectedSignedTimesheetId"
       @SignTimeSheetData-updated="signedTimeSheetMethod"
     />
-    <loader :isLoading="isLoading"></loader>
+
     <SuccessAlert ref="successAlert" />
   </div>
 </template>

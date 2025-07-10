@@ -105,14 +105,70 @@
                   <table class="table reportTable">
                     <thead>
                       <tr>
-                        <th scope="col">Sl No</th>
-                        <th scope="col">Staff</th>
+                        <th scope="col">
+                          Sl No
+                          <img
+                            src="../../assets/ArrowDown.png"
+                            class="img-fluid pe-2"
+                            alt="RecPal"
+                            loading="eager"
+                          />
+                        </th>
+                        <th scope="col">
+                          Staff
+                          <img
+                            src="../../assets/ArrowDown.png"
+                            class="img-fluid pe-2"
+                            alt="RecPal"
+                            loading="eager"
+                          />
+                        </th>
 
-                        <th scope="col">Document Category</th>
-                        <th scope="col">Document Type</th>
-                        <th scope="col">Upload Date</th>
-                        <th scope="col">Issue Date</th>
-                        <th scope="col">Expiry Date</th>
+                        <th scope="col">
+                          Document Category
+                          <img
+                            src="../../assets/ArrowDown.png"
+                            class="img-fluid pe-2"
+                            alt="RecPal"
+                            loading="eager"
+                          />
+                        </th>
+                        <th scope="col">
+                          Document Type
+                          <img
+                            src="../../assets/ArrowDown.png"
+                            class="img-fluid pe-2"
+                            alt="RecPal"
+                            loading="eager"
+                          />
+                        </th>
+                        <th scope="col">
+                          Upload Date
+                          <img
+                            src="../../assets/ArrowDown.png"
+                            class="img-fluid pe-2"
+                            alt="RecPal"
+                            loading="eager"
+                          />
+                        </th>
+                        <th scope="col">
+                          Issue Date
+                          <img
+                            src="../../assets/ArrowDown.png"
+                            class="img-fluid pe-2"
+                            alt="RecPal"
+                            loading="eager"
+                          />
+                        </th>
+                        <th scope="col">
+                          Expiry Date
+                          <img
+                            src="../../assets/ArrowDown.png"
+                            class="img-fluid pe-2"
+                            alt="RecPal"
+                            loading="eager"
+                          />
+                        </th>
                         <!-- <th scope="col">Status</th> -->
                       </tr>
                     </thead>
@@ -707,15 +763,16 @@ ul.nav-pills .nav-item {
 }
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  background: #000000;
+  background: #000000 !important;
   width: 100;
   height: 37;
-  color: #fff;
+  color: #fff !important;
   border-radius: 13px;
   padding-top: 10px;
   padding-right: 15px;
   padding-bottom: 11px;
   padding-left: 15px;
+  border-bottom: none !important;
 }
 
 button.nav-link > li.nav-item {

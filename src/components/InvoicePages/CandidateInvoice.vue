@@ -117,20 +117,6 @@
                       </div>
 
                       <div class="d-flex gap-3 align-items-center">
-                        <!-- <form
-                        v-if="getStaffInvoiceDetail?.length != 0"
-                        @submit.prevent="search"
-                        class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
-                      >
-                        <input
-                          class="form-control mr-sm-2"
-                          type="search"
-                          placeholder="Search..."
-                          aria-label="Search"
-                          v-model="searchQuery"
-                          @input="debounceSearch"
-                        />
-                      </form> -->
                         <button
                           type="button"
                           class="btn btn-lg text-nowrap text-nowrap text-capitalize"
@@ -147,10 +133,10 @@
                         </button>
                         <form
                           @submit.prevent="search"
-                          class="form-inline my-2 my-lg-0"
+                          class="w-md-auto position-relative"
                         >
                           <input
-                            class="form-control form-control-lg mr-sm-2 position-relative"
+                            class="form-control form-control-lg mr-sm-2 bg-white"
                             type="search"
                             placeholder="Search.."
                             aria-label="Search"
@@ -158,8 +144,7 @@
                             @input="debounceSearch"
                           />
                           <span
-                            class="position-absolute"
-                            style="transform: translate(1329%, -154%)"
+                            class="position-absolute top-50 end-0 translate-middle-y pe-3"
                           >
                             <img
                               src="../../assets/Search.png"
@@ -171,21 +156,7 @@
                       </div>
                     </div>
                   </div>
-                  <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                   
-                  </ul> -->
-                  <!-- <div v-if="currentView === 'weekly'">
-                  <div>
-                    <div v-for="(day, index) in daysOfWeek" :key="index"></div>
-                    <div v-for="(day, index) in getWeekDates" :key="index"></div>
-                  </div>
-                </div>
 
-                <div v-else-if="currentView === 'monthly'">
-                  <div>
-                    <div v-for="(day, index) in getMonthDates" :key="index"></div>
-                  </div>
-                </div> -->
                   <div class="d-flex gap-2">
                     <div></div>
                   </div>
@@ -255,9 +226,6 @@
                                 loading="eager"
                               />
                             </th>
-                            <!-- <th scope="col" class="text-center">Paid Amount</th> -->
-                            <!-- <th scope="col" class="text-center">Balance Amount</th> -->
-                            <!-- <th scope="col">Status</th> -->
 
                             <th scope="col">
                               Invoice Lock
@@ -317,11 +285,6 @@
                             <td scope="col" class="text-center">
                               {{ "£" + data.total_amount }}
                             </td>
-                            <!-- <td scope="col" class="text-center">{{ data.paid_amount }}</td> -->
-                            <!-- <td scope="col" class="text-center">
-                            {{ data.balance_amount }}
-                          </td> -->
-                            <!-- <td scope="col">{{ data.status }}</td> -->
 
                             <td scope="col">
                               <label class="switch">
@@ -368,14 +331,6 @@
                                   </router-link>
                                 </div>
                               </div>
-                              <!-- <router-link
-                                :to="{
-                                  name: 'CandidateInvoiceView',
-                                  params: { id: data.id },
-                                }"
-                                class="text-success"
-                                ><i class="bi bi-eye"></i
-                              ></router-link> -->
                             </td>
                           </tr>
                         </tbody>
@@ -394,24 +349,99 @@
                       <table class="table candidateTable" v-else>
                         <thead>
                           <tr>
-                            <th scope="col">#Number</th>
-                            <th scope="col">Staff</th>
+                            <th scope="col">
+                              #Number
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              Staff
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
 
-                            <th scope="col">From</th>
-                            <th scope="col">To</th>
-                            <th scope="col">Created On</th>
+                            <th scope="col">
+                              From
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              To
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              Created On
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
                             <!-- <th scope="col">Due Date</th> -->
                             <th scope="col" class="text-center">
                               Total Amount
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
                             </th>
-                            <!-- <th scope="col" class="text-center">Paid Amount</th>
-                          <th scope="col" class="text-center">Balance Amount</th> -->
-                            <!-- <th scope="col">Status</th> -->
 
-                            <th scope="col">Invoice Lock</th>
-                            <th scope="col">Generated By</th>
-                            <th scope="col">Email Status</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">
+                              Invoice Lock
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              Generated By
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              Email Status
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
+                            <th scope="col">
+                              Action
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </th>
                           </tr>
                         </thead>
                         <tbody v-if="searchResults?.length > 0">
@@ -518,6 +548,7 @@
               </div>
             </div>
           </div>
+          <loader :isLoading="isLoading"></loader>
         </div>
 
         <div
@@ -649,7 +680,7 @@
       </div>
     </div>
     <SuccessAlert ref="successAlert" />
-    <loader :isLoading="isLoading"></loader>
+
     <StaffGenrateInvoice />
   </div>
 </template>
@@ -767,7 +798,6 @@ export default {
       }
     },
     async fetWeekTimeSheetData() {
-      this.isLoading = true;
       const token = localStorage.getItem("token");
       let requestData = {};
 
@@ -786,7 +816,7 @@ export default {
           per_page: this.itemsPerPage,
         };
       }
-
+      this.isLoading = true;
       try {
         const response = await axios.get(`${VITE_API_URL}/staff_invoices`, {
           params: requestData,

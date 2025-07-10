@@ -131,9 +131,12 @@
                   </li>
                 </div>
               </button>
-              <form @submit.prevent="search" class="form-inline my-2 my-lg-0">
+              <form
+                @submit.prevent="search"
+                class="w-md-auto position-relative"
+              >
                 <input
-                  class="form-control form-control-lg mr-sm-2 position-relative"
+                  class="form-control form-control-lg mr-sm-2 bg-white"
                   type="search"
                   placeholder="Search.."
                   aria-label="Search"
@@ -141,8 +144,7 @@
                   @input="debounceSearch"
                 />
                 <span
-                  class="position-absolute"
-                  style="transform: translate(1329%, -154%)"
+                  class="position-absolute top-50 end-0 translate-middle-y pe-3"
                 >
                   <img
                     src="../../assets/Search.png"
@@ -222,6 +224,7 @@
               </div>
             </div>
           </div>
+
           <div
             class="tab-content mt-4"
             id="pills-tabContent"
@@ -369,6 +372,7 @@
                       </th>
                     </tr>
                   </thead>
+
                   <tbody v-if="paginateGetCustomTimeSheet?.length > 0">
                     <tr
                       v-for="(data, index) in paginateGetCustomTimeSheet"
@@ -448,25 +452,7 @@
                       <td scope="col">
                         {{ data.total_hours }}
                       </td>
-                      <!-- <td scope="col">
-                              {{ data.client_rate }}
-                            </td>
-                            <td scope="col">
-                              {{ data.total_cost }}
-                            </td>
-                            <td scope="col">
-                              <div v-if="data.paper_timesheet">
-                                <img
-                                  :src="fullPaperTimeSheetUrl(data.paper_timesheet)"
-                                  alt="Current Paper TimeSheet"
-                                  class="img-fluid"
-                                  style="width: 60px"
-                                />
-                                &nbsp;
-                                
-                              </div>
-                              <div v-else>Null</div>
-                            </td> -->
+
                       <td scope="col">
                         <button
                           type="button"
@@ -489,21 +475,6 @@
                         </button>
                       </td>
                       <td scope="col">
-                        <!-- <button
-                          type="button"
-                          :class="['btn', 'text-nowrap']"
-                          :style="
-                            data.status === 'Approved'
-                              ? { backgroundColor: '#E9FAEF', color: '#24D164' }
-                              : { backgroundColor: 'rgb(255 227 234)', color: '#FF3B30' }
-                          "
-                          :disabled="isSaveDisabled || data.status !== 'Approved'"
-                          @click="ApproveMethod(data.id)"
-                        >
-                          {{
-                            data.status === "Approved" ? "Unapprove" : "Approve"
-                          }}</button
-                        >&nbsp; -->
                         <div class="action-wrapper">
                           <i class="bi bi-three-dots dot-icon"></i>
 
@@ -527,7 +498,7 @@
                     </tr>
                   </tbody>
                   <tbody v-else>
-                    <tr>
+                    <tr v-if="!isLoading">
                       <td colspan="15" class="text-danger text-center">
                         {{ errorMessageCustom }}
                       </td>
@@ -560,16 +531,6 @@
                 <table class="table candidateTable">
                   <thead>
                     <tr>
-                      <!-- <th>
-                              <div class="form-check">
-                                <input
-                                  class="form-check-input"
-                                  type="checkbox"
-                                  value=""
-                                />
-                              </div>
-                            </th> -->
-                      <!-- <th scope="col">ID</th> -->
                       <th scope="col">
                         Ref Code
                         <img
@@ -669,9 +630,7 @@
                           loading="eager"
                         />
                       </th>
-                      <!-- <th scope="col">Client Rate</th>
-                            <th scope="col">Total Cost</th>
-                            <th scope="col">Paper TimeSheet</th> -->
+
                       <th scope="col">
                         Status
                         <img
@@ -694,17 +653,6 @@
                   </thead>
                   <tbody v-if="paginateSearchResults?.length > 0">
                     <tr v-for="data in paginateSearchResults" :key="data.id">
-                      <!-- <td>
-                              <input
-                                class="form-check-input"
-                                type="checkbox"
-                                :value="data.id"
-                                :id="data.id"
-                                v-model="checkedSites[data.id]"
-                                @change="handleCheckboxChange(data.id)"
-                              />
-                            </td> -->
-                      <!-- <td scope="col">{{ data.id }}</td> -->
                       <td scope="col">{{ data.code }}</td>
                       <td scope="col">
                         <router-link
@@ -766,24 +714,7 @@
                       <td scope="col">
                         {{ data.total_hours }}
                       </td>
-                      <!-- <td scope="col">
-                              {{ data.client_rate }}
-                            </td>
-                            <td scope="col">
-                              {{ data.total_cost }}
-                            </td>
-                            <td scope="col">
-                              <div v-if="data.paper_timesheet">
-                                <img
-                                  :src="fullPaperTimeSheetUrl(data.paper_timesheet)"
-                                  alt="Current Paper TimeSheet"
-                                  class="img-fluid"
-                                  style="width: 60px"
-                                />&nbsp;
-                               
-                              </div>
-                              <div v-else>Null</div>
-                            </td> -->
+
                       <td scope="col">
                         <button
                           type="button"
@@ -806,20 +737,6 @@
                         </button>
                       </td>
                       <td scope="col">
-                        <!-- <button
-                          type="button"
-                          :class="['btn', 'text-nowrap']"
-                          :style="
-                            data.status === 'Approved'
-                              ? { backgroundColor: '#E9FAEF', color: '#24D164' }
-                              : { backgroundColor: 'rgb(255 227 234)', color: '#FF3B30' }
-                          "
-                          @click="ApproveMethod(data.id)"
-                        >
-                          {{
-                            data.status === "Approved" ? "Approved" : "Approve"
-                          }}</button
-                        >&nbsp; -->
                         <div
                           class="action-wrapper"
                           @mouseenter="hover = true"
@@ -848,7 +765,7 @@
                     </tr>
                   </tbody>
                   <tbody v-else>
-                    <tr>
+                    <tr v-if="!isLoading">
                       <td colspan="15" class="text-danger text-center">
                         {{ errorMessage }}
                       </td>
@@ -974,7 +891,7 @@
                 </li>
               </ul>
             </div>
-            {{ console.log(getCandidatesData) }}
+
             <div class="d-flex align-items-center">
               &nbsp;&nbsp;
               <button
@@ -1004,6 +921,7 @@
             </div>
           </div>
         </div>
+        <loader :isLoading="isLoading"></loader>
       </div>
     </div>
     <CustomeTimeSheetEdit
@@ -1011,7 +929,7 @@
       @CustomTimeSheetData-updated="getCustomSheetMethod"
       ref="customEdit"
     />
-    <loader :isLoading="isLoading"></loader>
+
     <!-- <PaperTimeSheetViewVue :customDataId="selectedCustomTimesheetId" /> -->
   </div>
 </template>
@@ -1143,21 +1061,6 @@ export default {
       return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
     },
   },
-  // watch: {
-  //   selectedCandidate(newValue) {
-  //     if (newValue !== "") {
-  //       this.makeFilterAPICall("candidate", newValue);
-  //     } else {
-  //     }
-  //   },
-
-  //   selectedSiteName(newValue) {
-  //     if (newValue !== "") {
-  //       this.makeFilterAPICall("business_unit", newValue);
-  //     } else {
-  //     }
-  //   },
-  // },
 
   methods: {
     async ApproveMethod(id) {
@@ -1252,42 +1155,7 @@ export default {
         }
       }
     },
-    // async getCandidateListMethod() {
-    //   try {
-    //     let candidateLists = [];
-    //     let currentPage = 1;
-    //     const itemsPerPage = 10;
-    //     let totalPages = 1;
 
-    //     do {
-    //       const response = await axios.get(`${VITE_API_URL}/candidates`, {
-    //         params: {
-    //           page: currentPage,
-    //           per_page: itemsPerPage,
-    //           status_value: "approved",
-    //           activated_value: true,
-    //         },
-    //       });
-
-    //       candidateLists = [...candidateLists, ...response.data.data];
-    //       console.log(candidateLists);
-    //       totalPages = response.data.total_pages;
-
-    //       currentPage++;
-    //     } while (currentPage <= totalPages);
-
-    //     this.getCandidatesData = candidateLists;
-    //   } catch (error) {
-    //     if (error.response) {
-    //       // console.error(
-    //       //   "Error fetching candidate data:",
-    //       //   error.response.data.message || error
-    //       // );
-    //     } else {
-    //       // console.error("Network or Server Error:", error.message);
-    //     }
-    //   }
-    // },
     async getBusinessUnitMethod() {
       try {
         const response = await axios.get(`${VITE_API_URL}/activated_site`);
@@ -1555,7 +1423,6 @@ export default {
       this.getCustomSheetMethod();
     },
     async getCustomSheetMethod() {
-      this.isLoading = true;
       const token = localStorage.getItem("token");
       const startOfMonth = new Date(
         this.startDate.getFullYear(),
@@ -1579,6 +1446,7 @@ export default {
         page: this.currentPage,
         // end_date: endOfMonth.toLocaleDateString(),
       };
+      this.isLoading = true;
       try {
         const response = await axios.get(
           `${VITE_API_URL}/find_custom_timesheet_according_mounth`,

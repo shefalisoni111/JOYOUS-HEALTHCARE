@@ -648,6 +648,7 @@
               </table>
             </div>
           </div>
+          <loader :isLoading="isLoading"></loader>
         </div>
         <div
           class="mx-3 d-flex justify-content-between"
@@ -724,7 +725,7 @@
       @closeModal="closeModal"
       :paginatedTimesheets="mergedTimesheetsArray"
     />
-    <loader :isLoading="isLoading"></loader>
+
     <SuccessAlert ref="successAlert" />
   </div>
 </template>
@@ -869,10 +870,6 @@ export default {
       return site_id ? site_id.site_name : "";
     },
 
-    // selectCandidateList() {
-    //   const id = this.candidateLists.find((option) => option.id === this.id);
-    //   return id ? id.first_name : "";
-    // },
     selectBusinessUnit() {
       const site_id = this.businessUnit.find(
         (option) => option.id === this.site_id
@@ -886,20 +883,6 @@ export default {
       );
       return candidate ? `${candidate.first_name} ${candidate.last_name}` : "";
     },
-  },
-  watch: {
-    // selectedCandidate(newValue) {
-    //   if (newValue !== "") {
-    //     this.makeFilterAPICall("candidate", newValue);
-    //   } else {
-    //   }
-    // },
-    // site_id(newValue) {
-    //   if (newValue !== "") {
-    //     this.makeFilterAPICall("site", newValue);
-    //   } else {
-    //   }
-    // },
   },
 
   methods: {
@@ -1204,7 +1187,7 @@ export default {
       if (this.selectedCandidate) {
         params["weekly_timesheet[candidate_id]"] = this.selectedCandidate;
       }
-
+      this.isLoading = true;
       try {
         const response = await axios.get(`${VITE_API_URL}/filter_timesheets`, {
           params,
@@ -1270,6 +1253,8 @@ export default {
       } catch (error) {
         this.errorMessageFilter =
           "No Weekly timesheets found for the specified week.";
+      } finally {
+        this.isLoading = false;
       }
     },
     resetFilter() {

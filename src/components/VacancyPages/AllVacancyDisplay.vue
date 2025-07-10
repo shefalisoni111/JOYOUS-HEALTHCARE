@@ -99,13 +99,17 @@
               />
             </th>
             <th scope="col">
-              Publish
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
+              <div
+                class="d-flex justify-content-center align-items-center gap-1"
+              >
+                Publish
+                <img
+                  src="../../assets/ArrowDown.png"
+                  class="img-fluid pe-2"
+                  alt="RecPal"
+                  loading="eager"
+                />
+              </div>
             </th>
             <th scope="col" class="text-center withShow">
               <div
@@ -121,40 +125,56 @@
               </div>
             </th>
             <th scope="col">
-              Applied
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
+              <div
+                class="d-flex justify-content-center align-items-center gap-1"
+              >
+                Applied
+                <img
+                  src="../../assets/ArrowDown.png"
+                  class="img-fluid pe-2"
+                  alt="RecPal"
+                  loading="eager"
+                />
+              </div>
             </th>
             <th scope="col">
-              Assigned
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
+              <div
+                class="d-flex justify-content-center align-items-center gap-1"
+              >
+                Assigned
+                <img
+                  src="../../assets/ArrowDown.png"
+                  class="img-fluid pe-2"
+                  alt="RecPal"
+                  loading="eager"
+                />
+              </div>
             </th>
             <th scope="col">
-              Rejected
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
+              <div
+                class="d-flex justify-content-center align-items-center gap-1"
+              >
+                Rejected
+                <img
+                  src="../../assets/ArrowDown.png"
+                  class="img-fluid pe-2"
+                  alt="RecPal"
+                  loading="eager"
+                />
+              </div>
             </th>
             <th scope="col">
-              Created by
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
+              <div
+                class="d-flex justify-content-center align-items-center gap-1"
+              >
+                Created by
+                <img
+                  src="../../assets/ArrowDown.png"
+                  class="img-fluid pe-2"
+                  alt="RecPal"
+                  loading="eager"
+                />
+              </div>
             </th>
             <th scope="col">
               Action

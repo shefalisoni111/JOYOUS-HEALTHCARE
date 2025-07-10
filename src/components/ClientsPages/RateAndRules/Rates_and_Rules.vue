@@ -205,10 +205,13 @@
                             </li>
                           </ul>
                         </button>
-                        <div class="searchbox position-relative pe-2">
-                          <form @submit.prevent="search">
+                        <div class="row p-0 float-end">
+                          <form
+                            @submit.prevent="search"
+                            class="w-md-auto position-relative"
+                          >
                             <input
-                              class="form-control form-control-lg mr-sm-2 position-relative bg-white"
+                              class="form-control form-control-lg mr-sm-2 bg-white"
                               type="search"
                               placeholder="Search..."
                               aria-label="Search"
@@ -216,8 +219,7 @@
                               @input="debounceSearch"
                             />
                             <span
-                              class="position-absolute"
-                              style="transform: translate(1329%, -154%)"
+                              class="position-absolute top-50 end-0 translate-middle-y pe-3"
                             >
                               <img
                                 src="../../../assets/Search.png"

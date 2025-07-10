@@ -45,34 +45,9 @@
                           </option>
                         </select>
                       </div>
-                      <!-- <select v-model="id" @change="filterData">
-                        <option value="">All Staff</option>
-                        <option
-                          v-for="option in candidateLists"
-                          :key="option.id"
-                          :value="option.id"
-                          placeholder="Select Staff"
-                        >
-                          {{ option.first_name + " " + option.last_name }}
-                        </option>
-                      </select> -->
                     </div>
 
-                    <div>
-                      <!-- <form
-                        class="form-inline my-2 my-lg-0 d-flex align-items-center justify-content-between gap-2"
-                        @submit.prevent="search"
-                      >
-                        <input
-                          class="form-control mr-sm-2"
-                          type="search"
-                          placeholder="Search..."
-                          aria-label="Search"
-                          v-model="searchQuery"
-                          @input="debounceSearch"
-                        />
-                      </form> -->
-                    </div>
+                    <div></div>
                     <div class="d-flex gap-2">
                       <div
                         class="d-md-flex d-lg-flex justify-content-md-between justify-content-lg-between align-items-center"
@@ -215,33 +190,175 @@
                     <table class="table candidateTable" v-if="!searchQuery">
                       <thead>
                         <tr>
-                          <th>
-                            <!-- <div class="form-check">
-                              <input
-                                class="form-check-input"
-                                type="checkbox"
-                                v-model="checkedAll"
-                                @change="toggleSelectAll"
+                          <th scope="col" style="width: 2%"></th>
+
+                          <th scope="col">
+                            Client
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Site
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Job
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Day
+
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
                               />
-                            </div> -->
+                            </div>
                           </th>
-                          <!-- <th scope="col">ID</th> -->
-                          <th scope="col">Client</th>
-                          <th scope="col">Site</th>
-                          <th scope="col">Job</th>
-                          <th scope="col">Day</th>
-                          <th scope="col">Shift Type<br />Start-End Time</th>
-                          <th scope="col">Rate Type</th>
-                          <th scope="col">Client Rate</th>
-                          <th scope="col">Private Limited</th>
-                          <th scope="col">Self Employed</th>
-                          <th scope="col">Umbrella</th>
-                          <th scope="col">PAYE</th>
+                          <th scope="col" style="width: 7%">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Shift Time
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
+                          </th>
+                          <th scope="col">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Rate Type
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
+                          </th>
+                          <th scope="col">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Client Rate
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
+                          </th>
+                          <th scope="col">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Private Limited
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
+                          </th>
+                          <th scope="col">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Self Employed
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
+                          </th>
+                          <th scope="col" style="width: 7%">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Umbrella
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
+                          </th>
+                          <th scope="col" style="width: 6%">
+                            PAYE
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
                           <th scope="col" style="width: 10%">
-                            Created By and Time
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Created By and Time
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
                           </th>
-                          <th scope="col">Last Update</th>
-                          <th scope="col">Action</th>
+                          <th scope="col">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Last Update
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
+                          </th>
+                          <th scope="col" style="width: 7%">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Action
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
+                          </th>
                         </tr>
                       </thead>
 
@@ -549,27 +666,175 @@
                     <table class="table candidateTable" v-if="searchQuery">
                       <thead>
                         <tr>
-                          <th>
-                            <!-- <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" />
-                            </div> -->
+                          <th scope="col" style="width: 2%"></th>
+
+                          <th scope="col">
+                            Client
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
                           </th>
-                          <th scope="col">Client</th>
-                          <th scope="col">Site</th>
-                          <th scope="col">Job</th>
-                          <th scope="col">Day</th>
-                          <th scope="col">Shift Type<br />Start-End Time</th>
-                          <th scope="col">Rate Type</th>
-                          <th scope="col">Client Rate</th>
-                          <th scope="col">Private Limited</th>
-                          <th scope="col">Self Employed</th>
-                          <th scope="col">Umbrella</th>
-                          <th scope="col">PAYE</th>
+                          <th scope="col">
+                            Site
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            Job
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
+                          <th scope="col">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Day
+
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
+                          </th>
+                          <th scope="col" style="width: 7%">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Shift Time
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
+                          </th>
+                          <th scope="col">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Rate Type
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
+                          </th>
+                          <th scope="col">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Client Rate
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
+                          </th>
+                          <th scope="col">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Private Limited
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
+                          </th>
+                          <th scope="col">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Self Employed
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
+                          </th>
+                          <th scope="col" style="width: 7%">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Umbrella
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
+                          </th>
+                          <th scope="col" style="width: 6%">
+                            PAYE
+                            <img
+                              src="../../assets/ArrowDown.png"
+                              class="img-fluid pe-2"
+                              alt="RecPal"
+                              loading="eager"
+                            />
+                          </th>
                           <th scope="col" style="width: 10%">
-                            Created By and Time
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Created By and Time
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
                           </th>
-                          <th scope="col">Last Update</th>
-                          <th scope="col">Action</th>
+                          <th scope="col">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Last Update
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
+                          </th>
+                          <th scope="col" style="width: 7%">
+                            <div
+                              class="d-flex justify-content-center align-items-center gap-1"
+                            >
+                              Action
+                              <img
+                                src="../../assets/ArrowDown.png"
+                                class="img-fluid pe-2"
+                                alt="RecPal"
+                                loading="eager"
+                              />
+                            </div>
+                          </th>
                         </tr>
                       </thead>
 
@@ -1502,9 +1767,7 @@ select {
 a[data-v-507f63b7] {
   text-decoration: none;
 }
-.candidateTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
+
 .btn-primary {
   border-radius: 4px;
 }
