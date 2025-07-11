@@ -280,22 +280,18 @@ export default {
         });
       }
     },
-    formatDate(date) {
+    formatDate(dateString) {
       // return new Date(date).toLocaleDateString();
       //const options = {
       //   day: "2-digit",
       //   month: "2-digit",
       //   year: "numeric",
       // };
-      const parsedDate = new Date(date);
-
-      if (isNaN(parsedDate)) return ""; // Handle invalid date
-
-      const day = String(parsedDate.getDate()).padStart(2, "0");
-      const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
-      const year = parsedDate.getFullYear();
-
-      return `${day}/${month}/${year}`;
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${day}-${month}-${year}`;
 
       // return new Date(date).toLocaleDateString("en-GB", parsedDate);
     },
@@ -401,15 +397,7 @@ export default {
         }
       }
     },
-    isPastDate(dateStr) {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
 
-      const inputDate = new Date(dateStr);
-      inputDate.setHours(0, 0, 0, 0);
-
-      return inputDate < today;
-    },
     async addCandidateStatus() {
       try {
         const parsedDate = new Date(this.date);
@@ -450,16 +438,6 @@ export default {
             const availability = this.availabilityIds.find(
               (item) => item.date === formattedDate
             );
-
-            if (this.isPastDate(formattedDate)) {
-              Swal.fire({
-                icon: "error",
-                title: "Invalid Date",
-                text: "Cannot add availability for past dates.",
-                confirmButtonColor: "rgb(255 112 8)",
-              });
-              return;
-            }
             if (availability && availability.id !== null) {
               availabilities.push({
                 id: availability.id,
@@ -484,7 +462,7 @@ export default {
 
             if (putResponse.status === 200) {
               this.errorMessage = "";
-              // await this.fetchCandidateList(this.startDate);
+              await this.fetchCandidateList(this.startDate);
               Swal.fire({
                 icon: "success",
                 title: "Success!",
@@ -508,16 +486,6 @@ export default {
               const availability = this.availabilityIds.find(
                 (item) => item.date === formattedDate
               );
-
-              if (this.isPastDate(formattedDate)) {
-                Swal.fire({
-                  icon: "error",
-                  title: "Invalid Date",
-                  text: "Cannot add availability for past dates.",
-                  confirmButtonColor: "rgb(255 112 8)",
-                });
-                return;
-              }
               if (
                 availability &&
                 availability.id === null &&

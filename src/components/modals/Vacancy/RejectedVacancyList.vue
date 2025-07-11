@@ -84,7 +84,7 @@
                       <!-- <th scope="col">Action</th> -->
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody v-if="rejectedListData && rejectedListData.length > 0">
                     <tr v-for="data in rejectedListData" :key="data.id">
                       <td v-text="data.candidate_code"></td>
                       <td v-text="data.first_name"></td>
@@ -111,6 +111,13 @@
                           ></i>
                         </button>
                       </td> -->
+                    </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="7" class="text-danger text-center">
+                        data not Found !!
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -152,24 +159,12 @@
 
                       <td v-text="data.position"></td>
                       <td v-text="data.status"></td>
-                      <!-- <td v-text="data.employment_type"></td> -->
-                      <!-- <td v-text="data.last_login"></td> -->
-                      <!-- <td class="cursor-pointer">
-                       
-                        &nbsp;&nbsp;
-                        <button class="btn btn-outline-success text-nowrap">
-                          <i
-                            class="bi bi-trash border-0 border-0"
-                            v-on:click="vacancyDeleteMethod(data.id)"
-                          ></i>
-                        </button>
-                      </td> -->
                     </tr>
                   </tbody>
                   <tbody v-else>
                     <tr>
                       <td colspan="7" class="text-danger text-center">
-                        No Match Found !!
+                        data not Found !!
                       </td>
                     </tr>
                   </tbody>
@@ -183,6 +178,7 @@
               data-bs-target="#rejectedVacancyList"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
+              @click="blurActiveElement"
             >
               Cancel
             </button>

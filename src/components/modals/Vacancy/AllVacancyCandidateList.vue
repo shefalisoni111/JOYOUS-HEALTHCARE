@@ -96,7 +96,7 @@
                     <th scope="col">Action</th> -->
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody v-if="getVacancyDetail && getVacancyDetail.length > 0">
                     <tr v-for="data in getVacancyDetail" :key="data.id">
                       <td>
                         <input
@@ -129,6 +129,13 @@
                         ></i>
                       </button>
                     </td> -->
+                    </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="7" class="text-danger text-center">
+                        data not Found !!
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -193,7 +200,7 @@
                   <tbody v-else>
                     <tr>
                       <td colspan="7" class="text-danger text-center">
-                        No Match Found !!
+                        data not Found !!
                       </td>
                     </tr>
                   </tbody>
@@ -207,6 +214,7 @@
               data-bs-target="#allCandidateVacancyList"
               data-bs-toggle="modal"
               data-bs-dismiss="modal"
+              @click="blurActiveElement"
             >
               Close
             </button>

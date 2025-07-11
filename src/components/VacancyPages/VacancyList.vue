@@ -12,34 +12,34 @@
           <Navbar />
         </div>
         <div class="container-fluid pt-3 px-5">
-          <div
-            class="row d-flex justify-content-center col-11 col-sm-11 col-md-11 col-lg-11 col-xl-12 col-xxl-12 px-2"
-          >
-            <div class="py-3">
-              <ol class="breadcrumb my-2">
-                <li class="breadcrumb-item active fs-6">
-                  <a
-                    class="nav-link d-inline fs-4 fw-bolder"
-                    style="color: #000000; background: none"
-                    >Shift</a
-                  >
+          <div class="row">
+            <div class="d-flex justify-content-between">
+              <div class="py-3">
+                <ol class="breadcrumb my-2">
+                  <li class="breadcrumb-item active fs-6">
+                    <a
+                      class="nav-link d-inline fs-4 fw-bolder"
+                      style="color: #000000; background: none"
+                      >Shift</a
+                    >
 
-                  <!-- <span class="color-fonts">{{ activeTabName }} Shifts</span> -->
-                </li>
-              </ol>
-            </div>
-            <div class="d-flex align-items-center">
-              <button
-                v-if="activeTab === 0"
-                type="button"
-                class="btn btn-lg text-white"
-                style="background-color: #f9944b"
-                data-bs-toggle="modal"
-                data-bs-target="#addVacancies"
-                data-bs-whatever="@mdo"
-              >
-                + Add Shift
-              </button>
+                    <!-- <span class="color-fonts">{{ activeTabName }} Shifts</span> -->
+                  </li>
+                </ol>
+              </div>
+              <div class="d-flex align-items-center">
+                <button
+                  v-if="activeTab === 0"
+                  type="button"
+                  class="btn btn-lg text-white"
+                  style="background-color: #f9944b"
+                  data-bs-toggle="modal"
+                  data-bs-target="#addVacancies"
+                  data-bs-whatever="@mdo"
+                >
+                  + Add Shift
+                </button>
+              </div>
             </div>
           </div>
 
@@ -589,22 +589,6 @@ export default {
         } else {
           activatedStatus = this.activeTab === 1 ? true : false;
         }
-        // const response = await axiosInstance.get(
-        //   `${VITE_API_URL}/vacancy_searching_active_and_inactive`,
-        //   {
-        //     params: {
-        //       vacancy_query: modifiedSearchQuery,
-        //       activated: activatedStatus,
-        //       tab: this.activeTabName.toLowerCase(),
-        //     },
-        //     headers: {
-        //       "content-type": "application/json",
-        //       Authorization: "bearer " + token,
-        //     },
-        //   }
-        // );
-
-        // this.searchResults = response.data;
       } catch (error) {
         if (
           (error.response && error.response.status === 400) ||

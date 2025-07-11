@@ -96,7 +96,7 @@
                     <th scope="col">Action</th> -->
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody v-if="getVacancyDetail && getVacancyDetail.length > 0">
                     <tr v-for="data in getVacancyDetail" :key="data.id">
                       <td>
                         <input
@@ -129,6 +129,13 @@
                         ></i>
                       </button>
                     </td> -->
+                    </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="8" class="text-danger text-center">
+                        data not Found !!
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -194,8 +201,8 @@
                   </tbody>
                   <tbody v-else>
                     <tr>
-                      <td colspan="7" class="text-danger text-center">
-                        No Match Found !!
+                      <td colspan="8" class="text-danger text-center">
+                        data not Found !!
                       </td>
                     </tr>
                   </tbody>
@@ -519,6 +526,7 @@ export default {
     },
     closePopup() {
       this.$store.commit("setSelectedAppliedItemId", null);
+      this.blurActiveElement();
     },
   },
 };
@@ -562,9 +570,7 @@ label.form-label {
 table th {
   text-transform: capitalize;
 }
-.vacancyTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
+
 @media (max-width: 1120px) {
   .vacancyTable {
     width: 1090px;

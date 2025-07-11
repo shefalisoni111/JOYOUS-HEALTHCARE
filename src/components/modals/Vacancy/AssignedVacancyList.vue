@@ -83,7 +83,9 @@
                       <!-- <th scope="col">Action</th> -->
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody
+                    v-if="assignedVacancyData && assignedVacancyData.length > 0"
+                  >
                     <tr v-for="data in assignedVacancyData" :key="data.id">
                       <!-- <td v-text="data.id"></td> -->
                       <td v-text="data.candidate_code"></td>
@@ -111,6 +113,13 @@
                         ></i>
                       </button>
                     </td> -->
+                    </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="7" class="text-danger text-center">
+                        Data not found
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -171,7 +180,7 @@
                   <tbody v-else>
                     <tr>
                       <td colspan="7" class="text-danger text-center">
-                        No Match Found !!
+                        Data not found
                       </td>
                     </tr>
                   </tbody>
@@ -264,6 +273,7 @@ export default {
     },
     closePopup() {
       this.$store.commit("setSelectedAssignedItemId", null);
+      this.blurActiveElement();
     },
     debounceSearch() {
       clearTimeout(this.debounceTimeout);
