@@ -830,7 +830,6 @@ export default {
     },
     async filterData() {
       const params = {
-        page: 1,
         per_page: this.itemsPerPage,
       };
 
@@ -854,7 +853,7 @@ export default {
         params["date"] = formattedStartOfMonth;
         // params["client_invoice[shift_date]"] = formattedStartOfMonth;
       }
-      params.range = this.currentView === "weekly" ? "week" : "Monthly";
+      params.range = this.currentView === "weekly" ? "weekly" : "Monthly";
       this.isLoading = true;
       try {
         const response = await axios.get(`${VITE_API_URL}/client_invoices`, {
@@ -917,7 +916,7 @@ export default {
       }
 
       // queryParams.range = this.currentView === "weekly" ? "week" : "Monthly";
-      queryParams.range = this.currentView === "weekly" ? "week" : "Monthly";
+      queryParams.range = this.currentView === "weekly" ? "Weekly" : "Monthly";
       return axios
         .get(`${VITE_API_URL}/client_invoices`, {
           params: queryParams,
@@ -1086,14 +1085,16 @@ export default {
     },
     updateDateRange() {
       if (this.currentView === "weekly") {
-        const weekStart = new Date(this.startDate);
-        weekStart.setDate(
-          this.startDate.getDate() - this.startDate.getDay() + 1
-        );
+        const today = new Date();
+        const baseDate = new Date(today);
+        baseDate.setDate(today.getDate() + this.weekOffset * 7);
+
+        const weekStart = new Date(baseDate);
+        weekStart.setDate(baseDate.getDate() - baseDate.getDay() + 1);
         this.startDate = weekStart;
 
-        const weekEnd = new Date(this.startDate);
-        weekEnd.setDate(weekEnd.getDate() + 6);
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekStart.getDate() + 6);
         this.endDate = weekEnd;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();

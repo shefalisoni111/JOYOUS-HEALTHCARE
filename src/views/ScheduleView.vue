@@ -496,7 +496,7 @@
                                                   () => {
                                                     const status =
                                                       getBookingStatus(
-                                                        data,
+                                                        assign,
                                                         formattedDate(day)
                                                       );
                                                     openModalEdit(
@@ -542,17 +542,11 @@
                                                     font-size: larger;
                                                   "
                                                   v-if="
-                                                    getBookingStatus(
-                                                      avail,
-                                                      formattedDate(day)
-                                                    )
+                                                    getBookingStatuss(assign)
                                                   "
                                                 >
                                                   {{
-                                                    getBookingStatus(
-                                                      avail,
-                                                      formattedDate(day)
-                                                    )
+                                                    getBookingStatuss(assign)
                                                   }}
                                                 </span>
                                               </div>
@@ -885,7 +879,14 @@ export default {
 
       return null;
     },
-
+    getBookingStatuss(assign) {
+      if (assign.booking_status === "accepted") {
+        return "Booked";
+      } else if (assign.booking_status === "assigned") {
+        return "Booked";
+      }
+      return null;
+    },
     isTodayOrGreaterThanToday(day) {
       const today = new Date();
       const formattedToday = this.formattedDate(today);
@@ -1240,8 +1241,11 @@ export default {
         // await this.$refs.editAssignScheduleShift.fetchVacancyListMethod();
         await this.$refs.editAssignScheduleShift.fetchAssignList();
       }
+      const assignedVacancy = candidateId.availability
+        ?.flatMap((a) => a.assign_vacancies || [])
+        ?.find((v) => v.vacancy_id);
 
-      this.vacancyId = candidateId.id.toString() || "";
+      this.vacancyId = assignedVacancy?.vacancy_id?.toString() || "";
       if (!candidateId || !candidateId.candidate_id) {
         return;
       }
