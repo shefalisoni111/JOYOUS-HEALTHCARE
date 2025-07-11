@@ -476,18 +476,14 @@
                                           >
                                             <span
                                               :draggable="
-                                                getBookingStatus(
-                                                  avail,
-                                                  formattedDate(day)
-                                                ) !== 'Booked'
+                                                getBookingStatus(assign) !==
+                                                'Booked'
                                               "
                                               @dragstart="
-                                                getBookingStatus(
-                                                  avail,
-                                                  formattedDate(day)
-                                                ) !== 'Booked' &&
+                                                getBookingStatus(assign) !==
+                                                  'Booked' &&
                                                   handleDragRevert(
-                                                    avail,
+                                                    assign,
                                                     avail.candidate_id
                                                   )
                                               "
@@ -1110,12 +1106,12 @@ export default {
       event.preventDefault();
 
       try {
-        if (!this.vacancyBeingDragged || !this.vacancyBeingDragged.id) {
+        if (!this.vacancyBeingDragged || !this.vacancyBeingDragged.vacancy_id) {
           return;
         }
 
         const payload = {
-          vacancy_id: this.vacancyBeingDragged.id,
+          vacancy_id: this.vacancyBeingDragged.vacancy_id,
           candidate_id: this.dropCandidateId,
         };
 
