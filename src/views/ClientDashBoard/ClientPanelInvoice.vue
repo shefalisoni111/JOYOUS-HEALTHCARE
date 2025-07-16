@@ -1,134 +1,142 @@
 <template>
-  <div>
-    <ClientNavbar />
-    <div id="main">
+  <div id="main" class="main d-flex sidebar">
+    <div
+      class=""
+      style="
+        background: #fff;
+
+        border-radius: 20px;
+      "
+    >
+      <ClientNavbar />
+    </div>
+
+    <div class="container-fluid pt-3 px-5">
       <div class="pagetitle d-flex justify-content-between px-2">
         <div class="py-3">
           <ol class="breadcrumb mb-1">
-            <li class="breadcrumb-item active text-uppercase fs-6">
-              <router-link
-                class="nav-link d-inline"
-                aria-current="page"
-                to="/client/clientDashboard"
-                >Dashboard</router-link
+            <li class="breadcrumb-item active">
+              <a class="nav-link d-inline fs-4 fw-bolder" style="color: #000000"
+                >Invoices</a
               >
-              / <span class="color-fonts">Invoices</span>
+              <p>
+                <router-link
+                  class="nav-link d-inline fw-bolder"
+                  style="color: #000000"
+                  aria-current="page"
+                  to="/staff-list"
+                  >Invoices</router-link
+                >
+              </p>
             </li>
           </ol>
         </div>
       </div>
-
-      <div class="container-fluid pt-3">
-        <div class="row">
-          <div class="col-12">
-            <div class="">
-              <div class="d-flex justify-content-between">
-                <div class="p-2">
-                  <div class="d-flex justify-content-between">
-                    <div class="d-flex">
-                      <div class="d-flex align-items-center gap-2">
-                        <select
-                          class="form-control"
-                          v-model="currentView"
-                          @change="updateDateRange"
-                        >
-                          <option value="weekly">Weekly</option>
-                          <option value="monthly">Monthly</option>
-                        </select>
-                      </div>
-
-                      &nbsp;&nbsp;
-                      <div class="d-flex align-items-center">
-                        <span
-                          v-if="
-                            currentView === 'weekly' && startDate && endDate
-                          "
-                          class="fw-bold"
-                        >
-                          {{
-                            "Monday " +
-                            formatDate(startDate) +
-                            " to Sunday " +
-                            formatDate(endDate)
-                          }}
-                        </span>
-                        <span
-                          v-else-if="
-                            currentView === 'monthly' && startDate && endDate
-                          "
-                          class="fw-bold"
-                        >
-                          {{
-                            formatDate(startDate) + " to " + formatDate(endDate)
-                          }}
-                        </span>
-                      </div>
-                      &nbsp;&nbsp;
-                      <div class="d-flex align-items-center fs-4">
-                        <i
-                          class="bi bi-caret-left-fill"
-                          @click="moveToPrevious"
-                        ></i>
-                        <i class="bi bi-calendar2-check-fill"></i>
-                        <i
-                          class="bi bi-caret-right-fill"
-                          @click="moveToNext"
-                        ></i>
-                      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="">
+            <div class="d-flex justify-content-between">
+              <div class="p-2">
+                <div class="d-flex justify-content-between">
+                  <div class="d-flex">
+                    <div class="d-flex align-items-center gap-2">
+                      <select
+                        class="form-control"
+                        v-model="currentView"
+                        @change="updateDateRange"
+                      >
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                      </select>
                     </div>
 
-                    <div class="d-flex gap-3 align-items-center"></div>
+                    &nbsp;&nbsp;
+                    <div class="d-flex align-items-center">
+                      <span
+                        v-if="currentView === 'weekly' && startDate && endDate"
+                        class="fw-bold"
+                      >
+                        {{
+                          "Monday " +
+                          formatDate(startDate) +
+                          " to Sunday " +
+                          formatDate(endDate)
+                        }}
+                      </span>
+                      <span
+                        v-else-if="
+                          currentView === 'monthly' && startDate && endDate
+                        "
+                        class="fw-bold"
+                      >
+                        {{
+                          formatDate(startDate) + " to " + formatDate(endDate)
+                        }}
+                      </span>
+                    </div>
+                    &nbsp;&nbsp;
+                    <div class="d-flex align-items-center fs-4">
+                      <i
+                        class="bi bi-caret-left-fill"
+                        @click="moveToPrevious"
+                      ></i>
+                      <i class="bi bi-calendar2-check-fill"></i>
+                      <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                    </div>
                   </div>
+
+                  <div class="d-flex gap-3 align-items-center"></div>
                 </div>
-                <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+              </div>
+              <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                          
                         </ul> -->
-                <div v-if="currentView === 'weekly'">
-                  <div>
-                    <div v-for="(day, index) in daysOfWeek" :key="index"></div>
-                    <div
-                      v-for="(day, index) in getWeekDates"
-                      :key="index"
-                    ></div>
-                  </div>
+              <div v-if="currentView === 'weekly'">
+                <div>
+                  <div v-for="(day, index) in daysOfWeek" :key="index"></div>
+                  <div v-for="(day, index) in getWeekDates" :key="index"></div>
                 </div>
+              </div>
 
-                <div v-else-if="currentView === 'monthly'">
-                  <div>
-                    <div
-                      v-for="(day, index) in getMonthDates"
-                      :key="index"
-                    ></div>
-                  </div>
+              <div v-else-if="currentView === 'monthly'">
+                <div>
+                  <div v-for="(day, index) in getMonthDates" :key="index"></div>
                 </div>
-                <div class="d-flex gap-2 mb-3 justify-content-between">
-                  <div class="d-flex gap-2">
-                    <div>
-                      <form
-                        @submit.prevent="search"
-                        class="form-inline my-2 my-lg-0"
-                      >
-                        <input
-                          class="form-control mr-sm-2"
-                          type="search"
-                          placeholder="Search..."
-                          aria-label="Search"
-                          v-model="searchQuery"
-                          @input="debounceSearch"
-                        />
-                      </form>
-                    </div>
-                    <select aria-label="Default select example">
+              </div>
+              <div class="d-flex gap-2 mb-3 justify-content-between">
+                <div class="d-flex gap-2">
+                  <div>
+                    <form
+                      @submit.prevent="search"
+                      class="form-inline my-2 my-lg-0"
+                    >
+                      <input
+                        class="form-control mr-sm-2"
+                        type="search"
+                        placeholder="Search..."
+                        aria-label="Search"
+                        v-model="searchQuery"
+                        @input="debounceSearch"
+                      />
+                    </form>
+                  </div>
+                  <div class="custom-select-wrapper">
+                    <select
+                      aria-label="Default select example"
+                      class="form-select"
+                    >
                       <option selected>Status</option>
                       <option value="1">One</option>
                       <option value="2">Two</option>
                       <option value="3">Three</option>
                     </select>
-
+                  </div>
+                  <div class="custom-select-wrapper">
                     <select
                       v-model="site_id"
                       id="selectBusinessUnit"
                       @change="filterData"
+                      class="form-select"
                     >
                       <option value="">All Site</option>
                       <option
@@ -143,137 +151,138 @@
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div class="tab-content mt-2" id="pills-tabContent">
-                <div
-                  class="tab-pane fade show active table-wrapper AllBooking"
-                  id="pills-AllBooking"
-                  role="tabpanel"
-                  aria-labelledby="pills-AllBooking-tab"
-                >
-                  <table class="table bookingTable">
-                    <thead>
-                      <tr>
-                        <th>#Number</th>
-                        <th scope="col">Site</th>
-                        <th scope="col">From</th>
-                        <th scope="col">To</th>
-                        <th scope="col">Created on</th>
-                        <!-- <th scope="col" style="width: 142px">Due Date</th> -->
-                        <th scope="col">Total Amount</th>
-                        <!-- <th scope="col">Paid Amount</th>
+            <div class="tab-content mt-2" id="pills-tabContent">
+              <div
+                class="tab-pane fade show active table-wrapper AllBooking"
+                id="pills-AllBooking"
+                role="tabpanel"
+                aria-labelledby="pills-AllBooking-tab"
+              >
+                <table class="table bookingTable">
+                  <thead>
+                    <tr>
+                      <th>#Number</th>
+                      <th scope="col">Site</th>
+                      <th scope="col">From</th>
+                      <th scope="col">To</th>
+                      <th scope="col">Created on</th>
+                      <!-- <th scope="col" style="width: 142px">Due Date</th> -->
+                      <th scope="col">Total Amount</th>
+                      <!-- <th scope="col">Paid Amount</th>
                         <th scope="col">Balance Amount</th> -->
-                        <!-- <th scope="col">Status</th> -->
-                        <th scope="col" style="width: 13%">
-                          Invoice Creation <br />
-                          Period
-                        </th>
-                        <th scope="col" style="width: 13%">Generated By</th>
-                        <th scope="col">View</th>
-                      </tr>
-                    </thead>
-                    <tbody v-if="getBookingData?.length > 0">
-                      <tr v-for="data in getBookingData" :key="data.id">
-                        <td>{{ data.number }}</td>
-                        <td>{{ data.site }}</td>
-                        <td>{{ data.start_date }}</td>
-                        <td>{{ data.end_date }}</td>
-                        <td>{{ data.created_on }}</td>
-                        <!-- <td>{{ data.due_date }}</td> -->
-                        <td>{{ "£" + data.total_amount }}</td>
-                        <!-- <td>{{ data.paid_amount }}</td> -->
-                        <!-- <td>{{ data.balance_amount }}</td> -->
-                        <!-- <td>{{ data.status }}</td> -->
-                        <td>{{ data.invoice_creation_period }}</td>
-                        <td>{{ data.generated_by }}</td>
-                        <td>
-                          <!-- <button class="btn btn-success" @click="viewInvoice(data.id)">
+                      <!-- <th scope="col">Status</th> -->
+                      <th scope="col" style="width: 13%">
+                        Invoice Creation <br />
+                        Period
+                      </th>
+                      <th scope="col" style="width: 13%">Generated By</th>
+                      <th scope="col">View</th>
+                    </tr>
+                  </thead>
+                  <tbody v-if="getBookingData?.length > 0">
+                    <tr v-for="data in getBookingData" :key="data.id">
+                      <td>{{ data.number }}</td>
+                      <td>{{ data.site }}</td>
+                      <td>{{ data.start_date }}</td>
+                      <td>{{ data.end_date }}</td>
+                      <td>{{ data.created_on }}</td>
+                      <!-- <td>{{ data.due_date }}</td> -->
+                      <td>{{ "£" + data.total_amount }}</td>
+                      <!-- <td>{{ data.paid_amount }}</td> -->
+                      <!-- <td>{{ data.balance_amount }}</td> -->
+                      <!-- <td>{{ data.status }}</td> -->
+                      <td>{{ data.invoice_creation_period }}</td>
+                      <td>{{ data.generated_by }}</td>
+                      <td>
+                        <!-- <button class="btn btn-success" @click="viewInvoice(data.id)">
                             <i class="bi bi-eye"></i>
                           </button> -->
-                          <router-link
-                            :to="{
-                              name: 'ClientPanelInvoiceView',
-                              params: { id: data.id },
-                            }"
-                            class="text-success"
-                            ><i class="bi bi-eye"></i
-                          ></router-link>
-                        </td>
-                      </tr>
-                    </tbody>
+                        <router-link
+                          :to="{
+                            name: 'ClientPanelInvoiceView',
+                            params: { id: data.id },
+                          }"
+                          class="text-success"
+                          ><i class="bi bi-eye"></i
+                        ></router-link>
+                      </td>
+                    </tr>
+                  </tbody>
 
-                    <tbody v-else>
-                      <tr>
-                        <td colspan="9" class="text-danger text-center">
-                          {{
-                            errorMessageBooking ||
-                            errorMessageFilter ||
-                            "No InvoicE found."
-                          }}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="9" class="text-danger text-center">
+                        {{
+                          errorMessageBooking ||
+                          errorMessageFilter ||
+                          "No InvoicE found."
+                        }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div
-      class="mx-3"
-      style="text-align: right"
-      v-if="getBookingData?.length >= 10"
-    >
-      <!-- <button class="btn btn-outline-dark btn-sm">
+  </div>
+  <div
+    class="mx-3"
+    style="text-align: right"
+    v-if="getBookingData?.length >= 10"
+  >
+    <!-- <button class="btn btn-outline-dark btn-sm">
         {{ getClientDetail.length }} Records Per Page
       </button> -->
-      <button
-        class="btn btn-sm btn-primary dropdown-toggle"
-        type="button"
-        id="recordsPerPageDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        {{ itemsPerPage }} Records
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
-            >20 Records</a
-          >
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
-            >50 Records</a
-          >
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
-            >100 Records</a
-          >
-        </li>
-      </ul>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="changePage(currentPage - 1)"
-      >
-        Previous
-      </button>
-      &nbsp;&nbsp;
-      <span>{{ currentPage }} of {{ totalPages }}</span>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage === totalPages"
-        @click="changePage(currentPage + 1)"
-      >
-        Next
-      </button>
-    </div>
+    <button
+      class="btn btn-sm btn-primary dropdown-toggle"
+      type="button"
+      id="recordsPerPageDropdown"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      {{ itemsPerPage }} Records
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
+      <li>
+        <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+          >20 Records</a
+        >
+      </li>
+      <li>
+        <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+          >50 Records</a
+        >
+      </li>
+      <li>
+        <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+          >100 Records</a
+        >
+      </li>
+    </ul>
+    &nbsp;&nbsp;
+    <button
+      class="btn btn-sm btn-primary mr-2"
+      :disabled="currentPage === 1"
+      @click="changePage(currentPage - 1)"
+    >
+      Previous
+    </button>
+    &nbsp;&nbsp;
+    <span>{{ currentPage }} of {{ totalPages }}</span>
+    &nbsp;&nbsp;
+    <button
+      class="btn btn-sm btn-primary ml-2"
+      :disabled="currentPage === totalPages"
+      @click="changePage(currentPage + 1)"
+    >
+      Next
+    </button>
+
     <loader :isLoading="isLoading"></loader>
 
     <!-- <ShowDetailsMessage v-if="showModal" :message="alertMessage" @close="closeModal" /> -->
@@ -803,14 +812,14 @@ export default {
 #main {
   transition: all 0.3s;
 
-  padding-top: 65px;
-  background-color: #fdce5e17;
+  background-color: rgb(249 249 249);
+  height: 100vh;
 }
 .main-content {
   transition: all 0.3s;
 }
 .bg-define {
-  background-color: #fdce5e17;
+  background-color: rgb(249 249 249);
 }
 .color-fonts {
   color: #ff5f30;
@@ -825,59 +834,36 @@ export default {
 .form-check-input {
   border: 2px solid grey;
 }
-select {
-  padding: 10px;
-  border-radius: 4px;
-  border: 0px;
-  border: 1px solid rgb(202, 198, 198);
-}
-.nav-pills .nav-link.active,
-.nav-pills .show > .nav-link {
-  background-color: transparent;
-  border: 1px solid green !important;
-  border-radius: 22px;
-  color: green;
-}
-.nav-pills .nav-link {
-  background-color: transparent;
-  border: 1px solid #ff5722 !important;
-  border-radius: 22px;
-  color: #ff5722;
-}
-.rounded-circle {
-  border: 1px solid #ff5f30;
-  padding: 8px 11px;
-  cursor: pointer;
-}
-.border-left {
-  border-left: 1px solid #ded9d9;
-  height: 100vh;
-}
-a[data-v-507f63b7] {
-  text-decoration: none;
-}
-.bookingTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
-.btn-primary {
-  border-radius: 4px;
+select.form-select {
+  background: #f9944b14;
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  height: 50px;
+  padding: 6px 12px;
 }
 
-.nav-pills .nav-link {
-  background-color: transparent;
-  border: 1px solid #0d6efd;
-  border-radius: 22px;
-}
-ul.nav-pills {
-  height: 53px;
-  border-bottom: 1px solid #b8b1b1;
+.custom-select-wrapper {
+  position: relative;
 }
 
-button.nav-link > li.nav-item {
-  border-bottom: 2px solid red;
-  padding-bottom: 5px;
+.custom-select-wrapper .form-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 30px;
 }
 
+.custom-select-wrapper::after {
+  content: "▼";
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 12px;
+  color: rgb(153, 153, 153);
+}
 .form-select {
   width: auto;
 }

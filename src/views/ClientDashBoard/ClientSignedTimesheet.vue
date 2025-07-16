@@ -1,24 +1,55 @@
 <template>
   <div>
-    <ClientNavbar />
-    <div id="main">
-      <div class="pagetitle d-flex justify-content-between px-2">
-        <div class="py-3">
-          <ol class="breadcrumb mb-1">
-            <li class="breadcrumb-item active text-uppercase fs-6">
-              <router-link
-                class="nav-link d-inline"
-                aria-current="page"
-                to="/client/clientDashboard"
-                >Dashboard</router-link
-              >
-              / <span class="color-fonts">Signed TimeSheet</span>
-            </li>
-          </ol>
-        </div>
+    <div id="main" class="main d-flex sidebar">
+      <div
+        class=""
+        style="
+          background: #fff;
+
+          border-radius: 20px;
+        "
+      >
+        <ClientNavbar />
       </div>
 
-      <div class="container-fluid pt-3">
+      <div class="container-fluid pt-3 px-5">
+        <div class="pagetitle d-flex justify-content-between px-2">
+          <div class="py-3">
+            <ol class="breadcrumb mb-1">
+              <li class="breadcrumb-item active">
+                <a
+                  class="nav-link d-inline fs-4 fw-bolder"
+                  style="color: #000000"
+                  >TimeSheet</a
+                >
+                <p>
+                  <router-link
+                    class="nav-link d-inline fw-bolder"
+                    style="color: #000000"
+                    aria-current="page"
+                    to="/staff-list"
+                    >Signed TimeSheet</router-link
+                  >
+                </p>
+              </li>
+            </ol>
+          </div>
+          <div class="align-items-center">
+            <div>
+              <button
+                v-if="activeTab === 0"
+                class="btn btn-lg text-white"
+                style="background-color: #f9944b"
+                data-bs-toggle="modal"
+                data-bs-target="#addShiftClient"
+                data-bs-whatever="@mdo"
+              >
+                + Add Shift
+              </button>
+              &nbsp;&nbsp;
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div class="col-12">
             <div class="">
@@ -27,14 +58,32 @@
                   <div class="d-flex justify-content-between">
                     <div class="d-flex">
                       <div class="d-flex align-items-center gap-2">
-                        <select
-                          class="form-control"
-                          v-model="currentView"
-                          @change="updateDateRange"
-                        >
-                          <option value="weekly">Weekly</option>
-                          <option value="monthly">Monthly</option>
-                        </select>
+                        <div class="view-toggle">
+                          <button
+                            :class="[
+                              'toggle-btn',
+                              currentView === 'weekly' ? 'active' : '',
+                            ]"
+                            @click="
+                              currentView = 'weekly';
+                              updateDateRange();
+                            "
+                          >
+                            Weekly
+                          </button>
+                          <button
+                            :class="[
+                              'toggle-btn',
+                              currentView === 'monthly' ? 'active' : '',
+                            ]"
+                            @click="
+                              currentView = 'monthly';
+                              updateDateRange();
+                            "
+                          >
+                            Monthly
+                          </button>
+                        </div>
                       </div>
 
                       &nbsp;&nbsp;
@@ -103,45 +152,47 @@
                 </div>
                 <div class="d-flex gap-2 mb-3 justify-content-between">
                   <div class="d-flex gap-2">
-                    <div></div>
-
-                    <select
-                      v-model="site_id"
-                      id="selectBusinessUnit"
-                      @change="fetchCandidateList"
-                    >
-                      <option value="">All Site</option>
-                      <option
-                        v-for="option in siteData"
-                        :key="option.id"
-                        :value="option.site_name"
-                        placeholder="Select BusinessUnit"
+                    <div class="custom-select-wrapper">
+                      <select
+                        v-model="site_id"
+                        class="form-select"
+                        id="selectBusinessUnit"
+                        @change="fetchCandidateList"
                       >
-                        {{ option.site_name }}
-                      </option>
-                    </select>
-
-                    <select
-                      v-model="id"
-                      @change="fetchCandidateList"
-                      id="selectCandidateList"
-                    >
-                      <option value="">All Staff</option>
-                      <option
-                        v-for="option in StaffData"
-                        :key="option.id"
-                        :value="option.id"
-                        placeholder="Select Staff"
+                        <option value="">All Site</option>
+                        <option
+                          v-for="option in siteData"
+                          :key="option.id"
+                          :value="option.site_name"
+                          placeholder="Select BusinessUnit"
+                        >
+                          {{ option.site_name }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="custom-select-wrapper">
+                      <select
+                        v-model="id"
+                        class="form-select"
+                        @change="fetchCandidateList"
+                        id="selectCandidateList"
                       >
-                        {{ option.first_name + " " + option.last_name }}
-                      </option>
-                    </select>
-                    &nbsp;&nbsp;
-
+                        <option value="">All Staff</option>
+                        <option
+                          v-for="option in StaffData"
+                          :key="option.id"
+                          :value="option.id"
+                          placeholder="Select Staff"
+                        >
+                          {{ option.first_name + " " + option.last_name }}
+                        </option>
+                      </select>
+                      &nbsp;&nbsp;
+                    </div>
                     <button
                       :disabled="!isFilterSelected"
                       @click="resetFilters"
-                      class="btn btn-secondary"
+                      class="btn btn-secondary text-wrap"
                     >
                       Reset Filters
                     </button>
@@ -555,15 +606,14 @@ export default {
 <style scoped>
 #main {
   transition: all 0.3s;
-
-  padding-top: 65px;
-  background-color: #fdce5e17;
+  height: 100vh;
+  background-color: rgb(249 249 249);
 }
 .main-content {
   transition: all 0.3s;
 }
 .bg-define {
-  background-color: #fdce5e17;
+  background-color: rgb(249 249 249);
 }
 .color-fonts {
   color: #ff5f30;
@@ -578,52 +628,42 @@ export default {
 .form-check-input {
   border: 2px solid grey;
 }
-select {
-  padding: 10px;
-  border-radius: 4px;
-  border: 0px;
-  border: 1px solid rgb(202, 198, 198);
+select.form-select {
+  background: #f9944b14;
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  height: 50px;
+  padding: 6px 12px;
 }
-.nav-pills .nav-link.active,
-.nav-pills .show > .nav-link {
-  background-color: transparent;
-  border: 1px solid green !important;
-  border-radius: 22px;
-  color: green;
+
+.custom-select-wrapper {
+  position: relative;
 }
-.nav-pills .nav-link {
-  background-color: transparent;
-  border: 1px solid #ff5722 !important;
-  border-radius: 22px;
-  color: #ff5722;
+
+.custom-select-wrapper .form-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 30px;
 }
-.rounded-circle {
-  border: 1px solid #ff5f30;
-  padding: 8px 11px;
-  cursor: pointer;
-}
-.border-left {
-  border-left: 1px solid #ded9d9;
-  height: 100vh;
+
+.custom-select-wrapper::after {
+  content: "▼";
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 12px;
+  color: rgb(153, 153, 153);
 }
 a[data-v-507f63b7] {
   text-decoration: none;
 }
-.bookingTable tr:nth-child(odd) td {
-  background: #fdce5e17 !important;
-}
+
 .btn-primary {
   border-radius: 4px;
-}
-
-.nav-pills .nav-link {
-  background-color: transparent;
-  border: 1px solid #0d6efd;
-  border-radius: 22px;
-}
-ul.nav-pills {
-  height: 53px;
-  border-bottom: 1px solid #b8b1b1;
 }
 
 button.nav-link > li.nav-item {
@@ -635,8 +675,27 @@ button.nav-link > li.nav-item {
   width: auto;
 }
 
-input::-webkit-input-placeholder {
-  margin-left: 5px;
+.view-toggle {
+  display: inline-flex;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #f6f6f6;
+  line-height: 37px;
+  gap: 5px;
+}
+.toggle-btn {
+  padding: 6px 16px;
+  border: none;
+  background: #fff;
+  color: #5a5560;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+
+.toggle-btn.active {
+  background-color: #f9944b;
+  color: white;
 }
 @media (max-width: 1120px) {
   .bookingTable {

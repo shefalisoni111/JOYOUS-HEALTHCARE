@@ -3,7 +3,7 @@
     <div class="row">
       <div class="d-flex gap-3">
         <div class="d-flex gap-3">
-          <div>
+          <div class="custom-select-wrapper">
             <select
               class="form-select"
               aria-label="Default select example"
@@ -22,7 +22,7 @@
               </option>
             </select>
           </div>
-          <div>
+          <div class="custom-select-wrapper">
             <select
               class="form-select"
               v-model="site_shift_id"
@@ -41,7 +41,7 @@
             </select>
           </div>
 
-          <div>
+          <div class="custom-select-wrapper">
             <select
               class="form-select"
               v-model="job_id"
@@ -49,7 +49,11 @@
               @change="filterData"
             >
               <option value="" disabled>All Jobs</option>
-              <option v-for="option in options" :key="option.id" :value="option.id">
+              <option
+                v-for="option in options"
+                :key="option.id"
+                :value="option.id"
+              >
                 {{ option.name }}
               </option>
             </select>
@@ -132,7 +136,11 @@
           /> -->
 
     <!-- <AddVacancy @addVacancy="createVacancy" /> -->
-    <div class="mt-3" style="text-align: right" v-if="getShiftAssignData?.length >= 10">
+    <div
+      class="mt-3"
+      style="text-align: right"
+      v-if="getShiftAssignData?.length >= 10"
+    >
       <button
         class="btn btn-sm btn-primary dropdown-toggle"
         type="button"
@@ -144,13 +152,19 @@
       </button>
       <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+            >20 Records</a
+          >
         </li>
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+            >50 Records</a
+          >
         </li>
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+            >100 Records</a
+          >
         </li>
       </ul>
       &nbsp;&nbsp;
@@ -216,12 +230,16 @@ export default {
       return this.site_id || this.site_shift_id || this.job_id;
     },
     selectClients() {
-      const client_id = this.clientData.find((option) => option.id === this.client_id);
+      const client_id = this.clientData.find(
+        (option) => option.id === this.client_id
+      );
       return this.client_id;
     },
 
     selectShifts() {
-      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
+      const shifts_id = this.shiftsTime.find(
+        (option) => option.id === this.shifts_id
+      );
       return shifts_id ? shifts_id.shift_name : "";
     },
     paginatedShift() {
@@ -387,7 +405,9 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(`${VITE_API_URL}/site_shift/${selectedSiteId}`);
+        const response = await axios.get(
+          `${VITE_API_URL}/site_shift/${selectedSiteId}`
+        );
 
         this.shiftsTime =
           response.data.site_shift_data.map((shift) => ({
@@ -549,3 +569,35 @@ export default {
   },
 };
 </script>
+<style>
+select.form-select {
+  background: #f9944b14;
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  height: 50px;
+  padding: 6px 12px;
+}
+
+.custom-select-wrapper {
+  position: relative;
+}
+
+.custom-select-wrapper .form-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 30px;
+}
+
+.custom-select-wrapper::after {
+  content: "▼";
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 12px;
+  color: rgb(153, 153, 153);
+}
+</style>

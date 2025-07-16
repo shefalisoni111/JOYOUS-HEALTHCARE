@@ -11,110 +11,51 @@
       >
         <ClientNavbar />
       </div>
-      <div class="container-fluid p-0">
+      <div class="container-fluid p-4">
         <div id="main">
           <div class="pagetitle d-flex justify-content-between px-2">
             <div class="py-3">
-              <ol class="breadcrumb my-2">
-                <li class="breadcrumb-item active text-uppercase fs-6">
-                  <router-link
-                    class="nav-link d-inline"
-                    aria-current="page"
-                    to="/client/clientDashboard"
-                    >Dashboard</router-link
+              <ol class="breadcrumb mb-1">
+                <li class="breadcrumb-item active">
+                  <a
+                    class="nav-link d-inline fs-4 fw-bolder"
+                    style="color: #000000"
+                    >Client Shift</a
                   >
-                  /
-
-                  <span class="color-fonts">{{ activeTabName }} Shifts</span>
+                  <p>
+                    <router-link
+                      class="nav-link d-inline fw-bolder"
+                      style="color: #000000"
+                      aria-current="page"
+                      to="/staff-list"
+                      >Client Shift</router-link
+                    >
+                    / {{ activeTabName }} Shifts
+                  </p>
                 </li>
               </ol>
+            </div>
+            <div class="align-items-center">
+              <div>
+                <button
+                  v-if="activeTab === 0"
+                  class="btn btn-lg text-white"
+                  style="background-color: #f9944b"
+                  data-bs-toggle="modal"
+                  data-bs-target="#addShiftClient"
+                  data-bs-whatever="@mdo"
+                >
+                  + Add Shift
+                </button>
+                &nbsp;&nbsp;
+              </div>
             </div>
           </div>
 
           <div class="container-fluid mt-3">
             <div class="row">
               <div class="col-12">
-                <div class="d-flex gap-2 justify-content-between">
-                  <div class="d-flex">
-                    <div class="d-flex align-items-center gap-2">
-                      <div class="view-toggle">
-                        <button
-                          :class="[
-                            'toggle-btn',
-                            currentView === 'weekly' ? 'active' : '',
-                          ]"
-                          @click="
-                            currentView = 'weekly';
-                            updateDateRange();
-                          "
-                        >
-                          Weekly
-                        </button>
-                        <button
-                          :class="[
-                            'toggle-btn',
-                            currentView === 'monthly' ? 'active' : '',
-                          ]"
-                          @click="
-                            currentView = 'monthly';
-                            updateDateRange();
-                          "
-                        >
-                          Monthly
-                        </button>
-                      </div>
-                    </div>
-
-                    &nbsp;&nbsp;
-                    <div class="d-flex align-items-center">
-                      <span
-                        v-if="currentView === 'weekly' && startDate && endDate"
-                        class="fw-bold"
-                      >
-                        {{
-                          "Monday " +
-                          formatDate(startDate) +
-                          " to Sunday " +
-                          formatDate(endDate)
-                        }}
-                      </span>
-                      <span
-                        v-else-if="
-                          currentView === 'monthly' && startDate && endDate
-                        "
-                        class="fw-bold"
-                      >
-                        {{
-                          formatDate(startDate) + " to " + formatDate(endDate)
-                        }}
-                      </span>
-                    </div>
-                    &nbsp;&nbsp;
-                    <div class="d-flex align-items-center fs-4">
-                      <i
-                        class="bi bi-caret-left-fill"
-                        @click="moveToPrevious"
-                      ></i>
-                      <i class="bi bi-calendar2-check-fill"></i>
-                      <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <button
-                        v-if="activeTab === 0"
-                        type="button"
-                        class="btn btn-outline-success text-nowrap"
-                        data-bs-toggle="modal"
-                        data-bs-target="#addShiftClient"
-                        data-bs-whatever="@mdo"
-                      >
-                        + Add Shift
-                      </button>
-                      &nbsp;&nbsp;
-                    </div>
-                  </div>
-                </div>
+                <div class="d-flex gap-2 justify-content-between"></div>
               </div>
             </div>
             <div class="row">
@@ -122,7 +63,7 @@
                 <div class="">
                   <div>
                     <ul
-                      class="nav nav-pills mb-3 d-flex justify-content-between mt-3"
+                      class="nav nav-pills mb-3 d-flex justify-content-between mt-3 p-0"
                       id="pills-tab"
                       role="tablist"
                     >
@@ -147,6 +88,77 @@
                             {{ tab.name }}
                           </button>
                         </li>
+                      </div>
+                      <div class="d-flex">
+                        <div class="d-flex align-items-center gap-2">
+                          <div class="view-toggle">
+                            <button
+                              :class="[
+                                'toggle-btn',
+                                currentView === 'weekly' ? 'active' : '',
+                              ]"
+                              @click="
+                                currentView = 'weekly';
+                                updateDateRange();
+                              "
+                            >
+                              Weekly
+                            </button>
+                            <button
+                              :class="[
+                                'toggle-btn',
+                                currentView === 'monthly' ? 'active' : '',
+                              ]"
+                              @click="
+                                currentView = 'monthly';
+                                updateDateRange();
+                              "
+                            >
+                              Monthly
+                            </button>
+                          </div>
+                        </div>
+
+                        &nbsp;&nbsp;
+                        <div class="d-flex align-items-center">
+                          <span
+                            v-if="
+                              currentView === 'weekly' && startDate && endDate
+                            "
+                            class="fw-bold"
+                          >
+                            {{
+                              "Monday " +
+                              formatDate(startDate) +
+                              " to Sunday " +
+                              formatDate(endDate)
+                            }}
+                          </span>
+                          <span
+                            v-else-if="
+                              currentView === 'monthly' && startDate && endDate
+                            "
+                            class="fw-bold"
+                          >
+                            {{
+                              formatDate(startDate) +
+                              " to " +
+                              formatDate(endDate)
+                            }}
+                          </span>
+                        </div>
+                        &nbsp;&nbsp;
+                        <div class="d-flex align-items-center fs-4">
+                          <i
+                            class="bi bi-caret-left-fill"
+                            @click="moveToPrevious"
+                          ></i>
+                          <i class="bi bi-calendar2-check-fill"></i>
+                          <i
+                            class="bi bi-caret-right-fill"
+                            @click="moveToNext"
+                          ></i>
+                        </div>
                       </div>
                     </ul>
                     <div>
@@ -504,6 +516,7 @@ export default {
   height: 100vh;
   background-color: rgb(249 249 249);
 }
+
 .main-content {
   transition: all 0.3s;
 }
@@ -516,6 +529,12 @@ export default {
 }
 .btn-primary {
   border: none;
+}
+select {
+  padding: 10px;
+  border-radius: 4px;
+  border: 0px;
+  border: 1px solid rgb(202, 198, 198);
 }
 .table.candidateTable td.widthDefine {
   white-space: pre-wrap;
@@ -567,7 +586,28 @@ a[data-v-507f63b7] {
 .btn-primary {
   border-radius: 4px;
 }
+.view-toggle {
+  display: inline-flex;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #f6f6f6;
+  line-height: 37px;
+  gap: 5px;
+}
+.toggle-btn {
+  padding: 6px 16px;
+  border: none;
+  background: #fff;
+  color: #5a5560;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
 
+.toggle-btn.active {
+  background-color: #f9944b;
+  color: white;
+}
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   background-color: transparent;
