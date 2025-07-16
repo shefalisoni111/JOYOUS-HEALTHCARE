@@ -107,70 +107,14 @@
                   >
                     <thead>
                       <tr>
-                        <th scope="col">
-                          Sl No
-                          <img
-                            src="../../assets/ArrowDown.png"
-                            class="img-fluid pe-2"
-                            alt="RecPal"
-                            loading="eager"
-                          />
-                        </th>
-                        <th scope="col">
-                          Staff
-                          <img
-                            src="../../assets/ArrowDown.png"
-                            class="img-fluid pe-2"
-                            alt="RecPal"
-                            loading="eager"
-                          />
-                        </th>
+                        <th scope="col">Sl No</th>
+                        <th scope="col">Staff</th>
 
-                        <th scope="col">
-                          Document Category
-                          <img
-                            src="../../assets/ArrowDown.png"
-                            class="img-fluid pe-2"
-                            alt="RecPal"
-                            loading="eager"
-                          />
-                        </th>
-                        <th scope="col">
-                          Document Type
-                          <img
-                            src="../../assets/ArrowDown.png"
-                            class="img-fluid pe-2"
-                            alt="RecPal"
-                            loading="eager"
-                          />
-                        </th>
-                        <th scope="col">
-                          Upload Date
-                          <img
-                            src="../../assets/ArrowDown.png"
-                            class="img-fluid pe-2"
-                            alt="RecPal"
-                            loading="eager"
-                          />
-                        </th>
-                        <th scope="col">
-                          Issue Date
-                          <img
-                            src="../../assets/ArrowDown.png"
-                            class="img-fluid pe-2"
-                            alt="RecPal"
-                            loading="eager"
-                          />
-                        </th>
-                        <th scope="col">
-                          Expiry Date
-                          <img
-                            src="../../assets/ArrowDown.png"
-                            class="img-fluid pe-2"
-                            alt="RecPal"
-                            loading="eager"
-                          />
-                        </th>
+                        <th scope="col">Document Category</th>
+                        <th scope="col">Document Type</th>
+                        <th scope="col">Upload Date</th>
+                        <th scope="col">Issue Date</th>
+                        <th scope="col">Expiry Date</th>
                         <!-- <th scope="col">Status</th> -->
                       </tr>
                     </thead>

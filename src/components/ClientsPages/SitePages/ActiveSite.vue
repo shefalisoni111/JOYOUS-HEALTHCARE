@@ -5,88 +5,16 @@
         <thead>
           <tr>
             <!-- <th scope="col">ID</th> -->
-            <th scope="col">
-              #RefCode
-              <img
-                src="../../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col">
-              Site
-              <img
-                src="../../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col">
-              ClientName
-              <img
-                src="../../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
+            <th scope="col">#RefCode</th>
+            <th scope="col">Site</th>
+            <th scope="col">ClientName</th>
 
-            <th scope="col">
-              Address
-              <img
-                src="../../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col">
-              PhoneNumber
-              <img
-                src="../../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col" style="width: 10%">
-              Email
-              <img
-                src="../../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col">
-              Status
-              <img
-                src="../../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col">
-              Portal Access
-              <img
-                src="../../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col">
-              Action
-              <img
-                src="../../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
+            <th scope="col">Address</th>
+            <th scope="col">PhoneNumber</th>
+            <th scope="col" style="width: 10%">Email</th>
+            <th scope="col">Status</th>
+            <th scope="col">Portal Access</th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody v-if="getSiteActiveData?.length > 0">

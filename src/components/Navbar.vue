@@ -829,6 +829,11 @@ export default {
     handleClick() {
       this.$refs.fileInput.click();
     },
+    blurActiveElement() {
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+    },
     confirmed() {
       if (localStorage.getItem("token")) {
         Swal.fire({
@@ -854,6 +859,7 @@ export default {
           }
         });
       }
+      this.blurActiveElement();
     },
     handleScroll() {
       const chatMessages = this.$refs.chatMessages;

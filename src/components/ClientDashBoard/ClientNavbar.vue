@@ -1,34 +1,49 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light fixed-navbar">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/client/clientDashboard"
-        ><img
-          src="../../assets/logo.png"
-          class="img-fluid"
-          alt="RecPal"
-          width="119"
-          loading="eager"
-      /></a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav m-auto mt-0 mb-lg-0 fw-bold">
+  <div class="">
+    <button
+      class="btn btn-outline-primary d-lg-none position-fixed top-0 start-0 m-3 z-1030 ms-4"
+      style="background: orange; color: #fff; border: 1px solid #fff"
+      @click="toggleSidebar"
+    >
+      <i class="bi bi-list"></i>
+    </button>
+    <!-- Sidebar -->
+    <nav id="sidebar">
+      <aside :class="['sidebar', { show: isSidebarVisible }]" class="sidebar">
+        <div class="sidebar-header">
+          <a
+            class="navbar-brand ps-3"
+            href="/client/clientDashboard"
+            style="outline: none; box-shadow: none"
+            ><img
+              src="../../assets/logo.png"
+              class="img-fluid"
+              alt="RecPal"
+              width="138"
+              height="31"
+              loading="eager"
+          /></a>
+          <button
+            class="btn btn-outline-primary d-lg-none"
+            @click="toggleSidebar"
+            style="background: orange; color: #fff; border: 1px solid #fff"
+          >
+            <i class="bi bi-list"></i>
+          </button>
+        </div>
+        <ul class="list-unstyled components">
           <li class="nav-item">
             <router-link
               class="nav-link"
               aria-current="page"
               to="/client/clientDashboard"
             >
+              <img
+                src="../../assets/Vector.png"
+                class="img-fluid pe-2"
+                alt="RecPal"
+                loading="eager"
+              />
               Dashboard
             </router-link>
           </li>
@@ -39,7 +54,7 @@
               aria-current="page"
               to="/client/clientDashboard/shift"
             >
-              Shifts
+              <i class="bi bi-calendar"></i> Shifts
             </router-link>
           </li>
           <!-- <li class="nav-item">
@@ -57,7 +72,7 @@
               aria-current="page"
               to="/client/clientDashboard/schedule"
             >
-              Schedule
+              <i class="bi bi-clock"></i> Schedule
             </router-link>
           </li>
           <!-- <li class="nav-item">
@@ -75,7 +90,7 @@
               aria-current="page"
               to="/client/clientDashboard/signedTimesheet"
             >
-              Timesheet
+              <i class="bi bi-file-earmark-text"></i> Timesheet
             </router-link>
           </li>
           <li class="nav-item">
@@ -84,54 +99,11 @@
               aria-current="page"
               to="/client/clientDashboard/invoice"
             >
-              Invoices
+              <i class="bi bi-receipt"></i> Invoices
             </router-link>
           </li>
         </ul>
-        <ul class="navbar-nav m-0 mb-2 mb-lg-0 inline-nav">
-          <!-- <li class="nav-item dropdown mt-2">
-            <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-              <i class="bi bi-chat-left-dots"></i
-            ></a>
-            <ul
-              class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
-              style="height: 454px; overflow-y: auto; width: 386px; overflow-x: hidden"
-            >
-              <li class="dropdown-header"></li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-            </ul>
-          </li> -->
-          <!-- <li>
-            <ul
-              class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
-           
-              @click.self="dropdownOpen = false"
-              style="height: 310px; width: 266px; overflow-x: scroll"
-              @scroll="onScroll"
-              ref="notificationDropdown"
-            >
-              <li
-                v-if="notifications.length === 0"
-                class="notification-item p-2 d-flex gap-1 text-danger"
-              >
-                {{ errorMessageNotification }}
-              </li>
-              <li
-                v-for="(notification, index) in notifications"
-                :key="index"
-                class="notification-item p-2 d-flex gap-1"
-              >
-                <i class="bi bi-exclamation-circle text-warning"></i>
-                <div>
-                  <h4>{{ notification.title }}</h4>
-                  <p>{{ notification.message }}</p>
-                  <p>{{ notification.time }}</p>
-                </div>
-              </li>
-            </ul>
-          </li> -->
+        <ul class="navbar-nav m-0 mb-2 mb-lg-0 inline-nav ps-4">
           <li class="nav-item dropdown mt-2">
             <a
               class="nav-link nav-icon"
@@ -140,8 +112,8 @@
               v-if="showNotificationIcon"
               @click="markAllAsRead"
             >
-              <i class="bi bi-bell"></i>
-
+              <i class="bi bi-bell pe-1"></i>
+              Notification
               <span
                 v-if="!dropdownOpen && unread_count > 0"
                 class="badge bg-primary badge-number"
@@ -149,7 +121,9 @@
                 {{ unread_count }}
               </span>
             </a>
-
+            <li class="me-4">
+              <hr class="" />
+            </li>
             <ul
               class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
               @click.self="dropdownOpen = false"
@@ -161,7 +135,10 @@
                 v-if="notifications.length === 0"
                 class="notification-item p-2 d-flex gap-1 text-danger"
               >
-                {{ errorMessageNotification }}
+              <a class="dropdown-item">
+       {{ errorMessageNotification }}
+              </a>
+         
               </li>
               <li
                 v-for="(notification, index) in notifications"
@@ -175,7 +152,10 @@
                   <p>{{ notification.time }}</p>
                 </div>
               </li>
-              <li v-if="notifications.length < totalCount" class="p-2 text-center">
+              <li
+                v-if="notifications.length < totalCount"
+                class="p-2 text-center"
+              >
                 <button @click.stop="loadMore" class="btn btn-sm btn-primary">
                   Read More
                 </button>
@@ -183,56 +163,9 @@
             </ul>
           </li>
 
-          <!-- <li class="nav-item dropdown mt-2">
-            <a
-              class="nav-link nav-icon"
-              href="#"
-              data-bs-toggle="dropdown"
-              @click="toggleDropdown"
-            >
-              <i class="bi bi-bell"></i>
-              <span
-                v-if="!dropdownOpen && showBadge"
-                class="badge bg-primary badge-number"
-                >2</span
-              >
-            </a>
-            <ul
-              class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
-              @click.self="dropdownOpen = false"
-              style="height: 390px"
-              @scroll="onScroll"
-              ref="notificationDropdown"
-            >
-              <li class="dropdown-header d-flex">
-                You have {{ notifications.length }} new notifications
-                <a href="#" class="mt-2 ms-2" @click.prevent="toggleShowAll">
-                  <span class="badge rounded-pill bg-primary p-2 ms-2">{{
-                    showAll ? "Show less" : "View all"
-                  }}</span>
-                </a>
-              </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li
-                v-for="(notification, index) in visibleNotifications"
-                :key="index"
-                class="notification-item p-2 d-flex gap-1"
-              >
-                <i class="bi bi-exclamation-circle text-warning"></i>
-                <div>
-                  <h4>{{ notification.title }}</h4>
-                  <p>{{ notification.message }}</p>
-                  <p>{{ notification.time }}</p>
-                </div>
-              </li>
-            </ul>
-          </li> -->
-
           <li class="nav-item dropdown">
             <a
-              class="nav-link nav-icon nav-profile d-flex align-items-center pe-0"
+              class="nav-link nav-icon nav-profile d-flex align-items-center pe-0 text-capitalize"
               href="#"
               data-bs-toggle="dropdown"
               aria-label="profile detail"
@@ -254,6 +187,7 @@
                 width="40"
                 loading="eager"
               />
+              {{ getAdminData.client_name }}
             </a>
 
             <ul
@@ -271,22 +205,11 @@
               </li>
 
               <li class="cursor-pointer my-1">
-                <a class="dropdown-item d-flex align-items-center">
-                  <i class="bi bi-asterisk pe-2"></i><span>Activity Log</span></a
-                >
-              </li>
-
-              <li class="cursor-pointer my-1">
-                <a class="dropdown-item d-flex align-items-center" to=""
-                  ><i class="bi bi-ban-fill pe-2"></i><span>Recruitment</span></a
-                >
-              </li>
-
-              <li class="cursor-pointer my-1">
                 <router-link
                   class="dropdown-item text-capitalize d-flex align-items-center"
                   :to="clientLink"
-                  ><i class="bi bi-gear-wide pe-2"></i><span>Personal Settings</span>
+                  ><i class="bi bi-gear-wide pe-2"></i
+                  ><span>Personal Settings</span>
                 </router-link>
               </li>
 
@@ -303,7 +226,10 @@
               </li>
 
               <li class="cursor-pointer">
-                <a class="dropdown-item d-flex align-items-center" v-on:click="confirmed">
+                <a
+                  class="dropdown-item d-flex align-items-center"
+                  v-on:click="confirmed"
+                >
                   <i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp;
                   <span>Sign Out</span>
                 </a>
@@ -311,15 +237,15 @@
             </ul>
           </li>
         </ul>
-      </div>
-    </div>
+      </aside>
+    </nav>
     <ConfirmationAlert
       :show-modal="isModalVisible"
       :message="confirmMessage"
       @confirm="confirmCallback"
       @cancel="canceled"
     />
-  </nav>
+  </div>
 </template>
 
 <script>
@@ -334,7 +260,9 @@ export default {
     return {
       newMessage: "",
       clientLink: "/client/clientDashboard/",
+      isSidebarVisible: true,
       isModalVisible: false,
+      getAdminData: [],
       confirmMessage: "",
       confirmCallback: null,
       showBadge: true,
@@ -353,6 +281,18 @@ export default {
   },
   components: { ConfirmationAlert },
   computed: {
+    isTimesheetMenuActive() {
+      return [
+        "/timesheet/weekly",
+        "/timesheet/custom",
+        "/timesheet/signed",
+      ].includes(this.$route.path);
+    },
+    isInvoiceMenuActive() {
+      return ["/invoice/client-invoice", "/invoice/staff-payroll"].includes(
+        this.$route.path
+      );
+    },
     userRole() {
       return this.$store.getters.userRole;
     },
@@ -403,6 +343,13 @@ export default {
     },
   },
   methods: {
+    toggleSidebar() {
+      this.isSidebarVisible = !this.isSidebarVisible;
+      const sidebar = document.getElementById("sidebar");
+      if (sidebar) {
+        sidebar.classList.toggle("show");
+      }
+    },
     hideNotificationIcon() {
       this.showNotificationIcon = true;
     },
@@ -416,7 +363,9 @@ export default {
         const clientId = localStorage.getItem("c_unique");
 
         if (!clientId) {
-          console.error("Client ID is missing. Cannot mark notifications as read.");
+          console.error(
+            "Client ID is missing. Cannot mark notifications as read."
+          );
           return;
         }
 
@@ -497,6 +446,11 @@ export default {
 
       this.confirmed();
     },
+    blurActiveElement() {
+      if (document.activeElement) {
+        document.activeElement.blur();
+      }
+    },
     canceled() {
       this.isModalVisible = false;
     },
@@ -525,18 +479,23 @@ export default {
           }
         });
       }
+      this.blurActiveElement();
     },
     async fetchProfileImage() {
       const token = localStorage.getItem("token");
       const clientId = localStorage.getItem("c_unique");
       try {
-        const response = await axios.get(`${VITE_API_URL}/clients/${clientId}`, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/clients/${clientId}`,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const imagePath = response.data.profile_photo;
+        this.getAdminData = response.data;
         this.localProfileImage = `${VITE_API_URL}${imagePath}`;
       } catch (error) {
         // console.error("Error fetching profile image:", error);
@@ -557,177 +516,138 @@ export default {
 </script>
 
 <style scoped>
-.divide_sec {
-  border-bottom: 1px solid #f0eeed;
-  width: 335px;
-  margin: auto;
+.main {
+  height: 100vh;
 }
-.divide_sec img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 3px solid #fc7d4f;
-}
-.divide_sec .else_profile {
-  font-size: 29px;
-  padding-left: 3px;
-  border-radius: 50%;
-  border: 3px solid #fc7d4f;
-  color: #979493;
-  width: 40px;
-  height: 40px;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-.chat-box {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-}
-.chat-container {
-  width: 400px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.chat-header {
-  background-color: #f0f0f0;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.dropdown-item:hover,
-.dropdown-item:focus {
-  background-color: #f6851d !important;
-  color: #fff !important;
-}
-.chat-messages {
-  height: 190px;
-  overflow-y: auto;
-  padding: 10px;
-}
-
-.message {
-  margin-bottom: 10px;
-}
-
-.message-sender {
-  font-weight: bold;
-}
-
-.chat-input {
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.fixed-navbar {
-  position: fixed;
+.sidebar {
   top: 0;
-  width: 100%;
-  background-color: #ffffff;
-  border-bottom: 1px solid #80808021;
+  left: 0;
+
+  overflow-y: auto;
+  background: #ffffff;
+
+  color: #000000;
+  padding-top: 12px;
+  transition: all 0.3s ease;
   z-index: 1000;
 }
-.bi-person::before {
-  font-size: 60px;
-}
-.bi-person-circle::before {
-  content: "\F4D7";
-  font-size: 36px;
-}
-.bi-bell::before {
-  content: "\f18a";
-  font-size: 21px;
-}
-.bi-chat-left-dots::before {
-  font-size: 21px;
-}
-ul.navbar-nav li a span.badge {
-  translate: -9px -12px;
-}
-.logo {
-  line-height: 1;
+
+#sidebar.active {
+  width: 70px;
 }
 
-.dropdown-item.active,
-.dropdown-item:active {
-  color: #fff;
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+}
+ul.components li a:hover,
+ul.components li a img:hover ul.components li.active > a,
+ul.components li.router-link-active,
+ul.components li a.router-link-active,
+ul.components li a.active,
+ul.dropdown li a:hover,
+.nav-link:hover,
+.nav-link:focus {
+  background: #1b59f81a;
+  color: #1b59f8;
+  width: 193px;
+  height: 38px;
+  padding-left: 5px;
+  border-radius: 10px;
+}
+.sidebar-header h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0;
+}
+
+.btn-toggle {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+ul.components {
+  padding: 0;
+  list-style: none;
+}
+
+ul.components li {
+  padding: 7px;
+}
+
+ul.components li a {
+  color: #000000;
   text-decoration: none;
-  background-color: #f6851d !important;
-}
-.dropdown-item:hover,
-.dropdown-item:focus {
-  background-color: #fdce5e17;
-  color: #000;
-}
-.profileAdminImg {
-  border: 1px solid grey;
-}
-.logo img {
-  max-height: 26px;
-  margin-right: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 193px;
+  height: 38px;
+
+  padding-left: 5px;
 }
 
-.bi-arrow-repeat {
-  font-weight: bold;
-  font-size: xx-large;
-  color: #235ec1;
+ul.list-unstyled {
+  padding-left: 15px;
 }
 
-ul.profile li a:hover,
-ul.profile .dropdown-item:hover,
-ul.profile .dropdown-item:focus {
-  background-color: #f6851d !important;
-  color: #fff;
-}
-.logo span {
-  font-size: 26px;
-  font-weight: 700;
-  color: #012970;
-  font-family: "Inter", sans-serif;
+#content {
+  margin-left: 250px;
+  transition: 0.3s;
+  padding: 20px;
 }
 
-.active {
-  color: blue;
+#content.active {
+  margin-left: 70px;
+}
+.sidebar {
+  width: 250px;
+  transition: all 0.3s ease;
+}
+.sidebar.collapsed {
+  width: 70px;
+  overflow-x: hidden;
 }
 
-main {
-  margin-left: 48px;
-  padding: 20px 30px;
-  transition: all 0.3s;
+.sidebar.collapsed .menu-text {
+  display: none;
 }
-a.router-link-active {
-  color: #fff;
-  background-color: #f6851d;
-  border-radius: 4px;
+
+.sidebar.collapsed .submenu {
+  display: none;
 }
-@media (max-width: 991px) {
-  .nav-item {
-    font-size: 15px;
-    padding: 5px;
-    margin-top: -5px;
+@media (max-width: 1100px) {
+  .sidebar {
+    display: none;
+    position: absolute;
+    z-index: 999;
+    background-color: white;
+    height: 100%;
+    left: 0;
+    top: 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   }
-  ul.inline-nav {
-    display: -webkit-box;
+
+  .sidebar.show {
+    display: block;
   }
-}
-@media (min-width: 1200px) {
-  .logo {
-    width: 280px;
+
+  .main.d-flex {
+    flex-direction: column;
   }
 }
-@media (max-width: 1400px) {
-  .bi-chat-left-dots::before {
-    font-size: 18px;
-    margin-top: 4px;
+
+@media (max-width: 1100px) {
+  #sidebar {
+    width: 70px;
+  }
+
+  #content {
+    margin-left: 70px;
   }
 }
 </style>

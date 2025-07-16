@@ -91,14 +91,7 @@
                       @click="moveToPrevious"
                       style="cursor: pointer"
                     ></i>
-                    &nbsp;
-                    <img
-                      src="../assets/calender.png"
-                      class="img-fluid pe-2"
-                      alt="RecPal"
-                      loading="eager"
-                    />
-                    &nbsp;
+                    &nbsp; &nbsp;
                     <span class="fw-bold fs-5">
                       {{ formatMonthYear(currentDate) }}
                     </span>

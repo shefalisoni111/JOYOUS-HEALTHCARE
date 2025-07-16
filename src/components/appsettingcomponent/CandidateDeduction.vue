@@ -72,31 +72,13 @@
                         <tr>
                           <th scope="col" class="col-2 bg-primary text-white">
                             ID
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
                           </th>
                           <th scope="col" class="col-2 bg-primary text-white">
                             Title
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
                           </th>
                           <!-- <th scope="col" class="col-2 bg-primary text-white">Job</th> -->
                           <th scope="col" class="col-2 bg-primary text-white">
                             Amount
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
                           </th>
 
                           <!--  <th scope="col" class="col-1 bg-primary text-white">

@@ -4,111 +4,39 @@
       <table class="table vacancyTable">
         <thead>
           <tr>
-            <th scope="col" style="width: 4%">
-              ID
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
+            <th scope="col" style="width: 4%">ID</th>
             <th scope="col" style="width: 7%">
               <div
                 class="d-flex justify-content-center align-items-center gap-1"
               >
                 #RefCode
-                <img
-                  src="../../assets/ArrowDown.png"
-                  class="img-fluid pe-2"
-                  alt="RecPal"
-                  loading="eager"
-                />
               </div>
             </th>
-            <th scope="col" style="width: 4%">
-              Client
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col" style="width: 4%">
-              Site
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
+            <th scope="col" style="width: 4%">Client</th>
+            <th scope="col" style="width: 4%">Site</th>
             <th scope="col" style="width: 5%">
               <div
                 class="d-flex justify-content-center align-items-center gap-1"
               >
                 Job Title
-                <img
-                  src="../../assets/ArrowDown.png"
-                  class="img-fluid pe-2"
-                  alt="RecPal"
-                  loading="eager"
-                />
               </div>
             </th>
-            <th scope="col" style="width: 4%">
-              Date
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col">
-              Shift
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
+            <th scope="col" style="width: 4%">Date</th>
+            <th scope="col">Shift</th>
             <th scope="col" class="withShow">
               <div
                 class="d-flex justify-content-center align-items-center gap-1"
               >
                 Staff Required
-                <img
-                  src="../../assets/ArrowDown.png"
-                  class="img-fluid pe-2"
-                  alt="RecPal"
-                  loading="eager"
-                />
               </div>
             </th>
             <!-- <th scope="col">Client Rate</th> -->
-            <th scope="col" class="widthDefineNotes">
-              Notes
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
+            <th scope="col" class="widthDefineNotes">Notes</th>
             <th scope="col">
               <div
                 class="d-flex justify-content-center align-items-center gap-1"
               >
                 Publish
-                <img
-                  src="../../assets/ArrowDown.png"
-                  class="img-fluid pe-2"
-                  alt="RecPal"
-                  loading="eager"
-                />
               </div>
             </th>
             <th scope="col" class="text-center withShow">
@@ -116,12 +44,6 @@
                 class="d-flex justify-content-center align-items-center gap-1"
               >
                 All Staff
-                <img
-                  src="../../assets/ArrowDown.png"
-                  class="img-fluid pe-2"
-                  alt="RecPal"
-                  loading="eager"
-                />
               </div>
             </th>
             <th scope="col">
@@ -129,12 +51,6 @@
                 class="d-flex justify-content-center align-items-center gap-1"
               >
                 Applied
-                <img
-                  src="../../assets/ArrowDown.png"
-                  class="img-fluid pe-2"
-                  alt="RecPal"
-                  loading="eager"
-                />
               </div>
             </th>
             <th scope="col">
@@ -142,12 +58,6 @@
                 class="d-flex justify-content-center align-items-center gap-1"
               >
                 Assigned
-                <img
-                  src="../../assets/ArrowDown.png"
-                  class="img-fluid pe-2"
-                  alt="RecPal"
-                  loading="eager"
-                />
               </div>
             </th>
             <th scope="col">
@@ -155,12 +65,6 @@
                 class="d-flex justify-content-center align-items-center gap-1"
               >
                 Rejected
-                <img
-                  src="../../assets/ArrowDown.png"
-                  class="img-fluid pe-2"
-                  alt="RecPal"
-                  loading="eager"
-                />
               </div>
             </th>
             <th scope="col">
@@ -168,23 +72,9 @@
                 class="d-flex justify-content-center align-items-center gap-1"
               >
                 Created by
-                <img
-                  src="../../assets/ArrowDown.png"
-                  class="img-fluid pe-2"
-                  alt="RecPal"
-                  loading="eager"
-                />
               </div>
             </th>
-            <th scope="col">
-              Action
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
 

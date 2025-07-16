@@ -7,7 +7,10 @@
           <div class="py-3">
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item active text-uppercase fs-6">
-                <router-link class="nav-link d-inline" aria-current="page" to="/home"
+                <router-link
+                  class="nav-link d-inline"
+                  aria-current="page"
+                  to="/home"
                   >Dashboard</router-link
                 >
                 / <span class="color-fonts">Schedule</span>
@@ -36,7 +39,9 @@
                     >
                       <i class="bi bi-funnel-fill"></i>
                     </button>
-                    <span v-if="isOpen" class="text-danger fs-5 ps-2">Filter </span>
+                    <span v-if="isOpen" class="text-danger fs-5 ps-2"
+                      >Filter
+                    </span>
                   </div>
                   <div>
                     <i
@@ -144,7 +149,9 @@
                           id="selectShifts"
                         >
                           {{
-                            option.shift_name ? option.shift_name.replace(/_/g, " ") : ""
+                            option.shift_name
+                              ? option.shift_name.replace(/_/g, " ")
+                              : ""
                           }}
                         </option>
                       </select>
@@ -192,14 +199,21 @@
                                 @click="moveToPrevious"
                               ></i>
                               <i class="bi bi-calendar2-check-fill"></i>
-                              <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                              <i
+                                class="bi bi-caret-right-fill"
+                                @click="moveToNext"
+                              ></i>
                             </div>
                           </div>
                         </th>
 
                         <th>
                           <div class="calendar-grid">
-                            <div v-for="day in daysOfWeek" :key="day" class="day-header">
+                            <div
+                              v-for="day in daysOfWeek"
+                              :key="day"
+                              class="day-header"
+                            >
                               {{ day }}
                             </div>
                             <div
@@ -216,7 +230,9 @@
 
                     <tbody v-if="candidateList?.length > 0">
                       <tr class="sticky-header">
-                        <td style="border-right: 1px solid rgb(209, 208, 208)"></td>
+                        <td
+                          style="border-right: 1px solid rgb(209, 208, 208)"
+                        ></td>
                         <td>
                           <div
                             class="calendar-grid"
@@ -256,9 +272,12 @@
                                     'bg-primary': liIndex >= 3,
                                   }"
                                 >
-                                  <span class="d-flex flex-column align-items-baseline">
+                                  <span
+                                    class="d-flex flex-column align-items-baseline"
+                                  >
                                     <span class="text-capitalize"
-                                      >{{ vacancy.site }}, {{ vacancy.job_title }}</span
+                                      >{{ vacancy.site }},
+                                      {{ vacancy.job_title }}</span
                                     >
                                     <span>{{
                                       vacancy.site_shift.replace(/_/g, " ")
@@ -285,7 +304,10 @@
 
                           <span class="fs-6 text-muted fw-100"
                             ><br /><span
-                              style="background: rgb(209, 207, 207); padding: 3px"
+                              style="
+                                background: rgb(209, 207, 207);
+                                padding: 3px;
+                              "
                               >{{ staff.job }}</span
                             ></span
                           >
@@ -322,7 +344,10 @@
 
                                         <br />
                                         {{
-                                          assignStaff.site_shift_name?.replace(/_/g, " ")
+                                          assignStaff.site_shift_name?.replace(
+                                            /_/g,
+                                            " "
+                                          )
                                         }}, {{ assignStaff.job_name }} &nbsp;
 
                                         <br />
@@ -362,7 +387,11 @@
                     </tbody>
                     <tbody v-else>
                       <tr>
-                        <td colspan="7" class="text-danger text-center" v-if="!isLoading">
+                        <td
+                          colspan="7"
+                          class="text-danger text-center"
+                          v-if="!isLoading"
+                        >
                           {{ errorMessage || "Data Not found!" }}
                         </td>
                       </tr>
@@ -420,13 +449,19 @@
       </button>
       <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+            >20 Records</a
+          >
         </li>
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+            >50 Records</a
+          >
         </li>
         <li>
-          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)">100 Records</a>
+          <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"
+            >100 Records</a
+          >
         </li>
       </ul>
       &nbsp;&nbsp;
@@ -529,7 +564,9 @@ export default {
       return Math.ceil(this.candidateList.length / this.itemsPerPage);
     },
     selectBusinessUnit() {
-      const site_id = this.businessUnit.find((option) => option.id === this.site_id);
+      const site_id = this.businessUnit.find(
+        (option) => option.id === this.site_id
+      );
       return site_id ? site_id.site_name : "";
     },
     selectJobTitle() {
@@ -545,7 +582,9 @@ export default {
       return this.searchResults.slice(startIndex, endIndex);
     },
     selectShifts() {
-      const shifts_id = this.shiftsTime.find((option) => option.id === this.shifts_id);
+      const shifts_id = this.shiftsTime.find(
+        (option) => option.id === this.shifts_id
+      );
       return shifts_id ? shifts_id.shift_name : "";
     },
     totalRecordsOnPage() {
@@ -606,7 +645,9 @@ export default {
       return this.formatDate(this.selectedDateRow[0]);
     },
     formattedEndDate() {
-      return this.formatDate(this.selectedDateRow[this.selectedDateRow.length - 1]);
+      return this.formatDate(
+        this.selectedDateRow[this.selectedDateRow.length - 1]
+      );
     },
     filteredAssignStaff() {
       return function (candidateId) {
@@ -777,9 +818,13 @@ export default {
     extractTimeRange(shift) {
       if (shift && shift.includes("Holiday")) {
         if (shift && shift.includes("Day Shift")) {
-          return shift.replace("Holiday Day Shift", "Holiday Night Shift").split(" ")[3];
+          return shift
+            .replace("Holiday Day Shift", "Holiday Night Shift")
+            .split(" ")[3];
         } else if (shift && shift.includes("Night Shift")) {
-          return shift.replace("Holiday Night Shift", "Holiday Day Shift").split(" ")[3];
+          return shift
+            .replace("Holiday Night Shift", "Holiday Day Shift")
+            .split(" ")[3];
         }
       } else if (shift && shift.includes("Day Shift")) {
         return shift.split(" ")[2];
@@ -837,7 +882,9 @@ export default {
     updateDateRange() {
       if (this.currentView === "weekly") {
         const weekStart = new Date(this.startDate);
-        weekStart.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
+        weekStart.setDate(
+          this.startDate.getDate() - this.startDate.getDay() + 1
+        );
         this.startDate = weekStart;
 
         const weekEnd = new Date(this.startDate);
@@ -845,8 +892,16 @@ export default {
         this.endDate = weekEnd;
       } else if (this.currentView === "monthly") {
         const currentDate = new Date();
-        this.startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        this.endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        this.startDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+        this.endDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          0
+        );
       }
 
       localStorage.setItem("startDate", this.startDate.toISOString());
@@ -989,7 +1044,10 @@ export default {
 
     getCandidateName() {
       if (this.selectedCandidate) {
-        if (this.selectedCandidate.first_name && this.selectedCandidate.last_name) {
+        if (
+          this.selectedCandidate.first_name &&
+          this.selectedCandidate.last_name
+        ) {
           return `${this.selectedCandidate.first_name} ${this.selectedCandidate.last_name}`;
         } else {
           return (
@@ -1013,7 +1071,9 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(`${VITE_API_URL}/site_shift/${selectionSite}`);
+        const response = await axios.get(
+          `${VITE_API_URL}/site_shift/${selectionSite}`
+        );
 
         this.shiftsTime =
           response.data.site_shift_data.map((shift) => ({

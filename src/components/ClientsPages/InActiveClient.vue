@@ -5,87 +5,15 @@
         <thead>
           <tr>
             <!-- <th scope="col">ID</th> -->
-            <th scope="col">
-              #RefCode
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col">
-              Client Name
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col" style="width: 10%">
-              Jobs
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col" style="width: 10%">
-              Address
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col">
-              PhoneNumber
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col" style="width: 10%">
-              Email
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col">
-              Status
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col">
-              Portal Access
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col">
-              Action
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
+            <th scope="col">#RefCode</th>
+            <th scope="col">Client Name</th>
+            <th scope="col" style="width: 10%">Jobs</th>
+            <th scope="col" style="width: 10%">Address</th>
+            <th scope="col">PhoneNumber</th>
+            <th scope="col" style="width: 10%">Email</th>
+            <th scope="col">Status</th>
+            <th scope="col">Portal Access</th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody v-if="paginateCandidates?.length > 0">

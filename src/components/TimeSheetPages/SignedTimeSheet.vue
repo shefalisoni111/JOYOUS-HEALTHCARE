@@ -50,14 +50,7 @@
                       @click="moveToPrevious"
                       style="cursor: pointer"
                     ></i>
-                    &nbsp;
-                    <img
-                      src="../../assets/calender.png"
-                      class="img-fluid pe-2"
-                      alt="calender"
-                      loading="eager"
-                    />
-                    &nbsp;
+                    &nbsp; &nbsp;
                     <span class="fw-bold fs-5">
                       {{ formatMonthYear(currentDate) }}
                     </span>
@@ -124,115 +117,19 @@
                             </div>
                           </th>
                           <!-- <th scope="col">ID</th> -->
-                          <th scope="col">
-                            Ref Code
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col" style="width: 11%">
-                            Staff
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Client
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Site
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Job Position
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Shift
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Date
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
+                          <th scope="col">Ref Code</th>
+                          <th scope="col" style="width: 11%">Staff</th>
+                          <th scope="col">Client</th>
+                          <th scope="col">Site</th>
+                          <th scope="col">Job Position</th>
+                          <th scope="col">Shift</th>
+                          <th scope="col">Date</th>
 
-                          <th scope="col">
-                            Start Time
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            End Time
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Break
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Total Hours
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Status
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
+                          <th scope="col">Start Time</th>
+                          <th scope="col">End Time</th>
+                          <th scope="col">Break</th>
+                          <th scope="col">Total Hours</th>
+                          <th scope="col">Status</th>
                           <th scope="col">View</th>
                         </tr>
                       </thead>

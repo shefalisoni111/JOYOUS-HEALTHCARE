@@ -57,14 +57,7 @@
                       @click="moveToPrevious"
                       style="cursor: pointer"
                     ></i>
-                    &nbsp;
-                    <img
-                      src="../../assets/calender.png"
-                      class="img-fluid pe-2"
-                      alt="calender"
-                      loading="eager"
-                    />
-                    &nbsp;
+                    &nbsp; &nbsp;
                     <span class="fw-bold fs-5">
                       {{ formatMonthYear(currentDate) }}
                     </span>
@@ -253,42 +246,10 @@
               <table class="table candidateTable">
                 <thead>
                   <tr>
-                    <th rowspan="3">
-                      ID
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
-                    <th rowspan="3" style="width: 10%">
-                      Name
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
-                    <th rowspan="3">
-                      Site
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
-                    <th rowspan="3">
-                      Shift
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
+                    <th rowspan="3">ID</th>
+                    <th rowspan="3" style="width: 10%">Name</th>
+                    <th rowspan="3">Site</th>
+                    <th rowspan="3">Shift</th>
                     <th>
                       <div class="calendar-grid">
                         <div
@@ -353,33 +314,9 @@
                       </div>
                     </th>
 
-                    <th rowspan="3">
-                      Total Hours
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
-                    <th rowspan="3">
-                      Total Cost
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
-                    <th rowspan="3">
-                      Approved By
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
+                    <th rowspan="3">Total Hours</th>
+                    <th rowspan="3">Total Cost</th>
+                    <th rowspan="3">Approved By</th>
                   </tr>
                 </thead>
 

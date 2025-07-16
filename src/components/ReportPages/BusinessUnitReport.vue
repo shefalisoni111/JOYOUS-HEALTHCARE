@@ -217,115 +217,19 @@
                               <input class="form-check-input" type="checkbox" value="" />
                             </div>
                           </th> -->
-                          <th scope="col">
-                            ID
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Code
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col" style="width: 153px">
-                            Name
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Site
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Job
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Shift Date
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Start Time
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            End Time
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Total Hours
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Client Rate
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Total Cost
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
+                          <th scope="col">ID</th>
+                          <th scope="col">Code</th>
+                          <th scope="col" style="width: 153px">Name</th>
+                          <th scope="col">Site</th>
+                          <th scope="col">Job</th>
+                          <th scope="col">Shift Date</th>
+                          <th scope="col">Start Time</th>
+                          <th scope="col">End Time</th>
+                          <th scope="col">Total Hours</th>
+                          <th scope="col">Client Rate</th>
+                          <th scope="col">Total Cost</th>
                           <!-- <th scope="col">Paper TimeSheet</th> -->
-                          <th scope="col">
-                            Approved
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
+                          <th scope="col">Approved</th>
                         </tr>
                       </thead>
                       <tbody v-if="paginateCandidates?.length > 0">
@@ -401,115 +305,19 @@
                               <input class="form-check-input" type="checkbox" value="" />
                             </div>
                           </th> -->
-                          <th scope="col">
-                            ID
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Code
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col" style="width: 153px">
-                            Name
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Site
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Job
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Shift Date
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Start Time
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            End Time
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Total Hours
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Client Rate
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Total Cost
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
+                          <th scope="col">ID</th>
+                          <th scope="col">Code</th>
+                          <th scope="col" style="width: 153px">Name</th>
+                          <th scope="col">Site</th>
+                          <th scope="col">Job</th>
+                          <th scope="col">Shift Date</th>
+                          <th scope="col">Start Time</th>
+                          <th scope="col">End Time</th>
+                          <th scope="col">Total Hours</th>
+                          <th scope="col">Client Rate</th>
+                          <th scope="col">Total Cost</th>
                           <!-- <th scope="col">Paper TimeSheet</th> -->
-                          <th scope="col">
-                            Approved
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
+                          <th scope="col">Approved</th>
                         </tr>
                       </thead>
                       <tbody v-if="paginateSearchResults?.length > 0">

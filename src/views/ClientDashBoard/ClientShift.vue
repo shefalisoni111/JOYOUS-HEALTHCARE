@@ -1,128 +1,163 @@
 <template>
   <div>
-    <ClientNavbar />
-    <div class="container-fluid p-0">
-      <div id="main">
-        <div class="pagetitle d-flex justify-content-between px-2">
-          <div class="py-3">
-            <ol class="breadcrumb my-2">
-              <li class="breadcrumb-item active text-uppercase fs-6">
-                <router-link
-                  class="nav-link d-inline"
-                  aria-current="page"
-                  to="/client/clientDashboard"
-                  >Dashboard</router-link
-                >
-                /
+    <div id="main" class="main d-flex sidebar">
+      <div
+        class=""
+        style="
+          background: #fff;
 
-                <span class="color-fonts">{{ activeTabName }} Shifts</span>
-              </li>
-            </ol>
+          border-radius: 20px;
+        "
+      >
+        <ClientNavbar />
+      </div>
+      <div class="container-fluid p-0">
+        <div id="main">
+          <div class="pagetitle d-flex justify-content-between px-2">
+            <div class="py-3">
+              <ol class="breadcrumb my-2">
+                <li class="breadcrumb-item active text-uppercase fs-6">
+                  <router-link
+                    class="nav-link d-inline"
+                    aria-current="page"
+                    to="/client/clientDashboard"
+                    >Dashboard</router-link
+                  >
+                  /
+
+                  <span class="color-fonts">{{ activeTabName }} Shifts</span>
+                </li>
+              </ol>
+            </div>
           </div>
-        </div>
 
-        <div class="container-fluid mt-3">
-          <div class="row">
-            <div class="col-12">
-              <div class="d-flex gap-2 justify-content-between">
-                <div class="d-flex">
-                  <div class="d-flex align-items-center gap-2">
-                    <select
-                      class="form-control"
-                      v-model="currentView"
-                      @change="updateDateRange"
-                    >
-                      <option value="weekly">Weekly</option>
-                      <option value="monthly">Monthly</option>
-                    </select>
-                  </div>
+          <div class="container-fluid mt-3">
+            <div class="row">
+              <div class="col-12">
+                <div class="d-flex gap-2 justify-content-between">
+                  <div class="d-flex">
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="view-toggle">
+                        <button
+                          :class="[
+                            'toggle-btn',
+                            currentView === 'weekly' ? 'active' : '',
+                          ]"
+                          @click="
+                            currentView = 'weekly';
+                            updateDateRange();
+                          "
+                        >
+                          Weekly
+                        </button>
+                        <button
+                          :class="[
+                            'toggle-btn',
+                            currentView === 'monthly' ? 'active' : '',
+                          ]"
+                          @click="
+                            currentView = 'monthly';
+                            updateDateRange();
+                          "
+                        >
+                          Monthly
+                        </button>
+                      </div>
+                    </div>
 
-                  &nbsp;&nbsp;
-                  <div class="d-flex align-items-center">
-                    <span
-                      v-if="currentView === 'weekly' && startDate && endDate"
-                      class="fw-bold"
-                    >
-                      {{
-                        "Monday " +
-                        formatDate(startDate) +
-                        " to Sunday " +
-                        formatDate(endDate)
-                      }}
-                    </span>
-                    <span
-                      v-else-if="
-                        currentView === 'monthly' && startDate && endDate
-                      "
-                      class="fw-bold"
-                    >
-                      {{ formatDate(startDate) + " to " + formatDate(endDate) }}
-                    </span>
-                  </div>
-                  &nbsp;&nbsp;
-                  <div class="d-flex align-items-center fs-4">
-                    <i
-                      class="bi bi-caret-left-fill"
-                      @click="moveToPrevious"
-                    ></i>
-                    <i class="bi bi-calendar2-check-fill"></i>
-                    <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
-                  </div>
-
-                  &nbsp;&nbsp;
-                </div>
-                <div>
-                  <div>
-                    <button
-                      v-if="activeTab === 0"
-                      type="button"
-                      class="btn btn-outline-success text-nowrap"
-                      data-bs-toggle="modal"
-                      data-bs-target="#addShiftClient"
-                      data-bs-whatever="@mdo"
-                    >
-                      + Add Shift
-                    </button>
                     &nbsp;&nbsp;
+                    <div class="d-flex align-items-center">
+                      <span
+                        v-if="currentView === 'weekly' && startDate && endDate"
+                        class="fw-bold"
+                      >
+                        {{
+                          "Monday " +
+                          formatDate(startDate) +
+                          " to Sunday " +
+                          formatDate(endDate)
+                        }}
+                      </span>
+                      <span
+                        v-else-if="
+                          currentView === 'monthly' && startDate && endDate
+                        "
+                        class="fw-bold"
+                      >
+                        {{
+                          formatDate(startDate) + " to " + formatDate(endDate)
+                        }}
+                      </span>
+                    </div>
+                    &nbsp;&nbsp;
+                    <div class="d-flex align-items-center fs-4">
+                      <i
+                        class="bi bi-caret-left-fill"
+                        @click="moveToPrevious"
+                      ></i>
+                      <i class="bi bi-calendar2-check-fill"></i>
+                      <i class="bi bi-caret-right-fill" @click="moveToNext"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <div>
+                      <button
+                        v-if="activeTab === 0"
+                        type="button"
+                        class="btn btn-outline-success text-nowrap"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addShiftClient"
+                        data-bs-whatever="@mdo"
+                      >
+                        + Add Shift
+                      </button>
+                      &nbsp;&nbsp;
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-12">
-              <div class="">
-                <div>
-                  <ul
-                    class="nav nav-pills mb-3 d-flex justify-content-between mt-3"
-                    id="pills-tab"
-                    role="tablist"
-                  >
-                    <div>
-                      <li class="nav-item d-flex gap-2" role="presentation">
-                        <button
-                          class="nav-link"
-                          :class="{ active: activeTab === index }"
-                          aria-selected="true"
-                          type="button"
-                          role="tab"
-                          v-for="(tab, index) in tabs"
-                          :key="index"
-                          @click="selectTab(index)"
-                        >
-                          {{ tab.name }}
-                        </button>
-                      </li>
-                    </div>
-                  </ul>
+            <div class="row">
+              <div class="col-12">
+                <div class="">
                   <div>
-                    <component
-                      :is="activeComponent"
-                      :startDate="startDate"
-                      :currentView="currentView"
-                      :options="options"
-                      :siteData="siteData"
-                    ></component>
+                    <ul
+                      class="nav nav-pills mb-3 d-flex justify-content-between mt-3"
+                      id="pills-tab"
+                      role="tablist"
+                    >
+                      <div
+                        style="
+                          background: #fff;
+                          border-radius: 60px;
+                          padding: 10px 10px;
+                        "
+                      >
+                        <li class="nav-item d-flex gap-2" role="presentation">
+                          <button
+                            class="nav-link"
+                            :class="{ active: activeTab === index }"
+                            aria-selected="true"
+                            type="button"
+                            role="tab"
+                            v-for="(tab, index) in tabs"
+                            :key="index"
+                            @click="selectTab(index)"
+                          >
+                            {{ tab.name }}
+                          </button>
+                        </li>
+                      </div>
+                    </ul>
+                    <div>
+                      <component
+                        :is="activeComponent"
+                        :startDate="startDate"
+                        :currentView="currentView"
+                        :options="options"
+                        :siteData="siteData"
+                      ></component>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -130,33 +165,32 @@
           </div>
         </div>
       </div>
-    </div>
-    <div
-      class="mt-3"
-      style="text-align: right"
-      v-if="getVacancyDetail?.length > 8"
-    >
-      <button class="btn btn-outline-dark btn-sm">
-        {{ totalRecordsOnPage }} Records Per Page
-      </button>
-      &nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary mr-2"
-        :disabled="currentPage === 1"
-        @click="currentPage--"
+      <div
+        class="mt-3"
+        style="text-align: right"
+        v-if="getVacancyDetail?.length > 8"
       >
-        Previous</button
-      >&nbsp;&nbsp; <span>{{ currentPage }}</span
-      >&nbsp;&nbsp;
-      <button
-        class="btn btn-sm btn-primary ml-2"
-        :disabled="currentPage * itemsPerPage >= searchResults.length"
-        @click="currentPage++"
-      >
-        Next
-      </button>
+        <button class="btn btn-outline-dark btn-sm">
+          {{ totalRecordsOnPage }} Records Per Page
+        </button>
+        &nbsp;&nbsp;
+        <button
+          class="btn btn-sm btn-primary mr-2"
+          :disabled="currentPage === 1"
+          @click="currentPage--"
+        >
+          Previous</button
+        >&nbsp;&nbsp; <span>{{ currentPage }}</span
+        >&nbsp;&nbsp;
+        <button
+          class="btn btn-sm btn-primary ml-2"
+          :disabled="currentPage * itemsPerPage >= searchResults.length"
+          @click="currentPage++"
+        >
+          Next
+        </button>
+      </div>
     </div>
-
     <!-- <AddVacancy @addVacancy="createVacancy" /> -->
     <!-- <AddClietShift @addVacancy="createVacancy" /> -->
   </div>
@@ -467,14 +501,14 @@ export default {
 }
 #main {
   transition: all 0.3s;
-  padding-top: 63px;
-  background-color: #fdce5e17;
+  height: 100vh;
+  background-color: rgb(249 249 249);
 }
 .main-content {
   transition: all 0.3s;
 }
 .bg-define {
-  background-color: #fdce5e17;
+  background-color: rgb(249 249 249);
 }
 .color-fonts {
   color: #ff5f30;
@@ -492,7 +526,29 @@ export default {
 .form-check-input {
   border: 2px solid grey;
 }
-
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  background: #000000 !important;
+  width: 100;
+  height: 37;
+  color: #fff !important;
+  border-radius: 13px;
+  padding-top: 10px;
+  padding-right: 15px;
+  padding-bottom: 11px;
+  padding-left: 15px;
+  border-bottom: none !important;
+}
+.nav-link,
+.nav-link:hover,
+.nav-link:focus {
+  color: #667085;
+}
+.nav-pills {
+  padding: 10px;
+  border-radius: 20px;
+  border-width: 1px;
+}
 .rounded-circle {
   border: 1px solid #ff5f30;
   padding: 8px 11px;
@@ -522,16 +578,8 @@ a[data-v-507f63b7] {
 
 .nav-pills .nav-link {
   background-color: transparent;
-  border: 1px solid #0d6efd;
-  border-radius: 22px;
 }
 
-.nav-pills .nav-link {
-  background-color: transparent;
-  border: 1px solid #ff5722;
-  border-radius: 22px;
-  color: #ff5722;
-}
 button.nav-link > li.nav-item {
   border-bottom: 2px solid red;
   padding-bottom: 5px;

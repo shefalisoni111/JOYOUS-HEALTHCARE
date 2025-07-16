@@ -101,12 +101,6 @@
                       class="d-flex justify-content-center align-items-center gap-1"
                     >
                       Job Code
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
                     </div>
                   </th>
                   <th scope="col" class="bg-primary text-white">
@@ -114,12 +108,6 @@
                       class="d-flex justify-content-center align-items-center gap-1"
                     >
                       No. of Clients
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
                     </div>
                   </th>
                   <th scope="col" class="bg-primary text-white text-center">
@@ -141,12 +129,6 @@
                       class="d-flex justify-content-center align-items-center gap-1"
                     >
                       No. of Documents
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
                     </div>
                   </th>
                   <th scope="col" class="bg-primary text-white">

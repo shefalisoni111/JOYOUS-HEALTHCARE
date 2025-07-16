@@ -254,45 +254,14 @@
                             <tr>
                               <th scope="col" style="width: 2%"></th>
 
-                              <th scope="col">
-                                Client
-                                <img
-                                  src="../../../assets/ArrowDown.png"
-                                  class="img-fluid pe-2"
-                                  alt="RecPal"
-                                  loading="eager"
-                                />
-                              </th>
-                              <th scope="col">
-                                Site
-                                <img
-                                  src="../../../assets/ArrowDown.png"
-                                  class="img-fluid pe-2"
-                                  alt="RecPal"
-                                  loading="eager"
-                                />
-                              </th>
-                              <th scope="col">
-                                Job
-                                <img
-                                  src="../../../assets/ArrowDown.png"
-                                  class="img-fluid pe-2"
-                                  alt="RecPal"
-                                  loading="eager"
-                                />
-                              </th>
+                              <th scope="col">Client</th>
+                              <th scope="col">Site</th>
+                              <th scope="col">Job</th>
                               <th scope="col">
                                 <div
                                   class="d-flex justify-content-center align-items-center gap-1"
                                 >
                                   Day
-
-                                  <img
-                                    src="../../../assets/ArrowDown.png"
-                                    class="img-fluid pe-2"
-                                    alt="RecPal"
-                                    loading="eager"
-                                  />
                                 </div>
                               </th>
                               <th scope="col" style="width: 7%">
@@ -300,12 +269,6 @@
                                   class="d-flex justify-content-center align-items-center gap-1"
                                 >
                                   Shift Time
-                                  <img
-                                    src="../../../assets/ArrowDown.png"
-                                    class="img-fluid pe-2"
-                                    alt="RecPal"
-                                    loading="eager"
-                                  />
                                 </div>
                               </th>
                               <th scope="col">
@@ -313,12 +276,6 @@
                                   class="d-flex justify-content-center align-items-center gap-1"
                                 >
                                   Rate Type
-                                  <img
-                                    src="../../../assets/ArrowDown.png"
-                                    class="img-fluid pe-2"
-                                    alt="RecPal"
-                                    loading="eager"
-                                  />
                                 </div>
                               </th>
                               <th scope="col">
@@ -326,12 +283,6 @@
                                   class="d-flex justify-content-center align-items-center gap-1"
                                 >
                                   Client Rate
-                                  <img
-                                    src="../../../assets/ArrowDown.png"
-                                    class="img-fluid pe-2"
-                                    alt="RecPal"
-                                    loading="eager"
-                                  />
                                 </div>
                               </th>
                               <th scope="col">
@@ -339,12 +290,6 @@
                                   class="d-flex justify-content-center align-items-center gap-1"
                                 >
                                   Private Limited
-                                  <img
-                                    src="../../../assets/ArrowDown.png"
-                                    class="img-fluid pe-2"
-                                    alt="RecPal"
-                                    loading="eager"
-                                  />
                                 </div>
                               </th>
                               <th scope="col">
@@ -352,12 +297,6 @@
                                   class="d-flex justify-content-center align-items-center gap-1"
                                 >
                                   Self Employed
-                                  <img
-                                    src="../../../assets/ArrowDown.png"
-                                    class="img-fluid pe-2"
-                                    alt="RecPal"
-                                    loading="eager"
-                                  />
                                 </div>
                               </th>
                               <th scope="col" style="width: 7%">
@@ -365,34 +304,14 @@
                                   class="d-flex justify-content-center align-items-center gap-1"
                                 >
                                   Umbrella
-                                  <img
-                                    src="../../../assets/ArrowDown.png"
-                                    class="img-fluid pe-2"
-                                    alt="RecPal"
-                                    loading="eager"
-                                  />
                                 </div>
                               </th>
-                              <th scope="col" style="width: 6%">
-                                PAYE
-                                <img
-                                  src="../../../assets/ArrowDown.png"
-                                  class="img-fluid pe-2"
-                                  alt="RecPal"
-                                  loading="eager"
-                                />
-                              </th>
+                              <th scope="col" style="width: 6%">PAYE</th>
                               <th scope="col" style="width: 10%">
                                 <div
                                   class="d-flex justify-content-center align-items-center gap-1"
                                 >
                                   Created By and Time
-                                  <img
-                                    src="../../../assets/ArrowDown.png"
-                                    class="img-fluid pe-2"
-                                    alt="RecPal"
-                                    loading="eager"
-                                  />
                                 </div>
                               </th>
                               <th scope="col">
@@ -400,12 +319,6 @@
                                   class="d-flex justify-content-center align-items-center gap-1"
                                 >
                                   Last Update
-                                  <img
-                                    src="../../../assets/ArrowDown.png"
-                                    class="img-fluid pe-2"
-                                    alt="RecPal"
-                                    loading="eager"
-                                  />
                                 </div>
                               </th>
                               <th scope="col" style="width: 7%">
@@ -413,12 +326,6 @@
                                   class="d-flex justify-content-center align-items-center gap-1"
                                 >
                                   Action
-                                  <img
-                                    src="../../../assets/ArrowDown.png"
-                                    class="img-fluid pe-2"
-                                    alt="RecPal"
-                                    loading="eager"
-                                  />
                                 </div>
                               </th>
                             </tr>
@@ -731,132 +638,22 @@
                           <thead>
                             <tr>
                               <th></th>
-                              <th scope="col">
-                                Client
-                                <img
-                                  src="../../../assets/ArrowDown.png"
-                                  class="img-fluid pe-2"
-                                  alt="RecPal"
-                                  loading="eager"
-                                />
-                              </th>
-                              <th scope="col">
-                                Site
-                                <img
-                                  src="../../../assets/ArrowDown.png"
-                                  class="img-fluid pe-2"
-                                  alt="RecPal"
-                                  loading="eager"
-                                />
-                              </th>
-                              <th scope="col">
-                                Job
-                                <img
-                                  src="../../../assets/ArrowDown.png"
-                                  class="img-fluid pe-2"
-                                  alt="RecPal"
-                                  loading="eager"
-                                />
-                              </th>
-                              <th scope="col">
-                                Day
-                                <img
-                                  src="../../../assets/ArrowDown.png"
-                                  class="img-fluid pe-2"
-                                  alt="RecPal"
-                                  loading="eager"
-                                />
-                              </th>
-                              <th scope="col">
-                                Shift Time
-                                <img
-                                  src="../../../assets/ArrowDown.png"
-                                  class="img-fluid pe-2"
-                                  alt="RecPal"
-                                  loading="eager"
-                                />
-                              </th>
-                              <th scope="col">
-                                Rate Type
-                                <img
-                                  src="../../../assets/ArrowDown.png"
-                                  class="img-fluid pe-2"
-                                  alt="RecPal"
-                                  loading="eager"
-                                />
-                              </th>
-                              <th scope="col">
-                                Client Rate
-                                <img
-                                  src="../../../assets/ArrowDown.png"
-                                  class="img-fluid pe-2"
-                                  alt="RecPal"
-                                  loading="eager"
-                                />
-                              </th>
-                              <th scope="col">
-                                Private Limited
-                                <img
-                                  src="../../../assets/ArrowDown.png"
-                                  class="img-fluid pe-2"
-                                  alt="RecPal"
-                                  loading="eager"
-                                />
-                              </th>
-                              <th scope="col">
-                                Self Employed
-                                <img
-                                  src="../../../assets/ArrowDown.png"
-                                  class="img-fluid pe-2"
-                                  alt="RecPal"
-                                  loading="eager"
-                                />
-                              </th>
-                              <th scope="col">
-                                Umbrella
-                                <img
-                                  src="../../../assets/ArrowDown.png"
-                                  class="img-fluid pe-2"
-                                  alt="RecPal"
-                                  loading="eager"
-                                />
-                              </th>
-                              <th scope="col">
-                                PAYE
-                                <img
-                                  src="../../../assets/ArrowDown.png"
-                                  class="img-fluid pe-2"
-                                  alt="RecPal"
-                                  loading="eager"
-                                />
-                              </th>
+                              <th scope="col">Client</th>
+                              <th scope="col">Site</th>
+                              <th scope="col">Job</th>
+                              <th scope="col">Day</th>
+                              <th scope="col">Shift Time</th>
+                              <th scope="col">Rate Type</th>
+                              <th scope="col">Client Rate</th>
+                              <th scope="col">Private Limited</th>
+                              <th scope="col">Self Employed</th>
+                              <th scope="col">Umbrella</th>
+                              <th scope="col">PAYE</th>
                               <th scope="col" style="width: 10%">
                                 Created By and Time
-                                <img
-                                  src="../../../assets/ArrowDown.png"
-                                  class="img-fluid pe-2"
-                                  alt="RecPal"
-                                  loading="eager"
-                                />
                               </th>
-                              <th scope="col">
-                                Last Update
-                                <img
-                                  src="../../../assets/ArrowDown.png"
-                                  class="img-fluid pe-2"
-                                  alt="RecPal"
-                                  loading="eager"
-                                />
-                              </th>
-                              <th scope="col">
-                                Action
-                                <img
-                                  src="../../../assets/ArrowDown.png"
-                                  class="img-fluid pe-2"
-                                  alt="RecPal"
-                                  loading="eager"
-                                />
-                              </th>
+                              <th scope="col">Last Update</th>
+                              <th scope="col">Action</th>
                             </tr>
                           </thead>
 

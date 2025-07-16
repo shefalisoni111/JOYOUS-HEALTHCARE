@@ -1,171 +1,158 @@
 <template>
   <div>
-    <ClientNavbar />
-    <div id="main" class="main">
-      <div class="pagetitle mainTop">
-        <div class="row">
-          <ol class="breadcrumb mb-1 ps-3">
-            <li class="breadcrumb-item active fs-6 text-white">Dashboard</li>
-          </ol>
-          <h5 class="fs-4 ps-3">
-            Welcome to Client Dashboard - {{ getRecords.client_name }}
-          </h5>
-        </div>
+    <div id="main" class="main d-flex sidebar">
+      <div
+        class=""
+        style="
+          background: #fff;
+
+          border-radius: 20px;
+        "
+      >
+        <ClientNavbar />
       </div>
-      <div>
-        <div class="row mt-3">
-          <div class="col-md-12 d-flex gap-5">
-            <div class="" style="width: 25%">
-              <div class="card mb-3">
-                <div class="row">
-                  <div class="col-md-6 d-flex align-items-center justify-content-evenly">
-                    <div
-                      style="
-                        background: #86b7fe;
-                        border-radius: 50%;
-                        text-align: center;
-                        width: 80px;
-                        height: 80px;
-                        line-height: 84px;
-                      "
-                    >
-                      <i class="bi bi-people fs-3"></i>
+
+      <div class="col-10 ms-4">
+        <div class="container-fluid">
+          <div class="row" style="margin-top: 35px">
+            <h5 class="fs-4 ps-3 text-capitalize">
+              Welcome to Client Dashboard - {{ getRecords.client_name }}
+            </h5>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-12 d-flex gap-5">
+              <div class="col-12 mb-3 pb-2">
+                <div
+                  class="card h-100 info-card sales-card border-left-blue py-4"
+                >
+                  <h5 class="card-title fw-bold d-flex fs-6 m-2 ps-3">
+                    Client Current Week Overview
+                  </h5>
+
+                  <div class="card-body py-1 d-flex justify-content-around">
+                    <div class="card-section">
+                      <div class="ps-4 mt-2">
+                        <a class="navbar-brand">
+                          <img
+                            src="@/assets/Sales.png"
+                            class="img-fluid"
+                            alt="client"
+                            loading="eager"
+                        /></a>
+                      </div>
+                      <div class="card-icon d-flex gap-3">
+                        <h4 class="text-muted">
+                          {{ getRecords.vacancies || 0 }}
+                        </h4>
+                        <p class="card-text mb-0">Shifts</p>
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="card-body">
-                      <h5 class="card-title">CURRENT WEEK</h5>
-                      <p class="card-text mb-0">SHIFTS</p>
-                      <small class="text-muted">{{ getRecords.vacancies || 0 }}</small>
+
+                    <div class="border-left-right"></div>
+
+                    <div class="card-section">
+                      <div class="ps-4 mt-2">
+                        <a class="navbar-brand">
+                          <img
+                            src="@/assets/Sales.png"
+                            class="img-fluid"
+                            alt="client"
+                            loading="eager"
+                        /></a>
+                      </div>
+                      <div class="card-icon d-flex gap-3">
+                        <h4 class="text-muted">
+                          {{ getRecords.bookigs || 0 }}
+                        </h4>
+                        <p class="card-text mb-0">Bookings</p>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="" style="width: 25%">
-              <div class="card mb-3">
-                <div class="row">
-                  <div class="col-md-6 d-flex align-items-center justify-content-evenly">
-                    <div
-                      style="
-                        background: #86b7fe;
-                        border-radius: 50%;
-                        text-align: center;
-                        width: 80px;
-                        height: 80px;
-                        line-height: 84px;
-                      "
-                    >
-                      <i class="bi bi-file-earmark-spreadsheet fs-3"></i>
+
+                    <div class="border-left-right"></div>
+
+                    <div class="card-section">
+                      <div class="ps-4 mt-2">
+                        <a class="navbar-brand">
+                          <img
+                            src="@/assets/Sales.png"
+                            class="img-fluid"
+                            alt="client"
+                            loading="eager"
+                        /></a>
+                      </div>
+                      <div class="card-icon d-flex gap-3">
+                        <h4 class="text-muted">{{ getRecords.sites || 0 }}</h4>
+                        <p class="card-title text-capitalize">Total Sites</p>
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="card-body">
-                      <h5 class="card-title">CURRENT WEEK</h5>
-                      <p class="card-text mb-0">BOOKINGS</p>
-                      <small class="text-muted">{{ getRecords.bookigs || 0 }}</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="" style="width: 25%">
-              <div class="card mb-3">
-                <div class="row">
-                  <div class="col-md-6 d-flex align-items-center justify-content-evenly">
-                    <div
-                      style="
-                        background: #86b7fe;
-                        border-radius: 50%;
-                        text-align: center;
-                        width: 80px;
-                        height: 80px;
-                        line-height: 84px;
-                      "
-                    >
-                      <i class="bi bi-building fs-3"></i>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="card-body">
-                      <h5 class="card-title">TOTAL BUSINESS UNITS</h5>
-                      <!-- <p class="card-text mb-0">SHIFTS</p> -->
-                      <small class="text-muted">{{ getRecords.sites || 0 }}</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="" style="width: 25%">
-              <div class="card mb-3">
-                <div class="row">
-                  <div class="col-md-6 d-flex align-items-center justify-content-evenly">
-                    <div
-                      style="
-                        background: #86b7fe;
-                        border-radius: 50%;
-                        text-align: center;
-                        width: 80px;
-                        height: 80px;
-                        line-height: 84px;
-                      "
-                    >
-                      <i class="bi bi-calendar-week fs-3"></i>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="card-body">
-                      <h5 class="card-title">CURRENT WEEK</h5>
-                      <p class="card-text mb-0">INVOICES</p>
-                      <small class="text-muted">{{ getRecords.invoices || 0 }}</small>
+                    <div class="border-left-right"></div>
+
+                    <div class="card-section">
+                      <div class="ps-4 mt-2">
+                        <a class="navbar-brand">
+                          <img
+                            src="@/assets/Sales.png"
+                            class="img-fluid"
+                            alt="client"
+                            loading="eager"
+                        /></a>
+                      </div>
+                      <div class="card-icon d-flex gap-3">
+                        <h4 class="text-muted">
+                          {{ getRecords.invoices || 0 }}
+                        </h4>
+                        <p class="card-text mb-0">Invoices</p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="row mx-1">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Ref. Code</th>
-              <th>Site</th>
-              <th>Position</th>
-              <th>Date</th>
-              <th>Shift</th>
-              <th>Staff Required</th>
-              <th>Assigned</th>
-              <th>Booking</th>
-            </tr>
-          </thead>
-          <tbody class="text-capitalize" v-if="CurrentWekShift?.length > 0">
-            <tr v-for="shift in CurrentWekShift" :key="shift.id">
-              <td>{{ shift.ref_code }}</td>
-              <td>{{ shift.site }}</td>
-              <td>{{ shift.job_title }}</td>
-              <td class="widthDefine">
-                <span v-for="(date, index) in shift.dates" :key="index">
-                  {{ date }}
+          <div class="row mx-1">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Ref. Code</th>
+                  <th>Site</th>
+                  <th>Position</th>
+                  <th>Date</th>
+                  <th>Shift</th>
+                  <th>Staff Required</th>
+                  <th>Assigned</th>
+                  <th>Booking</th>
+                </tr>
+              </thead>
+              <tbody class="text-capitalize" v-if="CurrentWekShift?.length > 0">
+                <tr v-for="shift in CurrentWekShift" :key="shift.id">
+                  <td>{{ shift.ref_code }}</td>
+                  <td>{{ shift.site }}</td>
+                  <td>{{ shift.job_title }}</td>
+                  <td class="widthDefine">
+                    <span v-for="(date, index) in shift.dates" :key="index">
+                      {{ date }}
 
-                  <template v-if="index !== shift.dates.length - 1">, </template>
-                </span>
-              </td>
-              <td>{{ shift.site_shift }}</td>
-              <td>{{ shift.staff_required }}</td>
-              <td>{{ shift.assigned }}</td>
-              <td>{{ shift.accepted }}</td>
-            </tr>
-          </tbody>
-          <tbody v-else>
-            <tr>
-              <td colspan="7" class="text-danger text-center">
-                {{ "Not Shift Found in this Week." }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                      <template v-if="index !== shift.dates.length - 1"
+                        >,
+                      </template>
+                    </span>
+                  </td>
+                  <td>{{ shift.site_shift }}</td>
+                  <td>{{ shift.staff_required }}</td>
+                  <td>{{ shift.assigned }}</td>
+                  <td>{{ shift.accepted }}</td>
+                </tr>
+              </tbody>
+              <tbody v-else>
+                <tr>
+                  <td colspan="8" class="text-danger text-center">
+                    {{ "Not Shift Found in this Week." }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -191,12 +178,15 @@ export default {
     async fetchData() {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(`${VITE_API_URL}/client_dashboard_home_api`, {
-          headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${VITE_API_URL}/client_dashboard_home_api`,
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         // this.getRecords = response.data;
         if (response.data && response.data.client_name) {
           this.getRecords = response.data;
@@ -342,11 +332,10 @@ table th.cw {
   transform: translateX(-34px);
 }
 #main {
-  padding: 0px 20px;
   transition: all 0.3s;
-  background: #fef8f8;
-  padding-top: 105px;
-  background-color: #fdce5e17;
+
+  height: 100vh;
+  background-color: rgb(249 249 249);
 }
 .mainTop {
   color: #fff;

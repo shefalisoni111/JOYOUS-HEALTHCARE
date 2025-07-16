@@ -201,81 +201,17 @@
                     <table class="table reportTable">
                       <thead>
                         <tr>
-                          <th scope="col">
-                            Sl No
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Client
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Site
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
+                          <th scope="col">Sl No</th>
+                          <th scope="col">Client</th>
+                          <th scope="col">Site</th>
 
-                          <th scope="col">
-                            Time From
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Time To
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Hours
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
+                          <th scope="col">Time From</th>
+                          <th scope="col">Time To</th>
+                          <th scope="col">Hours</th>
                           <!-- <th scope="col">Charge Rate</th> -->
-                          <th scope="col">
-                            Total Charge
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
+                          <th scope="col">Total Charge</th>
 
-                          <th scope="col">
-                            Status
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
+                          <th scope="col">Status</th>
                         </tr>
                       </thead>
                       <tbody v-if="paginateClientReport?.length > 0">
@@ -374,88 +310,16 @@
                     <table class="table reportTable">
                       <thead>
                         <tr>
-                          <th scope="col">
-                            Sl No
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Client
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Site
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
+                          <th scope="col">Sl No</th>
+                          <th scope="col">Client</th>
+                          <th scope="col">Site</th>
 
-                          <th scope="col">
-                            Time From
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Time To
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Hours
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Charge Rate
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Total Charge
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
-                          <th scope="col">
-                            Status
-                            <img
-                              src="../../assets/ArrowDown.png"
-                              class="img-fluid pe-2"
-                              alt="RecPal"
-                              loading="eager"
-                            />
-                          </th>
+                          <th scope="col">Time From</th>
+                          <th scope="col">Time To</th>
+                          <th scope="col">Hours</th>
+                          <th scope="col">Charge Rate</th>
+                          <th scope="col">Total Charge</th>
+                          <th scope="col">Status</th>
                         </tr>
                       </thead>
                       <tbody v-if="paginateSearchResults?.length > 0">

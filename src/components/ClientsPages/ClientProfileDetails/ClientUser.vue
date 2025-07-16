@@ -22,33 +22,9 @@
       <table class="table">
         <thead>
           <tr>
-            <th>
-              Email
-              <img
-                src="../../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th>
-              Password
-              <img
-                src="../../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th>
-              Actions
-              <img
-                src="../../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody v-if="getClientUser?.length > 0">

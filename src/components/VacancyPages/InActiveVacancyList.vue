@@ -4,108 +4,24 @@
       <table class="table vacancyTable">
         <thead>
           <tr>
-            <th scope="col">
-              ID
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col">
-              #RefCode
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col">
-              Client
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col">
-              Site
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col">
-              Job Title
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col">
-              Date
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col">
-              Shift
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
+            <th scope="col">ID</th>
+            <th scope="col">#RefCode</th>
+            <th scope="col">Client</th>
+            <th scope="col">Site</th>
+            <th scope="col">Job Title</th>
+            <th scope="col">Date</th>
+            <th scope="col">Shift</th>
             <th scope="col" class="withShow">
-              <div class="d-flex justify-content-center align-items-center gap-1">
+              <div
+                class="d-flex justify-content-center align-items-center gap-1"
+              >
                 Staff required
-                <img
-                  src="../../assets/ArrowDown.png"
-                  class="img-fluid pe-2"
-                  alt="RecPal"
-                  loading="eager"
-                />
               </div>
             </th>
             <!-- <th scope="col">Client Rate</th> -->
-            <th scope="col" class="widthDefineNotes">
-              Notes
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col">
-              Status
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
-            <th scope="col">
-              Action
-              <img
-                src="../../assets/ArrowDown.png"
-                class="img-fluid pe-2"
-                alt="RecPal"
-                loading="eager"
-              />
-            </th>
+            <th scope="col" class="widthDefineNotes">Notes</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody v-if="getInactiveData?.length > 0">
@@ -182,7 +98,10 @@
                     class="btn text-nowrap shadow-soft border-0"
                     @click="confirmed(data.id)"
                   >
-                    <i class="bi bi-trash border-0 border-0" style="color: #f9944b"></i>
+                    <i
+                      class="bi bi-trash border-0 border-0"
+                      style="color: #f9944b"
+                    ></i>
                     Delete
                   </button>
                 </div>
@@ -251,10 +170,14 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="recordsPerPageDropdown">
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)">20 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(20)"
+              >20 Records</a
+            >
           </li>
           <li>
-            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)">50 Records</a>
+            <a class="dropdown-item" href="#" @click="setItemsPerPage(50)"
+              >50 Records</a
+            >
           </li>
           <li>
             <a class="dropdown-item" href="#" @click="setItemsPerPage(100)"

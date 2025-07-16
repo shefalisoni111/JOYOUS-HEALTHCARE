@@ -102,150 +102,22 @@
               <table class="table candidateTable">
                 <thead>
                   <tr>
-                    <th scope="col" style="width: 4%">
-                      ID
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
-                    <th scope="col" style="width: 6%">
-                      #RefCode
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
-                    <th scope="col" style="width: 4%">
-                      Vendor
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
-                    <th scope="col" style="width: 4%">
-                      Site
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
-                    <th scope="col" style="width: 4%">
-                      Job Title
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
-                    <th scope="col">
-                      Date
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
-                    <th scope="col">
-                      Shift
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
-                    <th scope="col" class="withShow">
-                      Staff Required
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
-                    <th scope="col">
-                      Notes
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
-                    <th scope="col">
-                      Publish
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
-                    <th scope="col" class="text-center">
-                      All
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
-                    <th scope="col">
-                      Applied
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
-                    <th scope="col">
-                      Assigned
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
-                    <th scope="col">
-                      Rejected
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
-                    <th scope="col">
-                      Created by
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
-                    <th scope="col">
-                      Action
-                      <img
-                        src="../../assets/ArrowDown.png"
-                        class="img-fluid pe-2"
-                        alt="RecPal"
-                        loading="eager"
-                      />
-                    </th>
+                    <th scope="col" style="width: 4%">ID</th>
+                    <th scope="col" style="width: 6%">#RefCode</th>
+                    <th scope="col" style="width: 4%">Vendor</th>
+                    <th scope="col" style="width: 4%">Site</th>
+                    <th scope="col" style="width: 4%">Job Title</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Shift</th>
+                    <th scope="col" class="withShow">Staff Required</th>
+                    <th scope="col">Notes</th>
+                    <th scope="col">Publish</th>
+                    <th scope="col" class="text-center">All</th>
+                    <th scope="col">Applied</th>
+                    <th scope="col">Assigned</th>
+                    <th scope="col">Rejected</th>
+                    <th scope="col">Created by</th>
+                    <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody v-if="paginationVacancySearch?.length > 0">

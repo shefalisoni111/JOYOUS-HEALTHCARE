@@ -1,113 +1,126 @@
 <template>
   <div>
-    <ClientNavbarVue :profileImage="profileImage" />
-    <div class="container">
-      <div class="main-body" id="main">
-        <h3
-          class="text-center fw-bold p-2 m-auto rounded-3 mainheading"
-          style="width: 100%"
-        >
-          Client Profile
-        </h3>
-        <div class="row gutters-sm mt-3">
-          <div class="col-md-4">
-            <div class="card h-100">
-              <div class="card-body">
-                <div class="d-flex flex-column align-items-center text-center">
-                  <div class="img-div position-relative">
-                    <router-view to="/home">
-                      <img
-                        v-if="!profileImage"
-                        src="../profile.png"
-                        width="150"
-                        height="150"
-                        @click.prevent
-                        style=""
-                        loading="eager"
-                      />
-                      <img
-                        v-else
-                        :src="displayedProfileImage"
-                        width="150"
-                        height="150"
-                        @click="openFileInput"
-                        style=""
-                        loading="eager"
-                      />
-                    </router-view>
-                    <label for="profilePicInput">
-                      <i class="bi bi-camera-fill"></i>
-                    </label>
-                  </div>
+    <!-- <ClientNavbarVue :profileImage="profileImage" /> -->
+    <div class="main-body d-flex" id="main">
+      <div
+        style="
+          background: #fff;
 
-                  <input
-                    type="file"
-                    id="profilePicInput"
-                    ref="profilePicInput"
-                    style="display: none"
-                    @change="handleFileChange"
-                    accept="image/*"
-                  />
-                  <div class="mt-3">
-                    <h4 class="text-capitalize">
-                      {{ getClientData.client_name }}
-                    </h4>
-                    <p class="text-secondary mb-1">
-                      {{ getClientData.position }}
-                    </p>
-                  </div>
-                  <div>
-                    <button
-                      type="button"
-                      class="btn btn-primary text-nowrap text-nowrap"
-                      data-bs-toggle="modal"
-                      data-bs-target="#editClientDashboardProfile"
-                      data-bs-whatever="@mdo"
-                    >
-                      Edit
-                    </button>
+          border-radius: 20px;
+        "
+      >
+        <ClientNavbarVue :profileImage="profileImage" />
+      </div>
+      <div class="container mt-5">
+        <div class="" style="background-color: #f9f9f9">
+          <h3
+            class="text-center fw-bold p-2 m-auto rounded-3 mainheading"
+            style="width: 100%"
+          >
+            Client Profile
+          </h3>
+          <div class="row gutters-sm mt-3">
+            <div class="col-md-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <div
+                    class="d-flex flex-column align-items-center text-center"
+                  >
+                    <div class="img-div position-relative">
+                      <router-view to="/home">
+                        <img
+                          v-if="!profileImage"
+                          src="../profile.png"
+                          width="150"
+                          height="150"
+                          @click.prevent
+                          style=""
+                          loading="eager"
+                        />
+                        <img
+                          v-else
+                          :src="displayedProfileImage"
+                          width="150"
+                          height="150"
+                          @click="openFileInput"
+                          style=""
+                          loading="eager"
+                        />
+                      </router-view>
+                      <label for="profilePicInput">
+                        <i class="bi bi-camera-fill"></i>
+                      </label>
+                    </div>
+
+                    <input
+                      type="file"
+                      id="profilePicInput"
+                      ref="profilePicInput"
+                      style="display: none"
+                      @change="handleFileChange"
+                      accept="image/*"
+                    />
+                    <div class="mt-3">
+                      <h4 class="text-capitalize">
+                        {{ getClientData.client_name }}
+                      </h4>
+                      <p class="text-secondary mb-1">
+                        {{ getClientData.position }}
+                      </p>
+                    </div>
+                    <div>
+                      <button
+                        type="button"
+                        class="btn btn-primary text-nowrap text-nowrap"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editClientDashboardProfile"
+                        data-bs-whatever="@mdo"
+                      >
+                        Edit
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-8">
-            <div class="card h-100">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-sm-3">
-                    <h6 class="mb-0">Full Name</h6>
+            <div class="col-md-8">
+              <div class="card h-100">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Full Name</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary text-capitalize">
+                      {{ getClientData.client_name }}
+                    </div>
                   </div>
-                  <div class="col-sm-9 text-secondary text-capitalize">
-                    {{ getClientData.client_name }}
+                  <hr />
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Email</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{ getClientData.email }}
+                    </div>
                   </div>
-                </div>
-                <hr />
-                <div class="row">
-                  <div class="col-sm-3">
-                    <h6 class="mb-0">Email</h6>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    {{ getClientData.email }}
-                  </div>
-                </div>
 
-                <hr />
-                <div class="row">
-                  <div class="col-sm-3">
-                    <h6 class="mb-0">Mobile</h6>
+                  <hr />
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Mobile</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{ getClientData.phone_number }}
+                    </div>
                   </div>
-                  <div class="col-sm-9 text-secondary">
-                    {{ getClientData.phone_number }}
-                  </div>
-                </div>
-                <hr />
-                <div class="row">
-                  <div class="col-sm-3">
-                    <h6 class="mb-0">Address</h6>
-                  </div>
-                  <div class="col-sm-9 text-secondary text-capitalize">
-                    {{ getClientData.address }}
+                  <hr />
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Address</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary text-capitalize">
+                      {{ getClientData.address }}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -237,9 +250,7 @@ export default {
 .card {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
-#main {
-  margin-top: 85px;
-}
+
 .card {
   position: relative;
   display: flex;
